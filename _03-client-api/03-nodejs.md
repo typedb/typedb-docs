@@ -1,5 +1,5 @@
 ---
-title: Node.js Client
+title: Node.js
 keywords:
 tags: []
 summary: ""

@@ -1,5 +1,5 @@
 ---
-title: Hierarchical Reasoning
+title: Hierarchical
 keywords:
 tags: []
 summary: ""

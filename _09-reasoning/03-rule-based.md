@@ -1,5 +1,5 @@
 ---
-title: Rule-based Reasoning
+title: Rule-based
 keywords:
 tags: []
 summary: ""

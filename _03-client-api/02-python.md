@@ -1,5 +1,5 @@
 ---
-title: Python Client
+title: Python
 keywords:
 tags: []
 summary: ""

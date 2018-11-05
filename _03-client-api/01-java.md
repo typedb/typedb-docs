@@ -1,5 +1,5 @@
 ---
-title: Java Client
+title: Java
 keywords:
 tags: []
 summary: ""
