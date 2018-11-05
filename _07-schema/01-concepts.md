@@ -1,5 +1,5 @@
 ---
-title: Schema Concepts
+title: Concepts
 keywords:
 tags: []
 summary: ""

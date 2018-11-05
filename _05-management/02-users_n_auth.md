@@ -1,5 +1,5 @@
 ---
-title: Users & Authentication
+title: Authentication
 keywords:
 tags: []
 summary: ""

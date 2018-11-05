@@ -1,5 +1,5 @@
 ---
-title: Managing Keyspaces
+title: Keyspaces
 keywords:
 tags: []
 summary: ""

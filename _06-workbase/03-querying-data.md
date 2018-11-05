@@ -1,5 +1,5 @@
 ---
-title: Querying Data
+title: Querying
 keywords:
 tags: []
 summary: ""

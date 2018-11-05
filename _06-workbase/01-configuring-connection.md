@@ -1,5 +1,5 @@
 ---
-title: Configuring Connection
+title: Connection
 keywords:
 tags: []
 summary: ""
