@@ -1,9 +1,7 @@
 ---
-title: with Grakn!
+title: Dev B 1
 keywords:
 tags: []
 summary: ""
-permalink: /docs/dev-guidelines/your-gf
+permalink: /docs/dev-guidelines/dev-b-1
 ---
-
-# WITH GRAKN!

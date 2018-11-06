@@ -1,9 +1,7 @@
 ---
-title: is sleeping
+title: Dev A 2
 keywords:
 tags: []
 summary: ""
-permalink: /docs/dev-guidelines/is-sleeping
+permalink: /docs/dev-guidelines/dev-a-2
 ---
-
-# IS SLEEPING

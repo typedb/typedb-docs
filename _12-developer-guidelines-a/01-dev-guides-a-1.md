@@ -1,9 +1,7 @@
 ---
-title: Your GF
+title: Dev A 1
 keywords:
 tags: []
 summary: ""
-permalink: /docs/dev-guidelines/your-gf
+permalink: /docs/dev-guidelines/dev-a-1
 ---
-
-# YOUR GF
