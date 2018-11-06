@@ -1,5 +1,5 @@
 ---
-title: Graql Overview
+title: Overview
 keywords: graql, overview
 tags: [graql]
 summary: "An introduction to Graql"
