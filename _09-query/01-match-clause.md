@@ -5,6 +5,7 @@ tags: [graql]
 summary: "Graql Match Clause"
 permalink: /docs/query/match-clause
 ---
+
 A match describes a pattern to find in the knowledge graph. The results of the match can be modified with various
 [modifiers](#modifiers). To follow along, or experiment further, with the examples given below, please load the
 *basic-genealogy.gql* file, which can be found in the *examples* directory of the Grakn installation zip, or on
@@ -44,13 +45,21 @@ Match entities that are direct instances of the given type. In the example, find
 </ul>
 
 <div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell1">
-<pre class="language-graql"><code>match $x isa! person; get;</code></pre>
+    <div role="tabpanel" class="tab-pane active" id="shell1">
+        {{ '
+```graql
+match $x isa! person; get;
+```
+        ' | markdownify }}
+    </div>
+    <div role="tabpanel" class="tab-pane" id="java1">
+        {{ '
+```java
+qb.match(var("x").isaExplicit("person")).get();
+```
+        ' | markdownify }}
+    </div>
 </div>
-<div role="tabpanel" class="tab-pane" id="java1">
-<pre  class="language-java"><code>qb.match(var("x").isaExplicit("person")).get();</code></pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
 
 
 ### id
@@ -61,21 +70,22 @@ Match concepts that have a system id that matches the [predicate](#predicates).
 </ul>
 
 <div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell2">
-<pre class="language-graql">
-<code>
-match $x id "1216728"; get;
-</code>
-</pre>
+    <div role="tabpanel" class="tab-pane active" id="shell2">
+        <pre class="language-graql">
+            <code>
+                match $x id "1216728"; get;
+            </code>
+        </pre>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="java2">
+        <pre class="language-java">
+            <code>
+                qb.match(var("x").has("id", "1216728")).get();
+            </code>
+        </pre>
+    </div>
 </div>
-<div role="tabpanel" class="tab-pane" id="java2">
-<pre class="language-java">
-<code>
-qb.match(var("x").has("id", "1216728")).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
 
 ### val
 
