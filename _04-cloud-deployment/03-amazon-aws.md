@@ -24,64 +24,25 @@ associated resources is referred to as a `stack`.
 
 Provides a Grakn-equipped image that can be used when launching instances. The AMI is specified when starting an instance and you are free to launch as many instances as need be,
 combine them with instances using different AMIs and orchestrate them.
+<div class="no_toc_section">
+<ul id="profileTabs" class="nav nav-tabs nav-tabs--intro">
+    <li class="active" style="width: 50% !important"><a href="#cloudformation" data-toggle="tab">CloudFormation</a></li>
+    <li style="width: 50% !important"><a href="#kgms-ami" data-toggle="tab">Grakn KGMS AMI</a></li>
+</ul>
 
-To commence deployment, click yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
+<div class="tab-content tab-content--intro">
+    <div role="tabpanel" class="tab-pane active" id="cloudformation">
+        {% assign cloudformation_content = '
+To commence deployment with CloudFormation, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
 
 ![](/images/aws-deployment-methods.png)
 
-which allows you to either pick the [AMI](#grakn-ami):
+which allows you to pick `CloudFormation` as the _Fullfilment Option_:
 
-![](/images/aws-deployment-ami.png)
+![](/images/aws-deployment-cloudformation.png)
 
-or the [CloudFormation](#grakn-cloudformation) options.
+To continue, press the `Continue to Launch` button.
 
-![](/images/aws-deployment-cloudformation.png).
-
-To proceed please pick the required option and press the `Continue to Launch` button.
-
-## <a name="grakn-ami"></a> Grakn AMI
-The AMI launch screen looks as follows:
-![](/images/aws-deployment-ami-launch.png).
-
-and allows you to specify the instance parameters. After having specified the parameters, press the launch button to start a Grakn instance.
-
-The AMI Provides an image with a preinstalled Grakn KGMS. The following list summarises the important locations:
-
-- Grakn dist: `/opt/grakn/`
-- Grakn config: /`opt/grakn/conf/grakn.properties`
-- logs: `/var/log/grakn/`
-
-
-#### Important: storage configuration
-By default Grakn is expecting the storage directory to be `/mnt/data1/`. We recommend attaching an EBS drive to the Grakn instance and mounting it so that storage is located on the EBS drive.
-The instructions how to attach the EBS drive can be found [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-attaching-volume.html).
-
-In order to mount the drive, please follow the following procedure:
-* identify the EBS block name and path, to do this run `lsblk` command and find the name of attached EBS device. The path will then be `/dev/<BLOCK_NAME>`.
-* if the drive is not formatted, format it by executing:
-```
-mkfs -t ext4 <BLOCK_HOME>
-```
-
-* mount the drive by executing:
-```
-mount <BLOCK_PATH> /mnt/data1/
-```
-
-#### Running
-Grakn is configured as a service and by default it is not running. Once you have configured the storage, to start grakn the following command needs to be executed as root on the target machine:
-```
-systemctl grakn start
-```
-
-To stop run:
-
-```
-systemctl grakn stop
-```
-
-
-## <a name="grakn-cloudformation"></a> CloudFormation
 After initiating launch, we arrive at the CloudFormation stack creation page:
 
 ![](/images/aws-cloudformation.png).
@@ -90,7 +51,8 @@ To proceed, simply press the `Next` button and you will be taken to the stack pa
 
 ![](/images/aws-cloudformation-config.png).
 
-### Stack parameters
+## Stack parameters
+
 The following parameters and parameter groups are used to define the stack:
 
 * General:
@@ -148,12 +110,12 @@ where you can adjust Tagging, Permissions and other options to your liking. Once
 
 If happy with the deployment, press `Create` to start the deployment of the Grakn stack.
 
-### Running Grakn
+## **IMPORTANT:** Running Grakn
 **A Grakn Cluster starts automatically running as user `grakn`.** There is no need to manually start grakn servers.
 **Once the deployment is started, please allow some time for the cluster to fully bootup and synchronise**. A reasonable rule of thumb for the bootup time is **2 minutes per cluster node**. The progress of cluster bootup can be
 checked by logging in to a cluster node and executing the [cluster health check](#cluster-check) command.
 
-### Scaling the cluster
+## **IMPORTANT:** Scaling the cluster
 Grakn cluster is deployed within an Auto Scaling Group which allows you to adjust the number of instances in the cluster in a straight-forward manner.
 Auto Scaling Groups group together EC2 instances that share similar characteristics and are treated as a logical grouping for the purposes of instance scaling and management.
 
@@ -165,7 +127,7 @@ There you can adjust the instance count to your needs by changing the `Desired C
 
 For more information on Auto Scaling Groups please visit [AWS Docs](https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroup.html).
 
-### **IMPORTANT:** Stopping/starting Grakn instances within the cluster
+## **IMPORTANT:** Stopping/starting Grakn instances within the cluster
 
 By design, it is not possible to stop an instance belonging to an Auto Scaling Group. When a Scaling Policy triggers the removal of an instance, Auto Scaling will always Terminate the instance. As a result a different
 procedure is needed for stopping instances and it will be described here.
@@ -198,6 +160,78 @@ More information on stopping/starting and attaching and detaching instances can 
 - [Stopping and Starting instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html),
 - [Attaching instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-instance-asg.html),
 - [Detaching instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/detach-instance-asg.html).
+        ' | markdownify %}
+
+        <div id="toc">
+            {{ cloudformation_content | toc_only }}
+        </div>
+
+        {{ cloudformation_content }}
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="kgms-ami">
+        {% assign kgms_ami_content = '
+To commence deployment with Grakn KGMS AMU, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
+
+![](/images/aws-deployment-methods.png)
+
+which allows you to pick `Amazon Machine Image` as the _Fullfilment Option_:
+
+![](/images/aws-deployment-ami.png).
+
+To continue, press on the `Continue to Launch` button.
+
+The AMI launch screen looks as follows:
+![](/images/aws-deployment-ami-launch.png).
+
+and allows you to specify the instance parameters. After having specified the parameters, press the launch button to start a Grakn instance.
+
+The AMI Provides an image with a preinstalled Grakn KGMS. The following list summarises the important locations:
+
+- Grakn dist: `/opt/grakn/`
+- Grakn config: /`opt/grakn/conf/grakn.properties`
+- logs: `/var/log/grakn/`
+
+
+## **IMPORTANT:** Storage configuration
+By default Grakn is expecting the storage directory to be `/mnt/data1/`. The storage directory is settable in the Grakn properties
+file located in `/opt/grakn/conf/`. We recommend attaching an EBS drive to the Grakn instance and mounting it so that storage is located on the EBS drive.
+The instructions how to attach the EBS drive can be found [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-attaching-volume.html).
+
+In order to mount the drive, please follow the following procedure:
+* identify the EBS block name and path, to do this run `lsblk` command and find the name of attached EBS block. The block path is then `/dev/<BLOCK_NAME>`.
+* if the drive is not formatted, format it by executing:
+```
+mkfs -t ext4 <BLOCK_PATH>
+```
+* make sure the mount directory exists and user `grakn` has write access to it
+
+* mount the drive by executing:
+```
+mount <BLOCK_PATH> <MOUNT_DIR>
+```
+
+## **IMPORTANT:** Running
+Grakn is configured as a service and by default it is not running. Once you have configured the storage, to start grakn the following command needs to be executed as root on the target machine:
+```
+systemctl start grakn
+```
+
+To stop run:
+
+```
+systemctl stop grakn
+```
+        ' | markdownify %}
+
+        <div id="toc">
+            {{ kgms_ami_content | toc_only }}
+        </div>
+
+        {{ kgms_ami_content }}
+    </div>
+</div>
+</div>
 
 ## User credentials
 In order to use Graql and Grakn consoles, user credentials are required. The default user is `grakn`, whereas the default password can be found in the `GraknUserPassword` output.
@@ -261,74 +295,3 @@ If you want to learn more about Grakn KGMS, the [Grakn Academy](https://dev.grak
 
 To learn more about running Grakn KGMS in the cloud, take a look at the [best practices guide](https://dev.grakn.ai/docs/cloud-deployment/best-practices)
 and [post deployment steps](https://dev.grakn.ai/docs/cloud-deployment/post-deployment).
-
-
-
-- - - -
-MUST BE MERGED
-- - - -
-
----
-title: Deployment Best Practices
-keywords: cloud, deployment, google
-tags: [getting-started, deployment, cloud]
-summary: "Best Practices for deploying Grakn on Google Cloud Platform"
-sidebar: documentation_sidebar
-permalink: /docs/cloud-deployment/best-practices
-folder: docs
----
-
-# Deployment Best Practices
-
-In this section we shall describe the recommendations for compute and storage aspects of cloud deployments.
-
-## Compute
-
-The optimum machine choice offering a good balance between CPU and memory should be equipped with at least 4 vCPUs and 8 GB of RAM.
-Using machines with additional RAM above a 25 GB threshold is not expected to yield significant performance improvements.
-Having these bounds in mind the following machines are recommended because they offer a balanced set of system resources for a range of workloads:
-
-On Google cloud:
-
-* Standard:
-    - n1-standard-4,
-    - n1-standard-8,
-    - n1-standard-16
-* High-CPU:
-    - n1-highcpu-16,
-    - n1-highcpu-32
-* High-memory:
-    - n1-highmem-4,
-    - n1-highmem-8
-
-On AWS:
-
-* General Purpose:
-    - t2.xlarge,
-    - t2.2xlarge,
-* Memory Optimised:
-    - m5.xlarge,
-    - m4.xlarge,
-    - m3.xlarge,
-* Compute Optimised:
-    - c5.xlarge,
-    - c5.2xlarge,
-    - c4.xlarge,
-    - c4.2xlarge,
-    - c3.xlarge,
-    - c3.2xlarge,
-
-
-The optimal machine type appropriate for a given use case shall depend on the specific performance requirements of the use case.
-
-For more information on machine types, please visit:
-* [GC Machine Types](https://cloud.google.com/compute/docs/machine-types)
-* [AWS EC2 Instance Types](https://aws.amazon.com/ec2/instance-types)
-
-## Storage
-
-Google Cloud offers a wide spectrum of storage options. For performance, we suggest using SSD persistent disks for majority of use cases. The specific size of persistent disks depends on the volume of data to be processed and can be tailored to needs.
-
-It is also possible to use HDD persistent disks. Although these come at a reduced price, their poor performance does not justify their use and we do not recommend them.
-
-For more information on GCE disks, please visit the [GC Disk Docs](https://cloud.google.com/compute/docs/disks)
