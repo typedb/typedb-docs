@@ -26,7 +26,7 @@ associated resources is referred to as a `stack`.
 
 Provides a Grakn-equipped image that can be used when launching instances. The AMI is specified when starting an instance and you are free to launch as many instances as need be,
 combine them with instances using different AMIs and orchestrate them.
-
+<div class="no_toc_section">
 <ul id="profileTabs" class="nav nav-tabs nav-tabs--intro">
     <li class="active" style="width: 50% !important"><a href="#cloudformation" data-toggle="tab">CloudFormation</a></li>
     <li style="width: 50% !important"><a href="#kgms-ami" data-toggle="tab">Grakn KGMS AMI</a></li>
@@ -34,7 +34,7 @@ combine them with instances using different AMIs and orchestrate them.
 
 <div class="tab-content tab-content--intro">
     <div role="tabpanel" class="tab-pane active" id="cloudformation">
-        {{'
+        {% assign cloudformation_content = '
 To commence deployment with CloudFormation, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
 
 ![](/images/aws-deployment-methods.png)
@@ -54,6 +54,7 @@ To proceed, simply press the `Next` button and you will be taken to the stack pa
 ![](/images/aws-cloudformation-config.png).
 
 ## Stack parameters
+
 The following parameters and parameter groups are used to define the stack:
 
 * General:
@@ -161,10 +162,17 @@ More information on stopping/starting and attaching and detaching instances can 
 - [Stopping and Starting instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html),
 - [Attaching instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-instance-asg.html),
 - [Detaching instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/detach-instance-asg.html).
-        ' | markdownify }}
+        ' | markdownify %}
+
+        <div id="toc">
+            {{ cloudformation_content | toc_only }}
+        </div>
+
+        {{ cloudformation_content }}
+
     </div>
     <div role="tabpanel" class="tab-pane" id="kgms-ami">
-        {{'
+        {% assign kgms_ami_content = '
 To commence deployment with Grakn KGMS AMU, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
 
 ![](/images/aws-deployment-methods.png)
@@ -216,8 +224,15 @@ To stop run:
 ```
 systemctl stop grakn
 ```
-        ' | markdownify }}
+        ' | markdownify %}
+
+        <div id="toc">
+            {{ kgms_ami_content | toc_only }}
+        </div>
+
+        {{ kgms_ami_content }}
     </div>
+</div>
 </div>
 
 ## User credentials
