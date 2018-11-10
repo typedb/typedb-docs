@@ -13,7 +13,7 @@ Welcome to the API Reference landing page. From here, you can find the latest, a
 
 [![Javadocs](https://javadoc.io/badge/ai.grakn/grakn.svg)](https://javadoc.io/doc/ai.grakn/grakn)
 
-The latest version of our Javadocs API Reference documentation will always be posted at [(http://javadoc.io/doc/ai.grakn/grakn).](http://javadoc.io/doc/ai.grakn/grakn).   
+The latest version of our Javadocs API Reference documentation will always be posted at [(http://javadoc.io/doc/ai.grakn/grakn).](http://javadoc.io/doc/ai.grakn/grakn).
 
 You can use the drop down selector to choose previous versions of the API reference, should you want to refer back to them.
 
@@ -22,7 +22,7 @@ You can use the drop down selector to choose previous versions of the API refere
 ## REST API
 
 The Swagger 2.0 specification for the REST API is available
-[here](https://github.com/graknlabs/grakn/blob/master/docs/api.yaml).
+[here](https://github.com/graknlabs/docs/blob/master/api.yaml).
 
 ## Feedback
 We hope you find our documentation helpful, but if you need more information, please don't hesitate to contact us using our [discussion forums](http://discuss.grakn.ai) or through our main [website](http://www.grakn.ai).
