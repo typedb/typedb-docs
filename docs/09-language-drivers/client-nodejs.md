@@ -22,7 +22,7 @@ To install the Grakn client, simply run:
 npm install grakn
 ```
 
-You will also need access to a Grakn database. Head [here](https://grakn.ai/pages/documentation/get-started/setup-guide.html) to get started with Grakn.
+You will also need access to a Grakn database. Head [here](https://grakn.ai/pages/docs/get-started/setup-guide.html) to get started with Grakn.
 
 # Quickstart
 

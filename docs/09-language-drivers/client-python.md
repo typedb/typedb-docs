@@ -20,7 +20,7 @@ Works with Grakn >=1.3.0 up to this driver version, and Python >= 3.6
 pip3 install grakn
 ```
 
-To obtain the Grakn database itself, head [here](https://grakn.ai/pages/documentation/get-started/setup-guide.html) for the setup guide.
+To obtain the Grakn database itself, head [here](https://grakn.ai/pages/docs/get-started/setup-guide.html) for the setup guide.
 
 # Quickstart
 
@@ -32,7 +32,7 @@ In the interpreter or in your source, import `grakn`:
 import grakn
 ```
 
-You can then instantiate a client, open a session, and create transactions.     
+You can then instantiate a client, open a session, and create transactions.
 _NOTE_: Grakn's default gRPC port is 48555 for versions >=1.3. Port 4567 (the old default REST endpoint) is deprecated for clients.
 
 ```
@@ -68,39 +68,39 @@ tx.close()
 print("Label of person type: {0}".format(person_type.label())
 ```
 
-## Basic retrievals and insertions 
+## Basic retrievals and insertions
 
 You can execute Graql queries and iterate through the answers as follows:
 ```
 # Perform a query that returns an iterator of ConceptMap answers
-answer_iterator = tx.query("match $x isa person; limit 10; get;") 
+answer_iterator = tx.query("match $x isa person; limit 10; get;")
 # Request first response
-a_concept_map_answer = next(answer_iterator) 
+a_concept_map_answer = next(answer_iterator)
 # Get the dictionary of variables : concepts, retrieve variable 'x'
-person = a_concept_map_answer.map()['x']      
+person = a_concept_map_answer.map()['x']
 
 # we can also iterate using a `for` loop
 some_people = []
-for concept_map in answer_iterator:           
+for concept_map in answer_iterator:
     # Get 'x' again, without going through .map()
-    some_people.append(concept_map.get('x'))    
-    break 
+    some_people.append(concept_map.get('x'))
+    break
 
 # skip the iteration and .get('x') and extract all the concepts in one go
-remaining_people = answer_iterator.collect_concepts() 
+remaining_people = answer_iterator.collect_concepts()
 
 # explicit close if not using `with` statements
 tx.close()
 ```
 
 _NOTE_: queries will return almost immediately -- this is because Grakn lazily evaluates the request on the server when
-the local iterator is consumed, not when the request is created. Each time `next(iter)` is called, the client executes a fast RPC request 
+the local iterator is consumed, not when the request is created. Each time `next(iter)` is called, the client executes a fast RPC request
 to the server to obtain the next concrete result.
 
 You might also want to make some insertions using `.query()`
 ```
 # Perform insert query that returns an iterator of ConceptMap of inserted concepts
-insert_iterator = tx.query("insert $x isa person, has birth-date 2018-08-06;") 
+insert_iterator = tx.query("insert $x isa person, has birth-date 2018-08-06;")
 concepts = insert_iterator.collect_concepts()
 print("Inserted a person with ID: {0}".format(concepts[0].id))
 # Don't forget to commit() to persist changes
@@ -109,13 +109,13 @@ tx.commit()
 
 Or you can use the methods available on Concept objects, known as the Concept API:
 ```
-person_type = tx.get_schema_concept("person") # retrieve the "person" schema type 
+person_type = tx.get_schema_concept("person") # retrieve the "person" schema type
 person = person_type.create()                 # instantiate a person
 birth_date_type = tx.get_schema_concept("birth-date") " retrieve the "birth-date" schema type
 date = datetime.datetime(year=2018, month=8, day=6) # requires `import datetime`
 birth_date = birth_date_type.create(date)     # instantiate a date with a python datetime object
-person.has(birth_date)                        # attach the birth_date concept to the person concept 
-tx.commit()                                   # write changes to Grakn 
+person.has(birth_date)                        # attach the birth_date concept to the person concept
+tx.commit()                                   # write changes to Grakn
 ```
 
 
@@ -183,8 +183,8 @@ is performed when the iterator is consumed, creating an RPC to the server to obt
 
 **Answer**
 
-This object represents a query answer and it is contained in the Iterator returned by `transaction.query()` method.     
-There are **different types of Answer**, based on the type of query executed a different type of Answer will be returned:   
+This object represents a query answer and it is contained in the Iterator returned by `transaction.query()` method.
+There are **different types of Answer**, based on the type of query executed a different type of Answer will be returned:
 
 | Query Type                           | Answer Type       |
 |--------------------------------------|-------------------|
