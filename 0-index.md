@@ -42,7 +42,7 @@ toc: false
   <div role="tabpanel" class="tab-pane" id="gethelp">
     <h2>Get Help</h2>
     <p>We are here to help! If you need more information, please don't hesitate to contact us using our <a href="http://discuss.grakn.ai">discussion forums</a> or through our <a href="https://grakn.ai/slack">Slack channel</a>.</p>
-    <p>If there's anything you want to improve, you can leave us a comment using the link at the bottom of each page, or even contribute to them directly via <a target="_blank" href="https://github.com/graknlabs/grakn/tree/master/docs">Github</a>.</p>
+    <p>If there's anything you want to improve, you can leave us a comment using the link at the bottom of each page, or even contribute to them directly via <a target="_blank" href="https://github.com/graknlabs/docs">Github</a>.</p>
   </div>
 </div>
 

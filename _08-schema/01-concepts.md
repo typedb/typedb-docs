@@ -1,447 +1,326 @@
 ---
 title: Concepts
 keywords: schema
-tags: [java-api, java, advanced-grakn]
-summary: "Example of building a basic schema"
+tags: [graql]
+summary: "How a Grakn Schema is defined."
 permalink: /docs/schema/concepts
 ---
 
-{% include warning.html content="Please note that this page is in progress and subject to revision." %}
-
-## Introduction
-
-
-
-In this section we are going to run through the construction of a basic schema. We recommend that you refer to the [Knowledge Model](../knowledge-model/model) documentation before reading this page. The process we will follow is a general guideline as to how you may start designing a schema.
-
-The schema we will be building will be used for a genealogy knowledge graph used for mapping out a family tree. You can find the complete schema, the dataset and rules that accompany it, on Github in our [sample-datasets repository](https://github.com/graknlabs/sample-datasets/tree/master/genealogy-knowledge-base).
-
-
-## Identifying Entity Types
-
-The first step is about identifying the categories of things that will be in your knowledge graph.
-For example if you are modelling a retail store, valid categories may be `product`, `electronics`, `books`, etc.  It is up to you to decide the granularity of your categories.
-
-For our genealogy knowledge graph we know that it will mostly be filled with people. So we can create an entity type:
-
-```graql
-define
-  person sub entity;
-```
-
-Naturally, we could break this up into `man` and `woman` but for this example we are going to keep things simple.  
-
-## Describing Entity Types
-
-Grakn provides you with the ability to attach resources to entity types. For example a `car` could have an `engine`, a `licence number`, and a `transmission type` as resources that help to describe it.
-
-So what helps describe a `person`?
-Philosophical debates aside let us go with something simple. A `person` typically has a `firstname`, a `lastname`, and a `gender`. We can model this and other resources that identify a person with:
-
-```graql
-define
-
-person sub entity
-  has identifier
-  has firstname
-  has surname    
-  has middlename
-  has picture
-  has age
-  has birth-date
-  has death-date
-  has gender;
-
-  identifier sub attribute datatype string;
-  name sub attribute datatype string;
-  firstname sub name datatype string;
-  surname sub name datatype string;
-  middlename sub name datatype string;
-  picture sub attribute datatype string;
-  age sub attribute datatype long;
-  event-date sub attribute datatype date;
-  birth-date sub event-date datatype date;
-  death-date sub event-date datatype date;
-  gender sub attribute datatype string;   
-```
-
-## Supported Resource Types
-The following attribute types are supported: `string`, `boolean`, `long`, `double`, `date`.
-
-## Identifying Relationships and Roles
-
-The next step is to ask how your data is connected, that is, what are the relationships between your data?
-
-This can be between different entity types, for example, a `person` **drives** a `car`, or even between the same entity types, for example, a `person` **marries** another `person`.
-
-In a Grakn, N-ary relationships are also possible. For example, a `person` has a `child` with another `person`.
-
-In our example, we will add `marriage` and `parentship` relationships. A `marriage` has two roles: `spouse1` and `spouse2`, while `parentship` has a `parent` role and a `child` role.
-
-```graql
-define
-
-marriage sub relationship
-  relates spouse1
-  relates spouse2
-  has picture;
-
-parentship sub relationship
-  relates parent
-  relates child;
-```
-
-## Allowing Roles to be Played
-
-The next step is to give our entity types permission to play specific roles.  We do this explicitly so that we don't accidentally relate data which should not be related. For example, this will prevent us from accidentally saying that a `dog` and a `person` can have a child.
-
-For this current example we only have one entity type, which can play all our current roles, so we explicitly state that with:  
-
-```graql
-define
-
-person sub entity
-  plays parent
-  plays child
-  plays spouse1
-  plays spouse2;
-```    
-
-We have now completed our basic genealogy schema.
-
-## The Complete Schema
-
-The final schema will now look something like this:
-
-```graql
-define
-
- # Entities
-
-  person sub entity
-    has identifier
-    has firstname
-    has surname
-    has middlename
-    has picture
-    has age
-    has birth-date
-    has death-date
-    has gender
-    plays parent
-    plays child
-    plays spouse1
-    plays spouse2;
-
- # Attributes
-
-  identifier sub attribute datatype string;
-  name sub attribute datatype string;
-  firstname sub name datatype string;
-  surname sub name datatype string;
-  middlename sub name datatype string;
-  picture sub attribute datatype string;
-  age sub attribute datatype long;
-  event-date sub attribute datatype date;
-  birth-date sub event-date datatype date;
-  death-date sub event-date datatype date;
-  gender sub attribute datatype string;
-
- # Roles and Relations
-
-  marriage sub relationship
-    relates spouse1
-    relates spouse2
-    has picture;
-
-  parentship sub relationship
-    relates parent
-    relates child;
-```
-
-![Schema](/images/basic-schema1.png)
-
-## Summary
-
-In this tutorial we described our entity type `person` across separate steps. This was done to demonstrate the typical thought process when creating a schema. It is typically good practice to group entity type definitions together as above.
-
-{% include note.html content="It is worth noting that the schema does not need to be completely finalised before loading data. The schema of a Grakn knowledge graph can be expanded even after loading data." %}
-
-## Where Next?
-
-We will continue to explore the development of a schema in the next section on defining a [hierarchical schema](./hierarchical-schema).
-
-
-
-- - - -
-MUST BE MERGED
-- - - -
-
----
-title: Defining Schema
-keywords: graql, query, define
-tags: [graql]
-summary: "Defining Grakn Schema using Graql"
-sidebar: documentation_sidebar
-permalink: /docs/building-schema/defining-schema
-folder: docs
-KB: genealogy-plus
----
-
-The page documents use of the Graql `define` and `undefine` queries, which will define a specified
-[variable pattern](../querying-data/match-clause#variable-patterns) describing a schema. To follow along, or experiment
-further, with the examples given below, please load the *basic-genealogy.gql* file, which can be found in the *examples*
-directory of the Grakn installation zip, or on
-[Github](https://github.com/graknlabs/grakn/blob/master/grakn-dist/src/examples/basic-genealogy.gql).
-
-{% include note.html content="If you are working in the Graql shell, don't forget to `commit`." %}
-
 ## Define
+As the name suggests, the `define` keyword is used to define elements of the schema. These elements may be substances of Schema Concepts or [Rules](/docs/schema/rules).
 
-[Define queries](../api-references/ddl#define-query) are used to define your schema. Any
-[variable patterns](../api-references/dml#patterns) within them are added to the schema:
+When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell-define" data-toggle="tab">Graql</a></li>
-    <li><a href="#java-define" data-toggle="tab">Java</a></li>
-</ul>
+`define` can also be used in the [Grakn Console's interactive mode] and Grakn [Java](...), [Python](...) and [Node.js](...) Clients.
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell-define">
-<pre class="language-graql"> <code>
+
+## Entity
+An entity is a thing with a distinct existence. For example, `organisation`, `company` and `person`. The existence of each of these entities is independent of any other element in the domain.
+
+### Defining an entity
+To define a new entity, we use the `sub` keyword followed by `entity`.
+
+```graql
 define
-person sub entity, has name;
-name sub attribute, datatype string;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java-define">
-<pre class="language-java"> <code>
-qb.define(
-    label("person").sub("entity").has("name"),
-    label("name").sub("attribute").datatype(STRING)
-).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
 
-This example defines an entity `person` and an attribute `name`. `name` is given the datatype `string` and a `person`
-can have a name.
+person sub entity;
+```
+
+### Assigning an attribute to an entity
+An entity can be assigned any number of attributes. To do so, we use the `has` keyword followed by the attribute's label.
+
+```graql
+define
+
+person sub entity,
+  has name,
+  has forename
+  has surname
+  has middle-name;
+```
+
+To assign a unique attribute to an entity, we use the `key` keyword followed by the attribute's label.
+
+```graql
+define
+
+person sub entity,
+    key email;
+```
+This guarantees `email` to have a unique value for all instances of `person`.
+
+
+Note that although these attributes have been assigned to `person`, they are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
+
+### Entity to play a role
+An entity can play a role in a relationship. To define the role played by an entity, we use the `plays` keyword followed by the role's label.
+
+```graql
+define
+
+person sub entity,
+  plays employee;
+
+company sub entity,
+  plays employer;
+
+employment sub relationship,
+  relates employee,
+    relates employer;
+```
+
+The definition above contains also a relationship. We will soon learn how to [define a relationship](#defining-a-relationship).
+
+### Subtyping an entity
+An entity can be defined to inherit another entity. Let's go through an example of subtyping the `organisation` entity.
+
+```graql
+define
+
+organisation sub entity,
+  plays owner,
+  plays property,
+  has name;
+
+company sub organisation,
+  plays employer;
+
+university sub organisation;
+```
+
+As you can see in the example above, when defining entities, what follows the `sub` keyword can be the label that is previously given to another entity. In this example, `company` and `university` are both considered to be subtypes of `organisation` and so are defined that way. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent. Therefore, although not defined explicitly, we are right to assume that both `company` and `university` have a `name` and play the roles `owner` and `property`.
+
+The ability to subtype entities not only helps mirror the reality of our dataset but also enables [automated reasoning using type hierarchies](...).
+
+
+## Relationship
+A relationship describes how two or more things are in some way connected to each other. For example, `loan` and `employment`. Each of these relationships must relate to something else in the domain. In other words, relationships are dependent on the existence of at least two other things.
+
+### Defining a relationship
+To define a new relationship, we use the `sub` keyword followed by `relationship`.
+
+```graql
+define
+
+employment sub relationship;
+```
+
+To complete the definition of a relationship, its roles must be determined. To do so, we use the `relates` keyword followed by the role's label.
+
+```graql
+define
+
+employment sub relationship,
+  relates employee,
+  relates emplyer;
+```
+
+The roles `employee` and `employer` are now ready to be played by other elements in the schema.
+
+### Roleplayers of a relationship
+Entities, attributes, and even other relationships can play a role in a relationship. To do this we make use of the `plays` keyword followed by the role's label.
+
+We have already seen how to [define an entity to play a role](#defining-an-entity-to-play-a-role) and will soon learn how to [define an attribute to play a role](#defining-an-attribute-to-play-a-role). But what about a relationship that plays a role in another relationship?
+
+### Defining a relationship to play a role
+Let's go through a simple example of how a relationship can play a role in another relationship.
+
+```graql
+define
+
+loan sub relationship,
+  relates lender,
+  relates recipient,
+  plays subject;
+
+legal-constraint sub relationship,
+  relates subject,
+  relates legality;
+
+bank sub entity,
+  plays lender;
+
+person sub entity,
+  plays recipient;
+
+terms-n-conditions sub entity,
+  plays legality;
+```
+
+The diagram below illustrates what has been defined in the example above.
+
+<<insert diagram>>
+
+### A relationship with many roleplayers
+A relationship can relate to any number of roles. The example below illustrates a three-way relationship.
+
+```graql
+define
+
+mortgage sub relationship,
+  relates debtor,
+    relates lender,
+    relates subject;
+
+bank sub entity,
+  plays lender;
+
+person sub entity,
+  plays debtor;
+
+house sub entity,
+  plays subject;
+```
+
+The diagram below illustrates what has been defined the example above.
+
+<<insert diagram>>
+
+### Assigning attributes to a relationship
+A relationship can be assigned any number of attributes. To do so, we use the `has` keyword followed by the attribute's label.
+
+```graql
+define
+
+employment sub relationship,
+  has job-title
+    relates emplyer,
+    relates employee;
+```
+
+Note that although the attribute `job-title` has been assigned to `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
+
+To assign a unique attribute to a relationship, we use the `key` keyword followed by the attribute's label.
+
+```graql
+define
+
+employment sub relationship,
+    key reference-id;
+```
+
+This guarantees `reference-id` to have a unique value for all instances of `employment`.
+
+### Subtyping a relationship
+An entity can be defined to inherit another entity. Let's go through an example of subtyping an `organisation` entity.
+
+```graql
+define
+
+affiliation sub relationship,
+  relates party;
+
+membership sub affiliation,
+  relates member as party,
+  relates group as party;
+
+employment sub membership,
+  relates employee as member,
+  relates employer as group,
+  has job-title;
+
+board-membership sub membership,
+  relates board-member as member,
+  relates board as group;
+```
+
+As you can see in the example above, when defining relationships, what follows the `sub` keyword can be the label given to another relationship. In this case, `employment` and `board-membership` are both considered to be subtypes of `membership` which is itself a subtype of `affiliation`. By subtyping a parent relationship, the children inherit all attributes owned and roles related to their parent. Therefore, although not defined explicitly, we are right to assume that both `employment` and `board-membership` relate to roles `member`, `group` and `party`.
+
+Note the use of the `as` keyword. This is necessary to determine the correspondence between the parent's and child's role.
+
+The ability to subtype relationships not only helps mirror the reality of our dataset but also enables [automated reasoning using type hierarchies](...).
+
+## Attribute
+An attribute is a piece of information that determines the property of an element in the domain. For example, `name`, `language` and `age`. These attributes can be assigned to anything that needs them as a property.
+
+### Defining an attribute
+To define a new attribute, we use the `sub` keyword followed by `attribute` followed by `datatype` and finally the type of the desired value.
+
+```graql
+define
+
+name sub attribute datatype string;
+```
+
+This attribute is now ready to be assigned to any other element in the schema.
+
+The data types available in a Grakn knowledge graph are as follows:
+- long: a 64-bit signed integer.
+- double: a double-precision floating point number, including a decimal point.
+- string: enclosed in double `"` or single `'` quotes
+- boolean: `true` or `false`
+- date: a date or date-time in ISO 8601 format
+
+Note that a particular attribute with the same value exists only once in the knowledge graph. The diagram below illustrates this point.
+<<insert diagram>>
+
+We have already seen how to [assign an attribute to an entity](#assigning-an-attribute-to-an-entity) and similarly to [assign an attribute to a relationship](#assigning-an-attribute-to-a-relationship). But what about assigning an attribute to another attribute?
+
+### Assigning an attribute to another attribute
+Like entities and relationships, attributes can also own an attribute of their own. To do this, we use the 'has' keyword followed by the attribute's label.
+
+```graql
+text sub attribute datatype string,
+  has word;
+
+word sub attribute datatype string,
+  has position;
+
+position sub attribute datatype long;
+```
+
+### Defining an attribute to play a role
+An attribute can play a role in a relationship. To define the role played by an attribute, we use the `plays` keyword followed by the role's label.
+
+```graql
+define
+
+word sub attribute datatype string,
+  plays originated;
+
+language sub entity,
+  plays origin;
+
+origination sub relationship,
+  relates origin,
+  relates originated;
+```
+
+The definition above contains also a relationship. Previously we learned how to [define a relationship](#defining-a-relationship).
+
+### Subtyping an attribute
+An attribute can be defined to inherit another attribute. Let’s go through an example of subtyping a `name` attribute.
+
+```graql
+name sub attribute datatype string;
+forename sub name;
+surname sub name;
+middle-name sub name;
+```
+
+What this definition means is that `forename`, `surname` and `middle-name` are all inherently subtypes of `name`. They inherit the datatype of `name` as well its contextuality.
+
+The ability to subtype attributes not only helps mirror the reality of our dataset but also enables [automated reasoning using type hierarchies](...).
 
 ## Undefine
+As the name suggests, the `undefine` keyword is used to define an element of the schema. These elements may be substances of Schema Concepts or [Rules](/docs/schema/rules).
 
-[Undefine queries](../api-references/ddl#undefine-query) are used to undefine your schema. Any
-[variable patterns](../api-references/dml#patterns) within them are removed from your schema:
+`undefine` can also be used in the [Grakn Console's interactive mode] and Grakn [Java](...), [Python](...) and [Node.js](...) Clients.
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell-undefine-has" data-toggle="tab">Graql</a></li>
-    <li><a href="#java-undefine-has" data-toggle="tab">Java</a></li>
-</ul>
+Here are two examples of how a schema element can be undefined:
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell-undefine-has">
-<pre class="language-graql"> <code>
-undefine person has name;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java-undefine-has">
-<pre class="language-java"> <code>
-qb.undefine(label("person").has("name")).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-This example will stop instances of a `person` from having a `name`. `person` and `name` will both still be in the
-schema.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell-undefine-sub" data-toggle="tab">Graql</a></li>
-    <li><a href="#java-undefine-sub" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell-undefine-sub">
-<pre class="language-graql"> <code>
-<!--test-ignore-->
+```graql
 undefine person sub entity;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java-undefine-sub">
-<pre class="language-java"> <code>
-<!--test-ignore-->
-qb.undefine(label("person").sub("entity")).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+```
 
-This example will remove `person` from the schema entirely.
+The Graql code above removes the type `person` from the schema.
 
-## Properties
+```graql
+undefine person has name;
+```
+The Graql code above removes the association between the attribute `name` and the type `person` from the schema.
 
-### id
+## Summary
+We learned that a Grakn schema is essentially a collection of Entities, Relationships, and Attributes - what we call the Grakn Concepts. The modularity of these concepts and how they interact with one another is what allows us to model the schema in a way to represent the true nature of any dataset in any domain.
 
-It is not possible to define a concept with the given id, as this is the job of the system. However, if you attempt to
-define by id, you will retrieve a concept if one with that id already exists. The created or retrieved concept can then
-be modified with further properties.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell3" data-toggle="tab">Graql</a></li>
-    <li><a href="#java3" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell3">
-<pre class="language-graql"> <code>
-<!--test-ignore-->
-define id "1376496" plays parent;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java3">
-<pre class="language-java"> <code>
-<!--test-ignore-->
-qb.define(var().id(ConceptId.of("1376496")).plays("parent")).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-### sub
-
-Set up a hierarchy.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell8" data-toggle="tab">Graql</a></li>
-    <li><a href="#java8" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell8">
-<pre class="language-graql"> <code>
-define
-man sub person;
-woman sub person;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java8">
-<pre class="language-java"> <code>
-qb.define(label("man").sub("person")).execute();
-qb.define(label("woman").sub("person")).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-
-### relates
-Add a role to a relationship.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell9" data-toggle="tab">Graql</a></li>
-    <li><a href="#java9" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell9">
-<pre class="language-graql"> <code>
-define siblings sub relationship, relates sibling, relates sibling;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java9">
-<pre class="language-java"> <code>
-qb.define(
-  label("siblings").sub("relationship")
-    .relates("sibling").relates("sibling")
-).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-
-### as
-Equivalent to `sub`, but only used in `relates` for defining the hierarchy of roles.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell9" data-toggle="tab">Graql</a></li>
-    <li><a href="#java9" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell9">
-<pre class="language-graql"> <code>
-define fatherhood sub parentship, relates father as parent, relates son as child;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java9">
-<pre class="language-java"> <code>
-qb.define(
-  label("fatherhood").sub("parentship")
-    .relates(label("father"), label("parent"))
-    .relates(label("son"), label("child"))
-).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-
-### plays
-Allow the concept type to play the given role.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell10" data-toggle="tab">Graql</a></li>
-    <li><a href="#java10" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell10">
-<pre class="language-graql"> <code>
-define person plays sibling;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java10">
-<pre class="language-java"> <code>
-qb.define(label("person").plays("sibling")).execute();
-qb.define(label("person").plays("sibling")).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-
-### has
-
-Allow the concept type to have the given attribute.
-
-This is done by creating a specific relationship relating the concept and attribute.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell11" data-toggle="tab">Graql</a></li>
-    <li><a href="#java11" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell11">
-<pre class="language-graql"> <code>
-define person has nickname;
-</code>
-</pre>
-</div>
-
-<div role="tabpanel" class="tab-pane" id="java11">
-<pre class="language-java"> <code>
-qb.define(label("person").has("nickname")).execute();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+In the next section, we will learn about one last addition to the schema - [Graql Rules](/docs/schema/rules).
