@@ -22,7 +22,7 @@ To start deployment, click on the `Launch on Compute Engine` button which will t
 Feel free to adjust the settings to your needs.
 
 ### <a name="firewall"></a> Configuring firewall settings
-Please pay extra attention to the `Allow TCP port 48555 traffic` tickbox as it allows the automatic addition of a suitable firewall rule to allow connecting to servers from outside the cluster via RPC. 
+Please pay extra attention to the `Allow TCP port 48555 traffic` tickbox as it allows the automatic addition of a suitable firewall rule to allow connecting to servers from outside the cluster via RPC.
 The tickbox location is highlighted below:
 
 ![](/images/gc-deployment-options-firewall.png)
@@ -54,16 +54,16 @@ In order to use Graql and Grakn consoles, user credentials are required. The def
 
 ![](/images/gc-user-password.png)
 
-**Once logged in, We strongly encourage to change the default user password**. In order to do so, log in to th Grakn console and type:
- 
+**Once logged in, We strongly encourage to change the default user password**. In order to do so, log in to the Grakn console and type:
+
 ```
 UPDATE USER grakn WITH PASSWORD newpassword
 ```
 
-More details on available commands can be found [here](http://dev.grakn.ai/docs/get-started/grakn-console). 
+More details on available commands can be found [here](http://dev.grakn.ai/docs/get-started/grakn-console).
 
 ## Connecting to Grakn
- 
+
 ### Using Grakn gRPC
 
 To enable gRPC communication, traffic on TCP port 48555 needs to be allowed. It is not enabled by default. To create a suitable firewall rule, please execute the command in the red circle in your terminal:
@@ -106,7 +106,7 @@ A summary of available commands can be found [here](http://dev.grakn.ai/docs/get
 
 ## Next Steps
 
-Deploying Grakn KGMS on Google Cloud comes with our Enterprise Support. Please contact [Support](support@grakn.ai) with your Support ID so we can create your account on our [Support Platform](https://work.grakn.ai/helpdesk). 
+Deploying Grakn KGMS on Google Cloud comes with our Enterprise Support. Please contact [Support](support@grakn.ai) with your Support ID so we can create your account on our [Support Platform](https://work.grakn.ai/helpdesk).
 
 If you want to learn more about Grakn KGMS, the [Grakn Academy](https://dev.grakn.ai/academy/) is a good place to start.
 
