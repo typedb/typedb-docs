@@ -6,7 +6,7 @@ summary: "How Grakn uses rules to reason over explicitly stored data."
 permalink: /docs/schema/rules
 ---
 
-## Introduction
+## Introduction {#introduction1111}
 Grakn is capable of reasoning over data via pre-defined rules. Graql rules dyanmically create relationships that were non-existant when the raw data was initially inserted into the knowledge graph. [Automated reasoning](...) provided by rules is performed at query time and is guaranteed to be complete. Rules not only allow shortenening and simplifying commonly-used queries but also enable implementation of business logic at the database level.
 
 When you query the knowledge graph for certain information, Grakn returns a complete set of answers. These answeres contain direct matches as well as those inferred by the rules included in the schema.
@@ -44,11 +44,11 @@ people-with-same-parents-are-siblings sub rule,
 
 The Graql rule above is telling Grakn the following:
 
-when:
-- there are two different people (`$x` and `$y`) who have the same mother `$m` and the same father `$f`,
+when
+: there are two different people (`$x` and `$y`) who have the same mother `$m` and the same father `$f`,
 
-then:
-- those people (`$x` and `$y`) must be siblings.
+then
+: those people (`$x` and `$y`) must be siblings.
 
 If the find the Graql code above unfamiliar, don't be concerned. We will soon learn about [using Graql to describe patterns](...).
 
