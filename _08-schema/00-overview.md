@@ -2,12 +2,12 @@
 title: Overview
 keywords: schema
 tags: [graql]
-summary: "An overview of Schema in a Grakn knowledge graph."
+summary: "An overview of schema in a Grakn knowledge graph."
 permalink: /docs/schema/overview
 ---
 
 ## Motivation
-A Grakn Schema is the blueprint of a Grakn knowledge graph. It allows you to model the knowledge graph in order to represent the dataset in its most true nature. No database can scale without an underlying structure and a Grakn knowledge graph is no exception.
+A Grakn schema is the blueprint of a Grakn knowledge graph. It allows you to model the knowledge graph in order to represent the dataset in its most true nature. No database can scale without an underlying structure and a Grakn knowledge graph is no exception.
 
 The schema enforces logical integrity and consistency across the dataset. In other words, it ensures that all data will always conform to the given structure. Any piece of data that violates the schema stays out of the picture.
 
@@ -24,15 +24,20 @@ A relationship can also have an attribute and any number of roleplayers which ca
 
 At last, we have the [Graql Rules](/docs/schema/rules). A simple yet extreamly powerful tool that allows us to build an intelligent database for an intelligent system. Rules are one way to perform [automated reasoning](...) in a Gtakn knowledge graph.
 
-## Defining the Schema programmatically
+## Defining the schema programmatically
 In this section, we will learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](...), [Python](...) and [Node.js](...).
 
 
-## Loading the Schema
+## Loading the schema
 Once we have defined a schema, the next immediate step will be to load that schema into Grakn. Learn how this is done using the Grakn Console <<link>>.
 
-## Querying the Schema
+## Querying the schema
 Once we have loaded the schema into Grakn, we are able to [query the schema](...) as we wish.
 
 ## Migrating Data
 To learn how to migrate a pre-existing dataset in CSV, JSON or XML format into a Grakn knowledge graph, check out the [Migration Mechanism](...) followed by a comprehensive [tutorial](...) in the language of your choice.
+
+## Summary
+The Grakn schema sets the foundation of a Grakn knowledge graph. When modeled thoroughly, the schema provides us with data integrity, flexibility, automated reasoning and intuitiveness in when it comes to querying data and knowledge.
+
+In this section, we will learn about the members of a schema - Concepts and Rules.
