@@ -2,376 +2,213 @@
 title: Match Clause
 keywords: graql, query, match
 tags: [graql]
-summary: "Graql Match Clause"
+summary: "Describing patterns in a Grakn knowledge graph."
 permalink: /docs/query/match-clause
 ---
 
-A match describes a pattern to find in the knowledge graph. The results of the match can be modified with various
-[modifiers](#modifiers). To follow along, or experiment further, with the examples given below, please load the
-*basic-genealogy.gql* file, which can be found in the *examples* directory of the Grakn installation zip, or on
-[Github](https://github.com/graknlabs/grakn/blob/master/grakn-dist/src/examples/basic-genealogy.gql).
+## Introduction
+`match` clause describes a pattern in the knowledge graph. In other words, it uses the semantics of the knowledge graph as defined in the [schema](/docs/schema/overview) to find a specific match. We can use the `match` clause to target instances of data or elements of the schema.
 
-```bash
-./grakn server start
-./graql console -f <relative-path-to-Grakn>/examples/basic-genealogy.gql
-```
+## Variables
+Graql assigns instances and values to variables. A Graql variable is prefixed with `$` and is simply a placeholder for an instance that may be of type [entity](/docs/schema/concepts#entity), [relationship](/docs/schema/concepts#relationship), [attribute](/docs/schema/concepts#attribite) or simply a hard-coded value of our own.
 
-## Properties
+In case of a hard-coded value, the accepted data types are:
+- long: a 64-bit signed integer.
+- double: a double-precision floating point number, including a decimal point.
+- string: enclosed in double `"` or single `'` quotes
+- boolean: `true` or `false`
+- date: a date or date-time in ISO 8601 format
 
-### isa
-Match instances that have the given type. In the example, find all `person` entities.
+## Matching Data Instances
+What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we want to do with the matched instances, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we will learn about [using _get_ for reading the knowledge graph](...).
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell0" data-toggle="tab">Graql</a></li>
-    <li><a href="#java0" data-toggle="tab">Java</a></li>
-</ul>
+### Matching instances of an entity
+Matching instances of an entity type is easy. We do so by using a variable followed by the `isa` keyword and the label of the entity of interest. Let's look at an example.
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell0">
-<pre class="language-graql"><code>match $x isa person; get;</code></pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java0">
-<pre  class="language-java"><code>qb.match(var("x").isa("person")).get();</code></pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-
-### isa!
-Match entities that are direct instances of the given type. In the example, find all `person` entities.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell1" data-toggle="tab">Graql</a></li>
-    <li><a href="#java1" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="shell1">
-        {{ '
 ```graql
-match $x isa! person; get;
+match $p isa person; get;
 ```
-        ' | markdownify }}
-    </div>
-    <div role="tabpanel" class="tab-pane" id="java1">
-        {{ '
-```java
-qb.match(var("x").isaExplicit("person")).get();
+
+The example above, for every person, assigns the person (entity) instance to the variable `$p`.
+
+#### Instances of an entity with particular attributes
+To narrow down the match on an entity, we can specify the attributes that the entity must own. To do so, we use the `has` keyword. Let's look at an example.
+
+```graql
+match $p isa person has name $n; get;
 ```
-        ' | markdownify }}
-    </div>
-</div>
 
+We will soon learn how this `match` clause can be extended by [targeting attributes more specifically](#matching-instances-of-an-attribute).
 
-### id
-Match concepts that have a system id that matches the [predicate](#predicates).
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell2" data-toggle="tab">Graql</a></li>
-    <li><a href="#java2" data-toggle="tab">Java</a></li>
-</ul>
+### Matching instances of a relationship
+Because of the dependent nature of relationships, matching them is quite different to matching entities and attributes. Let's look at an example.
 
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="shell2">
-        <pre class="language-graql">
-            <code>
-                match $x id "1216728"; get;
-            </code>
-        </pre>
-    </div>
+```graql
+match $emp (employer: $x, employee: $y) isa employment; get;
+```
 
-    <div role="tabpanel" class="tab-pane" id="java2">
-        <pre class="language-java">
-            <code>
-                qb.match(var("x").has("id", "1216728")).get();
-            </code>
-        </pre>
-    </div>
-</div>
+The example above, for every employment, assigns the employment (relationship) instance to the variable `$emp`, the employer company (entity) to the variable `$x` and the employee person (entity) to the variable `$y`.
 
-### val
+#### Instances of a relationship with particular attributes
+To narrow down the match on a relationship, we can specify the attributes that the relationship must own. To do so, we use the `has` keyword. Let's look at an example.
 
-Match all attributes that have a value matching the given [predicate](#predicates).
+```graql
+match $emp (employer: $x, exmployee: $y) isa employment has reference-id $ref; get;
+```
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell3" data-toggle="tab">Graql</a></li>
-    <li><a href="#java3" data-toggle="tab">Java</a></li>
-</ul>
+We will soon learn how this `match` clause can be extended by [targeting more specific attributes](#matching-instances-of-an-attribute).
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell3">
-<pre class="language-graql">
-<code>
-match $x contains "Bar"; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java3">
-<pre class="language-java">
-<code>
-qb.match(var("x").val(contains("Bar"))).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+#### Leaving the instance unassigned
+Assigning a relationship to a variable is optional. We may only be interested in the roleplayers of a certain relationship. In such case, we would write the above like so:
 
+```graql
+match (employer: $x, employee: $y) isa employment; get;
+```
 
-### has
+#### Leaving the roles out
+In scenarios where the relationship relates to only one role, we can omit the roles altogether. Let's look at another example.
 
-<!-- TODO: Describe new reified syntax -->
+```graql
+match ($x, $y, $z) isa friendship; get;
+```
 
-Match things that have the attribute specified. If a [predicate](#predicates) is provided, the attribute must also match that predicate.
+### Matching instances of an attribute
+Instances of attributes can be matched in various ways depending on the use case.
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell4" data-toggle="tab">Graql</a></li>
-    <li><a href="#java4" data-toggle="tab">Java</a></li>
-</ul>
+#### Independent of type
+We can match instances of attributes based on their value regardless of what type of attribute they are. Let's look at an example.
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell4">
-<pre class="language-graql">
-<code>
-match $x has identifier $y; get;
-match $x has identifier contains "Bar"; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java4">
-<pre class="language-java">
-<code>
-qb.match(var("x").has("identifier", var("x"))).get();
-qb.match(var("x").has("identifier", contains("Bar"))).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+```graql
+match $x "whatever"; get;
+```
 
-You can also specify a variable to represent the relationship connecting the thing and the attribute:
+This, matches instances of any attribute type whose value is "whatever" and assigns them to variable `$x`.
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell5" data-toggle="tab">Graql</a></li>
-    <li><a href="#java5" data-toggle="tab">Java</a></li>
-</ul>
+#### Independent of owner
+We can match instances of attributes based on their value regardless of what they belong to. Let's look an example.
 
-<!-- TODO: Update to final syntax -->
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell5">
-<pre class="language-graql">
-<code>
-match $x has identifier "Bar" via $r; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java5">
-<pre class="language-java">
-<code>
-qb.match(var("x").has(Label.of("identifier"), var().val("Bar"), var("r"))).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+```graql
+match $n isa name "John"; get;
+```
 
+This matches instances of attribute `name` with value `"John"`, regardless of what owns the attribute `name`.
 
-### relationship
+#### With a given subset
+To match all instances of attributes that contain a substring, we use the `contains` keyword. Let's look at an example.
 
-Match things that have a relationship with the given variable. If a role is provided, the role player must be playing that role.
+```graql
+match $phone-number contains "+44"; get;
+```
+This matches instances of any attribute whose value contains the substring `"+44"`.
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell6" data-toggle="tab">Graql</a></li>
-    <li><a href="#java6" data-toggle="tab">Java</a></li>
-</ul>
+#### With a given regex
+The value of an attribute can also be matched using a regex. Let's look an example.
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell6">
-<pre class="language-graql">
-<code>
-match $x isa person; ($x, $y); get;
-match $x isa person; (wife:$x, $y); get;
-match $x isa person; (wife:$x, $y); $x has identifier $xn; $y has identifier $yn; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java6">
-<pre class="language-java">
-<code>
-qb.match(var("x").isa("person"), var().rel("x").rel("y")).get();
-qb.match(var("x").isa("person"), var().rel("wife", "x").rel("y")).get();
-qb.match(
-  var("x").isa("person"),
-  var().rel("wife", "x").rel("x"),
-  var("x").has("identifier", var("xn")),
-  var("y").has("identifier", var("yn"))
-).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+```graql
+match $x /.*(Mary|Barbara).*/; get;
+```
+This matches the instances of any attribute whose value matches the given regex - `"Mary"` or `"Barbara"`.
 
+#### Owners with multiple attributes
+To match instances of a thing that owns multiple attributes, we can simply chain triples of `has` + label + variable. Separating each triple with a comma is optional.
 
-### Variable Patterns
+```graql
+match $p isa person has first-name $fn, has last-name $ln; get;
+```
 
-Patterns can be combined into a disjunction ('or') and grouped together with curly braces. Patterns are separated by semicolons, and each pattern is independent of the others. The variable pattern can optionally be bound to a variable or an ID.
+#### Owners with attributes of given values
+We can also match instances that have an attribute with a specific value. Let's look at an example.
 
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell" data-toggle="tab">Graql</a></li>
-    <li><a href="#java" data-toggle="tab">Java</a></li>
-</ul>
+```graql
+match $p isa person has first-name "John" has age < 25; get;
+```
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell">
-<pre class="language-graql">
-<code>match $x isa person, has identifier $y; {$y contains "Elizabeth";} or {$y contains "Mary";}; get;</code></pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java">
-<pre class="language-java">
-<code>
-qb.match(
-    var("x").isa("person").has("identifier", var("y")),
-    or(
-        var("y").val(contains("Elizabeth")),
-        var("y").val(contains("Mary"))
-    )
-).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+But if in this example, we still want to know how old exactly each John is? we can separate the condition like so.
 
-## Predicates
+```graql
+match $p isa person has first-name "John" has age $a; $a < 25; get;
+```
 
-A predicate is a boolean function applied to values. If a concept doesn't have a value, all predicates are considered false.
+#### Leaving an attribute unassigned
+If we are not interested in the value that attribute `name` holds, we can leave the attribute unassigned.
+
+```graql
+match $p isa person has phone-number; get;
+```
+
+This matches all instances of type person who have the attribute `phone-number` and leaves out those who don't.
+
+### Instances of a direct type
+The type that an instance belongs to may be a subtype of another. This means when we use `isa` we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead.
+
+### One particular instance
+To match a particular instance with the given ID, we use the `id` keyword. Let's look at an example.
+
+```graql
+match $p id V41016; get;
+```
 
 ### Comparators
+When matching an instance of an attribute based on its value or simply comparing two variables, the following comparators can be used: `=`, `!=`, `>`, `>=`, `<` and `<=`
 
-There are several standard comparators, `=`, `!=`, `>`, `>=`, `<` and `<=`. For
-longs and doubles, these sort by value. Strings are ordered lexicographically.
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell12" data-toggle="tab">Graql</a></li>
-    <li><a href="#java12" data-toggle="tab">Java</a></li>
-</ul>
+## Matching Schema Elements
+In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. What we choose to do with the matched schema elements, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we will learn about [using _get_ for reading the knowledge graph](...).
 
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell12">
-<pre class="language-graql">
-<code>
-match $x has age > 70; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java12">
-<pre class="language-java">
-<code>
-qb.match(var("x").has("age", gt(70))).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
+Having fully understood the [schema concepts](/docs/schema/concepts) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema as defined in the `schema.gql` file.
 
-If a concept doesn't have a value, all predicates are considered false. The query below matches everything where the predicate `>10` is true. So, it will find all concepts with value greater than 10. However, if a concept does not have a value at all, the predicate is considered false, so it won???t appear in the results.
+### Subtypes of a given type
+To match all concepts of a given type, we use the `sub` keyword. Here are the examples for matching subtypes of all concepts types, including `thing` that is a parent to all other types.
 
 ```graql
-match $x > 10; get;
+match $x sub thing; get;
+match $x sub attribute; get;
+match $x sub entity; get;
+match $x sub role; get;
+match $x sub relationship; get;
 ```
 
-
-### Contains
-Asks if the given string is a substring.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell13" data-toggle="tab">Graql</a></li>
-    <li><a href="#java13" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell13">
-<pre class="language-graql">
-<code>
-match $x has identifier $id; $id contains "Niesz"; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java13">
-<pre class="language-java">
-<code>
-qb.match(
-    var("x").has("identifier", var("id")),
-    var("id").val(contains("Niesz"))
-).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-### Regex
-Checks if the value matches a regular expression. This match is across the
-entire string, so if you want to match something within a string, you must
-surround the expression with `.*`.
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell14" data-toggle="tab">Graql</a></li>
-    <li><a href="#java14" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell14">
-<pre class="language-graql">
-<code>
-match $x /.*(Mary|Barbara).*/; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java14">
-<pre class="language-java">
-<code>
-qb.match(var("x").val(regex(".*(Mary|Barbara).*"))).get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-## Modifiers
-
-There are a number of modifiers that can be applied to a query:
-
-* `limit` - Limits the number of results returned from the query.
-* `offset` - Offsets the results returned from the query by the given number of results.
-* `order` - Orders the results by the given variable's degree. If a type is provided, order by the attribute of that type on that concept. Order is ascending by default.
-
-
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#shell16" data-toggle="tab">Graql</a></li>
-    <li><a href="#java16" data-toggle="tab">Java</a></li>
-</ul>
-
-<div class="tab-content">
-<div role="tabpanel" class="tab-pane active" id="shell16">
-<pre class="language-graql">
-<code>
-match $x isa person, has identifier $id; limit 10; offset 5; order by $id asc; get;
-match $x isa person, has firstname $y; order by $y asc; get;
-</code>
-</pre>
-</div>
-<div role="tabpanel" class="tab-pane" id="java16">
-<pre class="language-java">
-<code>
-qb.match(var("x").isa("person").has("identifier", var("id")))
-    .limit(10)
-    .offset(5)
-    .orderBy("id", Order.asc)
-    .get();
-</code>
-</pre>
-</div> <!-- tab-pane -->
-</div> <!-- tab-content -->
-
-Note that the order in which you specify modifiers can be important. If you make a query and `limit` the results
-returned, say to 10 as in the example, then specify the `order by` modifier _after_ the `limit`, you will find that you
-get an ordering of 10 arbitrary results (so an ordering of a _sample_ of the results). If instead, you do `order by`,
-then `limit` you will get a global ordering.
+### Roles of a given relationship
+Given a particular relationship, we can use the `relates` keyword to match all roles related to that relationship. Let's look an example.
 
 ```graql
-match $x isa person, has firstname $y; limit 10; order by $y asc; get;
-# Returns 10 arbitrary people, ordered by firstname
-match $x isa person, has firstname $y; order by $y asc; limit 10; get;
-# Returns the 10 people who come first alphabetically by firstname
+match employment relates $x; get;
 ```
 
+This matches all roles of the `employment` relationship - `employer` and `employee`.
+
+#### Subroles of a given role in a super-relationship
+As we learned about [subtyping relationships](/docs/schema/concepts#subtyping-a-relationship), we saw that a role related to a sub-relationship is linked to a corresponding parent's role using the `as` keyword. We can use the same keyword in a `match` clause to match the corresponding role in the given sub-relationship. Let's look an example.
+
+```graql
+match employment relates $x as member; get;
+```
+
+This matches all the roles that correspond to the `member` role of the relationship which `employment` subtypes. In this case, the super-relationship being `membership` and the matched role being `employee`.
+
+### Roleplayers of a given role
+Given a role, we can match the `thing`s that play that role by using the `plays` keyword. Let's look at an example.
+
+```graql
+match $x plays employee; get;
+```
+
+This matches all `thing`s that play `employee` in any relationship - `person`.
+
+## Owners of a given attribute
+Given an attribute, we can match the `thing`s that own that attribute by using the `has` keyword. Let's look at an example.
+
+```graql
+match $x has name; get;
+```
+
+This matches all `thing`s that have `name` as their attribute - `person`, `organisation`, `company` and `university`.
+
+Note: although, `name` has explicitly been assigned to only `person` and `organisation`, the matched `thing`s include `company` and `university` as well. This is because they both subtype `organisation` and therefore inherit `name` as an attribute of their own.
+
+## Examples
+To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](/docs/examples/queries).
+
+## Summary
+We learned how to use the `match` clause to write intuitive statements that describe a desired pattern in the knowledge graph and fill in the variables that hold the data we would like to acquire.
+
+Next, we will learn how to use the `match` clause in conjunction with Graql queries to carry out instructions - starting with the [get query](/docs/schema/concepts).

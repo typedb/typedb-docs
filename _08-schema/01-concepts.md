@@ -234,7 +234,7 @@ The ability to subtype relationships not only helps mirror the reality of our da
 An attribute is a piece of information that determines the property of an element in the domain. For example, `name`, `language` and `age`. These attributes can be assigned to anything that needs them as a property.
 
 ### Defining an attribute
-To define a new attribute, we use the `sub` keyword followed by `attribute` followed by `datatype` and finally the type of the desired value.
+To define a new attribute, we use the `sub` keyword followed by `attribute datatype` and the type of the desired value.
 
 ```graql
 define
@@ -251,10 +251,34 @@ The data types available in a Grakn knowledge graph are as follows:
 - boolean: `true` or `false`
 - date: a date or date-time in ISO 8601 format
 
-Note that a particular attribute with the same value exists only once in the knowledge graph. The diagram below illustrates this point.
-<<insert diagram>>
+**The same attribute can belong to multiple `thing`s.** Let's look at an example.
 
-We have already seen how to [assign an attribute to an entity](#assigning-an-attribute-to-an-entity) and similarly to [assign an attribute to a relationship](#assigning-an-attribute-to-a-relationship). But what about assigning an attribute to another attribute?
+```graql
+define
+
+color sub attribute datatype string;
+
+car sub entity,
+  has color;
+
+bicylce sub entity,
+  has color;
+```
+
+Note that, in this example, the attribute `color` with the same value, for instance `"red"`, exists only once in the knowledge graph and shared among anything that owns it. This is useful when we need to query the knowledge graph for anything that has the `color` attribute of `"red"`. In this case, we would get all the red cars and bicycles as the answer.
+
+**A `thing` can have any number of the same attribute that holds different values.** In other words, a `thing` can have a many to many relationship with its attributes. Let's look at an example.
+
+```graql
+genre sub attribute datatype string;
+
+movie sub entity,
+  has genre;
+```
+
+A `movie` can have one `genre`, or two or three.
+
+We have already seen how to [assign an attribute to an entity](#assigning-an-attribute-to-an-entity) and similarly to [assign an attribute to a relationship](#assigning-an-attribute-to-a-relationship). But what about assigning an attribute to another attribute of its own?
 
 ### Assigning an attribute to another attribute
 Like entities and relationships, attributes can also own an attribute of their own. To do this, we use the 'has' keyword followed by the attribute's label.
