@@ -1,45 +1,63 @@
 ---
-title: Delete Query
-keywords: graql, query, delete
+title: Updating Data
+keywords: graql, query, update
 tags: [graql]
-summary: "Graql data from a Grakn knowledge graph."
-permalink: /docs/query/delete-query
+summary: ""
+permalink: /docs/query/updating-data
 ---
 
-## Deleting Instances of Entity
-To delete an instance of type entity from the knowledge graph, we use a [match clause](/docs/query/match-clause) followed by the `delete` keyword and the variable to be deleted. Let's look at a few examples.
+## Updading Data
+In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](/docs/query/delete-query) the current instance followed by [inserting](/docs/query/insert-query) the new instance.
+
+## Updating Instances of Attributes
+In most cases, a `thing` is expected to own only one instance of its attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the thing has with the attribute of interest](/docs/query/delete-query#deleting-instances-of-attributes) and then [insert the new instance of the attribute](/docs/query/delete-query#inserting-instances-of-attribute).
+
+Let's look at an example.
 
 ```graql
-match $p isa person id V41016; delete $p;
+## deleting the old
+match $comp isa company id V17391 has registration-number via $r; delete $r;
+
+## inserting the new
+Insert $comp isa company id V17391 has registration-number "81726354";
 ```
+In the above example, we first delete the association that the `company` with id `V17391` has with attribute `registration-number` by using the `via` keyword and then continue to assign the new instance of the `registration-number` to the same `company`.
 
-The delete query above deletes a particular `person` with the id of `V41016`.
 
-## Deleting Instances of Relationship
-Similar to deleting an entity, we first `match` and then `delete`.
+### Updating all instances of a given attribute
+There may also be cases when we need to update the value of all instances that are of a certain attribute type. To do so, first, we assign the new instance of the given attribute to all things that own the old instance, and then delete the old instance.
+Let's look at an example.
 
 ```graql
 match
-  $org isa organisation has name "Black House";
-  $org-emp (employer: $org, employee: $employee) isa employment;
-$delete $org-emp;
+  $x isa thing has color "maroon";
+insert $x has color "red";
+delete $c isa color "maroon";
 ```
 
-The delete query above deletes all instances of `employment` where the `employer` is an `ogranisation` with `name` of `"Black House"`.
+In the example above, we first look for anything that as `colour` with value `maroon` and then assign it the new `colour` with value `red`. Finally, we delete all instances of `colour` with value `maroon`.
 
-## Deleting Associations with Attributes
-Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](/docs/schema/concepts#defining-an-attribute) in a Grakn knowledge graph
-prior to performing `delete` queries on them.
-
-To delete only the association that a thing has with an attribute, we use the `via` keyword. Let's look at an example.
+### Updating the roleplayers of a relationship
+To change the roleplayer of a given relationship, we first need to [delete the instance of the relationship](/docs/query/delete-query# deleting-instances-of-relationship) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#inserting-instances-of-relationship) again with the correct new roleplayer. Let's look at an example.
 
 ```graql
-match $c isa car has color "red" via $r; delete $r;
+## deleting the old
+match
+  $p isa person has name "Pmurt";
+  $org isa organisation has name "Etihw Esouh";
+  $emp (employer: $org, $employee: $p) isa employment;
+delete $emp;
+
+## inserting the new
+match
+  $p isa person has name "Amabo";
+  $org isa organisation has name "Etihw Esouh";
+insert $emp (employer: $org, $employee: $p) isa employment;
 ```
 
-The delete query above looks for a `car` that has the attribute `colour` with the value of `"red"` and deletes its association with that instance of `colour`, while retaining the instance of the attribute itself and its association with anything else that owns it. Not that if we had instead written the query as `match $c isa car has colour $c;  $c = "red"; delete $c;`, we would have deleted the instance of colour with value `"red"` and its association with anything else that might have previously owned it.
+In the example above, we are updating an instance of an `employment` to have a different roleplayer as its `employee`.
 
 ## Summary
-An `insert` query preceded by a `match` clause is used to delete a data instance from the knowledge graph.
+Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained wh [defining the schema](/docs/schema/concepts). Simply put, to update is essentially to first `delete` and then `insert.
 
-Next, we will learn how to [update data](/docs/query/updating-data) in a knowledge graph.
+Next, we will learn how to [aggregate values over a set of data](/docs/query/aggregate-query) in a Grakn knowledge graph.
