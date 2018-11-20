@@ -7,13 +7,13 @@ permalink: /docs/query/delete-query
 ---
 
 ## Deleting Instances of Entity
-To delete an instance of type entity from the knowledge graph, we use a [match clause](/docs/query/match-clause) followed by the `delete` keyword and the variable to be deleted. Let's look at a few example.
+To delete an instance of type entity from the knowledge graph, we use a [match clause](/docs/query/match-clause) followed by the `delete` keyword and the variable to be deleted. Let's look at a few examples.
 
 ```graql
 match $p isa person id V41016; delete $p;
 ```
 
-The delete query above, deletes a particular `person` with id of `V41016`.
+The delete query above deletes a particular `person` with the id of `V41016`.
 
 ## Deleting Instances of Relationship
 Similar to deleting an entity, we first `match` and then `delete`.
@@ -25,7 +25,7 @@ match
 $delete $org-emp;
 ```
 
-The delete query above, deletes all instances of `employment` where the `employer` is an `ogranisation` with `name` of `"Black House"`.
+The delete query above deletes all instances of `employment` where the `employer` is an `ogranisation` with `name` of `"Black House"`.
 
 ## Deleting Associations with Attributes
 Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](/docs/schema/concepts#defining-an-attribute) in a Grakn knowledge graph
@@ -37,7 +37,7 @@ To delete only the association that a thing has with an attribute, we use the `v
 match $c isa car has color "red" via $r; delete $r;
 ```
 
-The delete query above, looks for a `car` that has the attribute `color` with value of `"red"` and deletes its assocaiation with that instance of `color`, while retaining the instance of attribute itself and its association with anything else that owns it. Not that if we had instead wrote the query as `match $c isa car has color $c;  $c = "red"; delete $c;`, we would have deleted the instance of color with value `"red"` and its association with anything else that might have previously owned it.
+The delete query above looks for a `car` that has the attribute `colour` with the value of `"red"` and deletes its association with that instance of `colour`, while retaining the instance of the attribute itself and its association with anything else that owns it. Not that if we had instead written the query as `match $c isa car has colour $c;  $c = "red"; delete $c;`, we would have deleted the instance of colour with value `"red"` and its association with anything else that might have previously owned it.
 
 ## Summary
 An `insert` query preceded by a `match` clause is used to delete a data instance from the knowledge graph.
