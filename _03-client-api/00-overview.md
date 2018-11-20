@@ -49,4 +49,4 @@ Grakn clients are built using [gRPC](https://grpc.io/). Creating a new client is
 ## Summary
 A Grakn Client is meant to be used at the application layer for the purpose of  performing operations over a keyspace that lives on the Grakn server.
 
-Next, we will learn about how Grakn Clients are setup and used at the application layer. Pick a language of your choice to continue - [Java](/docs/client-api/java), [Node.js](/docs/client-api/nodejs) or [Python](/docs/client-api/python).
+Next, we will learn about how Grakn Clients are set up and used. Pick a language of your choice to continue - [Java](/docs/client-api/java), [Node.js](/docs/client-api/nodejs) or [Python](/docs/client-api/python).
