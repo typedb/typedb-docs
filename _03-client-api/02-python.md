@@ -19,6 +19,8 @@ pip3 install grakn
 ```
 
 ## Quickstart
+First make sure, the Grakn server is running. Learn more about [how to run the Grakn server]().
+
 In the interpreter or in your source, import `grakn`.
 
 ```python
