@@ -52,7 +52,7 @@ then
 
 If you find the Graql code above unfamiliar, don't be concerned. We will soon learn about [using Graql to describe patterns](...).
 
-In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and include the `siblings` relationship in our queries.
+In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relationship when writing queries.
 
 This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...).
 
@@ -61,14 +61,14 @@ Under the hood, rules are restricted to be definite Horn Clauses. In simple term
 
 To simplify this logic even further, you can think of the [siblings example](#defining-a-rule) in form of an `if` statement like so:
 
-```
+```java
 if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y) {
     are-x-and-y-siblings = true;
     // any more assignments will break the rule!
 }
 ```
 {% include warning.html content = 'The text below down to the next subtitle will be put in a panel labeled with "Advanced Topic"' %}
-Insight: Rules as Horn Clauses can be defined either in terms of a disjunction with at most one unnegated atom or an implication with the consequent consisting of a single atom. Atoms are considered atomic first-order predicates - ones that cannot be decomposed to simpler constructs.
+Rules as Horn Clauses can be defined either in terms of a disjunction with at most one unnegated atom or an implication with the consequent consisting of a single atom. Atoms are considered atomic first-order predicates - ones that cannot be decomposed to simpler constructs.
 In our system, we define both the head and the body of rules as Graql patterns. Consequently, the rules are statements of the form:
 
 ```
@@ -79,16 +79,16 @@ where `q`s and the `p` are atoms that each correspond to a single Graql statemen
 
 The implication form of Horn clauses aligns more naturally with Graql semantics as we define the rules in terms of the “when” and “then” blocks which directly correspond to the antecedent and consequent of the implication respectively.
 
-### What can go in the then body
-The following are the types of a single statement that can be set as the conclusion of a rule in the `then` body:
-- setting the type. Example: `$x isa person;`
-- assigning an explicit value to an attribute. Example: `$x has age 20;`
-- inserting a relationship. Example: `(parent: $x, child: $y) isa parentship;`
+### What goes in the then body
+The following are the types of one single statement that can be set as the conclusion of a rule in the `then` body:
+- setting the type. Example: `$x isa person;`,
+- assigning an explicit value to an attribute. Example: `$x has age 20;`, or
+- inserting a relationship. Example: `(parent: $x, child: $y) isa parentship;`.
 
 ## Deleting Rules
-Rules like any other schema element can be undefined. To do so, you may learn [how to use the undefine keyword](/docs/schema/concepts#undefine) for deleting rules.
+Rules like any other schema element can be undefined. To do so, you [use  the undefine keyword](/docs/schema/concepts#undefine).
 
 ## Summary
-Rules are a powerful tool that allows reasoning over the raw data to produce and store insightful knowledge.
+Rules are a powerful tool that reason over the explicitly stored data and produce and store implicit knowledge.
 
-In the next section, we will learn how to [perform instruction over a knowledge graph](/docs/query/overview) that is powered by a schema containing concepts and rules.
+In the next section, we will learn how to [perform read and write instructions over a knowledge graph](/docs/query/overview) that is powered by a schema containing concepts and rules.

@@ -2,7 +2,7 @@
 title: Overview
 keywords: schema
 tags: [graql]
-summary: "An overview of schema in a Grakn knowledge graph."
+summary: "An overview of the schema in a Grakn knowledge graph."
 permalink: /docs/schema/overview
 ---
 
@@ -13,16 +13,18 @@ The schema enforces logical integrity and consistency across the dataset. In oth
 
 A well-constructed schema enables writing intuitive queries. Given such schema, you will often find yourself writing queries that map seamlessly with how you form their corresponding question in mind.
 
-Last and certainly not least, the schema sets the basis for [automated reasoning](...) over the represented data. It enables the extraction of implicit information from explicitly stored data - an extreamly powerful feature of Grakn that results in storing contexualised knowlwedge as opposed to raw data.
+Last and certainly not least, the schema sets the basis for [automated reasoning](...) over the represented data. It enables the extraction of implicit information from explicitly stored data - an extremely powerful feature of Grakn that results in storing contextualised knowledge as opposed to raw data.
 
 ## Data Model
 There are three Grakn Concepts that make up a schema: [Entity](/docs/schema/concepts#entity), [Relationship](/docs/schema/concepts#relationship), and [Attribute](/docs/schema/concepts#attribute). With these concepts and the interaction they have with each other, one can model any dataset as perceived in the real world.
 
-An entity can have an attribute and play a role in a relationship.
-An attribute can have an attribute of its own and also play a role in a relationship.
-A relationship can also have an attribute and any number of roleplayers which can be entities, attributes or even other relationships.
+An **entity** can have an attribute and play a role in a relationship.
 
-At last, we have the [Graql Rules](/docs/schema/rules). A simple yet extreamly powerful tool that allows us to build an intelligent database for an intelligent system. Rules are one way to perform [automated reasoning](...) in a Gtakn knowledge graph.
+An **attribute** can have an attribute of its own and also play a role in a relationship.
+
+A **relationship** can also have an attribute and any number of roleplayers which can be entities, attributes or even other relationships.
+
+At last, we have the [**Graql Rules**](/docs/schema/rules). A simple yet extremely powerful tool that allows us to build an intelligent database for an intelligent system. Rules are one way to perform [automated reasoning](...) in a Grakn knowledge graph.
 
 ## Defining the schema programmatically
 In this section, we will learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](...), [Python](...) and [Node.js](...).
@@ -38,6 +40,6 @@ Once we have loaded the schema into Grakn, we are able to [query the schema](...
 To learn how to migrate a pre-existing dataset in CSV, JSON or XML format into a Grakn knowledge graph, check out the [Migration Mechanism](...) followed by a comprehensive [tutorial](...) in the language of your choice.
 
 ## Summary
-The Grakn schema sets the foundation of a Grakn knowledge graph. When modeled thoroughly, the schema provides us with data integrity, flexibility, automated reasoning and intuitiveness in when it comes to querying data and knowledge.
+The Grakn schema sets the foundation of a Grakn knowledge graph. When modelled thoroughly, the schema provides us with data integrity, flexibility, automated reasoning and intuitiveness in when it comes to querying data and knowledge.
 
 In this section, we will learn about the members of a schema - Concepts and Rules.
