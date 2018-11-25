@@ -81,17 +81,20 @@ with client.session(keyspace="mykeyspace") as session:
     answer_iterator = tx.query("match $x isa person; limit 10; get;")
 
     ## retrieve the first answer
-    a_concept_map_answer = next(answer_iterator)
+    done = object()
+    a_concept_map_answer = next(answer_iterator, done)
     ## get the dictionary of variables : concepts, retrieve variable 'x'
     person = a_concept_map_answer.map()["x"]
 
     ## we can also iterate using a `for` loop
     some_people = []
-    for concept_map in answer_iterator:
+
+    while (a_concept_map_answer is not done):
       ## get 'x' again, without going through .map()
-      some_people.append(concept_map.get("x"))
-      ## skip the iteration, we are going to try something else
-      break
+      some_people.append(aConceptMapAnswer.map().get("x"))
+      break ## skip the iteration, we are going to try something else
+      a_concept_map_answer = next(answer_iterator, done)
+
 
     ## extract the rest of the people in one go
     remaining_people = answer_iterator.collect_concepts()

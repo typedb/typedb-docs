@@ -83,12 +83,11 @@ async function runBasicQueries() {
   // we can also iterate using a `for` loop
   const somePeople = [];
 
-  while (!aConceptMapAnswer.done) {
+  while ( aConceptMapAnswer != null) {
     // get the next `x`
-    aConceptMapAnswer = await answerIterator.next();
     somePeople.push(aConceptMapAnswer.map().get("x"));
-    // skip the iteration, we are going to try something else
-    break;
+    break; // skip the iteration, we are going to try something else
+    aConceptMapAnswer = await answerIterator.next();
   }
   const remainingPeople = answerIterator.collectConcepts()
   // read transaction must always be closed
