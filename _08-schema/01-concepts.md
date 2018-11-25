@@ -1042,7 +1042,7 @@ transaction.commit()
 As the name suggests, the `undefine` keyword is used to remove the definition of a type from the schema. To do so, we use the following syntax.
 
 ```graql
-underfine [label] sub [type];
+undefine [label] sub [type];
 ```
 
 <div class="alert">
