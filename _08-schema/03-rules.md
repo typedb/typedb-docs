@@ -67,7 +67,9 @@ if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y
     // any more assignments will break the rule!
 }
 ```
-{% include warning.html content = 'The text below down to the next subtitle will be put in a panel labeled with "Advanced Topic"' %}
+<!-- {% include warning.html content = 'The text below down to the next subtitle will be put in a panel labeled with "Advanced Topic"' %} -->
+<div class="alert">
+[Advanced Topic]
 Rules as Horn Clauses can be defined either in terms of a disjunction with at most one unnegated atom or an implication with the consequent consisting of a single atom. Atoms are considered atomic first-order predicates - ones that cannot be decomposed to simpler constructs.
 In our system, we define both the head and the body of rules as Graql patterns. Consequently, the rules are statements of the form:
 
@@ -78,6 +80,7 @@ q1 ∧ q2 ∧ ... ∧ qn → p
 where `q`s and the `p` are atoms that each correspond to a single Graql statement. The “when” of the statement (antecedent) then corresponds to the rule body with the “then” (consequent) corresponding to the rule head.
 
 The implication form of Horn clauses aligns more naturally with Graql semantics as we define the rules in terms of the “when” and “then” blocks which directly correspond to the antecedent and consequent of the implication respectively.
+</div>
 
 ### What goes in the then body
 The following are the types of one single statement that can be set as the conclusion of a rule in the `then` body:
@@ -86,7 +89,7 @@ The following are the types of one single statement that can be set as the concl
 - inserting a relationship. Example: `(parent: $x, child: $y) isa parentship;`.
 
 ## Deleting Rules
-Rules like any other schema element can be undefined. To do so, you [use  the undefine keyword](/docs/schema/concepts#undefine).
+Rules like any other schema element can be undefined. To do so, we use the [undefine keyword](/docs/schema/concepts#undefine).
 
 ## Summary
 Rules are a powerful tool that reason over the explicitly stored data and produce and store implicit knowledge.
