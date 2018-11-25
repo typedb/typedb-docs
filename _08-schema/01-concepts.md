@@ -252,7 +252,7 @@ As you can see in the example above, when defining entities, what follows the `s
 
 <div class="alert">
 [Note]
-The relationships that relates to the roles `owner`, `property` and `employer` have not been defined in the example above. We will soon learn how to [define a relationship](#defining-a-relationship). Similarly, the attributes `name` and `rank` are also yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute) as well.
+The relationships that relate to the roles `owner`, `property` and `employer` have not been defined in the example above. We will soon learn how to [define a relationship](#defining-a-relationship). Similarly, the attributes `name` and `rank` are also yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute) as well.
 </div>
 
 The ability to subtype entities not only helps mirror the reality of the dataset as perceived in the real world but also enables [automated reasoning using type hierarchies](...).
@@ -894,7 +894,7 @@ transaction.commit()
 [tab:end]
 </div>
 
-In this example, attribute `text` can be owned by, for instance, an `article` entity. But what this example aims to showcase is that the `text` attribute, besides its own value, owns an attribute named `word` which in turn also owns another attribute named `position`. Simply put, with such structure defined in the schema, we are modeling the granularity of a `text`.
+In this example, attribute `text` can be owned by, for instance, an `article` entity. But what this example aims to showcase is that the `text` attribute, besides its own value, owns an attribute named `word` which in turn also owns another attribute named `position`. Simply put, with such structure defined in the schema, we are modelling the granularity of a `text`.
 
 ### Defining an attribute to play a role
 An attribute can play a role in a relationship. To define the role played by an attribute, we use the `plays` keyword followed by the role's label.
@@ -1109,7 +1109,7 @@ transaction.commit()
 </div>
 
 ### Underfining a Supertype
-When the `thing` to be undefined is a supertype to something esle, we must first undefine all its subtypes before undefining the supertype itself.
+When the `thing` to be undefined is a supertype to something else, we must first undefine all its subtypes before undefining the supertype itself.
 
 ## Summary
 We learned that a Grakn schema is essentially a collection of Entities, Relationships, and Attributes - what we call the Grakn Concepts. The modularity of these concepts and how they interact with one another is what allows us to model the schema in a way to represent the true nature of any dataset in any domain.
