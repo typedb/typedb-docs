@@ -35,21 +35,32 @@ match $p isa person; get;
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
+SimpleURI localGrakn = new SimpleURI("localhost", 48555);
+Keyspace keyspace = Keyspace.of("some_keyspace");
+Grakn grakn = new Grakn(localGrakn);
+Grakn.Session ses = grakn.session(keyspace);
+Grakn.Transaction tx = ses.transaction(GraknTxType.READ);
+QueryBuilder qb = tx.graql();
 
 GetQuery answer_iterator = qb.match(
     var("p").isa("person")
 ).get();
 
-for ( ConceptMap answer : answer_iterator) {
+for (ConceptMap answer : answer_iterator) {
     System.out.println(answer.get("p").id());
 }
+
+tx.close();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answerIterator = await transaction.query("match $p isa person; get;");
+const grakn = new Grakn("localhost:48555");
+const ses = await grakn.session((keyspace = "some_keyspace"));
+const tx = await ses.transaction(Grakn.txType.READ);
+
+const answerIterator = await tx.query("match $p isa person; get;");
 
 let answer = await answerIterator.next();
 while (!answer.done) {
@@ -57,13 +68,23 @@ while (!answer.done) {
   answer = await answerIterator.next();
 }
 
-transaction.close();
+tx.close();
 
 ```
 [tab:end]
 
 [tab:Python]
 ```python
+client = grakn.Grakn(uri = "localhost:48555")
+with client.session(keyspace = "some_keyspace") as ses:
+  with ses.transaction(grakn.TxType.READ) as tx:
+    answer_iterator = tx.query("match $p isa person; get;")
+
+    done = object()
+    answer = next(answer_iterator, done)
+    while (answer is not done):
+      print(answer.map().get("p").id)
+      answer = next(answer_iterator, done)
 ```
 [tab:end]
 </div>
