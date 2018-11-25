@@ -77,14 +77,16 @@ async function runBasicQueries() {
   const rTx = await session.transaction(Grakn.txType.READ); // read transaction is open
   const answerIterator = await rTx.query("match $x isa person; limit 10; get;");
   // retrieve the first answer
-  const aConceptMapAnswer = await answerIterator.next();
+  let aConceptMapAnswer = await answerIterator.next();
   // get the object of variables : concepts, retrieve variable 'x'
   person = aConceptMapAnswer.map()["x"];
   // we can also iterate using a `for` loop
   const somePeople = [];
-  for (conceptMap in answerIterator) {
-    // get 'x' again, without going through .map()
-    somePeople.push(conceptMap["x"]);
+
+  while (!aConceptMapAnswer.done) {
+    // get the next `x`
+    aConceptMapAnswer = await answerIterator.next();
+    somePeople.push(aConceptMapAnswer.map().get("x"));
     // skip the iteration, we are going to try something else
     break;
   }

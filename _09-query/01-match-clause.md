@@ -25,52 +25,194 @@ What follows in this section, describes how we can use the `match` keyword to fi
 ### Matching instances of an entity
 Matching instances of an entity type is easy. We do so by using a variable followed by the `isa` keyword and the label of the entity of interest. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $p isa person; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+QueryBuilder qb = transaction.graql();
+
+GetQuery answer_iterator = qb.match(
+    var("p").isa("person")
+).get();
+
+for ( ConceptMap answer : answer_iterator) {
+    System.out.println(answer.get("p").id());
+}
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+const answerIterator = await transaction.query("match $p isa person; get;");
+
+let answer = await answerIterator.next();
+while (!answer.done) {
+  console.log(answer.map().get("p")["id"]);
+  answer = await answerIterator.next();
+}
+
+transaction.close();
+
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 The example above, for every person, assigns the person (entity) instance to the variable `$p`.
 
 #### Instances of an entity with particular attributes
 To narrow down the match on an entity, we can specify the attributes that the entity must own. To do so, we use the `has` keyword. Let's look at an example.
 
+
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $p isa person has name $n; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
+
 
 We will soon learn how this `match` clause can be extended by [targeting attributes more specifically](#matching-instances-of-an-attribute).
 
 ### Matching instances of a relationship
 Because of the dependent nature of relationships, matching them is quite different to matching entities and attributes. Let's look at an example.
 
+
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $emp (employer: $x, employee: $y) isa employment; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 The example above, for every employment, assigns the employment (relationship) instance to the variable `$emp`, the employer company (entity) to the variable `$x` and the employee person (entity) to the variable `$y`.
 
 #### Instances of a relationship with particular attributes
 To narrow down the match on a relationship, we can specify the attributes that the relationship must own. To do so, we use the `has` keyword. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $emp (employer: $x, exmployee: $y) isa employment has reference-id $ref; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 We will soon learn how this `match` clause can be extended by [targeting more specific attributes](#matching-instances-of-an-attribute).
 
 #### Leaving the instance unassigned
 Assigning a relationship to a variable is optional. We may only be interested in the roleplayers of a certain relationship. In such case, we would write the above like so:
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match (employer: $x, employee: $y) isa employment; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 #### Leaving the roles out
 In scenarios where the relationship relates to only one role, we can omit the roles altogether. Let's look at another example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match ($x, $y, $z) isa friendship; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 ### Matching instances of an attribute
 Instances of attributes can be matched in various ways depending on the use case.
@@ -78,63 +220,225 @@ Instances of attributes can be matched in various ways depending on the use case
 #### Independent of type
 We can match instances of attributes based on their value regardless of what type of attribute they are. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $x "whatever"; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 This, matches instances of any attribute type whose value is "whatever" and assigns them to variable `$x`.
 
 #### Independent of owner
 We can match instances of attributes based on their value regardless of what they belong to. Let's look an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $n isa name "John"; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 This matches instances of attribute `name` with value `"John"`, regardless of what owns the attribute `name`.
 
 #### With a given subset
 To match all instances of attributes that contain a substring, we use the `contains` keyword. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $phone-number contains "+44"; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
+
 This matches instances of any attribute whose value contains the substring `"+44"`.
 
 #### With a given regex
 The value of an attribute can also be matched using a regex. Let's look an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $x /.*(Mary|Barbara).*/; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
+
 This matches the instances of any attribute whose value matches the given regex - `"Mary"` or `"Barbara"`.
 
 #### Owners with multiple attributes
 To match instances of a thing that owns multiple attributes, we can simply chain triples of `has` + label + variable. Separating each triple with a comma is optional.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $p isa person has first-name $fn, has last-name $ln; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 #### Owners with attributes of given values
 We can also match instances that have an attribute with a specific value. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $p isa person has first-name "John" has age < 25; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 But if in this example, we still want to know how old exactly each John is? we can separate the condition like so.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $p isa person has first-name "John" has age $a; $a < 25; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 #### Leaving an attribute unassigned
 If we are not interested in the value that attribute `name` holds, we can leave the attribute unassigned.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $p isa person has phone-number; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 This matches all instances of type person who have the attribute `phone-number` and leaves out those who don't.
 
@@ -144,9 +448,29 @@ The type that an instance belongs to may be a subtype of another. This means whe
 ### One particular instance
 To match a particular instance with the given ID, we use the `id` keyword. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $p id V41016; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 ### Comparators
 When matching an instance of an attribute based on its value or simply comparing two variables, the following comparators can be used: `=`, `!=`, `>`, `>=`, `<` and `<=`
@@ -159,6 +483,9 @@ Having fully understood the [schema concepts](/docs/schema/concepts) and how the
 ### Subtypes of a given type
 To match all concepts of a given type, we use the `sub` keyword. Here are the examples for matching subtypes of all concepts types, including `thing` that is a parent to all other types.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $x sub thing; get;
 match $x sub attribute; get;
@@ -166,40 +493,136 @@ match $x sub entity; get;
 match $x sub role; get;
 match $x sub relationship; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 ### Roles of a given relationship
 Given a particular relationship, we can use the `relates` keyword to match all roles related to that relationship. Let's look an example.
 
+<div class="tabs">
+[tab:Graql]
 ```graql
 match employment relates $x; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 This matches all roles of the `employment` relationship - `employer` and `employee`.
 
 #### Subroles of a given role in a super-relationship
 As we learned about [subtyping relationships](/docs/schema/concepts#subtyping-a-relationship), we saw that a role related to a sub-relationship is linked to a corresponding parent's role using the `as` keyword. We can use the same keyword in a `match` clause to match the corresponding role in the given sub-relationship. Let's look an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match employment relates $x as member; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 This matches all the roles that correspond to the `member` role of the relationship which `employment` subtypes. In this case, the super-relationship being `membership` and the matched role being `employee`.
 
 ### Roleplayers of a given role
 Given a role, we can match the `thing`s that play that role by using the `plays` keyword. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $x plays employee; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 This matches all `thing`s that play `employee` in any relationship - `person`.
 
 ## Owners of a given attribute
 Given an attribute, we can match the `thing`s that own that attribute by using the `has` keyword. Let's look at an example.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
 match $x has name; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+```
+[tab:end]
+
+[tab:Python]
+```python
+```
+[tab:end]
+</div>
 
 This matches all `thing`s that have `name` as their attribute - `person`, `organisation`, `company` and `university`.
 
