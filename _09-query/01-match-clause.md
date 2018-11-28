@@ -35,58 +35,34 @@ match $p isa person; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-GetQuery answer_iterator = qb.match(
+GetQuery answer_iterator = query_builder.match(
   var("p").isa("person")
 ).get();
-
-for (ConceptMap answer : answer_iterator) {
-  System.out.println(answer.get("p").id());
-}
-
-tx.close();
-se.close();
 ```
+<!-- for (ConceptMap answer : answer_iterator) {
+  System.out.println(answer.get("p").id());
+} -->
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-const answerIterator = await tx.query("match $p isa person; get;");
-
-let answer = await answerIterator.next();
+const answerIterator = await transaction.query("match $p isa person; get;");
+```
+<!-- let answer = await answerIterator.next();
 while (answer != null) {
   console.log(answer.map().get("p")["id"]);
   answer = await answerIterator.next();
-}
-
-tx.close();
-se.close();
-```
+} -->
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with se.transaction(grakn.TxType.READ) as tx:
-
-    answer_iterator = tx.query("match $p isa person; get;")
-
-    answer = next(answer_iterator, done)
-    while (answer is not null):
-      print(answer.map().get("p").id)
-      answer = next(answer_iterator, done)
+answer_iterator = transaction.query("match $p isa person; get;")
 ```
+<!-- answer = next(answer_iterator, done)
+while (answer is not null):
+  print(answer.map().get("p").id)
+  answer = next(answer_iterator, done) -->
 [tab:end]
 </div>
 
@@ -106,58 +82,34 @@ match $p isa person has name $n; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-GetQuery answer_iterator = qb.match(
+GetQuery answer_iterator = query_builder.match(
   var("p").isa("person").has("name", var("n"))
 ).get();
-
-for ( ConceptMap answer : answer_iterator) {
-  System.out.println(answer.get("n").asAttribute().value());
-}
-
-tx.close();
-se.close();
 ```
+<!-- for ( ConceptMap answer : answer_iterator) {
+  System.out.println(answer.get("n").asAttribute().value());
+} -->
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-const answerIterator = await tx.query("match $p isa person has name $n; get;");
-
-let answer = await answerIterator.next();
+const answerIterator = await transaction.query("match $p isa person has name $n; get;");
+```
+<!-- let answer = await answerIterator.next();
 while (answer != null) {
   console.log(await answer.map().get("n").value());
   answer = await answerIterator.next();
-}
-
-tx.close();
-se.close();
-```
+} -->
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-    answer_iterator = transaction.query("match $p isa person has name $n; get;")
-
-    answer = next(answer_iterator, done)
-    while (answer is not null):
-      print(answer.map().get("n").value())
-      answer = next(answer_iterator, done)
+answer_iterator = transaction.query("match $p isa person has name $n; get;")
 ```
+<!-- answer = next(answer_iterator, done)
+while (answer is not null):
+  print(answer.map().get("n").value())
+  answer = next(answer_iterator, done) -->
 [tab:end]
 </div>
 
@@ -178,65 +130,42 @@ match $emp (employer: $x, employee: $y) isa employment; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-GetQuery answer_iterator = qb.match(
-  var("emp").isa("employment").rel("employer", "x").rel("employee", "y"),
+GetQuery answer_iterator = query_builder.match(
+  Var.isa("employment").rel("employer", "x").rel("employee", "y"),
 ).get();
-
-for ( ConceptMap answer : answer_iterator) {
+```
+<!-- for ( ConceptMap answer : answer_iterator) {
   System.out.println("employment: " + answer.get("emp").id());
   System.out.println("employer: " + answer.get("x").id());
   System.out.println("employee: " + answer.get("y").id());
-}
-
-tx.close();
-se.close();
-```
+} -->
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-const answerIterator = await tx.query("match $emp (employer: $x, employee: $y) isa employment; get;");
-
-let answer = await answerIterator.next();
+const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;");
+```
+<!-- let answer = await answerIterator.next();
 while (answer != null) {
   answer = await answer.map();
   console.log("employment: " + answer.get("emp")["id"]);
   console.log("employer: " + answer.get("x")["id"]);
   console.log("employee: " + answer.get("y")["id"]);
   answer = await answerIterator.next();
-}
-
-tx.close();
-se.close();
-```
+} -->
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with se.transaction(grakn.TxType.READ) as tx:
-    const answer_iterator = tx.query("match $emp (employer: $x, employee: $y) isa employment; get;")
-
-    done = object()
-      answer = next(answer_iterator, done)
-      while (answer is not done):
-        print("employment: " + answer.map().get("emp").id)
-        print("employer: " + answer.map().get("x").id)
-        print("employee: " + answer.map().get("y").id)
-        answer = next(answer_iterator, done)
+answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;")
 ```
+<!-- done = object()
+  answer = next(answer_iterator, done)
+  while (answer is not done):
+    print("employment: " + answer.map().get("emp").id)
+    print("employer: " + answer.map().get("x").id)
+    print("employee: " + answer.map().get("y").id)
+    answer = next(answer_iterator, done) -->
 [tab:end]
 </div>
 
@@ -255,39 +184,24 @@ match $emp (employer: $x, exmployee: $y) isa employment has reference-id $ref; g
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref")),
+).get();
 ```
+
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;")
 ```
 [tab:end]
-</div>
 </div>
 
 We will soon learn how this `match` clause can be extended by [targeting more specific attributes](#matching-instances-of-an-attribute).
@@ -295,50 +209,9 @@ We will soon learn how this `match` clause can be extended by [targeting more sp
 #### Leaving the instance unassigned
 Assigning a relationship to a variable is optional. We may only be interested in the roleplayers of a certain relationship. In such case, we would write the above like so:
 
-<div class="tabs">
-
-[tab:Graql]
 ```graql
 match (employer: $x, employee: $y) isa employment; get;
 ```
-[tab:end]
-
-[tab:Java]
-```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
-```
-[tab:end]
-
-[tab:Javascript]
-```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-tx.close();
-se.close();
-```
-[tab:end]
-
-[tab:Python]
-```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
-```
-[tab:end]
-</div>
-</div>
 
 #### Leaving the roles out
 In scenarios where the relationship relates to only one role, we can omit the roles altogether. Let's look at another example.
@@ -347,47 +220,29 @@ In scenarios where the relationship relates to only one role, we can omit the ro
 
 [tab:Graql]
 ```graql
-match ($x, $y, $z) isa friendship; get;
+match $fr ($x, $y, $z) isa friendship; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("fr").isa("friendship").rel("x").rel("y").rel("z"),
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-const answerIterator = await tx.query("match $p isa person has name $n; get;");
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match $fr ($x, $y, $z) isa friendship; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match $fr ($x, $y, $z) isa friendship; get;")
 ```
 [tab:end]
-</div>
 </div>
 
 ### Matching instances of an attribute
@@ -400,48 +255,32 @@ We can match instances of attributes based on their value regardless of what typ
 
 [tab:Graql]
 ```graql
-match $x "whatever"; get;
+match $x "some value"; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("x").val("some value")
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query('match $x "some value"; get;');
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query('match $x "some value"; get;')
 ```
 [tab:end]
 </div>
-</div>
 
-This, matches instances of any attribute type whose value is "whatever" and assigns them to variable `$x`.
+This, matches instances of any attribute type whose value is "some value" and assigns them to variable `$x`.
 
 #### Independent of owner
 We can match instances of attributes based on their value regardless of what they belong to. Let's look an example.
@@ -456,39 +295,23 @@ match $n isa name "John"; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("x").isa("name").val("John")
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query('match $n isa name "John"; get;');
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query('match $n isa name "John"; get;')
 ```
 [tab:end]
-</div>
 </div>
 
 This matches instances of attribute `name` with value `"John"`, regardless of what owns the attribute `name`.
@@ -506,39 +329,23 @@ match $phone-number contains "+44"; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("phone-number").val(Predicates.contains("+44"))
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query('match $phone-number contains "+44"; get;');
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query('match $phone-number contains "+44"; get;')
 ```
 [tab:end]
-</div>
 </div>
 
 This matches instances of any attribute whose value contains the substring `"+44"`.
@@ -556,42 +363,23 @@ match $x /.*(Mary|Barbara).*/; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("phone-number").val(Predicates.regex("/.*(Mary|Barbara).*/"))
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-const answerIterator = await tx.query("match $p isa person has name $n; get;");
-
-
-
-tx.close();
+const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
 ```
 [tab:end]
-</div>
 </div>
 
 This matches the instances of any attribute whose value matches the given regex - `"Mary"` or `"Barbara"`.
@@ -609,40 +397,23 @@ match $p isa person has first-name $fn, has last-name $ln; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("phone-number").val(Predicates.regex(/.*(Mary|Barbara).*/))
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
 ```
 [tab:end]
-</div>
 </div>
 
 #### Owners with attributes of given values
@@ -658,40 +429,23 @@ match $p isa person has first-name "John" has age < 25; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = query_builder.match(
+  var("p").isa("person").has("first-name", "John").has("age", Predicates.lt(25))
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query('match $p isa person has first-name "John" has age < 25; get;');
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query('match $p isa person has first-name "John" has age < 25; get;')
 ```
 [tab:end]
-</div>
 </div>
 
 But if in this example, we still want to know how old exactly each John is? we can separate the condition like so.
@@ -706,95 +460,59 @@ match $p isa person has first-name "John" has age $a; $a < 25; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = queryBuilder.match(
+  var("p").isa("person").has("name", "John").has("age", var("a")),
+  var("a").val(Predicates.lt(25))
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;');
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;')
 ```
 [tab:end]
 </div>
-</div>
 
-#### Leaving an attribute unassigned
-If we are not interested in the value that attribute `name` holds, we can leave the attribute unassigned.
+### Instances of a direct type
+The type that an instance belongs to may be a subtype of another. This means when we use `isa` we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](/docs/schema/concepts#subtyping-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
 
 <div class="tabs">
 
 [tab:Graql]
 ```graql
-match $p isa person has phone-number; get;
+match $o isa! organisation; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = queryBuilder.match(
+  var("o").isaExplicit("organisation")
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match $o isa! organisation; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match $o isa! organisation; get;")
 ```
 [tab:end]
-</div>
-</div>
 
-This matches all instances of type person who have the attribute `phone-number` and leaves out those who don't.
-
-### Instances of a direct type
-The type that an instance belongs to may be a subtype of another. This means when we use `isa` we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead.
+The example above matches only the direct instances of `organisation`. That means the instances of `company` and `university` (which subtype `organisation`) would not be included.
+</div>
 
 ### One particular instance
 To match a particular instance with the given ID, we use the `id` keyword. Let's look at an example.
@@ -803,50 +521,33 @@ To match a particular instance with the given ID, we use the `id` keyword. Let's
 
 [tab:Graql]
 ```graql
-match $p id V41016; get;
+match $x id V41016; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = queryBuilder.match(
+  var("x").id(ConceptId.of("V41016"))
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match $x id V41016; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match $x id V41016; get;")
 ```
 [tab:end]
 </div>
-</div>
 
 ### Comparators
-When matching an instance of an attribute based on its value or simply comparing two variables, the following comparators can be used: `=`, `!=`, `>`, `>=`, `<` and `<=`
+When matching an instance of an attribute based on its value or simply comparing two variables, the following comparators can be used: `==`, `!=`, `>`, `>=`, `<` and `<=`
 
 ## Matching Schema Elements
 In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. What we choose to do with the matched schema elements, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we will learn about [using _get_ for reading the knowledge graph](...).
@@ -870,46 +571,55 @@ match $x sub relationship; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
+GetQuery answer_iterator_a = queryBuilder.match(
+  var("x").sub("thing")
+).get();
 
-tx.close();
-se.close();
+GetQuery answer_iterator_b = queryBuilder.match(
+  var("x").sub("attribute")
+).get();
+
+GetQuery answer_iterator_c = queryBuilder.match(
+  var("x").sub("entity")
+).get();
+
+GetQuery answer_iterator_d = queryBuilder.match(
+  var("x").sub("role")
+).get();
+
+GetQuery answer_iterator_e = queryBuilder.match(
+  var("x").sub("relationship")
+).get();
+
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIteratorA = await transaction.query("match $x sub thing; get;");
+const answerIteratorB = await transaction.query("match $x sub attribute; get;");
+const answerIteratorC = await transaction.query("match $x sub entity; get;");
+const answerIteratorD = await transaction.query("match $x sub role; get;");
+const answerIteratorE = await transaction.query("match $x sub relationship; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator_a = transaction.query("match $x sub thing; get;")
+answer_iterator_b = transaction.query("match $x sub attribute; get;")
+answer_iterator_c = transaction.query("match $x sub entity; get;")
+answer_iterator_d = transaction.query("match $x sub role; get;")
+answer_iterator_e = transaction.query("match $x sub relationship; get;")
 ```
 [tab:end]
-</div>
 </div>
 
 ### Roles of a given relationship
 Given a particular relationship, we can use the `relates` keyword to match all roles related to that relationship. Let's look an example.
 
 <div class="tabs">
+
 [tab:Graql]
 ```graql
 match employment relates $x; get;
@@ -918,40 +628,23 @@ match employment relates $x; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator_e = queryBuilder.match(
+  label("employment").relates(var("x"))
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match employment relates $x; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match employment relates $x; get;")
 ```
 [tab:end]
-</div>
 </div>
 
 This matches all roles of the `employment` relationship - `employer` and `employee`.
@@ -969,40 +662,24 @@ match employment relates $x as member; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator_e = queryBuilder.match(
+  label("employment").relates(var("x")),
+  var("x").sub("member")
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match employment relates $x as member; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match employment relates $x as member; get;")
 ```
 [tab:end]
-</div>
 </div>
 
 This matches all the roles that correspond to the `member` role of the relationship which `employment` subtypes. In this case, the super-relationship being `membership` and the matched role being `employee`.
@@ -1020,43 +697,26 @@ match $x plays employee; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = queryBuilder.match(
+  var("x").plays("employee")
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match $x plays employee; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match $x plays employee; get;")
 ```
 [tab:end]
 </div>
-</div>
 
-This matches all `thing`s that play `employee` in any relationship - `person`.
+This matches all `thing`s that play the role `employee` in any relationship - `person`.
 
 ## Owners of a given attribute
 Given an attribute, we can match the `thing`s that own that attribute by using the `has` keyword. Let's look at an example.
@@ -1071,40 +731,23 @@ match $x has name; get;
 
 [tab:Java]
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-Keyspace keyspace = Keyspace.of("some_keyspace");
-Grakn grakn = new Grakn(localGrakn);
-Grakn.session se = grakn.session(keyspace);
-Grakn.Transaction tx = se.transaction(GraknTxType.READ);
-QueryBuilder qb = tx.graql();
-
-tx.close();
-se.close();
+GetQuery answer_iterator = queryBuilder.match(
+  var("x").has("name")
+).get();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const grakn = new Grakn("localhost:48555");
-const se = await grakn.session((keyspace = "some_keyspace"));
-const tx = await se.transaction(Grakn.txType.READ);
-
-
-tx.close();
-se.close();
+const answerIterator = await transaction.query("match $x has name; get;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "some_keyspace") as se:
-  with session.transaction(grakn.TxType.READ) as tx:
-
-
+answer_iterator = transaction.query("match $x has name; get;")
 ```
 [tab:end]
-</div>
 </div>
 
 This matches all `thing`s that have `name` as their attribute - `person`, `organisation`, `company` and `university`.
