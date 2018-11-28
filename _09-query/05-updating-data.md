@@ -139,12 +139,6 @@ queryBuilder.match(
 ```
 [tab:end]
 
-## inserting the new
-match $p isa person has name "Amabo"; $org isa organisation has name "Etihw Esouh"; insert $emp (employer: $org, $employee: $p) isa employment;
-
-## deleting the old
-match $p isa person has name "Pmurt"; $org isa organisation has name "Etihw Esouh"; $emp (employer: $org, $employee: $p) isa employment; delete $emp;
-
 [tab:Javascript]
 ```javascript
 await transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Etihw Esouh"; insert $emp (employer: $org, $employee: $p) isa employment;');
