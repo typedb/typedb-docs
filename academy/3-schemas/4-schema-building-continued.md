@@ -41,7 +41,7 @@ The first step is to look at our relationships one by one and think about what t
 
 
 ```graql-skip-test
-"owns" sub relationship relates owner relates owns;
+"owns" sub relationship relates owner relates owned;
 ```
 
 ## Defining roles
