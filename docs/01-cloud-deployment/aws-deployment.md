@@ -173,7 +173,7 @@ More information on stopping/starting and attaching and detaching instances can 
     </div>
     <div role="tabpanel" class="tab-pane" id="kgms-ami">
         {% assign kgms_ami_content = '
-To commence deployment with Grakn KGMS AMU, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
+To commence deployment with Grakn KGMS AMI, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
 
 ![](/images/aws-deployment-methods.png)
 
