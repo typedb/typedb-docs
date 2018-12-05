@@ -13,7 +13,7 @@ In this section, we will learn how to get Grakn to calculate the `count`, `sum`,
 To perform aggregation in Grakn, we first write a [match clause](/docs/query/match-clause) to describe the set of data and then use the `aggregate` query followed by one of the aggregate functions and the variable of interest.
 
 ### Count
-We use the `count` function to get the number of answers found in the match.
+We use the `count` function to get the number of the specified variable found in the match.
 
 <div class="tabs">
 
@@ -25,21 +25,23 @@ match $sh isa sheep; aggregate count;
 
 [tab:Java]
 ```java
-List&lt;Value&gt; answer = queryBuilder.match(
+AggregateQuery query = Graql.match(
   var("sh").isa("person")
-).aggregate(count()).execute();
+).aggregate(count());
+
+List&lt;Value&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match $sh isa sheep; aggregate count;");
+const answerIterator = await transaction.query("match $sh isa sheep; aggregate count;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match $sh isa sheep; aggregate count;")
+answer_iterator = transaction.query("match $sh isa sheep; aggregate count;")
 ```
 [tab:end]
 </div>
@@ -49,7 +51,7 @@ answer = transaction.query("match $sh isa sheep; aggregate count;")
 Optionally, `count` accepts a variable as an argument.
 
 ### Sum
-We use the `sum` function to get the sum of the given `long` or `double` variables in the results.
+We use the `sum` function to get the sum of the specified `long` or `double` variable in the results.
 
 <div class="tabs">
 
@@ -61,28 +63,29 @@ match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;
 
 [tab:Java]
 ```java
-List&lt;Value&gt; answer = queryBuilder.match(
+AggregateQuery query = Graql.match(
   var("h").isa("hotel").has("number-of-rooms", var("nor"))
-).aggregate(sum("nor")).execute();
+).aggregate(sum("nor"));
+
+List&lt;Value&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;");
+const answerIterator = await transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;")
+answer_iterator = transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;")
 ```
 [tab:end]
 </div>
 
 ### Maximum
-We use the `max` function to get the maximum value among the given `long` or `double` variables in the results.
-
+We use the `max` function to get the maximum value among the specified `long` or `double` variable in the results.
 
 <div class="tabs">
 
@@ -94,28 +97,30 @@ match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggr
 
 [tab:Java]
 ```java
-List&lt;Value&gt; answer = queryBuilder.match(
+AggregateQuery query = Graql.match(
   var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
   var("st").has("gpa", var("gpa"))
-).aggregate(max("gpa")).execute();
+).aggregate(max("gpa"));
+
+List&lt;Value&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;");
+const answerIterator = await transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;")
+answer_iterator = transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;")
 ```
 [tab:end]
 </div>
 
 ### Minimum
-We use the `min` function to get the minimum value among the given `long` or `double` variables in the results.
+We use the `min` function to get the minimum value among the specified `long` or `double` variable in the results.
 
 <div class="tabs">
 
@@ -127,27 +132,30 @@ match $b isa building has number-of-floors $nof; aggregate min $nof;
 
 [tab:Java]
 ```java
-List&lt;Value&gt; answer = queryBuilder.match(
-  var("b").isa("building").has("number-of-floors", "nof")
-).aggregate(min("nof")).execute();
+AggregateQuery query = Graql.match(
+  var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
+  var("st").has("gpa", var("gpa"))
+).aggregate(min("nof"));
+
+List&lt;Value&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;");
+const answerIterator = await transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;")
+answer_iterator = transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;")
 ```
 [tab:end]
 </div>
 
 ### Mean
-We use the `mean` function to get the average value of the given `long` or `double` variables in the results.
+We use the `mean` function to get the average value of the specified `long` or `double` variable in the results.
 
 <div class="tabs">
 
@@ -159,27 +167,29 @@ match $call isa call has duration $d; aggregate mean $d;
 
 [tab:Java]
 ```java
-List&lt;Value&gt; answer = queryBuilder.match(
+AggregateQuery query = Graql.match(
   var("call").isa("call").has("duration", "d")
 ).aggregate(mean("d")).execute();
+
+List&lt;Value&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match $call isa call has duration $d; aggregate mean $d;");
+const answerIterator = await transaction.query("match $call isa call has duration $d; aggregate mean $d;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match $call isa call has duration $d; aggregate mean $d;")
+answer_iterator = transaction.query("match $call isa call has duration $d; aggregate mean $d;")
 ```
 [tab:end]
 </div>
 
 ### Median
-We use the `median` function to get the median value among the given `long` or `double` variables in the results.
+We use the `median` function to get the median value among the specified `long` or `double` variable in the results.
 
 <div class="tabs">
 
@@ -191,27 +201,29 @@ match $p isa person has age $a; aggregate median $a;
 
 [tab:Java]
 ```java
-List&lt;Value&gt; answer = queryBuilder.match(
+AggregateQuery query = Graql.match(
   var("p").isa("person").has("age", var("a"))
 ).aggregate(median("a")).execute();
+
+List&lt;Value&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match $p isa person has age $a; aggregate median $a;");
+const answerIterator = await transaction.query("match $p isa person has age $a; aggregate median $a;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match $p isa person has age $a; aggregate median $a;")
+answer_iterator = transaction.query("match $p isa person has age $a; aggregate median $a;")
 ```
 [tab:end]
 </div>
 
 ### Grouping Results
-We use the `group` function, optionally followed by another aggregate function, to group the results by the given variable.
+We use the `group` function, optionally followed by another aggregate function, to group the results by the specified variable.
 
 <div class="tabs">
 
@@ -223,21 +235,24 @@ match (employer: $company, employee: $person) isa employment; aggregate group $c
 
 [tab:Java]
 ```java
-List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = queryBuilder.match(
-  var().isa("employment").rel("employer", var("company")).rel("employee", var("person"))
+AggregateQuery query = Graql.match(
+  var().isa("employment").rel("employer", var("company"))
+  .rel("employee", var("person"))
 ).aggregate(group("company")).execute();
+
+List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;");
+const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;")
+answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;")
 ```
 [tab:end]
 </div>
@@ -254,21 +269,24 @@ match (employer: $company, employee: $person) isa employment; aggregate group $c
 
 [tab:Java]
 ```java
-List<AnswerGroup&lt;Value&gt;> answer = queryBuilder.match(
-  var().isa("employment").rel("employer", var("company")).rel("employee", var("person"))
-).aggregate(group("company", count())).execute();
+AggregateQuery query = Graql.match(
+  var().isa("employment").rel("employer", var("company"))
+  .rel("employee", var("person"))
+).aggregate(group("company", count()));
+
+List&lt;AnswerGroup&lt;Value&gt;&gt; answer = transaction.execute(query.toString());
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-const answer = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;");
+const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;");
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-answer = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;")
+answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;")
 ```
 [tab:end]
 </div>
@@ -276,6 +294,6 @@ answer = transaction.query("match (employer: $company, employee: $person) isa em
 This query returns the total number of instances of `employment` mapped to their corresponding `employer` roleplayer.
 
 ## Summary
-An aggregate query, given a function, is used to calculate a given variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
+An aggregate query is used to calculate a given variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
 
 Next, we will learn how to [compute values over a large set of data](/docs/query/compute-query) in a knowledge graph.

@@ -7,11 +7,11 @@ permalink: /docs/schema/concepts
 ---
 
 ## Define
-As the name suggests, the `define` keyword is used to define elements of the schema. These elements may be substances of the three schema concepts(`entity`, `relationship` and `attribute`) or [Rules](/docs/schema/rules).
+As the name suggests, the `define` keyword is used to develop the [schema](/docs/schema/overview) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relationships, attributes and rules to the schema.
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-`define` can also be used in the [interactive mode of the Grakn Console]() as well as the Grakn Clients [Java](...), [Python](...) and [Node.js](...).
+`define` can also be used in the [interactive mode of the Grakn Console]() as well as the Grakn Clients [Java](/docs/client-api/java), [Python](/docs/client-api/python) and [Node.js](/docs/client-api/nodejs).
 
 <div class="alert">
 [Important]
@@ -21,11 +21,10 @@ When using one of the Grakn clients, to commit changes, we call the `commit()` m
 
 
 ## Entity
-An entity is a thing with a distinct existence. For example, `organisation`, `company` and `person`. The existence of each of these entities is independent of any other element in the domain.
- d
+An entity is a thing with a distinct existence. For example, `organisation`, `company` and `person`. The existence of each of these entities is independent of any other concept in the domain.
+
 ### Defining an entity
 To define a new entity, we use the `sub` keyword followed by `entity`.
-
 
 <div class="tabs">
 
@@ -41,19 +40,18 @@ person sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("person").sub("entity").has("name")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define person sub entity, has name;");
+await transaction.query("define person sub entity, has name;");
 transaction.commit();
 ```
 [tab:end]
@@ -85,19 +83,18 @@ person sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("person").sub("entity").has("name").has("forename").has("surname").has("middle-name")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define person sub entity, has name, has forename, has surname, has middle-name;");
+await transaction.query("define person sub entity, has name, has forename, has surname, has middle-name;");
 transaction.commit();
 ```
 [tab:end]
@@ -125,19 +122,18 @@ person sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("person").sub("entity").key("email")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define person sub entity, key email;");
+await transaction.query("define person sub entity, key email;");
 transaction.commit();
 ```
 [tab:end]
@@ -153,7 +149,11 @@ transaction.commit()
 This guarantees `email` to have a unique value for all instances of `person`.
 
 
-Note that although these attributes have been assigned to the `person` entity, they are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
+<div class="alert">
+[Note]
+Although the attributes above have been assigned to the `person` entity, they are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
+</div>
+
 
 ### Entity to play a role
 An entity can play a role in a relationship. To define the role played by an entity, we use the `plays` keyword followed by the role's label.
@@ -174,20 +174,19 @@ company sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("person").sub("entity").plays("employee"),
   label("company").sub("entity").plays("employer"),
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define person sub entity, plays employee; company sub entity, plays employer;");
+await transaction.query("define person sub entity, plays employee; company sub entity, plays employer;");
 transaction.commit();
 ```
 [tab:end]
@@ -202,7 +201,7 @@ transaction.commit()
 
 <div class="alert">
 [Note]
-The relationships that relates to the roles `employer` and `employee` has not yet been defined. We will soon learn how to [define a relationship](#defining-a-relationship).
+The relationship that relates to the roles `employer` and `employee` jas not yet been defined. We will soon learn how to [define a relationship](#defining-a-relationship).
 </div>
 
 ### Subtyping an entity
@@ -229,22 +228,28 @@ university sub organisation,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("organisation").sub("entity").plays("owner").plays("property").plays("employer").has("name"),
   label("company").sub("organisation"),
   label("university").sub("organisation").has("rank")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
+```javascript
+await transaction.query("define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;");
+transaction.commit();
+```
 [tab:end]
 
 [tab:Python]
+```python
+transaction.query(define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;)
+```
 [tab:end]
 </div>
 
@@ -252,13 +257,13 @@ As you can see in the example above, when defining entities, what follows the `s
 
 <div class="alert">
 [Note]
-The relationships that relate to the roles `owner`, `property` and `employer` have not been defined in the example above. We will soon learn how to [define a relationship](#defining-a-relationship). Similarly, the attributes `name` and `rank` are also yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute) as well.
+The relationships that relate to the roles `owner`, `property` and `employer` have not been defined in the example above. We will soon learn how to [define a relationship](#defining-a-relationship). Similarly, the attributes `name` and `rank` are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute) as well.
 </div>
 
 The ability to subtype entities not only helps mirror the reality of the dataset as perceived in the real world but also enables [automated reasoning using type hierarchies](...).
 
 #### Defining an abstract entity
-There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `organisation` entity type to be abstract.
+There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `organisation` entity type to be abstract. By doing so, we're indicating that no data instances of the `organisation` entity are allowed to be created.
 
 <div class="tabs">
 
@@ -272,19 +277,18 @@ organisation sub entity is-abstract;
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("organisation").sub("entity").isAbstract()
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define organisation sub entity is-abstract;");
+await transaction.query("define organisation sub entity is-abstract;");
 transaction.commit();
 ```
 [tab:end]
@@ -299,7 +303,7 @@ transaction.commit()
 </div>
 
 ## Relationship
-A relationship describes how two or more things are in some way connected to each other. For example, `loan` and `employment`. Each of these relationships must relate to something else in the domain. In other words, relationships are dependent on the existence of at least two other things.
+A relationship describes how two or more things are in some way connected to each other. For example, `loan` and `employment`. Each of these relationships must relate to roles that are played by something else in the domain. In other words, relationships are dependent on the existence of at least two other things.
 
 ### Defining a relationship
 To define a new relationship, we use the `sub` keyword followed by `relationship`.
@@ -326,19 +330,18 @@ employment sub relationship,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("employment").sub("relationship").relates("employee").relates("employer")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define employment sub relationship, relates employee, relates employer;");
+await transaction.query("define employment sub relationship, relates employee, relates employer;");
 transaction.commit();
 ```
 [tab:end]
@@ -389,24 +392,23 @@ terms-n-conditions sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("loan").sub("relationship").relates("lender").relates("recipient")
   .plays("subject"),
   label("legal-constraint").sub("relationship").relates("subject").relates("legality"),
   label("bank").sub("entity").plays("lender"),
   label("person").sub("entity").plays("recipient"),
   label("terms-n-conditions").sub("entity").plays("legality")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define loan sub relationship, relates lender, relates recipient, plays subject; legal-constraint sub relationship, relates subject, relates legality; bank sub entity, plays lender; person sub entity, plays recipient; terms-n-conditions sub entity, plays legality;");
+await transaction.query("define loan sub relationship, relates lender, relates recipient, plays subject; legal-constraint sub relationship, relates subject, relates legality; bank sub entity, plays lender; person sub entity, plays recipient; terms-n-conditions sub entity, plays legality;");
 transaction.commit();
 ```
 [tab:end]
@@ -449,24 +451,23 @@ house sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("mortgage").sub("relationship").relates("debtor").relates("lender")
   .relates("subject"),
   label("person").sub("entity").plays("debtor"),
   label("bank").sub("entity").plays("lender"),
   label("person").sub("entity").plays("recipient"),
   label("house").sub("entity").plays("legality")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define mortgage sub relationship, relates debtor, relates lender, relates subject; person sub entity, plays debtor; bank sub entity, plays lender; house sub entity, plays subject;");
+await transaction.query("define mortgage sub relationship, relates debtor, relates lender, relates subject; person sub entity, plays debtor; bank sub entity, plays lender; house sub entity, plays subject;");
 transaction.commit();
 ```
 [tab:end]
@@ -500,19 +501,18 @@ employment sub relationship,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("employment").sub("relationship").relates("employer").relates("employee").has("job-title")
-).execute();
+);
 
-transaction.commit()
+transaction.execute(query.toString());
+transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define employment sub relationship, has job-title, relates employer, relates employee;");
+await transaction.query("define employment sub relationship, has job-title, relates employer, relates employee;");
 transaction.commit();
 ```
 [tab:end]
@@ -542,19 +542,18 @@ employment sub relationship,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("employment").sub("relationship").key("reference-id").relates("employer").relates("employee")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;");
+await transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;");
 transaction.commit();
 ```
 [tab:end]
@@ -569,7 +568,10 @@ transaction.commit()
 
 This guarantees `reference-id` to have a unique value for all instances of `employment`.
 
-Note that although these attributes have been assigned to `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
+<div class="alert">
+[Note]
+Although the attributes above have been assigned to `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
+</div>
 
 ### Subtyping a relationship
 A relationship can be defined to inherit another relationship. Let's take a look at an example of subtyping an `affiliation` relationship.
@@ -601,9 +603,7 @@ board-membership sub membership,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("affiliation").sub("relationship").relates("party").key("reference-id"),
   label("member").sub("party"),
   label("group").sub("party"),
@@ -615,15 +615,16 @@ qb.define(
   label("board-member").sub("member"),
   label("board").sub("group"),
   label("board-membership").sub("membership").relates("board-member").relates("board")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define affiliation sub relationship, key reference-id, relates party; membership sub affiliation, relates member as party, relates group as party; employment sub membership, relates employee as member, relates employer as group, has job-title; board-membership sub membership, relates board-member as member, relates board as group;");
+await transaction.query("define affiliation sub relationship, key reference-id, relates party; membership sub affiliation, relates member as party, relates group as party; employment sub membership, relates employee as member, relates employer as group, has job-title; board-membership sub membership, relates board-member as member, relates board as group;");
 transaction.commit();
 ```
 [tab:end]
@@ -636,11 +637,11 @@ transaction.commit()
 [tab:end]
 </div>
 
-As you can see in the example above, when defining relationships, what follows the `sub` keyword can be a label previously given to another relationship. In this case, `employment` and `board-membership` are both considered to be subtypes of `membership` which is itself a subtype of `affiliation`. By subtyping a parent relationship, the children inherit all attributes owned and roles related to their parent. Therefore, although not defined explicitly, we are right to assume that both `employment` and `board-membership` relate to the roles `member`, `group` and `party` and own the key attribute `reference-id`.
+As you can see in the example above, when defining relationships, what follows the `sub` keyword can be a label previously given to another relationship. In this case, `employment` and `board-membership` are both considered to be subtypes of `membership` which is itself a subtype of `affiliation`. By subtyping a parent relationship, the children inherit all attributes owned and roles related to and played by their parent. Therefore, although not defined explicitly, we are right to assume that both `employment` and `board-membership` relate to the roles `member`, `group` and `party` and own the key attribute `reference-id`.
 
 <div class="alert">
 [Note]
-The attributes `reference-id` and `job-title` used in the example above are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
+Although the attributes above have been assigned to `affiliation` and `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#defining-an-attribute).
 </div>
 
 Note the use of the `as` keyword. This is necessary to determine the correspondence between the role of the child and that of the parent.
@@ -650,12 +651,10 @@ Note the use of the `as` keyword. This is necessary to determine the corresponde
 All roles defined to relate to the parent relationship must also be defined to relate to the child relationship using the `as` keyword.
 </div>
 
-
-
 The ability to subtype relationships not only helps mirror the reality of the dataset as perceived in the real world but also enables [automated reasoning using type hierarchies](...).
 
 #### Defining an abstract relationship
-There may be scenarios where a parent relationship is only defined for other relationships to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `affiliation` relationship type to be abstract.
+There may be scenarios where a parent relationship is only defined for other relationships to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `affiliation` relationship type to be abstract. By doing so, we're indicating that no data instances of the `affiliation` relationship are allowed to be created.
 
 <div class="tabs">
 
@@ -670,19 +669,18 @@ affiliation sub relationship is-abstract,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("affiliation").sub("relationship").isAbstract().relates("party")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define affiliation sub relationship is-abstract, relates party;");
+await transaction.query("define affiliation sub relationship is-abstract, relates party;");
 transaction.commit();
 ```
 [tab:end]
@@ -701,7 +699,7 @@ transaction.commit()
 An attribute is a piece of information that determines the property of an element in the domain. For example, `name`, `language` and `age`. These attributes can be assigned to anything that needs them as a property.
 
 ### Defining an attribute
-To define a new attribute, we use the `sub` keyword followed by `attribute datatype` and the type of the desired value.
+To define a new attribute, we use the `sub` keyword followed by `attribute`, `datatype` and, at last, the type of the desired value.
 
 <div class="tabs">
 
@@ -715,19 +713,18 @@ name sub attribute datatype string;
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING)
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define name sub attribute datatype string;");
+await transaction.query("define name sub attribute datatype string;");
 transaction.commit();
 ```
 [tab:end]
@@ -769,21 +766,20 @@ bicycle sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("colour").sub("attribute").datatype(AttributeType.DataType.STRING),
   label("car").sub("entity").has("colour"),
   label("bicycle").sub("entity").has("colour")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define colour sub attribute datatype string; car sub entity,  has colour; bicycle sub entity, has colour;");
+await transaction.query("define colour sub attribute datatype string; car sub entity,  has colour; bicycle sub entity, has colour;");
 transaction.commit();
 ```
 [tab:end]
@@ -816,20 +812,19 @@ movie sub entity,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("genre").sub("attribute").datatype(AttributeType.DataType.STRING),
   label("movie").sub("entity").has("genre"),
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("genre sub attribute datatype string; movie sub entity, has genre;");
+await transaction.query("genre sub attribute datatype string; movie sub entity, has genre;");
 transaction.commit();
 ```
 [tab:end]
@@ -856,45 +851,40 @@ Like entities and relationships, attributes can also own an attribute of their o
 define
 
 text sub attribute datatype string,
-  has word;
+  has language;
 
-word sub attribute datatype string,
-  has position;
-
-position sub attribute datatype long;
+language sub attribute datatype string;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
+DefineQuery query = Graql.define(
+  label("text").sub("attribute").datatype(AttributeType.DataType.STRING).has("language"),
+  label("language").sub("attribute").datatype(AttributeType.DataType.STRING)
+);
 
-qb.define(
-  label("text").sub("attribute").datatype(AttributeType.DataType.STRING).has("word"),
-  label("word").sub("attribute").datatype(AttributeType.DataType.STRING).has("position"),
-  label("position").sub("attribute").datatype(AttributeType.DataType.LONG),
-).execute();
-
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define text sub attribute datatype string, has word; word sub attribute datatype string, has position; position sub attribute datatype long;");
+await transaction.query("define text sub attribute datatype string, has language; language sub attribute datatype string;");
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-transaction.query("define text sub attribute datatype string, has word; word sub attribute datatype string, has position; position sub attribute datatype long;")
+transaction.query("define text sub attribute datatype string, has language; language sub attribute datatype string;")
 transaction.commit()
 ```
 [tab:end]
 </div>
 
-In this example, attribute `text` can be owned by, for instance, an `article` entity. But what this example aims to showcase is that the `text` attribute, besides its own value, owns an attribute named `word` which in turn also owns another attribute named `position`. Simply put, with such structure defined in the schema, we are modelling the granularity of a `text`.
+In this example, attribute `text` can be owned by, for instance, an `email` relationship. What this example aims to showcase is that the `text` attribute, besides its own value, owns an attribute named `language` which holds the name of the language the text is in.
 
 ### Defining an attribute to play a role
 An attribute can play a role in a relationship. To define the role played by an attribute, we use the `plays` keyword followed by the role's label.
@@ -919,21 +909,20 @@ origination sub relationship,
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("word").sub("attribute").datatype(AttributeType.DataType.STRING).plays("originated"),
   label("language").sub("entity").plays("origin"),
   label("origination").sub("relationship").relates("origin").relates("originated")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define word sub attribute datatype string,plays originated;language sub entity,plays origin;origination sub relationship,relates origin,relates originated;");
+await transaction.query("define word sub attribute datatype string,plays originated;language sub entity,plays origin;origination sub relationship,relates origin,relates originated;");
 transaction.commit();
 ```
 [tab:end]
@@ -946,10 +935,10 @@ transaction.commit()
 [tab:end]
 </div>
 
-The definition above contains also a relationship. Previously we learned how to [define a relationship](#defining-a-relationship).
+The definition above contains also a relationship. We learned earlier how to [define a relationship](#defining-a-relationship).
 
 ### Subtyping an attribute
-An attribute can be defined to inherit another attribute. Let’s look at an example of subtyping a `name` attribute.
+An attribute can be defined to inherit another attribute.
 
 <div class="tabs">
 
@@ -966,22 +955,21 @@ middle-name sub name;
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING),
   label("forename").sub("name"),
   label("surname").sub("name"),
   label("middle-name").sub("name")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define name sub attribute datatype string; forename sub name; surname sub name; middle-name sub name;");
+await transaction.query("define name sub attribute datatype string; forename sub name; surname sub name; middle-name sub name;");
 transaction.commit();
 ```
 [tab:end]
@@ -994,12 +982,12 @@ transaction.commit()
 [tab:end]
 </div>
 
-What this definition means is that `forename`, `surname` and `middle-name` are all inherently subtypes of `name`. They inherit the datatype of `name` as well its contextuality.
+What this definition means is that `forename`, `surname` and `middle-name` are all inherently subtypes of `name`. They inherit the datatype of `name` as well as its contextuality.
 
 The ability to subtype attributes not only helps mirror the reality of our dataset but also enables [automated reasoning using type hierarchies](...).
 
 #### Defining an abstract relationship
-There may be scenarios where a parent attribute is only defined for other attributes to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `name` attribute type to be abstract.
+There may be scenarios where a parent attribute is only defined for other attributes to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `name` attribute type to be abstract. By doing so, we are indicating that no data instances of the `name` attribute are allowed to be created.
 
 <div class="tabs">
 
@@ -1013,19 +1001,18 @@ name sub attribute is-abstract datatype string;
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.define(
+DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING),
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("define name sub attribute is-abstract datatype string;");
+await transaction.query("define name sub attribute is-abstract datatype string;");
 transaction.commit();
 ```
 [tab:end]
@@ -1039,11 +1026,7 @@ transaction.commit()
 </div>
 
 ## Undefine
-As the name suggests, the `undefine` keyword is used to remove the definition of a type from the schema. To do so, we use the following syntax.
-
-```graql
-undefine [label] sub [type];
-```
+As the name suggests, the `undefine` keyword is used to remove the definition of a type from the schema.
 
 <div class="alert">
 [Important]
@@ -1054,9 +1037,41 @@ When using one of the Grakn clients, to commit changes, we call the `commit()` m
 ### Undefining an attribute's association
 To undefine the association a `thing` has with an attribute we use the following syntax.
 
+<div class="tabs">
+
+[tab:Graql]
 ```graql
-undefine [owner's label] has [attribute's label];
+undefine person has name;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+Graql.undefine(
+  label("person").has("name")
+);
+
+transaction.execute(query.toString());
+transaction.commit();
+```
+[tab:end]
+
+[tab:Javascript]
+```javascript
+await transaction.query("undefine person has name;");
+transaction.commit();
+```
+[tab:end]
+
+[tab:Python]
+```python
+transaction.query("undefine person has name;")
+transaction.commit()
+```
+[tab:end]
+</div>
+
+The query above, removes the attribute `name` from the entity `person`.
 
 <div class="alert">
 [Important]
@@ -1080,22 +1095,21 @@ undefine
 
 [tab:Java]
 ```java
-QueryBuilder qb = transaction.graql();
-
-qb.undefine(
+Graql.undefine(
   label("employment").relates("employer").relates("employee"),
   label("employer").sub("group"),
   label("employee").sub("member"),
   label("employment").sub("membership")
-).execute();
+);
 
+transaction.execute(query.toString());
 transaction.commit();
 ```
 [tab:end]
 
 [tab:Javascript]
 ```javascript
-transaction.query("undefine employment relates employer, relates employee; employer sub group; employee sub member; employment sub membership;");
+await transaction.query("undefine employment relates employer, relates employee; employer sub group; employee sub member; employment sub membership;");
 transaction.commit();
 ```
 [tab:end]

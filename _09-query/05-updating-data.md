@@ -28,13 +28,18 @@ insert $comp isa company id V17391 has registration-number "81726354";
 
 [tab:Java]
 ```java
-queryBuilder.match(
+DeleteQuery delete_query = Graql.match(
   var("comp").isa("company").id(ConceptId.of("V17391")).has(Label.of("registration-number"), var("rn"), var("r"))
-).delete("r").execute();
+).delete("r");
 
-queryBuilder.insert(
+
+InsertQuery insert_query = Graql.insert(
   var("comp").isa("company").id(ConceptId.of("V17391")).has("registration-number", "81726354")
-).execute();
+);
+
+transaction.execute(delete_query.toString());
+transaction.execute(insert_query.toString());
+transaction.commit();
 ```
 [tab:end]
 
@@ -42,6 +47,7 @@ queryBuilder.insert(
 ```javascript
 await transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;");
 await transaction.query('insert $comp isa company id V17391 has registration-number "81726354";');
+await transaction.commit();
 ```
 [tab:end]
 
@@ -49,16 +55,16 @@ await transaction.query('insert $comp isa company id V17391 has registration-num
 ```python
 transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
 transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
+atransaction.commit()
 ```
 [tab:end]
 </div>
 
-In the above example, we first delete the association that the `company` with id `V17391` has with attribute `registration-number` by using the `via` keyword and then continue to assign the new instance of the `registration-number` to the same `company`.
+This first deletes the association that the `company` with id `V17391` has with attribute `registration-number` by using the `via` keyword and then continues to insert the new instance of the `registration-number` to be owned by the same `company`.
 
 
 ### Updating all instances of a given attribute
-There may also be cases when we need to update the value of all instances that are of a certain attribute type. To do so, first, we assign the new instance of the given attribute to all things that own the old instance, and then delete the old instance.
-Let's look at an example.
+There may also be cases where we need to update the value of all instances that are of a certain attribute type. To do so, first, we assign the new instance of the given attribute to all things that own the old instance, and then delete the old instance.
 
 <div class="tabs">
 
@@ -71,15 +77,19 @@ match $c isa color "maroon"; delete $c;
 
 [tab:Java]
 ```java
-queryBuilder.match(
+InsertQuery insert_query = Graql.match(
   var("x").isa("thing").has("color", "maroon")
 ).insert(
   var("x").has("color", "red")
-).execute();
+);
 
-queryBuilder.match(
+DeleteQuery delete_query = Graql.match(
   var("c").isa("color").val("maroon")
-).delete("c").execute();
+).delete("c");
+
+transaction.execute(insert_query.toString());
+transaction.execute(delete_query.toString());
+transaction.commit();
 ```
 [tab:end]
 
@@ -87,6 +97,7 @@ queryBuilder.match(
 ```javascript
 await transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;");
 await transaction.query('insert $comp isa company id V17391 has registration-number "81726354";');
+await transaction.commit();
 ```
 [tab:end]
 
@@ -94,14 +105,15 @@ await transaction.query('insert $comp isa company id V17391 has registration-num
 ```python
 transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
 transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
+transaction.commit()
 ```
 [tab:end]
 </div>
 
-In the example above, we first look for anything that as `colour` with value `maroon` and then assign it the new `colour` with value `red`. Finally, we delete all instances of `colour` with value `maroon`.
+This first looks for anything that owns the `color` attribute with the value of `"maroon"` and then inserts the new instance of the `color` attribute with the value of `"red"` to be owned by the matched owners. Finally, it deletes all instances of `color` with the value of `"maroon"`.
 
 ### Updating the roleplayers of a relationship
-To change the roleplayer of a given relationship, we first need to [delete the instance of the relationship](/docs/query/delete-query# deleting-instances-of-relationship) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#inserting-instances-of-relationship) again with the correct new roleplayer. Let's look at an example.
+To change the roleplayers of a given relationship, we first need to [delete the instances of the relationship](/docs/query/delete-query# deleting-instances-of-relationship) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#inserting-instances-of-relationship) with the new roleplayer.
 
 <div class="tabs">
 
@@ -124,18 +136,22 @@ delete $emp;
 
 [tab:Java]
 ```java
-queryBuilder.match(
+InsertQuery insert_query = Graql.match(
   var("p").isa("person").has("name", "Amabo"),
   var("org").isa("organisation").has("name", "Etihw Esouh"),
 ).insert(
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
-).execute();
+);
 
-queryBuilder.match(
+DeleteQuery delete_query = Graql.match(
   var("p").isa("person").has("name", "Pmurt"),
   var("org").isa("organisation").has("name", "Etihw Esouh"),
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
-).delete("emp").execute();
+).delete("emp");
+
+transaction.execute(insert_query.toString());
+transaction.execute(delete_query.toString());
+transaction.commit();
 ```
 [tab:end]
 
@@ -143,20 +159,22 @@ queryBuilder.match(
 ```javascript
 await transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Etihw Esouh"; insert $emp (employer: $org, $employee: $p) isa employment;');
 await transaction.query('match $p isa person has name "Pmurt"; $org isa organisation has name "Etihw Esouh"; $emp (employer: $org, $employee: $p) isa employment; delete $emp');
+await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
 ```python
-transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Etihw Esouh"; insert $emp (employer: $org, $employee: $p) isa employment;');
-transaction.query('match $p isa person has name "Pmurt"; $org isa organisation has name "Etihw Esouh"; $emp (employer: $org, $employee: $p) isa employment; delete $emp');
+transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Etihw Esouh"; insert $emp (employer: $org, $employee: $p) isa employment;')
+transaction.query('match $p isa person has name "Pmurt"; $org isa organisation has name "Etihw Esouh"; $emp (employer: $org, $employee: $p) isa employment; delete $emp')
+transaction.commit()
 ```
 [tab:end]
 </div>
 
-In the example above, we are updating an instance of an `employment` to have a different roleplayer as its `employee`.
+This updates the `employee` roleplayer of the `employment` relationship where the `employer` is a `company` named `"Etihw Esouh"`.
 
 ## Summary
-Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained wh [defining the schema](/docs/schema/concepts). Simply put, to update is essentially to first `delete` and then `insert.
+Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](/docs/schema/concepts). Simply put, to update is essentially to first `delete` and then `insert`.
 
 Next, we will learn how to [aggregate values over a set of data](/docs/query/aggregate-query) in a Grakn knowledge graph.
