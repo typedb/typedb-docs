@@ -1,0 +1,70 @@
+title: "Client"
+methods:
+  - method1:
+    common: &method-1
+      title: Creating a session
+      description: Creates a session of communication with the given keyspace running on the Grakn server
+      method: '.session("keyspace name")'
+      accepts: &accepts-1
+        param1: &accepts-1-param-1
+          name: keyspace
+          description: The name of the keyspace with which the session connects.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[Session](#client-api-title-session) object"
+    java:
+      <<: *method-1
+      method: '.session(Keyspace.of(String keyspace))'
+      accepts:
+        <<: *accepts-1
+        param1:
+          <<: *accepts-1-param-1
+          description: The keyspace with which the session connects.
+          type: 'Keyspace (<code>Keyspace.of("name-of-keyspace")</code>)'
+    javascript:
+      <<: *method-1
+    python:
+      <<: *method-1
+
+  - method2:
+    common: &method-2
+      title: Retrieving all keyspaces
+      description: Retrieves the name of all keyspaces running on the Grakn server.
+      method: '.keyspaces().retrieve()'
+    # java:
+    #   <<: *method-2
+    javascript:
+      <<: *method-2
+      returns:
+        - Array of Strings
+    python:
+      <<: *method-2
+      returns:
+        - List of Strings
+  - method3:
+    common: &method-3
+      title: Deleting a keyspace
+      description: Deletes a keyspace with the given name.
+      accepts: &accepts-3
+        param1: &accepts-3-param-1
+          name: keypsace
+          description: The name of the keyspace to be deleted.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-3
+      method: '.keyspaces().delete(Keyspace.of(String keyspace))'
+      accepts: &method-3-accepts
+        param1:
+          <<: *accepts-3-param-1
+          description: The keyspace to be deleted.
+          type: 'Keyspace'
+    javascript:
+      <<: *method-3
+      method: '.keyspaces().delete("keyspace name"))'
+    python:
+      <<: *method-3
+      method: '.keyspaces().delete("keyspace name"))'
