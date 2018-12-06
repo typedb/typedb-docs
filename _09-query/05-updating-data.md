@@ -37,10 +37,14 @@ InsertQuery insert_query = Graql.insert(
   var("comp").isa("company").id(ConceptId.of("V17391")).has("registration-number", "81726354")
 );
 
-transaction.execute(delete_query.toString());
-transaction.execute(insert_query.toString());
+delete_query.withTx(transaction).execute();
+insert_query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5
+transaction.execute(delete_query.toString());
+transaction.execute(insert_query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
@@ -87,10 +91,14 @@ DeleteQuery delete_query = Graql.match(
   var("c").isa("color").val("maroon")
 ).delete("c");
 
-transaction.execute(insert_query.toString());
-transaction.execute(delete_query.toString());
+insert_query.withTx(transaction).execute();
+delete_query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5
+transaction.execute(insert_query.toString());
+transaction.execute(delete_query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
@@ -149,10 +157,14 @@ DeleteQuery delete_query = Graql.match(
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
 ).delete("emp");
 
-transaction.execute(insert_query.toString());
-transaction.execute(delete_query.toString());
+insert_query.withTx(transaction).execute();
+delete_query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5
+transaction.execute(insert_query.toString());
+transaction.execute(delete_query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]

@@ -60,9 +60,10 @@ DefineQuery query = Graql.define(
   )
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]

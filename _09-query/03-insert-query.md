@@ -22,9 +22,12 @@ insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname
 InsertQuery query = Graql.insert(
   var("p").isa("person").has("forename", "Johny").has("middle-name", "Jimbly").has("surname", "Joe")
 );
-transaction.execute(query.toString());
+
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
@@ -62,9 +65,12 @@ InsertQuery query = Graql.match(
 ).insert(
   var("p-b").isa("person").has("surname", var("s"))
 );
-transaction.execute(query.toString());
+
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
@@ -102,9 +108,12 @@ insert $x isa environment "Production";
 InsertQuery query = Graql.insert(
   var("x").isa("environment").val("Production")
 );
-transaction.execute(query.toString());
+
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
@@ -145,6 +154,7 @@ InsertQuery query = Graql.match(
 ).insert(
   var("emp").isa("employment").rel("employer", "c").rel("employee", "p").has("reference-id", "WGFTSH"),
 );
+
 transaction.execute(query.toString());
 transaction.commit();
 ```

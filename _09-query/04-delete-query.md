@@ -23,9 +23,13 @@ DeleteQuery query = Graql.match(
     var("p").isa("person").id(ConceptId.of("V41016"))
 ).delete("p");
 
-transaction.execute(query.toString());
+);
+
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
@@ -66,9 +70,13 @@ DeleteQuery query = Graql.match(
   var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
 ).delete("emp");
 
-transaction.execute(query.toString());
+);
+
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
@@ -108,9 +116,13 @@ DeleteQuery query = Graql.match(
   var("co").val("red")
 ).delete("r");
 
-transaction.execute(query.toString());
+);
+
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString());
+transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]

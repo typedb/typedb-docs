@@ -44,9 +44,10 @@ DefineQuery query = Graql.define(
   label("person").sub("entity").has("name")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -84,12 +85,14 @@ person sub entity,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  label("person").sub("entity").has("name").has("forename").has("surname").has("middle-name")
+  label("person").sub("entity").has("name").has("forename").has("surname")
+  .has("middle-name")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -126,9 +129,10 @@ DefineQuery query = Graql.define(
   label("person").sub("entity").key("email")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -179,9 +183,10 @@ DefineQuery query = Graql.define(
   label("company").sub("entity").plays("employer"),
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -229,14 +234,16 @@ university sub organisation,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  label("organisation").sub("entity").plays("owner").plays("property").plays("employer").has("name"),
+  label("organisation").sub("entity").plays("owner").plays("property")
+  .plays("employer").has("name"),
   label("company").sub("organisation"),
   label("university").sub("organisation").has("rank")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -281,9 +288,10 @@ DefineQuery query = Graql.define(
   label("organisation").sub("entity").isAbstract()
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -334,9 +342,10 @@ DefineQuery query = Graql.define(
   label("employment").sub("relationship").relates("employee").relates("employer")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -395,15 +404,17 @@ terms-n-conditions sub entity,
 DefineQuery query = Graql.define(
   label("loan").sub("relationship").relates("lender").relates("recipient")
   .plays("subject"),
-  label("legal-constraint").sub("relationship").relates("subject").relates("legality"),
+  label("legal-constraint").sub("relationship").relates("subject")
+  .relates("legality"),
   label("bank").sub("entity").plays("lender"),
   label("person").sub("entity").plays("recipient"),
   label("terms-n-conditions").sub("entity").plays("legality")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -460,9 +471,10 @@ DefineQuery query = Graql.define(
   label("house").sub("entity").plays("legality")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -502,12 +514,14 @@ employment sub relationship,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  label("employment").sub("relationship").relates("employer").relates("employee").has("job-title")
+  label("employment").sub("relationship").relates("employer").relates("employee")
+  .has("job-title")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -543,12 +557,14 @@ employment sub relationship,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  label("employment").sub("relationship").key("reference-id").relates("employer").relates("employee")
+  label("employment").sub("relationship").key("reference-id").relates("employer")
+  .relates("employee")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -614,12 +630,14 @@ DefineQuery query = Graql.define(
   .has("job-title"),
   label("board-member").sub("member"),
   label("board").sub("group"),
-  label("board-membership").sub("membership").relates("board-member").relates("board")
+  label("board-membership").sub("membership")
+  .relates("board-member").relates("board")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -673,9 +691,10 @@ DefineQuery query = Graql.define(
   label("affiliation").sub("relationship").isAbstract().relates("party")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -717,9 +736,10 @@ DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING)
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -772,9 +792,10 @@ DefineQuery query = Graql.define(
   label("bicycle").sub("entity").has("colour")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -817,9 +838,10 @@ DefineQuery query = Graql.define(
   label("movie").sub("entity").has("genre"),
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -860,13 +882,15 @@ language sub attribute datatype string;
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  label("text").sub("attribute").datatype(AttributeType.DataType.STRING).has("language"),
+  label("text").sub("attribute").datatype(AttributeType.DataType.STRING)
+  .has("language"),
   label("language").sub("attribute").datatype(AttributeType.DataType.STRING)
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -910,14 +934,15 @@ origination sub relationship,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  label("word").sub("attribute").datatype(AttributeType.DataType.STRING).plays("originated"),
+  label("word").sub("attribute").datatype(AttributeType.DataType.STRING)
+  .plays("originated"),
   label("language").sub("entity").plays("origin"),
   label("origination").sub("relationship").relates("origin").relates("originated")
 );
-
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -962,9 +987,10 @@ DefineQuery query = Graql.define(
   label("middle-name").sub("name")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -1005,9 +1031,10 @@ DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING),
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -1051,9 +1078,10 @@ Graql.undefine(
   label("person").has("name")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -1102,9 +1130,10 @@ Graql.undefine(
   label("employment").sub("membership")
 );
 
-transaction.execute(query.toString());
+query.withTx(transaction).execute();
 transaction.commit();
 ```
+<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]

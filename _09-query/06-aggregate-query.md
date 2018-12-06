@@ -29,8 +29,9 @@ AggregateQuery query = Graql.match(
   var("sh").isa("person")
 ).aggregate(count());
 
-List&lt;Value&gt; answer = transaction.execute(query.toString());
+List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -67,8 +68,9 @@ AggregateQuery query = Graql.match(
   var("h").isa("hotel").has("number-of-rooms", var("nor"))
 ).aggregate(sum("nor"));
 
-List&lt;Value&gt; answer = transaction.execute(query.toString());
+List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -102,8 +104,9 @@ AggregateQuery query = Graql.match(
   var("st").has("gpa", var("gpa"))
 ).aggregate(max("gpa"));
 
-List&lt;Value&gt; answer = transaction.execute(query.toString());
+List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -137,8 +140,9 @@ AggregateQuery query = Graql.match(
   var("st").has("gpa", var("gpa"))
 ).aggregate(min("nof"));
 
-List&lt;Value&gt; answer = transaction.execute(query.toString());
+List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -171,8 +175,9 @@ AggregateQuery query = Graql.match(
   var("call").isa("call").has("duration", "d")
 ).aggregate(mean("d")).execute();
 
-List&lt;Value&gt; answer = transaction.execute(query.toString());
+List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -205,8 +210,9 @@ AggregateQuery query = Graql.match(
   var("p").isa("person").has("age", var("a"))
 ).aggregate(median("a")).execute();
 
-List&lt;Value&gt; answer = transaction.execute(query.toString());
+List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -240,8 +246,9 @@ AggregateQuery query = Graql.match(
   .rel("employee", var("person"))
 ).aggregate(group("company")).execute();
 
-List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = transaction.execute(query.toString());
+List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
@@ -274,8 +281,9 @@ AggregateQuery query = Graql.match(
   .rel("employee", var("person"))
 ).aggregate(group("company", count()));
 
-List&lt;AnswerGroup&lt;Value&gt;&gt; answer = transaction.execute(query.toString());
+List&lt;AnswerGroup&lt;Value&gt;&gt; answer = query.withTx(transaction).execute();
 ```
+<!-- 1.5 List&lt;AnswerGroup&lt;Value&gt;&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
