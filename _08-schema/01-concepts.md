@@ -255,7 +255,7 @@ transaction.commit();
 
 [tab:Python]
 ```python
-transaction.query(define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;)
+transaction.query("define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;")
 ```
 [tab:end]
 </div>
