@@ -9,7 +9,7 @@ permalink: /docs/query/insert-query
 ## Inserting Instances of Entity
 To insert an instance of an entity into the knowledge graph, we use the `insert` keyword followed by what looks a lot like what we used for [matching instances of entities](/docs/query/match-clause#matching-instances-of-an-entity).
 
-<div class="tabs">
+<div class="tabs dark">
 
 [tab:Graql]
 ```graql
@@ -48,7 +48,7 @@ transaction.commit()
 
 In a scenario where the instance to be inserted extracts the value of its attributes from the existing data, we use the so-called `match insert` query.
 
-<div class="tabs">
+<div class="tabs dark">
 
 [tab:Graql]
 ```graql
@@ -95,7 +95,7 @@ This `match insert` query:
 ## Inserting Instances of Attribute
 Similar to inserting an instance of an entity, to insert an instance of an attribute, we use the `insert` keyword followed by the variable pattern to describe the attribute of interest and its value.
 
-<div class="tabs">
+<div class="tabs dark">
 
 [tab:Graql]
 ```graql
@@ -134,7 +134,7 @@ transaction.commit()
 ## Inserting Instances of Relationship
 Given the dependent nature of relationships, inserting an instance of a relationship is quite different from that of an entity. The roles of a relationship to be inserted are expected to be played by instances that already exist in the knowledge graph. Therefore inserting a relationship is always preceded by matching the roleplayers - what is commonly called the `match insert`. What follows the `insert` keyword looks a lot like what we used for [matching instances of relationships](/docs/query/match-clause#matching-instances-of-an-relationship).
 
-<div class="tabs">
+<div class="tabs dark">
 
 [tab:Graql]
 ```graql

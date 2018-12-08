@@ -27,7 +27,7 @@ rule-label sub rule,
 
 Let's look an example.
 
-<div class="tabs">
+<div class="tabs dark">
 
 [tab:Graql]
 ```graql
