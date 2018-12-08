@@ -23,7 +23,7 @@ That's when the `compute` query and its statistical functions come into play. Th
 ### Count
 We use the `count` function to get the number of instances of the specified type.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -61,7 +61,7 @@ compute count;
 ### Sum
 We use the `sum` function to get the sum of the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -93,7 +93,7 @@ answer_iterator = transaction.query("compute sum of number-of-rooms, in hotel;")
 ### Maximum
 We use the `max` function to get the maximum value among the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -125,7 +125,7 @@ answer_iterator = transaction.query("compute max of gpa, in school-enrollment;")
 ### Minimum
 We use the `min` function to get the minimum value among the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -157,7 +157,7 @@ answer_iterator = transaction.query("compute max of number-of-floors, in buildin
 ### Mean
 We use the `mean` function to get the average value of the specified `long` or `double` attribute among all instances of a given time.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -189,7 +189,7 @@ answer_iterator = transaction.query("compute mean of duration, in call;")
 ### Median
 We use the `median` function to get the median value of the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -221,7 +221,7 @@ answer_iterator = transaction.query("compute median of age, in person;")
 ### Standard Deviation
 We use the `std` function to get the standard deviation value of the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -258,7 +258,7 @@ Aggregate queries can run on a specific set of data described by a match clause,
 ## Computing Shortest Path
 We can use the compute query to find the shortest path between two instances in a Grakn knowledge graph.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -293,7 +293,7 @@ As the answer to this query, we would get a list of ids starting with `V24819` a
 ### Specifying a whitelist
 When looking for the shortest path, we may need to constraint the shortest path to only include certain types. In other words, when given a whitelist of types, Grakn ignores any other path that leads to a type not included in the list. To do this, we use the `in` keyword followed by the list of allowed types.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -326,7 +326,7 @@ answer_iterator = transaction.query("compute path from V24819, to V93012, in [pe
 
 Given that `V24819` is the id of a `person` and `V93012` is the id of a `car`, we are asking for the shortest path between the given `car` and `person` through an `employment` relationship with the `company`. Any other indirect association between the given person and car will be ignored when looking for the shortest path.
 
-<div class="alert">
+<div class="galert">
 [Note]
 When specifying the whitelist, the types of the `from` and `to` instances must always be included.
 </div>
@@ -337,7 +337,7 @@ The centrality of an instance can be an indicator of its significance. The most 
 ### Computing centrality using degree
 The degree of an instance is the number of other instances directly connected to it. To compute the centrality of an entire Grakn knowledge graph using the degree of instances, we run the following query.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -371,7 +371,7 @@ This returns a map of instances ordered ascendingly by degree. Instances with th
 #### In a subgraph
 Depending on the domain that the knowledge graph represents, we may want to compute the centrality on specific types. To do so, we use the `in` keyword followed by a list of the types that indicate importance. Let's look at an example that recognises companies with the highest number of employees as the most important.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -405,7 +405,7 @@ This returns a map of instances ordered ascendingly by degree. The instances inc
 #### Of a given type
 Consider the example above. What we are really interested in is the company with the most number of employees, but we're also getting the employee and employment instances in the results. What if we only want to get the centrality of a given type based on its relationship with other types without getting irrelevant answers in the results. To do this, we use the `of` keyword.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -442,7 +442,7 @@ Coreness is a measure that helps identify tightly interlinked sets of instances 
 
 To compute the coreness centrality of any `k` value higher than 1, we run the following query.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql
@@ -476,7 +476,7 @@ This returns a map representing a list of all `id`s for each `k` value found in 
 #### Specifying minimum k value
 To compute coreness with a given minimum `k` value we use of the `where` keyword followed by an assignment of `min-k`. For example, we would like to obtain subgraphs where every contained instance has at least a degree of 5, we would write the query as follows.
 
-<div class="tabs dark">
+<div class="gtabs dark">
 
 [tab:Graql]
 ```graql

@@ -19,7 +19,7 @@ If installed via Homebrew, this file is located in the following directory.
 
 If downloaded manually, you will find this file in the `conf` directory inside the unzipped folder.
 
-<div class="alert">
+<div class="galert">
 [Note]
 In order for any new configuration to take affect, we need to [stop](/docs/running-grakn/install-n-run/#stopping-the-grakn-server) and [start](/docs/running-grakn/install-n-run/#starting-the-grakn-server) the Grakn Server again.
 </div>
@@ -33,7 +33,7 @@ The `knowledge-base.sharding-threshold` config specifies the number of instances
 ### Where data is stored
 The `data-dir` config sets the path to the directory where the data for all keyspaces get stored. The default value is `db/`.
 
-<div class="alert">
+<div class="galert">
 [Important]
 For production use, it is recommended that the `data-dir` is set to a path outside of `$GRAKN_HOME`. This helps to make the process of upgrading Grakn easier.
 </div>

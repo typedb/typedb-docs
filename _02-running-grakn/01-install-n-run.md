@@ -11,7 +11,7 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 
 
 ## Download and Install Grakn
-<div class="tabs light">
+<div class="gtabs light">
 [tab:Mac OS X]
 
 ### To download the latest release
@@ -27,7 +27,7 @@ We will soon learn how to interact with the [Grakn server]() and the [Graql cons
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
 
-<div class="alert">
+<div class="galert">
 [Warning]
 Take into account that many features of previous versions are deprecated and so no longer supported.
 </div>
@@ -44,7 +44,7 @@ We will soon learn how to interact with the [Grakn server]() and the [Graql cons
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
 
-<div class="alert">
+<div class="galert">
 [Warning]
 Take into account that many features of previous versions are deprecated and so no longer supported.
 </div>
@@ -61,7 +61,7 @@ We will soon learn how to interact with the [Grakn server]() and the [Graql cons
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
 
-<div class="alert">
+<div class="galert">
 [Warning]
 Take into account that many features of previous versions are deprecated and so no longer supported.
 </div>
