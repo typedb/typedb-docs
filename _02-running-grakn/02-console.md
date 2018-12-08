@@ -12,7 +12,7 @@ The Graql Console, along with [Grakn Clients](/docs/client-api/overview) and [Wo
 ## Console Options
 
 ### Selecting/creating a keyspace
-To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option followed by the name of the keyspace. The name of keyspace can only contain alphanumeric values and `_`. Running the following command, creates.
+To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option followed by the name of the keyspace. The name of keyspace can only contain alphanumeric values and `_`. Running the following command creates.
 
 ```
 ./graql console --keyspace keyspace_name
@@ -33,7 +33,7 @@ If the keyspace of interest is hosted remotely, we use the `--uri` (or `r`) opti
 ```
 
 ### Disabling inference
-If we intent to ignore [inferred instances of data](...), when querying the knowledge graph, we use the `-no-infer` (or `-n`) option to disable inference.
+If we intend to ignore [inferred instances of data](...), when querying the knowledge graph, we use the `-no-infer` (or `-n`) option to disable inference.
 
 ```
 ./graql console -k keyspace_name --no-infer
@@ -45,7 +45,7 @@ To find out which version of Grakn is installed, we use the `--version` (or `-v`
 ## Console Commands
 
 ### Managing Users [KGMS-ONLY]
-Once inside the Graql Console, we can use the following commands to authenticate users of a the entered keyspace.
+Once inside the Graql Console, we can use the following commands to authenticate users of the entered keyspace.
 
 #### Creating a new user
 ```
@@ -73,7 +73,7 @@ DELETE USER username
 ```
 
 ### Committing changes
-Any write operations executed via the console, alters the knowledge graph contained in local copy of the keyspace. In order for these changes to be reflected on the original keyspace running on the Grakn Server, we use the `commit` command.
+Any write operations executed via the console, alters the knowledge graph contained in a local copy of the keyspace. In order for these changes to be reflected on the original keyspace running on the Grakn Server, we use the `commit` command.
 
 ### Rolling back changes
 As the name suggests, we use the `rollback` command to undo any uncommitted changes. This rolls back the state of the knowledge graph to how it was right after the last `commit` was made.
@@ -85,7 +85,7 @@ The Graql Console, at the moment, does not support multiline entries. However, w
 In order to clear the console from any previous queries, answers and commands, we use the `clear` command.
 
 ### Deleting the entire knowledge graph
-Meant to be used with caution, the `clean` command cleans not only the data but also the schema from the knowledge graph contained within the entered keyspace. This is an irreversible act that results in an empty keysapce.
+Meant to be used with caution, the `clean` command cleans not only the data but also the schema from the knowledge graph contained within the entered keyspace. This is an irreversible act that results in an empty keyspace.
 
 ### Exiting the console
 To exit the console, we use the `exit` command.
