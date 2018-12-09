@@ -51,7 +51,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define person sub entity, has name;");
 await transaction.commit();
 ```
@@ -96,7 +96,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define person sub entity, has name, has forename, has surname, has middle-name;");
 await transaction.commit();
 ```
@@ -136,7 +136,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define person sub entity, key email;");
 await transaction.commit();
 ```
@@ -190,7 +190,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define person sub entity, plays employee; company sub entity, plays employer;");
 await transaction.commit();
 ```
@@ -247,7 +247,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;");
 await transaction.commit();
 ```
@@ -295,7 +295,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define organisation sub entity is-abstract;");
 await transaction.commit();
 ```
@@ -349,7 +349,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define employment sub relationship, relates employee, relates employer;");
 await transaction.commit();
 ```
@@ -418,7 +418,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define loan sub relationship, relates lender, relates recipient, plays subject; legal-constraint sub relationship, relates subject, relates legality; bank sub entity, plays lender; person sub entity, plays recipient; terms-n-conditions sub entity, plays legality;");
 await transaction.commit();
 ```
@@ -478,7 +478,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define mortgage sub relationship, relates debtor, relates lender, relates subject; person sub entity, plays debtor; bank sub entity, plays lender; house sub entity, plays subject;");
 await transaction.commit();
 ```
@@ -525,7 +525,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define employment sub relationship, has job-title, relates employer, relates employee;");
 await transaction.commit();
 ```
@@ -568,7 +568,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;");
 await transaction.commit();
 ```
@@ -641,7 +641,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define affiliation sub relationship, key reference-id, relates party; membership sub affiliation, relates member as party, relates group as party; employment sub membership, relates employee as member, relates employer as group, has job-title; board-membership sub membership, relates board-member as member, relates board as group;");
 await transaction.commit();
 ```
@@ -698,7 +698,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define affiliation sub relationship is-abstract, relates party;");
 await transaction.commit();
 ```
@@ -743,7 +743,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define name sub attribute datatype string;");
 await transaction.commit();
 ```
@@ -799,7 +799,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define colour sub attribute datatype string; car sub entity,  has colour; bicycle sub entity, has colour;");
 await transaction.commit();
 ```
@@ -845,7 +845,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("genre sub attribute datatype string; movie sub entity, has genre;");
 await transaction.commit();
 ```
@@ -894,7 +894,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define text sub attribute datatype string, has language; language sub attribute datatype string;");
 await transaction.commit();
 ```
@@ -946,7 +946,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define word sub attribute datatype string,plays originated;language sub entity,plays origin;origination sub relationship,relates origin,relates originated;");
 await transaction.commit();
 ```
@@ -994,7 +994,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define name sub attribute datatype string; forename sub name; surname sub name; middle-name sub name;");
 await transaction.commit();
 ```
@@ -1038,7 +1038,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("define name sub attribute is-abstract datatype string;");
 await transaction.commit();
 ```
@@ -1085,7 +1085,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("undefine person has name;");
 await transaction.commit();
 ```
@@ -1137,7 +1137,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query("undefine employment relates employer, relates employee; employer sub group; employee sub member; employment sub membership;");
 await transaction.commit();
 ```

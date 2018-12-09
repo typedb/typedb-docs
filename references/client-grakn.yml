@@ -23,7 +23,7 @@ methods:
           <<: *accepts-1-param-1
           description: The keyspace with which the session connects.
           type: 'Keyspace (<code>Keyspace.of("name-of-keyspace")</code>)'
-    javascript:
+    nodejs:
       <<: *method-1
     python:
       <<: *method-1
@@ -35,7 +35,7 @@ methods:
       method: '.keyspaces().retrieve()'
     # java:
     #   <<: *method-2
-    javascript:
+    nodejs:
       <<: *method-2
       returns:
         - Array of Strings
@@ -62,7 +62,7 @@ methods:
           <<: *accepts-3-param-1
           description: The keyspace to be deleted.
           type: 'Keyspace'
-    javascript:
+    nodejs:
       <<: *method-3
       method: '.keyspaces().delete("keyspace name"))'
     python:

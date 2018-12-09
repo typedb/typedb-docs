@@ -33,7 +33,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query('match $p isa person id V41016; delete $p;');
 await transaction.commit();
 ```
@@ -80,7 +80,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query('match $org isa organisation has name "Black House"; $emp (employer: $org, employee: $p) isa employment; $delete $emp;');
 await transaction.commit();
 ```
@@ -126,7 +126,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query('match $c isa car has color "red" via $r; delete $r;');
 await transaction.commit()
 ```

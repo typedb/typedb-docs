@@ -22,34 +22,34 @@ First make sure, the Grakn server is running. Learn more about [how to run the G
 
 In your source, require `grakn`.
 
-```javascript
+```nodejs
 const Grakn = require("grakn");
 ```
 
 Instantiate a client and open a session.
 
-```javascript
-const client = new Grakn('localhost:48555');
-const session = client.session('keyspace');
+```nodejs
+const client = new Grakn("localhost:48555");
+const session = client.session("keyspace");
 ```
 
 As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previously used as the default REST endpoint) is deprecated for clients.
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](), into the initial constructor as a Javascript object.
+We can also pass the credentials, as specified when [configuring authentication via Grakn Console](), into the initial constructor as a nodejs object.
 
-```javascript
+```nodejs
 const client = grakn.Grakn("localhost:48555", { "username": "<username>", "password": "<password>" });
 ```
 
 Create transactions to use for reading and writing data.
 
-```javascript
-const client = new Grakn('localhost:48555');
-const session = client.session('keyspace');
+```nodejs
+const client = new Grakn("localhost:48555");
+const session = client.session("keyspace");
 
 // creating a write transaction
 const wTx = await session.transaction(Grakn.txType.WRITE); // write transaction is open
-// write transaction must always be committed (closed)
+// write transaction must always be committed/closed
 wTx.commit();
 
 // creating a read transaction
@@ -60,9 +60,9 @@ rTx.close();
 
 Running basic retrieval and insertion queries.
 
-```javascript
-const client = new Grakn('localhost:48555');
-const session = client.session('keyspace');
+```nodejs
+const client = new Grakn("localhost:48555");
+const session = client.session("keyspace");
 
 async function runBasicQueries() {
   // creating a write transaction
@@ -78,7 +78,7 @@ async function runBasicQueries() {
   const answerIterator = await rTx.query("match $x isa person; limit 10; get;");
   // retrieve the first answer
   let aConceptMapAnswer = await answerIterator.next();
-  // get the object of variables : concepts, retrieve variable 'x'
+  // get the object of variables : concepts, retrieve variable "x"
   person = aConceptMapAnswer.map()["x"];
   // we can also iterate using a `for` loop
   const somePeople = [];
@@ -104,4 +104,4 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api_reference.html language = "javascript" %}
+{% include client_api_reference.html language = "nodejs" %}

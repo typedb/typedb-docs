@@ -31,7 +31,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query('insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname "Joe";');
 await transaction.commit();
 ```
@@ -74,7 +74,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query('match $p-a isa person id V41016 has surname $s; insert $p-b isa person has surname $s;');
 await transaction.commit();
 ```
@@ -117,7 +117,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query('insert $x isa environment "Production";');
 await transaction.commit();
 ```
@@ -161,7 +161,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 await transaction.query('match $company isa company has name "Grakn Cloud"; $person isa person id V8272; insert $new-employment (employer: $company, employee: $person) isa employment; $new-employment key reference-id "WGFTSH";');
 await transaction.commit();
 ```

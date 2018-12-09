@@ -35,7 +35,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $sh isa sheep; aggregate count;");
 ```
 [tab:end]
@@ -74,7 +74,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;");
 ```
 [tab:end]
@@ -110,7 +110,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;");
 ```
 [tab:end]
@@ -146,7 +146,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;");
 ```
 [tab:end]
@@ -181,7 +181,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $call isa call has duration $d; aggregate mean $d;");
 ```
 [tab:end]
@@ -216,7 +216,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $p isa person has age $a; aggregate median $a;");
 ```
 [tab:end]
@@ -252,7 +252,7 @@ List\<AnswerGroup\<ConceptMap\>\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;");
 ```
 [tab:end]
@@ -287,7 +287,7 @@ List\<AnswerGroup\<Value\>\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;");
 ```
 [tab:end]

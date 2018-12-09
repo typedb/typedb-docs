@@ -40,7 +40,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute count in person;");
 ```
 [tab:end]
@@ -78,7 +78,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute sum of number-of-rooms, in hotel;");
 ```
 [tab:end]
@@ -110,7 +110,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute max of gpa, in school-enrollment;");
 ```
 [tab:end]
@@ -142,7 +142,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute max of number-of-floors, in building;");
 ```
 [tab:end]
@@ -174,7 +174,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute mean of duration, in call;");
 ```
 [tab:end]
@@ -206,7 +206,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute median of age, in person;");
 ```
 [tab:end]
@@ -238,7 +238,7 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute std of score, in examination;");
 ```
 [tab:end]
@@ -276,7 +276,7 @@ List\<ConceptList\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute path from V24819, to V93012;");
 ```
 [tab:end]
@@ -311,7 +311,7 @@ List\<ConceptList\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute path from V24819, to V93012, in [person, car, company, employment];");
 ```
 [tab:end]
@@ -354,7 +354,7 @@ List\<ConceptSetMeasure\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute centrality using degree;");
 ```
 [tab:end]
@@ -388,7 +388,7 @@ List\<ConceptSetMeasure\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute centrality in [company, employee, employment], using degree;");
 ```
 [tab:end]
@@ -425,7 +425,7 @@ List\<ConceptSetMeasure\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute centrality of company in [company, employment], using degree;");
 ```
 [tab:end]
@@ -459,7 +459,7 @@ List\<ConceptSetMeasure\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute centrality using k-core;");
 ```
 [tab:end]
@@ -497,7 +497,7 @@ List\<ConceptSetMeasure\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("compute centrality using k-core, where min-k = 5;");
 ```
 [tab:end]

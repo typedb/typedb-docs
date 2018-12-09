@@ -42,7 +42,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $fr ($x, $y, $z) isa friendship; $x isa person has name $x-name; $x-name contains "John"; $y isa person has name $y-name, has age $y-age; $z isa person has name $y-name, has age $z-age; get $x-name, $y-name, $y-age, $z-name, $y-age;');
 ```
 [tab:end]
@@ -79,7 +79,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $p isa person; limit 1; get;");
 ```
 [tab:end]
@@ -116,7 +116,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $p isa person has age $age; order by $age asc; get;");
 ```
 [tab:end]
@@ -159,7 +159,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $p isa person has age $age; order by $age; offset 100; limit 10; get;");
 ```
 [tab:end]

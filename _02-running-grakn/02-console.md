@@ -7,12 +7,14 @@ permalink: /docs/running-grakn/console
 ---
 
 ## What is the Graql Console?
-The Graql Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface through which we can read from and write to a Grakn knowledge graph. In addition, as an admin user of [KGMS](...), we can manage users and authentication using the Graql Console.
+The Graql Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph contained in a keyspace. In addition, as an admin user of [KGMS](...), we can manage users and authentication using the Graql Console.
+
+<!-- keyspace -> kbase -->
 
 ## Console Options
 
 ### Selecting/creating a keyspace
-To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option followed by the name of the keyspace. The name of the keyspace may only contain alphanumeric values and `_`.
+To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option followed by the name of the keyspace. The name may only contain alphanumeric values and underscores.
 
 ```
 ./graql console --keyspace keyspace_name

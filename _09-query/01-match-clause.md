@@ -45,7 +45,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $p isa person; get;");
 ```
 [tab:end]
@@ -82,7 +82,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $p isa person has name $n; get;");
 ```
 [tab:end]
@@ -120,7 +120,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;");
 ```
 [tab:end]
@@ -157,7 +157,7 @@ Stream\<ConceptMap\> answers = transaction.stream(query.toString());
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;");
 ```
 [tab:end]
@@ -194,7 +194,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match (employer: $x, employee: $y) isa employment; get;");
 ```
 [tab:end]
@@ -229,7 +229,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $fr ($x, $y, $z) isa friendship; get;");
 ```
 [tab:end]
@@ -267,7 +267,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $x "some value"; get;');
 ```
 [tab:end]
@@ -304,7 +304,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $n isa name "John"; get;');
 ```
 [tab:end]
@@ -341,7 +341,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $phone-number contains "+44"; get;');
 ```
 [tab:end]
@@ -378,7 +378,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
 ```
 [tab:end]
@@ -415,7 +415,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
 ```
 [tab:end]
@@ -450,7 +450,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $p isa person has first-name "John" has age < 25; get;');
 ```
 [tab:end]
@@ -485,7 +485,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;');
 ```
 [tab:end]
@@ -520,7 +520,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $o isa! organisation; get;");
 ```
 [tab:end]
@@ -557,7 +557,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $x id V41016; get;");
 ```
 [tab:end]
@@ -627,7 +627,7 @@ Stream\<ConceptMap\> answers = transaction.stream(query_e.toString());
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIteratorA = await transaction.query("match $x sub thing; get;");
 const answerIteratorB = await transaction.query("match $x sub attribute; get;");
 const answerIteratorC = await transaction.query("match $x sub entity; get;");
@@ -670,7 +670,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match employment relates $x; get;");
 ```
 [tab:end]
@@ -708,7 +708,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match employment relates $x as member; get;");
 ```
 [tab:end]
@@ -745,7 +745,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $x plays employee; get;");
 ```
 [tab:end]
@@ -782,7 +782,7 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```javascript
+```nodejs
 const answerIterator = await transaction.query("match $x has name; get;");
 ```
 [tab:end]

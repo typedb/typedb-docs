@@ -211,8 +211,8 @@ Pick a language of your choice to continue.
     <p>Let’s go through a summary of how the migration takes place.</p>
     <ol>
       <li><p>we need a way to talk to our Grakn keyspace. To do this, we will use the <a href="https://github.com/graknlabs/grakn/tree/master/client-nodejs">Node.js Client</a>.</p></li>
-      <li><p>we will go through each data file, extracting each data item and parsing it to a Javascript object.</p></li>
-      <li><p>we will pass each data item (in the form of a Javascript object) to its corresponding template function, which in turn gives us the constructed Graql query for inserting that item into Grakn.</p></li>
+      <li><p>we will go through each data file, extracting each data item and parsing it to a nodejs object.</p></li>
+      <li><p>we will pass each data item (in the form of a nodejs object) to its corresponding template function, which in turn gives us the constructed Graql query for inserting that item into Grakn.</p></li>
       <li><p>we will execute each of those queries to load the data into our target keyspace — phone_calls.</p></li>
     </ol>
     <p>Before moving on, make sure you have <strong>npm</strong> installed and the <a href="http://dev.grakn.ai/docs/get-started/grakn-server"><strong>Grakn server</strong></a> running on your machine.</p>
@@ -383,7 +383,7 @@ Pick a language of your choice to continue.
     <p>We started off by setting up our project and positioning the data files.</p>
     <p>Next we went on to set up the migration mechanism, one that was independent of the data format.</p>
     <p>Then, we went ahead and wrote a template function for each concept. A template’s sole purpose was to construct a Graql insert query for each data item.</p>
-    <p>After that, we learned how files with different data formats can be parsed into Javascript objects.</p>
+    <p>After that, we learned how files with different data formats can be parsed into nodejs objects.</p>
     <p>Lastly, we ran <code>npm run migrate.js</code> which fired the <code>buildPhoneCallGraph</code> function with the given <code>inputs</code>. This loaded the data into our Grakn knowledge graph.</p>
   </div>
 
