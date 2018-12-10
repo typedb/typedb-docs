@@ -1,0 +1,40 @@
+{% assign title = include.data.title %}
+{% assign description = include.data.description %}
+{% assign mappings = include.data.mappings %}
+{% assign types = include.data.types %}
+
+
+
+{% if title %}
+  <h2 id ="client-api-title-{{title | downcase | replace: ' ', '-'}}">{{ title }}</h2>
+{% endif %}
+
+{% if description %}
+  <p>{{ description[lang] }}</p>
+{% endif %}
+
+<table class="client-api-accepts">
+  <thead>
+    <th style="width: 300px;">Query Type</th>
+    <th style="text-align: right;">Answer Type</th>
+  </thead>
+  <tbody>
+    {% for mapping in mappings %}
+      <tr>
+        <td>{{ mapping.query }}</td>
+        <td style="text-align: right;">{{ mapping.answer | markdownify }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="no_toc_section">
+{% for type in types %}
+  <h2 id ="client-api-title-{{type.title | downcase | replace: ' ', '-'}}">{{ type.title }}</h2>
+  <div class="o_client-api-ref-list">
+    {% for method in type.methods %}
+      {% include client_api_method.html method = method %}
+    {% endfor %}
+  </div>
+{% endfor %}
+</div>

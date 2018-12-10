@@ -1,0 +1,30 @@
+
+title: "Iterator"
+description:
+  nodejs: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>async iterator.next()</code> method."
+  cpython: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>next(iterator)</code> method."
+methods:
+  - method1:
+    common: &method-1
+      title: Convert the iterator into array
+      method: async .collect();
+      description: Consumes the iterator and collects all the elements into an array.
+      returns:
+        - Array of IteratorEelement
+    nodejs:
+      <<: *method-1
+  - method2:
+    common: &method-2
+      title: Consuming the iterator eagerly
+    nodejs:
+      <<: *method-2
+      description: Consumes the iterator and collects all Concepts into an array.
+      method: async .collectConcepts();
+      returns:
+        - Array of Concept
+    cpython:
+      <<: *method-2
+      description: Consumes the iterator and collects all Concepts into a list.
+      method: .collect_concepts();
+      returns:
+        - List of Concept

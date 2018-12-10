@@ -1,0 +1,271 @@
+
+title: "Transaction"
+methods:
+  - method1:
+    common: &method-1
+      title: Lazy executation of a Graql query
+      description: Executes a Graql query lazily on the keyspace where the session is connected to.
+      accepts: &accepts-1
+        param1: &accepts-1-param-1
+          name: query
+          description: The Graql query to be exectured
+          type: String
+          required: true
+          default: N/A
+        param2: &accepts-1-param-2
+          description: Determines if the query should apply inference.
+          required: true
+      returns:
+        - "[Iterator](#client-api-title-iterator) of Answer"
+    # 1.5
+    # java:
+    #   <<: *method-1
+    #   method: .stream()
+    #   accepts:
+    #     - &accepts-1-param-1
+    #   returns:
+    #     - Stream<?> (type of elements in the stream is dependent on the type of the executed query)
+    nodejs:
+      <<: *method-1
+      method: 'async .query("Graql query", { infer: true })'
+      accepts:
+        <<: *accepts-1
+        param2:
+          <<: *accepts-1-param-2
+          name: options
+          type: '{ infer: true }'
+          required: true
+          default: '{ infer: true }'
+    cpython:
+      <<: *method-1
+      method: '.query("Graql query", infer = True)'
+      accepts:
+        <<: *accepts-1
+        param2:
+          <<: *accepts-1-param-2
+          name: infer
+          type: boolean
+          default: True
+  # 1.5
+  # - method2:
+  #   common: &method-2
+  #     title: Eager executation of a Graql query
+  #     method: '.execute()'
+  #     description: Executes a Graql query eagerly on the keyspace where the session is connected to.
+  #     accepts:
+  #       param1:
+  #         name: query
+  #         description: The Graql query to be exectured
+  #         type: String
+  #         required: true
+  #         default: N/A
+  #     returns:
+  #       - List<?> (type of elements in the list is dependent on the type of the executed query)
+  #   java:
+  #     <<: *method-2
+  - method3:
+    common: &method-3
+      title: Committing a write transaction
+      method: '.commit()'
+      description: >
+        Commits the inserted or deleted data instances or schema concepts to the original keyspace running on the Grakn server. 
+        The transaction closes after the commit has been made.
+    java:
+      <<: *method-3
+    nodejs:
+      <<: *method-3
+      method: 'async .commit()'
+    cpython:
+      <<: *method-3
+  - method4:
+    common: &method-4
+      title: Closing a read transaction
+      method: '.close()'
+      description: Closes the transaction which has been used to read from the keyspace running on the Grakn server.
+    java:
+      <<: *method-4
+    nodejs:
+      <<: *method-4
+      method: 'async .close()'
+    cpython:
+      <<: *method-4
+  - method5:
+    common: &method-5
+      title: Retriving a concept by ID
+      accepts: &accepts-5
+        param 1: &accepts-5-param-1
+          description: The id of the concept to retrieve
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - Concept object
+    nodejs:
+      <<: *method-5
+      method: 'async .getConcept(conceptId)'
+      accepts:
+        param1:
+          <<: *accepts-5-param-1
+          name: conceptId
+    cpython:
+      <<: *method-5
+      method: '.get_concept(concept_id)'
+      accepts:
+        param1:
+          <<: *accepts-5-param-1
+          name: concept_id
+  - method6:
+    common: &method-6
+      title: Retriving a schema concept by label
+      accepts:
+        param 1:
+          name: label
+          description: The label of the schema concept to retrieve
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - ConceptType object
+    nodejs:
+      <<: *method-6
+      method: 'async .getSchemaConcept(label)'
+    cpython:
+      <<: *method-6
+      method: '.get_schema_concept(label)'
+  - method7:
+    common: &method-7
+      title: Retriving an attribute by value
+      accepts:
+        param 1:
+          name: value
+          description: The value of the attribute to retrieve
+          type: String, long, double, boolean or data
+          required: true
+          default: N/A
+        param 2:
+          name: datatype
+          description: The datatype of the attribute to retrieve
+          type: grakn.DataType.STRING|LONG|DOUBLE|BOOLEAN|DATE
+          required: true
+          default: N/A
+      returns:
+        - "[Iterator](#client-api-title-iterator)  of Attribute"
+    nodejs:
+      <<: *method-7
+      method: 'async .getAttributesByValue(value, datatype)'
+    cpython:
+      <<: *method-7
+      method: '.get_attributes_by_value(value, datatype)'
+  - method8:
+    common: &method-8
+      title: Creating or retrieving an EntityType
+      description: Creates a new EntityType if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param 1:
+          name: label
+          description: The label of the EntityType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - EntityType object
+    nodejs:
+      <<: *method-8
+      method: 'async .putEntityType(label)'
+    cpython:
+      <<: *method-8
+      method: '.put_entity_type(label)'
+  - method9:
+    common: &method-9
+      title: Creating or retrieving a RelationshipType
+      description: Creates a new RelationshipType if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param 1:
+          name: label
+          description: The label of the RelationshipType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - RelationshipType object
+    nodejs:
+      <<: *method-9
+      method: 'async .putRelationshipType(label)'
+    cpython:
+      <<: *method-9
+      method: '.put_relationship_type(label)'
+  - method10:
+    common: &method-10
+      title: Creating or retrieving an AttributeType
+      description: Creates a new AttributeType if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param 1:
+          name: label
+          description: The label of the AttributeType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+        param 2:
+          name: datatype
+          description: The datatype of the attribute to create retrieve
+          type: grakn.DataType.STRING|LONG|DOUBLE|BOOLEAN|DATE
+          required: true
+          default: N/A
+      returns:
+        - AttributeType object
+    nodejs:
+      <<: *method-10
+      method: 'async .putAttributeType(label)'
+    cpython:
+      <<: *method-10
+      method: '.put_attribute_type(label)'
+  - method11:
+    common: &method-11
+      title: Creating or retrieving a Role
+      description: Creates a new Role if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param 1:
+          name: label
+          description: The label of the Role to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - Role object
+    nodejs:
+      <<: *method-11
+      method: 'async .putRole(label)'
+    cpython:
+      <<: *method-11
+      method: '.put_role(label)'
+  - method12:
+    common: &method-12
+      title: Creating or retrieving a Rule
+      description: Creates a new Rule if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param 1:
+          name: label
+          description: The label of the Rule to create or retrive.
+          type: String
+          required: true
+          default: N/A
+        param 2:
+          name: when
+          description: The when body of the rule to create.
+          type: String
+          required: true
+          default: N/A
+        param 3:
+          name: then
+          description: The then body of the rule to create.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - Rule object
+    nodejs:
+      <<: *method-12
+      method: 'async .putRule(label, when, then)'
+    cpython:
+      <<: *method-12
+      method: '.put_rule(label, when, then)'

@@ -1,0 +1,268 @@
+
+title: "Answer"
+description:
+  common: &common-description >
+    The type of answers contained in the iterator depends on the type of the query that has returned the iterator.
+    The table below illustrates the answer types mapped to query types.
+  java: >
+    The type of answers returned by executation of a query depends on the type of query executed.
+    The table below illustrates the answer types mapped to query types.
+  nodejs: *common-description
+  cpython: *common-description
+mappings:
+  -
+    query: define
+    answer: "[ConceptMap](#client-api-title-conceptmap)"
+  -
+    query: undefine
+    answer: "[ConceptMap](#client-api-title-conceptmap)"
+  -
+    query: get
+    answer: "[ConceptMap](#client-api-title-conceptmap)"
+  -
+    query: insert
+    answer: "[ConceptMap](#client-api-title-conceptmap)"
+  -
+    query: delete
+    answer: "[ConceptMap](#client-api-title-conceptmap)"
+  -
+    query: "aggregate count/min/max/sum/mean/std"
+    answer: "[Value](#client-api-title-value)"
+  -
+    query: aggregate group
+    answer: "[AnswerGroup](#client-api-title-answergroup)"
+  -
+    query: "compute count/min/max/sum/mean/std"
+    answer: "[Value](#client-api-title-value)"
+  -
+    query: compute path
+    answer: "[ConceptList](#client-api-title-conceptlist)"
+  -
+    query: compute cluster
+    answer: "[ConceptSet](#client-api-title-conceptset)"
+  -
+    query: compute centrality
+    answer: "[ConceptSetMeasure](#client-api-title-conceptsetmeasure)"
+types:
+  - type1:
+    title: ConceptMap
+    methods:
+      - method1:
+        common: &conceptmap-method-1
+          title: Retriving a map of Variable => Concept
+          method: .map()
+        java:
+          <<: *conceptmap-method-1
+          description: Produces a Map where keys are variable names and values are concepts
+          returns:
+            - 'Map ({variable_name: Concept})'
+        nodejs:
+          <<: *conceptmap-method-1
+          description: Produces a nodejs object where keys are variable names and values are concepts
+          returns:
+            - 'nodejs object ({variable_name: Concept})'
+        cpython:
+          <<: *conceptmap-method-1
+          description: Produces a dictionary where keys are variable names and values are concepts
+          returns:
+            - 'Dictionary ({"variable_name": Concept})'
+      - method2:
+        common: &explanation-method
+          title: Explaining an inferred answer
+          method: .explanation()
+          description: Provides an explanation on the inference of the concept in the answer, if the concept is in fact inferred.
+          returns:
+            - "[Explanation](#client-api-title-explanation)"
+            - "null"
+        java:
+          <<: *explanation-method
+        nodejs:
+          <<: *explanation-method
+        cpython:
+          <<: *explanation-method
+  - type2:
+    title: Value
+    methods:
+      - method1:
+        common: &value-method-1
+          title: Retriving nummeric value of the aggregate/computed answer
+          method: .map()
+        java:
+          <<: *value-method-1
+          returns:
+            - int
+            - float
+        nodejs:
+          <<: *value-method-1
+          returns:
+            - number
+        cpython:
+          <<: *value-method-1
+          returns:
+            - int
+            - float
+      - method2:
+        nodejs:
+          <<: *explanation-method
+        cpython:
+          <<: *explanation-method
+  - type3:
+    title: ConceptList
+    methods:
+      - method1:
+        common: &conceptlist-method-1
+          title: Retriving ids of all concepts in a path
+          method: .list()
+        java:
+          <<: *conceptlist-method-1
+          returns:
+            - Array of String
+        nodejs:
+          <<: *conceptlist-method-1
+          returns:
+            - Array of String
+        cpython:
+          <<: *conceptlist-method-1
+          returns:
+            - List of String
+      - method2:
+        java:
+          <<: *explanation-method
+        nodejs:
+          <<: *explanation-method
+        cpython:
+          <<: *explanation-method
+  - type4:
+    title: ConceptSet
+    methods:
+      - method1:
+        common: &conceptset-method-1
+          title: Retriving a set of ids of concepts after a cluster computation
+          method: .set()
+          returns:
+            - Set of String
+        java:
+          <<: *conceptset-method-1
+        nodejs:
+          <<: *conceptset-method-1
+        cpython:
+          <<: *conceptset-method-1
+      - method2:
+        java:
+          <<: *explanation-method
+        nodejs:
+          <<: *explanation-method
+        cpython:
+          <<: *explanation-method
+  - type5:
+    title: ConceptSetMeasure
+    methods:
+      - method1:
+        common: &conceptsetmeasure-method-1
+          title: Retrieving the numeric value of a centrality computation
+          method: .measurement()
+        java:
+          <<: *conceptsetmeasure-method-1
+          returns:
+            - int
+            - float
+        nodejs:
+          <<: *conceptsetmeasure-method-1
+          returns:
+            - number
+        cpython:
+          <<: *conceptsetmeasure-method-1
+          returns:
+            - int
+            - float
+      - method2:
+        common: &conceptsetmeasure-method-2
+          title: Retriving a set of ids of concepts after a centrality computation
+          method: .set()
+          returns:
+            - Set of String
+        java:
+          <<: *conceptsetmeasure-method-2
+        nodejs:
+          <<: *conceptsetmeasure-method-2
+        cpython:
+          <<: *conceptsetmeasure-method-2
+      - method3:
+        java:
+          <<: *explanation-method
+        nodejs:
+          <<: *explanation-method
+        cpython:
+          <<: *explanation-method
+  - type6:
+    title: AnswerGroup
+    methods:
+      - method1:
+        common: &answergroup-method-1
+          title: Retrieving the concept that is the group owner
+          method: .owner()
+          returns:
+            - Concept
+        java:
+          <<: *answergroup-method-1
+        nodejs:
+          <<: *answergroup-method-1
+        cpython:
+          <<: *answergroup-method-1
+      - method2:
+        common: &answergroup-method-2
+          title: Retriving the answers of the group
+          method: .answers()
+        java:
+          <<: *conceptsetmeasure-method-2
+          returns:
+            - Array of Answer
+        nodejs:
+          <<: *conceptsetmeasure-method-2
+          returns:
+            - Array of Answer
+        cpython:
+          <<: *conceptsetmeasure-method-2
+          returns:
+            - List of Answerz
+      - method3:
+        java:
+          <<: *explanation-method
+        nodejs:
+          <<: *explanation-method
+        cpython:
+          <<: *explanation-method
+  - type7:
+    title: Explanation
+    methods:
+      - method1:
+        common: &explanation-method-1
+          title: Retrieving a Graql explanation of the answer
+          returns:
+            - String
+        java:
+          <<: *explanation-method-1
+          method: .query_pattern();
+        nodejs:
+          <<: *explanation-method-1
+          method: .queryPattern();
+        cpython:
+          <<: *explanation-method-1
+          method: .query_pattern()
+      - method2:
+        common: &explanation-method-2
+          title: Retrieving deducted/factual answers
+          description: Provides a list of answers from which the inferred answer is deriven.
+          method: .answers()
+        java:
+          <<: *explanation-method-2
+          returns:
+            - Array of Answer
+        nodejs:
+          <<: *explanation-method-2
+          returns:
+            - Array of Answer
+        cpython:
+          <<: *explanation-method-2
+          returns:
+            - List of Answer

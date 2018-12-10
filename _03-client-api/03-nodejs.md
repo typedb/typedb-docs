@@ -104,4 +104,4 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api_reference.html language = "nodejs" %}
+{% include client_api_main.html language = "nodejs" %}

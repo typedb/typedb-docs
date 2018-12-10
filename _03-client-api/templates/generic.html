@@ -1,0 +1,17 @@
+{% assign methods = include.data.methods %}
+{% assign title = include.data.title %}
+{% assign description = include.data.description %}
+
+{% if title %}
+  <h2 id ="client-api-title-{{title | downcase | replace: ' ', '-'}}">{{ title }}</h2>
+{% endif %}
+
+{% if description %}
+  <p>{{ description[lang] }}</p>
+{% endif %}
+
+<div class="o_client-api-ref-list">
+	{% for method in methods %}
+		{% include client_api_method.html method = method %}
+	{% endfor %}
+</div>

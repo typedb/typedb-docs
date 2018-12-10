@@ -1,0 +1,37 @@
+
+title: "Query"
+description: |
+  The `Query` class is inherited by `DefineQuery`, `InsertQuery`, `GetQuery`, `DeleteQuery`, `AggregateQuery` and `ComputeQuery`
+methods:
+  - method1:
+    common: &method-1
+      title: Attaching transaction to query
+      method: .withTx(Transaction transaction)
+      description: Attaches a previously instantiated transaction to the query, preparing it for lazy or eager execution.
+      accepts:
+        param1:
+          name: transaction
+          description: The read or write transaction that is responsible for executing the query.
+          type: "[Transaction](#client-api-title-transaction)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-1
+  - method2:
+    common: &method-2
+      title: Lazy executation of a Graql query
+      method: .withTx(Transaction transaction).stream(String query)
+      description: Executes a Graql query lazily on the keyspace where the session is connected to.
+      returns:
+        - 'Stream\<?\> (type of elements in the stream is dependent on the type of the executed query)'
+    java:
+      <<: *method-2
+  - method3:
+    common: &method-3
+      title: Eager executation of a Graql query
+      method: '.withTx(Transaction transaction).execute()'
+      description: Executes a Graql query eagerly on the keyspace where the session is connected to.
+      returns:
+        - "List/<?/> (type of elements in the list is dependent on the type of the executed query)"
+    java:
+      <<: *method-3

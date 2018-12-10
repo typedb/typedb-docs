@@ -1,0 +1,44 @@
+
+title: "Session"
+methods:
+  - method1:
+    common: &method-1
+      title: Creating a transaction
+      description: Creates a transacton to execute read and write operations on the keyspace connected to the ssesion.
+      method: '.transaction(type)'
+      accepts: &accepts-1
+        param1: &accepts-1-param-1
+          name: type
+          description: The type of the transaction to be created - read or write.
+          type: grakn.TxType.READ or grakn.TxType.WRITE
+          required: true
+          default: N/A
+      returns:
+        - "[Transaction](#client-api-title-transaction) object"
+    java:
+      <<: *method-1
+      method: '.transaction(GraknTxType type)'
+      accepts:
+        <<: *accepts-1
+        param1:
+          <<: *accepts-1-param-1
+          type: 'GraknTxType.READ or GraknTxType.WRITE'
+    nodejs:
+      <<: *method-1
+    cpython:
+      <<: *method-1
+
+  - method2:
+    common: &method-2
+      title: Closing a session
+      description: Closes the session once it is no longer being used.
+      method: '.close()'
+
+    java:
+      <<: *method-2
+
+    nodejs:
+      <<: *method-2
+
+    cpython:
+      <<: *method-2

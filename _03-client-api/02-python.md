@@ -108,4 +108,4 @@ To view examples of running various Graql queries using the Grakn Client Python,
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api_reference.html language = "cpython" %}
+{% include client_api_main.html language = "cpython" %}
