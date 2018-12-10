@@ -46,34 +46,6 @@ To find out which version of Grakn is installed, we use the `--version` (or `-v`
 
 ## Console Commands
 
-### Managing Users [KGMS-ONLY]
-Once inside the Graql Console, we can use the following commands to manage users and their credentials.
-
-#### Creating a new user
-```
-CREATE USER username WITH PASSWORD user-password WITH ROLE admin
-```
-
-#### Updating a user
-```
-UPDATE USER username WITH PASSWORD new-password
-```
-
-#### Retrieving all users
-```
-LIST USERS
-```
-
-#### Retrieving one user
-```
-GET USER username
-```
-
-#### Deleing a user
-```
-DELETE USER username
-```
-
 ### Committing changes
 Any write operations executed via the console, affects only a _local_ copy of the keyspace that contains the altered knowledge graph. In order for these changes to be reflected on the original keyspace running on the Grakn Server, we use the `commit` command.
 
