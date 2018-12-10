@@ -40,7 +40,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('match $p isa person id V41016; delete $p;')
 transaction.commit()
 ```
@@ -87,7 +87,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('match $org isa organisation has name "Black House"; $emp (employer: $org, employee: $p) isa employment; $delete $emp;')
 transaction.commit()
 ```
@@ -133,7 +133,7 @@ await transaction.commit()
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('match $c isa car has color "red" via $r; delete $r;')
 transaction.commit()
 ```

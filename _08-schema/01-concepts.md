@@ -58,7 +58,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define person sub entity, has name;")
 transaction.commit()
 ```
@@ -103,7 +103,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define person sub entity, has name, has forename, has surname, has middle-name;")
 transaction.commit()
 ```
@@ -143,7 +143,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define person sub entity, key email;")
 transaction.commit()
 ```
@@ -197,7 +197,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define person sub entity, plays employee; company sub entity, plays employer;")
 transaction.commit()
 ```
@@ -254,7 +254,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;")
 ```
 [tab:end]
@@ -302,7 +302,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define organisation sub entity is-abstract;")
 transaction.commit()
 ```
@@ -356,7 +356,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define employment sub relationship, relates employee, relates employer;")
 transaction.commit()
 ```
@@ -425,7 +425,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define loan sub relationship, relates lender, relates recipient, plays subject; legal-constraint sub relationship, relates subject, relates legality; bank sub entity, plays lender; person sub entity, plays recipient; terms-n-conditions sub entity, plays legality;")
 transaction.commit()
 ```
@@ -485,7 +485,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define mortgage sub relationship, relates debtor, relates lender, relates subject; person sub entity, plays debtor; bank sub entity, plays lender; house sub entity, plays subject;")
 transaction.commit()
 ```
@@ -532,7 +532,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define employment sub relationship, has job-title, relates employer, relates employee;")
 transaction.commit()
 ```
@@ -575,7 +575,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;")
 transaction.commit()
 ```
@@ -648,7 +648,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define affiliation sub relationship, key reference-id, relates party; membership sub affiliation, relates member as party, relates group as party; employment sub membership, relates employee as member, relates employer as group, has job-title; board-membership sub membership, relates board-member as member, relates board as group;")
 transaction.commit()
 ```
@@ -705,7 +705,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define affiliation sub relationship is-abstract, relates party;")
 transaction.commit()
 ```
@@ -750,7 +750,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define name sub attribute datatype string;")
 transaction.commit()
 ```
@@ -806,7 +806,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define colour sub attribute datatype string; car sub entity,  has colour; bicycle sub entity, has colour;")
 transaction.commit()
 ```
@@ -852,7 +852,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("genre sub attribute datatype string; movie sub entity, has genre;")
 transaction.commit()
 ```
@@ -901,7 +901,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define text sub attribute datatype string, has language; language sub attribute datatype string;")
 transaction.commit()
 ```
@@ -953,7 +953,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define word sub attribute datatype string,plays originated;language sub entity,plays origin;origination sub relationship,relates origin,relates originated;")
 transaction.commit()
 ```
@@ -1001,7 +1001,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define name sub attribute datatype string; forename sub name; surname sub name; middle-name sub name;")
 transaction.commit()
 ```
@@ -1045,7 +1045,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("define name sub attribute is-abstract datatype string;")
 transaction.commit()
 ```
@@ -1092,7 +1092,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("undefine person has name;")
 transaction.commit()
 ```
@@ -1144,7 +1144,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("undefine employment relates employer, relates employee; employer sub group; employee sub member; employment sub membership;")
 transaction.commit()
 ```

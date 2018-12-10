@@ -56,7 +56,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
 transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
 atransaction.commit()
@@ -110,7 +110,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
 transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
 transaction.commit()
@@ -176,7 +176,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Etihw Esouh"; insert $emp (employer: $org, $employee: $p) isa employment;')
 transaction.query('match $p isa person has name "Pmurt"; $org isa organisation has name "Etihw Esouh"; $emp (employer: $org, $employee: $p) isa employment; delete $emp')
 transaction.commit()

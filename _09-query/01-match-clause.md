@@ -51,7 +51,7 @@ const answerIterator = await transaction.query("match $p isa person; get;");
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $p isa person; get;")
 ```
 [tab:end]
@@ -88,7 +88,7 @@ const answerIterator = await transaction.query("match $p isa person has name $n;
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $p isa person has name $n; get;")
 ```
 [tab:end]
@@ -126,7 +126,7 @@ const answerIterator = await transaction.query("match $emp (employer: $x, employ
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;")
 ```
 [tab:end]
@@ -163,7 +163,7 @@ const answerIterator = await transaction.query("match $emp (employer: $x, employ
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;")
 ```
 [tab:end]
@@ -200,7 +200,7 @@ const answerIterator = await transaction.query("match (employer: $x, employee: $
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match (employer: $x, employee: $y) isa employment; get;")
 ```
 [tab:end]
@@ -235,7 +235,7 @@ const answerIterator = await transaction.query("match $fr ($x, $y, $z) isa frien
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $fr ($x, $y, $z) isa friendship; get;")
 ```
 [tab:end]
@@ -273,7 +273,7 @@ const answerIterator = await transaction.query('match $x "some value"; get;');
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query('match $x "some value"; get;')
 ```
 [tab:end]
@@ -310,7 +310,7 @@ const answerIterator = await transaction.query('match $n isa name "John"; get;')
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query('match $n isa name "John"; get;')
 ```
 [tab:end]
@@ -347,7 +347,7 @@ const answerIterator = await transaction.query('match $phone-number contains "+4
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query('match $phone-number contains "+44"; get;')
 ```
 [tab:end]
@@ -384,7 +384,7 @@ const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; g
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
 ```
 [tab:end]
@@ -421,7 +421,7 @@ const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; g
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
 ```
 [tab:end]
@@ -456,7 +456,7 @@ const answerIterator = await transaction.query('match $p isa person has first-na
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query('match $p isa person has first-name "John" has age < 25; get;')
 ```
 [tab:end]
@@ -491,7 +491,7 @@ const answerIterator = await transaction.query('match $p isa person has first-na
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;')
 ```
 [tab:end]
@@ -526,7 +526,7 @@ const answerIterator = await transaction.query("match $o isa! organisation; get;
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $o isa! organisation; get;")
 ```
 [tab:end]
@@ -563,7 +563,7 @@ const answerIterator = await transaction.query("match $x id V41016; get;");
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $x id V41016; get;")
 ```
 [tab:end]
@@ -637,7 +637,7 @@ const answerIteratorE = await transaction.query("match $x sub relationship; get;
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator_a = transaction.query("match $x sub thing; get;")
 answer_iterator_b = transaction.query("match $x sub attribute; get;")
 answer_iterator_c = transaction.query("match $x sub entity; get;")
@@ -676,7 +676,7 @@ const answerIterator = await transaction.query("match employment relates $x; get
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match employment relates $x; get;")
 ```
 [tab:end]
@@ -714,7 +714,7 @@ const answerIterator = await transaction.query("match employment relates $x as m
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match employment relates $x as member; get;")
 ```
 [tab:end]
@@ -751,7 +751,7 @@ const answerIterator = await transaction.query("match $x plays employee; get;");
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $x plays employee; get;")
 ```
 [tab:end]
@@ -788,7 +788,7 @@ const answerIterator = await transaction.query("match $x has name; get;");
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $x has name; get;")
 ```
 [tab:end]

@@ -41,7 +41,7 @@ const answerIterator = await transaction.query("match $sh isa sheep; aggregate c
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $sh isa sheep; aggregate count;")
 ```
 [tab:end]
@@ -80,7 +80,7 @@ const answerIterator = await transaction.query("match $h isa hotel has number-of
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;")
 ```
 [tab:end]
@@ -116,7 +116,7 @@ const answerIterator = await transaction.query("match (student: $st, school: $sc
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;")
 ```
 [tab:end]
@@ -152,7 +152,7 @@ const answerIterator = await transaction.query("match $b isa building has number
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;")
 ```
 [tab:end]
@@ -187,7 +187,7 @@ const answerIterator = await transaction.query("match $call isa call has duratio
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $call isa call has duration $d; aggregate mean $d;")
 ```
 [tab:end]
@@ -222,7 +222,7 @@ const answerIterator = await transaction.query("match $p isa person has age $a; 
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match $p isa person has age $a; aggregate median $a;")
 ```
 [tab:end]
@@ -258,7 +258,7 @@ const answerIterator = await transaction.query("match (employer: $company, emplo
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;")
 ```
 [tab:end]
@@ -293,7 +293,7 @@ const answerIterator = await transaction.query("match (employer: $company, emplo
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;")
 ```
 [tab:end]

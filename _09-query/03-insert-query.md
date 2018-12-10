@@ -38,7 +38,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname "Joe";')
 transaction.commit()
 ```
@@ -81,7 +81,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('match $p-a isa person id V41016 has surname $s; insert $p-b isa person has surname $s;')
 transaction.commit()
 ```
@@ -124,7 +124,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('insert $x isa environment "Production";')
 transaction.commit()
 ```
@@ -168,7 +168,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 transaction.query('match $company isa company has name "Grakn Cloud"; $person isa person id V8272; insert $new-employment (employer: $company, employee: $person) isa employment; $new-employment key reference-id "WGFTSH";')
 transaction.commit()
 ```

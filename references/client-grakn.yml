@@ -25,7 +25,7 @@ methods:
           type: 'Keyspace (<code>Keyspace.of("name-of-keyspace")</code>)'
     nodejs:
       <<: *method-1
-    python:
+    cpython:
       <<: *method-1
 
   - method2:
@@ -39,7 +39,7 @@ methods:
       <<: *method-2
       returns:
         - Array of Strings
-    python:
+    cpython:
       <<: *method-2
       returns:
         - List of Strings
@@ -65,6 +65,6 @@ methods:
     nodejs:
       <<: *method-3
       method: '.keyspaces().delete("keyspace name"))'
-    python:
+    cpython:
       <<: *method-3
       method: '.keyspaces().delete("keyspace name"))'

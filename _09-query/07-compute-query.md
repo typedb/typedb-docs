@@ -46,7 +46,7 @@ const answerIterator = await transaction.query("compute count in person;");
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute count in person;")
 ```
 [tab:end]
@@ -84,7 +84,7 @@ const answerIterator = await transaction.query("compute sum of number-of-rooms, 
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute sum of number-of-rooms, in hotel;")
 ```
 [tab:end]
@@ -116,7 +116,7 @@ const answerIterator = await transaction.query("compute max of gpa, in school-en
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute max of gpa, in school-enrollment;")
 ```
 [tab:end]
@@ -148,7 +148,7 @@ const answerIterator = await transaction.query("compute max of number-of-floors,
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute max of number-of-floors, in building;")
 ```
 [tab:end]
@@ -180,7 +180,7 @@ const answerIterator = await transaction.query("compute mean of duration, in cal
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute mean of duration, in call;")
 ```
 [tab:end]
@@ -212,7 +212,7 @@ const answerIterator = await transaction.query("compute median of age, in person
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute median of age, in person;")
 ```
 [tab:end]
@@ -244,7 +244,7 @@ const answerIterator = await transaction.query("compute std of score, in examina
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute std of score, in examination;")
 ```
 [tab:end]
@@ -282,7 +282,7 @@ const answerIterator = await transaction.query("compute path from V24819, to V93
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute path from V24819, to V93012;")
 ```
 [tab:end]
@@ -317,7 +317,7 @@ const answerIterator = await transaction.query("compute path from V24819, to V93
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute path from V24819, to V93012, in [person, car, company, employment];")
 ```
 [tab:end]
@@ -360,7 +360,7 @@ const answerIterator = await transaction.query("compute centrality using degree;
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute centrality using degree;")
 ```
 [tab:end]
@@ -394,7 +394,7 @@ const answerIterator = await transaction.query("compute centrality in [company, 
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute centrality in [company, employee, employment], using degree;")
 ```
 [tab:end]
@@ -431,7 +431,7 @@ const answerIterator = await transaction.query("compute centrality of company in
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute centrality of company in [company, employment], using degree;")
 ```
 [tab:end]
@@ -465,7 +465,7 @@ const answerIterator = await transaction.query("compute centrality using k-core;
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute centrality using k-core;")
 ```
 [tab:end]
@@ -503,7 +503,7 @@ const answerIterator = await transaction.query("compute centrality using k-core,
 [tab:end]
 
 [tab:Python]
-```python
+```cpython
 answer_iterator = transaction.query("compute centrality using k-core, where min-k = 5;")
 ```
 [tab:end]

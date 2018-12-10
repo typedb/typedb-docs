@@ -23,13 +23,13 @@ First make sure, the Grakn server is running. Learn more about [how to run the G
 
 In the interpreter or in your source, import `grakn`.
 
-```python
+```cpython
 import grakn
 ```
 
 Instantiate a client and open a session.
 
-```python
+```cpython
 client = grakn.Grakn(uri="localhost:48555")
 with client.session(keyspace="mykeyspace") as session:
   ## session is open
@@ -39,13 +39,13 @@ As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previ
 
 We can also pass the credentials, as specified when [configuring authentication via Grakn Console](), into the initial constructor as a dictionary.
 
-```python
+```cpython
 client = grakn.Grakn(uri="localhost:48555", credentials={"username": "<username>", "password": "<password>"})
 ```
 
 Create transactions to use for reading and writing data.
 
-```python
+```cpython
 client = grakn.Grakn(uri="localhost:48555")
 
 with client.session(keyspace="mykeyspace") as session:
@@ -64,7 +64,7 @@ with client.session(keyspace="mykeyspace") as session:
 
 Running basic retrieval and insertion queries.
 
-```python
+```cpython
 client = grakn.Grakn(uri="localhost:48555")
 
 with client.session(keyspace="mykeyspace") as session:
@@ -108,4 +108,4 @@ To view examples of running various Graql queries using the Grakn Client Python,
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api_reference.html language = "python" %}
+{% include client_api_reference.html language = "cpython" %}
