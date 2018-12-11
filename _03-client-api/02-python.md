@@ -15,11 +15,15 @@ Before installing the Python `grakn` package, make sure the following dependenci
 
 ## Installation
 ```
+pip install grakn
+```
+If multiple Python versions are available, you may wish to use
+```
 pip3 install grakn
 ```
 
 ## Quickstart
-First make sure, the Grakn server is running. Learn more about [how to run the Grakn server]().
+First make sure, the Grakn server is running. Learn more about [how to run the Grakn server](/docs/running-grakn/install-n-run#starting-the-grakn-server).
 
 In the interpreter or in your source, import `grakn`.
 
@@ -33,11 +37,13 @@ Instantiate a client and open a session.
 client = grakn.Grakn(uri="localhost:48555")
 with client.session(keyspace="mykeyspace") as session:
   ## session is open
+  pass
+## session is closed
 ```
 
 As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previously used as the default REST endpoint) is deprecated for clients.
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](), into the initial constructor as a dictionary.
+We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/authentication), into the client constructor as a dictionary.
 
 ```cpython
 client = grakn.Grakn(uri="localhost:48555", credentials={"username": "<username>", "password": "<password>"})
@@ -99,9 +105,11 @@ with client.session(keyspace="mykeyspace") as session:
     # read_transaction.close()
 ```
 
+Remember that transactions always need to be closed. The safest way is to use the `with ...` syntax which auto-closes at the end of the `with` block. Otherwise, remember to call `transaction.close()` explicitly.
+
 Check out the [Concept API]() to learn about the available read and write methods on an instance such as `person` in the example above.
 
-To view examples of running various Graql queries using the Grakn Client Python, head over to their dedicated documentation pages as listed below. Note that these examples, assume a transaction object has been instantiated and will be committed/closed after the operation is complete:
+To view examples of running various Graql queries using the Grakn Client Python, head over to their dedicated documentation pages as listed below. Note that these examples assume a transaction object has been instantiated and will be committed/closed after the operation is complete:
 - [Insert](/docs/query/insert-query)
 - [Get](/docs/query/get-query)
 - [Delete](/docs/query/delete-query)
