@@ -3,7 +3,7 @@ title: Authentication
 keywords:
 tags: []
 summary:
-permalink: /docs/management/users-n-authentication
+permalink: /docs/management/authentication
 ---
 
 ## Managing Users and Authenticatin [KGMS only]
