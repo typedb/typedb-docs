@@ -1,12 +1,14 @@
 ---
 title: Amazon AWS
-keywords: cloud, deployment, aws
-tags: [getting-started, deployment, cloud, aws]
-summary: "Deploying Grakn on AWS"
+keywords:
+tags: []
+summary:
 permalink: /docs/cloud-deployment/amazon-aws
 ---
 
-# AWS Marketplace
+## Deploying Grakn on Amazon AWS
+
+<!-- # AWS Marketplace
 
 ## Deployment
 
@@ -294,4 +296,4 @@ A summary of available commands can be found [here](http://dev.grakn.ai/docs/get
 If you want to learn more about Grakn KGMS, the [Grakn Academy](https://dev.grakn.ai/academy/) is a good place to start.
 
 To learn more about running Grakn KGMS in the cloud, take a look at the [best practices guide](https://dev.grakn.ai/docs/cloud-deployment/best-practices)
-and [post deployment steps](https://dev.grakn.ai/docs/cloud-deployment/post-deployment).
+and [post deployment steps](https://dev.grakn.ai/docs/cloud-deployment/post-deployment). -->
