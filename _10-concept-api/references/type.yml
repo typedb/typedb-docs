@@ -28,7 +28,7 @@ methods:
       <<: *method-label-b
       method: type.label(Label.of(label));
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
     nodejs:
       <<: *method-label-b
       method: async type.label(label);
@@ -38,7 +38,7 @@ methods:
       <<: *method-label-b
       method: type.label(label)
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-sup-a
       title: Retrieve direct supertype
@@ -47,19 +47,19 @@ methods:
       <<: *method-sup-a
       method: type.sup();
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
         - "null"
     nodejs:
       <<: *method-sup-a
       method: async type.sup();
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methodsscript) object"
         - "null"
     cpython:
       <<: *method-sup-a
       method: type.sup()
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
         - None
   - method:
     common: &method-sup-b
@@ -69,14 +69,14 @@ methods:
         param:
           name: type
           description: The new type that the given type inherits
-          type: "[EntityType](...) | [AttributeType](...) | [RelationshipType](...)"
+          type: "[EntityType](/docs/concept-api/type#entitytype-methods) | [AttributeType](/docs/concept-api/type#attributetype-methods) | [RelationshipType](...)"
           required: true
           default: N/A
     java:
       <<: *method-sup-b
       method: type.sup(Type type);
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
         - "null"
     nodejs:
       <<: *method-sup-b
@@ -87,7 +87,7 @@ methods:
       <<: *method-sup-b
       method: type.sup(type)
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
         - None
   - method:
     common: &method-sups
@@ -97,17 +97,17 @@ methods:
       <<: *method-sups
       method: type.sups();
       returns:
-        - "Stream of [Type](...) objects"
+        - "Stream of [Type](/docs/concept-api/type?lang=java#type-methods) objects"
     nodejs:
       <<: *method-sups
       method: async type.sups()
       returns:
-        - "[Iterator](...) of [Type](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Type](/docs/concept-api/type?lang=java#type-methodsscript) objects"
     cpython:
       <<: *method-sups
       method: type.sups()
       returns:
-        - "[Iterator](...) of [Type](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Type](/docs/concept-api/type?lang=python#type-methods) objects"
   - method:
     common: &method-subs
       title: Retrieve all subtypes
@@ -116,17 +116,17 @@ methods:
       <<: *method-subs
       method: type.subs();
       returns:
-        - "Stream of [Type](...) objects"
+        - "Stream of [Type](/docs/concept-api/type?lang=java#type-methods) objects"
     nodejs:
       <<: *method-subs
       method: async type.subs()
       returns:
-        - "[Iterator](...) of [Type](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Type](/docs/concept-api/type#type-methods?lang=nodejs) objects"
     cpython:
       <<: *method-subs
       method: type.subs()
       returns:
-        - "[Iterator](...) of [Type](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Type](/docs/concept-api/type?lang=python#type-methods) objects"
   - method:
     common: &method-isAbstract-a
       title: Check if type is abstract
@@ -152,17 +152,21 @@ methods:
           type: boolean
           required: true
           default: N/A
-      returns:
-        - "[Type](...) object"
     java:
       <<: *method-isAbstract-b
       method: type.isAbstract(Boolean abstract);
+      returns:
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
     nodejs:
       <<: *method-isAbstract-b
       method: async type.isAbstract(abstract);
+      returns:
+        - void
     cpython:
       <<: *method-isAbstract-b
       method: type.is_abstract(abstract)
+      returns:
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-playing
       title: Retrieve roles played by the type
@@ -171,69 +175,91 @@ methods:
       <<: *method-playing
       method: type.playing();
       returns:
-        - "Stream of [Role](...) objectss"
+        - "Stream of [Role](/docs/concept-api/type?lang=java#role-methods) objectss"
     nodejs:
       <<: *method-playing
       method: async type.playing();
       returns:
-        - "[Iterator](...) of [Role](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=javascript#role-methods) objects"
     cpython:
       <<: *method-playing
       method: type.playing()
       returns:
-        - "[Iterator](...) of [Role](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=python#role-methods) objects"
   - method:
     common: &method-plays
       title: Add a new role to be played by the type
       description: Allows the type to play the given role.
       accepts:
-        param:
+        param: &accepts-plays-role
           name: role
           description: The role to be played by the type.
-          type: "[Role](...)"
           required: true
           default: N/A
     java:
       <<: *method-plays
       method: type.plays(Role role);
+      accepts:
+        param:
+          <<: *accepts-plays-role
+          type: "[Role](/docs/concept-api/type?lang=java#role-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
     nodejs:
       <<: *method-plays
       method: async type.plays(role);
+      accepts:
+        param:
+          <<: *accepts-plays-role
+          type: "[Role](/docs/concept-api/type?lang=javascript#role-methods)"
       returns:
         - void
     cpython:
       <<: *method-plays
       method: type.plays(role)
+      accepts:
+        param:
+          <<: *accepts-plays-role
+          type: "[Role](/docs/concept-api/type?lang=python#role-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-unplay
       title: Remove a role from being played by the type
       description: Disallows the type from playing the given role.
       accepts:
-        param:
+        param: &accepts-unplay
           name: role
           description: The role to not be played by the type.
-          type: "[Role](...)"
           required: true
           default: N/A
     java:
       <<: *method-unplay
       method: type.unplay(Role role);
+      accepts:
+        param:
+          <<: *accepts-unplay
+          type: "[Role](/docs/concept-api/type?lang=java#role-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
     nodejs:
       <<: *method-unplay
       method: async type.unplay(role);
+      accepts:
+        param:
+          <<: *accepts-unplay
+          type: "[Role](/docs/concept-api/type?lang=javascript#role-methods)"
       returns:
         - void
     cpython:
       <<: *method-unplay
       method: type.unplay(role)
+      accepts:
+        param:
+          <<: *accepts-unplay
+          type: "[Role](/docs/concept-api/type?lang=python#role-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-attributes
       title: Retrieve attributes of the type
@@ -242,25 +268,24 @@ methods:
       <<: *method-attributes
       method: type.attributes();
       returns:
-        - "Stream of [AttributeType](...) objects"
+        - "Stream of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods) objects"
     nodejs:
       <<: *method-attributes
       method: async type.attributes();
       returns:
-        - "Iterator of [AttributeType](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods) objects"
     cpython:
       <<: *method-attributes
       method: type.attributes()
       returns:
-        - "Iterator of [AttributeType](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [AttributeType](/docs/concept-api/type?lang=python#attributetype-methods) objects"
   - method:
     common: &method-has
       title: Add an attribute to the type
       description: Allows the type to own the given attribute.
       accepts:
-        param: &accepts-has-param-a
-          desctiption: the AttributeType to be owned by the type.
-          type: "[AttributeType](...)"
+        param: &accepts-has-attributeType
+          desctiption: The AttributeType to be owned by the type.
           required: true
           default: N/A
     java:
@@ -268,17 +293,19 @@ methods:
       method: type.has(AttributeType attributeType);
       accepts:
         param:
-          <<: *accepts-has-param-a
+          <<: *accepts-has-attributeType
           name: attributeType
+          type: "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
     nodejs:
       <<: *method-has
       method: async type.has(attributeType);
       accepts:
         param:
-          <<: *accepts-has-param-a
+          <<: *accepts-has-attributeType
           name: attributeType
+          type: "[AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)"
       returns:
         - void
     cpython:
@@ -286,18 +313,18 @@ methods:
       method: type.has(attribute_type)
       accepts:
         param:
-          <<: *accepts-has-param-a
+          <<: *accepts-has-attributeType
           name: attribute_type
+          type: "[AttributeType](/docs/concept-api/type?lang=python#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-unhas
       title: Remove an attribute from the type
       description: Disallows the type from owning the given attributeType.
       accepts:
-        param: &accepts-unhas-param-a
+        param: &accepts-unhas-attributeType
           desctiption: The AttributeType to not be owend by the type.
-          type: "[AttributeType](...)"
           required: true
           default: N/A
     java:
@@ -305,17 +332,19 @@ methods:
       method: type.unhas();
       accepts:
         param:
-          <<: *accepts-unhas-param-a
+          <<: *accepts-unhas-attributeType
           name: attributeType
+          type: "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
     nodejs:
       <<: *method-unhas
       method: async type.unhas();
       accepts:
         param:
-          <<: *accepts-unhas-param-a
+          <<: *accepts-unhas-attributeType
           name: attributeType
+          type: "[AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)"
       returns:
         - void
     cpython:
@@ -323,10 +352,11 @@ methods:
       method: type.unhas()
       accepts:
         param:
-          <<: *accepts-unhas-param-a
+          <<: *accepts-unhas-attributeType
           name: attribute_type
+          type: "[AttributeType](/docs/concept-api/type?lang=python#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-keys
       title: Retrieve keys of the type
@@ -335,71 +365,80 @@ methods:
       <<: *method-keys
       method: type.keys();
       returns:
-        - "Stream of [AttributeType](...) objects"
+        - "Stream of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods) objects"
     nodejs:
       <<: *method-keys
       method: async type.keys();
       returns:
-        - "Iterator of [AttributeType](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods) objects"
     cpython:
       <<: *method-keys
       method: type.keys()
       returns:
-        - "Iterator of [AttributeType](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [AttributeType](/docs/concept-api/type?lang=python#attributetype-methods) objects"
   - method:
     common: &method-key
       title: Add a key to the type
       description: Allows the type to own the given attributeType as its key.
       accepts:
-        param:
+        param: &accepts-key-key
           name: key
           desctiption: the AttributeType to be owned by the type as its key.
-          type: "[AttributeType](...)"
           required: true
           default: N/A
     java:
       <<: *method-key
       method: type.key(AttributeType attributeType);
+      param:
+        <<: *accepts-key-key
+        type: "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type#type-methods?lang=) object"
     nodejs:
       <<: *method-key
       method: async type.key(attributeType);
+      param:
+        <<: *accepts-key-key
+        type: "[AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)"
       returns:
         - void
     cpython:
       <<: *method-key
       method: type.key(attributeType)
+      param:
+        <<: *accepts-key-key
+        type: "[AttributeType](/docs/concept-api/type?lang=python#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type#type-methods?lang=) object"
   - method:
     common: &method-unkey
       title: Remove a key from the type
       description: Disallows the type from owning the given attributeType as its key.
       accepts:
-        param: &accepts-unkey-param-a
+        param: &accepts-unkey-attributeType
           desctiption: the AttributeType to not be owend by the type as its key.
-          type: "[AttributeType](...)"
           required: true
           default: N/A
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type#type-methods?lang=) object"
     java:
       <<: *method-unkey
       method: type.unkey(AttributeType key);
       accepts:
         param:
-          <<: *accepts-unkey-param-a
+          <<: *accepts-unkey-attributeType
           name: attributeType
+          type: "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=java#type-methods) object"
     nodejs:
       <<: *method-unkey
       method: async type.unkey(attributeType);
       accepts:
         param:
-          <<: *accepts-unkey-param-a
+          <<: *accepts-unkey-attributeType
           name: attributeType
+          type: "[AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)"
       returns:
         - void
     cpython:
@@ -407,10 +446,11 @@ methods:
       method: type.unkey(attribute_type)
       accepts:
         param:
-          <<: *accepts-unkey-param-a
+          <<: *accepts-unkey-attributeType
           name: attribute_type
+          type: "[AttributeType](/docs/concept-api/type?lang=python#attributetype-methods)"
       returns:
-        - "[Type](...) object"
+        - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-instances
       title: Retrieve instances of the type
@@ -418,14 +458,14 @@ methods:
       <<: *method-instances
       method: type.instances();
       returns:
-        - "Stream of [Thing](...) object"
+        - "Stream of [Thing](/docs/concept-api/thing?lang=java) object"
     nodejs:
       <<: *method-instances
       method: async type.instances();
       returns:
-        - "[Iterator]() of [Thing](...) object"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=javascript) object"
     cpython:
       <<: *method-instances
       method: type.instances()
       returns:
-        - "[Iterator]() of [Thing](...) object"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=python) object"

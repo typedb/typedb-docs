@@ -9,17 +9,21 @@ methods:
           type: String | boolean | integer | float | date
           required: true
           default: N/A
-      returns:
-        - "[Attribute](...) object"
     java:
       <<: *method-create
       method: attributeType.create(Object value);
+      returns:
+        - "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods) object"
     nodejs:
       <<: *method-create
       method: async attributeType.create(value);
+      returns:
+        - "[Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) object"
     cpython:
       <<: *method-create
       method: attribute_type.create(value)
+      returns:
+        - "[Attribute](/docs/concept-api/thing?lang=python#attribute-methods) object"
   - method:
     common: &method-attribute
       title: Retrieve an instance with the given value
@@ -34,19 +38,19 @@ methods:
       <<: *method-attribute
       method: attributeType.attribute(Object value);
       returns:
-        - "[Attribute](...) object"
+        - "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods) object"
         - "null"
     nodejs:
       <<: *method-attribute
       method: async attributeType.attribute(value);
       returns:
-        - "[Attribute](...) object"
+        - "[Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) object"
         - "null"
     cpython:
       <<: *method-attribute
       method: attribute_type.attribute(value)
       returns:
-        - "[Attribute](...) object"
+        - "[Attribute](/docs/concept-api/thing?lang=python#attribute-methods) object"
         - None
   - method:
     common: &method-datatype
@@ -99,7 +103,7 @@ methods:
       <<: *method-regex-b
       method: attributeType.regex(String regex);
       returns:
-        - "[AttributeType](...) object"
+        - "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods) object"
     nodejs:
       <<: *method-regex-b
       method: async attributeType.regex(regex);
@@ -109,4 +113,4 @@ methods:
       <<: *method-regex-b
       method: attribute_type.regex(regex)
       returns:
-        - "[AttributeType](...) object"
+        - "[AttributeType](/docs/concept-api/type?lang=python#attributetype-methods) object"

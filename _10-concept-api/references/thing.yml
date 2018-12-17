@@ -29,25 +29,25 @@ methods:
       method: thing.relationships(Role... roles);
       accepts:
         param:
-          type: "Array of [Role](...)s"
+          type: "Array of [Role](/docs/concept-api/type?lang=java#role-methods)s"
       returns:
-        - "Stream of [Relationship](...) objects"
+        - "Stream of [Relationship](/docs/concept-api/thing?lang=java#relationship-methods) objects"
     nodejs:
       <<: *method-relationships
       method: async thing.relationships(roles);
       accepts:
         param:
-          type: "Array of [Role](...)s"
+          type: "Array of [Role](/docs/concept-api/type?lang=javascript#role-methods)s"
       returns:
-        - "[Iterator](...) of [Relationship](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=javascript#relationship-methods) objects"
     cpython:
       <<: *method-relationships
       method: thing.relationships(roles)
       accepts:
         param:
-          type: "List of [Role](...)s"
+          type: "List of [Role](/docs/concept-api/type?lang=python#role-methods)s"
       returns:
-        - "[Iterator](...) of [Relationship](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=python#relationship-methods) objects"
   - method:
     common: &method-roles
       title: Retrieve the roles
@@ -56,17 +56,17 @@ methods:
       <<: *method-roles
       method: thing.roles();
       returns:
-        - "Stream of [Role](...) objects"
+        - "Stream of [Role](/docs/concept-api/type?lang=java#role-methods) objects"
     nodejs:
       <<: *method-roles
       method: async thing.roles();
       returns:
-        - "[Iterator](...) of [Role](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=javascript#role-methods) objects"
     cpython:
       <<: *method-roles
       method: thing.roles()
       returns:
-        - "[Iterator](...) of [Role](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=python#role-methods) objects"
   - method:
     common: &method-attributes
       title: Retrieve the attributes
@@ -84,9 +84,9 @@ methods:
         <<: *accepts-attributes
         param:
           <<: *accepts-attributes-param-types
-          type: "Array of [AttributeType](...)s"
+          type: "Array of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)s"
       returns:
-        - "Stream of [Attribute](...) objects"
+        - "Stream of [Attribute](/docs/concept-api/thing?lang=java#attribute-methods) objects"
     nodejs:
       <<: *method-attributes
       method: async thing.attributes();
@@ -94,9 +94,9 @@ methods:
         <<: *accepts-attributes
         param:
           <<: *accepts-attributes-param-types
-          type: "Array of [AttributeType](...)s"
+          type: "Array of [AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)s"
       returns:
-        - "[Iterator](...) of [Attribute](...) objects"
+        - "[Iterator](...) of [Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) objects"
     cpython:
       <<: *method-attributes
       method: thing.attributes()
@@ -104,9 +104,9 @@ methods:
         <<: *accepts-attributes
         param:
           <<: *accepts-attributes-param-types
-          type: "List of [AttributeType](...)s"
+          type: "List of [AttributeType](/docs/concept-api/type?lang=pyhthon#attributetype-methods)s"
       returns:
-        - "[Iterator](...) of [Attribute](...) objects"
+        - "[Iterator](...) of [Attribute](/docs/concept-api/thing?lang=pyhthon#attribute-methods) objects"
   - method:
     common: &method-keys
       title: Retrieve the keys
@@ -124,9 +124,9 @@ methods:
         <<: *accepts-keys
         param:
           <<: *accepts-keys-param-types
-          type: "Array of [AttributeType](...)s"
+          type: "Array of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)s"
       returns:
-        - "Stream of [Attribute](...) objects"
+        - "Stream of [Attribute](/docs/concept-api/thing?lang=java#attribute-methods) objects"
     nodejs:
       <<: *method-keys
       method: async thing.keys();
@@ -134,9 +134,9 @@ methods:
         <<: *accepts-keys
         param:
           <<: *accepts-keys-param-types
-          type: "Array of [AttributeType](...)s"
+          type: "Array of [AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)s"
       returns:
-        - "[Iterator](...) of [Attribute](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) objects"
     cpython:
       <<: *method-keys
       method: thing.keys()
@@ -144,31 +144,46 @@ methods:
         <<: *accepts-keys
         param:
           <<: *accepts-keys-param-types
-          type: "List of [AttributeType](...)s"
+          type: "List of [AttributeType](/docs/concept-api/type?lang=python#attributetype-methods)s"
       returns:
-        - "[Iterator](...) of [Attribute](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Attribute](/docs/concept-api/thing?lang=python#attribute-methods) objects"
   - method:
     common: &method-has
       title: Assign an attribute
       description: Assigns an attribute to the thing.
       accepts:
-        param:
+        param: &accepts-has-attribute
           name: attribute
           description: The attribute to be owned by the thing.
-          type: "[Attribute](...)"
           required: true
           default: N/A
-      returns:
-        - "[Thing](...) object"
     java:
       <<: *method-has
       method: thing.has(Attribute attribute);
+      accepts:
+        param:
+          <<: *accepts-has-attribute
+          type: "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods)"
+      returns:
+        - "[Thing](/docs/concept-api/thing?lang=java) object"
     nodejs:
       <<: *method-has
       method: async thing.has(attribute);
+      accepts:
+        param:
+          <<: *accepts-has-attribute
+          type: "[Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods)"
+      returns:
+        - "[Thing](/docs/concept-api/thing?lang=javascript) object"
     cpython:
       <<: *method-has
       method: thing.has(attribute)
+      accepts:
+        param:
+          <<: *accepts-has-attribute
+          type: "[Attribute](/docs/concept-api/thing?lang=python#attribute-methods)"
+      returns:
+        - "[Thing](/docs/concept-api/thing?lang=python) object"
   - method:
     common: &method-unhas
       title: Unassign an attribute
@@ -177,20 +192,24 @@ methods:
         param:
           name: attribute
           description: The attribute to be disowned from the thing.
-          type: "[Attribute](...)"
+          type: "[Attribute](/docs/concept-api/thing#attribute-methods)"
           required: true
           default: N/A
-      returns:
-        - "[Thing](...) object"
     java:
       <<: *method-unhas
       method: thing.unhas(Attribute attribute);
+      returns:
+        - "[Thing](/docs/concept-api/thing?lang=java) object"
     nodejs:
       <<: *method-unhas
       method: async thing.unhas(attribute);
+      returns:
+        - "[Thing](/docs/concept-api/thing?lang=javascript) object"
     cpython:
       <<: *method-unhas
       method: thing.unhas(attribute)
+      returns:
+        - "[Thing](/docs/concept-api/thing?lang=python) object"
   - method:
     common: &method-isInferred
       title: Check if inferred

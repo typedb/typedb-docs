@@ -139,7 +139,7 @@ methods:
       description: Casts the concept as Type so that we can call the Type methods on it.
       method: concept.asType();
       returns:
-        - "[Type](/docs/concept-api/type) object"
+        - "[Type](/docs/concept-api/type?lang=java) object"
     java:
       <<: *method-asType
   - method:
@@ -148,7 +148,7 @@ methods:
       description: Casts the concept as Thing so that we can call the Thing methods on it.
       method: concept.asThing();
       returns:
-        - "[Thing](...) object"
+        - "[Thing](/docs/concept-api/thing?lang=java) object"
     java:
       <<: *method-asThing
   - method:
@@ -157,7 +157,7 @@ methods:
       description: Casts the concept as EntityType so that we can call the EntityType methods on it.
       method: concept.asEntityType();
       returns:
-        - "[EntityType](...) object"
+        - "[EntityType](/docs/concept-api/type?lang=java#entitytype-methods) object"
     java:
       <<: *method-asEntityType
   - method:
@@ -166,7 +166,7 @@ methods:
       description: Casts the concept as AttributeType so that we can call the AttributeType methods on it.
       method: concept.asAttributeType();
       returns:
-        - "[AttributeType](...) object"
+        - "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods) object"
     java:
       <<: *method-asAttributeType
   - method:
@@ -175,7 +175,7 @@ methods:
       description: Casts the concept as RelationshipType so that we can call the RelationshipType methods on it.
       method: concept.asRelationshipType();
       returns:
-        - "[RelationshipType](...) object"
+        - "[RelationshipType](/docs/concept-api/type?lang=java#relationshiptype-methods) object"
     java:
       <<: *method-asRelationshipType
   - method:
@@ -184,7 +184,7 @@ methods:
       description: Casts the concept as AttributeType so that we can call the AttributeType methods on it.
       method: concept.asAttributeType();
       returns:
-        - "[AttributeType](...) object"
+        - "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods) object"
     java:
       <<: *method-asAttributeType
   - method:
@@ -193,7 +193,7 @@ methods:
       description: Casts the concept as Entity so that we can call the Entity methods on it.
       method: concept.asEntity();
       returns:
-        - "[Entity](...) object"
+        - Entity object
     java:
       <<: *method-asEntity
   - method:
@@ -202,7 +202,7 @@ methods:
       description: Casts the concept as Attribute so that we can call the Attribute methods on it.
       method: concept.asAttribute();
       returns:
-        - "[Attribute](...) object"
+        - "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods) object"
     java:
       <<: *method-asAttribute
   - method:
@@ -211,6 +211,6 @@ methods:
       description: Casts the concept as Relationship so that we can call the Relationship methods on it.
       method: concept.asRelationship();
       returns:
-        - "[Relationship](...) object"
+        - "[Relationship](/docs/concept-api/thing?lang=java#relationship-methods) object"
     java:
       <<: *method-asRelationship

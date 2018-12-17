@@ -37,14 +37,14 @@ methods:
       <<: *method-owners
       method: attribute.owners();
       return:
-        - "Stream of [Thing](...) objects"
+        - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
     nodejs:
       <<: *method-owners
       method: async attribute.owners();
       return:
-        - "[Iterator](...) of [Thing](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=javascript) objects"
     cpython:
       <<: *method-owners
       method: attribute.owners()
       return:
-        - "[Iterator](...) of [Thing](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=python) objects"

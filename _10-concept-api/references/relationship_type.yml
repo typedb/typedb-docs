@@ -2,17 +2,21 @@ methods:
   - method:
     common: &method-create
       title: Create an instance of the relationship type
-      returns:
-        - "[Relationship](...) object"
     java:
       <<: *method-create
       method: relationshipType.create();
+      returns:
+        - "[Relationship](/docs/concept-api/thing?lang=java#relationship-methods) object"
     nodejs:
       <<: *method-create
       method: async relationshipType.create();
+      returns:
+        - "[Relationship](/docs/concept-api/thing?lang=nodejs#relationship-methods) object"
     cpython:
       <<: *method-create
       method: relationship_type.create()
+      returns:
+        - "[Relationship](/docs/concept-api/thing?lang=python#relationship-methods) object"
   - method:
     common: &method-roles
       title: Retrieve roles of the relationship type
@@ -20,17 +24,17 @@ methods:
       <<: *method-roles
       method: relationshipType.roles();
       returns:
-        - "Stream of [Role](...) objectss"
+        - "Stream of [Role](/docs/concept-api/type?javalang=#role-methods) objectss"
     nodejs:
       <<: *method-roles
       method: async relationshipType.roles();
       returns:
-        - "[Iterator](...) of [Role](...) objects"
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Role](/docs/concept-api/type?javascriptlang=#role-methods) objects"
     cpython:
       <<: *method-roles
       method: relationship_type.roles()
       returns:
-        - "[Iterator](...) of [Role](...) objects"
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=python#role-methods) objects"
   - method:
     common: &method-relates
       title: Sets a new role for the relationship type
@@ -45,7 +49,7 @@ methods:
       <<: *method-relates
       method: relationshipType.relates(Role role);
       returns:
-        - "[RelationshipType](...) object"
+        - "[RelationshipType](/docs/concept-api/type?lang=java#relationshiptype-methods) object"
     nodejs:
       <<: *method-relates
       method: async relationshipType.relates(role);
@@ -55,7 +59,7 @@ methods:
       <<: *method-relates
       method: relationship_type.relates(role)
       returns:
-        - "[RelationshipType](...) object"
+        - "[RelationshipType](/docs/concept-api/type?lang=python#relationshiptype-methods) object"
   - method:
     common: &method-unrelate
       title: Remove a role from the relationship type
@@ -71,7 +75,7 @@ methods:
       <<: *method-unrelate
       method: relationshipType.unrelate(Role role);
       returns:
-        - "[RelationshipType](...) object"
+        - "[RelationshipType](/docs/concept-api/type?lang=java#relationshiptype-methods) object"
     nodejs:
       <<: *method-unrelate
       method: async relationshipType.unrelate(role);
@@ -81,4 +85,4 @@ methods:
       <<: *method-unrelate
       method: relationship_type.unrelate(role)
       returns:
-        - "[RelationshipType](...) object"
+        - "[RelationshipType](/docs/concept-api/type?lang=python#relationshiptype-methods) object"
