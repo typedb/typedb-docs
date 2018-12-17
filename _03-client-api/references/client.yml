@@ -1,1 +1,72 @@
-/Users/soroushsaffari/grakn-related/web-dev/_data/client_api/client.yml
+title: "Client"
+methods:
+  - method1:
+    common: &method-1
+      title: Creating a session/keyspace
+      description: >
+        Creates a communication channel to the given keyspace on the Grakn server.
+        **If no keyspace with the given name exists, a new one will be created.**
+      method: 'client.session("keyspace name")'
+      accepts: &accepts-1
+        param1: &accepts-1-param-1
+          name: keyspace
+          description: The name of the keyspace with which the session connects.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[Session](#client-api-title-session) object"
+    java:
+      <<: *method-1
+      method: 'client.session(Keyspace.of(String keyspace))'
+      accepts:
+        <<: *accepts-1
+        param1:
+          <<: *accepts-1-param-1
+          description: The keyspace with which the session connects.
+          type: 'Keyspace (<code>Keyspace.of("name-of-keyspace")</code>)'
+    nodejs:
+      <<: *method-1
+    cpython:
+      <<: *method-1
+
+  - method2:
+    common: &method-2
+      title: Retrieving all keyspaces
+      description: Retrieves the name of all keyspaces running on the Grakn server.
+      method: 'client.keyspaces().retrieve()'
+    # java:
+    #   <<: *method-2
+    nodejs:
+      <<: *method-2
+      returns:
+        - Array of Strings
+    cpython:
+      <<: *method-2
+      returns:
+        - List of Strings
+  - method3:
+    common: &method-3
+      title: Deleting a keyspace
+      description: Deletes a keyspace with the given name.
+      accepts: &accepts-3
+        param1: &accepts-3-param-1
+          name: keypsace
+          description: The name of the keyspace to be deleted.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-3
+      method: 'client.keyspaces().delete(Keyspace.of(String keyspace))'
+      accepts: &method-3-accepts
+        param1:
+          <<: *accepts-3-param-1
+          description: The keyspace to be deleted.
+          type: 'Keyspace'
+    nodejs:
+      <<: *method-3
+      method: 'client.keyspaces().delete("keyspace name"))'
+    cpython:
+      <<: *method-3
+      method: 'client.keyspaces().delete("keyspace name"))'
