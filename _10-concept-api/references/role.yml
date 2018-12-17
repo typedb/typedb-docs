@@ -1,0 +1,39 @@
+methods:
+  - method:
+    common: &method-relationships
+      title: Retrieve relationships
+      description: Retrieves the relationships that the role relates to.
+    java:
+      <<: *method-relationships
+      method: role.relationships();
+      returns:
+        - "Stream of [Relationship](...) objects"
+    nodejs:
+      <<: *method-relationships
+      method: async role.relationships();
+      returns:
+        - "[Iterator](...) of [Relationship](...) objects"
+    cpython:
+      <<: *method-relationships
+      method: role.relationships()
+      returns:
+        - "[Iterator](...) of [Relationship](...) objects"
+  - method:
+    common: &method-players
+      title: Retrieve roleplayers
+      description: Retrieves the types that play the role.
+    java:
+      <<: *method-players
+      method: role.players();
+      returns:
+        - "Stream of [Type](/docs/concept-api/type) objects"
+    nodejs:
+      <<: *method-players
+      method: async role.players();
+      returns:
+        - "[Iterator](...) of [Type](/docs/concept-api/type) objects"
+    cpython:
+      <<: *method-players
+      method: role.players()
+      returns:
+        - "[Iterator](...) of [Type](/docs/concept-api/type) objects"

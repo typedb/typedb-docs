@@ -1,0 +1,84 @@
+methods:
+  - method:
+    common: &method-create
+      title: Create an instance of the relationship type
+      returns:
+        - "[Relationship](...) object"
+    java:
+      <<: *method-create
+      method: relationshipType.create();
+    nodejs:
+      <<: *method-create
+      method: async relationshipType.create();
+    cpython:
+      <<: *method-create
+      method: relationship_type.create()
+  - method:
+    common: &method-roles
+      title: Retrieve roles of the relationship type
+    java:
+      <<: *method-roles
+      method: relationshipType.roles();
+      returns:
+        - "Stream of [Role](...) objectss"
+    nodejs:
+      <<: *method-roles
+      method: async relationshipType.roles();
+      returns:
+        - "[Iterator](...) of [Role](...) objects"
+    cpython:
+      <<: *method-roles
+      method: relationship_type.roles()
+      returns:
+        - "[Iterator](...) of [Role](...) objects"
+  - method:
+    common: &method-relates
+      title: Sets a new role for the relationship type
+      accepts:
+        param:
+          name: role
+          description: The new role for the relationship type to relate to.
+          type: Role
+          required: true
+          default: N/A
+    java:
+      <<: *method-relates
+      method: relationshipType.relates(Role role);
+      returns:
+        - "[RelationshipType](...) object"
+    nodejs:
+      <<: *method-relates
+      method: async relationshipType.relates(role);
+      returns:
+        - void
+    cpython:
+      <<: *method-relates
+      method: relationship_type.relates(role)
+      returns:
+        - "[RelationshipType](...) object"
+  - method:
+    common: &method-unrelate
+      title: Remove a role from the relationship type
+      description: Disallows the type from relating to the given role.
+      accepts:
+        param:
+          name: role
+          desctiption: The role to not relate to the relationship type.
+          type: Role
+          required: true
+          default: N/A
+    java:
+      <<: *method-unrelate
+      method: relationshipType.unrelate(Role role);
+      returns:
+        - "[RelationshipType](...) object"
+    nodejs:
+      <<: *method-unrelate
+      method: async relationshipType.unrelate(role);
+      returns:
+        - void
+    cpython:
+      <<: *method-unrelate
+      method: relationship_type.unrelate(role)
+      returns:
+        - "[RelationshipType](...) object"

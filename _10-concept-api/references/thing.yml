@@ -1,0 +1,208 @@
+methods:
+  - method:
+    common: &method-type
+      title: Retrieve the type
+      description: Retrieves the type which the thing belongs to.
+      returns:
+        - "[Type](/docs/concept-api/type) object"
+    java:
+      <<: *method-type
+      method: thing.type();
+    nodejs:
+      <<: *method-type
+      method: async thing.type();
+    cpython:
+      <<: *method-type
+      method: thing.type()
+  - method:
+    common: &method-relationships
+      title: Retrieve the relationships
+      description: Retrieves the relationships which the thing plays a role in.
+      accepts: &accepts-relationships
+        param: &accepts-relationships-param-roles
+          name: roles
+          description: The list of roles to filter the relationships by.
+          required: false
+          default: N/A
+    java:
+      <<: *method-relationships
+      method: thing.relationships(Role... roles);
+      accepts:
+        param:
+          type: "Array of [Role](...)s"
+      returns:
+        - "Stream of [Relationship](...) objects"
+    nodejs:
+      <<: *method-relationships
+      method: async thing.relationships(roles);
+      accepts:
+        param:
+          type: "Array of [Role](...)s"
+      returns:
+        - "[Iterator](...) of [Relationship](...) objects"
+    cpython:
+      <<: *method-relationships
+      method: thing.relationships(roles)
+      accepts:
+        param:
+          type: "List of [Role](...)s"
+      returns:
+        - "[Iterator](...) of [Relationship](...) objects"
+  - method:
+    common: &method-roles
+      title: Retrieve the roles
+      description: Retrieves the roles that the thing plays.
+    java:
+      <<: *method-roles
+      method: thing.roles();
+      returns:
+        - "Stream of [Role](...) objects"
+    nodejs:
+      <<: *method-roles
+      method: async thing.roles();
+      returns:
+        - "[Iterator](...) of [Role](...) objects"
+    cpython:
+      <<: *method-roles
+      method: thing.roles()
+      returns:
+        - "[Iterator](...) of [Role](...) objects"
+  - method:
+    common: &method-attributes
+      title: Retrieve the attributes
+      description: Retrieves the attributes that the thing has.
+      accepts: &accepts-attributes
+        param: &accepts-attributes-param-types
+          name: roles
+          description: The list of types to filter the attributes by.
+          required: false
+          default: N/A
+    java:
+      <<: *method-attributes
+      method: thing.attributes();
+      accepts:
+        <<: *accepts-attributes
+        param:
+          <<: *accepts-attributes-param-types
+          type: "Array of [AttributeType](...)s"
+      returns:
+        - "Stream of [Attribute](...) objects"
+    nodejs:
+      <<: *method-attributes
+      method: async thing.attributes();
+      accepts:
+        <<: *accepts-attributes
+        param:
+          <<: *accepts-attributes-param-types
+          type: "Array of [AttributeType](...)s"
+      returns:
+        - "[Iterator](...) of [Attribute](...) objects"
+    cpython:
+      <<: *method-attributes
+      method: thing.attributes()
+      accepts:
+        <<: *accepts-attributes
+        param:
+          <<: *accepts-attributes-param-types
+          type: "List of [AttributeType](...)s"
+      returns:
+        - "[Iterator](...) of [Attribute](...) objects"
+  - method:
+    common: &method-keys
+      title: Retrieve the keys
+      description: Retrieves the attributes that the thing has as its keys.
+      accepts: &accepts-keys
+        param: &accepts-keys-param-types
+          name: roles
+          description: The list of types to filter the attributes by.
+          required: false
+          default: N/A
+    java:
+      <<: *method-keys
+      method: thing.keys();
+      accepts:
+        <<: *accepts-keys
+        param:
+          <<: *accepts-keys-param-types
+          type: "Array of [AttributeType](...)s"
+      returns:
+        - "Stream of [Attribute](...) objects"
+    nodejs:
+      <<: *method-keys
+      method: async thing.keys();
+      accepts:
+        <<: *accepts-keys
+        param:
+          <<: *accepts-keys-param-types
+          type: "Array of [AttributeType](...)s"
+      returns:
+        - "[Iterator](...) of [Attribute](...) objects"
+    cpython:
+      <<: *method-keys
+      method: thing.keys()
+      accepts:
+        <<: *accepts-keys
+        param:
+          <<: *accepts-keys-param-types
+          type: "List of [AttributeType](...)s"
+      returns:
+        - "[Iterator](...) of [Attribute](...) objects"
+  - method:
+    common: &method-has
+      title: Assign an attribute
+      description: Assigns an attribute to the thing.
+      accepts:
+        param:
+          name: attribute
+          description: The attribute to be owned by the thing.
+          type: "[Attribute](...)"
+          required: true
+          default: N/A
+      returns:
+        - "[Thing](...) object"
+    java:
+      <<: *method-has
+      method: thing.has(Attribute attribute);
+    nodejs:
+      <<: *method-has
+      method: async thing.has(attribute);
+    cpython:
+      <<: *method-has
+      method: thing.has(attribute)
+  - method:
+    common: &method-unhas
+      title: Unassign an attribute
+      description: Unassigns an attribute from the thing.
+      accepts:
+        param:
+          name: attribute
+          description: The attribute to be disowned from the thing.
+          type: "[Attribute](...)"
+          required: true
+          default: N/A
+      returns:
+        - "[Thing](...) object"
+    java:
+      <<: *method-unhas
+      method: thing.unhas(Attribute attribute);
+    nodejs:
+      <<: *method-unhas
+      method: async thing.unhas(attribute);
+    cpython:
+      <<: *method-unhas
+      method: thing.unhas(attribute)
+  - method:
+    common: &method-isInferred
+      title: Check if inferred
+      description: Checks if the thing is inferred by a rule.
+      returns:
+        - boolean
+    java:
+      <<: *method-isInferred
+      method: thing.isInferred();
+    nodejs:
+      <<: *method-isInferred
+      method: async thing.isInferred();
+    cpython:
+      <<: *method-isInferred
+      method: thing.is_inferred()

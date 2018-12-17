@@ -1,0 +1,431 @@
+methods:
+  - method:
+    common: &method-label-a
+      title: Retrieve the label
+      returns:
+        - String
+    java:
+      <<: *method-label-a
+      method: type.label();
+    nodejs:
+      <<: *method-label-a
+      method: async type.label();
+    cpython:
+      <<: *method-label-a
+      method: type.label()
+  - method:
+    common: &method-label-b
+      title: Rename the label
+      description: Renames the label of the type. The new label mustn't already exist.
+      accepts:
+        param1:
+          name: label
+          description: The new label to repalce the current one
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-label-b
+      method: type.label(Label.of(label));
+      returns:
+        - "[Type](...) object"
+    nodejs:
+      <<: *method-label-b
+      method: async type.label(label);
+      returns:
+        - "void"
+    cpython:
+      <<: *method-label-b
+      method: type.label(label)
+      returns:
+        - "[Type](...) object"
+  - method:
+    common: &method-sup-a
+      title: Retrieve direct supertype
+      description: Retrieves the most immidiate supertype of the type
+    java:
+      <<: *method-sup-a
+      method: type.sup();
+      returns:
+        - "[Type](...) object"
+        - "null"
+    nodejs:
+      <<: *method-sup-a
+      method: async type.sup();
+      returns:
+        - "[Type](...) object"
+        - "null"
+    cpython:
+      <<: *method-sup-a
+      method: type.sup()
+      returns:
+        - "[Type](...) object"
+        - None
+  - method:
+    common: &method-sup-b
+      title: Change direct supertype
+      description: Changes the most immidiete supertype of the type.
+      accepts:
+        param:
+          name: type
+          description: The new type that the given type inherits
+          type: "[EntityType](...) | [AttributeType](...) | [RelationshipType](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-sup-b
+      method: type.sup(Type type);
+      returns:
+        - "[Type](...) object"
+        - "null"
+    nodejs:
+      <<: *method-sup-b
+      method: async type.sup(type)
+      returns:
+        - void
+    cpython:
+      <<: *method-sup-b
+      method: type.sup(type)
+      returns:
+        - "[Type](...) object"
+        - None
+  - method:
+    common: &method-sups
+      title: Retrieve all supertypes
+      description: Retrieves all supertypes of the type.
+    java:
+      <<: *method-sups
+      method: type.sups();
+      returns:
+        - "Stream of [Type](...) objects"
+    nodejs:
+      <<: *method-sups
+      method: async type.sups()
+      returns:
+        - "[Iterator](...) of [Type](...) objects"
+    cpython:
+      <<: *method-sups
+      method: type.sups()
+      returns:
+        - "[Iterator](...) of [Type](...) objects"
+  - method:
+    common: &method-subs
+      title: Retrieve all subtypes
+      description: Retrieves all subtypes of the type.
+    java:
+      <<: *method-subs
+      method: type.subs();
+      returns:
+        - "Stream of [Type](...) objects"
+    nodejs:
+      <<: *method-subs
+      method: async type.subs()
+      returns:
+        - "[Iterator](...) of [Type](...) objects"
+    cpython:
+      <<: *method-subs
+      method: type.subs()
+      returns:
+        - "[Iterator](...) of [Type](...) objects"
+  - method:
+    common: &method-isAbstract-a
+      title: Check if type is abstract
+      returns:
+        - boolean
+    java:
+      <<: *method-isAbstract-a
+      method: type.isAbstract();
+    nodejs:
+      <<: *method-isAbstract-a
+      method: async type.isAbstract();
+    cpython:
+      <<: *method-isAbstract-a
+      method: type.is_abstract()
+  - method:
+    common: &method-isAbstract-b
+      title: Toggle abstraction
+      description: Determines whether or not the type should be abstract.
+      accepts:
+        param:
+          name: abstract
+          description: true to be abstracted and false to not.
+          type: boolean
+          required: true
+          default: N/A
+      returns:
+        - "[Type](...) object"
+    java:
+      <<: *method-isAbstract-b
+      method: type.isAbstract(Boolean abstract);
+    nodejs:
+      <<: *method-isAbstract-b
+      method: async type.isAbstract(abstract);
+    cpython:
+      <<: *method-isAbstract-b
+      method: type.is_abstract(abstract)
+  - method:
+    common: &method-playing
+      title: Retrieve roles played by the type
+      description: Retrieves all roles that are allowed to be played by the type.
+    java:
+      <<: *method-playing
+      method: type.playing();
+      returns:
+        - "Stream of [Role](...) objectss"
+    nodejs:
+      <<: *method-playing
+      method: async type.playing();
+      returns:
+        - "[Iterator](...) of [Role](...) objects"
+    cpython:
+      <<: *method-playing
+      method: type.playing()
+      returns:
+        - "[Iterator](...) of [Role](...) objects"
+  - method:
+    common: &method-plays
+      title: Add a new role to be played by the type
+      description: Allows the type to play the given role.
+      accepts:
+        param:
+          name: role
+          description: The role to be played by the type.
+          type: "[Role](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-plays
+      method: type.plays(Role role);
+      returns:
+        - "[Type](...) object"
+    nodejs:
+      <<: *method-plays
+      method: async type.plays(role);
+      returns:
+        - void
+    cpython:
+      <<: *method-plays
+      method: type.plays(role)
+      returns:
+        - "[Type](...) object"
+  - method:
+    common: &method-unplay
+      title: Remove a role from being played by the type
+      description: Disallows the type from playing the given role.
+      accepts:
+        param:
+          name: role
+          description: The role to not be played by the type.
+          type: "[Role](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-unplay
+      method: type.unplay(Role role);
+      returns:
+        - "[Type](...) object"
+    nodejs:
+      <<: *method-unplay
+      method: async type.unplay(role);
+      returns:
+        - void
+    cpython:
+      <<: *method-unplay
+      method: type.unplay(role)
+      returns:
+        - "[Type](...) object"
+  - method:
+    common: &method-attributes
+      title: Retrieve attributes of the type
+      description: Retrieves attributes that the type is allowed to own.
+    java:
+      <<: *method-attributes
+      method: type.attributes();
+      returns:
+        - "Stream of [AttributeType](...) objects"
+    nodejs:
+      <<: *method-attributes
+      method: async type.attributes();
+      returns:
+        - "Iterator of [AttributeType](...) objects"
+    cpython:
+      <<: *method-attributes
+      method: type.attributes()
+      returns:
+        - "Iterator of [AttributeType](...) objects"
+  - method:
+    common: &method-has
+      title: Add an attribute to the type
+      description: Allows the type to own the given attribute.
+      accepts:
+        param: &accepts-has-param-a
+          desctiption: the AttributeType to be owned by the type.
+          type: "[AttributeType](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-has
+      method: type.has(AttributeType attributeType);
+      accepts:
+        param:
+          <<: *accepts-has-param-a
+          name: attributeType
+      returns:
+        - "[Type](...) object"
+    nodejs:
+      <<: *method-has
+      method: async type.has(attributeType);
+      accepts:
+        param:
+          <<: *accepts-has-param-a
+          name: attributeType
+      returns:
+        - void
+    cpython:
+      <<: *method-has
+      method: type.has(attribute_type)
+      accepts:
+        param:
+          <<: *accepts-has-param-a
+          name: attribute_type
+      returns:
+        - "[Type](...) object"
+  - method:
+    common: &method-unhas
+      title: Remove an attribute from the type
+      description: Disallows the type from owning the given attributeType.
+      accepts:
+        param: &accepts-unhas-param-a
+          desctiption: The AttributeType to not be owend by the type.
+          type: "[AttributeType](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-unhas
+      method: type.unhas();
+      accepts:
+        param:
+          <<: *accepts-unhas-param-a
+          name: attributeType
+      returns:
+        - "[Type](...) object"
+    nodejs:
+      <<: *method-unhas
+      method: async type.unhas();
+      accepts:
+        param:
+          <<: *accepts-unhas-param-a
+          name: attributeType
+      returns:
+        - void
+    cpython:
+      <<: *method-unhas
+      method: type.unhas()
+      accepts:
+        param:
+          <<: *accepts-unhas-param-a
+          name: attribute_type
+      returns:
+        - "[Type](...) object"
+  - method:
+    common: &method-keys
+      title: Retrieve keys of the type
+      descriotion: Retrieves keys that the type is allowed to own.
+    java:
+      <<: *method-keys
+      method: type.keys();
+      returns:
+        - "Stream of [AttributeType](...) objects"
+    nodejs:
+      <<: *method-keys
+      method: async type.keys();
+      returns:
+        - "Iterator of [AttributeType](...) objects"
+    cpython:
+      <<: *method-keys
+      method: type.keys()
+      returns:
+        - "Iterator of [AttributeType](...) objects"
+  - method:
+    common: &method-key
+      title: Add a key to the type
+      description: Allows the type to own the given attributeType as its key.
+      accepts:
+        param:
+          name: key
+          desctiption: the AttributeType to be owned by the type as its key.
+          type: "[AttributeType](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-key
+      method: type.key(AttributeType attributeType);
+      returns:
+        - "[Type](...) object"
+    nodejs:
+      <<: *method-key
+      method: async type.key(attributeType);
+      returns:
+        - void
+    cpython:
+      <<: *method-key
+      method: type.key(attributeType)
+      returns:
+        - "[Type](...) object"
+  - method:
+    common: &method-unkey
+      title: Remove a key from the type
+      description: Disallows the type from owning the given attributeType as its key.
+      accepts:
+        param: &accepts-unkey-param-a
+          desctiption: the AttributeType to not be owend by the type as its key.
+          type: "[AttributeType](...)"
+          required: true
+          default: N/A
+      returns:
+        - "[Type](...) object"
+    java:
+      <<: *method-unkey
+      method: type.unkey(AttributeType key);
+      accepts:
+        param:
+          <<: *accepts-unkey-param-a
+          name: attributeType
+      returns:
+        - "[Type](...) object"
+    nodejs:
+      <<: *method-unkey
+      method: async type.unkey(attributeType);
+      accepts:
+        param:
+          <<: *accepts-unkey-param-a
+          name: attributeType
+      returns:
+        - void
+    cpython:
+      <<: *method-unkey
+      method: type.unkey(attribute_type)
+      accepts:
+        param:
+          <<: *accepts-unkey-param-a
+          name: attribute_type
+      returns:
+        - "[Type](...) object"
+  - method:
+    common: &method-instances
+      title: Retrieve instances of the type
+    java:
+      <<: *method-instances
+      method: type.instances();
+      returns:
+        - "Stream of [Thing](...) object"
+    nodejs:
+      <<: *method-instances
+      method: async type.instances();
+      returns:
+        - "[Iterator]() of [Thing](...) object"
+    cpython:
+      <<: *method-instances
+      method: type.instances()
+      returns:
+        - "[Iterator]() of [Thing](...) object"

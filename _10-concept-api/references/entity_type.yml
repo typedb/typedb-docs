@@ -1,0 +1,15 @@
+methods:
+  - method:
+    common: &method-create
+      title: Create an instance of the entity type
+      returns:
+        - "[Entity](...) object"
+    java:
+      <<: *method-create
+      method: entityType.create();
+    nodejs:
+      <<: *method-create
+      method: async entityType.create();
+    cpython:
+      <<: *method-create
+      method: entity_type.create()

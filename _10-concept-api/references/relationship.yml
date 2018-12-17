@@ -1,0 +1,110 @@
+methods:
+  - method:
+    common: &method-rolePlayersMap
+      title: Retrieve roleplayers per role
+      description: Retrieves the roleplayers of a relationship mapped to each of its roles.
+    java:
+      <<: *method-rolePlayersMap
+      method: relationship.rolePlayersMap();
+      returns:
+        - 'Map<Role, Set<Thing>>'
+    nodejs:
+      <<: *method-rolePlayersMap
+      method: async relationship.rolePlayersMap();
+      returns:
+        - 'Map<Role, Set<Thing>>'
+    cpython:
+      <<: *method-rolePlayersMap
+      method: relationship.role_players_map()
+      returns:
+        - Dict[Role, set[Thing]]
+  - method:
+    common: &method-rolePlayers
+      title: Retrieve roleplayers
+      description: Retrieves the things that play a role in the relationship.
+      accepts:
+        param:
+          name: role
+          description: The role to filter the roleplayers by.
+          type: "[Role](...)"
+          required: false
+          default: N/A
+    java:
+      <<: *method-rolePlayers
+      method: relationship.rolePlayers(Role role);
+      returns:
+        - "Stream of [Thing](...) objects"
+    nodejs:
+      <<: *method-rolePlayers
+      method: async relationship.rolePlayers(role);
+      returns:
+        - "[Iterator](...) of [Thing](...) objects"
+    cpython:
+      <<: *method-rolePlayers
+      method: relationship.role_players(role)
+      returns:
+        - "[Iterator](...) of [Thing](...) objects"
+  - method:
+    common: &method-assign
+      title: Add a new roleplayer
+      description: Adds a new roleplayer to play the given role in the relationship.
+      accepts:
+        param:
+          name: role
+          description: The role to be played by the `thing`
+          type: "[Role](...)"
+          required: true
+          default: N/A
+        param:
+          name: thing
+          description: The thing to play the `role`
+          type: "[Thing](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-assign
+      method: relationship.assign(Role role, Thing thing);
+      returns:
+        - '[Relationship](...) object'
+    nodejs:
+      <<: *method-assign
+      method: async relationship.assign(role, thing);
+      returns:
+        - void
+    cpython:
+      <<: *method-assign
+      method: relationship.assign(role, thing)
+      returns:
+        - '[Relationship](...) object'
+  - method:
+    common: &method-unassign
+      title: Removes a roleplayer
+      description: Removes a roleplayer from playing the given role in the relationship.
+      accepts:
+        param:
+          name: role
+          description: The role to not be played by the `thing`
+          type: "[Role](...)"
+          required: true
+          default: N/A
+        param:
+          name: thing
+          description: The thing to not play the `role`
+          type: "[Thing](...)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-unassign
+      method: relationship.unassign(Role role, Thing thing);
+      returns:
+        - '[Relationship](...) object'
+    nodejs:
+      <<: *method-unassign
+      method: async relationship.unassign(role, thing);
+      returns:
+        - void
+    cpython:
+      <<: *method-unassign
+      method: relationship.unassign(role, thing)
+      returns:
+        - '[Relationship](...) object'

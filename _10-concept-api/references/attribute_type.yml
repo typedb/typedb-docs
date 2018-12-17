@@ -1,0 +1,112 @@
+methods:
+  - method:
+    common: &method-create
+      title: Create an instance of the attribute type
+      accepts:
+        param:
+          name: value
+          description: The value for the new attribute instance to hold
+          type: String | boolean | integer | float | date
+          required: true
+          default: N/A
+      returns:
+        - "[Attribute](...) object"
+    java:
+      <<: *method-create
+      method: attributeType.create(Object value);
+    nodejs:
+      <<: *method-create
+      method: async attributeType.create(value);
+    cpython:
+      <<: *method-create
+      method: attribute_type.create(value)
+  - method:
+    common: &method-attribute
+      title: Retrieve an instance with the given value
+      accepts:
+        param:
+          name: value
+          description: The value for the attribute instance to retrieve
+          type: String | boolean | integer | float | date
+          required: true
+          default: N/A
+    java:
+      <<: *method-attribute
+      method: attributeType.attribute(Object value);
+      returns:
+        - "[Attribute](...) object"
+        - "null"
+    nodejs:
+      <<: *method-attribute
+      method: async attributeType.attribute(value);
+      returns:
+        - "[Attribute](...) object"
+        - "null"
+    cpython:
+      <<: *method-attribute
+      method: attribute_type.attribute(value)
+      returns:
+        - "[Attribute](...) object"
+        - None
+  - method:
+    common: &method-datatype
+      title: Retrieve the datatype for attribute type
+      returns:
+        - String
+    java:
+      <<: *method-datatype
+      method: attributeType.dataType();
+    nodejs:
+      <<: *method-datatype
+      method: async attributeType.dataType();
+    cpython:
+      <<: *method-datatype
+      method: attributeType.dataType()
+  - method:
+    common: &method-regex-a
+      title: Retrieve the regex for attribute type
+      description: Retrueves the regex that all instacnes of the attribute type must conform to.
+    java:
+      <<: *method-regex-a
+      method: attributeType.regex();
+      returns:
+        - String
+        - "null"
+    nodejs:
+      <<: *method-regex-a
+      method: async attributeType.regex();
+      returns:
+        - String
+        - None
+    cpython:
+      <<: *method-regex-a
+      method: attribute_type.regex()
+      returns:
+        - String
+        - "null"
+  - method:
+    common: &method-regex-b
+      title: Set the regex for attribute type
+      description: Set the regex that all instacnes of the attribute type must conform to.
+      accepts:
+        param:
+          name: regex
+          description: The regex that all instances of the attribute type must conform to.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-regex-b
+      method: attributeType.regex(String regex);
+      returns:
+        - "[AttributeType](...) object"
+    nodejs:
+      <<: *method-regex-b
+      method: async attributeType.regex(regex);
+      returns:
+        - void
+    cpython:
+      <<: *method-regex-b
+      method: attribute_type.regex(regex)
+      returns:
+        - "[AttributeType](...) object"

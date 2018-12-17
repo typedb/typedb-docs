@@ -1,0 +1,50 @@
+methods:
+  - method:
+    common: &method-value
+      title: Retrieve the value
+      description: Retrieves the value which the attribute holds.
+    java:
+      <<: *method-value
+      method: attribute.value();
+      return:
+        - String
+        - Long
+        - Float
+        - Boolean
+        - Date
+    nodejs:
+      <<: *method-value
+      method: async attribute.value();
+      return:
+        - String
+        - Number
+        - boolean
+        - Date
+    cpython:
+      <<: *method-value
+      method: attribute.value()
+      return:
+        - String
+        - int
+        - float
+        - boolean
+        - Date
+  - method:
+    common: &method-owners
+      title: Retrieve the owners
+      description: Retrieves the things that own the attribute.
+    java:
+      <<: *method-owners
+      method: attribute.owners();
+      return:
+        - "Stream of [Thing](...) objects"
+    nodejs:
+      <<: *method-owners
+      method: async attribute.owners();
+      return:
+        - "[Iterator](...) of [Thing](...) objects"
+    cpython:
+      <<: *method-owners
+      method: attribute.owners()
+      return:
+        - "[Iterator](...) of [Thing](...) objects"
