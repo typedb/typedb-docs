@@ -6,4 +6,4 @@ summary: ""
 permalink: /docs/client-api/java
 ---
 
-{% include client_api/main.html language = "java" %}
+{% include client_api.html language = "java" %}
