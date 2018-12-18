@@ -27,7 +27,7 @@ rule-label sub rule,
 
 Let's look an example.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql

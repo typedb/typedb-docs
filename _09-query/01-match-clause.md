@@ -25,7 +25,7 @@ What follows in this section, describes how we can use the `match` keyword to fi
 ### Matching instances of an entity
 Matching instances of an entity type is easy. We do so by using a variable followed by the `isa` keyword and the label that belongs to the entity of interest.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -62,7 +62,7 @@ The example above, for every person, assigns the person (entity) instance to the
 #### Instances of an entity with particular attributes
 To only match the instances of entities that own a specific attribute, we use the `has` keyword, followed by the attribute's label and a variable.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -100,7 +100,7 @@ We will soon learn [how to target attributes of a specific value](#matching-inst
 ### Matching instances of a relationship
 Because of the [dependent nature of relationships](/docs/schema/concepts#defining-a-relationship), matching them is slightly different to matching entities and attributes.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -137,7 +137,7 @@ The example above, for every employment, assigns the employment (relationship) i
 #### Instances of a relationship with particular attributes
 To only match the instances of relationships that own a specific attribute, we use the `has` keyword followed by the attribute's label and a variable.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -174,7 +174,7 @@ We will soon learn [how to target attributes of a specific value](#matching-inst
 #### Leaving the instance unassigned
 Assigning a relationship to a variable is optional. We may only be interested in the roleplayers of a certain relationship. In such case, we would write the above like so:
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -209,7 +209,7 @@ answer_iterator = transaction.query("match (employer: $x, employee: $y) isa empl
 #### Leaving the roles out
 In scenarios where the relationship relates to only one role, we can omit the roles altogether. Let's look at another example.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -247,7 +247,7 @@ Instances of attributes can be matched in various ways depending on the use case
 #### Independent of type
 We can match instances of attributes based on their value regardless of their abel.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -284,7 +284,7 @@ This matches instances of any attribute whose value is "some value" and assigns 
 #### Independent of owner
 We can match instances of attributes based on their value regardless of what they belong to. Let's look an example.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -321,7 +321,7 @@ This matches instances of attribute `name` with value `"John"`, regardless of wh
 #### With a given subset
 To match all instances of attributes that contain a substring, we use the `contains` keyword.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -358,7 +358,7 @@ This matches instances of any attribute whose value contains the substring `"+44
 #### With a given regex
 The value of an attribute can also be matched using a regex.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -395,7 +395,7 @@ This matches the instances of any attribute whose value matches the given regex 
 #### Owners with multiple attributes
 To match instances of a thing that owns multiple attributes, we can simply chain triples of `has`, label and variable. Separating each triple with a comma is optional.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -430,7 +430,7 @@ answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
 #### Owners with attributes of given values
 We can also match instances that own an attribute with a specific value.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -464,7 +464,7 @@ answer_iterator = transaction.query('match $p isa person has first-name "John" h
 
 But if in this example, we still want to know how old exactly each John is? we can separate the condition like so.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -500,7 +500,7 @@ answer_iterator = transaction.query('match $p isa person has first-name "John" h
 ### Instances of a direct type
 The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](/docs/schema/concepts#subtyping-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -537,7 +537,7 @@ Thi matches only the direct instances of `organisation`. That means the instance
 ### One particular instance
 To match a particular instance with the given ID, we use the `id` keyword.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -580,7 +580,7 @@ Having fully understood the [schema concepts](/docs/schema/concepts) and how the
 ### Subtypes of a given type
 To match all concepts of a given type, we use the `sub` keyword. Here are the examples for matching subtypes of all concepts types, including `thing` that is a supertype to all other types.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -650,7 +650,7 @@ answer_iterator_e = transaction.query("match $x sub relationship; get;")
 ### Roles of a given relationship
 Given a particular relationship, we can use the `relates` keyword to match all roles related to that relationship.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -687,7 +687,7 @@ This matches all roles of the `employment` relationship - `employer` and `employ
 #### Subroles of a given role in a super-relationship
 As we learned about [subtyping relationships](/docs/schema/concepts#subtyping-a-relationship), we saw that a role related to a sub-relationship is linked to a corresponding parent's role using the `as` keyword. We can use the same keyword in a `match` clause to match the corresponding role in the given sub-relationship. Let's look an example.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -725,7 +725,7 @@ This matches all the roles that correspond to the `member` role of the relations
 ### Roleplayers of a given role
 Given a role, we can match the `thing`s that play that role by using the `plays` keyword.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -762,7 +762,7 @@ This matches all `thing`s that play the role `employee` in any relationship - `p
 ## Owners of a given attribute
 Given an attribute, we can match the `thing`s that own that attribute by using the `has` keyword.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql

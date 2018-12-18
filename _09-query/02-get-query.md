@@ -12,7 +12,7 @@ The `get` query triggers a search in the knowledge graph based on what has been 
 ## Getting the Variables
 Any variable that has been specified in the `match` clause can be returned as the answers of the `get` query. Let's look at an example of how variables can be asked for in the answer.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -59,7 +59,7 @@ If no variable is specified after `get`, all variables specified in the `match` 
 ## Limiting Results
 To limit the number of results to be returned, we use the `limit` keyword followed by the number to which results are to be limited.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -96,7 +96,7 @@ This query returns only one single (and random) instance of type `person`.
 ## Ordering Results
 To order the results by a particular variable, we use the `order` keyword followed by the variable by which we would like the results to be ordered. A second argument, `asc` (ascending) or `desc` (descending), determines of the sorting method.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -139,7 +139,7 @@ Placing `order by` before and after the `limit` makes a big difference. `order b
 ## Offsetting Results
 Often used in conjunction with `limit`, we use the `offset` keyword followed by the number we would like the results to be offset by. This is commonly used to return a desired range of the results.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql

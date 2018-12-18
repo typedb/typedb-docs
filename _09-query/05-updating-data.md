@@ -14,7 +14,7 @@ In most cases, a `thing` is expected to own only one instance of its attribute a
 
 Let's look at an example.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -70,7 +70,7 @@ This first deletes the association that the `company` with id `V17391` has with 
 ### Updating all instances of a given attribute
 There may also be cases where we need to update the value of all instances that are of a certain attribute type. To do so, first, we assign the new instance of the given attribute to all things that own the old instance, and then delete the old instance.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -123,7 +123,7 @@ This first looks for anything that owns the `color` attribute with the value of 
 ### Updating the roleplayers of a relationship
 To change the roleplayers of a given relationship, we first need to [delete the instances of the relationship](/docs/query/delete-query# deleting-instances-of-relationship) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#inserting-instances-of-relationship) with the new roleplayer.
 
-<div class="gtabs dark">
+<div class="gtabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
