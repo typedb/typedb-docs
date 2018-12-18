@@ -104,13 +104,13 @@ Workbase connects to a running [Grakn Server](/docs/running-grakn/install-n-run#
 <div class="slideshow">
 
 [slide:start]
-[body:start]![Specify the host and port](/images/workbase/main_settings.png)[body:end]
+[body:start]![Specify the host and port](/docs/images/workbase/main_settings.png)[body:end]
 [footer:start]Right after opening the Workbase, click on the _gear_ icon in the right sidebar.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start][header:end]
-[body:start]![Specify the host and port](/images/workbase/settings_connection.png)[body:end]
+[body:start]![Specify the host and port](/docs/images/workbase/settings_connection.png)[body:end]
 [footer:start]Under _Connection Settings_ , alter the host and port as per your [custom configuration of Grakn Server](/docs/running-grakn/configuration##host-and-port).[footer:end]
 [slide:end]
 
@@ -120,17 +120,17 @@ Workbase connects to a running [Grakn Server](/docs/running-grakn/install-n-run#
 <div class="slideshow">
 
 [slide:start]
-[body:start]![Select a Keyspace](/images/workbase/main_keyspace.png)[body:end]
+[body:start]![Select a Keyspace](/docs/images/workbase/main_keyspace.png)[body:end]
 [footer:start]To select a keyspace for Workbase to connect to, we need to click on the keyspace button.[footer:end]
 [slide:end]
 
 [slide:start]
-[body:start]![Select a Keyspace](/images/workbase/main_keyspace_select.png)[body:end]
+[body:start]![Select a Keyspace](/docs/images/workbase/main_keyspace_select.png)[body:end]
 [footer:start]This shows us the list of all keyspaces running on the Grakn Server. We then select the keyspace of interest.[footer:end]
 [slide:end]
 
 [slide:start]
-[body:start]![Select a Keyspace](/images/workbase/main_keyspace_selected.png)[body:end]
+[body:start]![Select a Keyspace](/docs/images/workbase/main_keyspace_selected.png)[body:end]
 [footer:start]Keyspace is now connected to the selected keyspace, in our case that is named `phone_calls`.[footer:end]
 [slide:end]
 
