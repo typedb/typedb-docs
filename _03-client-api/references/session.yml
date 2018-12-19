@@ -3,7 +3,7 @@ title: "Session"
 methods:
   - method1:
     common: &method-1
-      title: Creating a transaction
+      title: Create a transaction ## !!! synced with codeKeywordsToLink
       description: Creates a transacton to execute read and write operations on the keyspace connected to the ssesion.
       method: 'session.transaction(type)'
       accepts: &accepts-1
@@ -30,7 +30,7 @@ methods:
 
   - method2:
     common: &method-2
-      title: Closing a session
+      title: Close a session
       description: Closes the session once it is no longer being used.
       method: 'session.close()'
 

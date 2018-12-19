@@ -9,7 +9,7 @@ permalink: /docs/concept-api/type
 ## Type Methods
 `Type` has all the [`Concept` methods](/docs/concept-api/concept) plus what follows.
 
-<div class="gtabs light" data-parse-to-html = "false">
+<div class="gtabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.type language="java" class_prefix="concept-api-java" %}
@@ -28,7 +28,7 @@ permalink: /docs/concept-api/type
 ## EntityType Methods
 `EntityType` has all the [`Type` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-parse-to-html = "false">
+<div class="gtabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.entity_type language="java" class_prefix="concept-api-java" %}
@@ -47,7 +47,7 @@ permalink: /docs/concept-api/type
 ## AttributeType Methods
 `AttributeType` has all the [`Type` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-parse-to-html = "false">
+<div class="gtabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.attribute_type language="java" class_prefix="concept-api-java" %}
@@ -66,7 +66,7 @@ permalink: /docs/concept-api/type
 ## RelationshipType Methods
 `RelationshipType` has all the [`Type` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-parse-to-html = "false">
+<div class="gtabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.relationship_type language="java" class_prefix="concept-api-java" %}
@@ -85,7 +85,7 @@ permalink: /docs/concept-api/type
 ## Role Methods
 `Role` has all the [`Concept` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-parse-to-html = "false">
+<div class="gtabs light" data-no-parse>
 
 [tab:Java]
 <div class="galert">

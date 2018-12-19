@@ -32,24 +32,27 @@ methods:
       <<: *method-rolePlayers
       method: relationship.rolePlayers(Role role);
       accepts:
-        <<: *accepts-rolePlayers-role
-        type: "[Role](/docs/concept-api/type?lang=java#role-methods)"
+        param:
+          <<: *accepts-rolePlayers-role
+          type: "[Role](/docs/concept-api/type?lang=java#role-methods)"
       returns:
         - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
     nodejs:
       <<: *method-rolePlayers
       method: async relationship.rolePlayers(role);
       accepts:
-        <<: *accepts-rolePlayers-role
-        type: "[Role](/docs/concept-api/type?lang=javascript#role-methods)"
+        param:
+          <<: *accepts-rolePlayers-role
+          type: "[Role](/docs/concept-api/type?lang=javascript#role-methods)"
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=java) objects"
     cpython:
       <<: *method-rolePlayers
       method: relationship.role_players(role)
       accepts:
-        <<: *accepts-rolePlayers-role
-        type: "[Role](/docs/concept-api/type?lang=python#role-methods)"
+        param:
+          <<: *accepts-rolePlayers-role
+          type: "[Role](/docs/concept-api/type?lang=python#role-methods)"
       returns:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=java) objects"
   - method:
@@ -70,7 +73,7 @@ methods:
           default: N/A
     java:
       <<: *method-assign
-      method: relationship.assign(Role role, Thing thing);
+      method: relationship.assign(Role role, Thing thing); 
       accepts:
         param:
           <<: *accepts-assign-role

@@ -6,6 +6,7 @@ summary: "How a Grakn Schema is defined."
 permalink: /docs/schema/concepts
 ---
 
+<!-- !!! synced with codeKeywordsToLink -->
 ## Define
 As the name suggests, the `define` keyword is used to develop the [schema](/docs/schema/overview) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relationships, attributes and rules to the schema.
 
@@ -1052,6 +1053,7 @@ transaction.commit()
 [tab:end]
 </div>
 
+<!-- !!! synced with codeKeywordsToLink -->
 ## Undefine
 As the name suggests, the `undefine` keyword is used to remove the definition of a type from the schema.
 

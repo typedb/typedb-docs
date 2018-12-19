@@ -9,7 +9,7 @@ permalink: /docs/concept-api/rule
 ## Rule Methods
 `Rule` has all the [`Concept` methods](/docs/concept-api/concept) plus what follows.
 
-<div class="gtabs light" data-parse-to-html = "false">
+<div class="gtabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.rule language="java" class_prefix="concept-api" %}

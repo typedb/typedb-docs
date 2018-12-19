@@ -3,7 +3,7 @@ title: "Transaction"
 methods:
   - method1:
     common: &method-1
-      title: Lazily execute a Graql query
+      title: Lazily execute a Graql query ## !!! synced with codeKeywordsToLink
       description: Prepare a Graql query to be executed on the keyspace where the session is connected to (answers are only computed when we ask for an answer, hence lazy).
       accepts: &accepts-1
         param1: &accepts-1-param-1
@@ -65,10 +65,10 @@ methods:
   #     <<: *method-2
   - method3:
     common: &method-3
-      title: Commit a write transaction
+      title: Commit a write transaction ## !!! synced with codeKeywordsToLink
       method: 'transaction.commit()'
       description: >
-        Commits the inserted or deleted data instances or schema concepts to the keyspace attached to the session from which this transaction originated. 
+        Commits the inserted or deleted data instances or schema concepts to the keyspace attached to the session from which this transaction originated.
         The transaction is also closed on commit.
     java:
       <<: *method-3
@@ -91,7 +91,7 @@ methods:
       <<: *method-4
   - method5:
     common: &method-5
-      title: Retrive a concept by ID
+      title: Retrive a concept by ID ## !!! synced with codeKeywordsToLink
       accepts: &accepts-5
         param 1: &accepts-5-param-1
           description: The id of the concept to retrieve
@@ -116,7 +116,7 @@ methods:
           name: concept_id
   - method6:
     common: &method-6
-      title: Retrive a schema concept by label
+      title: Retrive a schema concept by label ## !!! synced with codeKeywordsToLink
       accepts:
         param 1:
           name: label
@@ -134,7 +134,7 @@ methods:
       method: 'transaction.get_schema_concept(label)'
   - method7:
     common: &method-7
-      title: Retrive an attribute by value
+      title: Retrive an attribute by value ## !!! synced with codeKeywordsToLink
       accepts:
         param 1:
           name: value
@@ -177,7 +177,7 @@ methods:
       method: 'transaction.put_entity_type(label)'
   - method9:
     common: &method-9
-      title: Create or retrieve a RelationshipType
+      title: Create or retrieve a RelationshipType ## !!! synced with codeKeywordsToLink
       description: Creates a new RelationshipType if none exists with the given label, or retrieves the existing one.
       accepts:
         param 1:
@@ -196,7 +196,7 @@ methods:
       method: 'transaction.put_relationship_type(label)'
   - method10:
     common: &method-10
-      title: Create or retrieve an AttributeType
+      title: Create or retrieve an AttributeType ## !!! synced with codeKeywordsToLink
       description: Creates a new AttributeType if none exists with the given label, or retrieves the existing one.
       accepts:
         param 1:
@@ -221,7 +221,7 @@ methods:
       method: 'transaction.put_attribute_type(label)'
   - method11:
     common: &method-11
-      title: Create or retrieve a Role
+      title: Create or retrieve a Role ## !!! synced with codeKeywordsToLink
       description: Creates a new Role if none exists with the given label, or retrieves the existing one.
       accepts:
         param 1:
@@ -240,7 +240,7 @@ methods:
       method: 'transaction.put_role(label)'
   - method12:
     common: &method-12
-      title: Create or retrieve a Rule
+      title: Create or retrieve a Rule ## !!! synced with codeKeywordsToLink
       description: Creates a new Rule if none exists with the given label, or retrieves the existing one.
       accepts:
         param 1:

@@ -45,7 +45,7 @@ mappings:
     answer: "[ConceptSetMeasure](#client-api-title-conceptsetmeasure)"
 types:
   - type1:
-    title: ConceptMap
+    title: ConceptMap ## !!! synced with codeKeywordsToLink
     methods:
       - method1:
         common: &conceptmap-method-1
@@ -133,7 +133,7 @@ types:
     methods:
       - method1:
         common: &conceptset-method-1
-          title: Retrivea set of ids of concepts after a cluster computation
+          title: Retrive set of ids of concepts after a cluster computation
           method: answer.set()
           returns:
             - Set of String
@@ -155,7 +155,7 @@ types:
     methods:
       - method1:
         common: &conceptsetmeasure-method-1
-          title: Retrieve the numeric value of a centrality computation
+          title: Retrieve the numeric value of a centrality computation ## !!! synced with codeKeywordsToLink
           method: answer.measurement()
         java:
           <<: *conceptsetmeasure-method-1
@@ -195,7 +195,7 @@ types:
     methods:
       - method1:
         common: &answergroup-method-1
-          title: Retrieve the concept that is the group owner
+          title: Retrieve the concept that is the group owner ## !!! synced with codeKeywordsToLink
           method: answer.owner()
           returns:
             - Concept
@@ -229,11 +229,11 @@ types:
         cpython:
           <<: *explanation-method
   - type7:
-    title: Explanation
+    title: Explanation ## !!! synced with codeKeywordsToLink
     methods:
       - method1:
         common: &explanation-method-1
-          title: Retrieve a Graql explanation of the answer
+          title: Retrieve a Graql explanation of the answer ## !!! synced with codeKeywordsToLink
           returns:
             - String
         java:
@@ -247,7 +247,7 @@ types:
           method: answer.query_pattern()
       - method2:
         common: &explanation-method-2
-          title: Retrieve source facts of inference
+          title: Retrieve source facts of inference ## !!! synced with codeKeywordsToLink
           description: Provides a list of answers from which the inferred answer is derived.
           method: answer.answers()
         java:

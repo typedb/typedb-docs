@@ -1,5 +1,5 @@
 
-title: "Iterator"
+title: Iterator ## !!! synced with codeKeywordsToLink
 description:
   nodejs: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>async iterator.next()</code> method."
   cpython: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>next(iterator)</code> method."
@@ -15,7 +15,7 @@ methods:
       <<: *method-1
   - method2:
     common: &method-2
-      title: Consume the iterator eagerly
+      title: Consume the iterator eagerly ## !!! synced with codeKeywordsToLink
     nodejs:
       <<: *method-2
       description: Consumes the iterator and collects all Concepts into an array.

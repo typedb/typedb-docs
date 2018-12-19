@@ -1,5 +1,5 @@
 
-title: "Graql"
+title: Graql ## !!! synced with codeKeywordsToLink
 methods:
   - method1:
     common: &method-1
@@ -12,7 +12,7 @@ methods:
     #   <<: *method-1
   - method2:
     common: &method-2
-      title: Manipulate the schema programatically
+      title: Manipulate the schema programatically ## !!! synced with codeKeywordsToLink
       method: |
         .define(VarPattern... varPatterns)
         .undefine(VarPattern... varPatterns)
@@ -34,7 +34,7 @@ methods:
       <<: *method-2
   - method3:
     common: &method-3
-      title: Match patterns in data
+      title: Match patterns in data ## !!! synced with codeKeywordsToLink
       method: .match(Pattern... patterns);
       description: |
         Matches the data that conforms to the given pattern.
@@ -52,7 +52,7 @@ methods:
       <<: *method-3
   - method4:
     common: &method-4
-      title: Insert data instances
+      title: Insert data instances ## !!! synced with codeKeywordsToLink
       method: |
         .insert(VarPattern... varPatterns);
         .match(Pattern... patterns).insert(VarPattern... varPatterns);
@@ -74,7 +74,7 @@ methods:
       <<: *method-4
   - method5:
     common: &method-5
-      title: Retriv data instances
+      title: Retrive data instances ## !!! synced with codeKeywordsToLink
       method: |
         .match(Pattern... patterns).get(Var... vars);
       description: |
@@ -116,7 +116,7 @@ methods:
       <<: *method-6
   - method7:
     common: &method-7
-      title: Aggregate values
+      title: Aggregate values ## !!! synced with codeKeywordsToLink
       method: '.match(Pattern... patterns).aggregate(Aggregate\<T\> aggreagate);'
       description: |
         Aggregates a given function over the data that matched the preceding match clause.
@@ -136,7 +136,7 @@ methods:
       <<: *method-7
   - method8:
     common: &method-8
-      title: Compute values
+      title: Compute values ## !!! synced with codeKeywordsToLink
       method: '.compute(Method\<T\> method);'
       description: |
         Computes values over a large dataset using a variable pattern.

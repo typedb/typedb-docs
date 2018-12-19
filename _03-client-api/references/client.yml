@@ -2,7 +2,7 @@ title: "Client"
 methods:
   - method1:
     common: &method-1
-      title: Creating a session/keyspace
+      title: Create a session/keyspace ## !!! synced with codeKeywordsToLink
       description: >
         Creates a communication channel to the given keyspace on the Grakn server.
         **If no keyspace with the given name exists, a new one will be created.**
@@ -32,7 +32,7 @@ methods:
 
   - method2:
     common: &method-2
-      title: Retrieving all keyspaces
+      title: Retrieve all keyspaces ## !!! synced with codeKeywordsToLink
       description: Retrieves the name of all keyspaces running on the Grakn server.
       method: 'client.keyspaces().retrieve()'
     # java:
@@ -47,7 +47,7 @@ methods:
         - List of Strings
   - method3:
     common: &method-3
-      title: Deleting a keyspace
+      title: Delete a keyspace ## !!! synced with codeKeywordsToLink
       description: Deletes a keyspace with the given name.
       accepts: &accepts-3
         param1: &accepts-3-param-1
