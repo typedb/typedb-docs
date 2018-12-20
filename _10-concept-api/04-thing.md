@@ -1,7 +1,6 @@
 ---
-title: Thing
-keywords:
-tags: []
+sidebarTitle: Thing
+pageTitle: Thing
 summary:
 permalink: /docs/concept-api/thing
 ---

@@ -1,7 +1,6 @@
 ---
-title: Concepts
-keywords: schema
-tags: [graql]
+sidebarTitle: Concepts
+pageTitle: Schema Concepts
 summary: "How a Grakn Schema is defined."
 permalink: /docs/schema/concepts
 ---

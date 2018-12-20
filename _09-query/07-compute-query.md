@@ -1,7 +1,6 @@
 ---
-title: Compute Query
-keywords: graql, compute, match
-tags: [graql]
+sidebarTitle: Compute
+pageTitle: Compute Query
 summary: "Computing values over a large set of data in a Grakn knowledge graph."
 permalink: /docs/query/compute-query
 ---

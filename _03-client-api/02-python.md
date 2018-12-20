@@ -1,7 +1,6 @@
 ---
-title: Client Python
-keywords: grakn client, grakn driver, grakn python
-tags: []
+sidebarTitle: Python
+pageTitle: Client Python
 summary: ""
 permalink: /docs/client-api/python
 ---

@@ -1,7 +1,6 @@
 ---
-title: Insert Query
-keywords: graql, query, insert
-tags: [graql]
+sidebarTitle: Insert
+pageTitle: Insert Query
 summary: "Inserting data into a Grakn knowledge graph."
 permalink: /docs/query/insert-query
 ---

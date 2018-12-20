@@ -1,5 +1,6 @@
 ---
-title: Console
+sidebarTitle: Console
+pageTitle: Graql Console
 keywords:
 tags: []
 summary:
@@ -11,9 +12,19 @@ The Graql Console, along with the [Grakn Clients](/docs/client-api/overview) and
 
 <!-- keyspace -> kbase -->
 
-## Console Options
+## Console Options {#console-options}
 
-### Selecting/creating a keyspace
+The options accepted by the `graql console` command are as follows.
+
+| Option               | Alias | Mode            | Used with   | Description                                                                             |
+|----------------------|-------|-----------------|-------------|---------------------------------------------------------------------------------------- |
+| `--keyspace <name>`  | `-k`  | interactive     | -           | Enters console with the given keyspace. If none found with the given name, creates one. |
+| `--file <path>`      | `-f`  | non-interactive | - -keyspace | Loads the given schema into the given keyspace.                                         |
+| `--uri <address>`    | `-r`  | interactive     | - -keyspace | Enters the console connected to the given keyspace hosted remotely.                     |
+| `--no-infer`         | `-n`  | interactive     | - -keyspace | Enters the console connected to the given keyspace with inference disabled.             |
+| `--version`          | `-v`  | non-interactive | -           | Prints version of the running Grakn.                                                    |
+
+<!-- ### Selecting/creating a keyspace
 To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option followed by the name of the keyspace. The name may only contain alphanumeric values and underscores.
 
 ```
@@ -42,11 +53,22 @@ If we intend to ignore [inferred instances of data](...) when querying the knowl
 ```
 
 ### Viewing the Grakn's version
-To find out which version of Grakn is installed, we use the `--version` (or `-v`) option.
+To find out which version of Grakn is installed, we use the `--version` (or `-v`) option. -->
 
-## Console Commands
+## Console Commands {#console-commands}
 
-### Committing changes
+Once inside the console, besides [Graql queries](/docs/query/overview), we can run the following commands.
+
+| Option     | Description                                                                                                                                                                                                 |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `commit`   | Any write operations, executed via the console, affects only a local copy of the keyspace. This command commits all changes to the original keyspace running on the Grakn Server.                           |
+| `rollback` | Undoes any changes made in the knowledge graph since the last `commit`.                                                                                                                                     |
+| `edit`     | Opens the text-editor specified by the `$EDITOR` environment variable (vim by default), allowing us to write one or more (multiline) Graql queries. The queries are executed as soon as we exit the editor. |
+| `clear`    | Clears the console from any previous queries, answers and commands.                                                                                                                                         |
+| `clean`    | Meant to be used with caution, removes not only the data but also the schema of the knowledge graph contained within the keyspace.                                                                          |
+| `exit`     | Exists the console.                                                                                                                                                                                         |
+
+<!-- ### Committing changes
 Any write operations executed via the console, affects only a _local_ copy of the keyspace that contains the altered knowledge graph. In order for these changes to be reflected on the original keyspace running on the Grakn Server, we use the `commit` command.
 
 ### Rolling back changes
@@ -62,4 +84,4 @@ In order to clear the console from any previous queries, answers and commands, w
 Meant to be used with caution, the `clean` command removes not only the data but also the schema of the knowledge graph contained within the entered keyspace. This is an irreversible act that results in an empty keyspace.
 
 ### Exiting the console
-To exit the console, we use the `exit` command.
+To exit the console, we use the `exit` command. -->

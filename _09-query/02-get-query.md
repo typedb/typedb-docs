@@ -1,7 +1,6 @@
 ---
-title: Get Query
-keywords: graql, query, get
-tags: [graql]
+sidebarTitle: Get
+pageTitle: Get Query
 summary: "Retrieving data from a Grakn knowledge graph."
 permalink: /docs/query/get-query
 ---

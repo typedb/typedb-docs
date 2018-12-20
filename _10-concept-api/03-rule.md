@@ -1,7 +1,6 @@
 ---
-title: Rule
-keywords:
-tags: []
+sidebarTitle: Rule
+pageTitle: Rule
 summary:
 permalink: /docs/concept-api/rule
 ---

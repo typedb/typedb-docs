@@ -1,7 +1,6 @@
 ---
-title: Configuring Connection
-keywords:
-tags: []
+sidebarTitle: Connection
+pageTitle: Configuring Connection
 summary: ""
 permalink: /docs/workbase/connection
 ---

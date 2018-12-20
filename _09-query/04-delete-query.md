@@ -1,7 +1,6 @@
 ---
-title: Delete Query
-keywords: graql, query, delete
-tags: [graql]
+sidebarTitle: Delete
+pageTitle: Delete Query
 summary: "Graql data from a Grakn knowledge graph."
 permalink: /docs/query/delete-query
 ---

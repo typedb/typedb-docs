@@ -1,7 +1,7 @@
 ---
 title: Overview
-keywords: schema
-tags: [graql]
+sidebarTitle: Overview
+pageTitle: Schema
 summary: "An overview of the schema in a Grakn knowledge graph."
 permalink: /docs/schema/overview
 ---

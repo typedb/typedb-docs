@@ -1,5 +1,6 @@
 ---
-title: Configuration
+sidebarTitle: Configuration
+pageTitle: Configuring Grakn
 keywords:
 tags: []
 summary: ""
@@ -21,7 +22,7 @@ If downloaded manually, you will find the configuration file in the `conf` direc
 
 <div class="galert">
 [Note]
-In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-n-run/#stopping-the-grakn-server) the Grakn Sever and [start] (/docs/running-grakn/install-n-run/#starting-the-grakn-server) it again.
+In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-n-run/#stopping-the-grakn-server) the Grakn Sever and [start](/docs/running-grakn/install-n-run/#starting-the-grakn-server) it again.
 </div>
 
 ### The default keyspace

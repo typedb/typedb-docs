@@ -1,7 +1,6 @@
 ---
-title: Google Cloud
-keywords:
-tags: []
+sidebarTitle: Google Cloud
+pageTitle: Google Cloud Deployment
 summary:
 permalink: /docs/cloud-deployment/google-cloud
 ---

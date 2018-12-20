@@ -1,7 +1,6 @@
 ---
-title: Overview
-keywords: graql, overview
-tags: [graql]
+sidebarTitle: Overview
+pageTitle: Graql Queries
 summary: "An introduction to Graql"
 permalink: /docs/query/overview
 ---

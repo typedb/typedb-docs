@@ -1,7 +1,6 @@
 ---
-title: Keyspace
-keywords:
-tags: []
+sidebarTitle: Keyspace
+pageTitle: Managing Keyspaces
 summary: ""
 permalink: /docs/management/keyspace
 ---

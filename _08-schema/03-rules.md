@@ -1,7 +1,7 @@
 ---
 title: Rules
-keywords: graql, automated reasoning, machine reasoning
-tags: [graql, reasoning]
+sidebarTitle: Rules
+pageTitle: Rules
 summary: "How Grakn uses rules to reason over explicitly stored data."
 permalink: /docs/schema/rules
 ---

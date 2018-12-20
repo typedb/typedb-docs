@@ -1,8 +1,7 @@
 ---
-title: Overview
-keywords: cloud, deployment, aws
-tags: [getting-started, deployment, cloud]
-summary: "Deploying Grakn in the cloud"
+sidebarTitle: KGMS
+pageTitle: Grakn KGMS
+summary: ""
 permalink: /docs/cloud-deployment/overview
 ---
 

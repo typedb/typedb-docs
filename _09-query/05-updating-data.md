@@ -1,7 +1,6 @@
 ---
-title: Updating Data
-keywords: graql, query, update
-tags: [graql]
+sidebarTitle: Update
+pageTitle: Updating Data
 summary: ""
 permalink: /docs/query/updating-data
 ---

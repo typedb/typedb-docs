@@ -1,9 +1,8 @@
 ---
-title: Investigating
-keywords:
-tags: []
+sidebarTitle: Investigation
+pageTitle: Investigating Results
 summary: ""
-permalink: /docs/workbase/investigating
+permalink: /docs/workbase/investigation
 ---
 
 ## Investigate

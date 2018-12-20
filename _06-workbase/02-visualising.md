@@ -1,9 +1,8 @@
 ---
-title: Visualising
-keywords:
-tags: []
+sidebarTitle: Visualisation
+pageTitle: Visualising Results
 summary: ""
-permalink: /docs/workbase/visualising
+permalink: /docs/workbase/visualisation
 ---
 
 ## Visualise

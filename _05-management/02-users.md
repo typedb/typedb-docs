@@ -1,7 +1,6 @@
 ---
-title: Authentication
-keywords:
-tags: []
+sidebarTitle: Users
+pageTitle: Managing Users
 summary:
 permalink: /docs/management/users
 ---

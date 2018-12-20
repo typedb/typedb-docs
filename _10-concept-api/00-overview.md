@@ -1,7 +1,6 @@
 ---
-title: Overview
-keywords:
-tags: []
+sidebarTitle: Overview
+pageTitle: Concept API
 summary:
 permalink: /docs/concept-api/overview
 ---

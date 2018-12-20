@@ -112,12 +112,12 @@ methods:
       title: Removes a roleplayer
       description: Removes a roleplayer from playing the given role in the relationship.
       accepts:
-        param: &accepts-unassign-role
+        param1: &accepts-unassign-role
           name: role
           description: The role to not be played by the `thing`
           required: true
           default: N/A
-        param: &accepts-unassign-thing
+        param2: &accepts-unassign-thing
           name: thing
           description: The thing to not play the `role`
           type: "[Thing](/docs/concept-api/thing)"
@@ -127,10 +127,10 @@ methods:
       <<: *method-unassign
       method: relationship.unassign(Role role, Thing thing);
       accepts:
-        param:
+        param1:
           <<: *accepts-unassign-role
           type: "[Role](/docs/concept-api/type?lang=java#role-methods)"
-        param:
+        param2:
           <<: *accepts-unassign-thing
           type: "[Thing](/docs/concept-api/thing?lang=java)"
       returns:
@@ -139,10 +139,10 @@ methods:
       <<: *method-unassign
       method: async relationship.unassign(role, thing);
       accepts:
-        param:
+        param1:
           <<: *accepts-unassign-role
           type: "[Role](/docs/concept-api/type?lang=javascript#role-methods)"
-        param:
+        param2:
           <<: *accepts-unassign-thing
           type: "[Thing](/docs/concept-api/thing?lang=javascript)"
       returns:
@@ -151,10 +151,10 @@ methods:
       <<: *method-unassign
       method: relationship.unassign(role, thing)
       accepts:
-        param:
+        param1:
           <<: *accepts-unassign-role
           type: "[Role](/docs/concept-api/type?lang=python#role-methods)"
-        param:
+        param2:
           <<: *accepts-unassign-thing
           type: "[Thing](/docs/concept-api/thing?lang=python)"
       returns:

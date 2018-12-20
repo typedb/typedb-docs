@@ -1,5 +1,6 @@
 ---
-title: Overview
+sidebarTitle: Overview
+pageTitle: Grakn Clients
 keywords: client
 tags: []
 summary: ""

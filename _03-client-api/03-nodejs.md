@@ -1,7 +1,7 @@
 ---
 title: Client Node.js
-keywords: grakn client, grakn driver, grakn nodejs
-tags: []
+sidebarTitle: Node.js
+pageTitle: Client Node.js
 summary: ""
 permalink: /docs/client-api/nodejs
 ---

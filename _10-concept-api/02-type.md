@@ -1,7 +1,6 @@
 ---
-title: Type
-keywords:
-tags: []
+sidebarTitle: Type
+pageTitle: Type
 summary:
 permalink: /docs/concept-api/type
 ---
