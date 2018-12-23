@@ -12,21 +12,21 @@ In this section, we will learn about how we can configure Grakn to have it tailo
 
 Prior to starting, the Grakn Server and Console read configurations from a file named `grakn.properties`. The location of this file varies based on how Grakn has been installed.
 
-If installed via Homebrew, this file is located in the following directory.
+If installed via Homebrew, we can find this file in the following directory.
 
 ```
 /usr/local/Cellar/grakn/{installed-version}/libexec/conf/
 ```
 
-If downloaded manually, you will find the configuration file in the `conf` directory inside the unzipped folder.
+If downloaded manually, we can find the configuration file in the `conf` directory inside the unzipped folder.
 
 <div class="galert">
 [Note]
-In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-n-run/#stopping-the-grakn-server) the Grakn Sever and [start](/docs/running-grakn/install-n-run/#starting-the-grakn-server) it again.
+In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-n-run/#stop-the-grakn-server) the Grakn Sever and [start](/docs/running-grakn/install-n-run/#start-the-grakn-server) it again.
 </div>
 
 ### The default keyspace
-The `knowledge-base.default-keyspace` config sets the default keyspace that the Graql Console falls back on when no `--keyspace` option is specified. The default value is `grakn`.
+The `knowledge-base.default-keyspace` config sets the default keyspace that the Graql Console falls back on when no [`--keyspace` option](/docs/running-grakn/console#console-options) is specified. The default value is `grakn`.
 
 ### Mitigating the supernode problem
 Grakn uses sharding to mitigate against supernodes. The `knowledge-base.sharding-threshold` config specifies the number of instances after which Grakn shards any type node. A larger threshold increases runtime as a Grakn knowledge graph grows while decreasing the likelihood of supernodes. A smaller threshold creates supernodes more frequently. The default value is `10000`.

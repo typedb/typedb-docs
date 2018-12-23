@@ -5,12 +5,12 @@ summary:
 permalink: /docs/concept-api/overview
 ---
 
-## Concept API
+## Concept Architecture
 Anything in Grakn, whether a type or an instance of data, is a [Concept](/docs/concept-api/concept). The diagram below, illustrates how the Concept Superclass is inherited by its direct and indirect descendants.
 
 ![Concept Hierarchy](/docs/images/concept-api/overview_hierarchy.png)
 
-**Type** refers to a Concept Type as defined in the [schema](/docs/schema/overview).
+**Type** refers to a Concept Type as defined in the [schema](/docs/schema/overview#data-model).
 
 **Thing** refers to an instance of data that is an instantiation of a Concept Type.
 

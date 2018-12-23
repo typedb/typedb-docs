@@ -1,7 +1,7 @@
 methods:
   - method:
     common: &method-when
-      title: Retrieve the _when_ body
+      title: Retrieve the when body
       description: Retrieves the statements that constructs the when body of the rule.
       returns:
         - String
@@ -16,7 +16,7 @@ methods:
       method: rule.get_when()
   - method:
     common: &method-then
-      title: Retrieve the _then_ body
+      title: Retrieve the then body
       description: Retrieves the single statement that constructs the then body of the rule.
       returns:
         - String

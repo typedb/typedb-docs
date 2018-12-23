@@ -1,12 +1,12 @@
 methods:
   - method:
     common: &method-create
-      title: Create an instance of the attribute type
+      title: Create instance
       accepts:
         param:
           name: value
           description: The value for the new attribute instance to hold
-          type: String | boolean | integer | float | date
+          type: String &#124; boolean &#124; integer &#124; float &#124; date
           required: true
           default: N/A
     java:
@@ -26,12 +26,12 @@ methods:
         - "[Attribute](/docs/concept-api/thing?lang=python#attribute-methods) object"
   - method:
     common: &method-attribute
-      title: Retrieve an instance with the given value
+      title: Retrieve instance by value
       accepts:
         param:
           name: value
           description: The value for the attribute instance to retrieve
-          type: String | boolean | integer | float | date
+          type: String &#124; boolean &#124; integer &#124; float &#124; date
           required: true
           default: N/A
     java:
@@ -54,7 +54,7 @@ methods:
         - None
   - method:
     common: &method-datatype
-      title: Retrieve the datatype for attribute type
+      title: Retrieve datatype
       returns:
         - String
     java:
@@ -68,7 +68,7 @@ methods:
       method: attributeType.dataType()
   - method:
     common: &method-regex-a
-      title: Retrieve the regex for attribute type
+      title: Retrieve regex
       description: Retrueves the regex that all instacnes of the attribute type must conform to.
     java:
       <<: *method-regex-a
@@ -90,7 +90,7 @@ methods:
         - "null"
   - method:
     common: &method-regex-b
-      title: Set the regex for attribute type
+      title: Set regex
       description: Set the regex that all instacnes of the attribute type must conform to.
       accepts:
         param:

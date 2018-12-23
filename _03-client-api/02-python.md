@@ -22,7 +22,7 @@ pip3 install grakn
 ```
 
 ## Quickstart
-First make sure, the Grakn server is running. Learn more about [how to run the Grakn server](/docs/running-grakn/install-n-run#starting-the-grakn-server).
+First make sure, the Grakn server is running. Learn more about [how to run the Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server).
 
 In the interpreter or in your source, import `grakn`.
 
@@ -103,12 +103,15 @@ with client.session(keyspace="mykeyspace") as session:
     ## if not using a `with` statement, then we must always close the read transaction
     # read_transaction.close()
 ```
-
+<div class="galert">
+[Important]
 Remember that transactions always need to be closed. The safest way is to use the `with ...` syntax which auto-closes at the end of the `with` block. Otherwise, remember to call `transaction.close()` explicitly.
+</div>
 
-Check out the [Concept API]() to learn about the available read and write methods on an instance such as `person` in the example above.
+Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
 
-To view examples of running various Graql queries using the Grakn Client Python, head over to their dedicated documentation pages as listed below. Note that these examples assume a transaction object has been instantiated and will be committed/closed after the operation is complete:
+To view examples of running various Graql queries using the Grakn Client Python, head over to their dedicated documentation pages as listed below.
+
 - [Insert](/docs/query/insert-query)
 - [Get](/docs/query/get-query)
 - [Delete](/docs/query/delete-query)

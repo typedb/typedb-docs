@@ -8,7 +8,7 @@ permalink: /docs/running-grakn/install-n-run
 ---
 
 ## System Requirements
-Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can be downloaded from [OpenJDK](http://openjdk.java.net/install/){:target="_blank"} or [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html){:target="_blank"}.
+Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
 
 ## Download and Install Grakn
@@ -18,12 +18,12 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 ### To download the latest release
 #### Using Homebrew
 ```
-brew install grakn
+$ ~ brew install grakn
 ```
 #### Manual Download
 Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having downloaded Grakn, we can now interact with the [Grakn server](#starting-the-grakn-server) and the [Graql console](/docs/install-n-run/console).
+Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
 
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
@@ -40,7 +40,7 @@ Take into account that many features of previous versions are deprecated and so 
 ### To download the latest release
 Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having downloaded Grakn, we can now interact with the [Grakn server](#starting-the-grakn-server) and the [Graql console](/docs/install-n-run/console).
+Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
 
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
@@ -55,9 +55,9 @@ Take into account that many features of previous versions are deprecated and so 
 [tab:Windows]
 
 ### To download the latest release
-Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via terminal.
+Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via command prompt.
 
-Having downloaded Grakn, we can now interact with the [Grakn server](#starting-the-grakn-server) and the [Graql console](/docs/install-n-run/console).
+Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
 
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
@@ -75,7 +75,7 @@ If you have installed Grakn using Homebrew, to start the Grakn Server, run `grak
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server start`.
 
-## Stop the Gran Server
+## Stop the Grakn Server
 If you have installed Grakn using Homebrew, to stop the Grakn Server, run `grakn server stop`.
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server stop`.

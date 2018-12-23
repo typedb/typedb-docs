@@ -5,10 +5,10 @@ summary: "Retrieving data from a Grakn knowledge graph."
 permalink: /docs/query/get-query
 ---
 
-## Introduction
+## Retrieve Concept Types and Their Instances
 The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause.
 
-## Getting the Variables
+## Get the Variables
 Any variable that has been specified in the `match` clause can be returned as the answers of the `get` query. Let's look at an example of how variables can be asked for in the answer.
 
 <div class="gtabs dark" data-parse-to-html="true">
@@ -55,8 +55,8 @@ answer_iterator = transaction.query('match $fr ($x, $y, $z) isa friendship; $x i
 
 If no variable is specified after `get`, all variables specified in the `match` clause will be returned.
 
-## Limiting Results
-To limit the number of results to be returned, we use the `limit` keyword followed by the number to which results are to be limited.
+## Limit the Answers
+We can chose to limit the number of answers in the results. To do this, we use the `limit` keyword followed by the desired number of answers.
 
 <div class="gtabs dark" data-parse-to-html="true">
 
@@ -92,8 +92,8 @@ answer_iterator = transaction.query("match $p isa person; limit 1; get;")
 
 This query returns only one single (and random) instance of type `person`.
 
-## Ordering Results
-To order the results by a particular variable, we use the `order` keyword followed by the variable by which we would like the results to be ordered. A second argument, `asc` (ascending) or `desc` (descending), determines of the sorting method.
+## Order the Answers
+To order the answers by a particular variable, we use the `order` keyword followed by the variable by which we would like the results to be ordered. A second argument, `asc` (ascending) or `desc` (descending), determines the sorting method.
 
 <div class="gtabs dark" data-parse-to-html="true">
 
@@ -128,15 +128,15 @@ answer_iterator = transaction.query("match $p isa person has age $age; order by 
 
 </div>
 
-This query returns all instances of type `person` ordered by their `age`.
+This query returns all instances of the `person` (entity) type ordered by their `age`.
 
 <div class="galert">
 [Important]
 Placing `order by` before and after the `limit` makes a big difference. `order by` followed by `limit` results in a global ordering of the instances, whereas `limit` coming before `order by` returns the ordered arbitrary number of instances.
 </div>
 
-## Offsetting Results
-Often used in conjunction with `limit`, we use the `offset` keyword followed by the number we would like the results to be offset by. This is commonly used to return a desired range of the results.
+## Offset the Answers
+Often used in conjunction with `limit`, we use the `offset` keyword followed by the number we would like the answers to be offset by. This is commonly used to return a desired range of the answers.
 
 <div class="gtabs dark" data-parse-to-html="true">
 
@@ -171,7 +171,7 @@ answer_iterator = transaction.query("match $p isa person has age $age; order by 
 
 </div>
 
-This returns 10 instances of type `person` starting from the 100th person ordered by their `age`.
+This returns 10 instances of the `person` (entity) type starting from the 100th person ordered by their `age`.
 
 ## Summary
 A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order by` and `offset` to retrieve an optionally ordered subset of the matched instances.

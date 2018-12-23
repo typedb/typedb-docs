@@ -18,7 +18,7 @@ npm install grakn
 ```
 
 ## Quickstart
-First make sure, the Grakn server is running. Learn more about [how to run the Grakn server]().
+First make sure, the Grakn server is running. Learn more about [how to run the Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server)..
 
 In your source, require `grakn`.
 
@@ -48,14 +48,14 @@ const client = new Grakn("localhost:48555");
 const session = client.session("keyspace");
 
 // creating a write transaction
-const wTx = await session.transaction(Grakn.txType.WRITE); // write transaction is open
+const writeTx = await session.transaction(Grakn.txType.WRITE); // write transaction is open
 // write transaction must always be committed/closed
-wTx.commit();
+writeTx.commit();
 
 // creating a read transaction
-const rTx = await session.transaction(Grakn.txType.READ); // read transaction is open
+const readTx = await session.transaction(Grakn.txType.READ); // read transaction is open
 // read transaction must always be closed
-rTx.close();
+readTx.close();
 ```
 
 Running basic retrieval and insertion queries.
@@ -66,16 +66,16 @@ const session = client.session("keyspace");
 
 async function runBasicQueries() {
   // creating a write transaction
-  const wTx = await session.transaction(Grakn.txType.WRITE); // write transaction is open
-  const insertIterator = await wTx.query("insert $x isa person has birth-date 2018-08-06");
+  const writeTransaction = await session.transaction(Grakn.txType.WRITE); // write transaction is open
+  const insertIterator = await writeTransaction.query("insert $x isa person has birth-date 2018-08-06");
   concepts = await insertIterator.collectConcepts()
   console.log("Inserted a person with ID: " + concepts[0].id);
   // write transaction must always be committed (closed)
-  await wTx.commit();
+  await writeTransaction.commit();
 
   // creating a read transaction
-  const rTx = await session.transaction(Grakn.txType.READ); // read transaction is open
-  const answerIterator = await rTx.query("match $x isa person; limit 10; get;");
+  const readTransaction = await session.transaction(Grakn.txType.READ); // read transaction is open
+  const answerIterator = await readTransaction.query("match $x isa person; limit 10; get;");
   // retrieve the first answer
   let aConceptMapAnswer = await answerIterator.next();
   // get the object of variables : concepts, retrieve variable "x"
@@ -91,11 +91,18 @@ async function runBasicQueries() {
   }
   const remainingPeople = answerIterator.collectConcepts()
   // read transaction must always be closed
-  await rTx.close();
+  await readTransaction.close();
 }
 ```
 
-Check out the [Concept API]() to learn about the available read and write methods on an instance such as `person` in the example above.
+<div class="galert">
+[Important]
+Remember that transactions always need to be closed. Commiting a write transaction closes it. A write transaction, however, must be explicitly clased by calling the `close()` method on it.
+</div>
+
+Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+
+To view examples of running various Graql queries using the Grakn Client Node.js, head over to their dedicated documentation pages as listed below.
 
 To view examples of running various Graql queries using the Grakn Client Node.js, head over to their dedicated documentation pages as listed below:
 - [Insert](/docs/query/insert-query)

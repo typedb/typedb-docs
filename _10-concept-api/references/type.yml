@@ -1,7 +1,7 @@
 methods:
   - method:
     common: &method-label-a
-      title: Retrieve the label
+      title: Retrieve label
       returns:
         - String
     java:
@@ -15,8 +15,8 @@ methods:
       method: type.label()
   - method:
     common: &method-label-b
-      title: Rename the label
-      description: Renames the label of the type. The new label mustn't already exist.
+      title: Rename label
+      description: Renames the label of the type. The new label must not already exist.
       accepts:
         param1:
           name: label
@@ -53,7 +53,7 @@ methods:
       <<: *method-sup-a
       method: async type.sup();
       returns:
-        - "[Type](/docs/concept-api/type?lang=java#type-methodsscript) object"
+        - "[Type](/docs/concept-api/type?lang=javascript#type-methodsscript) object"
         - "null"
     cpython:
       <<: *method-sup-a
@@ -69,7 +69,7 @@ methods:
         param:
           name: type
           description: The new type that the given type inherits
-          type: "[EntityType](/docs/concept-api/type#entitytype-methods) | [AttributeType](/docs/concept-api/type#attributetype-methods) | [RelationshipType](...)"
+          type: "[EntityType](/docs/concept-api/type#entitytype-methods) &#124; [AttributeType](/docs/concept-api/type#attributetype-methods) &#124; [RelationshipType](...)"
           required: true
           default: N/A
     java:
@@ -169,7 +169,7 @@ methods:
         - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-playing
-      title: Retrieve roles played by the type
+      title: Retrieve roles
       description: Retrieves all roles that are allowed to be played by the type.
     java:
       <<: *method-playing
@@ -188,7 +188,7 @@ methods:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=python#role-methods) objects"
   - method:
     common: &method-plays
-      title: Add a new role to be played by the type
+      title: Add new role
       description: Allows the type to play the given role.
       accepts:
         param: &accepts-plays-role
@@ -225,7 +225,7 @@ methods:
         - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-unplay
-      title: Remove a role from being played by the type
+      title: Remove role
       description: Disallows the type from playing the given role.
       accepts:
         param: &accepts-unplay
@@ -262,7 +262,7 @@ methods:
         - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-attributes
-      title: Retrieve attributes of the type
+      title: Retrieve attributes
       description: Retrieves attributes that the type is allowed to own.
     java:
       <<: *method-attributes
@@ -281,11 +281,11 @@ methods:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [AttributeType](/docs/concept-api/type?lang=python#attributetype-methods) objects"
   - method:
     common: &method-has
-      title: Add an attribute to the type
+      title: Add attribute
       description: Allows the type to own the given attribute.
       accepts:
         param: &accepts-has-attributeType
-          desctiption: The AttributeType to be owned by the type.
+          description: The AttributeType to be owned by the type.
           required: true
           default: N/A
     java:
@@ -320,11 +320,11 @@ methods:
         - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-unhas
-      title: Remove an attribute from the type
+      title: Remove attribute
       description: Disallows the type from owning the given attributeType.
       accepts:
         param: &accepts-unhas-attributeType
-          desctiption: The AttributeType to not be owend by the type.
+          description: The AttributeType to not be owend by the type.
           required: true
           default: N/A
     java:
@@ -359,7 +359,7 @@ methods:
         - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-keys
-      title: Retrieve keys of the type
+      title: Retrieve keys
       descriotion: Retrieves keys that the type is allowed to own.
     java:
       <<: *method-keys
@@ -378,45 +378,48 @@ methods:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [AttributeType](/docs/concept-api/type?lang=python#attributetype-methods) objects"
   - method:
     common: &method-key
-      title: Add a key to the type
+      title: Add key
       description: Allows the type to own the given attributeType as its key.
       accepts:
         param: &accepts-key-key
           name: key
-          desctiption: the AttributeType to be owned by the type as its key.
+          description: The AttributeType to be owned by the type as its key.
           required: true
           default: N/A
     java:
       <<: *method-key
       method: type.key(AttributeType attributeType);
-      param:
-        <<: *accepts-key-key
-        type: "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)"
+      accepts:
+        param:
+          <<: *accepts-key-key
+          type: "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)"
       returns:
         - "[Type](/docs/concept-api/type#type-methods?lang=) object"
     nodejs:
       <<: *method-key
       method: async type.key(attributeType);
-      param:
-        <<: *accepts-key-key
-        type: "[AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)"
+      accepts:
+        param:
+          <<: *accepts-key-key
+          type: "[AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)"
       returns:
         - void
     cpython:
       <<: *method-key
       method: type.key(attributeType)
-      param:
-        <<: *accepts-key-key
-        type: "[AttributeType](/docs/concept-api/type?lang=python#attributetype-methods)"
+      accepts:
+        param:
+          <<: *accepts-key-key
+          type: "[AttributeType](/docs/concept-api/type?lang=python#attributetype-methods)"
       returns:
         - "[Type](/docs/concept-api/type#type-methods?lang=) object"
   - method:
     common: &method-unkey
-      title: Remove a key from the type
+      title: Remove key
       description: Disallows the type from owning the given attributeType as its key.
       accepts:
         param: &accepts-unkey-attributeType
-          desctiption: the AttributeType to not be owend by the type as its key.
+          description: the AttributeType to not be owend by the type as its key.
           required: true
           default: N/A
       returns:
@@ -453,7 +456,7 @@ methods:
         - "[Type](/docs/concept-api/type?lang=python#type-methods) object"
   - method:
     common: &method-instances
-      title: Retrieve instances of the type
+      title: Retrieve instances
     java:
       <<: *method-instances
       method: type.instances();

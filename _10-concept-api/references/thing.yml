@@ -1,7 +1,7 @@
 methods:
   - method:
     common: &method-type
-      title: Retrieve the type
+      title: Retrieve type
       description: Retrieves the type which the thing belongs to.
       returns:
         - "[Type](/docs/concept-api/type) object"
@@ -16,7 +16,7 @@ methods:
       method: thing.type()
   - method:
     common: &method-relationships
-      title: Retrieve the relationships
+      title: Retrieve relationships
       description: Retrieves the relationships which the thing plays a role in.
       accepts: &accepts-relationships
         param: &accepts-relationships-param-roles
@@ -29,6 +29,7 @@ methods:
       method: thing.relationships(Role... roles);
       accepts:
         param:
+          <<: *accepts-relationships-param-roles
           type: "Array of [Role](/docs/concept-api/type?lang=java#role-methods)s"
       returns:
         - "Stream of [Relationship](/docs/concept-api/thing?lang=java#relationship-methods) objects"
@@ -50,7 +51,7 @@ methods:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=python#relationship-methods) objects"
   - method:
     common: &method-roles
-      title: Retrieve the roles
+      title: Retrieve roles
       description: Retrieves the roles that the thing plays.
     java:
       <<: *method-roles
@@ -69,7 +70,7 @@ methods:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=python#role-methods) objects"
   - method:
     common: &method-attributes
-      title: Retrieve the attributes
+      title: Retrieve attributes
       description: Retrieves the attributes that the thing has.
       accepts: &accepts-attributes
         param: &accepts-attributes-param-types
@@ -109,7 +110,7 @@ methods:
         - "[Iterator](...) of [Attribute](/docs/concept-api/thing?lang=pyhthon#attribute-methods) objects"
   - method:
     common: &method-keys
-      title: Retrieve the keys
+      title: Retrieve keys
       description: Retrieves the attributes that the thing has as its keys.
       accepts: &accepts-keys
         param: &accepts-keys-param-types
@@ -149,7 +150,7 @@ methods:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Attribute](/docs/concept-api/thing?lang=python#attribute-methods) objects"
   - method:
     common: &method-has
-      title: Assign an attribute
+      title: Assign attribute
       description: Assigns an attribute to the thing.
       accepts:
         param: &accepts-has-attribute
@@ -186,7 +187,7 @@ methods:
         - "[Thing](/docs/concept-api/thing?lang=python) object"
   - method:
     common: &method-unhas
-      title: Unassign an attribute
+      title: Unassign attribute
       description: Unassigns an attribute from the thing.
       accepts:
         param:

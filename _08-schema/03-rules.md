@@ -7,16 +7,18 @@ permalink: /docs/schema/rules
 ---
 
 ## Introduction {#introduction1111}
-Grakn is capable of reasoning over data via pre-defined rules. Graql rules dynamically create relationships that were non-existent when the raw data was initially inserted into the knowledge graph. [Automated reasoning](...) provided by rules is performed at query time and is guaranteed to be complete. Rules not only allow shortening and simplifying commonly-used queries but also enable knowledge discovery and implementation of business logic at the database level.
+Grakn is capable of reasoning over data via pre-defined rules. Graql rules look for a given pattern in the dataset and when found, create the given queryable relationship. Automated reasoning provided by rules is performed at query (run) time. Rules not only allow shortening and simplifying commonly-used queries but also enable knowledge discovery and implementation of business logic at the database level.
 
-When you query the knowledge graph for certain information, Grakn returns a complete set of answers. These answers contain explicit matches as well as implicit ones that have inferred by the rules included in the schema.
+When you query the knowledge graph for certain information, Grakn returns a complete set of answers. These answers contain explicit matches as well as implicit ones that have been inferred by the rules included in the schema.
 
 In this section, we will learn more about how rules are constructed and how they are meant to be used.
 
-## Defining a Rule
+## Define a Rule
 Defining a Graql rule begins with a given label followed by `sub rule`, the `when` body as the condition, and the `then` body as the conclusion.
 
 ```graql
+define
+
 rule-label sub rule,
   when {
     ## the condition
@@ -91,14 +93,14 @@ then
 
 If you find the Graql code above unfamiliar, don't be concerned. We will soon learn about [using Graql to describe patterns](/docs/query/match-clause).
 
-In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relationship when writing queries.
+In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relationship in our queries.
 
-This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...).
+<!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
 
 ## The Underlying Logic
 Under the hood, rules are restricted to be definite Horn Clauses. In simple terms, the Graql statements placed in the `when` body form one single condition where all statements must be true for the rule to apply. The `then` body, on the other hand, is restricted to contain one single statement only.
 
-To simplify this logic even further, you can think of the [siblings example](#defining-a-rule) in form of an `if` statement like so:
+To simplify this logic even further, you can think of the [siblings example](#define-a-rule) in form of an `if` statement like so:
 
 ```java
 if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y && is-x-different-to-y) {
@@ -128,9 +130,9 @@ The following are the types of one single statement that can be set as the concl
 - inserting a relationship. Example: `($x, $y) isa siblings;`.
 
 ## Deleting Rules
-Rules like any other schema elements can be undefined. To do so, we use the [undefine keyword](/docs/schema/concepts#undefine).
+Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](/docs/schema/concepts#undefine).
 
 ## Summary
-Rules are a powerful tool that reason over the explicitly stored data and produce and store implicit knowledge.
+Rules are a powerful tool that reason over the explicitly stored data and produce and store implicit knowledge at run-time.
 
-In the next section, we will learn how to [perform read and write instructions over a knowledge graph](/docs/query/overview) that is powered by a schema containing concepts and rules.
+In the next section, we will learn how to [perform read and write instructions over a knowledge graph](/docs/query/overview) that is represented by a schema.
