@@ -17,7 +17,7 @@ insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 InsertQuery query = Graql.insert(
   var("p").isa("person").has("forename", "Johny").has("middle-name", "Jimbly").has("surname", "Joe")
 );
@@ -30,14 +30,14 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname "Joe";');
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname "Joe";')
 transaction.commit()
 ```
@@ -58,7 +58,7 @@ match
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 InsertQuery query = Graql.match(
   var("p-a").isa("person").id(ConceptId.of("V41016")).has("surname", var("s"))
 ).insert(
@@ -73,14 +73,14 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('match $p-a isa person id V41016 has surname $s; insert $p-b isa person has surname $s;');
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('match $p-a isa person id V41016 has surname $s; insert $p-b isa person has surname $s;')
 transaction.commit()
 ```
@@ -103,7 +103,7 @@ insert $x isa environment "Production";
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 InsertQuery query = Graql.insert(
   var("x").isa("environment").val("Production")
 );
@@ -116,14 +116,14 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('insert $x isa environment "Production";');
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('insert $x isa environment "Production";')
 transaction.commit()
 ```
@@ -146,7 +146,7 @@ insert $new-employment (employer: $company, employee: $person) isa employment;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 InsertQuery query = Graql.match(
   var("c").isa("company").has("name", "Grakn Cloud"),
   var("p").isa("person").id(ConceptId.of("V8272"))
@@ -160,14 +160,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('match $company isa company has name "Grakn Cloud"; $person isa person id V8272; insert $new-employment (employer: $company, employee: $person) isa employment; $new-employment key reference-id "WGFTSH";');
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('match $company isa company has name "Grakn Cloud"; $person isa person id V8272; insert $new-employment (employer: $company, employee: $person) isa employment; $new-employment key reference-id "WGFTSH";')
 transaction.commit()
 ```

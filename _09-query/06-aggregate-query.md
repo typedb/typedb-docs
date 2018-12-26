@@ -21,7 +21,7 @@ match $sh isa sheep; aggregate count;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var("sh").isa("person")
 ).aggregate(count());
@@ -32,13 +32,13 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $sh isa sheep; aggregate count;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $sh isa sheep; aggregate count;")
 ```
 [tab:end]
@@ -60,7 +60,7 @@ match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var("h").isa("hotel").has("number-of-rooms", var("nor"))
 ).aggregate(sum("nor"));
@@ -71,13 +71,13 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;")
 ```
 [tab:end]
@@ -95,7 +95,7 @@ match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggr
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
   var("st").has("gpa", var("gpa"))
@@ -107,13 +107,13 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;")
 ```
 [tab:end]
@@ -131,7 +131,7 @@ match $b isa building has number-of-floors $nof; aggregate min $nof;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
   var("st").has("gpa", var("gpa"))
@@ -143,13 +143,13 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;")
 ```
 [tab:end]
@@ -167,7 +167,7 @@ match $call isa call has duration $d; aggregate mean $d;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var("call").isa("call").has("duration", "d")
 ).aggregate(mean("d")).execute();
@@ -178,13 +178,13 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $call isa call has duration $d; aggregate mean $d;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $call isa call has duration $d; aggregate mean $d;")
 ```
 [tab:end]
@@ -202,7 +202,7 @@ match $p isa person has age $a; aggregate median $a;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var("p").isa("person").has("age", var("a"))
 ).aggregate(median("a")).execute();
@@ -213,13 +213,13 @@ List\<Value\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $p isa person has age $a; aggregate median $a;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $p isa person has age $a; aggregate median $a;")
 ```
 [tab:end]
@@ -237,7 +237,7 @@ match (employer: $company, employee: $person) isa employment; aggregate group $c
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var().isa("employment").rel("employer", var("company"))
   .rel("employee", var("person"))
@@ -249,13 +249,13 @@ List\<AnswerGroup\<ConceptMap\>\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;")
 ```
 [tab:end]
@@ -272,7 +272,7 @@ match (employer: $company, employee: $person) isa employment; aggregate group $c
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 AggregateQuery query = Graql.match(
   var().isa("employment").rel("employer", var("company"))
   .rel("employee", var("person"))
@@ -284,13 +284,13 @@ List\<AnswerGroup\<Value\>\> answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;")
 ```
 [tab:end]

@@ -22,13 +22,13 @@ First make sure, the Grakn server is running. Learn more about [how to run the G
 
 In your source, require `grakn`.
 
-```nodejs
+```lang-javascript
 const Grakn = require("grakn");
 ```
 
 Instantiate a client and open a session.
 
-```nodejs
+```lang-javascript
 const client = new Grakn("localhost:48555");
 const session = client.session("keyspace");
 ```
@@ -37,13 +37,13 @@ As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previ
 
 We can also pass the credentials, as specified when [configuring authentication via Grakn Console](), into the initial constructor as a nodejs object.
 
-```nodejs
+```lang-javascript
 const client = grakn.Grakn("localhost:48555", { "username": "<username>", "password": "<password>" });
 ```
 
 Create transactions to use for reading and writing data.
 
-```nodejs
+```lang-javascript
 const client = new Grakn("localhost:48555");
 const session = client.session("keyspace");
 
@@ -60,7 +60,7 @@ readTx.close();
 
 Running basic retrieval and insertion queries.
 
-```nodejs
+```lang-javascript
 const client = new Grakn("localhost:48555");
 const session = client.session("keyspace");
 
@@ -111,4 +111,4 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api.html language = "nodejs" %}
+{% include client_api.html language = "javascript" %}

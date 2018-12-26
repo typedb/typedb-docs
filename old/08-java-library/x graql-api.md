@@ -12,7 +12,7 @@ As well as the Graql shell, users can also construct and execute Graql queries p
 
 To use the API, add the following to your imports:
 
-```java-test-ignore
+```lang-java-test-ignore
 import ai.grakn.graql.QueryBuilder;
 import static ai.grakn.graql.Graql.*;
 ```
@@ -21,7 +21,7 @@ import static ai.grakn.graql.Graql.*;
 
 A `QueryBuilder` is constructed from a `Grakn.Transaction`:
 
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx = session.transaction(GraknTxType.WRITE)
@@ -42,7 +42,7 @@ queries.
 Matches are constructed using the `match` method. This will produce a `Match` instance, which includes additional
 methods that apply modifiers such as `limit` and `distinct`:
 
-```java
+```lang-java
 Match match = qb.match(var("x").isa("person").has("firstname", "Bob")).limit(50);
 ```
 
@@ -57,7 +57,7 @@ match.get("x").forEach(x -> System.out.println(x.asResource().getValue()));
 
 Get queries are constructed using the `get` method on a `match`.
 
-```java
+```lang-java
 GetQuery query = qb.match(var("x").isa("person").has("firstname", "Bob")).limit(50).get();
 ```
 
@@ -66,7 +66,7 @@ variables in the query.
 
 A `GetQuery` will only execute when it is iterated over.
 
-```java
+```lang-java
 for (Map<String, Concept> result : query) {
   System.out.println(result.get("x").getId());
 }
@@ -74,7 +74,7 @@ for (Map<String, Concept> result : query) {
 
 ## Aggregate Queries
 
-```java
+```lang-java
 if (qb.match(var().isa("person").has("firstname", "Bob")).stream().findAny().isPresent()) {
   System.out.println("There is someone called Bob!");
 }
@@ -82,7 +82,7 @@ if (qb.match(var().isa("person").has("firstname", "Bob")).stream().findAny().isP
 
 ## Insert Queries
 
-```java
+```lang-java
 InsertQuery addAlice = qb.insert(var().isa("person").has("firstname", "Alice"));
 
 addAlice.execute();
@@ -100,7 +100,7 @@ qb.match(
 
 ## Delete Queries
 
-```java
+```lang-java
 qb.match(var("x").has("firstname", "Alice")).delete("x").execute();
 ```
 
@@ -109,7 +109,7 @@ qb.match(var("x").has("firstname", "Alice")).delete("x").execute();
 The `QueryBuilder` also allows the user to parse Graql query strings into Java Graql
 objects:
 
-```java
+```lang-java
 for (ConceptMap a : qb.<GetQuery>parse("match $x isa person; get;").execute()) {
     System.out.println(a);
 }

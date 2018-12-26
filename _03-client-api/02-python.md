@@ -26,13 +26,13 @@ First make sure, the Grakn server is running. Learn more about [how to run the G
 
 In the interpreter or in your source, import `grakn`.
 
-```cpython
+```lang-python
 import grakn
 ```
 
 Instantiate a client and open a session.
 
-```cpython
+```lang-python
 client = grakn.Grakn(uri="localhost:48555")
 with client.session(keyspace="mykeyspace") as session:
   ## session is open
@@ -42,15 +42,15 @@ with client.session(keyspace="mykeyspace") as session:
 
 As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previously used as the default REST endpoint) is deprecated for clients.
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/authentication), into the client constructor as a dictionary.
+We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users), into the client constructor as a dictionary.
 
-```cpython
+```lang-python
 client = grakn.Grakn(uri="localhost:48555", credentials={"username": "<username>", "password": "<password>"})
 ```
 
 Create transactions to use for reading and writing data.
 
-```cpython
+```lang-python
 client = grakn.Grakn(uri="localhost:48555")
 
 with client.session(keyspace="mykeyspace") as session:
@@ -69,7 +69,7 @@ with client.session(keyspace="mykeyspace") as session:
 
 Running basic retrieval and insertion queries.
 
-```cpython
+```lang-python
 client = grakn.Grakn(uri="localhost:48555")
 
 with client.session(keyspace="mykeyspace") as session:
@@ -118,4 +118,4 @@ To view examples of running various Graql queries using the Grakn Client Python,
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api.html language = "cpython" %}
+{% include client_api.html language = "python" %}

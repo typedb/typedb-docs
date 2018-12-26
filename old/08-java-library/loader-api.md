@@ -25,13 +25,13 @@ import ai.grakn.client.BatchExecutorClient;
 
 The loader client can be instantiated by giving the engine URI.
 
-```java
+```lang-java
 BatchExecutorClient loader = BatchExecutorClient.newBuilderforURI(uri).build();
 ```
 
 The loader client can be thought of as an empty bucket in which to dump insert queries that will be batch-loaded into the specified knowledge graph. Batching, blocking and callbacks are all executed based on how the user has configured the client, which simplifies usage. The following code will load 100 insert queries into the knowledge graph.
 
-```java
+```lang-java
 InsertQuery insert = insert(var().isa("person"));
 
 for(int i = 0; i < 100; i++){
@@ -41,6 +41,6 @@ for(int i = 0; i < 100; i++){
 
 The loader should be closed as follows
 
-```java
+```lang-java
 loader.close();
 ```

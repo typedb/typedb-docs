@@ -41,7 +41,7 @@ Once the session is open, you can proceed by creating a **transaction** in order
 
 The following snippet shows how to open a Grakn session and transaction:
 
-```java-test-ignore
+```lang-java-test-ignore
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;
 import ai.grakn.client.Grakn;

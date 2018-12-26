@@ -25,7 +25,7 @@ Let's see how we can build the same schema exclusively via the Core API.
 First we need a knowledge graph. For this example we will just use an
 [in-memory knowledge graph](./setup#initialising-a-transaction-on-the-knowledge-base):
 
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx = session.transaction(GraknTxType.WRITE);
@@ -51,7 +51,7 @@ gender sub attribute datatype string;
 
 These same attribute types can be built with the Core API as follows:
 
-```java-test-ignore
+```lang-java-test-ignore
 AttributeType identifier = tx.putAttributeType("identifier", AttributeType.DataType.STRING);
 AttributeType firstname = tx.putAttributeType("firstname", AttributeType.DataType.STRING);
 AttributeType surname = tx.putAttributeType("surname", AttributeType.DataType.STRING);
@@ -80,7 +80,7 @@ parentship sub relationship
 
 Using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 Role spouse1 = tx.putRole("spouse1");
 Role spouse2 = tx.putRole("spouse2");
 RelationshipType marriage = tx.putRelationshipType("marriage")
@@ -118,7 +118,7 @@ person sub entity
 
 Using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 EntityType person = tx.putEntityType("person")
                         .plays(parent)
                         .plays(child)
@@ -138,13 +138,13 @@ person.has(gender);
 
 Now to commit the schema using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 tx.commit();
 ```
 
 If you do not wish to commit the schema you can revert your changes with:
 
-```java-test-ignore
+```lang-java-test-ignore
 tx.abort();
 ```
 
@@ -161,7 +161,7 @@ insert $x isa person has firstname "John";
 
 Now the equivalent Core API:    
 
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx = session.transaction(GraknTxType.WRITE);
@@ -183,7 +183,7 @@ insert
 
 With the Core API this would be:
 
-```java-test-ignore
+```lang-java-test-ignore
 //Create the attributes
 johnName = firstname.create("John");
 Attribute maryName = firstname.create("Mary");
@@ -209,7 +209,7 @@ insert
 
 Now the equivalent using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 Attribute weddingPicture = picture.create("www.LocationOfMyPicture.com");
 theMarriage.has(weddingPicture);
 ```
@@ -229,7 +229,7 @@ define
 
 becomes the following with the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 EntityType event = tx.putEntityType("event");
 EntityType wedding = tx.putEntityType("wedding").sup(event);
 ```
@@ -265,7 +265,7 @@ then {
 
 As there is more than one way to define Graql patterns through the API, there are several ways to construct rules. One options is through the Pattern factory:
 
-```java-test-ignore
+```lang-java-test-ignore
 Pattern rule1when = var().rel("parent", "p").rel("child", "c").isa("Parent");
 Pattern rule1then = var().rel("ancestor", "p").rel("descendant", "c").isa("Ancestor");
 
@@ -278,7 +278,7 @@ Pattern rule2then = var().rel("ancestor", "p").rel("descendant", "d").isa("Ances
 
 If we have a specific `Grakn.Transaction tx` already defined, we can use the Graql pattern parser:
 
-```java-test-ignore
+```lang-java-test-ignore
 rule1when = and(tx.graql().parser().parsePatterns("(parent: $p, child: $c) isa Parent;"));
 rule1then = and(tx.graql().parser().parsePatterns("(ancestor: $p, descendant: $c) isa Ancestor;"));
 
@@ -288,7 +288,7 @@ rule2then = and(tx.graql().parser().parsePatterns("(ancestor: $p, descendant: $d
 
 We conclude the rule creation with defining the rules from their constituent patterns:
 
-```java-test-ignore
+```lang-java-test-ignore
 Rule rule1 = tx.putRule("R1", rule1when, rule1then);
 Rule rule2 = tx.putRule("R2", rule2when, rule2then);
 ```

@@ -8,10 +8,10 @@ methods:
     java:
       <<: *method-type
       method: thing.type();
-    nodejs:
+    javascript:
       <<: *method-type
       method: async thing.type();
-    cpython:
+    python:
       <<: *method-type
       method: thing.type()
   - method:
@@ -33,7 +33,7 @@ methods:
           type: "Array of [Role](/docs/concept-api/type?lang=java#role-methods)s"
       returns:
         - "Stream of [Relationship](/docs/concept-api/thing?lang=java#relationship-methods) objects"
-    nodejs:
+    javascript:
       <<: *method-relationships
       method: async thing.relationships(roles);
       accepts:
@@ -41,7 +41,7 @@ methods:
           type: "Array of [Role](/docs/concept-api/type?lang=javascript#role-methods)s"
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=javascript#relationship-methods) objects"
-    cpython:
+    python:
       <<: *method-relationships
       method: thing.relationships(roles)
       accepts:
@@ -58,12 +58,12 @@ methods:
       method: thing.roles();
       returns:
         - "Stream of [Role](/docs/concept-api/type?lang=java#role-methods) objects"
-    nodejs:
+    javascript:
       <<: *method-roles
       method: async thing.roles();
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Role](/docs/concept-api/type?lang=javascript#role-methods) objects"
-    cpython:
+    python:
       <<: *method-roles
       method: thing.roles()
       returns:
@@ -88,7 +88,7 @@ methods:
           type: "Array of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)s"
       returns:
         - "Stream of [Attribute](/docs/concept-api/thing?lang=java#attribute-methods) objects"
-    nodejs:
+    javascript:
       <<: *method-attributes
       method: async thing.attributes();
       accepts:
@@ -98,7 +98,7 @@ methods:
           type: "Array of [AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)s"
       returns:
         - "[Iterator](...) of [Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) objects"
-    cpython:
+    python:
       <<: *method-attributes
       method: thing.attributes()
       accepts:
@@ -128,7 +128,7 @@ methods:
           type: "Array of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)s"
       returns:
         - "Stream of [Attribute](/docs/concept-api/thing?lang=java#attribute-methods) objects"
-    nodejs:
+    javascript:
       <<: *method-keys
       method: async thing.keys();
       accepts:
@@ -138,7 +138,7 @@ methods:
           type: "Array of [AttributeType](/docs/concept-api/type?lang=javascript#attributetype-methods)s"
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) objects"
-    cpython:
+    python:
       <<: *method-keys
       method: thing.keys()
       accepts:
@@ -167,7 +167,7 @@ methods:
           type: "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods)"
       returns:
         - "[Thing](/docs/concept-api/thing?lang=java) object"
-    nodejs:
+    javascript:
       <<: *method-has
       method: async thing.has(attribute);
       accepts:
@@ -176,7 +176,7 @@ methods:
           type: "[Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods)"
       returns:
         - "[Thing](/docs/concept-api/thing?lang=javascript) object"
-    cpython:
+    python:
       <<: *method-has
       method: thing.has(attribute)
       accepts:
@@ -201,12 +201,12 @@ methods:
       method: thing.unhas(Attribute attribute);
       returns:
         - "[Thing](/docs/concept-api/thing?lang=java) object"
-    nodejs:
+    javascript:
       <<: *method-unhas
       method: async thing.unhas(attribute);
       returns:
         - "[Thing](/docs/concept-api/thing?lang=javascript) object"
-    cpython:
+    python:
       <<: *method-unhas
       method: thing.unhas(attribute)
       returns:
@@ -220,9 +220,9 @@ methods:
     java:
       <<: *method-isInferred
       method: thing.isInferred();
-    nodejs:
+    javascript:
       <<: *method-isInferred
       method: async thing.isInferred();
-    cpython:
+    python:
       <<: *method-isInferred
       method: thing.is_inferred()

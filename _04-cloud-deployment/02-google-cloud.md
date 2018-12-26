@@ -7,7 +7,7 @@ permalink: /docs/cloud-deployment/google-cloud
 
 ### Deploying Grakn on Google Cloud
 
-As illustrated below, deploying a [Grakn KGMS on Google Cloud](https://console.cloud.google.com/marketplace/details/grakn-public/grakn-kgms-premium) is a straight-forward process.
+As illustrated below, deploying [Grakn KGMS on Google Cloud](https://console.cloud.google.com/marketplace/details/grakn-public/grakn-kgms-premium) is a straight-forward process.
 
 <div class="slideshow">
 
@@ -109,7 +109,7 @@ As part of the deployment, Google Cloud produces the default credentials with us
 
 ![Default Credentials](/docs/images/cloud-deployment/gc_default_password.png)
 
-We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](/docs/management/authentication#updating-a-user) `grakn` giving it a new secured password.
+We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](/docs/management/users#update-a-user) `grakn` giving it a new secured password.
 
 ### Logging into a node
 For a more direct interaction with the database, we need to log into a node. To do so, we need to start an `ssh` session as illustrated below.
@@ -142,9 +142,9 @@ Wait while a secured connection is being made.
 <!-- -->
 [slide:start]
 
-[header:start]We're in![header:end]
+[header:start]we are in![header:end]
 
-[body:start]![We're in!](/docs/images/cloud-deployment/gc_ssh_connected.png)[body:end]
+[body:start]![we are in!](/docs/images/cloud-deployment/gc_ssh_connected.png)[body:end]
 
 [footer:start]
 We are now inside the node and can directly interact with the database.
@@ -160,7 +160,7 @@ While [logged into a node](#logging-into-a-node), run `grakn cluster status`. Th
 ![Cluster Health Check](/docs/images/cloud-deployment/gc_cluster_health_check.png)
 
 ### Accessing Grakn Console
-While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/authentication).
+While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
 
 ### Accessing Graql Console
 While [logged into a node](#logging-into-a-node), we can enter the [Graql Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
@@ -178,14 +178,14 @@ The optimum machine choice offering a good balance between CPU and memory should
 Using machines with additional RAM above a 25 GB threshold is not expected to yield significant performance improvements.
 Having these bounds in mind, the following machines are recommended because they offer a balanced set of system resources for a range of workloads:
 - Standard:
-    - n1-standard-4,
-    - n1-standard-8,
+    - n1-standard-4
+    - n1-standard-8
     - n1-standard-16
 - High-CPU:
-    - n1-highcpu-16,
+    - n1-highcpu-16
     - n1-highcpu-32
 - High-memory:
-    - n1-highmem-4,
+    - n1-highmem-4
     - n1-highmem-8
 
 For more information, please visit the [GC Machine Types](https://cloud.google.com/compute/docs/machine-types)

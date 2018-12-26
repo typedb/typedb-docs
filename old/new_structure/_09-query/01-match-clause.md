@@ -54,7 +54,7 @@ match $x isa! person; get;
     </div>
     <div role="tabpanel" class="tab-pane" id="java1">
         {{ '
-```java
+```lang-java
 qb.match(var("x").isaExplicit("person")).get();
 ```
         ' | markdownify }}

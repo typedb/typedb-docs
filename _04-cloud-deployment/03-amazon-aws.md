@@ -1,299 +1,344 @@
 ---
-title: Amazon AWS
-keywords:
-tags: []
+sidebarTitle: AWS
+pageTitle: Amazon Web Services Deployment
 summary:
-permalink: /docs/cloud-deployment/amazon-aws
+permalink: /docs/cloud-deployment/aws
 ---
 
-## Deploying Grakn on Amazon AWS
+## Deploying Grakn on AWS
 
-<!-- # AWS Marketplace
+As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.amazon.com/marketplace/pp/B07H8RMX5X) is a straight-forward process.
 
-## Deployment
+<div class="gtabs light">
 
-We shall begin with the deployment of Grakn instances. The procedure is straight-forward and takes advantage of the listing in the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/B07H8RMX5X).
+[tab:CloudFormation]
+<div class="slideshow">
 
-![](/images/aws-solution-listing.png)
+[slide:start]
+[header:start]Visit KGMS on AWS[header:end]
+[body:start]![KGMS listing on AWS Marketplace](/docs/images/cloud-deployment/aws_listing.png)[body:end]
+[footer:start]Visit the [KGMS listing on AWS Marketplace](https://aws.amazon.com/marketplace/pp/B07H8RMX5X).[footer:end]
+[slide:end]
 
-At the moment we offer two deployment options:
-- **CloudFormation**
+[slide:start]
+[header:start]Subscribe[header:end]
+[body:start]![Subscribe](/docs/images/cloud-deployment/aws_subscribe.png)[body:end]
+[footer:start]Click on **Continue to Subscribe**.[footer:end]
+[slide:end]
 
-AWS CloudFormation templates are JSON or YAML formatted files that simplify resource orchestration, provisioning and management on AWS. The template describes the service or application
-architecture and configuration and AWS CloudFormation uses the template to provision the required resources (such as EC2 instances, EBS storages, etc.). The deployed application together with its
-associated resources is referred to as a `stack`.
-- **Grakn KGMS Amazon Machine Image (AMI)**
+[slide:start]
+[header:start]Accept Terms[header:end]
+[body:start]![Accept Terms](/docs/images/cloud-deployment/aws_accept_terms.png)[body:end]
+[footer:start]Review the pricing information and click on **Accept Terms** to continue.[footer:end]
+[slide:end]
 
-Provides a Grakn-equipped image that can be used when launching instances. The AMI is specified when starting an instance and you are free to launch as many instances as need be,
-combine them with instances using different AMIs and orchestrate them.
-<div class="no_toc_section">
-<ul id="profileTabs" class="nav nav-tabs nav-tabs--intro">
-    <li class="active" style="width: 50% !important"><a href="#cloudformation" data-toggle="tab">CloudFormation</a></li>
-    <li style="width: 50% !important"><a href="#kgms-ami" data-toggle="tab">Grakn KGMS AMI</a></li>
-</ul>
+[slide:start]
+[header:start]Subscribing[header:end]
+[body:start]![Subscribing](/docs/images/cloud-deployment/aws_subscribing.png)[body:end]
+[footer:start]We now need to wait while Amazon processes our request to subscribe to Grakn KGMS.[footer:end]
+[slide:end]
 
-<div class="tab-content tab-content--intro">
-    <div role="tabpanel" class="tab-pane active" id="cloudformation">
-        {% assign cloudformation_content = '
-To commence deployment with CloudFormation, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
+[slide:start]
+[header:start]Configure[header:end]
+[body:start]![Configure](/docs/images/cloud-deployment/aws_configure.png)[body:end]
+[footer:start]Click on **Continue to Configuration**[footer:end]
+[slide:end]
 
-![](/images/aws-deployment-methods.png)
+[slide:start]
+[header:start]Select CloudFormation[header:end]
+[body:start]![Select CloudFormation](/docs/images/cloud-deployment/aws_fulfillment_cf.png)[body:end]
+[footer:start]Select _CloudFormation_ as the _Fulfillment Option_.[footer:end]
+[slide:end]
 
-which allows you to pick `CloudFormation` as the _Fullfilment Option_:
+[slide:start]
+[header:start]Confirm Configuration[header:end]
+[body:start]![Confirm Configuration](/docs/images/cloud-deployment/aws_cf_configure.png)[body:end]
+[footer:start]We can now adjust the configuration based on our needs.[footer:end]
+[slide:end]
 
-![](/images/aws-deployment-cloudformation.png)
+[slide:start]
+[header:start]Continue to Launch[header:end]
+[body:start]![Continue to Launch](/docs/images/cloud-deployment/aws_cf_launch_a.png)[body:end]
+[footer:start]Click on **Continue to Launch**.[footer:end]
+[slide:end]
 
-To continue, press the `Continue to Launch` button.
+[slide:start]
+[header:start]Action: CloudFormation[header:end]
+[body:start]![Action: CloudFormation](/docs/images/cloud-deployment/aws_cf_launch_b.png)[body:end]
+[footer:start]Select _Launch CloudFormation_ as the _Action_.[footer:end]
+[slide:end]
 
-After initiating launch, we arrive at the CloudFormation stack creation page:
+[slide:start]
+[header:start]Launch[header:end]
+[body:start]![Launch ](/docs/images/cloud-deployment/aws_cf_launch_c.png)[body:end]
+[footer:start]Select _Launch CloudFormation_ as the _Action_.[footer:end]
+[slide:end]
 
-![](/images/aws-cloudformation.png).
+[slide:start]
+[header:start]Select Template[header:end]
+[body:start]![Select Template](/docs/images/cloud-deployment/aws_cf_template.png)[body:end]
+[footer:start]We can select a template of our choice or simply click on **Next** to continue with the pre-selected template.[footer:end]
+[slide:end]
 
-To proceed, simply press the `Next` button and you will be taken to the stack parameter page;
+[slide:start]
+[header:start]Specify Details[header:end]
+[body:start]![Specify Details](/docs/images/cloud-deployment/aws_cf_details.png)[body:end]
+[footer:start]Specify the stack details and parameters and click on **Next** to continue. Note that all fields are required.[footer:end]
+[slide:end]
 
-![](/images/aws-cloudformation-config.png).
+[slide:start]
+[header:start]Specify Options[header:end]
+[body:start]![Specify Options](/docs/images/cloud-deployment/aws_cf_options.png)[body:end]
+[footer:start]Explore and specify the available options to your liking and click on **Next** to continue.[footer:end]
+[slide:end]
 
-## Stack parameters
+[slide:start]
+[header:start]Review & Confirm[header:end]
+[body:start]![Review & Confirm](/docs/images/cloud-deployment/aws_cf_review.png)[body:end]
+[footer:start]Review all details and options for verification and click on **Create** to continue.[footer:end]
+[slide:end]
 
-The following parameters and parameter groups are used to define the stack:
+[slide:start]
+[header:start]Wait for Stack Creation[header:end]
+[body:start]![Wait for Stack Creation](/docs/images/cloud-deployment/aws_cf_stacks_a.png)[body:end]
+[footer:start]Once the stack creation form is successfully submitted, we will be redirected to the Stacks page. Although, it may seems as the stack has not been created, Amazon is processing the stack creation and after a short while ...[footer:end]
+[slide:end]
 
-* General:
-    - **StackName**
+[slide:start]
+[header:start]View the Stack[header:end]
+[body:start]![View the Stack](/docs/images/cloud-deployment/aws_cf_stacks_b.png)[body:end]
+[footer:start]The newly created stack will be displayed and we can click on its name to view its status and details.[footer:end]
+[slide:end]
 
-        The name of your Grakn KGMS stack. This must be a valid system name, specifically, it must consist of only lowercase letters, numbers, and hyphens, and cannot exceed 50 characters.
+</div>
 
+### Running Grakn
+Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
 
-* Node Configuration:
-    - **GraknGroupSize**
+<div class="galert">
+[Important]
+Once deployed, it will take some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
+</div>
 
-        Number of Grakn instances in the cluster.
-    - **GraknInstanceType**
+### Default Credentials
+As part of the deployment, AWS produces the default credentials with username being `grakn`. The screenshots below walk you through spotting the generated password. We will need these credentials to access the Graql and Grakn consoles.
 
-        EC2 instance type of Grakn instances.
+<div class="slideshow">
 
-    - **EbsVolumeSize**
+[slide:start]
+[header:start]View the Stack Details[header:end]
+[body:start]![View the Stack Details](/docs/images/cloud-deployment/aws_cf_select_stack.png)[body:end]
+[footer:start]Click on the stack's name to view its details.[footer:end]
+[slide:end]
 
-        Size in GB of each of the EBS volumes that are attached to Grakn instances.
-    - **OptimiseForEbs**
+[slide:start]
+[header:start]Expand Outputs[header:end]
+[body:start]![Expand Outputs](/docs/images/cloud-deployment/aws_cf_stack_output.png)[body:end]
+[footer:start]Expand _Outputs_.[footer:end]
+[slide:end]
 
-        Specifies whether to optimise Grakn Launch Configuration for EBS I/O.
+[slide:start]
+[header:start]Expand Outputs[header:end]
+[body:start]![Expand Outputs](/docs/images/cloud-deployment/aws_cf_stack_password.png)[body:end]
+[footer:start]The password for username `grakn` is the value of the `GraknUserPassword`.[footer:end]
+[slide:end]
 
-* VPC/Network:
-    - **VPC**
+</div>
 
-        The id of the VPC the stack should be deployed into.
+We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](/docs/management/users#update-a-user) `grakn` giving it a new secured password.
 
-    - **GraknSubnetCidrBlock**
-
-        The Grakn cluster will be deployed in a separate subnet and this setting specifies its IP CIDR range.
-
-
-* Security Group:
-
-    - **SSHLocation**
-
-        The IP address range that can be used to access Grakn instances using SSH.
-    - **gRPCLocation**
-
-        The IP address range that can be used to make gRPC requests.
-
-* Key Pair:
-     - **KeyPairName**
-
-        The key pair assigned to Grakn instances to allow SSH access.
-
-Once satisfied, press `Next` to proceed and arrive at the Options screen:
-
-![](/images/aws-cloudformation-options.png).
-
-where you can adjust Tagging, Permissions and other options to your liking. Once done, press `Next` to arrive at the final Review screen:
-
-![](/images/aws-cloudformation-review.png).
-
-If happy with the deployment, press `Create` to start the deployment of the Grakn stack.
-
-## **IMPORTANT:** Running Grakn
-**A Grakn Cluster starts automatically running as user `grakn`.** There is no need to manually start grakn servers.
-**Once the deployment is started, please allow some time for the cluster to fully bootup and synchronise**. A reasonable rule of thumb for the bootup time is **2 minutes per cluster node**. The progress of cluster bootup can be
-checked by logging in to a cluster node and executing the [cluster health check](#cluster-check) command.
-
-## **IMPORTANT:** Scaling the cluster
-Grakn cluster is deployed within an Auto Scaling Group which allows you to adjust the number of instances in the cluster in a straight-forward manner.
+### Scale the Cluster
+Grakn cluster is deployed within an Auto Scaling Group which allows us to adjust the number of instances in the cluster in a straight-forward manner.
 Auto Scaling Groups group together EC2 instances that share similar characteristics and are treated as a logical grouping for the purposes of instance scaling and management.
 
-To scale your cluster please go to the Auto Scaling and then to the Auto Scaling Groups section of your EC2 service dashboard which should look along the lines of:
+<div class="slideshow">
 
-![](/images/aws-autoscaling.png).
+[slide:start]
+[header:start]Navigate to Auto Scaling Groups[header:end]
+[body:start]![Navigate to Auto Scaling Groups](/docs/images/cloud-deployment/aws_cf_auto_scaling.png)[body:end]
+[footer:start]In the AWS Console, click on **Auto Scaling Groups** under _Auto Scaling_.[footer:end]
+[slide:end]
 
-There you can adjust the instance count to your needs by changing the `Desired Capacity` parameter.
+[slide:start]
+[header:start]Edit the Cluster[header:end]
+[body:start]![Edit the Cluster](/docs/images/cloud-deployment/aws_cf_auto_scaling_edit_a.png)[body:end]
+[footer:start]Having selected the Grakn Cluster, click on **Edit** under _Actions_.[footer:end]
+[slide:end]
 
-For more information on Auto Scaling Groups please visit [AWS Docs](https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroup.html).
+[slide:start]
+[header:start]Modify Desired Capacity[header:end]
+[body:start]![Modify Desired Capacity](/docs/images/cloud-deployment/aws_cf_auto_scaling_edit_b.png)[body:end]
+[footer:start]We can now change the values of _Desired Capacity_ as well as _min_ and _max_. For more information, refer to [AWS Documentation on Auto Scaling Groups](https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroup.html).[footer:end]
+[slide:end]
 
-## **IMPORTANT:** Stopping/starting Grakn instances within the cluster
-
-By design, it is not possible to stop an instance belonging to an Auto Scaling Group. When a Scaling Policy triggers the removal of an instance, Auto Scaling will always Terminate the instance. As a result a different
-procedure is needed for stopping instances and it will be described here.
-
-**IMPORTANT:** Before you proceed, make sure that the minimum capacity of the Auto Scaling Group the instance belongs to is at least one smaller than the current instance count, e.g. if you have 3 instances running and want to stop one,
-make sure the minimum capacity is at most 2. Otherwise new instances will be created in place of the stopped instance.
-
-The procedure is the following, for an instance you want to stop:
-- detach it from the Auto Scaling Group. In AWS CLI this can be achieved by typing:
-```
-aws autoscaling detach-instances --instance-ids <instance-id> --auto-scaling-group-name <asg> --should-decrement-desired-capacity
-```
-- stop the detached instance.
-```
-aws ec2 stop-instances --instance-ids <instance-id>
-```
-
-When you find it fit to restart the instance, the procedure follows in the reverse manner:
-
-- start your instance
-```
-aws ec2 start-instances --instance-ids <instance-id>
-```
-- attach the instance back to the Auto Scaling Group
-```
-aws autoscaling attach-instances --instance-ids <instance-id> --auto-scaling-group-name <asg>
-```
-
-More information on stopping/starting and attaching and detaching instances can be found here:
-- [Stopping and Starting instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html),
-- [Attaching instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-instance-asg.html),
-- [Detaching instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/detach-instance-asg.html).
-        ' | markdownify %}
-
-        <div id="toc">
-            {{ cloudformation_content | toc_only }}
-        </div>
-
-        {{ cloudformation_content }}
-
-    </div>
-    <div role="tabpanel" class="tab-pane" id="kgms-ami">
-        {% assign kgms_ami_content = '
-To commence deployment with Grakn KGMS AMU, click the yellow `Continue to Subscribe` button. Once subscribed, you should see the method configuration choice screen:
-
-![](/images/aws-deployment-methods.png)
-
-which allows you to pick `Amazon Machine Image` as the _Fullfilment Option_:
-
-![](/images/aws-deployment-ami.png).
-
-To continue, press on the `Continue to Launch` button.
-
-The AMI launch screen looks as follows:
-![](/images/aws-deployment-ami-launch.png).
-
-and allows you to specify the instance parameters. After having specified the parameters, press the launch button to start a Grakn instance.
-
-The AMI Provides an image with a preinstalled Grakn KGMS. The following list summarises the important locations:
-
-- Grakn dist: `/opt/grakn/`
-- Grakn config: /`opt/grakn/conf/grakn.properties`
-- logs: `/var/log/grakn/`
-
-
-## **IMPORTANT:** Storage configuration
-By default Grakn is expecting the storage directory to be `/mnt/data1/`. The storage directory is settable in the Grakn properties
-file located in `/opt/grakn/conf/`. We recommend attaching an EBS drive to the Grakn instance and mounting it so that storage is located on the EBS drive.
-The instructions how to attach the EBS drive can be found [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-attaching-volume.html).
-
-In order to mount the drive, please follow the following procedure:
-* identify the EBS block name and path, to do this run `lsblk` command and find the name of attached EBS block. The block path is then `/dev/<BLOCK_NAME>`.
-* if the drive is not formatted, format it by executing:
-```
-mkfs -t ext4 <BLOCK_PATH>
-```
-* make sure the mount directory exists and user `grakn` has write access to it
-
-* mount the drive by executing:
-```
-mount <BLOCK_PATH> <MOUNT_DIR>
-```
-
-## **IMPORTANT:** Running
-Grakn is configured as a service and by default it is not running. Once you have configured the storage, to start grakn the following command needs to be executed as root on the target machine:
-```
-systemctl start grakn
-```
-
-To stop run:
-
-```
-systemctl stop grakn
-```
-        ' | markdownify %}
-
-        <div id="toc">
-            {{ kgms_ami_content | toc_only }}
-        </div>
-
-        {{ kgms_ami_content }}
-    </div>
-</div>
 </div>
 
-## User credentials
-In order to use Graql and Grakn consoles, user credentials are required. The default user is `grakn`, whereas the default password can be found in the `GraknUserPassword` output.
+### Stop a Grakn Instance
+By design, it is not possible to stop an instance belonging to an Auto Scaling Group. When a Scaling Policy triggers the removal of an instance, Auto Scaling always terminates the instance.
+As a result, a different procedure is needed for stopping instances.
 
-**Once logged in, We strongly encourage you to change the default user password**. In order to do so, log in to the Grakn console and type:
+<div class="galert">
+[Important]
+Before we proceed, we must make sure that the minimum capacity of the Auto Scaling Group that the instance belongs to, is smaller than the current instance count. For instance, if we have three instances running, in order to stop one, the minimum capacity must be at most two. Otherwise, new instances will be created in place of the stopped instance.
+</div>
+
+#### 1. Install the AWS Command Line Interface
+Follow the instructions here (https://aws.amazon.com/cli/) to install the AWS CLI. Upon installation run `aws configure` via terminal.
+
+#### 2. Detach the instance from the Auto Scaling Group
+```
+aws autoscaling detach-instances --instance-ids &lt;id-of-the-instance-to-be-detached&gt; --region &lt;region-name&gt;" --auto-scaling-group-name &lt;name-of-the-auto-scaling-group-that-the-instance-belongs-to&gt; --should-decrement-desired-capacity
+```
+
+#### 3. Stop the detached instance
+```
+aws ec2 stop-instances --instance-ids &lt;id-of-the-detached-instanced-to-be-stopped&gt;
+```
+
+### Restart a Grakn Instance
+
+Having [installed and configured the AWS CLI](#install-the-aws-command-line-interface), we need to first start the instance and then attach it to the right Auto Scaling Group.
+
+#### 1. Start the instance
+```
+aws ec2 start-instances --instance-ids &lt;id-of-the-instance-to-be-restarted&gt;
+```
+
+#### 3. Attach the instance to the Auto Scaling Group
+```
+aws autoscaling attach-instances --instance-ids &lt;id-of-the-instance-to-be-stopped&gt; --region "&lt;region-name&gt;" --auto-scaling-group-name &lt;name-of-the-auto-scaling-group-that-the-instance-belongs-to&gt;
+```
+
+For more information check out AWS documentation on [Starting and Stopping Instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html), [Attaching Instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/attach-instance-asg.html) and [Detaching Instances](https://docs.aws.amazon.com/autoscaling/ec2/userguide/detach-instance-asg.html).
+
+[tab:end]
+
+[tab:Grakn KGMS AMI]
+
+<div class="slideshow">
+
+[slide:start]
+[header:start]Visit KGMS on AWS[header:end]
+[body:start]![KGMS listing on AWS Marketplace](/docs/images/cloud-deployment/aws_listing.png)[body:end]
+[footer:start]Visit the [KGMS listing on AWS Marketplace](https://aws.amazon.com/marketplace/pp/B07H8RMX5X).[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Subscribe[header:end]
+[body:start]![Subscribe](/docs/images/cloud-deployment/aws_subscribe.png)[body:end]
+[footer:start]Click on **Continue to Subscribe**.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Accept Terms[header:end]
+[body:start]![Accept Terms](/docs/images/cloud-deployment/aws_accept_terms.png)[body:end]
+[footer:start]Review the pricing information and click on **Accept Terms** to continue.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Subscribing[header:end]
+[body:start]![Subscribing](/docs/images/cloud-deployment/aws_subscribing.png)[body:end]
+[footer:start]We now need to wait while Amazon processes our request to subscribe to Grakn KGMS.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Configure[header:end]
+[body:start]![Configure](/docs/images/cloud-deployment/aws_configure.png)[body:end]
+[footer:start]Review the Click on **Continue to Configuration**[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Select CloudFormation[header:end]
+[body:start]![Select CloudFormation](/docs/images/cloud-deployment/aws_fulfillment_ami.png)[body:end]
+[footer:start]Select _Amazon Machine Image_ as the _Fulfillment Option_.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Confirm Configuration[header:end]
+[body:start]![Confirm Configuration](/docs/images/cloud-deployment/aws_ami_configure.png)[body:end]
+[footer:start]We can now adjust the configuration based on our needs.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Continue to Launch[header:end]
+[body:start]![Continue to Launch](/docs/images/cloud-deployment/aws_ami_launch_a.png)[body:end]
+[footer:start]Click on **Continue to Launch**.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Action: CloudFormation[header:end]
+[body:start]![Action: CloudFormation](/docs/images/cloud-deployment/aws_ami_launch_b.png)[body:end]
+[footer:start]Select _Launch From Website as the _Action_ and fill in the rest of the form. Once happy with all the options, click on **Launch** to continue.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Launch[header:end]
+[body:start]![Launch ](/docs/images/cloud-deployment/aws_ami_launch_c.png)[body:end]
+[footer:start]An instance of Grakn is now deployed on EC2.[footer:end]
+[slide:end]
+
+[slide:start]
+[header:start]Select Template[header:end]
+[body:start]![Select Template](/docs/images/cloud-deployment/aws_ami_console.png)[body:end]
+[footer:start]By navigating to the [EC2 Console](https://console.aws.amazon.com/ec2/v2/home), we can view the running instance..[footer:end]
+[slide:end]
+</div>
+
+## Configure Storage
+Grakn stores data in the default data directory as per its [configuration](/docs/running-grakn/configuration). To benefit from [Amazon Elastic Block Store](https://aws.amazon.com/ebs/)
+
+[tab:end]
+</div>
+
+### Logging into a node
+For a more direct interaction with the database, we need to log into one of the cluster nodes. To do so, we need to run the `ssh` as shown below.
 
 ```
-UPDATE USER grakn WITH PASSWORD newpassword
+ssh -i <path to the private key> ubuntu@<grakn instance DNS name or IP address>
 ```
 
-More details on available commands can be found [here](http://dev.grakn.ai/docs/get-started/grakn-console).
+The private key in question is the one that was specified as the `KeyPairName` stack parameter.
 
-## Accessing Grakn
+We can retrieve the DNS name or IP address by navigating to list of EC2 instances on AWS as illustrated below.
+![Grakn EC2 Instances](/docs/images/cloud-deployment/aws_instance_dns_ip.png)
 
-There are various ways to access Grakn on AWS. Here we will address the most common usage patterns.
 
-### Using Grakn gRPC client
+### Cluster Health Check
+While [logged into a node](#logging-into-a-node), run `grakn cluster status`. This outputs the list of all nodes, as shown below, with the first column indicating the Status (**U**p/**D**own) and State (**N**ormal/**L**eaving/**J**oining/**M**oving).
 
-The most common access pattern is to use the Grakn gRPC client to connect to a Grakn cluster. The connection happens via TCP port 48555 and the `gRPCLocation` stack parameter defines
-the range of IP addresses that can schedule gRPC requests.
+![Cluster Health Check](/docs/images/cloud-deployment/aws_cluster_health_check.png)
 
-### Logging in into a node
-To log in into one of the cluster nodes, simply use the ssh command:
+### Accessing Grakn Console
+While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
 
-`ssh -i <private key file> ubuntu@<grakn instance DNS name or IP address>`
+### Accessing Graql Console
+While [logged into a node](#logging-into-a-node), we can enter the [Graql Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
 
-#### <a name="cluster-check"></a> Cluster health check
-To verify the state of the cluster, execute the following command:
+### Signing up For Enterprise Support
+As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).
 
-`grakn cluster status`
+<hr style="margin-top: 40px">
 
-A sample output of the command executed on a node of a healthy 3-node cluster shall look similar to this:
+### Best Practices
+Amazon Web Services offers a wide range of compute options. What follows is a set of generic recommendations for an optimal choice.
 
-![](/images/aws-cluster-health.png)
+#### Compute options
+The optimum machine choice offering a good balance between CPU and memory should be equipped with at least 4 vCPUs and 8 GB of RAM.
+Using machines with additional RAM above a 25 GB threshold is not expected to yield significant performance improvements.
+Having these bounds in mind, the following machines are recommended because they offer a balanced set of system resources for a range of workloads:
+- General Purpose:
+    - t2.xlarge,
+    - t2.2xlarge,
+- Memory Optimised:
+    - m5.xlarge,
+    - m4.xlarge,
+    - m3.xlarge,
+- Compute Optimised:
+    - c5.xlarge,
+    - c5.2xlarge,
+    - c4.xlarge,
+    - c4.2xlarge,
+    - c3.xlarge,
+    - c3.2xlarge,
 
-#### Accessing the Graql console
-
-To access the Graql console, a user password is required. The default user password is specified in the `GraknUserPassword` output.
-
-To log into the Graql console, simply type `graql console`. After entering the user credentials (user: grakn, password: the one specified in the `GraknUserPassword` output), you are free to interact with Grakn via the Graql terminal.
-A successful login attempt shall look like this:
-
-![](/images/aws-graql-console.png)
-
-A summary of available commands can be found [here](http://dev.grakn.ai/docs/get-started/graql-console).
-
-#### Accessing the Grakn console
-The Grakn console can be accessed similarly to the Graql console by typing:
-
-`grakn console start`
-
-and providing the user credentials. A successful login attempt will look like this:
-
-![](/images/aws-grakn-console.png)
-
-A summary of available commands can be found [here](http://dev.grakn.ai/docs/get-started/grakn-console).
-
-## Next Steps
-
-If you want to learn more about Grakn KGMS, the [Grakn Academy](https://dev.grakn.ai/academy/) is a good place to start.
-
-To learn more about running Grakn KGMS in the cloud, take a look at the [best practices guide](https://dev.grakn.ai/docs/cloud-deployment/best-practices)
-and [post deployment steps](https://dev.grakn.ai/docs/cloud-deployment/post-deployment). -->
+For more information, please visit the [AWS EC2 Instance Types](https://aws.amazon.com/ec2/instance-types)

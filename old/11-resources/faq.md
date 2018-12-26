@@ -141,7 +141,7 @@ I want to clear the knowledge graph I've been experimenting with and try somethi
 
 If you are using the Java API, it's a simple as:
 
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(Grakn.DEFAULT_URI);
 grakn.keyspaces().delete("my-knowledge-base");
 ```

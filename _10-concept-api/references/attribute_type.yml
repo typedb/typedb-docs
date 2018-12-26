@@ -14,12 +14,12 @@ methods:
       method: attributeType.create(Object value);
       returns:
         - "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods) object"
-    nodejs:
+    javascript:
       <<: *method-create
       method: async attributeType.create(value);
       returns:
         - "[Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) object"
-    cpython:
+    python:
       <<: *method-create
       method: attribute_type.create(value)
       returns:
@@ -40,13 +40,13 @@ methods:
       returns:
         - "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods) object"
         - "null"
-    nodejs:
+    javascript:
       <<: *method-attribute
       method: async attributeType.attribute(value);
       returns:
         - "[Attribute](/docs/concept-api/thing?lang=javascript#attribute-methods) object"
         - "null"
-    cpython:
+    python:
       <<: *method-attribute
       method: attribute_type.attribute(value)
       returns:
@@ -60,10 +60,10 @@ methods:
     java:
       <<: *method-datatype
       method: attributeType.dataType();
-    nodejs:
+    javascript:
       <<: *method-datatype
       method: async attributeType.dataType();
-    cpython:
+    python:
       <<: *method-datatype
       method: attributeType.dataType()
   - method:
@@ -76,13 +76,13 @@ methods:
       returns:
         - String
         - "null"
-    nodejs:
+    javascript:
       <<: *method-regex-a
       method: async attributeType.regex();
       returns:
         - String
         - None
-    cpython:
+    python:
       <<: *method-regex-a
       method: attribute_type.regex()
       returns:
@@ -104,12 +104,12 @@ methods:
       method: attributeType.regex(String regex);
       returns:
         - "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods) object"
-    nodejs:
+    javascript:
       <<: *method-regex-b
       method: async attributeType.regex(regex);
       returns:
         - void
-    cpython:
+    python:
       <<: *method-regex-b
       method: attribute_type.regex(regex)
       returns:

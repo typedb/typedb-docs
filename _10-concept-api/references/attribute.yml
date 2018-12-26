@@ -12,7 +12,7 @@ methods:
         - Float
         - Boolean
         - Date
-    nodejs:
+    javascript:
       <<: *method-value
       method: async attribute.value();
       return:
@@ -20,7 +20,7 @@ methods:
         - Number
         - boolean
         - Date
-    cpython:
+    python:
       <<: *method-value
       method: attribute.value()
       return:
@@ -38,12 +38,12 @@ methods:
       method: attribute.owners();
       return:
         - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
-    nodejs:
+    javascript:
       <<: *method-owners
       method: async attribute.owners();
       return:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=javascript) objects"
-    cpython:
+    python:
       <<: *method-owners
       method: attribute.owners()
       return:

@@ -7,17 +7,17 @@ methods:
       <<: *method-rolePlayersMap
       method: relationship.rolePlayersMap();
       returns:
-        - 'Map<[Role](/docs/concept-api/type?lang=java#role-methods), Set<[Thing](/docs/concept-api/thing#thing-methods?lang=java)>>'
-    nodejs:
+        - 'Map<[Role](/docs/concept-api/type?lang=java#role-methods), Set<[Thing](/docs/concept-api/thing?lang=java#thing-methods)>>'
+    javascript:
       <<: *method-rolePlayersMap
       method: async relationship.rolePlayersMap();
       returns:
-        - 'Map<[Role](/docs/concept-api/type?lang=java#role-methods), Set<[Thing](/docs/concept-api/thing#thing-methods?lang=java)>>'
-    cpython:
+        - 'Map<[Role](/docs/concept-api/type?lang=java#role-methods), Set<[Thing](/docs/concept-api/thing?lang=java#thing-methods)>>'
+    python:
       <<: *method-rolePlayersMap
       method: relationship.role_players_map()
       returns:
-        - Dict[[Role](/docs/concept-api/type?lang=java#role-methods), set[[Thing](/docs/concept-api/thing#thing-methods?lang=java)]]
+        - Dict[[Role](/docs/concept-api/type?lang=java#role-methods), set[[Thing](/docs/concept-api/thing?lang=java#thing-methods)]]
   - method:
     common: &method-rolePlayers
       title: Retrieve roleplayers
@@ -37,7 +37,7 @@ methods:
           type: "[Role](/docs/concept-api/type?lang=java#role-methods)"
       returns:
         - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
-    nodejs:
+    javascript:
       <<: *method-rolePlayers
       method: async relationship.rolePlayers(role);
       accepts:
@@ -46,7 +46,7 @@ methods:
           type: "[Role](/docs/concept-api/type?lang=javascript#role-methods)"
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=java) objects"
-    cpython:
+    python:
       <<: *method-rolePlayers
       method: relationship.role_players(role)
       accepts:
@@ -83,7 +83,7 @@ methods:
           type: "[Thing](/docs/concept-api/thing?lang=java)"
       returns:
         - '[Relationship](/docs/concept-api/thing#relationship-methods) object'
-    nodejs:
+    javascript:
       <<: *method-assign
       method: async relationship.assign(role, thing);
       accepts:
@@ -95,7 +95,7 @@ methods:
           type: "[Thing](/docs/concept-api/thing?lang=javascript)"
       returns:
         - void
-    cpython:
+    python:
       <<: *method-assign
       method: relationship.assign(role, thing)
       accepts:
@@ -135,7 +135,7 @@ methods:
           type: "[Thing](/docs/concept-api/thing?lang=java)"
       returns:
         - '[Relationship](/docs/concept-api/thing#relationship-methods) object'
-    nodejs:
+    javascript:
       <<: *method-unassign
       method: async relationship.unassign(role, thing);
       accepts:
@@ -147,7 +147,7 @@ methods:
           type: "[Thing](/docs/concept-api/thing?lang=javascript)"
       returns:
         - void
-    cpython:
+    python:
       <<: *method-unassign
       method: relationship.unassign(role, thing)
       accepts:

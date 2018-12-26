@@ -9,7 +9,7 @@ permalink: /docs/query/updating-data
 In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](/docs/query/delete-query) the current instance followed by [inserting](/docs/query/insert-query) the new instance.
 
 ## Update Instances of an Attribute Type
-In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](/docs/query/delete-query#delete-associations-with-attributes) and then [insert the new instance of the attribute](/docs/query/delete-query#insert-instances-of-an-attribute-type).
+In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](/docs/query/delete-query#delete-associations-with-attributes) and then [insert the new instance of the attribute](/docs/query/insert-query#insert-instances-of-an-attribute-type).
 
 <div class="gtabs dark" data-parse-to-html="true">
 
@@ -24,7 +24,7 @@ insert $comp isa company id V17391 has registration-number "81726354";
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DeleteQuery delete_query = Graql.match(
   var("comp").isa("company").id(ConceptId.of("V17391")).has(Label.of("registration-number"), var("rn"), var("r"))
 ).delete("r");
@@ -45,7 +45,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;");
 await transaction.query('insert $comp isa company id V17391 has registration-number "81726354";');
 await transaction.commit();
@@ -53,7 +53,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
 transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
 atransaction.commit()
@@ -77,7 +77,7 @@ match $c isa colour "maroon"; delete $c;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 InsertQuery insert_query = Graql.match(
   var("x").isa("thing").has("colour", "maroon")
 ).insert(
@@ -99,7 +99,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;");
 await transaction.query('insert $comp isa company id V17391 has registration-number "81726354";');
 await transaction.commit();
@@ -107,7 +107,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
 transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
 transaction.commit()
@@ -140,7 +140,7 @@ delete $emp;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 InsertQuery insert_query = Graql.match(
   var("p").isa("person").has("name", "Amabo"),
   var("org").isa("organisation").has("name", "Wieth Souhe"),
@@ -165,7 +165,7 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Wieth Souhe"; insert $emp (employer: $org, $employee: $p) isa employment;');
 await transaction.query('match $p isa person has name "Prumt"; $org isa organisation has name "Wieth Souhe"; $emp (employer: $org, $employee: $p) isa employment; delete $emp');
 await transaction.commit();
@@ -173,7 +173,7 @@ await transaction.commit();
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Wieth Souhe"; insert $emp (employer: $org, $employee: $p) isa employment;')
 transaction.query('match $p isa person has name "Prumt"; $org isa organisation has name "Wieth Souhe"; $emp (employer: $org, $employee: $p) isa employment; delete $emp')
 transaction.commit()

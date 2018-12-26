@@ -1,46 +1,46 @@
 
 title: Graql ## !!! synced with codeKeywordsToLink
 methods:
-  - method1:
-    common: &method-1
-      title: Disable inference
+  # - method1:
+  #   common: &method-1
+  #     title: Disable inference
     #   method: '.infer(false)'
     #   description: Disables inference for the query to be executed.
     #   returns:
     #     - QueryBuilder object with inference set to false
     # java:
     #   <<: *method-1
-  - method2:
-    common: &method-2
+  - method:
+    common: &method-un-define
       title: Manipulate the schema programatically ## !!! synced with codeKeywordsToLink
       method: |
         .define(VarPattern... varPatterns)
         .undefine(VarPattern... varPatterns)
       description: |
         Manipulates the schema concepts using a list of variable pattern.
-        See examples for <a href="/docs/schema/concepts/#define">defining</a> and <a href="/docs/schema/concepts/#undefine">undefining</a> schema concepts.
+        See examples for <a href="/docs/schema/concepts#define">defining</a> and <a href="/docs/schema/concepts#undefine">undefining</a> schema concepts.
       accepts:
-        param1:
+        param:
           name: varPatterns
           description: >
             The statements that describe what is to be un/defined.
-            See examples for <a href="/docs/schema/concepts/#define">defining</a> and <a href="/docs/schema/concepts/#undefine">undefining</a> schema concepts.
+            See examples for <a href="/docs/schema/concepts#define">defining</a> and <a href="/docs/schema/concepts#undefine">undefining</a> schema concepts.
           type: VarPattern...
           required: true
           default: N/A
       returns:
         - "[DefineQuery](#client-api-title-query) object"
     java:
-      <<: *method-2
-  - method3:
-    common: &method-3
+      <<: *method-un-define
+  - method:
+    common: &method-match
       title: Match patterns in data ## !!! synced with codeKeywordsToLink
       method: .match(Pattern... patterns);
       description: |
         Matches the data that conforms to the given pattern.
         See various examples of <a href="/docs/query/match-clause">mactch clauses</a>.
       accepts:
-        param1:
+        param:
           name: patterns
           description: The statements that describes the pattern to be matched. See examples for various <a href="/docs/query/match-clause">match clauses</a>.
           type: Pattern...
@@ -49,9 +49,9 @@ methods:
       returns:
         - "[Match](/docs/query/match-clause) object"
     java:
-      <<: *method-3
-  - method4:
-    common: &method-4
+      <<: *method-match
+  - method:
+    common: &method-insertMatch
       title: Insert data instances ## !!! synced with codeKeywordsToLink
       method: |
         .insert(VarPattern... varPatterns);
@@ -60,7 +60,7 @@ methods:
         Inserts new instances of data using variable pattern(s).
         See examples for <a href="/docs/schema/query/insert-query">insert queries</a>.
       accepts:
-        param1:
+        param:
           name: varPatterns
           description: >
             The statements that describe the pattern for the data to be inserted.
@@ -71,9 +71,9 @@ methods:
       returns:
         - "[InsertQuery](#client-api-title-query) object"
     java:
-      <<: *method-4
-  - method5:
-    common: &method-5
+      <<: *method-insertMatch
+  - method:
+    common: &method-matchGet
       title: Retrive data instances ## !!! synced with codeKeywordsToLink
       method: |
         .match(Pattern... patterns).get(Var... vars);
@@ -81,7 +81,7 @@ methods:
         Retrieves instances of data that matched the preceding clause.
         See examples for <a href="/docs/schema/query/get-query">get queries</a>.
       accepts:
-        param1:
+        param:
           name: vars
           description: >
             The variables whose contained instances are to be retieved.
@@ -92,9 +92,9 @@ methods:
       returns:
         - "[GetQuery](#client-api-title-query) object"
     java:
-      <<: *method-5
-  - method6:
-    common: &method-6
+      <<: *method-matchGet
+  - method:
+    common: &method-matchDelete
       title: Delete data instances
       method: |
         .match(Pattern... patterns).delete(Var... vars);
@@ -102,7 +102,7 @@ methods:
         Deletes instances of data that matched the preceding match clause.
         See examples for <a href="/docs/schema/query/delete-query">delete queries</a>.
       accepts:
-        param1:
+        param:
           name: vars
           description: >
             The variables whose contained instances are to be deleted.
@@ -113,16 +113,16 @@ methods:
       returns:
         - "[DeleteQuery](#client-api-title-query) object"
     java:
-      <<: *method-6
-  - method7:
-    common: &method-7
+      <<: *method-matchDelete
+  - method:
+    common: &method-matchAggregate
       title: Aggregate values ## !!! synced with codeKeywordsToLink
       method: '.match(Pattern... patterns).aggregate(Aggregate\<T\> aggreagate);'
       description: |
         Aggregates a given function over the data that matched the preceding match clause.
         See examples for <a href="/docs/schema/query/delete-query">delete queries</a>.
       accepts:
-        param1:
+        param:
           name: aggreagate
           description: >
             The aggregate function to perform on the match instances.
@@ -133,16 +133,16 @@ methods:
       returns:
         - '[AggregateQuery](#client-api-title-query)\<?\> object (type of the AggregateQuery may be Value or AnswerGroup\<ConceptMap\>, depedning on the given aggreagte function)'
     java:
-      <<: *method-7
-  - method8:
-    common: &method-8
+      <<: *method-matchAggregate
+  - method:
+    common: &method-compute
       title: Compute values ## !!! synced with codeKeywordsToLink
       method: '.compute(Method\<T\> method);'
       description: |
         Computes values over a large dataset using a variable pattern.
         For a complete set of parameters and methods available on <code>compute()</code>, see examples of <a href="/docs/schema/query/compute-query">compute queries</a>.
       accepts:
-        param1:
+        param:
           name: method
           description: The method used for computation. See examples for <a href="/docs/schema/query/compute-query">compute queries</a>.
           type: GraqlSyntax.Compute.Method
@@ -151,4 +151,4 @@ methods:
       returns:
         - '[ComputeQuery](#client-api-title-query)\<?\> object(type of the ComputeQuery is dependent on the type of the compute method)'
     java:
-      <<: *method-8
+      <<: *method-compute

@@ -209,7 +209,7 @@ Pick a language of your choice to continue.
   </div>
 
   <div role="tabpanel" class="tab-pane" id="overview-nodejs">
-    <!-- nodejs: an overview -->
+    <!-- ```javascript an overview -->
     <h2 id="anoverview">An Overview</h2>
     <p>Let’s go through a summary of how the migration takes place.</p>
     <ol>
@@ -219,7 +219,7 @@ Pick a language of your choice to continue.
       <li><p>we will execute each of those queries to load the data into our target keyspace — phone_calls.</p></li>
     </ol>
     <p>Before moving on, make sure you have <strong>npm</strong> installed and the <a href="http://dev.grakn.ai/docs/get-started/grakn-server"><strong>Grakn server</strong></a> running on your machine.</p>
-    <!-- nodejs: getting started -->
+    <!-- ```javascript getting started -->
     <h2 id="gettingstarted">Getting Started</h2>
     <ol>
       <li><p>Create a directory named <code>phone_calls</code> on your desktop.</p></li>
@@ -228,13 +228,13 @@ Pick a language of your choice to continue.
       <li><p>Open the <code>phone_calls</code> directory in your favourite text editor.</p></li>
       <li><p>Create a <code>migrate.js</code> file in the root directory. This is where we’re going to write all our code.</p></li>
     </ol>
-    <!-- nodejs: including the data files -->
+    <!-- ```javascript including the data files -->
     <h2 id="includingthedatafiles">Including the Data Files</h2>
     <p>Pick one of the data formats below and download the files. After you download them, place the four files under the <code>phone_calls/data</code> directory. We will be using these to load their data into our <code>phone_calls</code> knowledge graph.</p>
     <p><strong>CSV:</strong> <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/companies.csv">companies</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/people.csv">people</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/contracts.csv">contracts</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/calls.csv">calls</a></p>
     <p><strong>JSON:</strong> <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/companies.json">companies</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/people.json">people</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/contracts.json">contracts</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/calls.json">calls</a></p>
     <p><strong>XML:</strong> <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/companies.xml">companies</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/people.xml">people</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/contracts.xml">contracts</a> | <a href="https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/calls.xml">calls</a></p>
-    <!-- nodejs: setting up the migration mechanism -->
+    <!-- ```javascript setting up the migration mechanism -->
     <h2 id="settingupthemigrationmechanism">Setting up the migration mechanism</h2>
     <p>All code that follows is to be written in <code>phone_calls/migrate.js</code>.</p>
     {% gist 50e72ea0110190eb3fdb16db516b0f01 %}
@@ -245,7 +245,7 @@ Pick a language of your choice to continue.
       <li><p>The template function that receives an object and produces the Graql insert query. We will define these template functions in a bit.</p></li>
     </ul>
     <p>Let’s move on.</p>
-    <!-- nodejs: buildPhoneCallGraph(inputs) -->
+    <!-- ```javascript buildPhoneCallGraph(inputs) -->
     <h2 id="buildPhoneCallGraphinputs">buildPhoneCallGraph(inputs)</h2>
     {% gist c0c7463f3077eead80bc169bfa837aff %}
     <p>This is the main and only function we need to call to start loading data into Grakn.</p>
@@ -256,7 +256,7 @@ Pick a language of your choice to continue.
       <li><p>For each <code>input</code> object in <code>inputs</code>, we call the <code>loadDataIntoGrakn(input, session)</code>. This will take care of loading the data as specified in the input object into our keyspace.</p></li>
       <li><p>The <code>session</code> is closed.</p></li>
     </ol>
-    <!-- nodejs: loadDataIntoGrakn(input, session) -->
+    <!-- ```javascript loadDataIntoGrakn(input, session) -->
     <h2 id="loaddataintograkninputsession">loadDataIntoGrakn(input, session)</h2>
     {% gist b57395a4cae644439ac5d0e573d0e49b %}
     <p>In order to load data from each file into Grakn, we need to:</p>
@@ -266,11 +266,11 @@ Pick a language of your choice to continue.
     </ol>
     {% include tip.html content="to avoid running out of memory, it’s recommended that every single query gets created and committed in a single transaction. However, for faster migration of large datasets, this can happen once for every <code>n</code> queries, where <code>n</code> is the maximum number of queries guaranteed to run on a single transaction." %}
     <p>Before we move on to parsing the data into objects, let’s start with the template functions.</p>
-    <!-- nodejs: the template functions -->
+    <!-- ```javascript the template functions -->
     <h2 id="thetemplatefunctions">The Template Functions</h2>
     <p>Templates are simple functions that accept an object, representing a single data item. The values within this object fill in the blanks of the query template. The result will be a Graql insert query.</p>
     <p>We need 4 of them. Let’s go through them one by one.</p>
-    <!-- nodejs: companyTemplate -->
+    <!-- ```javascript companyTemplate -->
     <h3 id="companytemplate">companyTemplate</h3>
     {% gist 213c3a5100ad0e361abb545d7a252cf1 %}
     <p>Example:</p>
@@ -278,7 +278,7 @@ Pick a language of your choice to continue.
       <li><p>Goes in: <code>{ name: "Telecom" }</code></p></li>
       <li><p><code>Comes out: insert $company isa company has name "Telecom";</code></p></li>
     </ul>
-    <!-- nodejs: personTemplate -->
+    <!-- ```javascript personTemplate -->
     <h3 id="persontemplate">personTemplate</h3>
     {% gist c496df88af2b4024206ab7c27b5d2bd4 %}
     <p>Example:</p>
@@ -291,7 +291,7 @@ Pick a language of your choice to continue.
       <li><p>Goes in: <code>{ firs-name: "Jackie", last-name: "Joe", city: "Jimo", age: 77, phone_number: "+00 091 xxx"}</code></p></li>
       <li><p>Comes out: <code>insert $person has phone-number "+44 091 xxx" has first-name "Jackie" has last-name "Joe" has city "Jimo" has age 77;</code></p></li>
     </ul>
-    <!-- nodejs: contractTemplate -->
+    <!-- ```javascript contractTemplate -->
     <h3 id="contracttemplate">contractTemplate</h3>
     {% gist 0b4461cc6dd05e75e3ba3dc68b85cb10 %}
     <p>Example:</p>
@@ -300,7 +300,7 @@ Pick a language of your choice to continue.
       <li><p>Comes out: <code>match $company isa company has name "Telecom"; $customer isa person has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;</code></p>
       </li>
     </ul>
-    <!-- nodejs: callTemplate -->
+    <!-- ```javascript callTemplate -->
     <h3 id="calltemplate">callTemplate</h3>
     {% gist 80273905e71b6e5d5f1815c32cee322a %}
     <p>Example:</p>
@@ -310,7 +310,7 @@ Pick a language of your choice to continue.
     </ul>
     <p>We’ve now created a template for each and all four concepts that were <a href="./defining-the-schema">previously</a> defined in the schema.</p>
     <p>It’s time for the implementation of <code>parseDataToObjects(input)</code>.</p>
-    <!-- nodejs: data-specific implementation -->
+    <!-- ```javascript data-specific implementation -->
     <h2 id="dataformatspecificimplementation">DataFormat-specific implementation</h2>
     <p>The implementation for parseDataToObjects(input) differs based on what format our data files have.</p>
     <p><code>.csv</code>, <code>.json</code> or <code>.xml</code>.</p>
@@ -377,7 +377,7 @@ Pick a language of your choice to continue.
         {% gist 11e7372deefc6b4c05629ec1d2d49ca8 %}
       </div>
     </div>
-    <!-- nodejs: time to load -->
+    <!-- ```javascript time to load -->
     <h2 id="timetoload">Time to Load</h2>
     <p>Run <code>npm run migrate.js</code></p>
     <p>Sit back, relax and watch the logs while the data starts pouring into Grakn.</p>

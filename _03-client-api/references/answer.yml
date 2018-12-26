@@ -7,8 +7,8 @@ description:
   java: >
     The type of answers returned by executation of a query depends on the type of query executed.
     The table below illustrates the answer types mapped to query types.
-  nodejs: *common-description
-  cpython: *common-description
+  javascript: *common-description
+  python: *common-description
 mappings:
   -
     query: define
@@ -47,218 +47,230 @@ types:
   - type1:
     title: ConceptMap ## !!! synced with codeKeywordsToLink
     methods:
-      - method1:
-        common: &conceptmap-method-1
+      - method:
+        common: &method-conceptmap-map
           title: Retrive a map of Variable => Concept from the ConceptMap answer
-          method: answer.map()
           returns:
-            - 'Map ({variable_name: Concept})'
+            - 'Map ({variable_name: [Concept](/docs/concept-api/concept)})'
         java:
-          <<: *conceptmap-method-1
+          <<: *method-conceptmap-map
+          method: answer.map();
           description: Produces a Map where keys are variable names and values are concepts
-        nodejs:
-          <<: *conceptmap-method-1
+        javascript:
+          <<: *method-conceptmap-map
+          method: answer.map();
           description: Produces a Javascript object where keys are variable names and values are concepts
-        cpython:
-          <<: *conceptmap-method-1
+        python:
+          <<: *method-conceptmap-map
+          method: answer.map()
           description: Produces a dictionary where keys are variable names and values are concepts
-      - method2:
-        common: &explanation-method
+      - method:
+        common: &method-explanation
           title: Explaining an inferred answer
-          method: answer.explanation()
           description: Provides an explanation on the inference of the concept in the answer, if the concept is in fact inferred.
           returns:
             - "[Explanation](#client-api-title-explanation)"
             - "null"
-        java:
-          <<: *explanation-method
-        nodejs:
-          <<: *explanation-method
-        cpython:
-          <<: *explanation-method
+        java: &method-explanation-java
+          <<: *method-explanation
+          method: answer.explanation();
+        javascript: &method-explanation-javascript
+          <<: *method-explanation
+          method: answer.explanation();
+        python: &method-explanation-python
+          <<: *method-explanation
+          method: answer.explanation()
   - type2:
     title: Value
     methods:
-      - method1:
-        common: &value-method-1
+      - method:
+        common: &method-value-map
           title: Retrive nummeric value of an aggregate/computed answer
-          method: answer.map()
         java:
-          <<: *value-method-1
+          <<: *method-value-map
+          method: answer.map();
           returns:
             - int
             - float
-        nodejs:
-          <<: *value-method-1
+        javascript:
+          <<: *method-value-map
+          method: answer.map();
           returns:
             - number
-        cpython:
-          <<: *value-method-1
+        python:
+          <<: *method-value-map
+          method: answer.map()
           returns:
             - int
             - float
-      - method2:
-        nodejs:
-          <<: *explanation-method
-        cpython:
-          <<: *explanation-method
+      - method:
+        java:
+          <<: *method-explanation-java
+        javascript:
+          <<: *method-explanation-javascript
+        python:
+          <<: *method-explanation-python
   - type3:
     title: ConceptList
     methods:
-      - method1:
-        common: &conceptlist-method-1
+      - method:
+        common: &method-conceptlist-list
           title: Retrive ids of all concepts in a ConceptList answer
-          method: answer.list()
         java:
-          <<: *conceptlist-method-1
+          <<: *method-conceptlist-list
+          method: answer.list();
           returns:
             - Array of String
-        nodejs:
-          <<: *conceptlist-method-1
+        javascript:
+          <<: *method-conceptlist-list
+          method: answer.list();
           returns:
             - Array of String
-        cpython:
-          <<: *conceptlist-method-1
+        python:
+          <<: *method-conceptlist-list
+          method: answer.list()
           returns:
             - List of String
-      - method2:
+      - method:
         java:
-          <<: *explanation-method
-        nodejs:
-          <<: *explanation-method
-        cpython:
-          <<: *explanation-method
+          <<: *method-explanation-java
+        javascript:
+          <<: *method-explanation-javascript
+        python:
+          <<: *method-explanation-python
   - type4:
     title: ConceptSet
     methods:
-      - method1:
-        common: &conceptset-method-1
+      - method:
+        common: &method-conceptset-set
           title: Retrive set of ids of concepts after a cluster computation
-          method: answer.set()
           returns:
             - Set of String
         java:
-          <<: *conceptset-method-1
-        nodejs:
-          <<: *conceptset-method-1
-        cpython:
-          <<: *conceptset-method-1
-      - method2:
+          <<: *method-conceptset-set
+          method: answer.set();
+        javascript:
+          <<: *method-conceptset-set
+          method: answer.set();
+        python:
+          <<: *method-conceptset-set
+          method: answer.set()
+      - method:
         java:
-          <<: *explanation-method
-        nodejs:
-          <<: *explanation-method
-        cpython:
-          <<: *explanation-method
+          <<: *method-explanation-java
+        javascript:
+          <<: *method-explanation-javascript
+        python:
+          <<: *method-explanation-python
   - type5:
     title: ConceptSetMeasure
     methods:
-      - method1:
-        common: &conceptsetmeasure-method-1
+      - method:
+        common: &method-conceptsetmeasure-measurement
           title: Retrieve the numeric value of a centrality computation ## !!! synced with codeKeywordsToLink
           method: answer.measurement()
         java:
-          <<: *conceptsetmeasure-method-1
+          <<: *method-conceptsetmeasure-measurement
           returns:
             - int
             - float
-        nodejs:
-          <<: *conceptsetmeasure-method-1
+        javascript:
+          <<: *method-conceptsetmeasure-measurement
           returns:
             - number
-        cpython:
-          <<: *conceptsetmeasure-method-1
+        python:
+          <<: *method-conceptsetmeasure-measurement
           returns:
             - int
             - float
-      - method2:
-        common: &conceptsetmeasure-method-2
+      - method:
+        common: &method-conceptsetmeasure-set
           title: Retrive a set of ids of concepts after a centrality computation
           method: answer.set()
           returns:
             - Set of String
         java:
-          <<: *conceptsetmeasure-method-2
-        nodejs:
-          <<: *conceptsetmeasure-method-2
-        cpython:
-          <<: *conceptsetmeasure-method-2
-      - method3:
+          <<: *method-conceptsetmeasure-set
+        javascript:
+          <<: *method-conceptsetmeasure-set
+        python:
+          <<: *method-conceptsetmeasure-set
+      - method:
         java:
-          <<: *explanation-method
-        nodejs:
-          <<: *explanation-method
-        cpython:
-          <<: *explanation-method
+          <<: *method-explanation-java
+        javascript:
+          <<: *method-explanation-javascript
+        python:
+          <<: *method-explanation-python
   - type6:
     title: AnswerGroup
     methods:
-      - method1:
-        common: &answergroup-method-1
+      - method:
+        common: &method-answergroup-owner
           title: Retrieve the concept that is the group owner ## !!! synced with codeKeywordsToLink
           method: answer.owner()
           returns:
-            - Concept
+            - "[Concept](/docs/concept-api/concept)"
         java:
-          <<: *answergroup-method-1
-        nodejs:
-          <<: *answergroup-method-1
-        cpython:
-          <<: *answergroup-method-1
-      - method2:
-        common: &answergroup-method-2
+          <<: *method-answergroup-owner
+        javascript:
+          <<: *method-answergroup-owner
+        python:
+          <<: *method-answergroup-owner
+      - method:
+        common: &method-answergroup-answers
           title: Retrive the answers of the group
           method: answer.answers()
         java:
-          <<: *conceptsetmeasure-method-2
+          <<: *method-answergroup-answers
           returns:
             - Array of Answer
-        nodejs:
-          <<: *conceptsetmeasure-method-2
+        javascript:
+          <<: *method-answergroup-answers
           returns:
             - Array of Answer
-        cpython:
-          <<: *conceptsetmeasure-method-2
+        python:
+          <<: *method-answergroup-answers
           returns:
             - List of Answer
-      - method3:
+      - method:
         java:
-          <<: *explanation-method
-        nodejs:
-          <<: *explanation-method
-        cpython:
-          <<: *explanation-method
+          <<: *method-explanation-java
+        javascript:
+          <<: *method-explanation-javascript
+        python:
+          <<: *method-explanation-python
   - type7:
     title: Explanation ## !!! synced with codeKeywordsToLink
     methods:
-      - method1:
-        common: &explanation-method-1
+      - method:
+        common: &method-explanation-querypattern
           title: Retrieve a Graql explanation of the answer ## !!! synced with codeKeywordsToLink
           returns:
             - String
         java:
-          <<: *explanation-method-1
+          <<: *method-explanation-querypattern
           method: answer.query_pattern();
-        nodejs:
-          <<: *explanation-method-1
+        javascript:
+          <<: *method-explanation-querypattern
           method: answer.queryPattern();
-        cpython:
-          <<: *explanation-method-1
+        python:
+          <<: *method-explanation-querypattern
           method: answer.query_pattern()
-      - method2:
-        common: &explanation-method-2
+      - method:
+        common: &method-explanation-answers
           title: Retrieve source facts of inference ## !!! synced with codeKeywordsToLink
           description: Provides a list of answers from which the inferred answer is derived.
           method: answer.answers()
         java:
-          <<: *explanation-method-2
+          <<: *method-explanation-answers
           returns:
-            - Array of Answer
-        nodejs:
-          <<: *explanation-method-2
+            - Array of [Answer](#client-api-title-answer)
+        javascript:
+          <<: *method-explanation-answers
           returns:
-            - Array of Answer
-        cpython:
-          <<: *explanation-method-2
+            - Array of [Answer](#client-api-title-answer)
+        python:
+          <<: *method-explanation-answers
           returns:
-            - List of Answer
+            - List of [Answer](#client-api-title-answer)

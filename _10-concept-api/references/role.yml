@@ -8,12 +8,12 @@ methods:
       method: role.relationships();
       returns:
         - "Stream of [Relationship](/docs/concept-api/thing?lang=java#relationship-methods) objects"
-    nodejs:
+    javascript:
       <<: *method-relationships
       method: async role.relationships();
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=javascript#relationship-methods) objects"
-    cpython:
+    python:
       <<: *method-relationships
       method: role.relationships()
       returns:
@@ -27,12 +27,12 @@ methods:
       method: role.players();
       returns:
         - "Stream of [Type](/docs/concept-api/type?lang=java) objects"
-    nodejs:
+    javascript:
       <<: *method-players
       method: async role.players();
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Type](/docs/concept-api/type?lang=nodejs) objects"
-    cpython:
+    python:
       <<: *method-players
       method: role.players()
       returns:

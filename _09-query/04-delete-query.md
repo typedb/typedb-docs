@@ -17,7 +17,7 @@ match $p isa person id V41016; delete $p;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DeleteQuery query = Graql.match(
     var("p").isa("person").id(ConceptId.of("V41016"))
 ).delete("p");
@@ -32,14 +32,14 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('match $p isa person id V41016; delete $p;');
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('match $p isa person id V41016; delete $p;')
 transaction.commit()
 ```
@@ -63,7 +63,7 @@ $delete $emp;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DeleteQuery query = Graql.match(
   var("org").isa("organisation").has("name", "Black House"),
   var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
@@ -79,14 +79,14 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('match $org isa organisation has name "Black House"; $emp (employer: $org, employee: $p) isa employment; $delete $emp;');
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('match $org isa organisation has name "Black House"; $emp (employer: $org, employee: $p) isa employment; $delete $emp;')
 transaction.commit()
 ```
@@ -109,7 +109,7 @@ match $c isa car has colour "red" via $r; delete $r;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DeleteQuery query = Graql.match(
   var("ca").isa("car").has(Label.of("colour"), var("co"), var("r")),
   var("co").val("red")
@@ -125,14 +125,14 @@ transaction.commit(); -->
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query('match $c isa car has colour "red" via $r; delete $r;');
 await transaction.commit()
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query('match $c isa car has colour "red" via $r; delete $r;')
 transaction.commit()
 ```

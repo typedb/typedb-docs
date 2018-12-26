@@ -1,13 +1,12 @@
 
 title: "Session"
 methods:
-  - method1:
-    common: &method-1
+  - method:
+    common: &method-transaction
       title: Create a transaction ## !!! synced with codeKeywordsToLink
       description: Creates a transacton to execute read and write operations on the keyspace connected to the ssesion.
-      method: 'session.transaction(type)'
-      accepts: &accepts-1
-        param1: &accepts-1-param-1
+      accepts: &accepts-transaction
+        param: &accepts-transaction-type
           name: type
           description: The type of the transaction to be created - read or write.
           type: grakn.TxType.READ or grakn.TxType.WRITE
@@ -16,29 +15,36 @@ methods:
       returns:
         - "[Transaction](#client-api-title-transaction) object"
     java:
-      <<: *method-1
+      <<: *method-transaction
       method: 'session.transaction(GraknTxType type)'
       accepts:
-        <<: *accepts-1
-        param1:
-          <<: *accepts-1-param-1
+        <<: *accepts-transaction
+        param:
+          <<: *accepts-transaction-type
           type: 'GraknTxType.READ or GraknTxType.WRITE'
-    nodejs:
-      <<: *method-1
-    cpython:
-      <<: *method-1
+    javascript:
+      <<: *method-transaction
+      method: session.transaction(type);
+    python:
+      <<: *method-transaction
+      method: session.transaction(type)
 
-  - method2:
-    common: &method-2
+  - method:
+    common: &method-close
       title: Close a session
       description: Closes the session once it is no longer being used.
-      method: 'session.close()'
-
     java:
-      <<: *method-2
-
-    nodejs:
-      <<: *method-2
-
-    cpython:
-      <<: *method-2
+      <<: *method-close
+      method: session.close();
+      returns:
+        - void
+    javascript:
+      <<: *method-close
+      method: session.close();
+      returns:
+        - void
+    python:
+      <<: *method-close
+      method: session.close()
+      returns:
+        - None

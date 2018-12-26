@@ -33,7 +33,7 @@ match $p isa person; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   Graql.var("p").isa("person")
 ).get();
@@ -44,13 +44,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $p isa person; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $p isa person; get;")
 ```
 [tab:end]
@@ -70,7 +70,7 @@ match $p isa person has name $n; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("p").isa("person").has("name", var("n"))
 ).get();
@@ -81,13 +81,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $p isa person has name $n; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $p isa person has name $n; get;")
 ```
 [tab:end]
@@ -108,7 +108,7 @@ match $emp (employer: $x, employee: $y) isa employment; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   Var.isa("employment").rel("employer", "x").rel("employee", "y"),
 ).get();
@@ -119,13 +119,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;")
 ```
 [tab:end]
@@ -145,7 +145,7 @@ match $emp (employer: $x, exmployee: $y) isa employment has reference-id $ref; g
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref")),
 ).get();
@@ -156,13 +156,13 @@ Stream\<ConceptMap\> answers = transaction.stream(query.toString());
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;")
 ```
 [tab:end]
@@ -182,7 +182,7 @@ match (employer: $x, employee: $y) isa employment; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = query_builder.match(
   var().isa("employment").rel("employer", "x").rel("employee", "y")
 ).get();
@@ -193,13 +193,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match (employer: $x, employee: $y) isa employment; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match (employer: $x, employee: $y) isa employment; get;")
 ```
 [tab:end]
@@ -217,7 +217,7 @@ match $fr ($x, $y, $z) isa friendship; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = query_builder.match(
   var("fr").isa("friendship").rel("x").rel("y").rel("z"),
 ).get();
@@ -228,13 +228,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $fr ($x, $y, $z) isa friendship; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $fr ($x, $y, $z) isa friendship; get;")
 ```
 [tab:end]
@@ -255,7 +255,7 @@ match $x "some value"; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("x").val("some value")
 ).get();
@@ -266,13 +266,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $x "some value"; get;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $x "some value"; get;')
 ```
 [tab:end]
@@ -292,7 +292,7 @@ match $n isa name "John"; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("x").isa("name").val("John")
 ).get();
@@ -303,13 +303,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $n isa name "John"; get;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $n isa name "John"; get;')
 ```
 [tab:end]
@@ -329,7 +329,7 @@ match $phone-number contains "+44"; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("phone-number").val(Predicates.contains("+44"))
 ).get();
@@ -340,13 +340,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $phone-number contains "+44"; get;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $phone-number contains "+44"; get;')
 ```
 [tab:end]
@@ -366,7 +366,7 @@ match $x /.*(Mary|Barbara).*/; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("phone-number").val(Predicates.regex("/.*(Mary|Barbara).*/"))
 ).get();
@@ -377,13 +377,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
 ```
 [tab:end]
@@ -403,7 +403,7 @@ match $p isa person has first-name $fn, has last-name $ln; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("phone-number").val(Predicates.regex(/.*(Mary|Barbara).*/))
 ).get();
@@ -414,13 +414,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
 ```
 [tab:end]
@@ -438,7 +438,7 @@ match $p isa person has first-name "John" has age < 25; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("p").isa("person").has("first-name", "John").has("age", Predicates.lt(25))
 ).get();
@@ -449,13 +449,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $p isa person has first-name "John" has age < 25; get;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $p isa person has first-name "John" has age < 25; get;')
 ```
 [tab:end]
@@ -472,7 +472,7 @@ match $p isa person has first-name "John" has age $a; $a < 25; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("p").isa("person").has("name", "John").has("age", var("a")),
   var("a").val(Predicates.lt(25))
@@ -484,13 +484,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;')
 ```
 [tab:end]
@@ -508,7 +508,7 @@ match $o isa! organisation; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("o").isaExplicit("organisation")
 ).get();
@@ -519,13 +519,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $o isa! organisation; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $o isa! organisation; get;")
 ```
 [tab:end]
@@ -545,7 +545,7 @@ match $x id V41016; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("x").id(ConceptId.of("V41016"))
 ).get();
@@ -556,13 +556,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $x id V41016; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $x id V41016; get;")
 ```
 [tab:end]
@@ -592,7 +592,7 @@ match $x sub relationship; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query_a = Graql.match(
   var("x").sub("thing")
 ).get();
@@ -626,7 +626,7 @@ Stream\<ConceptMap\> answers = transaction.stream(query_e.toString());
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIteratorA = await transaction.query("match $x sub thing; get;");
 const answerIteratorB = await transaction.query("match $x sub attribute; get;");
 const answerIteratorC = await transaction.query("match $x sub entity; get;");
@@ -636,7 +636,7 @@ const answerIteratorE = await transaction.query("match $x sub relationship; get;
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator_a = transaction.query("match $x sub thing; get;")
 answer_iterator_b = transaction.query("match $x sub attribute; get;")
 answer_iterator_c = transaction.query("match $x sub entity; get;")
@@ -658,7 +658,7 @@ match employment relates $x; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   label("employment").relates(var("x"))
 ).get();
@@ -669,13 +669,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match employment relates $x; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match employment relates $x; get;")
 ```
 [tab:end]
@@ -695,7 +695,7 @@ match employment relates $x as member; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   label("employment").relates(var("x")),
   var("x").sub("member")
@@ -707,13 +707,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match employment relates $x as member; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match employment relates $x as member; get;")
 ```
 [tab:end]
@@ -733,7 +733,7 @@ match $x plays employee; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("x").plays("employee")
 ).get();
@@ -744,13 +744,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $x plays employee; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $x plays employee; get;")
 ```
 [tab:end]
@@ -770,7 +770,7 @@ match $x has name; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("x").has("name")
 ).get();
@@ -781,13 +781,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $x has name; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $x has name; get;")
 ```
 [tab:end]

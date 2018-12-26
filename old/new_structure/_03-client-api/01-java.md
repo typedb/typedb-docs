@@ -39,7 +39,7 @@ Once the session is open, you can proceed by creating a **transaction** in order
 
 The following snippet shows how to open a Grakn session and transaction:
 
-```java-test-ignore
+```lang-java-test-ignore
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;
 import ai.grakn.client.Grakn;
@@ -103,7 +103,7 @@ Let's see how we can build the same schema exclusively via the Core API.
 First we need a knowledge graph. For this example we will just use an
 [in-memory knowledge graph](./setup#initialising-a-transaction-on-the-knowledge-base):
 
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx = session.transaction(GraknTxType.WRITE);
@@ -129,7 +129,7 @@ gender sub attribute datatype string;
 
 These same attribute types can be built with the Core API as follows:
 
-```java-test-ignore
+```lang-java-test-ignore
 AttributeType identifier = tx.putAttributeType("identifier", AttributeType.DataType.STRING);
 AttributeType firstname = tx.putAttributeType("firstname", AttributeType.DataType.STRING);
 AttributeType surname = tx.putAttributeType("surname", AttributeType.DataType.STRING);
@@ -158,7 +158,7 @@ parentship sub relationship
 
 Using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 Role spouse1 = tx.putRole("spouse1");
 Role spouse2 = tx.putRole("spouse2");
 RelationshipType marriage = tx.putRelationshipType("marriage")
@@ -196,7 +196,7 @@ person sub entity
 
 Using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 EntityType person = tx.putEntityType("person")
                         .plays(parent)
                         .plays(child)
@@ -216,13 +216,13 @@ person.has(gender);
 
 Now to commit the schema using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 tx.commit();
 ```
 
 If you do not wish to commit the schema you can revert your changes with:
 
-```java-test-ignore
+```lang-java-test-ignore
 tx.abort();
 ```
 
@@ -239,7 +239,7 @@ insert $x isa person has firstname "John";
 
 Now the equivalent Core API:    
 
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx = session.transaction(GraknTxType.WRITE);
@@ -261,7 +261,7 @@ insert
 
 With the Core API this would be:
 
-```java-test-ignore
+```lang-java-test-ignore
 //Create the attributes
 johnName = firstname.create("John");
 Attribute maryName = firstname.create("Mary");
@@ -287,7 +287,7 @@ insert
 
 Now the equivalent using the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 Attribute weddingPicture = picture.create("www.LocationOfMyPicture.com");
 theMarriage.has(weddingPicture);
 ```
@@ -307,7 +307,7 @@ define
 
 becomes the following with the Core API:
 
-```java-test-ignore
+```lang-java-test-ignore
 EntityType event = tx.putEntityType("event");
 EntityType wedding = tx.putEntityType("wedding").sup(event);
 ```
@@ -343,7 +343,7 @@ then {
 
 As there is more than one way to define Graql patterns through the API, there are several ways to construct rules. One options is through the Pattern factory:
 
-```java-test-ignore
+```lang-java-test-ignore
 Pattern rule1when = var().rel("parent", "p").rel("child", "c").isa("Parent");
 Pattern rule1then = var().rel("ancestor", "p").rel("descendant", "c").isa("Ancestor");
 
@@ -356,7 +356,7 @@ Pattern rule2then = var().rel("ancestor", "p").rel("descendant", "d").isa("Ances
 
 If we have a specific `Grakn.Transaction tx` already defined, we can use the Graql pattern parser:
 
-```java-test-ignore
+```lang-java-test-ignore
 rule1when = and(tx.graql().parser().parsePatterns("(parent: $p, child: $c) isa Parent;"));
 rule1then = and(tx.graql().parser().parsePatterns("(ancestor: $p, descendant: $c) isa Ancestor;"));
 
@@ -366,7 +366,7 @@ rule2then = and(tx.graql().parser().parsePatterns("(ancestor: $p, descendant: $d
 
 We conclude the rule creation with defining the rules from their constituent patterns:
 
-```java-test-ignore
+```lang-java-test-ignore
 Rule rule1 = tx.putRule("R1", rule1when, rule1then);
 Rule rule2 = tx.putRule("R2", rule2when, rule2then);
 ```
@@ -376,7 +376,7 @@ As well as the Graql shell, users can also construct and execute Graql queries p
 
 To use the API, add the following to your imports:
 
-```java-test-ignore
+```lang-java-test-ignore
 import ai.grakn.graql.QueryBuilder;
 import static ai.grakn.graql.Graql.*;
 ```
@@ -385,7 +385,7 @@ import static ai.grakn.graql.Graql.*;
 
 A `QueryBuilder` is constructed from a `Grakn.Transaction`:
 
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx = session.transaction(GraknTxType.WRITE)
@@ -406,7 +406,7 @@ queries.
 Matches are constructed using the `match` method. This will produce a `Match` instance, which includes additional
 methods that apply modifiers such as `limit` and `distinct`:
 
-```java
+```lang-java
 Match match = qb.match(var("x").isa("person").has("firstname", "Bob")).limit(50);
 ```
 
@@ -421,7 +421,7 @@ match.get("x").forEach(x -> System.out.println(x.asResource().getValue()));
 
 Get queries are constructed using the `get` method on a `match`.
 
-```java
+```lang-java
 GetQuery query = qb.match(var("x").isa("person").has("firstname", "Bob")).limit(50).get();
 ```
 
@@ -430,7 +430,7 @@ variables in the query.
 
 A `GetQuery` will only execute when it is iterated over.
 
-```java
+```lang-java
 for (Map<String, Concept> result : query) {
   System.out.println(result.get("x").getId());
 }
@@ -438,7 +438,7 @@ for (Map<String, Concept> result : query) {
 
 ## Aggregate Queries
 
-```java
+```lang-java
 if (qb.match(var().isa("person").has("firstname", "Bob")).stream().findAny().isPresent()) {
   System.out.println("There is someone called Bob!");
 }
@@ -446,7 +446,7 @@ if (qb.match(var().isa("person").has("firstname", "Bob")).stream().findAny().isP
 
 ## Insert Queries
 
-```java
+```lang-java
 InsertQuery addAlice = qb.insert(var().isa("person").has("firstname", "Alice"));
 
 addAlice.execute();
@@ -464,7 +464,7 @@ qb.match(
 
 ## Delete Queries
 
-```java
+```lang-java
 qb.match(var("x").has("firstname", "Alice")).delete("x").execute();
 ```
 
@@ -473,7 +473,7 @@ qb.match(var("x").has("firstname", "Alice")).delete("x").execute();
 The `QueryBuilder` also allows the user to parse Graql query strings into Java Graql
 objects:
 
-```java
+```lang-java
 for (ConceptMap a : qb.<GetQuery>parse("match $x isa person; get;").execute()) {
     System.out.println(a);
 }
@@ -493,7 +493,7 @@ Transactions in GRAKN.AI are thread bound, which means that for a specific keysp
 The following would result in an exception because the first transaction `tx1` was never closed:
 
 <!-- Ignored because this is designed to crash! -->
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx1 = session.transaction(GraknTxType.WRITE)
@@ -503,7 +503,7 @@ Grakn.Transaction tx2 = session.transaction(GraknTxType.WRITE)
 If you require multiple transactions open at the same time then you must do this on different threads. This is best illustrated with an example. Let's say that you wish to create 100 entities of a specific type concurrently.  The following will achieve that:
 
 <!-- Ignored because it contains a Java lambda, which Groovy doesn't support -->
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Set<Future> futures = new HashSet<>();

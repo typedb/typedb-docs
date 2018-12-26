@@ -26,7 +26,7 @@ get $x-name, $y-name, $y-age, $z-name, $y-age;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("fr").isa("friendship").rel("x").rel("y").rel("z"),
   var("x").isa("person").has("name", var("x-name")),
@@ -41,13 +41,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query('match $fr ($x, $y, $z) isa friendship; $x isa person has name $x-name; $x-name contains "John"; $y isa person has name $y-name, has age $y-age; $z isa person has name $y-name, has age $z-age; get $x-name, $y-name, $y-age, $z-name, $y-age;');
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query('match $fr ($x, $y, $z) isa friendship; $x isa person has name $x-name; $x-name contains "John"; $y isa person has name $y-name, has age $y-age; $z isa person has name $y-name, has age $z-age; get $x-name, $y-name, $y-age, $z-name, $y-age;')
 ```
 [tab:end]
@@ -67,7 +67,7 @@ match $p isa person; limit 1; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("p").isa("person")
 ).limit(1).get();
@@ -78,13 +78,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $p isa person; limit 1; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $p isa person; limit 1; get;")
 ```
 [tab:end]
@@ -104,7 +104,7 @@ match $p isa person has age $age; order by $age asc; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("p").isa("person")
 ).limit(1).get();
@@ -115,13 +115,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $p isa person has age $age; order by $age asc; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $p isa person has age $age; order by $age asc; get;")
 ```
 [tab:end]
@@ -147,7 +147,7 @@ match $p isa person has age $age; order by $age; offset 100; limit 10; get;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 GetQuery query = Graql.match(
   var("p").isa("person").has("age", var("age"))
 ).orderBy(var("age")).offset(100).limit(10).get();
@@ -158,13 +158,13 @@ List\<ConceptMap\> answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("match $p isa person has age $age; order by $age; offset 100; limit 10; get;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("match $p isa person has age $age; order by $age; offset 100; limit 10; get;")
 ```
 [tab:end]

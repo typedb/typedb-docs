@@ -31,7 +31,7 @@ compute count in person;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.COUNT).in("person")
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
@@ -39,13 +39,13 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute count in person;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute count in person;")
 ```
 [tab:end]
@@ -69,7 +69,7 @@ compute sum of number-of-rooms, in hotel;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.SUM).of("number-of-rooms").in("hotel")
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
@@ -77,13 +77,13 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute sum of number-of-rooms, in hotel;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute sum of number-of-rooms, in hotel;")
 ```
 [tab:end]
@@ -101,7 +101,7 @@ compute max of gpa, in school-enrollment;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MAX).of("gpa").in("school-enrollment");
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
@@ -109,13 +109,13 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute max of gpa, in school-enrollment;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute max of gpa, in school-enrollment;")
 ```
 [tab:end]
@@ -133,7 +133,7 @@ compute max of number-of-floors, in building;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MAX).of("number-of-floors").in("building");
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
@@ -141,13 +141,13 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute max of number-of-floors, in building;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute max of number-of-floors, in building;")
 ```
 [tab:end]
@@ -165,7 +165,7 @@ compute mean of duration, in call;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MEAN).of("duration").in("call");
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
@@ -173,13 +173,13 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute mean of duration, in call;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute mean of duration, in call;")
 ```
 [tab:end]
@@ -197,7 +197,7 @@ compute median of age, in person;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MEDIAN).of("age").in("person");
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
@@ -205,13 +205,13 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute median of age, in person;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute median of age, in person;")
 ```
 [tab:end]
@@ -229,7 +229,7 @@ compute std of score, in examination;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.STD).of("score").in("examination");
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
@@ -237,13 +237,13 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute std of score, in examination;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute std of score, in examination;")
 ```
 [tab:end]
@@ -266,7 +266,7 @@ compute path from V24819, to V93012;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.PATH).from(ConceptId.of("V24819")).to(ConceptId.of("V93012"));
 List&lt;ConceptList&gt; answer = query.withTx(transaction).execute();
 
@@ -275,13 +275,13 @@ List&lt;ConceptList&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute path from V24819, to V93012;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute path from V24819, to V93012;")
 ```
 [tab:end]
@@ -301,7 +301,7 @@ compute path from V24819, to V93012, in [person, car, company, employment];
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.PATH).from(ConceptId.of("V24819")).to(ConceptId.of("V93012")).in("person","car", "company", "employment");
 List&lt;ConceptList&gt; answer = query.withTx(transaction).execute();
 
@@ -310,13 +310,13 @@ List&lt;ConceptList&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute path from V24819, to V93012, in [person, car, company, employment];");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute path from V24819, to V93012, in [person, car, company, employment];")
 ```
 [tab:end]
@@ -344,7 +344,7 @@ compute centrality using degree;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).using(GraqlSyntax.Compute.Algorithm.DEGREE);
 List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 ```
@@ -352,13 +352,13 @@ List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute centrality using degree;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute centrality using degree;")
 ```
 [tab:end]
@@ -378,7 +378,7 @@ compute centrality in [company, employee, employment], using degree;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).in("company", "employee", "employment").using(GraqlSyntax.Compute.Algorithm.DEGREE);
 List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 ```
@@ -386,13 +386,13 @@ List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute centrality in [company, employee, employment], using degree;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute centrality in [company, employee, employment], using degree;")
 ```
 [tab:end]
@@ -412,7 +412,7 @@ compute centrality of company in [company, employment], using degree;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).
 of("company").in("company", "employment")
 .using(GraqlSyntax.Compute.Algorithm.DEGREE);
@@ -423,13 +423,13 @@ List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute centrality of company in [company, employment], using degree;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute centrality of company in [company, employment], using degree;")
 ```
 [tab:end]
@@ -449,7 +449,7 @@ compute centrality using k-core;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).using(GraqlSyntax.Compute.Algorithm.K_CORE);
 List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 ```
@@ -457,13 +457,13 @@ List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute centrality using k-core;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute centrality using k-core;")
 ```
 [tab:end]
@@ -483,7 +483,7 @@ compute centrality using k-core, where min-k = 5;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY)
 .using(GraqlSyntax.Compute.Algorithm.K_CORE)
 .where(GraqlSyntax.Compute.Argument.min_k(5));
@@ -494,13 +494,13 @@ List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute centrality using k-core, where min-k = 5;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute centrality using k-core, where min-k = 5;")
 ```
 [tab:end]
@@ -521,7 +521,7 @@ compute cluster in [person, employment, organisation], using connected-component
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
 in("person", "employment", "organisation").
 using(GraqlSyntax.Compute.Algorithm.CONNECTED_COMPONENT);
@@ -532,13 +532,13 @@ List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute cluster in [person, employment, organisation], using connected-component;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute cluster in [person, employment, organisation], using connected-component;")
 ```
 [tab:end]
@@ -558,7 +558,7 @@ compute cluster in [person, employment, organisation], using connected-component
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
 in("person", "employment", "organisation").
 using(GraqlSyntax.Compute.Algorithm.CONNECTED_COMPONENT).
@@ -570,13 +570,13 @@ List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute cluster in [person, employment, organisation], using connected-component, where contains=V12488;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute cluster in [person, employment, organisation], using connected-component, where contains=V12488;")
 ```
 [tab:end]
@@ -598,7 +598,7 @@ compute cluster in [person, employment, organisation], using k-core;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
 in("person", "employment", "organisation").
 using(GraqlSyntax.Compute.Algorithm.K_CORE);
@@ -609,13 +609,13 @@ List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute cluster in [person, employment, organisation], using k-core;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute cluster in [person, employment, organisation], using k-core;")
 ```
 [tab:end]
@@ -637,7 +637,7 @@ compute cluster in [person, employment, organisation], using k-core, where min-k
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
 in("person", "employment", "organisation").
 using(GraqlSyntax.Compute.Algorithm.K_CORE).
@@ -650,13 +650,13 @@ List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 const answerIterator = await transaction.query("compute cluster in [person, employment, organisation], using k-core, where min-k=5;");
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 answer_iterator = transaction.query("compute cluster in [person, employment, organisation], using k-core, where min-k=5;")
 ```
 [tab:end]

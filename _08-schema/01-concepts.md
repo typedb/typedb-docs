@@ -39,7 +39,7 @@ person sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("person").sub("entity").has("name")
 );
@@ -51,14 +51,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define person sub entity, has name;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define person sub entity, has name;")
 transaction.commit()
 ```
@@ -83,7 +83,7 @@ person sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("person").sub("entity").has("name").has("forename").has("surname")
   .has("middle-name")
@@ -96,14 +96,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define person sub entity, has name, has forename, has surname, has middle-name;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define person sub entity, has name, has forename, has surname, has middle-name;")
 transaction.commit()
 ```
@@ -124,7 +124,7 @@ person sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("person").sub("entity").key("email")
 );
@@ -136,14 +136,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define person sub entity, key email;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define person sub entity, key email;")
 transaction.commit()
 ```
@@ -177,7 +177,7 @@ company sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("person").sub("entity").plays("employee"),
   label("company").sub("entity").plays("employer"),
@@ -190,14 +190,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define person sub entity, plays employee; company sub entity, plays employer;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define person sub entity, plays employee; company sub entity, plays employer;")
 transaction.commit()
 ```
@@ -232,7 +232,7 @@ university sub organisation,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("organisation").sub("entity").plays("owner").plays("property")
   .plays("employer").has("name"),
@@ -247,14 +247,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define organisation sub entity, plays owner, plays property, plays employer, has name; company sub organisation; university sub organisation, has rank;")
 ```
 [tab:end]
@@ -283,7 +283,7 @@ organisation sub entity is-abstract;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("organisation").sub("entity").isAbstract()
 );
@@ -295,14 +295,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define organisation sub entity is-abstract;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define organisation sub entity is-abstract;")
 transaction.commit()
 ```
@@ -337,7 +337,7 @@ employment sub relationship,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("employment").sub("relationship").relates("employee").relates("employer")
 );
@@ -349,14 +349,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define employment sub relationship, relates employee, relates employer;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define employment sub relationship, relates employee, relates employer;")
 transaction.commit()
 ```
@@ -368,7 +368,7 @@ The roles `employee` and `employer` are now ready to be played by other concept 
 ### Roleplayers of a relationship
 Entities, attributes, and even other relationships can play a role in a relationship. To do this we make use of the `plays` keyword followed by the role's label.
 
-We have already seen how to [define an entity to play a role](#define-an-entity-to-play-a-role) and will soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relationship that plays a role in another relationship?
+We have already seen how to [define an entity to play a role](#entity-to-play-a-role) and will soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relationship that plays a role in another relationship?
 
 ### Define a relationship to play a role
 Let's go through a simple example of how a relationship can play a role in another relationship.
@@ -400,7 +400,7 @@ terms-n-conditions sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("loan").sub("relationship").relates("lender").relates("recipient")
   .plays("subject"),
@@ -418,14 +418,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define loan sub relationship, relates lender, relates recipient, plays subject; legal-constraint sub relationship, relates subject, relates legality; bank sub entity, plays lender; person sub entity, plays recipient; terms-n-conditions sub entity, plays legality;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define loan sub relationship, relates lender, relates recipient, plays subject; legal-constraint sub relationship, relates subject, relates legality; bank sub entity, plays lender; person sub entity, plays recipient; terms-n-conditions sub entity, plays legality;")
 transaction.commit()
 ```
@@ -460,7 +460,7 @@ house sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("mortgage").sub("relationship").relates("debtor").relates("lender")
   .relates("subject"),
@@ -477,14 +477,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define mortgage sub relationship, relates debtor, relates lender, relates subject; person sub entity, plays debtor; bank sub entity, plays lender; house sub entity, plays subject;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define mortgage sub relationship, relates debtor, relates lender, relates subject; person sub entity, plays debtor; bank sub entity, plays lender; house sub entity, plays subject;")
 transaction.commit()
 ```
@@ -493,7 +493,7 @@ transaction.commit()
 
 The example can be read in plain English as: _In a `mortgage`, a `person` is the `debtor`, a `bank` is the `lender` and the `house` is the `subject`._
 
-### Assign attributes to a relationship
+### Assign an attribute to a relationship
 We can assign any number of attributes to a relationship. To do so, we use the `has` keyword followed by the attribute's label.
 
 <div class="gtabs dark" data-parse-to-html="true">
@@ -510,7 +510,7 @@ employment sub relationship,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("employment").sub("relationship").relates("employer").relates("employee")
   .has("job-title")
@@ -523,14 +523,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define employment sub relationship, has job-title, relates employer, relates employee;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define employment sub relationship, has job-title, relates employer, relates employee;")
 transaction.commit()
 ```
@@ -553,7 +553,7 @@ employment sub relationship,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("employment").sub("relationship").key("reference-id").relates("employer")
   .relates("employee")
@@ -566,14 +566,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;")
 transaction.commit()
 ```
@@ -616,7 +616,7 @@ board-membership sub membership,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("affiliation").sub("relationship").relates("party").key("reference-id"),
   label("member").sub("party"),
@@ -639,14 +639,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define affiliation sub relationship, key reference-id, relates party; membership sub affiliation, relates member as party, relates group as party; employment sub membership, relates employee as member, relates employer as group, has job-title; board-membership sub membership, relates board-member as member, relates board as group;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define affiliation sub relationship, key reference-id, relates party; membership sub affiliation, relates member as party, relates group as party; employment sub membership, relates employee as member, relates employer as group, has job-title; board-membership sub membership, relates board-member as member, relates board as group;")
 transaction.commit()
 ```
@@ -684,7 +684,7 @@ affiliation sub relationship is-abstract,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("affiliation").sub("relationship").isAbstract().relates("party")
 );
@@ -696,14 +696,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define affiliation sub relationship is-abstract, relates party;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define affiliation sub relationship is-abstract, relates party;")
 transaction.commit()
 ```
@@ -729,7 +729,7 @@ name sub attribute datatype string;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING)
 );
@@ -741,14 +741,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define name sub attribute datatype string;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define name sub attribute datatype string;")
 transaction.commit()
 ```
@@ -783,7 +783,7 @@ bicycle sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("colour").sub("attribute").datatype(AttributeType.DataType.STRING),
   label("car").sub("entity").has("colour"),
@@ -797,14 +797,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define colour sub attribute datatype string; car sub entity,  has colour; bicycle sub entity, has colour;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define colour sub attribute datatype string; car sub entity,  has colour; bicycle sub entity, has colour;")
 transaction.commit()
 ```
@@ -832,7 +832,7 @@ movie sub entity,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("genre").sub("attribute").datatype(AttributeType.DataType.STRING),
   label("movie").sub("entity").has("genre"),
@@ -845,14 +845,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("genre sub attribute datatype string; movie sub entity, has genre;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("genre sub attribute datatype string; movie sub entity, has genre;")
 transaction.commit()
 ```
@@ -875,7 +875,7 @@ phone-number sub attribute datatype string regex /[0-9]{0,14}/;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("phone-number").sub("attribute").datatype(AttributeType.DataType.STRING).regex("/[0-9]{0,14}/")
 );
@@ -887,14 +887,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("phone-number sub attribute datatype string regex /[0-9]{0,14}/;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("phone-number sub attribute datatype string regex /[0-9]{0,14}/;")
 transaction.commit()
 ```
@@ -918,7 +918,7 @@ language sub attribute datatype string;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("text").sub("attribute").datatype(AttributeType.DataType.STRING)
   .has("language"),
@@ -932,14 +932,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define text sub attribute datatype string, has language; language sub attribute datatype string;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define text sub attribute datatype string, has language; language sub attribute datatype string;")
 transaction.commit()
 ```
@@ -970,7 +970,7 @@ origination sub relationship,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("word").sub("attribute").datatype(AttributeType.DataType.STRING)
   .plays("originated"),
@@ -984,14 +984,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define word sub attribute datatype string,plays originated;language sub entity,plays origin;origination sub relationship,relates origin,relates originated;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define word sub attribute datatype string,plays originated;language sub entity,plays origin;origination sub relationship,relates origin,relates originated;")
 transaction.commit()
 ```
@@ -1017,7 +1017,7 @@ middle-name sub name;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING),
   label("forename").sub("name"),
@@ -1032,14 +1032,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define name sub attribute datatype string; forename sub name; surname sub name; middle-name sub name;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define name sub attribute datatype string; forename sub name; surname sub name; middle-name sub name;")
 transaction.commit()
 ```
@@ -1064,7 +1064,7 @@ name sub attribute is-abstract datatype string;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING),
 );
@@ -1076,14 +1076,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define name sub attribute is-abstract datatype string;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define name sub attribute is-abstract datatype string;")
 transaction.commit()
 ```
@@ -1112,7 +1112,7 @@ undefine person has name;
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 Graql.undefine(
   label("person").has("name")
 );
@@ -1124,14 +1124,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("undefine person has name;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("undefine person has name;")
 transaction.commit()
 ```
@@ -1160,7 +1160,7 @@ undefine
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 Graql.undefine(
   label("employment").relates("employer").relates("employee"),
   label("company").plays("employer"),
@@ -1177,14 +1177,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("undefine employment relates employer; company plays employer; employer sub role; employment relates employee; person plays employee; employee sub role; employment sub relationship;");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("undefine employment relates employer; company plays employer; employer sub role; employment relates employee; person plays employee; employee sub role; employment sub relationship;")
 transaction.commit()
 ```

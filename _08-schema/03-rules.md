@@ -49,7 +49,7 @@ people-with-same-parents-are-siblings sub rule,
 [tab:end]
 
 [tab:Java]
-```java
+```lang-java
 DefineQuery query = Graql.define(
   label("people-with-same-parents-are-siblings").sub("rule").when(
     var().isa("parentship").rel("mother", "m").rel("x").and(
@@ -69,14 +69,14 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```nodejs
+```lang-javascript
 await transaction.query("define people-with-same-parents-are-siblings sub rule, when { (mother: $m, $x) isa parentship; (mother: $m, $y) isa parentship; (father: $f, $x) isa parentship; (father: $f, $y) isa parentship; $x != $y; } then { ($x, $y) isa siblings; };");
 await transaction.commit();
 ```
 [tab:end]
 
 [tab:Python]
-```cpython
+```lang-python
 transaction.query("define people-with-same-parents-are-siblings sub rule, when { (mother: $m, $x) isa parentship; (mother: $m, $y) isa parentship; (father: $f, $x) isa parentship; (father: $f, $y) isa parentship; $x != $y; } then { ($x, $y) isa siblings; };")
 transaction.commit()
 ```
@@ -102,7 +102,7 @@ Under the hood, rules are restricted to be definite Horn Clauses. In simple term
 
 To simplify this logic even further, you can think of the [siblings example](#define-a-rule) in form of an `if` statement like so:
 
-```java
+```lang-java
 if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y && is-x-different-to-y) {
     are-x-and-y-siblings = true;
     // any more assignments will break the rule!

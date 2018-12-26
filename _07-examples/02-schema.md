@@ -1,26 +1,22 @@
 ---
-title: Defining the Schema
-keywords: schema, knowledge graph, ontology, migration
-tags: [schema, knowledge graph, ontology, migration]
-summary: "How to model and load a schema into Grakn"
-permalink: /docs/examples/defining-the-schema
+sidebarTitle: Schema
+pageTitle: Defining a Sample Schema
+summary: "How to model and load a schema into Grakn."
+permalink: /docs/examples/phone-calls-schema
 ---
 
 ## The Goal
-
-In this tutorial, our aim is to write a schema and load it into our knowledge graph; phone_calls. One that describes the reality of our dataset.
+In this tutorial, our aim is to write a schema and load it into our `phone_calls` knowledge graph - one that describes the reality of our dataset.
 
 ## The Dataset
-
 First off, let’s look at the dataset we are going to be working with in this series. Simply put, we’re going to have:
 
 **people** who **call** each other. Those who make calls, have a **contract** with **company** “Telecom”.
 
 People, calls, contracts and companies. That’s what we are dealing with. But what do we want to get out of this data?
 
-## The insights
-
-The below insights will give us a better perspective of what else needs to be included in the dataset.
+## The Insights
+At the end of this series of examples, we aim obtain the following insights from the dataset contained within this knowledge graph.
 
 - Since September 10th, which customers called the person X?
 - Who are the people who have received a call from a London customer aged over 50 who has previously called someone aged under 20?
@@ -37,24 +33,19 @@ A **person** has a **first and last name**, an **age**, a **city** they live in,
 A **call**, made from a **person (caller)** to another **person (callee)**, has a **duration** as well as the **date and time** it’s been made.
 
 ## The Schema
-
 Now that we have a good understanding of our dataset, we can go ahead and write the schema for it.
 
 But first, let’s visualise the reality of our dataset.
 
-![The Visualised Schema](/images/examples-defining-the-schema-1.png)
+![The Visualised Schema](/docs/images/examples/phone_calls_schema.png)
 
-By looking at this visualised schema, we can identify the Grakn concepts.
-
-{% include tip.html content="Everything that describes your domain in a Grakn knowledge graph is a **[concept](http://dev.grakn.ai/academy/schema-elements.html#concepts)**. This includes the elements of the schema (namely types and roles, which we call schema concepts) and the actual data (which we simply call things; you can think of them as instances of types if you are the programmer kind of person)" %}
+By looking at this visualised schema, we can identify the [Concepts](/docs/schema/concepts).
 
 **call** is of type **relationship** that has two role players:
-
 - **person** who plays the role of a **caller**, and
 - (another) **person** who plays the role of a **callee**.
 
 **contract** is also of type **relationship** that has two role players:
-
 - **company** who plays the role of a **provider**, and
 - **person** who plays the role of a **customer**.
 
@@ -64,9 +55,8 @@ By looking at this visualised schema, we can identify the Grakn concepts.
 
 That’s all well and good, but how do we get our knowledge graph to reflect this model?
 
-## Time to talk Graql
-
-Open a new file in your favourite text editor, preferably one with syntax highlighting for Graql (.gql) files. Here are the ones for [atom](https://atom.io/packages/language-graql), [visual studio code](https://marketplace.visualstudio.com/items?itemName=idealley.gql) and [sublime 3](https://github.com/graknlabs/graql_syntax_sublime).
+## Time to Talk Graql
+Open a new file in your favourite text editor, preferably one with syntax highlighting for Graql (`.gql`) files. Here are the ones for [atom](https://atom.io/packages/language-graql), [visual studio code](https://marketplace.visualstudio.com/items?itemName=idealley.gql) and [sublime 3](https://github.com/graknlabs/graql_syntax_sublime).
 
 You can define the elements of a Grakn schema in any order you wish. I personally prefer to start from the relationships, as I see them to be the source of interactions — where knowledge is derived from.
 
@@ -76,7 +66,7 @@ In our case, a **call** relates to **caller** played by a **person** and to **ca
 
 Likewise for a **contract**. It relates to **provider** played by a **company** and to **customer** played by a **person**.
 
-```graq-test-ignore
+```graql
 define
 
   contract sub relationship,
@@ -98,7 +88,7 @@ define
 
 To define the attributes, we use the has keyword.
 
-```graq-test-ignore
+```graql
 define
 
   contract sub relationship,
@@ -172,7 +162,6 @@ Note that we don't need to define any id attribute. Grakn takes care of that for
 Save the schema.gql file. In a few minutes, we'll have it loaded into a brand new Grakn keyspace.
 
 ## Load and test the schema
-
 In order to load this schema in a keyspace, we first need to run the Grakn server.
 
 **1 -** [Download Grakn](http://dev.grakn.ai/docs/get-started/setup-guide#install-graknai)
@@ -204,7 +193,7 @@ match $x sub thing; get;
 
 The result should be as follows:
 
-```graq-test-ignore
+```graql
 {$x label thing;}
 {$x label entity;}
 {$x label relationship;}
@@ -235,12 +224,17 @@ The result should be as follows:
 ```
 
 ## To Recap
-
 We started off by describing our dataset in the most natural way possible.
+
 Next we went on to visualise that dataset by how we perceive it in the real world.
+
 Then, by identifying the Grakn concepts in the visualised schema, we went ahead and wrote our schema in Graql.
+
 Lastly we loaded the schema into a Grakn keyspace and ran a generic match query to ensure it was indeed loaded correctly.
 
 ## Next
+Now that we have a model for our knowledge graph, aka. the schema, we can go ahead and migrate some actual data into it so that we can proceed to query for those insights. Pick the client of your choice to continue with migration.
 
-Now that we have a model for our knowledge graph, aka. the schema, we can go ahead and migrate some actual data into it so that we can proceed to query for those insights.
+- [Java](/docs/examples/phone-calls-migration-java)
+- [Node.js](/docs/examples/phone-calls-migration-nodejs)
+- [Python](/docs/examples/phone-calls-migration-python)

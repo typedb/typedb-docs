@@ -18,7 +18,7 @@ Transactions in GRAKN.AI are thread bound, which means that for a specific keysp
 The following would result in an exception because the first transaction `tx1` was never closed:
 
 <!-- Ignored because this is designed to crash! -->
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Grakn.Transaction tx1 = session.transaction(GraknTxType.WRITE)
@@ -28,7 +28,7 @@ Grakn.Transaction tx2 = session.transaction(GraknTxType.WRITE)
 If you require multiple transactions open at the same time then you must do this on different threads. This is best illustrated with an example. Let's say that you wish to create 100 entities of a specific type concurrently.  The following will achieve that:
 
 <!-- Ignored because it contains a Java lambda, which Groovy doesn't support -->
-```java-test-ignore
+```lang-java-test-ignore
 Grakn grakn = new Grakn(new SimpleURI("localhost:48555"));
 Grakn.Session session = grakn.session(Keyspace.of("grakn"));
 Set<Future> futures = new HashSet<>();

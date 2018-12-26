@@ -7,9 +7,9 @@ methods:
     java:
       <<: *method-create
       method: entityType.create();
-    nodejs:
+    javascript:
       <<: *method-create
       method: async entityType.create();
-    cpython:
+    python:
       <<: *method-create
       method: entity_type.create()
