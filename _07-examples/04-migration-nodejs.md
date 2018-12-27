@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Migrate - Node.js
 pageTitle: Migrating CSV, JSON and XML Data with Client Node.js
-
 permalink: /docs/examples/phone-calls-migration-nodejs
 ---
 
@@ -826,7 +825,7 @@ Sit back, relax and watch the logs while the data starts pouring into Grakn.
 
 We started off by setting up our project and positioning the data files.
 
-Next we went on to set up the migration mechanism, one that was independent of the data format.
+Next, we went on to set up the migration mechanism, one that was independent of the data format.
 
 Then, we went ahead and wrote a template function for each concept. A template’s sole purpose was to construct a Graql insert query for each data item.
 

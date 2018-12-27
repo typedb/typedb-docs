@@ -17,7 +17,7 @@ methods:
         .define(VarPattern... varPatterns)
         .undefine(VarPattern... varPatterns)
       description: |
-        Manipulates the schema concepts using a list of variable pattern.
+        Manipulates the schema concepts using a list of variable patterns.
         See examples for <a href="/docs/schema/concepts#define">defining</a> and <a href="/docs/schema/concepts#undefine">undefining</a> schema concepts.
       accepts:
         param:
@@ -84,7 +84,7 @@ methods:
         param:
           name: vars
           description: >
-            The variables whose contained instances are to be retieved.
+            The variables whose contained instances are to be retrieved.
             See examples for <a href="/docs/schema/query/get-query">get queries</a>.
           type: Var...
           required: false

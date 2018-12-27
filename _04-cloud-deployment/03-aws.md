@@ -101,7 +101,7 @@ As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.
 [slide:start]
 [header:start]Wait for Stack Creation[header:end]
 [body:start]![Wait for Stack Creation](/docs/images/cloud-deployment/aws_cf_stacks_a.png)[body:end]
-[footer:start]Once the stack creation form is successfully submitted, we will be redirected to the Stacks page. Although, it may seems as the stack has not been created, Amazon is processing the stack creation and after a short while ...[footer:end]
+[footer:start]Once the stack creation form is successfully submitted, we will be redirected to the Stacks page. Although it may seem as the stack has not been created, Amazon is processing the stack creation and after a short while ...[footer:end]
 [slide:end]
 
 [slide:start]

@@ -1,11 +1,10 @@
 ---
 sidebarTitle: Rules
 pageTitle: Rules
-
 permalink: /docs/schema/rules
 ---
 
-## Introduction {#introduction1111}
+## What is a Rule?
 Grakn is capable of reasoning over data via pre-defined rules. Graql rules look for a given pattern in the dataset and when found, create the given queryable relationship. Automated reasoning provided by rules is performed at query (run) time. Rules not only allow shortening and simplifying commonly-used queries but also enable knowledge discovery and implementation of business logic at the database level.
 
 When you query the knowledge graph for certain information, Grakn returns a complete set of answers. These answers contain explicit matches as well as implicit ones that have been inferred by the rules included in the schema.

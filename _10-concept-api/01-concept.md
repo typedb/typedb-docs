@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Concept
 pageTitle: Concept
-summary:
 permalink: /docs/concept-api/concept
 ---
 

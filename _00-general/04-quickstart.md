@@ -202,7 +202,7 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 {$p id V139280 isa person;}
 ```
 
-#### Delete thew newly added person
+#### Delete the newly added person
 
 ```lang-graql
 >>> match $p isa person has first-name "Johny", has surname "Joe"; delete;
@@ -215,7 +215,7 @@ Grakn is capable of reasoning over explicit data to infer new implicit relations
 
 Let's extend the schema for our genealogy knowledge graph to take advantage of type hierarchies and rules.
 
-In the schema we defined and loaded into a keyspaces previously, there is no notion of `father`, `mother`, `son` and `daughter`. However, every single one of these new concept types can be inferred based on the existing explicitly stored dataset. All we need to do to make such inferences, is to look at the `gender` of each person in conjunction with the `role` they play in a `parentship` relationship.
+In the schema we defined and loaded into a keyspace previously, there is no notion of `father`, `mother`, `son` and `daughter`. However, every single one of these new concept types can be inferred based on the existing explicitly stored dataset. All we need to do to make such inferences, is to look at the `gender` of each person in conjunction with the `role` they play in a `parentship` relationship.
 
 ```lang-graql
 person

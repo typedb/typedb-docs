@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Get
 pageTitle: Get Query
-
 permalink: /docs/query/get-query
 ---
 

@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Schema
 pageTitle: Defining a Sample Schema
-
 permalink: /docs/examples/phone-calls-schema
 ---
 
@@ -9,14 +8,14 @@ permalink: /docs/examples/phone-calls-schema
 In this tutorial, our aim is to write a schema and load it into our `phone_calls` knowledge graph - one that describes the reality of our dataset.
 
 ## The Dataset
-First off, let’s look at the dataset we are going to be working with in this series. Simply put, we’re going to have:
+First off, let’s look at the dataset we are going to be working within this series. Simply put, we’re going to have:
 
-**people** who **call** each other. Those who make calls, have a **contract** with **company** “Telecom”.
+**people** who **call** each other. Those who make calls have a **contract** with **company** “Telecom”.
 
 People, calls, contracts and companies. That’s what we are dealing with. But what do we want to get out of this data?
 
 ## The Insights
-At the end of this series of examples, we aim obtain the following insights from the dataset contained within this knowledge graph.
+At the end of this series of examples, we aim to obtain the following insights from the dataset contained within this knowledge graph.
 
 - Since September 10th, which customers called the person X?
 - Who are the people who have received a call from a London customer aged over 50 who has previously called someone aged under 20?
@@ -117,7 +116,7 @@ define
     has is-customer;
 ```
 
-Lastly we need to define the type of each attribute.
+Lastly, we need to define the type of each attribute.
 
 ```graql
 define
@@ -158,7 +157,7 @@ person sub entity,
   is-customer sub attribute datatype boolean;
 ```
 
-Note that we don't need to define any id attribute. Grakn takes care of that for us.
+Note that we don't need to define an id attribute. Grakn takes care of that for us.
 Save the schema.gql file. In a few minutes, we'll have it loaded into a brand new Grakn keyspace.
 
 ## Load and test the schema
@@ -226,11 +225,11 @@ The result should be as follows:
 ## To Recap
 We started off by describing our dataset in the most natural way possible.
 
-Next we went on to visualise that dataset by how we perceive it in the real world.
+Next, we went on to visualise that dataset by how we perceive it in the real world.
 
 Then, by identifying the Grakn concepts in the visualised schema, we went ahead and wrote our schema in Graql.
 
-Lastly we loaded the schema into a Grakn keyspace and ran a generic match query to ensure it was indeed loaded correctly.
+Lastly, we loaded the schema into a Grakn keyspace and ran a generic match query to ensure it was indeed loaded correctly.
 
 ## Next
 Now that we have a model for our knowledge graph, aka. the schema, we can go ahead and migrate some actual data into it so that we can proceed to query for those insights. Pick the client of your choice to continue with migration.

@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Queries
 pageTitle: Queries the Phone Calls Knowledge Graph
-
 permalink: /docs/examples/phone-calls-queries
 ---
 
@@ -198,7 +197,7 @@ with client.session(keyspace = "phone_calls") as session:
 
 #### The business value:
 
-> We (company "Telecom") have received a number of harassment reports, which we suspect is caused by one individual. The only thing we know about the harasser is that he/she is aged roughly over 50 and lives in London. The reports have been made by young adults all aged under 20. We wonder if there is a pattern and so would like to speak to anyone who has received a call from a suspect, since he/she potentially started harassing.
+> We (company "Telecom") have received a number of harassment reports, which we suspect is caused by one individual. The only thing we know about the harasser is that he/she is aged roughly over 50 and lives in London. The reports have been made by young adults all aged under 20. We wonder if there is a pattern and so would like to speak to anyone who has received a call from a suspect since he/she potentially started harassing.
 
 #### As a statement:
 

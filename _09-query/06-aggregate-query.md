@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Aggregate
 pageTitle: Aggregate Query
-
 permalink: /docs/query/aggregate-query
 ---
 

@@ -6,7 +6,7 @@ permalink: /docs/running-grakn/console
 ---
 
 ## What is the Graql Console?
-The Graql Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knolwedge graph.
+The Graql Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
 
 <!-- keyspace -> kbase -->
 
@@ -61,13 +61,13 @@ Once inside the console, besides [Graql queries](/docs/query/overview), we can r
 |------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `commit`   | Any write operations, executed via the console, affects only a local copy of the keyspace. This command commits all changes to the original keyspace running on the Grakn Server.     |
 | `rollback` | Undoes any changes made in the knowledge graph since the last `commit`.                                                                                                               |
-| `edit`     | Opens the text-editor specified by the `$EDITOR` environment variable (vim by default). We can then write queries in multiple lines that get exectued as soon as we exit the editor.  |
+| `edit`     | Opens the text-editor specified by the `$EDITOR` environment variable (vim by default). We can then write queries in multiple lines that get executed as soon as we exit the editor.  |
 | `clear`    | Clears the console from any previous queries, answers and commands.                                                                                                                   |
 | `clean`    | Meant to be used with caution, removes not only the data but also the schema of the knowledge graph contained within the keyspace.                                                    |
 | `exit`     | Exists the console.                                                                                                                                                                   |
 
 <!-- ### Committing changes
-Any write operations executed via the console, affects only a _local_ copy of the keyspace that contains the altered knowledge graph. In order for these changes to be reflected on the original keyspace running on the Grakn Server, we use the `commit` command.
+Any write operations executed via the console affects only a _local_ copy of the keyspace that contains the altered knowledge graph. In order for these changes to be reflected on the original keyspace running on the Grakn Server, we use the `commit` command.
 
 ### Rolling back changes
 As the name suggests, we use the `rollback` command to undo any uncommitted changes. This rolls the state of the knowledge graph back to how it was right after the last `commit` was made.

@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Insert
 pageTitle: Insert Query
-
 permalink: /docs/query/insert-query
 ---
 

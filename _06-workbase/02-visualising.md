@@ -10,7 +10,7 @@ Workbase allows visualisation of answers returned by [Graql queries](/docs/query
 
 <div class="note">
 [Important]
-For the purpose of demonstration, we will be interacting with the `phone_calls` keyspace. If you'd like to follow the instructions below step-by-step and see the results accordingly, you need to have modeled the `phone_calls` knowledge graph, loaded its schema into a keyspace and migrated the dataset into it. To do so, follow the [Phone Calls Example](...).
+For the purpose of demonstration, we will be interacting with the `phone_calls` keyspace. If you'd like to follow the instructions below step-by-step and see the results accordingly, you need to have modelled the `phone_calls` knowledge graph, loaded its schema into a keyspace and migrated the dataset into it. To do so, follow the [Phone Calls Example](...).
 </div>
 
 ### Execute Custom Queries

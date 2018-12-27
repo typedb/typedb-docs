@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Migrate - Python
 pageTitle: Migrating CSV, JSON and XML Data with Client Python
-
 permalink: /docs/examples/phone-calls-migration-python
 ---
 
@@ -720,7 +719,7 @@ Sit back, relax and watch the logs while the data starts pouring into Grakn.
 
 We started off by setting up our project and positioning the data files.
 
-Next we went on to set up the migration mechanism, one that was independent of the data format.
+Next, we went on to set up the migration mechanism, one that was independent of the data format.
 
 Then, we went ahead and wrote the template functions whose only job was to construct a Graql insert query based on the data passed to them.
 

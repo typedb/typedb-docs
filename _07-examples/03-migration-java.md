@@ -198,7 +198,7 @@ public class Migration {
 
 `input.getDataPath()` returns `data/companies`.
 
-Given company is
+Given the company,
 
 ```lang-java
 { name: "Telecom" }
@@ -256,7 +256,7 @@ public class Migration {
 
 `input.getDataPath()` returns `data/people`.
 
-Given person is
+Given the person,
 
 ```lang-java
 { phone_number: "+44 091 xxx" }
@@ -268,7 +268,7 @@ Given person is
 insert $person has phone-number "+44 091 xxx";
 ```
 
-And given person is
+And given the person,
 
 ```lang-java
 { firs-name: "Jackie", last-name: "Joe", city: "Jimo", age: 77, phone_number: "+00 091 xxx"}
@@ -318,7 +318,7 @@ public class Migration {
 
 `input.getDataPath()` returns `data/contracts`.
 
-Given contract is
+Given the contract,
 
 ```lang-java
 { company_name: "Telecom", person_id: "+00 091 xxx" }
@@ -371,7 +371,7 @@ public class Migration {
 
 `input.getDataPath()` returns `data/calls`.
 
-Given call is
+Given the call,
 
 ```lang-java
 { caller_id: "+44 091 xxx", callee_id: "+00 091 xxx", started_at: 2018–08–10T07:57:51, duration: 148 }
@@ -434,7 +434,7 @@ The following happens in this method:
 1. A Grakn instance `grakn` is created, connected to the server we have running locally at `localhost:48555`.
 2. A `session` is created, connected to the keyspace `phone_calls`.
 3. For each `input` object in the `inputs` collection, we call the `loadDataIntoGrakn(input, session)`. This will take care of loading the data as specified in the `input` object into our keyspace.
-4. Finally the `session` is closed.
+4. Finally, the `session` is closed.
 
 ## Load the Data Into phone_calls
 

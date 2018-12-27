@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Match
 pageTitle: Match Clause
-
 permalink: /docs/query/match-clause
 ---
 
@@ -244,7 +243,7 @@ answer_iterator = transaction.query("match $fr ($x, $y, $z) isa friendship; get;
 We can match instances of attribute types in various ways depending on our use case.
 
 #### Independent of label
-We can match instances of attributes type based on their value regardless of their abel.
+We can match instances of attributes type based on their value regardless of their label.
 
 <div class="tabs dark" data-parse-to-html="true">
 
@@ -530,7 +529,7 @@ answer_iterator = transaction.query("match $o isa! organisation; get;")
 ```
 [tab:end]
 
-Thi matches only the direct instances of `organisation`. That means the instances of `company` and `university` (which subtype `organisation`) would not be included.
+The matches only the direct instances of `organisation`. That means the instances of `company` and `university` (which subtype `organisation`) would not be included.
 </div>
 
 ### One particular instance

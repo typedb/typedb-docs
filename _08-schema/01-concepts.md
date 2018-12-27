@@ -432,7 +432,7 @@ transaction.commit()
 [tab:end]
 </div>
 
-The example above can be read in plain english as: _In a `loan`, the `lender` is a `bank` and the `recipient` isa `person`. The `loan` is the `subject` of a `legal-constraint` where `terms-n-conditions` is the `legality`._
+The example above can be read in plain English as: _In a `loan`, the `lender` is a `bank` and the `recipient` isa `person`. The `loan` is the `subject` of a `legal-constraint` where `terms-n-conditions` is the `legality`._
 
 ### A relationship with many roleplayers
 A relationship can relate to any number of roles. The example below illustrates a three-way relationship.

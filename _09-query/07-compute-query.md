@@ -1,11 +1,10 @@
 ---
 sidebarTitle: Compute
 pageTitle: Compute Query
-
 permalink: /docs/query/compute-query
 ---
 
-## Computing Distributed Analaytics Over a Large Dataset
+## Computing Distributed Analytics Over a Large Dataset
 In this section, we will learn how to use the `compute` queries in a Grakn knowledge graph to:
 - calculate statistical values over a large set of data,
 - find the shortest path between two instances of data,
@@ -586,7 +585,7 @@ answer_iterator = transaction.query("compute cluster in [person, employment, org
 Coreness is a measure that helps identify tightly interlinked sets of instances within the knowledge graph. Given value `k`, k-core makes the maximal subgraph where every instance has at least degree `k`.
 Grakn uses K-core to identify tightly connected clusters within the knowledge graph.
 
-To compute clusters using corenewss with the `k` value of at least 2, we run the following query.
+To compute clusters using coreness with the `k` value of at least 2, we run the following query.
 
 
 <div class="tabs dark" data-parse-to-html="true">
@@ -620,8 +619,6 @@ answer_iterator = transaction.query("compute cluster in [person, employment, org
 ```
 [tab:end]
 </div>
-
-This query returnes
 
 This query retrieves the set of concept IDs that belong to clusters which include instances of `person`, `employment` and `organisation` concept types and all have a minimum degree of 2.
 
@@ -665,6 +662,6 @@ answer_iterator = transaction.query("compute cluster in [person, employment, org
 This query retrieves the set of concept IDs that belong to clusters which include instances of `person`, `employment` and `organisation` concept types and all have a minimum degree of 5.
 
 ## Summary
-We use a compute query to run distributed analytics on the entire knowlwedge graph or a large subset of it filtered by a concept type. These analytics include statistical function, shortest path, centrality and cluster
+We use a compute query to run distributed analytics on the entire knowledge graph or a large subset of it filtered by a concept type. This statistical analytics include statistical function, shortest path, centrality and cluster
 
 Next, we will learn about the [Concept API](/docs/concept-api/overview) and how it is used via the [Grakn Clients](/docs/client-api/overview) to retrieve information on a specific instance and its surroundings.

@@ -4,7 +4,7 @@ methods:
   - method:
     common: &method-transaction
       title: Create a transaction ## !!! synced with codeKeywordsToLink
-      description: Creates a transacton to execute read and write operations on the keyspace connected to the ssesion.
+      description: Creates a transaction to execute read and write operations on the keyspace connected to the session.
       accepts: &accepts-transaction
         param: &accepts-transaction-type
           name: type

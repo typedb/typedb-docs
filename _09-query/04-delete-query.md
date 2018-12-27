@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Delete
 pageTitle: Delete Query
-
 permalink: /docs/query/delete-query
 ---
 
@@ -93,7 +92,7 @@ transaction.commit()
 [tab:end]
 </div>
 
-This deletes all instances of the `employment` type where the `employer` is an `ogranisation` with `name` of `"Black House"`.
+This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Black House"`.
 
 ## Delete Associations with Attributes
 Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](/docs/schema/concepts#define-an-attribute) in a Grakn knowledge graph prior to performing `delete` queries on them.

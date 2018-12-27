@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Type
 pageTitle: Type
-summary:
 permalink: /docs/concept-api/type
 ---
 

@@ -194,7 +194,7 @@ Having these bounds in mind, the following machines are recommended because they
 For more information, please visit the [GC Machine Types](https://cloud.google.com/compute/docs/machine-types)
 
 #### Storage options
-For performance, we suggest using SSD persistent disks for majority of use cases. The specific size of persistent disks depends on the volume of data to be processed as well as your application-specific requirements.
+For performance, we suggest using SSD persistent disks for the majority of use cases. The specific size of persistent disks depends on the volume of data to be processed as well as your application-specific requirements.
 It is also possible to use HDD persistent disks. Although these come at a reduced price, their poor performance does not justify their use and we do not recommend them.
 
 For more information on GCE disks, please visit the [GC Disk Docs](https://cloud.google.com/compute/docs/disks)

@@ -33,7 +33,7 @@ const session = client.session("keyspace");
 
 As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previously used as the default REST endpoint) is deprecated for clients.
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](), into the initial constructor as a nodejs object.
+We can also pass the credentials, as specified when [configuring authentication via Grakn Console](), into the initial constructor as a Javascript object.
 
 ```lang-javascript
 const client = grakn.Grakn("localhost:48555", { "username": "<username>", "password": "<password>" });
@@ -95,7 +95,7 @@ async function runBasicQueries() {
 
 <div class="note">
 [Important]
-Remember that transactions always need to be closed. Commiting a write transaction closes it. A read transaction, however, must be explicitly clased by calling the `close()` method on it.
+Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
 Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.

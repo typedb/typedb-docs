@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Overview
 pageTitle: Graql Queries
-
 permalink: /docs/query/overview
 ---
 

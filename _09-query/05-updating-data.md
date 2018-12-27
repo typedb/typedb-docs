@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Update
 pageTitle: Updating Data
-
 permalink: /docs/query/updating-data
 ---
 
@@ -181,7 +180,7 @@ transaction.commit()
 [tab:end]
 </div>
 
-This query updates the `employee` roleplayer of the `employment` relationship where the `employer` is an `ogranisation` named `"Wieth Souhe"`.
+This query updates the `employee` roleplayer of the `employment` relationship where the `employer` is an `organisation` named `"Wieth Souhe"`.
 
 ## Summary
 Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](/docs/schema/concepts). Simply put, to update is essentially to first `delete` and then `insert`.
