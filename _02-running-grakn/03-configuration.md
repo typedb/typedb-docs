@@ -6,7 +6,7 @@ permalink: /docs/running-grakn/configuration
 ---
 
 ## Configuring Grakn
-In this section, we will learn about how we can configure Grakn to have it tailored to our production and development needs.
+In this section, we learn about how we can configure Grakn to have it tailored to our production and development needs.
 
 Prior to starting, the Grakn Server and Console read configurations from a file named `grakn.properties`. The location of this file varies based on how Grakn has been installed.
 

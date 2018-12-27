@@ -165,6 +165,9 @@ While [logged into a node](#logging-into-a-node), run `grakn console start`. Thi
 ### Accessing Graql Console
 While [logged into a node](#logging-into-a-node), we can enter the [Graql Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
 
+### Configuring Grakn
+To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).
+
 ### Signing up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).
 
