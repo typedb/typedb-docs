@@ -1,8 +1,152 @@
 ---
 sidebarTitle: Java
 pageTitle: Client Java
-summary: ""
 permalink: /docs/client-api/java
 ---
+
+## Dependencies
+The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.0` added as a dependency in your Java project.
+
+<div class="tabs dark">
+
+[tab:Grakn Core]
+```lang-xml
+<dependency>
+  <groupId>ai.grakn</groupId>
+  <artifactId>client-java</artifactId>
+  <version>1.4.3</version>
+</dependency>
+```
+[tab:end]
+
+[tab:Grakn KGMS]
+```lang-xml
+<dependency>
+  <groupId>ai.grakn.kgms</groupId>
+  <artifactId>client</artifactId>
+  <version>1.4.3</version>
+</dependency>
+```
+[tab:end]
+
+</div>
+
+## Quickstart
+First make sure, the [Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server) is running.
+
+In the interpreter or in your source, import `grakn`.
+
+Instantiate a client and open a session.
+
+```lang-java
+import ai.grakn.Keyspace;
+import ai.grakn.client.Grakn;
+import ai.grakn.util.SimpleURI;
+
+public class GraknQuickstart {
+    public static void main(String[] args) {
+        SimpleURI localGrakn = new SimpleURI("localhost", 48555);
+        Keyspace keyspace = Keyspace.of("genealogy");
+        Grakn grakn = new Grakn(localGrakn);
+        Grakn.Session session = grakn.session(keyspace);
+        // session is open
+        session.close();
+        // session is closed
+    }
+}
+```
+
+As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previously used as the default REST endpoint) is deprecated for clients.
+
+When working with [Grakn KGMS](/docs/cloud-deployment/kgms), we can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
+
+```lang-java
+SimpleURI localGrakn = new SimpleURI("localhost", 48555);
+Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client();
+```
+
+Create transactions to use for reading and writing data.
+
+```lang-java
+import ai.grakn.GraknTxType;
+import ai.grakn.Keyspace;
+import ai.grakn.client.Grakn;
+import ai.grakn.util.SimpleURI;
+
+public class GraknQuickstart {
+    public static void main(String[] args) {
+        SimpleURI localGrakn = new SimpleURI("localhost", 48555);
+        Keyspace keyspace = Keyspace.of("genealogy");
+        Grakn grakn = new Grakn(localGrakn);
+        Grakn.Session session = grakn.session(keyspace);
+
+        // creating a write transaction
+        Grakn.Transaction writeTransaction = session.transaction(GraknTxType.WRITE);
+        // write transaction is open
+        // write transaction must always be committed (closed)
+        writeTransaction.commit();
+
+        // creating a read transaction
+        Grakn.Transaction readTransaction = session.transaction(GraknTxType.READ);
+        // read transaction is open
+        // read transaction must always be closed
+        readTransaction.close();
+
+        session.close();
+    }
+}
+```
+
+Running basic retrieval and insertion queries.
+
+```lang-java
+import ai.grakn.GraknTxType;
+import ai.grakn.Keyspace;
+import ai.grakn.client.Grakn;
+import ai.grakn.graql.GetQuery;
+import ai.grakn.graql.Graql;
+import ai.grakn.graql.InsertQuery;
+import ai.grakn.graql.answer.ConceptMap;
+import ai.grakn.util.SimpleURI;
+import java.util.List;
+import java.util.stream.Stream;
+
+public class GraknQuickstart {
+    public static void main(String[] args) {
+      SimpleURI localGrakn = new SimpleURI("localhost", 48555);
+      Keyspace keyspace = Keyspace.of("phone_calls");
+      Grakn grakn = new Grakn(localGrakn);
+      Grakn.Session session = grakn.session(keyspace);
+
+      Grakn.Transaction writeTransaction = session.transaction(GraknTxType.WRITE);
+      InsertQuery insertQuery = Graql.insert(var("x").isa("person").has("first-name", "soroush"));
+      List<ConceptMap> insertedId = insertQuery.withTx(writeTransaction).execute();
+      System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").id());
+      writeTransaction.commit();
+
+      Grakn.Transaction readTransaction = session.transaction(GraknTxType.READ);
+      GetQuery query = Graql.match(var("x").isa("person")).limit(10).get();
+      Stream<ConceptMap> answers = query.withTx(readTransaction).stream();
+      answers.forEach(answer -> System.out.println(answer.get("x").id()));
+      readTransaction.close();
+
+      session.close();
+    }
+}
+```
+<div class="note">
+[Important]
+Remember that transactions always need to be closed. Commiting a write transaction closes it. A read transaction, however, must be explicitly clased by calling the `close()` method on it.
+</div>
+
+Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+
+To view examples of running various Graql queries using the Grakn Client Java, head over to their dedicated documentation pages as listed below.
+
+- [Insert](/docs/query/insert-query)
+- [Get](/docs/query/get-query)
+- [Delete](/docs/query/delete-query)
+- [Aggregate](/docs/query/aggregate-query)
+- [Compute](/docs/query/compute-query)
 
 {% include client_api.html language = "java" %}
