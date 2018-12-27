@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Match
 pageTitle: Match Clause
-summary: "Describing patterns in a Grakn knowledge graph."
+
 permalink: /docs/query/match-clause
 ---
 

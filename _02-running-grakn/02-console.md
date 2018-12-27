@@ -1,8 +1,6 @@
 ---
 sidebarTitle: Console
 pageTitle: Graql Console
-keywords:
-tags: []
 summary:
 permalink: /docs/running-grakn/console
 ---

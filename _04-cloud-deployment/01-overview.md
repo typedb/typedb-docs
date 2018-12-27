@@ -62,7 +62,7 @@ MUST BE MERGED
 title: Terms of service
 keywords: cloud, deployment, google, eula
 tags: [getting-started, deployment, cloud]
-summary: "Terms of service"
+
 sidebar: documentation_sidebar
 permalink: /docs/cloud-deployment/terms-of-service
 folder: docs
@@ -81,7 +81,7 @@ MUST BE MERGED
 title: Post Deployment
 keywords: cloud, deployment, google
 tags: [getting-started, deployment, cloud]
-summary: "Post Deployment Steps"
+
 sidebar: documentation_sidebar
 permalink: /docs/cloud-deployment/post-deployment
 folder: docs

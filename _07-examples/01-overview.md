@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Overview
 pageTitle: Phone Calls Knowledge Graph
-summary: "Landing page for Grakn examples."
+
 permalink: /docs/examples/phone-calls-overview
 ---
 

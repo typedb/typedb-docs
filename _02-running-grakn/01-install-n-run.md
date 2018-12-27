@@ -1,8 +1,6 @@
 ---
 sidebarTitle: Install & Run
 pageTitle: Install and Run Grakn
-keywords:
-tags: []
 summary: ""
 permalink: /docs/running-grakn/install-n-run
 ---

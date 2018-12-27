@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Overview
 pageTitle: Schema
-summary: "An overview of the schema in a Grakn knowledge graph."
+
 permalink: /docs/schema/overview
 ---
 
@@ -27,6 +27,8 @@ In the sections that follow, by looking at various real-world examples, we will 
 
 Lastly, we have the [**Graql Rules**](/docs/schema/rules). Rules watch for schema-driven patterns in the data and infer queryable conclusions. Rules are one way to perform automated reasoning in a Grakn knowledge graph.
 
+## Type Hierarchy
+Besides the modularity that the concept types provide, we can define any concept to subtype another. A concept type that subtypes another, inherits tha attributes owned and roles related to or played by the parent type. Subtyping not only allows us to mirror the true nature of a dataset as perceived in the realword, but also enables automated reasoning.
 
 ## (un)Define the schema programmatically
 In the following sections, we will learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).

@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Aggregate
 pageTitle: Aggregate Query
-summary: "Aggregating values from a set of data in a Grakn knowledge graph."
+
 permalink: /docs/query/aggregate-query
 ---
 

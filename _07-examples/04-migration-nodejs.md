@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Migrate - Node.js
 pageTitle: Migrating CSV, JSON and XML Data with Client Node.js
-summary: "How to migrate csv, json and xml data to a Grakn knowledge graph"
+
 permalink: /docs/examples/phone-calls-migration-nodejs
 ---
 

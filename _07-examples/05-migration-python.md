@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Migrate - Python
 pageTitle: Migrating CSV, JSON and XML Data with Client Python
-summary: "How to migrate csv, json and xml data to a Grakn knowledge graph"
+
 permalink: /docs/examples/phone-calls-migration-python
 ---
 

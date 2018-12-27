@@ -1,8 +1,6 @@
 ---
 sidebarTitle: Overview
 pageTitle: Grakn Clients
-keywords: client
-tags: []
 summary: ""
 permalink: /docs/client-api/overview
 ---

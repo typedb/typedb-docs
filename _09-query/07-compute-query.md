@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Compute
 pageTitle: Compute Query
-summary: "Computing values over a large set of data in a Grakn knowledge graph."
+
 permalink: /docs/query/compute-query
 ---
 
@@ -14,7 +14,7 @@ In this section, we will learn how to use the `compute` queries in a Grakn knowl
 
 <!-- In a dedicated section, we will learn more about the significance and use cases of [Distributed Analaytics]() in a Grakn knowledge graph. -->
 
-## Computr Statistics
+## Compute Statistics
 Computing simple statistics, such as the mean and standard deviations of small datasets, is an easy task given isolated instances. But what about when the knowledge graph becomes so large that it has to be distributed across many machines? What if the values to be calculated correspond to many different types?
 
 That's when the `compute` query and its statistical functions come into play. The compute query uses an intelligent algorithm to traverse the knowledge graph using multiple threads in parallel.

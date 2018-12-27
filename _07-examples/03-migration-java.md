@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Migrate - Java
 pageTitle: Migrating CSV, JSON and XML Data with Client Java
-summary: "How to migrate csv, json and xml data to a Grakn knowledge graph"
+
 permalink: /docs/examples/phone-calls-migration-java
 ---
 

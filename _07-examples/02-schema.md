@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Schema
 pageTitle: Defining a Sample Schema
-summary: "How to model and load a schema into Grakn."
+
 permalink: /docs/examples/phone-calls-schema
 ---
 

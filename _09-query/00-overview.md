@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Overview
 pageTitle: Graql Queries
-summary: "An introduction to Graql"
+
 permalink: /docs/query/overview
 ---
 

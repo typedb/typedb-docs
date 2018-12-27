@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Insert
 pageTitle: Insert Query
-summary: "Inserting data into a Grakn knowledge graph."
+
 permalink: /docs/query/insert-query
 ---
 

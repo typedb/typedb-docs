@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Queries
 pageTitle: Queries the Phone Calls Knowledge Graph
-summary: "How to query a knowledge graph for insights"
+
 permalink: /docs/examples/phone-calls-queries
 ---
 
