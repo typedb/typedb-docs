@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Install & Run
 pageTitle: Install and Run Grakn
-summary: ""
+
 permalink: /docs/running-grakn/install-n-run
 ---
 
@@ -10,7 +10,7 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 
 
 ## Download and Install Grakn
-<div class="gtabs light">
+<div class="tabs light">
 [tab:Mac OS X]
 
 ### To download the latest release
@@ -26,7 +26,7 @@ Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
 
-<div class="galert">
+<div class="note">
 [Warning]
 Take into account that many features of previous versions are deprecated and so no longer supported.
 </div>
@@ -43,7 +43,7 @@ Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
 
-<div class="galert">
+<div class="note">
 [Warning]
 Take into account that many features of previous versions are deprecated and so no longer supported.
 </div>
@@ -60,7 +60,7 @@ Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-
 ### To download an older version
 Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
 
-<div class="galert">
+<div class="note">
 [Warning]
 Take into account that many features of previous versions are deprecated and so no longer supported.
 </div>

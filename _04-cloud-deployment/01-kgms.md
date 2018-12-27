@@ -1,8 +1,7 @@
 ---
 sidebarTitle: KGMS
 pageTitle: Grakn KGMS
-summary: ""
-permalink: /docs/cloud-deployment/overview
+permalink: /docs/cloud-deployment/kgms
 ---
 
 ## What is Grakn KGMS?

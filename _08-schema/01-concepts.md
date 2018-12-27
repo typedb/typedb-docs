@@ -13,7 +13,7 @@ When defining the schema in a single `schema.gql` file, the keyword `define` nee
 
 `define` can also be used in the interactive mode of the [Graql Console](/docs/running-grakn/console) as well as the Grakn Clients [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).
 
-<div class="galert">
+<div class="note">
 [Important]
 Don't forget to `commit` after executing a `define` statement. Otherwise, anything you have defined will NOT be committed to the original keyspace that is running on the Grakn server.
 When using one of the Grakn clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
@@ -26,7 +26,7 @@ An entity is a thing with a distinct existence in the domain. For example, `orga
 ### Define an entity
 To define a new entity, we use the `sub` keyword followed by `entity`.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 
@@ -68,7 +68,7 @@ transaction.commit()
 ### Assign an attribute to an entity
 An entity can be assigned any number of attributes. To do so, we use the `has` keyword followed by the attribute's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -112,7 +112,7 @@ transaction.commit()
 
 To assign a unique attribute to an entity, we use the `key` keyword followed by the attribute's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -153,7 +153,7 @@ transaction.commit()
 This guarantees `email` to have a unique value for all instances of `person`.
 
 
-<div class="galert">
+<div class="note">
 [Note]
 Although the attributes above have been assigned to the `person` entity, they are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute).
 </div>
@@ -162,7 +162,7 @@ Although the attributes above have been assigned to the `person` entity, they ar
 ### Entity to play a role
 An entity can play a role in a relationship. To define the role played by an entity, we use the `plays` keyword followed by the role's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -204,7 +204,7 @@ transaction.commit()
 [tab:end]
 </div>
 
-<div class="galert">
+<div class="note">
 [Note]
 The relationship that relates to the roles `employer` and `employee` has not yet been defined. We will soon learn how to [define a relationship](#define-a-relationship).
 </div>
@@ -212,7 +212,7 @@ The relationship that relates to the roles `employer` and `employee` has not yet
 ### Subtype an entity
 We can define an entity to inherit all attributes owned and roles played by another entity. Let's look at an example of subtyping the `organisation` entity.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -262,7 +262,7 @@ transaction.query("define organisation sub entity, plays owner, plays property, 
 
 As you can see in the example above, when defining entities, what follows the `sub` keyword can be a label previously given to another entity. In this example, `company` and `university` are both considered to be subtypes of `organisation` and so are defined that way. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent. Therefore, although not defined explicitly, we are right to assume that both `company` and `university` have a `name` and play the roles `owner`, `property` and `employer`. However, the attribute `rank` is only owned by a `university`.
 
-<div class="galert">
+<div class="note">
 [Note]
 The relationships that relate to the roles `owner`, `property` and `employer` have not been defined in the example above. We will soon learn how to [define a relationship](#define-a-relationship). Similarly, the attributes `name` and `rank` are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute) as well.
 </div>
@@ -272,7 +272,7 @@ The ability to subtype entities not only helps mirror the reality of the dataset
 #### Define an abstract entity
 There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `organisation` entity type to be abstract. By doing so, we are indicating that no data instances of the `organisation` entity are allowed to be created.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -324,7 +324,7 @@ employment sub relationship;
 
 To complete the definition of a relationship, we must determine the roles that it relates to. To do so, we use the `relates` keyword followed by the role's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -373,7 +373,7 @@ We have already seen how to [define an entity to play a role](#entity-to-play-a-
 ### Define a relationship to play a role
 Let's go through a simple example of how a relationship can play a role in another relationship.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -437,7 +437,7 @@ The example above can be read in plain english as: _In a `loan`, the `lender` is
 ### A relationship with many roleplayers
 A relationship can relate to any number of roles. The example below illustrates a three-way relationship.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -496,7 +496,7 @@ The example can be read in plain English as: _In a `mortgage`, a `person` is the
 ### Assign an attribute to a relationship
 We can assign any number of attributes to a relationship. To do so, we use the `has` keyword followed by the attribute's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -539,7 +539,7 @@ transaction.commit()
 
 To assign a unique attribute to a relationship, we use the `key` keyword followed by the attribute's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -582,7 +582,7 @@ transaction.commit()
 
 This guarantees `reference-id` to have a unique value for all instances of `employment`.
 
-<div class="galert">
+<div class="note">
 [Note]
 Although the attributes above have been assigned to `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute).
 </div>
@@ -590,7 +590,7 @@ Although the attributes above have been assigned to `employment`, they are yet t
 ### Subtype a relationship
 We can define a relationship to inherit all attributes owned, and roles related to and played by another relationship. Let's take a look at an example of subtyping an `affiliation` relationship.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -655,14 +655,14 @@ transaction.commit()
 
 As you can see in the example above, when defining relationships, what follows the `sub` keyword can be a label previously given to another relationship. In this case, `employment` and `board-membership` are both considered to be subtypes of `membership` which is itself a subtype of `affiliation`. By subtyping a parent relationship, the children inherit all attributes owned and roles related to and played by their parent. Therefore, although not defined explicitly, we are right to assume that both `employment` and `board-membership` relate to the roles `member`, `group` and `party` and own the key attribute `reference-id`.
 
-<div class="galert">
+<div class="note">
 [Note]
 Although the attributes above have been assigned to `affiliation` and `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute).
 </div>
 
 Note the use of the `as` keyword. This is necessary to determine the correspondence between the role of the child and that of the parent.
 
-<div class="galert">
+<div class="note">
 [Important]
 All roles defined to relate to the parent relationship must also be defined to relate to the child relationship using the `as` keyword.
 </div>
@@ -672,7 +672,7 @@ The ability to subtype relationships not only helps mirror the reality of the da
 #### Define an abstract relationship
 There may be scenarios where a parent relationship is only defined for other relationships to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `affiliation` relationship type to be abstract. By doing so, we are indicating that no data instances of the `affiliation` relationship are allowed to be created.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -718,7 +718,7 @@ An attribute is a piece of information that determines the property of an elemen
 ### Define an attribute
 To define a new attribute, we use the `sub` keyword followed by `attribute`, `datatype` and the type of the desired value.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -766,7 +766,7 @@ The data types available in a Grakn knowledge graph are:
 
 **The same attribute type can be owned by different concept types.**.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -811,14 +811,14 @@ transaction.commit()
 [tab:end]
 </div>
 
-<div class="galert">
+<div class="note">
 [Important]
 Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a relational database. In this example, the attribute `colour` with the value of, for instance `"red"`, exists only once in the knowledge graph and shared among any number of instances that may own it. This is useful when we need to query the knowledge graph for anything that has the `colour` attribute with value `"red"`. In this case, we would get all the red cars and bicycles as the answer. It's important to remember this when performing write operations on instances of an attribute type.
 </div>
 
 **A concept type can have any number of the same attribute that holds different values.** In other words, a concept type has a many-to-many relationship with its attributes.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -866,7 +866,7 @@ We have already seen how to [assign an attribute to an entity](#assign-an-attrib
 ### Restrict attribute's by Regex
 Optionally, we can specify a Regex that the values of an attribute type must conform to. To do this, we use the `regex` keyword followed by the Regex pattern at the end of the attribute's definition.
 
-div class="gtabs dark" data-parse-to-html="true">
+div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -904,7 +904,7 @@ transaction.commit()
 ### Assign an attribute to another attribute
 Like entities and relationships, attributes can also own an attribute of their own. To do this, we use the 'has' keyword followed by the attribute's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -951,7 +951,7 @@ In this example, attribute `text` can be owned by, for instance, an `email` rela
 ### Define an attribute to play a role
 An attribute can play a role in a relationship. To define the role played by an attribute, we use the `plays` keyword followed by the role's label.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -1003,7 +1003,7 @@ The definition above contains a relationship that has not been explicitly define
 ### Subtype an attribute
 We can define an attribute to inherit the datatype, attributes owned and roles played by another attribute.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -1053,7 +1053,7 @@ The ability to subtype attributes not only helps mirror the reality of our datas
 #### Define an abstract relationship
 There may be scenarios where a parent attribute is only defined for other attributes to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `name` attribute type to be abstract. By doing so, we are indicating that no data instances of the `name` attribute are allowed to be created.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -1094,7 +1094,7 @@ transaction.commit()
 ## Undefine
 As the name suggests, the `undefine` keyword is used to remove the definition of a type or its association with other types from the schema.
 
-<div class="galert">
+<div class="note">
 [Important]
 Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined will NOT be committed to the original keyspace that is running on the Grakn server.
 When using one of the [Grakn clients](/docs/client-api/overview), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Graql Console](/docs/running-grakn/console), we use the `commit` command.
@@ -1103,7 +1103,7 @@ When using one of the [Grakn clients](/docs/client-api/overview), to commit chan
 ### Undefine an attribute's association
 We can undefine the association that a type has with an attribute. Let's look at an example.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -1140,7 +1140,7 @@ transaction.commit()
 
 The query above, removes the attribute `name` from the entity `person`.
 
-<div class="galert">
+<div class="note">
 [Important]
 It's important to note that `underfine [label] sub [type] has [attribute's label];` undefines the `label` itself, rather than its association with the attribute.
 </div>
@@ -1148,7 +1148,7 @@ It's important to note that `underfine [label] sub [type] has [attribute's label
 ### Undefine a relationship
 Given the dependent nature of relationships, before undefining the relationship itself, we must first undefine the association of its roles with the relationship itself and their roleplayers. Given an `employment` relationship, we would undefine it as shown below.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql

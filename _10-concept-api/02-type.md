@@ -8,7 +8,7 @@ permalink: /docs/concept-api/type
 ## Type Methods
 `Type` has all the [`Concept` methods](/docs/concept-api/concept) plus what follows.
 
-<div class="gtabs light" data-no-parse>
+<div class="tabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.type language="java" class_prefix="concept-api-java" %}
@@ -27,7 +27,7 @@ permalink: /docs/concept-api/type
 ## EntityType Methods
 `EntityType` has all the [`Type` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-no-parse>
+<div class="tabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.entity_type language="java" class_prefix="concept-api-java" %}
@@ -46,7 +46,7 @@ permalink: /docs/concept-api/type
 ## AttributeType Methods
 `AttributeType` has all the [`Type` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-no-parse>
+<div class="tabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.attribute_type language="java" class_prefix="concept-api-java" %}
@@ -65,7 +65,7 @@ permalink: /docs/concept-api/type
 ## RelationshipType Methods
 `RelationshipType` has all the [`Type` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-no-parse>
+<div class="tabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.relationship_type language="java" class_prefix="concept-api-java" %}
@@ -84,10 +84,10 @@ permalink: /docs/concept-api/type
 ## Role Methods
 `Role` has all the [`Concept` methods](#type-methods) plus what follows.
 
-<div class="gtabs light" data-no-parse>
+<div class="tabs light" data-no-parse>
 
 [tab:Java]
-<div class="galert">
+<div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
 - [label();](?lang=java#concept-api-java-method-retrieve-the-label)
@@ -102,7 +102,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 [tab:end]
 
 [tab:Javascript]
-<div class="galert">
+<div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
 - [label();](?lang=javascript#concept-api-nodejs-method-retrieve-the-label)
@@ -116,7 +116,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 [tab:end]
 
 [tab:Python]
-<div class="galert">
+<div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
 - [label();](?lang=python#concept-api-python-method-retrieve-the-label)

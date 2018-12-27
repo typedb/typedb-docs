@@ -1,14 +1,14 @@
 ---
 sidebarTitle: Investigation
 pageTitle: Investigating Results
-summary: ""
+
 permalink: /docs/workbase/investigation
 ---
 
 ## Investigate
 Once we have executed a [Graql query](/docs/query/overview) and visualised its result, we can then investigate each node further to obtain more insights.
 
-<div class="galert">
+<div class="note">
 [Important]
 For the purpose of demonstration, we will be interacting with the `phone_calls` keyspace. If you'd like to follow the instructions below step-by-step and see the results accordingly, you need to have modeled the `phone_calls` knowledge graph, loaded its schema into a keyspace and migrated the dataset into it. To do so, follow the [Phone Calls Example](...).
 </div>
@@ -67,7 +67,7 @@ Having selected a node, we can choose what colour it should be presented in and 
 ### Visualise Attributes
 To visualise the attributes of a node, we first need to select the node by clicking on it and then _hold shift and double click_ on the node.
 
-<div class="galert">
+<div class="note">
 [Note]
 The number of attributes to visualise is limited by the _Neighbour Limit_ value configured in the [Query Settings](/docs/workbase/visualising#configure-query-settings).
 </div>
@@ -81,7 +81,7 @@ Neighbours of an attribute concept are the **things** that own it.
 
 Neighbours of a relationship concept are the **things** that play a role in it.
 
-<div class="galert">
+<div class="note">
 [Note]
 The number of neighbours to visualise is limited by the _Neighbour Limit_ value configured in the [Query Settings](/docs/workbase/visualising#configure-query-settings).
 </div>

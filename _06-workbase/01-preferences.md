@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Connection
 pageTitle: Configuring Connection
-summary: ""
+
 permalink: /docs/workbase/connection
 ---
 

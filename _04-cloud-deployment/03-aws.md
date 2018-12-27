@@ -9,7 +9,7 @@ permalink: /docs/cloud-deployment/aws
 
 As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.amazon.com/marketplace/pp/B07H8RMX5X) is a straight-forward process.
 
-<div class="gtabs light">
+<div class="tabs light">
 
 [tab:CloudFormation]
 <div class="slideshow">
@@ -169,7 +169,7 @@ Auto Scaling Groups group together EC2 instances that share similar characterist
 By design, it is not possible to stop an instance belonging to an Auto Scaling Group. When a Scaling Policy triggers the removal of an instance, Auto Scaling always terminates the instance.
 As a result, a different procedure is needed for stopping instances.
 
-<div class="galert">
+<div class="note">
 [Important]
 Before we proceed, we must make sure that the minimum capacity of the Auto Scaling Group that the instance belongs to, is smaller than the current instance count. For instance, if we have three instances running, in order to stop one, the minimum capacity must be at most two. Otherwise, new instances will be created in place of the stopped instance.
 </div>
@@ -285,7 +285,7 @@ When deploying an AMI, the default password is the instance id with username bei
 ### Running Grakn
 Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
 
-<div class="galert">
+<div class="note">
 [Important]
 Once deployed, it will take some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
 </div>

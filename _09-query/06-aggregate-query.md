@@ -12,7 +12,7 @@ To perform aggregation in Grakn, we first write a [match clause](/docs/query/mat
 ### Count
 We use the `count` function to get the number of the specified matched variable.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -51,7 +51,7 @@ Optionally, `count` accepts a variable as an argument.
 ### Sum
 We use the `sum` function to get the sum of the specified `long` or `double` matched variable.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -86,7 +86,7 @@ answer_iterator = transaction.query("match $h isa hotel has number-of-rooms $nor
 ### Maximum
 We use the `max` function to get the maximum value among the specified `long` or `double` matched variable.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -122,7 +122,7 @@ answer_iterator = transaction.query("match (student: $st, school: $sch) isa scho
 ### Minimum
 We use the `min` function to get the minimum value among the specified `long` or `double` matched variable.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -158,7 +158,7 @@ answer_iterator = transaction.query("match $b isa building has number-of-floors 
 ### Mean
 We use the `mean` function to get the average value of the specified `long` or `double` matched variable.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -193,7 +193,7 @@ answer_iterator = transaction.query("match $call isa call has duration $d; aggre
 ### Median
 We use the `median` function to get the median value among the specified `long` or `double` matched variable.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -228,7 +228,7 @@ answer_iterator = transaction.query("match $p isa person has age $a; aggregate m
 ### Grouping Answers
 We use the `group` function, optionally followed by another aggregate function, to group the answers by the specified matched variable.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -263,7 +263,7 @@ answer_iterator = transaction.query("match (employer: $company, employee: $perso
 
 This query returns all instances of `employment` grouped by their `employer` roleplayer.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql

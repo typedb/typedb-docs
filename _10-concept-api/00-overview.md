@@ -16,7 +16,7 @@ Anything in Grakn, whether a type or an instance of data, is a [Concept](/docs/c
 
 **Rule** refers to a [Graql Rule](/docs/schema/rules).
 
-<div class="galert">
+<div class="note">
 [Important]
 The methods called on Concepts are bound to the [transaction](/docs/client-api/overview#transaction) that was used to retrieve the concept initially. As soon as the transaction in question is closed, methods can no longer be called on the retrieved Concepts. To do so, we must retrieve the Concept again with a newly created transaction.
 </div>

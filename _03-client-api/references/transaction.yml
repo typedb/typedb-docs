@@ -280,7 +280,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[Rule](/docs/concept-api/type#rue-methods) object"
+        - "[Rule](/docs/concept-api/rule) object"
     javascript:
       <<: *method-putRole
       method: async transaction.putRule(label, when, then);

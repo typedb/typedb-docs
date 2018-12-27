@@ -67,7 +67,7 @@ get $phone-number;
 ![phone_calls query #1 Console](/docs/images/examples/phone_calls_query_1_console.png)
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:Java]
 ```lang-java
@@ -236,7 +236,7 @@ get $phone-number;
 ![phone_calls query #2 Console](/docs/images/examples/phone_calls_query_2_console.png)
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:Java]
 ```lang-java
@@ -405,7 +405,7 @@ get $phone-number;
 ![phone_calls query #3 Console](/docs/images/examples/phone_calls_query_3_console.png)
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:Java]
 ```lang-java
@@ -572,7 +572,7 @@ get $phone-number-a, $phone-number-b;
 ![phone_calls query #4 Console](/docs/images/examples/phone_calls_query_4_console.png)
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:Java]
 ```lang-java
@@ -769,7 +769,7 @@ match $customer isa person has age > 40; $company isa company has name "Telecom"
 ![phone_calls query #5 Console](/docs/images/examples/phone_calls_query_5_console.png)
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:Java]
 ```lang-java

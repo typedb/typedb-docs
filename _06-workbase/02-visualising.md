@@ -1,14 +1,14 @@
 ---
 sidebarTitle: Visualisation
 pageTitle: Visualising Results
-summary: ""
+
 permalink: /docs/workbase/visualisation
 ---
 
 ## Visualise
 Workbase allows visualisation of answers returned by [Graql queries](/docs/query/overview). These include _custom_ and _pre-defined type-based_ queries.
 
-<div class="galert">
+<div class="note">
 [Important]
 For the purpose of demonstration, we will be interacting with the `phone_calls` keyspace. If you'd like to follow the instructions below step-by-step and see the results accordingly, you need to have modeled the `phone_calls` knowledge graph, loaded its schema into a keyspace and migrated the dataset into it. To do so, follow the [Phone Calls Example](...).
 </div>

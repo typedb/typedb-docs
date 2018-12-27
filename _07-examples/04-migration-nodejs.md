@@ -124,7 +124,7 @@ In order to load data from each file into Grakn, we need to:
 1.  retrieve a list containing objects, each of which represents a data item. We do this by calling `parseDataToObjects(input)`
 2.  for each object in `items`: a) create a transaction `tx`, b) construct the `graqlInsertQuery` using the corresponding template function, c) run the query and d)commit the transaction.
 
-<div class="galert">
+<div class="note">
 [Important]
 To avoid running out of memory, it’s recommended that every single query gets created and committed in a single transaction.
 However, for faster migration of large datasets, this can happen once for every `n` queries, where `n` is the maximum number of queries guaranteed to run on a single transaction.
@@ -275,7 +275,7 @@ It’s time for the implementation of `parseDataToObjects(input)`.
 
 The implementation for `parseDataToObjects(input)` differs based on the format of our data files.
 
-<div class="gtabs light">
+<div class="tabs light">
 
 [tab:CSV]
 We use [Papaparse](https://www.papaparse.com/), a CSV (or delimited text) parser.
@@ -433,7 +433,7 @@ function parseDataToObjects(input) {
 
 Here is how our `migrate.js` looks like for each data format.
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:CSV]
 ```lang-javascript

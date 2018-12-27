@@ -28,7 +28,7 @@ rule-label sub rule,
 
 Let's look an example.
 
-<div class="gtabs dark" data-parse-to-html="true">
+<div class="tabs dark" data-parse-to-html="true">
 
 [tab:Graql]
 ```graql
@@ -108,7 +108,7 @@ if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y
 }
 ```
 <!-- {% include warning.html content = 'The text below down to the next subtitle will be put in a panel labeled with "Advanced Topic"' %} -->
-<div class="galert">
+<div class="note">
 [Advanced Topic]
 Rules as Horn Clauses can be defined either in terms of a disjunction with at most one unnegated atom or an implication with the consequent consisting of a single atom. Atoms are considered atomic first-order predicates - ones that cannot be decomposed to simpler constructs.
 In our system, we define both the head and the body of rules as Graql patterns. Consequently, the rules are statements of the form:

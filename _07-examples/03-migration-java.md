@@ -479,7 +479,7 @@ In order to load data from each file into Grakn, we need to:
 1. retrieve an `ArrayList` of JSON objects, each of which represents a data item. We do this by calling `parseDataToJson(input)`, and
 2. for each JSON object in `items`: a) create a transaction `tx`, b) construct the `graqlInsertQuery` using the corresponding `template`, c) run the `query`, d)`commit` the transaction and e) `close` the transaction.
 
-<div class="galert">
+<div class="note">
 [Important]
 To avoid running out of memory, it’s recommended that every single query gets created and committed in a single transaction.
 However, for faster migration of large datasets, this can happen once for every `n` queries, where `n` is the maximum number of queries guaranteed to run on a single transaction.
@@ -516,7 +516,7 @@ public class Migration {
 }
 ```
 
-<div class="gtabs light">
+<div class="tabs light">
 
 [tab:CSV]
 We use the [Univocity CSV Parser](https://www.univocity.com/pages/univocity_parsers_documentation) for parsing our `.csv` files. Let’s add the dependency for it. We need to add the following to the `dependencies` tag in `pom.xml`.
@@ -785,7 +785,7 @@ public class XmlMigration {
 ## Putting It All Together
 Here is how our `Migrate.java` looks like for each data format.
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:CSV]
 ```lang-java

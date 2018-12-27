@@ -1,8 +1,6 @@
 ---
-title: Client Node.js
 sidebarTitle: Node.js
 pageTitle: Client Node.js
-summary: ""
 permalink: /docs/client-api/nodejs
 ---
 
@@ -18,7 +16,7 @@ npm install grakn
 ```
 
 ## Quickstart
-First make sure, the Grakn server is running. Learn more about [how to run the Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server)..
+First make sure, the [Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server) is running..
 
 In your source, require `grakn`.
 
@@ -95,9 +93,9 @@ async function runBasicQueries() {
 }
 ```
 
-<div class="galert">
+<div class="note">
 [Important]
-Remember that transactions always need to be closed. Commiting a write transaction closes it. A write transaction, however, must be explicitly clased by calling the `close()` method on it.
+Remember that transactions always need to be closed. Commiting a write transaction closes it. A read transaction, however, must be explicitly clased by calling the `close()` method on it.
 </div>
 
 Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.

@@ -2,7 +2,7 @@
 title: Node.js
 keywords: setup, getting started, download, driver
 tags: [getting-started]
-summary: ""
+
 permalink: /docs/client-api/nodejs
 ---
 

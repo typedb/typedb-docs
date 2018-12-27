@@ -1,7 +1,6 @@
 ---
 sidebarTitle: Python
 pageTitle: Client Python
-summary: ""
 permalink: /docs/client-api/python
 ---
 
@@ -22,7 +21,7 @@ pip3 install grakn
 ```
 
 ## Quickstart
-First make sure, the Grakn server is running. Learn more about [how to run the Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server).
+First make sure, the [Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server) is running.
 
 In the interpreter or in your source, import `grakn`.
 
@@ -103,7 +102,7 @@ with client.session(keyspace="mykeyspace") as session:
     ## if not using a `with` statement, then we must always close the read transaction
     # read_transaction.close()
 ```
-<div class="galert">
+<div class="note">
 [Important]
 Remember that transactions always need to be closed. The safest way is to use the `with ...` syntax which auto-closes at the end of the `with` block. Otherwise, remember to call `transaction.close()` explicitly.
 </div>

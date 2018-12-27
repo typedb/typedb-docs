@@ -127,7 +127,7 @@ In order to load data from each file into Grakn, we need to:
 1.  retrieve a list containing dictionaries, each of which represents a data item. We do this by calling `parse_data_to_dictionaries(input)`
 2.  for each dictionary in `items`: a) create a transaction `tx`, which closes once used, b) construct the `graql_insert_query` using the corresponding template function, c) execute the query and d)commit the transaction.
 
-<div class="galert">
+<div class="note">
 [Important]
 To avoid running out of memory, it’s recommended that every single query gets created and committed in a single transaction.
 However, for faster migration of large datasets, this can happen once for every `n` queries, where `n` is the maximum number of queries guaranteed to run on a single transaction.
@@ -269,7 +269,7 @@ It’s time for the implementation of `parse_data_to_dictionaries(input)`.
 
 The implementation for `parse_data_to_dictionaries(input)` differs based on the format of our data files.
 
-<div class="gtabs light">
+<div class="tabs light">
 
 [tab:CSV]
 We use Python’s built-in [`csv` library](https://docs.python.org/3/library/csv.html#dialects-and-formatting-parameters). Let’s import the module for it.
@@ -403,7 +403,7 @@ def parse_data_to_dictionaries(input):
 
 Here is how our `migrate.py` looks like for each data format.
 
-<div class="gtabs dark">
+<div class="tabs dark">
 
 [tab:CSV]
 ```lang-python

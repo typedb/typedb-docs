@@ -1,14 +1,14 @@
 ---
 sidebarTitle: Keyspace
 pageTitle: Managing Keyspaces
-summary: ""
+
 permalink: /docs/management/keyspace
 ---
 
 ## What is a Keyspace?
 A keyspace is the outermost container for data in a Grakn knowledge graph, corresponding closely to a relational _database_. As per a relational database, it is commonly known to be good practice to create a single keyspace per application, but it is absolutely fine to create as many keyspaces as your application needs. As a rule of thumb, it is recommended to start off with one keyspace and create more if the requirement arises.
 
-<div class="galert">
+<div class="note">
 [Important]
 Keyspaces are isolated from one another. Even when running on the same Grakn Server, it is not possible to perform operations from one keyspace on another one.
 </div>

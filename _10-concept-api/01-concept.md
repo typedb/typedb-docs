@@ -8,7 +8,7 @@ permalink: /docs/concept-api/concept
 ## Concept Methods & Props
 `Concept` is inherited and extended by [`Type`](/docs/concept-api/type), [`Rule`](/docs/concept-api/rule) and [`Thing`](/docs/concept-api/thing).
 
-<div class="gtabs light" data-no-parse>
+<div class="tabs light" data-no-parse>
 
 [tab:Java]
 {% include api/generic.html data=site.data.concept_api.concept language="java" class_prefix="concept-api" %}

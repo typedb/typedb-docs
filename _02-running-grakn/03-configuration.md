@@ -1,7 +1,7 @@
 ---
 sidebarTitle: Configuration
 pageTitle: Configuring Grakn
-summary: ""
+
 permalink: /docs/running-grakn/configuration
 ---
 
@@ -18,7 +18,7 @@ If installed via Homebrew, we can find this file in the following directory.
 
 If downloaded manually, we can find the configuration file in the `conf` directory inside the unzipped folder.
 
-<div class="galert">
+<div class="note">
 [Note]
 In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-n-run/#stop-the-grakn-server) the Grakn Sever and [start](/docs/running-grakn/install-n-run/#start-the-grakn-server) it again.
 </div>
@@ -32,7 +32,7 @@ Grakn uses sharding to mitigate against supernodes. The `knowledge-base.sharding
 ### Where data is stored
 The `data-dir` config sets the path to the directory where the data for all keyspaces gets stored. The default value is `db/`.
 
-<div class="galert">
+<div class="note">
 [Important]
 For production use, it is recommended that the `data-dir` is set to a path outside of `$GRAKN_HOME`. This helps to make the process of upgrading Grakn easier.
 </div>

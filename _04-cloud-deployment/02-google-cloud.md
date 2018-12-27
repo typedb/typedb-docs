@@ -99,7 +99,7 @@ In order to connect to the Grakn Server from outside the cluster, you need to _A
 ### Running Grakn
 Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
 
-<div class="galert">
+<div class="note">
 [Important]
 Once deployed, it will take some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
 </div>

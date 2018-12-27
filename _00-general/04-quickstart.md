@@ -73,7 +73,7 @@ Download the [`genealogy-data.gql`](/docs/files/genealogy-data.gql){:target="_bl
 ./graql console --keyspace genealogy --file path-to-the-data.gql
 ```
 
-As you may have guessed it, `data.gql` contains a series of [Graql insert queries](/docs/query/insert-query) that creates data instances in the genealogy knowledge graph. In a real-world application, it's more likely that we have the data in some formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](/docs/client-api/overview) to [migrate](/docs/examples/overview#whats-covered) the dataset into the target Grakn knowledge graph.
+As you may have guessed it, `data.gql` contains a series of [Graql insert queries](/docs/query/insert-query) that creates data instances in the genealogy knowledge graph. In a real-world application, it's more likely that we have the data in some formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](/docs/client-api/overview) to [migrate](/docs/examples/phone-calls-overview#whats-covered) the dataset into the target Grakn knowledge graph.
 
 ### Query the Knowledge Graph
 Now that we have some data in our genealogy knowledge graph, we can go ahead and retrieve some information from it. To do this we can use the [Graql Console](/docs/management/console), [Grakn Workbase](/docs/workbase/overview) or one of the [Grakn Clients](/docs/client-api/overview).
@@ -182,7 +182,7 @@ We can add and remove instances of data in a Grakn knowledge graph by running [i
 >>> commit
 ```
 
-<div class="galert">
+<div class="note">
 [Important]
 Any manipulation made in the schema or the data instances, is not persisted to the original keyspace until we run the `commit` command.
 </div>
@@ -279,7 +279,7 @@ Download the [`genealogy-extension.gql`](/docs/files/genealogy-extension.gql){:t
 $ ./graql console --keyspace genealogy --file path-to-the-genealogy-extension.gql
 ```
 
-<div class="galert">
+<div class="note">
 [Note]
 Feel free to study the content of `genealogy-extension.gql`. It includes definitions of more concept types and rules that build a complete family tree based on the existing dataset.
 </div>
@@ -329,4 +329,4 @@ Let's look at a few examples of running `compute` on the `genealogy` knowledge g
 - [Grakn Schema](/docs/schema/overview)
 - [Graql Queries](/docs/query/overview)
 - [Workbase](/docs/workbase/overview)
-- [Examples](/docs/examples/overview)
+- [Examples](/docs/examples/phone-calls-overview)
