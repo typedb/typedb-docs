@@ -1,8 +1,10 @@
 ---
 sidebarTitle: Quickstart
 pageTitle: Quickstart
-
 permalink: /docs/general/quickstart
+redirect_from:
+  - /
+  - /docs
 ---
 
 ### An Overview
