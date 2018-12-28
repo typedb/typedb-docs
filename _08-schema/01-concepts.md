@@ -76,8 +76,8 @@ define
 
 person sub entity,
   has name,
-  has forename
-  has surname
+  has forename,
+  has surname,
   has middle-name;
 ```
 [tab:end]

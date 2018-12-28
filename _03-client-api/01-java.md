@@ -119,15 +119,15 @@ public class GraknQuickstart {
       Grakn.Session session = grakn.session(keyspace);
 
       Grakn.Transaction writeTransaction = session.transaction(GraknTxType.WRITE);
-      InsertQuery insertQuery = Graql.insert(var("x").isa("person").has("first-name", "soroush"));
+      InsertQuery insertQuery = Graql.insert(var("p").isa("person").has("first-name", "Elizabeth"));
       List<ConceptMap> insertedId = insertQuery.withTx(writeTransaction).execute();
-      System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").id());
+      System.out.println("Inserted a person with ID: " + insertedId.get(0).get("p").id());
       writeTransaction.commit();
 
       Grakn.Transaction readTransaction = session.transaction(GraknTxType.READ);
-      GetQuery query = Graql.match(var("x").isa("person")).limit(10).get();
+      GetQuery query = Graql.match(var("p").isa("person")).limit(10).get();
       Stream<ConceptMap> answers = query.withTx(readTransaction).stream();
-      answers.forEach(answer -> System.out.println(answer.get("x").id()));
+      answers.forEach(answer -> System.out.println(answer.get("p").id()));
       readTransaction.close();
 
       session.close();
