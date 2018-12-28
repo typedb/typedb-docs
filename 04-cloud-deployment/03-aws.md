@@ -112,6 +112,14 @@ As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.
 
 </div>
 
+### Running Grakn
+Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
+
+<div class="note">
+[Important]
+Once deployed, it will take some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
+</div>
+
 ### Default Credentials
 As part of the deployment, AWS produces the default password with username being `grakn`. The screenshots below walk you through spotting the generated password. We will need these credentials to access the Graql and Grakn consoles.
 
@@ -276,18 +284,13 @@ For more information check out AWS documentation on [Starting and Stopping Insta
 [slide:end]
 </div>
 
+### Running Grakn
+Once the deployment is complete, Grakn starts automatically. There is no need for starting Grakn Servers manually.
+
 ### Default Credentials
 When deploying an AMI, the default password is the instance id with username being `grakn`.
 
 [tab:end]
-</div>
-
-### Running Grakn
-Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
-
-<div class="note">
-[Important]
-Once deployed, it will take some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
 </div>
 
 ### Logging into a node
