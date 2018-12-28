@@ -5,7 +5,7 @@ permalink: /docs/general/quickstart
 ---
 
 ### An Overview
-In this tutorial, we go through creating and interacting with a Grakn knowledge graph containing a simple genealogy dataset. In the process, we learn about the constructs of Grakn Schema, extend and visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with Grakn.
+In this tutorial, we go through creating and interacting with a Grakn knowledge graph containing a simple genealogy dataset. In the process, we learn about the constructs of the Grakn Schema, extend and visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with Grakn.
 
 Let's get started!
 
