@@ -14,11 +14,11 @@ permalink: /docs/concept-api/type
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.type language="nodejs" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.type language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.type language="cpython" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.concept_api.type language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>
@@ -33,11 +33,11 @@ permalink: /docs/concept-api/type
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.entity_type language="nodejs" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.entity_type language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.entity_type language="cpython" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.concept_api.entity_type language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>
@@ -52,11 +52,11 @@ permalink: /docs/concept-api/type
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.attribute_type language="nodejs" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.attribute_type language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.attribute_type language="cpython" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.concept_api.attribute_type language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>
@@ -71,11 +71,11 @@ permalink: /docs/concept-api/type
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relationship_type language="nodejs" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.relationship_type language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.relationship_type language="cpython" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.concept_api.relationship_type language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>
@@ -111,7 +111,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 - [sups();](?lang=javascript#concept-api-nodejs-method-retrieve-all-supertypes)
 - [subs();](?lang=javascript#concept-api-nodejs-method-retrieve-all-subtypes)
 </div>
-{% include api/generic.html data=site.data.concept_api.role language="nodejs" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.role language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
@@ -125,7 +125,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 - [sups();](?lang=python#concept-api-python-method-retrieve-all-supertypes)
 - [subs();](?lang=python#concept-api-python-method-retrieve-all-subtypes)
 </div>
-{% include api/generic.html data=site.data.concept_api.role language="cpython" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.concept_api.role language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>

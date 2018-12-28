@@ -10,15 +10,15 @@ permalink: /docs/concept-api/thing
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.thing language="java" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.thing language="java" class_prefix="concept-api-java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.thing language="nodejs" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.thing language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.thing language="cpython" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.thing language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>
@@ -29,15 +29,15 @@ permalink: /docs/concept-api/thing
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.attribute language="java" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.attribute language="java" class_prefix="concept-api-java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.attribute language="nodejs" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.attribute language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.attribute language="cpython" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.attribute language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>
@@ -48,15 +48,15 @@ permalink: /docs/concept-api/thing
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.relationship language="java" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.relationship language="java" class_prefix="concept-api-java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relationship language="nodejs" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.relationship language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.relationship language="cpython" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.relationship language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>

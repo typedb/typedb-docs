@@ -10,15 +10,15 @@ permalink: /docs/concept-api/concept
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.concept language="java" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.concept language="java" class_prefix="concept-api-java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.concept language="nodejs" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.concept language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.concept language="cpython" class_prefix="concept-api" %}
+{% include api/generic.html data=site.data.concept_api.concept language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>
