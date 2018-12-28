@@ -495,6 +495,42 @@ answer_iterator = transaction.query('match $p isa person has first-name "John" h
 [tab:end]
 </div>
 
+### Disjunction of patterns
+By default a collection of patterns in a `match` clause constructs a conjunction of patterns. To include patterns in form of a disjunction, we need o wrap each pattern in `{}` and place the `or` keyword in between them.
+
+<div class="tabs dark">
+
+[tab:Graql]
+```lang-graql
+match $p isa person has full-name $fn; { $fn contains "Elizabeth"; } or { $fn contains "Mary"; }; get;
+```
+[tab:end]
+
+[tab:Java]
+```lang-java
+GetQuery query = Graql.match(
+  var("p").isa("person").has("full-name", var("fn")),
+  var("fn").val(Predicates.contains("Elizabeth")).or(var("fn").val(Predicates.contains("Mary")))
+).get();
+
+List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
+```
+<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
+[tab:end]
+
+[tab:Javascript]
+```lang-javascript
+const answerIterator = await transaction.query("match $p isa person has full-name $fn; { $fn contains "Elizabeth"; } or { $fn contains "Mary"; }; get;");
+```
+[tab:end]
+
+[tab:Python]
+```lang-python
+answer_iterator = transaction.query("match $p isa person has full-name $fn; { $fn contains "Elizabeth"; } or { $fn contains "Mary"; }; get;")
+```
+[tab:end]
+</div>
+
 ### Instances of a direct type
 The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](/docs/schema/concepts#subtype-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
 
@@ -528,9 +564,9 @@ const answerIterator = await transaction.query("match $o isa! organisation; get;
 answer_iterator = transaction.query("match $o isa! organisation; get;")
 ```
 [tab:end]
+</div>
 
 The matches only the direct instances of `organisation`. That means the instances of `company` and `university` (which subtype `organisation`) would not be included.
-</div>
 
 ### One particular instance
 To match a particular instance with the given ID, we use the `id` keyword followed by the `id` assigned to the instance by Grakn.
@@ -757,7 +793,7 @@ answer_iterator = transaction.query("match $x plays employee; get;")
 
 This matches all concept types that play the role `employee` in any relationship.
 
-## Owners of a given attribute
+### Owners of a given attribute
 Given an attribute type, we can match the concept types that own the given attribute type by using the `has` keyword.
 
 <div class="tabs dark">
