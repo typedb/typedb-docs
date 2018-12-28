@@ -38,7 +38,7 @@ In this section, we build up a simple schema to illustrate the concept types in 
 
 We define two entities, `person` and `company`, each of which have a `name` attribute.
 
-```graql
+```lang-graql
 define
   person sub entity,
   has name;
@@ -58,7 +58,7 @@ Image showing a schema where types 'person' and 'company' have an attribute 'nam
 
 We subtype the entities:
 
-```graql
+```lang-graql
 define
   person sub entity,
   has name;
@@ -85,7 +85,7 @@ Image showing the above schema, but with additional types 'customer' which subs 
 
 We introduce a relationship between a `company` and a `person`:
 
-```graql
+```lang-graql
 define
   person sub entity,
   has name,
@@ -138,7 +138,7 @@ In the simple example above, we have illustrated the four constructs that relate
 
 Relationships are inherently non-directional and are defined in terms of roles of entities in the relationship. Relations can have multiple attributes. Here we give the employment relationship a date attribute.
 
-```graql
+```lang-graql
 define
   person sub entity,
   has name,
@@ -163,7 +163,7 @@ An image showing the schema where the relationship 'employment' now has the attr
 
 N-ary relationships are also allowed by Grakn. For example, a three way `employment` relationship that has `employer`, `employee` and `office` roles:
 
-```graql
+```lang-graql
 define
   employment sub relationship,
     relates employee,

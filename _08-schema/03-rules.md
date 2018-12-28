@@ -14,7 +14,7 @@ In this section, we will learn more about how rules are constructed and how they
 ## Define a Rule
 Defining a Graql rule begins with a given label followed by `sub rule`, the `when` body as the condition, and the `then` body as the conclusion.
 
-```graql
+```lang-graql
 define
 
 rule-label sub rule,
@@ -27,10 +27,10 @@ rule-label sub rule,
 
 Let's look an example.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 people-with-same-parents-are-siblings sub rule,

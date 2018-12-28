@@ -214,13 +214,13 @@ Aggregate queries are computationally light and run single-threaded on a single 
 
 For example, you can use an aggregate query to filter results by attribute. The following  aggregate query, allows you to match the number of people of a particular name:
 
-```graql
+```lang-graql
 match $x has identifier contains "Elizabeth"; aggregate count;
 ```
 
 Compute queries are computationally intensive and run in parallel on a cluster (so are good for big data).
 
-```graql
+```lang-graql
 compute count in person;
 ```
 

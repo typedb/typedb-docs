@@ -52,7 +52,7 @@ Go to the keyspace selector at the top right and select the appropriate keyspace
 
 The main pane of your knowledge graph will be empty at this point. You can submit queries by typing them into the form in the middle of the top menu bar. You will then need to click '>' (or _Enter_) to visualise the knowledge graph. For example:
 
-```graql
+```lang-graql
 match $x isa person, has firstname "John"; get;
 ```
 
@@ -62,7 +62,7 @@ You can zoom the display in and out, and move the nodes around for better visibi
 
 Alternatively, for simple visualisation, you can click the Types dropdown in the top menu to list out what is in the schema. For our example, go to the Entities dropdown and choose `person`. The query specific to your selection will be displayed in the form with a default offset and result limit, which is applied by the visualiser (`offset 0; limit 30`).
 
-```graql
+```lang-graql
 match $x isa person; offset 0; limit 30; get;
 ```
 
@@ -149,7 +149,7 @@ NEEDS UPDATING
 
 The first step is to clear the knowledge graph, then choose two people from the genealogy dataset, to determine the shortest path between them. For example, use the following query, and enter it into the form in the visualiser, to bring up two nodes:
 
-```graql
+```lang-graql
 match $x isa person has firstname "Susan" has surname "Dudley"; $y isa person has firstname "Barbara" has surname "Herchelroth"; get;
 ```
 
@@ -160,7 +160,7 @@ match $x isa person has firstname "Susan" has surname "Dudley"; $y isa person ha
 
 <!-- Ignoring because uses made-up IDs -->
 
-```graql-test-ignore
+```lang-graql-test-ignore
 compute path from "102432", to "192584"; # (The ID values in the strings will be different for each knowledge graph)
 ```
 
@@ -174,7 +174,7 @@ Submit the query as usual by clicking '>' (or _Enter_) and the knowledge graph w
 
 The Query Builder menu that is brought up from a right click of the mouse also has an "Explore Relations" option. This option allows you to determine the relationships between nodes. To illustrate that, clear and submit a query as follows:
 
-```graql
+```lang-graql
 match $x isa person has surname "Niesz"; offset 0; limit 100; get; # Find everyone with surname Niesz
 ```
 
@@ -182,7 +182,7 @@ match $x isa person has surname "Niesz"; offset 0; limit 100; get; # Find everyo
 2. Open the Query Builder menu by right clicking the mouse.
 3. The submission form will now contain a query for those two nodes, for example:
 
-```graql
+```lang-graql
 match $x id "651472"; $y id "889000"; $r ($x, $y); get;
 ```
 

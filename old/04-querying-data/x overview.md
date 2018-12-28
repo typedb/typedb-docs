@@ -57,11 +57,11 @@ As well as the _subject_, [properties](#property) sometimes take other arguments
 
 When a [property](#property) takes a [variable](#variable) argument representing a schema concept, it is possible to
 substitute a label. For example,
-```graql
+```lang-graql
 match $x isa $A; $A label person; get;
 ```
 should be written more succinctly as
-```graql
+```lang-graql
 match $x isa person; get;
 ```
 
@@ -95,7 +95,7 @@ The following list Graql's reserved keywords:
 
 #### Querying and query modifiers
 
-```graql-test-ignore
+```lang-graql-test-ignore
 aggregate, asc
 by
 compute, contains
@@ -113,7 +113,7 @@ val
 
 #### Datatypes
 
-```graql-test-ignore
+```lang-graql-test-ignore
 datatype
 boolean, double, long, string, date
 true, false
@@ -121,7 +121,7 @@ true, false
 
 #### Schema definition
 
-```graql-test-ignore
+```lang-graql-test-ignore
 has,
 is-abstract, isa,
 key,
@@ -131,14 +131,14 @@ relates
 
 #### Rules definition
 
-```graql-test-ignore
+```lang-graql-test-ignore
 when, then
 ```
 
 #### Statistics
 Used with `compute` and `aggregate`:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 count
 group
 max, mean, median, min
@@ -147,7 +147,7 @@ std, sum
 
 #### Graql templates
 
-```graql-template
+```lang-graql-template
 and
 concat
 do

@@ -70,11 +70,11 @@ The [variable](../querying-data/overview#variable) representing the role can opt
 The `via $r` is optional. Additionally, a [predicate](#predicate) can be used instead of a
 [variable](../querying-data/overview#variable):
 
-```graql-test-ignore
+```lang-graql-test-ignore
 $x has <identifier> <predicate>;
 ```
 which is equivalent to:
-```graql-test-ignore
+```lang-graql-test-ignore
 $x has <identifier> $_;
 $_ val <predicate>;
 ```
@@ -82,7 +82,7 @@ $_ val <predicate>;
 > `has` is syntactic sugar for a particular kind of relationship.
 >
 > It is equivalent to the following:
-> ```graql-test-ignore
+> ```lang-graql-test-ignore
 > $r ($x, $y);
 > $y isa <identifier>;
 > ```
@@ -124,7 +124,7 @@ $_ val <predicate>;
 > `has` is syntactic sugar for a particular kind of relationship.
 >
 > It is equivalent to the following:
-> ```graql-test-ignore
+> ```lang-graql-test-ignore
 > $_R sub relationship, relates $_O, relates $_V;
 > $_O sub role;
 > $_V sub role;
@@ -143,7 +143,7 @@ $_ val <predicate>;
 > `key` is syntactic sugar for a particular kind of relationship.
 >
 > It is equivalent to the following:
-> ```graql-test-ignore
+> ```lang-graql-test-ignore
 > $_R sub relationship, relates $_O, relates $_V;
 > $_O sub role;
 > $_V sub role;
@@ -242,13 +242,13 @@ If `<identifier>` is a key for the direct type of `$x`, then the resulting relat
 The `via $r` is optional. Additionally, a literal [value](../querying-data/overview#value) can be used instead of a
 [variable](../querying-data/overview#variable):
 
-```graql-test-ignore
+```lang-graql-test-ignore
 $x has <identifier> <value>;
 ```
 
 which is equivalent to:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 $x has <identifier> $_;
 $_ val <value>;
 ```
@@ -258,14 +258,14 @@ $_ val <value>;
 >
 > If `<identifier>` is not a key for the direct type of `$x`, it is equivalent to:
 >
-> ```graql-test-ignore
+> ```lang-graql-test-ignore
 > $r (has-<identifier>-owner: $x, has-<identifier>-value: $y) isa has-<identifier>;
 > $y isa <identifier>;
 > ```
 >
 > Otherwise, it is equivalent to:
 >
-> ```graql-test-ignore
+> ```lang-graql-test-ignore
 > $r (key-<identifier>-owner: $x, key-<identifier>-value: $y) isa key-<identifier>;
 > $y isa <identifier>;
 > ```

@@ -28,7 +28,7 @@ The functionality breaks down into two main tasks:
 Currently you can compute the `min`, `max`, `mean`, `median`, `std` (standard deviation) and `sum` of resources attached to entities. This
 can also be achieved on a subgraph, which is a subset of the types in your dataset. For example, you can specify queries to find the mean age of people in a knowledge graph:
 
-```graql
+```lang-graql
 compute mean of age, in person;
 ```
 
@@ -53,7 +53,7 @@ Often you are not interested in the whole knowledge graph when performing calcul
 For example, a knowledge graph may contain groups, people and the relationships between them, but these can be excluded by specifying a subgraph using the `in` keyword.
 To count just people:
 
-```graql
+```lang-graql
 compute count in person;
 ```
 
@@ -61,7 +61,7 @@ Consider the simple knowledge graph below that includes types and instances (som
 Analytics will consider every instance in the knowledge graph, and therefore, will not consider the type nodes `person` and `marriage`, (coloured in pink).
 To compute the count on this knowledge graph without specifying any subgraph, we call the following, which would return the number 4:
 
-```graql
+```lang-graql
 compute count;
 ```
 
@@ -73,7 +73,7 @@ the marriage relationship.
 A subgraph is defined in analytics by using the types. For example, we could specify a subgraph that includes only
 `person` like this:
 
-```graql
+```lang-graql
 compute count in person;
 ```
 
@@ -87,7 +87,7 @@ We may also specify a subgraph for efficiency (so we do not have to count the th
 The algorithm for computing the degree is one example.
 If we execute the following query, the number of arrows (edges) attached to each node is returned:
 
-```graql
+```lang-graql
 compute centrality in [person, marriage], using degree;
 ```
 

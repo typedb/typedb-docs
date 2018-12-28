@@ -38,7 +38,7 @@ In the following subsection we will show examples of how to augment the schema b
 
 In the [Hierarchical Schema](./hierarchical-schema.html) section, we have defined the following parentship relationship together with its role hierarchy:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 parentship sub relatives
   relates parent
   relates mother as parent
@@ -51,7 +51,7 @@ parentship sub relatives
 
 Now instead of specifying all relationship combinations for a given parentship pair. We can define a basic `(parent, child)` relationship and let rules do the genderisation for us. One way to accomplish that is to define the following rules:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 define
 
 genderizeParentships1
@@ -93,7 +93,7 @@ then
 
 The rules simply declare specialised `parentship` relationships based on the gender of the role players. As a result, once we insert a single base `parentship` relationship declaring Alice to be a child of Bob:
 
-```graql
+```lang-graql
 insert
 
 $bob isa person, has firstname 'Bob', has gender 'male';
@@ -103,7 +103,7 @@ $alice isa person, has firstname 'Alice', has gender 'female';
 
 the knowledge graph will recognise the following `parentship` relationship instances:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 (parent: $bob, child: $alice) isa parentship;
 (parent: $bob, daughter: $alice) isa parentship;
 (father: $bob, child: $alice) isa parentship;
@@ -116,7 +116,7 @@ where $x and $y are respectively Bob and Alice.
 Having defined the genderised `parentship` relation we can proceed with using rules to define complex relationships derived from the `parentship` relation. We will focus our examples on defining the `cousins` relation.
 The relationship will be defined through a `siblings` relationship. We define both relationships as symmetric hence having a single role:
 
-```graql
+```lang-graql
 define
 
 siblings sub relationship
@@ -129,7 +129,7 @@ cousins sub relationship
 
 Having the schema definition of the relationships, we can subsequently tell the system to recognise the relationships based on what `parentship` relationships we have defined. This is done via rules in the following manner:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 define
 
 peopleWithSameParentsAreSiblings
@@ -157,7 +157,7 @@ then
 As we can see, we simply define `siblings` to be people sharing common parents and then define `cousins` as people having parents that are siblings. Consequently, provided the following information has been inserted into
 the knowledge graph:
 
-```graql
+```lang-graql
 insert
 
 $bob isa person, has firstname 'Bob', has gender 'male';

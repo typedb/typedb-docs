@@ -28,7 +28,7 @@ The `person` with the highest degree, or the greatest number of marriages, is ar
 In analyics, the `degree` algorithm computes how many arrows (edges) there are attached to instances in the graph.
 A map is returned containing degree and instances with the degree (map<key=degree, value=set of instance>). If we call:
 
-```graql
+```lang-graql
 compute centrality using degree;
 ```
 
@@ -56,7 +56,7 @@ An instance have coreness k if the instance belongs to a
 
 We can compute the coreness centrality using the following:
 
-```graql
+```lang-graql
 compute centrality using k-core;
 ```
 
@@ -67,7 +67,7 @@ Similar to degree, a map is returned.
 Additionally, if we only care about the entities that have higher coreness, we can set the minimum value of k,
 using the following command:
 
-```graql
+```lang-graql
 compute centrality using k-core, where min-k = 10;
 ```
 
@@ -81,7 +81,7 @@ Consider that in this graph, people with more marriages are more interesting.
 We can use the subgraph functionality to restrict the graph to only see people and who they are married to.
 Once the graph has been restricted we can determine the number of marriages by computing the degree:
 
-```graql
+```lang-graql
 compute centrality in [person, marriage], using degree;
 ```
 
@@ -104,7 +104,7 @@ but we cannot exclude instances of `marriage` from the subgraph,
 otherwise every entity will have its degree = 0.
 In a case like this, we can use the following:
 
-```graql
+```lang-graql
 compute centrality of person, in [person, marriage], using degree;
 ```
 
@@ -113,7 +113,7 @@ so the result map would only contain these types.
 
 Another example:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 compute centrality of [cat, dog], in [man, cat, dog, mans-best-friend], using k-core;
 ```
 

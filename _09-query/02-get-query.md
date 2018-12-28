@@ -10,10 +10,10 @@ The `get` query triggers a search in the knowledge graph based on what has been 
 ## Get the Variables
 Any variable that has been specified in the `match` clause can be returned as the answers of the `get` query. Let's look at an example of how variables can be asked for in the answer.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match
   $fr ($x, $y, $z) isa friendship;
   $x isa person has name $x-name;
@@ -57,10 +57,10 @@ If no variable is specified after `get`, all variables specified in the `match` 
 ## Limit the Answers
 We can chose to limit the number of answers in the results. To do this, we use the `limit` keyword followed by the desired number of answers.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match $p isa person; limit 1; get;
 ```
 [tab:end]
@@ -94,10 +94,10 @@ This query returns only one single (and random) instance of type `person`.
 ## Order the Answers
 To order the answers by a particular variable, we use the `order` keyword followed by the variable by which we would like the results to be ordered. A second argument, `asc` (ascending) or `desc` (descending), determines the sorting method.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match $p isa person has age $age; order by $age asc; get;
 ```
 [tab:end]
@@ -137,10 +137,10 @@ Placing `order by` before and after the `limit` makes a big difference. `order b
 ## Offset the Answers
 Often used in conjunction with `limit`, we use the `offset` keyword followed by the number we would like the answers to be offset by. This is commonly used to return a desired range of the answers.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match $p isa person has age $age; order by $age; offset 100; limit 10; get;
 ```
 [tab:end]

@@ -47,7 +47,7 @@ Match entities that are direct instances of the given type. In the example, find
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="shell1">
         {{ '
-```graql
+```lang-graql
 match $x isa! person; get;
 ```
         ' | markdownify }}
@@ -267,7 +267,7 @@ qb.match(var("x").has("age", gt(70))).get();
 
 If a concept doesn't have a value, all predicates are considered false. The query below matches everything where the predicate `>10` is true. So, it will find all concepts with value greater than 10. However, if a concept does not have a value at all, the predicate is considered false, so it won???t appear in the results.
 
-```graql
+```lang-graql
 match $x > 10; get;
 ```
 
@@ -368,7 +368,7 @@ returned, say to 10 as in the example, then specify the `order by` modifier _aft
 get an ordering of 10 arbitrary results (so an ordering of a _sample_ of the results). If instead, you do `order by`,
 then `limit` you will get a global ordering.
 
-```graql
+```lang-graql
 match $x isa person, has firstname $y; limit 10; order by $y asc; get;
 # Returns 10 arbitrary people, ordered by firstname
 match $x isa person, has firstname $y; order by $y asc; limit 10; get;

@@ -21,10 +21,10 @@ That's when the `compute` query and its statistical functions come into play. Th
 ### Count
 We use the `count` function to get the number of instances of a specified type.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute count in person;
 ```
 [tab:end]
@@ -52,17 +52,17 @@ answer_iterator = transaction.query("compute count in person;")
 
 To count all instances of all types in the entire knowledge graph, we run the query as follows.
 
-```graql
+```lang-graql
 compute count;
 ```
 
 ### Sum
 We use the `sum` function to get the sum of the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute sum of number-of-rooms, in hotel;
 ```
 [tab:end]
@@ -91,10 +91,10 @@ answer_iterator = transaction.query("compute sum of number-of-rooms, in hotel;")
 ### Maximum
 We use the `max` function to get the maximum value among the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute max of gpa, in school-enrollment;
 ```
 [tab:end]
@@ -123,10 +123,10 @@ answer_iterator = transaction.query("compute max of gpa, in school-enrollment;")
 ### Minimum
 We use the `min` function to get the minimum value among the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute max of number-of-floors, in building;
 ```
 [tab:end]
@@ -155,10 +155,10 @@ answer_iterator = transaction.query("compute max of number-of-floors, in buildin
 ### Mean
 We use the `mean` function to get the average value of the specified `long` or `double` attribute among all instances of a given time.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute mean of duration, in call;
 ```
 [tab:end]
@@ -187,10 +187,10 @@ answer_iterator = transaction.query("compute mean of duration, in call;")
 ### Median
 We use the `median` function to get the median value of the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute median of age, in person;
 ```
 [tab:end]
@@ -219,10 +219,10 @@ answer_iterator = transaction.query("compute median of age, in person;")
 ### Standard Deviation
 We use the `std` function to get the standard deviation value of the specified `long` or `double` attribute among all instances of a given type.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute std of score, in examination;
 ```
 [tab:end]
@@ -256,10 +256,10 @@ Aggregate queries can run on a specific set of data described by a match clause,
 ## Compute the Shortest Path
 We can use the compute query to find the shortest path between two instances of data.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute path from V24819, to V93012;
 ```
 [tab:end]
@@ -291,10 +291,10 @@ As the answer to this query, we would get a list of ids starting with `V24819` a
 ### Specify a whitelist
 When looking for the shortest path, we may need to constraint the shortest path to only include certain types. In other words, when given a whitelist of types, Grakn ignores any other path that leads to a type not included in the list. To do this, we use the `in` keyword followed by the list of allowed types.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute path from V24819, to V93012, in [person, car, company, employment];
 ```
 [tab:end]
@@ -334,10 +334,10 @@ The centrality of an instance can be an indicator of its significance. The most 
 ### Compute centrality using degree
 The degree of an instance is the number of other instances directly connected to it. To compute the centrality of an entire Grakn knowledge graph using the degree of instances, we run the following query.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute centrality using degree;
 ```
 [tab:end]
@@ -368,10 +368,10 @@ This query returns a map of instances ordered ascendingly by degree. Instances w
 #### In a subgraph
 Depending on the domain that the knowledge graph represents, we may want to compute the centrality on specific types. To do so, we use the `in` keyword followed by a list of the types that indicate importance. Let's look at an example that recognises companies with the highest number of employees as the most important.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute centrality in [company, employee, employment], using degree;
 ```
 [tab:end]
@@ -402,10 +402,10 @@ This query returns a map of instances ordered ascendingly by degree. The instanc
 #### Of a given type
 Consider the example above. What we are really interested in is the company with the most number of employees, but we are also getting the employee and employment instances in the answers. What if we only want to get the centrality of a given type based on its relationship with other types without getting irrelevant answers. To do this, we use the `of` keyword.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute centrality of company in [company, employment], using degree;
 ```
 [tab:end]
@@ -439,10 +439,10 @@ Coreness is a measure that helps identify tightly interlinked sets of instances 
 
 To compute centrality using coreness with the `k` value of at least 2, we run the following query.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute centrality using k-core;
 ```
 [tab:end]
@@ -473,10 +473,10 @@ This query returns a map representing a list of all `id`s for each `k` value fou
 #### Specify the minimum k value
 To compute centrality using coreness with a given minimum `k` value, we use of the `where` keyword followed by an assignment of `min-k`. For example, if we were to compute centrality where every contained instance had at least a degree of 5, we would write the query as follows.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute centrality using k-core, where min-k = 5;
 ```
 [tab:end]
@@ -511,10 +511,10 @@ Clusters in a Grakn knowledge graph are disjoint groups of instances that repres
 ### Compute clusters using connected component
 The connected component algorithm retrieves clusters regardless of how tightly the instances in each cluster are connected. Let's look at an example.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute cluster in [person, employment, organisation], using connected-component;
 ```
 [tab:end]
@@ -548,10 +548,10 @@ This query retrieves the set of concept IDs that belong to clusters which includ
 ### Retrieve the cluster that contains a given instance
 We can retrieve a cluster that contains a given instance, by using the `where` keyword.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute cluster in [person, employment, organisation], using connected-component, where contains=V12488;
 ```
 [tab:end]
@@ -588,10 +588,10 @@ Grakn uses K-core to identify tightly connected clusters within the knowledge gr
 To compute clusters using coreness with the `k` value of at least 2, we run the following query.
 
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute cluster in [person, employment, organisation], using k-core;
 ```
 [tab:end]
@@ -625,10 +625,10 @@ This query retrieves the set of concept IDs that belong to clusters which includ
 #### Specify the minimum k value
 To compute clusters using coreness with a given minimum `k` value, we use of the `where` keyword followed by an assignment of `min-k`.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 compute cluster in [person, employment, organisation], using k-core, where min-k=5;
 ```
 [tab:end]

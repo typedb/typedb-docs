@@ -26,11 +26,11 @@ An entity is a thing with a distinct existence in the domain. For example, `orga
 ### Define an entity
 To define a new entity, we use the `sub` keyword followed by `entity`.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
 
-```graql
+```lang-graql
 define
 
 person sub entity,
@@ -68,10 +68,10 @@ transaction.commit()
 ### Assign an attribute to an entity
 An entity can be assigned any number of attributes. To do so, we use the `has` keyword followed by the attribute's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 person sub entity,
@@ -112,10 +112,10 @@ transaction.commit()
 
 To assign a unique attribute to an entity, we use the `key` keyword followed by the attribute's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 person sub entity,
@@ -162,10 +162,10 @@ Although the attributes above have been assigned to the `person` entity, they ar
 ### Entity to play a role
 An entity can play a role in a relationship. To define the role played by an entity, we use the `plays` keyword followed by the role's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 person sub entity,
@@ -212,10 +212,10 @@ The relationship that relates to the roles `employer` and `employee` has not yet
 ### Subtype an entity
 We can define an entity to inherit all attributes owned and roles played by another entity. Let's look at an example of subtyping the `organisation` entity.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 organisation sub entity,
@@ -272,10 +272,10 @@ The ability to subtype entities not only helps mirror the reality of the dataset
 #### Define an abstract entity
 There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `organisation` entity type to be abstract. By doing so, we are indicating that no data instances of the `organisation` entity are allowed to be created.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 organisation sub entity is-abstract;
@@ -316,7 +316,7 @@ A relationship describes how two or more things are in some way connected to eac
 ### Define a relationship
 To define a new relationship, we use the `sub` keyword followed by `relationship`.
 
-```graql
+```lang-graql
 define
 
 employment sub relationship;
@@ -324,10 +324,10 @@ employment sub relationship;
 
 To complete the definition of a relationship, we must determine the roles that it relates to. To do so, we use the `relates` keyword followed by the role's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 employment sub relationship,
@@ -373,10 +373,10 @@ We have already seen how to [define an entity to play a role](#entity-to-play-a-
 ### Define a relationship to play a role
 Let's go through a simple example of how a relationship can play a role in another relationship.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 loan sub relationship,
@@ -437,10 +437,10 @@ The example above can be read in plain English as: _In a `loan`, the `lender` is
 ### A relationship with many roleplayers
 A relationship can relate to any number of roles. The example below illustrates a three-way relationship.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 mortgage sub relationship,
@@ -496,10 +496,10 @@ The example can be read in plain English as: _In a `mortgage`, a `person` is the
 ### Assign an attribute to a relationship
 We can assign any number of attributes to a relationship. To do so, we use the `has` keyword followed by the attribute's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 employment sub relationship,
@@ -539,10 +539,10 @@ transaction.commit()
 
 To assign a unique attribute to a relationship, we use the `key` keyword followed by the attribute's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 employment sub relationship,
@@ -590,10 +590,10 @@ Although the attributes above have been assigned to `employment`, they are yet t
 ### Subtype a relationship
 We can define a relationship to inherit all attributes owned, and roles related to and played by another relationship. Let's take a look at an example of subtyping an `affiliation` relationship.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 affiliation sub relationship,
@@ -672,10 +672,10 @@ The ability to subtype relationships not only helps mirror the reality of the da
 #### Define an abstract relationship
 There may be scenarios where a parent relationship is only defined for other relationships to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `affiliation` relationship type to be abstract. By doing so, we are indicating that no data instances of the `affiliation` relationship are allowed to be created.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 affiliation sub relationship is-abstract,
@@ -718,10 +718,10 @@ An attribute is a piece of information that determines the property of an elemen
 ### Define an attribute
 To define a new attribute, we use the `sub` keyword followed by `attribute`, `datatype` and the type of the desired value.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 name sub attribute datatype string;
@@ -766,10 +766,10 @@ The data types available in a Grakn knowledge graph are:
 
 **The same attribute type can be owned by different concept types.**.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 colour sub attribute datatype string;
@@ -818,10 +818,10 @@ Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a 
 
 **A concept type can have any number of the same attribute that holds different values.** In other words, a concept type has a many-to-many relationship with its attributes.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 genre sub attribute datatype string;
@@ -863,13 +863,13 @@ An instance of a `movie` can have one instance of `genre`, or two or three, ... 
 
 We have already seen how to [assign an attribute to an entity](#assign-an-attribute-to-an-entity) and similarly to [assign an attribute to a relationship](#assign-an-attribute-to-a-relationship). But what about an attribute owning an attribute of its own?
 
-### Restrict attribute's by Regex
+### Restrict attribute's value by Regex
 Optionally, we can specify a Regex that the values of an attribute type must conform to. To do this, we use the `regex` keyword followed by the Regex pattern at the end of the attribute's definition.
 
-div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 phone-number sub attribute datatype string regex /[0-9]{0,14}/;
 ```
 [tab:end]
@@ -904,10 +904,10 @@ transaction.commit()
 ### Assign an attribute to another attribute
 Like entities and relationships, attributes can also own an attribute of their own. To do this, we use the 'has' keyword followed by the attribute's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 text sub attribute datatype string,
@@ -951,10 +951,10 @@ In this example, attribute `text` can be owned by, for instance, an `email` rela
 ### Define an attribute to play a role
 An attribute can play a role in a relationship. To define the role played by an attribute, we use the `plays` keyword followed by the role's label.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 word sub attribute datatype string,
@@ -1003,10 +1003,10 @@ The definition above contains a relationship that has not been explicitly define
 ### Subtype an attribute
 We can define an attribute to inherit the datatype, attributes owned and roles played by another attribute.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 name sub attribute datatype string;
@@ -1053,10 +1053,10 @@ The ability to subtype attributes not only helps mirror the reality of our datas
 #### Define an abstract relationship
 There may be scenarios where a parent attribute is only defined for other attributes to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `name` attribute type to be abstract. By doing so, we are indicating that no data instances of the `name` attribute are allowed to be created.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 define
 
 name sub attribute is-abstract datatype string;
@@ -1103,10 +1103,10 @@ When using one of the [Grakn clients](/docs/client-api/overview), to commit chan
 ### Undefine an attribute's association
 We can undefine the association that a type has with an attribute. Let's look at an example.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 undefine person has name;
 ```
 [tab:end]
@@ -1148,10 +1148,10 @@ It's important to note that `underfine [label] sub [type] has [attribute's label
 ### Undefine a relationship
 Given the dependent nature of relationships, before undefining the relationship itself, we must first undefine the association of its roles with the relationship itself and their roleplayers. Given an `employment` relationship, we would undefine it as shown below.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 undefine
   employment relates employer; company plays employer; employer sub role;
   employment relates employee; person plays employee; employee sub role;

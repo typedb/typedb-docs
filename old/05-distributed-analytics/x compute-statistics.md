@@ -15,7 +15,7 @@ if the values you are calculating correspond to many different types of things?
 Graql analytics can perform the necessary statistics computations.
 For example, the following query executes a distributed computation to determine the mean age of all of the people in the knowledge graph.
 
-```graql
+```lang-graql
 compute mean of age, in person;
 ```
 
@@ -45,7 +45,7 @@ For further information see the individual sections below.
 The default behaviour of count is to return a single value that gives the number of instances present in the graph. It
 is possible to also count subsets of the instances in the graph using the [subgraph](#subgraph) syntax, as described below.
 
-```graql-skip-test
+```lang-graql-skip-test
 compute count in person;
 ```
 
@@ -54,14 +54,14 @@ compute count in person;
 Computes the mean value of a given attribute. This algorithm requires the [subgraph](#subgraph) syntax to be used.
 For example,
 
-```graql-skip-test
+```lang-graql-skip-test
 compute mean of age, in person;
 ```
 
 would compute the mean value of `age` across all instances of the type `person`.
 It is also possible to provide a set of attributes.
 
-```graql-skip-test
+```lang-graql-skip-test
 compute mean of [attribute-a, attribute-b], in person;
 ```
 
@@ -72,7 +72,7 @@ given the two attribute types have the same data type.
 
 Computes the median value of a given attribute, similar to [mean](#mean).
 
-```graql-skip-test
+```lang-graql-skip-test
 compute median of age, in person;
 ```
 
@@ -82,7 +82,7 @@ would compute the median of the value persisted in instances of the attribute `a
 
 Computes the minimum value of a given attribute, similar to [mean](#mean).
 
-```graql-skip-test
+```lang-graql-skip-test
 compute min of age, in person;
 ```
 
@@ -90,7 +90,7 @@ compute min of age, in person;
 
 Computes the maximum value of a given attribute, similar to [mean](#mean).
 
-```graql-skip-test
+```lang-graql-skip-test
 compute max of age, in person;
 ```
 
@@ -98,7 +98,7 @@ compute max of age, in person;
 
 Computes the standard deviation of a given attribute, similar to [mean](#mean).
 
-```graql-skip-test
+```lang-graql-skip-test
 compute std of age, in person;
 ```
 
@@ -106,7 +106,7 @@ compute std of age, in person;
 
 Computes the sum of a given attribute, similar to [mean](#mean).
 
-```graql-skip-test
+```lang-graql-skip-test
 compute sum of age, in person;
 ```
 
@@ -118,13 +118,13 @@ compute sum of age, in person;
 
 For example, you can use an aggregate query to filter results by attribute. The following aggregate query, allows you to match the number of people of a particular name:
 
-```graql-skip-test
+```lang-graql-skip-test
 match $x has name 'Bob'; aggregate count;
 ```
 
 Compute queries are computationally intensive and run in parallel on a cluster (so are good for big data).
 
-```graql-skip-test
+```lang-graql-skip-test
 compute count of person;
 ```
 

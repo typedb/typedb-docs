@@ -65,7 +65,7 @@ In our case, a **call** relates to **caller** played by a **person** and to **ca
 
 Likewise for a **contract**. It relates to **provider** played by a **company** and to **customer** played by a **person**.
 
-```graql
+```lang-graql
 define
 
   contract sub relationship,
@@ -87,7 +87,7 @@ define
 
 To define the attributes, we use the has keyword.
 
-```graql
+```lang-graql
 define
 
   contract sub relationship,
@@ -118,7 +118,7 @@ define
 
 Lastly, we need to define the type of each attribute.
 
-```graql
+```lang-graql
 define
 
   contract sub relationship,
@@ -186,13 +186,13 @@ For the rest of these instructions, I will assume that you have downloaded the G
 
 **5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Graql console, run:
 
-```graql
+```lang-graql
 match $x sub thing; get;
 ```
 
 The result should be as follows:
 
-```graql
+```lang-graql
 {$x label thing;}
 {$x label entity;}
 {$x label relationship;}

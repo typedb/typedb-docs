@@ -22,14 +22,14 @@ In this knowledge graph three unique labels will be created one corresponding to
 
 You can call the connected component algorithm to find the clusters above using:
 
-```graql
+```lang-graql
 compute cluster in [person, marriage], using connected-component;
 ```
 
 The results you get involve 3 clusters with sizes: 3, 5, 3.
 If you only wanna find out which cluster contains the given entity, you can use the modifier `contains`.\_
 
-```graql-skip-test
+```lang-graql-skip-test
 compute cluster in [person, marriage], using connected-component, where [contains="V123"];
 ```
 
@@ -42,13 +42,13 @@ to find clusters of instances that are tightly interlinked within a network.
 
 Similar to Connected Component, we can compute the clusters using the following:
 
-```graql
+```lang-graql
 compute cluster in [person, marriage], using k-core;
 ```
 
 By default k = 2. Of course we can set the value of k (k > 2):
 
-```graql
+```lang-graql
 compute cluster in [person, marriage], using k-core, where k=10;
 ```
 

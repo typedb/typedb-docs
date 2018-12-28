@@ -10,7 +10,7 @@ A compute query executes a [Pregel algorithm](https://www.quora.com/What-are-the
 to determine information about the knowledge graph in parallel.
 Called within the Graql shell or dashboard, the general syntax is:
 
-```graql-skip-test
+```lang-graql-skip-test
 compute goal [in subgraph], (using [strategy] where [modifiers];)
 ```
 
@@ -26,13 +26,13 @@ Additionally, for graph queries
 
 The simplest query `count` can be executed using the following:
 
-```graql-skip-test
+```lang-graql-skip-test
 compute count;
 ```
 The following query compute the clusters, in the subgraph containing only person and marriage,
 using connected component, and return the members of each cluster.
 
-```graql-test-ignore
+```lang-graql-test-ignore
 compute cluster in [person, marriage], using connected-component, where members=true;
 ```
 
@@ -44,7 +44,7 @@ Using the `in` keyword followed by a comma separated list of types will restrict
 
 For example,
 
-```graql-skip-test
+```lang-graql-skip-test
 compute count in person;
 ```
 

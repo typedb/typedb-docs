@@ -45,7 +45,7 @@ The implication form of Horn clauses aligns more naturally with Graql semantics 
 ## Graql Rule Syntax
 In Graql we refer to the body of the rule as the "when" of the rule (antecedent of the implication) and the head as the "then" of the rule (consequent of the implication). Therefore, in Graql terms, we define rule objects in the following way:
 
-```graql-test-ignore
+```lang-graql-test-ignore
 optional-label
 when {
     ...;
@@ -67,7 +67,7 @@ by `when` and `then` blocks. The label is necessary if we want to refer to the r
 
 A classic reasoning example is the ancestor example. The two Graql rules `R1` and `R2` stated below define the ancestor relationship, which can be understood as either happening between two generations directly between a parent and a child or between three generations when the first generation hop is expressed via a parentship relationship and the second generation hop is captured by an ancestor relationship.
 
-```graql
+```lang-graql
 define
 
 R1

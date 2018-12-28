@@ -36,7 +36,7 @@ Then start the Graql shell in its interactive (REPL) mode:
 
 You will see a `>>>` prompt. Type in a query to check that everything is working:
 
-```graql   
+```lang-graql   
 match $x isa person, has identifier $n; get;
 ```
 
@@ -50,7 +50,7 @@ You can find out much more about the Grakn schema in our documentation about the
 
 For the purposes of this guide, the schema describes items of data and defines how they relate to one another. You need to have a basic understanding of the schema to be able to make useful queries on the data, so let's review the chunks of it that are important for our initial demonstration:
 
-```graql
+```lang-graql
 define
 
 # Entities
@@ -107,7 +107,7 @@ There are a number of things we can say about schema shown above:
 
 The data is rather cumbersome, so we will not reproduce it all here. It is part of our [genealogy-knowledge-base](https://github.com/graknlabs/sample-datasets/tree/master/genealogy-graph) project, and you can find out much more about the Niesz family in our [CSV migration](../examples/CSV-migration) and [Graql reasoning](../examples/graql-reasoning) example documentation. Here is a snippet of some of the data that you added to the graph when you loaded the *basic-genealogy.gql* file:
 
-```graql-skip-test
+```lang-graql-skip-test
 $57472 isa person has firstname "Mary" has identifier "Mary Guthrie" has surname "Guthrie" has gender "female";
 $86144 has surname "Dudley" isa person has identifier "Susan Josephine Dudley" has gender "female" has firstname "Susan" has middlename "Josephine";
 $118912 has age 74 isa person has firstname "Margaret" has surname "Newman" has gender "female" has identifier "Margaret Newman";
@@ -129,7 +129,7 @@ Having started Grakn engine and the Graql shell in its interactive mode, we are 
 
 Find all the people in the knowledge graph, and list their `identifier` attributes (a string that represents their full name):
 
-```graql
+```lang-graql
 match $p isa person, has identifier $i; get;
 ```
 
@@ -137,19 +137,19 @@ match $p isa person, has identifier $i; get;
 
 Find all the people who are married:
 
-```graql
+```lang-graql
 match (spouse: $x, spouse: $y) isa marriage; $x has identifier $xi; $y has identifier $yi; get;
 ```
 
 List parent-child relationships with the names of each person:
 
-```graql
+```lang-graql
 match (parent: $p, child: $c) isa parentship; $p has identifier $pi; $c has identifier $ci; get;
 ```
 
 Find all the people who are named 'Elizabeth':
 
-```graql
+```lang-graql
 match $x isa person, has identifier $y; $y contains "Elizabeth"; get;
 ```
 
@@ -162,7 +162,7 @@ Besides making `get` queries, it is also possible to `insert` data
 [(see further documentation)](../querying-data/delete-queries) through the Graql shell. To illustrate inserting a
 fictional person:
 
-```graql
+```lang-graql
 insert $g isa person has firstname "Titus" has identifier "Titus Groan" has surname "Groan" has gender "male";
 commit
 ```
@@ -171,20 +171,20 @@ commit
 
 To find your inserted `person`:
 
-```graql
+```lang-graql
 match $x isa person has identifier "Titus Groan"; get;
 ```
 
 To delete the `person` again:
 
-```graql
+```lang-graql
 match $x isa person has identifier "Titus Groan"; delete $x;
 commit
 ```
 
 Alternatively, we can use `match...insert` syntax, to insert additional data associated with something already in the knowledge graph. Adding some fictional information (middle name, birth date, death date and age at death) for one of our family, Mary Guthrie:
 
-```graql
+```lang-graql
 match $p has identifier "Mary Guthrie"; insert $p has middlename "Mathilda"; $p has birth-date 1902-01-01; $p has death-date 1952-01-01; $p has age 50;
 commit
 ```
@@ -204,7 +204,7 @@ We will move on to discuss the use of GRAKN.AI to infer new information about a 
 
 However, the `person` entity does have a gender attribute, and we can use Grakn to infer more information about each relationship by using that property. The schema accommodates the more specific roles of mother, father, daughter and son:
 
-```graql
+```lang-graql
 define
 
 person
@@ -229,7 +229,7 @@ daughter sub child;
 
 Included in *basic-genealogy.gql* are a set of Graql rules to instruct Grakn's reasoner on how to label each parentship relationship:
 
-```graql
+```lang-graql
 define
 
 genderizeParentships1 sub rule
@@ -275,7 +275,7 @@ Let's test it out!
 
 First, try making a get query to find `parentship` relationships between fathers and sons in the Graql shell:
 
-```graql
+```lang-graql
 match (father: $p, son: $c) isa parentship; $p has identifier $n1; $c has identifier $n2; get;
 ```
 
@@ -289,7 +289,7 @@ You may want to take a look at the results of this query in the Grakn visualiser
 
 Now try submitting the query above or a variation of it for mothers and sons, fathers and daughters etc. Or, you can even go one step further and find out fathers who have the same name as their sons:
 
-```graql
+```lang-graql
 match (father: $p, son: $c) isa parentship; $p has firstname $n; $c has firstname $n; get;
 ```
 
@@ -304,13 +304,13 @@ Turning to [Graql analytics](../distributed-analytics/overview), we can illustra
 ### Statistics
 The mean age at death can be calculated using `compute mean` as follows, entering it into the visualiser's query form:
 
-```graql
+```lang-graql
 compute mean of age, in person; # returns 77.0 (rounded to 2 decimal places)
 ```
 
 Other statistical values can be calculated similarly, e.g. values for `count`:
 
-```graql
+```lang-graql
 compute count in person; # 60
 ```
 
@@ -324,14 +324,14 @@ a video.
 
 In brief, let's select two people from the genealogy dataset:
 
-```graql
+```lang-graql
 match $x has identifier "Barbara Shafner"; $y has identifier "Jacob J. Niesz"; get;
 ```
 
 and then search for relationships joining two of them using:
 
 <!-- Ignoring because uses fake IDs -->
-```graql-test-ignore
+```lang-graql-test-ignore
 compute path from "id1", to "id2"; # Use the actual values of identifier for each person
 # e.g. compute path from "114848", to "348264";
 ```
@@ -345,7 +345,7 @@ The path query uses a scalable shortest path algorithm to determine the smallest
 To scope the specific types of entities an relationships to be considered in the shortest path computation, you can provide a list of types to the query.
 
 <!-- Ignoring because uses fake IDs -->
-```graql-test-ignore
+```lang-graql-test-ignore
 compute path from "id1", to "id2", in [person, parentship];
 ```
 

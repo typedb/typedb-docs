@@ -91,7 +91,7 @@ Shows the list of keyspaces and allows you to delete an exisiting one or create 
 
 The graph will be empty at this point. You can submit queries by typing them into the form in the middle of the top menu bar. You will then need to click `>` or hit `enter` to visualise the knowledge graph. For example:
 
-```graql
+```lang-graql
 match $x isa person, has firstname "John"; get;
 ```
 
@@ -101,7 +101,7 @@ You can zoom the display in and out, and move the nodes around for better visibi
 
 Alternatively, for simple visualisation, you can click the Types dropdown in the top menu to list out what is in the schema. For our example, go to the Entities dropdown and choose `person`. The query specific to your selection will be displayed in the form with a default offset and result limit, which is applied by the visualiser `offset 0; limit 30`.
 
-```graql
+```lang-graql
 match $x isa person; offset 0; limit 30; get;
 ```
 

@@ -27,7 +27,7 @@ schema.
 In order to remove a schema concept entirely, it is sufficient to undefine its [direct super-concept](#sub):
 
 <!-- Ignored so we don't delete the person type for real -->
-```graql-test-ignore
+```lang-graql-test-ignore
 undefine person sub entity;
 ```
 
@@ -67,7 +67,7 @@ In the case where `$B` does not have a defined `sub`, this will also implicitly 
 > `has` is syntactic sugar for a particular kind of relationship.
 >
 > This is done using the following relationship structure:
-> ```graql-test-ignore
+> ```lang-graql-test-ignore
 > has-<identifier>-owner sub has-<sup>-owner;
 > has-<identifier>-value sub has-<sup>-value;
 > has-<identifier> sub has-<sup>, relates has-<identifier>-owner, relates has-<identifier>-value;
@@ -84,7 +84,7 @@ In the case where `$B` does not have a defined `sub`, this will also implicitly 
 > `key` is syntactic sugar for a particular kind of relationship.
 >
 > This is done using the following relationship structure:
-> ```graql-test-ignore
+> ```lang-graql-test-ignore
 > key-<identifier>-owner sub key-<sup>-owner;
 > key-<identifier>-value sub key-<sup>-value;
 > key-<identifier> sub key-<sup>, relates key-<identifier>-owner, relates key-<identifier>-value;

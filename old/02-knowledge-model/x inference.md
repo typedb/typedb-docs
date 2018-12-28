@@ -29,7 +29,7 @@ The rule-based inference exploits a set of user-defined datalog rules and is con
 
 A rule is an expression of the form `when G1 then G2`, where `G1` and `G2` are a pair of Graql patterns. Whenever the "when" pattern `G1` is found in the data, the "then" pattern `G2` can be assumed to exist. For example:
 
-```graql
+```lang-graql
 define
   location sub entity;
 

@@ -33,7 +33,7 @@ Grakn.Transaction tx = session.transaction(GraknTxType.WRITE);
 
 We need to define our constructs before we can use them. We will begin by defining our attribute types since they are used everywhere. In Graql, they were defined as follows:
 
-```graql
+```lang-graql
 define
 
 identifier sub attribute datatype string;
@@ -65,7 +65,7 @@ AttributeType gender = tx.putAttributeType("gender", AttributeType.DataType.STRI
 
 Now the role and relationship types. In Graql:
 
-```graql
+```lang-graql
 define
 
 marriage sub relationship
@@ -97,7 +97,7 @@ RelationshipType parentship = tx.putRelationshipType("parentship")
 
 Now the entity types. First, in Graql:
 
-```graql
+```lang-graql
 define
 
 person sub entity
@@ -155,7 +155,7 @@ tx.abort();
 
 Now that we have created the schema, we can load in some data using the Core API. We can compare how a Graql statement maps to the Core API. First, the Graql:
 
-```graql
+```lang-graql
 insert $x isa person has firstname "John";
 ```
 
@@ -174,7 +174,7 @@ What if we want to create a relationship between some entities?
 
 In Graql we know we can do the following:
 
-```graql
+```lang-graql
 insert
     $x isa person has firstname "John";
     $y isa person has firstname "Mary";
@@ -198,7 +198,7 @@ Relationship theMarriage = marriage.create().assign(spouse1, john).assign(spouse
 
 Add a picture, first using Graql:
 
-```graql
+```lang-graql
 match
     $x isa person has firstname "John";
     $y isa person has firstname "Mary";
@@ -221,7 +221,7 @@ In the [Hierarchical Schema documentation](../building-schema/hierarchical-schem
 
 How can we create a hierarchy using the Core API? Well, this graql statement:
 
-```graql
+```lang-graql
 define
     event sub entity;
     wedding sub event;
@@ -242,7 +242,7 @@ It is worth remembering that adding a type hierarchy allows you to create a more
 
 Rules can be added to the knowledge graph both through the Core API as well as through Graql. We will consider an example:
 
-```graql
+```lang-graql
 define
 
 R1

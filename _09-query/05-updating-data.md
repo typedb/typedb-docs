@@ -10,10 +10,10 @@ In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](/
 ## Update Instances of an Attribute Type
 In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](/docs/query/delete-query#delete-associations-with-attributes) and then [insert the new instance of the attribute](/docs/query/insert-query#insert-instances-of-an-attribute-type).
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 ## deleting the old
 match $comp isa company id V17391 has registration-number via $r; delete $r;
 
@@ -66,10 +66,10 @@ This query first deletes the association that the `company` with id `V17391` has
 ### Update all instances of a given attribute
 There may also be cases where we need to update the value of all instances of an attribute type. To do so, we first assign the new instance of the given attribute to all instances that own the old instance, and then delete the old instance of the attribute type.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match $x isa thing has colour "maroon"; insert $x has colour "red";
 match $c isa colour "maroon"; delete $c;
 ```
@@ -119,10 +119,10 @@ This query first looks for any instance that owns the `colour` attribute with th
 ### Update the roleplayers of a relationship
 To change the roleplayers of a given relationship, we first need to [delete the instances of the relationship](/docs/query/delete-query#delete-instances-of-a-relationship-type) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#insert-instances-of-a-relationship-type) with the new roleplayers.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 ## inserting the new
 match
   $p isa person has name "Amabo";

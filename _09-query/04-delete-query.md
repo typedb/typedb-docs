@@ -7,10 +7,10 @@ permalink: /docs/query/delete-query
 ## Delete Instances of an Entity Type
 To delete an instance of an entity type from the knowledge graph, we use a [match clause](/docs/query/match-clause) followed by the `delete` keyword and the variable to be deleted.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match $p isa person id V41016; delete $p;
 ```
 [tab:end]
@@ -50,10 +50,10 @@ This deletes a particular instance of the `person` type with the id of `V41016`.
 ## Delete Instances of a Relationship Type
 To delete an instance of a relationship type, similar to deleting an entity type, we first `match` and then `delete`.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match
   $org isa organisation has name "Black House";
   $emp (employer: $org, employee: $p) isa employment;
@@ -99,10 +99,10 @@ Attributes with the same value are shared among their owners. It's important tha
 
 To delete only the association that a thing has with an attribute, we use the `via` keyword to capture and delete the relationship between the owner and the owned attribute - NOT the instance of the attribute type itself, as doing so disowns the instance from any other instance that may have owned it.
 
-<div class="tabs dark" data-parse-to-html="true">
+<div class="tabs dark">
 
 [tab:Graql]
-```graql
+```lang-graql
 match $c isa car has colour "red" via $r; delete $r;
 ```
 [tab:end]

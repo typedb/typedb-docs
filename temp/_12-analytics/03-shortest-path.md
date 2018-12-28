@@ -11,7 +11,7 @@ When starting a task you don't always know in advance what you are looking for.
 Finding the shortest path between two instances in a knowledge graph can be a great way to explore connections because you do not need to provide any guidance.
 In the knowledge graph below I have displayed two specific people using the query:
 
-```graql
+```lang-graql
 match
 $x has identifier "Barbara Shafner";
 $y has identifier "Jacob J. Niesz";
@@ -21,7 +21,7 @@ get;
 and then searched for the shortest path(s) joining two of them using:
 
 <!-- Ignoring because uses made-up IDs -->
-```graql-test-ignore
+```lang-graql-test-ignore
 compute path from "id1", to "id2";
 ```
 
@@ -41,7 +41,7 @@ In the following query only the blood relationships (parent/child relationships)
 We have excluded marriage in this subgraph and as a result the shortest path is longer than before - it turns out the Barbara Shafner and Jacob J. Niesz are cousins (their mothers, Mary Young and Catherine Young, are sisters, their father being Jacob Young).
 
 <!-- Ignoring because uses made-up IDs -->
-```graql-test-ignore
+```lang-graql-test-ignore
 compute path from "id1", to "id2", in [person, parentship];
 ```
 

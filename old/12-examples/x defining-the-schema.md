@@ -132,7 +132,7 @@ define
 
 Lastly we need to define the type of each attribute.
 
-```graql
+```lang-graql
 define
 
   contract sub relationship,
@@ -201,7 +201,7 @@ For the rest of these instructions, I will assume that you have downloaded the G
 
 **5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Graql console, run:
 
-```graql
+```lang-graql
 match $x sub thing; get;
 ```
 

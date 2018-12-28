@@ -170,12 +170,12 @@ qb.match(var("x").plays("has-firstname-owner")).get();
 ### label
 Allows you to refer to a specific types by its typename. For example:
 
-```graql
+```lang-graql
 match $x isa $type; $type label 'person'; get $x;
 ```
 
 This is equivalent to the following:
 
-```graql
+```lang-graql
 match $x isa person; get;
 ```

@@ -22,7 +22,7 @@ For example if you are modelling a retail store, valid categories may be `produc
 
 For our genealogy knowledge graph we know that it will mostly be filled with people. So we can create an entity type:
 
-```graql
+```lang-graql
 define
   person sub entity;
 ```
@@ -36,7 +36,7 @@ Grakn provides you with the ability to attach resources to entity types. For exa
 So what helps describe a `person`?
 Philosophical debates aside let us go with something simple. A `person` typically has a `firstname`, a `lastname`, and a `gender`. We can model this and other resources that identify a person with:
 
-```graql
+```lang-graql
 define
 
 person sub entity
@@ -76,7 +76,7 @@ In a Grakn, N-ary relationships are also possible. For example, a `person` has a
 
 In our example, we will add `marriage` and `parentship` relationships. A `marriage` has two roles: `spouse1` and `spouse2`, while `parentship` has a `parent` role and a `child` role.
 
-```graql
+```lang-graql
 define
 
 marriage sub relationship
@@ -95,7 +95,7 @@ The next step is to give our entity types permission to play specific roles.  We
 
 For this current example we only have one entity type, which can play all our current roles, so we explicitly state that with:
 
-```graql
+```lang-graql
 define
 
 person sub entity
@@ -111,7 +111,7 @@ We have now completed our basic genealogy schema.
 
 The final schema will now look something like this:
 
-```graql
+```lang-graql
 define
 
  # Entities
