@@ -18,7 +18,7 @@ In case of a hard-coded value, the accepted datatypes are:
 - `date`: a date or date-time in ISO 8601 format
 
 ## Match Instances of Concept Types
-What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we will learn about [using _get_ for retrieval of information from the knowledge graph](/docs/query/get-query).
+What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we learn about [using _get_ for retrieval of information from the knowledge graph](/docs/query/get-query).
 
 ### Match instances of an entity
 Matching instances of an entity type is easy. We do so by using a variable followed by the `isa` keyword and the label of the entity type.
@@ -93,7 +93,7 @@ answer_iterator = transaction.query("match $p isa person has name $n; get;")
 </div>
 
 
-We will soon learn [how to target attributes of a specific value](#match-instances-of-an-attribute).
+We soon learn [how to target attributes of a specific value](#match-instances-of-an-attribute).
 
 ### Match instances of a relationship
 Because of the [dependent nature of relationships](/docs/schema/concepts#define-a-relationship), matching them is slightly different to matching entities and attributes.
@@ -167,7 +167,7 @@ answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa
 [tab:end]
 </div>
 
-We will soon learn [how to target attributes of a specific value](#match-instances-of-an-attribute).
+We soon learn [how to target attributes of a specific value](#match-instances-of-an-attribute).
 
 #### Leave the relationship instance unassigned
 Assigning a relationship to a variable is optional. We may only be interested in the roleplayers of a certain relationship. In such case, we would write the above match clause like so:
@@ -607,7 +607,7 @@ answer_iterator = transaction.query("match $x id V41016; get;")
 When matching an instance of an attribute type based on its value or simply comparing two variables, the following comparators may be used: `==`, `!=`, `>`, `>=`, `<` and `<=`.
 
 ## Match Schema Concepts
-In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we will learn about [how to use the get keyword](/docs/query/get-query).
+In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we learn about [how to use the get keyword](/docs/query/get-query).
 
 Having fully understood the [schema concepts](/docs/schema/concepts) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema statements.
 
@@ -836,4 +836,4 @@ To see some `get` queries powered by complex and expressive `match` clauses, che
 ## Summary
 We learned how to use the `match` clause to write intuitive statements that describe a desired pattern in the knowledge graph and fill in the variables that hold the data we would like to acquire.
 
-Next, we will learn how to use the `match` clause in conjunction with Graql queries to carry out instructions - starting with the [get query](/docs/query/get-query).
+Next, we learn how to use the `match` clause in conjunction with Graql queries to carry out instructions - starting with the [get query](/docs/query/get-query).

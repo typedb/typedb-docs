@@ -16,4 +16,4 @@ Workbase is the newest member of the Grakn family of products and will undergo h
 In the next release, Workbase will include the graphical interface for designing and visualising the schema. The future releases of Workbase are aimed at enabling write operations as well.
 </div>
 
-In the sections that follow, we will learn how to [connect](/docs/workbase/connection) Workbase with the Grakn Server, execute and [visusalise](/docs/workbase/visualisation) queries and interact with the visualiser to [investigate](/docs/workbase/investigation) the results.
+In the sections that follow, we learn how to [connect](/docs/workbase/connection) Workbase with the Grakn Server, execute and [visusalise](/docs/workbase/visualisation) queries and interact with the visualiser to [investigate](/docs/workbase/investigation) the results.

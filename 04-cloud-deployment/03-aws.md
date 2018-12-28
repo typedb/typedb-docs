@@ -101,13 +101,13 @@ As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.
 [slide:start]
 [header:start]Wait for Stack Creation[header:end]
 [body:start]![Wait for Stack Creation](/docs/images/cloud-deployment/aws_cf_stacks_a.png)[body:end]
-[footer:start]Once the stack creation form is successfully submitted, we will be redirected to the Stacks page. Although it may seem as the stack has not been created, Amazon is processing the stack creation and after a short while ...[footer:end]
+[footer:start]Once the stack creation form is successfully submitted, we be redirected to the Stacks page. Although it may seem as the stack has not been created, Amazon is processing the stack creation and after a short while ...[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]View the Stack[header:end]
 [body:start]![View the Stack](/docs/images/cloud-deployment/aws_cf_stacks_b.png)[body:end]
-[footer:start]The newly created stack will be displayed and we can click on its name to view its status and details.[footer:end]
+[footer:start]The newly created stack is displayed and we can click on its name to view its status and details.[footer:end]
 [slide:end]
 
 </div>
@@ -117,11 +117,11 @@ Once the deployment is complete, a Grakn Cluster starts automatically. There is 
 
 <div class="note">
 [Important]
-Once deployed, it will take some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
+Once deployed, it takes some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
 </div>
 
 ### Default Credentials
-As part of the deployment, AWS produces the default password with username being `grakn`. The screenshots below walk you through spotting the generated password. We will need these credentials to access the Graql and Grakn consoles.
+As part of the deployment, AWS produces the default password with username being `grakn`. The screenshots below walk you through spotting the generated password. we need these credentials to access the Graql and Grakn consoles.
 
 <div class="slideshow">
 
@@ -179,7 +179,7 @@ As a result, a different procedure is needed for stopping instances.
 
 <div class="note">
 [Important]
-Before we proceed, we must make sure that the minimum capacity of the Auto Scaling Group that the instance belongs to, is smaller than the current instance count. For instance, if we have three instances running, in order to stop one, the minimum capacity must be at most two. Otherwise, new instances will be created in place of the stopped instance.
+Before we proceed, we must make sure that the minimum capacity of the Auto Scaling Group that the instance belongs to, is smaller than the current instance count. For instance, if we have three instances running, in order to stop one, the minimum capacity must be at most two. Otherwise, new instances are created in place of the stopped instance.
 </div>
 
 #### 1. Install the AWS Command Line Interface

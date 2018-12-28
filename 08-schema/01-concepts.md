@@ -15,7 +15,7 @@ When defining the schema in a single `schema.gql` file, the keyword `define` nee
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `define` statement. Otherwise, anything you have defined will NOT be committed to the original keyspace that is running on the Grakn server.
+Don't forget to `commit` after executing a `define` statement. Otherwise, anything you have defined is NOT be committed to the original keyspace that is running on the Grakn server.
 When using one of the Grakn clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
 </div>
 
@@ -155,7 +155,7 @@ This guarantees `email` to have a unique value for all instances of `person`.
 
 <div class="note">
 [Note]
-Although the attributes above have been assigned to the `person` entity, they are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute).
+Although the attributes above have been assigned to the `person` entity, they are yet to be defined. We soon learn how to [define an attribute](#define-an-attribute).
 </div>
 
 
@@ -206,7 +206,7 @@ transaction.commit()
 
 <div class="note">
 [Note]
-The relationship that relates to the roles `employer` and `employee` has not yet been defined. We will soon learn how to [define a relationship](#define-a-relationship).
+The relationship that relates to the roles `employer` and `employee` has not yet been defined. We soon learn how to [define a relationship](#define-a-relationship).
 </div>
 
 ### Subtype an entity
@@ -264,7 +264,7 @@ As you can see in the example above, when defining entities, what follows the `s
 
 <div class="note">
 [Note]
-The relationships that relate to the roles `owner`, `property` and `employer` have not been defined in the example above. We will soon learn how to [define a relationship](#define-a-relationship). Similarly, the attributes `name` and `rank` are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute) as well.
+The relationships that relate to the roles `owner`, `property` and `employer` have not been defined in the example above. We soon learn how to [define a relationship](#define-a-relationship). Similarly, the attributes `name` and `rank` are yet to be defined. We soon learn how to [define an attribute](#define-an-attribute) as well.
 </div>
 
 The ability to subtype entities not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
@@ -368,7 +368,7 @@ The roles `employee` and `employer` are now ready to be played by other concept 
 ### Roleplayers of a relationship
 Entities, attributes, and even other relationships can play a role in a relationship. To do this we make use of the `plays` keyword followed by the role's label.
 
-We have already seen how to [define an entity to play a role](#entity-to-play-a-role) and will soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relationship that plays a role in another relationship?
+We have already seen how to [define an entity to play a role](#entity-to-play-a-role) and soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relationship that plays a role in another relationship?
 
 ### Define a relationship to play a role
 Let's go through a simple example of how a relationship can play a role in another relationship.
@@ -584,7 +584,7 @@ This guarantees `reference-id` to have a unique value for all instances of `empl
 
 <div class="note">
 [Note]
-Although the attributes above have been assigned to `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute).
+Although the attributes above have been assigned to `employment`, they are yet to be defined. We soon learn how to [define an attribute](#define-an-attribute).
 </div>
 
 ### Subtype a relationship
@@ -657,7 +657,7 @@ As you can see in the example above, when defining relationships, what follows t
 
 <div class="note">
 [Note]
-Although the attributes above have been assigned to `affiliation` and `employment`, they are yet to be defined. We will soon learn how to [define an attribute](#define-an-attribute).
+Although the attributes above have been assigned to `affiliation` and `employment`, they are yet to be defined. We soon learn how to [define an attribute](#define-an-attribute).
 </div>
 
 Note the use of the `as` keyword. This is necessary to determine the correspondence between the role of the child and that of the parent.
@@ -1096,7 +1096,7 @@ As the name suggests, the `undefine` keyword is used to remove the definition of
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined will NOT be committed to the original keyspace that is running on the Grakn server.
+Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
 When using one of the [Grakn clients](/docs/client-api/overview), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Graql Console](/docs/running-grakn/console), we use the `commit` command.
 </div>
 
@@ -1197,4 +1197,4 @@ When the concept type to be undefined is a supertype to something else, we must 
 ## Summary
 We learned that a Grakn schema is essentially a collection of Entities, Relationships, and Attributes - what we call the Grakn Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
 
-In the next section, we will learn about one last addition to the schema - [Graql Rules](/docs/schema/rules).
+In the next section, we learn about one last addition to the schema - [Graql Rules](/docs/schema/rules).

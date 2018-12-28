@@ -76,7 +76,7 @@ First thing first, we require the grakn module. We use it for connecting to our 
 
 Next, we declare the `inputs`. More on this later. For now, what we need to understand about inputs — it’s an array of objects, each one containing:
 - The path to the data file
-- The template function that receives an object and produces the Graql insert query. We will define these template functions in a bit.
+- The template function that receives an object and produces the Graql insert query. we define these template functions in a bit.
 
 Let’s move on.
 

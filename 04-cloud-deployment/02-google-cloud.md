@@ -91,7 +91,7 @@ In order to connect to the Grakn Server from outside the cluster, you need to _A
 
 [body:start]![Default Password](/docs/images/cloud-deployment/gc_default_password.png)[body:end]
 
-[footer:start]Take note of the default password, as we will need this to for the initial authentication.[footer:end]
+[footer:start]Take note of the default password, as we need this to for the initial authentication.[footer:end]
 
 [slide:end]
 </div>
@@ -101,11 +101,11 @@ Once the deployment is complete, a Grakn Cluster starts automatically. There is 
 
 <div class="note">
 [Important]
-Once deployed, it will take some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
+Once deployed, it takes some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
 </div>
 
 ### Default Credentials
-As part of the deployment, Google Cloud produces the default credentials with username being `grakn` and the password as displayed on the post-deployment screen. We will need these credentials to access the Graql and Grakn consoles.
+As part of the deployment, Google Cloud produces the default credentials with username being `grakn` and the password as displayed on the post-deployment screen. We need these credentials to access the Graql and Grakn consoles.
 
 ![Default Credentials](/docs/images/cloud-deployment/gc_default_password.png)
 
@@ -123,7 +123,7 @@ For a more direct interaction with the database, we need to log into a node. To 
 [body:start]![SSH Options](/docs/images/cloud-deployment/gc_ssh_options.png)[body:end]
 
 [footer:start]
-Click on the dropdown caret. Choose an option. For the purpose of this demonstration, we will use (the first option) an in-browser terminal for the SSH session.
+Click on the dropdown caret. Choose an option. For the purpose of this demonstration, we use (the first option) an in-browser terminal for the SSH session.
 [footer:end]
 
 [slide:end]

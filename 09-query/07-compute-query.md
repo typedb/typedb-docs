@@ -5,13 +5,13 @@ permalink: /docs/query/compute-query
 ---
 
 ## Computing Distributed Analytics Over a Large Dataset
-In this section, we will learn how to use the `compute` queries in a Grakn knowledge graph to:
+In this section, we learn how to use the `compute` queries in a Grakn knowledge graph to:
 - calculate statistical values over a large set of data,
 - find the shortest path between two instances of data,
 - find the most important instance in the entire knowledge graph or a subset of it, and
 - identify clusters of interconnected instances or those that are tightly linked within a network.
 
-<!-- In a dedicated section, we will learn more about the significance and use cases of [Distributed Analaytics]() in a Grakn knowledge graph. -->
+<!-- In a dedicated section, we learn more about the significance and use cases of [Distributed Analaytics]() in a Grakn knowledge graph. -->
 
 ## Compute Statistics
 Computing simple statistics, such as the mean and standard deviations of small datasets, is an easy task given isolated instances. But what about when the knowledge graph becomes so large that it has to be distributed across many machines? What if the values to be calculated correspond to many different types?
@@ -321,7 +321,7 @@ answer_iterator = transaction.query("compute path from V24819, to V93012, in [pe
 [tab:end]
 </div>
 
-Given that `V24819` is the id of a `person` and `V93012` is the id of a `car`, we are asking for the shortest path between the given `car` and `person` through an `employment` relationship with the `company`. Any other indirect association between the given person and car will be ignored when looking for the shortest path.
+Given that `V24819` is the id of a `person` and `V93012` is the id of a `car`, we are asking for the shortest path between the given `car` and `person` through an `employment` relationship with the `company`. Any other indirect association between the given person and car is ignored when looking for the shortest path.
 
 <div class="note">
 [Note]
@@ -363,7 +363,7 @@ answer_iterator = transaction.query("compute centrality using degree;")
 [tab:end]
 </div>
 
-This query returns a map of instances ordered ascendingly by degree. Instances with the degree of 0 will be excluded from the answers.
+This query returns a map of instances ordered ascendingly by degree. Instances with the degree of 0 are excluded from the answers.
 
 #### In a subgraph
 Depending on the domain that the knowledge graph represents, we may want to compute the centrality on specific types. To do so, we use the `in` keyword followed by a list of the types that indicate importance. Let's look at an example that recognises companies with the highest number of employees as the most important.
@@ -664,4 +664,4 @@ This query retrieves the set of concept IDs that belong to clusters which includ
 ## Summary
 We use a compute query to run distributed analytics on the entire knowledge graph or a large subset of it filtered by a concept type. This statistical analytics include statistical function, shortest path, centrality and cluster
 
-Next, we will learn about the [Concept API](/docs/concept-api/overview) and how it is used via the [Grakn Clients](/docs/client-api/overview) to retrieve information on a specific instance and its surroundings.
+Next, we learn about the [Concept API](/docs/concept-api/overview) and how it is used via the [Grakn Clients](/docs/client-api/overview) to retrieve information on a specific instance and its surroundings.

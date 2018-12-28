@@ -9,7 +9,7 @@ Grakn is capable of reasoning over data via pre-defined rules. Graql rules look 
 
 When you query the knowledge graph for certain information, Grakn returns a complete set of answers. These answers contain explicit matches as well as implicit ones that have been inferred by the rules included in the schema.
 
-In this section, we will learn more about how rules are constructed and how they are meant to be used.
+In this section, we learn more about how rules are constructed and how they are meant to be used.
 
 ## Define a Rule
 Defining a Graql rule begins with a given label followed by `sub rule`, the `when` body as the condition, and the `then` body as the conclusion.
@@ -89,7 +89,7 @@ when
 then
 : those people (`$x` and `$y`) must be siblings.
 
-If you find the Graql code above unfamiliar, don't be concerned. We will soon learn about [using Graql to describe patterns](/docs/query/match-clause).
+If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](/docs/query/match-clause).
 
 In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relationship in our queries.
 
@@ -103,10 +103,10 @@ To simplify this logic even further, you can think of the [siblings example](#de
 ```lang-java
 if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y && is-x-different-to-y) {
     are-x-and-y-siblings = true;
-    // any more assignments will break the rule!
+    // any more assignments break the rule!
 }
 ```
-<!-- {% include warning.html content = 'The text below down to the next subtitle will be put in a panel labeled with "Advanced Topic"' %} -->
+
 <div class="note">
 [Advanced Topic]
 Rules as Horn Clauses can be defined either in terms of a disjunction with at most one unnegated atom or an implication with the consequent consisting of a single atom. Atoms are considered atomic first-order predicates - ones that cannot be decomposed to simpler constructs.
@@ -133,4 +133,4 @@ Rules like any other concept types can be undefined. To do so, we use the [undef
 ## Summary
 Rules are a powerful tool that reason over the explicitly stored data and produce and store implicit knowledge at run-time.
 
-In the next section, we will learn how to [perform read and write instructions over a knowledge graph](/docs/query/overview) that is represented by a schema.
+In the next section, we learn how to [perform read and write instructions over a knowledge graph](/docs/query/overview) that is represented by a schema.

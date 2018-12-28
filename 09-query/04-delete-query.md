@@ -145,4 +145,4 @@ If we had instead written the query as `match $c isa car has colour $c;  $c == "
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.
 
-Next, we will learn how to [update data](/docs/query/updating-data) in a Grakn knowledge graph.
+Next, we learn how to [update data](/docs/query/updating-data) in a Grakn knowledge graph.

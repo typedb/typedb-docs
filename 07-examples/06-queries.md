@@ -16,7 +16,7 @@ Let’s revise:
 - [Who are the customers who 1) have all called each other and 2) have all called person X at least once?](#who-are-the-customers-who-1-have-all-called-each-other-and-2-have-all-called-person-x-at-least-once)
 - [How does the average call duration among customers aged under 20 compare those aged over 40?](#how-does-the-average-call-duration-among-customers-aged-under-20-compare-with-those-aged-over-40)
 
-For the rest of this post, we will go through each of these questions to:
+For the rest of this post, we go through each of these questions to:
 
 - understand their business value,
 - write them as a statement,
@@ -31,7 +31,7 @@ Let’s begin.
 
 #### The business value:
 
-> The person with phone number +86 921 547 9004 has been identified as a lead. We (company "Telecom") would like to know which of our customers have been in contact with this person since September 14th. This will help us in converting this lead into a customer.
+> The person with phone number +86 921 547 9004 has been identified as a lead. We (company "Telecom") would like to know which of our customers have been in contact with this person since September 14th. This helps us in converting this lead into a customer.
 
 #### As a statement:
 

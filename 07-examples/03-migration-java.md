@@ -427,13 +427,13 @@ public class Migration {
 }
 ```
 
-`connectAndMigrate(Collection&lt;Input&gt; inputs)` is the only method that will be fired to initiate migration of the data into the `phone_calls` knowledge graph.
+`connectAndMigrate(Collection&lt;Input&gt; inputs)` is the only method that is fired to initiate migration of the data into the `phone_calls` knowledge graph.
 
 The following happens in this method:
 
 1. A Grakn instance `grakn` is created, connected to the server we have running locally at `localhost:48555`.
 2. A `session` is created, connected to the keyspace `phone_calls`.
-3. For each `input` object in the `inputs` collection, we call the `loadDataIntoGrakn(input, session)`. This will take care of loading the data as specified in the `input` object into our keyspace.
+3. For each `input` object in the `inputs` collection, we call the `loadDataIntoGrakn(input, session)`. This takes care of loading the data as specified in the `input` object into our keyspace.
 4. Finally, the `session` is closed.
 
 ## Load the Data Into phone_calls
@@ -485,7 +485,7 @@ To avoid running out of memory, it’s recommended that every single query gets 
 However, for faster migration of large datasets, this can happen once for every `n` queries, where `n` is the maximum number of queries guaranteed to run on a single transaction.
 </div>
 
-Now that we have done all the above, we are ready to read each file and parse each data item to a JSON object. It’s these JSON objects that will be passed to the `template` method on each `Input` object.
+Now that we have done all the above, we are ready to read each file and parse each data item to a JSON object. It’s these JSON objects that is be passed to the `template` method on each `Input` object.
 
 We are going to write the implementation of `parseDataToJson(input)`.
 
@@ -939,7 +939,7 @@ public class CsvMigration {
   *   e. closes the transaction
   *
   * @param input   contains details required to parse the data
-  * @param session off of which a transaction will be created
+  * @param session off of which a transaction is created
   * @throws UnsupportedEncodingException
   */
  static void loadDataIntoGrakn(Input input, Grakn.Session session) throws UnsupportedEncodingException {
@@ -1136,7 +1136,7 @@ public class JsonMigration {
   *   d. commits the transaction
   *
   * @param input   contains details required to parse the data
-  * @param session off of which a transaction will be created
+  * @param session off of which a transaction is created
   * @throws UnsupportedEncodingException
   */
  static void loadDataIntoGrakn(Input input, Grakn.Session session) throws IOException {
@@ -1352,7 +1352,7 @@ public class XmlMigration {
   *   d. commits the transaction
   *
   * @param input   contains details required to parse the data
-  * @param session off of which a transaction will be created
+  * @param session off of which a transaction is created
   * @throws UnsupportedEncodingException
   */
  static void loadDataIntoGrakn(Input input, Grakn.Session session) throws UnsupportedEncodingException, XMLStreamException {

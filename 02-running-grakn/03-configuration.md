@@ -46,7 +46,7 @@ The `log.dirs` config holds the path to the directory where the logs get stored.
 ### Verbosity of the logs
 The `log.level` config specifies the verbosity of the logs. The default value is `INFO` and the options are as follows:
 - `ERROR`: critical errors indicating that the application has failed.
-- `WARN`: errors that will not affect the overall running of the application.
+- `WARN`: errors that do not affect the overall running of the application.
 - `INFO`: minimally verbose, including Grakn server lifecycle events.
 - `DEBUG`: verbose, non-production use, server task lifecycle events.
 - `TRACE`: extraordinarily verbose, including graql query traversal paths, extra task lifecycle events and Kafka consumer offsets.

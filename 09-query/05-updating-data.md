@@ -185,4 +185,4 @@ This query updates the `employee` roleplayer of the `employment` relationship wh
 ## Summary
 Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](/docs/schema/concepts). Simply put, to update is essentially to first `delete` and then `insert`.
 
-Next, we will learn how to [aggregate values over a set of data](/docs/query/aggregate-query) in a Grakn knowledge graph.
+Next, we learn how to [aggregate values over a set of data](/docs/query/aggregate-query) in a Grakn knowledge graph.

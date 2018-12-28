@@ -52,7 +52,7 @@ answer_iterator = transaction.query('match $fr ($x, $y, $z) isa friendship; $x i
 [tab:end]
 </div>
 
-If no variable is specified after `get`, all variables specified in the `match` clause will be returned.
+If no variable is specified after `get`, all variables specified in the `match` clause are returned.
 
 ## Limit the Answers
 We can chose to limit the number of answers in the results. To do this, we use the `limit` keyword followed by the desired number of answers.
@@ -175,4 +175,4 @@ This returns 10 instances of the `person` (entity) type starting from the 100th 
 ## Summary
 A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order by` and `offset` to retrieve an optionally ordered subset of the matched instances.
 
-Next, we will learn how to [insert data](/docs/query/insert-query) into a Grakn knowledge graph.
+Next, we learn how to [insert data](/docs/query/insert-query) into a Grakn knowledge graph.

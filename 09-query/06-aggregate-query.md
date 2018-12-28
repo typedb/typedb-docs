@@ -5,7 +5,7 @@ permalink: /docs/query/aggregate-query
 ---
 
 ## Aggregate Values Over a Dataset
-In this section, we will learn how to get Grakn to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
+In this section, we learn how to get Grakn to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
 To perform aggregation in Grakn, we first write a [match clause](/docs/query/match-clause) to describe the set of data and then use the `aggregate` query followed by one of the aggregate functions and the variable of interest.
 
 ### Count
@@ -300,4 +300,4 @@ This query returns the total number of instances of `employment` mapped to their
 ## Summary
 We use an aggregate query to calculate a certain variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
 
-Next, we will learn how to [compute values over a large set of data](/docs/query/compute-query) in a knowledge graph.
+Next, we learn how to [compute values over a large set of data](/docs/query/compute-query) in a knowledge graph.

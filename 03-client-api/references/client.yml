@@ -5,7 +5,7 @@ methods:
       title: Create a session/keyspace ## !!! synced with codeKeywordsToLink
       description: >
         Creates a communication channel to the given keyspace on the Grakn server.
-        **If no keyspace with the given name exists, a new one will be created.**
+        **If no keyspace with the given name exists, a new one is created.**
       method: 'client.session("keyspace name")'
       accepts: &accepts-session
         param: &accepts-session-keyspace

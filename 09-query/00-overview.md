@@ -7,11 +7,11 @@ permalink: /docs/query/overview
 ## Graql Instructions
 Graql is the language for the Grakn knowledge graph. Whether it's through the [Graql Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
 
-**Graql is declarative**. In simple terms, when writing Graql code, you simply describe _what_ you would like to achieve, rather than _how_ it's going to get there. The implementation of a Graql query is hidden under the hood and will never affect you as the developer.
+**Graql is declarative**. In simple terms, when writing Graql code, you simply describe _what_ you would like to achieve, rather than _how_ it's going to get there. The implementation of a Graql query is hidden under the hood and never affects you as the developer.
 
 **Graql is intuitive**. Graql queries can look a lot like questions the same way they are formed in mind, as opposed to a complicated series of statements that are difficult to follow and, at scale, become confusing It's important to note that the intuitiveness of a Graql query originates from the [schema](/docs/schema/overview). The better the knowledge graph represents the reality of its dataset via its schema, the more intuitive writing and reading Graql queries become.
 
-In this section, we will learn how a Graql query can be written to:
+In this section, we learn how a Graql query can be written to:
 - [Match](/docs/query/match) specific patterns in the data and schema
 - [Insert](/docs/query/insert) new instances of conept types into the knowledge graph
 - [Get](/docs/query/get) back desired data/knowledge
@@ -26,4 +26,4 @@ Some Graql queries such as `get`, `aggregate` and `compute` are expected to retu
 ## Summary
 Graql is a powerful language that is easy to learn, write and read.
 
-In the sections that follow, we will learn about how we can use Graql to query and modify the data instances as well as the underlying schema.
+In the sections that follow, we learn about how we can use Graql to query and modify the data instances as well as the underlying schema.

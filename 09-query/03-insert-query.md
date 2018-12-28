@@ -174,12 +174,12 @@ transaction.commit()
 </div>
 
 This `match insert` query:
-1. Matches the `company` that will play `employer`, assigned to variable `$c`.
-2. Matches the `person` that will play `employee`, assigned to variable `$p`.
+1. Matches the `company` that plays `employer`, assigned to variable `$c`.
+2. Matches the `person` that plays `employee`, assigned to variable `$p`.
 3. Inserts an `employment` relationship with `$c` and `$p` as its roleplayers, assigned to variable `$emp`.
 4. Inserts the ownership of `reference-id` with value `WGFTSH` by to the `$emp` relationship instance.
 
 ## Summary
 An `insert` query optionally preceded by a `match` clause is used to insert a data instance into the knowledge graph.
 
-Next, we will learn how to [delete data](/docs/query/delete-query) from a knowledge graph.
+Next, we learn how to [delete data](/docs/query/delete-query) from a knowledge graph.
