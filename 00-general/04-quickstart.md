@@ -19,12 +19,12 @@ A [Grakn schema](/docs/schema/overview) is the blueprint of a Grakn knowledge gr
 ```lang-graql
 define
 
-marriage sub relationship
+marriage sub relationship,
   has picture,
   relates spouse;
 
-parentship sub relationship
-  relates parent
+parentship sub relationship,
+  relates parent,
   relates child;
 
 person sub entity,
