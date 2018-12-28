@@ -1,0 +1,77 @@
+title: "Client"
+methods:
+  - method:
+    common: &method-session
+      title: Create a session/keyspace ## !!! synced with codeKeywordsToLink
+      description: >
+        Creates a communication channel to the given keyspace on the Grakn server.
+        **If no keyspace with the given name exists, a new one will be created.**
+      method: 'client.session("keyspace name")'
+      accepts: &accepts-session
+        param: &accepts-session-keyspace
+          name: keyspace
+          description: The name of the keyspace with which the session connects.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[Session](#client-api-title-session) object"
+    java:
+      <<: *method-session
+      method: 'client.session(Keyspace.of(String keyspace))'
+      accepts:
+        <<: *accepts-session
+        param:
+          <<: *accepts-session-keyspace
+          description: The keyspace with which the session connects.
+          type: 'Keyspace (<code>Keyspace.of("name-of-keyspace")</code>)'
+    javascript:
+      <<: *method-session
+    python:
+      <<: *method-session
+
+  - method:
+    common: &method-keyspaces-retrieve
+      title: Retrieve all keyspaces ## !!! synced with codeKeywordsToLink
+      description: Retrieves the name of all keyspaces running on the Grakn server.
+      method: 'client.keyspaces().retrieve()'
+    # java:
+    #   <<: *method-keyspaces-retrieve
+    javascript:
+      <<: *method-keyspaces-retrieve
+      returns:
+        - Array of Strings
+    python:
+      <<: *method-keyspaces-retrieve
+      returns:
+        - List of Strings
+  - method3:
+    common: &method-keyspaces-delete
+      title: Delete a keyspace ## !!! synced with codeKeywordsToLink
+      description: Deletes a keyspace with the given name.
+      accepts: &accepts-keyspaces-delete
+        param: &accepts-keyspaces-delete-keyspace
+          name: keypsace
+          description: The name of the keyspace to be deleted.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-keyspaces-delete
+      method: 'client.keyspaces().delete(Keyspace.of(String keyspace))'
+      accepts: &method-keyspaces-delete-accepts
+        param:
+          <<: *accepts-keyspaces-delete-keyspace
+          description: The keyspace to be deleted.
+          type: 'Keyspace'
+    javascript:
+      <<: *method-keyspaces-delete
+      method: 'client.keyspaces().delete("keyspace name"))'
+      returns:
+        - void
+    python:
+      <<: *method-keyspaces-delete
+      method: 'client.keyspaces().delete("keyspace name"))'
+      returns:
+        - None
+

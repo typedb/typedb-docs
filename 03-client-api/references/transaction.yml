@@ -1,0 +1,289 @@
+
+title: "Transaction"
+methods:
+  - method:
+    common: &method-query
+      title: Lazily execute a Graql query ## !!! synced with codeKeywordsToLink
+      description: Prepare a Graql query to be executed on the keyspace where the session is connected to (answers are only computed when we ask for an answer, hence lazy).
+      accepts: &accepts-query
+        param: &accepts-query-query
+          name: query
+          description: The Graql query to be exectured
+          type: String
+          required: true
+          default: N/A
+        param: &accepts-query-inference
+          description: Determines if the query should apply inference.
+          required: true
+      returns:
+        - "[Iterator](#client-api-title-iterator) of Answer"
+    # 1.5
+    # java:
+    #   <<: *method-query
+    #   method: .stream()
+    #   accepts:
+    #     - &accepts-query-param-1
+    #   returns:
+    #     - Stream<?> (type of elements in the stream is dependent on the type of the executed query)
+    javascript:
+      <<: *method-query
+      method: 'async transaction.query(query, options);'
+      accepts:
+        <<: *accepts-query
+        param:
+          <<: *accepts-query-inference
+          name: options
+          type: '{ infer: true }'
+          required: true
+          default: '{ infer: true }'
+    python:
+      <<: *method-query
+      method: 'transaction.query(query, infer = True)'
+      accepts:
+        <<: *accepts-query
+        param:
+          <<: *accepts-query-inference
+          name: infer
+          type: boolean
+          default: True
+  # 1.5
+  # - method:
+  #   common: &method-2
+  #     title: Eager executation of a Graql query
+  #     method: '.execute()'
+  #     description: Executes a Graql query eagerly on the keyspace where the session is connected to.
+  #     accepts:
+  #       param1:
+  #         name: query
+  #         description: The Graql query to be exectured
+  #         type: String
+  #         required: true
+  #         default: N/A
+  #     returns:
+  #       - List<?> (type of elements in the list is dependent on the type of the executed query)
+  #   java:
+  #     <<: *method-2
+  - method:
+    common: &method-commit
+      title: Commit a write transaction ## !!! synced with codeKeywordsToLink
+      description: >
+        Commits the inserted or deleted data instances or schema concepts to the keyspace attached to the session from which this transaction originated.
+        The transaction is also closed on commit.
+    java:
+      <<: *method-commit
+      method: transaction.commit();
+      returns:
+        - void
+      javascript:
+      <<: *method-commit
+      method: 'async transaction.commit()'
+      returns:
+        - void
+    python:
+      <<: *method-commit
+      method: transaction.commit()
+      returns:
+        - None
+
+  - method:
+    common: &method-close
+      title: Close a read transaction
+      description: Closes the transaction which has been used to read from the keyspace.
+    java:
+      <<: *method-close
+      method: transaction.close()
+      returns:
+        - void
+    javascript:
+      <<: *method-close
+      method: async transaction.close();
+      returns:
+        - void
+    python:
+      <<: *method-close
+      method: transaction.close()
+      returns:
+        - None
+  - method:
+    common: &method-getConcept
+      title: Retrive a concept by ID ## !!! synced with codeKeywordsToLink
+      accepts: &accepts-getConcept
+        param 1: &accepts-getConcept-conceptId
+          description: The id of the concept to retrieve
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[Concept](/docs/concept-api/concept) object"
+    javascript:
+      <<: *method-getConcept
+      method: 'async transaction.getConcept(conceptId)'
+      accepts:
+        param1:
+          <<: *accepts-getConcept-conceptId
+          name: conceptId
+    python:
+      <<: *method-getConcept
+      method: 'transaction.get_concept(concept_id)'
+      accepts:
+        param1:
+          <<: *accepts-getConcept-conceptId
+          name: concept_id
+  - method:
+    common: &method-getSchemaConcept
+      title: Retrive a schema concept by label ## !!! synced with codeKeywordsToLink
+      accepts:
+        param 1:
+          name: label
+          description: The label of the schema concept to retrieve
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[Type](/docs/concept-api/type) object"
+    javascript:
+      <<: *method-getSchemaConcept
+      method: async transaction.getSchemaConcept(label);
+    python:
+      <<: *method-getSchemaConcept
+      method: transaction.get_schema_concept(label)
+  - method:
+    common: &method-getAttributesByValue
+      title: Retrive an attribute by value ## !!! synced with codeKeywordsToLink
+      accepts:
+        param:
+          name: value
+          description: The value of the attribute to retrieve
+          type: String, long, double, boolean or date
+          required: true
+          default: N/A
+        param:
+          name: datatype
+          description: The datatype of the attribute to retrieve
+          type: grakn.DataType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATE
+          required: true
+          default: N/A
+      returns:
+        - "[Iterator](#client-api-title-iterator) of [Attribute](/docs/concept-api/thing#attribute-methods)"
+    javascript:
+      <<: *method-getAttributesByValue
+      method: async transaction.getAttributesByValue(value, datatype);
+    python:
+      <<: *method-getAttributesByValue
+      method: transaction.get_attributes_by_value(value, datatype)
+  - method:
+    common: &method-putEntity
+      title: Create or retrievie an EntityType
+      description: Creates a new EntityType if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param:
+          name: label
+          description: The label of the EntityType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[EntityType](/docs/concept-api/type#entitytype-methods) object"
+    javascript:
+      <<: *method-putEntity
+      method: async transaction.putEntityType(label);
+    python:
+      <<: *method-putEntity
+      method: transaction.put_entity_type(label)
+  - method:
+    common: &method-putRelationshipType
+      title: Create or retrieve a RelationshipType ## !!! synced with codeKeywordsToLink
+      description: Creates a new RelationshipType if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param:
+          name: label
+          description: The label of the RelationshipType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[RelationshipType](/docs/concept-api/type#relationshiptype-methods) object"
+    javascript:
+      <<: *method-putRelationshipType
+      method: async transaction.putRelationshipType(label);
+    python:
+      <<: *method-putRelationshipType
+      method: transaction.put_relationship_type(label)
+
+  - method:
+    common: &method-putAttributeType
+      title: Create or retrieve an AttributeType ## !!! synced with codeKeywordsToLink
+      description: Creates a new AttributeType if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param:
+          name: label
+          description: The label of the AttributeType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+        param:
+          name: datatype
+          description: The datatype of the attribute to create retrieve
+          type: grakn.DataType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATE
+          required: true
+          default: N/A
+      returns:
+        - "[AttributeType](/docs/concept-api/type#attributetype-methods) object"
+    javascript:
+      <<: *method-putAttributeType
+      method: async transaction.putAttributeType(label);
+    python:
+      <<: *method-putAttributeType
+      method: transaction.put_attribute_type(label)
+
+  - method:
+    common: &method-putRole
+      title: Create or retrieve a Role ## !!! synced with codeKeywordsToLink
+      description: Creates a new Role if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param:
+          name: label
+          description: The label of the Role to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[Role](/docs/concept-api/type#role-methods) object"
+    javascript:
+      <<: *method-putRole
+      method: async transaction.putRole(label);
+    python:
+      <<: *method-putRole
+      method: transaction.put_role(label)
+
+  - method:
+    common: &method-putRole
+      title: Create or retrieve a Rule ## !!! synced with codeKeywordsToLink
+      description: Creates a new Rule if none exists with the given label, or retrieves the existing one.
+      accepts:
+        param:
+          name: label
+          description: The label of the Rule to create or retrive.
+          type: String
+          required: true
+          default: N/A
+        param:
+          name: when
+          description: The when body of the rule to create.
+          type: String
+          required: true
+          default: N/A
+        param:
+          name: then
+          description: The then body of the rule to create.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - "[Rule](/docs/concept-api/rule) object"
+    javascript:
+      <<: *method-putRole
+      method: async transaction.putRule(label, when, then);
+    python:
+      <<: *method-putRole
+      method: transaction.put_rule(label, when, then)

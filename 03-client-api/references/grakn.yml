@@ -1,0 +1,50 @@
+methods:
+  - method:
+    common: &method-grakn
+      title: Creating an instance of Grakn
+      description: In order to communicate with Grakn keyspaces via sessions and transactions, we first need to instantiate a Grakn client. The created object connects our application with the running Grakn server.
+      accepts: &accepts-grakn
+        param:
+          name: uri
+          description: The URI (host:port) on which the Grakn Server is running
+          type: String
+          required: true
+          default: localhost:48555
+        param: &accepts-grakn-credentials
+          name: credentials
+          description: The username and password required for connecting to the Grakn Server
+          required: true
+      returns:
+        - "[Client](#client-api-title-client) object"
+    java:
+      <<: *method-grakn
+      method: "new Grakn(new SimpleURI(host, port))"
+      accepts:
+        param1:
+          name: host
+          description: The host address on which the Grakn Server is running
+          type: String
+          required: true
+          default: localhost
+        param2:
+          name: port
+          description: The port on which the Grakn server is running
+          type: int
+          required: true
+          default: 48555
+    javascript:
+      <<: *method-grakn
+      method: new Grakn(uri, credentials);
+      accepts:
+        <<: *accepts-grakn
+        param2:
+          <<: *accepts-grakn-credentials
+          type: '{ username: "", password: "" }'
+    python:
+      <<: *method-grakn
+      method: grakn.Grakn(uri = "", credientials = {})
+      accepts:
+        <<: *accepts-grakn
+        param2:
+          <<: *accepts-grakn-credentials
+          type: '{ "username": "", "password": "" }'
