@@ -58,7 +58,7 @@ public class GraknQuickstart {
 
 As specified above, Grakn's default gRPC port is `48555`. The port `4567` (previously used as the default REST endpoint) is deprecated for clients.
 
-When working with [Grakn KGMS](/docs/cloud-deployment/kgms), we can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
+[KGMS ONLY] We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
 
 ```lang-java
 SimpleURI localGrakn = new SimpleURI("localhost", 48555);
