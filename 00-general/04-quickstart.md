@@ -144,8 +144,8 @@ import grakn
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "genealogy") as session:
   with session.transaction(grakn.TxType.READ) as transaction:
-    answers_iterator = transaction.query('match $p isa person has first-name "Elizabeth"; get;')
-    for answer in answers_iterator:
+    answer_iterator = transaction.query('match $p isa person has first-name "Elizabeth"; get;')
+    for answer in answer_iterator:
       print(answer.map().get("p").id)
 ```
 
@@ -158,8 +158,8 @@ const grakn = new Grakn("localhost:48555");
 async function getFathers() {
   const session = await grakn.session((keyspace = "genealogy"));
   const transaction = await session.transaction(Grakn.txType.READ);
-  const answersIterator = await transaction.query('match (parent: $f) isa parentship; $f isa person has gender "male" has age $a; get $a;')
-  const answers = await answersIterator.collectConcepts();
+  const answerIterator = await transaction.query('match (parent: $f) isa parentship; $f isa person has gender "male" has age $a; get $a;')
+  const answers = await answerIterator.collectConcepts();
   for (answer of answers) {
     console.log(await answer.value());
   }
