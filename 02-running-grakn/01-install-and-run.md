@@ -1,8 +1,7 @@
 ---
 sidebarTitle: Install & Run
 pageTitle: Install and Run Grakn
-
-permalink: /docs/running-grakn/install-n-run
+permalink: /docs/running-grakn/install-and-run
 ---
 
 ## System Requirements
@@ -16,7 +15,7 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 ### To download the latest release
 #### Using Homebrew
 ```
-$ ~ brew install grakn
+$ brew install grakn
 ```
 #### Manual Download
 Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via terminal.
