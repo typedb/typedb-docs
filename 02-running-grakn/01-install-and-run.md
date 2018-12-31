@@ -18,51 +18,26 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 $ brew install grakn
 ```
 #### Manual Download
-Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via terminal.
+Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
 
 Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
-
-### To download an older version
-Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
-
-<div class="note">
-[Warning]
-Take into account that many features of previous versions are deprecated and so no longer supported.
-</div>
-
 [tab:end]
 
 [tab:Linux]
 
 ### To download the latest release
-Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via terminal.
+Download the [latest 1.4.2 release](https://grakn.ai/download?os=linux#core), unzip it in a location on your machine that is easily accessible via terminal.
 
 Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
-
-### To download an older version
-Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
-
-<div class="note">
-[Warning]
-Take into account that many features of previous versions are deprecated and so no longer supported.
-</div>
 
 [tab:end]
 
 [tab:Windows]
 
 ### To download the latest release
-Download the [latest 1.4.2 release](https://github.com/graknlabs/grakn/releases/download/v1.4.2/grakn-core-1.4.2.zip), unzip it in a location on your machine that is easily accessible via command prompt.
+Download the [latest 1.4.2 release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
 
 Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
-
-### To download an older version
-Refer to the [Grakn releases on Github](https://github.com/graknlabs/grakn/releases) to download a previous version of Grakn.
-
-<div class="note">
-[Warning]
-Take into account that many features of previous versions are deprecated and so no longer supported.
-</div>
 
 [tab:end]
 </div>
