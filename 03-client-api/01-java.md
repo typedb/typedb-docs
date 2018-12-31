@@ -32,7 +32,7 @@ The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.
 </div>
 
 ## Quickstart
-First make sure, the [Grakn server](/docs/running-grakn/install-n-run#start-the-grakn-server) is running.
+First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
 In the interpreter or in your source, import `grakn`.
 

@@ -14,7 +14,7 @@ In this section and the following pages, we learn the mechanism that a Grakn cli
 All Grakn clients share a common architecture. Simply put, the main components of a Grakn client are the `client` itself, `session` and `transaction`.
 
 ### Client
-A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-n-run#start-the-grakn-server). We would then use this connection to manage keyspaces and creating sessions.
+A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server). We would then use this connection to manage keyspaces and creating sessions.
 
 ### Session
 A session is responsible for connecting our application to a particular keyspace. This connection would then allow creating transactions. We can think of a session as a two-way long-lasting tunnel that connects our application to a particular keyspace on the Grakn server.

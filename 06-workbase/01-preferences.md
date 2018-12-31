@@ -7,7 +7,7 @@ permalink: /docs/workbase/connection
 
 <!-- 1.5
 ## Preferences
-The preferences panel in Workbase allows us to manage [Keyspaces](/docs/management/keyspace) as well as configuring the connection to the [Grakn Server](/docs/running-grakn/install-n-run#starting-the-grakn-server).
+The preferences panel in Workbase allows us to manage [Keyspaces](/docs/management/keyspace) as well as configuring the connection to the [Grakn Server](/docs/running-grakn/install-and-run#starting-the-grakn-server).
 
 ### Configure Connection
 <div class="slideshow">
@@ -97,7 +97,7 @@ The preferences panel in Workbase allows us to manage [Keyspaces](/docs/manageme
 </div> -->
 
 ## Connect to Grakn
-Workbase connects to a running [Grakn Server](/docs/running-grakn/install-n-run#start-the-grakn-server) and interacts with [keyspaces](/docs/management/keyspace). In this short section, we learn how to configure this connection and select a keyspace to interact with.
+Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) and interacts with [keyspaces](/docs/management/keyspace). In this short section, we learn how to configure this connection and select a keyspace to interact with.
 
 ### Specify the host and port
 <div class="slideshow">

@@ -20,7 +20,7 @@ If downloaded manually, we can find the configuration file in the `conf` directo
 
 <div class="note">
 [Note]
-In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-n-run/#stop-the-grakn-server) the Grakn Sever and [start](/docs/running-grakn/install-n-run/#start-the-grakn-server) it again.
+In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-and-run/#stop-the-grakn-server) the Grakn Sever and [start](/docs/running-grakn/install-and-run/#start-the-grakn-server) it again.
 </div>
 
 ### The default keyspace

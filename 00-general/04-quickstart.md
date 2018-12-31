@@ -10,7 +10,7 @@ In this tutorial, we go through creating and interacting with a Grakn knowledge 
 Let's get started!
 
 ### Run Grakn
-[Install Grakn](/docs/running-grakn/install-n-run#system-requirements) and start the [Grakn Server](/docs/running-grakn/install-n-run#start-the-grakn-server).
+[Install Grakn](/docs/running-grakn/install-and-run#system-requirements) and start the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server).
 
 
 ### The Schema

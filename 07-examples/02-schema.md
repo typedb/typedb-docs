@@ -163,7 +163,7 @@ Save the schema.gql file. In a few minutes, we'll have it loaded into a brand ne
 ## Load and test the schema
 In order to load this schema in a keyspace, we first need to run the Grakn server.
 
-**1 -** [Download Grakn](/docs/running-grakn/install-n-run#download-and-install-grakn)
+**1 -** [Download Grakn](/docs/running-grakn/install-and-run#download-and-install-grakn)
 For the rest of these instructions, I assume that you have downloaded the Grakn zip file and navigated into the unzipped folder via terminal.
 
 **2 -** Run the Grakn server:

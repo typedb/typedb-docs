@@ -24,7 +24,7 @@ Let’s go through a summary of how the migration takes place.
 3.  we pass each data item (in the form of a JSON object) to its corresponding template. What the template returns is the Graql query for inserting that item into Grakn.
 4.  we execute each of those queries to load the data into our target keyspace — `phone_calls`.
 
-Before moving on, make sure you have **Java 1.8** installed and the [**Grakn Server**](/docs/running-grakn/install-n-run#start-the-grakn-server) running on your machine.
+Before moving on, make sure you have **Java 1.8** installed and the [**Grakn Server**](/docs/running-grakn/install-and-run#start-the-grakn-server) running on your machine.
 
 ## Get Started
 
