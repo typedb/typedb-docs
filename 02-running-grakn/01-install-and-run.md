@@ -26,7 +26,7 @@ Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-
 [tab:Linux]
 
 ### To download the latest release
-Download the [latest 1.4.2 release](https://grakn.ai/download?os=linux#core), unzip it in a location on your machine that is easily accessible via terminal.
+Download the [latest release](https://grakn.ai/download?os=linux#core), unzip it in a location on your machine that is easily accessible via terminal.
 
 Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
 
@@ -35,7 +35,7 @@ Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-
 [tab:Windows]
 
 ### To download the latest release
-Download the [latest 1.4.2 release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
+Download the [latest release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
 
 Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
 
