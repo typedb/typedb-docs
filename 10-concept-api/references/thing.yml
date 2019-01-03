@@ -38,6 +38,7 @@ methods:
       method: async thing.relationships(roles);
       accepts:
         param:
+          <<: *accepts-relationships-param-roles
           type: "Array of [Role](/docs/concept-api/type?lang=javascript#role-methods)s"
       returns:
         - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=javascript#relationship-methods) objects"
@@ -46,6 +47,7 @@ methods:
       method: thing.relationships(roles)
       accepts:
         param:
+          <<: *accepts-relationships-param-roles
           type: "List of [Role](/docs/concept-api/type?lang=python#role-methods)s"
       returns:
         - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=python#relationship-methods) objects"
