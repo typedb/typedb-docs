@@ -84,22 +84,22 @@ types:
     title: Value
     methods:
       - method:
-        common: &method-value-map
+        common: &method-value-number
           title: Retrive nummeric value of an aggregate/computed answer
         java:
-          <<: *method-value-map
-          method: answer.map();
+          <<: *method-value-number
+          method: answer.number();
           returns:
             - int
             - float
         javascript:
-          <<: *method-value-map
-          method: answer.map();
+          <<: *method-value-number
+          method: answer.number();
           returns:
             - number
         python:
-          <<: *method-value-map
-          method: answer.map()
+          <<: *method-value-number
+          method: answer.number()
           returns:
             - int
             - float
