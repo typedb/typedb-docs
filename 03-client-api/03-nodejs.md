@@ -77,7 +77,7 @@ async function runBasicQueries() {
   // retrieve the first answer
   let aConceptMapAnswer = await answerIterator.next();
   // get the object of variables : concepts, retrieve variable "x"
-  person = aConceptMapAnswer.map()["x"];
+  const person = aConceptMapAnswer.map().get("x");
   // we can also iterate using a `for` loop
   const somePeople = [];
 
