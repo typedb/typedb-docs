@@ -16,7 +16,7 @@ When defining the schema in a single `schema.gql` file, the keyword `define` nee
 <div class="note">
 [Important]
 Don't forget to `commit` after executing a `define` statement. Otherwise, anything you have defined is NOT be committed to the original keyspace that is running on the Grakn server.
-When using one of the Grakn clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
+When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
 </div>
 
 
@@ -63,6 +63,11 @@ transaction.query("define person sub entity, has name;")
 transaction.commit()
 ```
 [tab:end]
+</div>
+
+<div class="note">
+[Note]
+Although the `name` attribute has been assigned to the `person` entity, it is yet to be defined. We soon learn how to [define an attribute](#define-an-attribute).
 </div>
 
 ### Assign an attribute to an entity
@@ -1050,7 +1055,7 @@ What this definition means is that `forename`, `surname` and `middle-name` are a
 
 The ability to subtype attributes not only helps mirror the reality of our dataset but also enables automated reasoning using type hierarchies.
 
-#### Define an abstract relationship
+#### Define an abstract attribute
 There may be scenarios where a parent attribute is only defined for other attributes to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `name` attribute type to be abstract. By doing so, we are indicating that no data instances of the `name` attribute are allowed to be created.
 
 <div class="tabs dark">
@@ -1097,7 +1102,7 @@ As the name suggests, the `undefine` keyword is used to remove the definition of
 <div class="note">
 [Important]
 Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
-When using one of the [Grakn clients](/docs/client-api/overview), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Graql Console](/docs/running-grakn/console), we use the `commit` command.
+When using one of the [Grakn Clients](/docs/client-api/overview), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Graql Console](/docs/running-grakn/console), we use the `commit` command.
 </div>
 
 ### Undefine an attribute's association

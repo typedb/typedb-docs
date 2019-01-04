@@ -11,7 +11,7 @@ A Grakn client, along with the [Graql Console](/docs/running-grakn/console) and 
 In this section and the following pages, we learn the mechanism that a Grakn client uses to set up communication with [keyspaces](/docs/management/keyspace) running on the Grakn server as well as the methods available for executing queries and retrieving their answers.
 
 ## Architecture
-All Grakn clients share a common architecture. Simply put, the main components of a Grakn client are the `client` itself, `session` and `transaction`.
+All Grakn Clients share a common architecture. Simply put, the main components of a Grakn client are the `client` itself, `session` and `transaction`.
 
 ### Client
 A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server). We would then use this connection to manage keyspaces and creating sessions.
@@ -41,7 +41,7 @@ Grakn currently supports clients for:
 - [Python](/docs/client-api/python)
 
 ## Building Your Own Grakn Client
-Grakn clients are built using [gRPC](https://grpc.io/). Creating a new client is a straightforward task. In a blog post, [Joshua Send](https://blog.grakn.ai/@joshuasend) takes us through the process of building the Grakn Client Python as a comprehensive guide for [building a Grakn client of your own](https://blog.grakn.ai/grakn-python-driver-how-to-roll-your-own-b010bbd73023).
+Grakn Clients are built using [gRPC](https://grpc.io/). Creating a new client is a straightforward task. In a blog post, [Joshua Send](https://blog.grakn.ai/@joshuasend) takes us through the process of building the Grakn Client Python as a comprehensive guide for [building a Grakn client of your own](https://blog.grakn.ai/grakn-python-driver-how-to-roll-your-own-b010bbd73023).
 
 ## Summary
 A Grakn Client is meant to be used at the application layer for the purpose of managing and performing operations over keyspaces that live on the Grakn server.
