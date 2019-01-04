@@ -41,6 +41,27 @@ To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a
 ## Query the schema
 In the next section we learn how to [insert](/docs/query/insert-query), [get](/docs/query/get-query), [delete](/docs/query/delete-query), [update](/docs/query/update-data), [aggregate](/docs/query/aggregate-query) and [compute](/docs/query/compute-query) data represented by a schema.
 
+## Reserved Keywords
+The following keywords are reserved and meant to only be used by Graql in the schema.
+
+```lang-graql
+## Datatypes
+datatype
+boolean, double, long, string, date
+true, false
+regex
+
+## Schema definition
+has,
+is-abstract, isa,
+key,
+plays,
+relates
+
+## Rules definition
+when, then
+```
+
 ## Summary
 The Grakn schema sets the foundation for a Grakn knowledge graph. When modelled thoroughly, the schema provides us with a knowledge graph that benefits from logical integrity, is flexible towards change, capable of automated reasoning, and enables writing intuitive queries.
 
