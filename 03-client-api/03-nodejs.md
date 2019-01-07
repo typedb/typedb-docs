@@ -100,8 +100,6 @@ Remember that transactions always need to be closed. Committing a write transact
 
 Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
 
-To view examples of running various Graql queries using the Grakn Client Node.js, head over to their dedicated documentation pages as listed below.
-
 To view examples of running various Graql queries using the Grakn Client Node.js, head over to their dedicated documentation pages as listed below:
 - [Insert](/docs/query/insert-query)
 - [Get](/docs/query/get-query)
