@@ -2,6 +2,7 @@
 sidebarTitle: Thing
 pageTitle: Thing
 permalink: /docs/concept-api/thing
+toc: false
 ---
 
 ## Thing Methods

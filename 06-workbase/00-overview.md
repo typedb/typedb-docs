@@ -1,8 +1,8 @@
 ---
 sidebarTitle: Overview
 pageTitle: Grakn Workbase
-
 permalink: /docs/workbase/overview
+toc: false
 ---
 
 ## What is Workbase?

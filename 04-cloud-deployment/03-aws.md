@@ -112,7 +112,7 @@ As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.
 
 </div>
 
-### Running Grakn
+## Running Grakn
 Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
 
 <div class="note">
@@ -120,7 +120,7 @@ Once the deployment is complete, a Grakn Cluster starts automatically. There is 
 Once deployed, it takes some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
 </div>
 
-### Default Credentials
+## Default Credentials
 As part of the deployment, AWS produces the default password with username being `grakn`. The screenshots below walk you through spotting the generated password. we need these credentials to access the Graql and Grakn consoles.
 
 <div class="slideshow">
@@ -147,7 +147,7 @@ As part of the deployment, AWS produces the default password with username being
 
 We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](/docs/management/users#update-a-user) `grakn` giving it a new secured password.
 
-### Scale the Cluster
+## Scale the Cluster
 Grakn cluster is deployed within an Auto Scaling Group which allows us to adjust the number of instances in the cluster in a straight-forward manner.
 Auto Scaling Groups group together EC2 instances that share similar characteristics and are treated as a logical grouping for the purposes of instance scaling and management.
 
@@ -173,7 +173,7 @@ Auto Scaling Groups group together EC2 instances that share similar characterist
 
 </div>
 
-### Stop a Grakn Instance
+## Stop a Grakn Instance
 By design, it is not possible to stop an instance belonging to an Auto Scaling Group. When a Scaling Policy triggers the removal of an instance, Auto Scaling always terminates the instance.
 As a result, a different procedure is needed for stopping instances.
 
@@ -182,29 +182,29 @@ As a result, a different procedure is needed for stopping instances.
 Before we proceed, we must make sure that the minimum capacity of the Auto Scaling Group that the instance belongs to, is smaller than the current instance count. For instance, if we have three instances running, in order to stop one, the minimum capacity must be at most two. Otherwise, new instances are created in place of the stopped instance.
 </div>
 
-#### 1. Install the AWS Command Line Interface
+### 1. Install the AWS Command Line Interface
 Follow the instructions here (https://aws.amazon.com/cli/) to install the AWS CLI. Upon installation run `aws configure` via terminal.
 
-#### 2. Detach the instance from the Auto Scaling Group
+### 2. Detach the instance from the Auto Scaling Group
 ```
 aws autoscaling detach-instances --instance-ids &lt;id-of-the-instance-to-be-detached&gt; --region &lt;region-name&gt;" --auto-scaling-group-name &lt;name-of-the-auto-scaling-group-that-the-instance-belongs-to&gt; --should-decrement-desired-capacity
 ```
 
-#### 3. Stop the detached instance
+### 3. Stop the detached instance
 ```
 aws ec2 stop-instances --instance-ids &lt;id-of-the-detached-instanced-to-be-stopped&gt;
 ```
 
-### Restart a Grakn Instance
+## Restart a Grakn Instance
 
 Having [installed and configured the AWS CLI](#install-the-aws-command-line-interface), we need to first start the instance and then attach it to the right Auto Scaling Group.
 
-#### 1. Start the instance
+### 1. Start the instance
 ```
 aws ec2 start-instances --instance-ids &lt;id-of-the-instance-to-be-restarted&gt;
 ```
 
-#### 3. Attach the instance to the Auto Scaling Group
+### 3. Attach the instance to the Auto Scaling Group
 ```
 aws autoscaling attach-instances --instance-ids &lt;id-of-the-instance-to-be-stopped&gt; --region "&lt;region-name&gt;" --auto-scaling-group-name &lt;name-of-the-auto-scaling-group-that-the-instance-belongs-to&gt;
 ```
@@ -284,16 +284,16 @@ For more information check out AWS documentation on [Starting and Stopping Insta
 [slide:end]
 </div>
 
-### Running Grakn
+## Running Grakn
 Once the deployment is complete, Grakn starts automatically. There is no need for starting Grakn Servers manually.
 
-### Default Credentials
+## Default Credentials
 When deploying an AMI, the default password is the instance id with username being `grakn`.
 
 [tab:end]
 </div>
 
-### Logging into a node
+## Logging into a node
 For a more direct interaction with the database, we need to log into one of the cluster nodes. To do so, we need to run the `ssh` as shown below.
 
 ```
@@ -306,29 +306,29 @@ We can retrieve the DNS name or IP address by navigating to list of EC2 instance
 ![Grakn EC2 Instances](/docs/images/cloud-deployment/aws_instance_dns_ip.png)
 
 
-### Cluster Health Check
+## Cluster Health Check
 While [logged into a node](#logging-into-a-node), run `grakn cluster status`. This outputs the list of all nodes, as shown below, with the first column indicating the Status (**U**p/**D**own) and State (**N**ormal/**L**eaving/**J**oining/**M**oving).
 
 ![Cluster Health Check](/docs/images/cloud-deployment/aws_cluster_health_check.png)
 
-### Accessing Grakn Console
+## Accessing Grakn Console
 While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
 
-### Accessing Graql Console
+## Accessing Graql Console
 While [logged into a node](#logging-into-a-node), we can enter the [Graql Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
 
-### Configuring Grakn
+## Configuring Grakn
 To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).
 
-### Signing up For Enterprise Support
+## Signing up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).
 
 <hr style="margin-top: 40px">
 
-### Best Practices
+## Best Practices
 Amazon Web Services offers a wide range of compute options. What follows is a set of generic recommendations for an optimal choice.
 
-#### Compute options
+### Compute options
 The optimum machine choice offering a good balance between CPU and memory should be equipped with at least 4 vCPUs and 8 GB of RAM.
 Using machines with additional RAM above a 25 GB threshold is not expected to yield significant performance improvements.
 Having these bounds in mind, the following machines are recommended because they offer a balanced set of system resources for a range of workloads:

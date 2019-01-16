@@ -2,6 +2,7 @@
 sidebarTitle: Rule
 pageTitle: Rule
 permalink: /docs/concept-api/rule
+toc: false
 ---
 
 ## Rule Methods

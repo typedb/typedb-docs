@@ -2,6 +2,7 @@
 sidebarTitle: KGMS
 pageTitle: Grakn KGMS
 permalink: /docs/cloud-deployment/kgms
+toc: false
 ---
 
 ## What is Grakn KGMS?

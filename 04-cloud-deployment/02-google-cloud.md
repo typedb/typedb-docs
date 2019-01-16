@@ -1,11 +1,10 @@
 ---
 sidebarTitle: Google Cloud
 pageTitle: Google Cloud Deployment
-summary:
 permalink: /docs/cloud-deployment/google-cloud
 ---
 
-### Deploying Grakn on Google Cloud
+## Deploying Grakn on Google Cloud
 
 As illustrated below, deploying [Grakn KGMS on Google Cloud](https://console.cloud.google.com/marketplace/details/grakn-public/grakn-kgms-premium) is a straight-forward process.
 
@@ -96,7 +95,7 @@ In order to connect to the Grakn Server from outside the cluster, you need to _A
 [slide:end]
 </div>
 
-### Running Grakn
+## Running Grakn
 Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
 
 <div class="note">
@@ -104,14 +103,14 @@ Once the deployment is complete, a Grakn Cluster starts automatically. There is 
 Once deployed, it takes some time for the cluster to fully bootup and synchronise. Allow approximately **two minutes per cluster node**. To check the status of the cluster bootup, you can perform a [cluster health check](#cluster-health-check).
 </div>
 
-### Default Credentials
+## Default Credentials
 As part of the deployment, Google Cloud produces the default credentials with username being `grakn` and the password as displayed on the post-deployment screen. We need these credentials to access the Graql and Grakn consoles.
 
 ![Default Credentials](/docs/images/cloud-deployment/gc_default_password.png)
 
 We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](/docs/management/users#update-a-user) `grakn` giving it a new secured password.
 
-### Logging into a node
+## Logging into a node
 For a more direct interaction with the database, we need to log into a node. To do so, we need to start an `ssh` session as illustrated below.
 
 <div class="slideshow">
@@ -154,29 +153,29 @@ We are now inside the node and can directly interact with the database.
 <!-- -->
 </div>
 
-### Cluster Health Check
+## Cluster Health Check
 While [logged into a node](#logging-into-a-node), run `grakn cluster status`. This outputs the list of all nodes, as shown below, with the first column indicating the Status (**U**p/**D**own) and State (**N**ormal/**L**eaving/**J**oining/**M**oving).
 
 ![Cluster Health Check](/docs/images/cloud-deployment/gc_cluster_health_check.png)
 
-### Accessing Grakn Console
+## Accessing Grakn Console
 While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
 
-### Accessing Graql Console
+## Accessing Graql Console
 While [logged into a node](#logging-into-a-node), we can enter the [Graql Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
 
-### Configuring Grakn
+## Configuring Grakn
 To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).
 
-### Signing up For Enterprise Support
+## Signing up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).
 
 <hr style="margin-top: 40px">
 
-### Best Practices
+## Best Practices
 Google Cloud offers a wide range of compute and storage options. What follows is a set of generic recommendations for an optimal choice.
 
-#### Compute options
+### Compute options
 The optimum machine choice offering a good balance between CPU and memory should be equipped with at least 4 vCPUs and 8 GB of RAM.
 Using machines with additional RAM above a 25 GB threshold is not expected to yield significant performance improvements.
 Having these bounds in mind, the following machines are recommended because they offer a balanced set of system resources for a range of workloads:
@@ -193,7 +192,7 @@ Having these bounds in mind, the following machines are recommended because they
 
 For more information, please visit the [GC Machine Types](https://cloud.google.com/compute/docs/machine-types)
 
-#### Storage options
+### Storage options
 For performance, we suggest using SSD persistent disks for the majority of use cases. The specific size of persistent disks depends on the volume of data to be processed as well as your application-specific requirements.
 It is also possible to use HDD persistent disks. Although these come at a reduced price, their poor performance does not justify their use and we do not recommend them.
 

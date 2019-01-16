@@ -1,8 +1,8 @@
 ---
 sidebarTitle: Visualisation
 pageTitle: Visualising Results
-
 permalink: /docs/workbase/visualisation
+toc: false
 ---
 
 ## Visualise

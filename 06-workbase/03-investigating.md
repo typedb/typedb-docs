@@ -1,8 +1,8 @@
 ---
 sidebarTitle: Investigation
 pageTitle: Investigating Results
-
 permalink: /docs/workbase/investigation
+toc: false
 ---
 
 ## Investigate

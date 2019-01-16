@@ -1,8 +1,8 @@
 ---
 sidebarTitle: Users
 pageTitle: Managing Users
-summary:
 permalink: /docs/management/users
+toc: false
 ---
 
 ## Managing Users [KGMS ONLY]

@@ -3,6 +3,7 @@ sidebarTitle: Console
 pageTitle: Graql Console
 summary:
 permalink: /docs/running-grakn/console
+toc: false
 ---
 
 ## What is the Graql Console?

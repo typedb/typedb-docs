@@ -1,8 +1,8 @@
 ---
 sidebarTitle: Keyspace
 pageTitle: Managing Keyspaces
-
 permalink: /docs/management/keyspace
+toc: false
 ---
 
 ## What is a Keyspace?

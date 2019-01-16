@@ -1,8 +1,8 @@
 ---
 sidebarTitle: Connection
 pageTitle: Configuring Connection
-
 permalink: /docs/workbase/connection
+toc: false
 ---
 
 <!-- 1.5

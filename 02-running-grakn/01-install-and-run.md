@@ -2,6 +2,7 @@
 sidebarTitle: Install & Run
 pageTitle: Install and Run Grakn
 permalink: /docs/running-grakn/install-and-run
+toc: false
 ---
 
 ## System Requirements
