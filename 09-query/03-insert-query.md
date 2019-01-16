@@ -4,6 +4,11 @@ pageTitle: Insert Query
 permalink: /docs/query/insert-query
 ---
 
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing an insert query is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+</div>
+
 ## Insert Instances of an Entity Type
 To insert an instance of an entity type into the knowledge graph, we use the `insert` keyword followed by what looks a lot like what we used for [matching instances of entities](/docs/query/match-clause#match-instances-of-an-entity).
 
@@ -27,21 +32,6 @@ transaction.commit();
 <!-- 1.5 transaction.execute(query.toString());
 transaction.commit(); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname "Joe";');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname "Joe";')
-transaction.commit()
-```
-[tab:end]
-
 </div>
 
 In a scenario where the instance to be inserted owns an attribute whose value must be extracted from the existing data, we use the so-called `match insert` query.
@@ -69,20 +59,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString());
 transaction.commit(); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('match $p-a isa person id V41016 has surname $s; insert $p-b isa person has surname $s;');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('match $p-a isa person id V41016 has surname $s; insert $p-b isa person has surname $s;')
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -113,20 +89,6 @@ transaction.commit();
 <!-- 1.5 transaction.execute(query.toString());
 transaction.commit(); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('insert $x isa environment "Production";');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('insert $x isa environment "Production";')
-transaction.commit()
-```
-[tab:end]
 </div>
 
 ## Insert Instances of a Relationship Type
@@ -155,20 +117,6 @@ InsertQuery query = Graql.match(
 
 transaction.execute(query.toString());
 transaction.commit();
-```
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('match $company isa company has name "Grakn Cloud"; $person isa person id V8272; insert $new-employment (employer: $company, employee: $person) isa employment; $new-employment key reference-id "WGFTSH";');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('match $company isa company has name "Grakn Cloud"; $person isa person id V8272; insert $new-employment (employer: $company, employee: $person) isa employment; $new-employment key reference-id "WGFTSH";')
-transaction.commit()
 ```
 [tab:end]
 </div>

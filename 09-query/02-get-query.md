@@ -4,6 +4,11 @@ pageTitle: Get Query
 permalink: /docs/query/get-query
 ---
 
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing a get query, is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+</div>
+
 ## Retrieve Concept Types and Their Instances
 The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause.
 
@@ -37,20 +42,7 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $fr ($x, $y, $z) isa friendship; $x isa person has name $x-name; $x-name contains "John"; $y isa person has name $y-name, has age $y-age; $z isa person has name $y-name, has age $z-age; get $x-name, $y-name, $y-age, $z-name, $y-age;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $fr ($x, $y, $z) isa friendship; $x isa person has name $x-name; $x-name contains "John"; $y isa person has name $y-name, has age $y-age; $z isa person has name $y-name, has age $z-age; get $x-name, $y-name, $y-age, $z-name, $y-age;')
-```
-[tab:end]
-</div>
+[tab:end]</div>
 
 If no variable is specified after `get`, all variables specified in the `match` clause are returned.
 
@@ -74,20 +66,7 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $p isa person; limit 1; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $p isa person; limit 1; get;")
-```
-[tab:end]
-</div>
+[tab:end]</div>
 
 This query returns only one single (and random) instance of type `person`.
 
@@ -112,19 +91,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $p isa person has age $age; order by $age asc; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $p isa person has age $age; order by $age asc; get;")
-```
-[tab:end]
-
 </div>
 
 This query returns all instances of the `person` (entity) type ordered by their `age`.
@@ -155,19 +121,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $p isa person has age $age; order by $age; offset 100; limit 10; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $p isa person has age $age; order by $age; offset 100; limit 10; get;")
-```
-[tab:end]
-
 </div>
 
 This returns 10 instances of the `person` (entity) type starting from the 100th person ordered by their `age`.

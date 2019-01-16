@@ -7,6 +7,11 @@ permalink: /docs/query/match-clause
 ## Match Concept Types and Their Instances
 `match` clause describes a pattern in the knowledge graph. In other words, it uses the semantics of the knowledge graph as defined in the [schema](/docs/schema/overview) to find a specific match. We can use the `match` clause to target instances of data or concepts defined in the schema.
 
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+</div>
+
 ## Variables
 Graql assigns instances of data and schema concepts to variables. A Graql variable is prefixed with `$` and is simply a placeholder for an instance of a concept type or simply a hard-coded value.
 
@@ -41,18 +46,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $p isa person; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $p isa person; get;")
-```
-[tab:end]
 </div>
 
 The example above, for every person, assigns the person (entity) instance to the variable `$p`.
@@ -77,18 +70,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $p isa person has name $n; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $p isa person has name $n; get;")
-```
 [tab:end]
 </div>
 
@@ -116,18 +97,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment; get;")
-```
-[tab:end]
 </div>
 
 The example above, for every employment, assigns the instance of the employment (relationship) type to the variable `$emp`, the instance of the employer company (entity) type to the variable `$x` and the instance of the employee person (entity) type to the variable `$y`.
@@ -152,18 +121,6 @@ GetQuery query = Graql.match(
 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString());
 ```
 
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $emp (employer: $x, employee: $y) isa employment has reference-id $ref; get;")
-```
 [tab:end]
 </div>
 
@@ -190,18 +147,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match (employer: $x, employee: $y) isa employment; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match (employer: $x, employee: $y) isa employment; get;")
-```
-[tab:end]
 </div>
 
 #### Leave the roles out
@@ -224,18 +169,6 @@ GetQuery query = query_builder.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $fr ($x, $y, $z) isa friendship; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $fr ($x, $y, $z) isa friendship; get;")
-```
 [tab:end]
 </div>
 
@@ -263,18 +196,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $x "some value"; get;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $x "some value"; get;')
-```
-[tab:end]
 </div>
 
 This matches instances of any attribute type whose value is `"some value"` and assigns each to variable `$x`.
@@ -299,18 +220,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $n isa name "John"; get;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $n isa name "John"; get;')
-```
 [tab:end]
 </div>
 
@@ -337,18 +246,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $phone-number contains "+44"; get;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $phone-number contains "+44"; get;')
-```
-[tab:end]
 </div>
 
 This matches instances of any attribute type whose value contains the substring `"+44"`.
@@ -373,18 +270,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
-```
 [tab:end]
 </div>
 
@@ -411,18 +296,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $x /.*(Mary|Barbara).*/; get;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $x /.*(Mary|Barbara).*/; get;')
-```
-[tab:end]
 </div>
 
 #### Owners with attributes of given values
@@ -446,18 +319,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $p isa person has first-name "John" has age < 25; get;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $p isa person has first-name "John" has age < 25; get;')
-```
-[tab:end]
 </div>
 
 But if in this example, we still want to know how old exactly each John is? we can separate the condition like so.
@@ -480,18 +341,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;');
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query('match $p isa person has first-name "John" has age $a; $a < 25; get;')
-```
 [tab:end]
 </div>
 
@@ -517,18 +366,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $p isa person has full-name $fn; { $fn contains "Elizabeth"; } or { $fn contains "Mary"; }; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $p isa person has full-name $fn; { $fn contains "Elizabeth"; } or { $fn contains "Mary"; }; get;")
-```
-[tab:end]
 </div>
 
 ### Instances of a direct type
@@ -551,18 +388,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $o isa! organisation; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $o isa! organisation; get;")
-```
 [tab:end]
 </div>
 
@@ -588,18 +413,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $x id V41016; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $x id V41016; get;")
-```
 [tab:end]
 </div>
 
@@ -659,26 +472,6 @@ GetQuery query_e = Graql.match(
 Stream&lt;ConceptMap&gt; answers = transaction.stream(query_e.toString());
 ```
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIteratorA = await transaction.query("match $x sub thing; get;");
-const answerIteratorB = await transaction.query("match $x sub attribute; get;");
-const answerIteratorC = await transaction.query("match $x sub entity; get;");
-const answerIteratorD = await transaction.query("match $x sub role; get;");
-const answerIteratorE = await transaction.query("match $x sub relationship; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator_a = transaction.query("match $x sub thing; get;")
-answer_iterator_b = transaction.query("match $x sub attribute; get;")
-answer_iterator_c = transaction.query("match $x sub entity; get;")
-answer_iterator_d = transaction.query("match $x sub role; get;")
-answer_iterator_e = transaction.query("match $x sub relationship; get;")
-```
-[tab:end]
 </div>
 
 ### Roles of a given relationship
@@ -701,18 +494,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match employment relates $x; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match employment relates $x; get;")
-```
 [tab:end]
 </div>
 
@@ -740,18 +521,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match employment relates $x as member; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match employment relates $x as member; get;")
-```
-[tab:end]
 </div>
 
 This matches all the roles that correspond to the `member` role of the relationship which `employment` subtypes. In this case, the super-relationship being `membership` and the matched role being `employee`.
@@ -777,18 +546,6 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $x plays employee; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $x plays employee; get;")
-```
-[tab:end]
 </div>
 
 This matches all concept types that play the role `employee` in any relationship.
@@ -813,18 +570,6 @@ GetQuery query = Graql.match(
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
 <!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $x has name; get;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $x has name; get;")
-```
 [tab:end]
 </div>
 

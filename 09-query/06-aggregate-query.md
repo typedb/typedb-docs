@@ -4,6 +4,11 @@ pageTitle: Aggregate Query
 permalink: /docs/query/aggregate-query
 ---
 
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing an aggregate query is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+</div>
+
 ## Aggregate Values Over a Dataset
 In this section, we learn how to get Grakn to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
 To perform aggregation in Grakn, we first write a [match clause](/docs/query/match-clause) to describe the set of data and then use the `aggregate` query followed by one of the aggregate functions and the variable of interest.
@@ -28,18 +33,6 @@ AggregateQuery query = Graql.match(
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
 <!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $sh isa sheep; aggregate count;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $sh isa sheep; aggregate count;")
-```
 [tab:end]
 </div>
 
@@ -68,18 +61,6 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
 <!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;")
-```
-[tab:end]
 </div>
 
 ### Maximum
@@ -103,18 +84,6 @@ AggregateQuery query = Graql.match(
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
 <!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;")
-```
 [tab:end]
 </div>
 
@@ -140,18 +109,6 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
 <!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $b isa building has number-of-floors $nof; aggregate min $nof;")
-```
-[tab:end]
 </div>
 
 ### Mean
@@ -175,18 +132,6 @@ List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
 <!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $call isa call has duration $d; aggregate mean $d;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $call isa call has duration $d; aggregate mean $d;")
-```
-[tab:end]
 </div>
 
 ### Median
@@ -209,18 +154,6 @@ AggregateQuery query = Graql.match(
 List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
 <!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match $p isa person has age $a; aggregate median $a;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match $p isa person has age $a; aggregate median $a;")
-```
 [tab:end]
 </div>
 
@@ -246,18 +179,6 @@ List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = query.withTx(transaction).exe
 ```
 <!-- 1.5 List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company;")
-```
-[tab:end]
 </div>
 
 This query returns all instances of `employment` grouped by their `employer` roleplayer.
@@ -280,18 +201,6 @@ AggregateQuery query = Graql.match(
 List&lt;AnswerGroup&lt;Value&gt;&gt;answer = query.withTx(transaction).execute();
 ```
 <!-- 1.5 List&lt;AnswerGroup&lt;Value&gt;&gt;answer = transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-const answerIterator = await transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;");
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-answer_iterator = transaction.query("match (employer: $company, employee: $person) isa employment; aggregate group $company count;")
-```
 [tab:end]
 </div>
 

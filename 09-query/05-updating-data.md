@@ -4,6 +4,11 @@ pageTitle: Updating Data
 permalink: /docs/query/updating-data
 ---
 
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing queries is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+</div>
+
 ## Update Instances of Concept Types
 In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](/docs/query/delete-query) the current instance followed by [inserting](/docs/query/insert-query) the new instance.
 
@@ -42,22 +47,6 @@ transaction.execute(delete_query.toString());
 transaction.execute(insert_query.toString());
 transaction.commit(); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;");
-await transaction.query('insert $comp isa company id V17391 has registration-number "81726354";');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
-transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
-atransaction.commit()
-```
-[tab:end]
 </div>
 
 This query first deletes the association that the `company` with id `V17391` has with the instance of the `registration-number` attribute type by using the `via` keyword and then continues to insert the new instance of the `registration-number` to be owned by the same instance of `company`.
@@ -95,22 +84,6 @@ transaction.commit();
 transaction.execute(insert_query.toString());
 transaction.execute(delete_query.toString());
 transaction.commit(); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;");
-await transaction.query('insert $comp isa company id V17391 has registration-number "81726354";');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("match $comp isa company id V17391 has registration-number via $r; delete $r;")
-transaction.query('insert $comp isa company id V17391 has registration-number "81726354";')
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -161,22 +134,6 @@ transaction.commit();
 transaction.execute(insert_query.toString());
 transaction.execute(delete_query.toString());
 transaction.commit(); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Wieth Souhe"; insert $emp (employer: $org, $employee: $p) isa employment;');
-await transaction.query('match $p isa person has name "Prumt"; $org isa organisation has name "Wieth Souhe"; $emp (employer: $org, $employee: $p) isa employment; delete $emp');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('match $p isa person has name "Amabo"; $org isa organisation has name "Wieth Souhe"; insert $emp (employer: $org, $employee: $p) isa employment;')
-transaction.query('match $p isa person has name "Prumt"; $org isa organisation has name "Wieth Souhe"; $emp (employer: $org, $employee: $p) isa employment; delete $emp')
-transaction.commit()
-```
 [tab:end]
 </div>
 

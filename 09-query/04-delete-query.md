@@ -4,6 +4,11 @@ pageTitle: Delete Query
 permalink: /docs/query/delete-query
 ---
 
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing a delete query is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+</div>
+
 ## Delete Instances of an Entity Type
 To delete an instance of an entity type from the knowledge graph, we use a [match clause](/docs/query/match-clause) followed by the `delete` keyword and the variable to be deleted.
 
@@ -28,20 +33,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString());
 transaction.commit(); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('match $p isa person id V41016; delete $p;');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('match $p isa person id V41016; delete $p;')
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -76,20 +67,6 @@ transaction.commit();
 <!-- 1.5 transaction.execute(query.toString());
 transaction.commit(); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('match $org isa organisation has name "Black House"; $emp (employer: $org, employee: $p) isa employment; $delete $emp;');
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('match $org isa organisation has name "Black House"; $emp (employer: $org, employee: $p) isa employment; $delete $emp;')
-transaction.commit()
-```
-[tab:end]
 </div>
 
 This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Black House"`.
@@ -121,20 +98,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString());
 transaction.commit(); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-javascript
-await transaction.query('match $c isa car has colour "red" via $r; delete $r;');
-await transaction.commit()
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query('match $c isa car has colour "red" via $r; delete $r;')
-transaction.commit()
-```
 [tab:end]
 </div>
 
