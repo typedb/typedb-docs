@@ -7,7 +7,6 @@ define
 		full-name sub name;
 		nickname sub name;
 	title sub attribute datatype string;
-	bio sub attribute datatype string;
 	event-date sub attribute is-abstract datatype date;
 		approved-date sub event-date; ## to subtype an attribute
 		birth-date sub event-date;
@@ -15,7 +14,7 @@ define
 		end-date sub event-date;
 		engagement-date sub event-date;
 	published-date sub attribute datatype date;
-	reference-id sub attribute datatype date;
+	reference-id sub attribute datatype string;
 	graduated sub attribute datatype boolean;
 	phone-number sub attribute datatype string;
 	email sub attribute datatype string;
@@ -29,23 +28,21 @@ define
 		plays spoken,
 		plays mutual-language;
 	content sub attribute datatype string,
-		has language; ## UC: to assign an attribute to another attribute
-	emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, angry]/, ## UC: to restrict the value of an attribute by regex
-		plays reacted-emotion; ## UC: attribute to play a role
+		has language;
+	emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, angry]/,
+		plays reacted-emotion;
 
 	person sub entity,
 		has full-name,
 		has nickname,
-		has bio,
 		has gender,
-		key phone-number, ## UC: many instances of the same attribute type owned by one type
-		key email; ## UC: to assign a unique attribute to an entity
+		has phone-number,
+		key email;
 
 ###################
 ## GENERIC TYPES ##
 ###################
 
-	## UC: to subtype a relationship
 	location-of-everything sub relationship is-abstract, ## to define an abstract relationship
 		relates located-subject,
 		relates subject-location;
@@ -64,7 +61,7 @@ define
 		plays superior-location;
 
 	request sub relationship,
-		relates requested-subject,
+		relates approved-subject,
 		relates requester,
 		relates respondent;
 
@@ -80,19 +77,12 @@ define
 	event-overlapping sub relationship,
 		relates overlapped-event;
 
-	# match
-	# 	$p1 id V1;
-	# 	$p2 isa person;
-	# 	($p1, $p2, $sce1, $sce2) isa mutual-course-enrollment;
-	# 	($sce1, $sce2) isa event-overlapping;
-	# get;
-
 	events-overlap sub rule,
 		when {
 			$e1 isa periodic-event has start-date $sd1 has end-date $ed1;
 			$e2 isa periodic-event has start-date $sd2 has end-date $ed2;
-			$sd1 < $ed1;
-			$ed1 < $ed2;
+			$sd2 > $sd1;
+			$sd2 < $ed1;
 			$e1 != $e2;
 		} then {
 			(overlapped-event: $e1, overlapped-event: $e2) isa event-overlapping;
@@ -214,10 +204,6 @@ define
 # 	$loc sub location;
 # get;
 
-	school-course-offerring sub relationship,
-		relates offerring-school,
-		relates offered-course;
-
 	location-of-school sub location-of-everything,
 		relates located-school as located-subject,
 		relates school-location as subject-location;
@@ -226,6 +212,7 @@ define
 		has graduated,
 		relates student,
 		relates enrolled-course,
+		relates enrolling-school,
 		plays overlapped-event,
 		plays mutual-course-enrollment;
 
@@ -233,6 +220,7 @@ define
 		has name,
 		plays offerring-school,
 		plays located-school,
+		plays enrolling-school,
 		plays mutual-school;
 
 	school-course sub entity,
@@ -247,6 +235,21 @@ define
 
 	location sub entity,
 		plays school-location;
+
+	##########################
+	## school offerings ##
+	##########################
+
+	school-course-offerring sub relationship,
+		relates offerring-school,
+		relates offered-course;
+
+	school-offers-the-enrolled-courses sub rule,
+		when {
+			(student: $p, enrolled-course: $c, enrolling-school: $s) isa school-course-enrollment;
+		} then {
+			(offerring-school: $s, offered-course: $c) isa school-course-offerring;
+		};
 
 	##########################
 	## educations in common ##
@@ -370,7 +373,7 @@ define
 	organisation sub entity,
 		has name,
 		plays office-owner,
-		plays employer, ## UC: entity to play a role
+		plays employer,
 		plays mutual-organisation;
 
 	office sub entity,
@@ -381,7 +384,7 @@ define
 		plays office-location;
 
 	person sub entity,
-		plays employee, ## UC: entity to play a role
+		plays employee,
 		plays mutual-employee;
 
 	##########################
@@ -466,7 +469,7 @@ define
 # 	$per sub person;
 # get;
 
-	romantic-relationship sub relationship is-abstract,
+	romantic-relationship sub relationship,
 		has start-date,
 		has end-date,
 		has engaged,
@@ -510,15 +513,14 @@ define
 # 	$muf sub mutual-friendship;
 # get;
 
-	## UC: a relationship to play a role
 	friendship sub relationship,
 		relates friend,
-		plays requested-friendship,
+		plays approved-friendship,
 		plays listed-friendship;
 
 	friend-request sub request,
 		has approved-date,
-		relates requested-friendship as requested-subject,
+		relates approved-friendship as approved-subject,
 		relates friendship-requester as requester,
 		relates friendship-respondent as respondent;
 
@@ -584,7 +586,6 @@ define
 		relates attached,
 		relates attached-to;
 
-	## UC: a relationship with many roleplayers
 	reaction sub relationship,
 		relates reacted-emotion,
 		relates reacted-to,
@@ -615,8 +616,7 @@ define
 		has published-date,
 		plays media-owner;
 
-	## UC: to subtype an entity
-	media sub post is-abstract, ## UC: to define an abstract entity
+	media sub post is-abstract,
 		has caption,
 		has file,
 		plays owned-media,
@@ -626,7 +626,6 @@ define
 
 	photo sub media;
 
-	## UC: an attribute to a relationship
 	link sub attribute datatype string,
 		plays attached;
 

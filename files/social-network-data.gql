@@ -1,0 +1,338 @@
+
+insert
+
+###########################
+## LOCATIONS | HIERARCHY ##
+###########################
+
+$loc-cou-1 isa location has name "United States";
+$loc-cou-2 isa location has name "United Kingdome";
+$loc-cou-3 isa location has name "Australia";
+$loc-cou-4 isa location has name "Canada";
+
+$loc-cit-1 isa location has name "Renmark";
+$loc-hir-1-3 (subordinate-location: $loc-cit-1, superior-location: $loc-cou-3) isa location-hierarchy;
+$loc-cit-2 isa location has name "Mansfield";
+$loc-hir-2-2 (subordinate-location: $loc-cit-2, superior-location: $loc-cou-2) isa location-hierarchy;
+$loc-cit-3 isa location has name "Johnstown";
+$loc-hir-3-1 (subordinate-location: $loc-cit-3, superior-location: $loc-cou-1) isa location-hierarchy;
+$loc-cit-4 isa location has name "West Nipissing";
+$loc-hir-4-2 (subordinate-location: $loc-cit-4, superior-location: $loc-cou-2) isa location-hierarchy;
+$loc-cit-5 isa location has name "Fairmont";
+$loc-hir-5-1 (subordinate-location: $loc-cit-5, superior-location: $loc-cou-1) isa location-hierarchy;
+$loc-cit-6 isa location has name "Holsworthy";
+$loc-hir-6-4 (subordinate-location: $loc-cit-6, superior-location: $loc-cou-4) isa location-hierarchy;
+$loc-cit-7 isa location has name "Bourke";
+$loc-hir-7-3 (subordinate-location: $loc-cit-7, superior-location: $loc-cou-3) isa location-hierarchy;
+$loc-cit-8 isa location has name "French Lick";
+$loc-hir-8-1 (subordinate-location: $loc-cit-8, superior-location: $loc-cou-1) isa location-hierarchy;
+
+###################################
+## SCHOOLS | COURSES | OFFERINGS ##
+###################################
+
+## SCHOOLS + LOCATIONS
+$sch-1 isa school has name "WNC";
+$los-1 (located-school: $sch-1, school-location: $loc-cit-2) isa location-of-school;
+$sch-2 isa school has name "UPJ";
+$los-2 (located-school: $sch-2, school-location: $loc-cit-3) isa location-of-school;
+$sch-3 isa school has name "UPN";
+$los-3 (located-school: $sch-3, school-location: $loc-cit-3) isa location-of-school;
+$sch-4 isa school has name "UPK";
+$los-4 (located-school: $sch-4, school-location: $loc-cit-3) isa location-of-school;
+$sch-5 isa school has name "HCC";
+$los-5 (located-school: $sch-5, school-location: $loc-cit-4) isa location-of-school;
+$sch-6 isa school has name "UPT";
+$los-6 (located-school: $sch-6, school-location: $loc-cit-3) isa location-of-school;
+$sch-7 isa school has name "UPL";
+$los-7 (located-school: $sch-7, school-location: $loc-cit-3) isa location-of-school;
+$sch-8 isa school has name "UPA";
+$los-8 (located-school: $sch-8, school-location: $loc-cit-3) isa location-of-school;
+
+## COURSES
+$cou-1 isa school-course has title "Biomedical Engineering";
+$cou-2 isa school-course has title "Management Information Systems";
+$cou-3 isa school-course has title "Materials Science";
+$cou-4 isa school-course has title "Software Engineering";
+$cou-5 isa school-course has title "Biochemistry";
+$cou-6 isa school-course has title "Microbiology";
+$cou-7 isa school-course has title "International Law";
+$cou-8 isa school-course has title "Accounting";
+
+# ## OFFERINGS
+# $sco-1 (offerring-school: $sch-1, offered-course: $cou-1) isa school-course-offerring;
+# $sco-2 (offerring-school: $sch-1, offered-course: $cou-2) isa school-course-offerring;
+# $sco-3 (offerring-school: $sch-2, offered-course: $cou-2) isa school-course-offerring;
+# $sco-4 (offerring-school: $sch-2, offered-course: $cou-3) isa school-course-offerring;
+# $sco-5 (offerring-school: $sch-2, offered-course: $cou-4) isa school-course-offerring;
+# $sco-6 (offerring-school: $sch-3, offered-course: $cou-4) isa school-course-offerring;
+# $sco-7 (offerring-school: $sch-4, offered-course: $cou-3) isa school-course-offerring;
+# $sco-8 (offerring-school: $sch-5, offered-course: $cou-5) isa school-course-offerring;
+# $sco-9 (offerring-school: $sch-5, offered-course: $cou-7) isa school-course-offerring;
+# $sco-10 (offerring-school: $sch-6, offered-course: $cou-6) isa school-course-offerring;
+# $sco-11 (offerring-school: $sch-7, offered-course: $cou-8) isa school-course-offerring;
+# $sco-12 (offerring-school: $sch-8, offered-course: $cou-8) isa school-course-offerring;
+
+###############################################
+## ORGANISATIONS | OFFICES || WORK POSITIONS ##
+###############################################
+
+## ORGANISATIONS
+$org-1 isa organisation has name "Medicely";
+$org-2 isa organisation has name "Pharos";
+$org-3 isa organisation has name "Facelook";
+$org-4 isa organisation has name "Finworld";
+$org-5 isa organisation has name "Cybersafe";
+
+## OFFICE | OWNERSHIP | LOCATION
+$off-1 isa office;
+$ofo-1 (office-owner: $org-1, owned-office: $off-1) isa office-ownership;
+$loo-1 (located-office: $off-1, office-location: $loc-cit-2) isa location-of-office;
+$off-2 isa office;
+$ofo-2 (office-owner: $org-2, owned-office: $off-2) isa office-ownership;
+$loo-2 (located-office: $off-2, office-location: $loc-cit-4) isa location-of-office;
+$off-3 isa office;
+$ofo-3 (office-owner: $org-3, owned-office: $off-3) isa office-ownership;
+$loo-3 (located-office: $off-3, office-location: $loc-cit-3) isa location-of-office;
+$off-4 isa office;
+$ofo-4 (office-owner: $org-4, owned-office: $off-4) isa office-ownership;
+$loo-4 (located-office: $off-4, office-location: $loc-cit-3) isa location-of-office;
+$off-5 isa office;
+$ofo-5 (office-owner: $org-5, owned-office: $off-5) isa office-ownership;
+$loo-5 (located-office: $off-5, office-location: $loc-cit-3) isa location-of-office;
+
+## WORK POSITIONS
+$wpo-1 isa work-position has title "Bioengineer";
+$wpo-2 isa work-position has title "Software Engineer";
+$wpo-3 isa work-position has title "Systems Analyst";
+$wpo-4 isa work-position has title "Materials Engineer";
+$wpo-5 isa work-position has title "Biologist";
+$wpo-6 isa work-position has title "Lawyer";
+$wpo-7 isa work-position has title "HR Manager";
+$wpo-8 isa work-position has title "Accountant";
+
+###############
+## LANGUAGES ##
+###############
+$lan-1 isa language "English";
+$lan-2 isa language "French";
+
+
+#################################################################################
+## PERSON | BIRTH | EDUCATION | EMPLOYMENT | RESIDENCY | TRAVEL | RELATIONSHIP ##
+#################################################################################
+
+## PERSON
+$per-1 isa person has full-name "Miriam Morton", has nickname "Mitzi", has gender "female", has email "miriam.morton@gmail.com", has phone-number "+61-491-570-156", has phone-number "+44-1632-960007";
+$per-2 isa person has full-name "Solomon Tran", has gender "male", has email "solomon.tran@gmail.com", has phone-number "+44-1632-12938", has phone-number "+61-491-570-158";
+$per-3 isa person has full-name "Julie Hutchinson", has gender "female", has email "julie.hutchinson@gmail.com", has phone-number "+44-1632-960166", has phone-number "+61-491-570-110";
+$per-4 isa person has full-name "Leona Rice", has nickname "Loni" has gender "female", has email "leona.rice@gmail.com", has phone-number "+1-613-555-0143", has phone-number "+1-202-555-0199";
+$per-5 isa person has full-name "Jeremy Kelley", has nickname "Jere", has gender "male", has email "jeremy.kelley@gmail.com", has phone-number "202-555-0144";
+$per-6 isa person has full-name "Fabian Clarke", has gender "male", has email "fabian.clarke@gmail.com", has phone-number "+44-1632-960123";
+$per-7 isa person has full-name "Sofia Baker", has nickname "Saffi", has gender "female", has email "sofia.baker@gmail.com", has phone-number "+1-202-555-0106";
+$per-8 isa person has full-name "Mabel Solis", has gender "female", has email "mabel.solis@gmail.com", has phone-number "+44-2819-12938";
+$per-9 isa person has full-name "Haleema Garza", has gender "female", has email "haleema.garza@gmail.com", has phone-number "+1-202-555-0155";
+$per-10 isa person has full-name "Haider Johnson", has gender "male", has email "haider.johnson@gmail.com", has phone-number "+1-613-532-0171", has phone-number "+44-1632-920266";
+$per-11 isa person has full-name "Fraser Saunders", has gender "male", has email "fraser.saunders@gmail.com", has phone-number "+1-613-555-0192", has phone-number "+44-2819-12929";
+$per-12 isa person has full-name "Dominic Lyons", has gender "male", has email "dominic.lyons@gmail.com", has phone-number "+1-613-555-0198", has phone-number "+44-1632-966371";
+$per-13 isa person has full-name "Emelia Cummings", has gender "female", has email "emelia.cummings@gmail.com", has phone-number "+1-613-555-0171", has phone-number "+44-1632-960411";
+$per-14 isa person has full-name "Ahmed Frazier", has gender "male", has email "ahmed.frazier@gmail.com", has phone-number "+1-202-555-2155";
+$per-15 isa person has full-name "Tanya Arnold", has gender "female", has email "tanya.arnold@gmail.com", has phone-number "+44-1632-960962";
+$per-16 isa person has full-name "Raphael Santos", has gender "male", has email "raphael.santos@gmail.com", has phone-number "+1-202-555-0107";
+
+## BIRTHS
+$bir-1 (birthed-child: $per-1) isa birth has birth-date 1990-06-01;
+$lob-1 (located-birth: $bir-1, birth-location: $loc-cit-1) isa location-of-birth;
+$bir-2 (birthed-child: $per-2) isa birth has birth-date 1991-03-21;
+$lob-2 (located-birth: $bir-2, birth-location: $loc-cit-1) isa location-of-birth;
+$bir-3 (birthed-child: $per-3) isa birth has birth-date 1989-09-09;
+$lob-3 (located-birth: $bir-3, birth-location: $loc-cit-1) isa location-of-birth;
+$bir-4 (birthed-child: $per-4) isa birth has birth-date 1992-12-03;
+$lob-4 (located-birth: $bir-4, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-5 (birthed-child: $per-5) isa birth has birth-date 1988-04-11;
+$lob-5 (located-birth: $bir-5, birth-location: $loc-cit-2) isa location-of-birth;
+$bir-6 (birthed-child: $per-6) isa birth has birth-date 1989-07-19;
+$lob-6 (located-birth: $bir-6, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-7 (birthed-child: $per-7) isa birth has birth-date 1994-01-28;
+$lob-7 (located-birth: $bir-7, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-8 (birthed-child: $per-8) isa birth has birth-date 1993-11-14;
+$lob-8 (located-birth: $bir-8, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-9 (birthed-child: $per-9) isa birth has birth-date 1983-02-02;
+$lob-9 (located-birth: $bir-9, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-10 (birthed-child: $per-10) isa birth has birth-date 1990-02-02;
+$lob-10 (located-birth: $bir-10, birth-location: $loc-cit-4) isa location-of-birth;
+$bir-11 (birthed-child: $per-11) isa birth has birth-date 1989-07-12;
+$lob-11 (located-birth: $bir-11, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-12 (birthed-child: $per-12) isa birth has birth-date 1992-12-06;
+$lob-12 (located-birth: $bir-12, birth-location: $loc-cit-4) isa location-of-birth;
+$bir-13 (birthed-child: $per-13) isa birth has birth-date 1995-11-21;
+$lob-13 (located-birth: $bir-13, birth-location: $loc-cit-4) isa location-of-birth;
+$bir-14 (birthed-child: $per-14) isa birth has birth-date 1991-12-12;
+$lob-14 (located-birth: $bir-14, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-15 (birthed-child: $per-15) isa birth has birth-date 1982-09-01;
+$lob-15 (located-birth: $bir-15, birth-location: $loc-cit-3) isa location-of-birth;
+$bir-16 (birthed-child: $per-16) isa birth has birth-date 1989-10-20;
+$lob-16 (located-birth: $bir-16, birth-location: $loc-cit-3) isa location-of-birth;
+
+## RESIDENCIES
+$res-1 (resident: $per-1) isa residency has start-date 1990-06-01, has end-date 2007-02-28;
+$lor-1 (located-residence: $res-1, residence: $loc-cit-1) isa location-of-residence;
+$res-2 (resident: $per-1) isa residency has start-date 2007-02-28;
+$lor-2 (located-residence: $res-2, residence: $loc-cit-2) isa location-of-residence;
+$res-3 (resident: $per-2) isa residency has start-date 1991-03-21, has end-date 2007-03-05;
+$lor-3 (located-residence: $res-3, residence: $loc-cit-1) isa location-of-residence;
+$res-4 (resident: $per-2) isa residency has start-date 2007-03-05;
+$lor-4 (located-residence: $res-4, residence: $loc-cit-2) isa location-of-residence;
+$res-5 (resident: $per-3) isa residency has start-date 1989-09-09, has end-date 2009-01-09;
+$lor-5 (located-residence: $res-5, residence: $loc-cit-1) isa location-of-residence;
+$res-6 (resident: $per-3) isa residency has start-date 2009-01-09;
+$lor-6 (located-residence: $res-6, residence: $loc-cit-2) isa location-of-residence;
+$res-7 (resident: $per-4) isa residency has start-date 1992-12-03, has end-date 2011-10-19;
+$lor-7 (located-residence: $res-7, residence: $loc-cit-3) isa location-of-residence;
+$res-8 (resident: $per-4) isa residency has start-date 2011-10-19;
+$lor-8 (located-residence: $res-8, residence: $loc-cit-4) isa location-of-residence;
+$res-9 (resident: $per-5) isa residency has start-date 1988-04-11;
+$lor-9 (located-residence: $res-9, residence: $loc-cit-3) isa location-of-residence;
+$res-10 (resident: $per-6) isa residency has start-date 1989-07-19;
+$lor-10 (located-residence: $res-10, residence: $loc-cit-3) isa location-of-residence;
+$res-11 (resident: $per-7) isa residency has start-date 1994-01-28;
+$lor-11 (located-residence: $res-11, residence: $loc-cit-3) isa location-of-residence;
+$res-12 (resident: $per-8) isa residency has start-date 1993-11-14;
+$lor-12 (located-residence: $res-12, residence: $loc-cit-3) isa location-of-residence;
+$res-13 (resident: $per-9) isa residency has start-date 1983-02-02;
+$lor-13 (located-residence: $res-13, residence: $loc-cit-3) isa location-of-residence;
+$res-14 (resident: $per-10) isa residency has start-date 1990-02-02, has end-date 2002-11-05;
+$lor-14 (located-residence: $res-14, residence: $loc-cit-3) isa location-of-residence;
+$res-15 (resident: $per-10) isa residency has start-date 2002-11-05;
+$lor-15 (located-residence: $res-15, residence: $loc-cit-4) isa location-of-residence;
+$res-16 (resident: $per-11) isa residency has start-date 1989-07-12, has end-date 2015-10-01;
+$lor-16 (located-residence: $res-16, residence: $loc-cit-3) isa location-of-residence;
+$res-17 (resident: $per-11) isa residency has start-date 2015-10-01;
+$lor-17 (located-residence: $res-17, residence: $loc-cit-4) isa location-of-residence;
+$res-18 (resident: $per-12) isa residency has start-date 1992-12-06, has end-date 2016-10-12;
+$lor-18 (located-residence: $res-18, residence: $loc-cit-4) isa location-of-residence;
+$res-19 (resident: $per-12) isa residency has start-date 2016-10-12;
+$lor-19 (located-residence: $res-19, residence: $loc-cit-3) isa location-of-residence;
+$res-20 (resident: $per-13) isa residency has start-date 1995-11-21, has end-date 2009-04-28;
+$lor-20 (located-residence: $res-20, residence: $loc-cit-4) isa location-of-residence;
+$res-21 (resident: $per-13) isa residency has start-date 2009-04-28;
+$lor-21 (located-residence: $res-21, residence: $loc-cit-3) isa location-of-residence;
+$res-22 (resident: $per-14) isa residency has start-date 1991-12-12;
+$lor-22 (located-residence: $res-22, residence: $loc-cit-3) isa location-of-residence;
+$res-23 (resident: $per-15) isa residency has start-date 1982-09-01;
+$lor-23 (located-residence: $res-23, residence: $loc-cit-3) isa location-of-residence;
+$res-24 (resident: $per-16) isa residency has start-date 1989-10-20;
+$lor-24 (located-residence: $res-24, residence: $loc-cit-3) isa location-of-residence;
+
+## ENROLLMENTS
+$sce-1 (student: $per-1, enrolled-course: $cou-1, enrolling-school: $sch-1) isa school-course-enrollment has start-date 2008-03-10, has end-date 2011-11-03, has graduated true;
+$sce-2 (student: $per-2, enrolled-course: $cou-2, enrolling-school: $sch-1) isa school-course-enrollment has start-date 2008-03-10, has end-date 2011-11-03, has graduated true;
+$sce-3 (student: $per-3, enrolled-course: $cou-1, enrolling-school: $sch-1) isa school-course-enrollment has start-date 2009-03-10, has end-date 2012-11-03, has graduated true;
+$sce-4 (student: $per-4, enrolled-course: $cou-2, enrolling-school: $sch-2) isa school-course-enrollment has start-date 2009-07-03, has end-date 2011-09-01, has graduated true;
+$sce-6 (student: $per-6, enrolled-course: $cou-3, enrolling-school: $sch-2) isa school-course-enrollment has start-date 2008-01-01, has end-date 2010-01-01, has graduated true;
+$sce-7 (student: $per-7, enrolled-course: $cou-4, enrolling-school: $sch-2) isa school-course-enrollment has start-date 2012-01-01, has end-date 2015-01-01, has graduated true;
+$sce-8 (student: $per-8, enrolled-course: $cou-4, enrolling-school: $sch-3) isa school-course-enrollment has start-date 2011-07-01, has end-date 2014-07-01, has graduated true;
+$sce-9 (student: $per-9, enrolled-course: $cou-3, enrolling-school: $sch-4) isa school-course-enrollment has start-date 2005-01-01, has end-date 2008-01-01, has graduated true;
+$sce-10 (student: $per-10, enrolled-course: $cou-5, enrolling-school: $sch-5) isa school-course-enrollment has start-date 2009-01-01, has end-date 2013-01-01, has graduated true;
+$sce-11 (student: $per-11, enrolled-course: $cou-6, enrolling-school: $sch-6) isa school-course-enrollment has start-date 2009-01-01, has end-date 2013-01-01, has graduated true;
+$sce-12 (student: $per-12, enrolled-course: $cou-7, enrolling-school: $sch-5) isa school-course-enrollment has start-date 2011-01-01, has end-date 2014-07-01, has graduated true;
+$sce-13 (student: $per-13, enrolled-course: $cou-7, enrolling-school: $sch-5) isa school-course-enrollment has start-date 2014-01-01, has end-date 2017-07-01, has graduated true;
+$sce-15 (student: $per-15, enrolled-course: $cou-8, enrolling-school: $sch-7) isa school-course-enrollment has start-date 2010-01-01, has end-date 2014-07-01, has graduated true;
+$sce-16 (student: $per-16, enrolled-course: $cou-8, enrolling-school: $sch-8) isa school-course-enrollment has start-date 2009-01-01, has end-date 2013-07-01, has graduated true;
+
+## TRAVELS
+$tra-1 (traveler: $per-3) isa travel has start-date 2013-12-22, has end-date 2014-01-02;
+$lot-1 (located-travel: $tra-1, travel-location: $loc-cit-5) isa location-of-travel;
+$tra-2 (traveler: $per-5) isa travel has start-date 2013-12-22, has end-date 2014-01-02;
+$lot-2 (located-travel: $tra-2, travel-location: $loc-cit-5) isa location-of-travel;
+
+$tra-3 (traveler: $per-6) isa travel has start-date 2012-10-10, has end-date 2012-10-14;
+$lot-3 (located-travel: $tra-3, travel-location: $loc-cit-6) isa location-of-travel;
+$tra-4 (traveler: $per-8) isa travel has start-date 2012-10-10, has end-date 2012-10-14;
+$lot-4 (located-travel: $tra-5, travel-location: $loc-cit-6) isa location-of-travel;
+
+$tra-5 (traveler: $per-7) isa travel has start-date 2018-05-10, has end-date 2018-06-11;
+$lot-5 (located-travel: $tra-5, travel-location: $loc-cit-7) isa location-of-travel;
+$tra-6 (traveler: $per-9) isa travel has start-date 2018-05-10, has end-date 2018-06-11;
+$lot-6 (located-travel: $tra-6, travel-location: $loc-cit-7) isa location-of-travel;
+
+$tra-7 (traveler: $per-1) isa travel;
+$lot-7 (located-travel: $tra-7, travel-location: $loc-cit-8) isa location-of-travel;
+$tra-8 (traveler: $per-2) isa travel;
+$lot-8 (located-travel: $tra-8, travel-location: $loc-cit-8) isa location-of-travel;
+$tra-9 (traveler: $per-3) isa travel;
+$lot-9 (located-travel: $tra-9, travel-location: $loc-cit-8) isa location-of-travel;
+
+## EMPLOYMENTS
+$emp-1 (employee: $per-1, employer: $org-1, offered-position: $wpo-1) isa employment has reference-id "r-1", has start-date 2012-01-03;
+$emp-2 (employee: $per-2, employer: $org-1, offered-position: $wpo-2) isa employment has reference-id "r-2", has start-date 2012-01-08;
+$emp-3 (employee: $per-3, employer: $org-1, offered-position: $wpo-1) isa employment has reference-id "r-3", has start-date 2013-02-05;
+$emp-4 (employee: $per-4, employer: $org-1, offered-position: $wpo-2) isa employment has reference-id "r-4", has start-date 2011-12-01;
+$emp-6 (employee: $per-6, employer: $org-1, offered-position: $wpo-1) isa employment has reference-id "r-5", has start-date 2010-02-01;
+$emp-7 (employee: $per-7, employer: $org-3, offered-position: $wpo-1) isa employment has reference-id "r-6", has start-date 2015-04-01;
+$emp-8 (employee: $per-8, employer: $org-4, offered-position: $wpo-3) isa employment has reference-id "r-7", has start-date 2014-09-01;
+$emp-10 (employee: $per-10, employer: $org-2, offered-position: $wpo-5) isa employment has reference-id "r-8", has start-date 2011-06-04;
+$emp-11 (employee: $per-11, employer: $org-2, offered-position: $wpo-5) isa employment has reference-id "r-9", has start-date 2013-06-01;
+$emp-12 (employee: $per-12, employer: $org-3, offered-position: $wpo-6) isa employment has reference-id "r-10", has start-date 2014-07-15;
+$emp-13 (employee: $per-13, employer: $org-4, offered-position: $wpo-6) isa employment has reference-id "r-11", has start-date 2017-07-28;
+$emp-14 (employee: $per-14, employer: $org-4, offered-position: $wpo-7) isa employment has reference-id "r-12", has start-date 2010-01-01;
+$emp-15 (employee: $per-15, employer: $org-5, offered-position: $wpo-8) isa employment has reference-id "r-13", has start-date 2014-05-01;
+$emp-16 (employee: $per-16, employer: $org-5, offered-position: $wpo-8) isa employment has reference-id "r-14", has start-date 2015-01-01;
+
+## SPEAKING OF LANGUAGES
+$sol-1 (speaker: $per-1, spoken: $lan-1) isa speaking-of-language;
+$sol-2 (speaker: $per-2, spoken: $lan-1) isa speaking-of-language;
+$sol-3 (speaker: $per-3, spoken: $lan-1) isa speaking-of-language;
+$sol-4 (speaker: $per-4, spoken: $lan-1) isa speaking-of-language;
+$sol-5 (speaker: $per-4, spoken: $lan-2) isa speaking-of-language;
+$sol-6 (speaker: $per-5, spoken: $lan-1) isa speaking-of-language;
+$sol-7 (speaker: $per-6, spoken: $lan-1) isa speaking-of-language;
+$sol-8 (speaker: $per-7, spoken: $lan-1) isa speaking-of-language;
+$sol-9 (speaker: $per-8, spoken: $lan-1) isa speaking-of-language;
+$sol-10 (speaker: $per-9, spoken: $lan-1) isa speaking-of-language;
+$sol-11 (speaker: $per-10, spoken: $lan-1) isa speaking-of-language;
+$sol-12 (speaker: $per-10, spoken: $lan-2) isa speaking-of-language;
+$sol-13 (speaker: $per-11, spoken: $lan-1) isa speaking-of-language;
+$sol-14 (speaker: $per-11, spoken: $lan-2) isa speaking-of-language;
+$sol-15 (speaker: $per-12, spoken: $lan-1) isa speaking-of-language;
+$sol-16 (speaker: $per-12, spoken: $lan-2) isa speaking-of-language;
+$sol-17 (speaker: $per-13, spoken: $lan-1) isa speaking-of-language;
+$sol-18 (speaker: $per-13, spoken: $lan-2) isa speaking-of-language;
+$sol-19 (speaker: $per-14, spoken: $lan-1) isa speaking-of-language;
+$sol-20 (speaker: $per-15, spoken: $lan-1) isa speaking-of-language;
+$sol-21 (speaker: $per-16, spoken: $lan-1) isa speaking-of-language;
+
+## RELATIONSHIPS
+$mar-1 (wife: $per-3, husband: $per-5) isa marriage has start-date 2010-06-01;
+$dre-1 (partner: $per-6, partner: $per-8) isa domestic-relationship has start-date 2012-10-12;
+$rre-1 (partner: $per-7, partner: $per-9) isa romantic-relationship has start-date 2017-07-03;
+
+## FRIENDSHIPS
+$fri-req-1 (friendship-requester: $per-1, friendship-respondent: $per-2, approved-friendship: $fri-1) isa friend-request has approved-date 2008-03-12;
+$fri-1 (friend: $per-1, friend: $per-2) isa friendship;
+$fri-req-2 (friendship-requester: $per-1, friendship-respondent: $per-3, approved-friendship: $fri-2) isa friend-request has approved-date 2008-03-01;
+$fri-2 (friend: $per-1, friend: $per-3) isa friendship;
+$fri-req-3 (friendship-requester: $per-2, friendship-respondent: $per-3, approved-friendship: $fri-3) isa friend-request has approved-date 2008-04-14;
+$fri-3 (friend: $per-2, friend: $per-3) isa friendship;
+$fri-req-4 (friendship-requester: $per-3, friendship-respondent: $per-5, approved-friendship: $fri-4) isa friend-request has approved-date 2008-03-19;
+$fri-4 (friend: $per-3, friend: $per-5) isa friendship;
+$fri-req-5 (friendship-requester: $per-2, friendship-respondent: $per-4, approved-friendship: $fri-5) isa friend-request has approved-date 2008-03-21;
+$fri-5 (friend: $per-2, friend: $per-4) isa friendship;
+$fri-req-6 (friendship-requester: $per-6, friendship-respondent: $per-8, approved-friendship: $fri-6) isa friend-request has approved-date 2008-04-25;
+$fri-6 (friend: $per-6, friend: $per-8) isa friendship;
+$fri-req-7 (friendship-requester: $per-6, friendship-respondent: $per-7, approved-friendship: $fri-7) isa friend-request has approved-date 2008-03-02;
+$fri-7 (friend: $per-6, friend: $per-7) isa friendship;
+$fri-req-8 (friendship-requester: $per-7, friendship-respondent: $per-8, approved-friendship: $fri-8) isa friend-request has approved-date 2008-03-22;
+$fri-8 (friend: $per-7, friend: $per-9) isa friendship;
+$fri-req-9 (friendship-requester: $per-10, friendship-respondent: $per-11, approved-friendship: $fri-9) isa friend-request has approved-date 2008-04-12;
+$fri-9 (friend: $per-10, friend: $per-11) isa friendship;
+$fri-req-10 (friendship-requester: $per-11, friendship-respondent: $per-13, approved-friendship: $fri-10) isa friend-request has approved-date 2008-03-24;
+$fri-10 (friend: $per-11, friend: $per-13) isa friendship;
+$fri-req-11 (friendship-requester: $per-13, friendship-respondent: $per-12, approved-friendship: $fri-11) isa friend-request has approved-date 2008-03-04;
+$fri-11 (friend: $per-13, friend: $per-12) isa friendship;
+$fri-req-12 (friendship-requester: $per-14, friendship-respondent: $per-15, approved-friendship: $fri-12) isa friend-request has approved-date 2008-03-15;
+$fri-12 (friend: $per-14, friend: $per-15) isa friendship;
+$fri-req-13 (friendship-requester: $per-15, friendship-respondent: $per-16, approved-friendship: $fri-13) isa friend-request has approved-date 2008-04-14;
+$fri-13 (friend: $per-15, friend: $per-16) isa friendship;
+$fri-req-14 (friendship-requester: $per-14, friendship-respondent: $per-15, approved-friendship: $fri-14) isa friend-request has approved-date 2008-03-12;
+$fri-14 (friend: $per-14, friend: $per-15) isa friendship;
