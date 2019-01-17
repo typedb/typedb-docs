@@ -2,6 +2,7 @@
 sidebarTitle: Overview
 pageTitle: Concept API
 permalink: /docs/concept-api/overview
+toc: false
 ---
 
 ## Concept Architecture
