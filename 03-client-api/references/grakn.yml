@@ -18,7 +18,7 @@ methods:
         - "[Client](#client-api-title-client) object"
     java:
       <<: *method-grakn
-      method: "new Grakn(new SimpleURI(host, port))"
+      method: "new Grakn(new SimpleURI(host, port));"
       accepts:
         param1:
           name: host

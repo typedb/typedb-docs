@@ -168,33 +168,37 @@ types:
       - method:
         common: &method-conceptsetmeasure-measurement
           title: Retrieve the numeric value of a centrality computation ## !!! synced with codeKeywordsToLink
-          method: answer.measurement()
         java:
           <<: *method-conceptsetmeasure-measurement
+          method: answer.measurement();
           returns:
             - int
             - float
         javascript:
           <<: *method-conceptsetmeasure-measurement
+          method: answer.measurement();
           returns:
             - number
         python:
           <<: *method-conceptsetmeasure-measurement
+          method: answer.measurement()
           returns:
             - int
             - float
       - method:
         common: &method-conceptsetmeasure-set
           title: Retrive a set of ids of concepts after a centrality computation
-          method: answer.set()
           returns:
             - Set of String
         java:
           <<: *method-conceptsetmeasure-set
+          method: answer.set();
         javascript:
           <<: *method-conceptsetmeasure-set
+          method: answer.set()
         python:
           <<: *method-conceptsetmeasure-set
+          method: answer.set()
       - method:
         java:
           <<: *method-explanation-java
@@ -208,29 +212,33 @@ types:
       - method:
         common: &method-answergroup-owner
           title: Retrieve the concept that is the group owner ## !!! synced with codeKeywordsToLink
-          method: answer.owner()
           returns:
             - "[Concept](/docs/concept-api/concept)"
         java:
           <<: *method-answergroup-owner
+          method: answer.owner();
         javascript:
           <<: *method-answergroup-owner
+          method: answer.owner();
         python:
           <<: *method-answergroup-owner
+          method: answer.owner()
       - method:
         common: &method-answergroup-answers
           title: Retrive the answers of the group
-          method: answer.answers()
         java:
           <<: *method-answergroup-answers
+          method: answer.answers();
           returns:
             - Array of Answer
         javascript:
           <<: *method-answergroup-answers
+          method: answer.answers();
           returns:
             - Array of Answer
         python:
           <<: *method-answergroup-answers
+          method: answer.answers()
           returns:
             - List of Answer
       - method:

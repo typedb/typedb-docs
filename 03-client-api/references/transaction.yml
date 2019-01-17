@@ -74,7 +74,7 @@ methods:
       method: transaction.commit();
       returns:
         - void
-      javascript:
+    javascript:
       <<: *method-commit
       method: 'async transaction.commit()'
       returns:
@@ -91,7 +91,7 @@ methods:
       description: Closes the transaction which has been used to read from the keyspace.
     java:
       <<: *method-close
-      method: transaction.close()
+      method: transaction.close();
       returns:
         - void
     javascript:

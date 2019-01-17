@@ -18,7 +18,7 @@ methods:
         - "[Session](#client-api-title-session) object"
     java:
       <<: *method-session
-      method: 'client.session(Keyspace.of(String keyspace))'
+      method: 'client.session(Keyspace.of(String keyspace));'
       accepts:
         <<: *accepts-session
         param:
@@ -58,7 +58,7 @@ methods:
           default: N/A
     java:
       <<: *method-keyspaces-delete
-      method: 'client.keyspaces().delete(Keyspace.of(String keyspace))'
+      method: 'client.keyspaces().delete(Keyspace.of(String keyspace));'
       accepts: &method-keyspaces-delete-accepts
         param:
           <<: *accepts-keyspaces-delete-keyspace
