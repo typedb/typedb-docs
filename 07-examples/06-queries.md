@@ -52,7 +52,7 @@ get $phone-number;
 
 #### The result:
 
-```lang-javascript
+```lang-nodejs
 [ '+62 107 530 7500', '+370 351 224 5176', '+54 398 559 0423',
   '+7 690 597 4443',  '+263 498 495 0617', '+63 815 962 6097',
   '+81 308 988 7153', '+81 746 154 2598']
@@ -118,7 +118,7 @@ public class Queries {
 [tab:end]
 
 [tab:Node.js]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
 const session = grakn.session("phone_calls");
@@ -220,7 +220,7 @@ get $phone-number;
 
 #### The result:
 
-```lang-javascript
+```lang-nodejs
 [ '+30 419 575 7546',  '+86 892 682 0628', '+1 254 875 4647',
   '+351 272 414 6570', '+33 614 339 0298', '+86 922 760 0418',
   '+86 825 153 5518',  '+48 894 777 5173', '+351 515 605 7915',
@@ -289,7 +289,7 @@ public class Queries {
 [tab:end]
 
 [tab:Node.js]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
 const session = grakn.session("phone_calls");
@@ -392,7 +392,7 @@ get $phone-number;
 
 #### The result:
 
-```lang-javascript
+```lang-nodejs
 ['+86 892 682 0628', '+54 398 559 0423']
 ```
 
@@ -455,7 +455,7 @@ public class Queries {
 [tab:end]
 
 [tab:Node.js]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
 const session = grakn.session("phone_calls");
@@ -559,7 +559,7 @@ get $phone-number-a, $phone-number-b;
 
 #### The result:
 
-```lang-javascript
+```lang-nodejs
 [ '+62 107 530 7500', '+261 860 539 4754', '+81 308 988 7153' ]
 ```
 
@@ -625,7 +625,7 @@ public class Queries {
 [tab:end]
 
 [tab:Node.js]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
 const session = grakn.session("phone_calls");
@@ -847,7 +847,7 @@ public class Queries {
 [tab:end]
 
 [tab:Node.js]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
 const session = grakn.session("phone_calls");

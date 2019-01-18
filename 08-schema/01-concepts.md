@@ -49,7 +49,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define person sub entity;");
 await transaction.commit();
 ```
@@ -99,7 +99,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define person sub entity, has full-name, has nickname, has bio, has gender;");
 await transaction.commit();
 ```
@@ -139,7 +139,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define person sub entity, key email;");
 await transaction.commit();
 ```
@@ -192,7 +192,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define person sub entity, plays employee; organisation sub entity, plays employer;");
 await transaction.commit();
 ```
@@ -258,7 +258,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define post sub entity, plays replied-to, plays tagged-in, plays reacted-to; comment sub post, has content, plays attached-to; media sub post, has caption, has file, plays attached; video sub media; photo sub media;");
 await transaction.commit();
 ```
@@ -311,7 +311,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define post sub entity is-abstract; media sub post is-abstract");
 await transaction.commit();
 ```
@@ -365,7 +365,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define employment sub relationship, relates employee, relates employer;");
 await transaction.commit();
 ```
@@ -429,7 +429,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define friendship sub relationship, relates friend, plays requested-friendship; friend-request sub relationship, relates requested-friendship, relates friendship-requester, relates friendship-respondent; person sub entity, plays friend, plays friendship-requester, plays friendship-respondent;");
 await transaction.commit();
 ```
@@ -490,7 +490,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define reaction sub relationship, relates reacted-emotion, relates reacted-to, relates reacted-by emotion sub attribute datatype string, plays reacted-emotion; post sub entity, plays reacted-to; person sub entity, plays reacted-by;");
 await transaction.commit();
 ```
@@ -541,7 +541,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define friend-request sub relationship, has approved-date, relates requested-friendship, relates friendship-requester, relates friendship-respondent;");
 await transaction.commit();
 ```
@@ -584,7 +584,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;");
 await transaction.commit();
 ```
@@ -648,7 +648,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define location-of-everything sub relationship, relates located-subject, relates subject-location; location-of-birth sub location-of-everything, relates located-birth as located-subject, relates birth-location as subject-location; location-of-residence sub location-of-everything, relates located-residence as located-subject, relates residence as subject-location;");
 await transaction.commit();
 ```
@@ -704,7 +704,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("location-of-everything sub relationship is-abstract, relates located-subject, relates subject-location;");
 await transaction.commit();
 ```
@@ -749,7 +749,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define name sub attribute datatype string;");
 await transaction.commit();
 ```
@@ -807,7 +807,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define start-date sub attribute datatype string; residency sub entity, has start-date; travel sub entity, has start-date;");
 await transaction.commit();
 ```
@@ -855,7 +855,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("phone-number sub attribute datatype string; person sub entity, has phone-number;");
 await transaction.commit();
 ```
@@ -895,7 +895,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, angry]/;");
 await transaction.commit();
 ```
@@ -945,7 +945,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define content sub attribute datatype string, has language; language sub attribute datatype string;");
 await transaction.commit();
 ```
@@ -997,7 +997,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define language sub attribute datatype string, plays spoken; person sub entity, plays speaker; speaking-of-language sub relationship, relates speaker, relates spoken;");
 await transaction.commit();
 ```
@@ -1043,7 +1043,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define event-date sub attribute datatype date; birth-date sub event-date; start-date sub event-date; end-date sub event-date;");
 await transaction.commit();
 ```
@@ -1087,7 +1087,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("define event-date sub attribute is-abstract datatype date;");
 await transaction.commit();
 ```
@@ -1135,7 +1135,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("undefine person has nickname;");
 await transaction.commit();
 ```
@@ -1188,7 +1188,7 @@ transaction.commit();
 [tab:end]
 
 [tab:Javascript]
-```lang-javascript
+```lang-nodejs
 await transaction.query("undefine employment relates employer; company plays employer; employer sub role; employment relates employee; person plays employee; employee sub role; employment sub relationship;");
 await transaction.commit();
 ```

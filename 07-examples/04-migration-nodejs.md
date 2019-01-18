@@ -47,7 +47,7 @@ Pick one of the data formats below and download the files. After you download th
 
 All code that follows is to be written in `phone_calls/migrate.js`.
 
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 
 const inputs = [
@@ -82,7 +82,7 @@ Let’s move on.
 
 ## buildPhoneCallGraph(inputs)
 
-```lang-javascript
+```lang-nodejs
 async function buildPhoneCallGraph(inputs) {
   const grakn = new Grakn("localhost:48555");
   const session = grakn.session("phone_calls");
@@ -105,7 +105,7 @@ What happens in this function, is as follows:
 
 ## loadDataIntoGrakn(input, session)
 
-```lang-javascript
+```lang-nodejs
 async function loadDataIntoGrakn(input, session) {
   const items = await parseDataToObjects(input);
 
@@ -139,7 +139,7 @@ We need 4 of them. Let’s go through them one by one.
 
 ### companyTemplate
 
-```lang-javascript
+```lang-nodejs
 function companyTemplate(company) {
   return `insert $company isa company has name "${company.name}";`;
 }
@@ -148,18 +148,18 @@ function companyTemplate(company) {
 Example:
 
 - Goes in:
-```lang-javascript
+```lang-nodejs
 { name: "Telecom" }
 ```
 
 - Comes out:
-```lang-javascript
+```lang-nodejs
 insert $company isa company has name "Telecom";
 ```
 
 ### personTemplate
 
-```lang-javascript
+```lang-nodejs
 function personTemplate(person) {
   const { first_name, last_name, phone_number, city, age } = person;
 
@@ -187,30 +187,30 @@ function personTemplate(person) {
 Example:
 
 - Goes in:
-```lang-javascript
+```lang-nodejs
 { phone_number: "+44 091 xxx" }
 ```
 
 - Comes out:
-```lang-javascript
+```lang-nodejs
 insert $person has phone-number "+44 091 xxx";
 ```
 
 or:
 
 - Goes in:
-```lang-javascript
+```lang-nodejs
 { firs_name: "Jackie", last_name: "Joe", city: "Jimo", age: 77, phone_number: "+00 091 xxx"}
 ```
 
 - Comes out:
-```lang-javascript
+```lang-nodejs
 insert $person has phone-number "+44 091 xxx" has first-name "Jackie" has last-name "Joe" has city "Jimo" has age 77;
 ```
 
 ### contractTemplate
 
-```lang-javascript
+```lang-nodejs
 function contractTemplate(contract) {
   const { company_name, person_id } = contract;
   // match company
@@ -227,18 +227,18 @@ function contractTemplate(contract) {
 Example:
 
 - Goes in:
-```lang-javascript
+```lang-nodejs
 { company_name: "Telecom", person_id: "+00 091 xxx" }
 ```
 
 - Comes out:
-```lang-javascript
+```lang-nodejs
 match $company isa company has name "Telecom"; $customer isa person has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
 ### callTemplate
 
-```lang-javascript
+```lang-nodejs
 function callTemplate(call) {
   const { caller_id, callee_id, started_at, duration } = call;
 
@@ -257,12 +257,12 @@ function callTemplate(call) {
 Example:
 
 - Goes in:
-```lang-javascript
+```lang-nodejs
 { caller_id: "+44 091 xxx", callee_id: "+00 091 xxx", started_at: 2018–08–10T07:57:51, duration: 148 }
 ```
 
 - Comes out:
-```lang-javascript
+```lang-nodejs
 match $caller isa person has phone-number "+44 091 xxx"; $callee isa person has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018–08–10T07:57:51; $call has duration 148;
 ```
 
@@ -281,7 +281,7 @@ We use [Papaparse](https://www.papaparse.com/), a CSV (or delimited text) parser
 
 Via the terminal, while in the `phone_calls` directory, run `npm install papaparse` and require the module for it.
 
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const fs = require("fs");
 const papa = require("papaparse");
@@ -290,7 +290,7 @@ const papa = require("papaparse");
 
 Moving on, we write the implementation of `parseDataToObjects(input)` for parsing `.csv` files.
 
-```lang-javascript
+```lang-nodejs
 function parseDataToObjects(input) {
   const items = [];
 
@@ -330,7 +330,7 @@ We use [stream-json](https://github.com/uhop/stream-json) for custom JSON proces
 
 Via the terminal, while in the `phone_calls` directory, run `npm install stream-json` and require the modules for it.
 
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const fs = require("fs");
 const { parser } = require("stream-json");
@@ -341,7 +341,7 @@ const { chain } = require("stream-chain");
 
 Moving on, we write the implementation of `parseDataToObjects(input)` for processing `.json` files.
 
-```lang-javascript
+```lang-nodejs
 function parseDataToObjects(input) {
   const items = [];
   return new Promise(function(resolve, reject) {
@@ -368,7 +368,7 @@ We use xml-stream, an xml stream parser.
 
 Via the terminal, while in the `phone_calls` directory, run `npm install xml-stream` and require the module for it.
 
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const fs = require("fs");
 const xmlStream = require("xml-stream");
@@ -377,7 +377,7 @@ const xmlStream = require("xml-stream");
 
 For parsing XML data, we need to know the target tag name. This needs to be specified for each data file in our `inputs` deceleration.
 
-```lang-javascript
+```lang-nodejs
 ...
 const inputs = [
   {
@@ -406,7 +406,7 @@ const inputs = [
 
 And now for the implementation of `parseDataToObjects(input)` for parsing `.xml` files.
 
-```lang-javascript
+```lang-nodejs
 function parseDataToObjects(input) {
   const items = [];
   return new Promise((resolve, reject) => {
@@ -435,7 +435,7 @@ Here is how our `migrate.js` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const fs = require("fs");
 const papa = require("papaparse");
@@ -567,7 +567,7 @@ function parseDataToObjects(input) {
 [tab:end]
 
 [tab:JSON]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const fs = require("fs");
 const { parser } = require("stream-json");
@@ -684,7 +684,7 @@ function parseDataToObjects(input) {
 [tab:end]
 
 [tab:XML]
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const fs = require("fs");
 const xmlStream = require("xml-stream");

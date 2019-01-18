@@ -151,7 +151,7 @@ with client.session(keyspace = "genealogy") as session:
 
 #### Eagerly retrieve the age of all fathers using [Client Node.js](/docs/client-api/nodejs)
 
-```lang-javascript
+```lang-nodejs
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
 
