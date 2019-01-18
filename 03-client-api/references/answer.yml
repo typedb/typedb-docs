@@ -49,7 +49,7 @@ types:
     methods:
       - method:
         common: &method-conceptmap-map
-          title: Retrive a map of Variable => Concept from the ConceptMap answer
+          title: Retrieve a map of Variable => Concept from the ConceptMap answer
           returns:
             - 'Map ({variable_name: [Concept](/docs/concept-api/concept)})'
         java:
@@ -85,7 +85,7 @@ types:
     methods:
       - method:
         common: &method-value-number
-          title: Retrive nummeric value of an aggregate/computed answer
+          title: Retrieve nummeric value of an aggregate/computed answer
         java:
           <<: *method-value-number
           method: answer.number();
@@ -115,7 +115,7 @@ types:
     methods:
       - method:
         common: &method-conceptlist-list
-          title: Retrive ids of all concepts in a ConceptList answer
+          title: Retrieve ids of all concepts in a ConceptList answer
         java:
           <<: *method-conceptlist-list
           method: answer.list();
@@ -143,7 +143,7 @@ types:
     methods:
       - method:
         common: &method-conceptset-set
-          title: Retrive set of ids of concepts after a cluster computation
+          title: Retrieve set of ids of concepts after a cluster computation
           returns:
             - Set of String
         java:
@@ -187,7 +187,7 @@ types:
             - float
       - method:
         common: &method-conceptsetmeasure-set
-          title: Retrive a set of ids of concepts after a centrality computation
+          title: Retrieve a set of ids of concepts after a centrality computation
           returns:
             - Set of String
         java:
@@ -225,7 +225,7 @@ types:
           method: answer.owner()
       - method:
         common: &method-answergroup-answers
-          title: Retrive the answers of the group
+          title: Retrieve the answers of the group
         java:
           <<: *method-answergroup-answers
           method: answer.answers();

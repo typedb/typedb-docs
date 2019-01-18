@@ -106,7 +106,7 @@ methods:
         - None
   - method:
     common: &method-getConcept
-      title: Retrive a concept by ID ## !!! synced with codeKeywordsToLink
+      title: Retrieve a concept by ID ## !!! synced with codeKeywordsToLink
       accepts: &accepts-getConcept
         param 1: &accepts-getConcept-conceptId
           description: The id of the concept to retrieve
@@ -131,7 +131,7 @@ methods:
           name: concept_id
   - method:
     common: &method-getSchemaConcept
-      title: Retrive a schema concept by label ## !!! synced with codeKeywordsToLink
+      title: Retrieve a schema concept by label ## !!! synced with codeKeywordsToLink
       accepts:
         param 1:
           name: label
@@ -149,7 +149,7 @@ methods:
       method: transaction.get_schema_concept(label)
   - method:
     common: &method-getAttributesByValue
-      title: Retrive an attribute by value ## !!! synced with codeKeywordsToLink
+      title: Retrieve an attribute by value ## !!! synced with codeKeywordsToLink
       accepts:
         param:
           name: value

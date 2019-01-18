@@ -74,7 +74,7 @@ methods:
       <<: *method-insertMatch
   - method:
     common: &method-matchGet
-      title: Retrive data instances ## !!! synced with codeKeywordsToLink
+      title: Retrieve data instances ## !!! synced with codeKeywordsToLink
       method: |
         .match(Pattern... patterns).get(Var... vars);
       description: |
