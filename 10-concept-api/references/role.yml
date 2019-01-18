@@ -8,7 +8,7 @@ methods:
       method: role.relationships();
       returns:
         - "Stream of [Relationship](/docs/concept-api/thing?lang=java#relationship-methods) objects"
-    javascript:
+    nodejs:
       <<: *method-relationships
       method: async role.relationships();
       returns:
@@ -27,7 +27,7 @@ methods:
       method: role.players();
       returns:
         - "Stream of [Type](/docs/concept-api/type?lang=java) objects"
-    javascript:
+    nodejs:
       <<: *method-players
       method: async role.players();
       returns:

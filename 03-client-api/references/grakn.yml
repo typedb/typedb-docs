@@ -32,7 +32,7 @@ methods:
           type: int
           required: true
           default: 48555
-    javascript:
+    nodejs:
       <<: *method-grakn
       method: new Grakn(uri, credentials);
       accepts:

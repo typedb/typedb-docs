@@ -12,7 +12,7 @@ methods:
         - Float
         - Boolean
         - Date
-    javascript:
+    nodejs:
       <<: *method-value
       method: async attribute.value();
       return:
@@ -38,7 +38,7 @@ methods:
       method: attribute.owners();
       return:
         - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
-    javascript:
+    nodejs:
       <<: *method-owners
       method: async attribute.owners();
       return:

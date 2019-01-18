@@ -14,7 +14,7 @@ methods:
       method: attributeType.create(Object value);
       returns:
         - "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods) object"
-    javascript:
+    nodejs:
       <<: *method-create
       method: async attributeType.create(value);
       returns:
@@ -40,7 +40,7 @@ methods:
       returns:
         - "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods) object"
         - "null"
-    javascript:
+    nodejs:
       <<: *method-attribute
       method: async attributeType.attribute(value);
       returns:
@@ -60,7 +60,7 @@ methods:
     java:
       <<: *method-datatype
       method: attributeType.dataType();
-    javascript:
+    nodejs:
       <<: *method-datatype
       method: async attributeType.dataType();
     python:
@@ -76,7 +76,7 @@ methods:
       returns:
         - String
         - "null"
-    javascript:
+    nodejs:
       <<: *method-regex-a
       method: async attributeType.regex();
       returns:
@@ -104,7 +104,7 @@ methods:
       method: attributeType.regex(String regex);
       returns:
         - "[AttributeType](/docs/concept-api/type?lang=java#attributetype-methods) object"
-    javascript:
+    nodejs:
       <<: *method-regex-b
       method: async attributeType.regex(regex);
       returns:

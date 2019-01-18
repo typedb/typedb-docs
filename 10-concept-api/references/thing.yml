@@ -8,7 +8,7 @@ methods:
     java:
       <<: *method-type
       method: thing.type();
-    javascript:
+    nodejs:
       <<: *method-type
       method: async thing.type();
     python:
@@ -33,7 +33,7 @@ methods:
           type: "Array of [Role](/docs/concept-api/type?lang=java#role-methods)s"
       returns:
         - "Stream of [Relationship](/docs/concept-api/thing?lang=java#relationship-methods) objects"
-    javascript:
+    nodejs:
       <<: *method-relationships
       method: async thing.relationships(roles);
       accepts:
@@ -60,7 +60,7 @@ methods:
       method: thing.roles();
       returns:
         - "Stream of [Role](/docs/concept-api/type?lang=java#role-methods) objects"
-    javascript:
+    nodejs:
       <<: *method-roles
       method: async thing.roles();
       returns:
@@ -90,7 +90,7 @@ methods:
           type: "Array of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)s"
       returns:
         - "Stream of [Attribute](/docs/concept-api/thing?lang=java#attribute-methods) objects"
-    javascript:
+    nodejs:
       <<: *method-attributes
       method: async thing.attributes();
       accepts:
@@ -130,7 +130,7 @@ methods:
           type: "Array of [AttributeType](/docs/concept-api/type?lang=java#attributetype-methods)s"
       returns:
         - "Stream of [Attribute](/docs/concept-api/thing?lang=java#attribute-methods) objects"
-    javascript:
+    nodejs:
       <<: *method-keys
       method: async thing.keys();
       accepts:
@@ -169,7 +169,7 @@ methods:
           type: "[Attribute](/docs/concept-api/thing?lang=java#attribute-methods)"
       returns:
         - "[Thing](/docs/concept-api/thing?lang=java) object"
-    javascript:
+    nodejs:
       <<: *method-has
       method: async thing.has(attribute);
       accepts:
@@ -203,7 +203,7 @@ methods:
       method: thing.unhas(Attribute attribute);
       returns:
         - "[Thing](/docs/concept-api/thing?lang=java) object"
-    javascript:
+    nodejs:
       <<: *method-unhas
       method: async thing.unhas(attribute);
       returns:
@@ -222,7 +222,7 @@ methods:
     java:
       <<: *method-isInferred
       method: thing.isInferred();
-    javascript:
+    nodejs:
       <<: *method-isInferred
       method: async thing.isInferred();
     python:

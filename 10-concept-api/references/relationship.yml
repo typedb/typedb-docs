@@ -8,7 +8,7 @@ methods:
       method: relationship.rolePlayersMap();
       returns:
         - 'Map<[Role](/docs/concept-api/type?lang=java#role-methods), Set<[Thing](/docs/concept-api/thing?lang=java#thing-methods)>>'
-    javascript:
+    nodejs:
       <<: *method-rolePlayersMap
       method: async relationship.rolePlayersMap();
       returns:
@@ -37,7 +37,7 @@ methods:
           type: "[Role](/docs/concept-api/type?lang=java#role-methods)"
       returns:
         - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
-    javascript:
+    nodejs:
       <<: *method-rolePlayers
       method: async relationship.rolePlayers(role);
       accepts:
@@ -83,7 +83,7 @@ methods:
           type: "[Thing](/docs/concept-api/thing?lang=java)"
       returns:
         - '[Relationship](/docs/concept-api/thing#relationship-methods) object'
-    javascript:
+    nodejs:
       <<: *method-assign
       method: async relationship.assign(role, thing);
       accepts:
@@ -135,7 +135,7 @@ methods:
           type: "[Thing](/docs/concept-api/thing?lang=java)"
       returns:
         - '[Relationship](/docs/concept-api/thing#relationship-methods) object'
-    javascript:
+    nodejs:
       <<: *method-unassign
       method: async relationship.unassign(role, thing);
       accepts:

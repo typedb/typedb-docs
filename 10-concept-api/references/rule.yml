@@ -8,7 +8,7 @@ methods:
     java:
       <<: *method-when
       method: rule.when();
-    javascript:
+    nodejs:
       <<: *method-when
       method: async rule.getWhen();
     python:
@@ -23,7 +23,7 @@ methods:
     java:
       <<: *method-then
       method: rule.then();
-    javascript:
+    nodejs:
       <<: *method-then
       method: async rule.get_then();
     python:

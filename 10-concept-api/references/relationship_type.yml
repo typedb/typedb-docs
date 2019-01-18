@@ -7,7 +7,7 @@ methods:
       method: relationshipType.create();
       returns:
         - "[Relationship](/docs/concept-api/thing?lang=java#relationship-methods) object"
-    javascript:
+    nodejs:
       <<: *method-create
       method: async relationshipType.create();
       returns:
@@ -25,7 +25,7 @@ methods:
       method: relationshipType.roles();
       returns:
         - "Stream of [Role](/docs/concept-api/type?javalang=#role-methods) objects"
-    javascript:
+    nodejs:
       <<: *method-roles
       method: async relationshipType.roles();
       returns:
@@ -50,7 +50,7 @@ methods:
       method: relationshipType.relates(Role role);
       returns:
         - "[RelationshipType](/docs/concept-api/type?lang=java#relationshiptype-methods) object"
-    javascript:
+    nodejs:
       <<: *method-relates
       method: async relationshipType.relates(role);
       returns:
@@ -76,7 +76,7 @@ methods:
       method: relationshipType.unrelate(Role role);
       returns:
         - "[RelationshipType](/docs/concept-api/type?lang=java#relationshiptype-methods) object"
-    javascript:
+    nodejs:
       <<: *method-unrelate
       method: async relationshipType.unrelate(role);
       returns:

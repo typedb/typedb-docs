@@ -7,7 +7,7 @@ description:
   java: >
     The type of answers returned by execution of a query depends on the type of query executed.
     The table below illustrates the answer types mapped to query types.
-  javascript: *common-description
+  nodejs: *common-description
   python: *common-description
 mappings:
   -
@@ -56,7 +56,7 @@ types:
           <<: *method-conceptmap-map
           method: answer.map();
           description: Produces a Map where keys are variable names and values are concepts
-        javascript:
+        nodejs:
           <<: *method-conceptmap-map
           method: answer.map();
           description: Produces a Javascript object where keys are variable names and values are concepts
@@ -74,7 +74,7 @@ types:
         java: &method-explanation-java
           <<: *method-explanation
           method: answer.explanation();
-        javascript: &method-explanation-javascript
+        nodejs: &method-explanation-javascript
           <<: *method-explanation
           method: answer.explanation();
         python: &method-explanation-python
@@ -92,7 +92,7 @@ types:
           returns:
             - int
             - float
-        javascript:
+        nodejs:
           <<: *method-value-number
           method: answer.number();
           returns:
@@ -106,7 +106,7 @@ types:
       - method:
         java:
           <<: *method-explanation-java
-        javascript:
+        nodejs:
           <<: *method-explanation-javascript
         python:
           <<: *method-explanation-python
@@ -121,7 +121,7 @@ types:
           method: answer.list();
           returns:
             - Array of String
-        javascript:
+        nodejs:
           <<: *method-conceptlist-list
           method: answer.list();
           returns:
@@ -134,7 +134,7 @@ types:
       - method:
         java:
           <<: *method-explanation-java
-        javascript:
+        nodejs:
           <<: *method-explanation-javascript
         python:
           <<: *method-explanation-python
@@ -149,7 +149,7 @@ types:
         java:
           <<: *method-conceptset-set
           method: answer.set();
-        javascript:
+        nodejs:
           <<: *method-conceptset-set
           method: answer.set();
         python:
@@ -158,7 +158,7 @@ types:
       - method:
         java:
           <<: *method-explanation-java
-        javascript:
+        nodejs:
           <<: *method-explanation-javascript
         python:
           <<: *method-explanation-python
@@ -174,7 +174,7 @@ types:
           returns:
             - int
             - float
-        javascript:
+        nodejs:
           <<: *method-conceptsetmeasure-measurement
           method: answer.measurement();
           returns:
@@ -193,7 +193,7 @@ types:
         java:
           <<: *method-conceptsetmeasure-set
           method: answer.set();
-        javascript:
+        nodejs:
           <<: *method-conceptsetmeasure-set
           method: answer.set()
         python:
@@ -202,7 +202,7 @@ types:
       - method:
         java:
           <<: *method-explanation-java
-        javascript:
+        nodejs:
           <<: *method-explanation-javascript
         python:
           <<: *method-explanation-python
@@ -217,7 +217,7 @@ types:
         java:
           <<: *method-answergroup-owner
           method: answer.owner();
-        javascript:
+        nodejs:
           <<: *method-answergroup-owner
           method: answer.owner();
         python:
@@ -231,7 +231,7 @@ types:
           method: answer.answers();
           returns:
             - Array of Answer
-        javascript:
+        nodejs:
           <<: *method-answergroup-answers
           method: answer.answers();
           returns:
@@ -244,7 +244,7 @@ types:
       - method:
         java:
           <<: *method-explanation-java
-        javascript:
+        nodejs:
           <<: *method-explanation-javascript
         python:
           <<: *method-explanation-python
@@ -259,7 +259,7 @@ types:
         java:
           <<: *method-explanation-querypattern
           method: answer.query_pattern();
-        javascript:
+        nodejs:
           <<: *method-explanation-querypattern
           method: answer.queryPattern();
         python:
@@ -274,7 +274,7 @@ types:
           <<: *method-explanation-answers
           returns:
             - Array of [Answer](#client-api-title-answer)
-        javascript:
+        nodejs:
           <<: *method-explanation-answers
           returns:
             - Array of [Answer](#client-api-title-answer)
