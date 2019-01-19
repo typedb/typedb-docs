@@ -74,7 +74,7 @@ types:
         java: &method-explanation-java
           <<: *method-explanation
           method: answer.explanation();
-        nodejs: &method-explanation-javascript
+        nodejs: &method-explanation-nodejs
           <<: *method-explanation
           method: answer.explanation();
         python: &method-explanation-python
@@ -107,7 +107,7 @@ types:
         java:
           <<: *method-explanation-java
         nodejs:
-          <<: *method-explanation-javascript
+          <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
   - type3:
@@ -135,7 +135,7 @@ types:
         java:
           <<: *method-explanation-java
         nodejs:
-          <<: *method-explanation-javascript
+          <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
   - type4:
@@ -159,7 +159,7 @@ types:
         java:
           <<: *method-explanation-java
         nodejs:
-          <<: *method-explanation-javascript
+          <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
   - type5:
@@ -203,7 +203,7 @@ types:
         java:
           <<: *method-explanation-java
         nodejs:
-          <<: *method-explanation-javascript
+          <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
   - type6:
@@ -245,7 +245,7 @@ types:
         java:
           <<: *method-explanation-java
         nodejs:
-          <<: *method-explanation-javascript
+          <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
   - type7:

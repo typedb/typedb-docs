@@ -15,7 +15,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.type language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
@@ -34,7 +34,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.entity_type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.entity_type language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
@@ -53,7 +53,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.attribute_type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.attribute_type language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
@@ -72,7 +72,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relationship_type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.relationship_type language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
@@ -112,7 +112,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 - [sups();](?lang=javascript#concept-api-nodejs-method-retrieve-all-supertypes)
 - [subs();](?lang=javascript#concept-api-nodejs-method-retrieve-all-subtypes)
 </div>
-{% include api/generic.html data=site.data.concept_api.role language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.role language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]

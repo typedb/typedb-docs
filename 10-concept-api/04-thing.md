@@ -15,7 +15,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.thing language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.thing language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
@@ -34,7 +34,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.attribute language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.attribute language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
@@ -53,7 +53,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relationship language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.relationship language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]

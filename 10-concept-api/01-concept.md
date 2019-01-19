@@ -15,7 +15,7 @@ toc: false
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.concept language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.concept language="nodejs" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
