@@ -4,6 +4,11 @@ pageTitle: Schema Concepts
 permalink: /docs/schema/concepts
 ---
 
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing a query that defines or undefines a a schema concept, is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+</div>
+
 <!-- !!! synced with codeKeywordsToLink -->
 ## Define
 As the name suggests, we use the `define` keyword to develop the [schema](/docs/schema/overview) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relationships, attributes and rules to the schema.
@@ -47,20 +52,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define person sub entity;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define person sub entity;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 <div class="note">
@@ -97,20 +88,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define person sub entity, has full-name, has nickname, has bio, has gender;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define person sub entity, has full-name, has nickname, has bio, has gender;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 To assign a unique attribute to an entity, we use the `key` keyword followed by the attribute's label.
@@ -136,20 +113,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define person sub entity, key email;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define person sub entity, key email;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -189,20 +152,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define person sub entity, plays employee; organisation sub entity, plays employer;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define person sub entity, plays employee; organisation sub entity, plays employer;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -256,19 +205,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define post sub entity, plays replied-to, plays tagged-in, plays reacted-to; comment sub post, has content, plays attached-to; media sub post, has caption, has file, plays attached; video sub media; photo sub media;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define post sub entity, plays replied-to, plays tagged-in, plays reacted-to; comment sub post, has content, plays attached-to; media sub post, has caption, has file, plays attached; video sub media; photo sub media;")
-```
-[tab:end]
 </div>
 
 As you can see in the example above, when defining entities, what follows the `sub` keyword can be a label previously given to another entity. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent.
@@ -309,21 +245,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define post sub entity is-abstract; media sub post is-abstract");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define post sub entity is-abstract; media sub post is-abstract")
-transaction.commit()
-```
-[tab:end]
-
 </div>
 
 ## Relationship
@@ -362,20 +283,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define employment sub relationship, relates employee, relates employer;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define employment sub relationship, relates employee, relates employer;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -427,20 +334,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define friendship sub relationship, relates friend, plays requested-friendship; friend-request sub relationship, relates requested-friendship, relates friendship-requester, relates friendship-respondent; person sub entity, plays friend, plays friendship-requester, plays friendship-respondent;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define friendship sub relationship, relates friend, plays requested-friendship; friend-request sub relationship, relates requested-friendship, relates friendship-requester, relates friendship-respondent; person sub entity, plays friend, plays friendship-requester, plays friendship-respondent;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 In the example above, the `friendship` relationship plays the role of the `requested-friendship` in the `friend-request` relationship. The other two roleplayers in a `friend-request` are 1) the `person` who plays the `friendship-requester` role and 2) another `person` whole plays the `friendship-respondent` role.
@@ -488,20 +381,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define reaction sub relationship, relates reacted-emotion, relates reacted-to, relates reacted-by emotion sub attribute datatype string, plays reacted-emotion; post sub entity, plays reacted-to; person sub entity, plays reacted-by;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define reaction sub relationship, relates reacted-emotion, relates reacted-to, relates reacted-by emotion sub attribute datatype string, plays reacted-emotion; post sub entity, plays reacted-to; person sub entity, plays reacted-by;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 In the example above, the `reaction` relationship relates to three roles:
@@ -539,20 +418,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define friend-request sub relationship, has approved-date, relates requested-friendship, relates friendship-requester, relates friendship-respondent;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define friend-request sub relationship, has approved-date, relates requested-friendship, relates friendship-requester, relates friendship-respondent;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 To assign a unique attribute to a relationship, we use the `key` keyword followed by the attribute's label.
@@ -581,20 +446,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define employment sub relationship, key reference-id, relates employer, relates employee;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -646,20 +497,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define location-of-everything sub relationship, relates located-subject, relates subject-location; location-of-birth sub location-of-everything, relates located-birth as located-subject, relates birth-location as subject-location; location-of-residence sub location-of-everything, relates located-residence as located-subject, relates residence as subject-location;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define location-of-everything sub relationship, relates located-subject, relates subject-location; location-of-birth sub location-of-everything, relates located-birth as located-subject, relates birth-location as subject-location; location-of-residence sub location-of-everything, relates located-residence as located-subject, relates residence as subject-location;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 As you can see in the example above, when defining relationships, what follows the `sub` keyword can be a label previously given to another relationship. By subtyping a parent relationship, the children inherit all attributes owned and roles played by their parent.
@@ -702,21 +539,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("location-of-everything sub relationship is-abstract, relates located-subject, relates subject-location;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("location-of-everything sub relationship is-abstract, relates located-subject, relates subject-location;")
-transaction.commit()
-```
-[tab:end]
-
 </div>
 
 
@@ -746,20 +568,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define name sub attribute datatype string;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define name sub attribute datatype string;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -805,20 +613,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define start-date sub attribute datatype string; residency sub entity, has start-date; travel sub entity, has start-date;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define start-date sub attribute datatype string; residency sub entity, has start-date; travel sub entity, has start-date;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 <div class="note">
@@ -853,20 +647,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("phone-number sub attribute datatype string; person sub entity, has phone-number;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("phone-number sub attribute datatype string; person sub entity, has phone-number;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 An instance of a `person` can have one instance of `phone-number`, or two or three, ... you get the idea.
@@ -892,20 +672,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, angry]/;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, angry]/;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -942,20 +708,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define content sub attribute datatype string, has language; language sub attribute datatype string;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define content sub attribute datatype string, has language; language sub attribute datatype string;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -995,20 +747,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define language sub attribute datatype string, plays spoken; person sub entity, plays speaker; speaking-of-language sub relationship, relates speaker, relates spoken;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define language sub attribute datatype string, plays spoken; person sub entity, plays speaker; speaking-of-language sub relationship, relates speaker, relates spoken;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 ### Subtype an attribute
@@ -1041,20 +779,6 @@ transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define event-date sub attribute datatype date; birth-date sub event-date; start-date sub event-date; end-date sub event-date;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define event-date sub attribute datatype date; birth-date sub event-date; start-date sub event-date; end-date sub event-date;")
-transaction.commit()
-```
-[tab:end]
 </div>
 
 What this definition means is that `birth-date`, `start-date` and `end-date` are all inherently subtypes of `event-date`. They inherit the datatype of `event-name` as well as its contextuality.
@@ -1084,20 +808,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("define event-date sub attribute is-abstract datatype date;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("define event-date sub attribute is-abstract datatype date;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -1132,20 +842,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("undefine person has nickname;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("undefine person has nickname;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
@@ -1185,20 +881,6 @@ query.withTx(transaction).execute();
 transaction.commit();
 ```
 <!-- 1.5 transaction.execute(query.toString()); -->
-[tab:end]
-
-[tab:Javascript]
-```lang-nodejs
-await transaction.query("undefine employment relates employer; company plays employer; employer sub role; employment relates employee; person plays employee; employee sub role; employment sub relationship;");
-await transaction.commit();
-```
-[tab:end]
-
-[tab:Python]
-```lang-python
-transaction.query("undefine employment relates employer; company plays employer; employer sub role; employment relates employee; person plays employee; employee sub role; employment sub relationship;")
-transaction.commit()
-```
 [tab:end]
 </div>
 
