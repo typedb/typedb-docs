@@ -100,9 +100,9 @@ Given the dependent nature of relationships, inserting an instance of a relation
 [tab:Graql]
 ```lang-graql
 match
-  $company isa company has name "Facelook";
+  $org isa organisation has name "Facelook";
   $person isa person id V8272;
-insert $new-employment (employer: $company, employee: $person) isa employment;
+insert $new-employment (employer: $org, employee: $person) isa employment;
   $new-employment key reference-id "WGFTSH";
 ```
 [tab:end]
@@ -110,10 +110,10 @@ insert $new-employment (employer: $company, employee: $person) isa employment;
 [tab:Java]
 ```lang-java
 InsertQuery query = Graql.match(
-  var("c").isa("company").has("name", "Facelook"),
+  var("org").isa("organisation").has("name", "Facelook"),
   var("p").isa("person").id(ConceptId.of("V8272"))
 ).insert(
-  var("emp").isa("employment").rel("employer", "c").rel("employee", "p").has("reference-id", "WGFTSH"),
+  var("emp").isa("employment").rel("employer", "org").rel("employee", "p").has("reference-id", "WGFTSH"),
 );
 
 transaction.execute(query.toString());
@@ -123,7 +123,7 @@ transaction.commit();
 </div>
 
 This `match insert` query:
-1. Matches the `company` that plays `employer`, assigned to variable `$c`.
+1. Matches the `organisation` that plays `employer`, assigned to variable `$c`.
 2. Matches the `person` that plays `employee`, assigned to variable `$p`.
 3. Inserts an `employment` relationship with `$c` and `$p` as its roleplayers, assigned to variable `$emp`.
 4. Inserts the ownership of `reference-id` with value `WGFTSH` by to the `$emp` relationship instance.
