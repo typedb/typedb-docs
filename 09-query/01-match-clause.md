@@ -57,14 +57,14 @@ To only match the instances of entities that own a specific attribute, we use th
 
 [tab:Graql]
 ```lang-graql
-match $p isa person has name $n; get;
+match $p isa person has full-name $n; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("p").isa("person").has("name", var("n"))
+  var("p").isa("person").has("full-name", var("n"))
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -156,14 +156,14 @@ We can always chose to not include the lable of roles when matching a relationsh
 
 [tab:Graql]
 ```lang-graql
-match $fr ($x, $y, $z) isa friendship; get;
+match $fr ($x, $y) isa friendship; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = query_builder.match(
-  var("fr").isa("friendship").rel("x").rel("y").rel("z"),
+  var("fr").isa("friendship").rel("x").rel("y"),
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -182,14 +182,14 @@ We can match instances of attributes type based on their value regardless of the
 
 [tab:Graql]
 ```lang-graql
-match $x "some value"; get;
+match $x "like"; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("x").val("some value")
+  var("x").val("like")
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -198,7 +198,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-This matches instances of any attribute type whose value is `"some value"` and assigns each to variable `$x`.
+This matches instances of any attribute type whose value is `"like"` and assigns each to variable `$x`.
 
 #### Independent of owner
 We can match instances of attributes based on their value regardless of what concept type they belong to.
@@ -207,14 +207,14 @@ We can match instances of attributes based on their value regardless of what con
 
 [tab:Graql]
 ```lang-graql
-match $n isa name "John"; get;
+match $n isa nickname "Mitzi"; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("x").isa("name").val("John")
+  var("x").isa("nickname").val("Mitzi")
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -223,7 +223,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-This matches instances of attribute with label of `name` and value of `"John"`, regardless of what owns the attribute `name`.
+This matches instances of attribute with label of `nickname` and value of `"Mitzi"`, regardless of what owns the attribute `nickname`.
 
 #### With a given subset
 To match all instances of attribute types that contain a substring, we use the `contains` keyword.
@@ -257,14 +257,14 @@ The value of an attribute can also be matched using a regex.
 
 [tab:Graql]
 ```lang-graql
-match $x /.*(Mary|Barbara).*/; get;
+match $x /.*(Miriam Morton|Solomon Tran).*/; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("phone-number").val(Predicates.regex("/.*(Mary|Barbara).*/"))
+  var("phone-number").val(Predicates.regex("/.*(Miriam Morton|Solomon Tran).*/"))
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -273,7 +273,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-This matches the instances of any attribute type whose value matches the given regex - `"Mary"` or `"Barbara"`.
+This matches the instances of any attribute type whose value matches the given regex - `"Miriam Morton"` or `"Solomon Tran"`.
 
 #### Owners with multiple attributes
 To match instances of a concept type that owns multiple attributes, we can simply chain triples of `has`, label and variable. Separating each triple with a comma is optional.
@@ -282,7 +282,7 @@ To match instances of a concept type that owns multiple attributes, we can simpl
 
 [tab:Graql]
 ```lang-graql
-match $p isa person has first-name $fn, has last-name $ln; get;
+match $p isa person has nickname $nn, has last-name $ln; get;
 ```
 [tab:end]
 
@@ -305,14 +305,14 @@ We can also match instances that own an attribute with a specific value.
 
 [tab:Graql]
 ```lang-graql
-match $p isa person has first-name "John" has age < 25; get;
+match $p isa person has nickname "Mitzi" has phone-number contains "+44"; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("p").isa("person").has("first-name", "John").has("age", Predicates.lt(25))
+  var("p").isa("person").has("nickname", "Mitzi").has("phone-number", Predicates.contains("+44"))
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -327,15 +327,15 @@ But if in this example, we still want to know how old exactly each John is? we c
 
 [tab:Graql]
 ```lang-graql
-match $p isa person has first-name "John" has age $a; $a < 25; get;
+match $p isa person has nickname "Mitzi" has phone-number $pn; $pn contains "+44"; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("p").isa("person").has("name", "John").has("age", var("a")),
-  var("a").val(Predicates.lt(25))
+  var("p").isa("person").has("nickname", "Mitzi").has("phone-number", var("pn")),
+  var("pn").val(Predicates.contains("+44"))
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -351,7 +351,7 @@ By default a collection of patterns in a `match` clause constructs a conjunction
 
 [tab:Graql]
 ```lang-graql
-match $p isa person has full-name $fn; { $fn contains "Elizabeth"; } or { $fn contains "Mary"; }; get;
+match $p isa person has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get;
 ```
 [tab:end]
 
@@ -359,7 +359,7 @@ match $p isa person has full-name $fn; { $fn contains "Elizabeth"; } or { $fn co
 ```lang-java
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn")),
-  var("fn").val(Predicates.contains("Elizabeth")).or(var("fn").val(Predicates.contains("Mary")))
+  var("fn").val(Predicates.contains("Miriam")).or(var("fn").val(Predicates.contains("Solomon")))
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -375,14 +375,14 @@ The type that an instance belongs to may be a subtype of another. This means whe
 
 [tab:Graql]
 ```lang-graql
-match $o isa! organisation; get;
+match $rr isa! romantic-relationship; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("o").isaExplicit("organisation")
+  var("rr").isaExplicit("romantic-relationship")
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -391,7 +391,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-The matches only the direct instances of `organisation`. That means the instances of `company` and `university` (which subtype `organisation`) would not be included.
+This query matches only the direct instances of `romantic-relationship`. That means the instances of `open-relationship`, `domestic-relationship` and `complicated-relationship` (which all subtype `romantic-relationship`) would not be included.
 
 ### One particular instance
 To match a particular instance with the given ID, we use the `id` keyword followed by the `id` assigned to the instance by Grakn.
@@ -506,15 +506,15 @@ When we learned about [subtyping relationships](/docs/schema/concepts#subtype-a-
 
 [tab:Graql]
 ```lang-graql
-match employment relates $x as member; get;
+match location-of-office relates $x as located-subject; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  label("employment").relates(var("x")),
-  var("x").sub("member")
+  label("location-of-office").relates(var("x")),
+  var("x").sub("located-subject")
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -523,7 +523,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-This matches all the roles that correspond to the `member` role of the relationship which `employment` subtypes. In this case, the super-relationship being `membership` and the matched role being `employee`.
+This matches all the roles that correspond to the `located-subject` role of the relationship which `location-of-office` subtypes. In this case, the super-relationship being `location-of-everything` and the matched role being `located-subject`.
 
 ### Roleplayers of a given role
 Given a role, we can match the concept types that play the given role by using the `plays` keyword.
@@ -557,14 +557,14 @@ Given an attribute type, we can match the concept types that own the given attri
 
 [tab:Graql]
 ```lang-graql
-match $x has name; get;
+match $x has title; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("x").has("name")
+  var("x").has("title")
 ).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
@@ -573,7 +573,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-This matches all concept types that own `name` as their attribute.
+This matches all concept types that own `title` as their attribute.
 
 ## Examples
 To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](/docs/examples/queries).
