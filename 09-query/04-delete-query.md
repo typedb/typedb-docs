@@ -46,7 +46,7 @@ To delete an instance of a relationship type, similar to deleting an entity type
 [tab:Graql]
 ```lang-graql
 match
-  $org isa organisation has name "Black House";
+  $org isa organisation has name "Pharos";
   $emp (employer: $org, employee: $p) isa employment;
 $delete $emp;
 ```
@@ -55,7 +55,7 @@ $delete $emp;
 [tab:Java]
 ```lang-java
 DeleteQuery query = Graql.match(
-  var("org").isa("organisation").has("name", "Black House"),
+  var("org").isa("organisation").has("name", "Pharos"),
   var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
 ).delete("emp");
 
@@ -69,7 +69,7 @@ transaction.commit(); -->
 [tab:end]
 </div>
 
-This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Black House"`.
+This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Pharos"`.
 
 ## Delete Associations with Attributes
 Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](/docs/schema/concepts#define-an-attribute) in a Grakn knowledge graph prior to performing `delete` queries on them.
@@ -80,18 +80,16 @@ To delete only the association that a thing has with an attribute, we use the `v
 
 [tab:Graql]
 ```lang-graql
-match $c isa car has colour "red" via $r; delete $r;
+match $t isa travel has start-date 2013-12-22 via $r; delete $r;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 DeleteQuery query = Graql.match(
-  var("ca").isa("car").has(Label.of("colour"), var("co"), var("r")),
-  var("co").val("red")
+  var("t").isa("travel").has(Label.of("start-date"), var("st"), var("r")),
+  var("st").val(LocalDate.of(2013, 12, 22).atStartOfDay())
 ).delete("r");
-
-);
 
 query.withTx(transaction).execute();
 transaction.commit();
@@ -101,9 +99,9 @@ transaction.commit(); -->
 [tab:end]
 </div>
 
-This looks for a `car` that owns the attribute `colour` with the value of `"red"`, captures the association between the attribute and the owner as the variable `$r` and finally deletes `$r`. This ensures that the attribute instance of type `colour` and value `"red"` remains associated with any other instance that may own it.
+This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22`, captures the association between the attribute and the owner as the variable `$r` and finally deletes `$r`. This ensures that the attribute instance of type `start-date` and value `2013-12-22` remains associated with any other instance that may own it.
 
-If we had instead written the query as `match $c isa car has colour $c;  $c == "red"; delete $c;`, we would have deleted the instance of colour with value `"red"` and its association with all other concept types that previously owned it.
+If we had instead written the query as `match $t isa travel has start-date $st;  $st == 2013-12-22"; delete $st;`, we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
 
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.
