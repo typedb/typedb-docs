@@ -20,22 +20,22 @@ In most cases, a concept type is expected to own only one instance of an attribu
 [tab:Graql]
 ```lang-graql
 ## deleting the old
-match $comp isa company id V17391 has registration-number via $r; delete $r;
+match $org isa organisation id V17391 has registration-number via $r; delete $r;
 
 ## inserting the new
-insert $comp isa company id V17391 has registration-number "81726354";
+insert $org isa organisation id V17391 has registration-number "81726354";
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 DeleteQuery delete_query = Graql.match(
-  var("comp").isa("company").id(ConceptId.of("V17391")).has(Label.of("registration-number"), var("rn"), var("r"))
+  var("org").isa("organisation").id(ConceptId.of("V17391")).has(Label.of("registration-number"), var("rn"), var("r"))
 ).delete("r");
 
 
 InsertQuery insert_query = Graql.insert(
-  var("comp").isa("company").id(ConceptId.of("V17391")).has("registration-number", "81726354")
+  var("org").isa("organisation").id(ConceptId.of("V17391")).has("registration-number", "81726354")
 );
 
 delete_query.withTx(transaction).execute();
@@ -49,7 +49,7 @@ transaction.commit(); -->
 [tab:end]
 </div>
 
-This query first deletes the association that the `company` with id `V17391` has with the instance of the `registration-number` attribute type by using the `via` keyword and then continues to insert the new instance of the `registration-number` to be owned by the same instance of `company`.
+This query first deletes the association that the `organisation` with id `V17391` has with the instance of the `registration-number` attribute type by using the `via` keyword and then continues to insert the new instance of the `registration-number` to be owned by the same instance of `organisation`.
 
 
 ### Update all instances of a given attribute
@@ -59,22 +59,25 @@ There may also be cases where we need to update the value of all instances of an
 
 [tab:Graql]
 ```lang-graql
-match $x isa thing has colour "maroon"; insert $x has colour "red";
-match $c isa colour "maroon"; delete $c;
+match $m isa media has caption $c; $c contains "inappropriate word"; insert $m has caption "deleted";
+match $c isa caption; $c contains "inappropriate word"; delete $c;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
-InsertQuery insert_query = Graql.match(
-  var("x").isa("thing").has("colour", "maroon")
+InsertQuery query = Graql.match(
+  var("m").isa("media").has("caption", var("c")),
+  var("c").val(Predicates.contains("inappropriate word"))
 ).insert(
-  var("x").has("colour", "red")
+  var("m").has("caption", "deleted")
 );
 
 DeleteQuery delete_query = Graql.match(
-  var("c").isa("colour").val("maroon")
-).delete("c");
+  var("c").isa("caption").val(Predicates.contains("inappropriate word"))
+).delete(
+  var("c")
+);
 
 insert_query.withTx(transaction).execute();
 delete_query.withTx(transaction).execute();
@@ -87,7 +90,7 @@ transaction.commit(); -->
 [tab:end]
 </div>
 
-This query first looks for any instance that owns the `colour` attribute with the value of `"maroon"` and then inserts the new instance of the `colour` attribute with the value of `"red"` to be owned by the matched owners. Finally, it deletes all instances of `colour` with the value of `"maroon"`.
+This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
 ### Update the roleplayers of a relationship
 To change the roleplayers of a given relationship, we first need to [delete the instances of the relationship](/docs/query/delete-query#delete-instances-of-a-relationship-type) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#insert-instances-of-a-relationship-type) with the new roleplayers.
