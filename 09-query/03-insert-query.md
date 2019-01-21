@@ -16,14 +16,15 @@ To insert an instance of an entity type into the knowledge graph, we use the `in
 
 [tab:Graql]
 ```lang-graql
-insert $p isa person has forename "Johny", has middle-name "Jimbly", has surname "Joe";
+insert $p isa person has full-name "John Parkson", has nickname "Johny", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234=567890";
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 InsertQuery query = Graql.insert(
-  var("p").isa("person").has("forename", "Johny").has("middle-name", "Jimbly").has("surname", "Joe")
+  var("p").isa("person").has("full-name", "John Parkson").has("nickname", "Johny").has("email", "john.parkson@gmail.com")
+  .has("phone-number", "+44-1234-567890")
 );
 
 query.withTx(transaction).execute();
@@ -34,7 +35,7 @@ transaction.commit(); -->
 [tab:end]
 </div>
 
-In a scenario where the instance to be inserted owns an attribute whose value must be extracted from the existing data, we use the so-called `match insert` query.
+<!-- In a scenario where the instance to be inserted owns an attribute whose value must be extracted from the existing data, we use the so-called `match insert` query.
 
 <div class="tabs dark">
 
@@ -57,10 +58,10 @@ InsertQuery query = Graql.match(
 query.withTx(transaction).execute();
 transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString());
-transaction.commit(); -->
+1.5 transaction.execute(query.toString());
+transaction.commit();
 [tab:end]
-</div>
+</div> -->
 
 This `match insert` query:
 1. Assigns the `surname` attribute of a `person` with `id` of `V41016` to variable `$s`.
@@ -73,14 +74,14 @@ Similar to inserting an instance of an entity, to insert an instance of an attri
 
 [tab:Graql]
 ```lang-graql
-insert $x isa environment "Production";
+insert $x isa emotion "like";
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 InsertQuery query = Graql.insert(
-  var("x").isa("environment").val("Production")
+  var("x").isa("emotion").val("like")
 );
 
 query.withTx(transaction).execute();
