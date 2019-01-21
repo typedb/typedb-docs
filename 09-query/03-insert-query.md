@@ -100,7 +100,7 @@ Given the dependent nature of relationships, inserting an instance of a relation
 [tab:Graql]
 ```lang-graql
 match
-  $company isa company has name "Grakn Cloud";
+  $company isa company has name "Facelook";
   $person isa person id V8272;
 insert $new-employment (employer: $company, employee: $person) isa employment;
   $new-employment key reference-id "WGFTSH";
@@ -110,7 +110,7 @@ insert $new-employment (employer: $company, employee: $person) isa employment;
 [tab:Java]
 ```lang-java
 InsertQuery query = Graql.match(
-  var("c").isa("company").has("name", "Grakn Cloud"),
+  var("c").isa("company").has("name", "Facelook"),
   var("p").isa("person").id(ConceptId.of("V8272"))
 ).insert(
   var("emp").isa("employment").rel("employer", "c").rel("employee", "p").has("reference-id", "WGFTSH"),
