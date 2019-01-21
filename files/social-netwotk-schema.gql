@@ -15,6 +15,7 @@ define
 		engagement-date sub event-date;
 	published-date sub attribute datatype date;
 	reference-id sub attribute datatype string;
+	registration-number sub attribute datatype string;
 	graduated sub attribute datatype boolean;
 	phone-number sub attribute datatype string;
 	email sub attribute datatype string;
@@ -372,6 +373,7 @@ define
 
 	organisation sub entity,
 		has name,
+		has registration-number,
 		plays office-owner,
 		plays employer,
 		plays mutual-organisation;
