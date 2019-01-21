@@ -20,24 +20,22 @@ Any variable that has been specified in the `match` clause can be returned as th
 [tab:Graql]
 ```lang-graql
 match
-  $fr ($x, $y, $z) isa friendship;
-  $x isa person has name $x-name;
-  $x-name contains "John";
-  $y isa person has name $y-name, has age $y-age;
-  $z isa person has name $y-name, has age $z-age;
-get $x-name, $y-name, $y-age, $z-name, $y-age;
+  $fr ($x, $y) isa friendship;
+  $x isa person has full-name $x-fn;
+  $x-fn contains "Miriam";
+  $y isa person has full-name $y-fn, has phone-number $y-pn;
+get $x-fn, $y-fn, $y-pn;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("fr").isa("friendship").rel("x").rel("y").rel("z"),
-  var("x").isa("person").has("name", var("x-name")),
-  var("x-name").val(Predicates.contains("John")),
-  var("y").isa("person").has("name", var("y-name")).has("age", var("y-age")),
-  var("z").isa("person").has("name", var("z-name")).has("age", var("z-age")),
-).get(var("x-name"), var("y-name"), var("y-age"), var("z-name"), var("z-age"));
+  var("fr").isa("friendship").rel("x").rel("y"),
+  var("x").isa("person").has("full-name", var("x-fn")),
+  var("x-fn").val(Predicates.contains("Miriam")),
+  var("y").isa("person").has("full-name", var("y-fn")).has("phone-number", var("y-pn"))
+).get(var("x-fn"), var("y-fn"), var("y-pn"));
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
@@ -77,15 +75,15 @@ To order the answers by a particular variable, we use the `order` keyword follow
 
 [tab:Graql]
 ```lang-graql
-match $p isa person has age $age; order by $age asc; get;
+match $p isa person has full-name $fn; order by $fn asc; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("p").isa("person")
-).limit(1).get();
+  var("p").isa("person").has("full-name", var("fn"))
+).orderBy("fn", Order.asc).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
@@ -93,7 +91,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-This query returns all instances of the `person` (entity) type ordered by their `age`.
+This query returns all instances of the `person` (entity) type ordered by their `full-name`.
 
 <div class="note">
 [Important]
@@ -107,15 +105,15 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 
 [tab:Graql]
 ```lang-graql
-match $p isa person has age $age; order by $age; offset 100; limit 10; get;
+match $p isa person has full-name $fn; order by $fn; offset 100; limit 10; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```lang-java
 GetQuery query = Graql.match(
-  var("p").isa("person").has("age", var("age"))
-).orderBy(var("age")).offset(100).limit(10).get();
+  var("p").isa("person").has("full-name", var("fn"))
+).orderBy("fn").offset(6).limit(10).get();
 
 List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
@@ -123,7 +121,7 @@ List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 [tab:end]
 </div>
 
-This returns 10 instances of the `person` (entity) type starting from the 100th person ordered by their `age`.
+This returns 10 instances of the `person` (entity) type starting from the 6th person ordered by their `full-name`.
 
 ## Summary
 A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order by` and `offset` to retrieve an optionally ordered subset of the matched instances.
