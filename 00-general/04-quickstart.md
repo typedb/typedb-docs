@@ -16,7 +16,7 @@ Let's get started!
 ### The Schema
 A [Grakn schema](/docs/schema/overview) is the blueprint of a Grakn knowledge graph. Let's take a look at what the initial schema for our genealogy example looks like.
 
-```lang-graql
+```graql
 define
 
 marriage sub relationship,
@@ -81,7 +81,7 @@ Let's see an example of running [Graql get queries](/docs/query/get-query) via e
 
 #### Retrieve the full name of each person using [Graql Console](/docs/running-grakn/console)
 
-```lang-graql
+```graql
 $ ./graql console -k genealogy
 >>> match $p isa person has first-name $fn, has surname $sn; get;
 
@@ -97,7 +97,7 @@ $ ./graql console -k genealogy
 
 #### Retrieve all parents and children using [Client Java](/docs/client-api/java)
 
-```lang-java
+```java
 package ai.grakn.examples;
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;
@@ -138,7 +138,7 @@ public class Queries {
 
 #### Lazily retrieve all people named _Elizabeth_ using [Client Python](/docs/client-api/python)
 
-```lang-python
+```python
 import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
@@ -151,7 +151,7 @@ with client.session(keyspace = "genealogy") as session:
 
 #### Eagerly retrieve the age of all fathers using [Client Node.js](/docs/client-api/nodejs)
 
-```lang-nodejs
+```javascript
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
 
@@ -175,7 +175,7 @@ We can add and remove instances of data in a Grakn knowledge graph by running [i
 
 #### Insert an instance of type person
 
-```lang-graql
+```graql
 >>> insert $p isa person has first-name "Johny", has middle-name "Jimbly", has surname "Joe", has gender "male";
 {$p id V139280 isa person;}
 >>> commit
@@ -188,7 +188,7 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 
 ### Insert an age attribute to the newly added person
 
-```lang-graql
+```graql
 >>> match $p id V139280; insert $p has age 77;
 {$p id V139280 isa person;}
 >>> commit
@@ -196,14 +196,14 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 
 #### Retrieve the newly added person
 
-```lang-graql
+```graql
 >>> match $p isa person has first-name "Johny", has surname "Joe"; get;
 {$p id V139280 isa person;}
 ```
 
 #### Delete the newly added person
 
-```lang-graql
+```graql
 >>> match $p isa person has first-name "Johny", has surname "Joe"; delete;
 {V139280}
 >>> commit
@@ -216,7 +216,7 @@ Let's extend the schema for our genealogy knowledge graph to take advantage of t
 
 In the schema we defined and loaded into a keyspace previously, there is no notion of `father`, `mother`, `son` and `daughter`. However, every single one of these new concept types can be inferred based on the existing explicitly stored dataset. All we need to do to make such inferences, is to look at the `gender` of each person in conjunction with the `role` they play in a `parentship` relationship.
 
-```lang-graql
+```graql
 person
   plays son
   plays daughter
@@ -285,7 +285,7 @@ Feel free to study the content of `genealogy-extension.gql`. It includes definit
 
 With the extended complete schema, we can now, for instance, ask for the fatherhood relationships, although such information was not included in the dataset we initially loaded into our knowledge graph.
 
-```lang-graql
+```graql
 >>> match (father: $f, son: $s) isa parentship; $f isa person has first-name $f-fn, has surname $f-sn; $s isa person has first-name $s-fn, has surname $s-sn; limit 5; get;
 ```
 
@@ -296,19 +296,19 @@ The [Graql compute queries](/docs/query/compute-query) are designed to traverse 
 Let's look at a few examples of running `compute` on the `genealogy` knowledge graph.
 
 #### Retrieve the mean of an attribute owned by a given type
-```lang-graql
+```graql
 >>> compute mean of age, in person;
 78.22727272727273
 ```
 
 #### Retrieve the total number of instances of a given type
-```lang-graql
+```graql
 >>> compute count in marriage;
 22
 ```
 
 #### Find the shortest path between two instances
-```lang-graql
+```graql
 >>> match $x has first-name "Barbara", has surname "Shafner"; $y has first-name "Jacob", has surname "Niesz"; get;
 {$y id V184392 isa person; $x id V90344 isa person;}
 >>> compute path from V184392, to V90344;
@@ -316,7 +316,7 @@ Let's look at a few examples of running `compute` on the `genealogy` knowledge g
 ```
 
 #### Identify clusters in a subgraph
-```lang-graql
+```graql
 >>> compute cluster in [person, marriage], using connected-component;
 {V159816, V98432, V184320, V82152, V336040}
 {V196664, V151608, V430136}

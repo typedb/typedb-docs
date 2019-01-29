@@ -25,7 +25,7 @@ methods:
     #     - &accepts-query-param-1
     #   returns:
     #     - Stream<?> (type of elements in the stream is dependent on the type of the executed query)
-    nodejs:
+    javascript:
       <<: *method-query
       method: 'async transaction.query(query, options);'
       accepts:
@@ -74,7 +74,7 @@ methods:
       method: transaction.commit();
       returns:
         - void
-    nodejs:
+    javascript:
       <<: *method-commit
       method: 'async transaction.commit()'
       returns:
@@ -94,7 +94,7 @@ methods:
       method: transaction.close();
       returns:
         - void
-    nodejs:
+    javascript:
       <<: *method-close
       method: async transaction.close();
       returns:
@@ -115,7 +115,7 @@ methods:
           default: N/A
       returns:
         - "[Concept](/docs/concept-api/concept) object"
-    nodejs:
+    javascript:
       <<: *method-getConcept
       method: 'async transaction.getConcept(conceptId)'
       accepts:
@@ -141,7 +141,7 @@ methods:
           default: N/A
       returns:
         - "[Type](/docs/concept-api/type) object"
-    nodejs:
+    javascript:
       <<: *method-getSchemaConcept
       method: async transaction.getSchemaConcept(label);
     python:
@@ -165,7 +165,7 @@ methods:
           default: N/A
       returns:
         - "[Iterator](#client-api-title-iterator) of [Attribute](/docs/concept-api/thing#attribute-methods)"
-    nodejs:
+    javascript:
       <<: *method-getAttributesByValue
       method: async transaction.getAttributesByValue(value, datatype);
     python:
@@ -184,7 +184,7 @@ methods:
           default: N/A
       returns:
         - "[EntityType](/docs/concept-api/type#entitytype-methods) object"
-    nodejs:
+    javascript:
       <<: *method-putEntity
       method: async transaction.putEntityType(label);
     python:
@@ -203,7 +203,7 @@ methods:
           default: N/A
       returns:
         - "[RelationshipType](/docs/concept-api/type#relationshiptype-methods) object"
-    nodejs:
+    javascript:
       <<: *method-putRelationshipType
       method: async transaction.putRelationshipType(label);
     python:
@@ -229,7 +229,7 @@ methods:
           default: N/A
       returns:
         - "[AttributeType](/docs/concept-api/type#attributetype-methods) object"
-    nodejs:
+    javascript:
       <<: *method-putAttributeType
       method: async transaction.putAttributeType(label);
     python:
@@ -249,7 +249,7 @@ methods:
           default: N/A
       returns:
         - "[Role](/docs/concept-api/type#role-methods) object"
-    nodejs:
+    javascript:
       <<: *method-putRole
       method: async transaction.putRole(label);
     python:
@@ -281,7 +281,7 @@ methods:
           default: N/A
       returns:
         - "[Rule](/docs/concept-api/rule) object"
-    nodejs:
+    javascript:
       <<: *method-putRole
       method: async transaction.putRule(label, when, then);
     python:
