@@ -1,7 +1,7 @@
 
 title: Iterator ## !!! synced with codeKeywordsToLink
 description:
-  nodejs: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>async iterator.next()</code> method."
+  javascript: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>async iterator.next()</code> method."
   python: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>next(iterator)</code> method."
 methods:
   - method:
@@ -11,12 +11,12 @@ methods:
       description: Consumes the iterator and collects all the elements into an array.
       returns:
         - Array of IteratorEelement
-    nodejs:
+    javascript:
       <<: *method-collect
   - method:
     common: &method-collectConcepts
       title: Consume the iterator eagerly ## !!! synced with codeKeywordsToLink
-    nodejs:
+    javascript:
       <<: *method-collectConcepts
       description: Consumes the iterator and collects all Concepts into an array.
       method: async iterator.collectConcepts();

@@ -25,13 +25,13 @@ First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-th
 
 In the interpreter or in your source, import `grakn`.
 
-```lang-python
+```python
 import grakn
 ```
 
 Instantiate a client and open a session.
 
-```lang-python
+```python
 client = grakn.Grakn(uri="localhost:48555")
 with client.session(keyspace="mykeyspace") as session:
   ## session is open
@@ -41,13 +41,13 @@ with client.session(keyspace="mykeyspace") as session:
 
 We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users), into the client constructor as a dictionary.
 
-```lang-python
+```python
 client = grakn.Grakn(uri="localhost:48555", credentials={"username": "<username>", "password": "<password>"})
 ```
 
 Create transactions to use for reading and writing data.
 
-```lang-python
+```python
 client = grakn.Grakn(uri="localhost:48555")
 
 with client.session(keyspace="mykeyspace") as session:
@@ -66,7 +66,7 @@ with client.session(keyspace="mykeyspace") as session:
 
 Running basic retrieval and insertion queries.
 
-```lang-python
+```python
 import grakn
 
 client = grakn.Grakn(uri="localhost:48555")

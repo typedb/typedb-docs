@@ -10,7 +10,7 @@ The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.
 <div class="tabs dark">
 
 [tab:Grakn Core]
-```lang-xml
+```xml
 <dependency>
   <groupId>ai.grakn</groupId>
   <artifactId>client-java</artifactId>
@@ -20,7 +20,7 @@ The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.
 [tab:end]
 
 [tab:Grakn KGMS]
-```lang-xml
+```xml
 <dependency>
   <groupId>ai.grakn.kgms</groupId>
   <artifactId>client</artifactId>
@@ -38,7 +38,7 @@ In the interpreter or in your source, import `grakn`.
 
 Instantiate a client and open a session.
 
-```lang-java
+```java
 import ai.grakn.Keyspace;
 import ai.grakn.client.Grakn;
 import ai.grakn.util.SimpleURI;
@@ -58,14 +58,14 @@ public class GraknQuickstart {
 
 [KGMS ONLY] We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
 
-```lang-java
+```java
 SimpleURI localGrakn = new SimpleURI("localhost", 48555);
 Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client();
 ```
 
 Create transactions to use for reading and writing data.
 
-```lang-java
+```java
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;
 import ai.grakn.client.Grakn;
@@ -97,7 +97,7 @@ public class GraknQuickstart {
 
 Running basic retrieval and insertion queries.
 
-```lang-java
+```java
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;
 import ai.grakn.client.Grakn;

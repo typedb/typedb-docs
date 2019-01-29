@@ -1,0 +1,50 @@
+methods:
+  - method:
+    common: &method-value
+      title: Retrieve value
+      description: Retrieves the value which the attribute holds.
+    java:
+      <<: *method-value
+      method: attribute.value();
+      return:
+        - String
+        - Long
+        - Float
+        - Boolean
+        - Date
+    javascript:
+      <<: *method-value
+      method: async attribute.value();
+      return:
+        - String
+        - Number
+        - boolean
+        - Date
+    python:
+      <<: *method-value
+      method: attribute.value()
+      return:
+        - String
+        - int
+        - float
+        - boolean
+        - Date
+  - method:
+    common: &method-owners
+      title: Retrieve owners
+      description: Retrieves the things that own the attribute.
+    java:
+      <<: *method-owners
+      method: attribute.owners();
+      return:
+        - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
+    javascript:
+      <<: *method-owners
+      method: async attribute.owners();
+      return:
+        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=javascript) objects"
+    python:
+      <<: *method-owners
+      method: attribute.owners()
+      return:
+        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=python) objects"

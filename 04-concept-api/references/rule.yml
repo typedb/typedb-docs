@@ -1,0 +1,31 @@
+methods:
+  - method:
+    common: &method-when
+      title: Retrieve the when body
+      description: Retrieves the statements that constructs the when body of the rule.
+      returns:
+        - String
+    java:
+      <<: *method-when
+      method: rule.when();
+    javascript:
+      <<: *method-when
+      method: async rule.getWhen();
+    python:
+      <<: *method-when
+      method: rule.get_when()
+  - method:
+    common: &method-then
+      title: Retrieve the then body
+      description: Retrieves the single statement that constructs the then body of the rule.
+      returns:
+        - String
+    java:
+      <<: *method-then
+      method: rule.then();
+    javascript:
+      <<: *method-then
+      method: async rule.get_then();
+    python:
+      <<: *method-then
+      method: rule.getThen()
