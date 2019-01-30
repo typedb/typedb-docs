@@ -6,7 +6,17 @@ permalink: /docs/query/compute-query
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing a compute query is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `compute` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
 </div>
 
 ## Computing Distributed Analytics Over a Large Dataset
@@ -36,10 +46,9 @@ compute count in person;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.COUNT).in("person")
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.COUNT)
+                          .in("person")
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString());  -->
 [tab:end]
 </div>
 
@@ -62,10 +71,10 @@ compute sum of number-of-rooms, in hotel;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.SUM).of("number-of-rooms").in("hotel")
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.SUM)
+                          .of("number-of-rooms")
+                          .in("hotel")
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString());  -->
 [tab:end]
 </div>
 
@@ -82,10 +91,10 @@ compute max of gpa, in school-enrollment;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MAX).of("gpa").in("school-enrollment");
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MAX)
+                          .of("gpa")
+                          .in("school-enrollment");
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString());  -->
 [tab:end]
 </div>
 
@@ -102,10 +111,10 @@ compute max of number-of-floors, in building;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MAX).of("number-of-floors").in("building");
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MAX)
+                          .of("number-of-floors")
+                          .in("building");
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString());  -->
 [tab:end]
 </div>
 
@@ -122,10 +131,10 @@ compute mean of duration, in call;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MEAN).of("duration").in("call");
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MEAN)
+                          .of("duration")
+                          .in("call");
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString());  -->
 [tab:end]
 </div>
 
@@ -142,10 +151,10 @@ compute median of age, in person;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MEDIAN).of("age").in("person");
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.MEDIAN)
+                          .of("age")
+                          .in("person");
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString());  -->
 [tab:end]
 </div>
 
@@ -162,10 +171,10 @@ compute std of score, in examination;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.STD).of("score").in("examination");
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.STD)
+                          .of("score")
+                          .in("examination");
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString());  -->
 [tab:end]
 </div>
 
@@ -187,11 +196,10 @@ compute path from V24819, to V93012;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.PATH).from(ConceptId.of("V24819")).to(ConceptId.of("V93012"));
-List&lt;ConceptList&gt; answer = query.withTx(transaction).execute();
-
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.PATH)
+                          .from(ConceptId.of("V24819"))
+                          .to(ConceptId.of("V93012"));
 ```
-<!-- List&lt;ConceptList&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -210,11 +218,11 @@ compute path from V24819, to V93012, in [person, car, company, employment];
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.PATH).from(ConceptId.of("V24819")).to(ConceptId.of("V93012")).in("person","car", "company", "employment");
-List&lt;ConceptList&gt; answer = query.withTx(transaction).execute();
-
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.PATH)
+                          .from(ConceptId.of("V24819"))
+                          .to(ConceptId.of("V93012"))
+                          .in("person","car", "company", "employment");
 ```
-<!-- List&lt;ConceptList&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -241,10 +249,9 @@ compute centrality using degree;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).using(GraqlSyntax.Compute.Algorithm.DEGREE);
-List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY)
+                          .using(GraqlSyntax.Compute.Algorithm.DEGREE);
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -263,10 +270,10 @@ compute centrality in [company, employee, employment], using degree;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).in("company", "employee", "employment").using(GraqlSyntax.Compute.Algorithm.DEGREE);
-List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY)
+                          .in("company", "employee", "employment")
+                          .using(GraqlSyntax.Compute.Algorithm.DEGREE);
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -285,13 +292,11 @@ compute centrality of company in [company, employment], using degree;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).
-of("company").in("company", "employment")
-.using(GraqlSyntax.Compute.Algorithm.DEGREE);
-
-List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY)
+                          .of("company")
+                          .in("company", "employment")
+                          .using(GraqlSyntax.Compute.Algorithm.DEGREE);
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -310,10 +315,9 @@ compute centrality using k-core;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY).using(GraqlSyntax.Compute.Algorithm.K_CORE);
-List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
+ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY)
+                          .using(GraqlSyntax.Compute.Algorithm.K_CORE);
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -333,12 +337,9 @@ compute centrality using k-core, where min-k = 5;
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.CENTRALITY)
-.using(GraqlSyntax.Compute.Algorithm.K_CORE)
-.where(GraqlSyntax.Compute.Argument.min_k(5));
-
-List&lt;ConceptSetMeasure&gt; answer = query.withTx(transaction).execute();
+                          .using(GraqlSyntax.Compute.Algorithm.K_CORE)
+                          .where(GraqlSyntax.Compute.Argument.min_k(5));
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -358,13 +359,10 @@ compute cluster in [person, employment, organisation], using connected-component
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
-in("person", "employment", "organisation").
-using(GraqlSyntax.Compute.Algorithm.CONNECTED_COMPONENT);
-
-List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
+ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER)
+                                      .in("person", "employment", "organisation")
+                                      .using(GraqlSyntax.Compute.Algorithm.CONNECTED_COMPONENT);
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -383,14 +381,11 @@ compute cluster in [person, employment, organisation], using connected-component
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
-in("person", "employment", "organisation").
-using(GraqlSyntax.Compute.Algorithm.CONNECTED_COMPONENT).
-where(GraqlSyntax.Compute.Argument.contains(ConceptId.of("V12488")));
-
-List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
+ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER)
+                                      .in("person", "employment", "organisation")
+                                      .using(GraqlSyntax.Compute.Algorithm.CONNECTED_COMPONENT)
+                                      .where(GraqlSyntax.Compute.Argument.contains(ConceptId.of("V12488")));
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -411,11 +406,9 @@ compute cluster in [person, employment, organisation], using k-core;
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
-in("person", "employment", "organisation").
-using(GraqlSyntax.Compute.Algorithm.K_CORE);
-
-List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
+ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER)
+                                      .in("person", "employment", "organisation")
+                                      .using(GraqlSyntax.Compute.Algorithm.K_CORE);
 ```
 <!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
@@ -436,15 +429,11 @@ compute cluster in [person, employment, organisation], using k-core, where min-k
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER).
-in("person", "employment", "organisation").
-using(GraqlSyntax.Compute.Algorithm.K_CORE).
-where(GraqlSyntax.Compute.Argument.min_k(5));
-
-
-List&lt;ConceptSet&gt; answers = query.withTx(transaction).execute();
+ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(GraqlSyntax.Compute.Method.CLUSTER)
+                                      .in("person", "employment", "organisation")
+                                      .using(GraqlSyntax.Compute.Algorithm.K_CORE)
+                                      .where(GraqlSyntax.Compute.Argument.min_k(5));
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 

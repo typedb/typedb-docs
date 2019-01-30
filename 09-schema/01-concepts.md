@@ -48,11 +48,8 @@ person sub entity;
 DefineQuery query = Graql.define(
   label("person").sub("entity")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -83,11 +80,8 @@ person sub entity,
 DefineQuery query = Graql.define(
   label("person").sub("entity").has("full-name").has("nickname").has("bio").has("gender")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -109,11 +103,8 @@ person sub entity,
 DefineQuery query = Graql.define(
   label("person").sub("entity").key("email")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -148,11 +139,8 @@ DefineQuery query = Graql.define(
   label("person").sub("entity").plays("employee"),
   label("organisation").sub("entity").plays("employer")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -199,11 +187,8 @@ DefineQuery query = Graql.define(
   label("video").sub("media"),
   label("photo").sub("media")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -239,11 +224,8 @@ DefineQuery query = Graql.define(
   label("post").sub("entity").isAbstract(),
   label("media").sub("post").isAbstract()
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -278,11 +260,8 @@ employment sub relationship,
 DefineQuery query = Graql.define(
   label("employment").sub("relationship").relates("employee").relates("employer")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -325,11 +304,8 @@ DefineQuery query = Graql.define(
   label("friend-request").sub("relationship").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent"),
   label("person").sub("entity").plays("friend").plays("friendship-requester").plays("friendship-respondent")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -370,11 +346,8 @@ DefineQuery query = Graql.define(
   label("post").sub("entity").plays("reacted-to"),
   label("person").sub("entity").plays("reacted-by")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -405,11 +378,8 @@ friend-request sub relationship,
 DefineQuery query = Graql.define(
   label("friend-request").sub("relationship").has("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -433,11 +403,8 @@ employment sub relationship,
 DefineQuery query = Graql.define(
   label("employment").sub("relationship").key("reference-id").relates("employer").relates("employee")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -481,11 +448,8 @@ DefineQuery query = Graql.define(
   label("located-residence").sub("located-subject"),
   label("residence").sub("subject-location")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -522,11 +486,8 @@ location-of-everything sub relationship is-abstract,
 DefineQuery query = Graql.define(
   label("location-of-everything").sub("relationship").isAbstract().relates("located-subject").relates("subject-location")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -552,11 +513,8 @@ name sub attribute datatype string;
 DefineQuery query = Graql.define(
   label("name").sub("attribute").datatype(AttributeType.DataType.STRING)
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -596,11 +554,8 @@ DefineQuery query = Graql.define(
   label("residency").sub("entity").has("start-date"),
   label("travel").sub("entity").has("start-date")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -630,11 +585,8 @@ DefineQuery query = Graql.define(
   label("phone-number").sub("attribute").datatype(AttributeType.DataType.STRING),
   label("person").sub("entity").has("phone-number")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -656,11 +608,8 @@ emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, 
 DefineQuery query = Graql.define(
   label("emotion").sub("attribute").datatype(AttributeType.DataType.STRING).regex("/[like, love, funny, shocking, sad, angry]/")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -691,11 +640,8 @@ DefineQuery query = Graql.define(
   label("content").sub("attribute").datatype(AttributeType.DataType.STRING).has("language"),
   label("language").sub("attribute").datatype(AttributeType.DataType.STRING)
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -728,11 +674,8 @@ DefineQuery query = Graql.define(
   label("language").sub("attribute").datatype(AttributeType.DataType.STRING).plays("spoken"),
   label("person").sub("entity").plays("speaker"),
   label("speaking-of-language").sub("relationship").relates("speaker").relates("spoken")
-);
-query.withTx(transaction).execute();
-transaction.commit();
-```
-<!-- 1.5 transaction.execute(query.toString()); -->
+);```
+
 [tab:end]
 </div>
 
@@ -760,11 +703,8 @@ DefineQuery query = Graql.define(
   label("start-date").sub("event-date"),
   label("end-date").sub("event-date")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -790,11 +730,8 @@ event-date sub attribute is-abstract datatype date;
 DefineQuery query = Graql.define(
   label("event-date").sub("attribute").datatype(AttributeType.DataType.DATE)
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -826,11 +763,8 @@ person has nickname;
 UndefineQuery query = Graql.undefine(
   label("person").has("nickname")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
+
 [tab:end]
 </div>
 
@@ -866,11 +800,7 @@ UndefineQuery query = Graql.undefine(
   label("employee").sub("role"),
   label("employment").sub("relationship")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 

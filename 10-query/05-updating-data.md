@@ -6,7 +6,17 @@ permalink: /docs/query/updating-data
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing queries is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains `insert` and `delete` queries, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
 </div>
 
 ## Update Instances of Concept Types
@@ -33,19 +43,10 @@ DeleteQuery delete_query = Graql.match(
   var("org").isa("organisation").id(ConceptId.of("V17391")).has(Label.of("registration-number"), var("rn"), var("r"))
 ).delete("r");
 
-
 InsertQuery insert_query = Graql.insert(
   var("org").isa("organisation").id(ConceptId.of("V17391")).has("registration-number", "81726354")
 );
-
-delete_query.withTx(transaction).execute();
-insert_query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5
-transaction.execute(delete_query.toString());
-transaction.execute(insert_query.toString());
-transaction.commit(); -->
 [tab:end]
 </div>
 
@@ -78,15 +79,7 @@ DeleteQuery delete_query = Graql.match(
 ).delete(
   var("c")
 );
-
-insert_query.withTx(transaction).execute();
-delete_query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5
-transaction.execute(insert_query.toString());
-transaction.execute(delete_query.toString());
-transaction.commit(); -->
 [tab:end]
 </div>
 
@@ -128,15 +121,7 @@ DeleteQuery delete_query = Graql.match(
   var("org").isa("organisation").has("name", "Wieth Souhe"),
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
 ).delete("emp");
-
-insert_query.withTx(transaction).execute();
-delete_query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5
-transaction.execute(insert_query.toString());
-transaction.execute(delete_query.toString());
-transaction.commit(); -->
 [tab:end]
 </div>
 

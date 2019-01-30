@@ -9,7 +9,17 @@ permalink: /docs/query/match-clause
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
 </div>
 
 ## Variables
@@ -41,10 +51,7 @@ match $p isa person; get;
 GetQuery query = Graql.match(
   Graql.var("p").isa("person")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -66,10 +73,7 @@ match $p isa person has full-name $n; get;
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("n"))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -92,10 +96,7 @@ match $emp (employer: $x, employee: $y) isa employment; get;
 GetQuery query = Graql.match(
   Var.isa("employment").rel("employer", "x").rel("employee", "y"),
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -120,7 +121,6 @@ GetQuery query = Graql.match(
 
 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString());
 ```
-
 [tab:end]
 </div>
 
@@ -142,10 +142,7 @@ match (employer: $x, employee: $y) isa employment; get;
 GetQuery query = query_builder.match(
   var().isa("employment").rel("employer", "x").rel("employee", "y")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -165,10 +162,7 @@ match $fr ($x, $y) isa friendship; get;
 GetQuery query = query_builder.match(
   var("fr").isa("friendship").rel("x").rel("y"),
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -191,10 +185,7 @@ match $x "like"; get;
 GetQuery query = Graql.match(
   var("x").val("like")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -216,10 +207,7 @@ match $n isa nickname "Mitzi"; get;
 GetQuery query = Graql.match(
   var("x").isa("nickname").val("Mitzi")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -241,10 +229,7 @@ match $phone-number contains "+44"; get;
 GetQuery query = Graql.match(
   var("phone-number").val(Predicates.contains("+44"))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -266,10 +251,7 @@ match $x /.*(Miriam Morton|Solomon Tran).*/; get;
 GetQuery query = Graql.match(
   var("phone-number").val(Predicates.regex("/.*(Miriam Morton|Solomon Tran).*/"))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -291,10 +273,7 @@ match $p isa person has nickname $nn, has last-name $ln; get;
 GetQuery query = Graql.match(
   var("phone-number").val(Predicates.regex(/.*(Mary|Barbara).*/))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -314,10 +293,7 @@ match $p isa person has nickname "Mitzi" has phone-number contains "+44"; get;
 GetQuery query = Graql.match(
   var("p").isa("person").has("nickname", "Mitzi").has("phone-number", Predicates.contains("+44"))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -337,10 +313,7 @@ GetQuery query = Graql.match(
   var("p").isa("person").has("nickname", "Mitzi").has("phone-number", var("pn")),
   var("pn").val(Predicates.contains("+44"))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -361,10 +334,7 @@ GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn")),
   var("fn").val(Predicates.contains("Miriam")).or(var("fn").val(Predicates.contains("Solomon")))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -384,10 +354,7 @@ match $rr isa! romantic-relationship; get;
 GetQuery query = Graql.match(
   var("rr").isaExplicit("romantic-relationship")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -409,10 +376,7 @@ match $x id V41016; get;
 GetQuery query = Graql.match(
   var("x").id(ConceptId.of("V41016"))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -445,31 +409,21 @@ GetQuery query_a = Graql.match(
   var("x").sub("thing")
 ).get();
 
-Stream&lt;ConceptMap&gt; answers = transaction.stream(query_a.toString());
-
 GetQuery query_b = Graql.match(
   var("x").sub("attribute")
 ).get();
-
-Stream&lt;ConceptMap&gt; answers = transaction.stream(query_b.toString());
 
 GetQuery query_c = Graql.match(
   var("x").sub("entity")
 ).get();
 
-Stream&lt;ConceptMap&gt; answers = transaction.stream(query_c.toString());
-
 GetQuery query_d = Graql.match(
   var("x").sub("role")
 ).get();
 
-Stream&lt;ConceptMap&gt; answers = transaction.stream(query_d.toString());
-
 GetQuery query_e = Graql.match(
   var("x").sub("relationship")
 ).get();
-
-Stream&lt;ConceptMap&gt; answers = transaction.stream(query_e.toString());
 ```
 [tab:end]
 </div>
@@ -490,10 +444,7 @@ match employment relates $x; get;
 GetQuery query = Graql.match(
   label("employment").relates(var("x"))
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -516,10 +467,7 @@ GetQuery query = Graql.match(
   label("location-of-office").relates(var("x")),
   var("x").sub("located-subject")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -541,10 +489,7 @@ match $x plays employee; get;
 GetQuery query = Graql.match(
   var("x").plays("employee")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -566,10 +511,7 @@ match $x has title; get;
 GetQuery query = Graql.match(
   var("x").has("title")
 ).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 

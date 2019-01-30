@@ -6,7 +6,17 @@ permalink: /docs/query/aggregate-query
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing an aggregate query is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `aggregate` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `aggregate` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `aggregate` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
 </div>
 
 ## Aggregate Values Over a Dataset
@@ -29,10 +39,7 @@ match $sh isa sheep; aggregate count;
 AggregateQuery query = Graql.match(
   var("sh").isa("person")
 ).aggregate(count());
-
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -56,10 +63,7 @@ match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;
 AggregateQuery query = Graql.match(
   var("h").isa("hotel").has("number-of-rooms", var("nor"))
 ).aggregate(sum("nor"));
-
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -80,10 +84,7 @@ AggregateQuery query = Graql.match(
   var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
   var("st").has("gpa", var("gpa"))
 ).aggregate(max("gpa"));
-
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -104,10 +105,7 @@ AggregateQuery query = Graql.match(
   var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
   var("st").has("gpa", var("gpa"))
 ).aggregate(min("nof"));
-
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -127,10 +125,7 @@ match $call isa call has duration $d; aggregate mean $d;
 AggregateQuery query = Graql.match(
   var("call").isa("call").has("duration", "d")
 ).aggregate(mean("d")).execute();
-
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -150,10 +145,7 @@ match $p isa person has age $a; aggregate median $a;
 AggregateQuery query = Graql.match(
   var("p").isa("person").has("age", var("a"))
 ).aggregate(median("a")).execute();
-
-List&lt;Value&gt; answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;Value&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -174,10 +166,7 @@ AggregateQuery query = Graql.match(
   var().isa("employment").rel("employer", var("company"))
   .rel("employee", var("person"))
 ).aggregate(group("company")).execute();
-
-List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;AnswerGroup&lt;ConceptMap&gt;&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
@@ -197,10 +186,7 @@ AggregateQuery query = Graql.match(
   var().isa("employment").rel("employer", var("company"))
   .rel("employee", var("person"))
 ).aggregate(group("company", count()));
-
-List&lt;AnswerGroup&lt;Value&gt;&gt;answer = query.withTx(transaction).execute();
 ```
-<!-- 1.5 List&lt;AnswerGroup&lt;Value&gt;&gt;answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 

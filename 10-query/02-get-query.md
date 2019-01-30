@@ -6,7 +6,17 @@ permalink: /docs/query/get-query
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing a get query, is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `get` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `get` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `get` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
 </div>
 
 ## Retrieve Concept Types and Their Instances
@@ -36,10 +46,7 @@ GetQuery query = Graql.match(
   var("x-fn").val(Predicates.contains("Miriam")),
   var("y").isa("person").has("full-name", var("y-fn")).has("phone-number", var("y-pn"))
 ).get(var("x-fn"), var("y-fn"), var("y-pn"));
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]</div>
 
 If no variable is specified after `get`, all variables specified in the `match` clause are returned.
@@ -60,10 +67,7 @@ match $p isa person; limit 1; get;
 GetQuery query = Graql.match(
   var("p").isa("person")
 ).limit(1).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]</div>
 
 This query returns only one single (and random) instance of type `person`.
@@ -84,10 +88,7 @@ match $p isa person has full-name $fn; order by $fn asc; get;
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
 ).orderBy("fn", Order.asc).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 
@@ -114,10 +115,7 @@ match $p isa person has full-name $fn; order by $fn; offset 100; limit 10; get;
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
 ).orderBy("fn").offset(6).limit(10).get();
-
-List&lt;ConceptMap&gt; answers = query.withTx(transaction).execute();
 ```
-<!-- 1.5 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString()); -->
 [tab:end]
 </div>
 

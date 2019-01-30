@@ -6,7 +6,17 @@ permalink: /docs/query/insert-query
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/java) or [Python](/docs/client-api/python)**: Executing an insert query is as simple as passing the Graql (string) query to the `query()` method available on the `transaction` object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `insert` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `insert` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `insert` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
 </div>
 
 ## Insert Instances of an Entity Type
@@ -26,12 +36,7 @@ InsertQuery query = Graql.insert(
   var("p").isa("person").has("full-name", "John Parkson").has("nickname", "Johny").has("email", "john.parkson@gmail.com")
   .has("phone-number", "+44-1234-567890")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString());
-transaction.commit(); -->
 [tab:end]
 </div>
 
@@ -54,9 +59,6 @@ InsertQuery query = Graql.match(
 ).insert(
   var("p-b").isa("person").has("surname", var("s"))
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
 1.5 transaction.execute(query.toString());
 transaction.commit();
@@ -83,12 +85,7 @@ insert $x isa emotion "like";
 InsertQuery query = Graql.insert(
   var("x").isa("emotion").val("like")
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString());
-transaction.commit(); -->
 [tab:end]
 </div>
 
@@ -115,9 +112,6 @@ InsertQuery query = Graql.match(
 ).insert(
   var("emp").isa("employment").rel("employer", "org").rel("employee", "p").has("reference-id", "WGFTSH"),
 );
-
-transaction.execute(query.toString());
-transaction.commit();
 ```
 [tab:end]
 </div>

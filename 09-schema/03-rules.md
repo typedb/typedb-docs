@@ -59,11 +59,7 @@ DefineQuery query = Graql.define(
     var().isa("siblings").rel("x").rel("y")
   )
 );
-
-query.withTx(transaction).execute();
-transaction.commit();
 ```
-<!-- 1.5 transaction.execute(query.toString()); -->
 [tab:end]
 
 [tab:Javascript]
