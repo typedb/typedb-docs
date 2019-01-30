@@ -46,23 +46,28 @@ methods:
           name: infer
           type: boolean
           default: True
-  # 1.5
-  # - method:
-  #   common: &method-2
-  #     title: Eager executation of a Graql query
-  #     method: '.execute()'
-  #     description: Executes a Graql query eagerly on the keyspace where the session is connected to.
-  #     accepts:
-  #       param1:
-  #         name: query
-  #         description: The Graql query to be exectured
-  #         type: String
-  #         required: true
-  #         default: N/A
-  #     returns:
-  #       - List<?> (type of elements in the list is dependent on the type of the executed query)
-  #   java:
-  #     <<: *method-2
+  - method:
+    common: &method-execute
+      title: Eagerly execute of a Graql query
+      method: 'transaction.execute(Query query, boolean infer)'
+      description: Executes a Graql query eagerly on the keyspace the session is connected to.
+      accepts:
+        param1:
+          name: query
+          description: The Graql query to be executed
+          type: String
+          required: true
+          default: N/A
+        param2:
+          name: infer
+          description: Whether or not inferred result should be included
+          type: boolean
+          required: false
+          default: true
+      returns:
+        - List<?> (type of elements in the list is dependent on the type of the executed query)
+    java:
+      <<: *method-execute
   - method:
     common: &method-commit
       title: Commit a write transaction ## !!! synced with codeKeywordsToLink
