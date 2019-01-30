@@ -442,7 +442,7 @@ match employment relates $x; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  label("employment").relates(var("x"))
+  type("employment").relates(var("x"))
 ).get();
 ```
 [tab:end]
@@ -464,7 +464,7 @@ match location-of-office relates $x as located-subject; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  label("location-of-office").relates(var("x")),
+  type("location-of-office").relates(var("x")),
   var("x").sub("located-subject")
 ).get();
 ```
