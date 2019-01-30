@@ -299,14 +299,11 @@ public class Migration {
       @Override
       public String template(Json contract) {
         // match company
-        String graqlInsertQuery = "match $company isa company has name " +
-                                  contract.at("company_name") + ";";
+        String graqlInsertQuery = "match $company isa company has name " + contract.at("company_name") + ";";
         // match person
-        graqlInsertQuery += " $customer isa person has phone-number " +
-                            contract.at("person_id") + ";";
+        graqlInsertQuery += " $customer isa person has phone-number " + contract.at("person_id") + ";";
         // insert contract
-        graqlInsertQuery += " insert (provider: $company, customer: $customer) isa
-                            contract;";
+        graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
         return graqlInsertQuery;
       }
     });
@@ -350,16 +347,11 @@ public class Migration {
       @Override
       public String template(Json call) {
         // match caller
-        String graqlInsertQuery = "match $caller isa person has phone-number " +
-                                  call.at("caller_id") + ";";
+        String graqlInsertQuery = "match $caller isa person has phone-number " + call.at("caller_id") + ";";
         // match callee
-        graqlInsertQuery += " $callee isa person has phone-number " +
-                            call.at("callee_id") + ";";
+        graqlInsertQuery += " $callee isa person has phone-number " + call.at("callee_id") + ";";
         // insert call
-        graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
-                            " $call has started-at " + call.at("started_at").asString() +
-                            ";" +
-                            " $call has duration " + call.at("duration").asInteger() + ";";
+        graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call; $call has started-at " + call.at("started_at").asString() + "; $call has duration " + call.at("duration").asInteger() + ";";
         return graqlInsertQuery;
       }
     });
@@ -465,8 +457,7 @@ public class Migration {
       tx.commit();
       tx.close();
     });
-    System.out.println("\nInserted " + items.size() + " items from [ "
-                       + input.getDataPath() + "] into Grakn.\n");
+    System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
   }
 
   static ArrayList<Json> parseDataToJson(Input input)
@@ -510,8 +501,7 @@ public class Migration {
 
   public static Reader getReader(String relativePath)
   throws UnsupportedEncodingException {
-    return new InputStreamReader(Migration.class.getClassLoader()
-                                .getResourceAsStream(relativePath), "UTF-8");
+    return new InputStreamReader(Migration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
   }
 }
 ```
@@ -522,11 +512,11 @@ public class Migration {
 We use the [Univocity CSV Parser](https://www.univocity.com/pages/univocity_parsers_documentation) for parsing our `.csv` files. Let’s add the dependency for it. We need to add the following to the `dependencies` tag in `pom.xml`.
 
 ```xml
-<dependency>
-  <groupId>com.univocity</groupId>
-  <artifactId>univocity-parsers</artifactId>
-  <version>2.7.6</version>
-</dependency>
+&lt;dependency&gt;
+  &lt;groupId&gt;com.univocity&lt;/groupId&gt;
+  &lt;artifactId&gt;univocity-parsers&lt;/artifactId&gt;
+  &lt;version&gt;2.7.6&lt;/version&gt;
+&lt;/dependency&gt;
 ```
 
 Having done that, we write the implementation of `parseDataToJson(input)` for parsing `.csv` files.
@@ -541,15 +531,15 @@ import com.univocity.parsers.csv.CsvParserSettings;
 public class Migration {
   abstract static class Input {...}
   public static void main(String[] args) {...}
-  static void connectAndMigrate(Collection<Input> inputs) {...}
-  static Collection<Input> initialiseInputs() {...}
+  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
+  static Collection&lt;Input&gt; initialiseInputs() {...}
   static void loadDataIntoGrakn(Input input, Grakn.Session session)
   throws UnsupportedEncodingException {...}
 
-  static ArrayList<Json> parseDataToJson(Input input)
+  static ArrayList&lt;Json&gt; parseDataToJson(Input input)
 
   throws UnsupportedEncodingException {
-    ArrayList<Json> items = new ArrayList<>();
+    ArrayList&lt;Json&gt; items = new ArrayList<>();
 
     CsvParserSettings settings = new CsvParserSettings();
     settings.setLineSeparatorDetectionEnabled(true);
@@ -570,8 +560,7 @@ public class Migration {
 
   public static Reader getReader(String relativePath)
   throws UnsupportedEncodingException {
-    return new InputStreamReader(Migration.class.getClassLoader()
-                                .getResourceAsStream(relativePath), "UTF-8");
+    return new InputStreamReader(Migration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
   }
 }
 ```
@@ -594,11 +583,11 @@ becomes
 We’ll use [Gson’s JsonReader](https://google.github.io/gson/apidocs/com/google/gson/stream/JsonReader.html) for reading our `.json` files. Let’s add the dependency for it. We need to add the following to the `dependencies` tag in `pom.xml`.
 
 ```xml
-<dependency>
-  <groupId>com.google.code.gson</groupId>
-  <artifactId>gson</artifactId>
-  <version>2.7</version>
-</dependency>
+&gt;dependency&gt;
+  &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+  &lt;artifactId&gt;gson&lt;/artifactId&gt;
+  &lt;version&gt;2.7&lt;/version&gt;
+&gt;/dependency&gt;
 ```
 
 Having done that, we write the implementation of `parseDataToJson(input)` for reading `.json` files.
@@ -610,13 +599,13 @@ import com.google.gson.stream.JsonReader;
 public class Migration {
   abstract static class Input {...}
   public static void main(String[] args) {...}
-  static void connectAndMigrate(Collection<Input> inputs) {...}
-  static Collection<Input> initialiseInputs() {...}
+  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
+  static Collection&t;Input&gt; initialiseInputs() {...}
   static void loadDataIntoGrakn(Input input, Grakn.Session session)
   throws UnsupportedEncodingException {...}
 
-  static ArrayList<Json> parseDataToJson(Input input) throws IOException {
-    ArrayList<Json> items = new ArrayList<>();
+  static ArrayList&lt;Json&gt; parseDataToJson(Input input) throws IOException {
+    ArrayList&lt;Json&gt; items = new ArrayList<>();
 
     JsonReader jsonReader = new JsonReader(getReader(input.getDataPath() + ".json"));
 
@@ -644,8 +633,7 @@ public class Migration {
 
   public static Reader getReader(String relativePath)
   throws UnsupportedEncodingException {
-    return new InputStreamReader(Migration.class.getClassLoader().
-                                getResourceAsStream(relativePath), "UTF-8");
+    return new InputStreamReader(Migration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
   }
 }
 ```
@@ -673,10 +661,10 @@ public class XmlMigration {
   }
 
   public static void main(String[] args)  {...}
-  static void connectAndMigrate(Collection<Input> inputs) {...}
+  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
 
-  static Collection<Input> initialiseInputs() {
-    Collection<Input> inputs = new ArrayList<>();
+  static Collection&lt;Input&gt; initialiseInputs() {
+    Collection&lt;Input&gt; inputs = new ArrayList<>();
 
     inputs.add(new Input("data/companies", "company") {...});
     inputs.add(new Input("data/people", "person") {...});
@@ -717,10 +705,10 @@ public class XmlMigration {
   }
 
   public static void main(String[] args)  {...}
-  static void connectAndMigrate(Collection<Input> inputs) {...}
+  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
 
-  static Collection<Input> initialiseInputs() {
-    Collection<Input> inputs = new ArrayList<>();
+  static Collection&lt;Input&gt; initialiseInputs() {
+    Collection&lt;Input&gt; inputs = new ArrayList<>();
 
     inputs.add(new Input("data/companies", "company") {...});
     inputs.add(new Input("data/people", "person") {...});
@@ -733,13 +721,11 @@ public class XmlMigration {
   static void loadDataIntoGrakn(Input input, Grakn.Session session)
   throws UnsupportedEncodingException, XMLStreamException {...}
 
-  static ArrayList<Json> parseDataToJson(Input input)
+  static ArrayList&lt;Json&gt; parseDataToJson(Input input)
   throws UnsupportedEncodingException, XMLStreamException {
-    ArrayList<Json> items = new ArrayList<>();
+    ArrayList&lt;Json&gt; items = new ArrayList<>();
 
-    XMLStreamReader r = XMLInputFactory.newInstance().
-                        createXMLStreamReader(getReader(input.getDataPath() +
-                        ".xml"));
+    XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(getReader(input.getDataPath() + ".xml"));
     String key;
     String value = null;
     Boolean inSelector = false;
@@ -943,7 +929,7 @@ public class CsvMigration {
   * @throws UnsupportedEncodingException
   */
  static void loadDataIntoGrakn(Input input, Grakn.Session session) throws UnsupportedEncodingException {
-  ArrayList <Json> items = parseDataToJson(input); // 1
+  ArrayList &lt;Json&gt; items = parseDataToJson(input); // 1
   items.forEach(item -> {
    Grakn.Transaction tx = session.transaction(GraknTxType.WRITE); // 2a
    String graqlInsertQuery = input.template(item); // 2b
@@ -965,8 +951,8 @@ public class CsvMigration {
   * @return the list of json objects
   * @throws UnsupportedEncodingException
   */
- static ArrayList <Json> parseDataToJson(Input input) throws UnsupportedEncodingException {
-  ArrayList <Json> items = new ArrayList <> ();
+ static ArrayList &lt;Json&gt; parseDataToJson(Input input) throws UnsupportedEncodingException {
+  ArrayList &lt;Json&gt; items = new ArrayList <> ();
 
   CsvParserSettings settings = new CsvParserSettings();
   settings.setLineSeparatorDetectionEnabled(true);
@@ -1034,12 +1020,12 @@ public class JsonMigration {
  }
 
  public static void main(String[] args) {
-  Collection <Input> inputs = initialiseInputs();
+  Collection &lt;Input&gt; inputs = initialiseInputs();
   connectAndMigrate(inputs);
  }
 
- static Collection <Input> initialiseInputs() {
-  Collection <Input> inputs = new ArrayList <> ();
+ static Collection &lt;Input&gt; initialiseInputs() {
+  Collection &lt;Input&gt; inputs = new ArrayList <> ();
 
   // define template for constructing a company Graql insert query
   inputs.add(new Input("data/companies") {
@@ -1140,7 +1126,7 @@ public class JsonMigration {
   * @throws UnsupportedEncodingException
   */
  static void loadDataIntoGrakn(Input input, Grakn.Session session) throws IOException {
-  ArrayList <Json> items = parseDataToJson(input); // 1
+  ArrayList &lt;Json&gt; items = parseDataToJson(input); // 1
   items.forEach(item -> {
    Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE); // 2a
    String graqlInsertQuery = input.template(item); // 2b
@@ -1160,8 +1146,8 @@ public class JsonMigration {
   * @return the list of json objects
   * @throws IOException
   */
- static ArrayList <Json> parseDataToJson(Input input) throws IOException {
-  ArrayList <Json> items = new ArrayList <> ();
+ static ArrayList &lt;Json&gt; parseDataToJson(Input input) throws IOException {
+  ArrayList &lt;Json&gt; items = new ArrayList <> ();
 
   JsonReader jsonReader = new JsonReader(getReader(input.getDataPath() + ".json")); // 1
 
@@ -1250,12 +1236,12 @@ public class XmlMigration {
  }
 
  public static void main(String[] args) {
-  Collection <Input> inputs = initialiseInputs();
+  Collection&lt;Input&gt; inputs = initialiseInputs();
   connectAndMigrate(inputs);
  }
 
- static Collection <Input> initialiseInputs() {
-  Collection <Input> inputs = new ArrayList <> ();
+ static Collection &lt;Input&gt; initialiseInputs() {
+  Collection &lt;Input&gt; inputs = new ArrayList <> ();
 
   // define template for constructing a company Graql insert query
   inputs.add(new Input("data/companies", "company") {
@@ -1324,7 +1310,7 @@ public class XmlMigration {
   * 3. loads the csv data to Grakn for each file
   * 4. closes the session
   */
- static void connectAndMigrate(Collection <Input> inputs) {
+ static void connectAndMigrate(Collection &lt;Input&gt; inputs) {
   SimpleURI localGrakn = new SimpleURI("localhost", 48555);
   Grakn grakn = new Grakn(localGrakn); // 1
   Keyspace keyspace = Keyspace.of("phone_calls");
@@ -1356,7 +1342,7 @@ public class XmlMigration {
   * @throws UnsupportedEncodingException
   */
  static void loadDataIntoGrakn(Input input, Grakn.Session session) throws UnsupportedEncodingException, XMLStreamException {
-  ArrayList <Json> items = parseDataToJson(input); // 1
+  ArrayList &lt;Json&gt; items = parseDataToJson(input); // 1
   items.forEach(item -> {
    Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE); // 2a
    String graqlInsertQuery = input.template(item); // 2b
@@ -1376,8 +1362,8 @@ public class XmlMigration {
   * @return the list of json objects
   * @throws UnsupportedEncodingException
   */
- static ArrayList <Json> parseDataToJson(Input input) throws UnsupportedEncodingException, XMLStreamException {
-  ArrayList <Json> items = new ArrayList <> ();
+ static ArrayList &lt;Json&gt; parseDataToJson(Input input) throws UnsupportedEncodingException, XMLStreamException {
+  ArrayList &lt;Json&gt; items = new ArrayList <> ();
 
   XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(getReader(input.getDataPath() + ".xml")); // 1
   String key;
