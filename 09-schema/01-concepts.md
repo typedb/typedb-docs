@@ -352,7 +352,7 @@ person sub entity,
 ```java
 DefineQuery query = Graql.define(
   type("reaction").sub("relationship").relates("reacted-emotion").relates("reacted-to").relates("reacted-by"),
-  type("emotion").sub("attribute").datatype(AttributeType.DataType.STRING).plays("reacted-emotion"),
+  type("emotion").sub("attribute").datatype(DataType.STRING).plays("reacted-emotion"),
   type("post").sub("entity").plays("reacted-to"),
   type("person").sub("entity").plays("reacted-by")
 );
@@ -521,7 +521,7 @@ name sub attribute datatype string;
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("name").sub("attribute").datatype(AttributeType.DataType.STRING)
+  type("name").sub("attribute").datatype(DataType.STRING)
 );
 ```
 
@@ -560,7 +560,7 @@ travel sub relationship,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("start-date").sub("attribute").datatype(AttributeType.DataType.STRING),
+  type("start-date").sub("attribute").datatype(DataType.STRING),
   type("residency").sub("entity").has("start-date"),
   type("travel").sub("entity").has("start-date")
 );
@@ -592,7 +592,7 @@ person sub entity,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("phone-number").sub("attribute").datatype(AttributeType.DataType.STRING),
+  type("phone-number").sub("attribute").datatype(DataType.STRING),
   type("person").sub("entity").has("phone-number")
 );
 ```
@@ -616,7 +616,7 @@ emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, 
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("emotion").sub("attribute").datatype(AttributeType.DataType.STRING).regex("/[like, love, funny, shocking, sad, angry]/")
+  type("emotion").sub("attribute").datatype(DataType.STRING).regex("/[like, love, funny, shocking, sad, angry]/")
 );
 ```
 
@@ -647,8 +647,8 @@ language sub attribute datatype string;
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("content").sub("attribute").datatype(AttributeType.DataType.STRING).has("language"),
-  type("language").sub("attribute").datatype(AttributeType.DataType.STRING)
+  type("content").sub("attribute").datatype(DataType.STRING).has("language"),
+  type("language").sub("attribute").datatype(DataType.STRING)
 );
 ```
 
@@ -681,7 +681,7 @@ speaking-of-language sub relationship,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("language").sub("attribute").datatype(AttributeType.DataType.STRING).plays("spoken"),
+  type("language").sub("attribute").datatype(DataType.STRING).plays("spoken"),
   type("person").sub("entity").plays("speaker"),
   type("speaking-of-language").sub("relationship").relates("speaker").relates("spoken")
 );```
@@ -708,7 +708,7 @@ end-date sub event-date;
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("event-date").sub("attribute").datatype(AttributeType.DataType.DATE),
+  type("event-date").sub("attribute").datatype(DataType.DATE),
   type("birth-date").sub("event-date"),
   type("start-date").sub("event-date"),
   type("end-date").sub("event-date")
@@ -738,7 +738,7 @@ event-date sub attribute is-abstract datatype date;
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("event-date").sub("attribute").datatype(AttributeType.DataType.DATE)
+  type("event-date").sub("attribute").datatype(DataType.DATE)
 );
 ```
 
