@@ -9,19 +9,19 @@ methods:
         param: &accepts-transaction-type
           name: type
           description: The type of the transaction to be created - read or write.
-          type: grakn.TxType.READ or grakn.TxType.WRITE
+          type: grakn.Type.READ or grakn.Type.WRITE
           required: true
           default: N/A
       returns:
         - "[Transaction](#client-api-title-transaction) object"
     java:
       <<: *method-transaction
-      method: 'session.transaction(GraknTxType type)'
+      method: 'session.transaction(Type type)'
       accepts:
         <<: *accepts-transaction
         param:
           <<: *accepts-transaction-type
-          type: 'GraknTxType.READ or GraknTxType.WRITE'
+          type: 'Type.READ or Type.WRITE'
     javascript:
       <<: *method-transaction
       method: session.transaction(type);
