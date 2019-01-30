@@ -823,7 +823,7 @@ person has nickname;
 
 [tab:Java]
 ```java
-Graql.undefine(
+UndefineQuery query = Graql.undefine(
   label("person").has("nickname")
 );
 
@@ -858,7 +858,7 @@ undefine
 
 [tab:Java]
 ```java
-Graql.undefine(
+UndefineQuery query = Graql.undefine(
   label("employment").relates("employer").relates("employee"),
   label("company").plays("employer"),
   label("person").plays("employee"),
