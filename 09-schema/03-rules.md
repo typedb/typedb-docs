@@ -50,11 +50,13 @@ people-with-same-parents-are-siblings sub rule,
 ```java
 DefineQuery query = Graql.define(
   label("people-with-same-parents-are-siblings").sub("rule").when(
-    var().isa("parentship").rel("mother", "m").rel("x").and(
-    var().isa("parentship").rel("mother", "m").rel("y")).and(
-    var().isa("parentship").rel("father", "f").rel("x")).and(
-    var().isa("parentship").rel("father", "f").rel("y")).and(
-    var("x").neq(var("y")))
+    and(
+      var().rel("mother", "m").rel("x").isa("parentship"),
+      var().rel("mother", "m").rel("y").isa("parentship"),
+      var().rel("father", "f").rel("x").isa("parentship"),
+      var().rel("father", "f").rel("y").isa("parentship"),
+      var("x").neq("y")
+    )
   ).then(
     var().isa("siblings").rel("x").rel("y")
   )

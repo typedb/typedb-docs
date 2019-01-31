@@ -94,7 +94,7 @@ match $emp (employer: $x, employee: $y) isa employment; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  Var.isa("employment").rel("employer", "x").rel("employee", "y")
+  var("emp").isa("employment").rel("employer", "x").rel("employee", "y")
 ).get();
 ```
 [tab:end]
@@ -139,7 +139,7 @@ match (employer: $x, employee: $y) isa employment; get;
 
 [tab:Java]
 ```java
-GetQuery query = query_builder.match(
+GetQuery query = Graql.match(
   var().isa("employment").rel("employer", "x").rel("employee", "y")
 ).get();
 ```
@@ -159,7 +159,7 @@ match $fr ($x, $y) isa friendship; get;
 
 [tab:Java]
 ```java
-GetQuery query = query_builder.match(
+GetQuery query = Graql.match(
   var("fr").isa("friendship").rel("x").rel("y")
 ).get();
 ```
