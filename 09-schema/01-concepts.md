@@ -43,8 +43,6 @@ To define a new entity, we use the `sub` keyword followed by `entity`.
 
 [tab:Graql]
 
-<!-- ignore-test -->
-
 ```graql
 define
 

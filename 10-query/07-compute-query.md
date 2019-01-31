@@ -47,7 +47,7 @@ compute count in person;
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.COUNT)
-                          .in("person")
+                          .in("person");
 ```
 [tab:end]
 </div>
@@ -73,7 +73,7 @@ compute sum of number-of-rooms, in hotel;
 ```java
 ComputeQuery query = Graql.compute(GraqlSyntax.Compute.Method.SUM)
                           .of("number-of-rooms")
-                          .in("hotel")
+                          .in("hotel");
 ```
 [tab:end]
 </div>

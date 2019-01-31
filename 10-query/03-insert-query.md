@@ -110,7 +110,7 @@ InsertQuery query = Graql.match(
   var("org").isa("organisation").has("name", "Facelook"),
   var("p").isa("person").id(ConceptId.of("V8272"))
 ).insert(
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p").has("reference-id", "WGFTSH"),
+  var("emp").isa("employment").rel("employer", "org").rel("employee", "p").has("reference-id", "WGFTSH")
 );
 ```
 [tab:end]
