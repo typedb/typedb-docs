@@ -332,7 +332,10 @@ match $p isa person has full-name $fn; { $fn contains "Miriam"; } or { $fn conta
 ```java
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn")),
-  var("fn").val(contains("Miriam")).or(var("fn").val(contains("Solomon")))
+  or(
+    var("fn").val(contains("Miriam")),
+    var("fn").val(contains("Solomon"))
+  )
 ).get();
 ```
 [tab:end]
