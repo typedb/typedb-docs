@@ -352,7 +352,7 @@ match $rr isa! romantic-relationship; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("rr").isaExplicit("romantic-relationship")
+  var("rr").isaX("romantic-relationship")
 ).get();
 ```
 [tab:end]
