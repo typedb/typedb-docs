@@ -97,6 +97,7 @@ $ ./graql console -k genealogy
 
 #### Retrieve all parents and children using [Client Java](/docs/client-api/java)
 
+<!-- ignore-test -->
 ```java
 package ai.grakn.examples;
 import ai.grakn.GraknTxType;
@@ -138,6 +139,7 @@ public class Queries {
 
 #### Lazily retrieve all people named _Elizabeth_ using [Client Python](/docs/client-api/python)
 
+<!-- ignore-test -->
 ```python
 import grakn
 
@@ -151,6 +153,7 @@ with client.session(keyspace = "genealogy") as session:
 
 #### Eagerly retrieve the age of all fathers using [Client Node.js](/docs/client-api/nodejs)
 
+<!-- ignore-test -->
 ```javascript
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");

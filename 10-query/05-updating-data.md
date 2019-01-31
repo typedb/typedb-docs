@@ -111,7 +111,7 @@ delete $emp;
 ```java
 InsertQuery insert_query = Graql.match(
   var("p").isa("person").has("name", "Amabo"),
-  var("org").isa("organisation").has("name", "Wieth Souhe"),
+  var("org").isa("organisation").has("name", "Wieth Souhe")
 ).insert(
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
 );

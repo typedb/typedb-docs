@@ -94,7 +94,7 @@ match $emp (employer: $x, employee: $y) isa employment; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  Var.isa("employment").rel("employer", "x").rel("employee", "y"),
+  Var.isa("employment").rel("employer", "x").rel("employee", "y")
 ).get();
 ```
 [tab:end]
@@ -116,7 +116,7 @@ match $emp (employer: $x, exmployee: $y) isa employment has reference-id $ref; g
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref")),
+  var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref"))
 ).get();
 
 Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString());
@@ -160,7 +160,7 @@ match $fr ($x, $y) isa friendship; get;
 [tab:Java]
 ```java
 GetQuery query = query_builder.match(
-  var("fr").isa("friendship").rel("x").rel("y"),
+  var("fr").isa("friendship").rel("x").rel("y")
 ).get();
 ```
 [tab:end]
@@ -271,7 +271,7 @@ match $p isa person has nickname $nn, has last-name $ln; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("phone-number").val(Predicates.regex(/.*(Mary|Barbara).*/))
+  var("phone-number").val(Predicates.regex("/.*(Mary|Barbara).*/"))
 ).get();
 ```
 [tab:end]
