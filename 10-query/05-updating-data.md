@@ -76,9 +76,7 @@ InsertQuery query = Graql.match(
 
 DeleteQuery delete_query = Graql.match(
   var("c").isa("caption").val(contains("inappropriate word"))
-).delete(
-  var("c")
-);
+).delete("c");
 ```
 [tab:end]
 </div>
