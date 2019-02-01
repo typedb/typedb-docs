@@ -37,7 +37,7 @@ match $sh isa sheep; aggregate count;
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("sh").isa("person")
+  var("sh").isa("sheep")
 ).aggregate(count());
 ```
 [tab:end]
