@@ -40,7 +40,7 @@ insert $org isa organisation id V17391 has registration-number "81726354";
 [tab:Java]
 ```java
 DeleteQuery delete_query = Graql.match(
-  var("org").isa("organisation").id("V17391").has(Label.of("registration-number"), var("rn"), var("r"))
+  var("org").isa("organisation").id("V17391").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
 InsertQuery insert_query = Graql.insert(

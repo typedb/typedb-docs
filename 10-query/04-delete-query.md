@@ -83,7 +83,7 @@ match $t isa travel has start-date 2013-12-22 via $r; delete $r;
 [tab:Java]
 ```java
 DeleteQuery query = Graql.match(
-  var("t").isa("travel").has(Label.of("start-date"), var("st"), var("r")),
+  var("t").isa("travel").has("start-date", var("st"), var("r")),
   var("st").val(LocalDate.of(2013, 12, 22).atStartOfDay())
 ).delete("r");
 ```
