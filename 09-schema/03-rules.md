@@ -63,18 +63,6 @@ DefineQuery query = Graql.define(
 );
 ```
 [tab:end]
-
-[tab:Javascript]
-```nodejs
-await transaction.query("define people-with-same-parents-are-siblings sub rule, when { (mother: $m, $x) isa parentship; (mother: $m, $y) isa parentship; (father: $f, $x) isa parentship; (father: $f, $y) isa parentship; $x != $y; } then { ($x, $y) isa siblings; };");
-```
-[tab:end]
-
-[tab:Python]
-```python
-transaction.query("define people-with-same-parents-are-siblings sub rule, when { (mother: $m, $x) isa parentship; (mother: $m, $y) isa parentship; (father: $f, $x) isa parentship; (father: $f, $y) isa parentship; $x != $y; } then { ($x, $y) isa siblings; };")
-```
-[tab:end]
 </div>
 
 <div class = "note">
