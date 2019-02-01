@@ -63,6 +63,7 @@ match $p isa person; limit 1; get;
 [tab:end]
 
 [tab:Java]
+<!-- ignore-test -->
 ```java
 GetQuery query = Graql.match(
   var("p").isa("person")
@@ -84,6 +85,7 @@ match $p isa person has full-name $fn; order by $fn asc; get;
 [tab:end]
 
 [tab:Java]
+<!-- ignore-test -->
 ```java
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
@@ -111,6 +113,7 @@ match $p isa person has full-name $fn; order by $fn; offset 100; limit 10; get;
 [tab:end]
 
 [tab:Java]
+<!-- ignore-test -->
 ```java
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
