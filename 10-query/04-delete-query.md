@@ -33,7 +33,7 @@ match $p isa person id V41016; delete $p;
 [tab:Java]
 ```java
 DeleteQuery query = Graql.match(
-    var("p").isa("person").id(ConceptId.of("V41016"))
+    var("p").isa("person").id("V41016")
 ).delete("p");
 ```
 [tab:end]

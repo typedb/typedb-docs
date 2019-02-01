@@ -377,7 +377,7 @@ match $x id V41016; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("x").id(ConceptId.of("V41016"))
+  var("x").id("V41016")
 ).get();
 ```
 [tab:end]

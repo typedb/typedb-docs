@@ -45,7 +45,7 @@ GetQuery query = Graql.match(
   var("x").isa("person").has("full-name", var("x-fn")),
   var("x-fn").val(contains("Miriam")),
   var("y").isa("person").has("full-name", var("y-fn")).has("phone-number", var("y-pn"))
-).get(var("x-fn"), var("y-fn"), var("y-pn"));
+).get("x-fn", "y-fn", "y-pn");
 ```
 [tab:end]</div>
 
