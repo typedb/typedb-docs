@@ -55,7 +55,7 @@ match
 [tab:Java]
 ```java
 InsertQuery query = Graql.match(
-  var("p-a").isa("person").id(ConceptId.of("V41016")).has("surname", var("s"))
+  var("p-a").isa("person").id("V41016").has("surname", var("s"))
 ).insert(
   var("p-b").isa("person").has("surname", var("s"))
 );
@@ -108,7 +108,7 @@ insert $new-employment (employer: $org, employee: $person) isa employment;
 ```java
 InsertQuery query = Graql.match(
   var("org").isa("organisation").has("name", "Facelook"),
-  var("p").isa("person").id("V8272"))
+  var("p").isa("person").id("V8272")
 ).insert(
   var("emp").isa("employment").rel("employer", "org").rel("employee", "p").has("reference-id", "WGFTSH")
 );

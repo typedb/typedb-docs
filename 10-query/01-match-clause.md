@@ -118,8 +118,6 @@ match $emp (employer: $x, exmployee: $y) isa employment, has reference-id $ref; 
 GetQuery query = Graql.match(
   var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref"))
 ).get();
-
-Stream&lt;ConceptMap&gt; answers = transaction.stream(query.toString());
 ```
 [tab:end]
 </div>

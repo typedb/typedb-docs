@@ -98,7 +98,7 @@ In this example, siblings data is not explicitly stored anywhere in the knowledg
 Under the hood, rules are restricted to be definite Horn Clauses. In simple terms, the Graql statements placed in the `when` body form one single condition where all statements must be true for the rule to apply. The `then` body, on the other hand, is restricted to contain one single statement only.
 
 To simplify this logic even further, you can think of the [siblings example](#define-a-rule) in form of an `if` statement like so:
-
+<!-- ignore-test -->
 ```java
 if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y && is-x-different-to-y) {
     are-x-and-y-siblings = true;

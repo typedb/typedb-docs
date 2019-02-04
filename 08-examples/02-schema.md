@@ -112,7 +112,7 @@ define
     has last-name,
     has phone-number,
     has city,
-    has age
+    has age,
     has is-customer;
 ```
 
