@@ -30,21 +30,21 @@ In most cases, a concept type is expected to own only one instance of an attribu
 [tab:Graql]
 ```graql
 ## deleting the old
-match $org isa organisation id V17391, has registration-number via $r; delete $r;
+match $org id V17391, has registration-number via $r; delete $r;
 
 ## inserting the new
-insert $org isa organisation id V17391, has registration-number "81726354";
+insert $org id V17391, has registration-number "81726354";
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 DeleteQuery delete_query = Graql.match(
-  var("org").isa("organisation").id("V17391").has("registration-number", var("rn"), var("r"))
+  var("org").id("V17391").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
 InsertQuery insert_query = Graql.insert(
-  var("org").isa("organisation").id("V17391").has("registration-number", "81726354")
+  var("org").id("V17391").has("registration-number", "81726354")
 );
 ```
 [tab:end]

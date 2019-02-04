@@ -728,7 +728,7 @@ match
   $company isa company, has name "Telecom";
   (customer: $customer, provider: $company) isa contract;
   (caller: $customer, callee: $anyone) isa call, has duration $duration;
-aggregate mean $duration;
+get $duration; mean $duration;
 ```
 
 #### The result:
@@ -751,12 +751,8 @@ match
   $company isa company, has name "Telecom";
   (customer: $customer, provider: $company) isa contract;
   (caller: $customer, callee: $anyone) isa call, has duration $duration;
-aggregate mean $duration;
+get $duration; mean $duration;
 ```
-
-match $customer isa person, has age < 20; $company isa company, has name "Telecom"; (customer: $customer, provider: $company) isa contract; (caller: $customer, callee: $anyone) isa call, has duration $duration; aggregate mean $duration;
-
-match $customer isa person, has age > 40; $company isa company, has name "Telecom"; (customer: $customer, provider: $company) isa contract; (caller: $customer, callee: $anyone) isa call, has duration $duration; aggregate mean $duration;
 
 #### The result:
 
@@ -796,7 +792,7 @@ public class Queries {
       "  $company isa company, has name \"Telecom\";",
       "  (customer: $customer, provider: $company) isa contract;",
       "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-      "aggregate mean $duration;"
+      "get $duration; mean $duration;"
     );
 
     System.out.println("\nFirst Query:\n" + String.join("\n", firstQueryAsList));
@@ -819,7 +815,7 @@ public class Queries {
       "  $company isa company, has name \"Telecom\";",
       "  (customer: $customer, provider: $company) isa contract;",
       "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-      "aggregate mean $duration;"
+      "get $duration; mean $duration;"
     );
 
     System.out.println("\nSecond Query:\n" +
@@ -864,7 +860,7 @@ async function ExecuteMatchQuery() {
     '  $company isa company, has name "Telecom";',
     "  (customer: $customer, provider: $company) isa contract;",
     "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-    "aggregate mean $duration;"
+    "get $duration; mean $duration;"
   ];
   console.log("\nQuery:\n", queryA.join("\n"));
   queryA = queryA.join("");
@@ -883,7 +879,7 @@ async function ExecuteMatchQuery() {
     '  $company isa company, has name "Telecom";',
     "  (customer: $customer, provider: $company) isa contract;",
     "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-    "aggregate mean $duration;"
+    "get $duration; mean $duration;"
   ];
   console.log("\nQuery:\n", queryB.join("\n"));
   queryB = queryB.join("");
@@ -917,7 +913,7 @@ with client.session(keyspace = "phone_calls") as session:
       '  $company isa company, has name "Telecom";',
       '  (customer: $customer, provider: $company) isa contract;',
       '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
-      'aggregate mean $duration;'
+      'get $duration; mean $duration;'
     ]
 
     print("\nQuery:\n", "\n".join(query_a))
@@ -934,7 +930,7 @@ with client.session(keyspace = "phone_calls") as session:
       '  $company isa company, has name "Telecom";',
       '  (customer: $customer, provider: $company) isa contract;',
       '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
-      'aggregate mean $duration;'
+      'get $duration; mean $duration;'
     ]
     print("\nQuery:\n", "\n".join(query_b))
     query_b = "".join(query_b)

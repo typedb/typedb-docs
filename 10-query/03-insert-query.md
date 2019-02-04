@@ -47,7 +47,7 @@ InsertQuery query = Graql.insert(
 [tab:Graql]
 ```graql
 match
-  $p-a isa person id V41016, has surname $s;
+  $p-a id V41016, has surname $s;
   insert $p-b isa person, has surname $s;
 ```
 [tab:end]
@@ -55,7 +55,7 @@ match
 [tab:Java]
 ```java
 InsertQuery query = Graql.match(
-  var("p-a").isa("person").id("V41016").has("surname", var("s"))
+  var("p-a").id("V41016").has("surname", var("s"))
 ).insert(
   var("p-b").isa("person").has("surname", var("s"))
 );
@@ -76,7 +76,7 @@ Similar to inserting an instance of an entity, to insert an instance of an attri
 
 [tab:Graql]
 ```graql
-insert $x isa emotion "like";
+insert $x isa emotion; $x == "like";
 ```
 [tab:end]
 
@@ -98,7 +98,7 @@ Given the dependent nature of relationships, inserting an instance of a relation
 ```graql
 match
   $org isa organisation, has name "Facelook";
-  $person isa person id V8272;
+  $person id V8272;
 insert $new-employment (employer: $org, employee: $person) isa employment;
   $new-employment key reference-id "WGFTSH";
 ```

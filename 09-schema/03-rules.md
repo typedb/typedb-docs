@@ -13,7 +13,7 @@ In this section, we learn more about how rules are constructed and how they are 
 
 ## Define a Rule
 Defining a Graql rule begins with a given label followed by `sub rule`, the `when` body as the condition, and the `then` body as the conclusion.
-
+<!-- ignore-test -->
 ```graql
 define
 

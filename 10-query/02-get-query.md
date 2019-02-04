@@ -58,11 +58,12 @@ We can chose to limit the number of answers in the results. To do this, we use t
 
 [tab:Graql]
 ```graql
-match $p isa person; limit 1; get;
+match $p isa person; get; limit 1;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- not yet implemented -->
 <!-- ignore-test -->
 ```java
 GetQuery query = Graql.match(
@@ -80,11 +81,12 @@ To order the answers by a particular variable, we use the `order` keyword follow
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; order by $fn asc; get;
+match $p isa person, has full-name $fn; get; order $fn asc;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- not yet implemented -->
 <!-- ignore-test -->
 ```java
 GetQuery query = Graql.match(
@@ -98,7 +100,7 @@ This query returns all instances of the `person` (entity) type ordered by their 
 
 <div class="note">
 [Important]
-Placing `order by` before and after the `limit` makes a big difference. `order by` followed by `limit` results in a global ordering of the instances, whereas `limit` coming before `order by` returns the ordered arbitrary number of instances.
+Placing `order` before and after the `limit` makes a big difference. `order` followed by `limit` results in a global ordering of the instances, whereas `limit` coming before `order` returns the ordered arbitrary number of instances.
 </div>
 
 ## Offset the Answers
@@ -108,11 +110,12 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; order by $fn; offset 100; limit 10; get;
+match $p isa person, has full-name $fn;  get; order $fn; offset 100; limit 10;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- not yet implemented -->
 <!-- ignore-test -->
 ```java
 GetQuery query = Graql.match(
@@ -125,6 +128,6 @@ GetQuery query = Graql.match(
 This returns 10 instances of the `person` (entity) type starting from the 6th person ordered by their `full-name`.
 
 ## Summary
-A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order by` and `offset` to retrieve an optionally ordered subset of the matched instances.
+A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order` and `offset` to retrieve an optionally ordered subset of the matched instances.
 
 Next, we learn how to [insert data](/docs/query/insert-query) into a Grakn knowledge graph.

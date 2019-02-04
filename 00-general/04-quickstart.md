@@ -230,16 +230,18 @@ Let's extend the schema for our genealogy knowledge graph to take advantage of t
 In the schema we defined and loaded into a keyspace previously, there is no notion of `father`, `mother`, `son` and `daughter`. However, every single one of these new concept types can be inferred based on the existing explicitly stored dataset. All we need to do to make such inferences, is to look at the `gender` of each person in conjunction with the `role` they play in a `parentship` relationship.
 
 ```graql
-person
-  plays son
-  plays daughter
-  plays mother
+define
+
+person sub entity,
+  plays son,
+  plays daughter,
+  plays mother,
   plays father;
 
-parentship sub relationship
-  relates mother
-  relates father
-  relates son
+parentship sub relationship,
+  relates mother,
+  relates father,
+  relates son,
   relates daughter;
 
 mother sub parent;

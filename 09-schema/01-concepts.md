@@ -212,7 +212,7 @@ We are yet to define the relationships that relate to the roles as well as the a
 The ability to subtype entities not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
 
 ### Define an abstract entity
-There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define both the `post` and `media` entity types to be abstract. By doing so, we are indicating that no data instances of the of these entity types are allowed to be created, leaving us only with instances of `comment`, `photo` and `video`.
+There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define both the `post` and `media` entity types to be abstract. By doing so, we are indicating that no data instances of the of these entity types are allowed to be created, leaving us only with instances of `comment`, `photo` and `video`.
 
 <div class="tabs dark">
 
@@ -220,9 +220,9 @@ There may be scenarios where a parent entity is only defined for other entities 
 ```graql
 define
 
-post sub entity is-abstract;
+post sub entity, abstract;
 
-media sub post is-abstract;
+media sub post, abstract;
 ```
 [tab:end]
 
@@ -335,7 +335,8 @@ reaction sub relationship,
   relates reacted-to,
   relates reacted-by;
 
-emotion sub attribute datatype string,
+emotion sub attribute,
+  datatype string,
   plays reacted-emotion;
 
 post sub entity,
@@ -475,7 +476,7 @@ All roles defined to relate to the parent relationship must also be defined to r
 The ability to subtype relationships not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
 
 #### Define an abstract relationship
-There may be scenarios where a parent relationship is only defined for other relationships to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `location-of-everything` relationship type to be abstract. By doing so, we are indicating that no data instances of the `location-of-everything` relationship are allowed to be created, leaving us with instances of `location-of-birth` and `location-of-residence` only.
+There may be scenarios where a parent relationship is only defined for other relationships to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define the `location-of-everything` relationship type to be abstract. By doing so, we are indicating that no data instances of the `location-of-everything` relationship are allowed to be created, leaving us with instances of `location-of-birth` and `location-of-residence` only.
 
 <div class="tabs dark">
 
@@ -483,7 +484,7 @@ There may be scenarios where a parent relationship is only defined for other rel
 ```graql
 define
 
-location-of-everything sub relationship is-abstract,
+location-of-everything sub relationship, abstract,
   relates located-subject,
   relates subject-location;
 ```
@@ -610,7 +611,9 @@ Optionally, we can specify a Regex that the values of an attribute type must con
 
 [tab:Graql]
 ```graql
-emotion sub attribute datatype string regex /[like, love, funny, shocking, sad, angry]/;
+emotion sub attribute,
+  datatype string,
+  regex "/[like, love, funny, shocking, sad, angry]/";
 ```
 [tab:end]
 
@@ -638,7 +641,7 @@ Let's go through a simple example of how an attribute can own an attribute of it
 ```graql
 define
 
-content sub attribute datatype string,
+content sub attribute, datatype string,
   has language;
 
 language sub attribute,
@@ -668,7 +671,7 @@ An attribute can play a role in a relationship. To define the role played by an 
 ```graql
 define
 
-language sub attribute datatype string,
+language sub attribute, datatype string,
   plays spoken;
 
 person sub entity,
@@ -726,7 +729,7 @@ What this definition means is that `birth-date`, `start-date` and `end-date` are
 The ability to subtype attributes not only helps mirror the reality of our dataset but also enables automated reasoning using type hierarchies.
 
 #### Define an abstract attribute
-There may be scenarios where a parent attribute is only defined for other attributes to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `is-abstract` keyword. Let's say in the example above, we would like to define the `event-date` attribute type to be abstract. By doing so, we are indicating that no data instances of the `event-date` attribute are allowed to be created, leaving us with instances of `birth-date`, `start-date` and `end-date`.
+There may be scenarios where a parent attribute is only defined for other attributes to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define the `event-date` attribute type to be abstract. By doing so, we are indicating that no data instances of the `event-date` attribute are allowed to be created, leaving us with instances of `birth-date`, `start-date` and `end-date`.
 
 <div class="tabs dark">
 
@@ -734,7 +737,7 @@ There may be scenarios where a parent attribute is only defined for other attrib
 ```graql
 define
 
-event-date sub attribute is-abstract,
+event-date sub attribute, abstract,
 	datatype date;
 ```
 [tab:end]

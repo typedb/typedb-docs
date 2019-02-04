@@ -27,7 +27,7 @@ Some Graql queries such as `get`, `aggregate` and `compute` are expected to retu
 The following keywords are reserved and meant to only be used by Graql in the queries.
 
 ```graql
-aggregate, asc
+asc
 by
 compute, contains, count
 delete, desc

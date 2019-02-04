@@ -3,40 +3,51 @@ define
 ################
 ## ATTRIBITES ##
 ################
-	name sub attribute datatype string;
+	name sub attribute,
+		datatype string;
 		full-name sub name;
 		nickname sub name;
-	title sub attribute datatype string;
-	event-date sub attribute is-abstract,
-	datatype date;
+	title sub attribute,
+		datatype string;
+	event-date sub attribute, abstract,
+		datatype date;
 		approved-date sub event-date; ## to subtype an attribute
 		birth-date sub event-date;
 		start-date sub event-date;
 		end-date sub event-date;
 		engagement-date sub event-date;
 	published-date sub attribute,
-	datatype date;
-	reference-id sub attribute datatype string;
-	registration-number sub attribute datatype string;
+		datatype date;
+	reference-id sub attribute,
+		datatype string;
 	graduated sub attribute,
-	datatype boolean;
-	phone-number sub attribute datatype string;
-	email sub attribute datatype string;
-	gender sub attribute datatype string;
+		datatype boolean;
+	phone-number sub attribute,
+		datatype string;
+	email sub attribute,
+		datatype string;
+	gender sub attribute,
+		datatype string;
 	engaged sub attribute,
-	datatype boolean;
+		datatype boolean;
 	separated sub attribute,
-	datatype boolean;
+		datatype boolean;
 	divorced sub attribute,
-	datatype boolean;
-	file sub attribute datatype string;
-	caption sub attribute datatype string;
-	language sub attribute datatype string,
+		datatype boolean;
+	file sub attribute,
+		datatype string;
+	caption sub attribute,
+		datatype string;
+	language sub attribute,
+		datatype string,
 		plays spoken,
 		plays mutual-language;
-	content sub attribute datatype string,
+	content sub attribute,
+		datatype string,
 		has language;
-	emotion sub attribute datatype string regex /like|love|funny|shocking|sad|angry/,
+	emotion sub attribute,
+		datatype string,
+		regex "/[like, love, funny, shocking, sad, angry]/",
 		plays reacted-emotion;
 
 	person sub entity,
@@ -50,7 +61,7 @@ define
 ## GENERIC TYPES ##
 ###################
 
-	location-of-everything sub relationship is-abstract, ## to define an abstract relationship
+	location-of-everything sub relationship, abstract, ## to define an abstract relationship
 		relates located-subject,
 		relates subject-location;
 
@@ -72,7 +83,7 @@ define
 		relates requester,
 		relates respondent;
 
-	periodic-event sub relationship is-abstract,
+	periodic-event sub relationship, abstract,
 		has start-date,
 		has end-date,
 		plays overlapped-event;
@@ -379,7 +390,6 @@ define
 
 	organisation sub entity,
 		has name,
-		has registration-number,
 		plays office-owner,
 		plays employer,
 		plays mutual-organisation;
@@ -561,102 +571,6 @@ define
 			(one-degree-friend: $p1, one-degree-friend: $p3, mutual-friend: $p2) isa mutual-friendship;
 		};
 
-###########
-## GROUP ##
-###########
-
-## query the schema section
-# match
-# 	$gro sub group-ownership;
-# 	$grm sub group-membership;
-# 	$gmr sub group-membership-request;
-# 	$pug sub public-group;
-# 	$clg sub closed-group;
-# 	$seg sub secret-group;
-# 	$per sub person;
-# get;
-
-	group-ownership sub ownership,
-		relates group-owner as owner,
-		relates owned-group as owned;
-
-	group-membership sub relationship,
-		has approved-date,
-		plays approved-group-membership,
-		relates group-member,
-		relates membership-grouping;
-
-	group-membership-request sub request,
-		has approved-date,
-		relates approved-group-membership as approved-subject,
-		relates group-membership-requester as requester,
-		relates group-membership-respondent as respondent;
-
-	group sub entity is-abstract,
-		has name,
-		plays owned-group,
-		plays membership-grouping,
-		plays shared-in;
-
-	public-group sub group;
-
-	closed-group sub group;
-
-	secret-group sub group;
-
-	person sub entity,
-		plays group-owner,
-		plays group-member,
-		plays group-membership-requester,
-		plays group-membership-respondent;
-
-	#####################################
-	## public group membership request ##
-	#####################################
-
-	public-group-membership-is-automatically-approved sub rule,
-		when {
-			$group isa public-group;
-			(group-owner: $owner, owned-group: $group) isa group-ownership;
-			$membership (group-member: $member, membership-grouping: $group) isa group-membership;
-		} then {
-			(approved-group-membership: $membership, group-membership-requester: $member, group-membership-respondent: $owner) isa group-membership-request;
-		};
-
-	###################################
-	## group owner is always member ##
-	###################################
-
-	group-owner-is-always-member sub rule,
-		when {
-			$group isa group;
-			(group-owner: $owner, owned-group: $group) isa group-ownership;
-		} then {
-			(group-member: $owner, membership-grouping: $group) isa group-membership;
-		};
-
-##############
-## TIMELINE ##
-##############
-
-## query the schema section
-# match
-# 	$tow sub timeline-ownership;
-# 	$tim sub timeline;
-# 	$per sub person;
-# get;
-
-	timeline-ownership sub ownership,
-		relates timeline-owner as owner,
-		relates owned-timeline as owned;
-
-	timeline sub entity,
-		plays owned-timeline,
-		plays shared-in;
-
-	person sub entity,
-		plays timeline-owner;
-
 ##########
 ## POST ##
 ##########
@@ -678,18 +592,9 @@ define
 # 	$per sub person;
 # get;
 
-	reply-sharing-inherits-original-sharing sub rule,
-		when {
-			$rep (replied-to: $rt, reply-content: $rc) isa reply;
-			(shared-content: $rt, shared-by: $sb, shared-in: $si) isa $sha;
-		} then {
-			(shared-content: $rc, shared-by: $sb, shared-in: $si) isa $sha;
-		};
-
 	reply sub relationship,
 		relates replied-to,
-		relates reply-content,
-		relates replied-by;
+		relates reply-content;
 
 	tagging sub relationship,
 		relates tagged,
@@ -704,7 +609,7 @@ define
 		relates reacted-to,
 		relates reacted-by;
 
-	post sub entity is-abstract,
+	post sub entity, abstract,
 		plays permitted-content,
 		plays shared-content,
 		plays replied-to,
@@ -729,7 +634,7 @@ define
 		has published-date,
 		plays media-owner;
 
-	media sub post is-abstract,
+	media sub post, abstract,
 		has caption,
 		has file,
 		plays owned-media,
@@ -739,13 +644,76 @@ define
 
 	photo sub media;
 
-	link sub attribute datatype string,
+	link sub attribute,
+		datatype string,
 		plays attached;
 
 	person sub entity,
 		plays tagged,
-		plays reacted-by,
-		plays replied-by;
+		plays reacted-by;
+
+###########
+## GROUP ##
+###########
+
+## query the schema section
+# match
+# 	$gro sub group-ownership;
+# 	$grm sub group-membership;
+# 	$pug sub public-group;
+# 	$clg sub closed-group;
+# 	$seg sub secret-group;
+# 	$per sub person;
+# get;
+
+	group-ownership sub ownership,
+		relates group-owner as owner,
+		relates owned-group as owned;
+
+	group-membership sub relationship,
+		has approved-date,
+		relates requester,
+		relates respondent,
+		relates group-member,
+		relates membership-grouping;
+
+	group sub entity, abstract,
+		has name,
+		plays owned-group,
+		plays membership-grouping,
+		plays shared-in;
+
+	public-group sub group;
+
+	closed-group sub group;
+
+	secret-group sub group;
+
+	person sub entity,
+		plays group-owner,
+		plays group-member;
+
+##############
+## TIMELINE ##
+##############
+
+## query the schema section
+# match
+# 	$tow sub timeline-ownership;
+# 	$tim sub timeline;
+# 	$per sub person;
+# get;
+
+	timeline-ownership sub ownership,
+		relates timeline-owner as owner,
+		relates owned-timeline as owned;
+
+	timeline sub entity,
+		plays owned-timeline,
+		plays shared-in;
+
+	person sub entity,
+		plays timeline-owner;
 
 #############
 ## SHARING ##
@@ -764,36 +732,31 @@ define
 # 	$puu sub public-user;
 # get;
 
-	sharing sub relationship is-abstract,
+	sharing sub relationship, abstract,
 		relates shared-content,
 		relates shared-by,
 		relates shared-in;
 
 	public-sharing sub sharing,
 		relates shared-content,
-		relates shared-by,
-		relates shared-in;
+		relates shared-by;
 
 	friends-sharing sub sharing,
 		relates shared-content,
-		relates shared-by,
-		relates shared-in;
+		relates shared-by;
 
 	inclusive-sharing sub sharing,
 		relates shared-content,
 		relates shared-by,
-		relates shared-in,
 		relates shared-with;
 
 	friends-with-exclusion-sharing sub sharing,
 		relates shared-content,
 		relates shared-by,
-		relates shared-in,
 		relates hidden-from;
 
 	private-sharing sub sharing,
 		relates shared-content,
-		relates shared-in,
 		relates shared-by;
 
 	permitted-to-see sub relationship,
