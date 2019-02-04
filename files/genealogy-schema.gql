@@ -26,8 +26,12 @@ first-name sub name datatype string;
 middle-name sub name datatype string;
 surname sub name datatype string;
 picture sub attribute datatype string;
-age sub attribute datatype long;
-event-date sub attribute datatype date;
-birth-date sub event-date datatype date;
-death-date sub event-date datatype date;
+age sub attribute,
+	datatype long;
+event-date sub attribute,
+	datatype date;
+birth-date sub event-date,
+	datatype date;
+death-date sub event-date,
+	datatype date;
 gender sub attribute datatype string;

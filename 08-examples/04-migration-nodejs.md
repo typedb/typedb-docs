@@ -141,7 +141,7 @@ We need 4 of them. Let’s go through them one by one.
 
 ```javascript
 function companyTemplate(company) {
-  return `insert $company isa company has name "${company.name}";`;
+  return `insert $company isa company, has name "${company.name}";`;
 }
 ```
 
@@ -154,7 +154,7 @@ Example:
 
 - Comes out:
 ```javascript
-insert $company isa company has name "Telecom";
+insert $company isa company, has name "Telecom";
 ```
 
 ### personTemplate
@@ -164,19 +164,19 @@ function personTemplate(person) {
   const { first_name, last_name, phone_number, city, age } = person;
 
   // insert person
-  let graqlInsertQuery = `insert $person isa person has phone-number "${phone_number}"`;
+  let graqlInsertQuery = `insert $person isa person, has phone-number "${phone_number}"`;
   const isNotCustomer = typeof first_name === "undefined";
 
   if (isNotCustomer) {
     // person is not a customer
-    graqlInsertQuery += " has is-customer false";
+    graqlInsertQuery += ", has is-customer false";
   } else {
     // person is a customer
-    graqlInsertQuery += ` has is-customer true`;
-    graqlInsertQuery += ` has first-name "${first_name}"`;
-    graqlInsertQuery += ` has last-name "${last_name}"`;
-    graqlInsertQuery += ` has city "${city}"`;
-    graqlInsertQuery += ` has age ${age}`;
+    graqlInsertQuery += `, has is-customer true`;
+    graqlInsertQuery += `, has first-name "${first_name}"`;
+    graqlInsertQuery += `, has last-name "${last_name}"`;
+    graqlInsertQuery += `, has city "${city}"`;
+    graqlInsertQuery += `, has age ${age}`;
   }
 
   graqlInsertQuery += ";";
@@ -205,7 +205,7 @@ or:
 
 - Comes out:
 ```javascript
-insert $person has phone-number "+44 091 xxx" has first-name "Jackie" has last-name "Joe" has city "Jimo" has age 77;
+insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ### contractTemplate
@@ -214,9 +214,9 @@ insert $person has phone-number "+44 091 xxx" has first-name "Jackie" has last-n
 function contractTemplate(contract) {
   const { company_name, person_id } = contract;
   // match company
-  let graqlInsertQuery = `match $company isa company has name "${company_name}"; `;
+  let graqlInsertQuery = `match $company isa company, has name "${company_name}"; `;
   // match person
-  graqlInsertQuery += `$customer isa person has phone-number "${person_id}"; `;
+  graqlInsertQuery += `$customer isa person, has phone-number "${person_id}"; `;
   // insert contract
   graqlInsertQuery +=
     "insert (provider: $company, customer: $customer) isa contract;";
@@ -233,7 +233,7 @@ Example:
 
 - Comes out:
 ```javascript
-match $company isa company has name "Telecom"; $customer isa person has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
+match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
 ### callTemplate
@@ -243,10 +243,10 @@ function callTemplate(call) {
   const { caller_id, callee_id, started_at, duration } = call;
 
   // match caller
-  let graqlInsertQuery = `match $caller isa person has phone-number "${caller_id}"; `;
+  let graqlInsertQuery = `match $caller isa person, has phone-number "${caller_id}"; `;
 
   // match callee
-  graqlInsertQuery += `$callee isa person has phone-number "${callee_id}"; `;
+  graqlInsertQuery += `$callee isa person, has phone-number "${callee_id}"; `;
 
   // insert call
   graqlInsertQuery += `insert $call(caller: $caller, callee: $callee) isa call; $call has started-at ${started_at}; $call has duration ${duration};`;
@@ -263,7 +263,7 @@ Example:
 
 - Comes out:
 ```javascript
-match $caller isa person has phone-number "+44 091 xxx"; $callee isa person has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018–08–10T07:57:51; $call has duration 148;
+match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018–08–10T07:57:51; $call has duration 148;
 ```
 
 We’ve now created a template for each and all four concepts that were [previously](./defining-the-schema) defined in the schema.
@@ -498,24 +498,24 @@ async function loadDataIntoGrakn(input, session) {
 }
 
 function companyTemplate(company) {
-  return `insert $company isa company has name "${company.name}";`;
+  return `insert $company isa company, has name "${company.name}";`;
 }
 
 function personTemplate(person) {
   const { first_name, last_name, phone_number, city, age } = person;
   // insert person
-  let graqlInsertQuery = `insert $person isa person has phone-number "${phone_number}"`;
+  let graqlInsertQuery = `insert $person isa person, has phone-number "${phone_number}"`;
   const isNotCustomer = first_name === "";
   if (isNotCustomer) {
     // person is not a customer
-    graqlInsertQuery += " has is-customer false";
+    graqlInsertQuery += ", has is-customer false";
   } else {
     // person is a customer
-    graqlInsertQuery += ` has is-customer true`;
-    graqlInsertQuery += ` has first-name "${first_name}"`;
-    graqlInsertQuery += ` has last-name "${last_name}"`;
-    graqlInsertQuery += ` has city "${city}"`;
-    graqlInsertQuery += ` has age ${age}`;
+    graqlInsertQuery += `, has is-customer true`;
+    graqlInsertQuery += `, has first-name "${first_name}"`;
+    graqlInsertQuery += `, has last-name "${last_name}"`;
+    graqlInsertQuery += `, has city "${city}"`;
+    graqlInsertQuery += `, has age ${age}`;
   }
 
   graqlInsertQuery += ";";
@@ -525,9 +525,9 @@ function personTemplate(person) {
 function contractTemplate(contract) {
   const { company_name, person_id } = contract;
   // match company
-  let graqlInsertQuery = `match $company isa company has name "${company_name}"; `;
+  let graqlInsertQuery = `match $company isa company, has name "${company_name}"; `;
   // match person
-  graqlInsertQuery += `$customer isa person has phone-number "${person_id}"; `;
+  graqlInsertQuery += `$customer isa person, has phone-number "${person_id}"; `;
   // insert contract
   graqlInsertQuery +=
     "insert (provider: $company, customer: $customer) isa contract;";
@@ -537,9 +537,9 @@ function contractTemplate(contract) {
 function callTemplate(call) {
   const { caller_id, callee_id, started_at, duration } = call;
   // match caller
-  let graqlInsertQuery = `match $caller isa person has phone-number "${caller_id}"; `;
+  let graqlInsertQuery = `match $caller isa person, has phone-number "${caller_id}"; `;
   // match callee
-  graqlInsertQuery += `$callee isa person has phone-number "${callee_id}"; `;
+  graqlInsertQuery += `$callee isa person, has phone-number "${callee_id}"; `;
   // insert call
   graqlInsertQuery += "insert $call(caller: $caller, callee: $callee) isa call; " +
     `$call has started-at ${started_at}; $call has duration ${duration};`;
@@ -614,24 +614,24 @@ async function loadDataIntoGrakn(input, session) {
 }
 
 function companyTemplate(company) {
-  return `insert $company isa company has name "${company.name}";`;
+  return `insert $company isa company, has name "${company.name}";`;
 }
 
 function personTemplate(person) {
   const { first_name, last_name, phone_number, city, age } = person;
   // insert person
-  let graqlInsertQuery = `insert $person isa person has phone-number "${phone_number}"`;
+  let graqlInsertQuery = `insert $person isa person, has phone-number "${phone_number}"`;
   const isNotCustomer = typeof first_name === "undefined";
   if (isNotCustomer) {
     // person is not a customer
-    graqlInsertQuery += " has is-customer false";
+    graqlInsertQuery += ", has is-customer false";
   } else {
     // person is a customer
-    graqlInsertQuery += ` has is-customer true`;
-    graqlInsertQuery += ` has first-name "${first_name}"`;
-    graqlInsertQuery += ` has last-name "${last_name}"`;
-    graqlInsertQuery += ` has city "${city}"`;
-    graqlInsertQuery += ` has age ${age}`;
+    graqlInsertQuery += `, has is-customer true`;
+    graqlInsertQuery += `, has first-name "${first_name}"`;
+    graqlInsertQuery += `, has last-name "${last_name}"`;
+    graqlInsertQuery += `, has city "${city}"`;
+    graqlInsertQuery += `, has age ${age}`;
   }
 
   graqlInsertQuery += ";";
@@ -641,9 +641,9 @@ function personTemplate(person) {
 function contractTemplate(contract) {
   const { company_name, person_id } = contract;
   // match company
-  let graqlInsertQuery = `match $company isa company has name "${company_name}"; `;
+  let graqlInsertQuery = `match $company isa company, has name "${company_name}"; `;
   // match person
-  graqlInsertQuery += `$customer isa person has phone-number "${person_id}"; `;
+  graqlInsertQuery += `$customer isa person, has phone-number "${person_id}"; `;
   // insert contract
   graqlInsertQuery +=
     "insert (provider: $company, customer: $customer) isa contract;";
@@ -653,9 +653,9 @@ function contractTemplate(contract) {
 function callTemplate(call) {
   const { caller_id, callee_id, started_at, duration } = call;
   // match caller
-  let graqlInsertQuery = `match $caller isa person has phone-number "${caller_id}"; `;
+  let graqlInsertQuery = `match $caller isa person, has phone-number "${caller_id}"; `;
   // match callee
-  graqlInsertQuery += `$callee isa person has phone-number "${callee_id}"; `;
+  graqlInsertQuery += `$callee isa person, has phone-number "${callee_id}"; `;
   // insert call
   graqlInsertQuery += "insert $call(caller: $caller, callee: $callee) isa call; " +
     `$call has started-at ${started_at}; $call has duration ${duration};`;
@@ -746,24 +746,24 @@ async function loadDataIntoGrakn(input, session) {
 }
 
 function companyTemplate(company) {
-  return `insert $company isa company has name "${company.name}";`;
+  return `insert $company isa company, has name "${company.name}";`;
 }
 
 function personTemplate(person) {
   const { first_name, last_name, phone_number, city, age } = person;
   // insert person
-  let graqlInsertQuery = `insert $person isa person has phone-number "${phone_number}"`;
+  let graqlInsertQuery = `insert $person isa person, has phone-number "${phone_number}"`;
   const isNotCustomer = typeof first_name === "undefined";
   if (isNotCustomer) {
     // person is not a customer
-    graqlInsertQuery += " has is-customer false";
+    graqlInsertQuery += ", has is-customer false";
   } else {
     // person is a customer
-    graqlInsertQuery += ` has is-customer true`;
-    graqlInsertQuery += ` has first-name "${first_name}"`;
-    graqlInsertQuery += ` has last-name "${last_name}"`;
-    graqlInsertQuery += ` has city "${city}"`;
-    graqlInsertQuery += ` has age ${age}`;
+    graqlInsertQuery += `, has is-customer true`;
+    graqlInsertQuery += `, has first-name "${first_name}"`;
+    graqlInsertQuery += `, has last-name "${last_name}"`;
+    graqlInsertQuery += `, has city "${city}"`;
+    graqlInsertQuery += `, has age ${age}`;
   }
 
   graqlInsertQuery += ";";
@@ -773,9 +773,9 @@ function personTemplate(person) {
 function contractTemplate(contract) {
   const { company_name, person_id } = contract;
   // match company
-  let graqlInsertQuery = `match $company isa company has name "${company_name}"; `;
+  let graqlInsertQuery = `match $company isa company, has name "${company_name}"; `;
   // match person
-  graqlInsertQuery += `$customer isa person has phone-number "${person_id}"; `;
+  graqlInsertQuery += `$customer isa person, has phone-number "${person_id}"; `;
   // insert contract
   graqlInsertQuery +=
     "insert (provider: $company, customer: $customer) isa contract;";
@@ -785,9 +785,9 @@ function contractTemplate(contract) {
 function callTemplate(call) {
   const { caller_id, callee_id, started_at, duration } = call;
   // match caller
-  let graqlInsertQuery = `match $caller isa person has phone-number "${caller_id}"; `;
+  let graqlInsertQuery = `match $caller isa person, has phone-number "${caller_id}"; `;
   // match callee
-  graqlInsertQuery += `$callee isa person has phone-number "${callee_id}"; `;
+  graqlInsertQuery += `$callee isa person, has phone-number "${callee_id}"; `;
   // insert call
   graqlInsertQuery += "insert $call(caller: $caller, callee: $callee) isa call; " +
     `$call has started-at ${started_at}; $call has duration ${duration};`;

@@ -26,7 +26,7 @@ To insert an instance of an entity type into the knowledge graph, we use the `in
 
 [tab:Graql]
 ```graql
-insert $p isa person has full-name "John Parkson", has nickname "Johny", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234=567890";
+insert $p isa person, has full-name "John Parkson", has nickname "Johny", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234=567890";
 ```
 [tab:end]
 
@@ -47,8 +47,8 @@ InsertQuery query = Graql.insert(
 [tab:Graql]
 ```graql
 match
-  $p-a isa person id V41016 has surname $s;
-  insert $p-b isa person has surname $s;
+  $p-a isa person id V41016, has surname $s;
+  insert $p-b isa person, has surname $s;
 ```
 [tab:end]
 
@@ -97,7 +97,7 @@ Given the dependent nature of relationships, inserting an instance of a relation
 [tab:Graql]
 ```graql
 match
-  $org isa organisation has name "Facelook";
+  $org isa organisation, has name "Facelook";
   $person isa person id V8272;
 insert $new-employment (employer: $org, employee: $person) isa employment;
   $new-employment key reference-id "WGFTSH";

@@ -31,9 +31,9 @@ Any variable that has been specified in the `match` clause can be returned as th
 ```graql
 match
   $fr ($x, $y) isa friendship;
-  $x isa person has full-name $x-fn;
+  $x isa person, has full-name $x-fn;
   $x-fn contains "Miriam";
-  $y isa person has full-name $y-fn, has phone-number $y-pn;
+  $y isa person, has full-name $y-fn, has phone-number $y-pn;
 get $x-fn, $y-fn, $y-pn;
 ```
 [tab:end]
@@ -79,7 +79,7 @@ To order the answers by a particular variable, we use the `order` keyword follow
 
 [tab:Graql]
 ```graql
-match $p isa person has full-name $fn; order by $fn asc; get;
+match $p isa person, has full-name $fn; order by $fn asc; get;
 ```
 [tab:end]
 
@@ -106,7 +106,7 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 
 [tab:Graql]
 ```graql
-match $p isa person has full-name $fn; order by $fn; offset 100; limit 10; get;
+match $p isa person, has full-name $fn; order by $fn; offset 100; limit 10; get;
 ```
 [tab:end]
 

@@ -49,7 +49,7 @@ To delete an instance of a relationship type, similar to deleting an entity type
 [tab:Graql]
 ```graql
 match
-  $org isa organisation has name "Pharos";
+  $org isa organisation, has name "Pharos";
   $emp (employer: $org, employee: $p) isa employment;
 $delete $emp;
 ```
@@ -76,7 +76,7 @@ To delete only the association that a thing has with an attribute, we use the `v
 
 [tab:Graql]
 ```graql
-match $t isa travel has start-date 2013-12-22 via $r; delete $r;
+match $t isa travel, has start-date 2013-12-22 via $r; delete $r;
 ```
 [tab:end]
 
@@ -92,7 +92,7 @@ DeleteQuery query = Graql.match(
 
 This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22`, captures the association between the attribute and the owner as the variable `$r` and finally deletes `$r`. This ensures that the attribute instance of type `start-date` and value `2013-12-22` remains associated with any other instance that may own it.
 
-If we had instead written the query as `match $t isa travel has start-date $st;  $st == 2013-12-22"; delete $st;`, we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
+If we had instead written the query as `match $t isa travel, has start-date $st;  $st == 2013-12-22"; delete $st;`, we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
 
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.

@@ -41,11 +41,11 @@ Let’s begin.
 
 ```graql
 match
-  $customer isa person has phone-number $phone-number;
-  $company isa company has name "Telecom";
+  $customer isa person, has phone-number $phone-number;
+  $company isa company, has name "Telecom";
   (customer: $customer, provider: $company) isa contract;
-  $target isa person has phone-number "+86 921 547 9004";
-  (caller: $customer, callee: $target) isa call has started-at $started-at;
+  $target isa person, has phone-number "+86 921 547 9004";
+  (caller: $customer, callee: $target) isa call, has started-at $started-at;
   $min-date == 2018-09-14T17:18:49; $started-at > $min-date;
 get $phone-number;
 ```
@@ -67,8 +67,8 @@ get $phone-number;
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
 <div class="tabs dark">
-
 [tab:Java]
+<!-- ignore-test -->
 ```java
 package ai.grakn.examples;
 
@@ -89,11 +89,11 @@ public class Queries {
 
     List < String > queryAsList = Arrays.asList(
       "match",
-      "  $customer isa person has phone-number $phone-number;",
-      "  $company isa company has name \"Telecom\";",
+      "  $customer isa person, has phone-number $phone-number;",
+      "  $company isa company, has name \"Telecom\";",
       "  (customer: $customer, provider: $company) isa contract;",
-      "  $target isa person has phone-number \"+86 921 547 9004\";",
-      "  (caller: $customer, callee: $target) isa call has started-at $started-at;",
+      "  $target isa person, has phone-number \"+86 921 547 9004\";",
+      "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
       "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
       "get $phone-number;"
     );
@@ -118,6 +118,7 @@ public class Queries {
 [tab:end]
 
 [tab:Node.js]
+
 ```javascript
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
@@ -130,11 +131,11 @@ async function ExecuteMatchQuery() {
 
   let query = [
     "match",
-    "  $customer isa person has phone-number $phone-number;",
-    '  $company isa company has name "Telecom";',
+    "  $customer isa person, has phone-number $phone-number;",
+    '  $company isa company, has name "Telecom";',
     "  (customer: $customer, provider: $company) isa contract;",
-    '  $target isa person has phone-number "+86 921 547 9004";',
-    "  (caller: $customer, callee: $target) isa call has started-at $started-at;",
+    '  $target isa person, has phone-number "+86 921 547 9004";',
+    "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
     "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
     "get $phone-number;"
   ];
@@ -170,11 +171,11 @@ with client.session(keyspace = "phone_calls") as session:
   with session.transaction(grakn.TxType.READ) as transaction:
     query = [
       'match',
-      '  $customer isa person has phone-number $phone-number;',
-      '  $company isa company has name "Telecom";',
+      '  $customer isa person, has phone-number $phone-number;',
+      '  $company isa company, has name "Telecom";',
       '  (customer: $customer, provider: $company) isa contract;',
-      '  $target isa person has phone-number "+86 921 547 9004";',
-      '  (caller: $customer, callee: $target) isa call has started-at $started-at;',
+      '  $target isa person, has phone-number "+86 921 547 9004";',
+      '  (caller: $customer, callee: $target) isa call, has started-at $started-at;',
       '  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;',
       'get $phone-number;'
     ]
@@ -207,13 +208,13 @@ with client.session(keyspace = "phone_calls") as session:
 
 ```graql
 match
-  $suspect isa person has city "London", has age > 50;
-  $company isa company has name "Telecom";
+  $suspect isa person, has city "London", has age > 50;
+  $company isa company, has name "Telecom";
   (customer: $suspect, provider: $company) isa contract;
-  $pattern-callee isa person has age < 20;
-  (caller: $suspect, callee: $pattern-callee) isa call has started-at $pattern-call-date;
-  $target isa person has phone-number $phone-number, has is-customer false;
-  (caller: $suspect, callee: $target) isa call has started-at $target-call-date;
+  $pattern-callee isa person, has age < 20;
+  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;
+  $target isa person, has phone-number $phone-number, has is-customer false;
+  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;
   $target-call-date > $pattern-call-date;
 get $phone-number;
 ```
@@ -236,8 +237,8 @@ get $phone-number;
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
 <div class="tabs dark">
-
 [tab:Java]
+<!-- ignore-test -->
 ```java
 package ai.grakn.examples;
 
@@ -258,13 +259,13 @@ public class Queries {
 
     List < String > queryAsList = Arrays.asList(
       "match ",
-      "  $suspect isa person has city \"London\", has age > 50;",
-      "  $company isa company has name \"Telecom\";",
+      "  $suspect isa person, has city \"London\", has age > 50;",
+      "  $company isa company, has name \"Telecom\";",
       "  (customer: $suspect, provider: $company) isa contract;",
-      "  $pattern-callee isa person has age < 20;",
-      "  (caller: $suspect, callee: $pattern-callee) isa call has started-at $pattern-call-date;",
-      "  $target isa person has phone-number $phone-number, has is-customer false;",
-      "  (caller: $suspect, callee: $target) isa call has started-at $target-call-date;",
+      "  $pattern-callee isa person, has age < 20;",
+      "  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;",
+      "  $target isa person, has phone-number $phone-number, has is-customer false;",
+      "  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;",
       "  $target-call-date > $pattern-call-date;",
       "get $phone-number;"
     );
@@ -301,13 +302,13 @@ async function ExecuteMatchQuery() {
 
   let query = [
     "match ",
-    '  $suspect isa person has city "London", has age > 50;',
-    '  $company isa company has name "Telecom";',
+    '  $suspect isa person, has city "London", has age > 50;',
+    '  $company isa company, has name "Telecom";',
     "  (customer: $suspect, provider: $company) isa contract;",
-    "  $pattern-callee isa person has age < 20;",
-    "  (caller: $suspect, callee: $pattern-callee) isa call has started-at $pattern-call-date;",
-    "  $target isa person has phone-number $phone-number, has is-customer false;",
-    "  (caller: $suspect, callee: $target) isa call has started-at $target-call-date;",
+    "  $pattern-callee isa person, has age < 20;",
+    "  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;",
+    "  $target isa person, has phone-number $phone-number, has is-customer false;",
+    "  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;",
     "  $target-call-date > $pattern-call-date;",
     "get $phone-number;"
   ];
@@ -343,13 +344,13 @@ with client.session(keyspace = "phone_calls") as session:
   with session.transaction(grakn.TxType.READ) as tx:
     query = [
       'match ',
-      '  $suspect isa person has city "London", has age > 50;',
-      '  $company isa company has name "Telecom";',
+      '  $suspect isa person, has city "London", has age > 50;',
+      '  $company isa company, has name "Telecom";',
       '  (customer: $suspect, provider: $company) isa contract;',
-      '  $pattern-callee isa person has age < 20;',
-      '  (caller: $suspect, callee: $pattern-callee) isa call has started-at $pattern-call-date;',
-      '  $target isa person has phone-number $phone-number, has is-customer false;',
-      '  (caller: $suspect, callee: $target) isa call has started-at $target-call-date;',
+      '  $pattern-callee isa person, has age < 20;',
+      '  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;',
+      '  $target isa person, has phone-number $phone-number, has is-customer false;',
+      '  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;',
       '  $target-call-date > $pattern-call-date;',
       'get $phone-number;'
     ]
@@ -382,9 +383,9 @@ with client.session(keyspace = "phone_calls") as session:
 
 ```graql
 match
-  $common-contact isa person has phone-number $phone-number;
-  $customer-a isa person has phone-number "+7 171 898 0853";
-  $customer-b isa person has phone-number "+370 351 224 5176";
+  $common-contact isa person, has phone-number $phone-number;
+  $customer-a isa person, has phone-number "+7 171 898 0853";
+  $customer-b isa person, has phone-number "+370 351 224 5176";
   (caller: $customer-a, callee: $common-contact) isa call;
   (caller: $customer-b, callee: $common-contact) isa call;
 get $phone-number;
@@ -405,8 +406,8 @@ get $phone-number;
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
 <div class="tabs dark">
-
 [tab:Java]
+<!-- ignore-test -->
 ```java
 package ai.grakn.examples;
 
@@ -427,9 +428,9 @@ public class Queries {
 
     List < String > queryAsList = Arrays.asList(
       "match ",
-      "  $common-contact isa person has phone-number $phone-number;",
-      "  $customer-a isa person has phone-number \"+7 171 898 0853\";",
-      "  $customer-b isa person has phone-number \"+370 351 224 5176\";",
+      "  $common-contact isa person, has phone-number $phone-number;",
+      "  $customer-a isa person, has phone-number \"+7 171 898 0853\";",
+      "  $customer-b isa person, has phone-number \"+370 351 224 5176\";",
       "  (caller: $customer-a, callee: $common-contact) isa call;",
       "  (caller: $customer-b, callee: $common-contact) isa call;",
       "get $phone-number;"
@@ -467,9 +468,9 @@ async function ExecuteMatchQuery() {
 
   let query = [
     "match ",
-    "  $common-contact isa person has phone-number $phone-number;",
-    '  $customer-a isa person has phone-number "+7 171 898 0853";',
-    '  $customer-b isa person has phone-number "+370 351 224 5176";',
+    "  $common-contact isa person, has phone-number $phone-number;",
+    '  $customer-a isa person, has phone-number "+7 171 898 0853";',
+    '  $customer-b isa person, has phone-number "+370 351 224 5176";',
     "  (caller: $customer-a, callee: $common-contact) isa call;",
     "  (caller: $customer-b, callee: $common-contact) isa call;",
     "get $phone-number;"
@@ -506,9 +507,9 @@ with client.session(keyspace = "phone_calls") as session:
   with session.transaction(grakn.TxType.READ) as tx:
     query = [
       'match ',
-      '  $common-contact isa person has phone-number $phone-number;',
-      '  $customer-a isa person has phone-number "+7 171 898 0853";',
-      '  $customer-b isa person has phone-number "+370 351 224 5176";',
+      '  $common-contact isa person, has phone-number $phone-number;',
+      '  $customer-a isa person, has phone-number "+7 171 898 0853";',
+      '  $customer-b isa person, has phone-number "+370 351 224 5176";',
       '  (caller: $customer-a, callee: $common-contact) isa call;',
       '  (caller: $customer-b, callee: $common-contact) isa call;',
       'get $phone-number;'
@@ -545,10 +546,10 @@ Get me the phone phone number of all customers who have called each other as wel
 
 ```graql
 match
-  $target isa person has phone-number "+48 894 777 5173";
-  $company isa company has name "Telecom";
-  $customer-a isa person has phone-number $phone-number-a;
-  $customer-b isa person has phone-number $phone-number-b;
+  $target isa person, has phone-number "+48 894 777 5173";
+  $company isa company, has name "Telecom";
+  $customer-a isa person, has phone-number $phone-number-a;
+  $customer-b isa person, has phone-number $phone-number-b;
   (customer: $customer-a, provider: $company) isa contract;
   (customer: $customer-b, provider: $company) isa contract;
   (caller: $customer-a, callee: $customer-b) isa call;
@@ -572,8 +573,8 @@ get $phone-number-a, $phone-number-b;
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
 <div class="tabs dark">
-
 [tab:Java]
+<!-- ignore-test -->
 ```java
 package ai.grakn.examples;
 
@@ -594,12 +595,12 @@ public class Queries {
 
     List < String > queryAsList = Arrays.asList(
       "match ",
-      "  $target isa person has phone-number \"+48 894 777 5173\";",
-      "  $company isa company has name \"Telecom\";",
-      "  $customer-a isa person has phone-number $phone-number-a;",
+      "  $target isa person, has phone-number \"+48 894 777 5173\";",
+      "  $company isa company, has name \"Telecom\";",
+      "  $customer-a isa person, has phone-number $phone-number-a;",
       "  (customer: $customer-a, provider: $company) isa contract;",
       "  (caller: $customer-a, callee: $target) isa call;",
-      "  $customer-b isa person has phone-number $phone-number-b;",
+      "  $customer-b isa person, has phone-number $phone-number-b;",
       "  (customer: $customer-b, provider: $company) isa contract;",
       "  (caller: $customer-b, callee: $target) isa call;",
       "  (caller: $customer-a, callee: $customer-b) isa call;",
@@ -637,12 +638,12 @@ async function ExecuteMatchQuery() {
 
   let query = [
     "match ",
-    '  $target isa person has phone-number "+48 894 777 5173";',
-    '  $company isa company has name "Telecom";',
-    "  $customer-a isa person has phone-number $phone-number-a;",
+    '  $target isa person, has phone-number "+48 894 777 5173";',
+    '  $company isa company, has name "Telecom";',
+    "  $customer-a isa person, has phone-number $phone-number-a;",
     "  (customer: $customer-a, provider: $company) isa contract;",
     "  (caller: $customer-a, callee: $target) isa call;",
-    "  $customer-b isa person has phone-number $phone-number-b;",
+    "  $customer-b isa person, has phone-number $phone-number-b;",
     "  (customer: $customer-b, provider: $company) isa contract;",
     "  (caller: $customer-b, callee: $target) isa call;",
     "  (caller: $customer-a, callee: $customer-b) isa call;",
@@ -680,12 +681,12 @@ with client.session(keyspace = "phone_calls") as session:
   with session.transaction(grakn.TxType.READ) as tx:
   query = [
       'match ',
-      '  $target isa person has phone-number "+48 894 777 5173";',
-      '  $company isa company has name "Telecom";',
-      '  $customer-a isa person has phone-number $phone-number-a;',
+      '  $target isa person, has phone-number "+48 894 777 5173";',
+      '  $company isa company, has name "Telecom";',
+      '  $customer-a isa person, has phone-number $phone-number-a;',
       '  (customer: $customer-a, provider: $company) isa contract;',
       '  (caller: $customer-a, callee: $target) isa call;',
-      '  $customer-b isa person has phone-number $phone-number-b;',
+      '  $customer-b isa person, has phone-number $phone-number-b;',
       '  (customer: $customer-b, provider: $company) isa contract;',
       '  (caller: $customer-b, callee: $target) isa call;',
       '  (caller: $customer-a, callee: $customer-b) isa call;',
@@ -723,10 +724,10 @@ Two queries need to be executed to provide this insight.
 
 ```graql
 match
-  $customer isa person has age < 20;
-  $company isa company has name "Telecom";
+  $customer isa person, has age < 20;
+  $company isa company, has name "Telecom";
   (customer: $customer, provider: $company) isa contract;
-  (caller: $customer, callee: $anyone) isa call has duration $duration;
+  (caller: $customer, callee: $anyone) isa call, has duration $duration;
 aggregate mean $duration;
 ```
 
@@ -746,16 +747,16 @@ aggregate mean $duration;
 
 ```graql
 match
-  $customer isa person has age > 40;
-  $company isa company has name "Telecom";
+  $customer isa person, has age > 40;
+  $company isa company, has name "Telecom";
   (customer: $customer, provider: $company) isa contract;
-  (caller: $customer, callee: $anyone) isa call has duration $duration;
+  (caller: $customer, callee: $anyone) isa call, has duration $duration;
 aggregate mean $duration;
 ```
 
-match $customer isa person has age < 20; $company isa company has name "Telecom"; (customer: $customer, provider: $company) isa contract; (caller: $customer, callee: $anyone) isa call has duration $duration; aggregate mean $duration;
+match $customer isa person, has age < 20; $company isa company, has name "Telecom"; (customer: $customer, provider: $company) isa contract; (caller: $customer, callee: $anyone) isa call, has duration $duration; aggregate mean $duration;
 
-match $customer isa person has age > 40; $company isa company has name "Telecom"; (customer: $customer, provider: $company) isa contract; (caller: $customer, callee: $anyone) isa call has duration $duration; aggregate mean $duration;
+match $customer isa person, has age > 40; $company isa company, has name "Telecom"; (customer: $customer, provider: $company) isa contract; (caller: $customer, callee: $anyone) isa call, has duration $duration; aggregate mean $duration;
 
 #### The result:
 
@@ -769,8 +770,8 @@ match $customer isa person has age > 40; $company isa company has name "Telecom"
 [caption:Using [Graql Console](/docs/running-grakn/console)]
 
 <div class="tabs dark">
-
 [tab:Java]
+<!-- ignore-test -->
 ```java
 package ai.grakn.examples;
 
@@ -791,10 +792,10 @@ public class Queries {
 
     List < String > firstQueryAsList = Arrays.asList(
       "match",
-      "  $customer isa person has age < 20;",
-      "  $company isa company has name \"Telecom\";",
+      "  $customer isa person, has age < 20;",
+      "  $company isa company, has name \"Telecom\";",
       "  (customer: $customer, provider: $company) isa contract;",
-      "  (caller: $customer, callee: $anyone) isa call has duration $duration;",
+      "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
       "aggregate mean $duration;"
     );
 
@@ -814,10 +815,10 @@ public class Queries {
 
     List < String > secondQueryAsList = Arrays.asList(
       "match",
-      "  $customer isa person has age > 40;",
-      "  $company isa company has name \"Telecom\";",
+      "  $customer isa person, has age > 40;",
+      "  $company isa company, has name \"Telecom\";",
       "  (customer: $customer, provider: $company) isa contract;",
-      "  (caller: $customer, callee: $anyone) isa call has duration $duration;",
+      "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
       "aggregate mean $duration;"
     );
 
@@ -859,10 +860,10 @@ async function ExecuteMatchQuery() {
 
   let queryA = [
     "match",
-    "  $customer isa person has age < 20;",
-    '  $company isa company has name "Telecom";',
+    "  $customer isa person, has age < 20;",
+    '  $company isa company, has name "Telecom";',
     "  (customer: $customer, provider: $company) isa contract;",
-    "  (caller: $customer, callee: $anyone) isa call has duration $duration;",
+    "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
     "aggregate mean $duration;"
   ];
   console.log("\nQuery:\n", queryA.join("\n"));
@@ -878,10 +879,10 @@ async function ExecuteMatchQuery() {
 
   let queryB = [
     "match ",
-    "  $customer isa person has age > 40;",
-    '  $company isa company has name "Telecom";',
+    "  $customer isa person, has age > 40;",
+    '  $company isa company, has name "Telecom";',
     "  (customer: $customer, provider: $company) isa contract;",
-    "  (caller: $customer, callee: $anyone) isa call has duration $duration;",
+    "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
     "aggregate mean $duration;"
   ];
   console.log("\nQuery:\n", queryB.join("\n"));
@@ -912,10 +913,10 @@ with client.session(keyspace = "phone_calls") as session:
   with session.transaction(grakn.TxType.READ) as tx:
     query_a = [
       'match',
-      '  $customer isa person has age < 20;',
-      '  $company isa company has name "Telecom";',
+      '  $customer isa person, has age < 20;',
+      '  $company isa company, has name "Telecom";',
       '  (customer: $customer, provider: $company) isa contract;',
-      '  (caller: $customer, callee: $anyone) isa call has duration $duration;',
+      '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
       'aggregate mean $duration;'
     ]
 
@@ -929,10 +930,10 @@ with client.session(keyspace = "phone_calls") as session:
 
     query_b = [
       'match ',
-      '  $customer isa person has age > 40;',
-      '  $company isa company has name "Telecom";',
+      '  $customer isa person, has age > 40;',
+      '  $company isa company, has name "Telecom";',
       '  (customer: $customer, provider: $company) isa contract;',
-      '  (caller: $customer, callee: $anyone) isa call has duration $duration;',
+      '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
       'aggregate mean $duration;'
     ]
     print("\nQuery:\n", "\n".join(query_b))

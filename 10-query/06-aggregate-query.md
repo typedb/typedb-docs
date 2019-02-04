@@ -54,7 +54,7 @@ We use the `sum` function to get the sum of the specified `long` or `double` mat
 
 [tab:Graql]
 ```graql
-match $h isa hotel has number-of-rooms $nor; aggregate sum $nor;
+match $h isa hotel, has number-of-rooms $nor; aggregate sum $nor;
 ```
 [tab:end]
 
@@ -74,7 +74,7 @@ We use the `max` function to get the maximum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; aggregate max $gpa;
+match (student: $st, school: $sch) isa school-enrollment; $st, has gpa $gpa; aggregate max $gpa;
 ```
 [tab:end]
 
@@ -95,7 +95,7 @@ We use the `min` function to get the minimum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-match $b isa building has number-of-floors $nof; aggregate min $nof;
+match $b isa building, has number-of-floors $nof; aggregate min $nof;
 ```
 [tab:end]
 
@@ -116,7 +116,7 @@ We use the `mean` function to get the average value of the specified `long` or `
 
 [tab:Graql]
 ```graql
-match $call isa call has duration $d; aggregate mean $d;
+match $call isa call, has duration $d; aggregate mean $d;
 ```
 [tab:end]
 
@@ -136,7 +136,7 @@ We use the `median` function to get the median value among the specified `long` 
 
 [tab:Graql]
 ```graql
-match $p isa person has age $a; aggregate median $a;
+match $p isa person, has age $a; aggregate median $a;
 ```
 [tab:end]
 

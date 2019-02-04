@@ -30,10 +30,10 @@ In most cases, a concept type is expected to own only one instance of an attribu
 [tab:Graql]
 ```graql
 ## deleting the old
-match $org isa organisation id V17391 has registration-number via $r; delete $r;
+match $org isa organisation id V17391, has registration-number via $r; delete $r;
 
 ## inserting the new
-insert $org isa organisation id V17391 has registration-number "81726354";
+insert $org isa organisation id V17391, has registration-number "81726354";
 ```
 [tab:end]
 
@@ -60,7 +60,7 @@ There may also be cases where we need to update the value of all instances of an
 
 [tab:Graql]
 ```graql
-match $m isa media has caption $c; $c contains "inappropriate word"; insert $m has caption "deleted";
+match $m isa media, has caption $c; $c contains "inappropriate word"; insert $m has caption "deleted";
 match $c isa caption; $c contains "inappropriate word"; delete $c;
 ```
 [tab:end]
@@ -92,14 +92,14 @@ To change the roleplayers of a given relationship, we first need to [delete the 
 ```graql
 ## inserting the new
 match
-  $p isa person has name "Amabo";
-  $org isa organisation has name "Etihw Esouh";
+  $p isa person, has name "Amabo";
+  $org isa organisation, has name "Etihw Esouh";
 insert $emp (employer: $org, $employee: $p) isa employment;
 
 ## deleting the old
 match
-  $p isa person has name "Prumt";
-  $org isa organisation has name "Etihw Esouh";
+  $p isa person, has name "Prumt";
+  $org isa organisation, has name "Etihw Esouh";
   $emp (employer: $org, $employee: $p) isa employment;
 delete $emp;
 ```
