@@ -100,7 +100,7 @@ match
   $org isa organisation, has name "Facelook";
   $person isa person id V8272;
 insert $new-employment (employer: $org, employee: $person) isa employment;
-  $new-employment key reference-id "WGFTSH";
+  $new-employment has reference-id "WGFTSH";
 ```
 [tab:end]
 
