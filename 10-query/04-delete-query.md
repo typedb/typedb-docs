@@ -51,7 +51,7 @@ To delete an instance of a relationship type, similar to deleting an entity type
 match
   $org isa organisation, has name "Pharos";
   $emp (employer: $org, employee: $p) isa employment;
-$delete $emp;
+delete $emp;
 ```
 [tab:end]
 

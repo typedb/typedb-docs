@@ -286,7 +286,7 @@ Consider the example above. What we are really interested in is the company with
 
 [tab:Graql]
 ```graql
-compute centrality of company in [company, employment], using degree;
+compute centrality of company, in [company, employment], using degree;
 ```
 [tab:end]
 
@@ -423,7 +423,7 @@ To compute clusters using coreness with a given minimum `k` value, we use of the
 
 [tab:Graql]
 ```graql
-compute cluster in [person, employment, organisation], using k-core, where min-k=5;
+compute cluster, in [person, employment, organisation], using k-core, where min-k=5;
 ```
 [tab:end]
 
