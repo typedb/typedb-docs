@@ -611,6 +611,8 @@ Optionally, we can specify a Regex that the values of an attribute type must con
 
 [tab:Graql]
 ```graql
+define
+
 emotion sub attribute,
   datatype string,
   regex "/[like, love, funny, shocking, sad, angry]/";
