@@ -249,7 +249,7 @@ match $x /.*(Miriam Morton|Solomon Tran).*/; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("phone-number").val(regex("/.*(Miriam Morton|Solomon Tran).*/"))
+  var("phone-number").val(regex("(Miriam Morton|Solomon Tran)"))
 ).get();
 ```
 [tab:end]
@@ -271,7 +271,7 @@ match $p isa person, has nickname $nn, has last-name $ln; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("phone-number").val(regex("/.*(Mary|Barbara).*/"))
+  var("phone-number").val(regex("(Mary|Barbara)"))
 ).get();
 ```
 [tab:end]
