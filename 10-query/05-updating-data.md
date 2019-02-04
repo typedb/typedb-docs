@@ -28,6 +28,8 @@ In most cases, a concept type is expected to own only one instance of an attribu
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test edge case -->
+<!-- ignore-test -->
 ```graql
 ## deleting the old
 match $org id V17391, has registration-number $rn via $r; delete $r;
@@ -59,6 +61,8 @@ There may also be cases where we need to update the value of all instances of an
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test edge case -->
+<!-- ignore-test -->
 ```graql
 match $m isa media, has caption $c; $c contains "inappropriate word"; insert $m has caption "deleted";
 match $c isa caption; $c contains "inappropriate word"; delete $c;
@@ -89,6 +93,8 @@ To change the roleplayers of a given relationship, we first need to [delete the 
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test edge case -->
+<!-- ignore-test -->
 ```graql
 ## inserting the new
 match

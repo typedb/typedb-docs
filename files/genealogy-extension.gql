@@ -75,7 +75,7 @@ define
       (spouse: $s1, spouse: $s2) isa marriage;
       $s1 has gender "male";
       $s2 has gender "female";
-    } then {
+    }, then {
       (husband: $s1, wife: $s2) isa marriage;
     };
 
@@ -93,7 +93,7 @@ define
       (parent: $p, child: $c) isa parentship;
       $p has gender "male";
       $c has gender "male";
-    } then {
+    }, then {
       (father: $p, son: $c) isa parentship;
     };
 
@@ -102,7 +102,7 @@ define
       (parent: $p, child: $c) isa parentship;
       $p has gender "male";
       $c has gender "female";
-    } then {
+    }, then {
       (father: $p, daughter: $c) isa parentship;
     };
 
@@ -111,7 +111,7 @@ define
       (parent: $p, child: $c) isa parentship;
       $p has gender "female";
       $c has gender "male";
-    } then {
+    }, then {
       (mother: $p, son: $c) isa parentship;
     };
 
@@ -120,7 +120,7 @@ define
       (parent: $p, child: $c) isa parentship;
       $p has gender "female";
       $c has gender "female";
-    } then {
+    }, then {
       (mother: $p, daughter: $c) isa parentship;
     };
 
@@ -129,7 +129,7 @@ define
     when {
       ($p, son: $gc) isa parentship;
       (father: $gp, $p) isa parentship;
-    } then {
+    }, then {
       (grandfather: $gp, grandson: $gc) isa grandparentship;
     };
 
@@ -137,7 +137,7 @@ define
     when {
       ($p, daughter: $gc) isa parentship;
       (father: $gp, $p) isa parentship;
-    } then {
+    }, then {
       (grandfather: $gp, granddaughter: $gc) isa grandparentship;
     };
 
@@ -145,7 +145,7 @@ define
     when {
       ($p, son: $gc) isa parentship;
       (mother: $gp, $p) isa parentship;
-    } then {
+    }, then {
       (grandmother: $gp, grandson: $gc) isa grandparentship;
     };
 
@@ -153,7 +153,7 @@ define
     when {
       ($p, daughter: $gc) isa parentship;
       (mother: $gp, $p) isa parentship;
-    } then {
+    }, then {
       (grandmother: $gp, granddaughter: $gc) isa grandparentship;
     };
 
@@ -164,7 +164,7 @@ define
       (father: $f, $c1) isa parentship;
       (father: $f, $c2) isa parentship;
       $c1 != $c2;
-    } then {
+    }, then {
       (sibling: $c1, sibling: $c2) isa siblings;
     };
 
@@ -173,7 +173,7 @@ define
       (parent: $p1, child: $c1) isa parentship;
       (parent: $p2, child: $c2) isa parentship;
       ($p1, $p2) isa siblings;
-    } then {
+    }, then {
       (cousin: $c1, cousin: $c2) isa cousins;
     };
 
@@ -181,7 +181,7 @@ define
     when {
       (husband: $h, wife: $w) isa marriage;
       (mother: $m, $w) isa parentship;
-    } then {
+    }, then {
       (mother-in-law: $m, son-in-law: $h) isa in-laws;
     };
 
@@ -189,7 +189,7 @@ define
     when {
       (husband: $h, wife: $w) isa marriage;
       (father: $f, $w) isa parentship;
-    } then {
+    }, then {
       (father-in-law: $f, son-in-law: $h) isa in-laws;
     };
 
@@ -197,7 +197,7 @@ define
     when {
       (husband: $h, wife: $w) isa marriage;
       (mother: $m, child: $h) isa parentship;
-    } then {
+    }, then {
       (mother-in-law: $m, daughter-in-law: $w) isa in-laws;
     };
 
@@ -205,6 +205,6 @@ define
     when {
       (husband: $h, wife: $w) isa marriage;
       (father: $f, child: $h) isa parentship;
-    } then {
+    }, then {
       (father-in-law: $f, daughter-in-law: $w) isa in-laws;
     };

@@ -20,7 +20,7 @@ define
 rule-label sub rule,
   when {
     ## the condition
-  } then {
+  }, then {
     ## the conclusion
   };
 ```
@@ -40,7 +40,7 @@ people-with-same-parents-are-siblings sub rule,
     (father: $f, $x) isa parentship;
     (father: $f, $y) isa parentship;
     $x != $y;
-  } then {
+  }, then {
     ($x, $y) isa siblings;
   };
 ```

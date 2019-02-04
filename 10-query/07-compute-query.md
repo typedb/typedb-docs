@@ -423,7 +423,7 @@ To compute clusters using coreness with a given minimum `k` value, we use of the
 
 [tab:Graql]
 ```graql
-compute cluster in [person, employment, organisation], using k-core, where min-k=5;
+compute cluster in [person, employment, organisation], using k-core, where k=5;
 ```
 [tab:end]
 

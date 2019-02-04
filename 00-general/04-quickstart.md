@@ -254,7 +254,7 @@ male-parent-and-male-child-implies-father-son-parentship sub rule,
     (parent: $p, child: $c) isa parentship;
     $p has gender "male";
     $c has gender "male";
-  } then {
+  }, then {
     (father: $p, son: $c) isa parentship;
   };
 
@@ -263,7 +263,7 @@ male-parent-and-female-child-implies-father-daughter-parentship sub rule,
     (parent: $p, child: $c) isa parentship;
     $p has gender "male";
     $c has gender "female";
-  } then {
+  }, then {
     (father: $p, daughter: $c) isa parentship;
   };
 
@@ -272,7 +272,7 @@ female-parent-and-male-child-implies-mother-son-parentship sub rule,
     (parent: $p, child: $c) isa parentship;
     $p has gender "female";
     $c has gender "male";
-  } then {
+  }, then {
     (mother: $p, son: $c) isa parentship;
   };
 
@@ -281,7 +281,7 @@ female-parent-and-female-child-implies-mother-daughter-parentship sub rule,
     (parent: $p, child: $c) isa parentship;
     $p has gender "female";
     $c has gender "female";
-  } then {
+  }, then {
     (mother: $p, daughter: $c) isa parentship;
   };
 ```
