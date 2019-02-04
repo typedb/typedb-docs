@@ -33,7 +33,7 @@ In most cases, a concept type is expected to own only one instance of an attribu
 match $org id V17391, has registration-number $rn via $r; delete $r;
 
 ## inserting the new
-insert $org id V17391, has registration-number "81726354";
+insert $org isa organisation, has registration-number "81726354";
 ```
 [tab:end]
 
