@@ -395,7 +395,7 @@ Having fully understood the [schema concepts](/docs/schema/concepts) and how the
 To match all concepts of a given type, we use the `sub` keyword. Here are the examples for matching subtypes of all concept types, including `thing` that is a supertype to all other types.
 
 <div class="tabs dark">
-
+<!-- ignore-test -->
 [tab:Graql]
 ```graql
 match $x sub thing; get;
