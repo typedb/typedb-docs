@@ -40,16 +40,26 @@ person sub entity,
   plays child,
   plays spouse;
 
-name sub attribute datatype string;
-first-name sub name datatype string;
-middle-name sub name datatype string;
-surname sub name datatype string;
-picture sub attribute datatype string;
-age sub attribute datatype long;
-event-date sub attribute datatype date;
-birth-date sub event-date datatype date;
-death-date sub event-date datatype date;
-gender sub attribute datatype string;
+name sub attribute,
+	datatype string;
+first-name sub name,
+	datatype string;
+middle-name sub name,
+	datatype string;
+surname sub name,
+	datatype string;
+picture sub attribute,
+	datatype string;
+age sub attribute,
+	datatype long;
+event-date sub attribute,
+	datatype date;
+birth-date sub event-date,
+	datatype date;
+death-date sub event-date,
+	datatype date;
+gender sub attribute,
+	datatype string;
 ```
 
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Graql Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
@@ -80,10 +90,10 @@ Now that we have some data in our genealogy knowledge graph, we can go ahead and
 Let's see an example of running [Graql get queries](/docs/query/get-query) via each of these interfaces.
 
 #### Retrieve the full name of each person using [Graql Console](/docs/running-grakn/console)
-
+<!-- ignore-test -->
 ```graql
 $ ./graql console -k genealogy
->>> match $p isa person has first-name $fn, has surname $sn; get;
+>>> match $p isa person, has first-name $fn, has surname $sn; get;
 
 {$sn val "Herchelroth" isa surname; $fn val "Barbara" isa first-name; $p id V37080 isa person;}
 {$fn val "Isabelle" isa first-name; $p id V53320 isa person; $sn val "McGaughey" isa surname;}
@@ -146,7 +156,7 @@ import grakn
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "genealogy") as session:
   with session.transaction(grakn.TxType.READ) as transaction:
-    answer_iterator = transaction.query('match $p isa person has first-name "Elizabeth"; get;')
+    answer_iterator = transaction.query('match $p isa person, has first-name "Elizabeth"; get;')
     for answer in answer_iterator:
       print(answer.map().get("p").id)
 ```
@@ -161,7 +171,7 @@ const grakn = new Grakn("localhost:48555");
 async function getFathers() {
   const session = await grakn.session((keyspace = "genealogy"));
   const transaction = await session.transaction(Grakn.txType.READ);
-  const answerIterator = await transaction.query('match (parent: $f) isa parentship; $f isa person has gender "male" has age $a; get $a;')
+  const answerIterator = await transaction.query('match (parent: $f) isa parentship; $f isa person, has gender "male", has age $a; get $a;')
   const answers = await answerIterator.collectConcepts();
   for (answer of answers) {
     console.log(await answer.value());
@@ -177,9 +187,9 @@ getFathers();
 We can add and remove instances of data in a Grakn knowledge graph by running [insert](/docs/query/insert-query) and [delete](/docs/query/delete-query) queries. Let's try one of each in our genealogy example.
 
 #### Insert an instance of type person
-
+<!-- ignore-test -->
 ```graql
->>> insert $p isa person has first-name "Johny", has middle-name "Jimbly", has surname "Joe", has gender "male";
+>>> insert $p isa person, has first-name "Johny", has middle-name "Jimbly", has surname "Joe", has gender "male";
 {$p id V139280 isa person;}
 >>> commit
 ```
@@ -190,24 +200,24 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 </div>
 
 ### Insert an age attribute to the newly added person
-
+<!-- ignore-test -->
 ```graql
->>> match $p id V139280; insert $p has age 77;
+>>> match $p id V139280; insert $p, has age 77;
 {$p id V139280 isa person;}
 >>> commit
 ```
 
 #### Retrieve the newly added person
-
+<!-- ignore-test -->
 ```graql
->>> match $p isa person has first-name "Johny", has surname "Joe"; get;
+>>> match $p isa person, has first-name "Johny", has surname "Joe"; get;
 {$p id V139280 isa person;}
 ```
 
 #### Delete the newly added person
-
+<!-- ignore-test -->
 ```graql
->>> match $p isa person has first-name "Johny", has surname "Joe"; delete;
+>>> match $p isa person, has first-name "Johny", has surname "Joe"; delete;
 {V139280}
 >>> commit
 ```
@@ -287,7 +297,7 @@ Feel free to study the content of `genealogy-extension.gql`. It includes definit
 </div>
 
 With the extended complete schema, we can now, for instance, ask for the fatherhood relationships, although such information was not included in the dataset we initially loaded into our knowledge graph.
-
+<!-- ignore-test -->
 ```graql
 >>> match (father: $f, son: $s) isa parentship; $f isa person has first-name $f-fn, has surname $f-sn; $s isa person has first-name $s-fn, has surname $s-sn; limit 5; get;
 ```
@@ -299,18 +309,21 @@ The [Graql compute queries](/docs/query/compute-query) are designed to traverse 
 Let's look at a few examples of running `compute` on the `genealogy` knowledge graph.
 
 #### Retrieve the mean of an attribute owned by a given type
+<!-- ignore-test -->
 ```graql
 >>> compute mean of age, in person;
 78.22727272727273
 ```
 
 #### Retrieve the total number of instances of a given type
+<!-- ignore-test -->
 ```graql
 >>> compute count in marriage;
 22
 ```
 
 #### Find the shortest path between two instances
+<!-- ignore-test -->
 ```graql
 >>> match $x has first-name "Barbara", has surname "Shafner"; $y has first-name "Jacob", has surname "Niesz"; get;
 {$y id V184392 isa person; $x id V90344 isa person;}
@@ -319,6 +332,7 @@ Let's look at a few examples of running `compute` on the `genealogy` knowledge g
 ```
 
 #### Identify clusters in a subgraph
+<!-- ignore-test -->
 ```graql
 >>> compute cluster in [person, marriage], using connected-component;
 {V159816, V98432, V184320, V82152, V336040}

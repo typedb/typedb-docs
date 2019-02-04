@@ -143,7 +143,7 @@ We need 4 of them. Let’s go through them one by one.
 
 ```python
 def company_template(company):
-  return 'insert $company isa company has name "' + company["name"] + '";'
+  return 'insert $company isa company, has name "' + company["name"] + '";'
 ```
 
 Example:
@@ -155,7 +155,7 @@ Example:
 
 - Comes out:
 ```python
-insert $company isa company has name "Telecom";
+insert $company isa company, has name "Telecom";
 ```
 
 ### personTemplate
@@ -163,17 +163,17 @@ insert $company isa company has name "Telecom";
 ```python
 def person_template(person):
   # insert person
-  graql_insert_query = 'insert $person isa person has phone-number "' + person["phone_number"] + '"'
+  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
   if "first_name" in person:
     # person is a customer
-    graql_insert_query += " has is-customer true"
-    graql_insert_query += ' has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ' has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ' has city "' + person["city"] + '"'
-    graql_insert_query += " has age " + str(person["age"])
+    graql_insert_query += ", has is-customer true"
+    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+    graql_insert_query += ', has city "' + person["city"] + '"'
+    graql_insert_query += ", has age " + str(person["age"])
   else:
     # person is not a customer
-    graql_insert_query += " has is-customer false"
+    graql_insert_query += ", has is-customer false"
   graql_insert_query += ";"
   return graql_insert_query
 ```
@@ -199,7 +199,7 @@ or:
 
 - Comes out:
 ```python
-insert $person has phone-number "+44 091 xxx" has first-name "Jackie" has last-name "Joe" has city "Jimo" has age 77;
+insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ### contractTemplate
@@ -208,17 +208,17 @@ insert $person has phone-number "+44 091 xxx" has first-name "Jackie" has last-n
 
 def person_template(person):
   # insert person
-  graql_insert_query = 'insert $person isa person has phone-number "' + person["phone_number"] + '"'
+  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
   if "first_name" in person:
     # person is a customer
-    graql_insert_query += " has is-customer true"
-    graql_insert_query += ' has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ' has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ' has city "' + person["city"] + '"'
-    graql_insert_query += " has age " + str(person["age"])
+    graql_insert_query += ", has is-customer true"
+    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+    graql_insert_query += ', has city "' + person["city"] + '"'
+    graql_insert_query += ", has age " + str(person["age"])
   else:
     # person is not a customer
-    graql_insert_query += " has is-customer false"
+    graql_insert_query += ", has is-customer false"
   graql_insert_query += ";"
   return graql_insert_query
 ```
@@ -232,7 +232,7 @@ Example:
 
 - Comes out:
 ```python
-match $company isa company has name "Telecom"; $customer isa person has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
+match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
 ### callTemplate
@@ -240,9 +240,9 @@ match $company isa company has name "Telecom"; $customer isa person has phone-nu
 ```python
 def call_template(call):
   # match caller
-  graql_insert_query = 'match $caller isa person has phone-number "' + call["caller_id"] + '";'
+  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
   # match callee
-  graql_insert_query += ' $callee isa person has phone-number "' + call["callee_id"] + '";'
+  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
   # insert call
   graql_insert_query += " insert $call(caller: $caller, callee: $callee) isa call; $call has started-at " + call["started_at"] + "; $call has duration " + str(call["duration"]) + ";"
   return graql_insert_query
@@ -257,7 +257,7 @@ Example:
 
 - Comes out:
 ```python
-match $caller isa person has phone-number "+44 091 xxx"; $callee isa person has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018–08–10T07:57:51; $call has duration 148;
+match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018–08–10T07:57:51; $call has duration 148;
 ```
 
 We’ve now created a template for each and all four concepts that were [previously](./defining-the-schema) defined in the schema.
@@ -429,38 +429,38 @@ def load_data_into_grakn(input, session):
   print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
 def company_template(company):
-  return 'insert $company isa company has name "' + company["name"] + '";'
+  return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
   # insert person
-  graql_insert_query = 'insert $person isa person has phone-number "' + person["phone_number"] + '"'
+  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
   if person["first_name"] == "":
     # person is not a customer
-    graql_insert_query += " has is-customer false"
+    graql_insert_query += ", has is-customer false"
   else:
     # person is a customer
-    graql_insert_query += " has is-customer true"
-    graql_insert_query += ' has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ' has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ' has city "' + person["city"] + '"'
-    graql_insert_query += " has age " + str(person["age"])
+    graql_insert_query += ", has is-customer true"
+    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+    graql_insert_query += ', has city "' + person["city"] + '"'
+    graql_insert_query += ", has age " + str(person["age"])
   graql_insert_query += ";"
   return graql_insert_query
 
 def contract_template(contract):
   # match company
-  graql_insert_query = 'match $company isa company has name "' + contract["company_name"] + '";'
+  graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
   # match person
-  graql_insert_query += ' $customer isa person has phone-number "' + contract["person_id"] + '";'
+  graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
   # insert contract
   graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
   return graql_insert_query
 
 def call_template(call):
   # match caller
-  graql_insert_query = 'match $caller isa person has phone-number "' + call["caller_id"] + '";'
+  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
   # match callee
-  graql_insert_query += ' $callee isa person has phone-number "' + call["callee_id"] + '";'
+  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
   # insert call
   graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
                          "$call has started-at " + call["started_at"] + "; " +
@@ -523,38 +523,38 @@ def load_data_into_grakn(input, session):
   print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
 def company_template(company):
-  return 'insert $company isa company has name "' + company["name"] + '";'
+  return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
   # insert person
-  graql_insert_query = 'insert $person isa person has phone-number "' + person["phone_number"] + '"'
+  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
   if "first_name" in person:
     # person is a customer
-    graql_insert_query += " has is-customer true"
-    graql_insert_query += ' has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ' has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ' has city "' + person["city"] + '"'
-    graql_insert_query += " has age " + str(person["age"])
+    graql_insert_query += ", has is-customer true"
+    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+    graql_insert_query += ', has city "' + person["city"] + '"'
+    graql_insert_query += ", has age " + str(person["age"])
   else:
     # person is not a customer
-    graql_insert_query += " has is-customer false"
+    graql_insert_query += ", has is-customer false"
   graql_insert_query += ";"
   return graql_insert_query
 
 def contract_template(contract):
   # match company
-  graql_insert_query = 'match $company isa company has name "' + contract["company_name"] + '";'
+  graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
   # match person
-  graql_insert_query += ' $customer isa person has phone-number "' + contract["person_id"] + '";'
+  graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
   # insert contract
   graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
   return graql_insert_query
 
 def call_template(call):
   # match caller
-  graql_insert_query = 'match $caller isa person has phone-number "' + call["caller_id"] + '";'
+  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
   # match callee
-  graql_insert_query += ' $callee isa person has phone-number "' + call["callee_id"] + '";'
+  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
   # insert call
   graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
                          "$call has started-at " + call["started_at"] + "; " +
@@ -616,38 +616,38 @@ def load_data_into_grakn(input, session):
   print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
 def company_template(company):
-  return 'insert $company isa company has name "' + company["name"] + '";'
+  return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
   # insert person
-  graql_insert_query = 'insert $person isa person has phone-number "' + person["phone_number"] + '"'
+  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
   if "first_name" in person:
     # person is a customer
-    graql_insert_query += " has is-customer true"
-    graql_insert_query += ' has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ' has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ' has city "' + person["city"] + '"'
-    graql_insert_query += " has age " + str(person["age"])
+    graql_insert_query += ", has is-customer true"
+    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+    graql_insert_query += ', has city "' + person["city"] + '"'
+    graql_insert_query += ", has age " + str(person["age"])
   else:
     # person is not a customer
-    graql_insert_query += " has is-customer false"
+    graql_insert_query += ", has is-customer false"
   graql_insert_query += ";"
   return graql_insert_query
 
 def contract_template(contract):
   # match company
-  graql_insert_query = 'match $company isa company has name "' + contract["company_name"] + '";'
+  graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
   # match person
-  graql_insert_query += ' $customer isa person has phone-number "' + contract["person_id"] + '";'
+  graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
   # insert contract
   graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
   return graql_insert_query
 
 def call_template(call):
   # match caller
-  graql_insert_query = 'match $caller isa person has phone-number "' + call["caller_id"] + '";'
+  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
   # match callee
-  graql_insert_query += ' $callee isa person has phone-number "' + call["callee_id"] + '";'
+  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
   # insert call
   graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
                          "$call has started-at " + call["started_at"] + "; " +

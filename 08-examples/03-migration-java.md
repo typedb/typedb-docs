@@ -190,7 +190,7 @@ public class Migration {
     inputs.add(new Input("data/companies") {
       @Override
       public String template(Json company) {
-        return "insert $company isa company has name " + company.at("name") + ";";
+        return "insert $company isa company, has name " + company.at("name") + ";";
       }
     });
 
@@ -211,7 +211,7 @@ Given the company,
 `input.template(company)` returns
 
 ```graql
-insert $company isa company has name "Telecom";
+insert $company isa company, has name "Telecom";
 ```
 
 
@@ -234,19 +234,19 @@ public class Migration {
       @Override
       public String template(Json person) {
         // insert person
-        String graqlInsertQuery = "insert $person isa person has phone-number " +
+        String graqlInsertQuery = "insert $person isa person, has phone-number " +
         person.at("phone_number");
 
         if (! person.has("first_name")) {
           // person is not a customer
-          graqlInsertQuery += " has is-customer false";
+          graqlInsertQuery += ", has is-customer false";
         } else {
           // person is a customer
-          graqlInsertQuery += " has is-customer true";
-            graqlInsertQuery += " has first-name " + person.at("first_name");
-            graqlInsertQuery += " has last-name " + person.at("last_name");
-            graqlInsertQuery += " has city " + person.at("city");
-            graqlInsertQuery += " has age " + person.at("age").asInteger();
+          graqlInsertQuery += ", has is-customer true";
+            graqlInsertQuery += ", has first-name " + person.at("first_name");
+            graqlInsertQuery += ", has last-name " + person.at("last_name");
+            graqlInsertQuery += ", has city " + person.at("city");
+            graqlInsertQuery += ", has age " + person.at("age").asInteger();
           }
 
           graqlInsertQuery += ";";
@@ -284,7 +284,7 @@ And given the person,
 `input.template(person)` returns
 
 ```graql
-insert $person has phone-number "+44 091 xxx" has first-name "Jackie" has last-name "Joe" has city "Jimo" has age 77;
+insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ## Input Instance For a Contract
@@ -307,9 +307,9 @@ public class Migration {
       @Override
       public String template(Json contract) {
         // match company
-        String graqlInsertQuery = "match $company isa company has name " + contract.at("company_name") + ";";
+        String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
         // match person
-        graqlInsertQuery += " $customer isa person has phone-number " + contract.at("person_id") + ";";
+        graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
         // insert contract
         graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
         return graqlInsertQuery;
@@ -332,7 +332,7 @@ Given the contract,
 `input.template(contract)` returns
 
 ```graql
-match $company isa company has name "Telecom"; $customer isa person has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
+match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
 ## Input Instance For a Call
@@ -356,9 +356,9 @@ public class Migration {
       @Override
       public String template(Json call) {
         // match caller
-        String graqlInsertQuery = "match $caller isa person has phone-number " + call.at("caller_id") + ";";
+        String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
         // match callee
-        graqlInsertQuery += " $callee isa person has phone-number " + call.at("callee_id") + ";";
+        graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
         // insert call
         graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call; $call has started-at " + call.at("started_at").asString() + "; $call has duration " + call.at("duration").asInteger() + ";";
         return graqlInsertQuery;
@@ -382,7 +382,7 @@ Given the call,
 `input.template(call)` returns
 
 ```graql
-match $caller isa person has phone-number "+44 091 xxx"; $callee isa person has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018–08–10T07:57:51; $call has duration 148;
+match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018–08–10T07:57:51; $call has duration 148;
 ```
 
 ## Connect and Migrate
@@ -874,7 +874,7 @@ public class CsvMigration {
   inputs.add(new Input("data/companies") {
    @Override
    public String template(Json company) {
-    return "insert $company isa company has name " + company.at("name") + ";";
+    return "insert $company isa company, has name " + company.at("name") + ";";
    }
   });
   // define template for constructing a person Graql insert query
@@ -882,18 +882,18 @@ public class CsvMigration {
    @Override
    public String template(Json person) {
     // insert person
-    String graqlInsertQuery = "insert $person isa person has phone-number " + person.at("phone_number");
+    String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
 
     if (person.at("first_name").isNull()) {
      // person is not a customer
-     graqlInsertQuery += " has is-customer false";
+     graqlInsertQuery += ", has is-customer false";
     } else {
      // person is a customer
-     graqlInsertQuery += " has is-customer true";
-     graqlInsertQuery += " has first-name " + person.at("first_name");
-     graqlInsertQuery += " has last-name " + person.at("last_name");
-     graqlInsertQuery += " has city " + person.at("city");
-     graqlInsertQuery += " has age " + person.at("age").asInteger();
+     graqlInsertQuery += ", has is-customer true";
+     graqlInsertQuery += ", has first-name " + person.at("first_name");
+     graqlInsertQuery += ", has last-name " + person.at("last_name");
+     graqlInsertQuery += ", has city " + person.at("city");
+     graqlInsertQuery += ", has age " + person.at("age").asInteger();
     }
 
     graqlInsertQuery += ";";
@@ -905,9 +905,9 @@ public class CsvMigration {
    @Override
    public String template(Json contract) {
     // match company
-    String graqlInsertQuery = "match $company isa company has name " + contract.at("company_name") + ";";
+    String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
     // match person
-    graqlInsertQuery += " $customer isa person has phone-number " + contract.at("person_id") + ";";
+    graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
     // insert contract
     graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
     return graqlInsertQuery;
@@ -918,9 +918,9 @@ public class CsvMigration {
    @Override
    public String template(Json call) {
     // match caller
-    String graqlInsertQuery = "match $caller isa person has phone-number " + call.at("caller_id") + ";";
+    String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
     // match callee
-    graqlInsertQuery += " $callee isa person has phone-number " + call.at("callee_id") + ";";
+    graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
     // insert call
     graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
      " $call has started-at " + call.at("started_at").asString() + ";" +
@@ -1049,7 +1049,7 @@ public class JsonMigration {
   inputs.add(new Input("data/companies") {
    @Override
    public String template(Json company) {
-    return "insert $company isa company has name " + company.at("name") + ";";
+    return "insert $company isa company, has name " + company.at("name") + ";";
    }
   });
   // define template for constructing a person Graql insert query
@@ -1057,18 +1057,18 @@ public class JsonMigration {
    @Override
    public String template(Json person) {
     // insert person
-    String graqlInsertQuery = "insert $person isa person has phone-number " + person.at("phone_number");
+    String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
 
     if (!person.has("first_name")) {
      // person is not a customer
-     graqlInsertQuery += " has is-customer false";
+     graqlInsertQuery += ", has is-customer false";
     } else {
      // person is a customer
-     graqlInsertQuery += " has is-customer true";
-     graqlInsertQuery += " has first-name " + person.at("first_name");
-     graqlInsertQuery += " has last-name " + person.at("last_name");
-     graqlInsertQuery += " has city " + person.at("city");
-     graqlInsertQuery += " has age " + person.at("age").asInteger();
+     graqlInsertQuery += ", has is-customer true";
+     graqlInsertQuery += ", has first-name " + person.at("first_name");
+     graqlInsertQuery += ", has last-name " + person.at("last_name");
+     graqlInsertQuery += ", has city " + person.at("city");
+     graqlInsertQuery += ", has age " + person.at("age").asInteger();
     }
 
     graqlInsertQuery += ";";
@@ -1080,9 +1080,9 @@ public class JsonMigration {
    @Override
    public String template(Json contract) {
     // match company
-    String graqlInsertQuery = "match $company isa company has name " + contract.at("company_name") + ";";
+    String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
     // match person
-    graqlInsertQuery += " $customer isa person has phone-number " + contract.at("person_id") + ";";
+    graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
     // insert contract
     graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
     return graqlInsertQuery;
@@ -1093,9 +1093,9 @@ public class JsonMigration {
    @Override
    public String template(Json call) {
     // match caller
-    String graqlInsertQuery = "match $caller isa person has phone-number " + call.at("caller_id") + ";";
+    String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
     // match callee
-    graqlInsertQuery += " $callee isa person has phone-number " + call.at("callee_id") + ";";
+    graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
     // insert call
     graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
      " $call has started-at " + call.at("started_at").asString() + ";" +
@@ -1266,7 +1266,7 @@ public class XmlMigration {
   inputs.add(new Input("data/companies", "company") {
    @Override
    public String template(Json company) {
-    return "insert $company isa company has name " + company.at("name") + ";";
+    return "insert $company isa company, has name " + company.at("name") + ";";
    }
   });
   // define template for constructing a person Graql insert query
@@ -1274,18 +1274,18 @@ public class XmlMigration {
    @Override
    public String template(Json person) {
     // insert person
-    String graqlInsertQuery = "insert $person isa person has phone-number " + person.at("phone_number");
+    String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
 
     if (!person.has("first_name")) {
      // person is not a customer
-     graqlInsertQuery += " has is-customer false";
+     graqlInsertQuery += ", has is-customer false";
     } else {
      // person is a customer
-     graqlInsertQuery += " has is-customer true";
-     graqlInsertQuery += " has first-name " + person.at("first_name");
-     graqlInsertQuery += " has last-name " + person.at("last_name");
-     graqlInsertQuery += " has city " + person.at("city");
-     graqlInsertQuery += " has age " + person.at("age").asInteger();
+     graqlInsertQuery += ", has is-customer true";
+     graqlInsertQuery += ", has first-name " + person.at("first_name");
+     graqlInsertQuery += ", has last-name " + person.at("last_name");
+     graqlInsertQuery += ", has city " + person.at("city");
+     graqlInsertQuery += ", has age " + person.at("age").asInteger();
     }
 
     graqlInsertQuery += ";";
@@ -1297,9 +1297,9 @@ public class XmlMigration {
    @Override
    public String template(Json contract) {
     // match company
-    String graqlInsertQuery = "match $company isa company has name " + contract.at("company_name") + ";";
+    String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
     // match person
-    graqlInsertQuery += " $customer isa person has phone-number " + contract.at("person_id") + ";";
+    graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
     // insert contract
     graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
     return graqlInsertQuery;
@@ -1310,9 +1310,9 @@ public class XmlMigration {
    @Override
    public String template(Json call) {
     // match caller
-    String graqlInsertQuery = "match $caller isa person has phone-number " + call.at("caller_id") + ";";
+    String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
     // match callee
-    graqlInsertQuery += " $callee isa person has phone-number " + call.at("callee_id") + ";";
+    graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
     // insert call
     graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
      " $call has started-at " + call.at("started_at").asString() + ";" +

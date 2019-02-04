@@ -7,22 +7,28 @@ define
 		full-name sub name;
 		nickname sub name;
 	title sub attribute datatype string;
-	event-date sub attribute is-abstract datatype date;
+	event-date sub attribute is-abstract,
+	datatype date;
 		approved-date sub event-date; ## to subtype an attribute
 		birth-date sub event-date;
 		start-date sub event-date;
 		end-date sub event-date;
 		engagement-date sub event-date;
-	published-date sub attribute datatype date;
+	published-date sub attribute,
+	datatype date;
 	reference-id sub attribute datatype string;
 	registration-number sub attribute datatype string;
-	graduated sub attribute datatype boolean;
+	graduated sub attribute,
+	datatype boolean;
 	phone-number sub attribute datatype string;
 	email sub attribute datatype string;
 	gender sub attribute datatype string;
-	engaged sub attribute datatype boolean;
-	separated sub attribute datatype boolean;
-	divorced sub attribute datatype boolean;
+	engaged sub attribute,
+	datatype boolean;
+	separated sub attribute,
+	datatype boolean;
+	divorced sub attribute,
+	datatype boolean;
 	file sub attribute datatype string;
 	caption sub attribute datatype string;
 	language sub attribute datatype string,

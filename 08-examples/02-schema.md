@@ -146,15 +146,24 @@ person sub entity,
     has age,
     has is-customer;
 
-  name sub attribute datatype string;
-  started-at sub attribute datatype date;
-  duration sub attribute datatype long;
-  first-name sub attribute datatype string;
-  last-name sub attribute datatype string;
-  phone-number sub attribute datatype string;
-  city sub attribute datatype string;
-  age sub attribute datatype long;
-  is-customer sub attribute datatype boolean;
+  name sub attribute,
+	datatype string;
+  started-at sub attribute,
+	datatype date;
+  duration sub attribute,
+	datatype long;
+  first-name sub attribute,
+	datatype string;
+  last-name sub attribute,
+	datatype string;
+  phone-number sub attribute,
+	datatype string;
+  city sub attribute,
+	datatype string;
+  age sub attribute,
+	datatype long;
+  is-customer sub attribute,
+	datatype boolean;
 ```
 
 Note that we don't need to define an id attribute. Grakn takes care of that for us.
@@ -191,7 +200,7 @@ match $x sub thing; get;
 ```
 
 The result should be as follows:
-
+<!-- ignore-test -->
 ```graql
 {$x label thing;}
 {$x label entity;}

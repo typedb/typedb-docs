@@ -512,7 +512,8 @@ To define a new attribute, we use the `sub` keyword followed by `attribute`, `da
 ```graql
 define
 
-name sub attribute datatype string;
+name sub attribute,
+	datatype string;
 ```
 [tab:end]
 
@@ -543,7 +544,8 @@ The data types available in a Grakn knowledge graph are:
 ```graql
 define
 
-start-date sub attribute datatype date;
+start-date sub attribute,
+	datatype date;
 
 residency sub relationship,
   ## roles and other attributes
@@ -580,7 +582,8 @@ Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a 
 ```graql
 define
 
-phone-number sub attribute datatype string;
+phone-number sub attribute,
+	datatype string;
 
 person sub entity,
   has phone-number;
@@ -638,7 +641,8 @@ define
 content sub attribute datatype string,
   has language;
 
-language sub attribute datatype string;
+language sub attribute,
+	datatype string;
 ```
 [tab:end]
 
@@ -696,7 +700,8 @@ We can define an attribute to inherit the datatype, attributes owned and roles p
 ```graql
 define
 
-event-date sub attribute datatype date;
+event-date sub attribute,
+	datatype date;
 birth-date sub event-date;
 start-date sub event-date;
 end-date sub event-date;
@@ -729,7 +734,8 @@ There may be scenarios where a parent attribute is only defined for other attrib
 ```graql
 define
 
-event-date sub attribute is-abstract datatype date;
+event-date sub attribute is-abstract,
+	datatype date;
 ```
 [tab:end]
 

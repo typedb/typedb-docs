@@ -64,7 +64,7 @@ To only match the instances of entities that own a specific attribute, we use th
 
 [tab:Graql]
 ```graql
-match $p isa person has full-name $n; get;
+match $p isa person, has full-name $n; get;
 ```
 [tab:end]
 
@@ -109,7 +109,7 @@ To only match the instances of relationships that own a specific attribute, we u
 
 [tab:Graql]
 ```graql
-match $emp (employer: $x, exmployee: $y) isa employment has reference-id $ref; get;
+match $emp (employer: $x, exmployee: $y) isa employment, has reference-id $ref; get;
 ```
 [tab:end]
 
@@ -264,7 +264,7 @@ To match instances of a concept type that owns multiple attributes, we can simpl
 
 [tab:Graql]
 ```graql
-match $p isa person has nickname $nn, has last-name $ln; get;
+match $p isa person, has nickname $nn, has last-name $ln; get;
 ```
 [tab:end]
 
@@ -284,7 +284,7 @@ We can also match instances that own an attribute with a specific value.
 
 [tab:Graql]
 ```graql
-match $p isa person has nickname "Mitzi" has phone-number contains "+44"; get;
+match $p isa person, has nickname "Mitzi", has phone-number contains "+44"; get;
 ```
 [tab:end]
 
@@ -303,7 +303,7 @@ But if in this example, we still want to know how old exactly each John is? we c
 
 [tab:Graql]
 ```graql
-match $p isa person has nickname "Mitzi" has phone-number $pn; $pn contains "+44"; get;
+match $p isa person, has nickname "Mitzi", has phone-number $pn; $pn contains "+44"; get;
 ```
 [tab:end]
 
@@ -324,7 +324,7 @@ By default a collection of patterns in a `match` clause constructs a conjunction
 
 [tab:Graql]
 ```graql
-match $p isa person has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get;
+match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get;
 ```
 [tab:end]
 
