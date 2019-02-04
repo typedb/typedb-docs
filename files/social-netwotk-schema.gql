@@ -47,7 +47,7 @@ define
 		has language;
 	emotion sub attribute,
 		datatype string,
-		regex "/[like, love, funny, shocking, sad, angry]/",
+		regex "[like, love, funny, shocking, sad, angry]",
 		plays reacted-emotion;
 
 	person sub entity,

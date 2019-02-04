@@ -25,7 +25,7 @@ Some Graql queries such as `get`, `aggregate` and `compute` are expected to retu
 
 ## Reserved Keywords
 The following keywords are reserved and meant to only be used by Graql in the queries.
-
+<!-- ignore-test -->
 ```graql
 asc
 by

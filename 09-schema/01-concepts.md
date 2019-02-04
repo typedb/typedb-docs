@@ -615,14 +615,14 @@ define
 
 emotion sub attribute,
   datatype string,
-  regex "/[like, love, funny, shocking, sad, angry]/";
+  regex "[like, love, funny, shocking, sad, angry]";
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("emotion").sub("attribute").datatype(DataType.STRING).regex("/[like, love, funny, shocking, sad, angry]/")
+  type("emotion").sub("attribute").datatype(DataType.STRING).regex("[like, love, funny, shocking, sad, angry]")
 );
 ```
 

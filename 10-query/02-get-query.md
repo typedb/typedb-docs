@@ -57,6 +57,8 @@ We can chose to limit the number of answers in the results. To do this, we use t
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- not yet implemented -->
+<!-- ignore-test -->
 ```graql
 match $p isa person; get; limit 1;
 ```
@@ -80,6 +82,8 @@ To order the answers by a particular variable, we use the `order` keyword follow
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- not yet implemented -->
+<!-- ignore-test -->
 ```graql
 match $p isa person, has full-name $fn; get; order $fn asc;
 ```
@@ -109,6 +113,8 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- not yet implemented -->
+<!-- ignore-test -->
 ```graql
 match $p isa person, has full-name $fn;  get; order $fn; offset 100; limit 10;
 ```
