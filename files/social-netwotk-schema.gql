@@ -662,6 +662,7 @@ define
 # match
 # 	$gro sub group-ownership;
 # 	$grm sub group-membership;
+# 	$gmr sub group-membership-request;
 # 	$pug sub public-group;
 # 	$clg sub closed-group;
 # 	$seg sub secret-group;
@@ -674,13 +675,17 @@ define
 
 	group-membership sub relationship,
 		has approved-date,
-		relates requester,
-		relates respondent,
+		plays approved-group-membership,
 		relates group-member,
 		relates membership-grouping;
 
-	social-group sub entity,
-		abstract,
+	group-membership-request sub request,
+		has approved-date,
+		relates approved-group-membership as approved-subject,
+		relates group-membership-requester as requester,
+		relates group-membership-respondent as respondent;
+
+	social-group sub entity is-abstract,
 		has name,
 		plays owned-group,
 		plays membership-grouping,
@@ -694,7 +699,9 @@ define
 
 	person sub entity,
 		plays group-owner,
-		plays group-member;
+		plays group-member,
+		plays group-membership-requester,
+		plays group-membership-respondent;
 
 ##############
 ## TIMELINE ##
