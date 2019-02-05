@@ -47,7 +47,7 @@ define
 		has language;
 	emotion sub attribute,
 		datatype string,
-		regex "[like, love, funny, shocking, sad, angry]",
+		regex "(like|love|funny|shocking|sad|angry)",
 		plays reacted-emotion;
 
 	person sub entity,
@@ -595,6 +595,7 @@ define
 # get;
 
 	reply sub relationship,
+		relates replied-by,
 		relates replied-to,
 		relates reply-content;
 
@@ -652,7 +653,8 @@ define
 
 	person sub entity,
 		plays tagged,
-		plays reacted-by;
+		plays reacted-by,
+		plays replied-by;
 
 ###########
 ## GROUP ##
@@ -685,7 +687,8 @@ define
 		relates group-membership-requester as requester,
 		relates group-membership-respondent as respondent;
 
-	social-group sub entity is-abstract,
+	social-group sub entity,
+		abstract,
 		has name,
 		plays owned-group,
 		plays membership-grouping,
@@ -749,25 +752,30 @@ define
 
 	public-sharing sub sharing,
 		relates shared-content,
-		relates shared-by;
+		relates shared-by,
+		relates shared-in;
 
 	friends-sharing sub sharing,
 		relates shared-content,
-		relates shared-by;
+		relates shared-by,
+		relates shared-in;
 
 	inclusive-sharing sub sharing,
 		relates shared-content,
 		relates shared-by,
-		relates shared-with;
+		relates shared-with,
+		relates shared-in;
 
 	friends-with-exclusion-sharing sub sharing,
 		relates shared-content,
 		relates shared-by,
-		relates hidden-from;
+		relates hidden-from,
+		relates shared-in;
 
 	private-sharing sub sharing,
 		relates shared-content,
-		relates shared-by;
+		relates shared-by,
+		relates shared-in;
 
 	permitted-to-see sub relationship,
 		relates permitted-content,
