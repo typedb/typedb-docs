@@ -32,21 +32,21 @@ $loc-hir-8-1 (subordinate-location: $loc-cit-8, superior-location: $loc-cou-1) i
 ###################################
 
 ## SCHOOLS + LOCATIONS
-$sch-1 isa school, has name "WNC";
+$sch-1 isa school, has name "WNC", has ranking 36;
 $los-1 (located-school: $sch-1, school-location: $loc-cit-2) isa location-of-school;
-$sch-2 isa school, has name "UPJ";
+$sch-2 isa school, has name "UPJ", has ranking 53;
 $los-2 (located-school: $sch-2, school-location: $loc-cit-3) isa location-of-school;
-$sch-3 isa school, has name "UPN";
+$sch-3 isa school, has name "UPN", has ranking 136;
 $los-3 (located-school: $sch-3, school-location: $loc-cit-3) isa location-of-school;
-$sch-4 isa school, has name "UPK";
+$sch-4 isa school, has name "UPK", has ranking 86;
 $los-4 (located-school: $sch-4, school-location: $loc-cit-3) isa location-of-school;
-$sch-5 isa school, has name "HCC";
+$sch-5 isa school, has name "HCC", has ranking 24;
 $los-5 (located-school: $sch-5, school-location: $loc-cit-4) isa location-of-school;
-$sch-6 isa school, has name "UPT";
+$sch-6 isa school, has name "UPT", has ranking 6;
 $los-6 (located-school: $sch-6, school-location: $loc-cit-3) isa location-of-school;
-$sch-7 isa school, has name "UPL";
+$sch-7 isa school, has name "UPL", has ranking 192;
 $los-7 (located-school: $sch-7, school-location: $loc-cit-3) isa location-of-school;
-$sch-8 isa school, has name "UPA";
+$sch-8 isa school, has name "UPA", has ranking 213;
 $los-8 (located-school: $sch-8, school-location: $loc-cit-3) isa location-of-school;
 
 ## COURSES
@@ -114,8 +114,8 @@ $wpo-8 isa work-position, has title "Accountant";
 ###############
 ## LANGUAGES ##
 ###############
-$lan-1 isa language; $lan-1 == "English";
-$lan-2 isa language; $lan-2 == "French";
+$lan-1 isa language "English";
+$lan-2 isa language "French";
 
 
 #################################################################################
@@ -225,20 +225,20 @@ $res-24 (resident: $per-16) isa residency, has start-date 1989-10-20;
 $lor-24 (located-residence: $res-24, residence: $loc-cit-3) isa location-of-residence;
 
 ## ENROLLMENTS
-$sce-1 (student: $per-1, enrolled-course: $cou-1, enrolling-school: $sch-1) isa school-course-enrollment, has start-date 2008-03-10, has end-date 2011-11-03, has graduated true;
-$sce-2 (student: $per-2, enrolled-course: $cou-2, enrolling-school: $sch-1) isa school-course-enrollment, has start-date 2008-03-10, has end-date 2011-11-03, has graduated true;
-$sce-3 (student: $per-3, enrolled-course: $cou-1, enrolling-school: $sch-1) isa school-course-enrollment, has start-date 2009-03-10, has end-date 2012-11-03, has graduated true;
-$sce-4 (student: $per-4, enrolled-course: $cou-2, enrolling-school: $sch-2) isa school-course-enrollment, has start-date 2009-07-03, has end-date 2011-09-01, has graduated true;
-$sce-6 (student: $per-6, enrolled-course: $cou-3, enrolling-school: $sch-2) isa school-course-enrollment, has start-date 2008-01-01, has end-date 2010-01-01, has graduated true;
-$sce-7 (student: $per-7, enrolled-course: $cou-4, enrolling-school: $sch-2) isa school-course-enrollment, has start-date 2012-01-01, has end-date 2015-01-01, has graduated true;
-$sce-8 (student: $per-8, enrolled-course: $cou-4, enrolling-school: $sch-3) isa school-course-enrollment, has start-date 2011-07-01, has end-date 2014-07-01, has graduated true;
-$sce-9 (student: $per-9, enrolled-course: $cou-3, enrolling-school: $sch-4) isa school-course-enrollment, has start-date 2005-01-01, has end-date 2008-01-01, has graduated true;
-$sce-10 (student: $per-10, enrolled-course: $cou-5, enrolling-school: $sch-5) isa school-course-enrollment, has start-date 2009-01-01, has end-date 2013-01-01, has graduated true;
-$sce-11 (student: $per-11, enrolled-course: $cou-6, enrolling-school: $sch-6) isa school-course-enrollment, has start-date 2009-01-01, has end-date 2013-01-01, has graduated true;
-$sce-12 (student: $per-12, enrolled-course: $cou-7, enrolling-school: $sch-5) isa school-course-enrollment, has start-date 2011-01-01, has end-date 2014-07-01, has graduated true;
-$sce-13 (student: $per-13, enrolled-course: $cou-7, enrolling-school: $sch-5) isa school-course-enrollment, has start-date 2014-01-01, has end-date 2017-07-01, has graduated true;
-$sce-15 (student: $per-15, enrolled-course: $cou-8, enrolling-school: $sch-7) isa school-course-enrollment, has start-date 2010-01-01, has end-date 2014-07-01, has graduated true;
-$sce-16 (student: $per-16, enrolled-course: $cou-8, enrolling-school: $sch-8) isa school-course-enrollment, has start-date 2009-01-01, has end-date 2013-07-01, has graduated true;
+$sce-1 (student: $per-1, enrolled-course: $cou-1, enrolling-school: $sch-1) isa school-course-enrollment, has start-date 2008-03-10, has end-date 2011-11-03, has graduated true, has score 8.3;
+$sce-2 (student: $per-2, enrolled-course: $cou-2, enrolling-school: $sch-1) isa school-course-enrollment, has start-date 2008-03-10, has end-date 2011-11-03, has graduated true, has score 8.1;
+$sce-3 (student: $per-3, enrolled-course: $cou-1, enrolling-school: $sch-1) isa school-course-enrollment, has start-date 2009-03-10, has end-date 2012-11-03, has graduated true, has score 7.3;
+$sce-4 (student: $per-4, enrolled-course: $cou-2, enrolling-school: $sch-2) isa school-course-enrollment, has start-date 2009-07-03, has end-date 2011-09-01, has graduated true, has score 8.0;
+$sce-6 (student: $per-6, enrolled-course: $cou-3, enrolling-school: $sch-2) isa school-course-enrollment, has start-date 2008-01-01, has end-date 2010-01-01, has graduated true, has score 9.1;
+$sce-7 (student: $per-7, enrolled-course: $cou-4, enrolling-school: $sch-2) isa school-course-enrollment, has start-date 2012-01-01, has end-date 2015-01-01, has graduated true, has score 6.5;
+$sce-8 (student: $per-8, enrolled-course: $cou-4, enrolling-school: $sch-3) isa school-course-enrollment, has start-date 2011-07-01, has end-date 2014-07-01, has graduated true, has score 9.2;
+$sce-9 (student: $per-9, enrolled-course: $cou-3, enrolling-school: $sch-4) isa school-course-enrollment, has start-date 2005-01-01, has end-date 2008-01-01, has graduated true, has score 5.3;
+$sce-10 (student: $per-10, enrolled-course: $cou-5, enrolling-school: $sch-5) isa school-course-enrollment, has start-date 2009-01-01, has end-date 2013-01-01, has graduated true, has score 7.6;
+$sce-11 (student: $per-11, enrolled-course: $cou-6, enrolling-school: $sch-6) isa school-course-enrollment, has start-date 2009-01-01, has end-date 2013-01-01, has graduated true, has score 6.4;
+$sce-12 (student: $per-12, enrolled-course: $cou-7, enrolling-school: $sch-5) isa school-course-enrollment, has start-date 2011-01-01, has end-date 2014-07-01, has graduated true, has score 9.5;
+$sce-13 (student: $per-13, enrolled-course: $cou-7, enrolling-school: $sch-5) isa school-course-enrollment, has start-date 2014-01-01, has end-date 2017-07-01, has graduated true, has score 7.1;
+$sce-15 (student: $per-15, enrolled-course: $cou-8, enrolling-school: $sch-7) isa school-course-enrollment, has start-date 2010-01-01, has end-date 2014-07-01, has graduated true, has score 8.7;
+$sce-16 (student: $per-16, enrolled-course: $cou-8, enrolling-school: $sch-8) isa school-course-enrollment, has start-date 2009-01-01, has end-date 2013-07-01, has graduated true, has score 8.7;
 
 ## TRAVELS
 $tra-1 (traveler: $per-3) isa travel, has start-date 2013-12-22, has end-date 2014-01-02;
@@ -264,20 +264,20 @@ $tra-9 (traveler: $per-3) isa travel;
 $lot-9 (located-travel: $tra-9, travel-location: $loc-cit-8) isa location-of-travel;
 
 ## EMPLOYMENTS
-$emp-1 (employee: $per-1, employer: $org-1, offered-position: $wpo-1) isa employment, has reference-id "r-1", has start-date 2012-01-03;
-$emp-2 (employee: $per-2, employer: $org-1, offered-position: $wpo-2) isa employment, has reference-id "r-2", has start-date 2012-01-08;
-$emp-3 (employee: $per-3, employer: $org-1, offered-position: $wpo-1) isa employment, has reference-id "r-3", has start-date 2013-02-05;
-$emp-4 (employee: $per-4, employer: $org-1, offered-position: $wpo-2) isa employment, has reference-id "r-4", has start-date 2011-12-01;
-$emp-6 (employee: $per-6, employer: $org-1, offered-position: $wpo-1) isa employment, has reference-id "r-5", has start-date 2010-02-01;
-$emp-7 (employee: $per-7, employer: $org-3, offered-position: $wpo-1) isa employment, has reference-id "r-6", has start-date 2015-04-01;
-$emp-8 (employee: $per-8, employer: $org-4, offered-position: $wpo-3) isa employment, has reference-id "r-7", has start-date 2014-09-01;
-$emp-10 (employee: $per-10, employer: $org-2, offered-position: $wpo-5) isa employment, has reference-id "r-8", has start-date 2011-06-04;
-$emp-11 (employee: $per-11, employer: $org-2, offered-position: $wpo-5) isa employment, has reference-id "r-9", has start-date 2013-06-01;
-$emp-12 (employee: $per-12, employer: $org-3, offered-position: $wpo-6) isa employment, has reference-id "r-10", has start-date 2014-07-15;
-$emp-13 (employee: $per-13, employer: $org-4, offered-position: $wpo-6) isa employment, has reference-id "r-11", has start-date 2017-07-28;
-$emp-14 (employee: $per-14, employer: $org-4, offered-position: $wpo-7) isa employment, has reference-id "r-12", has start-date 2010-01-01;
-$emp-15 (employee: $per-15, employer: $org-5, offered-position: $wpo-8) isa employment, has reference-id "r-13", has start-date 2014-05-01;
-$emp-16 (employee: $per-16, employer: $org-5, offered-position: $wpo-8) isa employment, has reference-id "r-14", has start-date 2015-01-01;
+$emp-1 (employee: $per-1, employer: $org-1, offered-position: $wpo-1) isa employment, has reference-id "r-1", has start-date 2012-01-03, has salary 3200;
+$emp-2 (employee: $per-2, employer: $org-1, offered-position: $wpo-2) isa employment, has reference-id "r-2", has start-date 2012-01-08, has salary 2900;
+$emp-3 (employee: $per-3, employer: $org-1, offered-position: $wpo-1) isa employment, has reference-id "r-3", has start-date 2013-02-05, has salary 4000;
+$emp-4 (employee: $per-4, employer: $org-1, offered-position: $wpo-2) isa employment, has reference-id "r-4", has start-date 2011-12-01, has salary 2500;
+$emp-6 (employee: $per-6, employer: $org-1, offered-position: $wpo-1) isa employment, has reference-id "r-5", has start-date 2010-02-01, has salary 9800;
+$emp-7 (employee: $per-7, employer: $org-3, offered-position: $wpo-1) isa employment, has reference-id "r-6", has start-date 2015-04-01, has salary 2200;
+$emp-8 (employee: $per-8, employer: $org-4, offered-position: $wpo-3) isa employment, has reference-id "r-7", has start-date 2014-09-01, has salary 5600;
+$emp-11 (employee: $per-11, employer: $org-2, offered-position: $wpo-5) isa employment, has reference-id "r-9", has start-date 2013-06-01, has salary 3400;
+$emp-10 (employee: $per-10, employer: $org-2, offered-position: $wpo-5) isa employment, has reference-id "r-8", has start-date 2011-06-04, has salary 6500;
+$emp-12 (employee: $per-12, employer: $org-3, offered-position: $wpo-6) isa employment, has reference-id "r-10", has start-date 2014-07-15, has salary 3900;
+$emp-13 (employee: $per-13, employer: $org-4, offered-position: $wpo-6) isa employment, has reference-id "r-11", has start-date 2017-07-28, has salary 3500;
+$emp-14 (employee: $per-14, employer: $org-4, offered-position: $wpo-7) isa employment, has reference-id "r-12", has start-date 2010-01-01, has salary 4100;
+$emp-15 (employee: $per-15, employer: $org-5, offered-position: $wpo-8) isa employment, has reference-id "r-13", has start-date 2014-05-01, has salary 3750;
+$emp-16 (employee: $per-16, employer: $org-5, offered-position: $wpo-8) isa employment, has reference-id "r-14", has start-date 2015-01-01, has salary 7100;
 
 ## SPEAKING OF LANGUAGES
 $sol-1 (speaker: $per-1, spoken: $lan-1) isa speaking-of-language;
@@ -390,12 +390,12 @@ $gro-2-mem-4 (group-member: $per-6, membership-grouping: $gro-2) isa group-membe
 $gro-2-mem-4-req (approved-group-membership: $gro-2-mem-4, group-membership-requester: $per-6, group-membership-respondent: $per-10) isa group-membership-request;
 
 ## EMOTIONS
-$emo-1 isa emotion; $emo-1 "like";
-$emo-2 isa emotion; $emo-2 "love";
-$emo-3 isa emotion; $emo-3 "funny";
-$emo-4 isa emotion; $emo-4 "shocking";
-$emo-5 isa emotion; $emo-5 "sad";
-$emo-6 isa emotion; $emo-6 "angry";
+$emo-1 isa emotion "like";
+$emo-2 isa emotion "love";
+$emo-3 isa emotion "funny";
+$emo-4 isa emotion "shocking";
+$emo-5 isa emotion "sad";
+$emo-6 isa emotion "angry";
 
 ## POST | COMMENT | SHARING | REPLY | REACTION | TAGGING
 $per-1-pos-1 isa status-update, has content "$per-1-pos-1-content";
