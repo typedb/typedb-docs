@@ -5,49 +5,75 @@ define
 ################
 	name sub attribute,
 		datatype string;
-		full-name sub name;
-		nickname sub name;
+	full-name sub name;
+	nickname sub name;
+
 	title sub attribute,
 		datatype string;
-	event-date sub attribute, abstract,
+
+	event-date sub attribute,
+		is-abstract,
 		datatype date;
-		approved-date sub event-date; ## to subtype an attribute
-		birth-date sub event-date;
-		start-date sub event-date;
-		end-date sub event-date;
-		engagement-date sub event-date;
+	approved-date sub event-date;
+	birth-date sub event-date;
+	start-date sub event-date;
+	end-date sub event-date;
+	engagement-date sub event-date;
+
 	published-date sub attribute,
 		datatype date;
+
 	reference-id sub attribute,
 		datatype string;
+
+	salary sub attribute,
+		datatype long;
+
+	registration-number sub attribute,
+		datatype string;
+
 	graduated sub attribute,
 		datatype boolean;
+
+	score sub attribute,
+		datatype double;
+
+	ranking sub attribute,
+		datatype long;
+
 	phone-number sub attribute,
 		datatype string;
+
 	email sub attribute,
 		datatype string;
+
 	gender sub attribute,
 		datatype string;
+
 	engaged sub attribute,
 		datatype boolean;
 	separated sub attribute,
 		datatype boolean;
 	divorced sub attribute,
 		datatype boolean;
+
 	file sub attribute,
 		datatype string;
+
 	caption sub attribute,
 		datatype string;
+
 	language sub attribute,
 		datatype string,
 		plays spoken,
 		plays mutual-language;
+
 	content sub attribute,
 		datatype string,
 		has language;
+
 	emotion sub attribute,
-		datatype string,
-		regex "(like|love|funny|shocking|sad|angry)",
+		datatype string regex /like|love|funny|shocking|sad|angry/,
 		plays reacted-emotion;
 
 	person sub entity,
@@ -61,7 +87,8 @@ define
 ## GENERIC TYPES ##
 ###################
 
-	location-of-everything sub relationship, abstract, ## to define an abstract relationship
+	location-of-everything sub relationship,
+		is-abstract,
 		relates located-subject,
 		relates subject-location;
 
@@ -83,7 +110,8 @@ define
 		relates requester,
 		relates respondent;
 
-	periodic-event sub relationship, abstract,
+	periodic-event sub relationship,
+		is-abstract,
 		has start-date,
 		has end-date,
 		plays overlapped-event;
@@ -97,14 +125,12 @@ define
 
 	events-overlap sub rule,
 		when {
-			$e1 isa periodic-event;
-			$e1 has start-date $sd1, has end-date $ed1;
-			$e2 isa periodic-event;
-			$e2 has start-date $sd2, has end-date $ed2;
+			$e1 isa periodic-event has start-date $sd1 has end-date $ed1;
+			$e2 isa periodic-event has start-date $sd2 has end-date $ed2;
 			$sd2 > $sd1;
 			$sd2 < $ed1;
 			$e1 != $e2;
-		}, then {
+		} then {
 			(overlapped-event: $e1, overlapped-event: $e2) isa event-overlapping;
 		};
 
@@ -155,7 +181,7 @@ define
 			($b1, birth-location: $l) isa location-of-birth;
 			($b2, birth-location: $l) isa location-of-birth;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-birthed-child: $p1, mutual-birthed-child: $p2, mutual-birth-location: $l, mutual-birth: $b1, mutual-birth: $b2) isa birth-mutuality;
 		};
 
@@ -205,7 +231,7 @@ define
 			($r1, residence: $l) isa location-of-residence;
 			($r2, residence: $l) isa location-of-residence;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-resident: $p1, mutual-resident: $p2, mutual-residence: $l, mutual-residency: $r1, mutual-residency: $r2) isa residence-mutuality;
 		};
 
@@ -230,6 +256,7 @@ define
 
 	school-course-enrollment sub periodic-event,
 		has graduated,
+		has score,
 		relates student,
 		relates enrolled-course,
 		relates enrolling-school,
@@ -238,6 +265,7 @@ define
 
 	school sub entity,
 		has name,
+		has ranking,
 		plays offerring-school,
 		plays located-school,
 		plays enrolling-school,
@@ -267,7 +295,7 @@ define
 	school-offers-the-enrolled-courses sub rule,
 		when {
 			(student: $p, enrolled-course: $c, enrolling-school: $s) isa school-course-enrollment;
-		}, then {
+		} then {
 			(offerring-school: $s, offered-course: $c) isa school-course-offerring;
 		};
 
@@ -286,7 +314,7 @@ define
 			(offered-course: $c1, offerring-school: $s) isa school-course-offerring;
 			(offered-course: $c2, offerring-school: $s) isa school-course-offerring;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(schoolmate: $p1, schoolmate: $p2, mutual-school: $s) isa school-mutuality;
 		};
 
@@ -299,7 +327,7 @@ define
 			$sce1 (student: $p1, enrolled-course: $sc) isa school-course-enrollment;
 			$sce2 (student: $p2, enrolled-course: $sc) isa school-course-enrollment;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(coursemate: $p1, coursemate: $p2, mutual-course-enrollment: $sce1, mutual-course-enrollment: $sce2) isa course-enrollment-mutuality;
 		};
 
@@ -348,7 +376,7 @@ define
 			($t1, travel-location: $l) isa location-of-travel;
 			($t2, travel-location: $l) isa location-of-travel;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-traveler: $p1, mutual-traveler: $p2, mutual-travel-location: $l, mutual-travel: $t1, mutual-travel: $t2) isa travel-mutuality;
 		};
 
@@ -372,6 +400,7 @@ define
 
 	employment sub periodic-event,
 		key reference-id,
+		has salary,
 		relates employer,
 		relates employee,
 		relates offered-position,
@@ -392,6 +421,7 @@ define
 
 	organisation sub entity,
 		has name,
+		has registration-number,
 		plays office-owner,
 		plays employer,
 		plays mutual-organisation;
@@ -421,7 +451,7 @@ define
 			$e1 (employee: $p1, employer: $o) isa employment;
 			$e2 (employee: $p2, employer: $o) isa employment;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-employee: $p1, mutual-employee: $p2, mutual-organisation: $o, mutual-employment: $e1, mutual-employment: $e2) isa employment-mutuality;
 		};
 
@@ -435,7 +465,7 @@ define
 			$e1 (employee: $p1, offered-position: $p) isa employment;
 			$e2 (employee: $p2, offered-position: $p) isa employment;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-employee: $p1, mutual-employee: $p2, mutual-position: $p, mutual-employment: $e1, mutual-employment: $e2) isa work-position-mutuality;
 		};
 
@@ -474,7 +504,7 @@ define
 			$sol1 (speaker: $p1, spoken: $l) isa speaking-of-language;
 			$sol2 (speaker: $p2, spoken: $l) isa speaking-of-language;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-speaker: $p1, mutual-speaker: $p2, mutual-language: $l, mutual-language-speaking: $sol1, mutual-language-speaking: $sol2) isa speaking-language-mutuality;
 		};
 
@@ -569,92 +599,9 @@ define
 		when {
 			($p1, $p2) isa friendship;
 			($p2, $p3) isa friendship;
-		}, then {
+		} then {
 			(one-degree-friend: $p1, one-degree-friend: $p3, mutual-friend: $p2) isa mutual-friendship;
 		};
-
-##########
-## POST ##
-##########
-
-## query the schema section
-# match
-# 	$rep sub reply;
-# 	$tag sub tagging;
-# 	$att sub attachment;
-# 	$rea sub reaction;
-# 	$emo sub emotion;
-# 	$lin sub link;
-# 	$stu sub status-update;
-# 	$com sub comment;
-# 	$mow sub media-ownership;
-# 	$alb sub album;
-# 	$vid sub video;
-# 	$pho sub photo;
-# 	$per sub person;
-# get;
-
-	reply sub relationship,
-		relates replied-by,
-		relates replied-to,
-		relates reply-content;
-
-	tagging sub relationship,
-		relates tagged,
-		relates tagged-in;
-
-	attachment sub relationship,
-		relates attached,
-		relates attached-to;
-
-	reaction sub relationship,
-		relates reacted-emotion,
-		relates reacted-to,
-		relates reacted-by;
-
-	post sub entity, abstract,
-		plays permitted-content,
-		plays shared-content,
-		plays replied-to,
-		plays tagged-in,
-		plays reacted-to;
-
-	status-update sub post,
-		has content,
-		plays attached-to;
-
-	comment sub post,
-		has content,
-		plays reply-content,
-		plays attached-to;
-
-	media-ownership sub ownership,
-		relates media-owner as owner,
-		relates owned-media as owned;
-
-	album sub post,
-		has title,
-		has published-date,
-		plays media-owner;
-
-	media sub post, abstract,
-		has caption,
-		has file,
-		plays owned-media,
-		plays attached;
-
-	video sub media;
-
-	photo sub media;
-
-	link sub attribute,
-		datatype string,
-		plays attached;
-
-	person sub entity,
-		plays tagged,
-		plays reacted-by,
-		plays replied-by;
 
 ###########
 ## GROUP ##
@@ -687,24 +634,48 @@ define
 		relates group-membership-requester as requester,
 		relates group-membership-respondent as respondent;
 
-	social-group sub entity,
-		abstract,
+	group sub entity is-abstract,
 		has name,
 		plays owned-group,
 		plays membership-grouping,
 		plays shared-in;
 
-	public-group sub social-group;
+	public-group sub group;
 
-	closed-group sub social-group;
+	closed-group sub group;
 
-	secret-group sub social-group;
+	secret-group sub group;
 
 	person sub entity,
 		plays group-owner,
 		plays group-member,
 		plays group-membership-requester,
 		plays group-membership-respondent;
+
+	#####################################
+	## public group membership request ##
+	#####################################
+
+	public-group-membership-is-automatically-approved sub rule,
+		when {
+			$group isa public-group;
+			(group-owner: $owner, owned-group: $group) isa group-ownership;
+			$membership (group-member: $member, membership-grouping: $group) isa group-membership;
+		} then {
+			(approved-group-membership: $membership, group-membership-requester: $member, group-membership-respondent: $owner) isa group-membership-request;
+		};
+
+	###################################
+	## group owner is always member ##
+	###################################
+
+	group-owner-is-always-member sub rule,
+		when {
+			$group isa group;
+			(group-owner: $owner, owned-group: $group) isa group-ownership;
+		} then {
+			(group-member: $owner, membership-grouping: $group) isa group-membership;
+		};
 
 ##############
 ## TIMELINE ##
@@ -728,6 +699,96 @@ define
 	person sub entity,
 		plays timeline-owner;
 
+##########
+## POST ##
+##########
+
+## query the schema section
+# match
+# 	$rep sub reply;
+# 	$tag sub tagging;
+# 	$att sub attachment;
+# 	$rea sub reaction;
+# 	$emo sub emotion;
+# 	$lin sub link;
+# 	$stu sub status-update;
+# 	$com sub comment;
+# 	$mow sub media-ownership;
+# 	$alb sub album;
+# 	$vid sub video;
+# 	$pho sub photo;
+# 	$per sub person;
+# get;
+
+	reply-sharing-inherits-original-sharing sub rule,
+		when {
+			$rep (replied-to: $rt, reply-content: $rc) isa reply;
+			(shared-content: $rt, shared-by: $sb, shared-in: $si) isa $sha;
+		} then {
+			(shared-content: $rc, shared-by: $sb, shared-in: $si) isa $sha;
+		};
+
+	reply sub relationship,
+		relates replied-to,
+		relates reply-content,
+		relates replied-by;
+
+	tagging sub relationship,
+		relates tagged,
+		relates tagged-in;
+
+	attachment sub relationship,
+		relates attached,
+		relates attached-to;
+
+	reaction sub relationship,
+		relates reacted-emotion,
+		relates reacted-to,
+		relates reacted-by;
+
+	post sub entity is-abstract,
+		plays permitted-content,
+		plays shared-content,
+		plays replied-to,
+		plays tagged-in,
+		plays reacted-to;
+
+	status-update sub post,
+		has content,
+		plays attached-to;
+
+	comment sub post,
+		has content,
+		plays reply-content,
+		plays attached-to;
+
+	media-ownership sub ownership,
+		relates media-owner as owner,
+		relates owned-media as owned;
+
+	album sub post,
+		has title,
+		has published-date,
+		plays media-owner;
+
+	media sub post is-abstract,
+		has caption,
+		has file,
+		plays owned-media,
+		plays attached;
+
+	video sub media;
+
+	photo sub media;
+
+	link sub attribute datatype string,
+		plays attached;
+
+	person sub entity,
+		plays tagged,
+		plays reacted-by,
+		plays replied-by;
+
 #############
 ## SHARING ##
 #############
@@ -745,7 +806,7 @@ define
 # 	$puu sub public-user;
 # get;
 
-	sharing sub relationship, abstract,
+	sharing sub relationship is-abstract,
 		relates shared-content,
 		relates shared-by,
 		relates shared-in;
@@ -763,19 +824,19 @@ define
 	inclusive-sharing sub sharing,
 		relates shared-content,
 		relates shared-by,
-		relates shared-with,
-		relates shared-in;
+		relates shared-in,
+		relates shared-with;
 
 	friends-with-exclusion-sharing sub sharing,
 		relates shared-content,
 		relates shared-by,
-		relates hidden-from,
-		relates shared-in;
+		relates shared-in,
+		relates hidden-from;
 
 	private-sharing sub sharing,
 		relates shared-content,
-		relates shared-by,
-		relates shared-in;
+		relates shared-in,
+		relates shared-by;
 
 	permitted-to-see sub relationship,
 		relates permitted-content,
@@ -798,7 +859,7 @@ define
 		when {
 			(shared-content: $sc) isa public-sharing;
 			$pu isa public-user;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $pu) isa permitted-to-see;
 		};
 
@@ -806,14 +867,14 @@ define
 		when {
 			(shared-content: $sc, shared-by: $sb) isa friends-sharing;
 			(friend: $sb, $f) isa friendship;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
 		};
 
 	inclusive-permissions sub rule,
 		when {
 			(shared-content: $sc, shared-with: $sw) isa inclusive-sharing;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $sw) isa permitted-to-see;
 		};
 
@@ -822,7 +883,7 @@ define
 			(shared-content: $sc, shared-by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
 			(friend: $sb, $f) isa friendship;
 			$f != $hf;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
 		};
 
@@ -830,7 +891,7 @@ define
 		when {
 			(shared-content: $sc, shared-by: $sb) isa private-sharing;
 			$pu isa public-user;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
 		};
 
@@ -838,6 +899,6 @@ define
 		when {
 			(shared-content: $sc, shared-by: $sb) isa sharing;
 			$pu isa public-user;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
 		};
