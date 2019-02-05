@@ -3,40 +3,77 @@ define
 ################
 ## ATTRIBITES ##
 ################
-	name sub attribute datatype string;
-		full-name sub name;
-		nickname sub name;
-	title sub attribute datatype string;
-	event-date sub attribute is-abstract,
-	datatype date;
-		approved-date sub event-date; ## to subtype an attribute
-		birth-date sub event-date;
-		start-date sub event-date;
-		end-date sub event-date;
-		engagement-date sub event-date;
+	name sub attribute,
+		datatype string;
+	full-name sub name;
+	nickname sub name;
+
+	title sub attribute,
+		datatype string;
+
+	event-date sub attribute,
+		is-abstract,
+		datatype date;
+	approved-date sub event-date;
+	birth-date sub event-date;
+	start-date sub event-date;
+	end-date sub event-date;
+	engagement-date sub event-date;
+
 	published-date sub attribute,
-	datatype date;
-	reference-id sub attribute datatype string;
-	registration-number sub attribute datatype string;
+		datatype date;
+
+	reference-id sub attribute,
+		datatype string;
+
+	salary sub attribute,
+		datatype long;
+
+	registration-number sub attribute,
+		datatype string;
+
 	graduated sub attribute,
-	datatype boolean;
-	phone-number sub attribute datatype string;
-	email sub attribute datatype string;
-	gender sub attribute datatype string;
+		datatype boolean;
+
+	score sub attribute,
+		datatype double;
+
+	ranking sub attribute,
+		datatype long;
+
+	phone-number sub attribute,
+		datatype string;
+
+	email sub attribute,
+		datatype string;
+
+	gender sub attribute,
+		datatype string;
+
 	engaged sub attribute,
-	datatype boolean;
+		datatype boolean;
 	separated sub attribute,
-	datatype boolean;
+		datatype boolean;
 	divorced sub attribute,
-	datatype boolean;
-	file sub attribute datatype string;
-	caption sub attribute datatype string;
-	language sub attribute datatype string,
+		datatype boolean;
+
+	file sub attribute,
+		datatype string;
+
+	caption sub attribute,
+		datatype string;
+
+	language sub attribute,
+		datatype string,
 		plays spoken,
 		plays mutual-language;
-	content sub attribute datatype string,
+
+	content sub attribute,
+		datatype string,
 		has language;
-	emotion sub attribute datatype string regex /like|love|funny|shocking|sad|angry/,
+
+	emotion sub attribute,
+		datatype string regex /like|love|funny|shocking|sad|angry/,
 		plays reacted-emotion;
 
 	person sub entity,
@@ -50,7 +87,8 @@ define
 ## GENERIC TYPES ##
 ###################
 
-	location-of-everything sub relationship is-abstract, ## to define an abstract relationship
+	location-of-everything sub relationship,
+		is-abstract,
 		relates located-subject,
 		relates subject-location;
 
@@ -72,7 +110,8 @@ define
 		relates requester,
 		relates respondent;
 
-	periodic-event sub relationship is-abstract,
+	periodic-event sub relationship,
+		is-abstract,
 		has start-date,
 		has end-date,
 		plays overlapped-event;
@@ -217,6 +256,7 @@ define
 
 	school-course-enrollment sub periodic-event,
 		has graduated,
+		has score,
 		relates student,
 		relates enrolled-course,
 		relates enrolling-school,
@@ -225,6 +265,7 @@ define
 
 	school sub entity,
 		has name,
+		has ranking,
 		plays offerring-school,
 		plays located-school,
 		plays enrolling-school,
@@ -359,6 +400,7 @@ define
 
 	employment sub periodic-event,
 		key reference-id,
+		has salary,
 		relates employer,
 		relates employee,
 		relates offered-position,
