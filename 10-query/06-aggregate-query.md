@@ -30,15 +30,19 @@ We use the `count` function to get the number of the specified matched variable.
 
 [tab:Graql]
 ```graql
-match $sh isa sheep; get $sh; count;
+match
+  $sce isa school-course-enrollment, has score $sco;
+  $sco > 7.0;
+get; count;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("sh").isa("sheep")
-).get("sh").count();
+  var("sce").isa("school-course-enrollment").has("score", var("sco")),
+  var("sco").val(gt(7.0))
+).get().count();
 ```
 [tab:end]
 </div>
@@ -54,15 +58,21 @@ We use the `sum` function to get the sum of the specified `long` or `double` mat
 
 [tab:Graql]
 ```graql
-match $h isa hotel, has number-of-rooms $nor; get $nor; sum $nor;
+match
+  $org isa organisation, has name $orn;
+  $orn == "Medicely";
+  ($org) isa employment, has salary $sal;
+get $sal; sum $sal;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("h").isa("hotel").has("number-of-rooms", var("nor"))
-).get("nor").sum("nor");
+  var("org").isa("organisation").has("name", var("orn")),
+  var("orn").val("Medicely"),
+  var().rel("org").isa("employment").has("salary", var("sal"))
+).get("sal").sum("sal");
 ```
 [tab:end]
 </div>
@@ -74,16 +84,17 @@ We use the `max` function to get the maximum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-match (student: $st, school: $sch) isa school-enrollment; $st has gpa $gpa; get $gpa; max $gpa;
+match
+  $sch isa school, has ranking $ran;
+get $ran; max $ran;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
-  var("st").has("gpa", var("gpa"))
-).get("gpa").max("gpa");
+  var("sch").isa("school").has("ranking", var("ran"))
+).get("ran").max("ran");
 ```
 [tab:end]
 </div>
@@ -95,15 +106,19 @@ We use the `min` function to get the minimum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-match $b isa building, has number-of-floors $nof; get $nof; min $nof;
+match
+  ($per) isa marriage;
+  ($per) isa employment, has salary $sal;
+get $sal; min $sal;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("b").isa("building").has("number-of-floors", var("nof"))
-).get("nof").min("nof");
+  var().rel(var("per")).isa("marriage"),
+  var().rel(var("per")).isa("employment").has("salary", var("sal"))
+).get("sal").min("sal");
 ```
 [tab:end]
 </div>
@@ -115,15 +130,17 @@ We use the `mean` function to get the average value of the specified `long` or `
 
 [tab:Graql]
 ```graql
-match $call isa call, has duration $d; get $d; mean $d;
+match
+  $emp isa employment, has salary $sal;
+get $sal; mean $sal;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("call").isa("call").has("duration", var("d"))
-).get("d").mean("d");
+  var("emp").isa("employment").has("salary", var("sal"))
+).get("sal").mean("sal");
 ```
 [tab:end]
 </div>
@@ -136,14 +153,23 @@ We use the `median` function to get the median value among the specified `long` 
 [tab:Graql]
 ```graql
 match $p isa person, has age $a; get $a; median $a;
+match
+  $org isa organisation, has name $orn;
+  $orn == "Facelook";
+  (employer: $org, employee: $per) isa employment;
+  ($per) isa school-course-enrollment has score $sco;
+get $sco; median $sco;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("p").isa("person").has("age", var("a"))
-).get("a").median("a");
+  var("org").isa("organisation").has("name", var("orn")),
+  var("orn").val("Facelook"),
+  var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
+  var().rel(var("per")).isa("school-course-enrollment").has("score", var("sco"))
+).get("sco").median("sco");
 ```
 [tab:end]
 </div>
@@ -155,16 +181,21 @@ We use the `group` function, optionally followed by another aggregate function, 
 
 [tab:Graql]
 ```graql
-match (employer: $c, employee: $p) isa employment; get $c; group $c;
+match
+  $per isa person;
+  $scc isa school-course, has title $tit;
+  (student: $per, enrolled-course: $scc) isa school-course-enrollment;
+get; group $tit;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GroupQuery query = Graql.match(
-  var().isa("employment").rel("employer", var("c"))
-  .rel("employee", var("p"))
-).get("c", "p").group("c");
+AggregateQuery query = Graql.match(
+  var("per").isa("person"),
+  var("scc").isa("school-course").has("title", var("tit")),
+  var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
+).get().group("tit");
 ```
 [tab:end]
 </div>
@@ -175,16 +206,21 @@ This query returns all instances of `employment` grouped by their `employer` rol
 
 [tab:Graql]
 ```graql
-match (employer: $c, employee: $p) isa employment; get $c; group $c; count;
+match
+  $per isa person;
+  $scc isa school-course, has title $tit;
+  (student: $per, enrolled-course: $scc) isa school-course-enrollment;
+get; group $tit; count;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GroupAggregateQuery query = Graql.match(
-  var().isa("employment").rel("employer", var("c"))
-  .rel("employee", var("p"))
-).get("c", "p").group("c").count();
+AggregateQuery query = Graql.match(
+  var("per").isa("person"),
+  var("scc").isa("school-course").has("title", var("tit")),
+  var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
+).get().group("tit").count();
 ```
 [tab:end]
 </div>
