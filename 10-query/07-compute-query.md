@@ -65,15 +65,15 @@ We use the `sum` function to get the sum of the specified `long` or `double` att
 
 [tab:Graql]
 ```graql
-compute sum of number-of-rooms, in hotel;
+compute sum of salary, in employment;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(SUM)
-                          .of("number-of-rooms")
-                          .in("hotel");
+                          .of("salary")
+                          .in("employment");
 ```
 [tab:end]
 </div>
@@ -85,15 +85,15 @@ We use the `max` function to get the maximum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-compute max of gpa, in school-enrollment;
+compute max of score, in school-course-enrollment;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(MAX)
-                          .of("gpa")
-                          .in("school-enrollment");
+                          .of("score")
+                          .in("school-course-enrollment");
 ```
 [tab:end]
 </div>
@@ -105,15 +105,15 @@ We use the `min` function to get the minimum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-compute max of number-of-floors, in building;
+compute min of ranking, in school;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(MAX)
-                          .of("number-of-floors")
-                          .in("building");
+ComputeQuery query = Graql.compute(MIN)
+                          .of("ranking")
+                          .in("school");
 ```
 [tab:end]
 </div>
@@ -125,15 +125,15 @@ We use the `mean` function to get the average value of the specified `long` or `
 
 [tab:Graql]
 ```graql
-compute mean of duration, in call;
+compute mean of salary, in employment;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(MEAN)
-                          .of("duration")
-                          .in("call");
+                          .of("salary")
+                          .in("employment");
 ```
 [tab:end]
 </div>
@@ -145,15 +145,15 @@ We use the `median` function to get the median value of the specified `long` or 
 
 [tab:Graql]
 ```graql
-compute median of age, in person;
+compute median of score, in school-course-enrollment;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(MEDIAN)
-                          .of("age")
-                          .in("person");
+                          .of("score")
+                          .in("school-course-enrollment");
 ```
 [tab:end]
 </div>
@@ -165,15 +165,15 @@ We use the `std` function to get the standard deviation value of the specified `
 
 [tab:Graql]
 ```graql
-compute std of score, in examination;
+compute std of salary, in employment;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(STD)
-                          .of("score")
-                          .in("examination");
+                          .of("salary")
+                          .in("employment");
 ```
 [tab:end]
 </div>
@@ -190,20 +190,24 @@ We can use the compute query to find the shortest path between two instances of 
 
 [tab:Graql]
 ```graql
-compute path from V24819, to V93012;
+compute path from V229424, to v446496;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(PATH)
-                          .from(ConceptId.of("V24819"))
-                          .to(ConceptId.of("V93012"));
+                          .from(ConceptId.of("V229424"))
+                          .to(ConceptId.of("v446496"));
 ```
 [tab:end]
 </div>
 
-As the answer to this query, we would get a list of ids starting with `V24819` and ending with `V93012`. In between come the ids that connect the two.
+Running the above query in [Grakn Console](/docs/running-grakn/console),returns a list of ids that that represents the instances placed on the shortest path between the two.
+
+When we execute this query in the [Grakn Workbase](/docs/workbase/overview), the result is as follows:
+
+![shortest path in workbase](/docs/images/query/compute_path.png)
 
 ### Specify a whitelist
 When looking for the shortest path, we may need to constraint the shortest path to only include certain types. In other words, when given a whitelist of types, Grakn ignores any other path that leads to a type not included in the list. To do this, we use the `in` keyword followed by the list of allowed types.
@@ -212,21 +216,25 @@ When looking for the shortest path, we may need to constraint the shortest path 
 
 [tab:Graql]
 ```graql
-compute path from V24819, to V93012, in [person, car, company, employment];
+compute path from V229424, to v446496, in [person, friendship];
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(PATH)
-                          .from(ConceptId.of("V24819"))
-                          .to(ConceptId.of("V93012"))
+                          .from(ConceptId.of("V229424"))
+                          .to(ConceptId.of("v446496"))
                           .in("person","car", "company", "employment");
 ```
 [tab:end]
 </div>
 
-Given that `V24819` is the id of a `person` and `V93012` is the id of a `car`, we are asking for the shortest path between the given `car` and `person` through an `employment` relationship with the `company`. Any other indirect association between the given person and car is ignored when looking for the shortest path.
+Given the two `person` instances with ids of `V229424` and `v446496`, running the above query in [Grakn Console](/docs/running-grakn/console) returns a list of ids representing the shortest path between them. The list includes only the ids of instances that are of type `person` and `friendship`, as specified via the `in` keyword. Any other indirect association between the given persons is ignored when looking for the shortest path.
+
+When we execute this query in the [Grakn Workbase](/docs/workbase/overview), the result is as follows:
+
+![subgraph shortest path in workbase](/docs/images/query/compute_path_subgraph.png)
 
 <div class="note">
 [Note]
@@ -264,20 +272,20 @@ Depending on the domain that the knowledge graph represents, we may want to comp
 
 [tab:Graql]
 ```graql
-compute centrality in [company, employee, employment], using degree;
+compute centrality in [organisation, person, employment], using degree;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(CENTRALITY)
-                          .in("company", "employee", "employment")
+                          .in("organisation", "person", "employment")
                           .using(DEGREE);
 ```
 [tab:end]
 </div>
 
-This query returns a map of instances ordered ascendingly by degree. The instances included in the answers are those of types `company`, `employee` and `employment`.
+This query returns a map of instances ordered ascendingly by degree. The instances included in the answers are those of types `organisation`, `person` and `employment`.
 
 #### Of a given type
 Consider the example above. What we are really interested in is the company with the most number of employees, but we are also getting the employee and employment instances in the answers. What if we only want to get the centrality of a given type based on its relationship with other types without getting irrelevant answers. To do this, we use the `of` keyword.
@@ -286,15 +294,15 @@ Consider the example above. What we are really interested in is the company with
 
 [tab:Graql]
 ```graql
-compute centrality of company, in [company, employment], using degree;
+compute centrality of organisation, in [organisation, person, employment], using degree;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery query = Graql.compute(CENTRALITY)
-                          .of("company")
-                          .in("company", "employment")
+                          .of("organisation")
+                          .in("organisation", "person", "employment")
                           .using(DEGREE);
 ```
 [tab:end]
@@ -330,7 +338,7 @@ To compute centrality using coreness with a given minimum `k` value, we use of t
 
 [tab:Graql]
 ```graql
-compute centrality using k-core, where min-k = 5;
+compute centrality using k-core, where min-k=5;
 ```
 [tab:end]
 
@@ -400,21 +408,20 @@ To compute clusters using coreness with the `k` value of at least 2, we run the 
 
 [tab:Graql]
 ```graql
-compute cluster in [person, employment, organisation], using k-core;
+compute cluster in [person, friendship], using k-core;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "employment", "organisation")
+                                      .in("person", "friendship")
                                       .using(K_CORE);
 ```
-<!-- 1.5 List&lt;ConceptSetMeasure&gt; answer = transaction.execute(query.toString()); -->
 [tab:end]
 </div>
 
-This query retrieves the set of concept IDs that belong to clusters which include instances of `person`, `employment` and `organisation` concept types and all have a minimum degree of 2.
+This query retrieves the set of concept IDs that belong to clusters which include instances of `person` and `friendship`. The identified clusters all have a minimum degree of 2.
 
 #### Specify the minimum k value
 To compute clusters using coreness with a given minimum `k` value, we use of the `where` keyword followed by an assignment of `min-k`.
@@ -423,21 +430,21 @@ To compute clusters using coreness with a given minimum `k` value, we use of the
 
 [tab:Graql]
 ```graql
-compute cluster, in [person, employment, organisation], using k-core, where min-k=5;
+compute cluster, in [person, friendship], using k-core, where min-k=3;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "employment", "organisation")
+                                      .in("person", "friendship")
                                       .using(K_CORE)
                                       .where(min_k(5));
 ```
 [tab:end]
 </div>
 
-This query retrieves the set of concept IDs that belong to clusters which include instances of `person`, `employment` and `organisation` concept types and all have a minimum degree of 5.
+This query retrieves the set of concept IDs that belong to clusters which include instances of `person` and `friendship` concept types and all have a minimum degree of 3.
 
 ## Summary
 We use a compute query to run distributed analytics on the entire knowledge graph or a large subset of it filtered by a concept type. This statistical analytics include statistical function, shortest path, centrality and cluster
