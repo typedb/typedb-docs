@@ -97,8 +97,10 @@ define
 
 	events-overlap sub rule,
 		when {
-			$e1 isa periodic-event has start-date $sd1 has end-date $ed1;
-			$e2 isa periodic-event has start-date $sd2 has end-date $ed2;
+			$e1 isa periodic-event;
+			$e1 has start-date $sd1, has end-date $ed1;
+			$e2 isa periodic-event;
+			$e2 has start-date $sd2, has end-date $ed2;
 			$sd2 > $sd1;
 			$sd2 < $ed1;
 			$e1 != $e2;
@@ -677,17 +679,18 @@ define
 		relates group-member,
 		relates membership-grouping;
 
-	group sub entity, abstract,
+	social-group sub entity,
+		abstract,
 		has name,
 		plays owned-group,
 		plays membership-grouping,
 		plays shared-in;
 
-	public-group sub group;
+	public-group sub social-group;
 
-	closed-group sub group;
+	closed-group sub social-group;
 
-	secret-group sub group;
+	secret-group sub social-group;
 
 	person sub entity,
 		plays group-owner,
