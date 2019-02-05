@@ -30,20 +30,22 @@ We use the `count` function to get the number of the specified matched variable.
 
 [tab:Graql]
 ```graql
-match $sh isa sheep; aggregate count;
+match
+  $sce isa school-course-enrollment, has score $sco;
+  $sco > 7.0;
+aggregate count;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("sh").isa("sheep")
+  var("sce").isa("school-course-enrollment").has("score", var("sco")),
+  var("sco").val(gt(7.0))
 ).aggregate(count());
 ```
 [tab:end]
 </div>
-
-[Hope you manage to stay awake for the rest of the aggregate functions!](https://www.youtube.com/watch?v=FmbmNp1RDCE)
 
 Optionally, `count` accepts a variable as an argument.
 
@@ -54,15 +56,21 @@ We use the `sum` function to get the sum of the specified `long` or `double` mat
 
 [tab:Graql]
 ```graql
-match $h isa hotel, has number-of-rooms $nor; aggregate sum $nor;
+match
+  $org isa organisation, has name $orn;
+  $orn == "Medicely";
+  ($org) isa employment, has salary $sal;
+aggregate sum $sal;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("h").isa("hotel").has("number-of-rooms", var("nor"))
-).aggregate(sum("nor"));
+  var("org").isa("organisation").has("name", var("orn")),
+  var("orn").val("Medicely"),
+  var().rel("org").isa("employment").has("salary", var("sal"))
+).aggregate(sum("sal"));
 ```
 [tab:end]
 </div>
@@ -74,16 +82,17 @@ We use the `max` function to get the maximum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-match (student: $st, school: $sch) isa school-enrollment; $st, has gpa $gpa; aggregate max $gpa;
+match
+  $sch isa school, has ranking $ran;
+aggregate max $ran;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
-  var("st").has("gpa", var("gpa"))
-).aggregate(max("gpa"));
+  var("sch").isa("school").has("ranking", var("ran"))
+).aggregate(max("ran"));
 ```
 [tab:end]
 </div>
@@ -95,16 +104,19 @@ We use the `min` function to get the minimum value among the specified `long` or
 
 [tab:Graql]
 ```graql
-match $b isa building, has number-of-floors $nof; aggregate min $nof;
+match
+  ($per) isa marriage;
+  ($per) isa employment, has salary $sal;
+aggregate min $sal;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var().isa("school-enrollment").rel("student", "st").rel("school", "sch"),
-  var("st").has("gpa", var("gpa"))
-).aggregate(min("nof"));
+  var().rel(var("per")).isa("marriage"),
+  var().rel(var("per")).isa("employment").has("salary", var("sal"))
+).aggregate(min("sal"));
 ```
 [tab:end]
 </div>
@@ -116,15 +128,17 @@ We use the `mean` function to get the average value of the specified `long` or `
 
 [tab:Graql]
 ```graql
-match $call isa call, has duration $d; aggregate mean $d;
+match
+  $emp isa employment, has salary $sal;
+aggregate mean $sal;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("call").isa("call").has("duration", "d")
-).aggregate(mean("d")).execute();
+  var("emp").isa("employment").has("salary", var("sal"))
+).aggregate(mean("sal"));
 ```
 [tab:end]
 </div>
@@ -136,15 +150,25 @@ We use the `median` function to get the median value among the specified `long` 
 
 [tab:Graql]
 ```graql
-match $p isa person, has age $a; aggregate median $a;
+match
+  $org isa organisation, has name $orn;
+  $orn == "Facelook";
+  (employer: $org, employee: $per) isa employment;
+  ($per) isa school-course-enrollment has score $sco;
+aggregate median $sco;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var("p").isa("person").has("age", var("a"))
-).aggregate(median("a")).execute();
+  var("org").isa("organisation").has("name", var("orn")),
+  var("orn").val("Facelook"),
+  var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
+  var().rel(var("per")).isa("school-course-enrollment").has("score", var("sco"))
+).aggregate(median("sco"));
+
+System.out.println(query.toString());
 ```
 [tab:end]
 </div>
@@ -156,41 +180,51 @@ We use the `group` function, optionally followed by another aggregate function, 
 
 [tab:Graql]
 ```graql
-match (employer: $company, employee: $person) isa employment; aggregate group $company;
+match
+  $per isa person;
+  $scc isa school-course, has title $tit;
+  (student: $per, enrolled-course: $scc) isa school-course-enrollment;
+aggregate group $tit;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var().isa("employment").rel("employer", var("company"))
-  .rel("employee", var("person"))
-).aggregate(group("company")).execute();
+  var("per").isa("person"),
+  var("scc").isa("school-course").has("title", var("tit")),
+  var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
+).aggregate(group("tit"));
 ```
 [tab:end]
 </div>
 
-This query returns all instances of `employment` grouped by their `employer` roleplayer.
+This query returns all instances of `person` grouped by the `title` of their `school-course`.
 
 <div class="tabs dark">
 
 [tab:Graql]
 ```graql
-match (employer: $company, employee: $person) isa employment; aggregate group $company count;
+match
+  $per isa person;
+  $scc isa school-course, has title $tit;
+  (student: $per, enrolled-course: $scc) isa school-course-enrollment;
+aggregate group $tit count;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 AggregateQuery query = Graql.match(
-  var().isa("employment").rel("employer", var("company"))
-  .rel("employee", var("person"))
-).aggregate(group("company", count()));
+  var("per").isa("person"),
+  var("scc").isa("school-course").has("title", var("tit")),
+  var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
+).aggregate(group("tit", count()));
 ```
 [tab:end]
 </div>
 
-This query returns the total number of instances of `employment` mapped to their corresponding `employer` roleplayer.
+This query returns the total count of `person`s grouped by the `title` of their `school-course`.
 
 ## Summary
 We use an aggregate query to calculate a certain variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
