@@ -167,8 +167,6 @@ AggregateQuery query = Graql.match(
   var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
   var().rel(var("per")).isa("school-course-enrollment").has("score", var("sco"))
 ).aggregate(median("sco"));
-
-System.out.println(query.toString());
 ```
 [tab:end]
 </div>
