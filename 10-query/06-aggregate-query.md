@@ -152,12 +152,11 @@ We use the `median` function to get the median value among the specified `long` 
 
 [tab:Graql]
 ```graql
-match $p isa person, has age $a; get $a; median $a;
 match
   $org isa organisation, has name $orn;
   $orn == "Facelook";
   (employer: $org, employee: $per) isa employment;
-  ($per) isa school-course-enrollment has score $sco;
+  ($per) isa school-course-enrollment, has score $sco;
 get $sco; median $sco;
 ```
 [tab:end]
@@ -191,7 +190,7 @@ get; group $tit;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GroupQuery query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
@@ -216,7 +215,7 @@ get; group $tit; count;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GroupAggregateQuery query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
