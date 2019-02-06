@@ -1,0 +1,1 @@
+exports_files(["conf/grakn.properties"])
