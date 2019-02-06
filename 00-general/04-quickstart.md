@@ -14,10 +14,18 @@ Let's get started!
 
 
 ### The Schema
-A [Grakn schema](/docs/schema/overview) is the blueprint of a Grakn knowledge graph. The code presented below, is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
+A [Grakn schema](/docs/schema/overview) is the blueprint of a Grakn knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
 
 ```graql
 define
+
+title sub attribute,
+  datatype string;
+
+event-date sub attribute,
+  is-abstract,
+  datatype date;
+approved-date sub event-date;
 
 ## an abstract relationship, only to be subtyped by other relationships
 request sub relationship,
@@ -28,26 +36,26 @@ request sub relationship,
   relates respondent;
 
 friendship sub relationship,
-	relates friend,
-	plays approved-friendship,
-	plays listed-friendship;
+    relates friend,
+    plays approved-friendship,
+    plays listed-friendship;
 
 ## an example of subtyping in Grakn
 friend-request sub request,
-	relates approved-friendship as approved-subject,
-	relates friendship-requester as requester,
-	relates friendship-respondent as respondent;
+    relates approved-friendship as approved-subject,
+    relates friendship-requester as requester,
+    relates friendship-respondent as respondent;
 
 friends-list sub relationship,
-	has title,
-	relates list-owner,
-	relates listed-friendship;
+    has title,
+    relates list-owner,
+    relates listed-friendship;
 
 person sub entity,
-	plays friend,
-	plays friendship-requester,
-	plays friendship-respondent,
-	plays list-owner;
+    plays friend,
+    plays friendship-requester,
+    plays friendship-respondent,
+    plays list-owner;
 ```
 
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Graql Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
@@ -100,6 +108,7 @@ $ ./graql console -k social_network
 <!-- ignore-test -->
 ```java
 package ai.grakn.examples;
+
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;
 import ai.grakn.client.Grakn;
@@ -124,7 +133,7 @@ public class Queries {
       var("org").has("name", var("org-n"))
     ).get();
 
-    List < ConceptMap > answers = query.withTx(transaction).execute();
+    List <ConceptMap> answers = query.withTx(transaction).execute();
 
     for (ConceptMap answer: answers) {
       System.out.println(answer.get("per-fn").asAttribute().value());
@@ -150,7 +159,7 @@ with client.session(keyspace = "social_network") as session:
     query = '''
       match
         $pos isa media;
-        $funny isa emotion;
+        $fun isa emotion;
         $fun == "funny";
         $per has gender "female";
         (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
@@ -279,7 +288,7 @@ match
 get $mate-1-fn, $mate-2-fn;
 ```
 
-Similar to the first rule, the answer we're asking for here, was never injested into the knowledge graph and is being inferred at query time by Grakn.
+Similar to the first rule, the answer we're asking for here, was never injected into the knowledge graph and is being inferred at query time by Grakn.
 
 ### Distributed Analytics With Grakn
 

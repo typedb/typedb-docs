@@ -115,7 +115,8 @@ define
 	periodic-event sub relationship,
 		is-abstract,
 		has start-date,
-		has end-date;
+		has end-date,
+		plays overlapped-event;
 
 	########################
 	## events overlapping ##
