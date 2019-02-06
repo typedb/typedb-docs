@@ -84,7 +84,7 @@ Download the [`social-network-data.gql`](/docs/files/social-network-data.gql){:t
 As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](/docs/query/insert-query) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](/docs/client-api/overview) to [migrate](/docs/examples/phone-calls-overview#whats-covered) the dataset into the target Grakn knowledge graph.
 
 ### Query the Knowledge Graph
-Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Graql Console](/docs/management/console), [Grakn Workbase](/docs/workbase/overview) or one of the [Grakn Clients](/docs/client-api/overview).
+Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Graql Console](/docs/running-grakn/console), [Grakn Workbase](/docs/workbase/overview) or one of the [Grakn Clients](/docs/client-api/overview).
 
 Let's see an example of running [Graql get queries](/docs/query/get-query) via each of these interfaces.
 
