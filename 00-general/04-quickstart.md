@@ -62,37 +62,37 @@ gender sub attribute,
 	datatype string;
 ```
 
-The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Graql Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
+The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 Save the code above in a file named `schema.gql`.
 
 ### Load the Schema
-To create the genealogy knowledge graph, we need to load this schema into a [keyspace](/docs/management/keyspace). To do this, we need to use the non-interactive mode of the [Graql Console](/docs/running-grakn/console).
+To create the genealogy knowledge graph, we need to load this schema into a [keyspace](/docs/management/keyspace). To do this, we need to use the non-interactive mode of the [Grakn Console](/docs/running-grakn/console).
 
 While in the unzipped directory of the Grakn distribution, via terminal, run:
 
 ```
-./graql console --keyspace genealogy --file path-to-the-schema.gql
+./grakn console --keyspace genealogy --file path-to-the-schema.gql
 ```
 
 ### Load the Dataset
 Download the [`genealogy-data.gql`](/docs/files/genealogy-data.gql){:target="_blank"} and load into the same keyspace. Run:
 
 ```
-./graql console --keyspace genealogy --file path-to-the-data.gql
+./grakn console --keyspace genealogy --file path-to-the-data.gql
 ```
 
 As you may have guessed it, `data.gql` contains a series of [Graql insert queries](/docs/query/insert-query) that creates data instances in the genealogy knowledge graph. In a real-world application, it's more likely that we have the data in some formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](/docs/client-api/overview) to [migrate](/docs/examples/phone-calls-overview#whats-covered) the dataset into the target Grakn knowledge graph.
 
 ### Query the Knowledge Graph
-Now that we have some data in our genealogy knowledge graph, we can go ahead and retrieve some information from it. To do this we can use the [Graql Console](/docs/management/console), [Grakn Workbase](/docs/workbase/overview) or one of the [Grakn Clients](/docs/client-api/overview).
+Now that we have some data in our genealogy knowledge graph, we can go ahead and retrieve some information from it. To do this we can use the [Grakn Console](/docs/running-grakn/console), [Grakn Workbase](/docs/workbase/overview) or one of the [Grakn Clients](/docs/client-api/overview).
 
 Let's see an example of running [Graql get queries](/docs/query/get-query) via each of these interfaces.
 
-#### Retrieve the full name of each person using [Graql Console](/docs/running-grakn/console)
+#### Retrieve the full name of each person using [Grakn Console](/docs/running-grakn/console)
 <!-- ignore-test -->
 ```graql
-$ ./graql console -k genealogy
+$ ./grakn console -k genealogy
 >>> match $p isa person, has first-name $fn, has surname $sn; get;
 
 {$sn val "Herchelroth" isa surname; $fn val "Barbara" isa first-name; $p id V37080 isa person;}
@@ -189,7 +189,7 @@ We can add and remove instances of data in a Grakn knowledge graph by running [i
 #### Insert an instance of type person
 <!-- ignore-test -->
 ```graql
->>> insert $p isa person, has first-name "Johny", has middle-name "Jimbly", has surname "Joe", has gender "male";
+>>> insert $p isa person, has first-name "Johny", has middle-name "Jimbly", has surname "Joe", has gender "male", has email "johnyjj@gmail.com";
 {$p id V139280 isa person;}
 >>> commit
 ```
@@ -202,7 +202,7 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 ### Insert an age attribute to the newly added person
 <!-- ignore-test -->
 ```graql
->>> match $p id V139280; insert $p, has age 77;
+>>> match $p id V139280; insert $p has age 77;
 {$p id V139280 isa person;}
 >>> commit
 ```
@@ -290,7 +290,7 @@ The code above is a _part of_ the extension we are about to make to the genealog
 Download the [`genealogy-extension.gql`](/docs/files/genealogy-extension.gql){:target="_blank"} and to load it into the `genealogy` keyspace, via terminal, run:
 
 ```
-$ ./graql console --keyspace genealogy --file path-to-the-genealogy-extension.gql
+$ ./grakn console --keyspace genealogy --file path-to-the-genealogy-extension.gql
 ```
 
 <div class="note">
