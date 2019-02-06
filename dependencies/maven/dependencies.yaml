@@ -1,0 +1,51 @@
+options:
+  languages: ["java"]
+  resolverType: coursier
+  resolvers:
+  - id: mavencentral
+    type: default
+    url: https://repo.maven.apache.org/maven2/
+  strictVisibility: true
+  transitivity: runtime_deps
+  versionConflictPolicy: highest
+  thirdPartyDirectory: dependencies/maven/artifacts
+
+
+dependencies:
+#  org.apache.commons
+  io.grpc:
+    grpc-core:
+      version: "1.15.0"
+      lang: java
+    grpc-stub:
+      version: "1.15.0"
+      lang: java
+    grpc-netty-shaded:
+      version: "1.15.0"
+      lang: java
+  com.google.protobuf:
+    protobuf-java:
+      version: "3.5.1"
+      lang: java
+  org.rocksdb:
+    rocksdbjni:
+      version: "5.14.2"
+      lang: java
+  commons-io:
+    commons-io:
+      version: "2.6"
+      lang: java
+  org.apache.logging.log4j:
+    log4j-api:
+      version: "2.11.1"
+      lang: java
+    log4j-core:
+      version: "2.11.1"
+      lang: java
+    log4j-iostreams:
+      version: "2.11.1"
+      lang: java
+  org.zeroturnaround:
+    zt-exec:
+      version: "1.10"
+      lang: java

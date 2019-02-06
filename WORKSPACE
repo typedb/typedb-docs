@@ -1,7 +1,24 @@
 workspace( name = "test_ci_docs" )
 
+###############################################################
+#                   common bazel imports                      #
+###############################################################
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
+###############################################################
+#                        Load Build Tools                     #
+###############################################################
+# Load additional build tools, such bazel-deps and unused-deps
+load("//dependencies/tools:dependencies.bzl", "tools_dependencies")
+tools_dependencies()
+
+load("//dependencies/maven:dependencies.bzl", maven_dependencies_for_build = "maven_dependencies")
+maven_dependencies_for_build()
+
+###############################################################
+#               grakn + transitive dependencies               #
+###############################################################
 git_repository(
     name = "graknlabs_grakn",
     remote = "https://github.com/lolski/test-ci-grakn",
