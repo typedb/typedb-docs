@@ -5,5 +5,5 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 git_repository(
     name = "grakn",
     remote = "https://github.com/graknlabs/grakn",
-    commit = '53c45c7025c4b05bdfa818652b2d0108df8102e7' # grakn-dependency: do not remove this comment. this is used by the auto-update script
+    commit = 'c62fc71c7eabc9fbcb08d14465d74237d734c684' # grakn-dependency: do not remove this comment. this is used by the auto-update script
 )
