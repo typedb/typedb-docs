@@ -40,6 +40,8 @@ insert $org isa organisation, has registration-number "81726354";
 [tab:end]
 
 [tab:Java]
+<!-- test edge case -->
+<!-- ignore-test -->
 ```java
 DeleteQuery delete_query = Graql.match(
   var("org").id("V17391").has("registration-number", var("rn"), var("r"))
@@ -64,14 +66,22 @@ There may also be cases where we need to update the value of all instances of an
 <!-- test edge case -->
 <!-- ignore-test -->
 ```graql
-match $m isa media, has caption $c; $c contains "inappropriate word"; insert $m has caption "deleted";
+## inserting the new
+match
+  $m isa media, has caption $c;
+  $c contains "inappropriate word";
+insert $m has caption "deleted";
+
+## deleting the old
 match $c isa caption; $c contains "inappropriate word"; delete $c;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test edge case -->
+<!-- ignore-test -->
 ```java
-InsertQuery query = Graql.match(
+InsertQuery insert_query = Graql.match(
   var("m").isa("media").has("caption", var("c")),
   var("c").val(contains("inappropriate word"))
 ).insert(
@@ -112,6 +122,8 @@ delete $emp;
 [tab:end]
 
 [tab:Java]
+<!-- test edge case -->
+<!-- ignore-test -->
 ```java
 InsertQuery insert_query = Graql.match(
   var("p").isa("person").has("name", "Amabo"),
