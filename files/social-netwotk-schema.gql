@@ -211,8 +211,7 @@ define
 	residency sub periodic-event,
 		relates resident,
 		plays located-residence,
-		plays mutual-residency,
-		plays overlapped-event;
+		plays mutual-residency;
 
 	person sub entity,
 		plays resident,
@@ -267,7 +266,6 @@ define
 		relates student,
 		relates enrolled-course,
 		relates enrolling-school,
-		plays overlapped-event,
 		plays mutual-course-enrollment;
 
 	school sub entity,
