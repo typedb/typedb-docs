@@ -1,19 +1,19 @@
 ---
 sidebarTitle: Console
-pageTitle: Graql Console
+pageTitle: Grakn Console
 summary:
 permalink: /docs/running-grakn/console
 toc: false
 ---
 
-## What is the Graql Console?
-The Graql Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
+## What is the Grakn Console?
+The Grakn Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
 
 <!-- keyspace -> kbase -->
 
 ## Console Options {#console-options}
 
-The options accepted by the `graql console` command are as follows.
+The options accepted by the `grakn console` command are as follows.
 
 | Option               | Alias | Mode            | Used with   | Description                                                                             |
 |----------------------|-------|-----------------|-------------|---------------------------------------------------------------------------------------- |
@@ -27,28 +27,28 @@ The options accepted by the `graql console` command are as follows.
 To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option followed by the name of the keyspace. The name may only contain alphanumeric values and underscores.
 
 ```
-./graql console --keyspace keyspace_name
+./grakn console --keyspace keyspace_name
 ```
 
 ### Loading a schema into a keyspace
 To load a [schema](/docs/schema/overview) into a keyspace, we use the `--file` (or `-f`) option followed by the path to the schema (`.gql`) file. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) into which the schema should be loaded. Note that if the keyspace has not yet been created, this command also creates a new keyspace with the given name.
 
 ```
-./graql console -k keyspace_name --file path/to/schema.gql
+./grakn console -k keyspace_name --file path/to/schema.gql
 ```
 
 ### Entering a remote keyspace
 If the keyspace of interest is hosted remotely, we use the `--uri` (or `r`) option followed by the target URI. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) that we would like to enter.
 
 ```
-./graql console -k keyspace_name --uri the-uri-hosting-the-keyspace
+./grakn console -k keyspace_name --uri the-uri-hosting-the-keyspace
 ```
 
 ### Disabling inference
 If we intend to ignore [inferred instances of data](...) when querying the knowledge graph, we use the `-no-infer` (or `-n`).
 
 ```
-./graql console -k keyspace_name --no-infer
+./grakn console -k keyspace_name --no-infer
 ```
 
 ### Viewing the Grakn's version
@@ -62,7 +62,7 @@ Once inside the console, besides [Graql queries](/docs/query/overview), we can r
 |------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `commit`   | Any write operations, executed via the console, affects only a local copy of the keyspace. This command commits all changes to the original keyspace running on the Grakn Server.     |
 | `rollback` | Undoes any changes made in the knowledge graph since the last `commit`.                                                                                                               |
-| `edit`     | Opens the text-editor specified by the `$EDITOR` environment variable (vim by default). We can then write queries in multiple lines that get executed as soon as we exit the editor.  |
+| `editor`   | Opens the text-editor specified by the `$EDITOR` environment variable (vim by default). We can then write queries in multiple lines that get executed as soon as we exit the editor.  |
 | `clear`    | Clears the console from any previous queries, answers and commands.                                                                                                                   |
 | `clean`    | Meant to be used with caution, removes not only the data but also the schema of the knowledge graph contained within the keyspace.                                                    |
 | `exit`     | Exists the console.                                                                                                                                                                   |
@@ -74,7 +74,7 @@ Any write operations executed via the console affects only a _local_ copy of the
 As the name suggests, we use the `rollback` command to undo any uncommitted changes. This rolls the state of the knowledge graph back to how it was right after the last `commit` was made.
 
 ### Running multiline queries
-The Graql Console, at the moment, does not support multiline entries. However, we can use the `edit` command to open the text editor specified by the $EDITOR environment variable (vim by default). This will then allows us to write one or more queries in multiple lines and have them run as soon as we exit the text editor.
+The Grakn Console, at the moment, does not support multiline entries. However, we can use the `edit` command to open the text editor specified by the $EDITOR environment variable (vim by default). This will then allows us to write one or more queries in multiple lines and have them run as soon as we exit the text editor.
 
 ### Clearing the console
 In order to clear the console from any previous queries, answers and commands, we use the `clear` command.

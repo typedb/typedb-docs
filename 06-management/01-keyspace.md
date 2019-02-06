@@ -14,13 +14,13 @@ Keyspaces are isolated from one another. Even when running on the same Grakn Ser
 </div>
 
 ### Creating a Keyspace
-We can create a new a keyspace via the Grakn Clients [Java](/docs/client-api/java#client-api-method-create-a-session-keyspace), [Node.js](/docs/client-api/nodejs#client-api-method-create-a-session-keyspace) and [Python](/docs/client-api/python#client-api-method-create-a-session-keyspace) and [Graql Console](/docs/running-grakn/console#console-options).
+We can create a new a keyspace via the Grakn Clients [Java](/docs/client-api/java#client-api-method-create-a-session-keyspace), [Node.js](/docs/client-api/nodejs#client-api-method-create-a-session-keyspace) and [Python](/docs/client-api/python#client-api-method-create-a-session-keyspace) and [Grakn Console](/docs/running-grakn/console#console-options).
 
 ### Listing All Keyspaces
 We can list all keyspaces of the running Grakn server via the Grakn Clients [Node.js](/docs/client-api/nodejs#client-api-method-retrieve-all-keyspaces) and [Python](/docs/client-api/python#client-api-method-retrieve-all-keyspaces), as well as [Workbase](/docs/workbase/connection#select-a-keyspace).
 
 ### Cleaning a Keyspce
-Cleaning the keyspace, not to be confused with deletion, wipes out both the data and the schema contained within the keyspace. We can clean a keyspace via [Graql Console](/docs/running-grakn/console#console-commands).
+Cleaning the keyspace, not to be confused with deletion, wipes out both the data and the schema contained within the keyspace. We can clean a keyspace via [Grakn Console](/docs/running-grakn/console#console-commands).
 
 ### Deleting a Keyspace
 We can delete a keyspace via the Grakn Clients [Java](/docs/client-api/java#client-api-method-delete-a-keyspace), [Node.js](/docs/client-api/nodejs#client-api-method-delete-a-keyspace) and [Python](/docs/client-api/python#client-api-method-delete-a-keyspace).

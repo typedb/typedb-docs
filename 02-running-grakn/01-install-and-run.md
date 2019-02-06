@@ -61,4 +61,4 @@ Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder 
 ## Summary
 So far we have learned how to download/install Grakn and run the Grakn Server.
 
-Next, we learn how to [configure the Grakn Server](/docs/running-grakn/configuration) and [interact with a Grakn knowledge graph via the Graql Console](/docs/running-grakn/console).
+Next, we learn how to [configure the Grakn Server](/docs/running-grakn/configuration) and [interact with a Grakn knowledge graph via the Grakn Console](/docs/running-grakn/console).

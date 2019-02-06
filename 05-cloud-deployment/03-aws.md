@@ -314,8 +314,8 @@ While [logged into a node](#logging-into-a-node), run `grakn cluster status`. Th
 ## Accessing Grakn Console
 While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
 
-## Accessing Graql Console
-While [logged into a node](#logging-into-a-node), we can enter the [Graql Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
+## Accessing Grakn Console
+While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
 
 ## Configuring Grakn
 To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).

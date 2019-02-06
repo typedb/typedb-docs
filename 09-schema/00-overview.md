@@ -33,7 +33,7 @@ Besides the modularity that the concept types provide, we can define any concept
 In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).
 
 ## Load the schema
-Once we have defined the schema, the next immediate step is to load it into Grakn. Learn how to [load the schema via the Graql Console](/docs/running-grakn/console#console-options).
+Once we have defined the schema, the next immediate step is to load it into Grakn. Learn how to [load the schema via the Grakn Console](/docs/running-grakn/console#console-options).
 
 ## Migrate Data
 To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a Grakn knowledge graph, check out the [Migration Mechanism](...) followed by a comprehensive [tutorial](...) in the language of your choice.

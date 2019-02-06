@@ -23,7 +23,7 @@ In order for any new configuration to take affect, we must [stop](/docs/running-
 </div>
 
 ## The default keyspace
-The `knowledge-base.default-keyspace` config sets the default keyspace that the Graql Console falls back on when no [`--keyspace` option](/docs/running-grakn/console#console-options) is specified. The default value is `grakn`.
+The `knowledge-base.default-keyspace` config sets the default keyspace that the Grakn Console falls back on when no [`--keyspace` option](/docs/running-grakn/console#console-options) is specified. The default value is `grakn`.
 
 ## Mitigating the supernode problem
 Grakn uses sharding to mitigate against supernodes. The `knowledge-base.sharding-threshold` config specifies the number of instances after which Grakn shards any type node. A larger threshold increases runtime as a Grakn knowledge graph grows while decreasing the likelihood of supernodes. A smaller threshold creates supernodes more frequently. The default value is `10000`.

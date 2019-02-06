@@ -184,13 +184,13 @@ For the rest of these instructions, I assume that you have downloaded the Grakn 
 **3 -** Load the schema into a Grakn keyspace. Run:
 
 ```
-./graql console --keyspace phone_calls --file path/to/the/schema.gql
+./grakn console --keyspace phone_calls --file path/to/the/schema.gql
 ```
 
 **4 -** Open the Graql console in interactive mode. Run:
 
 ```
-./graql console --keyspace phone_calls
+./grakn console --keyspace phone_calls
 ```
 
 **5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Graql console, run:

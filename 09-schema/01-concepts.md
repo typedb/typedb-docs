@@ -25,12 +25,12 @@ As the name suggests, we use the `define` keyword to develop the [schema](/docs/
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [Graql Console](/docs/running-grakn/console) as well as the Grakn Clients [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).
+We can also use the `define` keyword in the interactive mode of the [Grakn Console](/docs/running-grakn/console) as well as the Grakn Clients [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).
 
 <div class="note">
 [Important]
 Don't forget to `commit` after executing a `define` query. Otherwise, anything you have defined is NOT committed to the original keyspace that is running on the Grakn server.
-When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
+When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Grakn Console, we use the `commit` command.
 </div>
 
 ## Entity
@@ -761,7 +761,7 @@ As the name suggests, we use the `undefine` keyword to remove the definition of 
 <div class="note">
 [Important]
 Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
-When using one of the [Grakn Clients](/docs/client-api/overview), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Graql Console](/docs/running-grakn/console), we use the `commit` command.
+When using one of the [Grakn Clients](/docs/client-api/overview), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Grakn Console](/docs/running-grakn/console), we use the `commit` command.
 </div>
 
 ### Undefine an attribute's association
