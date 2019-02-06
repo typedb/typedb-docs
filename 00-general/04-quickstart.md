@@ -202,7 +202,7 @@ We can create and delete instances of data in a Grakn knowledge graph by running
 #### Insert an instance of type person
 <!-- ignore-test -->
 ```graql
->>> insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male";
+>>> insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male", has email "johnyjj@gmail.com";
 {$per id V139280 isa person;}
 >>> commit
 ```
@@ -215,7 +215,7 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 #### Associate the newly added person with a nickname
 <!-- ignore-test -->
 ```graql
->>> match $per id V139280; insert $per, has nickname "JJJ";
+>>> match $per id V139280; insert $per has nickname "JJJ";
 {$per id V139280 isa person;}
 >>> commit
 ```
