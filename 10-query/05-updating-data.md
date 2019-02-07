@@ -28,8 +28,7 @@ In most cases, a concept type is expected to own only one instance of an attribu
 <div class="tabs dark">
 
 [tab:Graql]
-<!-- test edge case -->
-<!-- ignore-test -->
+
 ```graql
 ## deleting the old
 match $org id V17391, has registration-number $rn via $r; delete $r;
@@ -40,8 +39,7 @@ insert $org isa organisation, has registration-number "81726354";
 [tab:end]
 
 [tab:Java]
-<!-- test edge case -->
-<!-- ignore-test -->
+
 ```java
 DeleteQuery delete_query = Graql.match(
   var("org").id("V17391").has("registration-number", var("rn"), var("r"))
@@ -63,8 +61,6 @@ There may also be cases where we need to update the value of all instances of an
 <div class="tabs dark">
 
 [tab:Graql]
-<!-- test edge case -->
-<!-- ignore-test -->
 ```graql
 ## inserting the new
 match
@@ -78,8 +74,6 @@ match $c isa caption; $c contains "inappropriate word"; delete $c;
 [tab:end]
 
 [tab:Java]
-<!-- test edge case -->
-<!-- ignore-test -->
 ```java
 InsertQuery insert_query = Graql.match(
   var("m").isa("media").has("caption", var("c")),
@@ -122,8 +116,6 @@ delete $emp;
 [tab:end]
 
 [tab:Java]
-<!-- test edge case -->
-<!-- ignore-test -->
 ```java
 InsertQuery insert_query = Graql.match(
   var("p").isa("person").has("name", "Amabo"),

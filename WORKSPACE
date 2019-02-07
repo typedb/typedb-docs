@@ -1,4 +1,4 @@
-workspace( name = "test_ci_docs" )
+workspace( name = "docs" )
 
 ###############################################################
 #                   common bazel imports                      #
