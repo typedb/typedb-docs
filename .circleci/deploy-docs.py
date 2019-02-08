@@ -5,13 +5,12 @@ git_username = "Grabl"
 git_email = "grabl@grakn.ai"
 grabl_credential = "grabl:"+os.environ['GRABL_CREDENTIAL']
 
-# TODO: update test-ci-web-dev to web-dev, and test-ci-docs to docs when the integration CI is done
-web_dev_url = "github.com/graknlabs/test-ci-web-dev.git"
+web_dev_url = "github.com/graknlabs/web-dev.git"
 web_dev_master_branch = "master"
-web_dev_clone_location = os.path.join("test-ci-web-dev")
-docs_submodule_location = os.path.join(web_dev_clone_location, "test-ci-docs")
+web_dev_clone_location = os.path.join("web-dev")
+docs_submodule_location = os.path.join(web_dev_clone_location, "docs")
 
-commit_msg = "update test-ci-docs submodule"
+commit_msg = "update docs submodule"
 
 if __name__ == '__main__':
     try:
