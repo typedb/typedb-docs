@@ -11,8 +11,8 @@ java_test(
         "@graknlabs_grakn//test-integration/resources:logback-test",
     ],
     data = [
-        "//test-integration:resources/cassandra-embedded.yaml",
-        "//server:conf/grakn.properties"
+        "cassandra-embedded.yaml",
+        "grakn.properties"
     ]
 )
 
@@ -41,8 +41,8 @@ java_test(
         "@graknlabs_grakn//test-integration/resources:logback-test",
     ],
     data = [
-        "//test-integration:resources/cassandra-embedded.yaml",
-        "//server:conf/grakn.properties"
+        "cassandra-embedded.yaml",
+        "grakn.properties"
     ]
 )
 

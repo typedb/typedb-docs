@@ -1,0 +1,73 @@
+version: 2.1
+commands:
+  bazel_install:
+    steps:
+      - run:
+          name: Bazel - Install
+          command: |
+            curl -OL https://github.com/bazelbuild/bazel/releases/download/0.20.0/bazel-0.20.0-installer-linux-x86_64.sh
+            chmod +x bazel-0.20.0-installer-linux-x86_64.sh
+            sudo ./bazel-0.20.0-installer-linux-x86_64.sh
+
+  bazel_add_rbe_credential:
+    steps:
+      - run:
+          name: Bazel - Add RBE Credential
+          command: |
+            if [[ -n "$BAZEL_RBE_CREDENTIAL" ]]; then
+              BAZEL_RBE_CREDENTIAL_LOCATION=~/.config/gcloud/application_default_credentials.json
+              echo "An RBE credential is found and will be saved to $BAZEL_RBE_CREDENTIAL_LOCATION. Bazel will be executed with RBE support."
+              mkdir -p ~/.config/gcloud/
+              echo $BAZEL_RBE_CREDENTIAL > "$BAZEL_RBE_CREDENTIAL_LOCATION"
+            else
+              echo "No RBE credential found. Bazel will be executed locally without RBE support."
+            fi
+
+  bazel:
+    parameters:
+      command:
+          type: string
+    steps:
+      - run:
+          name: Bazel - Execute
+          command: |
+            if [[ -f ~/.config/gcloud/application_default_credentials.json ]]; then
+              echo "Bazel will be executed with RBE support. This means the build is remotely executed and the cache will be re-used by subsequent CI jobs."
+              CMD="<< parameters.command >> --config=rbe"
+            else
+              echo "Bazel will be executed locally (without RBE support)."
+              CMD="<< parameters.command >>"
+            fi
+            echo "Executing $CMD"
+            $CMD
+
+jobs:
+  tests:
+    machine: true
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - bazel:
+          command: bazel test //... --test_output=streamed
+  deploy-docs:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Deploy docs by updating the docs submodule in web-dev
+          command: |
+            mkdir docs
+            cd docs
+            python ../.circleci/deploy-docs.py
+    
+workflows:
+  ci:
+    jobs:
+      - tests
+      - deploy-docs:
+          filters:
+            branches:
+              only: master
+          requires:
+            - tests
