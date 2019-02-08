@@ -61,7 +61,7 @@ person sub entity,
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Graql Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network-schema.gql`](/docs/files/social-network-data.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we are going to load this schema into a [keyspace](/docs/management/keyspace). To do this, we need to use the non-interactive mode of the [Graql Console](/docs/running-grakn/console).
+First, download the [`social-network-schema.gql`](/docs/files/social-network-schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we are going to load this schema into a [keyspace](/docs/management/keyspace). To do this, we need to use the non-interactive mode of the [Graql Console](/docs/running-grakn/console).
 
 <div class="note">
 [Note]
