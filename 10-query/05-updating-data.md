@@ -31,10 +31,10 @@ In most cases, a concept type is expected to own only one instance of an attribu
 
 ```graql
 ## deleting the old
-match $org id V17391, has registration-number $rn via $r; delete $r;
+match $org isa organisation, has name "Medicely", has registration-number $rn via $r; delete $r;
 
 ## inserting the new
-insert $org isa organisation, has registration-number "81726354";
+match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
 ```
 [tab:end]
 
@@ -42,11 +42,13 @@ insert $org isa organisation, has registration-number "81726354";
 
 ```java
 DeleteQuery delete_query = Graql.match(
-  var("org").id("V17391").has("registration-number", var("rn"), var("r"))
+  var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
-InsertQuery insert_query = Graql.insert(
-  var("org").id("V17391").has("registration-number", "81726354")
+InsertQuery insert_query = Graql.match(
+  var("org").isa("organisation").has("name", "Medicely")
+).insert(
+  var("org").has("registration-number", "81726354")
 );
 ```
 [tab:end]

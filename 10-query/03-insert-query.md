@@ -40,29 +40,6 @@ InsertQuery query = Graql.insert(
 [tab:end]
 </div>
 
-<!-- In a scenario where the instance to be inserted owns an attribute whose value must be extracted from the existing data, we use the so-called `match insert` query.
-
-<div class="tabs dark">
-
-[tab:Graql]
-```graql
-match
-  $p-a id V41016, has full-name $fn;
-  insert $p-b isa person, has full-name $fn;
-```
-[tab:end]
-
-[tab:Java]
-```java
-InsertQuery query = Graql.match(
-  var("p-a").id("V41016").has("full-name", var("fn"))
-).insert(
-  var("p-b").isa("person").has("full-name", var("fn"))
-);
-```
-[tab:end]
-</div> -->
-
 This `match insert` query:
 1. Assigns the `surname` attribute of a `person` with `id` of `V41016` to variable `$s`.
 2. Inserts a `person` entity with the `surname` attribute holding the value of the variable `$s`.
@@ -96,7 +73,7 @@ Given the dependent nature of relationships, inserting an instance of a relation
 ```graql
 match
   $org isa organisation, has name "Facelook";
-  $person id V8272;
+  $person isa person, has email "tanya.arnold@gmail.com";
 insert $new-employment (employer: $org, employee: $person) isa employment;
   $new-employment has reference-id "WGFTSH";
 ```
@@ -106,7 +83,7 @@ insert $new-employment (employer: $org, employee: $person) isa employment;
 ```java
 InsertQuery query = Graql.match(
   var("org").isa("organisation").has("name", "Facelook"),
-  var("p").isa("person").id("V8272")
+  var("p").isa("person").has("email", "tanya.arnold@gmail.com")
 ).insert(
   var("emp").isa("employment").rel("employer", "org").rel("employee", "p").has("reference-id", "WGFTSH")
 );
