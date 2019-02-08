@@ -28,7 +28,7 @@ import java.time.LocalDate;
 
 public class JavaSnippetTest {
     @ClassRule
-    public static final GraknTestServer server = new GraknTestServer();
+    public static final GraknTestServer server = new GraknTestServer("test/grakn.properties", "test/cassandra-embedded.yaml");
 
     // PLACEHOLDER
 }
