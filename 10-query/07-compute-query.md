@@ -225,7 +225,7 @@ compute path from V229424, to v446496, in [person, friendship];
 ComputeQuery query = Graql.compute(PATH)
                           .from(ConceptId.of("V229424"))
                           .to(ConceptId.of("v446496"))
-                          .in("person","car", "company", "employment");
+                          .in("person","friendship");
 ```
 [tab:end]
 </div>

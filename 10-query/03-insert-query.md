@@ -47,21 +47,19 @@ InsertQuery query = Graql.insert(
 [tab:Graql]
 ```graql
 match
-  $p-a id V41016, has surname $s;
-  insert $p-b isa person, has surname $s;
+  $p-a id V41016, has full-name $fn;
+  insert $p-b isa person, has full-name $fn;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 InsertQuery query = Graql.match(
-  var("p-a").id("V41016").has("surname", var("s"))
+  var("p-a").id("V41016").has("full-name", var("fn"))
 ).insert(
-  var("p-b").isa("person").has("surname", var("s"))
+  var("p-b").isa("person").has("full-name", var("fn"))
 );
 ```
-1.5 transaction.execute(query.toString());
-transaction.commit();
 [tab:end]
 </div> -->
 

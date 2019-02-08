@@ -78,7 +78,6 @@ define
 person sub entity,
   has full-name,
   has nickname,
-  has bio,
   has gender;
 ```
 [tab:end]
@@ -86,7 +85,7 @@ person sub entity,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("person").sub("entity").has("full-name").has("nickname").has("bio").has("gender")
+  type("person").sub("entity").has("full-name").has("nickname").has("gender")
 );
 ```
 
@@ -561,9 +560,9 @@ travel sub relationship,
 [tab:Java]
 ```java
 DefineQuery query = Graql.define(
-  type("start-date").sub("attribute").datatype(DataType.STRING),
-  type("residency").sub("entity").has("start-date"),
-  type("travel").sub("entity").has("start-date")
+  type("start-date").sub("attribute").datatype(DataType.DATE),
+  type("residency").sub("relationship").has("start-date"),
+  type("travel").sub("relationship").has("start-date")
 );
 ```
 
@@ -803,8 +802,15 @@ Given the dependent nature of relationships, before undefining the relationship 
 ```graql
 undefine
 
-  employment relates employer; company plays employer; employer sub role;
+  employment relates employer; organisation plays employer; employer sub role;
+  
+undefine
+
   employment relates employee; person plays employee; employee sub role;
+
+
+undefine
+
   employment sub relationship;
 ```
 [tab:end]
@@ -813,7 +819,7 @@ undefine
 ```java
 UndefineQuery query = Graql.undefine(
   type("employment").relates("employer").relates("employee"),
-  type("company").plays("employer"),
+  type("organisation").plays("employer"),
   type("person").plays("employee"),
   type("employer").sub("role"),
   type("employee").sub("role"),
