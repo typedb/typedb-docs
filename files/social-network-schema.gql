@@ -74,7 +74,7 @@ define
 
 	emotion sub attribute,
 		datatype string,
-		regex "(like|love|funny|shocking|sad|angry)",
+		regex "^(like|love|funny|shocking|sad|angry)$",
 		plays reacted-emotion;
 
 	link sub attribute,
