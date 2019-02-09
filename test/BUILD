@@ -15,9 +15,9 @@ java_test(
         "@graknlabs_grakn//test-integration/resources:logback-test",
     ],
     data = [
-        "//test-integration:resources/cassandra-embedded.yaml",
-        "//server:conf/grakn.properties",
-        "//files:social-network-kg" # filegroup defined in files/BUILD
+        "//files:social-network-kg", # filegroup defined in files/BUILD
+        "cassandra-embedded.yaml",
+        "grakn.properties"
     ]
 )
 
@@ -49,9 +49,9 @@ java_test(
         "@graknlabs_grakn//test-integration/resources:logback-test",
     ],
     data = [
-        "//test-integration:resources/cassandra-embedded.yaml",
-        "//server:conf/grakn.properties",
-        "//files:social-network-kg" # filegroup defined in files/BUILD
+        "//files:social-network-kg", # filegroup defined in files/BUILD
+        "cassandra-embedded.yaml",
+        "grakn.properties"
     ]
 )
 
