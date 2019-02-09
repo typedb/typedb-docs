@@ -1,3 +1,7 @@
+######################################################
+# generating and running the java snippet test class #
+######################################################
+
 java_test(
     name = "java-snippet-test",
     test_class = "generated.JavaSnippetTest",
@@ -13,7 +17,7 @@ java_test(
     data = [
         "//test-integration:resources/cassandra-embedded.yaml",
         "//server:conf/grakn.properties",
-        "//files:social-network-kg"
+        "//files:social-network-kg" # filegroup defined in files/BUILD
     ]
 )
 
@@ -21,11 +25,16 @@ genrule(
     name = "java-snippet-test-generator",
     srcs = [
         "generate_java_snippet_tests.py",
-        "//:content" ## name of the filegroup defined in root/BUILD
+        "//:content" # filegroup defined in root/BUILD
     ],
     cmd = "python $(location generate_java_snippet_tests.py) $@ $(locations //:content)",
     outs = ["generated/JavaSnippetTest.java"]
 )
+
+
+#######################################################
+# generating and running the graql snippet test class #
+#######################################################
 
 java_test(
     name = "graql-snippet-test",
@@ -42,16 +51,15 @@ java_test(
     data = [
         "//test-integration:resources/cassandra-embedded.yaml",
         "//server:conf/grakn.properties",
-        "//files:social-network-kg"
+        "//files:social-network-kg" # filegroup defined in files/BUILD
     ]
 )
-
 
 genrule(
     name = "graql-snippet-test-generator",
     srcs = [
         "generate_graql_snippet_tests.py",
-        "//:content" ## name of the filegroup defined in root/BUILD
+        "//:content" # filegroup defined in root/BUILD
     ],
     cmd = "python $(location generate_graql_snippet_tests.py) $@ $(locations //:content)",
     outs = ["generated/GraqlSnippetTest.java"]
