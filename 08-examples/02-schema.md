@@ -64,7 +64,7 @@ Any **relationship** relates to at least one **role** that is played by at least
 In our case, a **call** relates to **caller** played by a **person** and to **callee** played by another **person**.
 
 Likewise for a **contract**. It relates to **provider** played by a **company** and to **customer** played by a **person**.
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 define
 
@@ -86,7 +86,7 @@ define
 ```
 
 To define the attributes, we use the has keyword.
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 define
 
@@ -117,7 +117,7 @@ define
 ```
 
 Lastly, we need to define the type of each attribute.
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 define
 
@@ -200,7 +200,7 @@ match $x sub thing; get;
 ```
 
 The result should be as follows:
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 {$x label thing;}
 {$x label entity;}

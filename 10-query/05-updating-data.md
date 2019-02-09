@@ -100,7 +100,7 @@ To change the roleplayers of a given relationship, we first need to [delete the 
 
 [tab:Graql]
 <!-- test edge case -->
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 ## inserting the new
 match

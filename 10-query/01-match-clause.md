@@ -368,14 +368,14 @@ To do so, we use the `id` keyword followed by the `id` assigned to the instance 
 <div class="tabs dark">
 
 [tab:Graql]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 match $x id V41016; get;
 ```
 [tab:end]
 
 [tab:Java]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 GetQuery query = Graql.match(
   var("x").id("V41016")

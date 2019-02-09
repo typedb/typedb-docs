@@ -74,7 +74,7 @@ graql_snippet_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = '(?<!<!-- ignore-test -->\n)```graql\n((\n|.)+?)```'
+pattern_to_find_snippets = '(?<!<!-- test-ignore -->\n)```graql\n((\n|.)+?)```'
 
 
 snippets = []

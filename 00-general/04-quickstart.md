@@ -101,7 +101,7 @@ match $tra (traveler: $per) isa travel; (located-travel: $tra, travel-location: 
 ```
 
 The result contains the following answers.
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 {$fn "Solomon Tran" isa full-name;}
 {$fn "Julie Hutchinson" isa full-name;}
@@ -114,7 +114,7 @@ The result contains the following answers.
 
 #### Retrieve all employments using [Client Java](/docs/client-api/java)
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 
@@ -158,7 +158,7 @@ public class Queries {
 
 #### Lazily retrieve all photos and videos that have been found funny by women sing [Client Python](/docs/client-api/python)
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```python
 import grakn
 
@@ -181,7 +181,7 @@ with client.session(keyspace = "social_network") as session:
 
 #### Retrieve the average salary of all employees at Pharos using [Client Node.js](/docs/client-api/nodejs)
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```javascript
 const Grakn = require("grakn");
 const grakn = new Grakn("localhost:48555");
@@ -214,7 +214,7 @@ We can create and delete instances of data in a Grakn knowledge graph by running
 insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male", has email "johnyjj@gmail.com";
 ```
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 commit
 ```
@@ -229,7 +229,7 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 ```graql
 match $per isa person, has email "johnyjj@gmail.com"; insert $per has nickname "JJJ";
 ```
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 commit
 ```
@@ -240,7 +240,7 @@ commit
 match $per isa person, has full-name "Johny Jimbly Joe"; delete $per;
 ```
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 commit
 ```

@@ -87,7 +87,7 @@ java_snippet_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = '(?<!<!-- ignore-test -->\n)```java\n((\n|.)+?)```'
+pattern_to_find_snippets = '(?<!<!-- test-ignore -->\n)```java\n((\n|.)+?)```'
 
 
 snippets = []
