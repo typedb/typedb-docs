@@ -9,8 +9,7 @@ package generated;
 import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
 import grakn.core.server.Transaction;
-import org.junit.Test;
-import org.junit.ClassRule;
+import org.junit.*;
 
 import grakn.core.graql.query.*;
 
@@ -18,7 +17,6 @@ import static grakn.core.graql.query.Graql.var;
 import static grakn.core.graql.query.Graql.type;
 import static grakn.core.graql.query.Graql.and;
 import static grakn.core.graql.query.Graql.or;
-
 
 import static grakn.core.graql.query.ComputeQuery.Method.*;
 import static grakn.core.graql.query.ComputeQuery.Algorithm.*;
@@ -30,11 +28,51 @@ import grakn.core.graql.concept.ConceptId;
 
 import grakn.core.graql.answer.ConceptSet;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 
 public class JavaSnippetTest {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer();
+
+    static GraknClient client;
+    static GraknClient.Session session ;
+    GraknClient.Transaction transaction;
+
+
+    @BeforeClass
+    public static void loadSocialNetwork() {
+        client = new GraknClient(server.grpcUri().toString());
+        session = client.session("social_network");
+        GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
+
+        try {
+            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network-schema.gql"));
+            String query = new String(encoded, StandardCharsets.UTF_8);
+            transaction.execute((Query) Graql.parse(query));
+            transaction.commit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Before
+    public void openTransaction(){
+        transaction = session.transaction(Transaction.Type.WRITE);
+    }
+
+    @After
+    public void abortTransaction(){
+        transaction.abort();
+    }
+
+    @AfterClass
+    public static void closeSession() {
+        session.close();
+    }
 
     // TEST METHODS PLACEHOLDER
 }
@@ -43,10 +81,9 @@ public class JavaSnippetTest {
 java_snippet_test_method_template = """
     @Test
     public void test() {
-        try (GraknClient.Transaction transaction = new GraknClient(server.grpcUri().toString()).session("grakn").transaction(Transaction.Type.WRITE)) {
-            // QUERY OBJECTS PLACEHOLDER
-            // EXECUTE PLACEHOLDER
-        }
+        // PAGE COMMENT PLACEHOLDER
+        // QUERY OBJECTS PLACEHOLDER
+        // EXECUTE PLACEHOLDER
     }
 """
 
@@ -58,17 +95,18 @@ for markdown_file in markdown_files:
     with open(markdown_file) as file:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
-            snippets.append(snippet[0])
+            snippets.append({ "code": snippet[0], "page": markdown_file})
 
 
 test_methods = ""
 for i, snippet in enumerate(snippets):
-    test_method = java_snippet_test_method_template.replace("test() {", "test_" + str(i) + "() {")  # change method name
-    test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet)  # add query objects
+    test_method = java_snippet_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+    test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
+    test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
 
     # add execute statements
     pattern_to_find_query_object_vars = 'Query\s(.*)\s='
-    matches = re.findall(pattern_to_find_query_object_vars, snippet)
+    matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
     execute_statements = ""
     for variable in matches:
         execute_statements += "transaction.execute(" + variable + ");\n"
@@ -76,7 +114,10 @@ for i, snippet in enumerate(snippets):
     test_method = test_method.replace("// EXECUTE PLACEHOLDER", execute_statements)
     test_methods += test_method
 
+test_methods = test_methods.replace("&lt;", "<").replace("&gt;", ">")
+
 java_snippet_test_class = java_snippet_test_class_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
+
 
 with open(generated_test_path, "w") as generated_test_file:
     generated_test_file.write(java_snippet_test_class)
