@@ -109,7 +109,7 @@ To only match the instances of relationships that own a specific attribute, we u
 
 [tab:Graql]
 ```graql
-match $emp (employer: $x, exmployee: $y) isa employment, has reference-id $ref; get;
+match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; get;
 ```
 [tab:end]
 
@@ -262,14 +262,14 @@ To match instances of a concept type that owns multiple attributes, we can simpl
 
 [tab:Graql]
 ```graql
-match $p isa person, has nickname $nn, has last-name $ln; get;
+match $p isa person, has nickname $nn, has full-name $fn; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("phone-number").val(regex("(Mary|Barbara)"))
+  var("p").isa("person").has("nickname", var("nn")).has("full-name", var("fn"))
 ).get();
 ```
 [tab:end]

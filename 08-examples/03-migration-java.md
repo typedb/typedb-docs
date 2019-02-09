@@ -209,7 +209,7 @@ Given the company,
 ```
 
 `input.template(company)` returns
-
+<!-- ignore-test -->
 ```graql
 insert $company isa company, has name "Telecom";
 ```
@@ -268,8 +268,8 @@ Given the person,
 { phone_number: "+44 091 xxx" }
 ```
 
-`input.template(person) returns
-
+`input.template(person)` returns
+<!-- ignore-test -->
 ```graql
 insert $person has phone-number "+44 091 xxx";
 ```
@@ -282,7 +282,7 @@ And given the person,
 ```
 
 `input.template(person)` returns
-
+<!-- ignore-test -->
 ```graql
 insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
@@ -330,7 +330,7 @@ Given the contract,
 ```
 
 `input.template(contract)` returns
-
+<!-- ignore-test -->
 ```graql
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
@@ -380,7 +380,7 @@ Given the call,
 ```
 
 `input.template(call)` returns
-
+<!-- ignore-test -->
 ```graql
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
