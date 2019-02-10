@@ -13,15 +13,11 @@ import org.junit.*;
 
 import grakn.core.graql.query.*;
 
-import static grakn.core.graql.query.Graql.var;
-import static grakn.core.graql.query.Graql.type;
-import static grakn.core.graql.query.Graql.and;
-import static grakn.core.graql.query.Graql.or;
+import static grakn.core.graql.query.Graql.*;
 
 import static grakn.core.graql.query.ComputeQuery.Method.*;
 import static grakn.core.graql.query.ComputeQuery.Algorithm.*;
 import static grakn.core.graql.query.ComputeQuery.Argument.*;
-import static grakn.core.graql.query.predicate.Predicates.*;
 import grakn.core.graql.query.Query.DataType;
 
 import grakn.core.graql.concept.ConceptId;
@@ -36,7 +32,10 @@ import java.time.LocalDate;
 
 public class JavaSnippetTest {
     @ClassRule
-    public static final GraknTestServer server = new GraknTestServer();
+    public static final GraknTestServer server = new GraknTestServer(
+        "test/grakn-test-server/conf/grakn.properties", 
+        "test/grakn-test-server/conf/cassandra-embedded.yaml"
+    );
 
     static GraknClient client;
     static GraknClient.Session session ;
@@ -87,15 +86,22 @@ java_snippet_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = '(?<!<!-- test-ignore -->\n)```java\n((\n|.)+?)```'
+# pattern_to_find_snippets = '(?<!<!-- test-ignore -->)\n```java\n((\n|.)+?)```'
 
+pattern_to_find_snippets = ('<!-- test-(ignore|standalone.*) -->\n```java\n((\n|.)+?)```'
+                            +
+                            '|(```java\n' +
+                            '((\n|.)+?)' +  # group containing snippet
+                            '```)')
 
 snippets = []
 for markdown_file in markdown_files:
     with open(markdown_file) as file:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
-            snippets.append({ "code": snippet[0], "page": markdown_file})
+            flag_type = snippet[0]
+            if "ignore" not in flag_type and "standalone" not in flag_type:
+                snippets.append({"code": snippet[4], "page": markdown_file})
 
 
 test_methods = ""

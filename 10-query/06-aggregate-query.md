@@ -41,7 +41,7 @@ get; count;
 ```java
 AggregateQuery query = Graql.match(
   var("sce").isa("school-course-enrollment").has("score", var("sco")),
-  var("sco").val(gt(7.0))
+  var("sco").gt(7.0)
 ).get().count();
 ```
 [tab:end]

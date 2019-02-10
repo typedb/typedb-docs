@@ -43,7 +43,7 @@ get $x-fn, $y-fn, $y-pn;
 GetQuery query = Graql.match(
   var("fr").isa("friendship").rel("x").rel("y"),
   var("x").isa("person").has("full-name", var("x-fn")),
-  var("x-fn").val(contains("Miriam")),
+  var("x-fn").contains("Miriam"),
   var("y").isa("person").has("full-name", var("y-fn")).has("phone-number", var("y-pn"))
 ).get("x-fn", "y-fn", "y-pn");
 ```

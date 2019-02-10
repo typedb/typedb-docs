@@ -79,13 +79,13 @@ match $c isa caption; $c contains "inappropriate word"; delete $c;
 ```java
 InsertQuery insert_query = Graql.match(
   var("m").isa("media").has("caption", var("c")),
-  var("c").val(contains("inappropriate word"))
+  var("c").contains("inappropriate word")
 ).insert(
   var("m").has("caption", "deleted")
 );
 
 DeleteQuery delete_query = Graql.match(
-  var("c").isa("caption").val(contains("inappropriate word"))
+  var("c").isa("caption").contains("inappropriate word")
 ).delete("c");
 ```
 [tab:end]

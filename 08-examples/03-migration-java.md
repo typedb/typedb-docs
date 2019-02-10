@@ -790,7 +790,7 @@ Here is how our `Migrate.java` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
-<!-- test-ignore -->
+<!-- test-standalone -->
 ```java
 package ai.grakn.examples;
 
@@ -818,7 +818,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CsvMigration {
+public class PhoneCallsCSVMigration {
  /**
   * representation of Input object that links an input file to its own templating function,
   * which is used to map a Json object to a Graql query string
@@ -989,14 +989,14 @@ public class CsvMigration {
  }
 
  public static Reader getReader(String relativePath) throws UnsupportedEncodingException {
-  return new InputStreamReader(CsvMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
+  return new InputStreamReader(PhoneCallsCsvMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
  }
 }
 ```
 [tab:end]
 
 [tab:JSON]
-<!-- test-ignore -->
+<!-- test-standalone -->
 ```java
 package ai.grakn.examples;
 
@@ -1021,7 +1021,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class JsonMigration {
+public class PhoneCallsJSONMigration {
  /**
   * representation of Input object that links an input file to its own templating function,
   * which is used to map a Json object to Graql query string
@@ -1199,7 +1199,7 @@ public class JsonMigration {
 [tab:end]
 
 [tab:XML]
-<!-- test-ignore -->
+<!-- test-standalone -->
 ```java
 package ai.grakn.examples;
 
@@ -1230,7 +1230,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class XmlMigration {
+public class PhoneCallsXMLMigration {
  /**
   * representation of Input object that links an input file to its own templating function,
   * which is used to map a Json object to a Graql query string

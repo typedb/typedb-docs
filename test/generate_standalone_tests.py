@@ -22,10 +22,7 @@ import java.util.stream.Stream;
 
 public class GraqlSnippetTest {
     @ClassRule
-    public static final GraknTestServer server = new GraknTestServer(
-        "test/grakn-test-server/conf/grakn.properties", 
-        "test/grakn-test-server/conf/cassandra-embedded.yaml"
-    );
+    public static final GraknTestServer server = new GraknTestServer();
 
     static GraknClient client;
     static GraknClient.Session session;
@@ -77,20 +74,15 @@ graql_snippet_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = ('<!-- test-(ignore|standalone.*) -->\n```graql\n((\n|.)+?)```'
-                            +
-                            '|(```graql\n' +
-                            '((\n|.)+?)' +  # group containing snippet
-                            '```)')
+pattern_to_find_snippets = '(?<!<!-- ignore-test -->\n)```graql\n((\n|.)+?)```'
+
 
 snippets = []
 for markdown_file in markdown_files:
     with open(markdown_file) as file:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
-            flag_type = snippet[0]
-            if "ignore" not in flag_type and "standalone" not in flag_type:
-                snippets.append({"code": snippet[4], "page": markdown_file})
+            snippets.append({ "code": snippet[0], "page": markdown_file})
 
 
 test_methods = ""

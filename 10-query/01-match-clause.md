@@ -225,7 +225,7 @@ match $phone-number contains "+44"; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("phone-number").val(contains("+44"))
+  var("phone-number").contains("+44")
 ).get();
 ```
 [tab:end]
@@ -247,7 +247,7 @@ match $x like "(Miriam Morton|Solomon Tran)"; get;
 [tab:Java]
 ```java
 GetQuery query = Graql.match(
-  var("phone-number").val(regex("(Miriam Morton|Solomon Tran)"))
+  var("phone-number").regex("(Miriam Morton|Solomon Tran)")
 ).get();
 ```
 [tab:end]
@@ -309,7 +309,7 @@ match $p isa person, has nickname "Mitzi", has phone-number $pn; $pn contains "+
 ```java
 GetQuery query = Graql.match(
   var("p").isa("person").has("nickname", "Mitzi").has("phone-number", var("pn")),
-  var("pn").val(contains("+44"))
+  var("pn").contains("+44")
 ).get();
 ```
 [tab:end]
@@ -331,8 +331,8 @@ match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn cont
 GetQuery query = Graql.match(
   var("p").isa("person").has("full-name", var("fn")),
   or(
-    var("fn").val(contains("Miriam")),
-    var("fn").val(contains("Solomon"))
+    var("fn").contains("Miriam"),
+    var("fn").contains("Solomon")
   )
 ).get();
 ```
