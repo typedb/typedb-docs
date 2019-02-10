@@ -26,14 +26,14 @@ To insert an instance of an entity type into the knowledge graph, we use the `in
 
 [tab:Graql]
 ```graql
-insert $p isa person, has full-name "John Parkson", has nickname "Johny", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234=567890";
+insert $p isa person, has full-name "John Parkson", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234=567890";
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 InsertQuery query = Graql.insert(
-  var("p").isa("person").has("full-name", "John Parkson").has("nickname", "Johny").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
+  var("p").isa("person").has("full-name", "John Parkson").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
 );
 ```
 [tab:end]
