@@ -1,1 +1,0 @@
-exports_files(["resources/cassandra-embedded.yaml"])

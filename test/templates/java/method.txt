@@ -1,9 +1,0 @@
-@Test
-public void test() {
-    try (GraknClient.Transaction transaction = new GraknClient(server.grpcUri().toString()).session("grakn").transaction(Transaction.Type.WRITE)) {
-        // PLACEHOLDER
-
-
-        transaction.execute(query);
-    }
-}

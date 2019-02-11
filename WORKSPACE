@@ -1,4 +1,4 @@
-workspace( name = "test_ci_docs" )
+workspace( name = "docs" )
 
 ###############################################################
 #                   common bazel imports                      #
@@ -21,7 +21,7 @@ maven_dependencies_for_build()
 ###############################################################
 git_repository(
     name = "graknlabs_grakn",
-    remote = "https://github.com/lolski/test-ci-grakn",
+    remote = "https://github.com/graknlabs/grakn",
     commit = '24aff48a8981d5d8b4f99ee817bf0daec5d27c08' # grakn-dependency: do not remove this comment. this is used by the auto-update script
 )
 
