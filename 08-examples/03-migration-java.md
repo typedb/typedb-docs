@@ -790,14 +790,16 @@ Here is how our `Migrate.java` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsCSVMigration.java -->
 ```java
 package ai.grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.client.GraknClient.Transaction;
+import static grakn.core.graql.query.Graql.*;
+import grakn.core.graql.query.InsertQuery;
+import grakn.core.server.exception.InvalidKBException;
+import grakn.core.server.exception.TransactionException;
 
 /**
  * a collection of fast and reliable Java-based parsers for CSV, TSV and Fixed Width files
@@ -812,198 +814,191 @@ import com.univocity.parsers.csv.CsvParserSettings;
  */
 import mjson.Json;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CsvMigration {
- /**
-  * representation of Input object that links an input file to its own templating function,
-  * which is used to map a Json object to a Graql query string
-  */
- abstract static class Input {
-  String path;
+public class PhoneCallsCSVMigration {
+    /**
+     * representation of Input object that links an input file to its own templating function,
+     * which is used to map a Json object to a Graql query string
+     */
+    abstract static class Input {
+        String path;
 
-  public Input(String path) {
-   this.path = path;
-  }
+        public Input(String path) {
+            this.path = path;
+        }
 
-  String getDataPath() {
-   return path;
-  }
+        String getDataPath() {
+            return path;
+        }
 
-  abstract String template(Json data);
- }
-
- /**
-  * 1. creates a Grakn instance
-  * 2. creates a session to the targeted keyspace
-  * 3. initialises the list of Inputs, each containing details required to parse the data
-  * 4. loads the csv data to Grakn for each file
-  * 5. closes the session
-  */
- public static void main(String[] args) {
-  Collection <Input> inputs = initialiseInputs();
-  connectAndMigrate(inputs);
- }
-
- static void connectAndMigrate(Collection <Input> inputs) {
-  SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-  Grakn grakn = new Grakn(localGrakn);
-  Keyspace keyspace = Keyspace.of("phone_calls");
-  Grakn.Session session = grakn.session(keyspace);
-
-  inputs.forEach(input -> {
-   System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
-   try {
-    loadDataIntoGrakn(input, session);
-   } catch (UnsupportedEncodingException e) {
-    e.printStackTrace();
-   }
-  });
-
-  session.close();
- }
-
- static Collection <Input> initialiseInputs() {
-  Collection <Input> inputs = new ArrayList <> ();
-
-  // define template for constructing a company Graql insert query
-  inputs.add(new Input("data/companies") {
-   @Override
-   public String template(Json company) {
-    return "insert $company isa company, has name " + company.at("name") + ";";
-   }
-  });
-  // define template for constructing a person Graql insert query
-  inputs.add(new Input("data/people") {
-   @Override
-   public String template(Json person) {
-    // insert person
-    String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
-
-    if (person.at("first_name").isNull()) {
-     // person is not a customer
-     graqlInsertQuery += ", has is-customer false";
-    } else {
-     // person is a customer
-     graqlInsertQuery += ", has is-customer true";
-     graqlInsertQuery += ", has first-name " + person.at("first_name");
-     graqlInsertQuery += ", has last-name " + person.at("last_name");
-     graqlInsertQuery += ", has city " + person.at("city");
-     graqlInsertQuery += ", has age " + person.at("age").asInteger();
+        abstract String template(Json data);
     }
 
-    graqlInsertQuery += ";";
-    return graqlInsertQuery;
-   }
-  });
-  // define template for constructing a contract Graql insert query
-  inputs.add(new Input("data/contracts") {
-   @Override
-   public String template(Json contract) {
-    // match company
-    String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
-    // match person
-    graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
-    // insert contract
-    graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
-    return graqlInsertQuery;
-   }
-  });
-  // define template for constructing a call Graql insert query
-  inputs.add(new Input("data/calls") {
-   @Override
-   public String template(Json call) {
-    // match caller
-    String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
-    // match callee
-    graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
-    // insert call
-    graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
-     " $call has started-at " + call.at("started_at").asString() + ";" +
-     " $call has duration " + call.at("duration").asInteger() + ";";
-    return graqlInsertQuery;
-   }
-  });
-  return inputs;
- }
+    /**
+     * 1. creates a Grakn instance
+     * 2. creates a session to the targeted keyspace
+     * 3. initialises the list of Inputs, each containing details required to parse the data
+     * 4. loads the csv data to Grakn for each file
+     * 5. closes the session
+     */
+    public static void main(String[] args) throws FileNotFoundException, InvalidKBException {
+        Collection<Input> inputs = initialiseInputs();
+        connectAndMigrate(inputs);
+    }
 
- /**
-  * loads the csv data into our Grakn phone_calls keyspace:
-  * 1. gets the data items as a list of json objects
-  * 2. for each json object
-  *   a. creates a Grakn transaction
-  *   b. constructs the corresponding Graql insert query
-  *   c. runs the query
-  *   d. commits the transaction
-  *   e. closes the transaction
-  *
-  * @param input   contains details required to parse the data
-  * @param session off of which a transaction is created
-  * @throws UnsupportedEncodingException
-  */
- static void loadDataIntoGrakn(Input input, Grakn.Session session) throws UnsupportedEncodingException {
-  ArrayList &lt;Json&gt; items = parseDataToJson(input); // 1
-  items.forEach(item -> {
-   Grakn.Transaction tx = session.transaction(GraknTxType.WRITE); // 2a
-   String graqlInsertQuery = input.template(item); // 2b
-   System.out.println("Executing Graql Query: " + graqlInsertQuery);
-   tx.graql().parse(graqlInsertQuery).execute(); // 2c
-   tx.commit(); // 2d
-   tx.close(); // 2e
+    static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, InvalidKBException, TransactionException {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
 
-  });
-  System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
- }
+        for (Input input : inputs) {
+            System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
+            loadDataIntoGrakn(input, session);
+        }
 
- /**
-  * 1. reads a csv file through a stream
-  * 2. parses each row to a json object
-  * 3. adds the json object to the list of items
-  *
-  * @param input used to get the path to the data file, minus the format
-  * @return the list of json objects
-  * @throws UnsupportedEncodingException
-  */
- static ArrayList &lt;Json&gt; parseDataToJson(Input input) throws UnsupportedEncodingException {
-  ArrayList &lt;Json&gt; items = new ArrayList <> ();
+        session.close();
+    }
 
-  CsvParserSettings settings = new CsvParserSettings();
-  settings.setLineSeparatorDetectionEnabled(true);
-  CsvParser parser = new CsvParser(settings);
-  parser.beginParsing(getReader(input.getDataPath() + ".csv")); // 1
+    static Collection<Input> initialiseInputs() {
+        Collection<Input> inputs = new ArrayList<>();
 
-  String[] columns = parser.parseNext();
-  String[] row;
-  while ((row = parser.parseNext()) != null) {
-   Json item = Json.object();
-   for (int i = 0; i <row.length; i++) {
-    item.set(columns[i], row[i]); // 2
-   }
-   items.add(item); // 3
-  }
-  return items;
- }
+        // define template for constructing a company Graql insert query
+        inputs.add(new Input("files/phone-calls/data/companies") {
+            @Override
+            public String template(Json company) {
+                return "insert $company isa company, has name " + company.at("name") + ";";
+            }
+        });
+        // define template for constructing a person Graql insert query
+        inputs.add(new Input("files/phone-calls/data/people") {
+            @Override
+            public String template(Json person) {
+                // insert person
+                String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
 
- public static Reader getReader(String relativePath) throws UnsupportedEncodingException {
-  return new InputStreamReader(CsvMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
- }
+                if (person.at("first_name").isNull()) {
+                    // person is not a customer
+                    graqlInsertQuery += ", has is-customer false";
+                } else {
+                    // person is a customer
+                    graqlInsertQuery += ", has is-customer true";
+                    graqlInsertQuery += ", has first-name " + person.at("first_name");
+                    graqlInsertQuery += ", has last-name " + person.at("last_name");
+                    graqlInsertQuery += ", has city " + person.at("city");
+                    graqlInsertQuery += ", has age " + person.at("age").asInteger();
+                }
+
+                graqlInsertQuery += ";";
+                return graqlInsertQuery;
+            }
+        });
+        // define template for constructing a contract Graql insert query
+        inputs.add(new Input("files/phone-calls/data/contracts") {
+            @Override
+            public String template(Json contract) {
+                // match company
+                String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
+                // match person
+                graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
+                // insert contract
+                graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
+                return graqlInsertQuery;
+            }
+        });
+        // define template for constructing a call Graql insert query
+        inputs.add(new Input("files/phone-calls/data/calls") {
+            @Override
+            public String template(Json call) {
+                // match caller
+                String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
+                // match callee
+                graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
+                // insert call
+                graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
+                        " $call has started-at " + call.at("started_at").asString() + ";" +
+                        " $call has duration " + call.at("duration").asInteger() + ";";
+                return graqlInsertQuery;
+            }
+        });
+        return inputs;
+    }
+
+    /**
+     * loads the csv data into our Grakn phone_calls keyspace:
+     * 1. gets the data items as a list of json objects
+     * 2. for each json object
+     * a. creates a Grakn transaction
+     * b. constructs the corresponding Graql insert query
+     * c. runs the query
+     * d. commits the transaction
+     * e. closes the transaction
+     *
+     * @param input   contains details required to parse the data
+     * @param session off of which a transaction is created
+     * @throws UnsupportedEncodingException
+     */
+    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws FileNotFoundException, InvalidKBException {
+        ArrayList<Json> items = parseDataToJson(input); // 1
+        for (Json item : items) {
+            Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
+            String graqlInsertQuery = input.template(item); // 2b
+            System.out.println("Executing Graql Query: " + graqlInsertQuery);
+            transaction.execute((InsertQuery) parse(graqlInsertQuery)); // 2c
+            transaction.commit(); // 2d
+
+        }
+        System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
+    }
+
+    /**
+     * 1. reads a csv file through a stream
+     * 2. parses each row to a json object
+     * 3. adds the json object to the list of items
+     *
+     * @param input used to get the path to the data file, minus the format
+     * @return the list of json objects
+     * @throws UnsupportedEncodingException
+     */
+    static ArrayList<Json> parseDataToJson(Input input) throws FileNotFoundException {
+        ArrayList<Json> items = new ArrayList<>();
+
+        CsvParserSettings settings = new CsvParserSettings();
+        settings.setLineSeparatorDetectionEnabled(true);
+        CsvParser parser = new CsvParser(settings);
+        parser.beginParsing(getReader(input.getDataPath() + ".csv")); // 1
+
+        String[] columns = parser.parseNext();
+        String[] row;
+        while ((row = parser.parseNext()) != null) {
+            Json item = Json.object();
+            for (int i = 0; i < row.length; i++) {
+                item.set(columns[i], row[i]); // 2
+            }
+            items.add(item); // 3
+        }
+        return items;
+    }
+
+    public static Reader getReader(String relativePath) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(relativePath));
+    }
 }
 ```
 [tab:end]
 
 [tab:JSON]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsJSONMigration.java -->
 ```java
 package ai.grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.client.GraknClient.Transaction;
+import static grakn.core.graql.query.Graql.*;
+import grakn.core.graql.query.InsertQuery;
+import grakn.core.server.exception.InvalidKBException;
+import grakn.core.server.exception.TransactionException;
 
 /**
  * reads a JSON encoded value as a stream of tokens,
@@ -1021,192 +1016,194 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class JsonMigration {
- /**
-  * representation of Input object that links an input file to its own templating function,
-  * which is used to map a Json object to Graql query string
-  */
- abstract static class Input {
-  String path;
-  public Input(String path) {
-   this.path = path;
-  }
-  String getDataPath() {
-   return path;
-  }
-  abstract String template(Json data);
- }
+public class PhoneCallsJSONMigration {
+    /**
+     * representation of Input object that links an input file to its own templating function,
+     * which is used to map a Json object to a Graql query string
+     */
+    abstract static class Input {
+        String path;
 
- public static void main(String[] args) {
-  Collection &lt;Input&gt; inputs = initialiseInputs();
-  connectAndMigrate(inputs);
- }
+        public Input(String path) {
+            this.path = path;
+        }
 
- static Collection &lt;Input&gt; initialiseInputs() {
-  Collection &lt;Input&gt; inputs = new ArrayList <> ();
+        String getDataPath() {
+            return path;
+        }
 
-  // define template for constructing a company Graql insert query
-  inputs.add(new Input("data/companies") {
-   @Override
-   public String template(Json company) {
-    return "insert $company isa company, has name " + company.at("name") + ";";
-   }
-  });
-  // define template for constructing a person Graql insert query
-  inputs.add(new Input("data/people") {
-   @Override
-   public String template(Json person) {
-    // insert person
-    String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
-
-    if (!person.has("first_name")) {
-     // person is not a customer
-     graqlInsertQuery += ", has is-customer false";
-    } else {
-     // person is a customer
-     graqlInsertQuery += ", has is-customer true";
-     graqlInsertQuery += ", has first-name " + person.at("first_name");
-     graqlInsertQuery += ", has last-name " + person.at("last_name");
-     graqlInsertQuery += ", has city " + person.at("city");
-     graqlInsertQuery += ", has age " + person.at("age").asInteger();
+        abstract String template(Json data);
     }
 
-    graqlInsertQuery += ";";
-    return graqlInsertQuery;
-   }
-  });
-  // define template for constructing a contract Graql insert query
-  inputs.add(new Input("data/contracts") {
-   @Override
-   public String template(Json contract) {
-    // match company
-    String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
-    // match person
-    graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
-    // insert contract
-    graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
-    return graqlInsertQuery;
-   }
-  });
-  // define template for constructing a call Graql insert query
-  inputs.add(new Input("data/calls") {
-   @Override
-   public String template(Json call) {
-    // match caller
-    String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
-    // match callee
-    graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
-    // insert call
-    graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
-     " $call has started-at " + call.at("started_at").asString() + ";" +
-     " $call has duration " + call.at("duration").asInteger() + ";";
-    return graqlInsertQuery;
-   }
-  });
-  return inputs;
- }
-
- /**
-  * 1. creates a Grakn instance
-  * 2. creates a session to the targeted keyspace
-  * 3. loads the csv data to Grakn for each file
-  * 4. closes the session
-  */
- static void connectAndMigrate(Collection <Input> inputs) {
-  SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-  Grakn grakn = new Grakn(localGrakn); // 1
-  Keyspace keyspace = Keyspace.of("phone_calls");
-  Grakn.Session session = grakn.session(keyspace); // 2
-
-  inputs.forEach(input -> {
-   System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
-   try {
-    loadDataIntoGrakn(input, session); // 3
-   } catch (IOException e) {
-    e.printStackTrace();
-   }
-  });
-
-  session.close(); // 4
- }
-
- /**
-  * loads the json data into our Grakn phone_calls keyspace:
-  * 1. gets the data items as a list of json objects
-  * 2. for each json object
-  *   a. creates a Grakn transaction
-  *   b. constructs the corresponding Graql insert query
-  *   c. runs the query
-  *   d. commits the transaction
-  *
-  * @param input   contains details required to parse the data
-  * @param session off of which a transaction is created
-  * @throws UnsupportedEncodingException
-  */
- static void loadDataIntoGrakn(Input input, Grakn.Session session) throws IOException {
-  ArrayList &lt;Json&gt; items = parseDataToJson(input); // 1
-  items.forEach(item -> {
-   Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE); // 2a
-   String graqlInsertQuery = input.template(item); // 2b
-   System.out.println("Executing Graql Query: " + graqlInsertQuery);
-   transaction.graql().parse(graqlInsertQuery).execute(); // 2c
-   transaction.commit(); // 2d
-  });
-  System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
- }
-
- /**
-  * 1. reads a json file through a stream
-  * 2. parses each json object found in the file to a json object
-  * 3. adds the json object to the list of items
-  *
-  * @param input used to get the path to the data file, minus the format
-  * @return the list of json objects
-  * @throws IOException
-  */
- static ArrayList &lt;Json&gt; parseDataToJson(Input input) throws IOException {
-  ArrayList &lt;Json&gt; items = new ArrayList <> ();
-
-  JsonReader jsonReader = new JsonReader(getReader(input.getDataPath() + ".json")); // 1
-
-  jsonReader.beginArray();
-  while (jsonReader.hasNext()) {
-   jsonReader.beginObject();
-   Json item = Json.object();
-   while (jsonReader.hasNext()) {
-    String key = jsonReader.nextName();
-    switch (jsonReader.peek()) {
-     case STRING:
-      item.set(key, jsonReader.nextString()); // 2
-      break;
-     case NUMBER:
-      item.set(key, jsonReader.nextInt()); // 2
-      break;
+    /**
+     * 1. creates a Grakn instance
+     * 2. creates a session to the targeted keyspace
+     * 3. initialises the list of Inputs, each containing details required to parse the data
+     * 4. loads the csv data to Grakn for each file
+     * 5. closes the session
+     */
+    public static void main(String[] args) throws IOException, InvalidKBException {
+        Collection<Input> inputs = initialiseInputs();
+        connectAndMigrate(inputs);
     }
-   }
-   jsonReader.endObject();
-   items.add(item); // 3
-  }
-  jsonReader.endArray();
-  return items;
- }
 
- public static Reader getReader(String relativePath) throws UnsupportedEncodingException {
-  return new InputStreamReader(JsonMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
- }
+    static void connectAndMigrate(Collection<Input> inputs) throws IOException, InvalidKBException, TransactionException {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
+
+        for (Input input : inputs) {
+            System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
+            loadDataIntoGrakn(input, session);
+        }
+
+        session.close();
+    }
+
+    static Collection<Input> initialiseInputs() {
+        Collection<Input> inputs = new ArrayList<>();
+
+        // define template for constructing a company Graql insert query
+        inputs.add(new Input("files/phone-calls/data/companies") {
+            @Override
+            public String template(Json company) {
+                return "insert $company isa company, has name " + company.at("name") + ";";
+            }
+        });
+        // define template for constructing a person Graql insert query
+        inputs.add(new Input("files/phone-calls/data/people") {
+            @Override
+            public String template(Json person) {
+                // insert person
+                String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
+
+                if (! person.has("first_name")) {
+                    // person is not a customer
+                    graqlInsertQuery += ", has is-customer false";
+                } else {
+                    // person is a customer
+                    graqlInsertQuery += ", has is-customer true";
+                    graqlInsertQuery += ", has first-name " + person.at("first_name");
+                    graqlInsertQuery += ", has last-name " + person.at("last_name");
+                    graqlInsertQuery += ", has city " + person.at("city");
+                    graqlInsertQuery += ", has age " + person.at("age").asInteger();
+                }
+
+                graqlInsertQuery += ";";
+                return graqlInsertQuery;
+            }
+        });
+        // define template for constructing a contract Graql insert query
+        inputs.add(new Input("files/phone-calls/data/contracts") {
+            @Override
+            public String template(Json contract) {
+                // match company
+                String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
+                // match person
+                graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
+                // insert contract
+                graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
+                return graqlInsertQuery;
+            }
+        });
+        // define template for constructing a call Graql insert query
+        inputs.add(new Input("files/phone-calls/data/calls") {
+            @Override
+            public String template(Json call) {
+                // match caller
+                String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
+                // match callee
+                graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
+                // insert call
+                graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
+                        " $call has started-at " + call.at("started_at").asString() + ";" +
+                        " $call has duration " + call.at("duration").asInteger() + ";";
+                return graqlInsertQuery;
+            }
+        });
+        return inputs;
+    }
+
+    /**
+     * loads the csv data into our Grakn phone_calls keyspace:
+     * 1. gets the data items as a list of json objects
+     * 2. for each json object
+     * a. creates a Grakn transaction
+     * b. constructs the corresponding Graql insert query
+     * c. runs the query
+     * d. commits the transaction
+     * e. closes the transaction
+     *
+     * @param input   contains details required to parse the data
+     * @param session off of which a transaction is created
+     * @throws UnsupportedEncodingException
+     */
+    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws IOException, InvalidKBException {
+        ArrayList<Json> items = parseDataToJson(input); // 1
+        for (Json item : items) {
+            Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
+            String graqlInsertQuery = input.template(item); // 2b
+            System.out.println("Executing Graql Query: " + graqlInsertQuery);
+            transaction.execute((InsertQuery) parse(graqlInsertQuery)); // 2c
+            transaction.commit(); // 2d
+
+        }
+        System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
+    }
+
+    /**
+     * 1. reads a json file through a stream
+     * 2. parses each json object found in the file to a json object
+     * 3. adds the json object to the list of items
+     *
+     * @param input used to get the path to the data file, minus the format
+     * @return the list of json objects
+     * @throws IOException
+     */
+    static ArrayList <Json> parseDataToJson(Input input) throws IOException {
+        ArrayList <Json> items = new ArrayList <> ();
+
+        JsonReader jsonReader = new JsonReader(getReader(input.getDataPath() + ".json")); // 1
+
+        jsonReader.beginArray();
+        while (jsonReader.hasNext()) {
+            jsonReader.beginObject();
+            Json item = Json.object();
+            while (jsonReader.hasNext()) {
+                String key = jsonReader.nextName();
+                switch (jsonReader.peek()) {
+                    case STRING:
+                        item.set(key, jsonReader.nextString()); // 2
+                        break;
+                    case NUMBER:
+                        item.set(key, jsonReader.nextInt()); // 2
+                        break;
+                }
+            }
+            jsonReader.endObject();
+            items.add(item); // 3
+        }
+        jsonReader.endArray();
+        return items;
+    }
+
+    public static Reader getReader(String relativePath) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(relativePath));
+    }
 }
 ```
 [tab:end]
 
 [tab:XML]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsXMLMigration.java -->
 ```java
 package ai.grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.client.GraknClient.Transaction;
+import static grakn.core.graql.query.Graql.*;
+import grakn.core.graql.query.InsertQuery;
+import grakn.core.server.exception.InvalidKBException;
+import grakn.core.server.exception.TransactionException;
 
 /**
  * a lean JSON Library for Java,
@@ -1223,207 +1220,196 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class XmlMigration {
- /**
-  * representation of Input object that links an input file to its own templating function,
-  * which is used to map a Json object to a Graql query string
-  */
- abstract static class Input {
-  String path;
-  String selector;
+public class PhoneCallsXMLMigration {
+    /**
+     * representation of Input object that links an input file to its own templating function,
+     * which is used to map a Json object to a Graql query string
+     */
+    abstract static class Input {
+        String path;
+        String selector;
 
-  public Input(String path, String selector) {
-   this.path = path;
-   this.selector = selector;
-  }
+        public Input(String path, String selector) {
+            this.path = path;
+            this.selector = selector;
+        }
 
-  String getDataPath() {
-   return path;
-  }
-  String getSelector() {
-   return selector;
-  }
+        String getDataPath(){ return path;}
+        String getSelector(){ return selector;}
 
-  abstract String template(Json data);
- }
-
- public static void main(String[] args) {
-  Collection&lt;Input&gt; inputs = initialiseInputs();
-  connectAndMigrate(inputs);
- }
-
- static Collection &lt;Input&gt; initialiseInputs() {
-  Collection &lt;Input&gt; inputs = new ArrayList <> ();
-
-  // define template for constructing a company Graql insert query
-  inputs.add(new Input("data/companies", "company") {
-   @Override
-   public String template(Json company) {
-    return "insert $company isa company, has name " + company.at("name") + ";";
-   }
-  });
-  // define template for constructing a person Graql insert query
-  inputs.add(new Input("data/people", "person") {
-   @Override
-   public String template(Json person) {
-    // insert person
-    String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
-
-    if (!person.has("first_name")) {
-     // person is not a customer
-     graqlInsertQuery += ", has is-customer false";
-    } else {
-     // person is a customer
-     graqlInsertQuery += ", has is-customer true";
-     graqlInsertQuery += ", has first-name " + person.at("first_name");
-     graqlInsertQuery += ", has last-name " + person.at("last_name");
-     graqlInsertQuery += ", has city " + person.at("city");
-     graqlInsertQuery += ", has age " + person.at("age").asInteger();
+        abstract String template(Json data);
     }
 
-    graqlInsertQuery += ";";
-    return graqlInsertQuery;
-   }
-  });
-  // define template for constructing a contract Graql insert query
-  inputs.add(new Input("data/contracts", "contract") {
-   @Override
-   public String template(Json contract) {
-    // match company
-    String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
-    // match person
-    graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
-    // insert contract
-    graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
-    return graqlInsertQuery;
-   }
-  });
-  // define template for constructing a call Graql insert query
-  inputs.add(new Input("data/calls", "call") {
-   @Override
-   public String template(Json call) {
-    // match caller
-    String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
-    // match callee
-    graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
-    // insert call
-    graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
-     " $call has started-at " + call.at("started_at").asString() + ";" +
-     " $call has duration " + call.at("duration").asInteger() + ";";
-    return graqlInsertQuery;
-   }
-  });
-  return inputs;
- }
+    /**
+     * 1. creates a Grakn instance
+     * 2. creates a session to the targeted keyspace
+     * 3. initialises the list of Inputs, each containing details required to parse the data
+     * 4. loads the csv data to Grakn for each file
+     * 5. closes the session
+     */
+    public static void main(String[] args) throws FileNotFoundException, InvalidKBException, XMLStreamException {
+        Collection<Input> inputs = initialiseInputs();
+        connectAndMigrate(inputs);
+    }
 
- /**
-  * 1. creates a Grakn instance
-  * 2. creates a session to the targeted keyspace
-  * 3. loads the csv data to Grakn for each file
-  * 4. closes the session
-  */
- static void connectAndMigrate(Collection &lt;Input&gt; inputs) {
-  SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-  Grakn grakn = new Grakn(localGrakn); // 1
-  Keyspace keyspace = Keyspace.of("phone_calls");
-  Grakn.Session session = grakn.session(keyspace); // 2
+    static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, InvalidKBException, TransactionException, XMLStreamException {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
 
-  inputs.forEach(input -> {
-   System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
-   try {
-    loadDataIntoGrakn(input, session); // 3
-   } catch (IOException | XMLStreamException e) {
-    e.printStackTrace();
-   }
-  });
+        for (Input input : inputs) {
+            System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
+            loadDataIntoGrakn(input, session);
+        }
 
-  session.close(); // 4
- }
+        session.close();
+    }
 
- /**
-  * loads the xml data into the Grakn phone_calls keyspace:
-  * 1. gets the data items as a list of json objects
-  * 2. for each json object:
-  *   a. creates a Grakn transaction
-  *   b. constructs the corresponding Graql insert query
-  *   c. runs the query
-  *   d. commits the transaction
-  *
-  * @param input   contains details required to parse the data
-  * @param session off of which a transaction is created
-  * @throws UnsupportedEncodingException
-  */
- static void loadDataIntoGrakn(Input input, Grakn.Session session) throws UnsupportedEncodingException, XMLStreamException {
-  ArrayList &lt;Json&gt; items = parseDataToJson(input); // 1
-  items.forEach(item -> {
-   Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE); // 2a
-   String graqlInsertQuery = input.template(item); // 2b
-   System.out.println("Executing Graql Query: " + graqlInsertQuery);
-   transaction.graql().parse(graqlInsertQuery).execute(); // 2c
-   transaction.commit(); // 2d
-  });
-  System.out.println("\nInserted " + items.size() + " items from [" + input.getDataPath() + "] into Grakn.\n");
- }
+    static Collection<Input> initialiseInputs() {
+        Collection<Input> inputs = new ArrayList<>();
 
- /**
-  * 1. reads a xml file through a stream
-  * 2. parses each tag to a json object
-  * 3. adds the json object to the list of items
-  *
-  * @param input used to get the path to the data file (minus the format) and the tag selector
-  * @return the list of json objects
-  * @throws UnsupportedEncodingException
-  */
- static ArrayList &lt;Json&gt; parseDataToJson(Input input) throws UnsupportedEncodingException, XMLStreamException {
-  ArrayList &lt;Json&gt; items = new ArrayList <> ();
+        // define template for constructing a company Graql insert query
+        inputs.add(new Input("files/phone-calls/data/companies", "company") {
+            @Override
+            public String template(Json company) {
+                return "insert $company isa company, has name " + company.at("name") + ";";
+            }
+        });
+        // define template for constructing a person Graql insert query
+        inputs.add(new Input("files/phone-calls/data/people", "person") {
+            @Override
+            public String template(Json person) {
+                // insert person
+                String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
 
-  XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(getReader(input.getDataPath() + ".xml")); // 1
-  String key;
-  String value = null;
-  Boolean inSelector = false;
-  Json item = null;
-  while (r.hasNext()) {
-   int event = r.next();
+                if (! person.has("first_name")) {
+                    // person is not a customer
+                    graqlInsertQuery += ", has is-customer false";
+                } else {
+                    // person is a customer
+                    graqlInsertQuery += ", has is-customer true";
+                    graqlInsertQuery += ", has first-name " + person.at("first_name");
+                    graqlInsertQuery += ", has last-name " + person.at("last_name");
+                    graqlInsertQuery += ", has city " + person.at("city");
+                    graqlInsertQuery += ", has age " + person.at("age").asInteger();
+                }
 
-   switch (event) {
-    case XMLStreamConstants.START_ELEMENT:
-     if (r.getLocalName().equals(input.getSelector())) {
-      inSelector = true;
-      item = Json.object();
-     }
-     break;
+                graqlInsertQuery += ";";
+                return graqlInsertQuery;
+            }
+        });
+        // define template for constructing a contract Graql insert query
+        inputs.add(new Input("files/phone-calls/data/contracts", "contract") {
+            @Override
+            public String template(Json contract) {
+                // match company
+                String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
+                // match person
+                graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
+                // insert contract
+                graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
+                return graqlInsertQuery;
+            }
+        });
+        // define template for constructing a call Graql insert query
+        inputs.add(new Input("files/phone-calls/data/calls", "call") {
+            @Override
+            public String template(Json call) {
+                // match caller
+                String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
+                // match callee
+                graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
+                // insert call
+                graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
+                        " $call has started-at " + call.at("started_at").asString() + ";" +
+                        " $call has duration " + call.at("duration").asInteger() + ";";
+                return graqlInsertQuery;
+            }
+        });
+        return inputs;
+    }
 
-    case XMLStreamConstants.CHARACTERS:
-     value = r.getText();
-     break;
+    /**
+     * loads the xml data into the Grakn phone_calls keyspace:
+     * 1. gets the data items as a list of json objects
+     * 2. for each json object:
+     *   a. creates a Grakn transaction
+     *   b. constructs the corresponding Graql insert query
+     *   c. runs the query
+     *   d. commits the transaction
+     *
+     * @param input   contains details required to parse the data
+     * @param session off of which a transaction is created
+     * @throws UnsupportedEncodingException
+     */
+    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws FileNotFoundException, InvalidKBException, XMLStreamException {
+        ArrayList<Json> items = parseDataToJson(input); // 1
+        for (Json item : items) {
+            Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
+            String graqlInsertQuery = input.template(item); // 2b
+            System.out.println("Executing Graql Query: " + graqlInsertQuery);
+            transaction.execute((InsertQuery) parse(graqlInsertQuery)); // 2c
+            transaction.commit(); // 2d
 
-    case XMLStreamConstants.END_ELEMENT:
-     key = r.getLocalName();
-     if (inSelector && !key.equals(input.getSelector())) {
-      item.set(key, value); // 2
-     }
-     if (key.equals(input.getSelector())) {
-      inSelector = false;
-      items.add(item); // 3
-     }
+        }
+        System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
+    }
 
-     break;
-   }
-  }
+    /**
+     * 1. reads a xml file through a stream
+     * 2. parses each tag to a json object
+     * 3. adds the json object to the list of items
+     *
+     * @param input used to get the path to the data file (minus the format) and the tag selector
+     * @return the list of json objects
+     * @throws UnsupportedEncodingException
+     */
+    static ArrayList <Json> parseDataToJson(Input input) throws FileNotFoundException, XMLStreamException {
+        ArrayList <Json> items = new ArrayList <> ();
 
-  return items;
- }
+        XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(getReader(input.getDataPath() + ".xml")); // 1
+        String key;
+        String value = null;
+        Boolean inSelector = false;
+        Json item = null;
+        while (r.hasNext()) {
+            int event = r.next();
 
- public static Reader getReader(String relativePath) throws UnsupportedEncodingException {
-  return new InputStreamReader(XmlMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
- }
+            switch (event) {
+                case XMLStreamConstants.START_ELEMENT:
+                    if (r.getLocalName().equals(input.getSelector())) {
+                        inSelector = true;
+                        item = Json.object();
+                    }
+                    break;
+
+                case XMLStreamConstants.CHARACTERS:
+                    value = r.getText();
+                    break;
+
+                case XMLStreamConstants.END_ELEMENT:
+                    key = r.getLocalName();
+                    if (inSelector && !key.equals(input.getSelector())) {
+                        item.set(key, value); // 2
+                    }
+                    if (key.equals(input.getSelector())) {
+                        inSelector = false;
+                        items.add(item); // 3
+                    }
+
+                    break;
+            }
+        }
+
+        return items;
+    }
+
+    public static Reader getReader(String relativePath) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(relativePath));
+    }
 }
 ```
 [tab:end]

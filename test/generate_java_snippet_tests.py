@@ -9,24 +9,27 @@ package generated;
 import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
 import grakn.core.server.Transaction;
-import org.junit.*;
 
 import grakn.core.graql.query.*;
+<<<<<<< Updated upstream
 
 import static grakn.core.graql.query.Graql.var;
 import static grakn.core.graql.query.Graql.type;
 import static grakn.core.graql.query.Graql.and;
 import static grakn.core.graql.query.Graql.or;
 
+=======
+import static grakn.core.graql.query.Graql.*;
+>>>>>>> Stashed changes
 import static grakn.core.graql.query.ComputeQuery.Method.*;
 import static grakn.core.graql.query.ComputeQuery.Algorithm.*;
 import static grakn.core.graql.query.ComputeQuery.Argument.*;
 import static grakn.core.graql.query.predicate.Predicates.*;
 import grakn.core.graql.query.Query.DataType;
-
 import grakn.core.graql.concept.ConceptId;
-
 import grakn.core.graql.answer.ConceptSet;
+
+import org.junit.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -50,7 +53,7 @@ public class JavaSnippetTest {
         GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
 
         try {
-            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network-schema.gql"));
+            byte[] encoded = Files.readAllBytes(Paths.get("files/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
             transaction.execute((Query) Graql.parse(query));
             transaction.commit();

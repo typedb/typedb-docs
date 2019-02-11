@@ -36,7 +36,7 @@ public class GraqlSnippetTest {
         GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
 
         try {
-            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network-schema.gql"));
+            byte[] encoded = Files.readAllBytes(Paths.get("files/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
             transaction.execute((Query) Graql.parse(query));
             transaction.commit();
