@@ -26,14 +26,14 @@ To delete an instance of an entity type from the knowledge graph, we use a [matc
 
 [tab:Graql]
 ```graql
-match $p id V41016; delete $p;
+match $p isa person, has email "raphael.santos@gmail.com"; delete $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 DeleteQuery query = Graql.match(
-    var("p").id("V41016")
+    var("p").isa("person").has("email", "raphael.santos@gmail.com")
 ).delete("p");
 ```
 [tab:end]
