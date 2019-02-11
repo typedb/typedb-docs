@@ -114,45 +114,42 @@ The result contains the following answers.
 
 #### Retrieve all employments using [Client Java](/docs/client-api/java)
 
-<!-- test-ignore -->
+<!-- test-standalone SocialNetworkQuery.java -->
 ```java
 package ai.grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.graql.GetQuery;
-import ai.grakn.graql.Graql;
-import ai.grakn.graql.answer.ConceptMap;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.graql.answer.ConceptMap;
+import grakn.core.graql.query.GetQuery;
+import grakn.core.server.Transaction;
+import grakn.core.server.exception.TransactionException;
+import static grakn.core.graql.query.Graql.*;
+
 import java.util.List;
-import static ai.grakn.graql.Graql.var;
 
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("social_network");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.READ);
+public class SocialNetworkQuery extends Throwable {
+    public static void main(String[] args) throws TransactionException {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("social_network");
+        GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
 
-    GetQuery query = Graql.match(
-      var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
-      var("per").has("full-name", var("per-fn")),
-      var("org").has("name", var("org-n"))
-    ).get();
+        GetQuery query = match(
+                var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
+                var("per").has("full-name", var("per-fn")),
+                var("org").has("name", var("org-n"))
+        ).get();
 
-    List <ConceptMap> answers = query.withTx(transaction).execute();
+        List<ConceptMap> answers = transaction.execute(query);
 
-    for (ConceptMap answer: answers) {
-      System.out.println(answer.get("per-fn").asAttribute().value());
-      System.out.println(answer.get("org-n").asAttribute().value());
-      System.out.println(" - - - - - - - - ");
+        for (ConceptMap answer : answers) {
+            System.out.println(answer.get("per-fn").asAttribute().value());
+            System.out.println(answer.get("org-n").asAttribute().value());
+            System.out.println(" - - - - - - - - ");
+        }
+
+        transaction.close();
+        session.close();
     }
-
-    transaction.close();
-    session.close();
-  }
 }
 ```
 

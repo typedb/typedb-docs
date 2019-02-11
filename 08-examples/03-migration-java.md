@@ -814,9 +814,7 @@ import com.univocity.parsers.csv.CsvParserSettings;
  */
 import mjson.Json;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -846,12 +844,12 @@ public class PhoneCallsCSVMigration {
      * 4. loads the csv data to Grakn for each file
      * 5. closes the session
      */
-    public static void main(String[] args) throws UnsupportedEncodingException, InvalidKBException {
+    public static void main(String[] args) throws FileNotFoundException, InvalidKBException {
         Collection<Input> inputs = initialiseInputs();
         connectAndMigrate(inputs);
     }
 
-    static void connectAndMigrate(Collection<Input> inputs) throws UnsupportedEncodingException, InvalidKBException, TransactionException {
+    static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, InvalidKBException, TransactionException {
         GraknClient client = new GraknClient("localhost:48555");
         GraknClient.Session session = client.session("phone_calls");
 
@@ -867,14 +865,14 @@ public class PhoneCallsCSVMigration {
         Collection<Input> inputs = new ArrayList<>();
 
         // define template for constructing a company Graql insert query
-        inputs.add(new Input("data/companies") {
+        inputs.add(new Input("files/phone-calls/data/companies") {
             @Override
             public String template(Json company) {
                 return "insert $company isa company, has name " + company.at("name") + ";";
             }
         });
         // define template for constructing a person Graql insert query
-        inputs.add(new Input("data/people") {
+        inputs.add(new Input("files/phone-calls/data/people") {
             @Override
             public String template(Json person) {
                 // insert person
@@ -897,7 +895,7 @@ public class PhoneCallsCSVMigration {
             }
         });
         // define template for constructing a contract Graql insert query
-        inputs.add(new Input("data/contracts") {
+        inputs.add(new Input("files/phone-calls/data/contracts") {
             @Override
             public String template(Json contract) {
                 // match company
@@ -910,7 +908,7 @@ public class PhoneCallsCSVMigration {
             }
         });
         // define template for constructing a call Graql insert query
-        inputs.add(new Input("data/calls") {
+        inputs.add(new Input("files/phone-calls/data/calls") {
             @Override
             public String template(Json call) {
                 // match caller
@@ -941,7 +939,7 @@ public class PhoneCallsCSVMigration {
      * @param session off of which a transaction is created
      * @throws UnsupportedEncodingException
      */
-    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws UnsupportedEncodingException, InvalidKBException {
+    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws FileNotFoundException, InvalidKBException {
         ArrayList<Json> items = parseDataToJson(input); // 1
         for (Json item : items) {
             Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
@@ -963,7 +961,7 @@ public class PhoneCallsCSVMigration {
      * @return the list of json objects
      * @throws UnsupportedEncodingException
      */
-    static ArrayList<Json> parseDataToJson(Input input) throws UnsupportedEncodingException {
+    static ArrayList<Json> parseDataToJson(Input input) throws FileNotFoundException {
         ArrayList<Json> items = new ArrayList<>();
 
         CsvParserSettings settings = new CsvParserSettings();
@@ -983,8 +981,8 @@ public class PhoneCallsCSVMigration {
         return items;
     }
 
-    public static Reader getReader(String relativePath) throws UnsupportedEncodingException {
-        return new InputStreamReader(PhoneCallsCSVMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
+    public static Reader getReader(String relativePath) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(relativePath));
     }
 }
 ```
@@ -1065,20 +1063,20 @@ public class PhoneCallsJSONMigration {
         Collection<Input> inputs = new ArrayList<>();
 
         // define template for constructing a company Graql insert query
-        inputs.add(new Input("data/companies") {
+        inputs.add(new Input("files/phone-calls/data/companies") {
             @Override
             public String template(Json company) {
                 return "insert $company isa company, has name " + company.at("name") + ";";
             }
         });
         // define template for constructing a person Graql insert query
-        inputs.add(new Input("data/people") {
+        inputs.add(new Input("files/phone-calls/data/people") {
             @Override
             public String template(Json person) {
                 // insert person
                 String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
 
-                if (person.at("first_name").isNull()) {
+                if (! person.has("first_name")) {
                     // person is not a customer
                     graqlInsertQuery += ", has is-customer false";
                 } else {
@@ -1095,7 +1093,7 @@ public class PhoneCallsJSONMigration {
             }
         });
         // define template for constructing a contract Graql insert query
-        inputs.add(new Input("data/contracts") {
+        inputs.add(new Input("files/phone-calls/data/contracts") {
             @Override
             public String template(Json contract) {
                 // match company
@@ -1108,7 +1106,7 @@ public class PhoneCallsJSONMigration {
             }
         });
         // define template for constructing a call Graql insert query
-        inputs.add(new Input("data/calls") {
+        inputs.add(new Input("files/phone-calls/data/calls") {
             @Override
             public String template(Json call) {
                 // match caller
@@ -1188,8 +1186,8 @@ public class PhoneCallsJSONMigration {
         return items;
     }
 
-    public static Reader getReader(String relativePath) throws UnsupportedEncodingException {
-        return new InputStreamReader(PhoneCallsJSONMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
+    public static Reader getReader(String relativePath) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(relativePath));
     }
 }
 ```
@@ -1222,10 +1220,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -1256,12 +1251,12 @@ public class PhoneCallsXMLMigration {
      * 4. loads the csv data to Grakn for each file
      * 5. closes the session
      */
-    public static void main(String[] args) throws UnsupportedEncodingException, InvalidKBException, XMLStreamException {
+    public static void main(String[] args) throws FileNotFoundException, InvalidKBException, XMLStreamException {
         Collection<Input> inputs = initialiseInputs();
         connectAndMigrate(inputs);
     }
 
-    static void connectAndMigrate(Collection<Input> inputs) throws UnsupportedEncodingException, InvalidKBException, TransactionException, XMLStreamException {
+    static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, InvalidKBException, TransactionException, XMLStreamException {
         GraknClient client = new GraknClient("localhost:48555");
         GraknClient.Session session = client.session("phone_calls");
 
@@ -1277,29 +1272,29 @@ public class PhoneCallsXMLMigration {
         Collection<Input> inputs = new ArrayList<>();
 
         // define template for constructing a company Graql insert query
-        inputs.add(new Input("data/companies", "company") {
+        inputs.add(new Input("files/phone-calls/data/companies", "company") {
             @Override
             public String template(Json company) {
-                return "insert $company isa company has name " + company.at("name") + ";";
+                return "insert $company isa company, has name " + company.at("name") + ";";
             }
         });
         // define template for constructing a person Graql insert query
-        inputs.add(new Input("data/people", "person") {
+        inputs.add(new Input("files/phone-calls/data/people", "person") {
             @Override
             public String template(Json person) {
                 // insert person
-                String graqlInsertQuery = "insert $person isa person has phone-number " + person.at("phone_number");
+                String graqlInsertQuery = "insert $person isa person, has phone-number " + person.at("phone_number");
 
                 if (! person.has("first_name")) {
                     // person is not a customer
-                    graqlInsertQuery += " has is-customer false";
+                    graqlInsertQuery += ", has is-customer false";
                 } else {
                     // person is a customer
-                    graqlInsertQuery += " has is-customer true";
-                    graqlInsertQuery += " has first-name " + person.at("first_name");
-                    graqlInsertQuery += " has last-name " + person.at("last_name");
-                    graqlInsertQuery += " has city " + person.at("city");
-                    graqlInsertQuery += " has age " + person.at("age").asInteger();
+                    graqlInsertQuery += ", has is-customer true";
+                    graqlInsertQuery += ", has first-name " + person.at("first_name");
+                    graqlInsertQuery += ", has last-name " + person.at("last_name");
+                    graqlInsertQuery += ", has city " + person.at("city");
+                    graqlInsertQuery += ", has age " + person.at("age").asInteger();
                 }
 
                 graqlInsertQuery += ";";
@@ -1307,26 +1302,26 @@ public class PhoneCallsXMLMigration {
             }
         });
         // define template for constructing a contract Graql insert query
-        inputs.add(new Input("data/contracts", "contract") {
+        inputs.add(new Input("files/phone-calls/data/contracts", "contract") {
             @Override
             public String template(Json contract) {
                 // match company
-                String graqlInsertQuery = "match $company isa company has name " + contract.at("company_name") + ";";
+                String graqlInsertQuery = "match $company isa company, has name " + contract.at("company_name") + ";";
                 // match person
-                graqlInsertQuery += " $customer isa person has phone-number " + contract.at("person_id") + ";";
+                graqlInsertQuery += " $customer isa person, has phone-number " + contract.at("person_id") + ";";
                 // insert contract
                 graqlInsertQuery += " insert (provider: $company, customer: $customer) isa contract;";
                 return graqlInsertQuery;
             }
         });
         // define template for constructing a call Graql insert query
-        inputs.add(new Input("data/calls", "call") {
+        inputs.add(new Input("files/phone-calls/data/calls", "call") {
             @Override
             public String template(Json call) {
                 // match caller
-                String graqlInsertQuery = "match $caller isa person has phone-number " + call.at("caller_id") + ";";
+                String graqlInsertQuery = "match $caller isa person, has phone-number " + call.at("caller_id") + ";";
                 // match callee
-                graqlInsertQuery += " $callee isa person has phone-number " + call.at("callee_id") + ";";
+                graqlInsertQuery += " $callee isa person, has phone-number " + call.at("callee_id") + ";";
                 // insert call
                 graqlInsertQuery += " insert $call(caller: $caller, callee: $callee) isa call;" +
                         " $call has started-at " + call.at("started_at").asString() + ";" +
@@ -1350,7 +1345,7 @@ public class PhoneCallsXMLMigration {
      * @param session off of which a transaction is created
      * @throws UnsupportedEncodingException
      */
-    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws UnsupportedEncodingException, InvalidKBException, XMLStreamException {
+    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws FileNotFoundException, InvalidKBException, XMLStreamException {
         ArrayList<Json> items = parseDataToJson(input); // 1
         for (Json item : items) {
             Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
@@ -1372,7 +1367,7 @@ public class PhoneCallsXMLMigration {
      * @return the list of json objects
      * @throws UnsupportedEncodingException
      */
-    static ArrayList <Json> parseDataToJson(Input input) throws UnsupportedEncodingException, XMLStreamException {
+    static ArrayList <Json> parseDataToJson(Input input) throws FileNotFoundException, XMLStreamException {
         ArrayList <Json> items = new ArrayList <> ();
 
         XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(getReader(input.getDataPath() + ".xml")); // 1
@@ -1412,8 +1407,8 @@ public class PhoneCallsXMLMigration {
         return items;
     }
 
-    public static Reader getReader(String relativePath) throws UnsupportedEncodingException {
-        return new InputStreamReader(PhoneCallsXMLMigration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
+    public static Reader getReader(String relativePath) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(relativePath));
     }
 }
 ```

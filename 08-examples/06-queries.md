@@ -777,7 +777,8 @@ get $duration; mean $duration;
 package ai.grakn.examples;
 
 import grakn.core.client.GraknClient;
-import grakn.core.graql.query.GetQuery;
+import grakn.core.graql.answer.Value;
+import grakn.core.graql.query.AggregateQuery;
 import grakn.core.server.Transaction;
 import grakn.core.server.exception.TransactionException;
 import static grakn.core.graql.query.Graql.*;
@@ -803,9 +804,11 @@ public class PhoneCallsFifthQuery {
 
         String firstQuery = String.join("", firstQueryAsList);
 
-        float fisrtResult = transaction.execute(
-                (GetQuery) parse(firstQuery)
-        ).get(0).asValue().number().floatValue();
+        List<Value> firstAnswers = transaction.execute((AggregateQuery) parse(firstQuery));
+        float fisrtResult = 0;
+        if (firstAnswers.size() > 0) {
+            fisrtResult = firstAnswers.get(0).asValue().number().floatValue();
+        }
 
         String result = "Customers aged under 20 have made calls with average duration of " + fisrtResult + " seconds.\n";
 
@@ -823,9 +826,11 @@ public class PhoneCallsFifthQuery {
 
         String secondQuery = String.join("", secondQueryAsList);
 
-        float secondResult = transaction.execute(
-                (GetQuery) parse(secondQuery)
-        ).get(0).asValue().number().floatValue();
+        float secondResult = 0;
+        List<Value> secondAnswers = transaction.execute((AggregateQuery) parse(secondQuery));
+        if (secondAnswers.size() > 0) {
+            secondResult = secondAnswers.get(0).asValue().number().floatValue();
+        }
 
         result += "Customers aged over 40 have made calls with average duration of " + secondResult + " seconds.\n";
 
