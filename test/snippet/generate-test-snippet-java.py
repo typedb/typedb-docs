@@ -10,12 +10,22 @@ import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
 import grakn.core.server.Transaction;
 
-import grakn.core.graql.query.*;
+import grakn.core.graql.query.query.GraqlQuery;
+import grakn.core.graql.query.query.GraqlCompute;
+import grakn.core.graql.query.query.GraqlDefine;
+import grakn.core.graql.query.query.GraqlUndefine;
+import grakn.core.graql.query.query.GraqlGet;
+import grakn.core.graql.query.query.GraqlDelete;
+import grakn.core.graql.query.query.GraqlInsert;
+
+import grakn.core.graql.query.Graql;
 import static grakn.core.graql.query.Graql.*;
-import static grakn.core.graql.query.ComputeQuery.Method.*;
-import static grakn.core.graql.query.ComputeQuery.Algorithm.*;
-import static grakn.core.graql.query.ComputeQuery.Argument.*;
-import grakn.core.graql.query.Query.DataType;
+
+import static grakn.core.graql.query.query.GraqlCompute.Method.*;
+import static grakn.core.graql.query.query.GraqlCompute.Argument.*;
+// import static graql.lang.util.Token.Compute.Algorithm.*;
+
+
 import grakn.core.graql.concept.ConceptId;
 import grakn.core.graql.answer.ConceptSet;
 
@@ -30,8 +40,8 @@ import java.time.LocalDate;
 public class TestSnippetJava {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer(
-        "test/grakn-test-server/conf/grakn.properties", 
-        "test/grakn-test-server/conf/cassandra-embedded.yaml"
+        Paths.get("test/grakn-test-server/conf/grakn.properties"), 
+        Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
     );
 
     static GraknClient client;
@@ -48,7 +58,7 @@ public class TestSnippetJava {
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((Query) Graql.parse(query));
+            transaction.execute((GraqlQuery) Graql.parse(query));
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();

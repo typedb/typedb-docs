@@ -11,7 +11,8 @@ import grakn.core.rule.GraknTestServer;
 import grakn.core.server.Transaction;
 import org.junit.*;
 
-import grakn.core.graql.query.*;
+import grakn.core.graql.query.Graql;
+import grakn.core.graql.query.query.GraqlQuery;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -19,12 +20,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-
 public class TestSnippetGraql {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer(
-        "test/grakn-test-server/conf/grakn.properties", 
-        "test/grakn-test-server/conf/cassandra-embedded.yaml"
+        Paths.get("test/grakn-test-server/conf/grakn.properties"), 
+        Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
     );
 
     static GraknClient client;
@@ -41,7 +41,7 @@ public class TestSnippetGraql {
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((Query) Graql.parse(query));
+            transaction.execute((GraqlQuery) Graql.parse(query));
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,7 +72,7 @@ graql_snippet_test_method_template = """
     public void test() {
         // PAGE COMMENT PLACEHOLDER
         String queries = "// QUERIES PLACEHOLDER";
-        Stream<Query> parsedQuery = Graql.parseList(queries);
+        Stream<GraqlQuery> parsedQuery = Graql.parseList(queries);
         parsedQuery.forEach(query -> transaction.execute(query));
     }
 """

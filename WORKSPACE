@@ -22,7 +22,7 @@ maven_dependencies_for_build()
 git_repository(
     name = "graknlabs_grakn",
     remote = "https://github.com/graknlabs/grakn",
-    commit = '909bc2791671c4ace6159c5f891c8e7006e2db00' # grakn-dependency: do not remove this comment. this is used by the auto-update script
+    commit = '9aff33a5953be24b9d068ed803b5e92900c90cea' # grakn-dependency: do not remove this comment. this is used by the auto-update script
 )
 
 #load("@graknlabs_grakn//dependencies/pip:dependencies.bzl", "python_dependencies")
@@ -85,15 +85,12 @@ java_grpc_compile()
 
 
 
-
-
-
 load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
 pip_repositories()
 
 pip_import(
     name = "pypi_dependencies",
-    requirements = "//test:requirements.txt",
+    requirements = "//test/standalone/python:requirements.txt",
 )
 
 load("@pypi_dependencies//:requirements.bzl", "pip_install")

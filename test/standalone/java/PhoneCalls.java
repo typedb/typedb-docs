@@ -2,7 +2,7 @@ package generated;
 
 import grakn.core.client.GraknClient;
 import grakn.core.graql.query.Graql;
-import grakn.core.graql.query.Query;
+import grakn.core.graql.query.query.GraqlQuery;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class TestStandalonePhoneCalls {
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((Query) Graql.parse(query));
+            transaction.execute((GraqlQuery) Graql.parse(query));
             transaction.commit();
             session.close();
         } catch (IOException e) {
