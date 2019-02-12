@@ -93,7 +93,7 @@ pip_repositories()
 
 pip_import(
     name = "pypi_dependencies",
-    requirements = "test/requirements.txt",
+    requirements = "//test:requirements.txt",
 )
 
 load("@pypi_dependencies//:requirements.bzl", "pip_install")
