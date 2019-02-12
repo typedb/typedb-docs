@@ -118,7 +118,7 @@ Before anything, we need a structure to contain the details required for reading
 
 For this purpose, we create a new subclass called `Input`.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 import mjson.Json;
 
@@ -153,7 +153,7 @@ Time to initialise the `inputs`.
 
 The code below calls the `initialiseInputs()` method which returns a collection of `inputs`. We then use each input element in this collection to load each data file into Grakn.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // other imports
 import java.util.ArrayList;
@@ -176,7 +176,7 @@ public class Migration {
 
 ## Input Instance For a Company
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // imports
 
@@ -203,13 +203,13 @@ public class Migration {
 
 Given the company,
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 { name: "Telecom" }
 ```
 
 `input.template(company)` returns
-
+<!-- test-ignore -->
 ```graql
 insert $company isa company, has name "Telecom";
 ```
@@ -217,7 +217,7 @@ insert $company isa company, has name "Telecom";
 
 ## Input Instance For a Person
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // imports
 
@@ -263,33 +263,33 @@ public class Migration {
 
 Given the person,
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 { phone_number: "+44 091 xxx" }
 ```
 
-`input.template(person) returns
-
+`input.template(person)` returns
+<!-- test-ignore -->
 ```graql
 insert $person has phone-number "+44 091 xxx";
 ```
 
 And given the person,
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 { firs-name: "Jackie", last-name: "Joe", city: "Jimo", age: 77, phone_number: "+00 091 xxx"}
 ```
 
 `input.template(person)` returns
-
+<!-- test-ignore -->
 ```graql
 insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ## Input Instance For a Contract
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // imports
 
@@ -330,14 +330,14 @@ Given the contract,
 ```
 
 `input.template(contract)` returns
-
+<!-- test-ignore -->
 ```graql
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
 ## Input Instance For a Call
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // imports
 
@@ -374,13 +374,13 @@ public class Migration {
 
 Given the call,
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 { caller_id: "+44 091 xxx", callee_id: "+00 091 xxx", started_at: 2018-08-10T07:57:51, duration: 148 }
 ```
 
 `input.template(call)` returns
-
+<!-- test-ignore -->
 ```graql
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
@@ -389,7 +389,7 @@ match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, ha
 
 Now that we have the datapath and template defined for each of our data files, we can continue to connect with our ` ` knowledge graph and load the data into it.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // other imports
 import ai.grakn.GraknTxType;
@@ -443,7 +443,7 @@ The following happens in this method:
 
 Now that we have a `session` connected to the `phone_calls` keyspace, we can move on to actually loading the data into our knowledge graph.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // imports
 
@@ -497,7 +497,7 @@ The implementation for `parseDataToJson(input)` differs based on the format of o
 
 But regardless of what the data format is, we need the right setup to read the files line by line. For this, we use an `InputStreamReader`.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // other imports
 import java.io.InputStreamReader;
@@ -534,7 +534,7 @@ We use the [Univocity CSV Parser](https://www.univocity.com/pages/univocity_pars
 
 Having done that, we write the implementation of `parseDataToJson(input)` for parsing `.csv` files.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // other imports
 
@@ -605,7 +605,7 @@ We’ll use [Gson’s JsonReader](https://google.github.io/gson/apidocs/com/goog
 
 Having done that, we write the implementation of `parseDataToJson(input)` for reading `.json` files.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // other imports
 import com.google.gson.stream.JsonReader;
@@ -658,7 +658,7 @@ We use Java’s built-in [StAX](https://docs.oracle.com/cd/E13222_01/wls/docs90/
 
 For parsing XML data, we need to know the name of the target tag. This needs to be declared in the `Input` class and specified when constructing each `input` object.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // imports
 
@@ -699,7 +699,7 @@ public class XmlMigration {
 
 And now for the implementation of `parseDataToJson(input)` for parsing `.xml` files.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 // other imports
 import javax.xml.stream.XMLInputFactory;
@@ -790,7 +790,7 @@ Here is how our `Migrate.java` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 
@@ -996,7 +996,7 @@ public class CsvMigration {
 [tab:end]
 
 [tab:JSON]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 
@@ -1199,7 +1199,7 @@ public class JsonMigration {
 [tab:end]
 
 [tab:XML]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 

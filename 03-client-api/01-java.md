@@ -38,7 +38,7 @@ In the interpreter or in your source, import `grakn`.
 
 Instantiate a client and open a session.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 import ai.grakn.Keyspace;
 import ai.grakn.client.Grakn;
@@ -59,7 +59,7 @@ public class GraknQuickstart {
 
 [KGMS ONLY] We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 SimpleURI localGrakn = new SimpleURI("localhost", 48555);
 Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client();
@@ -67,7 +67,7 @@ Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client()
 
 Create transactions to use for reading and writing data.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;
@@ -100,7 +100,7 @@ public class GraknQuickstart {
 
 Running basic retrieval and insertion queries.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 import ai.grakn.GraknTxType;
 import ai.grakn.Keyspace;

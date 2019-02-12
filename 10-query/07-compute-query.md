@@ -225,7 +225,7 @@ compute path from V229424, to v446496, in [person, friendship];
 ComputeQuery query = Graql.compute(PATH)
                           .from(ConceptId.of("V229424"))
                           .to(ConceptId.of("v446496"))
-                          .in("person","car", "company", "employment");
+                          .in("person","friendship");
 ```
 [tab:end]
 </div>
@@ -423,14 +423,14 @@ ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
 
 This query retrieves the set of concept IDs that belong to clusters which include instances of `person` and `friendship`. The identified clusters all have a minimum degree of 2.
 
-#### Specify the minimum k value
-To compute clusters using coreness with a given minimum `k` value, we use of the `where` keyword followed by an assignment of `min-k`.
+#### Specify the k value
+To compute clusters using coreness with a given  `k` value, we use of the `where` keyword followed by an assignment of `k`.
 
 <div class="tabs dark">
 
 [tab:Graql]
 ```graql
-compute cluster in [person, friendship], using k-core, where min-k=3;
+compute cluster in [person, friendship], using k-core, where k=3;
 ```
 [tab:end]
 
@@ -439,7 +439,7 @@ compute cluster in [person, friendship], using k-core, where min-k=3;
 ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
                                       .in("person", "friendship")
                                       .using(K_CORE)
-                                      .where(min_k(5));
+                                      .where(k(5));
 ```
 [tab:end]
 </div>

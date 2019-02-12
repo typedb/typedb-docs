@@ -20,14 +20,14 @@ First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-th
 
 In your source, require `grakn`.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```javascript
 const Grakn = require("grakn");
 ```
 
 Instantiate a client and open a session.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```javascript
 const client = new Grakn("localhost:48555");
 const session = client.session("keyspace");
@@ -35,14 +35,14 @@ const session = client.session("keyspace");
 
 We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users), into the initial constructor as a Javascript object.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```javascript
 const client = new Grakn("localhost:48555", { "username": "<username>", "password": "<password>" });
 ```
 
 Create transactions to use for reading and writing data.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```javascript
 const client = new Grakn("localhost:48555");
 const session = client.session("keyspace");
@@ -60,7 +60,7 @@ readTx.close();
 
 Running basic retrieval and insertion queries.
 
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```javascript
 const Grakn = require("grakn");
 const client = new Grakn("localhost:48555");

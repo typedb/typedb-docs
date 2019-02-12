@@ -43,7 +43,7 @@ In the next section we learn how to [insert](/docs/query/insert-query), [get](/d
 
 ## Reserved Keywords
 The following keywords are reserved and meant to only be used by Graql in the schema.
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 ## Datatypes
 datatype

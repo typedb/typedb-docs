@@ -38,7 +38,7 @@ Let’s begin.
 > Get me the customers of company “Telecom” who called the target person with phone number +86 921 547 9004 from September 14th onwards.
 
 #### In Graql:
-
+<!-- test-ignore -->
 ```graql
 match
   $customer isa person, has phone-number $phone-number;
@@ -68,7 +68,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 
@@ -205,7 +205,7 @@ with client.session(keyspace = "phone_calls") as session:
 > Get me the phone number of people who have received a call from a customer aged over 50 after this customer (suspect) made a call to another customer aged under 20.
 
 #### In Graql:
-
+<!-- test-ignore -->
 ```graql
 match
   $suspect isa person, has city "London", has age > 50;
@@ -238,7 +238,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 
@@ -380,7 +380,7 @@ with client.session(keyspace = "phone_calls") as session:
 > Get me the phone number of people who have received calls from both customer with phone number +7 171 898 0853 and customer with phone number +370 351 224 5176.
 
 #### In Graql:
-
+<!-- test-ignore -->
 ```graql
 match
   $common-contact isa person, has phone-number $phone-number;
@@ -407,7 +407,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 
@@ -543,7 +543,7 @@ Get me the phone phone number of all customers who have called each other as wel
 ```
 
 #### In Graql:
-
+<!-- test-ignore -->
 ```graql
 match
   $target isa person, has phone-number "+48 894 777 5173";
@@ -574,7 +574,7 @@ get $phone-number-a, $phone-number-b;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 
@@ -721,7 +721,7 @@ Two queries need to be executed to provide this insight.
 > Get me the average call duration among customers who have a contract with company "Telecom" and are aged under 20.
 
 #### In Graql:
-
+<!-- test-ignore -->
 ```graql
 match
   $customer isa person, has age < 20;
@@ -744,7 +744,7 @@ get $duration; mean $duration;
 > Get me the average call duration among customers who have a contract with company "Telecom" and are aged over 40.
 
 #### In Graql:
-
+<!-- test-ignore -->
 ```graql
 match
   $customer isa person, has age > 40;
@@ -767,7 +767,7 @@ get $duration; mean $duration;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```java
 package ai.grakn.examples;
 

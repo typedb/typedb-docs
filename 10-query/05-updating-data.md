@@ -28,25 +28,27 @@ In most cases, a concept type is expected to own only one instance of an attribu
 <div class="tabs dark">
 
 [tab:Graql]
-<!-- test edge case -->
-<!-- ignore-test -->
+
 ```graql
 ## deleting the old
-match $org id V17391, has registration-number $rn via $r; delete $r;
+match $org isa organisation, has name "Medicely", has registration-number $rn via $r; delete $r;
 
 ## inserting the new
-insert $org isa organisation, has registration-number "81726354";
+match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
 ```
 [tab:end]
 
 [tab:Java]
+
 ```java
 DeleteQuery delete_query = Graql.match(
-  var("org").id("V17391").has("registration-number", var("rn"), var("r"))
+  var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
-InsertQuery insert_query = Graql.insert(
-  var("org").id("V17391").has("registration-number", "81726354")
+InsertQuery insert_query = Graql.match(
+  var("org").isa("organisation").has("name", "Medicely")
+).insert(
+  var("org").has("registration-number", "81726354")
 );
 ```
 [tab:end]
@@ -61,17 +63,21 @@ There may also be cases where we need to update the value of all instances of an
 <div class="tabs dark">
 
 [tab:Graql]
-<!-- test edge case -->
-<!-- ignore-test -->
 ```graql
-match $m isa media, has caption $c; $c contains "inappropriate word"; insert $m has caption "deleted";
+## inserting the new
+match
+  $m isa media, has caption $c;
+  $c contains "inappropriate word";
+insert $m has caption "deleted";
+
+## deleting the old
 match $c isa caption; $c contains "inappropriate word"; delete $c;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-InsertQuery query = Graql.match(
+InsertQuery insert_query = Graql.match(
   var("m").isa("media").has("caption", var("c")),
   var("c").val(contains("inappropriate word"))
 ).insert(
@@ -94,7 +100,7 @@ To change the roleplayers of a given relationship, we first need to [delete the 
 
 [tab:Graql]
 <!-- test edge case -->
-<!-- ignore-test -->
+<!-- test-ignore -->
 ```graql
 ## inserting the new
 match
