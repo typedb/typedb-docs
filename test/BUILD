@@ -1,3 +1,5 @@
+exports_files(["requirements.txt"])
+
 #######################################################
 ## generating and running the java snippet test class #
 #######################################################
