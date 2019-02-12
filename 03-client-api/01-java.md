@@ -122,7 +122,7 @@ public class GraknQuickstart {
 
     // Insert a person using a WRITE transaction
     Grakn.Transaction writeTransaction = session.transaction(GraknTxType.WRITE);
-    InsertQuery insertQuery = Graql.insert(var("p").isa("person").has("first-name", "Elizabeth"));
+    GraqlInsert insertQuery = Graql.insert(var("p").isa("person").has("first-name", "Elizabeth"));
     List<ConceptMap> insertedId = insertQuery.withTx(writeTransaction).execute();
     System.out.println("Inserted a person with ID: " + insertedId.get(0).get("p").id());
     // to persist changes, a write transaction must always be committed (closed)
@@ -130,7 +130,7 @@ public class GraknQuickstart {
 
     // Read the person using a READ only transaction
     Grakn.Transaction readTransaction = session.transaction(GraknTxType.READ);
-    GetQuery query = Graql.match(var("p").isa("person")).limit(10).get();
+    GraqlGet query = Graql.match(var("p").isa("person")).limit(10).get();
     Stream<ConceptMap> answers = query.withTx(readTransaction).stream();
     answers.forEach(answer -> System.out.println(answer.get("p").id()));
 

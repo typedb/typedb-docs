@@ -73,7 +73,7 @@ get $phone-number;
 package ai.grakn.examples;
 
 import grakn.core.client.GraknClient;
-import grakn.core.graql.query.GetQuery;
+import grakn.core.graql.query.query.GraqlGet;
 import grakn.core.server.Transaction;
 import grakn.core.server.exception.TransactionException;
 import static grakn.core.graql.query.Graql.*;
@@ -102,7 +102,7 @@ public class PhoneCallsFirstQuery {
 
         List<String> result = new ArrayList<>();
 
-        transaction.execute((GetQuery) parse(query)).forEach(answer -> {
+        transaction.execute((GraqlGet) parse(query)).forEach(answer -> {
                 result.add(
                         answer.asConceptMap().get("phone-number").asAttribute().value().toString()
                 );
@@ -244,7 +244,7 @@ get $phone-number;
 package ai.grakn.examples;
 
 import grakn.core.client.GraknClient;
-import grakn.core.graql.query.GetQuery;
+import grakn.core.graql.query.query.GraqlGet;
 import grakn.core.server.Transaction;
 import grakn.core.server.exception.TransactionException;
 import static grakn.core.graql.query.Graql.*;
@@ -274,7 +274,7 @@ public class PhoneCallsSecondQuery {
         String query = String.join("", queryAsList);
 
         List<String> result = new ArrayList<>();
-        transaction.execute((GetQuery) parse(query)).forEach(answer -> {
+        transaction.execute((GraqlGet) parse(query)).forEach(answer -> {
                 result.add(
                         answer.asConceptMap().get("phone-number").asAttribute().value().toString()
                 );
@@ -415,7 +415,7 @@ get $phone-number;
 package ai.grakn.examples;
 
 import grakn.core.client.GraknClient;
-import grakn.core.graql.query.GetQuery;
+import grakn.core.graql.query.query.GraqlGet;
 import grakn.core.server.Transaction;
 import grakn.core.server.exception.TransactionException;
 import static grakn.core.graql.query.Graql.*;
@@ -442,7 +442,7 @@ public class PhoneCallsThirdQuery {
         String query = String.join("", queryAsList);
 
         List<String> result = new ArrayList<>();
-        transaction.execute((GetQuery) parse(query)).forEach(answer -> {
+        transaction.execute((GraqlGet) parse(query)).forEach(answer -> {
                 result.add(
                         answer.asConceptMap().get("phone-number").asAttribute().value().toString()
                 );
@@ -583,7 +583,7 @@ get $phone-number-a, $phone-number-b;
 package ai.grakn.examples;
 
 import grakn.core.client.GraknClient;
-import grakn.core.graql.query.GetQuery;
+import grakn.core.graql.query.query.GraqlGet;
 import grakn.core.server.Transaction;
 import grakn.core.server.exception.TransactionException;
 import static grakn.core.graql.query.Graql.*;
@@ -614,7 +614,7 @@ public class PhoneCallsForthQuery {
         String query = String.join("", queryAsList);
 
         Set<String> result = new HashSet<>();
-        transaction.execute((GetQuery) parse(query)).forEach(answer -> {
+        transaction.execute((GraqlGet) parse(query)).forEach(answer -> {
             result.add(answer.asConceptMap().get("phone-number-a").asAttribute().value().toString());
             result.add(answer.asConceptMap().get("phone-number-b").asAttribute().value().toString());
         });
@@ -778,7 +778,7 @@ package ai.grakn.examples;
 
 import grakn.core.client.GraknClient;
 import grakn.core.graql.answer.Value;
-import grakn.core.graql.query.AggregateQuery;
+import grakn.core.graql.query.query.GraqlGet;
 import grakn.core.server.Transaction;
 import grakn.core.server.exception.TransactionException;
 import static grakn.core.graql.query.Graql.*;
@@ -804,7 +804,7 @@ public class PhoneCallsFifthQuery {
 
         String firstQuery = String.join("", firstQueryAsList);
 
-        List<Value> firstAnswers = transaction.execute((AggregateQuery) parse(firstQuery));
+        List<Value> firstAnswers = transaction.execute((GraqlGet.Aggregate) parse(firstQuery));
         float fisrtResult = 0;
         if (firstAnswers.size() > 0) {
             fisrtResult = firstAnswers.get(0).asValue().number().floatValue();
@@ -827,7 +827,7 @@ public class PhoneCallsFifthQuery {
         String secondQuery = String.join("", secondQueryAsList);
 
         float secondResult = 0;
-        List<Value> secondAnswers = transaction.execute((AggregateQuery) parse(secondQuery));
+        List<Value> secondAnswers = transaction.execute((GraqlGet.Aggregate) parse(secondQuery));
         if (secondAnswers.size() > 0) {
             secondResult = secondAnswers.get(0).asValue().number().floatValue();
         }

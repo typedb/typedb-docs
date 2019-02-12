@@ -797,7 +797,7 @@ package ai.grakn.examples;
 import grakn.core.client.GraknClient;
 import grakn.core.client.GraknClient.Transaction;
 import static grakn.core.graql.query.Graql.*;
-import grakn.core.graql.query.InsertQuery;
+import grakn.core.graql.query.query.GraqlInsert;
 import grakn.core.server.exception.InvalidKBException;
 import grakn.core.server.exception.TransactionException;
 
@@ -945,7 +945,7 @@ public class PhoneCallsCSVMigration {
             Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
             String graqlInsertQuery = input.template(item); // 2b
             System.out.println("Executing Graql Query: " + graqlInsertQuery);
-            transaction.execute((InsertQuery) parse(graqlInsertQuery)); // 2c
+            transaction.execute((GraqlInsert) parse(graqlInsertQuery)); // 2c
             transaction.commit(); // 2d
 
         }
@@ -996,7 +996,7 @@ package ai.grakn.examples;
 import grakn.core.client.GraknClient;
 import grakn.core.client.GraknClient.Transaction;
 import static grakn.core.graql.query.Graql.*;
-import grakn.core.graql.query.InsertQuery;
+import grakn.core.graql.query.query.GraqlInsert;
 import grakn.core.server.exception.InvalidKBException;
 import grakn.core.server.exception.TransactionException;
 
@@ -1143,7 +1143,7 @@ public class PhoneCallsJSONMigration {
             Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
             String graqlInsertQuery = input.template(item); // 2b
             System.out.println("Executing Graql Query: " + graqlInsertQuery);
-            transaction.execute((InsertQuery) parse(graqlInsertQuery)); // 2c
+            transaction.execute((GraqlInsert) parse(graqlInsertQuery)); // 2c
             transaction.commit(); // 2d
 
         }
@@ -1201,7 +1201,7 @@ package ai.grakn.examples;
 import grakn.core.client.GraknClient;
 import grakn.core.client.GraknClient.Transaction;
 import static grakn.core.graql.query.Graql.*;
-import grakn.core.graql.query.InsertQuery;
+import grakn.core.graql.query.query.GraqlInsert;
 import grakn.core.server.exception.InvalidKBException;
 import grakn.core.server.exception.TransactionException;
 
@@ -1351,7 +1351,7 @@ public class PhoneCallsXMLMigration {
             Transaction transaction = session.transaction(Transaction.Type.WRITE); // 2a
             String graqlInsertQuery = input.template(item); // 2b
             System.out.println("Executing Graql Query: " + graqlInsertQuery);
-            transaction.execute((InsertQuery) parse(graqlInsertQuery)); // 2c
+            transaction.execute((GraqlInsert) parse(graqlInsertQuery)); // 2c
             transaction.commit(); // 2d
 
         }

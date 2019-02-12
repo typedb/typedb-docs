@@ -40,7 +40,7 @@ get $x-fn, $y-fn, $y-pn;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("fr").isa("friendship").rel("x").rel("y"),
   var("x").isa("person").has("full-name", var("x-fn")),
   var("x-fn").contains("Miriam"),
@@ -68,7 +68,7 @@ match $p isa person; get; limit 1;
 <!-- not yet implemented -->
 <!-- test-ignore -->
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person")
 ).limit(1).get();
 ```
@@ -93,7 +93,7 @@ match $p isa person, has full-name $fn; get; order $fn asc;
 <!-- not yet implemented -->
 <!-- test-ignore -->
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
 ).orderBy("fn", Order.asc).get();
 ```
@@ -124,7 +124,7 @@ match $p isa person, has full-name $fn;  get; order $fn; offset 100; limit 10;
 <!-- not yet implemented -->
 <!-- test-ignore -->
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
 ).orderBy("fn").offset(6).limit(10).get();
 ```

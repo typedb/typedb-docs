@@ -48,7 +48,7 @@ match $p isa person; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   Graql.var("p").isa("person")
 ).get();
 ```
@@ -70,7 +70,7 @@ match $p isa person, has full-name $n; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person").has("full-name", var("n"))
 ).get();
 ```
@@ -93,7 +93,7 @@ match $emp (employer: $x, employee: $y) isa employment; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("emp").isa("employment").rel("employer", "x").rel("employee", "y")
 ).get();
 ```
@@ -115,7 +115,7 @@ match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; g
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref"))
 ).get();
 ```
@@ -137,7 +137,7 @@ match (employer: $x, employee: $y) isa employment; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var().isa("employment").rel("employer", "x").rel("employee", "y")
 ).get();
 ```
@@ -157,7 +157,7 @@ match $fr ($x, $y) isa friendship; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("fr").isa("friendship").rel("x").rel("y")
 ).get();
 ```
@@ -180,7 +180,7 @@ match $x "like"; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("x").val("like")
 ).get();
 ```
@@ -196,13 +196,13 @@ We can match instances of attributes based on their value regardless of what con
 
 [tab:Graql]
 ```graql
-match $n isa nickname; $n == "Mitzi"; get;
+match $n isa nickname; $n "Mitzi"; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("x").isa("nickname").val("Mitzi")
 ).get();
 ```
@@ -224,7 +224,7 @@ match $phone-number contains "+44"; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("phone-number").contains("+44")
 ).get();
 ```
@@ -246,7 +246,7 @@ match $x like "(Miriam Morton|Solomon Tran)"; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("phone-number").regex("(Miriam Morton|Solomon Tran)")
 ).get();
 ```
@@ -268,7 +268,7 @@ match $p isa person, has nickname $nn, has full-name $fn; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person").has("nickname", var("nn")).has("full-name", var("fn"))
 ).get();
 ```
@@ -288,7 +288,7 @@ match $p isa person, has nickname "Mitzi", has phone-number contains "+44"; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person").has("nickname", "Mitzi").has("phone-number", contains("+44"))
 ).get();
 ```
@@ -307,7 +307,7 @@ match $p isa person, has nickname "Mitzi", has phone-number $pn; $pn contains "+
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person").has("nickname", "Mitzi").has("phone-number", var("pn")),
   var("pn").contains("+44")
 ).get();
@@ -328,7 +328,7 @@ match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn cont
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("p").isa("person").has("full-name", var("fn")),
   or(
     var("fn").contains("Miriam"),
@@ -352,7 +352,7 @@ match $rr isa! romantic-relationship; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("rr").isaX("romantic-relationship")
 ).get();
 ```
@@ -377,7 +377,7 @@ match $x id V41016; get;
 [tab:Java]
 <!-- test-ignore -->
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("x").id("V41016")
 ).get();
 ```
@@ -408,23 +408,23 @@ match $x sub relationship; get;
 
 [tab:Java]
 ```java
-GetQuery query_a = Graql.match(
+GraqlGet query_a = Graql.match(
   var("x").sub("thing")
 ).get();
 
-GetQuery query_b = Graql.match(
+GraqlGet query_b = Graql.match(
   var("x").sub("attribute")
 ).get();
 
-GetQuery query_c = Graql.match(
+GraqlGet query_c = Graql.match(
   var("x").sub("entity")
 ).get();
 
-GetQuery query_d = Graql.match(
+GraqlGet query_d = Graql.match(
   var("x").sub("role")
 ).get();
 
-GetQuery query_e = Graql.match(
+GraqlGet query_e = Graql.match(
   var("x").sub("relationship")
 ).get();
 ```
@@ -445,7 +445,7 @@ match employment relates $x; get;
 [tab:Java]
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   type("employment").relates(var("x"))
 ).get();
 ```
@@ -467,7 +467,7 @@ match location-of-office relates $x as located-subject; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   type("location-of-office").relates(var("x")),
   var("x").sub("located-subject")
 ).get();
@@ -490,7 +490,7 @@ match $x plays employee; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("x").plays("employee")
 ).get();
 ```
@@ -512,7 +512,7 @@ match $x has title; get;
 
 [tab:Java]
 ```java
-GetQuery query = Graql.match(
+GraqlGet query = Graql.match(
   var("x").has("title")
 ).get();
 ```

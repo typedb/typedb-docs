@@ -48,7 +48,7 @@ people-with-same-parents-are-siblings sub rule,
 
 [tab:Java]
 ```java
-DefineQuery query = Graql.define(
+GraqlDefine query = Graql.define(
   type("people-with-same-parents-are-siblings").sub("rule").when(
     and(
       var().rel("mother", "m").rel("x").isa("parentship"),

@@ -120,7 +120,7 @@ package ai.grakn.examples;
 
 import grakn.core.client.GraknClient;
 import grakn.core.graql.answer.ConceptMap;
-import grakn.core.graql.query.GetQuery;
+import grakn.core.graql.query.query.GraqlGet;
 import grakn.core.server.Transaction;
 import grakn.core.server.exception.TransactionException;
 import static grakn.core.graql.query.Graql.*;
@@ -133,7 +133,7 @@ public class SocialNetworkQuery extends Throwable {
         GraknClient.Session session = client.session("social_network");
         GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
 
-        GetQuery query = match(
+        GraqlGet query = match(
                 var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
                 var("per").has("full-name", var("per-fn")),
                 var("org").has("name", var("org-n"))
@@ -166,7 +166,7 @@ with client.session(keyspace = "social_network") as session:
       match
         $pos isa media;
         $fun isa emotion;
-        $fun == "funny";
+        $fun "funny";
         $per has gender "female";
         (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
       get $pos;

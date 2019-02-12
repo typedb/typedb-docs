@@ -32,7 +32,7 @@ insert $p isa person, has full-name "John Parkson", has gender "male", has email
 
 [tab:Java]
 ```java
-InsertQuery query = Graql.insert(
+GraqlInsert query = Graql.insert(
   var("p").isa("person").has("full-name", "John Parkson").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
 );
 ```
@@ -50,13 +50,13 @@ Similar to inserting an instance of an entity, to insert an instance of an attri
 
 [tab:Graql]
 ```graql
-insert $x isa emotion; $x == "like";
+insert $x isa emotion; $x "like";
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-InsertQuery query = Graql.insert(
+GraqlInsert query = Graql.insert(
   var("x").isa("emotion").val("like")
 );
 ```
@@ -80,7 +80,7 @@ insert $new-employment (employer: $org, employee: $person) isa employment;
 
 [tab:Java]
 ```java
-InsertQuery query = Graql.match(
+GraqlInsert query = Graql.match(
   var("org").isa("organisation").has("name", "Facelook"),
   var("p").isa("person").has("email", "tanya.arnold@gmail.com")
 ).insert(
