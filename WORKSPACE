@@ -21,15 +21,15 @@ maven_dependencies_for_build()
 ###############################################################
 git_repository(
     name = "graknlabs_grakn",
-    remote = "https://github.com/lolski/grakn",
-    commit = 'd8fe9eec5ed120801117ded134b15e55d72cdd77' # grakn-dependency: do not remove this comment. this is used by the auto-update script
+    remote = "https://github.com/graknlabs/grakn",
+    commit = '909bc2791671c4ace6159c5f891c8e7006e2db00' # grakn-dependency: do not remove this comment. this is used by the auto-update script
 )
 
-load("@graknlabs_grakn//dependencies/pip:dependencies.bzl", "python_dependencies")
-python_dependencies()
-
-load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
-pip_repositories()
+#load("@graknlabs_grakn//dependencies/pip:dependencies.bzl", "python_dependencies")
+#python_dependencies()
+#
+#load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
+#pip_repositories()
 
 load("@graknlabs_grakn//dependencies/compilers:dependencies.bzl", "grpc_dependencies")
 grpc_dependencies()
@@ -47,12 +47,13 @@ git_repository(
     commit="df751d03b1fcbb69ed11dd1e7265020144d7233b"
 )
 
-pip_import(
-    name = "pypi_deployment_dependencies",
-    requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
-)
-load("@pypi_deployment_dependencies//:requirements.bzl", "pip_install")
-pip_install()
+#pip_import(
+#    name = "pypi_deployment_dependencies",
+#    requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
+#)
+
+#load("@pypi_deployment_dependencies//:requirements.bzl", "pip_install")
+#pip_install()
 
 
 # ----- @graknlabs_grakn deps -----
@@ -81,3 +82,19 @@ antlr_dependencies()
 
 load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
 java_grpc_compile()
+
+
+
+
+
+
+load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
+pip_repositories()
+
+pip_import(
+    name = "pypi_dependencies",
+    requirements = "test/requirements.txt",
+)
+
+load("@pypi_dependencies//:requirements.bzl", "pip_install")
+pip_install()

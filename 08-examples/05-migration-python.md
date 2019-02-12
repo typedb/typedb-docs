@@ -405,6 +405,7 @@ Here is how our `migrate.py` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
+<!-- test-standalone phone_calls_csv_migration.py -->
 ```python
 import grakn
 import csv
@@ -494,11 +495,12 @@ inputs = [
   }
 ]
 
-build_phone_call_graph(inputs)
+build_phone_call_graph(inputs=inputs)
 ```
 [tab:end]
 
 [tab:JSON]
+<!-- test-standalone phone_calls_json_migration.py -->
 ```python
 import grakn
 import ijson
@@ -592,6 +594,7 @@ build_phone_call_graph(inputs)
 [tab:end]
 
 [tab:XML]
+<!-- test-standalone phone_calls_xml_migration.py -->
 ```python
 import grakn
 import xml.etree.cElementTree as et
