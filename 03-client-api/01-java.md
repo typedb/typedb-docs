@@ -11,21 +11,21 @@ The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.
 
 [tab:Grakn Core]
 ```xml
-<dependency>
-  <groupId>ai.grakn</groupId>
-  <artifactId>client-java</artifactId>
-  <version>1.4.3</version>
-</dependency>
+&lt;dependency&gt;
+  &lt;groupId&gt;ai.grakn&lt;/groupId&gt;
+  &lt;artifactId&gt;client-java&lt;/artifactId&gt;
+  &lt;version&gt;1.4.3&lt;/version&gt;
+&lt;/dependency&gt;
 ```
 [tab:end]
 
 [tab:Grakn KGMS]
 ```xml
-<dependency>
-  <groupId>ai.grakn.kgms</groupId>
-  <artifactId>client</artifactId>
-  <version>1.4.3</version>
-</dependency>
+&lt;dependency&gt;
+  &lt;groupId&gt;ai.grakn.kgms&lt;/groupId&gt;
+  &lt;artifactId&gt;client&lt;/artifactId&gt;
+  &lt;version&gt;1.4.3&lt;/version&gt;
+&lt;/dependency&gt;
 ```
 [tab:end]
 
