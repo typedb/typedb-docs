@@ -4,33 +4,40 @@ load("@io_bazel_rules_python//python:python.bzl", "py_library", "py_test")
 load("@pypi_dependencies//:requirements.bzl", "requirement")
 
 py_library(
-    name = "standalone-python-phone-calls",
+    name = "python-library-standalone-python-phone-calls",
     deps = [
-        requirement('grakn'),
-        requirement('csv')
-  ]
+        "@graknlabs_client_python//:client_python"
+    ]
 )
 
 py_test(
     name = "standalone-python-phone-calls",
+    main = "generated/test_standalone_phone_calls.py",
     srcs = [
-        "generated/phone_calls_csv_migration.py",
-        "generated/test_standalone_phone_calls.py"
+        ":generate-standalones-python-phone-calls",
+        ":move-test-standalone-python-phone-calls"
     ],
     deps = [
-        "standalone-python-phone-calls"
+        "python-library-standalone-python-phone-calls"
     ]
 )
 
 genrule(
     name = "generate-standalones-python-phone-calls",
     srcs = [
-        "generate_standalone_tests.py",
+        "//test/standalone:generate_standalone_tests.py",
         "//:content"
     ],
-    cmd = "python $(location generate_standalone_tests.py) $(OUTS) $(locations //:content)",
+    cmd = "python $(location //test/standalone:generate_standalone_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         ## examples/migration-python
         "generated/phone_calls_csv_migration.py"
     ]
+)
+
+genrule(
+    name = "move-test-standalone-python-phone-calls",
+    srcs = ["phone_calls.py"],
+    cmd = "cp $(location phone_calls.py) $(location generated/test_standalone_phone_calls.py)",
+    outs = ["generated/test_standalone_phone_calls.py"]
 )
