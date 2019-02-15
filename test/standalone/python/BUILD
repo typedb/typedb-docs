@@ -6,7 +6,8 @@ load("@pypi_dependencies//:requirements.bzl", "requirement")
 py_library(
     name = "python-library-standalone-python-phone-calls",
     deps = [
-        "@graknlabs_client_python//:client_python"
+        "@graknlabs_client_python//:client_python",
+        requirement("ijson")
     ]
 )
 
@@ -18,7 +19,10 @@ py_test(
         ":move-test-standalone-python-phone-calls"
     ],
     deps = [
-        "python-library-standalone-python-phone-calls"
+        ":python-library-standalone-python-phone-calls"
+    ],
+    data = [
+        "//files:phone-calls-kg"
     ]
 )
 
@@ -31,7 +35,15 @@ genrule(
     cmd = "python $(location //test/standalone:generate_standalone_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         ## examples/migration-python
-        "generated/phone_calls_csv_migration.py"
+        "generated/phone_calls_csv_migration.py",
+        "generated/phone_calls_json_migration.py",
+        "generated/phone_calls_xml_migration.py",
+        ## examples/queries
+        "generated/phone_calls_first_query.py",
+        "generated/phone_calls_second_query.py",
+        "generated/phone_calls_third_query.py",
+        "generated/phone_calls_forth_query.py",
+        "generated/phone_calls_fifth_query.py",
     ]
 )
 

@@ -52,19 +52,19 @@ import grakn
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template
   }
 ]
@@ -336,22 +336,22 @@ For parsing XML data, we need to know the target tag name. This needs to be spec
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template,
     "selector": "company"
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template,
     "selector": "person"
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template,
     "selector": "contract"
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template,
     "selector": "call"
   }
@@ -478,19 +478,19 @@ def parse_data_to_dictionaries(input):
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template
   }
 ]
@@ -572,19 +572,19 @@ def parse_data_to_dictionaries(input):
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template
   }
 ]
@@ -685,22 +685,22 @@ def parse_data_to_dictionaries(input):
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template,
     "selector": "company"
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template,
     "selector": "person"
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template,
     "selector": "contract"
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template,
     "selector": "call"
   }

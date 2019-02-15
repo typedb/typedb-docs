@@ -69,19 +69,19 @@ def parse_data_to_dictionaries(input):
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies/companies",
     "template": company_template
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/companies/people",
     "template": person_template
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/companies/contracts",
     "template": contract_template
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/companies/calls",
     "template": call_template
   }
 ]

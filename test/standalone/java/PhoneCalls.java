@@ -48,27 +48,32 @@ public class TestStandalonePhoneCalls {
     }
 
     @Test
-    public void testCPhoneCallsForthQuery() {
+    public void testCPhoneCallsThirdQuery() {
+        PhoneCallsSecondQuery.main(new String[]{});
+    }
+
+    @Test
+    public void testDPhoneCallsForthQuery() {
         PhoneCallsForthQuery.main(new String[]{});
     }
 
     @Test
-    public void testDPhoneCallsFifthQuery() {
+    public void testEPhoneCallsFifthQuery() {
         PhoneCallsFifthQuery.main(new String[]{});
     }
 
     @Test
-    public void testEPhoneCallsCSVMigration() throws FileNotFoundException {
+    public void testFPhoneCallsCSVMigration() throws FileNotFoundException {
         PhoneCallsCSVMigration.main(new String[]{});
     }
 
     @Test
-    public void testFPhoneCallsJSONMigration() throws IOException {
+    public void testGPhoneCallsJSONMigration() throws IOException {
         PhoneCallsJSONMigration.main(new String[]{});
     }
 
     @Test
-    public void testGPhoneCallsXMLMigration() throws FileNotFoundException, XMLStreamException {
+    public void testHPhoneCallsXMLMigration() throws FileNotFoundException, XMLStreamException {
         PhoneCallsXMLMigration.main(new String[]{});
     }
 }

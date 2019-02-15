@@ -338,7 +338,7 @@ async function ExecuteMatchQuery() {
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_first_query.py -->
+<!-- test-standalone phone_calls_second_query.py -->
 ```python
 import grakn
 
@@ -684,18 +684,18 @@ import grakn
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
   with session.transaction(grakn.TxType.READ) as tx:
-  query = [
-      'match ',
-      '  $target isa person, has phone-number "+48 894 777 5173";',
-      '  $company isa company, has name "Telecom";',
-      '  $customer-a isa person, has phone-number $phone-number-a;',
-      '  (customer: $customer-a, provider: $company) isa contract;',
-      '  (caller: $customer-a, callee: $target) isa call;',
-      '  $customer-b isa person, has phone-number $phone-number-b;',
-      '  (customer: $customer-b, provider: $company) isa contract;',
-      '  (caller: $customer-b, callee: $target) isa call;',
-      '  (caller: $customer-a, callee: $customer-b) isa call;',
-      'get $phone-number-a, $phone-number-b;'
+    query = [
+        'match ',
+        '  $target isa person, has phone-number "+48 894 777 5173";',
+        '  $company isa company, has name "Telecom";',
+        '  $customer-a isa person, has phone-number $phone-number-a;',
+        '  (customer: $customer-a, provider: $company) isa contract;',
+        '  (caller: $customer-a, callee: $target) isa call;',
+        '  $customer-b isa person, has phone-number $phone-number-b;',
+        '  (customer: $customer-b, provider: $company) isa contract;',
+        '  (caller: $customer-b, callee: $target) isa call;',
+        '  (caller: $customer-a, callee: $customer-b) isa call;',
+        'get $phone-number-a, $phone-number-b;'
     ]
 
     print("\nQuery:\n", "\n".join(query))

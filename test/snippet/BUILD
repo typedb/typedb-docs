@@ -7,12 +7,12 @@
 #    test_class = "generated.TestSnippetJava",
 #    srcs = [":generate-test-snippet-java"],
 #    deps = [
-#        "@graknlabs_grakn//client-java:client-java",
-#        "@graknlabs_grakn//server:server",
-#        "@graknlabs_grakn//test-integration/rule:grakn-test-server"
+#        "@graknlabs_grakn_core//client-java:client-java",
+#        "@graknlabs_grakn_core//server:server",
+#        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server"
 #    ],
 #    classpath_resources = [
-#        "@graknlabs_grakn//test-integration/resources:logback-test",
+#        "@graknlabs_grakn_core//test-integration/resources:logback-test",
 #    ],
 #    data = [
 #        "//files:social-network-kg", # filegroup defined in files/BUILD
@@ -40,12 +40,12 @@
 #    test_class = "generated.TestSnippetGraql",
 #    srcs = [":generate-test-snippet-graql"],
 #    deps = [
-#        "@graknlabs_grakn//client-java:client-java",
-#        "@graknlabs_grakn//server:server",
-#        "@graknlabs_grakn//test-integration/rule:grakn-test-server"
+#        "@graknlabs_grakn_core//client-java:client-java",
+#        "@graknlabs_grakn_core//server:server",
+#        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server"
 #    ],
 #    classpath_resources = [
-#        "@graknlabs_grakn//test-integration/resources:logback-test",
+#        "@graknlabs_grakn_core//test-integration/resources:logback-test",
 #    ],
 #    data = [
 #        "//files:social-network-kg", # filegroup defined in files/BUILD
