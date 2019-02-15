@@ -155,7 +155,7 @@ public class SocialNetworkQuery extends Throwable {
 
 #### Lazily retrieve all photos and videos that have been found funny by women sing [Client Python](/docs/client-api/python)
 
-<!-- test-ignore -->
+<!-- test-standalone social_network_query.py -->
 ```python
 import grakn
 

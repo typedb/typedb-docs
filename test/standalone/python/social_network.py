@@ -1,15 +1,11 @@
 import grakn
-import csv
-import phone_calls_csv_migration
+import unittest
 
-from unittest import TestCase
+class TestStandaloneSocialNetwork(unittest.TestCase):
 
-
-class LoadPhoneCalls(TestCase):
-
-    def setUpClass(self):
-
-        with open('files/phone-calls/schema.gql', 'r') as schema:
+    @classmethod
+    def setUpClass(cls):
+        with open('files/social-network/schema.gql', 'r') as schema:
             define_query = schema.read()
 
             client = grakn.Grakn(uri="localhost:48555")
@@ -18,5 +14,9 @@ class LoadPhoneCalls(TestCase):
                     transaction.query(define_query)
                     transaction.commit()
 
-    def test_csv_migration(self):
-        phone_calls_csv_migration.build_phone_call_graph()
+    def test_social_network_query(self):
+        import social_network_query
+
+
+if __name__ == '__main__':
+    unittest.main()

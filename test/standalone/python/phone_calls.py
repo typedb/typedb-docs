@@ -1,5 +1,4 @@
 import grakn
-
 import unittest
 
 class TestStandalonePhoneCalls(unittest.TestCase):

@@ -5,9 +5,19 @@ load("@pypi_dependencies//:requirements.bzl", requirement="requirement")
 load("@test_pypi_dependencies//:requirements.bzl", test_requirement="requirement")
 
 py_library(
+    name = "python-library-standalone-python-common",
+    deps = [
+        "@graknlabs_client_python//:client_python"
+    ]
+)
+
+#################################
+## phone_calls Standalones Test #
+#################################
+
+py_library(
     name = "python-library-standalone-python-phone-calls",
     deps = [
-        "@graknlabs_client_python//:client_python",
         test_requirement("ijson")
     ]
 )
@@ -20,6 +30,7 @@ py_test(
         ":move-test-standalone-python-phone-calls"
     ],
     deps = [
+        ":python-library-standalone-python-common",
         ":python-library-standalone-python-phone-calls"
     ],
     data = [
@@ -53,4 +64,43 @@ genrule(
     srcs = ["phone_calls.py"],
     cmd = "cp $(location phone_calls.py) $(location generated/test_standalone_phone_calls.py)",
     outs = ["generated/test_standalone_phone_calls.py"]
+)
+
+####################################
+## social_network Standalones Test #
+####################################
+
+py_test(
+    name = "standalone-social-network",
+    main = "generated/test_standalone_social_network.py",
+    srcs = [
+        ":generate-standalones-python-social-network",
+        ":move-test-standalone-python-social-network"
+    ],
+    deps = [
+        ":python-library-standalone-python-common"
+    ],
+    data = [
+        "//files:social-network-kg"
+    ]
+)
+
+genrule(
+    name = "generate-standalones-python-social-network",
+    srcs = [
+        "//test/standalone:generate_standalone_tests.py",
+        "//:content"
+    ],
+    cmd = "python $(location //test/standalone:generate_standalone_tests.py) $(OUTS) $(locations //:content)",
+    outs = [
+        ## general/quickstart
+        "generated/social_network_query.py"
+    ]
+)
+
+genrule(
+    name = "move-test-standalone-python-social-network",
+    srcs = ["social_network.py"],
+    cmd = "cp $(location social_network.py) $(location generated/test_standalone_social_network.py)",
+    outs = ["generated/test_standalone_social_network.py"]
 )
