@@ -77,20 +77,20 @@ git_repository(
 )
 
 pip_import(
-    name = "client_python_dependencies",
+    name = "pypi_dependencies",
     requirements = "@graknlabs_client_python//:requirements.txt",
 )
 
-load("@client_python_dependencies//:requirements.bzl", "pip_install")
+load("@pypi_dependencies//:requirements.bzl", "pip_install")
 pip_install()
 
 # ----- local python dependencies -----
 pip_import(
-    name = "pypi_dependencies",
+    name = "test_pypi_dependencies",
     requirements = "//test/standalone/python:requirements.txt",
 )
 
-load("@pypi_dependencies//:requirements.bzl", "pip_install")
+load("@test_pypi_dependencies//:requirements.bzl", "pip_install")
 pip_install()
 
 # ----- grakn bazel distribution dependencies -----
