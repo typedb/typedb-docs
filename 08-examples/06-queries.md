@@ -300,7 +300,7 @@ const session = grakn.session("phone_calls");
 ExecuteMatchQuery();
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+  const transaction = await session.transaction(Grakn.TxType.READ);
 
   let query = [
     "match ",
@@ -318,7 +318,7 @@ async function ExecuteMatchQuery() {
   console.log("\nQuery:\n", query.join("\n"));
   query = query.join("");
 
-  const iterator = await tx.query(query);
+  const iterator = await transaction.query(query);
   const answers = await iterator.collect();
   const result = await Promise.all(
     answers.map(answer =>
@@ -344,7 +344,7 @@ import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
+  with session.transaction(grakn.TxType.READ) as transaction:
     query = [
       'match ',
       '  $suspect isa person, has city "London", has age > 50;',
@@ -361,7 +361,7 @@ with client.session(keyspace = "phone_calls") as session:
     print("\nQuery:\n", "\n".join(query))
     query = "".join(query)
 
-    iterator = tx.query(query)
+    iterator = transaction.query(query)
     answers = iterator.collect_concepts()
     result = [ answer.value() for answer in answers ]
 
@@ -467,7 +467,7 @@ const session = grakn.session("phone_calls");
 ExecuteMatchQuery();
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+  const transaction = await session.transaction(Grakn.TxType.READ);
 
   let query = [
     "match ",
@@ -482,7 +482,7 @@ async function ExecuteMatchQuery() {
   console.log("\nQuery:\n", query.join("\n"));
   query = query.join("");
 
-  const iterator = await tx.query(query);
+  const iterator = await transaction.query(query);
   const answers = await iterator.collect();
   const result = await Promise.all(
     answers.map(answer =>
@@ -508,7 +508,7 @@ import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
+  with session.transaction(grakn.TxType.READ) as transaction:
     query = [
       'match ',
       '  $common-contact isa person, has phone-number $phone-number;',
@@ -522,7 +522,7 @@ with client.session(keyspace = "phone_calls") as session:
     print("\nQuery:\n", "\n".join(query))
     query = "".join(query)
 
-    iterator = tx.query(query)
+    iterator = transaction.query(query)
     answers = iterator.collect_concepts()
     result = [ answer.value() for answer in answers ]
 
@@ -638,7 +638,7 @@ const session = grakn.session("phone_calls");
 ExecuteMatchQuery();
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+  const transaction = await session.transaction(Grakn.TxType.READ);
 
   let query = [
     "match ",
@@ -657,7 +657,7 @@ async function ExecuteMatchQuery() {
   console.log("\nQuery:\n", query.join("\n"));
   query = query.join("");
 
-  const iterator = await tx.query(query);
+  const iterator = await transaction.query(query);
   const answers = await iterator.collect();
   const result = await Promise.all(
     answers.map(answer =>
@@ -683,7 +683,7 @@ import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
+  with session.transaction(grakn.TxType.READ) as transaction:
     query = [
         'match ',
         '  $target isa person, has phone-number "+48 894 777 5173";',
@@ -701,7 +701,7 @@ with client.session(keyspace = "phone_calls") as session:
     print("\nQuery:\n", "\n".join(query))
     query = "".join(query)
 
-    iterator = tx.query(query)
+    iterator = transaction.query(query)
     answers = iterator.collect_concepts()
     result = [ answer.value() for answer in answers ]
 
@@ -853,7 +853,7 @@ const session = grakn.session("phone_calls");
 ExecuteMatchQuery();
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+  const transaction = await session.transaction(Grakn.TxType.READ);
 
   let queryA = [
     "match",
@@ -866,7 +866,7 @@ async function ExecuteMatchQuery() {
   console.log("\nQuery:\n", queryA.join("\n"));
   queryA = queryA.join("");
 
-  const iteratorA = await tx.query(queryA);
+  const iteratorA = await transaction.query(queryA);
   const answersA = await iteratorA.collect();
   const resultA = answersA[0].number();
   let result =
@@ -885,7 +885,7 @@ async function ExecuteMatchQuery() {
   console.log("\nQuery:\n", queryB.join("\n"));
   queryB = queryB.join("");
 
-  const iteratorB = await tx.query(queryB);
+  const iteratorB = await transaction.query(queryB);
   const answersB = await iteratorB.collect();
   const resultB = answersB[0].number();
   result +=
@@ -908,8 +908,8 @@ import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
-    query_a = [
+  with session.transaction(grakn.TxType.READ) as transaction:
+    first_query = [
       'match',
       '  $customer isa person, has age < 20;',
       '  $company isa company, has name "Telecom";',
@@ -918,15 +918,18 @@ with client.session(keyspace = "phone_calls") as session:
       'get $duration; mean $duration;'
     ]
 
-    print("\nQuery:\n", "\n".join(query_a))
-    query_a = "".join(query_a)
+    print("\nQuery:\n", "\n".join(first_query))
+    first_query = "".join(first_query)
 
-    iterator_a = tx.query(query_a)
-    result_a = next(iterator_a).number()
+    first_answer = list(transaction.query(first_query))
+    first_result = 0
+    if len(first_answer) > 0:
+      first_result = first_answer.number()
+
     result = ("Customers aged under 20 have made calls with average duration of "
-             + str(round(result_a)) + " seconds.\n")
+             + str(round(first_result)) + " seconds.\n")
 
-    query_b = [
+    second_query = [
       'match ',
       '  $customer isa person, has age > 40;',
       '  $company isa company, has name "Telecom";',
@@ -934,13 +937,16 @@ with client.session(keyspace = "phone_calls") as session:
       '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
       'get $duration; mean $duration;'
     ]
-    print("\nQuery:\n", "\n".join(query_b))
-    query_b = "".join(query_b)
+    print("\nQuery:\n", "\n".join(second_query))
+    second_query = "".join(second_query)
 
-    iterator_b = tx.query(query_b)
-    result_b = next(iterator_b).number()
+    second_answer = list(transaction.query(second_query))
+    second_result = 0
+    if len(second_answer) > 0:
+      second_result = second_answer.number()
+
     result += ("Customers aged above 40 have made calls with average duration of "
-              + str(round(result_b)) + " seconds.\n")
+              + str(round(second_result)) + " seconds.\n")
 
     print("\nResult:\n", result)
 ```
