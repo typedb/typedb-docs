@@ -175,12 +175,12 @@ To navigate between Graql queries that we have previously executed, while in the
 
 </div>
 
-### Tabs
+### Visualise Multiple Queries
 <div class="slideshow">
 
 [slide:start]
 [body:start]![tabs](/docs/images/workbase/1.1/tabs_1.png)[body:end]
-[footer:start]To visualise multiple queries or keyspaces at the same time, you can create a new tab by clicking the __plus__ icon on the bottom left.[footer:end]
+[footer:start]To visualise multiple queries or keyspaces at the same time, we can create a new tab by clicking the __plus__ icon on the bottom left.[footer:end]
 [slide:end]
 
 [slide:start]
@@ -190,12 +190,12 @@ To navigate between Graql queries that we have previously executed, while in the
 
 [slide:start]
 [body:start]![tabs](/docs/images/workbase/1.1/tabs_3.png)[body:end]
-[footer:start]You may also rename a tab by double clicking on the tab and then save it by clicking the __tick__ icon.[footer:end]
+[footer:start]We may also rename a tab by double clicking on the tab and then save it by clicking the __tick__ icon.[footer:end]
 [slide:end]
 
 [slide:start]
 [body:start]![tabs](/docs/images/workbase/1.1/tabs_4.png)[body:end]
-[footer:start]You may close a tab by clicking the __cross__ icon.[footer:end]
+[footer:start]We may close a tab by clicking the __cross__ icon.[footer:end]
 [slide:end]
 
 </div>
