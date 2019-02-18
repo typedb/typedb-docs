@@ -13,27 +13,27 @@ Having selected a node, we can choose what colour it should be presented in and 
 <div class="slideshow">
 
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/display_settings_1.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/display_settings_1.png)[body:end]
 [footer:start]To configure the display settings, click on the _gear_ icon.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/display_settings_2.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/display_settings_2.png)[body:end]
 [footer:start]Expand the _Display Settings_ section.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/display_settings_3.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/display_settings_3.png)[body:end]
 [footer:start]Select the type for which we want to configure the display settings.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/1.1/display_settings_4.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/1.1.1/display_settings_4.png)[body:end]
 [footer:start]To display or hide an attribute on the nodes of the selected type, we can toggle toggle the attribute of interest. To clear all attributes of the selected type, click on the _eraser_ icon. [footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/1.1/display_settings_5.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/1.1.1/display_settings_5.png)[body:end]
 [footer:start]To pick a color for all nodes of the selected type, we need to use the color slider. To reset the color to default, click on the _eraser_ icon.[footer:end]
 [slide:end]
 
@@ -43,17 +43,17 @@ Having selected a node, we can choose what colour it should be presented in and 
 <div class="slideshow">
 
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/concept_info_1.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/concept_info_1.png)[body:end]
 [footer:start]To view details about a concept, click on the _info_ icon.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/concept_info_2.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/concept_info_2.png)[body:end]
 [footer:start]Select the node of interest by clicking on it.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/concept_info_3.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/concept_info_3.png)[body:end]
 [footer:start]View the details of the selected concept.[footer:end]
 [slide:end]
 
@@ -88,17 +88,17 @@ To select more than one node, we need to _hold the command/control key_ while cl
 <div class="slideshow">
 
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/hide_node_1.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/hide_node_1.png)[body:end]
 [footer:start]Select one or [multiple nodes](#select-multiple-nodes).[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/hide_node_2.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/hide_node_2.png)[body:end]
 [footer:start]Right click on the node.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/1.1/hide_node_3.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/1.1.1/hide_node_3.png)[body:end]
 [footer:start]Select _hide_ from the list.[footer:end]
 [slide:end]
 
