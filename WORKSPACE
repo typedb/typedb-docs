@@ -63,7 +63,7 @@ load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
 java_grpc_compile()
 
 ###############################################################
-#               client + python dependencies                  #
+#                client + python dependencies                 #
 ###############################################################
 
 load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
@@ -107,3 +107,37 @@ pip_import(
 
 load("@pypi_deployment_dependencies//:requirements.bzl", "pip_install")
 pip_install()
+
+###############################################################
+#                client + nodejs dependencies                 #
+###############################################################
+
+git_repository(
+    name = "build_bazel_rules_nodejs",
+    remote = "https://github.com/graknlabs/rules_nodejs.git",
+    commit = "ac3f6854365f119130186f971588514ccff503ab",
+)
+
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
+load("@build_bazel_rules_nodejs//:package.bzl", "rules_nodejs_dependencies")
+node_repositories()
+rules_nodejs_dependencies()
+
+# ----- client nodejs + transitive dependencies -----
+git_repository(
+    name = "graknlabs_client_nodejs",
+    remote = "https://github.com/sorsaffari/client-nodejs",
+    commit = 'cf3e652a1ce9738a4c1fa1c744c14d59535bb2ca' # grakn-client-nodejs-dependency: do not remove this comment. this is used by the auto-update script
+)
+
+npm_install(
+    name = "nodejs_dependencies",
+    package_json = "@graknlabs_client_nodejs//:package.json"
+)
+
+# ----- local nodejs dependencies -----
+
+npm_install(
+    name = "test_nodejs_dependencies",
+    package_json = "//test/standalone/nodejs:package.json"
+)

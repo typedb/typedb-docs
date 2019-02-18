@@ -435,6 +435,7 @@ Here is how our `migrate.js` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
+<!-- test-standalone phoneCallsCSVMigration.js -->
 ```javascript
 const Grakn = require("grakn");
 const fs = require("fs");
@@ -567,6 +568,7 @@ function parseDataToObjects(input) {
 [tab:end]
 
 [tab:JSON]
+<!-- test-standalone phoneCallsJSONMigration.js -->
 ```javascript
 const Grakn = require("grakn");
 const fs = require("fs");
@@ -684,6 +686,7 @@ function parseDataToObjects(input) {
 [tab:end]
 
 [tab:XML]
+<!-- test-standalone phoneCallsXMLMigration.js -->
 ```javascript
 const Grakn = require("grakn");
 const fs = require("fs");
