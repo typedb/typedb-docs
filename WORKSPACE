@@ -147,10 +147,3 @@ npm_install(
       "@build_bazel_rules_nodejs//internal/babel_library:yarn.lock",
     ],
 )
-
-# ----- local nodejs dependencies -----
-
-npm_install(
-    name = "test_nodejs_dependencies",
-    package_json = "//test/standalone/nodejs:package.json"
-)

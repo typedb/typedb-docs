@@ -10,7 +10,7 @@ nodejs_jest_test(
     ],
     deps = [
         "@graknlabs_client_nodejs//:client-nodejs",
-        "@test_nodejs_dependencies//jest",
+        "@nodejs_dependencies//jest",
         "@nodejs_dependencies//fs-extra"
     ]
 )
