@@ -131,11 +131,10 @@ node_repositories()
 rules_nodejs_dependencies()
 
 # ----- client nodejs + transitive dependencies -----
-# TODO(sorsaffari): replace with upstream once graknlabs/client-nodejs#7 is merged
 git_repository(
     name = "graknlabs_client_nodejs",
-    remote = "https://github.com/vmax/grakn-client-nodejs",
-    commit = 'b99c8652c3f24cf9c723a44db647a154baf65dc6' # grakn-client-nodejs-dependency: do not remove this comment. this is used by the auto-update script
+    remote = "https://github.com/graknlabs/grakn-client-nodejs",
+    commit = 'af9a565b2ab828b856340d3e63490f74aed37341' # grakn-client-nodejs-dependency: do not remove this comment. this is used by the auto-update script
 )
 
 npm_install(
@@ -144,6 +143,6 @@ npm_install(
     data = [
       "@build_bazel_rules_nodejs//internal/babel_library:package.json",
       "@build_bazel_rules_nodejs//internal/babel_library:babel.js",
-      "@build_bazel_rules_nodejs//internal/babel_library:yarn.lock",
-    ],
+      "@build_bazel_rules_nodejs//internal/babel_library:yarn.lock"
+    ]
 )
