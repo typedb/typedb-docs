@@ -22,7 +22,7 @@ maven_dependencies_for_build()
 git_repository(
     name = "graknlabs_grakn_core",
     remote = "https://github.com/graknlabs/grakn",
-    commit = '4a5ccbcee03023d11b4d09134ad344d0cbf14599' # grakn-dependency: do not remove this comment. this is used by the auto-update script
+    commit = '80a9d8f01cb2fe642b9c29d0c550987dee3feb67' # grakn-dependency: do not remove this comment. this is used by the auto-update script
 )
 
 load("@graknlabs_grakn_core//dependencies/compilers:dependencies.bzl", "grpc_dependencies")
@@ -51,13 +51,20 @@ maven_dependencies_for_build()
 load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl", maven_dependencies_for_build = "maven_dependencies")
 maven_dependencies_for_build()
 
+# Load Graql dependencies
+load("@graknlabs_grakn_core//dependencies/git:dependencies.bzl", "graknlabs_graql")
+graknlabs_graql()
+
 # Load ANTLR dependencies for Bazel
-load("@graknlabs_grakn_core//dependencies/compilers:dependencies.bzl", "antlr_dependencies")
+load("@graknlabs_graql//dependencies/compilers:dependencies.bzl", "antlr_dependencies")
 antlr_dependencies()
 
 # Load ANTLR dependencies for ANTLR programs
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies()
+
+load("@graknlabs_graql//dependencies/maven:dependencies.bzl", graql_dependencies = "maven_dependencies")
+graql_dependencies()
 
 load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
 java_grpc_compile()
@@ -124,20 +131,19 @@ node_repositories()
 rules_nodejs_dependencies()
 
 # ----- client nodejs + transitive dependencies -----
+# TODO(sorsaffari): replace with upstream once graknlabs/client-nodejs#7 is merged
 git_repository(
     name = "graknlabs_client_nodejs",
-    remote = "https://github.com/sorsaffari/client-nodejs",
-    commit = 'cf3e652a1ce9738a4c1fa1c744c14d59535bb2ca' # grakn-client-nodejs-dependency: do not remove this comment. this is used by the auto-update script
+    remote = "https://github.com/vmax/grakn-client-nodejs",
+    commit = 'b99c8652c3f24cf9c723a44db647a154baf65dc6' # grakn-client-nodejs-dependency: do not remove this comment. this is used by the auto-update script
 )
 
 npm_install(
     name = "nodejs_dependencies",
-    package_json = "@graknlabs_client_nodejs//:package.json"
-)
-
-# ----- local nodejs dependencies -----
-
-npm_install(
-    name = "test_nodejs_dependencies",
-    package_json = "//test/standalone/nodejs:package.json"
+    package_json = "@graknlabs_client_nodejs//:package.json",
+    data = [
+      "@build_bazel_rules_nodejs//internal/babel_library:package.json",
+      "@build_bazel_rules_nodejs//internal/babel_library:babel.js",
+      "@build_bazel_rules_nodejs//internal/babel_library:yarn.lock",
+    ],
 )
