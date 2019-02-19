@@ -122,7 +122,7 @@ pip_install()
 git_repository(
     name = "build_bazel_rules_nodejs",
     remote = "https://github.com/graknlabs/rules_nodejs.git",
-    commit = "ac3f6854365f119130186f971588514ccff503ab",
+    commit = "3d14bf46e177862fc14ea8de8ad5116924c5064e",
 )
 
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
@@ -133,7 +133,7 @@ rules_nodejs_dependencies()
 # ----- client nodejs + transitive dependencies -----
 git_repository(
     name = "graknlabs_client_nodejs",
-    remote = "https://github.com/graknlabs/grakn-client-nodejs",
+    remote = "https://github.com/graknlabs/client-nodejs",
     commit = 'af9a565b2ab828b856340d3e63490f74aed37341' # grakn-client-nodejs-dependency: do not remove this comment. this is used by the auto-update script
 )
 
