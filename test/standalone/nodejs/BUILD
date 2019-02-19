@@ -12,7 +12,8 @@ nodejs_jest_test(
         "@graknlabs_client_nodejs//:client-nodejs",
         "@nodejs_dependencies//jest",
         "@nodejs_dependencies//fs-extra"
-    ]
+    ],
+    tests_root = "generated"
 )
 
 genrule(
@@ -39,6 +40,6 @@ genrule(
 genrule(
     name = "move-test-standalone-nodejs-phone-calls",
     srcs = ["phoneCalls.js"],
-    cmd = "cp $(location phoneCalls.js) $(location generated/testStandalonePhoneCalls.js)",
-    outs = ["generated/testStandalonePhoneCalls.js"]
+    cmd = "cp $(location phoneCalls.js) $(location generated/testStandalonePhoneCalls.test.js)",
+    outs = ["generated/testStandalonePhoneCalls.test.js"]
 )
