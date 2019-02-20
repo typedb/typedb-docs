@@ -14,6 +14,7 @@ filegroup(
         exclude=[
             "bazel-bin/**/*.md",
             "bazel-out/**/*.md",
+            "bazel-docs/**/*.md",
             ".runfiles/**/*.md"
         ]
     ),
