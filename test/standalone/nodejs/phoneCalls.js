@@ -1,9 +1,21 @@
-const Grakn = require("grakn");
-const fs = require("fs");
+const fs = require('fs-extra')
+fs.copySync(
+    '../../../external/graknlabs_client_nodejs/',
+    '../../../external/graknlabs_client_nodejs_nosymlinks/', {
+        dereference: true,
+        filter: (src, dest) => {
+            if (src.includes('client-nodejs') && !src.includes('client-nodejs-proto')) {
+                return false;
+            }
+            return true;
+        }
+    });
 
-const PhoneCallsCSVMigration = require("PhoneCallsCSVMigration.js");
-const PhoneCallsJSONMigration = require("PhoneCallsJSONMigration.js");
-const PhoneCallsXMLMigration = require("PhoneCallsXMLMigration.js");
+const Grakn = require('../../../../external/graknlabs_client_nodejs_nosymlinks/');
+
+const PhoneCallsCSVMigration = require("./PhoneCallsCSVMigration.js");
+const PhoneCallsJSONMigration = require("./PhoneCallsJSONMigration.js");
+const PhoneCallsXMLMigration = require("./PhoneCallsXMLMigration.js");
 
 beforeAll(async () => {
     await loadSchemaPhoneCalls();

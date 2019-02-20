@@ -11,7 +11,11 @@ nodejs_jest_test(
     deps = [
         "@graknlabs_client_nodejs//:client-nodejs",
         "@nodejs_dependencies//jest",
-        "@nodejs_dependencies//fs-extra"
+        "@nodejs_dependencies//fs-extra",
+        "@nodejs_dependencies//:node_modules"
+    ],
+    data = [
+        "@graknlabs_client_nodejs//:package.json",
     ],
     tests_root = "generated"
 )
