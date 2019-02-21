@@ -13,7 +13,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/schema_designer.png)[body:end]
-[footer:start]We can access the schema designer by clicking the top left __schema desinger__ icon.[footer:end]
+[footer:start]We can access the schema designer by clicking the top left **schema desinger** icon.[footer:end]
 [slide:end]
 
 </div>
@@ -43,7 +43,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/define_entity_5.png)[body:end]
-[footer:start] Create the type by clikcing on __Submit__ [footer:end]
+[footer:start] Create the type by clikcing on **Submit** [footer:end]
 [slide:end]
 
 [slide:start]
@@ -78,7 +78,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/define_attribute_5.png)[body:end]
-[footer:start] Create the type by clikcing on __Submit__ [footer:end]
+[footer:start] Create the type by clikcing on **Submit** [footer:end]
 [slide:end]
 
 [slide:start]
@@ -113,7 +113,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/define_relationship_5.png)[body:end]
-[footer:start] Create the type by clikcing on __Submit__ [footer:end]
+[footer:start] Create the type by clikcing on **Submit** [footer:end]
 [slide:end]
 
 [slide:start]
@@ -128,7 +128,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/attribute_type_1.png)[body:end]
-[footer:start]We may add an exisiting attribute type to a schema concept type by selecting it and clicking on __Add Attribute Types__ in the right bar.[footer:end]
+[footer:start]We may add an exisiting attribute type to a schema concept type by selecting it and clicking on **Add Attribute Types** in the right bar.[footer:end]
 [slide:end]
 
 [slide:start]
@@ -138,7 +138,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/attribute_type_3.png)[body:end]
-[footer:start]Click __Add__. [footer:end]
+[footer:start]Click **Add**. [footer:end]
 [slide:end]
 
 [slide:start]
@@ -148,7 +148,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/attribute_type_5.png)[body:end]
-[footer:start]We can remove an attribute by clicking on the trash icon next to the attribtue. [footer:end]
+[footer:start]We can remove an attribute by clicking on the **trash** icon next to the attribute. [footer:end]
 [slide:end]
 </div>
 
@@ -157,7 +157,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/schema_display_settings_1.png)[body:end]
-[footer:start]Navigating to the display settings by clicking on the __gear__ icon in the right bar.[footer:end]
+[footer:start]Navigate to the **display settings** by clicking on the **gear** icon.[footer:end]
 [slide:end]
 
 [slide:start]
@@ -177,7 +177,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/delete_schema_type.png)[body:end]
-[footer:start]We may delete an existing schema concept type by right clicking on a node and clicking delete[footer:end]
+[footer:start]We may delete an existing schema concept type by right-clicking on the node and clicking **Delete**[footer:end]
 [slide:end]
 
 </div>
