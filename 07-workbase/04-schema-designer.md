@@ -13,7 +13,7 @@ Workbase allows the visualisation and design of a grakn schema.
 
 [slide:start]
 [body:start]![schema designer](/docs/images/workbase/1.1.1/schema_designer.png)[body:end]
-[footer:start]We can access the schema designer by clicking the top left **schema desinger** icon.[footer:end]
+[footer:start]We can access the schema designer by clicking the top left **Schema Desinger** icon.[footer:end]
 [slide:end]
 
 </div>
