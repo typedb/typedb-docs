@@ -52,19 +52,19 @@ const Grakn = require("grakn");
 
 const inputs = [
   {
-    dataPath: "./data/companies",
+    dataPath: "files/phone-calls/data/companies",
     template: companyTemplate
   },
   {
-    dataPath: "./data/people",
+    dataPath: "files/phone-calls/data/people",
     template: personTemplate
   },
   {
-    dataPath: "./data/contracts",
+    dataPath: "files/phone-calls/data/contracts",
     template: contractTemplate
   },
   {
-    dataPath: "./data/calls",
+    dataPath: "files/phone-calls/data/calls",
     template: callTemplate
   }
 ];
@@ -381,22 +381,22 @@ For parsing XML data, we need to know the target tag name. This needs to be spec
 ...
 const inputs = [
   {
-    dataPath: "./data/companies",
+    dataPath: "files/phone-calls/data/companies",
     template: companyTemplate,
     selector: "company"
   },
   {
-    dataPath: "./data/people",
+    dataPath: "files/phone-calls/data/people",
     template: personTemplate,
     selector: "person"
   },
   {
-    dataPath: "./data/contracts",
+    dataPath: "files/phone-calls/data/contracts",
     template: contractTemplate,
     selector: "contract"
   },
   {
-    dataPath: "./data/calls",
+    dataPath: "files/phone-calls/data/calls",
     template: callTemplate,
     selector: "call"
   }
@@ -437,15 +437,21 @@ Here is how our `migrate.js` looks like for each data format.
 [tab:CSV]
 <!-- test-standalone phoneCallsCSVMigration.js -->
 ```javascript
-const Grakn = require("grakn");
 const fs = require("fs");
-const papa = require("papaparse");
+process = require('process')
+console.log(fs.readdirSync('../../../external/graknlabs_client_nodejs_nosymlinks'));
+console.log(process.cwd())
+console.log(__filename);
+console.log(__dirname);
+// const Grakn = require("grakn");
+// const papa = require("papaparse");
+
 
 const inputs = [
-  { dataPath: "./data/companies", template: companyTemplate },
-  { dataPath: "./data/people", template: personTemplate },
-  { dataPath: "./data/contracts", template: contractTemplate },
-  { dataPath: "./data/calls", template: callTemplate }
+  { dataPath: "files/phone-calls/data/companies", template: companyTemplate },
+  { dataPath: "files/phone-calls/data/people", template: personTemplate },
+  { dataPath: "files/phone-calls/data/contracts", template: contractTemplate },
+  { dataPath: "files/phone-calls/data/calls", template: callTemplate }
 ];
 
 // Go
@@ -577,10 +583,10 @@ const { streamArray } = require("stream-json/streamers/StreamArray");
 const { chain } = require("stream-chain");
 
 const inputs = [
-  { dataPath: "./data/companies", template: companyTemplate },
-  { dataPath: "./data/people", template: personTemplate },
-  { dataPath: "./data/contracts", template: contractTemplate },
-  { dataPath: "./data/calls", template: callTemplate }
+  { dataPath: "files/phone-calls/data/companies", template: companyTemplate },
+  { dataPath: "files/phone-calls/data/people", template: personTemplate },
+  { dataPath: "files/phone-calls/data/contracts", template: contractTemplate },
+  { dataPath: "files/phone-calls/data/calls", template: callTemplate }
 ];
 
 // Go
@@ -694,22 +700,22 @@ const xmlStream = require("xml-stream");
 
 const inputs = [
   {
-    dataPath: "./data/companies",
+    dataPath: "files/phone-calls/data/companies",
     template: companyTemplate,
     selector: "company"
   },
   {
-    dataPath: "./data/people",
+    dataPath: "files/phone-calls/data/people",
     template: personTemplate,
     selector: "person"
   },
   {
-    dataPath: "./data/contracts",
+    dataPath: "files/phone-calls/data/contracts",
     template: contractTemplate,
     selector: "contract"
   },
   {
-    dataPath: "./data/calls",
+    dataPath: "files/phone-calls/data/calls",
     template: callTemplate,
     selector: "call"
   }

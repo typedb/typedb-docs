@@ -9,7 +9,7 @@ class TestStandaloneSocialNetwork(unittest.TestCase):
             define_query = schema.read()
 
             client = grakn.Grakn(uri="localhost:48555")
-            with client.session(keyspace="social_network") as session:
+            with client.session("social_network") as session:
                 with session.transaction(grakn.TxType.WRITE) as transaction:
                     transaction.query(define_query)
                     transaction.commit()

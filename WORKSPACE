@@ -22,7 +22,7 @@ maven_dependencies_for_build()
 git_repository(
     name = "graknlabs_grakn_core",
     remote = "https://github.com/graknlabs/grakn",
-    commit = '80a9d8f01cb2fe642b9c29d0c550987dee3feb67' # grakn-dependency: do not remove this comment. this is used by the auto-update script
+    commit = '8c6ecb0685d05e7e31383bbe58f222815383d999' # grakn-dependency: do not remove this comment. this is used by the auto-update script
 )
 
 load("@graknlabs_grakn_core//dependencies/compilers:dependencies.bzl", "grpc_dependencies")
@@ -68,6 +68,15 @@ graql_dependencies()
 
 load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
 java_grpc_compile()
+
+###############################################################
+#               graql + transitive dependencies               #
+###############################################################
+git_repository(
+    name = "graknlabs_graql",
+    remote = "https://github.com/graknlabs/graql",
+    commit = 'ff73e8c5a0ffae51902f65165367983a5b7a9c5a' # graql-dependency: do not remove this comment. this is used by the auto-update script
+)
 
 ###############################################################
 #                client + python dependencies                 #
@@ -137,9 +146,11 @@ git_repository(
     commit = 'af9a565b2ab828b856340d3e63490f74aed37341' # grakn-client-nodejs-dependency: do not remove this comment. this is used by the auto-update script
 )
 
+# the package.json file passed to npm_install contains both the dependencies of docs standalones and those of client-nodejs
+# this is required because only one npm_install (and thus package.json) is allowed per bazel project
 npm_install(
     name = "nodejs_dependencies",
-    package_json = "@graknlabs_client_nodejs//:package.json",
+    package_json = "//test/standalone/nodejs:package.json",
     data = [
       "@build_bazel_rules_nodejs//internal/babel_library:package.json",
       "@build_bazel_rules_nodejs//internal/babel_library:babel.js",
