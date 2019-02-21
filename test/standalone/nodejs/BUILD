@@ -12,10 +12,13 @@ nodejs_jest_test(
         "@graknlabs_client_nodejs//:client-nodejs",
         "@nodejs_dependencies//jest",
         "@nodejs_dependencies//fs-extra",
+        "@nodejs_dependencies//module-alias",
+        "@nodejs_dependencies//papaparse",
         "@nodejs_dependencies//:node_modules"
     ],
     data = [
         "@graknlabs_client_nodejs//:package.json",
+        "//files:phone-calls-kg"
     ],
     tests_root = "generated"
 )
