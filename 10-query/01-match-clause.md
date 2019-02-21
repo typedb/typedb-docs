@@ -407,6 +407,8 @@ match $x sub relationship; get;
 [tab:end]
 
 [tab:Java]
+<!-- test-edge-case -->
+<!-- ignore-test -->
 ```java
 GetQuery query_a = Graql.match(
   var("x").sub("thing")

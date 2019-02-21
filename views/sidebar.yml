@@ -1,0 +1,167 @@
+chapters:
+  -
+    title: General
+    hideTitle: true
+    pages:
+      -
+        title: Quickstart
+        url: /docs/general/quickstart
+  -
+    title: Grakn
+    sections:
+      -
+        title: Running Grakn
+        baseUrl: /docs/running-grakn/
+        pages:
+          -
+            title: Install & Run
+            url: install-and-run
+          -
+            title: Console
+            url: console
+          -
+            title: Configuration
+            url: configuration
+      -
+        title: Client API
+        baseUrl: /docs/client-api/
+        pages:
+          -
+            title: Overview
+            url: overview
+          -
+            title: Java
+            url: java
+          -
+            title: Node.js
+            url: nodejs
+          -
+            title: Python
+            url: python
+      -
+        title: Concept API
+        baseUrl: /docs/concept-api/
+        pages:
+          -
+            title: Overview
+            url: overview
+          -
+            title: Concept
+            url: concept
+          -
+            title: Type
+            url: type
+          -
+            title: Rule
+            url: rule
+          -
+            title: Thing
+            url: thing
+      -
+        title: Cloud Deployment
+        baseUrl: /docs/cloud-deployment/
+        pages:
+          -
+            title: KGMS
+            url: kgms
+          -
+            title: Google Cloud
+            url: google-cloud
+          -
+            title: AWS
+            url: aws
+      -
+        title: Management
+        baseUrl: /docs/management/
+        pages:
+          -
+            title: Keyspaces
+            url: keyspace
+          -
+            title: Users
+            url: users
+      -
+        title: Workbase
+        baseUrl: /docs/workbase/
+        pages:
+          -
+            title: Overview
+            url: overview
+          -
+            title: Connection
+            url: connection
+          -
+            title: Visualisation
+            url: visualisation
+          -
+            title: Investigation
+            url: investigation
+          -
+            title: Schema Designer
+            url: schema-designer
+      -
+        title: Examples
+        baseUrl: /docs/examples/
+        pages:
+          -
+            title: Overview
+            url: phone-calls-overview
+          -
+            title: Schema
+            url: phone-calls-schema
+          -
+            title: Migrate - Java
+            url: phone-calls-migration-java
+          -
+            title: Migrate - Node.js
+            url: phone-calls-migration-nodejs
+          -
+            title: Migrate - Python
+            url: phone-calls-migration-python
+          -
+            title: Queries
+            url: phone-calls-queries
+  -
+    title: Graql
+    sections:
+      -
+        title: Schema
+        baseUrl: /docs/schema/
+        pages:
+          -
+            title: Overview
+            url: overview
+          -
+            title: Concepts
+            url: concepts
+          -
+            title: Rules
+            url: rules
+      -
+        title: Query
+        baseUrl: /docs/query/
+        pages:
+          -
+            title: Overview
+            url: overview
+          -
+            title: Match
+            url: match-clause
+          -
+            title: Get
+            url: get-query
+          -
+            title: Insert
+            url: insert-query
+          -
+            title: Delete
+            url: delete-query
+          -
+            title: Update
+            url: updating-data
+          -
+            title: Aggregate
+            url: aggregate-query
+          -
+            title: Compute
+            url: compute-query

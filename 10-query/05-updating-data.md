@@ -39,7 +39,6 @@ match $org isa organisation, has name "Medicely"; insert $org has registration-n
 [tab:end]
 
 [tab:Java]
-
 ```java
 DeleteQuery delete_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
@@ -99,8 +98,6 @@ To change the roleplayers of a given relationship, we first need to [delete the 
 <div class="tabs dark">
 
 [tab:Graql]
-<!-- test edge case -->
-<!-- test-ignore -->
 ```graql
 ## inserting the new
 match
