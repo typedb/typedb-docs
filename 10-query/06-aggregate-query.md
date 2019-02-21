@@ -6,7 +6,7 @@ permalink: /docs/query/aggregate-query
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `aggregate` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a `aggregate` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
