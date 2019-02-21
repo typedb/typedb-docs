@@ -187,7 +187,7 @@ Example:
 
 - Comes out:
 ```python
-insert $person has phone-number "+44 091 xxx";
+insert $person isa person has phone-number "+44 091 xxx";
 ```
 
 or:

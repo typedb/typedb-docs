@@ -32,6 +32,9 @@ define
 	registration-number sub attribute,
 		datatype string;
 
+	identifier sub attribute,
+    		datatype string;
+
 	graduated sub attribute,
 		datatype boolean;
 
@@ -74,7 +77,7 @@ define
 
 	emotion sub attribute,
 		datatype string,
-		regex "(like|love|funny|shocking|sad|angry)",
+		regex "^(like|love|funny|shocking|sad|angry)$",
 		plays reacted-emotion;
 
 	link sub attribute,
@@ -106,7 +109,7 @@ define
 		relates owned;
 
 	location sub entity,
-		has name,
+		key name,
 		plays subordinate-location,
 		plays superior-location;
 
@@ -269,7 +272,7 @@ define
 		plays mutual-course-enrollment;
 
 	school sub entity,
-		has name,
+		key name,
 		has ranking,
 		plays offerring-school,
 		plays located-school,
@@ -277,7 +280,7 @@ define
 		plays mutual-school;
 
 	school-course sub entity,
-		has title,
+		key title,
 		plays offered-course,
 		plays enrolled-course;
 
@@ -420,18 +423,19 @@ define
 		relates owned-office as owned;
 
 	work-position sub entity,
-		has title,
+		key title,
 		plays offered-position,
 		plays mutual-position;
 
 	organisation sub entity,
-		has name,
-		has registration-number,
+		key name,
+		key registration-number,
 		plays office-owner,
 		plays employer,
 		plays mutual-organisation;
 
 	office sub entity,
+	    key registration-number,
 		plays owned-office,
 		plays located-office;
 
@@ -641,7 +645,7 @@ define
 
 	social-group sub entity,
 		abstract,
-		has name,
+		key name,
 		plays owned-group,
 		plays membership-grouping,
 		plays shared-in;
@@ -699,6 +703,7 @@ define
 		relates owned-timeline as owned;
 
 	timeline sub entity,
+	    key identifier,
 		plays owned-timeline,
 		plays shared-in;
 
@@ -726,14 +731,6 @@ define
 # 	$per sub person;
 # get;
 
-	reply-sharing-inherits-original-sharing sub rule,
-		when {
-			$rep (replied-to: $rt, reply-content: $rc) isa reply;
-			(shared-content: $rt, shared-by: $sb, shared-in: $si) isa $sha;
-		}, then {
-			(shared-content: $rc, shared-by: $sb, shared-in: $si) isa $sha;
-		};
-
 	reply sub relationship,
 		relates replied-to,
 		relates reply-content,
@@ -754,6 +751,7 @@ define
 
 	post sub entity,
 		abstract,
+		key identifier,
 		plays permitted-content,
 		plays shared-content,
 		plays replied-to,
