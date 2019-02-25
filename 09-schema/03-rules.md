@@ -139,7 +139,11 @@ To delete rules we refer to them by their label and use the undefine keyword. Fo
 undefine people-with-same-parents-are-siblings sub rule;
 ```
 
-To persist the result, executing a commit; statement is also required.
+<div class="note">
+[Important]
+Don't forget to `commit` after executing a `undefine` query. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
+When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
+</div>
 
 ## Functional Interpretation
 Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
