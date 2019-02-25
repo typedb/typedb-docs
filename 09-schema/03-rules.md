@@ -13,7 +13,7 @@ Once a given query is executed, Graql will not only query the knowledge graph fo
 
 In this section, we learn more about how rules are constructed and how they are meant to be used.
 
-## Rule Definition
+## Define a Rule
 Graql rules assume the following general form:
 
 ```
@@ -49,6 +49,7 @@ Let us have a look at an example. We want to express the fact that two given peo
 - they share the same father
 
 To express those two facts in Graql, we can write:
+
 ```
 (mother: $m, $x) isa parentship;
 (mother: $m, $y) isa parentship;
@@ -56,7 +57,8 @@ To express those two facts in Graql, we can write:
 (father: $f, $y) isa parentship;
 $x != $y;
 ```
-Please note the variable inequality requirement. Without it, $x and $y can still be mapped to the same concept. Those requirements will serve as our `when` part of the rule. What remains to be done is to define the conclusion of our requirements - the fact that two people are siblings. We do it simply by writing the relevant relation pattern:
+
+If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](/docs/query/match-clause). Please note the variable inequality requirement. Without it, $x and $y can still be mapped to the same concept. Those requirements will serve as our `when` part of the rule. What remains to be done is to define the conclusion of our requirements - the fact that two people are siblings. We do it simply by writing the relevant relation pattern:
 
 ```
 (sibling: $x, sibling: $y) isa siblings;
@@ -121,7 +123,7 @@ Please note that facts defined via rules are in general not stored in the knowle
 
 <!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
 
-## Rule Retrieval
+## Retrieve a Rule
 
 To retrieve rules, we refer to them by their label in a match statement:
 
@@ -129,7 +131,7 @@ To retrieve rules, we refer to them by their label in a match statement:
 match $x label people-with-same-parents-are-siblings; get;
 ```
 
-## Rule Deletion
+## Delete a Rule
 
 To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
 
@@ -149,6 +151,7 @@ Another way to look at rules is to treat them as functions. In that way, we trea
 (father: $f, $y) isa parentship;
 $x != $y;
 ```
+
 we see a conjunction of four relation statements with an extra inequality statement. Defining parentship to be a function of two arguments (parent, child), we can quantify our siblings conditions (omitting roles for clarity) as:
 
 ```
