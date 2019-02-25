@@ -13,7 +13,7 @@ Once a given query is executed, Graql will not only query the knowledge graph fo
 
 In this section, we learn more about how rules are constructed and how they are meant to be used.
 
-## Rule definition
+## Rule Definition
 Graql rules assume the following general form:
 
 ```
@@ -121,7 +121,7 @@ Please note that facts defined via rules are in general not stored in the knowle
 
 <!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
 
-## Rule retrieval
+## Rule Retrieval
 
 To retrieve rules, we refer to them by their label in a match statement:
 
@@ -129,7 +129,7 @@ To retrieve rules, we refer to them by their label in a match statement:
 match $x label people-with-same-parents-are-siblings; get;
 ```
 
-## Rule deletion
+## Rule Deletion
 
 To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
 
@@ -139,7 +139,7 @@ undefine people-with-same-parents-are-siblings sub rule;
 
 To persist the result, executing a commit; statement is also required.
 
-## Functional interpretation
+## Functional Interpretation
 Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
 
 ```
