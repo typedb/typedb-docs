@@ -14,26 +14,34 @@ Once a given query is executed, Graql will not only query the knowledge graph fo
 In this section, we learn more about how rules are constructed and how they are meant to be used.
 
 ## Defining Rules
-
-In Graql we refer to the body of the rule as the "when" of the rule (antecedent of the implication) and the head as the "then" of the rule (consequent of the implication). Therefore, in Graql terms, we define rule objects in the following way:
+Graql rules assume the following general form:
 
 ```
-optional-label
+when {rule-body}, then {rule-head};
+```
+
+People familiar with Prolog/Datalog, may recognise it as similar:
+
+```
+{rule-head} :- {rule-body}.
+```
+
+In Graql we refer to the body of the rule as the "when" part of the rule and the to head as the "then" part of the rule. Rules are integral members of the schema. As a result they require the define keyword for their creation. A rule is then defined by specifying its label followed by when and then blocks. Therefore, in Graql terms, we define rule objects in the following way:
+
+```
+define 
+rule-label sub rule,
 when {
-    ...;
-    ...;
-    ...;
+    ##
+    ## conditions go here
+    ##
 },
 then {
-    ...;
+    ## concluded fact
 };
 ```
 
-Each dotted line corresponds to a single Graql statement.
-
-Rules are integral members of the schema. As a result they require the define keyword for their creation. A rule is then defined by specifying its label followed by when and then blocks. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should be atomic - each rule derives a single fact only. If your use case requires a rule with a disjunction in the "when" part, please notice that, when using the disjunctive normal form, it can be decomposed into series of conjunctive rules.
-
-A classic reasoning example is the ancestor example. The two Graql rules R1 and R2 stated below define the ancestor relationship, which can be understood as either happening between two generations directly between a parent and a child or between three generations when the first generation hop is expressed via a parentship relationship and the second generation hop is captured by an ancestor relationship.
+Each hashed line corresponds to a single Graql statement. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should be atomic - each rule can derive a single fact only. If your use case requires a rule with a disjunction in the "when" part, please notice that, when using the disjunctive normal form, it can be decomposed into series of conjunctive rules.
 
 Let us have a look at an example. We want to express the fact that two given people are siblings. As we all know, for two people to be siblings, we need the following facts to be true:
 - they share the same mother
@@ -169,18 +177,6 @@ if (parentship(m, x)
 ```
 
 ## The Underlying Logic
-Graql rules assume the following general form:
-
-```
-when {rule-body}, then {rule-head};
-```
-
-People familiar with Prolog/Datalog, may recognise it as similar:
-
-```
-{rule-head} :- {rule-body}.
-```
-
 In logical terms, we restrict the rules to be definite Horn clauses. These can be defined either in terms of a disjunction with at most one unnegated atom or an implication with the consequent consisting of a single atom. Atoms are considered atomic first-order predicates - ones that cannot be decomposed to simpler constructs.
 
 In our system we define both the head and the body of rules as Graql patterns. Consequently, the rules are statements of the form:
