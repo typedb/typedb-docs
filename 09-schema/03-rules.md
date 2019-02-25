@@ -125,7 +125,7 @@ Please note that facts defined via rules are in general not stored in the knowle
 
 To retrieve rules, we refer to them by their label in a match statement:
 
-```
+```graql
 match $x label people-with-same-parents-are-siblings; get;
 ```
 
@@ -133,7 +133,7 @@ match $x label people-with-same-parents-are-siblings; get;
 
 To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
 
-```
+```graql
 undefine people-with-same-parents-are-siblings sub rule;
 ```
 
