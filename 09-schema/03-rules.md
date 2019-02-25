@@ -5,15 +5,15 @@ permalink: /docs/schema/rules
 ---
 
 ## What is a Rule?
-Graql uses machine reasoning to perform inference over data and relationship types as well as to provide context disambiguation and dynamically-created relationships. This allows you to discover hidden and implicit associations between data instances through short and concise statements.
+Graql uses rule-based reasoning to perform inference over data as well as to provide context disambiguation and dynamically-created relationships. This allows us to discover hidden and implicit associations between data instances through short and concise statements.
 
-The rule-based reasoning allows automated capture and evolution of patterns within the knowledge graph. Graql reasoning is performed at query time and is guaranteed to be complete. Thanks to the reasoning facility, common patterns in the knowledge graph can be defined and associated with existing schema elements. The association happens by means of rules. This not only allows you to compress and simplify typical queries, but offers the ability to derive new non-trivial information by combining defined patterns.
+The rule-based reasoning allows automated capture and evolution of patterns within the knowledge graph. Graql reasoning is performed at query time and is guaranteed to be complete. Thanks to the reasoning facility, common patterns in the knowledge graph can be defined and associated with existing schema elements. The association happens by means of rules. This not only allows us to compress and simplify typical queries, but offers the ability to derive new non-trivial information by combining defined patterns.
 
 Once a given query is executed, Graql will not only query the knowledge graph for exact matches but will also inspect the defined rules to check whether additional information can be found (inferred) by combining the patterns defined in the rules. The completeness property of Graql reasoning guarantees that, for a given content of the knowledge graph and the defined rule set, the query result shall contain all possible answers derived by combining database lookups and rule applications.
 
 In this section, we learn more about how rules are constructed and how they are meant to be used.
 
-## Defining Rules
+## Rule definition
 Graql rules assume the following general form:
 
 ```
@@ -42,7 +42,7 @@ then {
 };
 ```
 
-Each hashed line corresponds to a single Graql statement. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should be atomic - each rule can derive a single fact only. If your use case requires a rule with a disjunction in the "when" part, please notice that, when using the disjunctive normal form, it can be decomposed into series of conjunctive rules.
+Each hashed line corresponds to a single Graql statement. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should be atomic - each rule can derive a single fact only. If our use case requires a rule with a disjunction in the "when" part, please notice that, when using the disjunctive normal form, it can be decomposed into series of conjunctive rules.
 
 Let us have a look at an example. We want to express the fact that two given people are siblings. As we all know, for two people to be siblings, we need the following facts to be true:
 - they share the same mother
@@ -121,7 +121,7 @@ Please note that facts defined via rules are in general not stored in the knowle
 
 <!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
 
-## Retrieving rules
+## Rule retrieval
 
 To retrieve rules, we refer to them by their label in a match statement:
 
@@ -129,7 +129,7 @@ To retrieve rules, we refer to them by their label in a match statement:
 match $x label people-with-same-parents-are-siblings; get;
 ```
 
-## Deleting rules
+## Rule deletion
 
 To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
 
@@ -159,7 +159,7 @@ parentship(f, y) &&
 x != y
 ```
 
-Consequently, we can say that this pattern is satisfied (returns true) if it is possible to assign concepts from the knowledge graph to`$m`, `$f`, `$x` and `$y` variables such that all the statements will return true. The rule then says that if its `when` pattern is true, the fact defined by the `then` part is true.
+Consequently, we can say that this pattern is satisfied (returns true) if it is possible to assign concepts from the knowledge graph to `$m`, `$f`, `$x` and `$y` variables such that all the statements will return true. The rule then says that if its `when` pattern is true, the fact defined by the `then` part is true.
 
 The rule can then be understood as following:
 <!-- ignore-test -->
