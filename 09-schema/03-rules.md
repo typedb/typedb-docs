@@ -4,16 +4,12 @@ pageTitle: Rules
 permalink: /docs/schema/rules
 ---
 
-In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
-
 ## Graql Reasoning
 Graql uses rule-based reasoning to perform inference over data as well as to provide context disambiguation and dynamically-created relationships. This allows us to discover hidden and implicit associations between data instances through short and concise statements.
 
-The rule-based reasoning allows automated capture and evolution of patterns within the knowledge graph. Graql reasoning is performed at query time and is guaranteed to be complete. Thanks to the reasoning facility, common patterns in the knowledge graph can be defined and associated with existing schema elements. The association happens by means of rules. This not only allows us to compress and simplify typical queries, but offers the ability to derive new non-trivial information by combining defined patterns.
+The rule-based reasoning allows automated capture and evolution of patterns within the knowledge graph. Graql reasoning is performed at query time and is guaranteed to be complete. Thanks to the reasoning facility, common patterns in the knowledge graph can be defined and associated with existing schema elements. The association happens by means of rules. This not only allows us to compress and simplify typical queries, but offers the ability to derive new non-trivial information by combining defined patterns. Once a given query is executed, Graql will not only query the knowledge graph for exact matches but will also inspect the defined rules to check whether additional information can be found (inferred) by combining the patterns defined in the rules. The completeness property of Graql reasoning guarantees that, for a given content of the knowledge graph and the defined rule set, the query result shall contain all possible answers derived by combining database lookups and rule applications.
 
-Once a given query is executed, Graql will not only query the knowledge graph for exact matches but will also inspect the defined rules to check whether additional information can be found (inferred) by combining the patterns defined in the rules. The completeness property of Graql reasoning guarantees that, for a given content of the knowledge graph and the defined rule set, the query result shall contain all possible answers derived by combining database lookups and rule applications.
-
-In this section, we learn more about how rules are constructed and how they are meant to be used.
+In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
 
 ## Define a Rule
 A Graql rule assumes the following general form:
@@ -52,7 +48,7 @@ Let us have a look at an example. We want to express the fact that two given peo
 
 To express those two facts in Graql, we can write:
 
-```
+```graql
 (mother: $m, $x) isa parentship;
 (mother: $m, $y) isa parentship;
 (father: $f, $x) isa parentship;
@@ -75,15 +71,15 @@ Combining all this information we can finally define our rule as following.
 define
 
 people-with-same-parents-are-siblings sub rule,
-  when {
+when {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;
     (father: $f, $x) isa parentship;
     (father: $f, $y) isa parentship;
     $x != $y;
-  } then {
+}, then {
     ($x, $y) isa siblings;
-  };
+};
 ```
 [tab:end]
 
@@ -150,7 +146,7 @@ When using one of the Grakn Clients, to commit changes, we call the `commit()` m
 ## Functional Interpretation
 Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
 
-```
+```graql
 (mother: $m, $x) isa parentship;
 (mother: $m, $y) isa parentship;
 (father: $f, $x) isa parentship;
