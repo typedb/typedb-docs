@@ -28,8 +28,9 @@ People familiar with Prolog/Datalog, may recognise it as similar:
 
 In Graql we refer to the body of the rule as the "when" part of the rule and the to head as the "then" part of the rule. Rules are integral members of the schema. As a result they require the define keyword for their creation. A rule is then defined by specifying its label followed by when and then blocks. Therefore, in Graql terms, we define rule objects in the following way:
 
-```
+```graql
 define 
+
 rule-label sub rule,
 when {
     ##
