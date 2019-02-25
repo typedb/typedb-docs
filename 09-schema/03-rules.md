@@ -4,7 +4,9 @@ pageTitle: Rules
 permalink: /docs/schema/rules
 ---
 
-## What is a Rule?
+In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
+
+## Graql Reasoning
 Graql uses rule-based reasoning to perform inference over data as well as to provide context disambiguation and dynamically-created relationships. This allows us to discover hidden and implicit associations between data instances through short and concise statements.
 
 The rule-based reasoning allows automated capture and evolution of patterns within the knowledge graph. Graql reasoning is performed at query time and is guaranteed to be complete. Thanks to the reasoning facility, common patterns in the knowledge graph can be defined and associated with existing schema elements. The association happens by means of rules. This not only allows us to compress and simplify typical queries, but offers the ability to derive new non-trivial information by combining defined patterns.
@@ -14,13 +16,13 @@ Once a given query is executed, Graql will not only query the knowledge graph fo
 In this section, we learn more about how rules are constructed and how they are meant to be used.
 
 ## Define a Rule
-Graql rules assume the following general form:
+A Graql rule assumes the following general form:
 
 ```
 when {rule-body}, then {rule-head};
 ```
 
-People familiar with Prolog/Datalog, may recognise it as similar:
+and can be understood as asserting a single new fact defined in the head provided the relevant conditions (a graph pattern) specified in the body are met. People familiar with Prolog/Datalog, may recognise it as similar:
 
 ```
 {rule-head} :- {rule-body}.
