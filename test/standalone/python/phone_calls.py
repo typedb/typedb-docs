@@ -38,5 +38,15 @@ class TestStandalonePhoneCalls(unittest.TestCase):
     def test_h_phone_calls_xml_migration(self):
         import phone_calls_xml_migration
 
+    @classmethod
+    def tearDown(cls):
+        client = grakn.Grakn(uri="localhost:48555")
+        with client.session(keyspace="phone_calls") as session:
+            with session.transaction(grakn.TxType.WRITE) as transaction:
+                transaction.query("match $x isa relationship; delete $x;")
+                transaction.query("match $x isa entity; delete $x;")
+                transaction.query("match $x isa attribute; delete $x;")
+                transaction.commit()
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,13 +1,12 @@
 exports_files(["requirements.txt"])
-#
+
 #load("@io_bazel_rules_python//python:python.bzl", "py_library", "py_test")
-#load("@pypi_dependencies//:requirements.bzl", requirement="requirement")
-#load("@test_pypi_dependencies//:requirements.bzl", test_requirement="requirement")
+#load("@pypi_dependencies//:requirements.bzl", test_requirement="requirement")
 #
 #py_library(
 #    name = "python-library-standalone-python-common",
 #    deps = [
-#        "@graknlabs_client_python//:client_python"
+#        test_requirement("grakn")
 #    ]
 #)
 #
