@@ -178,7 +178,6 @@ if (parentship(m, x)
   && parentship(f, y) 
   && x != y) {
      siblings(x, y) will return true
-  
 }
 ```
 
