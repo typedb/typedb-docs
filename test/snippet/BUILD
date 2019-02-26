@@ -1,7 +1,7 @@
 ######################
 ## Java Snippet Test #
 ######################
-#
+
 #java_test(
 #    name = "snippet-java",
 #    test_class = "generated.TestSnippetJava",
@@ -20,17 +20,17 @@
 #        "//test/grakn-test-server/conf:grakn.properties"
 #    ]
 #)
-#
-#genrule(
-#    name = "generate-test-snippet-java",
-#    srcs = [
-#        "generate-test-snippet-java.py",
-#        "//:content" # filegroup defined in root/BUILD
-#    ],
-#    cmd = "python $(location generate-test-snippet-java.py) $@ $(locations //:content)",
-#    outs = ["generated/TestSnippetJava.java"]
-#)
-#
+
+genrule(
+    name = "generate-test-snippet-java",
+    srcs = [
+        "generate-test-snippet-java.py",
+        "//:content" # filegroup defined in root/BUILD
+    ],
+    cmd = "python $(location generate-test-snippet-java.py) $@ $(locations //:content)",
+    outs = ["generated/TestSnippetJava.java"]
+)
+
 #######################
 ## Graql Snippet Test #
 #######################

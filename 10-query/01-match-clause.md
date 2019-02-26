@@ -289,7 +289,7 @@ match $p isa person, has nickname "Mitzi", has phone-number contains "+44"; get;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-  var("p").isa("person").has("nickname", "Mitzi").has("phone-number", contains("+44"))
+  var("p").isa("person").has("nickname", "Mitzi").has("phone-number", Graql.contains("+44"))
 ).get();
 ```
 [tab:end]

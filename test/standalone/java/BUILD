@@ -1,6 +1,6 @@
-##################################
-### phone_calls Standalones Test #
-##################################
+#################################
+## phone_calls Standalones Test #
+#################################
 #
 #java_test(
 #    name = "standalone-java-phone-calls",
@@ -55,7 +55,7 @@
 #    cmd = "cp $(location PhoneCalls.java) $(location generated/TestStandalonePhoneCalls.java)",
 #    outs = ["generated/TestStandalonePhoneCalls.java"]
 #)
-#
+
 #####################################
 ### social_network Standalones Test #
 #####################################

@@ -46,8 +46,7 @@ compute count in person;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(COUNT)
-                          .in("person");
+GraqlCompute.Statistics query = Graql.compute().count().in("person");
 ```
 [tab:end]
 </div>
@@ -71,9 +70,7 @@ compute sum of salary, in employment;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(SUM)
-                          .of("salary")
-                          .in("employment");
+GraqlCompute.Statistics query = Graql.compute().sum().of("salary").in("employment");
 ```
 [tab:end]
 </div>
@@ -91,9 +88,7 @@ compute max of score, in school-course-enrollment;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(MAX)
-                          .of("score")
-                          .in("school-course-enrollment");
+GraqlCompute.Statistics query = Graql.compute().max().of("score").in("school-course-enrollment");
 ```
 [tab:end]
 </div>
@@ -111,9 +106,7 @@ compute min of ranking, in school;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(MIN)
-                          .of("ranking")
-                          .in("school");
+GraqlCompute.Statistics query = Graql.compute().min().of("ranking").in("school");
 ```
 [tab:end]
 </div>
@@ -131,9 +124,7 @@ compute mean of salary, in employment;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(MEAN)
-                          .of("salary")
-                          .in("employment");
+GraqlCompute.Statistics query = Graql.compute().mean().of("salary").in("employment");
 ```
 [tab:end]
 </div>
@@ -151,9 +142,7 @@ compute median of score, in school-course-enrollment;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(MEDIAN)
-                          .of("score")
-                          .in("school-course-enrollment");
+GraqlCompute.Statistics query = Graql.compute().median().of("score").in("school-course-enrollment");
 ```
 [tab:end]
 </div>
@@ -171,9 +160,7 @@ compute std of salary, in employment;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(STD)
-                          .of("salary")
-                          .in("employment");
+GraqlCompute.Statistics query = Graql.compute().std().of("salary").in("employment");
 ```
 [tab:end]
 </div>
@@ -196,9 +183,7 @@ compute path from V229424, to v446496;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(PATH)
-                          .from(ConceptId.of("V229424"))
-                          .to(ConceptId.of("v446496"));
+GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496");
 ```
 [tab:end]
 </div>
@@ -222,10 +207,7 @@ compute path from V229424, to v446496, in [person, friendship];
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(PATH)
-                          .from(ConceptId.of("V229424"))
-                          .to(ConceptId.of("v446496"))
-                          .in("person","friendship");
+GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496").in("person","friendship");
 ```
 [tab:end]
 </div>
@@ -257,8 +239,7 @@ compute centrality using degree;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(CENTRALITY)
-                          .using(DEGREE);
+GraqlCompute.Centrality query = Graql.compute().centrality().using(DEGREE);
 ```
 [tab:end]
 </div>
@@ -278,9 +259,7 @@ compute centrality in [organisation, person, employment], using degree;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(CENTRALITY)
-                          .in("organisation", "person", "employment")
-                          .using(DEGREE);
+GraqlCompute.Centrality query = Graql.compute().centrality().in("organisation", "person", "employment").using(DEGREE);
 ```
 [tab:end]
 </div>
@@ -300,10 +279,7 @@ compute centrality of organisation, in [organisation, person, employment], using
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(CENTRALITY)
-                          .of("organisation")
-                          .in("organisation", "person", "employment")
-                          .using(DEGREE);
+GraqlCompute.Centrality query = Graql.compute().centrality().of("organisation").in("organisation", "person", "employment").using(DEGREE);
 ```
 [tab:end]
 </div>
@@ -323,8 +299,7 @@ compute centrality using k-core;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(CENTRALITY)
-                          .using(K_CORE);
+GraqlCompute.Centrality query = Graql.compute().centrality().using(K_CORE);
 ```
 [tab:end]
 </div>
@@ -344,9 +319,7 @@ compute centrality using k-core, where min-k=5;
 
 [tab:Java]
 ```java
-GraqlCompute query = Graql.compute(CENTRALITY)
-                          .using(K_CORE)
-                          .where(min_k(5));
+GraqlCompute.Centrality query = Graql.compute().centrality().using(K_CORE).where(min_k(5));
 ```
 [tab:end]
 </div>
@@ -367,9 +340,7 @@ compute cluster in [person, employment, organisation], using connected-component
 
 [tab:Java]
 ```java
-GraqlCompute&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "employment", "organisation")
-                                      .using(CONNECTED_COMPONENT);
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "employment", "organisation").using(CONNECTED_COMPONENT);
 ```
 [tab:end]
 </div>
@@ -389,10 +360,7 @@ compute cluster in [person, employment, organisation], using connected-component
 
 [tab:Java]
 ```java
-GraqlCompute&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "employment", "organisation")
-                                      .using(CONNECTED_COMPONENT)
-                                      .where(contains(ConceptId.of("V12488")));
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "employment", "organisation").using(CONNECTED_COMPONENT).where(Argument.contains("V12488"));
 ```
 [tab:end]
 </div>
@@ -414,9 +382,7 @@ compute cluster in [person, friendship], using k-core;
 
 [tab:Java]
 ```java
-GraqlCompute&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "friendship")
-                                      .using(K_CORE);
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "friendship").using(K_CORE);
 ```
 [tab:end]
 </div>
@@ -436,10 +402,7 @@ compute cluster in [person, friendship], using k-core, where k=3;
 
 [tab:Java]
 ```java
-GraqlCompute&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "friendship")
-                                      .using(K_CORE)
-                                      .where(k(5));
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "friendship").using(K_CORE).where(k(5));
 ```
 [tab:end]
 </div>

@@ -10,24 +10,20 @@ import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
 import grakn.core.server.Transaction;
 
-import grakn.core.graql.query.query.GraqlQuery;
-import grakn.core.graql.query.query.GraqlCompute;
-import grakn.core.graql.query.query.GraqlDefine;
-import grakn.core.graql.query.query.GraqlUndefine;
-import grakn.core.graql.query.query.GraqlGet;
-import grakn.core.graql.query.query.GraqlDelete;
-import grakn.core.graql.query.query.GraqlInsert;
+import grakn.core.concept.answer.ConceptSet;
 
-import grakn.core.graql.query.Graql;
-import static grakn.core.graql.query.Graql.*;
-
-import static grakn.core.graql.query.query.GraqlCompute.Method.*;
-import static grakn.core.graql.query.query.GraqlCompute.Argument.*;
-// import static graql.lang.util.Token.Compute.Algorithm.*;
-
-
-import grakn.core.graql.concept.ConceptId;
-import grakn.core.graql.answer.ConceptSet;
+import graql.lang.Graql;
+import static graql.lang.Graql.*;
+import graql.lang.query.GraqlQuery;
+import graql.lang.query.GraqlCompute;
+import graql.lang.query.GraqlDefine;
+import graql.lang.query.GraqlUndefine;
+import graql.lang.query.GraqlGet;
+import graql.lang.query.GraqlDelete;
+import graql.lang.query.GraqlInsert;
+import graql.lang.query.GraqlCompute.Argument;
+import static graql.lang.query.GraqlCompute.Argument.*;
+import static graql.lang.Graql.Token.Compute.Algorithm.*;
 
 import org.junit.*;
 
