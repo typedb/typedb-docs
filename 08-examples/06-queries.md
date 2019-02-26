@@ -118,41 +118,40 @@ public class PhoneCallsFirstQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone PhoneCallsFirstQuery.js -->
+<!-- test-standalone phoneCallsFirstQuery.js -->
 ```javascript
-const Grakn = require("grakn");
+const Grakn = require("grakn-client");
 const grakn = new Grakn("localhost:48555");
 const session = grakn.session("phone_calls");
 
 ExecuteMatchQuery();
 
 async function ExecuteMatchQuery() {
-  const transaction = await session.transaction(Grakn.TxType.READ);
+    const transaction = await session.transaction(Grakn.TxType.READ);
 
   let query = [
-    "match",
-    "  $customer isa person, has phone-number $phone-number;",
-    '  $company isa company, has name "Telecom";',
-    "  (customer: $customer, provider: $company) isa contract;",
-    '  $target isa person, has phone-number "+86 921 547 9004";',
-    "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
-    "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
-    "get $phone-number;"
+      "match",
+      "  $customer isa person, has phone-number $phone-number;",
+      '  $company isa company, has name "Telecom";',
+      "  (customer: $customer, provider: $company) isa contract;",
+      '  $target isa person, has phone-number "+86 921 547 9004";',
+      "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
+      "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
+      "get $phone-number;"
   ];
 
   console.log("\nQuery:\n", query.join("\n"));
   query = query.join("");
 
   const iterator = await transaction.query(query);
-  const answers = await iterator.collect();
-  const result = await Promise.all(
-    answers.map(answer =>
-      answer
-        .map()
-        .get("phone-number")
-        .value()
-    )
-  );
+	const answers = await iterator.collect();
+	const result = await Promise.all(
+		answers.map(answer =>
+			answer.map()
+					.get("phone-number")
+					.value()
+		)
+	);
 
   console.log("\nResult:\n", result);
 
