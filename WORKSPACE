@@ -22,7 +22,7 @@ maven_dependencies_for_build()
 git_repository(
     name = "graknlabs_grakn",
     remote = "https://github.com/graknlabs/grakn",
-    commit = '892eac78b527ed52119b9af6a34ca44053125cb5' # grakn-dependency: do not remove this comment. this is used by the auto-update script
+    commit = '2e938f817ad1862c20b2fb550faa31cc711eaccb' # grakn-dependency: do not remove this comment. this is used by the auto-update script
 )
 
 load("@graknlabs_grakn//dependencies/pip:dependencies.bzl", "python_dependencies")
