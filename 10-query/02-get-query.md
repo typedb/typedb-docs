@@ -57,22 +57,12 @@ We can chose to limit the number of answers in the results. To do this, we use t
 <div class="tabs dark">
 
 [tab:Graql]
-<<<<<<< HEAD
-=======
-<!-- not yet implemented -->
-<!-- test-ignore -->
->>>>>>> development
 ```graql
 match $p isa person; get; limit 1;
 ```
 [tab:end]
 
 [tab:Java]
-<<<<<<< HEAD
-=======
-<!-- not yet implemented -->
-<!-- test-ignore -->
->>>>>>> development
 ```java
 GraqlGet query = Graql.match(
   var("p").isa("person")
@@ -88,22 +78,12 @@ To order the answers by a particular variable, we use the `order` keyword follow
 <div class="tabs dark">
 
 [tab:Graql]
-<<<<<<< HEAD
-=======
-<!-- not yet implemented -->
-<!-- test-ignore -->
->>>>>>> development
 ```graql
 match $p isa person, has full-name $fn; get; sort $fn asc;
 ```
 [tab:end]
 
 [tab:Java]
-<<<<<<< HEAD
-=======
-<!-- not yet implemented -->
-<!-- test-ignore -->
->>>>>>> development
 ```java
 GraqlGet query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
@@ -125,22 +105,12 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 <div class="tabs dark">
 
 [tab:Graql]
-<<<<<<< HEAD
-=======
-<!-- not yet implemented -->
-<!-- test-ignore -->
->>>>>>> development
 ```graql
 match $p isa person, has full-name $fn; get; sort $fn; offset 100; limit 10;
 ```
 [tab:end]
 
 [tab:Java]
-<<<<<<< HEAD
-=======
-<!-- not yet implemented -->
-<!-- test-ignore -->
->>>>>>> development
 ```java
 GraqlGet query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))

@@ -28,22 +28,14 @@ event-date sub attribute,
 approved-date sub event-date;
 
 ## an abstract relationship, only to be subtyped by other relationships
-<<<<<<< HEAD
 request sub relation,
-=======
-request sub relationship,
->>>>>>> development
   abstract,
   has approved-date,
   relates approved-subject,
   relates requester,
   relates respondent;
 
-<<<<<<< HEAD
 friendship sub relation,
-=======
-friendship sub relationship,
->>>>>>> development
     relates friend,
     plays approved-friendship,
     plays listed-friendship;
@@ -54,11 +46,7 @@ friend-request sub request,
     relates friendship-requester as requester,
     relates friendship-respondent as respondent;
 
-<<<<<<< HEAD
 friends-list sub relation,
-=======
-friends-list sub relationship,
->>>>>>> development
     has title,
     relates list-owner,
     relates listed-friendship;
@@ -126,7 +114,6 @@ The result contains the following answers.
 
 #### Retrieve all employments using [Client Java](/docs/client-api/java)
 
-<<<<<<< HEAD
 <!-- test-standalone SocialNetworkQuickstartQuery.java -->
 ```java
 package grakn.examples;
@@ -161,57 +148,12 @@ public class SocialNetworkQuickstartQuery extends Throwable {
         transaction.close();
         session.close();
     }
-=======
-<!-- test-ignore -->
-```java
-package ai.grakn.examples;
-
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.graql.GetQuery;
-import ai.grakn.graql.Graql;
-import ai.grakn.graql.answer.ConceptMap;
-import ai.grakn.util.SimpleURI;
-import java.util.List;
-import static ai.grakn.graql.Graql.var;
-
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("social_network");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.READ);
-
-    GetQuery query = Graql.match(
-      var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
-      var("per").has("full-name", var("per-fn")),
-      var("org").has("name", var("org-n"))
-    ).get();
-
-    List <ConceptMap> answers = query.withTx(transaction).execute();
-
-    for (ConceptMap answer: answers) {
-      System.out.println(answer.get("per-fn").asAttribute().value());
-      System.out.println(answer.get("org-n").asAttribute().value());
-      System.out.println(" - - - - - - - - ");
-    }
-
-    transaction.close();
-    session.close();
-  }
->>>>>>> development
 }
 ```
 
 #### Lazily retrieve all photos and videos that have been found funny by women sing [Client Python](/docs/client-api/python)
 
-<<<<<<< HEAD
 <!-- test-standalone social_network_quickstart_query.py -->
-=======
-<!-- test-ignore -->
->>>>>>> development
 ```python
 import grakn
 
@@ -222,11 +164,7 @@ with client.session(keyspace = "social_network") as session:
       match
         $pos isa media;
         $fun isa emotion;
-<<<<<<< HEAD
         $fun "funny";
-=======
-        $fun == "funny";
->>>>>>> development
         $per has gender "female";
         (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
       get $pos;
@@ -238,7 +176,6 @@ with client.session(keyspace = "social_network") as session:
 
 #### Retrieve the average salary of all employees at Pharos using [Client Node.js](/docs/client-api/nodejs)
 
-<<<<<<< HEAD
 <!-- test-standalone socialNetworkQuickstartQuery.js -->
 ```javascript
 const Grakn = require("grakn-client");
@@ -265,30 +202,6 @@ async function getAverageSalaryAt (orgName) {
 }
 
 getAverageSalaryAt("Pharos"); // asynchronous call
-=======
-<!-- test-ignore -->
-```javascript
-const Grakn = require("grakn");
-const grakn = new Grakn("localhost:48555");
-
-async function getAverageSalaryAt(orgName) {
-  const session = await grakn.session((keyspace = "social_network"));
-  const transaction = await session.transaction(Grakn.txType.READ);
-  const query = `
-    match
-      $org isa organisation, has name "${orgName}";
-      ($org, $per) isa employment, has salary $sal;
-      get $sal; mean $sal;
-  `
-  const answerIterator = await transaction.query(query);
-  const answer = await answerIterator.next();
-  console.log(await answer.number());
-  transaction.close();
-  session.close();
-}
-
-getAverageSalaryAt("Pharos");
->>>>>>> development
 ```
 
 ### Insert and Delete Data
@@ -296,21 +209,12 @@ We can create and delete instances of data in a Grakn knowledge graph by running
 
 #### Insert an instance of type person
 
-<<<<<<< HEAD
 ```graql
 insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male", has email "johnyjj@gmail.com";
 ```
 
 <!-- test-ignore -->
 ```graql
-=======
-```graql
-insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male", has email "johnyjj@gmail.com";
-```
-
-<!-- test-ignore -->
-```graql
->>>>>>> development
 commit
 ```
 
@@ -348,11 +252,7 @@ Let's look at some simple examples of how Grakn uses rules for reasoning over ex
 ```graql
 define
 
-<<<<<<< HEAD
 course-enrollment-mutuality sub relation,
-=======
-course-enrollment-mutuality sub relationship,
->>>>>>> development
   relates coursemate,
   relates mutual-course-enrollment;
 
@@ -367,7 +267,6 @@ people-taken-the-same-course sub rule,
 ```
 
 As you can see in the `social_network_data.gql` file, no instance of `course-enrollment-mutuality` was ever inserted. It's only the rule above that allows Grakn to infer this knowledge and know the answer to the following question at query time.
-<<<<<<< HEAD
 
 ```graql
 match
@@ -400,40 +299,6 @@ people-gone-to-the-same-school sub rule,
 
 We can query for people who have attended the same school and taken the same course, like so:
 
-=======
-
-```graql
-match
-  $per isa person, has full-name "Miriam Morton";
-  ($per, coursemate: $mate) isa course-enrollment-mutuality;
-  $mate has full-name $mate-fn;
-get $mate-fn;
-```
-
-Given the second rule:
-
-```graql
-define
-
-school-mutuality sub relationship,
-  relates schoolmate,
-  relates mutual-school;
-
-people-gone-to-the-same-school sub rule,
-  when {
-    (student: $p1, enrolled-course: $c1) isa school-course-enrollment;
-    (student: $p2, enrolled-course: $c2) isa school-course-enrollment;
-    (offered-course: $c1, offerring-school: $s) isa school-course-offerring;
-    (offered-course: $c2, offerring-school: $s) isa school-course-offerring;
-    $p1 != $p2;
-  }, then {
-    (schoolmate: $p1, schoolmate: $p2, mutual-school: $s) isa school-mutuality;
-  };
-```
-
-We can query for people who have attended the same school and taken the same course, like so:
-
->>>>>>> development
 ```graql
 match
   (coursemate: $mate-1, coursemate: $mate-2) isa course-enrollment-mutuality;
@@ -465,7 +330,6 @@ compute count in travel;
 
 #### Find the [shortest path](/docs/query/compute-query#compute-the-shortest-path) between two instances
 
-<<<<<<< HEAD
 ```graql
 match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
 ```
@@ -499,26 +363,6 @@ compute cluster in [person, employment, organisation], using connected-component
 {V360448, V250104, V176176, V667824, V180368, V303200, V639152}
 {V647200, V295008, V237808, V225328, V364544, V372832, V356352, V167984, V266488, V299104, V663584}
 {V401584, V229424, V639008, V213040, V655392}
-=======
-```graql
-match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
-# {$x id V446496 isa person; $y id V229424 isa person;}
-compute path from V446496, to V229424;
-# {V184392, V442424, V90344}
-```
-
-#### [Identify clusters](/docs/query/compute-query#identify-clusters) in a subgraph
-
-```graql
-compute cluster in [person, employment, organisation], using connected-component;
-# {V192656}
-# {V663728, V266336, V262392, V680112, V479408}
-# {V180272, V446496, V278672, V463024, V671920}
-# {V172176}
-# {V360448, V250104, V176176, V667824, V180368, V303200, V639152}
-# {V647200, V295008, V237808, V225328, V364544, V372832, V356352, V167984, V266488, V299104, V663584}
-# {V401584, V229424, V639008, V213040, V655392}
->>>>>>> development
 ```
 
 ### Where Next?

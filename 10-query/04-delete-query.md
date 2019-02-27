@@ -32,11 +32,7 @@ match $p isa person, has email "raphael.santos@gmail.com"; delete $p;
 
 [tab:Java]
 ```java
-<<<<<<< HEAD
 GraqlDelete query = Graql.match(
-=======
-DeleteQuery query = Graql.match(
->>>>>>> development
     var("p").isa("person").has("email", "raphael.santos@gmail.com")
 ).delete("p");
 ```

@@ -268,11 +268,7 @@ match $p isa person, has nickname $nn, has full-name $fn; get;
 
 [tab:Java]
 ```java
-<<<<<<< HEAD
 GraqlGet query = Graql.match(
-=======
-GetQuery query = Graql.match(
->>>>>>> development
   var("p").isa("person").has("nickname", var("nn")).has("full-name", var("fn"))
 ).get();
 ```

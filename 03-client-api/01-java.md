@@ -38,11 +38,7 @@ In the interpreter or in your source, import `grakn`.
 
 Instantiate a client and open a session.
 
-<<<<<<< HEAD
 <!-- test-standalone GraknQuickstartA.java -->
-=======
-<!-- test-ignore -->
->>>>>>> development
 ```java
 package grakn.examples;
 
@@ -69,11 +65,7 @@ Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client()
 
 Create transactions to use for reading and writing data.
 
-<<<<<<< HEAD
 <!-- test-standalone GraknQuickstartB.java -->
-=======
-<!-- test-ignore -->
->>>>>>> development
 ```java
 package grakn.examples;
 
@@ -104,11 +96,7 @@ public class GraknQuickstartB {
 
 Running basic retrieval and insertion queries.
 
-<<<<<<< HEAD
 <!-- test-standalone GraknQuickstartC.java -->
-=======
-<!-- test-ignore -->
->>>>>>> development
 ```java
 package grakn.examples;
 

@@ -32,13 +32,8 @@ insert $p isa person, has full-name "John Parkson", has gender "male", has email
 
 [tab:Java]
 ```java
-<<<<<<< HEAD
 GraqlInsert query = Graql.insert(
   var("p").isa("person").has("full-name", "John Parkson").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
-=======
-InsertQuery query = Graql.insert(
-  var("p").isa("person").has("full-name", "John Parkson").has("nickname", "Johny").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
->>>>>>> development
 );
 ```
 [tab:end]

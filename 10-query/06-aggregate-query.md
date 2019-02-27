@@ -190,11 +190,7 @@ get; group $tit;
 
 [tab:Java]
 ```java
-<<<<<<< HEAD
 GraqlGet.Group query = Graql.match(
-=======
-GroupQuery query = Graql.match(
->>>>>>> development
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
@@ -219,11 +215,7 @@ get; group $tit; count;
 
 [tab:Java]
 ```java
-<<<<<<< HEAD
 GraqlGet.Group.Aggregate query = Graql.match(
-=======
-GroupAggregateQuery query = Graql.match(
->>>>>>> development
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")

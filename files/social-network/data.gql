@@ -390,21 +390,12 @@ $gro-2-mem-4 (group-member: $per-6, membership-grouping: $gro-2) isa group-membe
 $gro-2-mem-4-req (approved-group-membership: $gro-2-mem-4, group-membership-requester: $per-6, group-membership-respondent: $per-10) isa group-membership-request;
 
 ## EMOTIONS
-<<<<<<< HEAD:files/social-network/data.gql
 $emo-1 isa emotion; $emo-1 "like";
 $emo-2 isa emotion; $emo-2 "love";
 $emo-3 isa emotion; $emo-3 "funny";
 $emo-4 isa emotion; $emo-4 "shocking";
 $emo-5 isa emotion; $emo-5 "sad";
 $emo-6 isa emotion; $emo-6 "angry";
-=======
-$emo-1 isa emotion; $emo-1 == "like";
-$emo-2 isa emotion; $emo-2 == "love";
-$emo-3 isa emotion; $emo-3 == "funny";
-$emo-4 isa emotion; $emo-4 == "shocking";
-$emo-5 isa emotion; $emo-5 == "sad";
-$emo-6 isa emotion; $emo-6 == "angry";
->>>>>>> development:files/social-network-data.gql
 
 ## POST | COMMENT | SHARING | REPLY | REACTION | TAGGING
 $per-1-pos-1 isa status-update, has content "$per-1-pos-1-content", has identifier "$per-1-pos-1";

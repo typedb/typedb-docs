@@ -41,19 +41,11 @@ match $org isa organisation, has name "Medicely"; insert $org has registration-n
 [tab:Java]
 
 ```java
-<<<<<<< HEAD
 GraqlDelete delete_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
 GraqlInsert insert_query = Graql.match(
-=======
-DeleteQuery delete_query = Graql.match(
-  var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
-).delete("r");
-
-InsertQuery insert_query = Graql.match(
->>>>>>> development
   var("org").isa("organisation").has("name", "Medicely")
 ).insert(
   var("org").has("registration-number", "81726354")
@@ -85,11 +77,7 @@ match $c isa caption; $c contains "inappropriate word"; delete $c;
 
 [tab:Java]
 ```java
-<<<<<<< HEAD
 GraqlInsert insert_query = Graql.match(
-=======
-InsertQuery insert_query = Graql.match(
->>>>>>> development
   var("m").isa("media").has("caption", var("c")),
   var("c").contains("inappropriate word")
 ).insert(

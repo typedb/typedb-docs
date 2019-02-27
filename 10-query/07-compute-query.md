@@ -211,14 +211,7 @@ compute path from V229424, to V446496, in [person, friendship];
 [tab:Java]
 <!-- test-delay -->
 ```java
-<<<<<<< HEAD
 GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496").in("person","friendship");
-=======
-ComputeQuery query = Graql.compute(PATH)
-                          .from(ConceptId.of("V229424"))
-                          .to(ConceptId.of("v446496"))
-                          .in("person","friendship");
->>>>>>> development
 ```
 [tab:end]
 </div>
@@ -413,14 +406,7 @@ compute cluster in [person, friendship], using k-core, where k=3;
 
 [tab:Java]
 ```java
-<<<<<<< HEAD
 GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "friendship").using(K_CORE).where(k(5));
-=======
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "friendship")
-                                      .using(K_CORE)
-                                      .where(k(5));
->>>>>>> development
 ```
 [tab:end]
 </div>
