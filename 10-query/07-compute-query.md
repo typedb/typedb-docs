@@ -176,12 +176,14 @@ We can use the compute query to find the shortest path between two instances of 
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-delay -->
 ```graql
-compute path from V229424, to v446496;
+compute path from V229424, to V446496;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
 GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496");
 ```
@@ -200,12 +202,14 @@ When looking for the shortest path, we may need to constraint the shortest path 
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-delay -->
 ```graql
-compute path from V229424, to v446496, in [person, friendship];
+compute path from V229424, to V446496, in [person, friendship];
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
 GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496").in("person","friendship");
 ```

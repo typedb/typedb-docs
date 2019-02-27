@@ -100,7 +100,7 @@ GraqlGet query = Graql.match(
 [tab:end]
 </div>
 
-The example above, for every employment, assigns the instance of the employment (relationship) type to the variable `$emp`, the instance of the employer company (entity) type to the variable `$x` and the instance of the employee person (entity) type to the variable `$y`.
+The example above, for every employment, assigns the instance of the employment (relationship) type to the variable `$emp`, the instance of the employer organisation (entity) type to the variable `$x` and the instance of the employee person (entity) type to the variable `$y`.
 
 #### Instances of a relationship with particular attributes
 To only match the instances of relationships that own a specific attribute, we use the `has` keyword followed by the attribute's label and a variable.
@@ -402,7 +402,7 @@ match $x sub thing; get;
 match $x sub attribute; get;
 match $x sub entity; get;
 match $x sub role; get;
-match $x sub relationship; get;
+match $x sub relation; get;
 ```
 [tab:end]
 
@@ -425,7 +425,7 @@ GraqlGet query_d = Graql.match(
 ).get();
 
 GraqlGet query_e = Graql.match(
-  var("x").sub("relationship")
+  var("x").sub("relation")
 ).get();
 ```
 [tab:end]

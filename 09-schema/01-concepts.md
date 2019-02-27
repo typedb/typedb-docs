@@ -245,7 +245,7 @@ To define a new relationship, we use the `sub` keyword followed by `relationship
 ```graql
 define
 
-employment sub relationship;
+employment sub relation;
 ```
 
 To complete the definition of a relationship, we must determine the roles that it relates to. To do so, we use the `relates` keyword followed by the role's label.
@@ -256,7 +256,7 @@ To complete the definition of a relationship, we must determine the roles that i
 ```graql
 define
 
-employment sub relationship,
+employment sub relation,
   relates employee,
   relates employer;
 ```
@@ -265,7 +265,7 @@ employment sub relationship,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("employment").sub("relationship").relates("employee").relates("employer")
+  type("employment").sub("relation").relates("employee").relates("employer")
 );
 ```
 
@@ -288,11 +288,11 @@ Let's go through a simple example of how a relationship can play a role in anoth
 ```graql
 define
 
-friendship sub relationship,
+friendship sub relation,
   relates friend,
   plays requested-friendship;
 
-friend-request sub relationship,
+friend-request sub relation,
   relates requested-friendship,
   relates friendship-requester,
   relates friendship-respondent;
@@ -307,8 +307,8 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friendship").sub("relationship").relates("friend").plays("requested-friendship"),
-  type("friend-request").sub("relationship").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent"),
+  type("friendship").sub("relation").relates("friend").plays("requested-friendship"),
+  type("friend-request").sub("relation").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent"),
   type("person").sub("entity").plays("friend").plays("friendship-requester").plays("friendship-respondent")
 );
 ```
@@ -329,7 +329,7 @@ A relationship can relate to any number of roles. The example below illustrates 
 ```graql
 define
 
-reaction sub relationship,
+reaction sub relation,
   relates reacted-emotion,
   relates reacted-to,
   relates reacted-by;
@@ -349,7 +349,7 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("reaction").sub("relationship").relates("reacted-emotion").relates("reacted-to").relates("reacted-by"),
+  type("reaction").sub("relation").relates("reacted-emotion").relates("reacted-to").relates("reacted-by"),
   type("emotion").sub("attribute").datatype("string").plays("reacted-emotion"),
   type("post").sub("entity").plays("reacted-to"),
   type("person").sub("entity").plays("reacted-by")
@@ -373,7 +373,7 @@ We can assign any number of attributes to a relationship. To do so, we use the `
 ```graql
 define
 
-friend-request sub relationship,
+friend-request sub relation,
   has approved-date,
   relates requested-friendship,
   relates friendship-requester,
@@ -384,7 +384,7 @@ friend-request sub relationship,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friend-request").sub("relationship").has("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
+  type("friend-request").sub("relation").has("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
 );
 ```
 
@@ -399,7 +399,7 @@ To assign a unique attribute to a relationship, we use the `key` keyword followe
 ```graql
 define
 
-employment sub relationship,
+employment sub relation,
   key reference-id,
   relates employer,
   relates employee;
@@ -409,7 +409,7 @@ employment sub relationship,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("employment").sub("relationship").key("reference-id").relates("employer").relates("employee")
+  type("employment").sub("relation").key("reference-id").relates("employer").relates("employee")
 );
 ```
 
@@ -432,7 +432,7 @@ We can define a relationship to inherit all attributes owned, and roles related 
 ```graql
 define
 
-location-of-everything sub relationship,
+location-of-everything sub relation,
   relates located-subject,
   relates subject-location;
 
@@ -449,7 +449,7 @@ location-of-residence sub location-of-everything,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("location-of-everything").sub("relationship").relates("located-subject").relates("subject-location"),
+  type("location-of-everything").sub("relation").relates("located-subject").relates("subject-location"),
   type("located-birth").sub("located-subject"),
   type("birth-location").sub("subject-location"),
   type("location-of-birth").sub("location-of-everything").relates("located-birth").relates("birth-location"),
@@ -483,7 +483,7 @@ There may be scenarios where a parent relationship is only defined for other rel
 ```graql
 define
 
-location-of-everything sub relationship, abstract,
+location-of-everything sub relation, abstract,
   relates located-subject,
   relates subject-location;
 ```
@@ -492,7 +492,7 @@ location-of-everything sub relationship, abstract,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("location-of-everything").sub("relationship").isAbstract().relates("located-subject").relates("subject-location")
+  type("location-of-everything").sub("relation").isAbstract().relates("located-subject").relates("subject-location")
 );
 ```
 
@@ -547,11 +547,11 @@ define
 start-date sub attribute,
 	datatype date;
 
-residency sub relationship,
+residency sub relation,
   ## roles and other attributes
   has start-date;
 
-travel sub relationship,
+travel sub relation,
   ## roles and other attributes
   has start-date;
 ```
@@ -561,8 +561,8 @@ travel sub relationship,
 ```java
 GraqlDefine query = Graql.define(
   type("start-date").sub("attribute").datatype("date"),
-  type("residency").sub("relationship").has("start-date"),
-  type("travel").sub("relationship").has("start-date")
+  type("residency").sub("relation").has("start-date"),
+  type("travel").sub("relation").has("start-date")
 );
 ```
 
@@ -678,7 +678,7 @@ language sub attribute, datatype string,
 person sub entity,
   plays speaker;
 
-speaking-of-language sub relationship,
+speaking-of-language sub relation,
   relates speaker,
   relates spoken;
 ```
@@ -689,7 +689,7 @@ speaking-of-language sub relationship,
 GraqlDefine query = Graql.define(
   type("language").sub("attribute").datatype("string").plays("spoken"),
   type("person").sub("entity").plays("speaker"),
-  type("speaking-of-language").sub("relationship").relates("speaker").relates("spoken")
+  type("speaking-of-language").sub("relation").relates("speaker").relates("spoken")
 );```
 
 [tab:end]
@@ -804,7 +804,7 @@ undefine
 
     speaking-of-language relates speaker; person plays speaker; speaker sub role;
     speaking-of-language relates spoken; language plays spoken; spoken sub role;
-    speaking-of-language sub relationship;
+    speaking-of-language sub relation;
 ```
 [tab:end]
 
@@ -816,7 +816,7 @@ GraqlUndefine query = Graql.undefine(
   type("language").plays("spoken"),
   type("speaker").sub("role"),
   type("spoken").sub("role"),
-  type("speaking-of-language").sub("relationship")
+  type("speaking-of-language").sub("relation")
 );
 ```
 [tab:end]

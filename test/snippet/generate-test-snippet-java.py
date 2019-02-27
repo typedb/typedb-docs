@@ -8,9 +8,6 @@ package generated;
 
 import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
-import grakn.core.server.Transaction;
-
-import grakn.core.concept.answer.ConceptSet;
 
 import graql.lang.Graql;
 import static graql.lang.Graql.*;
@@ -24,6 +21,7 @@ import graql.lang.query.GraqlInsert;
 import graql.lang.query.GraqlCompute.Argument;
 import static graql.lang.query.GraqlCompute.Argument.*;
 import static graql.lang.Graql.Token.Compute.Algorithm.*;
+import static graql.lang.Graql.Token.Order.*;
 
 import org.junit.*;
 
@@ -49,12 +47,17 @@ public class TestSnippetJava {
     public static void loadSocialNetwork() {
         client = new GraknClient(server.grpcUri().toString());
         session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
+        GraknClient.Transaction transaction = session.transaction().write();
 
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
             transaction.execute((GraqlQuery) Graql.parse(query));
+            
+            encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
+            query = new String(encoded, StandardCharsets.UTF_8);
+            transaction.execute((GraqlQuery) Graql.parse(query));
+            
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,7 +66,7 @@ public class TestSnippetJava {
 
     @Before
     public void openTransaction(){
-        transaction = session.transaction(Transaction.Type.WRITE);
+        transaction = session.transaction().write();
     }
 
     @After
@@ -89,9 +92,7 @@ java_snippet_test_method_template = """
     }
 """
 
-# pattern_to_find_snippets = '(?<!<!-- test-ignore -->)\n```java\n((\n|.)+?)```'
-
-pattern_to_find_snippets = ('<!-- test-(ignore|standalone.*) -->\n```java\n((\n|.)+?)```'
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|standalone.*) -->\n```java\n((\n|.)+?)```'
                             +
                             '|(```java\n' +
                             '((\n|.)+?)' +  # group containing snippet
@@ -103,7 +104,7 @@ for markdown_file in markdown_files:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
             flag_type = snippet[0]
-            if "ignore" not in flag_type and "standalone" not in flag_type:
+            if snippet[4] != "":
                 snippets.append({"code": snippet[4], "page": markdown_file})
 
 
@@ -114,7 +115,7 @@ for i, snippet in enumerate(snippets):
     test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
 
     # add execute statements
-    pattern_to_find_query_object_vars = 'Query\s(.*)\s='
+    pattern_to_find_query_object_vars = '^Graql[A-Z].*?\s(.*)\s='
     matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
     execute_statements = ""
     for variable in matches:

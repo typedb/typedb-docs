@@ -8,11 +8,11 @@ package generated;
 
 import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
-import grakn.core.server.Transaction;
-import org.junit.*;
 
-import grakn.core.graql.query.Graql;
-import grakn.core.graql.query.query.GraqlQuery;
+import graql.lang.Graql;
+import graql.lang.query.GraqlQuery;
+
+import org.junit.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -36,12 +36,17 @@ public class TestSnippetGraql {
     public static void loadSocialNetwork() {
         client = new GraknClient(server.grpcUri().toString());
         session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
+        GraknClient.Transaction transaction = session.transaction().write();
 
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
             transaction.execute((GraqlQuery) Graql.parse(query));
+            
+            encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
+            query = new String(encoded, StandardCharsets.UTF_8);
+            transaction.execute((GraqlQuery) Graql.parse(query));
+            
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,7 +55,7 @@ public class TestSnippetGraql {
 
     @Before
     public void openTransaction() {
-        transaction = session.transaction(Transaction.Type.WRITE);
+        transaction = session.transaction().write();
     }
 
     @After
@@ -77,7 +82,7 @@ graql_snippet_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = ('<!-- test-(ignore|standalone.*) -->\n```graql\n((\n|.)+?)```'
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|standalone.*) -->\n```graql\n((\n|.)+?)```'
                             +
                             '|(```graql\n' +
                             '((\n|.)+?)' +  # group containing snippet
@@ -89,7 +94,7 @@ for markdown_file in markdown_files:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
             flag_type = snippet[0]
-            if "ignore" not in flag_type and "standalone" not in flag_type:
+            if snippet[4] != "":
                 snippets.append({"code": snippet[4], "page": markdown_file})
 
 

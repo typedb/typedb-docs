@@ -1,6 +1,7 @@
 import grakn
 import unittest
 
+
 class TestStandalonePhoneCalls(unittest.TestCase):
 
     @classmethod
@@ -13,11 +14,14 @@ class TestStandalonePhoneCalls(unittest.TestCase):
                 with session.transaction(grakn.TxType.WRITE) as transaction:
                     transaction.query(define_query)
                     transaction.commit()
+                    print("Loaded the phone_calls schema")
 
     def test_a_phone_calls_first_query(self):
+        print("test_a_phone_calls_first_query")
         import phone_calls_first_query
 
     def test_b_phone_calls_second_query(self):
+        print("test_b_phone_calls_second_query")
         import phone_calls_second_query
 
     def test_c_phone_calls_third_query(self):
@@ -39,14 +43,11 @@ class TestStandalonePhoneCalls(unittest.TestCase):
         import phone_calls_xml_migration
 
     @classmethod
-    def tearDown(cls):
+    def tearDownClass(cls):
         client = grakn.Grakn(uri="localhost:48555")
-        with client.session(keyspace="phone_calls") as session:
-            with session.transaction(grakn.TxType.WRITE) as transaction:
-                transaction.query("match $x isa relationship; delete $x;")
-                transaction.query("match $x isa entity; delete $x;")
-                transaction.query("match $x isa attribute; delete $x;")
-                transaction.commit()
+        client.keyspaces().delete("phone_calls")
+        print("Deleted the phone_calls keyspace")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -564,7 +564,7 @@ function parseDataToObjects(input) {
 	});
 }
 
-module.exports.initiate = buildPhoneCallGraph;
+buildPhoneCallGraph();
 ```
 [tab:end]
 
@@ -700,7 +700,7 @@ function parseDataToObjects(input) {
 	});
 }
 
-module.exports.initiate = buildPhoneCallGraph;
+buildPhoneCallGraph();
 ```
 [tab:end]
 
@@ -848,7 +848,7 @@ function parseDataToObjects(input) {
 	});
 }
 
-module.exports.initiate = buildPhoneCallGraph;
+buildPhoneCallGraph();
 ```
 [tab:end]
 

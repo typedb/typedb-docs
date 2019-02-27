@@ -19,11 +19,11 @@ define
     is-customer sub attribute,
       datatype boolean;
 
-    contract sub relationship,
+    contract sub relation,
         relates provider,
         relates customer;
 
-    call sub relationship,
+    call sub relation,
         relates caller,
         relates callee,
         has started-at,

@@ -99,8 +99,6 @@ To change the roleplayers of a given relationship, we first need to [delete the 
 <div class="tabs dark">
 
 [tab:Graql]
-<!-- test edge case -->
-<!-- test-ignore -->
 ```graql
 ## inserting the new
 match
