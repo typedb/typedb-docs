@@ -9,6 +9,7 @@
 
 filegroup(
     name = "content",
+<<<<<<< HEAD
     srcs = glob(
         ["*/**/*.md"],
         exclude=[
@@ -18,5 +19,8 @@ filegroup(
             ".runfiles/**/*.md"
         ]
     ),
+=======
+    srcs = glob(["*/**/*.md"]),
+>>>>>>> development
     visibility = ["//visibility:public"]
 )

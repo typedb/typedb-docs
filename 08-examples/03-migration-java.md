@@ -790,7 +790,11 @@ Here is how our `Migrate.java` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
+<<<<<<< HEAD
 <!-- test-standalone PhoneCallsCSVMigration.java -->
+=======
+<!-- test-ignore -->
+>>>>>>> development
 ```java
 package grakn.examples;
 
@@ -987,7 +991,11 @@ public class PhoneCallsCSVMigration {
 [tab:end]
 
 [tab:JSON]
+<<<<<<< HEAD
 <!-- test-standalone PhoneCallsJSONMigration.java -->
+=======
+<!-- test-ignore -->
+>>>>>>> development
 ```java
 package grakn.examples;
 
@@ -1190,7 +1198,11 @@ public class PhoneCallsJSONMigration {
 [tab:end]
 
 [tab:XML]
+<<<<<<< HEAD
 <!-- test-standalone PhoneCallsXMLMigration.java -->
+=======
+<!-- test-ignore -->
+>>>>>>> development
 ```java
 package grakn.examples;
 

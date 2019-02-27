@@ -731,7 +731,11 @@ define
 # 	$per sub person;
 # get;
 
+<<<<<<< HEAD:files/social-network/schema.gql
 	reply sub relation,
+=======
+	reply sub relationship,
+>>>>>>> development:files/social-network-schema.gql
 		relates replied-to,
 		relates reply-content,
 		relates replied-by;

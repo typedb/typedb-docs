@@ -6,7 +6,7 @@ permalink: /docs/query/aggregate-query
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `aggregate` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a `aggregate` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
@@ -190,7 +190,11 @@ get; group $tit;
 
 [tab:Java]
 ```java
+<<<<<<< HEAD
 GraqlGet.Group query = Graql.match(
+=======
+GroupQuery query = Graql.match(
+>>>>>>> development
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
@@ -215,7 +219,11 @@ get; group $tit; count;
 
 [tab:Java]
 ```java
+<<<<<<< HEAD
 GraqlGet.Group.Aggregate query = Graql.match(
+=======
+GroupAggregateQuery query = Graql.match(
+>>>>>>> development
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")

@@ -6,7 +6,7 @@ permalink: /docs/schema/concepts
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing `define` and `undefine` queries, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing `define` and `undefine` queries, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
@@ -84,7 +84,11 @@ person sub entity,
 
 [tab:Java]
 ```java
+<<<<<<< HEAD
 GraqlDefine query = Graql.define(
+=======
+DefineQuery query = Graql.define(
+>>>>>>> development
   type("person").sub("entity").has("full-name").has("nickname").has("gender")
 );
 ```
@@ -559,10 +563,17 @@ travel sub relation,
 
 [tab:Java]
 ```java
+<<<<<<< HEAD
 GraqlDefine query = Graql.define(
   type("start-date").sub("attribute").datatype("date"),
   type("residency").sub("relation").has("start-date"),
   type("travel").sub("relation").has("start-date")
+=======
+DefineQuery query = Graql.define(
+  type("start-date").sub("attribute").datatype(DataType.DATE),
+  type("residency").sub("relationship").has("start-date"),
+  type("travel").sub("relationship").has("start-date")
+>>>>>>> development
 );
 ```
 
@@ -802,14 +813,28 @@ Given the dependent nature of relationships, before undefining the relationship 
 ```graql
 undefine
 
+<<<<<<< HEAD
     speaking-of-language relates speaker; person plays speaker; speaker sub role;
     speaking-of-language relates spoken; language plays spoken; spoken sub role;
     speaking-of-language sub relation;
+=======
+  employment relates employer; organisation plays employer; employer sub role;
+  
+undefine
+
+  employment relates employee; person plays employee; employee sub role;
+
+
+undefine
+
+  employment sub relationship;
+>>>>>>> development
 ```
 [tab:end]
 
 [tab:Java]
 ```java
+<<<<<<< HEAD
 GraqlUndefine query = Graql.undefine(
   type("speaking-of-language").relates("speaker").relates("spoken"),
   type("person").plays("speaker"),
@@ -817,6 +842,15 @@ GraqlUndefine query = Graql.undefine(
   type("speaker").sub("role"),
   type("spoken").sub("role"),
   type("speaking-of-language").sub("relation")
+=======
+UndefineQuery query = Graql.undefine(
+  type("employment").relates("employer").relates("employee"),
+  type("organisation").plays("employer"),
+  type("person").plays("employee"),
+  type("employer").sub("role"),
+  type("employee").sub("role"),
+  type("employment").sub("relationship")
+>>>>>>> development
 );
 ```
 [tab:end]

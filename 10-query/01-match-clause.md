@@ -9,7 +9,7 @@ permalink: /docs/query/match-clause
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
@@ -268,7 +268,11 @@ match $p isa person, has nickname $nn, has full-name $fn; get;
 
 [tab:Java]
 ```java
+<<<<<<< HEAD
 GraqlGet query = Graql.match(
+=======
+GetQuery query = Graql.match(
+>>>>>>> development
   var("p").isa("person").has("nickname", var("nn")).has("full-name", var("fn"))
 ).get();
 ```
@@ -407,6 +411,8 @@ match $x sub relation; get;
 [tab:end]
 
 [tab:Java]
+<!-- test-edge-case -->
+<!-- ignore-test -->
 ```java
 GraqlGet query_a = Graql.match(
   var("x").sub("thing")

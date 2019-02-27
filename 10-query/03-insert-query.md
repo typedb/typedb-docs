@@ -6,7 +6,7 @@ permalink: /docs/query/insert-query
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `insert` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a `insert` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
@@ -32,8 +32,13 @@ insert $p isa person, has full-name "John Parkson", has gender "male", has email
 
 [tab:Java]
 ```java
+<<<<<<< HEAD
 GraqlInsert query = Graql.insert(
   var("p").isa("person").has("full-name", "John Parkson").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
+=======
+InsertQuery query = Graql.insert(
+  var("p").isa("person").has("full-name", "John Parkson").has("nickname", "Johny").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
+>>>>>>> development
 );
 ```
 [tab:end]

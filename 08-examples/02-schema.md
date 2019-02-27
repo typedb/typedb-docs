@@ -117,7 +117,7 @@ define
 ```
 
 Lastly, we need to define the type of each attribute.
-
+<!-- test-ignore -->
 ```graql
 define
 

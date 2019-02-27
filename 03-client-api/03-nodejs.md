@@ -20,14 +20,22 @@ First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-th
 
 In your source, require `grakn`.
 
+<<<<<<< HEAD
 <!-- test-standalone socialNetworkNodejsClientA.js -->
+=======
+<!-- test-ignore -->
+>>>>>>> development
 ```javascript
 const Grakn = require("grakn-client");
 ```
 
 Instantiate a client and open a session.
 
+<<<<<<< HEAD
 <!-- test-standalone socialNetworkNodejsClientB.js -->
+=======
+<!-- test-ignore -->
+>>>>>>> development
 ```javascript
 const Grakn = require("grakn-client");
 
@@ -48,7 +56,11 @@ const client = new Grakn("localhost:48555", { "username": "<username>", "passwor
 
 Create transactions to use for reading and writing data.
 
+<<<<<<< HEAD
 <!-- test-standalone socialNetworkNodejsClientC.js -->
+=======
+<!-- test-ignore -->
+>>>>>>> development
 ```javascript
 const Grakn = require("grakn-client");
 
@@ -72,7 +84,11 @@ createTransactions("social_network"); // asynchronous call
 
 Running basic retrieval and insertion queries.
 
+<<<<<<< HEAD
 <!-- test-standalone socialNetworkNodejsClientD.js -->
+=======
+<!-- test-ignore -->
+>>>>>>> development
 ```javascript
 const Grakn = require("grakn-client");
 
