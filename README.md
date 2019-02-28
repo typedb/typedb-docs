@@ -31,10 +31,10 @@ PRs that have the `development` branch as their _base_, contain changes that are
 - meant to introduce a new future/change that will only be available as a part of the next release
 
 **Grakn Core** and clients **Java**, **Node.js** and **Python** are all separate repositories that have their independent release cycles. To ensure that the development state of the documentation remains in sync with the latest changes made in each of these repositories, `docs` has a different `development` branch for each of them. Therefore, when submitting a PR to update the development state of docs, the correct corresponding `development` branch needs to be selected as `base`. The file changes expected to be seen in a development PR are as follows:
-- `development-java`: `03-client-api/references/*.md`, `03-client-api/01-java.md` and changes made in `java` code blocks
-- `development-nodejs`: `03-client-api/references/*.md`, `03-client-api/01-nodejs.md` and changes made in `nodejs` code blocks
-- `development-python`: `03-client-api/references/*.md`, `03-client-api/01-python.md` and changes made in `python` code blocks
-- `development-grakn`: any other files and changes made in `graql` code blocks
+- `development-java`: `03-client-api/references/*.md`, `03-client-api/01-java.md` and changes made in `java` code blocks that use Client Java
+- `development-nodejs`: `03-client-api/references/*.md`, `03-client-api/01-nodejs.md` and changes made in `nodejs` code blocks that use Client Node.js
+- `development-python`: `03-client-api/references/*.md`, `03-client-api/01-python.md` and changes made in `python` code blocks that use Client Python
+- `development-grakn`: any other files and changes made in `graql` code blocks as well as those that do not use any of the Clients
 
 ## Contribution Guidelines
 
