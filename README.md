@@ -68,7 +68,7 @@ PRs that have the `development` branch as their _base_, contain changes that are
 - Screenshots of Workbase should be:
   - named after the UI/UX components of the software itself. (eg: `graql-editor_clear-query.png`).
   - taken at the screen resolution of 1280 x 720.
-  - image size of 1150 x 670.
+  - image size of 1147 x 671.
   - consistent in their paddings (position of Workbase's layout within the screenshot).
 
 ### Writing Style
