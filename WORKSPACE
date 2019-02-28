@@ -129,38 +129,3 @@ npm_install(
       "@build_bazel_rules_nodejs//internal/babel_library:yarn.lock"
     ]
 )
-
-pip_import(
-    name = "pypi_deployment_dependencies",
-    requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
-)
-load("@pypi_deployment_dependencies//:requirements.bzl", "pip_install")
-pip_install()
-
-
-# ----- @graknlabs_grakn deps -----
-git_repository(
- name="com_github_google_bazel_common",
- remote="https://github.com/graknlabs/bazel-common",
- commit="550f0490798a4e4b6c5ff8cac3b6f5c2a5e81e21",
-)
-
-load("@com_github_google_bazel_common//:workspace_defs.bzl", "google_common_workspace_rules")
-google_common_workspace_rules()
-
-load("@graknlabs_grakn//dependencies/maven:dependencies.bzl", maven_dependencies_for_build = "maven_dependencies")
-maven_dependencies_for_build()
-
-load("@graknlabs_grakn//dependencies/maven:dependencies.bzl", maven_dependencies_for_build = "maven_dependencies")
-maven_dependencies_for_build()
-
-# Load ANTLR dependencies for Bazel
-load("@graknlabs_grakn//dependencies/compilers:dependencies.bzl", "antlr_dependencies")
-antlr_dependencies()
-
-# Load ANTLR dependencies for ANTLR programs
-load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
-antlr_dependencies()
-
-load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
-java_grpc_compile()
