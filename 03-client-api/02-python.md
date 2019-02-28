@@ -25,15 +25,19 @@ First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-th
 
 In the interpreter or in your source, import `grakn`.
 
+<!-- test-standalone social_network_python_client_a.py -->
 ```python
 import grakn
 ```
 
 Instantiate a client and open a session.
 
+<!-- test-standalone social_network_python_client_b.py -->
 ```python
+import grakn
+
 client = grakn.Grakn(uri="localhost:48555")
-with client.session(keyspace="mykeyspace") as session:
+with client.session(keyspace="social_network") as session:
   ## session is open
   pass
 ## session is closed
@@ -41,16 +45,20 @@ with client.session(keyspace="mykeyspace") as session:
 
 We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users), into the client constructor as a dictionary.
 
+<!-- test-ignore -->
 ```python
 client = grakn.Grakn(uri="localhost:48555", credentials={"username": "<username>", "password": "<password>"})
 ```
 
 Create transactions to use for reading and writing data.
 
+<!-- test-standalone social_network_python_client_c.py -->
 ```python
+import grakn
+
 client = grakn.Grakn(uri="localhost:48555")
 
-with client.session(keyspace="mykeyspace") as session:
+with client.session(keyspace="social_network") as session:
   ## creating a write transaction
   with session.transaction(grakn.TxType.WRITE) as write_transaction:
     ## write transaction is open
@@ -62,27 +70,29 @@ with client.session(keyspace="mykeyspace") as session:
     ## read transaction is open
     ## if not using a `with` statement, we must always close the read transaction like so
     # read_transaction.close()
+    pass
 ```
 
 Running basic retrieval and insertion queries.
 
+<!-- test-standalone social_network_python_client_d.py -->
 ```python
 import grakn
 
 client = grakn.Grakn(uri="localhost:48555")
 
-with client.session(keyspace="keyspace") as session:
+with client.session(keyspace="social_network") as session:
   ## Insert a Person using a WRITE transaction
   with session.transaction(grakn.TxType.WRITE) as write_transaction:
-    insert_iterator = write_transaction.query("insert $x isa person;")
+    insert_iterator = write_transaction.query('insert $x isa person, has email "x@email.com";')
     concepts = insert_iterator.collect_concepts()
     print("Inserted a person with ID: {0}".format(concepts[0].id))
     ## to persist changes, write transaction must always be committed (closed)
     write_transaction.commit()
 
   ## Read the person using a READ only transaction
-  with session.transaction(grakn.TxType.READ) as read_transaction
-    answer_iterator = read_transaction.query("match $x isa person; limit 10; get;")
+  with session.transaction(grakn.TxType.READ) as read_transaction:
+    answer_iterator = read_transaction.query("match $x isa person; get; limit 10;")
 
     for answer in answer_iterator:
       person = answer.map().get("x")
@@ -90,7 +100,7 @@ with client.session(keyspace="keyspace") as session:
 
   ## Or query and consume the iterator immediately collecting all the results
   with session.transaction(grakn.TxType.READ) as read_transaction:
-    answer_iterator = read_transaction.query("match $x isa person; limit 10; get;")
+    answer_iterator = read_transaction.query("match $x isa person; get; limit 10;")
     persons = answer_iterator.collect_concepts()
     for person in persons:
       print("Retrieved person with id "+ person.id)

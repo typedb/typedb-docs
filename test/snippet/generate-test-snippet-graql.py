@@ -8,10 +8,11 @@ package generated;
 
 import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
-import grakn.core.server.Transaction;
-import org.junit.*;
 
-import grakn.core.graql.query.*;
+import graql.lang.Graql;
+import graql.lang.query.GraqlQuery;
+
+import org.junit.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -19,10 +20,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-
-public class GraqlSnippetTest {
+public class TestSnippetGraql {
     @ClassRule
-    public static final GraknTestServer server = new GraknTestServer();
+    public static final GraknTestServer server = new GraknTestServer(
+        Paths.get("test/grakn-test-server/conf/grakn.properties"), 
+        Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
+    );
 
     static GraknClient client;
     static GraknClient.Session session;
@@ -33,12 +36,17 @@ public class GraqlSnippetTest {
     public static void loadSocialNetwork() {
         client = new GraknClient(server.grpcUri().toString());
         session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
+        GraknClient.Transaction transaction = session.transaction().write();
 
         try {
-            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network-schema.gql"));
+            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((Query) Graql.parse(query));
+            transaction.execute((GraqlQuery) Graql.parse(query));
+            
+            encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
+            query = new String(encoded, StandardCharsets.UTF_8);
+            transaction.execute((GraqlQuery) Graql.parse(query));
+            
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,7 +55,7 @@ public class GraqlSnippetTest {
 
     @Before
     public void openTransaction() {
-        transaction = session.transaction(Transaction.Type.WRITE);
+        transaction = session.transaction().write();
     }
 
     @After
@@ -69,20 +77,25 @@ graql_snippet_test_method_template = """
     public void test() {
         // PAGE COMMENT PLACEHOLDER
         String queries = "// QUERIES PLACEHOLDER";
-        Stream<Query> parsedQuery = Graql.parseList(queries);
+        Stream<GraqlQuery> parsedQuery = Graql.parseList(queries);
         parsedQuery.forEach(query -> transaction.execute(query));
     }
 """
 
-pattern_to_find_snippets = '(?<!<!-- test-ignore -->\n)```graql\n((\n|.)+?)```'
-
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|standalone.*) -->\n```graql\n((\n|.)+?)```'
+                            +
+                            '|(```graql\n' +
+                            '((\n|.)+?)' +  # group containing snippet
+                            '```)')
 
 snippets = []
 for markdown_file in markdown_files:
     with open(markdown_file) as file:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
-            snippets.append({ "code": snippet[0], "page": markdown_file})
+            flag_type = snippet[0]
+            if snippet[4] != "":
+                snippets.append({"code": snippet[4], "page": markdown_file})
 
 
 test_methods = ""

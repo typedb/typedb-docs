@@ -52,19 +52,19 @@ import grakn
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template
   }
 ]
@@ -336,22 +336,22 @@ For parsing XML data, we need to know the target tag name. This needs to be spec
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template,
     "selector": "company"
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template,
     "selector": "person"
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template,
     "selector": "contract"
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template,
     "selector": "call"
   }
@@ -405,6 +405,7 @@ Here is how our `migrate.py` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
+<!-- test-standalone phone_calls_csv_migration.py -->
 ```python
 import grakn
 import csv
@@ -477,28 +478,29 @@ def parse_data_to_dictionaries(input):
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template
   }
 ]
 
-build_phone_call_graph(inputs)
+build_phone_call_graph(inputs=inputs)
 ```
 [tab:end]
 
 [tab:JSON]
+<!-- test-standalone phone_calls_json_migration.py -->
 ```python
 import grakn
 import ijson
@@ -570,19 +572,19 @@ def parse_data_to_dictionaries(input):
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template
   }
 ]
@@ -592,6 +594,7 @@ build_phone_call_graph(inputs)
 [tab:end]
 
 [tab:XML]
+<!-- test-standalone phone_calls_xml_migration.py -->
 ```python
 import grakn
 import xml.etree.cElementTree as et
@@ -682,22 +685,22 @@ def parse_data_to_dictionaries(input):
 
 inputs = [
   {
-    "data_path": "./data/companies",
+    "data_path": "files/phone-calls/data/companies",
     "template": company_template,
     "selector": "company"
   },
   {
-    "data_path": "./data/people",
+    "data_path": "files/phone-calls/data/people",
     "template": person_template,
     "selector": "person"
   },
   {
-    "data_path": "./data/contracts",
+    "data_path": "files/phone-calls/data/contracts",
     "template": contract_template,
     "selector": "contract"
   },
   {
-    "data_path": "./data/calls",
+    "data_path": "files/phone-calls/data/calls",
     "template": call_template,
     "selector": "call"
   }

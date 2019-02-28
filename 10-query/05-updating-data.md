@@ -40,11 +40,11 @@ match $org isa organisation, has name "Medicely"; insert $org has registration-n
 
 [tab:Java]
 ```java
-DeleteQuery delete_query = Graql.match(
+GraqlDelete delete_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
-InsertQuery insert_query = Graql.match(
+GraqlInsert insert_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely")
 ).insert(
   var("org").has("registration-number", "81726354")
@@ -76,15 +76,15 @@ match $c isa caption; $c contains "inappropriate word"; delete $c;
 
 [tab:Java]
 ```java
-InsertQuery insert_query = Graql.match(
+GraqlInsert insert_query = Graql.match(
   var("m").isa("media").has("caption", var("c")),
-  var("c").val(contains("inappropriate word"))
+  var("c").contains("inappropriate word")
 ).insert(
   var("m").has("caption", "deleted")
 );
 
-DeleteQuery delete_query = Graql.match(
-  var("c").isa("caption").val(contains("inappropriate word"))
+GraqlDelete delete_query = Graql.match(
+  var("c").isa("caption").contains("inappropriate word")
 ).delete("c");
 ```
 [tab:end]
@@ -116,14 +116,14 @@ delete $emp;
 
 [tab:Java]
 ```java
-InsertQuery insert_query = Graql.match(
+GraqlInsert insert_query = Graql.match(
   var("p").isa("person").has("name", "Amabo"),
   var("org").isa("organisation").has("name", "Wieth Souhe")
 ).insert(
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
 );
 
-DeleteQuery delete_query = Graql.match(
+GraqlDelete delete_query = Graql.match(
   var("p").isa("person").has("name", "Prumt"),
   var("org").isa("organisation").has("name", "Wieth Souhe"),
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
