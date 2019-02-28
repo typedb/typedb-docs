@@ -8,25 +8,22 @@ package generated;
 
 import grakn.core.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
-import grakn.core.server.Transaction;
+
+import graql.lang.Graql;
+import static graql.lang.Graql.*;
+import graql.lang.query.GraqlQuery;
+import graql.lang.query.GraqlCompute;
+import graql.lang.query.GraqlDefine;
+import graql.lang.query.GraqlUndefine;
+import graql.lang.query.GraqlGet;
+import graql.lang.query.GraqlDelete;
+import graql.lang.query.GraqlInsert;
+import graql.lang.query.GraqlCompute.Argument;
+import static graql.lang.query.GraqlCompute.Argument.*;
+import static graql.lang.Graql.Token.Compute.Algorithm.*;
+import static graql.lang.Graql.Token.Order.*;
+
 import org.junit.*;
-
-import grakn.core.graql.query.*;
-
-import static grakn.core.graql.query.Graql.var;
-import static grakn.core.graql.query.Graql.type;
-import static grakn.core.graql.query.Graql.and;
-import static grakn.core.graql.query.Graql.or;
-
-import static grakn.core.graql.query.ComputeQuery.Method.*;
-import static grakn.core.graql.query.ComputeQuery.Algorithm.*;
-import static grakn.core.graql.query.ComputeQuery.Argument.*;
-import static grakn.core.graql.query.predicate.Predicates.*;
-import grakn.core.graql.query.Query.DataType;
-
-import grakn.core.graql.concept.ConceptId;
-
-import grakn.core.graql.answer.ConceptSet;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -34,9 +31,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
-public class JavaSnippetTest {
+public class TestSnippetJava {
     @ClassRule
-    public static final GraknTestServer server = new GraknTestServer();
+    public static final GraknTestServer server = new GraknTestServer(
+        Paths.get("test/grakn-test-server/conf/grakn.properties"), 
+        Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
+    );
 
     static GraknClient client;
     static GraknClient.Session session ;
@@ -47,12 +47,17 @@ public class JavaSnippetTest {
     public static void loadSocialNetwork() {
         client = new GraknClient(server.grpcUri().toString());
         session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction(Transaction.Type.WRITE);
+        GraknClient.Transaction transaction = session.transaction().write();
 
         try {
-            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network-schema.gql"));
+            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((Query) Graql.parse(query));
+            transaction.execute((GraqlQuery) Graql.parse(query));
+            
+            encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
+            query = new String(encoded, StandardCharsets.UTF_8);
+            transaction.execute((GraqlQuery) Graql.parse(query));
+            
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +66,7 @@ public class JavaSnippetTest {
 
     @Before
     public void openTransaction(){
-        transaction = session.transaction(Transaction.Type.WRITE);
+        transaction = session.transaction().write();
     }
 
     @After
@@ -87,15 +92,20 @@ java_snippet_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = '(?<!<!-- test-ignore -->\n)```java\n((\n|.)+?)```'
-
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|standalone.*) -->\n```java\n((\n|.)+?)```'
+                            +
+                            '|(```java\n' +
+                            '((\n|.)+?)' +  # group containing snippet
+                            '```)')
 
 snippets = []
 for markdown_file in markdown_files:
     with open(markdown_file) as file:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
-            snippets.append({ "code": snippet[0], "page": markdown_file})
+            flag_type = snippet[0]
+            if snippet[4] != "":
+                snippets.append({"code": snippet[4], "page": markdown_file})
 
 
 test_methods = ""
@@ -105,7 +115,7 @@ for i, snippet in enumerate(snippets):
     test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
 
     # add execute statements
-    pattern_to_find_query_object_vars = 'Query\s(.*)\s='
+    pattern_to_find_query_object_vars = '^Graql[A-Z].*?\s(.*)\s='
     matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
     execute_statements = ""
     for variable in matches:

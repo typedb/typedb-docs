@@ -38,7 +38,6 @@ Let’s begin.
 > Get me the customers of company “Telecom” who called the target person with phone number +86 921 547 9004 from September 14th onwards.
 
 #### In Graql:
-<!-- test-ignore -->
 ```graql
 match
   $customer isa person, has phone-number $phone-number;
@@ -68,101 +67,101 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsFirstQuery.java -->
 ```java
-package ai.grakn.examples;
+package grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.concept.answer.ConceptMap;
+import graql.lang.query.GraqlGet;
+import static graql.lang.Graql.*;
 
 import java.util.*;
 
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("phone_calls");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE);
+public class PhoneCallsFirstQuery {
+    public static void main(String[] args) {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
+        GraknClient.Transaction transaction = session.transaction().write();
 
-    List < String > queryAsList = Arrays.asList(
-      "match",
-      "  $customer isa person, has phone-number $phone-number;",
-      "  $company isa company, has name \"Telecom\";",
-      "  (customer: $customer, provider: $company) isa contract;",
-      "  $target isa person, has phone-number \"+86 921 547 9004\";",
-      "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
-      "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
-      "get $phone-number;"
-    );
+        List<String> queryAsList = Arrays.asList(
+                "match",
+                "  $customer isa person, has phone-number $phone-number;",
+                "  $company isa company, has name \"Telecom\";",
+                "  (customer: $customer, provider: $company) isa contract;",
+                "  $target isa person, has phone-number \"+86 921 547 9004\";",
+                "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
+                "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
+                "get $phone-number;"
+        );
 
-    printToLog("Query:", String.join("\n", queryAsList));
-    String query = String.join("", queryAsList);
+        System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
+        String query = String.join("", queryAsList);
 
-    List < String > result = new ArrayList < > ();
-    transaction.graql().parse(query).execute().forEach(answer - > {
-      result.add(
-        answer.asConceptMap().get("phone-number").asAttribute().value().toString()
-      );
-    });
+        List<String> result = new ArrayList<>();
 
-    System.out.println("\nResult:\n" + String.join(", ", result));
+        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        for (ConceptMap answer : answers) {
+            result.add(
+                    answer.get("phone-number").asAttribute().value().toString()
+            );
+        }
 
-    transaction.close();
-    session.close();
-  }
+        System.out.println("\nResult:\n" + String.join(", ", result));
+
+        transaction.close();
+        session.close();
+    }
 }
 ```
 [tab:end]
 
 [tab:Node.js]
-
+<!-- test-standalone phoneCallsFirstQuery.js -->
 ```javascript
-const Grakn = require("grakn");
-const grakn = new Grakn("localhost:48555");
-const session = grakn.session("phone_calls");
-
-ExecuteMatchQuery();
+const Grakn = require("grakn-client");
+const client = new Grakn("localhost:48555");
+const session = client.session("phone_calls");
 
 async function ExecuteMatchQuery() {
-  const transaction = await session.transaction(Grakn.TxType.READ);
+	const transaction = await session.transaction(Grakn.txType.READ);
 
-  let query = [
-    "match",
-    "  $customer isa person, has phone-number $phone-number;",
-    '  $company isa company, has name "Telecom";',
-    "  (customer: $customer, provider: $company) isa contract;",
-    '  $target isa person, has phone-number "+86 921 547 9004";',
-    "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
-    "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
-    "get $phone-number;"
-  ];
+  	let query = [
+    	"match",
+    	"  $customer isa person, has phone-number $phone-number;",
+    	'  $company isa company, has name "Telecom";',
+    	"  (customer: $customer, provider: $company) isa contract;",
+    	'  $target isa person, has phone-number "+86 921 547 9004";',
+    	"  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
+    	"  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
+    	"get $phone-number;"
+  	];
 
-  console.log("\nQuery:\n", query.join("\n"));
-  query = query.join("");
+  	console.log("\nQuery:\n", query.join("\n"));
+  	query = query.join("");
 
-  const iterator = await transaction.query(query);
-  const answers = await iterator.collect();
-  const result = await Promise.all(
-    answers.map(answer =>
-      answer
-        .map()
-        .get("phone-number")
-        .value()
-    )
-  );
+  	const iterator = await transaction.query(query);
+	const answers = await iterator.collect();
+	const result = await Promise.all(
+		answers.map(answer =>
+			answer.map()
+				  .get("phone-number")
+				  .value()
+		)
+	);
 
-  console.log("\nResult:\n", result);
+  	console.log("\nResult:\n", result);
 
-  await transaction.close();
-  await session.close();
+  	await transaction.close();
+  	await session.close();
 }
+
+ExecuteMatchQuery();
 ```
 [tab:end]
 
 [tab:Python]
+<!-- test-standalone phone_calls_first_query.py -->
 ```python
 import grakn
 
@@ -205,7 +204,6 @@ with client.session(keyspace = "phone_calls") as session:
 > Get me the phone number of people who have received a call from a customer aged over 50 after this customer (suspect) made a call to another customer aged under 20.
 
 #### In Graql:
-<!-- test-ignore -->
 ```graql
 match
   $suspect isa person, has city "London", has age > 50;
@@ -238,110 +236,111 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsSecondQuery.java -->
 ```java
-package ai.grakn.examples;
+package grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.concept.answer.ConceptMap;
+import graql.lang.query.GraqlGet;
+import static graql.lang.Graql.*;
 
 import java.util.*;
 
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("phone_calls");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE);
+public class PhoneCallsSecondQuery {
+    public static void main(String[] args) {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
+        GraknClient.Transaction transaction = session.transaction().write();
 
-    List < String > queryAsList = Arrays.asList(
-      "match ",
-      "  $suspect isa person, has city \"London\", has age > 50;",
-      "  $company isa company, has name \"Telecom\";",
-      "  (customer: $suspect, provider: $company) isa contract;",
-      "  $pattern-callee isa person, has age < 20;",
-      "  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;",
-      "  $target isa person, has phone-number $phone-number, has is-customer false;",
-      "  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;",
-      "  $target-call-date > $pattern-call-date;",
-      "get $phone-number;"
-    );
+        List<String> queryAsList = Arrays.asList(
+                "match ",
+                "  $suspect isa person, has city \"London\", has age > 50;",
+                "  $company isa company, has name \"Telecom\";",
+                "  (customer: $suspect, provider: $company) isa contract;",
+                "  $pattern-callee isa person, has age < 20;",
+                "  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;",
+                "  $target isa person, has phone-number $phone-number, has is-customer false;",
+                "  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;",
+                "  $target-call-date > $pattern-call-date;",
+                "get $phone-number;"
+        );
 
-    System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
-    String query = String.join("", queryAsList);
+        System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
+        String query = String.join("", queryAsList);
 
-    List < String > result = new ArrayList < > ();
-    transaction.graql().parse(query).execute().forEach(answer - > {
-      result.add(
-        answer.asConceptMap().get("phone-number").asAttribute().value().toString()
-      );
-    });
+        List<String> result = new ArrayList<>();
 
-    System.out.println("\nResult:\n" + String.join(", ", result));
+        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        for (ConceptMap answer : answers) {
+            result.add(
+                    answer.get("phone-number").asAttribute().value().toString()
+            );
+        }
 
-    transaction.close();
-    session.close();
-  }
+        System.out.println("\nResult:\n" + String.join(", ", result));
+
+        transaction.close();
+        session.close();
+    }
 }
 ```
 [tab:end]
 
 [tab:Node.js]
+<!-- test-standalone phoneCallsSecondQuery.js -->
 ```javascript
-const Grakn = require("grakn");
-const grakn = new Grakn("localhost:48555");
-const session = grakn.session("phone_calls");
-
-ExecuteMatchQuery();
+const Grakn = require("grakn-client");
+const client = new Grakn("localhost:48555");
+const session = client.session("phone_calls");
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+	const transaction = await session.transaction(Grakn.txType.READ);
 
-  let query = [
-    "match ",
-    '  $suspect isa person, has city "London", has age > 50;',
-    '  $company isa company, has name "Telecom";',
-    "  (customer: $suspect, provider: $company) isa contract;",
-    "  $pattern-callee isa person, has age < 20;",
-    "  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;",
-    "  $target isa person, has phone-number $phone-number, has is-customer false;",
-    "  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;",
-    "  $target-call-date > $pattern-call-date;",
-    "get $phone-number;"
-  ];
+  	let query = [
+		"match ",
+		'  $suspect isa person, has city "London", has age > 50;',
+		'  $company isa company, has name "Telecom";',
+		"  (customer: $suspect, provider: $company) isa contract;",
+		"  $pattern-callee isa person, has age < 20;",
+		"  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;",
+		"  $target isa person, has phone-number $phone-number, has is-customer false;",
+		"  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;",
+		"  $target-call-date > $pattern-call-date;",
+		"get $phone-number;"
+  	];
 
-  console.log("\nQuery:\n", query.join("\n"));
-  query = query.join("");
+  	console.log("\nQuery:\n", query.join("\n"));
+  	query = query.join("");
 
-  const iterator = await tx.query(query);
-  const answers = await iterator.collect();
-  const result = await Promise.all(
-    answers.map(answer =>
-      answer
-        .map()
-        .get("phone-number")
-        .value()
-    )
-  );
+  	const iterator = await transaction.query(query);
+	const answers = await iterator.collect();
+	const result = await Promise.all(
+		answers.map(answer =>
+			answer.map()
+				  .get("phone-number")
+				  .value()
+		)
+	);
 
-  console.log("\nResult:\n", result);
+  	console.log("\nResult:\n", result);
 
-  await ransaction.close();
-  await session.close();
+  	await transaction.close();
+  	await session.close();
 }
+
+ExecuteMatchQuery();
 ```
 [tab:end]
 
 [tab:Python]
+<!-- test-standalone phone_calls_second_query.py -->
 ```python
 import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
+  with session.transaction(grakn.TxType.READ) as transaction:
     query = [
       'match ',
       '  $suspect isa person, has city "London", has age > 50;',
@@ -358,7 +357,7 @@ with client.session(keyspace = "phone_calls") as session:
     print("\nQuery:\n", "\n".join(query))
     query = "".join(query)
 
-    iterator = tx.query(query)
+    iterator = transaction.query(query)
     answers = iterator.collect_concepts()
     result = [ answer.value() for answer in answers ]
 
@@ -380,7 +379,6 @@ with client.session(keyspace = "phone_calls") as session:
 > Get me the phone number of people who have received calls from both customer with phone number +7 171 898 0853 and customer with phone number +370 351 224 5176.
 
 #### In Graql:
-<!-- test-ignore -->
 ```graql
 match
   $common-contact isa person, has phone-number $phone-number;
@@ -407,104 +405,105 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsThirdQuery.java -->
 ```java
-package ai.grakn.examples;
+package grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.concept.answer.ConceptMap;
+import graql.lang.query.GraqlGet;
+import static graql.lang.Graql.*;
 
 import java.util.*;
 
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("phone_calls");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE);
+public class PhoneCallsThirdQuery {
+    public static void main(String[] args) {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
+        GraknClient.Transaction transaction = session.transaction().write();
 
-    List < String > queryAsList = Arrays.asList(
-      "match ",
-      "  $common-contact isa person, has phone-number $phone-number;",
-      "  $customer-a isa person, has phone-number \"+7 171 898 0853\";",
-      "  $customer-b isa person, has phone-number \"+370 351 224 5176\";",
-      "  (caller: $customer-a, callee: $common-contact) isa call;",
-      "  (caller: $customer-b, callee: $common-contact) isa call;",
-      "get $phone-number;"
-    );
+        List<String> queryAsList = Arrays.asList(
+                "match ",
+                "  $common-contact isa person, has phone-number $phone-number;",
+                "  $customer-a isa person, has phone-number \"+7 171 898 0853\";",
+                "  $customer-b isa person, has phone-number \"+370 351 224 5176\";",
+                "  (caller: $customer-a, callee: $common-contact) isa call;",
+                "  (caller: $customer-b, callee: $common-contact) isa call;",
+                "get $phone-number;"
+        );
 
-    System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
-    String query = String.join("", queryAsList);
+        System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
+        String query = String.join("", queryAsList);
 
-    List < String > result = new ArrayList < > ();
-    transaction.graql().parse(query).execute().forEach(answer - > {
-      result.add(
-        answer.asConceptMap().get("phone-number").asAttribute().value().toString()
-      );
-    });
+        List<String> result = new ArrayList<>();
 
-    System.out.println("\nResult:\n" + String.join(", ", result));
+        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        for (ConceptMap answer : answers) {
+            result.add(
+                    answer.get("phone-number").asAttribute().value().toString()
+            );
+        }
 
-    transaction.close();
-    session.close();
-  }
+        System.out.println("\nResult:\n" + String.join(", ", result));
+
+        transaction.close();
+        session.close();
+    }
 }
 ```
 [tab:end]
 
 [tab:Node.js]
+<!-- test-standalone phoneCallsThirdQuery.js -->
 ```javascript
-const Grakn = require("grakn");
-const grakn = new Grakn("localhost:48555");
-const session = grakn.session("phone_calls");
-
-ExecuteMatchQuery();
+const Grakn = require("grakn-client");
+const client = new Grakn("localhost:48555");
+const session = client.session("phone_calls");
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+	const transaction = await session.transaction(Grakn.txType.READ);
 
-  let query = [
-    "match ",
-    "  $common-contact isa person, has phone-number $phone-number;",
-    '  $customer-a isa person, has phone-number "+7 171 898 0853";',
-    '  $customer-b isa person, has phone-number "+370 351 224 5176";',
-    "  (caller: $customer-a, callee: $common-contact) isa call;",
-    "  (caller: $customer-b, callee: $common-contact) isa call;",
-    "get $phone-number;"
-  ];
+	let query = [
+		"match ",
+		"  $common-contact isa person, has phone-number $phone-number;",
+		'  $customer-a isa person, has phone-number "+7 171 898 0853";',
+		'  $customer-b isa person, has phone-number "+370 351 224 5176";',
+		"  (caller: $customer-a, callee: $common-contact) isa call;",
+		"  (caller: $customer-b, callee: $common-contact) isa call;",
+		"get $phone-number;"
+	];
 
-  console.log("\nQuery:\n", query.join("\n"));
-  query = query.join("");
+  	console.log("\nQuery:\n", query.join("\n"));
+  	query = query.join("");
 
-  const iterator = await tx.query(query);
-  const answers = await iterator.collect();
-  const result = await Promise.all(
-    answers.map(answer =>
-      answer
-        .map()
-        .get("phone-number")
-        .value()
-    )
-  );
+	const iterator = await transaction.query(query);
+	const answers = await iterator.collect();
+	const result = await Promise.all(
+		answers.map(answer =>
+			answer.map()
+				  .get("phone-number")
+				  .value()
+		)
+	);
 
-  console.log("\nResult:\n", result);
+  	console.log("\nResult:\n", result);
 
-  await session.close();
-  process.exit();
+	transaction.close();
+  	await session.close();
 }
+
+ExecuteMatchQuery();
 ```
 [tab:end]
 
 [tab:Python]
+<!-- test-standalone phone_calls_third_query.py -->
 ```python
 import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
+  with session.transaction(grakn.TxType.READ) as transaction:
     query = [
       'match ',
       '  $common-contact isa person, has phone-number $phone-number;',
@@ -518,7 +517,7 @@ with client.session(keyspace = "phone_calls") as session:
     print("\nQuery:\n", "\n".join(query))
     query = "".join(query)
 
-    iterator = tx.query(query)
+    iterator = transaction.query(query)
     answers = iterator.collect_concepts()
     result = [ answer.value() for answer in answers ]
 
@@ -543,7 +542,6 @@ Get me the phone phone number of all customers who have called each other as wel
 ```
 
 #### In Graql:
-<!-- test-ignore -->
 ```graql
 match
   $target isa person, has phone-number "+48 894 777 5173";
@@ -574,129 +572,131 @@ get $phone-number-a, $phone-number-b;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsForthQuery.java -->
 ```java
-package ai.grakn.examples;
+package grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.concept.answer.ConceptMap;
+import graql.lang.query.GraqlGet;
+import grakn.core.server.exception.TransactionException;
+import static graql.lang.Graql.*;
 
 import java.util.*;
 
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("phone_calls");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE);
+public class PhoneCallsForthQuery {
+    public static void main(String[] args) throws TransactionException {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
+        GraknClient.Transaction transaction = session.transaction().write();
 
-    List < String > queryAsList = Arrays.asList(
-      "match ",
-      "  $target isa person, has phone-number \"+48 894 777 5173\";",
-      "  $company isa company, has name \"Telecom\";",
-      "  $customer-a isa person, has phone-number $phone-number-a;",
-      "  (customer: $customer-a, provider: $company) isa contract;",
-      "  (caller: $customer-a, callee: $target) isa call;",
-      "  $customer-b isa person, has phone-number $phone-number-b;",
-      "  (customer: $customer-b, provider: $company) isa contract;",
-      "  (caller: $customer-b, callee: $target) isa call;",
-      "  (caller: $customer-a, callee: $customer-b) isa call;",
-      "get $phone-number-a, $phone-number-b;"
-    );
+        List<String> queryAsList = Arrays.asList(
+                "match ",
+                "  $target isa person, has phone-number \"+48 894 777 5173\";",
+                "  $company isa company, has name \"Telecom\";",
+                "  $customer-a isa person, has phone-number $phone-number-a;",
+                "  (customer: $customer-a, provider: $company) isa contract;",
+                "  (caller: $customer-a, callee: $target) isa call;",
+                "  $customer-b isa person, has phone-number $phone-number-b;",
+                "  (customer: $customer-b, provider: $company) isa contract;",
+                "  (caller: $customer-b, callee: $target) isa call;",
+                "  (caller: $customer-a, callee: $customer-b) isa call;",
+                "get $phone-number-a, $phone-number-b;"
+        );
 
-    System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
-    String query = String.join("", queryAsList);
+        System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
+        String query = String.join("", queryAsList);
 
-    Set < String > result = new HashSet < > ();
-    transaction.graql().parse(query).execute().forEach(answer - > {
-      result.add(answer.asConceptMap().get("phone-number-a").asAttribute().value().toString());
-      result.add(answer.asConceptMap().get("phone-number-b").asAttribute().value().toString());
-    });
+        Set<String> result = new HashSet<>();
 
-    System.out.println("\nResult:\n" + String.join(", ", result));
+        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        for (ConceptMap answer : answers) {
+            result.add(answer.get("phone-number-a").asAttribute().value().toString());
+            result.add(answer.get("phone-number-b").asAttribute().value().toString());
+        }
 
-    transaction.close();
-    session.close();
-  }
+        System.out.println("\nResult:\n" + String.join(", ", result));
+
+        transaction.close();
+        session.close();
+    }
 }
 ```
 [tab:end]
 
 [tab:Node.js]
+<!-- test-standalone phoneCallsForthQuery.js -->
 ```javascript
-const Grakn = require("grakn");
-const grakn = new Grakn("localhost:48555");
-const session = grakn.session("phone_calls");
-
-ExecuteMatchQuery();
+const Grakn = require("grakn-client");
+const client = new Grakn("localhost:48555");
+const session = client.session("phone_calls");
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+	const transaction = await session.transaction(Grakn.txType.READ);
 
-  let query = [
-    "match ",
-    '  $target isa person, has phone-number "+48 894 777 5173";',
-    '  $company isa company, has name "Telecom";',
-    "  $customer-a isa person, has phone-number $phone-number-a;",
-    "  (customer: $customer-a, provider: $company) isa contract;",
-    "  (caller: $customer-a, callee: $target) isa call;",
-    "  $customer-b isa person, has phone-number $phone-number-b;",
-    "  (customer: $customer-b, provider: $company) isa contract;",
-    "  (caller: $customer-b, callee: $target) isa call;",
-    "  (caller: $customer-a, callee: $customer-b) isa call;",
-    "get $phone-number-a, $phone-number-b;"
-  ];
+  	let query = [
+    	"match ",
+    	'  $target isa person, has phone-number "+48 894 777 5173";',
+    	'  $company isa company, has name "Telecom";',
+    	"  $customer-a isa person, has phone-number $phone-number-a;",
+    	"  (customer: $customer-a, provider: $company) isa contract;",
+    	"  (caller: $customer-a, callee: $target) isa call;",
+    	"  $customer-b isa person, has phone-number $phone-number-b;",
+    	"  (customer: $customer-b, provider: $company) isa contract;",
+    	"  (caller: $customer-b, callee: $target) isa call;",
+    	"  (caller: $customer-a, callee: $customer-b) isa call;",
+    	"get $phone-number-a, $phone-number-b;"
+  	];
 
-  console.log("\nQuery:\n", query.join("\n"));
-  query = query.join("");
+  	console.log("\nQuery:\n", query.join("\n"));
+  	query = query.join("");
 
-  const iterator = await tx.query(query);
-  const answers = await iterator.collect();
-  const result = await Promise.all(
-    answers.map(answer =>
-      answer
-        .map()
-        .get("phone-number-a")
-        .value()
-    )
-  );
+  	const iterator = await transaction.query(query);
+	const answers = await iterator.collect();
+	const result = await Promise.all(
+		answers.map(answer =>
+			answer.map()
+				  .get("phone-number-a")
+			      .value()
+		)
+	);
 
-  console.log("\nResult:\n", result);
+	console.log("\nResult:\n", result);
 
-  await session.close();
-  process.exit();
+	await transaction.close();
+  	await session.close();
 }
+
+ExecuteMatchQuery();
 ```
 [tab:end]
 
 [tab:Python]
+<!-- test-standalone phone_calls_forth_query.py -->
 ```python
 import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
-  query = [
-      'match ',
-      '  $target isa person, has phone-number "+48 894 777 5173";',
-      '  $company isa company, has name "Telecom";',
-      '  $customer-a isa person, has phone-number $phone-number-a;',
-      '  (customer: $customer-a, provider: $company) isa contract;',
-      '  (caller: $customer-a, callee: $target) isa call;',
-      '  $customer-b isa person, has phone-number $phone-number-b;',
-      '  (customer: $customer-b, provider: $company) isa contract;',
-      '  (caller: $customer-b, callee: $target) isa call;',
-      '  (caller: $customer-a, callee: $customer-b) isa call;',
-      'get $phone-number-a, $phone-number-b;'
+  with session.transaction(grakn.TxType.READ) as transaction:
+    query = [
+        'match ',
+        '  $target isa person, has phone-number "+48 894 777 5173";',
+        '  $company isa company, has name "Telecom";',
+        '  $customer-a isa person, has phone-number $phone-number-a;',
+        '  (customer: $customer-a, provider: $company) isa contract;',
+        '  (caller: $customer-a, callee: $target) isa call;',
+        '  $customer-b isa person, has phone-number $phone-number-b;',
+        '  (customer: $customer-b, provider: $company) isa contract;',
+        '  (caller: $customer-b, callee: $target) isa call;',
+        '  (caller: $customer-a, callee: $customer-b) isa call;',
+        'get $phone-number-a, $phone-number-b;'
     ]
 
     print("\nQuery:\n", "\n".join(query))
     query = "".join(query)
 
-    iterator = tx.query(query)
+    iterator = transaction.query(query)
     answers = iterator.collect_concepts()
     result = [ answer.value() for answer in answers ]
 
@@ -721,7 +721,6 @@ Two queries need to be executed to provide this insight.
 > Get me the average call duration among customers who have a contract with company "Telecom" and are aged under 20.
 
 #### In Graql:
-<!-- test-ignore -->
 ```graql
 match
   $customer isa person, has age < 20;
@@ -744,7 +743,6 @@ get $duration; mean $duration;
 > Get me the average call duration among customers who have a contract with company "Telecom" and are aged over 40.
 
 #### In Graql:
-<!-- test-ignore -->
 ```graql
 match
   $customer isa person, has age > 40;
@@ -767,147 +765,150 @@ get $duration; mean $duration;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-ignore -->
+<!-- test-standalone PhoneCallsFifthQuery.java -->
 ```java
-package ai.grakn.examples;
+package grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import grakn.core.concept.answer.Numeric;
+import graql.lang.query.GraqlGet;
+import static graql.lang.Graql.*;
 
 import java.util.*;
 
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("phone_calls");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.WRITE);
+public class PhoneCallsFifthQuery {
+    public static void main(String[] args) {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("phone_calls");
+        GraknClient.Transaction transaction = session.transaction().write();
 
-    List < String > firstQueryAsList = Arrays.asList(
-      "match",
-      "  $customer isa person, has age < 20;",
-      "  $company isa company, has name \"Telecom\";",
-      "  (customer: $customer, provider: $company) isa contract;",
-      "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-      "get $duration; mean $duration;"
-    );
+        List<String> firstQueryAsList = Arrays.asList(
+                "match",
+                "  $customer isa person, has age < 20;",
+                "  $company isa company, has name \"Telecom\";",
+                "  (customer: $customer, provider: $company) isa contract;",
+                "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
+                "get $duration; mean $duration;"
+        );
 
-    System.out.println("\nFirst Query:\n" + String.join("\n", firstQueryAsList));
+        System.out.println("\nFirst Query:\n" + String.join("\n", firstQueryAsList));
 
-    String firstQuery = String.join("", firstQueryAsList);
+        String firstQuery = String.join("", firstQueryAsList);
 
-    float fisrtResult = transaction.graql().
-                        parse(firstQuery).
-                        execute().
-                        get(0).
-                        asValue().
-                        number().
-                        floatValue();
-    String result = "Customers aged under 20 have made calls with average duration of "
-                    + fisrtResult + " seconds.\n";
+        List<Numeric> firstAnswers = transaction.execute((GraqlGet.Aggregate) parse(firstQuery));
+        float fisrtResult = 0;
+        if (firstAnswers.size() > 0) {
+            fisrtResult = firstAnswers.get(0).number().floatValue();
+        }
 
-    List < String > secondQueryAsList = Arrays.asList(
-      "match",
-      "  $customer isa person, has age > 40;",
-      "  $company isa company, has name \"Telecom\";",
-      "  (customer: $customer, provider: $company) isa contract;",
-      "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-      "get $duration; mean $duration;"
-    );
+        String result = "Customers aged under 20 have made calls with average duration of " + fisrtResult + " seconds.\n";
 
-    System.out.println("\nSecond Query:\n" +
-                        String.join("\n", secondQueryAsList));
+        List<String> secondQueryAsList = Arrays.asList(
+                "match",
+                "  $customer isa person, has age > 40;",
+                "  $company isa company, has name \"Telecom\";",
+                "  (customer: $customer, provider: $company) isa contract;",
+                "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
+                "get $duration; mean $duration;"
+        );
 
-    String secondQuery = String.join("", secondQueryAsList);
+        System.out.println("\nSecond Query:\n" +
+                String.join("\n", secondQueryAsList));
 
-    float secondResult = transaction.graql().
-                         parse(secondQuery).
-                         execute().
-                         get(0).
-                         asValue().
-                         number().
-                         floatValue();
+        String secondQuery = String.join("", secondQueryAsList);
 
-    result += "Customers aged over 40 have made calls with average duration of "
-              + secondResult + " seconds.\n";
+        float secondResult = 0;
+        List<Numeric> secondAnswers = transaction.execute((GraqlGet.Aggregate) parse(secondQuery));
+        if (secondAnswers.size() > 0) {
+            secondResult = secondAnswers.get(0).number().floatValue();
+        }
 
-    System.out.println("\nResult:\n" + String.join(", ", result));
+        result += "Customers aged over 40 have made calls with average duration of " + secondResult + " seconds.\n";
 
-    transaction.close();
-    session.close();
-  }
+        System.out.println("\nResult:\n" + String.join(", ", result));
+
+        transaction.close();
+        session.close();
+    }
 }
 ```
 [tab:end]
 
 [tab:Node.js]
+<!-- test-standalone phoneCallsFifthQuery.js -->
 ```javascript
-const Grakn = require("grakn");
-const grakn = new Grakn("localhost:48555");
-const session = grakn.session("phone_calls");
-
-ExecuteMatchQuery();
+const Grakn = require("grakn-client");
+const client = new Grakn("localhost:48555");
+const session = client.session("phone_calls");
 
 async function ExecuteMatchQuery() {
-  const tx = await session.transaction(Grakn.txType.READ);
+	const transaction = await session.transaction(Grakn.txType.READ);
 
-  let queryA = [
-    "match",
-    "  $customer isa person, has age < 20;",
-    '  $company isa company, has name "Telecom";',
-    "  (customer: $customer, provider: $company) isa contract;",
-    "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-    "get $duration; mean $duration;"
-  ];
-  console.log("\nQuery:\n", queryA.join("\n"));
-  queryA = queryA.join("");
+  	let firstQuery = [
+		'match',
+		'  $customer isa person, has age < 20;',
+		'  $company isa company, has name "Telecom";',
+		'  (customer: $customer, provider: $company) isa contract;',
+		'  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
+		'get $duration; mean $duration;'
+	];
 
-  const iteratorA = await tx.query(queryA);
-  const answersA = await iteratorA.collect();
-  const resultA = answersA[0].number();
-  let result =
-    "Customers aged under 20 have made calls with average duration of " +
-    Math.round(resultA) +
-    " seconds.\n";
+	console.log("\nQuery:\n", firstQuery.join("\n"));
+	firstQuery = firstQuery.join("");
 
-  let queryB = [
-    "match ",
-    "  $customer isa person, has age > 40;",
-    '  $company isa company, has name "Telecom";',
-    "  (customer: $customer, provider: $company) isa contract;",
-    "  (caller: $customer, callee: $anyone) isa call, has duration $duration;",
-    "get $duration; mean $duration;"
-  ];
-  console.log("\nQuery:\n", queryB.join("\n"));
-  queryB = queryB.join("");
+	const firstIterator = await transaction.query(firstQuery);
+	const firstAnswer = await firstIterator.collect();
+	let firstResult = 0;
+	if(firstAnswer.length > 0) {
+		firstResult = firstAnswer[0].number();
+	}
 
-  const iteratorB = await tx.query(queryB);
-  const answersB = await iteratorB.collect();
-  const resultB = answersB[0].number();
-  result +=
-    "Customers aged over 40 have made calls with average duration of " +
-    Math.round(resultB) +
-    " seconds.\n";
+  	let result =
+		"Customers aged under 20 have made calls with average duration of " +
+		Math.round(firstResult) +
+		" seconds.\n";
 
-  console.log("\nResult:\n", result);
+	secondQuery = [
+		'match ' +
+		'  $customer isa person, has age > 40;',
+		'  $company isa company, has name "Telecom";',
+		'  (customer: $customer, provider: $company) isa contract;',
+		'  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
+		'get $duration; mean $duration;'
+	];
 
-  await session.close();
-  process.exit();
+	console.log("\nQuery:\n", secondQuery.join("\n"));
+	secondQuery = secondQuery.join("");
+
+	const secondIterator = await transaction.query(secondQuery);
+	const secondAnswer = await secondIterator.collect();
+	let secondResult = 0;
+	if(secondAnswer.length > 0) {
+		secondResult = secondAnswer[0].number();
+	}
+
+	result +=
+		"Customers aged over 40 have made calls with average duration of " +
+		Math.round(secondResult) +
+		" seconds.\n";
+
+	await transaction.close();
+  	await session.close();
 }
+
+ExecuteMatchQuery();
 ```
 [tab:end]
 
 [tab:Python]
+<!-- test-standalone phone_calls_fifth_query.py -->
 ```python
 import grakn
 
 client = grakn.Grakn(uri = "localhost:48555")
 with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as tx:
-    query_a = [
+  with session.transaction(grakn.TxType.READ) as transaction:
+    first_query = [
       'match',
       '  $customer isa person, has age < 20;',
       '  $company isa company, has name "Telecom";',
@@ -916,15 +917,18 @@ with client.session(keyspace = "phone_calls") as session:
       'get $duration; mean $duration;'
     ]
 
-    print("\nQuery:\n", "\n".join(query_a))
-    query_a = "".join(query_a)
+    print("\nQuery:\n", "\n".join(first_query))
+    first_query = "".join(first_query)
 
-    iterator_a = tx.query(query_a)
-    result_a = next(iterator_a).number()
+    first_answer = list(transaction.query(first_query))
+    first_result = 0
+    if len(first_answer) > 0:
+      first_result = first_answer.number()
+
     result = ("Customers aged under 20 have made calls with average duration of "
-             + str(round(result_a)) + " seconds.\n")
+             + str(round(first_result)) + " seconds.\n")
 
-    query_b = [
+    second_query = [
       'match ',
       '  $customer isa person, has age > 40;',
       '  $company isa company, has name "Telecom";',
@@ -932,13 +936,16 @@ with client.session(keyspace = "phone_calls") as session:
       '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
       'get $duration; mean $duration;'
     ]
-    print("\nQuery:\n", "\n".join(query_b))
-    query_b = "".join(query_b)
+    print("\nQuery:\n", "\n".join(second_query))
+    second_query = "".join(second_query)
 
-    iterator_b = tx.query(query_b)
-    result_b = next(iterator_b).number()
+    second_answer = list(transaction.query(second_query))
+    second_result = 0
+    if len(second_answer) > 0:
+      second_result = second_answer.number()
+
     result += ("Customers aged above 40 have made calls with average duration of "
-              + str(round(result_b)) + " seconds.\n")
+              + str(round(second_result)) + " seconds.\n")
 
     print("\nResult:\n", result)
 ```

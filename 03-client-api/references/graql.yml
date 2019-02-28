@@ -131,7 +131,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - '[AggregateQuery](#client-api-title-query)\<?\> object (type of the AggregateQuery may be Value or AnswerGroup\<ConceptMap\>, depedning on the given aggreagte function)'
+        - '[GraqlGet.Aggregate](#client-api-title-query)\<?\> object (type of the GraqlGet.Aggregate may be Value or AnswerGroup\<ConceptMap\>, depedning on the given aggreagte function)'
     java:
       <<: *method-matchAggregate
   - method:
@@ -149,6 +149,6 @@ methods:
           required: true
           default: N/A
       returns:
-        - '[ComputeQuery](#client-api-title-query)\<?\> object(type of the ComputeQuery is dependent on the type of the compute method)'
+        - '[GraqlCompute](#client-api-title-query)\<?\> object(type of the GraqlComputeis dependent on the type of the compute method)'
     java:
       <<: *method-compute

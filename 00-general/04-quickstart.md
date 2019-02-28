@@ -28,14 +28,14 @@ event-date sub attribute,
 approved-date sub event-date;
 
 ## an abstract relationship, only to be subtyped by other relationships
-request sub relationship,
+request sub relation,
   abstract,
   has approved-date,
   relates approved-subject,
   relates requester,
   relates respondent;
 
-friendship sub relationship,
+friendship sub relation,
     relates friend,
     plays approved-friendship,
     plays listed-friendship;
@@ -46,7 +46,7 @@ friend-request sub request,
     relates friendship-requester as requester,
     relates friendship-respondent as respondent;
 
-friends-list sub relationship,
+friends-list sub relation,
     has title,
     relates list-owner,
     relates listed-friendship;
@@ -114,51 +114,46 @@ The result contains the following answers.
 
 #### Retrieve all employments using [Client Java](/docs/client-api/java)
 
-<!-- test-ignore -->
+<!-- test-standalone SocialNetworkQuickstartQuery.java -->
 ```java
-package ai.grakn.examples;
+package grakn.examples;
 
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.graql.GetQuery;
-import ai.grakn.graql.Graql;
-import ai.grakn.graql.answer.ConceptMap;
-import ai.grakn.util.SimpleURI;
+import grakn.core.client.GraknClient;
+import static graql.lang.Graql.*;
+import graql.lang.query.GraqlGet;
+import grakn.core.concept.answer.ConceptMap;
+
 import java.util.List;
-import static ai.grakn.graql.Graql.var;
 
-public class Queries {
-  public static void main(String[] args) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("social_network");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
-    Grakn.Transaction transaction = session.transaction(GraknTxType.READ);
+public class SocialNetworkQuickstartQuery extends Throwable {
+    public static void main(String[] args) {
+        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient.Session session = client.session("social_network");
+        GraknClient.Transaction transaction = session.transaction().write();
 
-    GetQuery query = Graql.match(
-      var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
-      var("per").has("full-name", var("per-fn")),
-      var("org").has("name", var("org-n"))
-    ).get();
+        GraqlGet query = match(
+                var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
+                var("per").has("full-name", var("per-fn")),
+                var("org").has("name", var("org-n"))
+        ).get();
 
-    List <ConceptMap> answers = query.withTx(transaction).execute();
+        List<ConceptMap> answers = transaction.execute(query);
 
-    for (ConceptMap answer: answers) {
-      System.out.println(answer.get("per-fn").asAttribute().value());
-      System.out.println(answer.get("org-n").asAttribute().value());
-      System.out.println(" - - - - - - - - ");
+        for (ConceptMap answer : answers) {
+            System.out.println(answer.get("per-fn").asAttribute().value());
+            System.out.println(answer.get("org-n").asAttribute().value());
+            System.out.println(" - - - - - - - - ");
+        }
+
+        transaction.close();
+        session.close();
     }
-
-    transaction.close();
-    session.close();
-  }
 }
 ```
 
 #### Lazily retrieve all photos and videos that have been found funny by women sing [Client Python](/docs/client-api/python)
 
-<!-- test-ignore -->
+<!-- test-standalone social_network_quickstart_query.py -->
 ```python
 import grakn
 
@@ -169,7 +164,7 @@ with client.session(keyspace = "social_network") as session:
       match
         $pos isa media;
         $fun isa emotion;
-        $fun == "funny";
+        $fun "funny";
         $per has gender "female";
         (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
       get $pos;
@@ -181,28 +176,32 @@ with client.session(keyspace = "social_network") as session:
 
 #### Retrieve the average salary of all employees at Pharos using [Client Node.js](/docs/client-api/nodejs)
 
-<!-- test-ignore -->
+<!-- test-standalone socialNetworkQuickstartQuery.js -->
 ```javascript
-const Grakn = require("grakn");
-const grakn = new Grakn("localhost:48555");
+const Grakn = require("grakn-client");
+const client = new Grakn("localhost:48555");
 
-async function getAverageSalaryAt(orgName) {
-  const session = await grakn.session((keyspace = "social_network"));
-  const transaction = await session.transaction(Grakn.txType.READ);
-  const query = `
-    match
-      $org isa organisation, has name "${orgName}";
-      ($org, $per) isa employment, has salary $sal;
-      get $sal; mean $sal;
-  `
-  const answerIterator = await transaction.query(query);
-  const answer = await answerIterator.next();
-  console.log(await answer.number());
-  transaction.close();
-  session.close();
+async function getAverageSalaryAt (orgName) {
+	const session = client.session("social_network");
+	const transaction = await session.transaction(Grakn.txType.READ)
+	const query = `
+		match
+			$org isa organisation, has name "${orgName}";
+			($org, $per) isa employment, has salary $sal;
+		get $sal; mean $sal;
+	`
+	const answerIterator = await transaction.query(query);
+	const answer = await answerIterator.next();
+	if (answer) {
+		console.log(await answer.number());
+	} else {
+	  console.log(`No one works at ${orgName}`);
+	}
+	await transaction.close();
+	await session.close();
 }
 
-getAverageSalaryAt("Pharos");
+getAverageSalaryAt("Pharos"); // asynchronous call
 ```
 
 ### Insert and Delete Data
@@ -253,7 +252,7 @@ Let's look at some simple examples of how Grakn uses rules for reasoning over ex
 ```graql
 define
 
-course-enrollment-mutuality sub relationship,
+course-enrollment-mutuality sub relation,
   relates coursemate,
   relates mutual-course-enrollment;
 
@@ -282,7 +281,7 @@ Given the second rule:
 ```graql
 define
 
-school-mutuality sub relationship,
+school-mutuality sub relation,
   relates schoolmate,
   relates mutual-school;
 
@@ -333,22 +332,37 @@ compute count in travel;
 
 ```graql
 match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
-# {$x id V446496 isa person; $y id V229424 isa person;}
+```
+
+<!-- test-ignore -->
+```graql
+{$x id V446496 isa person; $y id V229424 isa person;}
+```
+
+<!-- test-ignore -->
+```graql
 compute path from V446496, to V229424;
-# {V184392, V442424, V90344}
+```
+
+<!-- test-ignore -->
+```graql
+{V184392, V442424, V90344}
 ```
 
 #### [Identify clusters](/docs/query/compute-query#identify-clusters) in a subgraph
-
 ```graql
 compute cluster in [person, employment, organisation], using connected-component;
-# {V192656}
-# {V663728, V266336, V262392, V680112, V479408}
-# {V180272, V446496, V278672, V463024, V671920}
-# {V172176}
-# {V360448, V250104, V176176, V667824, V180368, V303200, V639152}
-# {V647200, V295008, V237808, V225328, V364544, V372832, V356352, V167984, V266488, V299104, V663584}
-# {V401584, V229424, V639008, V213040, V655392}
+```
+
+<!-- test-ignore -->
+```graql
+{V192656}
+{V663728, V266336, V262392, V680112, V479408}
+{V180272, V446496, V278672, V463024, V671920}
+{V172176}
+{V360448, V250104, V176176, V667824, V180368, V303200, V639152}
+{V647200, V295008, V237808, V225328, V364544, V372832, V356352, V167984, V266488, V299104, V663584}
+{V401584, V229424, V639008, V213040, V655392}
 ```
 
 ### Where Next?

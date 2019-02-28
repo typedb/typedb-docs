@@ -9,6 +9,14 @@
 
 filegroup(
     name = "content",
-    srcs = glob(["*/**/*.md"]),
+    srcs = glob(
+        ["*/**/*.md"],
+        exclude=[
+            "bazel-bin/**/*.md",
+            "bazel-out/**/*.md",
+            "bazel-docs/**/*.md",
+            ".runfiles/**/*.md"
+        ]
+    ),
     visibility = ["//visibility:public"]
 )

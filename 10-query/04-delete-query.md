@@ -32,7 +32,7 @@ match $p isa person, has email "raphael.santos@gmail.com"; delete $p;
 
 [tab:Java]
 ```java
-DeleteQuery query = Graql.match(
+GraqlDelete query = Graql.match(
     var("p").isa("person").has("email", "raphael.santos@gmail.com")
 ).delete("p");
 ```
@@ -57,7 +57,7 @@ delete $emp;
 
 [tab:Java]
 ```java
-DeleteQuery query = Graql.match(
+GraqlDelete query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
 ).delete("emp");
@@ -82,7 +82,7 @@ match $t isa travel, has start-date 2013-12-22 via $r; delete $r;
 
 [tab:Java]
 ```java
-DeleteQuery query = Graql.match(
+GraqlDelete query = Graql.match(
   var("t").isa("travel").has("start-date", var("st"), var("r")),
   var("st").val(LocalDate.of(2013, 12, 22).atStartOfDay())
 ).delete("r");

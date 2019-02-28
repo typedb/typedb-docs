@@ -95,16 +95,16 @@ define
 ## GENERIC TYPES ##
 ###################
 
-	location-of-everything sub relationship,
+	location-of-everything sub relation,
 		abstract,
 		relates located-subject,
 		relates subject-location;
 
-	location-hierarchy sub relationship,
+	location-hierarchy sub relation,
 		relates subordinate-location,
 		relates superior-location;
 
-	ownership sub relationship,
+	ownership sub relation,
 		relates owner,
 		relates owned;
 
@@ -113,12 +113,12 @@ define
 		plays subordinate-location,
 		plays superior-location;
 
-	request sub relationship,
+	request sub relation,
 		relates approved-subject,
 		relates requester,
 		relates respondent;
 
-	periodic-event sub relationship,
+	periodic-event sub relation,
 		abstract,
 		has start-date,
 		has end-date,
@@ -128,7 +128,7 @@ define
 	## events overlapping ##
 	########################
 
-	event-overlapping sub relationship,
+	event-overlapping sub relation,
 		relates overlapped-event;
 
 	events-overlap sub rule,
@@ -161,7 +161,7 @@ define
 		relates located-birth as located-subject,
 		relates birth-location as subject-location;
 
-	birth sub relationship,
+	birth sub relation,
 		has birth-date,
 		relates birthed-child,
 		plays located-birth,
@@ -179,7 +179,7 @@ define
 	## birth location in common ##
 	##############################
 
-	birth-mutuality sub relationship,
+	birth-mutuality sub relation,
 		relates mutual-birthed-child,
 		relates mutual-birth-location,
 		relates mutual-birth;
@@ -228,7 +228,7 @@ define
 	## residence in common ##
 	#########################
 
-	residence-mutuality sub relationship,
+	residence-mutuality sub relation,
 		relates mutual-resident,
 		relates mutual-residency,
 		relates mutual-residence;
@@ -296,7 +296,7 @@ define
 	## school offerings ##
 	##########################
 
-	school-course-offerring sub relationship,
+	school-course-offerring sub relation,
 		relates offerring-school,
 		relates offered-course;
 
@@ -311,7 +311,7 @@ define
 	## educations in common ##
 	##########################
 
-	school-mutuality sub relationship,
+	school-mutuality sub relation,
 		relates schoolmate,
 		relates mutual-school;
 
@@ -326,7 +326,7 @@ define
 			(schoolmate: $p1, schoolmate: $p2, mutual-school: $s) isa school-mutuality;
 		};
 
-	course-enrollment-mutuality sub relationship,
+	course-enrollment-mutuality sub relation,
 		relates coursemate,
 		relates mutual-course-enrollment;
 
@@ -372,7 +372,7 @@ define
 	## travels in common ##
 	#######################
 
-	travel-mutuality sub relationship,
+	travel-mutuality sub relation,
 		relates mutual-traveler,
 		relates mutual-travel,
 		relates mutual-travel-location;
@@ -450,7 +450,7 @@ define
 	## employment in common ##
 	##########################
 
-	employment-mutuality sub relationship,
+	employment-mutuality sub relation,
 		relates mutual-employee,
 		relates mutual-employment,
 		relates mutual-organisation;
@@ -464,7 +464,7 @@ define
 			(mutual-employee: $p1, mutual-employee: $p2, mutual-organisation: $o, mutual-employment: $e1, mutual-employment: $e2) isa employment-mutuality;
 		};
 
-	work-position-mutuality sub relationship,
+	work-position-mutuality sub relation,
 		relates mutual-employee,
 		relates mutual-employment,
 		relates mutual-position;
@@ -490,7 +490,7 @@ define
 # 	$slm sub speaking-language-mutuality;
 # get;
 
-	speaking-of-language sub relationship,
+	speaking-of-language sub relation,
 		relates speaker,
 		relates spoken,
 		plays mutual-language-speaking;
@@ -503,7 +503,7 @@ define
 	## speaking languages in common ##
 	##################################
 
-	speaking-language-mutuality sub relationship,
+	speaking-language-mutuality sub relation,
 		relates mutual-speaker,
 		relates mutual-language-speaking,
 		relates mutual-language;
@@ -528,7 +528,7 @@ define
 # 	$per sub person;
 # get;
 
-	romantic-relationship sub relationship,
+	romantic-relationship sub relation,
 		has start-date,
 		has end-date,
 		has engaged,
@@ -544,7 +544,7 @@ define
 	complicated-relationship sub romantic-relationship,
 		relates partner;
 
-	marriage sub relationship,
+	marriage sub relation,
 		has start-date,
 		has end-date,
 		has separated,
@@ -572,7 +572,7 @@ define
 # 	$muf sub mutual-friendship;
 # get;
 
-	friendship sub relationship,
+	friendship sub relation,
 		relates friend,
 		plays approved-friendship,
 		plays listed-friendship;
@@ -583,7 +583,7 @@ define
 		relates friendship-requester as requester,
 		relates friendship-respondent as respondent;
 
-	friends-list sub relationship,
+	friends-list sub relation,
 		has title,
 		relates list-owner,
 		relates listed-friendship;
@@ -600,7 +600,7 @@ define
 	## mutual friendship ##
 	#######################
 
-	mutual-friendship sub relationship,
+	mutual-friendship sub relation,
 		relates mutual-friend,
 		relates one-degree-friend;
 
@@ -631,7 +631,7 @@ define
 		relates group-owner as owner,
 		relates owned-group as owned;
 
-	group-membership sub relationship,
+	group-membership sub relation,
 		has approved-date,
 		plays approved-group-membership,
 		relates group-member,
@@ -731,20 +731,20 @@ define
 # 	$per sub person;
 # get;
 
-	reply sub relationship,
+	reply sub relation,
 		relates replied-to,
 		relates reply-content,
 		relates replied-by;
 
-	tagging sub relationship,
+	tagging sub relation,
 		relates tagged,
 		relates tagged-in;
 
-	attachment sub relationship,
+	attachment sub relation,
 		relates attached,
 		relates attached-to;
 
-	reaction sub relationship,
+	reaction sub relation,
 		relates reacted-emotion,
 		relates reacted-to,
 		relates reacted-by;
@@ -809,7 +809,7 @@ define
 # 	$puu sub public-user;
 # get;
 
-	sharing sub relationship,
+	sharing sub relation,
 		abstract,
 		relates shared-content,
 		relates shared-by,
@@ -842,7 +842,7 @@ define
 		relates shared-in,
 		relates shared-by;
 
-	permitted-to-see sub relationship,
+	permitted-to-see sub relation,
 		relates permitted-content,
 		relates permission-grantee;
 

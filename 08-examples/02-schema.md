@@ -68,11 +68,11 @@ Likewise for a **contract**. It relates to **provider** played by a **company** 
 ```graql
 define
 
-  contract sub relationship,
+  contract sub relation,
     relates provider,
     relates customer;
 
-  call sub relationship,
+  call sub relation,
     relates caller,
     relates callee;
 
@@ -90,11 +90,11 @@ To define the attributes, we use the has keyword.
 ```graql
 define
 
-  contract sub relationship,
+  contract sub relation,
     relates provider,
     relates customer;
 
-  call sub relationship,
+  call sub relation,
     relates provider,
     relates customer,
     has started-at,
@@ -121,11 +121,11 @@ Lastly, we need to define the type of each attribute.
 ```graql
 define
 
-  contract sub relationship,
+  contract sub relation,
     relates provider,
     relates customer;
 
-  call sub relationship,
+  call sub relation,
     relates caller,
     relates callee,
     has started-at,
@@ -147,23 +147,23 @@ person sub entity,
     has is-customer;
 
   name sub attribute,
-	datatype string;
+	  datatype string;
   started-at sub attribute,
-	datatype date;
+	  datatype date;
   duration sub attribute,
-	datatype long;
+	  datatype long;
   first-name sub attribute,
-	datatype string;
+	  datatype string;
   last-name sub attribute,
-	datatype string;
+	  datatype string;
   phone-number sub attribute,
-	datatype string;
+	  datatype string;
   city sub attribute,
-	datatype string;
+	  datatype string;
   age sub attribute,
-	datatype long;
+	  datatype long;
   is-customer sub attribute,
-	datatype boolean;
+	  datatype boolean;
 ```
 
 Note that we don't need to define an id attribute. Grakn takes care of that for us.
@@ -208,9 +208,9 @@ The result should be as follows:
 {$x label attribute;}
 {$x label company sub entity;}
 {$x label person sub entity;}
-{$x label call sub relationship;}
-{$x label "@has-attribute" sub relationship;}
-{$x label contract sub relationship;}
+{$x label call sub relation;}
+{$x label "@has-attribute" sub relation;}
+{$x label contract sub relation;}
 {$x label name sub attribute;}
 {$x label started-at sub attribute;}
 {$x label age sub attribute;}

@@ -1,10 +1,10 @@
 define
 
-marriage sub relationship
+marriage sub relation
   has picture,
   relates spouse;
 
-parentship sub relationship
+parentship sub relation
   relates parent
   relates child;
 

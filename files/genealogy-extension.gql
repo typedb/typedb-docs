@@ -21,11 +21,11 @@ define
     plays grandmother,
     plays grandfather;
 
-  marriage sub relationship,
+  marriage sub relation,
     relates husband,
     relates wife;
 
-  parentship sub relationship,
+  parentship sub relation,
     relates mother,
     relates father,
     relates son,
@@ -36,10 +36,10 @@ define
   son sub child;
   daughter sub child;
 
-  siblings sub relationship,
+  siblings sub relation,
     relates sibling;
 
-  grandparentship sub relationship,
+  grandparentship sub relation,
     relates grandparent,
     relates grandfather,
     relates grandmother,
@@ -52,10 +52,10 @@ define
   grandson sub grandchild;
   granddaughter sub grandchild;
 
-  cousins sub relationship,
+  cousins sub relation,
       relates cousin;
 
-  in-laws sub relationship,
+  in-laws sub relation,
     relates child-in-law,
     relates son-in-law,
     relates daughter-in-law,

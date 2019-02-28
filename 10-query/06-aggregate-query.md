@@ -39,9 +39,9 @@ get; count;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GraqlGet.Aggregate query = Graql.match(
   var("sce").isa("school-course-enrollment").has("score", var("sco")),
-  var("sco").val(gt(7.0))
+  var("sco").gt(7.0)
 ).get().count();
 ```
 [tab:end]
@@ -60,7 +60,7 @@ We use the `sum` function to get the sum of the specified `long` or `double` mat
 ```graql
 match
   $org isa organisation, has name $orn;
-  $orn == "Medicely";
+  $orn "Medicely";
   ($org) isa employment, has salary $sal;
 get $sal; sum $sal;
 ```
@@ -68,7 +68,7 @@ get $sal; sum $sal;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GraqlGet.Aggregate query = Graql.match(
   var("org").isa("organisation").has("name", var("orn")),
   var("orn").val("Medicely"),
   var().rel("org").isa("employment").has("salary", var("sal"))
@@ -92,7 +92,7 @@ get $ran; max $ran;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GraqlGet.Aggregate query = Graql.match(
   var("sch").isa("school").has("ranking", var("ran"))
 ).get("ran").max("ran");
 ```
@@ -115,7 +115,7 @@ get $sal; min $sal;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GraqlGet.Aggregate query = Graql.match(
   var().rel(var("per")).isa("marriage"),
   var().rel(var("per")).isa("employment").has("salary", var("sal"))
 ).get("sal").min("sal");
@@ -138,7 +138,7 @@ get $sal; mean $sal;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GraqlGet.Aggregate query = Graql.match(
   var("emp").isa("employment").has("salary", var("sal"))
 ).get("sal").mean("sal");
 ```
@@ -163,7 +163,7 @@ get $sco; median $sco;
 
 [tab:Java]
 ```java
-AggregateQuery query = Graql.match(
+GraqlGet.Aggregate query = Graql.match(
   var("org").isa("organisation").has("name", var("orn")),
   var("orn").val("Facelook"),
   var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
@@ -190,7 +190,7 @@ get; group $tit;
 
 [tab:Java]
 ```java
-GroupQuery query = Graql.match(
+GraqlGet.Group query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
@@ -215,7 +215,7 @@ get; group $tit; count;
 
 [tab:Java]
 ```java
-GroupAggregateQuery query = Graql.match(
+GraqlGet.Group.Aggregate query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("tit")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
