@@ -6,9 +6,44 @@ This repository contains all content that powers the Grakn Documentation Portal,
 ## Contribute
 - Fork this repository
 - Read the [Contribution Guidelines]() carefully
-- Issue a pull request
+- Make the desired changes.
+- Issue pull request(s) and select the `base` branch in accordance with the Branch Classifications.
+
+## Branch Classifications
+The classification of the branches and the purpose of each is as follows:
+
+### Master
+The master branch contains the content for the live documentation for the current release.
+PRs that have the `master` branch as their _base_, contain one or more of the following changes:
+- fixing a linguistic mistake,
+- reflecting a change in the terminology,
+- rephrasing textual content,
+- adding complementary content to an existing feature,
+- updating images,
+- and other changes of the same nature
+
+Given a PR made on `master` that can and should be reflected in the next release as well, a second identical (or slightly different) PR needs to be made on one of the `development` branches.
+
+### Development
+The development branch contains the content of the documentation for the next immediate release.
+PRs that have the `development` branch as their _base_, contain changes that are either:
+- previously made on `master` and should also be reflected for the next release, or
+- meant to introduce a new future/change that will only be available as a part of the next release
+
+**Grakn Core** and clients **Java**, **Node.js** and **Python** are all separate repositories that have their independent release cycles. To ensure that the development state of the documentation remains in sync with the latest changes made in each of these repositories, `docs` has a different `development` branch for each of them. Therefore, when submitting a PR to update the development state of docs, the correct corresponding `development` branch needs to be selected as `base`. The file changes expected to be seen in a development PR are as follows:
+- `development-java`: `03-client-api/references/*.md`, `03-client-api/01-java.md` and changes made in `java` code blocks
+- `development-nodejs`: `03-client-api/references/*.md`, `03-client-api/01-nodejs.md` and changes made in `nodejs` code blocks
+- `development-python`: `03-client-api/references/*.md`, `03-client-api/01-python.md` and changes made in `python` code blocks
+- `development-grakn`: any other files and changes made in `graql` code blocks
 
 ## Contribution Guidelines
+
+- [Naming Conventions](#naming-conventions)
+- [Using Images](#using-images)
+- [Writing Style](#writing-style)
+- [Writing Markdown](#writing-markdown)
+- [API References](#api-references)
+- [Tests](#tests)
 
 ### Naming Conventions
 
@@ -16,27 +51,27 @@ This repository contains all content that powers the Grakn Documentation Portal,
 
 - Separate words with hyphens (`-`).
 - Keep file and directory names compact: in most cases, one or two words that best describe the contained content. Never use more than three words.
-- Choosing the same name for different files located in different directories is acceptavble. (eg: `files/social-network/schema.gql` and `files/phone-cals/schema.gql`).
+- Choosing the same name for different files located in different directories is acceptable. (eg: `files/social-network/schema.gql` and `files/phone-calls/schema.gql`).
 - For naming images, refer to the [Images Guidelines](#images).
 
 
 **Headlines**
 
-- Headlines should be phrased in a way that when read the user can determine the question that the text is meant to answer. They should describe a use case.
+- Headlines should be phrased in a way that when read the user can determine the question that the text is meant to answer. They should describe a use-case.
 - Use primitive verbs (eg: _Manage Keyspaces_ as opposed to _Managing Keyspaces_).
 
-## Images
+### Using Images
 
 - The name of directories placed under `images/`, corresponds to the name of the section as displayed in the sidebar.
 - Name of images, while remaining concise, should be to some level descriptive of their content (eg: `compute_path.png` and `compute_path_subgraph.png` as opposed to `compute_0.png` and `compute_1.png`).
 - When an image is used across multiple pages, the **same** image file should be referenced, rather than duplicating the image.
 - Screenshots of Workbase should be:
   - named after the UI/UX components of the software itself. (eg: `graql-editor_clear-query.png`).
-  - taken at screen resolution of 1280 x 720.
-  - image sized of 1150 x 670.
+  - taken at the screen resolution of 1280 x 720.
+  - image size of 1150 x 670.
   - consistent in their paddings (position of Workbase's layout within the screenshot).
 
-### Style Guide
+### Writing Style
 
 **Spelling**
 
@@ -86,8 +121,8 @@ Use American.git st
 **Code Blocks**
 
 - Include the language name right after the opening ` ``` ` (eg: ` ```graql `)
-- To automatically link a code keyword to its corresponding documentation, review and maintain the [views/autolink-keywords.js](views/autolink-keywords.js)
-- Use ` `` ` within text, to add inline code. Language is not specified for inline code.
+- To automatically link a code keyword to its corresponding documentation, review and maintain the [`views/autolink-keywords.js`](views/autolink-keywords.js)
+- Use ` `` ` within the text, to add inline code. Language is not specified for inline code.
 
 **Tabbed Content**
 To add tabbed content, use the following structure.
@@ -110,7 +145,7 @@ To add tabbed content, use the following structure.
 - Avoid indents inside the `div` tag.
 - When the tabbed content is solely a code block, use the `dark` mode (`class`).
 - When the tabbed content includes text, use the `light` mode (`class`).
-- In the rare occasions, when the tabbed content is solely a Liquid `include` tag, add `data-no-parse` to the `div`.
+- In rare occasions, when the tabbed content is solely a Liquid `include` tag, add `data-no-parse` to the `div`.
 
 **Slideshow**
 
@@ -138,7 +173,7 @@ To add slideshows, use the following structure.
 
 **Colored Panels**
 
-To add a colored panel, use the following structure.
+To add a coloured panel, use the following structure.
 
 ```html
  <div class="note">
@@ -147,28 +182,29 @@ To add a colored panel, use the following structure.
  </div>
 ```
 
-In order for the above html/markdown to be presented as a colored panel, `predefined-title` must map to an object contained within `coloredPanels` accessible in `views/colored-panels.js`.
+In order for the above html/markdown to be presented as a coloured panel, `predefined-title` must map to an object contained within `coloredPanels` accessible in [`views/colored-panels.js`](views/colored-panels.js).
 
 **Colored Labels**
 
-To add an inline colored label, use the following structure.
+To add an inline coloured label, use the following structure.
 
 ```
 [Label Title]
 ```
 
-In order for the above to be presented as a colored label, the `Label Title` must be included in the `labelsList` accessible in `views/colored-labels.js`.
+In order for the above to be presented as a coloured label, the `Label Title` must be included in the `labelsList` accessible in [`views/colored-labels.js`](views/colored-labels.js).
 
-## Tests
+### API References
+
+API references are written and maintained in `.yml` files. In order to work, with these files, you need to have a solid understanding of yaml anchors and references.
+
+Client API reference files are accessible via [`03-client-api/references`](03-client-api/references) and Concept API references via [`04-concept-api/references`](04-client-api/references).
+
+### Tests
 
 - Code blocks that have no language name, will not be tested.
 - Code blocks whose language is not `java`, `javascript` or `python` will not be tested.
 - Code blocks that follow the `<!-- test-ignore --> flag, will not be tested.
-- Code blocks of `java`, `javascript` or `python` that are not preceded by any test flags, will be tested as snippets. Current snippets are:
-    - One or more assignments of Java `GraqlQuery` objects
-    - Graql queries
-- Code blocks that follow the `<!-- test-standalone file-name.extension --> flag, will be tested as standalones. Standalones are self-contained code blocks, that are expected to compile and run on their own.
-- Using the `<!-- test-standalone file-name.extension -->` flag requires modification of one of the following test files:
-    - `PhoneCalls.java` or `SocialNetwork.java` under `test/standalone/java/`
-    - `phoneCalls.js` or `socialNetwork.js` under `test/standalone/nodejs/`
-    - `phone_calls.py` or `social_network.py` under `test/standalone/python/`
+- Code blocks that follow the `<!-- test-delay --> flag, with the flag expected to be removed in the next major or minor release.
+- Code blocks of `java`, `javascript` or `python` that are not preceded by any test flags, will be tested as snippets. Learn more about [Snippet Tests](test/snippet/README.md).
+- Code blocks that follow the `<!-- test-standalone file-name.extension --> flag, will be tested as standalones. Learn more about [Standalone Tests](test/standalone/README.md).
