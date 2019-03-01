@@ -22,7 +22,7 @@ maven_dependencies_for_build()
 git_repository(
     name = "graknlabs_grakn_core",
     remote = "https://github.com/graknlabs/grakn",
-    commit = 'cef8a507d9946207bd1171986dec67eb4ea3b51a' # grakn-dependency: do not remove this comment. this is used by the auto-update script
+    commit = 'cef8a507d9946207bd1171986dec67eb4ea3b51a' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_grakn_core
 )
 
 load("@graknlabs_grakn_core//dependencies/compilers:dependencies.bzl", "grpc_dependencies")
@@ -60,7 +60,7 @@ docker_dependencies()
 git_repository(
     name = "graknlabs_graql",
     remote = "https://github.com/graknlabs/graql",
-    commit = '2dbf9b5f57119038bed604293135ae11263bde68' # graql-dependency: do not remove this comment. this is used by the auto-update script
+    commit = '2dbf9b5f57119038bed604293135ae11263bde68' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_graql
 )
 
 load("@graknlabs_graql//dependencies/maven:dependencies.bzl", "maven_dependencies")
