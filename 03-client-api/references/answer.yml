@@ -27,13 +27,13 @@ mappings:
     answer: "[ConceptMap](#client-api-title-conceptmap)"
   -
     query: "aggregate count/min/max/sum/mean/std"
-    answer: "[Value](#client-api-title-value)"
+    answer: "[Numeric](#client-api-title-numeric)"
   -
     query: aggregate group
     answer: "[AnswerGroup](#client-api-title-answergroup)"
   -
     query: "compute count/min/max/sum/mean/std"
-    answer: "[Value](#client-api-title-value)"
+    answer: "[Numeric](#client-api-title-numeric)"
   -
     query: compute path
     answer: "[ConceptList](#client-api-title-conceptlist)"
@@ -81,7 +81,7 @@ types:
           <<: *method-explanation
           method: answer.explanation()
   - type2:
-    title: Value
+    title: Numeric
     methods:
       - method:
         common: &method-value-number

@@ -5,10 +5,22 @@ permalink: /docs/client-api/nodejs
 ---
 
 ## Dependencies
-Before installing the `grakn` node module, make sure the following dependencies are installed.
 
-- [Grakn >= 1.3.0](https://github.com/graknlabs/grakn/releases)
-- [Node >= 6.5.0](https://nodejs.org/en/download/)
+| Client Node.js | Grakn Core                  | Grakn KGMS   |  Node  |
+| :------------: | :-------------------------: | :----------: | :----: |
+| 1.5.0          | 1.5.0                       | N/A          | >= 6.5 |
+| 1.3.1          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.3.0          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.2.9          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.2.8          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.2.7          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.2.6          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.2.5          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.2.4          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
+| 1.2.3          | 1.2.0                       | 1.2.0        | >= 6.5 |
+| 1.2.2          | 1.2.0                       | 1.2.0        | >= 6.5 |
+| 1.2.1          | 1.2.0                       | 1.2.0        | >= 6.5 |
+| 1.2.0          | 1.2.0                       | 1.2.0        | >= 6.5 |
 
 ## Installation
 ```
@@ -34,9 +46,12 @@ const Grakn = require("grakn-client");
 async function openSession (keyspace) {
 	const client = new Grakn("localhost:48555");
 	const session = await client.session(keyspace);
+	// session is open
+	await session.close();
+	//session is closed
 };
 
-openSession("social_network"); // asynchronous call
+openSession("social_network");
 ```
 
 We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users), into the initial constructor as a Javascript object.
@@ -65,9 +80,11 @@ async function createTransactions (keyspace) {
 	const readTransaction = await session.transaction(Grakn.txType.READ); // read transaction is open
 	// read transaction must always be closed
 	await readTransaction.close();
+	// a session must always be closed
+	await session.close();
 }
 
-createTransactions("social_network"); // asynchronous call
+createTransactions("social_network");
 ```
 
 Running basic retrieval and insertion queries.
@@ -112,7 +129,7 @@ async function runBasicQueries (keyspace) {
 	await session.close();
 }
 
-runBasicQueries("social_network"); // asynchronous call
+runBasicQueries("social_network");
 ```
 
 <div class="note">
