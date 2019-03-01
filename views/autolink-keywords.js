@@ -20,60 +20,42 @@ codeKeywordsToLink = {
         // order matters for functionality. keywords that need to turn into a link first. example: undefine before define
         {
             titles: ["undefine"],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-manipulate-the-schema-programatically",
-            languages: ["java"]
-        },
-        {
-            titles: ["undefine"],
             baseUrl: "/docs/schema/concepts",
             syntaxedAs: ["graql-keyword", "string"],
             anchor: "#undefine",
-            languages: ["graql", "javascript", "python"]
+            languages: ["graql",  "java", "javascript", "python"]
         },
         {
             titles: ["getAttributesByValue", "get_attributes_by_value"],
             syntaxedAs: ["function"],
             anchor: "#client-api-method-retrieve-an-attribute-by-value",
-            languages: ["javascript", "python"]
+            languages: [ "java", "javascript", "python"]
         },
         {
             titles: ["getConcept", "get_concept"],
             syntaxedAs: ["function"],
             anchor: "#client-api-method-retrieve-a-concept-by-id",
-            languages: ["javascript", "python"]
+            languages: ["java", "javascript", "python"]
         },
         {
             titles: ["getSchemaConcept", "get_schema_concept"],
             syntaxedAs: ["function"],
             anchor: "#client-api-method-retrieve-a-schema-concept-by-label",
-            languages: ["javascript", "python"]
+            languages: ["java", "javascript", "python"]
         },
         {
-            titles: ["getSchemaConcept", "get_schema_concept"],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-retrieve-a-schema-concept-by-label",
-            languages: ["javascript", "python"]
-        },
-        {
-            titles: ["queryPattern", "query_pattern"],
+            titles: ["queryPattern", "query_pattern", "getPattern"],
             syntaxedAs: ["function"],
             anchor: "#client-api-method-retrieve-a-graql-explanation-of-the-answer",
-            languages: ["javascript", "python"]
+            languages: ["java", "javascript", "python"]
         },
         // alphabetic order only required for readability
         {
-            titles: ["aggregate"],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-aggregatd-values",
-            languages: ["java"]
-        },
-        {
-            titles: ["aggregate"],
+            titles: ["count", "sum", "min", "max", "mean", "median", "std"],
             baseUrl: "/docs/query/aggregate-query",
-            syntaxedAs: ["graql-keyword", "string"],
+            syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
-            languages: ["graql", "javascript", "python"]
+            languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["answerIterator", "answer_iterator", "Iterator", "iterator"],
@@ -82,10 +64,10 @@ codeKeywordsToLink = {
             languages: ["javascript", "python"]
         },
         {
-            titles: ["answers"],
+            titles: ["answers", "getAnswers"],
             syntaxedAs: ["function"],
             anchor: "#client-api-method-retrieve-source-facts-of-inference",
-            languages: ["javascript", "python"]
+            languages: ["java", "javascript", "python"]
         },
         {
             titles: ["collectConcepts", "collect_concepts"],
@@ -101,16 +83,10 @@ codeKeywordsToLink = {
         },
         {
             titles: ["compute"],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-compute-values",
-            languages: ["java"]
-        },
-        {
-            titles: ["compute"],
             baseUrl: "/docs/query/compute-query",
-            syntaxedAs: ["graql-keyword", "string"],
-            anchor: "",
-            languages: ["graql", "javascript", "python"]
+            syntaxedAs: ["function", "graql-keyword", "string"],
+            anchor: "#compute-statistics",
+            languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["ConceptMap", "concept_map", "conceptMap"],
@@ -120,23 +96,17 @@ codeKeywordsToLink = {
         },
         {
             titles: ["define"],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-manipulate-the-schema-programatically",
-            languages: ["java"]
-        },
-        {
-            titles: ["define"],
             baseUrl: "/docs/schema/concepts",
-            syntaxedAs: ["graql-keyword", "string"],
+            syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "#define",
-            languages: ["graql", "javascript", "python"]
+            languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["delete"],
             baseUrl: "/docs/query/delete-query",
-            syntaxedAs: ["graql-keyword", "string"],
+            syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
-            languages: ["graql", "javascript", "python"]
+            languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["explanation"],
@@ -159,9 +129,9 @@ codeKeywordsToLink = {
         {
             titles: ["get"],
             baseUrl: "/docs/query/get-query",
-            syntaxedAs: ["graql-keyword", "string"],
+            syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
-            languages: ["graql", "javascript", "python"]
+            languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["Graql"],
@@ -170,37 +140,18 @@ codeKeywordsToLink = {
             languages: ["java"]
         },
         {
-            baseUrl: "/docs/query/delete-query",
-            titles: ["delete"],
-            syntaxedAs: ["graql-keyword", "string"],
-            anchor: "",
-            languages: ["graql", "javascript", "python"]
-        },
-        {
             titles: ["insert"],
             baseUrl: "/docs/query/insert-query",
-            syntaxedAs: ["graql-keyword", "string"],
+            syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
-            languages: ["graql", "javascript", "python"]
-        },
-        {
-            titles: ['insert'],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-insert-data-instances",
-            languages: ["java"]
-        },
-        {
-            titles: ["match"],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-match-patterns-in-data",
-            languages: ["java"]
+            languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["match"],
             baseUrl: "/docs/query/match-clause",
-            syntaxedAs: ["graql-keyword", "string"],
+            syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
-            languages: ["graql", "javascript", "python"]
+            languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["measurement"],
@@ -227,9 +178,9 @@ codeKeywordsToLink = {
             languages: ["javascript", "python"]
         },
         {
-            titles: ["putRelationshipType", "put_relationship_type"],
+            titles: ["putRelationType", "put_relation_type"],
             syntaxedAs: ["function"],
-            anchor: "#client-api-method-create-or-retrieve-a-relationshiptype",
+            anchor: "#client-api-method-create-or-retrieve-a-relation",
             languages: ["javascript", "python"]
         },
         {
@@ -264,22 +215,16 @@ codeKeywordsToLink = {
             languages: ["java", "javascript", "python"]
         },
         {
-            titles: ["stream"],
+            titles: ["transaction().read()"],
             syntaxedAs: ["function"],
-            anchor: "#client-api-method-lazily-execute-of-a-graql-query",
-            languages: ["java"]
-        },
-        {
-            titles: ["transaction"],
-            syntaxedAs: ["function"],
-            anchor: "#client-api-method-create-a-transaction",
+            anchor: "#client-api-method-open-a-read-transaction",
             languages: ["java", "javascript", "python"]
         },
         {
-            titles: ["withTx"],
+            titles: ["transaction().write()"],
             syntaxedAs: ["function"],
-            anchor: "#client-api-method-attach-transaction-to-query",
-            languages: ["java"]
-        },
+            anchor: "#client-api-method-open-a-write-transaction",
+            languages: ["java", "javascript", "python"]
+        }
     ]
 }
