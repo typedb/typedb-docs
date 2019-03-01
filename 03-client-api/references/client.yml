@@ -4,9 +4,8 @@ methods:
     common: &method-session
       title: Create a session/keyspace ## !!! synced with codeKeywordsToLink
       description: >
-        Creates a communication channel to the given keyspace on the Grakn server.
+        Opens a communication tunnel (session) to the given keyspace on the running Grakn server.
         **If no keyspace with the given name exists, a new one is created.**
-      method: 'client.session("keyspace name")'
       accepts: &accepts-session
         param: &accepts-session-keyspace
           name: keyspace
@@ -18,34 +17,35 @@ methods:
         - "[Session](#client-api-title-session) object"
     java:
       <<: *method-session
-      method: 'client.session(Keyspace.of(String keyspace));'
-      accepts:
-        <<: *accepts-session
-        param:
-          <<: *accepts-session-keyspace
-          description: The keyspace with which the session connects.
-          type: 'Keyspace (<code>Keyspace.of("name-of-keyspace")</code>)'
+      method: client.session(String keyspace);
     javascript:
       <<: *method-session
+      method: await client.session(keyspace)
     python:
       <<: *method-session
+      method: client.session(keyspace)
 
   - method:
     common: &method-keyspaces-retrieve
       title: Retrieve all keyspaces ## !!! synced with codeKeywordsToLink
       description: Retrieves the name of all keyspaces running on the Grakn server.
-      method: 'client.keyspaces().retrieve()'
-    # java:
-    #   <<: *method-keyspaces-retrieve
+    java:
+      <<: *method-keyspaces-retrieve
+      method: client.keyspaces().retrieve();
+      returns:
+        - List of Strings
     javascript:
       <<: *method-keyspaces-retrieve
+      method: await client.keyspaces().retrieve();
       returns:
         - Array of Strings
     python:
       <<: *method-keyspaces-retrieve
+      method: client.keyspaces().retrieve()
       returns:
         - List of Strings
-  - method3:
+
+  - method:
     common: &method-keyspaces-delete
       title: Delete a keyspace ## !!! synced with codeKeywordsToLink
       description: Deletes a keyspace with the given name.
@@ -58,20 +58,36 @@ methods:
           default: N/A
     java:
       <<: *method-keyspaces-delete
-      method: 'client.keyspaces().delete(Keyspace.of(String keyspace));'
-      accepts: &method-keyspaces-delete-accepts
-        param:
-          <<: *accepts-keyspaces-delete-keyspace
-          description: The keyspace to be deleted.
-          type: 'Keyspace'
+      method: client.keyspaces().delete(String keyspace);
+      returns:
+        - void
     javascript:
       <<: *method-keyspaces-delete
-      method: 'client.keyspaces().delete("keyspace name"))'
+      method: await client.keyspaces().delete("keyspace name");
       returns:
         - void
     python:
       <<: *method-keyspaces-delete
-      method: 'client.keyspaces().delete("keyspace name"))'
+      method: client.keyspaces().delete("keyspace name")
       returns:
         - None
 
+  - method:
+    common: &method-close
+      title: Close a client
+      description: Before instantiating a new client, the currently open client should first be closed.
+    java:
+      <<: *method-close
+      method: client.close();
+      returns:
+        - void
+    # javascript:
+    #   <<: *method-close
+    #   method: await client.close();
+    #   returns:
+    #     - void
+    # python:
+    #   <<: *method-close
+    #   method: client.close()
+    #   returns:
+    #     - None
