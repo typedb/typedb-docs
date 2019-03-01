@@ -4,37 +4,42 @@ This repository contains all content that powers the Grakn Documentation Portal,
 
 
 ## Contribute
+
 - Fork this repository
 - Read the [Contribution Guidelines]() carefully
 - Make the desired changes.
 - Issue pull request(s) and select the `base` branch in accordance with the Branch Classifications.
 
 ## Branch Classifications
+
 The classification of the branches and the purpose of each is as follows:
 
 ### Master
-The master branch contains the content for the live documentation for the current release.
-PRs that have the `master` branch as their _base_, contain one or more of the following changes:
-- fixing a linguistic mistake,
-- reflecting a change in the terminology,
-- rephrasing textual content,
-- adding complementary content to an existing feature,
-- updating images,
-- and other changes of the same nature
 
-Given a PR made on `master` that can and should be reflected in the next release as well, a second identical (or slightly different) PR needs to be made on one of the `development` branches.
+The master branch contains the content for the live documentation of the current release.
+PRs that have the `master` branch as their _base_, contain one or more of the following changes:
+- fixing a linguistic mistake
+- reflecting a change in the terminology
+- rephrasing textual content
+- adding complementary content to an existing feature
+- updating images
+- other changes of the same nature
+
+Given a PR made on `master` that can and should be reflected in the next release as well, a second identical (or slightly different) PR needs to be made on one of the `development` branches. The steps required to issue the second PR is as follows. While on the _head_ branch of the first PR, run:
+1. `git checkout development`
+2. `git pull <name of the graknlabs/docs remote> development`
+3. `git checkout -b <name of the branch to be the head of the upcoming PR>`
+4. `git cherry-pick <SHA of the commit that represents the beginning of your change in previous PR>..<SHA of the commit that represents the beginning of your change in previous PR>`
+5. commit any other changes that are exclusive to the next release
+5. `git push <name of the fork remote> <name of the current branch>`
+6. issue the PR and select `development` as the _base_ branch
 
 ### Development
+
 The development branch contains the content of the documentation for the next immediate release.
 PRs that have the `development` branch as their _base_, contain changes that are either:
 - previously made on `master` and should also be reflected for the next release, or
 - meant to introduce a new future/change that will only be available as a part of the next release
-
-**Grakn Core** and clients **Java**, **Node.js** and **Python** are all separate repositories that have their independent release cycles. To ensure that the development state of the documentation remains in sync with the latest changes made in each of these repositories, `docs` has a different `development` branch for each of them. Therefore, when submitting a PR to update the development state of docs, the correct corresponding `development` branch needs to be selected as `base`. The file changes expected to be seen in a development PR are as follows:
-- `development-java`: `03-client-api/references/*.md`, `03-client-api/01-java.md` and changes made in `java` code blocks that use Client Java
-- `development-nodejs`: `03-client-api/references/*.md`, `03-client-api/01-nodejs.md` and changes made in `nodejs` code blocks that use Client Node.js
-- `development-python`: `03-client-api/references/*.md`, `03-client-api/01-python.md` and changes made in `python` code blocks that use Client Python
-- `development-grakn`: any other files and changes made in `graql` code blocks as well as those that do not use any of the Clients
 
 ## Contribution Guidelines
 
