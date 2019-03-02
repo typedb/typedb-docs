@@ -22,7 +22,7 @@ maven_dependencies_for_build()
 git_repository(
     name = "graknlabs_grakn_core",
     remote = "https://github.com/graknlabs/grakn",
-    commit = '66f4d49a39d7cd2402606b5a4b80cf6b4890aba7' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_grakn_core
+    commit = 'd5e6fd55181b483073928c248e27d849214d202a' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_grakn_core
 )
 
 load("@graknlabs_grakn_core//dependencies/compilers:dependencies.bzl", "grpc_dependencies")
