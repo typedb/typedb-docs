@@ -118,7 +118,7 @@ The result contains the following answers.
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlGet;
 import grakn.core.concept.answer.ConceptMap;

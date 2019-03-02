@@ -7,7 +7,7 @@ java_test(
     test_class = "generated.TestSnippetJava",
     srcs = [":generate-test-snippet-java"],
     deps = [
-        "@graknlabs_grakn_core//client-java:client-java",
+        "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//concept:concept",
         "@graknlabs_grakn_core//server:server",
@@ -43,7 +43,7 @@ java_test(
     test_class = "generated.TestSnippetGraql",
     srcs = [":generate-test-snippet-graql"],
     deps = [
-        "@graknlabs_grakn_core//client-java:client-java",
+        "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//concept:concept",
         "@graknlabs_grakn_core//server:server",

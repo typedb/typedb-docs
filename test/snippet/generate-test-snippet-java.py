@@ -6,7 +6,7 @@ generated_test_path, markdown_files = sys.argv[1], sys.argv[2:]
 java_snippet_test_class_template = """
 package generated;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
 
 import graql.lang.Graql;
