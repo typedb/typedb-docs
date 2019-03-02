@@ -794,7 +794,7 @@ Here is how our `Migrate.java` looks like for each data format.
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -856,6 +856,7 @@ public class PhoneCallsCSVMigration {
         }
 
         session.close();
+        client.close();
     }
 
     static Collection<Input> initialiseInputs() {
@@ -991,7 +992,7 @@ public class PhoneCallsCSVMigration {
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -1052,6 +1053,7 @@ public class PhoneCallsJSONMigration {
         }
 
         session.close();
+        client.close();
     }
 
     static Collection<Input> initialiseInputs() {
@@ -1194,7 +1196,7 @@ public class PhoneCallsJSONMigration {
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import graql.lang.query.GraqlInsert;
 import static graql.lang.Graql.*;
 
@@ -1259,6 +1261,7 @@ public class PhoneCallsXMLMigration {
         }
 
         session.close();
+        client.close();
     }
 
     static Collection<Input> initialiseInputs() {

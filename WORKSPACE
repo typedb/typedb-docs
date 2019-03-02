@@ -74,27 +74,51 @@ antlr_dependencies()
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies()
 
+###############################################################
+#           client java + transitive dependencies             #
+###############################################################
+git_repository(
+    name = "graknlabs_client_java",
+    remote = "https://github.com/graknlabs/client-java",
+    commit = 'e2d3cba2216c5aadf58184c9abeb16dd3718c677' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_client_java
+)
+
 ######################################################
-#                python dependencies                 #
+#      client python + transitive dependencies       #
 ######################################################
+git_repository(
+    name = "graknlabs_client_python",
+    remote = "https://github.com/graknlabs/client-python",
+    commit = 'bf27d7b0872ffadba15bd72db1716080875e7dd2' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_client_python
+)
 
 load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
 pip_repositories()
 
-# ----- local python dependencies -----
+# ----- transitive python dependencies -----
+# TODO: client python's pip_import should be called pypi_dependencies_grakn_client
 pip_import(
     name = "pypi_dependencies",
+    requirements = "@graknlabs_client_python//:requirements.txt",
+)
+
+load("@pypi_dependencies//:requirements.bzl", grakn_client_pip_install = "pip_install")
+grakn_client_pip_install()
+
+# ----- local python dependencies -----
+pip_import(
+    name = "local_pypi_dependencies",
     requirements = "//test/standalone/python:requirements.txt",
 )
 
-load("@pypi_dependencies//:requirements.bzl", "pip_install")
+load("@local_pypi_dependencies//:requirements.bzl", "pip_install")
 pip_install()
 
 # ----- grakn bazel distribution dependencies -----
 git_repository(
     name="graknlabs_bazel_distribution",
     remote="https://github.com/graknlabs/bazel-distribution",
-    commit="d95bf5376adf7df904938a14ea5c75c3beda82c3"
+    commit="ca5c3e1284bdfbfd8c34a7fe2299254d902bdba0"
 )
 
 pip_import(

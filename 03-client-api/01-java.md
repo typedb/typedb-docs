@@ -42,13 +42,13 @@ permalink: /docs/client-api/java
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-Import `grakn.core.client.GraknClient`, instantiate a client and open a session to a [keyspace](/docs/management/keyspace).
+Import `grakn.client.GraknClient`, instantiate a client and open a session to a [keyspace](/docs/management/keyspace).
 
 <!-- test-standalone GraknQuickstartA.java -->
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 
 public class GraknQuickstartA {
     public static void main(String[] args) {
@@ -75,7 +75,7 @@ Create transactions to use for reading and writing data.
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 
 public class GraknQuickstartB {
     public static void main(String[] args) {
@@ -106,7 +106,7 @@ Running basic retrieval and insertion queries.
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import graql.lang.Graql;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlGet;

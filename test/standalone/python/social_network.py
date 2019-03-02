@@ -16,8 +16,8 @@ class TestStandaloneSocialNetwork(unittest.TestCase):
                     transaction.commit()
                     print("Loaded the social_network schema")
 
-    def test_social_network_query(self):
-        import social_network_query
+    def test_social_network_quickstart_query(self):
+        import social_network_quickstart_query
 
     def test_social_network_python_client_a(self):
         import social_network_python_client_a

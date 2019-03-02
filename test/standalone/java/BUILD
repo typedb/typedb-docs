@@ -10,7 +10,7 @@ java_test(
         ":generate-standalones-java-phone-calls"
     ],
     deps = [
-        "@graknlabs_grakn_core//client-java:client-java",
+        "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//concept:concept",
         "@graknlabs_grakn_core//server:server",
@@ -70,7 +70,7 @@ java_test(
         ":generate-standalones-java-social-network"
     ],
     deps = [
-        "@graknlabs_grakn_core//client-java:client-java",
+        "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//concept:concept",
         "@graknlabs_grakn_core//server:server",

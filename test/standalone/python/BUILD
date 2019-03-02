@@ -2,6 +2,7 @@ exports_files(["requirements.txt"])
 
 load("@io_bazel_rules_python//python:python.bzl", "py_library", "py_test")
 load("@pypi_dependencies//:requirements.bzl", "requirement")
+load("@local_pypi_dependencies//:requirements.bzl", "requirement")
 
 py_library(
     name = "python-library-standalone-python-common",

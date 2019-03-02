@@ -1,6 +1,6 @@
 package generated;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
 
