@@ -7,7 +7,7 @@ load("@local_pypi_dependencies//:requirements.bzl", "requirement")
 py_library(
     name = "python-library-standalone-python-common",
     deps = [
-        requirement("grakn-client")
+        "@graknlabs_client_python//:client_python"
     ]
 )
 
