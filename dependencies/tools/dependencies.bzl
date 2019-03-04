@@ -17,7 +17,7 @@
 #
 
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file", "http_jar")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file", "http_jar", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 def tools_dependencies():
@@ -74,4 +74,14 @@ def tools_dependencies():
         name="com_github_google_bazel_common",
         remote="https://github.com/graknlabs/bazel-common",
         commit="5cf83ccbb4b184f282380fe2c1f47b13336ffcdd",
+    )
+
+    http_archive(
+        name = "bazel_toolchains",
+        sha256 = "07a81ee03f5feae354c9f98c884e8e886914856fb2b6a63cba4619ef10aaaf0b",
+        strip_prefix = "bazel-toolchains-31b5dc8c4e9c7fd3f5f4d04c6714f2ce87b126c1",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/archive/31b5dc8c4e9c7fd3f5f4d04c6714f2ce87b126c1.tar.gz",
+            "https://github.com/bazelbuild/bazel-toolchains/archive/31b5dc8c4e9c7fd3f5f4d04c6714f2ce87b126c1.tar.gz"
+        ]
     )
