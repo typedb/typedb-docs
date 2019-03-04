@@ -2,7 +2,7 @@
 sidebarTitle: Concept
 pageTitle: Concept
 permalink: /docs/concept-api/concept
-toc: false
+toc: true
 ---
 
 ## Concept Methods & Props

@@ -2,7 +2,7 @@
 sidebarTitle: Type
 pageTitle: Type
 permalink: /docs/concept-api/type
-toc: false
+toc: true
 ---
 
 ## Type Methods
