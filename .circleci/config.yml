@@ -59,7 +59,7 @@ jobs:
       - bazel_add_rbe_credential
       - start_grakn_server
       - bazel:
-          command: bazel test //...
+          command: bazel test //... --test_output=streamed
 
   deploy-docs-to-staging:
     machine: true
