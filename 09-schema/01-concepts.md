@@ -21,7 +21,7 @@ permalink: /docs/schema/concepts
 
 <!-- !!! synced with codeKeywordsToLink -->
 ## Define
-As the name suggests, we use the `define` keyword to develop the [schema](/docs/schema/overview) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relationships, attributes and rules to the schema.
+As the name suggests, we use the `define` keyword to develop the [schema](/docs/schema/overview) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
@@ -124,7 +124,7 @@ Although, in the example above, we have assigned attributes to the `person` enti
 
 
 ### Entity to play a role
-An entity can play a role in a relationship. To define the role played by an entity, we use the `plays` keyword followed by the role's label.
+An entity can play a role in a relation. To define the role played by an entity, we use the `plays` keyword followed by the role's label.
 
 <div class="tabs dark">
 
@@ -153,7 +153,7 @@ GraqlDefine query = Graql.define(
 
 <div class="note">
 [Note]
-We are yet to define the relationship that relates to the roles `employer` and `employee`. We soon learn how to [define a relationship](#define-a-relationship).
+We are yet to define the relation that relates to the roles `employer` and `employee`. We soon learn how to [define a relation](#define-a-relation).
 </div>
 
 ### Subtype an entity
@@ -205,7 +205,7 @@ In this example, `comment` and `media` are both considered to be subtypes of `po
 
 <div class="note">
 [Note]
-We are yet to define the relationships that relate to the roles as well as the attributes in the example above. We soon learn how to [define a relationship](#define-a-relationship) and [define an attribute](#define-an-attribute).
+We are yet to define the relations that relate to the roles as well as the attributes in the example above. We soon learn how to [define a relation](#define-a-relation) and [define an attribute](#define-an-attribute).
 </div>
 
 The ability to subtype entities not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
@@ -236,11 +236,11 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-## Relationship
-A relationship describes how two or more things are in some way connected to each other. For example, `friendship` and `employment`. Each of these relationships must relate to roles that are played by something else in the domain. In other words, relationships are dependent on the existence of at least two other things.
+## Relation
+A relation describes how two or more things are in some way connected to each other. For example, `friendship` and `employment`. Each of these relations must relate to roles that are played by something else in the domain. In other words, relations are dependent on the existence of at least two other things.
 
-### Define a relationship
-To define a new relationship, we use the `sub` keyword followed by `relationship`.
+### Define a relation
+To define a new relation, we use the `sub` keyword followed by `relation`.
 
 ```graql
 define
@@ -248,7 +248,7 @@ define
 employment sub relation;
 ```
 
-To complete the definition of a relationship, we must determine the roles that it relates to. To do so, we use the `relates` keyword followed by the role's label.
+To complete the definition of a relation, we must determine the roles that it relates to. To do so, we use the `relates` keyword followed by the role's label.
 
 <div class="tabs dark">
 
@@ -274,13 +274,13 @@ GraqlDefine query = Graql.define(
 
 The roles `employee` and `employer` are now ready to be played by other concept types in the schema.
 
-### Roleplayers of a relationship
-Entities, attributes, and even other relationships can play a role in a relationship. To do this we make use of the `plays` keyword followed by the role's label.
+### Roleplayers of a relation
+Entities, attributes, and even other relations can play a role in a relation. To do this we make use of the `plays` keyword followed by the role's label.
 
-We have already seen how to [define an entity to play a role](#entity-to-play-a-role) and soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relationship that plays a role in another relationship?
+We have already seen how to [define an entity to play a role](#entity-to-play-a-role) and soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relation that plays a role in another relation?
 
-### Define a relationship to play a role
-Let's go through a simple example of how a relationship can play a role in another relationship.
+### Define a relation to play a role
+Let's go through a simple example of how a relation can play a role in another relation.
 
 <div class="tabs dark">
 
@@ -316,12 +316,12 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-In the example above, the `friendship` relationship plays the role of the `requested-friendship` in the `friend-request` relationship. The other two roleplayers in a `friend-request` are 1) the `person` who plays the `friendship-requester` role and 2) another `person` whole plays the `friendship-respondent` role.
+In the example above, the `friendship` relation plays the role of the `requested-friendship` in the `friend-request` relation. The other two roleplayers in a `friend-request` are 1) the `person` who plays the `friendship-requester` role and 2) another `person` whole plays the `friendship-respondent` role.
 
-Once the `friend-request` is accepted, then those two `person`s play the role of `friend` in the `friendship` relationship.
+Once the `friend-request` is accepted, then those two `person`s play the role of `friend` in the `friendship` relation.
 
-### A relationship with many roleplayers
-A relationship can relate to any number of roles. The example below illustrates a three-way relationship.
+### A relation with many roleplayers
+A relation can relate to any number of roles. The example below illustrates a three-way relation.
 
 <div class="tabs dark">
 
@@ -359,13 +359,13 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-In the example above, the `reaction` relationship relates to three roles:
+In the example above, the `reaction` relation relates to three roles:
 1. `reacted-emotion` role played by an `emotion` attribute.
 2. `reacted-to` role played by a `post` entity.
 3. `reacted-by` role played by a `person` entity.
 
-### Assign an attribute to a relationship
-We can assign any number of attributes to a relationship. To do so, we use the `has` keyword followed by the attribute's label.
+### Assign an attribute to a relation
+We can assign any number of attributes to a relation. To do so, we use the `has` keyword followed by the attribute's label.
 
 <div class="tabs dark">
 
@@ -391,7 +391,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-To assign a unique attribute to a relationship, we use the `key` keyword followed by the attribute's label.
+To assign a unique attribute to a relation, we use the `key` keyword followed by the attribute's label.
 
 <div class="tabs dark">
 
@@ -420,11 +420,11 @@ This guarantees that no instances of `reference-id` may hold the same value amon
 
 <div class="note">
 [Note]
-Although, in the example above, we have assigned the attributes to the `friend-request` and `employment` relationships , they are yet to be defined. We soon learn how to [define an attribute](#define-an-attribute).
+Although, in the example above, we have assigned the attributes to the `friend-request` and `employment` relations , they are yet to be defined. We soon learn how to [define an attribute](#define-an-attribute).
 </div>
 
-### Subtype a relationship
-We can define a relationship to inherit all attributes owned, and roles related to and played by another relationship. Let's take a look at an example of subtyping an `affiliation` relationship.
+### Subtype a relation
+We can define a relation to inherit all attributes owned, and roles related to and played by another relation. Let's take a look at an example of subtyping an `affiliation` relation.
 
 <div class="tabs dark">
 
@@ -461,21 +461,21 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-As you can see in the example above, when defining relationships, what follows the `sub` keyword can be a label previously given to another relationship. By subtyping a parent relationship, the children inherit all attributes owned and roles played by their parent.
+As you can see in the example above, when defining relations, what follows the `sub` keyword can be a label previously given to another relation. By subtyping a parent relation, the children inherit all attributes owned and roles played by their parent.
 
-In this example, `location-of-birth` and `location-of-residence` are both considered to be subtypes of `location-of-everything` and so are defined that way. Modelling these relationships in this way, not only allows us to query for locations of birth and residence separately, but also allows us to query for all the associations that a given person has with a given location.
+In this example, `location-of-birth` and `location-of-residence` are both considered to be subtypes of `location-of-everything` and so are defined that way. Modelling these relations in this way, not only allows us to query for locations of birth and residence separately, but also allows us to query for all the associations that a given person has with a given location.
 
 Note the use of the `as` keyword. This is necessary to determine the correspondence between the role of the child and that of the parent.
 
 <div class="note">
 [Important]
-All roles defined to relate to the parent relationship must also be defined to relate to the child relationship using the `as` keyword.
+All roles defined to relate to the parent relation must also be defined to relate to the child relation using the `as` keyword.
 </div>
 
-The ability to subtype relationships not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
+The ability to subtype relations not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
 
-#### Define an abstract relationship
-There may be scenarios where a parent relationship is only defined for other relationships to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define the `location-of-everything` relationship type to be abstract. By doing so, we are indicating that no data instances of the `location-of-everything` relationship are allowed to be created, leaving us with instances of `location-of-birth` and `location-of-residence` only.
+#### Define an abstract relation
+There may be scenarios where a parent relation is only defined for other relations to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define the `location-of-everything` relation type to be abstract. By doing so, we are indicating that no data instances of the `location-of-everything` relation are allowed to be created, leaving us with instances of `location-of-birth` and `location-of-residence` only.
 
 <div class="tabs dark">
 
@@ -574,7 +574,7 @@ GraqlDefine query = Graql.define(
 Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a relational database. In this example, the attribute `start-date` with the value of, for instance `2019-01-01`, exists only once in the knowledge graph and shared among any number of instances that may own it. This is useful when we need to query the knowledge graph for anything that has the `start-date` attribute with value `2019-01-01`. In this case, we would get all the residencies and travels that started on the first day of 2019. It's important to remember this when performing write operations on instances of an attribute type.
 </div>
 
-**A concept type can have any number of the same attribute that holds different values.** In other words, a concept type has a many-to-many relationship with its attributes.
+**A concept type can have any number of the same attribute that holds different values.** In other words, a concept type has a many-to-many relation with its attributes.
 
 <div class="tabs dark">
 
@@ -629,9 +629,9 @@ GraqlDefine query = Graql.define(
 </div>
 
 ### Owners of an attribute
-Entities, relationships, and even attributes can own one or more attributes of their own. To do this we make use of the `has` keyword followed by the attributes's label.
+Entities, relations, and even attributes can own one or more attributes of their own. To do this we make use of the `has` keyword followed by the attributes's label.
 
-We have already seen how to [assign an attribute to an entity](#assign-an-attribute-to-an-entity) and similarly to [assign an attribute to a relationship](#assign-an-attribute-to-a-relationship). But what about an attribute owning an attribute of its own?
+We have already seen how to [assign an attribute to an entity](#assign-an-attribute-to-an-entity) and similarly to [assign an attribute to a relation](#assign-an-attribute-to-a-relation). But what about an attribute owning an attribute of its own?
 
 ### Assign an attribute to another attribute
 Let's go through a simple example of how an attribute can own an attribute of its own.
@@ -664,7 +664,7 @@ GraqlDefine query = Graql.define(
 In this example, attribute `content` can be owned by, for instance, a `post` entity. What this example aims to showcase is that the `content` attribute, besides its own value, owns an attribute named `language` which holds the name of the language the text is written in.
 
 ### Define an attribute to play a role
-An attribute can play a role in a relationship. To define the role played by an attribute, we use the `plays` keyword followed by the role's label.
+An attribute can play a role in a relation. To define the role played by an attribute, we use the `plays` keyword followed by the role's label.
 
 <div class="tabs dark">
 
@@ -793,8 +793,8 @@ The query above, removes the attribute `nickname` from the entity `person`.
 It's important to note that `underfine [label] sub [type] has [attribute's label];` undefines the `label` itself, rather than its association with the attribute.
 </div>
 
-### Undefine a relationship
-Given the dependent nature of relationships, before undefining the relationship itself, we must first undefine the association of its roles with the relationship as well as the association of the roleplayers with the roles. Given an `employment` relationship, we would undefine it as shown below.
+### Undefine a relation
+Given the dependent nature of relations, before undefining the relation itself, we must first undefine the association of its roles with the relation as well as the association of the roleplayers with the roles. Given an `employment` relation, we would undefine it as shown below.
 
 <div class="tabs dark">
 
@@ -826,6 +826,6 @@ GraqlUndefine query = Graql.undefine(
 When the concept type to be undefined is a supertype to something else, we must first undefine all its subtypes before undefining the supertype itself.
 
 ## Summary
-We learned that a Grakn schema is essentially a collection of Entities, Relationships, and Attributes - what we call the Grakn Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
+We learned that a Grakn schema is essentially a collection of Entities, Relations, and Attributes - what we call the Grakn Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
 
 In the next section, we learn about one last addition to the schema - [Graql Rules](/docs/schema/rules).

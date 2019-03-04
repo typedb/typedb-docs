@@ -75,11 +75,11 @@ The number of attributes to visualise is limited by the _Neighbour Limit_ value 
 ### Visualise Neighbours
 To visualise neighbours of a node, we first need to select the node by clicking on it and then _double click_ on the node. It's important to note that, the neighbours of a concept vary based on its type.
 
-Neighbours of an entity concept are the **relationships** in which the entity plays a role in.
+Neighbours of an entity concept are the **relations** in which the entity plays a role in.
 
 Neighbours of an attribute concept are the **things** that own it.
 
-Neighbours of a relationship concept are the **things** that play a role in it.
+Neighbours of a relation concept are the **things** that play a role in it.
 
 <div class="note">
 [Note]

@@ -7,17 +7,17 @@ methods:
       <<: *method-relations
       method: role.relations();
       returns:
-        - "Stream of [`Relation`](/docs/concept-api/thing?lang=java#relationship-methods) objects"
+        - "Stream of [`Relation`](/docs/concept-api/thing?lang=java#relation-methods) objects"
     javascript:
       <<: *method-relations
       method: await role.relations();
       returns:
-        - "Iterator of [`Relation](/docs/concept-api/thing?lang=javascript#relationship-methods) objects"
+        - "Iterator of [`Relation](/docs/concept-api/thing?lang=javascript#relation-methods) objects"
     python:
       <<: *method-relations
       method: role.relations()
       returns:
-        - "Iterator of [`Relation`](/docs/concept-api/thing?lang=python#relationship-methods) objects"
+        - "Iterator of [`Relation`](/docs/concept-api/thing?lang=python#relation-methods) objects"
   - method:
     common: &method-players
       title: Retrieve roleplayers

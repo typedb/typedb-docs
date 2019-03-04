@@ -63,8 +63,8 @@ GraqlInsert query = Graql.insert(
 [tab:end]
 </div>
 
-## Insert Instances of a Relationship Type
-Given the dependent nature of relationships, inserting an instance of a relationship is quite different from that of an entity. The roles of a relationship to be inserted are expected to be played by instances that already exist in the knowledge graph. Therefore inserting a relationship is always preceded by matching the roleplayers - what is commonly called the `match insert`. What follows the `insert` keyword looks a lot like what we used for [matching instances of relationships](/docs/query/match-clause#match-instances-of-a-relationship).
+## Insert Instances of a Relation Type
+Given the dependent nature of relations, inserting an instance of a relation is quite different from that of an entity. The roles of a relation to be inserted are expected to be played by instances that already exist in the knowledge graph. Therefore inserting a relation is always preceded by matching the roleplayers - what is commonly called the `match insert`. What follows the `insert` keyword looks a lot like what we used for [matching instances of relations](/docs/query/match-clause#match-instances-of-a-relation).
 
 <div class="tabs dark">
 
@@ -93,8 +93,8 @@ GraqlInsert query = Graql.match(
 This `match insert` query:
 1. Matches the `organisation` that plays `employer`, assigned to variable `$c`.
 2. Matches the `person` that plays `employee`, assigned to variable `$p`.
-3. Inserts an `employment` relationship with `$c` and `$p` as its roleplayers, assigned to variable `$emp`.
-4. Inserts the ownership of `reference-id` with value `WGFTSH` by to the `$emp` relationship instance.
+3. Inserts an `employment` relation with `$c` and `$p` as its roleplayers, assigned to variable `$emp`.
+4. Inserts the ownership of `reference-id` with value `WGFTSH` by to the `$emp` relation instance.
 
 ## Summary
 An `insert` query optionally preceded by a `match` clause is used to insert a data instance into the knowledge graph.

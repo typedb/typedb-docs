@@ -14,13 +14,13 @@ A well-constructed schema enables writing intuitive queries. Given such schema, 
 Last and certainly not least, the schema sets the basis for performing automated reasoning over the represented data. It enables the extraction of implicit information from explicitly stored data - a powerful feature of Grakn that facilitates knowledge discovery and implementation of business logic inside the database.
 
 ## Data Model
-There are three Grakn Concepts that make up a schema: [Entity](/docs/schema/concepts#entity), [Relationship](/docs/schema/concepts#relationship), and [Attribute](/docs/schema/concepts#attribute).
+There are three Grakn Concepts that make up a schema: [Entity](/docs/schema/concepts#entity), [Relation](/docs/schema/concepts#relation), and [Attribute](/docs/schema/concepts#attribute).
 
-An **entity** can have attributes and play roles in relationships.
+An **entity** can have attributes and play roles in relations.
 
-An **attribute** expresses a *value* of a specified *datatype*. It can have attributes of its own and play roles in relationships.
+An **attribute** expresses a *value* of a specified *datatype*. It can have attributes of its own and play roles in relations.
 
-A **relationship** has at least one roleplayer, can have attributes and play roles in other relationships.
+A **relation** has at least one roleplayer, can have attributes and play roles in other relations.
 
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset.
 
