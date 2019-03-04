@@ -69,7 +69,7 @@ get $phone-number;
 [tab:Java]
 <!-- test-standalone PhoneCallsFirstQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -239,7 +239,7 @@ get $phone-number;
 [tab:Java]
 <!-- test-standalone PhoneCallsSecondQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -409,7 +409,7 @@ get $phone-number;
 [tab:Java]
 <!-- test-standalone PhoneCallsThirdQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -577,7 +577,7 @@ get $phone-number-a, $phone-number-b;
 [tab:Java]
 <!-- test-standalone PhoneCallsForthQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -771,7 +771,7 @@ get $duration; mean $duration;
 [tab:Java]
 <!-- test-standalone PhoneCallsFifthQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.Numeric;

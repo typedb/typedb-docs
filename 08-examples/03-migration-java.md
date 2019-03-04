@@ -792,7 +792,7 @@ Here is how our `Migrate.java` looks like for each data format.
 [tab:CSV]
 <!-- test-standalone PhoneCallsCSVMigration.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
@@ -990,7 +990,7 @@ public class PhoneCallsCSVMigration {
 [tab:JSON]
 <!-- test-standalone PhoneCallsJSONMigration.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
@@ -1194,7 +1194,7 @@ public class PhoneCallsJSONMigration {
 [tab:XML]
 <!-- test-standalone PhoneCallsXMLMigration.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import graql.lang.query.GraqlInsert;
