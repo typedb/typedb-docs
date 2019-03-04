@@ -32,64 +32,55 @@ Before moving on, make sure you have **Java 1.8** installed and the [**Grakn Ser
 This project uses SDK 1.8 and is named `phone_calls`. I am using IntelliJ as the IDE.
 
 ### Set Grakn as a dependency
-Modify `pom.xml` to include the latest version of Grakn (1.4.2) as a dependency.
+Modify `pom.xml` to include the latest version of Grakn Core, Graql and Grakn Client Java as dependencies.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>ai.grakn.examples</groupId>
-  <artifactId>migrate-csv-to-grakn</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <repositories>
-    <repository>
-      <id>releases</id>
-      <url>https://oss.sonatype.org/content/repositories/releases</url>
-    </repository>
-  </repositories>
-  <properties>
-    <grakn.version>1.4.2</grakn.version>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>ai.grakn</groupId>
-      <artifactId>client-java</artifactId>
-      <version>${grakn.version}</version>
-    </dependency>
-  </dependencies>
+	<modelVersion>4.0.0</modelVersion>
+  	<groupId>ai.grakn.examples</groupId>
+  	<artifactId>migrate-csv-to-grakn</artifactId>
+  	<version>1.0-SNAPSHOT</version>
+  	<repositories>
+    	<repository>
+      		<id>releases</id>
+      		<url>https://oss.sonatype.org/content/repositories/releases</url>
+    	</repository>
+  	</repositories>
+  	<properties>
+    	<maven.compiler.source>1.7</maven.compiler.source>
+    	<maven.compiler.target>1.7</maven.compiler.target>
+  	</properties>
+  	<dependencies>
+    	<dependency>
+            <groupId>grakn.core</groupId>
+            <artifactId>concept</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>graql</groupId>
+            <artifactId>lang</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>grakn.client</groupId>
+            <artifactId>api</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+  	</dependencies>
 </project>
 ```
 
 ### Configure logging
 
-We would like to be able to configure what Grakn logs out. To do this, modify `pom.xml` to exclude `slf4j` shipped with grakn and add `logback` as a dependency, instead.
+We would like to be able to configure what Grakn logs out. To do this, modify `pom.xml` to add `logback` as a dependency.
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <!-- ... -->
-  <dependencies>
-    <dependency>
-      <groupId>ai.grakn</groupId>
-      <artifactId>client-java</artifactId>
-      <version>${grakn.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-simple</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
-    </dependency>
-  </dependencies>
-</project>
+<dependency>
+	<groupId>ch.qos.logback</groupId>
+	<artifactId>logback-classic</artifactId>
+	<version>1.2.3</version>
+</dependency>
 ```
 
 Next, add a new file called `logback.xml` with the content below and place it under `src/main/resources`.
@@ -122,7 +113,7 @@ For this purpose, we create a new subclass called `Input`.
 ```java
 import mjson.Json;
 
-public class Migration {
+public class PhoneCallsMigration {
   abstract static class Input {
     String path;
 
@@ -143,9 +134,9 @@ Later in this tutorial, we see how an instance of the `Input` class can be creat
 
 ```xml
 <dependency>
-  <groupId>org.sharegov</groupId>
-  <artifactId>mjson</artifactId>
-  <version>1.4.0</version>
+	<groupId>org.sharegov</groupId>
+	<artifactId>mjson</artifactId>
+	<version>1.4.1</version>
 </dependency>
 ```
 
@@ -159,7 +150,7 @@ The code below calls the `initialiseInputs()` method which returns a collection 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Migration {
+public class PhoneCallsMigration {
   abstract static class Input {...}
 
   public static void main(String[] args) {
@@ -221,7 +212,7 @@ insert $company isa company, has name "Telecom";
 ```java
 // imports
 
-public class Migration {
+public class PhoneCallsMigration {
   abstract static class Input {...}
   public static void main(String[] args) {...}
 
@@ -293,7 +284,7 @@ insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last
 ```java
 // imports
 
-public class Migration {
+public class PhoneCallsMigration {
   abstract static class Input {...}
   public static void main(String[] args) {...}
 
@@ -341,7 +332,7 @@ match $company isa company, has name "Telecom"; $customer isa person, has phone-
 ```java
 // imports
 
-public class Migration {
+public class PhoneCallsMigration {
   abstract static class Input {...}
   public static void main(String[] args) {...}
 
@@ -392,41 +383,34 @@ Now that we have the datapath and template defined for each of our data files, w
 <!-- test-ignore -->
 ```java
 // other imports
-import ai.grakn.GraknTxType;
-import ai.grakn.Keyspace;
-import ai.grakn.client.Grakn;
-import ai.grakn.util.SimpleURI;
-import java.io.UnsupportedEncodingException;
+import grakn.client.GraknClient;
+import static graql.lang.Graql.*;
+import graql.lang.query.GraqlInsert;
 
 public class Migration {
-  abstract static class Input {...}
+	abstract static class Input {...}
 
-  public static void main(String[] args) {
-    Collection<Input> inputs = initialiseInputs();
-    connectAndMigrate(inputs);
-  }
+  	public static void main(String[] args) {
+    	Collection<Input> inputs = initialiseInputs();
+    	connectAndMigrate(inputs);
+  	}
 
-  static void connectAndMigrate(Collection<Input> inputs) {
-    SimpleURI localGrakn = new SimpleURI("localhost", 48555);
-    Keyspace keyspace = Keyspace.of("phone_calls");
-    Grakn grakn = new Grakn(localGrakn);
-    Grakn.Session session = grakn.session(keyspace);
+  	static void connectAndMigrate(Collection<Input> inputs) {
+    	GraknClient client = new GraknClient("localhost:48555");
+		GraknClient.Session session = client.session("phone_calls");
 
-    inputs.forEach(input -> {
-      System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
-      try {
-        loadDataIntoGrakn(input, session);
-      } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-      }
-    });
+		for (Input input : inputs) {
+			System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
+			loadDataIntoGrakn(input, session);
+		}
 
-    session.close();
-  }
+		session.close();
+		client.close();
+  	}
 
-  static Collection<Input> initialiseInputs() {...}
-  static void loadDataIntoGrakn(Input input, Grakn.Session session)
-  throws UnsupportedEncodingException {...}
+  	static Collection<Input> initialiseInputs() {...}
+  	static void loadDataIntoGrakn(Input input, Grakn.Session session)
+  	throws UnsupportedEncodingException {...}
 }
 ```
 
@@ -434,10 +418,10 @@ public class Migration {
 
 The following happens in this method:
 
-1. A Grakn instance `grakn` is created, connected to the server we have running locally at `localhost:48555`.
+1. A Grakn Client instance `client` is created, connected to the server we have running locally at `localhost:48555`.
 2. A `session` is created, connected to the keyspace `phone_calls`.
 3. For each `input` object in the `inputs` collection, we call the `loadDataIntoGrakn(input, session)`. This takes care of loading the data as specified in the `input` object into our keyspace.
-4. Finally, the `session` is closed.
+4. Finally, the `session` and `client` are both closed.
 
 ## Load the Data Into phone_calls
 
@@ -447,40 +431,37 @@ Now that we have a `session` connected to the `phone_calls` keyspace, we can mov
 ```java
 // imports
 
-public class Migration {
-  abstract static class Input {...}
+public class PhoneCallsMigration {
+	abstract static class Input {...}
 
-  public static void main(String[] args) {
-    Collection<Input> inputs = initialiseInputs();
-    connectAndMigrate(inputs);
-  }
+  	public static void main(String[] args) {
+    	Collection<Input> inputs = initialiseInputs();
+    	connectAndMigrate(inputs);
+  	}
 
-  static Collection<Input> initialiseInputs() {...}
-  static void connectAndMigrate(Collection<Input> inputs) {...}
+  	static Collection<Input> initialiseInputs() {...}
+  	static void connectAndMigrate(Collection<Input> inputs) {...}
 
-  static void loadDataIntoGrakn(Input input, Grakn.Session session)
-  throws UnsupportedEncodingException {
-    ArrayList<Json> items = parseDataToJson(input);
-    items.forEach(item -> {
-      Grakn.Transaction tx = session.transaction(GraknTxType.WRITE);
-      String graqlInsertQuery = input.template(item);
-      System.out.println("Executing Graql Query: " + graqlInsertQuery);
-      tx.graql().parse(graqlInsertQuery).execute();
-      tx.commit();
-      tx.close();
-    });
-    System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
-  }
+  	static void loadDataIntoGrakn(Input input, Grakn.Session session) {
+  	  	ArrayList<Json> items = parseDataToJson(input);
+		for (Json item : items) {
+			GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+			String graqlInsertQuery = input.template(item);
+			System.out.println("Executing Graql Query: " + graqlInsertQuery);
+			transaction.execute((GraqlInsert) parse(graqlInsertQuery));
+			transaction.commit();
+		}
+  		System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
+  	}
 
-  static ArrayList<Json> parseDataToJson(Input input)
-  throws UnsupportedEncodingException {...}
+  	static ArrayList<Json> parseDataToJson(Input input) {...}
 }
 ```
 
 In order to load data from each file into Grakn, we need to:
 
 1. retrieve an `ArrayList` of JSON objects, each of which represents a data item. We do this by calling `parseDataToJson(input)`, and
-2. for each JSON object in `items`: a) create a transaction `tx`, b) construct the `graqlInsertQuery` using the corresponding `template`, c) run the `query`, d)`commit` the transaction and e) `close` the transaction.
+2. for each JSON object in `items`: a) create a transaction `tx`, b) construct the `graqlInsertQuery` using the corresponding `template`, c) run the `query` and d)`commit` the transaction.
 
 <div class="note">
 [Important]
@@ -504,18 +485,16 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 
-public class Migration {
-  abstract static class Input {...}
-  public static void main(String[] args) {...}
-  static void connectAndMigrate(Collection<Input> inputs) {...}
-  static Collection<Input> initialiseInputs() {...}
-  static void loadDataIntoGrakn(Input input, Grakn.Session session)
-  throws UnsupportedEncodingException {...}
+public class PhoneCallsMigration {
+  	abstract static class Input {...}
+  	public static void main(String[] args) {...}
+  	static void connectAndMigrate(Collection<Input> inputs) {...}
+  	static Collection<Input> initialiseInputs() {...}
+  	static void loadDataIntoGrakn(Input input, Grakn.Session session){...}
 
-  public static Reader getReader(String relativePath)
-  throws UnsupportedEncodingException {
-    return new InputStreamReader(Migration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
-  }
+  	public static Reader getReader(String relativePath) throws FileNotFoundException {
+		return new InputStreamReader(new FileInputStream(relativePath));
+	}
 }
 ```
 
@@ -526,9 +505,9 @@ We use the [Univocity CSV Parser](https://www.univocity.com/pages/univocity_pars
 
 ```xml
 &lt;dependency&gt;
-  &lt;groupId&gt;com.univocity&lt;/groupId&gt;
-  &lt;artifactId&gt;univocity-parsers&lt;/artifactId&gt;
-  &lt;version&gt;2.7.6&lt;/version&gt;
+	&lt;groupId&gt;com.univocity&lt;/groupId&gt;
+  	&lt;artifactId&gt;univocity-parsers&lt;/artifactId&gt;
+  	&lt;version&gt;2.7.6&lt;/version&gt;
 &lt;/dependency&gt;
 ```
 
@@ -541,46 +520,40 @@ Having done that, we write the implementation of `parseDataToJson(input)` for pa
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 
-public class Migration {
-  abstract static class Input {...}
-  public static void main(String[] args) {...}
-  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
-  static Collection&lt;Input&gt; initialiseInputs() {...}
-  static void loadDataIntoGrakn(Input input, Grakn.Session session)
-  throws UnsupportedEncodingException {...}
+public class PhoneCallsMigration {
+    abstract static class Input {...}
+    public static void main(String[] args) {...}
+    static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
+    static Collection&lt;Input&gt; initialiseInputs() {...}
+    static void loadDataIntoGrakn(Input input, Grakn.Session session) {...}
 
-  static ArrayList&lt;Json&gt; parseDataToJson(Input input)
+    static ArrayList&lt;Json&gt; parseDataToJson(Input input) throws FileNotFoundException {
+        ArrayList&lt;Json&gt; items = new ArrayList<>();
 
-  throws UnsupportedEncodingException {
-    ArrayList&lt;Json&gt; items = new ArrayList<>();
+        CsvParserSettings settings = new CsvParserSettings();
+        settings.setLineSeparatorDetectionEnabled(true);
+        CsvParser parser = new CsvParser(settings);
+        parser.beginParsing(getReader(input.getDataPath() + ".csv"));
 
-    CsvParserSettings settings = new CsvParserSettings();
-    settings.setLineSeparatorDetectionEnabled(true);
-    CsvParser parser = new CsvParser(settings);
-    parser.beginParsing(getReader(input.getDataPath() + ".csv"));
-
-    String[] columns = parser.parseNext();
-    String[] row;
-    while ((row = parser.parseNext()) != null) {
-      Json item = Json.object();
-      for (int i = 0; i <row.length; i++) {
-        item.set(columns[i], row[i]);
-      }
-      items.add(item);
+        String[] columns = parser.parseNext();
+        String[] row;
+        while ((row = parser.parseNext()) != null) {
+            Json item = Json.object();
+            for (int i = 0; i <row.length; i++) {
+                item.set(columns[i], row[i]);
+            }
+            items.add(item);
+        }
+        return items;
     }
-    return items;
-  }
 
-  public static Reader getReader(String relativePath)
-  throws UnsupportedEncodingException {
-    return new InputStreamReader(Migration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
-  }
+    public static Reader getReader(String relativePath) throws FileNotFoundException {...}
 }
 ```
 
 Besides this implementation, we need to make one more change.
 
-Given the nature of CSV files, the JSON object produced has all the columns of the `.csv` file as its keys, even when the value is not there, it is taken as a `null`.
+Given the nature of CSV data, the JSON object produced has all the columns of the `.csv` file as its keys, even when the value is not there, it is taken as a `null`.
 
 For this reason, we need to change one line in the `template` method for the `input` instance for person.
 
@@ -597,9 +570,9 @@ We’ll use [Gson’s JsonReader](https://google.github.io/gson/apidocs/com/goog
 
 ```xml
 &gt;dependency&gt;
-  &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
-  &lt;artifactId&gt;gson&lt;/artifactId&gt;
-  &lt;version&gt;2.7&lt;/version&gt;
+	&lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+  	&lt;artifactId&gt;gson&lt;/artifactId&gt;
+  	&lt;version&gt;2.7&lt;/version&gt;
 &gt;/dependency&gt;
 ```
 
@@ -610,45 +583,41 @@ Having done that, we write the implementation of `parseDataToJson(input)` for re
 // other imports
 import com.google.gson.stream.JsonReader;
 
-public class Migration {
-  abstract static class Input {...}
-  public static void main(String[] args) {...}
-  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
-  static Collection&t;Input&gt; initialiseInputs() {...}
-  static void loadDataIntoGrakn(Input input, Grakn.Session session)
-  throws UnsupportedEncodingException {...}
+public class PhoneCallsMigration {
+    abstract static class Input {...}
+    public static void main(String[] args) {...}
+    static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
+    static Collection&t;Input&gt; initialiseInputs() {...}
+    static void loadDataIntoGrakn(Input input, Grakn.Session session) {...}
 
-  static ArrayList&lt;Json&gt; parseDataToJson(Input input) throws IOException {
-    ArrayList&lt;Json&gt; items = new ArrayList<>();
+    static ArrayList&lt;Json&gt; parseDataToJson(Input input) throws IOException {
+        ArrayList&lt;Json&gt; items = new ArrayList<>();
 
-    JsonReader jsonReader = new JsonReader(getReader(input.getDataPath() + ".json"));
+        JsonReader jsonReader = new JsonReader(getReader(input.getDataPath() + ".json"));
 
-    jsonReader.beginArray();
-    while (jsonReader.hasNext()) {
-      jsonReader.beginObject();
-      Json item = Json.object();
-      while (jsonReader.hasNext()) {
-        String key = jsonReader.nextName();
-        switch (jsonReader.peek()) {
-          case STRING:
-            item.set(key, jsonReader.nextString());
-            break;
-          case NUMBER:
-            item.set(key, jsonReader.nextInt());
-            break;
-          }
+        jsonReader.beginArray();
+        while (jsonReader.hasNext()) {
+            jsonReader.beginObject();
+            Json item = Json.object();
+            while (jsonReader.hasNext()) {
+                String key = jsonReader.nextName();
+                switch (jsonReader.peek()) {
+                    case STRING:
+                        item.set(key, jsonReader.nextString());
+                        break;
+                    case NUMBER:
+                        item.set(key, jsonReader.nextInt());
+                        break;
+                }
+            }
+            jsonReader.endObject();
+            items.add(item);
         }
-      jsonReader.endObject();
-      items.add(item);
+        jsonReader.endArray();
+        return items;
     }
-    jsonReader.endArray();
-    return items;
-  }
 
-  public static Reader getReader(String relativePath)
-  throws UnsupportedEncodingException {
-    return new InputStreamReader(Migration.class.getClassLoader().getResourceAsStream(relativePath), "UTF-8");
-  }
+    public static Reader getReader(String relativePath) throws FileNotFoundException {...}
 }
 ```
 [tab:end]
@@ -662,38 +631,36 @@ For parsing XML data, we need to know the name of the target tag. This needs to 
 ```java
 // imports
 
-public class XmlMigration {
-  abstract static class Input {
-    String path;
-    String selector;
-    public Input(String path, String selector) {
-      this.path = path;
-      this.selector = selector;
+public class PhoneCallsMigration {
+    abstract static class Input {
+        String path;
+        String selector;
+        public Input(String path, String selector) {
+            this.path = path;
+            this.selector = selector;
+        }
+        String getDataPath(){ return path;}
+        String getSelector(){ return selector;}
+        abstract String template(Json data);
     }
-    String getDataPath(){ return path;}
-    String getSelector(){ return selector;}
-    abstract String template(Json data);
-  }
 
-  public static void main(String[] args)  {...}
-  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
+    public static void main(String[] args)  {...}
+	static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
 
-  static Collection&lt;Input&gt; initialiseInputs() {
-    Collection&lt;Input&gt; inputs = new ArrayList<>();
+    static Collection&lt;Input&gt; initialiseInputs() {
+        Collection&lt;Input&gt; inputs = new ArrayList<>();
 
-    inputs.add(new Input("data/companies", "company") {...});
-    inputs.add(new Input("data/people", "person") {...});
-    inputs.add(new Input("data/contracts", "contract") {...});
-    inputs.add(new Input("data/calls", "call") {...});
+        inputs.add(new Input("data/companies", "company") {...});
+        inputs.add(new Input("data/people", "person") {...});
+        inputs.add(new Input("data/contracts", "contract") {...});
+        inputs.add(new Input("data/calls", "call") {...});
 
-    return inputs;
-  }
+        return inputs;
+    }
 
-  static void loadDataIntoGrakn(Input input, Grakn.Session session)
-  throws UnsupportedEncodingException, XMLStreamException {...}
+    static void loadDataIntoGrakn(Input input, Grakn.Session session) {...}
 
-  public static Reader getReader(String relativePath)
-  throws UnsupportedEncodingException {...}
+    public static Reader getReader(String relativePath) throws FileNotFoundException {...}
 }
 ```
 
@@ -708,76 +675,74 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class XmlMigration {
-  abstract static class Input {
-    String path;
-    String selector;
-    public Input(String path, String selector) {
-      this.path = path;
-      this.selector = selector;
+    abstract static class Input {
+        String path;
+        String selector;
+        public Input(String path, String selector) {
+            this.path = path;
+            this.selector = selector;
+        }
+        String getDataPath(){ return path;}
+        String getSelector(){ return selector;}
+        abstract String template(Json data);
     }
-    String getDataPath(){ return path;}
-    String getSelector(){ return selector;}
-    abstract String template(Json data);
-  }
 
-  public static void main(String[] args)  {...}
-  static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
+    public static void main(String[] args)  {...}
+    static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
 
-  static Collection&lt;Input&gt; initialiseInputs() {
-    Collection&lt;Input&gt; inputs = new ArrayList<>();
+    static Collection&lt;Input&gt; initialiseInputs() {
+        Collection&lt;Input&gt; inputs = new ArrayList<>();
 
-    inputs.add(new Input("data/companies", "company") {...});
-    inputs.add(new Input("data/people", "person") {...});
-    inputs.add(new Input("data/contracts", "contract") {...});
-    inputs.add(new Input("data/calls", "call") {...});
+        inputs.add(new Input("data/companies", "company") {...});
+        inputs.add(new Input("data/people", "person") {...});
+        inputs.add(new Input("data/contracts", "contract") {...});
+        inputs.add(new Input("data/calls", "call") {...});
 
-    return inputs;
-  }
-
-  static void loadDataIntoGrakn(Input input, Grakn.Session session)
-  throws UnsupportedEncodingException, XMLStreamException {...}
-
-  static ArrayList&lt;Json&gt; parseDataToJson(Input input)
-  throws UnsupportedEncodingException, XMLStreamException {
-    ArrayList&lt;Json&gt; items = new ArrayList<>();
-
-    XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(getReader(input.getDataPath() + ".xml"));
-    String key;
-    String value = null;
-    Boolean inSelector = false;
-    Json item = null;
-    while(r.hasNext()) {
-      int event = r.next();
-
-      switch (event) {
-        case XMLStreamConstants.START_ELEMENT:
-          if (r.getLocalName().equals(input.getSelector())) {
-            inSelector = true;
-            item = Json.object();
-          }
-          break;
-
-        case XMLStreamConstants.CHARACTERS:
-          value = r.getText();
-          break;
-
-        case XMLStreamConstants.END_ELEMENT:
-          key = r.getLocalName();
-          if (inSelector && ! key.equals(input.getSelector())) {
-            item.set(key, value);
-          }
-          if (key.equals(input.getSelector())) {
-            inSelector = false;
-            items.add(item);
-          }
-
-          break;
-      }
+        return inputs;
     }
-    return items;
-  }
-  public static Reader getReader(String relativePath)
-  throws UnsupportedEncodingException {...}
+
+    static void loadDataIntoGrakn(Input input, Grakn.Session session) {...}
+
+    static ArrayList&lt;Json&gt; parseDataToJson(Input input) throws FileNotFoundException, XMLStreamException {
+        ArrayList&lt;Json&gt; items = new ArrayList<>();
+
+        XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(getReader(input.getDataPath() + ".xml"));
+        String key;
+        String value = null;
+        Boolean inSelector = false;
+        Json item = null;
+        while(r.hasNext()) {
+            int event = r.next();
+
+            switch (event) {
+                case XMLStreamConstants.START_ELEMENT:
+                    if (r.getLocalName().equals(input.getSelector())) {
+                        inSelector = true;
+                        item = Json.object();
+                    }
+                    break;
+
+                case XMLStreamConstants.CHARACTERS:
+                    value = r.getText();
+                    break;
+
+                case XMLStreamConstants.END_ELEMENT:
+                    key = r.getLocalName();
+                    if (inSelector && ! key.equals(input.getSelector())) {
+                        item.set(key, value);
+                    }
+                    if (key.equals(input.getSelector())) {
+                        inSelector = false;
+                        items.add(item);
+                    }
+
+                    break;
+            }
+        }
+        return items;
+	}
+
+    public static Reader getReader(String relativePath) throws FileNotFoundException {...}
 }
 ```
 [tab:end]
@@ -792,7 +757,7 @@ Here is how our `Migrate.java` looks like for each data format.
 [tab:CSV]
 <!-- test-standalone PhoneCallsCSVMigration.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
@@ -990,7 +955,7 @@ public class PhoneCallsCSVMigration {
 [tab:JSON]
 <!-- test-standalone PhoneCallsJSONMigration.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
@@ -1194,7 +1159,7 @@ public class PhoneCallsJSONMigration {
 [tab:XML]
 <!-- test-standalone PhoneCallsXMLMigration.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import graql.lang.query.GraqlInsert;
