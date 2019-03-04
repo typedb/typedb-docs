@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess as sp
 
 git_username = "Grabl"
@@ -6,7 +7,7 @@ git_email = "grabl@grakn.ai"
 grabl_credential = "grabl:"+os.environ['GRABL_CREDENTIAL']
 
 web_dev_url = "github.com/graknlabs/web-dev.git"
-web_dev_master_branch = "master"
+web_dev_master_branch = sys.argv[1]
 web_dev_clone_location = os.path.join("web-dev")
 docs_submodule_location = os.path.join(web_dev_clone_location, "docs")
 
