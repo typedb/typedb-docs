@@ -27,7 +27,7 @@ event-date sub attribute,
   datatype date;
 approved-date sub event-date;
 
-## an abstract relationship, only to be subtyped by other relationships
+## an abstract relation, only to be subtyped by other relations
 request sub relation,
   abstract,
   has approved-date,

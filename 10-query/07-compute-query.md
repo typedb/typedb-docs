@@ -271,7 +271,7 @@ GraqlCompute.Centrality query = Graql.compute().centrality().in("organisation", 
 This query returns a map of instances ordered ascendingly by degree. The instances included in the answers are those of types `organisation`, `person` and `employment`.
 
 #### Of a given type
-Consider the example above. What we are really interested in is the company with the most number of employees, but we are also getting the employee and employment instances in the answers. What if we only want to get the centrality of a given type based on its relationship with other types without getting irrelevant answers. To do this, we use the `of` keyword.
+Consider the example above. What we are really interested in is the company with the most number of employees, but we are also getting the employee and employment instances in the answers. What if we only want to get the centrality of a given type based on its relation with other types without getting irrelevant answers. To do this, we use the `of` keyword.
 
 <div class="tabs dark">
 

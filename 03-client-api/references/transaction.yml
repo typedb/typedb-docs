@@ -245,7 +245,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`RelationType`](/docs/concept-api/type#relationship-methods) object"
+        - "[`RelationType`](/docs/concept-api/type#relation-methods) object"
     java:
       <<: *method-putRelationType
       method: transaction.putRelationType(Label.of(String label));

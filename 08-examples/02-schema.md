@@ -40,11 +40,11 @@ But first, let’s visualise the reality of our dataset.
 
 By looking at this visualised schema, we can identify the [Concepts](/docs/schema/concepts).
 
-**call** is of type **relationship** that has two role players:
+**call** is of type **relation** that has two role players:
 - **person** who plays the role of a **caller**, and
 - (another) **person** who plays the role of a **callee**.
 
-**contract** is also of type **relationship** that has two role players:
+**contract** is also of type **relation** that has two role players:
 - **company** who plays the role of a **provider**, and
 - **person** who plays the role of a **customer**.
 
@@ -57,9 +57,9 @@ That’s all well and good, but how do we get our knowledge graph to reflect thi
 ## Time to Talk Graql
 Open a new file in your favourite text editor, preferably one with syntax highlighting for Graql (`.gql`) files. Here are the ones for [atom](https://atom.io/packages/language-graql), [visual studio code](https://marketplace.visualstudio.com/items?itemName=idealley.gql) and [sublime 3](https://github.com/graknlabs/graql_syntax_sublime).
 
-You can define the elements of a Grakn schema in any order you wish. I personally prefer to start from the relationships, as I see them to be the source of interactions — where knowledge is derived from.
+You can define the elements of a Grakn schema in any order you wish. I personally prefer to start from the relations, as I see them to be the source of interactions — where knowledge is derived from.
 
-Any **relationship** relates to at least one **role** that is played by at least 2 **concepts**.
+Any **relation** relates to at least one **role** that is played by at least 2 **concepts**.
 
 In our case, a **call** relates to **caller** played by a **person** and to **callee** played by another **person**.
 
@@ -204,7 +204,7 @@ The result should be as follows:
 ```graql
 {$x label thing;}
 {$x label entity;}
-{$x label relationship;}
+{$x label relation;}
 {$x label attribute;}
 {$x label company sub entity;}
 {$x label person sub entity;}

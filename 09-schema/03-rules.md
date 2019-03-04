@@ -5,7 +5,7 @@ permalink: /docs/schema/rules
 ---
 
 ## What is a Rule?
-Grakn is capable of reasoning over data via pre-defined rules. Graql rules look for a given pattern in the dataset and when found, create the given queryable relationship. Automated reasoning provided by rules is performed at query (run) time. Rules not only allow shortening and simplifying commonly-used queries but also enable knowledge discovery and implementation of business logic at the database level.
+Grakn is capable of reasoning over data via pre-defined rules. Graql rules look for a given pattern in the dataset and when found, create the given queryable relation. Automated reasoning provided by rules is performed at query (run) time. Rules not only allow shortening and simplifying commonly-used queries but also enable knowledge discovery and implementation of business logic at the database level.
 
 When you query the knowledge graph for certain information, Grakn returns a complete set of answers. These answers contain explicit matches as well as implicit ones that have been inferred by the rules included in the schema.
 
@@ -90,7 +90,7 @@ then
 
 If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](/docs/query/match-clause).
 
-In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relationship in our queries.
+In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
 
 <!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
 
@@ -124,7 +124,7 @@ The implication form of Horn clauses aligns more naturally with Graql semantics 
 The following are the types of one single statement that can be set as the conclusion of a rule in the `then` body:
 - setting the type. Example: `$x isa person;`,
 - assigning an explicit value to an attribute. Example: `$x has flag "incomplete";`, or
-- inserting a relationship. Example: `($x, $y) isa siblings;`.
+- inserting a relation. Example: `($x, $y) isa siblings;`.
 
 ## Deleting Rules
 Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](/docs/schema/concepts#undefine).

@@ -92,8 +92,8 @@ GraqlDelete delete_query = Graql.match(
 
 This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
-### Update the roleplayers of a relationship
-To change the roleplayers of a given relationship, we first need to [delete the instances of the relationship](/docs/query/delete-query#delete-instances-of-a-relationship-type) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#insert-instances-of-a-relationship-type) with the new roleplayers.
+### Update the roleplayers of a relation
+To change the roleplayers of a given relation, we first need to [delete the instances of the relation](/docs/query/delete-query#delete-instances-of-a-relation-type) with the current roleplayers and [insert the new instance of the relation](/docs/query/insert-query#insert-instances-of-a-relation-type) with the new roleplayers.
 
 <div class="tabs dark">
 
@@ -132,7 +132,7 @@ GraqlDelete delete_query = Graql.match(
 [tab:end]
 </div>
 
-This query updates the `employee` roleplayer of the `employment` relationship where the `employer` is an `organisation` named `"Wieth Souhe"`.
+This query updates the `employee` roleplayer of the `employment` relation where the `employer` is an `organisation` named `"Wieth Souhe"`.
 
 ## Summary
 Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](/docs/schema/concepts). Simply put, to update is essentially to first `delete` and then `insert`.

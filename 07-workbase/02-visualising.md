@@ -73,7 +73,7 @@ For the purpose of demonstration, we be interacting with the `phone_calls` keysp
 <!-- -->
 [slide:start]
 [body:start]![Launch](/docs/images/workbase/types_select.png)[body:end]
-[footer:start]We can then click on any of the Concept Types which may be an entity, an attribute or a relationship.[footer:end]
+[footer:start]We can then click on any of the Concept Types which may be an entity, an attribute or a relation.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]

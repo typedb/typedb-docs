@@ -33,7 +33,7 @@ methods:
           <<: *accepts-relations-param-roles
           type: "Varargs of [`Role`](/docs/concept-api/type?lang=java#role-methods) objects"
       returns:
-        - "Stream of [`Relation`](/docs/concept-api/thing?lang=java#relationship-methods) objects"
+        - "Stream of [`Relation`](/docs/concept-api/thing?lang=java#relation-methods) objects"
     javascript:
       <<: *method-relations
       method: await thing.relations(roles);
@@ -42,7 +42,7 @@ methods:
           <<: *accepts-relations-param-roles
           type: "Array of [`Role`](/docs/concept-api/type?lang=javascript#role-methods)s"
       returns:
-        - "Iterator of [`Relation`](/docs/concept-api/thing?lang=javascript#relationship-methods) objects"
+        - "Iterator of [`Relation`](/docs/concept-api/thing?lang=javascript#relation-methods) objects"
     python:
       <<: *method-relations
       method: thing.relations(roles)
@@ -51,7 +51,7 @@ methods:
           <<: *accepts-relations-param-roles
           type: "List of [`Role`](/docs/concept-api/type?lang=python#role-methods)s"
       returns:
-        - "Iterator of [`Relation`](/docs/concept-api/thing?lang=python#relationship-methods) objects"
+        - "Iterator of [`Relation`](/docs/concept-api/thing?lang=python#relation-methods) objects"
 
   - method:
     common: &method-roles
