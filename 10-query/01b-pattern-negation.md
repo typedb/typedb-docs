@@ -25,14 +25,14 @@ curly braces and preceding them with a `not` keyword:
 
 ```
 not {
-	...
+    ...
 };
 ```
 
 Therefore to retrieve people the that are unemployed we want to express:
 
 ```
-Person($x), ¬ Employment($x, employer: $y)
+Person($x), ¬Employment($x, employer: $y)
 ```
 
 i.e. we look for the pattern:
@@ -40,7 +40,7 @@ i.e. we look for the pattern:
 ```
 $x isa person
 not {
-	(employee: $x, employer: $y) isa employment;
+    (employee: $x, employer: $y) isa employment;
 };
 ```
 
@@ -52,7 +52,7 @@ to non-negated statements. This imposes a requirment of at least one variable in
 Here our only bound variable is `$x`. Consequently we can think of the query as:
 
 ```
-Person($x), ¬ ???($x)
+Person($x), ¬???($x)
 ???($x) :- Employment($x, employer:$y)
 ```
 
@@ -66,13 +66,13 @@ not { ($x) isa ???;};
 with the question relation defined in terms of a rule:
 
 ```
-negation-block sub rule
-    when {
-    	(employee: $x, employer: $y) isa employment;
-    }
-    then {
-        ($x) isa ???;
-    };
+negation-block sub rule,
+when {
+    (employee: $x, employer: $y) isa employment;
+},
+then {
+    ($x) isa ???;
+};
 ```
 
 In this way, we have no problems defining the projection or join operations as these are handled by the native rule semantics. Consquently we can proceed with the set difference
@@ -83,7 +83,7 @@ The rule interpretation is for understanding purposes only. As a user the only t
 ```
 $x isa person
 not {
-	(employee: $x, employer: $y) isa employment;
+    (employee: $x, employer: $y) isa employment;
 };
 ```
 
@@ -106,22 +106,22 @@ more convenient to define it in terms of a type:
 
 ```
 unemployed sub entity;
-unemployment sub rule
-    when {
-    	$x isa person;
-        not{ 
-        	(employee: $x, employer: $y) isa employment;
-        };
-    }
-    then {
-        $x isa unemployed;
+unemployment sub rule,
+when {
+    $x isa person;
+    not{
+        (employee: $x, employer: $y) isa employment;
     };
+},
+then {
+    $x isa unemployed;
+};
 ```
 
 Consequently, our unemployment query pattern simply becomes:
 
 ```
-$x isa person
+$x isa person;
 $x isa unemployed;
 ```
 
@@ -156,7 +156,7 @@ One might be tempted to put the two negation blocks into one. Let's look at the 
 
 
 ```
-$x isa person
+$x isa person;
 not { 
 	($x, father: $y) isa parentship;
 	($x, mother: $z) isa parentship;
@@ -169,7 +169,7 @@ We can go further than that. Negation blocks in queries can be nested. Consequen
 like this:
 
 ```
-$x isa person
+$x isa person;
 not { 
 	($x, father: $y) isa parentship;
 	not { ($y) isa employment; };
@@ -213,7 +213,7 @@ Let's start with our knowledge to be the following:
 This can be summarised as:
 
 ```
-flies(X) :-  bird(X), ¬ abnormal(X)
+flies(X) :-  bird(X), ¬abnormal(X)
 abnormal(X) :- penguin(X)
 bird(X) :- penguin(X)
 ```
@@ -232,7 +232,7 @@ abnormal isa entity;
 Accompanying it with relevant rules:
 
 ```
-flying-rule sub rule
+flying-rule sub rule,
 when{
 	$x isa bird;
 	not {$x isa abnormal;};
@@ -241,7 +241,7 @@ then{
 	$x isa flies;
 }
 
-abnormal-rule sub rule;
+abnormal-rule sub rule,
 when{
 	$x isa penguin;
 },
