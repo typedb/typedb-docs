@@ -10,11 +10,8 @@ Oftentimes we encounter situations where we would like to form queries with the 
 An examples of such queries include:
 
 a) List all people that were unemployed in the last 6 months?
-
 b) show me text-only (no videos are images) timelines
-
 c) All people that are singles that have posted a photo in a forum
-
 d) All employees of company A that are graduates of a given school
 
 The intuitive meaning of a negated pattern is that of a complement. However relation complement is not a clearly defined term as it requires 
@@ -28,22 +25,22 @@ curly braces and preceding them with a `not` keyword:
 
 ```
 not {
-    ...
+	...
 };
 ```
 
 Therefore to retrieve people the that are unemployed we want to express:
 
 ```
-Person($x), ¬Employment($x, employer: $y)
+Person($x), ¬ Employment($x, employer: $y)
 ```
 
-i.e. we look for the following Graql pattern:
+i.e. we look for the pattern:
 
 ```
 $x isa person
 not {
-    (employee: $x, employer: $y) isa employment;
+	(employee: $x, employer: $y) isa employment;
 };
 ```
 
@@ -55,7 +52,7 @@ to non-negated statements. This imposes a requirment of at least one variable in
 Here our only bound variable is `$x`. Consequently we can think of the query as:
 
 ```
-Person($x), ¬???($x)
+Person($x), ¬ ???($x)
 ???($x) :- Employment($x, employer:$y)
 ```
 
@@ -69,13 +66,13 @@ not { ($x) isa ???;};
 with the question relation defined in terms of a rule:
 
 ```
-negation-block sub rule,
-when {
-    (employee: $x, employer: $y) isa employment;
-},
-then {
-    ($x) isa ???;
-};
+negation-block sub rule
+    when {
+    	(employee: $x, employer: $y) isa employment;
+    }
+    then {
+        ($x) isa ???;
+    };
 ```
 
 In this way, we have no problems defining the projection or join operations as these are handled by the native rule semantics. Consquently we can proceed with the set difference
@@ -86,7 +83,7 @@ The rule interpretation is for understanding purposes only. As a user the only t
 ```
 $x isa person
 not {
-    (employee: $x, employer: $y) isa employment;
+	(employee: $x, employer: $y) isa employment;
 };
 ```
 
@@ -96,7 +93,7 @@ The variables in the negation block are local to the negation block. Consequentl
 match
 $x isa person
 not {
-    (employee: $x, employer: $y) isa employment;
+	(employee: $x, employer: $y) isa employment;
 };
 get;
 ```
@@ -109,22 +106,22 @@ more convenient to define it in terms of a type:
 
 ```
 unemployed sub entity;
-unemployment sub rule,
-when {
-    $x isa person;
-    not{
-        (employee: $x, employer: $y) isa employment;
+unemployment sub rule
+    when {
+    	$x isa person;
+        not{ 
+        	(employee: $x, employer: $y) isa employment;
+        };
+    }
+    then {
+        $x isa unemployed;
     };
-},
-then {
-    $x isa unemployed;
-};
 ```
 
 Consequently, our unemployment query pattern simply becomes:
 
 ```
-$x isa person;
+$x isa person
 $x isa unemployed;
 ```
 
@@ -143,7 +140,7 @@ We shall now see how we can form more complex patterns with negation. Let's say 
 Person($x), ¬Parentship($x, father: $y), ¬Parentship($x, mother: $y)
 ```
 
-To express that in Graql we require two negation blocks:
+To formulate in Graql terms we require two negation blocks:
 
 ```
 $x isa person
@@ -151,7 +148,7 @@ not { ($x, father: $y) isa parentship;};
 not { ($x, mother: $y) isa parentship;};
 ```
 
-This tells us to compute a set of answers `A = P \ F \ M`, where the set `P` is the set of all people, the set `F` is the set of all people having a father and the set `M` is the
+This tells us to compute a set of answers `A = P \ F \ M`, where the set P is the set of all people, the set F is the set of all people having a father and the set M is the
 set of all people having a mother. Please not that the scope of variables in a negation block is local to the negation block. As a result the above pattern does not 
 look for people that do not have a mother and a father that is the same person.
 
@@ -159,10 +156,10 @@ One might be tempted to put the two negation blocks into one. Let's look at the 
 
 
 ```
-$x isa person;
+$x isa person
 not { 
-    ($x, father: $y) isa parentship;
-    ($x, mother: $z) isa parentship;
+	($x, father: $y) isa parentship;
+	($x, mother: $z) isa parentship;
 };
 ```
 noting that this time we need to pick a fresh variable for mother as we are in the same negation block. The meaning of this pattern is the following. From all the people,
@@ -172,10 +169,10 @@ We can go further than that. Negation blocks in queries can be nested. Consequen
 like this:
 
 ```
-$x isa person;
+$x isa person
 not { 
-    ($x, father: $y) isa parentship;
-    not { ($y) isa employment; };
+	($x, father: $y) isa parentship;
+	not { ($y) isa employment; };
 };
 ```
 
@@ -216,7 +213,7 @@ Let's start with our knowledge to be the following:
 This can be summarised as:
 
 ```
-flies(X) :-  bird(X), ¬abnormal(X)
+flies(X) :- bird(X), ¬ abnormal(X)
 abnormal(X) :- penguin(X)
 bird(X) :- penguin(X)
 ```
@@ -235,21 +232,21 @@ abnormal isa entity;
 Accompanying it with relevant rules:
 
 ```
-flying-rule sub rule,
+flying-rule sub rule
 when{
-    $x isa bird;
-    not {$x isa abnormal;};
+	$x isa bird;
+	not {$x isa abnormal;};
 },
 then{
-    $x isa flies;
+	$x isa flies;
 }
 
-abnormal-rule sub rule,
+abnormal-rule sub rule;
 when{
-    $x isa penguin;
+	$x isa penguin;
 },
 then{
-    $x isa abnormal;
+	$x isa abnormal;
 }
 ```
 
