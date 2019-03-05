@@ -95,8 +95,7 @@ jobs:
       - bazel_install
       - bazel_add_rbe_credential
       - start_grakn_server
-      - run:
-          command: bazel test //test/standalone/nodejs:standalone-nodejs-phone-calls --test_output=streamed
+      - run: bazel test //test/standalone/nodejs:standalone-nodejs-phone-calls --test_output=streamed
 
   test-standalone-python-phone-calls:
     machine: true
@@ -105,8 +104,7 @@ jobs:
       - bazel_install
       - bazel_add_rbe_credential
       - start_grakn_server
-      - run:
-          command: bazel test //test/standalone/python:standalone-python-phone-calls --test_output=streamed
+      - run: bazel test //test/standalone/python:standalone-python-phone-calls --test_output=streamed
 
 
   test-standalone-nodejs-python-social-network:
@@ -116,10 +114,8 @@ jobs:
       - bazel_install
       - bazel_add_rbe_credential
       - start_grakn_server
-      - run:
-          command: bazel test //test/standalone/nodejs:standalone-nodejs-social-network --test_output=streamed
-      - run:
-          command: bazel test //test/standalone/python:standalone-python-social-network --test_output=streamed
+      - run: bazel test //test/standalone/nodejs:standalone-nodejs-social-network --test_output=streamed
+      - run: bazel test //test/standalone/python:standalone-python-social-network --test_output=streamed
 
 
   deploy-docs-to-staging:
