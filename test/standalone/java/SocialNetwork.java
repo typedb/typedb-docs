@@ -3,21 +3,27 @@ package generated;
 import grakn.client.GraknClient;
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
+import grakn.core.rule.GraknTestServer;
+
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 public class TestStandaloneSocialNetwork {
 
+    @ClassRule
+    public static final GraknTestServer server = new GraknTestServer(
+            Paths.get("test/grakn-test-server/conf/grakn.properties"),
+            Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
+    );
+
     @BeforeClass
     public static void loadSocialNetwork() {
-        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient client = new GraknClient(server.grpcUri().toString());
         GraknClient.Session session = client.session("social_network");
         GraknClient.Transaction transaction = session.transaction().write();
 
@@ -34,22 +40,32 @@ public class TestStandaloneSocialNetwork {
     }
 
     @Test
-    public void testSocialNetworkQuickstartQuery() { SocialNetworkQuickstartQuery.main(new String[]{}); }
+    public void testSocialNetworkQuickstartQuery() {
+        String[] args = { server.grpcUri().toString() };
+        SocialNetworkQuickstartQuery.main(args);
+    }
 
     @Test
-    public void testGraknQuickstartA() { GraknQuickstartA.main(new String[]{}); }
+    public void testGraknQuickstartA() {
+        String[] args = { server.grpcUri().toString() };
+        GraknQuickstartA.main(args);
+    }
 
     @Test
-    public void testGraknQuickstartB() { GraknQuickstartB.main(new String[]{}); }
+    public void testGraknQuickstartB() {
+        String[] args = { server.grpcUri().toString() };
+        GraknQuickstartB.main(args);
+    }
 
     @Test
     public void testGraknQuickstartC() {
-        GraknQuickstartC.main(new String[]{});
+        String[] args = { server.grpcUri().toString() };
+        GraknQuickstartC.main(args);
     }
 
     @AfterClass
     public static void cleanSocialNetwork() {
-        GraknClient client = new GraknClient("localhost:48555");
+        GraknClient client = new GraknClient(server.grpcUri().toString());
         client.keyspaces().delete("social_network");
         System.out.println("Deleted the social_network keyspace");
     }
