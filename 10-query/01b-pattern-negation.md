@@ -192,12 +192,82 @@ This ensures that set difference operations are performed on sets that are not d
 
 ## Negation in rules
 As we have already mentioned, we can use negation blocks within rules.
-
+ 
 However, when inserting negation blocks in rules, currently the following restrictions apply:
 - all restrictions applying to queries with negation blocks
 - each rule can only have a single negation block
 - nested negation blocks are not supported
-- recursion with negation blocks is not supported
+- recursion with negation blocks is not supported 
+
+We will illustrate the use of negation with rules with a graphical example.
+
+Let us define a network of nodes with possible links between nodes:
+
+```
+traversable sub entity,
+    has index;
+    plays from,
+    plays to;
+
+node sub traversable;
+
+link sub relation, relates from, relates to;
+```
+
+Then we can define two nodes as being reachable if there exists a link between them:
+
+```
+reachable sub relation, relates from, relates to;
+reachabilityA sube rule,
+when {
+    (from: $x, to: $y) isa link;
+},
+then {
+    (from: $x, to: $y) isa reachable;
+};
+
+reachabilityB sub rule,
+when {
+    (from: $x, to: $z) isa link;
+    (from: $z, to: $y) isa reachable;
+},
+then {
+    (from: $x, to: $y) isa reachable;
+};
+```
+
+Consequently, with the use of negation we can define links that are indirect:
+
+```
+indirect-link sub relation, relates from, relates to;
+indirect-link-rule sub rule,
+when {
+    (from: $x, to: $y) isa reachable;
+    not {(from: $x, to: $y) isa link;};
+},
+then {
+    (from: $x, to: $y) isa indirect-link;
+};
+```
+
+or, mark the unreachable nodes by specifying the following rule:
+
+```
+unreachable sub relation, relates from, relates to;
+unreachability-rule
+when {
+    $x isa node;
+    $y isa node;
+    not {(from: $x, to: $y) isa reachable;};
+},
+then {
+    (from: $x, to: $y) isa unreachable;
+};
+```
+
+Please note the explicit addition of the `node` types in the body of the rule. This is to to ensure the boundedness condition
+is satisfied as well as to maintain the expected meaning of `unreachable` relation.
+
 
 
 ## Monotonicity of reasoning with negation
