@@ -53,6 +53,16 @@ commands:
 
 jobs:
 
+  build:
+    machine: true
+    working_directory: ~/grakn
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - bazel:
+          command: bazel build //...
+
   test-snippet-graql:
     machine: true
     steps:
@@ -136,6 +146,7 @@ jobs:
 workflows:
   docs:
     jobs:
+      - build
       - test-snippet-graql
       - test-snippet-java
       - test-standalone-java-phone-calls
@@ -147,6 +158,7 @@ workflows:
             branches:
               only: development
           requires:
+            - build
             - test-snippet-graql
             - test-snippet-java
             - test-standalone-java-phone-calls
@@ -158,6 +170,7 @@ workflows:
             branches:
               only: master
           requires:
+            - build
             - test-snippet-graql
             - test-snippet-java
             - test-standalone-java-phone-calls
