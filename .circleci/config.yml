@@ -50,16 +50,66 @@ commands:
             unzip bazel-genfiles/external/graknlabs_grakn_core/grakn-core-all.zip -d bazel-genfiles/dist/
             nohup bazel-genfiles/dist/grakn-core-all/grakn server start
 
+
 jobs:
-  tests:
+
+  test-snippet-graql:
+    machine: true
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - bazel:
+          command: bazel test //test/snippet:snippet-graql --test_output=streamed
+
+  test-snippet-java:
+    machine: true
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - bazel:
+          command: bazel test //test/snippet:snippet-java --test_output=streamed
+
+  test-standalone-java-phone-calls:
     machine: true
     steps:
       - checkout
       - bazel_install
       - bazel_add_rbe_credential
       - start_grakn_server
-      - bazel:
-          command: bazel test //... --test_output=streamed
+      - run: bazel test //test/standalone/java:standalone-java-phone-calls --test_output=streamed
+
+  test-standalone-nodejs-phone-calls:
+    machine: true
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - start_grakn_server
+      - run: bazel test //test/standalone/nodejs:standalone-nodejs-phone-calls --test_output=streamed
+
+  test-standalone-python-phone-calls:
+    machine: true
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - start_grakn_server
+      - run: bazel test //test/standalone/python:standalone-python-phone-calls --test_output=streamed
+
+
+  test-standalone-social-network:
+    machine: true
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - start_grakn_server
+      - run: bazel test //test/standalone/java:standalone-java-social-network --test_output=streamed
+      - run: bazel test //test/standalone/nodejs:standalone-nodejs-social-network --test_output=streamed
+      - run: bazel test //test/standalone/python:standalone-python-social-network --test_output=streamed
+
 
   deploy-docs-to-staging:
     machine: true
@@ -84,18 +134,33 @@ jobs:
             python ../.circleci/deploy-docs.py master
     
 workflows:
-  ci:
+  docs:
     jobs:
-      - tests
+      - test-snippet-graql
+      - test-snippet-java
+      - test-standalone-java-phone-calls
+      - test-standalone-nodejs-phone-calls
+      - test-standalone-python-phone-calls
+      - test-standalone-social-network
       - deploy-docs-to-staging:
           filters:
             branches:
               only: development
           requires:
-            - tests
+            - test-snippet-graql
+            - test-snippet-java
+            - test-standalone-java-phone-calls
+            - test-standalone-nodejs-phone-calls
+            - test-standalone-python-phone-calls
+            - test-standalone-social-network
       - deploy-docs-to-production:
           filters:
             branches:
               only: master
           requires:
-            - tests
+            - test-snippet-graql
+            - test-snippet-java
+            - test-standalone-java-phone-calls
+            - test-standalone-nodejs-phone-calls
+            - test-standalone-python-phone-calls
+            - test-standalone-social-network
