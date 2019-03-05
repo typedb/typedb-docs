@@ -103,9 +103,9 @@ get;
 
 will yield a list of concepts assigned to the `$x` variable.
 
-Shall we decide that our unemployment pattern is a common one, we might decide to express it via rule.
-Defining the unemployment it in terms of a rule and the freshly introduced negation block we can then write. In case when the set of bound variables has only one element, it is
-more convenient to define it in terms of a type:
+Shall we decide that our unemployment pattern is a common one, we might decide to express it via rule. In case when the 
+set of bound variables has only one element, it is more convenient to define it in terms of a type. 
+Defining the unemployment in terms of a rule and the freshly introduced negation block we can then write: 
 
 ```
 unemployed sub entity;
