@@ -125,6 +125,14 @@ $x isa person
 $x isa unemployed;
 ```
 
+Negation blocks are not tied to relations. We are free to define our patterns inside the negation blocks as long as they are conjunctive. For example we can use negation
+blocks to perform exclusions, e.g. the query pattern to list all non-English speaking employees can read:
+
+```
+(employee: $x) isa employment;
+(speaker: $x, spoken: $y) isa speaking-of-language;
+not { $y == "English";};
+```
 
 We shall now see how we can form more complex patterns with negation. Let's say we want to find people that are orphans:
 
