@@ -111,7 +111,7 @@ jobs:
       - run: bazel test //test/standalone/python:standalone-python-social-network --test_output=streamed
 
 
-  deploy-docs-to-staging:
+  release-staging:
     machine: true
     steps:
       - checkout
@@ -122,7 +122,7 @@ jobs:
             cd docs
             python ../.circleci/deploy-docs.py development
 
-  deploy-docs-to-production:
+  release-production:
     machine: true
     steps:
       - checkout
@@ -142,7 +142,7 @@ workflows:
       - test-standalone-nodejs-phone-calls
       - test-standalone-python-phone-calls
       - test-standalone-social-network
-      - deploy-docs-to-staging:
+      - release-staging:
           filters:
             branches:
               only: development
@@ -153,7 +153,7 @@ workflows:
             - test-standalone-nodejs-phone-calls
             - test-standalone-python-phone-calls
             - test-standalone-social-network
-      - deploy-docs-to-production:
+      - release-production:
           filters:
             branches:
               only: master
