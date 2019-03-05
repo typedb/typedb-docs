@@ -52,23 +52,6 @@ commands:
 
 
 jobs:
-  test-standalone-java-phone-calls:
-    machine: true
-    steps:
-      - checkout
-      - bazel_install
-      - bazel_add_rbe_credential
-      - bazel:
-          command: bazel test //test/standalone/java:standalone-java-phone-calls --test_output=streamed
-
-  test-standalone-java-social-network:
-    machine: true
-    steps:
-      - checkout
-      - bazel_install
-      - bazel_add_rbe_credential
-      - bazel:
-          command: bazel test //test/standalone/java:standalone-java-social-network --test_output=streamed
 
   test-snippet-graql:
     machine: true
@@ -87,6 +70,14 @@ jobs:
       - bazel_add_rbe_credential
       - bazel:
           command: bazel test //test/snippet:snippet-java --test_output=streamed
+
+  test-standalone-java-phone-calls:
+    machine: true
+    steps:
+      - checkout
+      - bazel_install
+      - bazel_add_rbe_credential
+      - run: bazel test //test/standalone/java:standalone-java-phone-calls --test_output=streamed
 
   test-standalone-nodejs-phone-calls:
     machine: true
@@ -107,13 +98,14 @@ jobs:
       - run: bazel test //test/standalone/python:standalone-python-phone-calls --test_output=streamed
 
 
-  test-standalone-nodejs-python-social-network:
+  test-standalone-social-network:
     machine: true
     steps:
       - checkout
       - bazel_install
       - bazel_add_rbe_credential
       - start_grakn_server
+      - run: bazel test //test/standalone/java:standalone-java-social-network --test_output=streamed
       - run: bazel test //test/standalone/nodejs:standalone-nodejs-social-network --test_output=streamed
       - run: bazel test //test/standalone/python:standalone-python-social-network --test_output=streamed
 
@@ -148,29 +140,26 @@ workflows:
       - test-standalone-java-phone-calls
       - test-standalone-nodejs-phone-calls
       - test-standalone-python-phone-calls
-      - test-standalone-java-social-network
-      - test-standalone-nodejs-python-social-network
+      - test-standalone-social-network
       - deploy-docs-to-staging:
           filters:
             branches:
               only: development
           requires:
-            - test-standalone-java-phone-calls
-            - test-standalone-java-social-network
             - test-snippet-graql
             - test-snippet-java
+            - test-standalone-java-phone-calls
             - test-standalone-nodejs-phone-calls
             - test-standalone-python-phone-calls
-            - test-standalone-nodejs-python-social-network
+            - test-standalone-social-network
       - deploy-docs-to-production:
           filters:
             branches:
               only: master
           requires:
-            - test-standalone-java-phone-calls
-            - test-standalone-java-social-network
             - test-snippet-graql
             - test-snippet-java
+            - test-standalone-java-phone-calls
             - test-standalone-nodejs-phone-calls
             - test-standalone-python-phone-calls
-            - test-standalone-nodejs-python-social-network
+            - test-standalone-social-network
