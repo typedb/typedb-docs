@@ -64,21 +64,21 @@ public class TestStandalonePhoneCalls {
     public void testEPhoneCallsFifthQuery() {
         PhoneCallsFifthQuery.main(new String[]{});
     }
-//
-//    @Test
-//    public void testFPhoneCallsCSVMigration() throws FileNotFoundException {
-//        PhoneCallsCSVMigration.main(new String[]{});
-//    }
-//
-//    @Test
-//    public void testGPhoneCallsJSONMigration() throws IOException {
-//        PhoneCallsJSONMigration.main(new String[]{});
-//    }
-//
-//    @Test
-//    public void testHPhoneCallsXMLMigration() throws FileNotFoundException, XMLStreamException {
-//        PhoneCallsXMLMigration.main(new String[]{});
-//    }
+
+    @Test
+    public void testFPhoneCallsCSVMigration() throws FileNotFoundException {
+        PhoneCallsCSVMigration.main(new String[]{});
+    }
+
+    @Test
+    public void testGPhoneCallsJSONMigration() throws IOException {
+        PhoneCallsJSONMigration.main(new String[]{});
+    }
+
+    @Test
+    public void testHPhoneCallsXMLMigration() throws FileNotFoundException, XMLStreamException {
+        PhoneCallsXMLMigration.main(new String[]{});
+    }
 
     @AfterClass
     public static void cleanPhoneCalls() {
