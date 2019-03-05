@@ -808,9 +808,12 @@ public class PhoneCallsCSVMigration {
      */
     public static void main(String[] args) throws FileNotFoundException {
         Collection<Input> inputs = initialiseInputs();
+        connectAndMigrate(inputs);
+    }
 
+    static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException {
         GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");        
+        GraknClient.Session session = client.session("phone_calls");
 
         for (Input input : inputs) {
             System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
@@ -1002,7 +1005,10 @@ public class PhoneCallsJSONMigration {
      */
     public static void main(String[] args) throws IOException {
         Collection<Input> inputs = initialiseInputs();
+        connectAndMigrate(inputs);
+    }
 
+    static void connectAndMigrate(Collection<Input> inputs) throws IOException {
         GraknClient client = new GraknClient("localhost:48555");
         GraknClient.Session session = client.session("phone_calls");
 
@@ -1207,7 +1213,10 @@ public class PhoneCallsXMLMigration {
      */
     public static void main(String[] args) throws FileNotFoundException, XMLStreamException {
         Collection<Input> inputs = initialiseInputs();
-        
+        connectAndMigrate(inputs);
+    }
+
+    static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, XMLStreamException {
         GraknClient client = new GraknClient("localhost:48555");
         GraknClient.Session session = client.session("phone_calls");
 

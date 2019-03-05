@@ -31,5 +31,4 @@ for markdown_file in markdown_files:
                 with open(corresponding_path, "w") as generated_file:
                     standalone = standalone[1].replace("&lt;", "<").replace("&gt;", ">")  # replace html unicodes
                     standalone = re.sub(r"package .*?;", "package generated;", standalone)  # replace package name with that of bazel's
-                    standalone = re.sub(r"(\'|\")localhost:48555(\'|\")", "args[0]", standalone)  # replacing standalone's uri with that of the grakn test server
                     generated_file.write(standalone)

@@ -1,9 +1,9 @@
 package generated;
 
 import grakn.client.GraknClient;
+
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
-import grakn.core.rule.GraknTestServer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,15 +19,9 @@ import javax.xml.stream.XMLStreamException;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestStandalonePhoneCalls {
 
-    @ClassRule
-    public static final GraknTestServer server = new GraknTestServer(
-            Paths.get("test/grakn-test-server/conf/grakn.properties"),
-            Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
-    );
-
     @BeforeClass
     public static void loadPhoneCalls() {
-        GraknClient client = new GraknClient(server.grpcUri().toString());
+        GraknClient client = new GraknClient("localhost:48555");
         GraknClient.Session session = client.session("phone_calls");
         GraknClient.Transaction transaction = session.transaction().write();
 
@@ -44,57 +38,51 @@ public class TestStandalonePhoneCalls {
         }
     }
 
+
+
     @Test
     public void testAPhoneCallsFirtstQuery() {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsFirstQuery.main(args);
+        PhoneCallsFirstQuery.main(new String[]{});
     }
 
     @Test
     public void testBPhoneCallsSecondQuery() {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsSecondQuery.main(args);
+        PhoneCallsSecondQuery.main(new String[]{});
     }
 
     @Test
     public void testCPhoneCallsThirdQuery() {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsSecondQuery.main(args);
+        PhoneCallsSecondQuery.main(new String[]{});
     }
 
     @Test
     public void testDPhoneCallsForthQuery() {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsForthQuery.main(args);
+        PhoneCallsForthQuery.main(new String[]{});
     }
 
     @Test
     public void testEPhoneCallsFifthQuery() {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsFifthQuery.main(args);
+        PhoneCallsFifthQuery.main(new String[]{});
     }
-
-    @Test
-    public void testFPhoneCallsCSVMigration() throws FileNotFoundException {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsCSVMigration.main(args);
-    }
-
-    @Test
-    public void testGPhoneCallsJSONMigration() throws IOException {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsJSONMigration.main(args);
-    }
-
-    @Test
-    public void testHPhoneCallsXMLMigration() throws FileNotFoundException, XMLStreamException {
-        String[] args = { server.grpcUri().toString() };
-        PhoneCallsXMLMigration.main(args);
-    }
+//
+//    @Test
+//    public void testFPhoneCallsCSVMigration() throws FileNotFoundException {
+//        PhoneCallsCSVMigration.main(new String[]{});
+//    }
+//
+//    @Test
+//    public void testGPhoneCallsJSONMigration() throws IOException {
+//        PhoneCallsJSONMigration.main(new String[]{});
+//    }
+//
+//    @Test
+//    public void testHPhoneCallsXMLMigration() throws FileNotFoundException, XMLStreamException {
+//        PhoneCallsXMLMigration.main(new String[]{});
+//    }
 
     @AfterClass
     public static void cleanPhoneCalls() {
-        GraknClient client = new GraknClient(server.grpcUri().toString());
+        GraknClient client = new GraknClient("localhost:48555");
         client.keyspaces().delete("phone_calls");
         client.close();
         System.out.println("Deleted the phone_calls keyspace");

@@ -71,7 +71,7 @@ genrule(
 ####################################
 
 py_test(
-    name = "standalone-social-network",
+    name = "standalone-python-social-network",
     main = "generated/test_standalone_social_network.py",
     srcs = [
         ":generate-standalones-python-social-network",
