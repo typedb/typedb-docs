@@ -12,13 +12,13 @@ Graql is the language for the Grakn knowledge graph. Whether it's through the [G
 **Graql is intuitive**. Graql queries can look a lot like questions the same way they are formed in mind, as opposed to a complicated series of statements that are difficult to follow and, at scale, become confusing It's important to note that the intuitiveness of a Graql query originates from the [schema](/docs/schema/overview). The better the knowledge graph represents the reality of its dataset via its schema, the more intuitive writing and reading Graql queries become.
 
 In this section, we learn how a Graql query can be written to:
-- [Match](/docs/query/match) specific patterns in the data and schema
-- [Insert](/docs/query/insert) new instances of conept types into the knowledge graph
-- [Get](/docs/query/get) back desired data/knowledge
-- [Aggregate](/docs/query/aggregate) values over a set of data
-- [Delete](/docs/query/delete) instances of concept types from the knowledge graph
-- [Compute](/docs/query/compute) distributed analytics over a large set of data
-- [Update](/docs/query/update) instances of concept types
+- [Match](/docs/query/match-clause) specific patterns in the data and schema
+- [Insert](/docs/query/insert-query) new instances of conept types into the knowledge graph
+- [Get](/docs/query/get-query) back desired data/knowledge
+- [Aggregate](/docs/query/aggregate-query) values over a set of data
+- [Delete](/docs/query/delete-query) instances of concept types from the knowledge graph
+- [Compute](/docs/query/compute-query) distributed analytics over a large set of data
+- [Update](/docs/query/update-query) instances of concept types
 
 ## Graql Answers
 Some Graql queries such as `get`, `aggregate` and `compute` are expected to return an answer. Depending on the type of query, the structure of the answer may be different (more on Answer types in the [Client API](/docs/client-api/overview#investigating-answers) section). As a part of the [Concept API](/docs/concept-api/overview), we can call various methods on the concepts contained in an answer to retrieve more explicit and implicit knowledge about them and their surroundings.
