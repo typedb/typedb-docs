@@ -22,29 +22,68 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 
+################################
+# Load Grakn Labs Dependencies #
+################################
+
+git_repository(
+    name = "graknlabs_graql",
+    remote = "https://github.com/graknlabs/graql",
+    commit = 'b27d7cb4269e471a990a5b6e6f2577d3567734df' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_graql
+)
+
+git_repository(
+    name = "graknlabs_grakn_core",
+    remote = "https://github.com/graknlabs/grakn",
+    commit = '34ee67d9440a0980e2689741e656cd4236da10be' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_grakn_core
+)
+
+git_repository(
+    name = "graknlabs_client_java",
+    remote = "https://github.com/graknlabs/client-java",
+    commit = 'e2d3cba2216c5aadf58184c9abeb16dd3718c677' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_java
+)
+
+git_repository(
+    name = "graknlabs_client_python",
+    remote = "https://github.com/graknlabs/client-python",
+    commit = 'bf27d7b0872ffadba15bd72db1716080875e7dd2' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_python
+)
+
+git_repository(
+    name = "graknlabs_build_tools",
+    remote = "https://github.com/graknlabs/build-tools",
+    commit = "aaf4009b82de1e04012aff070a18ac52be2be809", # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_build_tools
+)
+
+load("@graknlabs_build_tools//distribution:dependencies.bzl", "graknlabs_bazel_distribution")
+graknlabs_bazel_distribution()
+
+
 ####################
 # Load Build Tools #
 ####################
 
 # Load additional build tools, such bazel-deps and unused-deps
-load("//dependencies/tools:dependencies.bzl", "tools_dependencies")
-tools_dependencies()
+load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_common", "bazel_deps",
+     "bazel_toolchain", "bazel_rules_nodejs", "bazel_rules_python")
+bazel_common()
+bazel_deps()
+bazel_toolchain()
+bazel_rules_nodejs()
+bazel_rules_python()
 
 
 ###########################
-# Load local dependencies #
+# Load Local dependencies #
 ###########################
 
 # for Java
-load("//dependencies/maven:dependencies.bzl", maven_dependencies_for_build = "maven_dependencies")
-maven_dependencies_for_build()
+
+load("//dependencies/maven:dependencies.bzl", "maven_dependencies")
+maven_dependencies()
 
 # for Node.js
-git_repository(
-    name = "build_bazel_rules_nodejs",
-    remote = "https://github.com/graknlabs/rules_nodejs.git",
-    commit = "1c9b8cb1e1f39214fe27bafa44d1597cdc9d8ff5",
-)
 
 load("@build_bazel_rules_nodejs//:package.bzl", "rules_nodejs_dependencies")
 rules_nodejs_dependencies()
@@ -63,11 +102,6 @@ npm_install(
 )
 
 # for Python
-git_repository(
-    name = "io_bazel_rules_python",
-    remote = "https://github.com/bazelbuild/rules_python.git",
-    commit = "e6399b601e2f72f74e5aa635993d69166784dde1",
-)
 
 load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
 pip_repositories()
@@ -76,6 +110,7 @@ pip_import(
     name = "local_pypi_dependencies",
     requirements = "//test/standalone/python:requirements.txt",
 )
+
 load("@local_pypi_dependencies//:requirements.bzl", "pip_install")
 pip_install()
 
@@ -84,36 +119,28 @@ pip_install()
 # Load Grakn Core dependencies #
 ################################
 
-git_repository(
-    name = "graknlabs_grakn_core",
-    remote = "https://github.com/graknlabs/grakn",
-    commit = '20750ca0a46b4bc252ad81edccdfd8d8b7c46caa' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_grakn_core
-)
-
-load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl", maven_dependencies_for_grakn_core = "maven_dependencies")
-maven_dependencies_for_grakn_core()
-
-
-#######################################
-# Load compiler dependencies for GRPC #
-#######################################
+load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl", grakn_core_dependencies = "maven_dependencies")
+grakn_core_dependencies()
 
 load("@graknlabs_grakn_core//dependencies/compilers:dependencies.bzl", "grpc_dependencies")
 grpc_dependencies()
 
-load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", com_github_grpc_grpc_bazel_grpc_deps = "grpc_deps")
-com_github_grpc_grpc_bazel_grpc_deps()
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+grpc_deps()
 
 load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
 java_grpc_compile()
+
+load("@com_github_google_bazel_common//:workspace_defs.bzl", "google_common_workspace_rules")
+google_common_workspace_rules()
+
+load("@graknlabs_grakn_core//dependencies/distribution/docker:dependencies.bzl", "docker_dependencies")
+docker_dependencies()
 
 
 ###########################
 # Load Graql dependencies #
 ###########################
-
-load("@graknlabs_grakn_core//dependencies/git:dependencies.bzl", "graknlabs_graql")
-graknlabs_graql()
 
 # Load ANTLR dependencies for Bazel
 load("@graknlabs_graql//dependencies/compilers:dependencies.bzl", "antlr_dependencies")
@@ -127,26 +154,9 @@ load("@graknlabs_graql//dependencies/maven:dependencies.bzl", graql_dependencies
 graql_dependencies()
 
 
-#################################
-# Load Client Java dependencies #
-#################################
-
-git_repository(
-    name = "graknlabs_client_java",
-    remote = "https://github.com/graknlabs/client-java",
-    commit = 'e2d3cba2216c5aadf58184c9abeb16dd3718c677' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_client_java
-)
-
-
 ###################################
 # Load Client Python dependencies #
 ###################################
-
-git_repository(
-    name = "graknlabs_client_python",
-    remote = "https://github.com/graknlabs/client-python",
-    commit = 'bf27d7b0872ffadba15bd72db1716080875e7dd2' # grabl-marker: do not remove this comment, this is used for dependency-update by @graknlabs_client_python
-)
 
 # TODO: client python's pip_import should be called pypi_dependencies_grakn_client
 pip_import(
@@ -154,30 +164,10 @@ pip_import(
     requirements = "@graknlabs_client_python//:requirements.txt",
 )
 
-load("@pypi_dependencies//:requirements.bzl", grakn_client_pip_install = "pip_install")
-grakn_client_pip_install()
-
-
-##################################
-# Load Distribution Dependencies #
-##################################
-
-load("@graknlabs_grakn_core//dependencies/distribution:dependencies.bzl", "distribution_dependencies")
-distribution_dependencies()
-
-load("@graknlabs_bazel_distribution//github:dependencies.bzl", "github_dependencies_for_deployment")
-github_dependencies_for_deployment()
-
-load("@com_github_google_bazel_common//:workspace_defs.bzl", "google_common_workspace_rules")
-google_common_workspace_rules()
-
-load("@graknlabs_grakn_core//dependencies/docker:dependencies.bzl", "docker_dependencies")
-docker_dependencies()
-
 pip_import(
     name = "pypi_deployment_dependencies",
     requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
 )
-load("@pypi_deployment_dependencies//:requirements.bzl", "pip_install")
-pip_install()
 
+load("@pypi_dependencies//:requirements.bzl", client_python_pip_install = "pip_install")
+client_python_pip_install()
