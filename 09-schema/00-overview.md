@@ -5,29 +5,77 @@ permalink: /docs/schema/overview
 ---
 
 ## Why Use a Schema?
+
+Schema isa a mean to address the problems of managing and handling unstructured or loosely structured data.
+
+![Unstructured problems](/docs/images/schema/unstructured-problems.png)
+
+The common problems we encounter when dealing with unstructured or loosely structured data are :
+- The problem of data integrity
+As the data is weakly tied to any particular structure it is hard or even impossible to control the state and validity of the data. As a result we have no guarantees on data consistency and validity.
+- The problem of data accessibility and retrieval
+With the lack of any high-level structure comes the lack of possibility to query the data meaningfully. This is either because our data structure is too low level to express complex queries or that handling the complexity of such queries becomes a problem.
+Consequently we might be forced to ask simple questions only.
+- The problem of data maintenance
+This problem is tied to the integrity problem. Since we have little control over the structure of our data it is hard to maintain either requiring data changes to be carried out with surgical precision or making them difficult since data pollution needs to be taken care of.
+- Starting with loose or no schema only defers the responsibility of schema definition and enforcement in time.
+In production systems we cannot afford not having control over you data. As a result, the schema logic needs to be incorporated at the app level instead of being handled by the database.
+
 A Grakn schema is the blueprint of a Grakn knowledge graph. Using a highly flexible language, we define a schema to model a domain true to nature. Highly interconnected data cannot be stored at scale without an underlying structure - one that is capable of expressing the complexity of the dataset, is easy to understand, and can be extended programmatically, at runtime.
 
-The schema enforces logical integrity and consistency across the dataset. In other words, it ensures that all data always conform to the given structure. Any attempt to add data that violates the schema is disallowed.
+The schema defines a specific, explicit, high-level structure of data that is enforced across the dataset. This allows to provide logical integrity and consistency guarantees of our data. Any attempt to add data not conforming to the defined schema is a schema violation and is not allowed.
 
 A well-constructed schema enables writing intuitive queries. Given such schema, you often find yourself writing queries that map seamlessly with how you form them as questions in your mind.
 
 Last and certainly not least, the schema sets the basis for performing automated reasoning over the represented data. It enables the extraction of implicit information from explicitly stored data - a powerful feature of Grakn that facilitates knowledge discovery and implementation of business logic inside the database.
 
-## Data Model
-There are three Grakn Concepts that make up a schema: [Entity](/docs/schema/concepts#entity), [Relationship](/docs/schema/concepts#relationship), and [Attribute](/docs/schema/concepts#attribute).
+## What is a Grakn schema
+Grakn schema is an inherent part of the knowledge graph that describes how the data is and can be structured.
 
-An **entity** can have attributes and play roles in relationships.
+If you know a bit about other schema first database knowledge systems, you know that normally database design involves three schemas:
 
-An **attribute** expresses a *value* of a specified *datatype*. It can have attributes of its own and play roles in relationships.
+  1. _A high-level conceptual schema_, that models your problem and usually involves some variation of the entity-relation model
 
-A **relationship** has at least one roleplayer, can have attributes and play roles in other relationships.
+  1. _A mid-level logical schema_, that depends on the database type you are using (for example if you are going relational, this would involve turning the conceptual model into tables and going over a series of normalisation steps of your schema)
+
+  1. _A low level physical schema_, that requires you to optimise your schema according to how your physical resources are distributed
+
+With Grakn, thanks to our high level knowledge model, your schema will closely resemble the conceptual schema, essentially avoiding the hassle of going through the other two modelling steps. The Grakn system will take care of those.
+
+This greatly simplifies the design process, getting you what can be considered a highly normalised distributed schema without the need of going through the logical and physical modelling.
+
+Let us have a look at the main components of a Grakn knowledge graph and schema.
+
+## Grakn Data Model
+
+### Concepts
+Everything that describes our domain in a Grakn Knowledge Graph is a concept. This includes the elements of the schema (namely types and roles, which we call schema concepts) and the actual data instances. 
+We refer to data instances as things - they can be thought of as instances of types defined in the schema.
+
+### Types
+Types constitute the core of your schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](/docs/schema/concepts#entity), [Relationships](/docs/schema/concepts#relationship), and [Attributes](/docs/schema/concepts#attribute):
+
+__Entities__ are the main actors in our domain. These are usually the type of things we want to know about. Entity types provide means of classifying the objects in our domain.
+
+__Relationships__ are things that connect other concepts. Each relationship can connect a number of things, as specified in your schema. The character of participation in a relationship is characterised by roles that can be played in that relationship. Each relationship is required to
+have at least one role.
+
+__Attributes__ are used to characterise concepts with small pieces of data to other (think of numbers, strings, dates etc.). They allow to attach values of specified datatype to our instances.
+
+### Type Hierarchies
+Besides the modularity that the concept types provide, we are free to form subtype relations between concept types. For a given child concept type subtyping a parent concept type, the child concept type inherits the attributes owned and roles played by the parent type.
+The mechanism is analoguous of subclassing known in Object Oriented Programming. Each concept type can have only a single parent type - multiinheritance is not supported. 
+Subtyping not only allows us to mirror the true nature of a dataset as perceived in the real world, but also enables automated reasoning.
+
+### Roles
+_Roles_ are what connects types together. They are not types themselves: you cannot have a thing which is an instance of a role, but you will be able to have things playing a role in a specific relationship. In your schema, we will need to specify what role relates to each relationship type and who can play this role. Thanks to roles, you will be able to guarantee the logical integrity of your data, avoiding to have a marriage between a cat and a building, for example, unless you specifically allow such a thing in the schema.
+
+### Rules
+Lastly, the Grakn schema is completed with [**Graql Rules**](/docs/schema/rules). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
+
 
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset.
 
-Lastly, we have the [**Graql Rules**](/docs/schema/rules). Rules watch for schema-driven patterns in the data and infer queryable conclusions. Rules are one way to perform automated reasoning in a Grakn knowledge graph.
-
-## Type Hierarchy
-Besides the modularity that the concept types provide, we can define any concept to subtype another. A concept type that subtypes another, inherits the attributes owned and roles related to or played by the parent type. Subtyping not only allows us to mirror the true nature of a dataset as perceived in the real world, but also enables automated reasoning.
 
 ## (un)Define the schema programmatically
 In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).
