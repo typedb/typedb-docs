@@ -35,7 +35,7 @@ git_repository(
 git_repository(
     name = "graknlabs_grakn_core",
     remote = "https://github.com/graknlabs/grakn",
-    commit = '40afe6c4cc5e50d30e21c13d7afc2f57a7722caf' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_grakn_core
+    commit = 'd87f824bef4dafcf9f19518b360f1010d155c2d2' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_grakn_core
 )
 
 git_repository(
