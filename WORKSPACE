@@ -18,43 +18,20 @@
 
 workspace(name = "graknlabs_docs")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-
 
 ################################
 # Load Grakn Labs Dependencies #
 ################################
 
-git_repository(
-    name = "graknlabs_graql",
-    remote = "https://github.com/graknlabs/graql",
-    commit = '33b53ca88871a4efdd3d4e17e7e40e2317c3778b' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_graql
-)
+load("//dependencies/graknlabs:dependencies.bzl",
+     "graknlabs_grakn_core", "graknlabs_client_java", "graknlabs_client_python", "graknlabs_build_tools")
+graknlabs_grakn_core()
+graknlabs_client_java()
+graknlabs_client_python()
+graknlabs_build_tools()
 
-git_repository(
-    name = "graknlabs_grakn_core",
-    remote = "https://github.com/graknlabs/grakn",
-    commit = 'be04bc17219514a8d278929ad7f3b28f7b2b6371' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_grakn_core
-)
-
-git_repository(
-    name = "graknlabs_client_java",
-    remote = "https://github.com/graknlabs/client-java",
-    commit = 'e2d3cba2216c5aadf58184c9abeb16dd3718c677' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_java
-)
-
-git_repository(
-    name = "graknlabs_client_python",
-    remote = "https://github.com/graknlabs/client-python",
-    commit = 'bf27d7b0872ffadba15bd72db1716080875e7dd2' # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_python
-)
-
-git_repository(
-    name = "graknlabs_build_tools",
-    remote = "https://github.com/graknlabs/build-tools",
-    commit = "4815b8583ca98ad59058d1a808b87e6b2f47dbf7", # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_build_tools
-)
+load("@graknlabs_grakn_core//dependencies/graknlabs:dependencies.bzl", "graknlabs_graql")
+graknlabs_graql()
 
 load("@graknlabs_build_tools//distribution:dependencies.bzl", "graknlabs_bazel_distribution")
 graknlabs_bazel_distribution()
