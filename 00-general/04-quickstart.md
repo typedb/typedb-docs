@@ -4,6 +4,32 @@ pageTitle: Quickstart
 permalink: /docs/general/quickstart
 ---
 
+## What is Grakn?
+
+To put it in short, Grakn is a modern database that facilitates building intelligent applications.
+
+More precisely, it is what we call a [Knowledge Graph System](https://en.wikipedia.org/wiki/Knowledge-based_systems): a piece of software that allows to model complex problems, made of several components:
+
+  * __Data layer.__ A data storage component that allows to store and efficiently access your data. A database. In order to be able to store highly interconnected data at a scale, Grakn uses a graph database, but that is just because it happens to be the best tool for the job. As you will see, Grakn is a much more than a graph database. And much more than a relational database for all that matters. That is why we call Grakn a _knowledge graph_.
+
+  * __Data model.__ A knowledge representation object model (our Schema model) that allows to describe your knowledge of the domain and store it together with the data. In simpler words, this helps giving structure to your data.
+
+  * __Reasoning.__ An inference engine, that allows to gain new knowledge that is not explicitly in your data and obtain more intelligent answers to your questions.
+
+  * __User interfaces.__ A set of user interfaces that allow to access and interact with your knowledge graph both graphically and programmatically and make it easy to extend and build applications on top of Grakn.
+
+A knowledge graph management system like Grakn helps you turning data into information (thanks to its data layer and model components) and to turn information into knowledge thanks to its reasoning engine.
+
+  ![DIKW Pyramid](/docs/images/quickstart/DKIWpyramid.png)
+
+On top of that, Grakn adds
+
+  * Graql, an easy to learn, easy to read querying and templating language used to control all the different components.
+
+  * Powerful distributed graph analytics that allow to effortlessly perform graph data analysis at scale.
+
+The fact that Grakn adds knowledge graph system capabilities on top of a graph database, all governed by a simple language, makes it the ideal tool both for effectively exploring large datasets and to build AI-based applications while providing guarantees for the logical integrity of the data by following our schema-first approach. 
+
 ### An Overview
 In this tutorial, we go through creating and interacting with a Grakn knowledge graph representing a social network. In the process, we learn about the constructs of the Grakn Schema, visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with Grakn.
 
