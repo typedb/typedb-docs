@@ -66,10 +66,11 @@ graknlabs_bazel_distribution()
 
 # Load additional build tools, such bazel-deps and unused-deps
 load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_common", "bazel_deps",
-     "bazel_toolchain", "bazel_rules_nodejs", "bazel_rules_python")
+     "bazel_toolchain", "bazel_rules_docker", "bazel_rules_nodejs", "bazel_rules_python")
 bazel_common()
 bazel_deps()
 bazel_toolchain()
+bazel_rules_docker()
 bazel_rules_nodejs()
 bazel_rules_python()
 
@@ -133,9 +134,6 @@ java_grpc_compile()
 
 load("@com_github_google_bazel_common//:workspace_defs.bzl", "google_common_workspace_rules")
 google_common_workspace_rules()
-
-load("@graknlabs_grakn_core//dependencies/distribution/docker:dependencies.bzl", "docker_dependencies")
-docker_dependencies()
 
 
 ###########################
