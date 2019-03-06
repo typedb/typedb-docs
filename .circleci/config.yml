@@ -45,7 +45,7 @@ commands:
       - run:
           name: Grakn Server - Start
           command: |
-            bazel build @graknlabs_grakn_core//:assemble-zip
+            bazel build @graknlabs_grakn_core//:assemble-linux-targz
             unzip bazel-genfiles/external/graknlabs_grakn_core/grakn-core-all.zip -d bazel-genfiles/dist/
             nohup bazel-genfiles/dist/grakn-core-all/grakn server start
 
