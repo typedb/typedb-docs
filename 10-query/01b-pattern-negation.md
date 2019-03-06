@@ -7,20 +7,20 @@ permalink: /docs/query/pattern-negation
 ## Queries with negation
 
 Oftentimes we encounter situations where we would like to form queries with the use of negation.
-An examples of such queries include:
+Examples of such queries include:
 
-a) List all people that were unemployed in the last 6 months?
+a) List all people that were unemployed in the last 6 months
 
-b) show me text-only (no videos are images) timelines
+b) Show me text-only timelines (no videos are images) 
 
-c) All people that are singles that have posted a photo in a forum
+c) All single people who have posted a photo in a forum
 
 d) All employees of company A that are graduates of a given school
 
 The intuitive meaning of a negated pattern is that of a complement. However relation complement is not a clearly defined term as it requires 
 the definition of a domain of values with respect to which the complement is computed. Even in this case we end up with an infinite relation which leaves 
 the projection or join operations unapplicable. As a result, we understand pattern negation in terms of computation of set differences. The set-difference semantics
-are different to the perhaps familiar semantics of negation by failure of Prolog and in this chapter we will attempt to provide a clear explanation of the meaning
+are different to the perhaps familiar semantics of _Negation-as-Failure_ of Prolog and in this chapter we will attempt to provide a clear explanation of the meaning
 of pattern negation in Graql.
 
 Let us consider the relation of unemployment which can be trivially understood as the absence of employment. We define negation blocks by enclosing patterns with
@@ -32,7 +32,7 @@ not {
 };
 ```
 
-Therefore to retrieve people the that are unemployed we want to express:
+Therefore, to retrieve people the that are unemployed we want to express:
 
 ```
 Person($x), ¬Employment($x, employer: $y)
@@ -81,7 +81,7 @@ then {
 In this way, we have no problems defining the projection or join operations as these are handled by the native rule semantics. Consquently we can proceed with the set difference
 semantics unambiguously. As a result, the unemployment is evaluated according to our expectation of unemployment as an absence of being part of any employment - from the
 set of people we subtract the set of people being in employment relations. Please note that this example illustrates the basic mechanism of how patterns with negation are interpreted. 
-The rule interpretation is for understanding purposes only. As a user the only thing we need to type is our query pattern:
+The rule interpretation above is for understanding purposes only. As a user the only thing we need to type is our query pattern:
 
 ```
 $x isa person
@@ -103,7 +103,7 @@ get;
 
 will yield a list of concepts assigned to the `$x` variable.
 
-Shall we decide that our unemployment pattern is a common one, we might decide to express it via rule. In case when the 
+Should we decide that our unemployment pattern is a common one, we might decide to express it via a rule. In the case when the 
 set of bound variables has only one element, it is more convenient to define it in terms of a type. 
 Defining the unemployment in terms of a rule and the freshly introduced negation block we can then write: 
 
@@ -143,10 +143,10 @@ We shall now see how we can form more complex patterns with negation. Let's say 
 Person($x), ¬Parentship($x, father: $y), ¬Parentship($x, mother: $y)
 ```
 
-To express that in Graql we require two negation blocks:
+To express that in Graql, we require two negation blocks:
 
 ```
-$x isa person
+$x isa person;
 not { ($x, father: $y) isa parentship;};
 not { ($x, mother: $y) isa parentship;};
 ```
@@ -187,7 +187,7 @@ Please note, the following restrictions apply to negation blocks:
 - for each negation block in a query, at least one variable in the negation block must be bound to a statement outside of the negation block
 This ensures that set difference operations are performed on sets that are not disjoint.
 - variables in negation blocks are local to the block they are defined in
-- only conjunctive statements are allowed
+- only conjunctive statements are allowed within negation blocks
 
 
 ## Negation in rules
@@ -218,7 +218,7 @@ Then we can define two nodes as being reachable if there exists a link between t
 
 ```
 reachable sub relation, relates from, relates to;
-reachabilityA sube rule,
+reachabilityA sub rule,
 when {
     (from: $x, to: $y) isa link;
 },
@@ -250,11 +250,11 @@ then {
 };
 ```
 
-or, mark the unreachable nodes by specifying the following rule:
+We can mark the unreachable nodes by defining the following rule:
 
 ```
 unreachable sub relation, relates from, relates to;
-unreachability-rule
+unreachability-rule sub rule,
 when {
     $x isa node;
     $y isa node;
@@ -266,15 +266,15 @@ then {
 ```
 
 Please note the explicit addition of the `node` types in the body of the rule. This is to to ensure the boundedness condition
-is satisfied as well as to maintain the expected meaning of `unreachable` relation.
-
-
+is satisfied as well as to maintain the expected meaning of the `unreachable` relation.
 
 ## Monotonicity of reasoning with negation
 
-In this subsection we will address an important property of reasoning being the monotonicity property.
-We say that reasoning is monotonic if previously derived facts remain true upon addition of new knowledge. Up to this point Graql reasoning was monotonic. However with
-the addition of pattern negation this property no longer holds. We can illustrate this fact in a popular example:
+In this subsection we address an important property of reasoning - the monotonicity property.
+We say that reasoning is monotonic if previously derived facts remain true upon addition of new knowledge. 
+Without employing pattern negation in rules, Graql reasoning is monotonic. When pattern negation is used in rules however, this property no longer holds.
+Preserving monotonicity property is not strictly necessary or required, however it is important to be aware of the consequences of non-monotonic reasoning 
+and how it possibly affects querying. We can illustrate this with a popular example:
 
 Let's start with our knowledge to be the following:
 
@@ -312,7 +312,7 @@ when{
 },
 then{
     $x isa flies;
-}
+};
 
 abnormal-rule sub rule,
 when{
@@ -320,7 +320,7 @@ when{
 },
 then{
     $x isa abnormal;
-}
+};
 ```
 
 In consequence of the above knowledge, we can establish that Tweety flies, i. e. if we query:
@@ -332,3 +332,6 @@ the Tweety concept will be returned.
 
 Let us now look what will happen if we add an extra bit of information - we will specialise Tweety to be a penguin. If we now repeat our flying query, we will
 receive no answers. Consequently our previously derived fact no longer holds.
+
+This illustrates the fact that when using pattern negation in rules, we lose the guarantee of all our previous inferences being true upon addition of new 
+information be it new data or rules.
