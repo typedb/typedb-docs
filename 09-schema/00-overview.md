@@ -62,13 +62,21 @@ have at least one role.
 
 __Attributes__ are used to characterise concepts with small pieces of data to other (think of numbers, strings, dates etc.). They allow to attach values of specified datatype to our instances.
 
+Apart from serving as a mean of classification, types also define behaviours of their instances. Consequently, types can define the following behaviours:
+
+__has [attribute type]__ - the ability to have an attribute of specified type attached to an instance
+
+__plays [role]__ - the ability to participate in relationships that allow for that role to be played
+
+__relates [role]__ (only relationships) - the ability of other instances to play this role in instances of this relationship type
+
 ### Type Hierarchies
 Besides the modularity that the concept types provide, we are free to form subtype relations between concept types. For a given child concept type subtyping a parent concept type, the child concept type inherits the attributes owned and roles played by the parent type.
-The mechanism is analoguous of subclassing known in Object Oriented Programming. Each concept type can have only a single parent type - multiinheritance is not supported. 
+The mechanism is analogous of subclassing known in Object Oriented Programming. Each concept type can have only a single parent type - multiple inheritance is not supported. 
 Subtyping not only allows us to mirror the true nature of a dataset as perceived in the real world, but also enables automated reasoning.
 
 ### Roles
-_Roles_ are what connects types together. They are not types themselves: you cannot have a thing which is an instance of a role, but you will be able to have things playing a role in a specific relationship. In your schema, we will need to specify what role relates to each relationship type and who can play this role. Thanks to roles, you will be able to guarantee the logical integrity of your data, avoiding to have a marriage between a cat and a building, for example, unless you specifically allow such a thing in the schema.
+_Roles_ specify the nature of the connection between instances. They are not types themselves: you cannot have a thing which is an instance of a role, but you will be able to have things playing a role in a specific relationship. In your schema, we will need to specify what role relates to each relationship type and who can play this role. Thanks to roles, you will be able to guarantee the logical integrity of your data, avoiding to have a marriage between a cat and a building, for example, unless you specifically allow such a thing in the schema.
 
 ### Rules
 Lastly, the Grakn schema is completed with [**Graql Rules**](/docs/schema/rules). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
