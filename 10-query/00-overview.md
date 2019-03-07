@@ -47,7 +47,7 @@ In the following sections, we learn how to create Graql queries of different typ
     * [Get](/docs/query/get-query) back desired data/knowledge
 
 - define and undefine schema
-    * [Define](/docs/query/define-query) new instances of concept types into the knowledge graph
+    * [Define/Undefine](/docs/query/schema/concepts) new instances of concept types into the knowledge graph
 
 - insert and remove data
     * [Insert](/docs/query/insert-query) new instances of concept types into the knowledge graph
