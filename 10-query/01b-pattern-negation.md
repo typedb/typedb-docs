@@ -148,12 +148,152 @@ To express that in Graql, we require two negation blocks:
 ```
 $x isa person;
 not { ($x, father: $y) isa parentship;};
+not { ($x, mother: $y) isa parentship;}; 
+```
+
+which is equivalent to saying:
+
+```
+$x isa person;
+not { $x isa person-with-a-father;};
+not { $x isa person-with-a-mother;};
+```
+
+Now let's look at how do we arrive at the answers if we executed this as a match query. To do this we will go through
+the set difference computation procedure. Let's define a set `P` to be the set of all people, i.e. a set that is the answer set to query:
+```
+match $x isa person;get;
+```
+ 
+a set `F` as the set of people having a father, i. e. a set that is the answer set of query: 
+
+```
+match $x isa person-with-a-father;get;
+```
+and finally a set `M` as the set of people having a mother which can be defined in terms of a query:
+
+```
+match $x isa person-with-a-mother;get;
+```
+We can illustrate the relationships between the sets with a suitable Venn diagram:
+
+![Calculating the P \ F \ M set difference](/docs/images/query/PFM.png)
+
+Consequently, our set of answers of our match pattern is defined as `A = P \ F \ M`. As a result, from the set of all people we subtract those who have a father and those who have a mother.
+Please not that the scope of variables in a negation block is local to the negation block. As a result the above pattern does not look for people that do not have a mother and a father that is the same person.
+
+Now let's say we have five people, Alice (A), Bob (B), Charlie (C), Dave (D) and Eve (E). Consequently our set `P` reads:
+
+```
+P = {Alice, Bob, Charlie}
+```
+
+Additionally we know that the following three `parentship` relations hold:
+
+```
+Parentship(child: Alice, father: Bob)
+Parentship(child: Bob, mother: Charlie)
+```
+
+This results in our sets `F` and `M` read:
+
+```
+F = {Alice}
+M = {Bob}
+```
+
+As a result, the final result of the match query:
+
+```
+match
+$x isa person;
+not { ($x, father: $y) isa parentship;};
+not { ($x, mother: $y) isa parentship;};
+get; 
+```
+
+will only have the Charlie concept mapped to the `$x` variable as:
+
+```
+A = P \ F \ M = {Charlie}
+```
+
+Now let's complicate things a little and see what happens if we bind the `$y` variable for parents, i. e. we we consider a query pattern:
+
+```
+$x isa person;
+$y isa person;
+not { ($x, father: $y) isa parentship;};
 not { ($x, mother: $y) isa parentship;};
 ```
 
-This tells us to compute a set of answers `A = P \ F \ M`, where the set `P` is the set of all people, the set `F` is the set of all people having a father and the set `M` is the
-set of all people having a mother. Please not that the scope of variables in a negation block is local to the negation block. As a result the above pattern does not 
-look for people that do not have a mother and a father that is the same person.
+Upon inspection, we can see that in this case our three sets are different. The first difference is that an element of each set is a pair (2-tuple). 
+Our set of people `P` corresponds to the answer set of a match query:
+
+```
+$x isa person;
+$y isa person;
+```
+
+As a result, we have (abbreviating the names for clarity):
+
+```
+P' = { 
+        (A, A), (A, B), (A, C),
+        (B, A), (B, B), (B, C),
+        (C, A), (C, B), (C, C)
+}
+```
+
+Now the set `F` is a set of pairs `{($x, $y)}` such that the concepts in the pair are connected via `parentship` relation with the concept assigned to `$y` variable playing the role of a father. 
+Similarly the set `M` is a set of pairs `{($x, $y)}` such that the concepts in the pair are connected via `parentship` relation with the concept assigned to `$y` variable playing the role of a mother. 
+Consequently we have:
+
+```
+F' = {(A, B)}
+M' = {(B, C)}
+```
+
+Now, executing our query pattern as an ordinary match-get query:
+
+```
+match
+$x isa person;
+$y isa person;
+not { ($x, father: $y) isa parentship;};
+not { ($x, mother: $y) isa parentship;};
+get;
+```
+
+we will get the following concept pairs mapped to `$x` and `$y` variables:
+
+```
+A'' = P' \ F' \ M' = 
+{ 
+        (A, A), (A, C),
+        (B, A), (B, B), 
+        (C, A), (C, B), (C, C)
+}
+```
+
+However! If we do a projection onto `$x` variable to compare results with the variant with `$y` being unbounded, i.e. if we execute:
+
+```
+match
+$x isa person;
+not { ($x, father: $y) isa parentship;};
+not { ($x, mother: $y) isa parentship;};
+get $x;
+```
+
+we will get the following concepts in return:
+
+```
+A' = P' \ F' \ M' | x = {A, B, C}
+```
+which is clearly different to the anticipated result of `A = {C}` - our answer set is not a set of orphans, 
+it is a projection from a set of people pairs with pairs playing in `parentship` relation excluded. 
+As a result, extra care should be taken and thought given when formulating queries with negation blocks.
 
 One might be tempted to put the two negation blocks into one. Let's look at the outcome of that. If we define:
 
