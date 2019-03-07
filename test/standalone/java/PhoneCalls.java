@@ -1,6 +1,6 @@
 package generated;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
@@ -11,10 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runners.MethodSorters;
 
 import javax.xml.stream.XMLStreamException;
@@ -34,11 +31,14 @@ public class TestStandalonePhoneCalls {
             transaction.execute((GraqlQuery) Graql.parse(query));
             transaction.commit();
             session.close();
+            client.close();
             System.out.println("Loaded the phone_calls schema");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     @Test
     public void testAPhoneCallsFirtstQuery() {
@@ -84,6 +84,7 @@ public class TestStandalonePhoneCalls {
     public static void cleanPhoneCalls() {
         GraknClient client = new GraknClient("localhost:48555");
         client.keyspaces().delete("phone_calls");
+        client.close();
         System.out.println("Deleted the phone_calls keyspace");
     }
 }

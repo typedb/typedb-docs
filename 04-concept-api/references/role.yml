@@ -1,39 +1,39 @@
 methods:
   - method:
-    common: &method-relationships
-      title: Retrieve relationships
-      description: Retrieves the relationships that the role relates to.
+    common: &method-relations
+      title: Retrieve relations
+      description: Retrieves the Relation instances that this role is related to.
     java:
-      <<: *method-relationships
-      method: role.relationships();
+      <<: *method-relations
+      method: role.relations();
       returns:
-        - "Stream of [Relationship](/docs/concept-api/thing?lang=java#relationship-methods) objects"
+        - "Stream of [`Relation`](/docs/concept-api/thing?lang=java#relation-methods) objects"
     javascript:
-      <<: *method-relationships
-      method: async role.relationships();
+      <<: *method-relations
+      method: await role.relations();
       returns:
-        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=javascript#relationship-methods) objects"
+        - "Iterator of [`Relation](/docs/concept-api/thing?lang=javascript#relation-methods) objects"
     python:
-      <<: *method-relationships
-      method: role.relationships()
+      <<: *method-relations
+      method: role.relations()
       returns:
-        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Relationship](/docs/concept-api/thing?lang=python#relationship-methods) objects"
+        - "Iterator of [`Relation`](/docs/concept-api/thing?lang=python#relation-methods) objects"
   - method:
     common: &method-players
       title: Retrieve roleplayers
-      description: Retrieves the types that play the role.
+      description: Retrieves the Types whose instances play this role.
     java:
       <<: *method-players
       method: role.players();
       returns:
-        - "Stream of [Type](/docs/concept-api/type?lang=java) objects"
+        - "Stream of [`Type`](/docs/concept-api/type?lang=java) objects"
     javascript:
       <<: *method-players
-      method: async role.players();
+      method: await role.players();
       returns:
-        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Type](/docs/concept-api/type?lang=nodejs) objects"
+        - "Iterator of [`Type`](/docs/concept-api/type?lang=nodejs) objects"
     python:
       <<: *method-players
       method: role.players()
       returns:
-        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Type](/docs/concept-api/type?lang=python) objects"
+        - "Iterator of [`Type`](/docs/concept-api/type?lang=python) objects"

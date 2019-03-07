@@ -1,38 +1,47 @@
-
 title: "Session"
 methods:
   - method:
-    common: &method-transaction
-      title: Create a transaction ## !!! synced with codeKeywordsToLink
-      description: Creates a transaction to execute read and write operations on the keyspace connected to the session.
-      accepts: &accepts-transaction
-        param: &accepts-transaction-type
-          name: type
-          description: The type of the transaction to be created - read or write.
-          type: grakn.Type.READ or grakn.Type.WRITE
-          required: true
-          default: N/A
+    common: &method-transaction-read
+      title: Open a read transaction ## !!! synced with codeKeywordsToLink
+      description: Opens a read transaction to perform read queries on the keyspace connected to the session.
       returns:
         - "[Transaction](#client-api-title-transaction) object"
     java:
-      <<: *method-transaction
-      method: 'session.transaction(Type type)'
-      accepts:
-        <<: *accepts-transaction
-        param:
-          <<: *accepts-transaction-type
-          type: 'Type.READ or Type.WRITE'
+      <<: *method-transaction-read
+      method: session.transaction().read();
     javascript:
-      <<: *method-transaction
-      method: async session.transaction(type);
+      <<: *method-transaction-read
+      method: await session.transaction(Grakn.txType.READ);
+      # method: await session.transaction().read();
     python:
-      <<: *method-transaction
-      method: session.transaction(type)
+      <<: *method-transaction-read
+      method: session.transaction(Grakn.TxType.READ)
+      # method: session.transaction().read()
+
+  - method:
+    common: &method-transaction-write
+      title: Open a write transaction ## !!! synced with codeKeywordsToLink
+      description: Opens a write transaction to perform write queries on the keyspace connected to the session.
+      returns:
+        - "[Transaction](#client-api-title-transaction) object"
+    java:
+      <<: *method-transaction-write
+      method: session.transaction().write();
+    javascript:
+      <<: *method-transaction-write
+      method: await session.transaction(Grakn.txType.WRITE);
+      # method: await session.transaction().write();
+    python:
+      <<: *method-transaction-write
+      method: session.transaction(Grakn.TxType.WRITE)
+      # method: session.transaction().write()
 
   - method:
     common: &method-close
       title: Close a session
-      description: Closes the session once it is no longer being used.
+      description: |
+        Closes the session.
+        **Before openning a new session, the currently open session should first be closed.**
     java:
       <<: *method-close
       method: session.close();
@@ -40,7 +49,7 @@ methods:
         - void
     javascript:
       <<: *method-close
-      method: session.close();
+      method: await session.close();
       returns:
         - void
     python:

@@ -41,8 +41,8 @@ GraqlDelete query = Graql.match(
 
 This deletes a particular instance of the `person` type with the id of `V41016`.
 
-## Delete Instances of a Relationship Type
-To delete an instance of a relationship type, similar to deleting an entity type, we first `match` and then `delete`.
+## Delete Instances of a Relation Type
+To delete an instance of a relation type, similar to deleting an entity type, we first `match` and then `delete`.
 
 <div class="tabs dark">
 
@@ -70,7 +70,7 @@ This deletes all instances of the `employment` type where the `employer` is an `
 ## Delete Associations with Attributes
 Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](/docs/schema/concepts#define-an-attribute) in a Grakn knowledge graph prior to performing `delete` queries on them.
 
-To delete only the association that a thing has with an attribute, we use the `via` keyword to capture and delete the relationship between the owner and the owned attribute - NOT the instance of the attribute type itself, as doing so disowns the instance from any other instance that may have owned it.
+To delete only the association that a thing has with an attribute, we use the `via` keyword to capture and delete the relation between the owner and the owned attribute - NOT the instance of the attribute type itself, as doing so disowns the instance from any other instance that may have owned it.
 
 <div class="tabs dark">
 

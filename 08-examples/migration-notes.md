@@ -26,7 +26,7 @@ The best approach is to take advantage of both types, that is to have
 
 ### Preparing the Execution List
 
-The next step is to add each of the constructed Graql insert queries to a list which will later be iterated for execution. To ensure that every query can be successfully executed, the order of the queries in the list matters. Queries that are meant to insert relationships (that rely on the existence of other instances), should be placed towards the end of the list, or stored in separate lists altogether.
+The next step is to add each of the constructed Graql insert queries to a list which will later be iterated for execution. To ensure that every query can be successfully executed, the order of the queries in the list matters. Queries that are meant to insert relations (that rely on the existence of other instances), should be placed towards the end of the list, or stored in separate lists altogether.
 
 #### Avoiding Duplicates
 

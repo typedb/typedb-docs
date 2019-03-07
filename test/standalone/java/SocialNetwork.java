@@ -1,6 +1,6 @@
 package generated;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
 
@@ -9,9 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 public class TestStandaloneSocialNetwork {
 
@@ -43,9 +41,7 @@ public class TestStandaloneSocialNetwork {
     public void testGraknQuickstartB() { GraknQuickstartB.main(new String[]{}); }
 
     @Test
-    public void testGraknQuickstartC() {
-        GraknQuickstartC.main(new String[]{});
-    }
+    public void testGraknQuickstartC() { GraknQuickstartC.main(new String[]{}); }
 
     @AfterClass
     public static void cleanSocialNetwork() {

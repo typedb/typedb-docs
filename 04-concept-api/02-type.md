@@ -2,7 +2,7 @@
 sidebarTitle: Type
 pageTitle: Type
 permalink: /docs/concept-api/type
-toc: false
+toc: true
 ---
 
 ## Type Methods
@@ -62,21 +62,21 @@ toc: false
 
 </div>
 
-## RelationshipType Methods
-`RelationshipType` has all the [`Type` methods](#type-methods) plus what follows.
+## RelationType Methods
+`RelationType` has all the [`Type` methods](#type-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.relationship_type language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.concept_api.relation_type language="java" class_prefix="concept-api-java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relationship_type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.relation_type language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.relationship_type language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.concept_api.relation_type language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>

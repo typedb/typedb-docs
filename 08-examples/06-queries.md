@@ -69,9 +69,9 @@ get $phone-number;
 [tab:Java]
 <!-- test-standalone PhoneCallsFirstQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
 import graql.lang.query.GraqlGet;
 import static graql.lang.Graql.*;
@@ -111,6 +111,7 @@ public class PhoneCallsFirstQuery {
 
         transaction.close();
         session.close();
+        client.close();
     }
 }
 ```
@@ -238,9 +239,9 @@ get $phone-number;
 [tab:Java]
 <!-- test-standalone PhoneCallsSecondQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
 import graql.lang.query.GraqlGet;
 import static graql.lang.Graql.*;
@@ -282,6 +283,7 @@ public class PhoneCallsSecondQuery {
 
         transaction.close();
         session.close();
+        client.close();
     }
 }
 ```
@@ -407,9 +409,9 @@ get $phone-number;
 [tab:Java]
 <!-- test-standalone PhoneCallsThirdQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
 import graql.lang.query.GraqlGet;
 import static graql.lang.Graql.*;
@@ -448,6 +450,7 @@ public class PhoneCallsThirdQuery {
 
         transaction.close();
         session.close();
+        client.close();
     }
 }
 ```
@@ -574,9 +577,9 @@ get $phone-number-a, $phone-number-b;
 [tab:Java]
 <!-- test-standalone PhoneCallsForthQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
 import graql.lang.query.GraqlGet;
 import grakn.core.server.exception.TransactionException;
@@ -619,6 +622,7 @@ public class PhoneCallsForthQuery {
 
         transaction.close();
         session.close();
+        client.close();
     }
 }
 ```
@@ -767,9 +771,9 @@ get $duration; mean $duration;
 [tab:Java]
 <!-- test-standalone PhoneCallsFifthQuery.java -->
 ```java
-package grakn.examples;
+package grakn.example.phoneCalls;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import grakn.core.concept.answer.Numeric;
 import graql.lang.query.GraqlGet;
 import static graql.lang.Graql.*;
@@ -829,6 +833,7 @@ public class PhoneCallsFifthQuery {
 
         transaction.close();
         session.close();
+        client.close();
     }
 }
 ```

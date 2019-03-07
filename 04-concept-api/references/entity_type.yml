@@ -2,6 +2,7 @@ methods:
   - method:
     common: &method-create
       title: Create instance
+      description: Creates and returns a new instance of this EntityType.
       returns:
         - Entity object
     java:
@@ -9,7 +10,7 @@ methods:
       method: entityType.create();
     javascript:
       <<: *method-create
-      method: async entityType.create();
+      method: await entityType.create();
     python:
       <<: *method-create
       method: entity_type.create()

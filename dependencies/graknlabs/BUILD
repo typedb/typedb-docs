@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 #
 # GRAKN.AI - THE KNOWLEDGE GRAPH
 # Copyright (C) 2018 Grakn Labs Ltd
@@ -16,13 +15,3 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-
-# Script for updating Maven dependencies after the dependency list in //dependencies/maven/dependencies.yaml.
-
-[[ $(readlink $0) ]] && path=$(readlink $0) || path=$0
-GRAKN_CORE_HOME=$(cd "$(dirname "${path}")" && pwd -P)/../../
-pushd "$GRAKN_CORE_HOME" > /dev/null
-
-bazel run @graknlabs_build_tools//bazel:bazel-deps -- generate -r $GRAKN_CORE_HOME -s dependencies/maven/dependencies.bzl -d dependencies/maven/dependencies.yaml
-
-popd > /dev/null

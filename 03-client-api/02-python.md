@@ -5,11 +5,12 @@ permalink: /docs/client-api/python
 ---
 
 ## Dependencies
-Before installing the Python `grakn` package, make sure the following dependencies are installed.
 
-- [Grakn >= 1.3.0](https://github.com/graknlabs/grakn/releases)
-- [Python >= 2.7](https://www.python.org/downloads/)
-- [PIP package manager](https://pip.pypa.io/en/stable/installing/)
+| Client Python  | Grakn Core                  | Grakn KGMS   | Python |
+| :------------: | :-------------------------: | :----------: | :----: |
+| 1.5.0          | 1.5.0                       | N/A          | >= 2.7 |
+| 1.4.2          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0, 1.4.3 | >= 3.6 |
+| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3        | >= 3.6 |
 
 ## Installation
 ```

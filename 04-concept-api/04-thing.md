@@ -2,7 +2,7 @@
 sidebarTitle: Thing
 pageTitle: Thing
 permalink: /docs/concept-api/thing
-toc: false
+toc: true
 ---
 
 ## Thing Methods
@@ -43,21 +43,21 @@ toc: false
 
 </div>
 
-## Relationship Methods
-`Relationship` has all the [`Thing` methods](/docs/concept-api/concept) plus what follows.
+## Relation Methods
+`Relation` has all the [`Thing` methods](/docs/concept-api/concept) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.relationship language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.concept_api.relation language="java" class_prefix="concept-api-java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relationship language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.concept_api.relation language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.relationship language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.concept_api.relation language="python" class_prefix="concept-api-python" %}
 [tab:end]
 
 </div>

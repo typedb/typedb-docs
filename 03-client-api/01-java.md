@@ -5,16 +5,24 @@ permalink: /docs/client-api/java
 ---
 
 ## Dependencies
-The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.0` added as a dependency in your Java project.
+
+| Client Java | Grakn Core | Grakn KGMS |
+| :---------: | :--------: | :--------: |
+| 1.5.0       | 1.5.0      | N/A        |
+| 1.4.3       | 1.4.3      | 1.4.3      |
+| 1.4.2       | 1.4.2      | 1.2.0      |
+| 1.4.1       | 1.4.0      | 1.2.0      |
+| 1.4.0       | 1.4.0      | 1.2.0      |
+| 1.3.0       | 1.3.0      | 1.2.0      |
 
 <div class="tabs dark">
 
 [tab:Grakn Core]
 ```xml
 <dependency>
-  <groupId>ai.grakn</groupId>
-  <artifactId>client-java</artifactId>
-  <version>1.4.3</version>
+  <groupId>grakn.core</groupId>
+  <artifactId>client</artifactId>
+  <version>1.5.0</version>
 </dependency>
 ```
 [tab:end]
@@ -23,7 +31,7 @@ The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.
 ```xml
 <dependency>
   <groupId>ai.grakn.kgms</groupId>
-  <artifactId>client</artifactId>
+  <artifactId>grakn-kgms</artifactId>
   <version>1.4.3</version>
 </dependency>
 ```
@@ -32,17 +40,15 @@ The only dependency for getting started with Grakn Client Java is `Grakn >= 1.3.
 </div>
 
 ## Quickstart
-First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
+First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In the interpreter or in your source, import `grakn`.
-
-Instantiate a client and open a session.
+Import `grakn.client.GraknClient`, instantiate a client and open a session to a [keyspace](/docs/management/keyspace).
 
 <!-- test-standalone GraknQuickstartA.java -->
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 
 public class GraknQuickstartA {
     public static void main(String[] args) {
@@ -55,7 +61,7 @@ public class GraknQuickstartA {
 }
 ```
 
-[KGMS ONLY] We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
+[KGMS ONLY] Using Client Java 1.4.3, we can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
 
 <!-- test-ignore -->
 ```java
@@ -69,7 +75,7 @@ Create transactions to use for reading and writing data.
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 
 public class GraknQuickstartB {
     public static void main(String[] args) {
@@ -100,7 +106,7 @@ Running basic retrieval and insertion queries.
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import graql.lang.Graql;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlGet;

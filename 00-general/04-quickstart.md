@@ -27,7 +27,7 @@ event-date sub attribute,
   datatype date;
 approved-date sub event-date;
 
-## an abstract relationship, only to be subtyped by other relationships
+## an abstract relation, only to be subtyped by other relations
 request sub relation,
   abstract,
   has approved-date,
@@ -118,7 +118,7 @@ The result contains the following answers.
 ```java
 package grakn.examples;
 
-import grakn.core.client.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlGet;
 import grakn.core.concept.answer.ConceptMap;
