@@ -11,11 +11,9 @@ Examples of such queries include:
 
 a) List all people that were unemployed in the last 6 months
 
-b) Show me text-only timelines (no videos are images) 
+b) Show me text-only timelines (no videos or images) 
 
 c) All single people who have posted a photo in a forum
-
-d) All employees of company A that are graduates of a given school
 
 The intuitive meaning of a negated pattern is that of a complement. However relation complement is not a clearly defined term as it requires 
 the definition of a domain of values with respect to which the complement is computed. Even in this case we end up with an infinite relation which leaves 
@@ -159,7 +157,7 @@ not { $x isa person-with-a-father;};
 not { $x isa person-with-a-mother;};
 ```
 
-Now let's look at how do we arrive at the answers if we executed this as a match query. To do this we will go through
+Now let's look at how we arrive at the answers if we execute this as a match query. To do this we will go through
 the set difference computation procedure. Let's define a set `P` to be the set of all people, i.e. a set that is the answer set to a query:
 ```
 match $x isa person;get;
@@ -213,7 +211,7 @@ not { ($x, mother: $y) isa parentship;};
 get; 
 ```
 
-will only have the Charlie concept as the result is obtained by computing the set difference:
+will only have the Charlie concept as the result obtained by computing the set difference:
 
 ```
 A = P \ F \ M = {Charlie}
@@ -279,7 +277,7 @@ A'' = P' \ F' \ M' =
 }
 ```
 
-However! If we now do a projection onto thr `$x` variable to compare the results with our previous query variant where 
+However! If we now do a projection onto the `$x` variable to compare the results with our previous query variant where 
 the `$y` variable is unbounded, i.e. if we execute:
 
 ```
@@ -295,8 +293,8 @@ we will get the following concepts in return:
 ```
 A' = P' \ F' \ M' | x = {A, B, C}
 ```
-which is clearly different to the anticipated result of `A = {C}` - our answer set is not a set of orphans, instead
-it is a projection from a set of people pairs with pairs playing in `parentship` relation excluded. 
+which is clearly different to the anticipated result of `A = {C}` - our answer set is not a set of orphans, instead 
+it is a projection from a set of people pairs where pairs playing in `parentship` relation excluded. 
 As a result, extra care should be taken and thought given when formulating queries with negation blocks.
 
 One might be tempted to put the two negation blocks into one. Let's look at the outcome of that. If we define:
@@ -309,7 +307,7 @@ not {
     ($x, mother: $z) isa parentship;
 };
 ```
-noting that this time we need to pick a fresh variable for mother as we are in the same negation block. The meaning of this pattern is the following. From all the people,
+noting that this time we need to pick a fresh variable for mother as we are in the same negation block. The meaning of this pattern is the following. From all people,
 remove the people that have both a mother and a father. As a result our answer set will contain people that have at most one parent.
 
 We can go further than that. Negation blocks in queries can be nested. Consequently, if we wanted to find people whose father is unemployed we can write something
@@ -417,7 +415,7 @@ is satisfied as well as to maintain the expected meaning of the `unreachable` re
 In this subsection we address an important property of reasoning - the monotonicity property.
 We say that reasoning is monotonic if previously derived facts remain true upon addition of new knowledge. 
 Without employing pattern negation in rules, Graql reasoning is monotonic. When pattern negation is used in rules however, this property no longer holds.
-Preserving monotonicity property is not strictly necessary or required, however it is important to be aware of the consequences of non-monotonic reasoning 
+Preserving monotonicity is not strictly necessary or required, however it is important to be aware of the consequences of non-monotonic reasoning 
 and how it possibly affects querying. We can illustrate this with a popular example:
 
 Let's start with our knowledge to be the following:
@@ -425,7 +423,6 @@ Let's start with our knowledge to be the following:
 - birds fly unless they are abnormal
 - penguins are abnormal birds
 - penguins are birds
-- Tweety is a bird
 
 This can be summarised as:
 
@@ -435,9 +432,7 @@ abnormal(X) :- penguin(X)
 bird(X) :- penguin(X)
 ```
 
-We can capture this information in Graql terms:
-
-Defining our little schema first:
+We can capture this information in Graql terms. Defining our little schema first:
 
 ```
 bird sub entity;
@@ -466,16 +461,33 @@ then{
     $x isa abnormal;
 };
 ```
-
-In consequence of the above knowledge, we can establish that Tweety flies, i. e. if we query:
+Let's now say that we there is a bird which we will call Tweety:
 
 ```
-match $x isa flies;get;
+insert $x isa bird;
 ```
-the Tweety concept will be returned.
 
-Let us now look what will happen if we add an extra bit of information - we will specialise Tweety to be a penguin. If we now repeat our flying query, we will
-receive no answers. Consequently our previously derived fact no longer holds.
+In consequence of the above knowledge, we can establish that Tweety flies, i.e. if we query:
+
+```
+match $x isa flies; get;
+```
+
+our single Tweety bird concept will be returned. Let us now look what will happen if we add an extra bit of information.
+We will specialise Tweety to be a penguin:
+
+```
+match $x isa bird; delete;
+insert $x isa penguin;
+```
+
+If we now repeat our flying query:
+ 
+ ```
+ match $x isa flies; get;
+ ```
+ 
+we will receive no answers. Consequently our previously derived fact of Tweety being able to fly no longer holds.
 
 This illustrates the fact that when using pattern negation in rules, we lose the guarantee of all our previous inferences being true upon addition of new 
 information be it new data or rules.
