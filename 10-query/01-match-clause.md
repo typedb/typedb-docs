@@ -4,23 +4,12 @@ pageTitle: Match Clause
 permalink: /docs/query/match-clause
 ---
 
-## Match Concept Types and Their Instances
-`match` clause describes a pattern in the knowledge graph. In other words, it uses the semantics of the knowledge graph as defined in the [schema](/docs/schema/overview) to find a specific match. We can use the `match` clause to target instances of data or concepts defined in the schema.
+## Match Clause
+Match clauses are used to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
+By defining the [schema](/docs/schema/overview), we effectively define a vocabulary to be used to describe concepts of our domain. 
+Once the schema is defined, we can form graph patterns that we want to search for in our knowledge graph. We do that by using match clauses.
+Each match clause represents a particular graph pattern. The match clauses are then executed as a part of Get query returning tuples of instances fulfilling the specified pattern.
 
-<div class = "note">
-[Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
-</div>
 
 ## Variables
 Graql assigns instances of data and schema concepts to variables. A Graql variable is prefixed with `$` and is simply a placeholder for an instance of a concept type or simply a hard-coded value.
@@ -525,6 +514,21 @@ This matches all concept types that own `title` as their attribute.
 
 ## Examples
 To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](/docs/examples/queries).
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
+</div>
 
 ## Summary
 We learned how to use the `match` clause to write intuitive statements that describe a desired pattern in the knowledge graph and fill in the variables that hold the data we would like to acquire.
