@@ -25,6 +25,8 @@ In the following subsection we will show examples of how to augment the schema b
 In the [Hierarchical Schema](/docs/schema/hierarchical-schema) section, we have defined the following `parentship` relationship together with its role hierarchy:
 
 ```graql
+define
+
 parentship sub relatives,
     relates parent,
     relates mother as parent,

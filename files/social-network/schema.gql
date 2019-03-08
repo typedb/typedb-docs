@@ -85,6 +85,7 @@ define
 		plays attached;
 
 	person sub entity,
+		has name,
 		has full-name,
 		has nickname,
 		has gender,
@@ -245,7 +246,7 @@ define
 		};
 
 
-	relatives sub relationship, abstract;
+	relatives sub relation, abstract;
 
 	marriage sub relation,
   		relates spouse,
