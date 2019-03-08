@@ -105,10 +105,10 @@ The relationship will be defined through a `siblings` relationship. We define bo
 ```graql
 define
 
-siblings sub relationship,
+siblings sub relation,
     relates sibling;
 
-cousins sub relationship,
+cousins sub relation,
     relates cousin;
 ```
 
