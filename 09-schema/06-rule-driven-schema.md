@@ -22,15 +22,15 @@ In the following subsection we will show examples of how to augment the schema b
 
 ## Defining relationships with hierarchical role structure
 
-In the [Hierarchical Schema](/docs/schema/hierarchical-schema) section, we have defined the following parentship relationship together with its role hierarchy:
+In the [Hierarchical Schema](/docs/schema/hierarchical-schema) section, we have defined the following `parentship` relationship together with its role hierarchy:
 
 ```graql
-parentship sub relatives
-  relates parent
-  relates mother as parent
-  relates father as parent
-  relates child
-  relates son as child
+parentship sub relatives,
+  relates parent,
+  relates mother as parent,
+  relates father as parent,
+  relates child,
+  relates son as child,
   relates daughter as child;
 
 ````
@@ -105,10 +105,10 @@ The relationship will be defined through a `siblings` relationship. We define bo
 ```graql
 define
 
-siblings sub relationship
+siblings sub relationship,
     relates sibling;
 
-cousins sub relationship
+cousins sub relationship,
     relates cousin;
 ```
 

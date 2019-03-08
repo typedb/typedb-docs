@@ -111,13 +111,12 @@ We will first expand our `marriage` relationship type so that it can provide mor
 ```graql
 define
 
-relatives sub relationship
-  is-abstract;
+relatives sub relationship, abstract;
 
-marriage sub relation
-  relates spouse
-  relates husband as spouse
-  relates wife as spouse
+marriage sub relation,
+  relates spouse,
+  relates husband as spouse,
+  relates wife as spouse,
   has event-date;
 
 ```
@@ -130,12 +129,12 @@ Let's expand this even further:
 ```graql
 define
 
-parentship sub relatives
-  relates parent
-  relates mother as parent
-  relates father as parent
-  relates child
-  relates son as child
+parentship sub relatives,
+  relates parent,
+  relates mother as parent,
+  relates father as parent,
+  relates child,
+  relates son as child,
   relates daughter as child;
 
 ```
@@ -164,92 +163,72 @@ Now we have provided more detail about being a parent. We have also said that be
 We could go into far more detail regarding our genealogy knowledge graph but I will leave that to you.
 For the moment here is our more complex schema to get you started on making your own deeper ontologies.
 
-```graql-test-ignore
-
+```graql
 define
 
-# Entities
+#Entities
 
-  person sub entity
-    has gender
-    has birth-date
-    has death-date
-    has identifier
-    has firstname
-    has middlename
-    has surname
-    plays spouse
-    plays parent
-    plays child;
+person sub entity,
+    has name,
+    has gender,
+    has phone-number,
+    key email,
+    plays parent,
+    plays child,
+    plays spouse;
+    
+post sub entity,
+    abstract,
+    key identifier;
 
-    gender sub attribute datatype string;
-    birth-date sub event-date;
-    death-date sub event-date;
-    name sub attribute datatype string;
-    firstname sub name;
-    middlename sub name;
-    surname sub name;
-    identifier sub attribute datatype string;
+status-update sub post,
+    has content;
 
-  event sub entity
-    is-abstract
-    has degree
-    has confidence
-    has event-date
-    has identifier
-    has notes
-    has conclusion
-    has happening;
+comment sub post,
+	has content;
 
-  wedding sub event;
+album sub post,
+	has title,
+	has published-date;
 
-  funeral sub event
-    has death-date;
+media sub post,
+	abstract,
+	has caption,
+	has file;
 
-  christening sub event
-    has birth-date;
+video sub media;
+photo sub media;
 
-  birth sub event
-    has firstname
-    has middlename
-    has surname
-    has gender
-    has birth-date;
+ # Attributes
 
-  death sub event
-    has death-date;   	    
+name sub attribute, datatype string;
+phone-number sub attribute, datatype string;
+email sub attribute, datatype string;
+gender sub attribute, datatype string;
+content sub attribute, datatype string;
+title sub attribute, datatype string;
+published-date sub attribute, datatype date;
 
-## Relations
+ # Roles and Relations
 
-  relatives sub relationship
-    is-abstract;
+relatives sub relationship, abstract;
 
-  marriage sub relatives
-    relates spouse
-    relates spouse1 as spouse
-    relates spouse2 as spouse
-    relates husband as spouse
-    relates wife as spouse
-    has event-date;
-
-  parentship sub relatives
-    relates parent
-    relates mother as parent
-    relates father as parent
-    relates child
-    relates son as child
-    relates daughter as child;
-
-## Attributes
-  event-date sub attribute datatype date;
-  notes sub attribute datatype string;
-  happening sub attribute datatype string;
-  degree sub attribute datatype string;
-  conclusion sub attribute datatype string;
-  confidence sub attribute datatype string;
+marriage sub relation,
+  relates spouse,
+  relates husband as spouse,
+  relates wife as spouse,
+  has event-date;
+  
+  
+parentship sub relatives,
+  relates parent,
+  relates mother as parent,
+  relates father as parent,
+  relates child,
+  relates son as child,
+  relates daughter as child;
 
 ```
-
 
 
 ## Where Next?
