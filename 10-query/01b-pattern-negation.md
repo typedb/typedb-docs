@@ -192,6 +192,7 @@ Additionally let's say we know that the following two `parentship` relations hol
 Parentship(child: Alice, father: Bob)
 Parentship(child: Bob, mother: Charlie)
 ```
+
 i.e. Bob is the father of Alice and Charlie is the mother of Bob.
 
 This results in our sets `F` and `M` being defined as:

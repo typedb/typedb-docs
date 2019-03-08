@@ -1,7 +1,7 @@
 define
 
 ################
-## ATTRIBITES ##
+## ATTRIBUTES ##
 ################
 	name sub attribute,
 		datatype string;
@@ -194,6 +194,30 @@ define
 		}, then {
 			(mutual-birthed-child: $p1, mutual-birthed-child: $p2, mutual-birth-location: $l, mutual-birth: $b1, mutual-birth: $b2) isa birth-mutuality;
 		};
+
+
+	parentship sub relation
+  		relates parent
+		relates child;
+
+	father sub parent;
+	mother sub parent;
+
+	fatherhood sub rule,
+	when {
+		(child: $x, parent: $y) isa parentship;
+		$y has gender 'male';
+	}, then {
+		(child: $x, father: $y) isa parentship;
+	};
+
+	motherhood sub rule,
+	when {
+		(child: $x, parent: $y) isa parentship;
+		$y has gender 'female';
+	}, then {
+		(child: $x, mother: $y) isa parentship;
+	};
 
 ###############
 ## RESIDENCY ##
