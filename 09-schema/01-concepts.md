@@ -123,7 +123,7 @@ Although, in the example above, we have assigned attributes to the `person` enti
 </div>
 
 
-### Entity to play a role
+### Allow an entity to play a role
 An entity can play a role in a relation. To define the role played by an entity, we use the `plays` keyword followed by the role's label.
 
 <div class="tabs dark">
@@ -279,7 +279,7 @@ Entities, attributes, and even other relations can play a role in a relation. To
 
 We have already seen how to [define an entity to play a role](#entity-to-play-a-role) and soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relation that plays a role in another relation?
 
-### Define a relation to play a role
+### Allow a relation to play a role
 Let's go through a simple example of how a relation can play a role in another relation.
 
 <div class="tabs dark">
