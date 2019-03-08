@@ -196,27 +196,48 @@ define
 		};
 
 
-	parentship sub relation
-  		relates parent
-		relates child;
+	parentship sub relation,
+  		relates parent,
+		relates child,
+		relates father as parent,
+		relates mother as parent,
+		relates son as child,
+		relates dadughter as child;
 
-	father sub parent;
-	mother sub parent;
-
-	fatherhood sub rule,
-	when {
-		(child: $x, parent: $y) isa parentship;
-		$y has gender 'male';
-	}, then {
-		(child: $x, father: $y) isa parentship;
+	genderizeParentships1
+	when{
+		(parent: $p, child: $c) isa parentship;
+		$p has gender 'male';
+		$c has gender 'male';
+	}, then{
+		(father: $p, son: $c) isa parentship;
 	};
 
-	motherhood sub rule,
-	when {
-		(child: $x, parent: $y) isa parentship;
-		$y has gender 'female';
-	}, then {
-		(child: $x, mother: $y) isa parentship;
+	genderizeParentships2
+	when{
+		(parent: $p, child: $c) isa parentship;
+		$p has gender 'male';
+		$c has gender 'female';
+	}, then{
+		(father: $p, daughter: $c) isa parentship;
+	};
+
+	genderizeParentships3
+	when{
+		(parent: $p, child: $c) isa parentship;
+		$p has gender 'female';
+		$c has gender 'male';
+	}, then{
+		(mother: $p, son: $c) isa parentship;
+	};
+
+	genderizeParentships4
+	when{
+		(parent: $p, child: $c) isa parentship;
+		$p has gender 'female';
+		$c has gender 'female';
+	}, then{
+		(mother: $p, daughter: $c) isa parentship;
 	};
 
 ###############
