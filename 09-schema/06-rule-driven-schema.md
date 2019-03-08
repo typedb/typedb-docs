@@ -26,12 +26,12 @@ In the [Hierarchical Schema](/docs/schema/hierarchical-schema) section, we have 
 
 ```graql
 parentship sub relatives,
-  relates parent,
-  relates mother as parent,
-  relates father as parent,
-  relates child,
-  relates son as child,
-  relates daughter as child;
+    relates parent,
+    relates mother as parent,
+    relates father as parent,
+    relates child,
+    relates son as child,
+    relates daughter as child;
 
 ````
 
@@ -42,38 +42,38 @@ define
 
 genderizeParentships1 sub rule,
 when{
-(parent: $p, child: $c) isa parentship;
-$p has gender 'male';
-$c has gender 'male';
+    (parent: $p, child: $c) isa parentship;
+    $p has gender 'male';
+    $c has gender 'male';
 }, then{
-(father: $p, son: $c) isa parentship;
+    (father: $p, son: $c) isa parentship;
 };
 
 genderizeParentships2 sub rule,
 when{
-(parent: $p, child: $c) isa parentship;
-$p has gender 'male';
-$c has gender 'female';
+    (parent: $p, child: $c) isa parentship;
+    $p has gender 'male';
+    $c has gender 'female';
 }, then{
-(father: $p, daughter: $c) isa parentship;
+    (father: $p, daughter: $c) isa parentship;
 };
 
 genderizeParentships3 sub rule,
 when{
-(parent: $p, child: $c) isa parentship;
-$p has gender 'female';
-$c has gender 'male';
+    (parent: $p, child: $c) isa parentship;
+    $p has gender 'female';
+    $c has gender 'male';
 }, then{
-(mother: $p, son: $c) isa parentship;
+    (mother: $p, son: $c) isa parentship;
 };
 
 genderizeParentships4 sub rule,
 when{
-(parent: $p, child: $c) isa parentship;
-$p has gender 'female';
-$c has gender 'female';
+    (parent: $p, child: $c) isa parentship;
+    $p has gender 'female';
+    $c has gender 'female';
 }, then{
-(mother: $p, daughter: $c) isa parentship;
+    (mother: $p, daughter: $c) isa parentship;
 };
 ```
 
@@ -120,22 +120,22 @@ define
 
 peopleWithSameParentsAreSiblings sub rule,
 when{
-(mother: $m, $x) isa parentship;
-(mother: $m, $y) isa parentship;
-(father: $f, $x) isa parentship;
-(father: $f, $y) isa parentship;
-$x != $y;
+    (mother: $m, $x) isa parentship;
+    (mother: $m, $y) isa parentship;
+    (father: $f, $x) isa parentship;
+    (father: $f, $y) isa parentship;
+    $x != $y;
 }, then{
-(sibling: $x, sibling: $y) isa siblings;
+    (sibling: $x, sibling: $y) isa siblings;
 };
 
 peopleWithSiblingsParentsAreCousins sub rule,
 when{
-(parent: $p, child: $c1) isa parentship;
-($p, $p2) isa siblings;
-(parent: $p2, child: $c2) isa parentship;
+    (parent: $p, child: $c1) isa parentship;
+    ($p, $p2) isa siblings;
+    (parent: $p2, child: $c2) isa parentship;
 }, then{
-(cousin: $c1, cousin: $c2) isa cousins;
+    (cousin: $c1, cousin: $c2) isa cousins;
 };
 ```
 
@@ -161,8 +161,38 @@ Alice and Charlie will be recognised as siblings and Daisy and Eva as cousins on
 
 
 ## Creating real-time classifications
+Another example of rule application is to use them for real-time classification, i.e. classification based on some real-time conditions or classifications that are meant to be temporary.
 
-//TODO
+A simple example of such a classification is marking the people that are unemployed. We can do this by accompanying a type definition with a suitable rule:
+
+```graql
+unemployed sub entity;
+
+unemployment sub rule,
+when{
+    $x isa person;
+    not { (employee: $x, employer: $y) isa employment; };
+}, then{
+    $x isa unemployed;
+};
+```
+
+Consequently, the unemployement information will be encoded via the rule and triggered only when we query for the unemployed people.
+Similarly, we can classify people who do not participate in parentship relationships as child as orphans:
+
+```graql
+orphan sub entity;
+
+orphans sub rule,
+when{
+    $x isa person;
+    not { (child: $x, parent: $y) isa parentship; };
+}, then{
+    $x isa orphan;
+};
+```
+
+Please not that as both `mother` and `father` are subtypes of `parent`. By specifying a single parentship condition we can effectively check for the existence of both specialised roles.
 
 
 ## Where Next?
