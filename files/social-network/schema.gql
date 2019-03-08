@@ -244,6 +244,24 @@ define
 			(mutual-resident: $p1, mutual-resident: $p2, mutual-residence: $l, mutual-residency: $r1, mutual-residency: $r2) isa residence-mutuality;
 		};
 
+
+	relatives sub relationship, abstract;
+
+	marriage sub relation,
+  		relates spouse,
+  		relates husband as spouse,
+  		relates wife as spouse,
+  		has event-date;
+  
+  
+	parentship sub relatives,
+  		relates parent,
+  		relates mother as parent,
+  		relates father as parent,
+  		relates child,
+  		relates son as child,
+  		relates daughter as child;
+
 ###############
 ## EDUCATION ##
 ###############

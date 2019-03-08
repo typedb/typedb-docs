@@ -215,7 +215,7 @@ published-date sub attribute, datatype date;
 
  # Roles and Relations
 
-relatives sub relationship, abstract;
+relatives sub relation, abstract;
 
 marriage sub relation,
   relates spouse,

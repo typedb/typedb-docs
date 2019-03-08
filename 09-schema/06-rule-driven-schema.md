@@ -145,11 +145,11 @@ the knowledge graph:
 ```graql
 insert
 
-$bob isa person, has firstname 'Bob', has gender 'male';
-$alice isa person, has firstname 'Alice', has gender 'female';
-$charlie isa person, has firstname 'Charlie', has gender 'male';
-$daisy isa person, has firstname 'Daisy', has gender 'female';
-$eva isa person, has firstname 'Eva', has gender 'female';
+$bob isa person, has name 'Bob', has gender 'male';
+$alice isa person, has name 'Alice', has gender 'female';
+$charlie isa person, has name 'Charlie', has gender 'male';
+$daisy isa person, has name 'Daisy', has gender 'female';
+$eva isa person, has name 'Eva', has gender 'female';
 (parent: $bob, child: $alice) isa parentship;
 (parent: $bob, child: $charlie) isa parentship;
 (parent: $alice, child: $daisy) isa parentship;
