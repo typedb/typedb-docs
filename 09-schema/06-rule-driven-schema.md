@@ -82,14 +82,14 @@ The rules simply declare specialised `parentship` relationships based on the gen
 ```graql
 insert
 
-$bob isa person, has firstname 'Bob', has gender 'male';
-$alice isa person, has firstname 'Alice', has gender 'female';
+$bob isa person, has name 'Bob', has gender 'male';
+$alice isa person, has name 'Alice', has gender 'female';
 (parent: $bob, child: $alice) isa parentship;
 ```
 
 the knowledge graph will recognise the following `parentship` relationship instances:
 
-```graql
+```
 (parent: $bob, child: $alice) isa parentship;
 (parent: $bob, daughter: $alice) isa parentship;
 (father: $bob, child: $alice) isa parentship;
@@ -166,9 +166,11 @@ Another example of rule application is to use them for real-time classification,
 A simple example of such a classification is marking the people that are unemployed. We can do this by accompanying a type definition with a suitable rule:
 
 ```graql
+define 
+
 unemployed sub entity;
 
-unemployment sub rule,
+unemployment-rule sub rule,
 when{
     $x isa person;
     not { (employee: $x, employer: $y) isa employment; };
@@ -181,9 +183,11 @@ Consequently, the unemployement information will be encoded via the rule and tri
 Similarly, we can classify people who do not participate in parentship relationships as child as orphans:
 
 ```graql
+define 
+
 orphan sub entity;
 
-orphans sub rule,
+orphan-rule sub rule,
 when{
     $x isa person;
     not { (child: $x, parent: $y) isa parentship; };

@@ -111,9 +111,9 @@ We will first expand our `marriage` relationship type so that it can provide mor
 ```graql
 define
 
-relatives sub relationship, abstract;
+relatives sub relation, abstract;
 
-marriage sub relation,
+marriage sub relatives,
   relates spouse,
   relates husband as spouse,
   relates wife as spouse,
@@ -142,6 +142,8 @@ parentship sub relatives,
 Please note that the role specialisation happens via the `as` keyword. The following definition:
 
 ```graql
+define 
+
 parentship sub relation,
   	relates parent,
 	relates father as parent;
@@ -150,6 +152,8 @@ parentship sub relation,
 is equivalent to defining:
 
 ```graql
+define
+
 parentship sub relation,
   	relates parent,
 	relates father;
