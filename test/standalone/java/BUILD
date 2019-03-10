@@ -24,8 +24,8 @@ java_test(
         "@graknlabs_grakn_core//test-integration/resources:logback-test",
     ],
     data = [
-        "//test/grakn-test-server/conf:cassandra-embedded.yaml",
-        "//test/grakn-test-server/conf:grakn.properties",
+        "//test/conf:cassandra-embedded.yaml",
+        "//test/conf:grakn.properties",
         "//files:phone-calls-kg"
     ]
 )
@@ -80,8 +80,8 @@ java_test(
         "@graknlabs_grakn_core//test-integration/resources:logback-test",
     ],
     data = [
-        "//test/grakn-test-server/conf:cassandra-embedded.yaml",
-        "//test/grakn-test-server/conf:grakn.properties",
+        "//test/conf:cassandra-embedded.yaml",
+        "//test/conf:grakn.properties",
         "//files:social-network-kg"
     ]
 )

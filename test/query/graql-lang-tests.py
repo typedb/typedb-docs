@@ -23,8 +23,8 @@ import java.util.stream.Stream;
 public class GraqlLangTest {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer(
-        Paths.get("test/grakn-test-server/conf/grakn.properties"), 
-        Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
+        Paths.get("test/conf/grakn.properties"), 
+        Paths.get("test/conf/cassandra-embedded.yaml")
     );
 
     static GraknClient client;
