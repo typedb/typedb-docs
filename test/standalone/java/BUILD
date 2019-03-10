@@ -3,11 +3,11 @@
 ################################
 
 java_test(
-    name = "standalone-java-phone-calls",
-    test_class = "generated.TestStandalonePhoneCalls",
+    name = "phone-calls",
+    test_class = "grakn.doc.test.example.TestStandalonePhoneCalls",
     srcs = [
-        ":move-test-standalone-java-phone-calls",
-        ":generate-standalones-java-phone-calls"
+        "PhoneCallsTest.java",
+        ":phone-calls-tests"
     ],
     deps = [
         "@graknlabs_client_java//:client-java",
@@ -24,38 +24,31 @@ java_test(
         "@graknlabs_grakn_core//test-integration/resources:logback-test",
     ],
     data = [
+        "//files:phone-calls-kg",
         "//test/conf:cassandra-embedded.yaml",
         "//test/conf:grakn.properties",
-        "//files:phone-calls-kg"
     ]
 )
 
 genrule(
-    name = "generate-standalones-java-phone-calls",
+    name = "phone-calls-tests",
     srcs = [
-        "generate_standalone_tests.py",
+        "java-tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location generate_standalone_tests.py) $(OUTS) $(locations //:content)",
+    cmd = "python $(location java-tests.py) $(OUTS) $(locations //:content)",
     outs = [
         ## examples/migration-java
-        "generated/PhoneCallsCSVMigration.java",
-        "generated/PhoneCallsJSONMigration.java",
-        "generated/PhoneCallsXMLMigration.java",
+        "PhoneCallsCSVMigration.java",
+        "PhoneCallsJSONMigration.java",
+        "PhoneCallsXMLMigration.java",
         ## examples/queries
-        "generated/PhoneCallsFirstQuery.java",
-        "generated/PhoneCallsSecondQuery.java",
-        "generated/PhoneCallsThirdQuery.java",
-        "generated/PhoneCallsForthQuery.java",
-        "generated/PhoneCallsFifthQuery.java",
+        "PhoneCallsFirstQuery.java",
+        "PhoneCallsSecondQuery.java",
+        "PhoneCallsThirdQuery.java",
+        "PhoneCallsForthQuery.java",
+        "PhoneCallsFifthQuery.java",
     ]
-)
-
-genrule(
-    name = "move-test-standalone-java-phone-calls",
-    srcs = ["PhoneCalls.java"],
-    cmd = "cp $(location PhoneCalls.java) $(location generated/TestStandalonePhoneCalls.java)",
-    outs = ["generated/TestStandalonePhoneCalls.java"]
 )
 
 ###################################
@@ -63,11 +56,11 @@ genrule(
 ###################################
 
 java_test(
-    name = "standalone-java-social-network",
-    test_class = "generated.TestStandaloneSocialNetwork",
+    name = "social-network",
+    test_class = "grakn.doc.test.example.TestStandaloneSocialNetwork",
     srcs = [
-        ":move-test-standalone-java-social-network",
-        ":generate-standalones-java-social-network"
+        "SocialNetworkTest.java",
+        ":social-network-tests"
     ],
     deps = [
         "@graknlabs_client_java//:client-java",
@@ -87,25 +80,18 @@ java_test(
 )
 
 genrule(
-    name = "generate-standalones-java-social-network",
+    name = "social-network-tests",
     srcs = [
-        "generate_standalone_tests.py",
+        "java-tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location generate_standalone_tests.py) $(OUTS) $(locations //:content)",
+    cmd = "python $(location java-tests.py) $(OUTS) $(locations //:content)",
     outs = [
         # general/quickstart
-        "generated/SocialNetworkQuickstartQuery.java",
+        "SocialNetworkQuickstartQuery.java",
         # client-api/java
-        "generated/GraknQuickstartA.java",
-        "generated/GraknQuickstartB.java",
-        "generated/GraknQuickstartC.java"
+        "GraknQuickstartA.java",
+        "GraknQuickstartB.java",
+        "GraknQuickstartC.java"
     ]
-)
-
-genrule(
-    name = "move-test-standalone-java-social-network",
-    srcs = ["SocialNetwork.java"],
-    cmd = "cp $(location SocialNetwork.java) $(location generated/TestStandaloneSocialNetwork.java)",
-    outs = ["generated/TestStandaloneSocialNetwork.java"]
 )

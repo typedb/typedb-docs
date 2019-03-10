@@ -10,7 +10,6 @@ import grakn.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
 
 import graql.lang.Graql;
-import static graql.lang.Graql.*;
 import graql.lang.query.GraqlQuery;
 import graql.lang.query.GraqlCompute;
 import graql.lang.query.GraqlDefine;
@@ -19,10 +18,6 @@ import graql.lang.query.GraqlGet;
 import graql.lang.query.GraqlDelete;
 import graql.lang.query.GraqlInsert;
 import graql.lang.query.GraqlCompute.Argument;
-import static graql.lang.query.GraqlCompute.Argument.*;
-import static graql.lang.Graql.Token.Compute.Algorithm.*;
-import static graql.lang.Graql.Token.Order.*;
-
 import org.junit.*;
 
 import java.io.*;
@@ -30,6 +25,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+
+import static graql.lang.Graql.*;
+import static graql.lang.Graql.Token.Compute.Algorithm.*;
+import static graql.lang.Graql.Token.Order.*;
+import static graql.lang.query.GraqlCompute.Argument.*;
 
 public class GraqlJavaTest {
     @ClassRule

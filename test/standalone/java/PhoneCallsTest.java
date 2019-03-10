@@ -1,4 +1,4 @@
-package generated;
+package grakn.doc.test.example;
 
 import grakn.client.GraknClient;
 
@@ -17,7 +17,7 @@ import org.junit.runners.MethodSorters;
 import javax.xml.stream.XMLStreamException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestStandalonePhoneCalls {
+public class PhoneCallsTest {
 
     @BeforeClass
     public static void loadPhoneCalls() {

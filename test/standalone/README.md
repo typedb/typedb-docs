@@ -26,7 +26,7 @@ Add the `<!-- test-standalone <FileName.java> -->` immediately before the intend
 
 ### 2. Add the Test Method Placeholder
 
-Add a JUnit test method in the corresponding test class (ie. [`test/standalone/java/PhoneCalls.java`](java/PhoneCalls.java) or [`test/standalone/java/SocialNetwork.java`](java/SocialNetwork.java))
+Add a JUnit test method in the corresponding test class (ie. [`test/standalone/java/PhoneCalls.java`](java/PhoneCallsTest.java) or [`test/standalone/java/SocialNetwork.java`](java/SocialNetworkTest.java))
 
 #### Format:
 

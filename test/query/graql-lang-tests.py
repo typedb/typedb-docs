@@ -8,10 +8,8 @@ package grakn.doc.test.query;
 
 import grakn.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
-
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
-
 import org.junit.*;
 
 import java.io.*;
