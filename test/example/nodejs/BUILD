@@ -7,10 +7,8 @@ load("@build_bazel_rules_nodejs//:defs.bzl", "jasmine_node_test")
 ################################
 
 jasmine_node_test(
-    name = "standalone-nodejs-phone-calls",
-    srcs = [
-        ":generate-standalone-tests-phone-calls-nodejs"
-    ],
+    name = "phone-calls",
+    srcs = [":phone-calls-tests"],
     deps = [
         "@nodejs_dependencies//jasmine",
         "@nodejs_dependencies//jasmine-reporters",
@@ -19,20 +17,18 @@ jasmine_node_test(
         "@nodejs_dependencies//stream-json",
         "@nodejs_dependencies//xml-stream"
     ],
-    data = [
-        "//files:phone-calls-kg"
-    ]
+    data = ["//files:phone-calls-kg"]
 )
 
 genrule(
-    name = "generate-standalone-tests-phone-calls-nodejs",
+    name = "phone-calls-tests",
     srcs = [
-        "generate_standalone_tests.py",
-        "phoneCallsTemplate.js",
+        "nodejs-tests.py",
+        "PhoneCalls.template.js",
         "//:content"
     ],
-    cmd = "python $(location generate_standalone_tests.py) $(location phoneCallsTemplate.js) $(location generated/testStandalonePhoneCalls.test.js) $(locations //:content)",
-    outs = ["generated/testStandalonePhoneCalls.test.js"]
+    cmd = "python $(location nodejs-tests.py) $(location PhoneCalls.template.js) $(location PhoneCalls.test.js) $(locations //:content)",
+    outs = ["PhoneCalls.test.js"]
 )
 
 ###################################
@@ -40,27 +36,23 @@ genrule(
 ###################################
 
 jasmine_node_test(
-    name = "standalone-nodejs-social-network",
-    srcs = [
-        ":generate-standalone-tests-social-network-nodejs"
-    ],
+    name = "social-network",
+    srcs = [":social-network-tests"],
     deps = [
         "@nodejs_dependencies//jasmine",
         "@nodejs_dependencies//grakn-client",
         "@nodejs_dependencies//jasmine-reporters"
     ],
-    data = [
-        "//files:social-network-kg"
-    ]
+    data = ["//files:social-network-kg"]
 )
 
 genrule(
-    name = "generate-standalone-tests-social-network-nodejs",
+    name = "social-network-tests",
     srcs = [
-        "generate_standalone_tests.py",
-        "socialNetworkTemplate.js",
+        "nodejs-tests.py",
+        "SocialNetwork.template.js",
         "//:content"
     ],
-    cmd = "python $(location generate_standalone_tests.py) $(location socialNetworkTemplate.js) $(location generated/testStandaloneSocialNetwork.test.js) $(locations //:content)",
-    outs = ["generated/testStandaloneSocialNetwork.test.js"]
+    cmd = "python $(location nodejs-tests.py) $(location SocialNetwork.template.js) $(location SocialNetwork.test.js) $(locations //:content)",
+    outs = ["SocialNetwork.test.js"]
 )

@@ -62,7 +62,7 @@ Add the `<!-- test-example <fileName.js> -->` immediately before the intended co
 
 ### 2. Add the Test Method Placeholder
 
-Add a Jasmine `spect` in the relevant `describe` of corresponding test file (ie. [`test/example/nodejs/phoneCallsTemplate.js`](nodejs/phoneCallsTemplate.js) or [`test/example/nodejs/socialNetworkTemplate.js`](nodejs/socialNetworkTemplate.js))
+Add a Jasmine `spect` in the relevant `describe` of corresponding test file (ie. [`test/example/nodejs/PhoneCalls.template.js`](nodejs/PhoneCalls.template.js) or [`test/example/nodejs/SocialNetwork.template.js`](nodejs/SocialNetwork.template.js))
 
 #### Format:
 

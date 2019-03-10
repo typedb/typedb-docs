@@ -86,8 +86,8 @@ jobs:
       - checkout
       - install-bazel
       - run-grakn-server
-      - run: bazel test //test/example/nodejs:standalone-nodejs-phone-calls --test_output=errors
-      - run: bazel test //test/example/nodejs:standalone-nodejs-social-network --test_output=errors
+      - run: bazel test //test/example/nodejs:phone-calls --test_output=errors
+      - run: bazel test //test/example/nodejs:social-network --test_output=errors
 
   test-example-python:
     machine: true

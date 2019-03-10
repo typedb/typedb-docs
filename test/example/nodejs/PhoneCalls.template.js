@@ -7,7 +7,7 @@ jasmine.getEnv().addReporter(tapReporter)
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 
-// TODO set explicit order of executation for tests
+// TODO set explicit order of execution for tests
 
 beforeAll(async function() {
     const client = new Grakn("localhost:48555");

@@ -32,13 +32,10 @@ public class PhoneCallsTest {
             transaction.commit();
             session.close();
             client.close();
-            System.out.println("Loaded the phone_calls schema");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     @Test
     public void testAPhoneCallsFirtstQuery() {
@@ -85,6 +82,5 @@ public class PhoneCallsTest {
         GraknClient client = new GraknClient("localhost:48555");
         client.keyspaces().delete("phone_calls");
         client.close();
-        System.out.println("Deleted the phone_calls keyspace");
     }
 }
