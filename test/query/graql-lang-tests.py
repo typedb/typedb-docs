@@ -1,10 +1,10 @@
 import re
 import sys
 
-generated_test_path, markdown_files = sys.argv[1], sys.argv[2:]
+output_path, markdown_files = sys.argv[1], sys.argv[2:]
 
-graql_snippet_test_class_template = """
-package generated;
+graql_lang_test_template = """
+package grakn.doc.test.query;
 
 import grakn.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
@@ -20,7 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-public class TestSnippetGraql {
+public class GraqlLangTest {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer(
         Paths.get("test/grakn-test-server/conf/grakn.properties"), 
@@ -72,7 +72,7 @@ public class TestSnippetGraql {
 }
 """
 
-graql_snippet_test_method_template = """
+graql_lang_test_method_template = """
     @Test
     public void test() {
         // PAGE COMMENT PLACEHOLDER
@@ -109,12 +109,12 @@ for i, snippet in enumerate(snippets):
             graql_lines.append(line.replace('"', "\\\""))
     final_snippet = " ".join(graql_lines)
 
-    test_method = graql_snippet_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+    test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
     test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
     test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add query objects
     test_methods += test_method
 
-graql_snippet_test_class = graql_snippet_test_class_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
+graql_lang_test_class = graql_lang_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
 
-with open(generated_test_path, "w") as generated_test_file:
-    generated_test_file.write(graql_snippet_test_class)
+with open(output_path, "w") as output_file:
+    output_file.write(graql_lang_test_class)

@@ -60,21 +60,21 @@ jobs:
       - run-bazel-rbe:
           command: bazel build //...
 
-  test-snippet-graql:
+  test-query-graql-lang:
     machine: true
     steps:
       - checkout
       - install-bazel
       - run-bazel-rbe:
-          command: bazel test //test/snippet:snippet-graql --test_output=streamed
+          command: bazel test //test/query:graql-lang --test_output=errors
 
-  test-snippet-java:
+  test-query-graql-java:
     machine: true
     steps:
       - checkout
       - install-bazel
       - run-bazel-rbe:
-          command: bazel test //test/snippet:snippet-java --test_output=streamed
+          command: bazel test //test/query:graql-java --test_output=errors
 
   test-standalone-java-phone-calls:
     machine: true
@@ -138,8 +138,8 @@ workflows:
   docs:
     jobs:
       - build
-      - test-snippet-graql
-      - test-snippet-java
+      - test-query-graql-lang
+      - test-query-graql-java
       - test-standalone-java-phone-calls
       - test-standalone-nodejs-phone-calls
       - test-standalone-python-phone-calls
@@ -150,8 +150,8 @@ workflows:
               only: development
           requires:
             - build
-            - test-snippet-graql
-            - test-snippet-java
+            - test-query-graql-lang
+            - test-query-graql-java
             - test-standalone-java-phone-calls
             - test-standalone-nodejs-phone-calls
             - test-standalone-python-phone-calls
@@ -162,8 +162,8 @@ workflows:
               only: master
           requires:
             - build
-            - test-snippet-graql
-            - test-snippet-java
+            - test-query-graql-lang
+            - test-query-graql-java
             - test-standalone-java-phone-calls
             - test-standalone-nodejs-phone-calls
             - test-standalone-python-phone-calls

@@ -1,10 +1,10 @@
 import re
 import sys
 
-generated_test_path, markdown_files = sys.argv[1], sys.argv[2:]
+output_path, markdown_files = sys.argv[1], sys.argv[2:]
 
-java_snippet_test_class_template = """
-package generated;
+graql_java_test_template = """
+package grakn.doc.test.query;
 
 import grakn.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
@@ -31,7 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
-public class TestSnippetJava {
+public class GraqlJavaTest {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer(
         Paths.get("test/grakn-test-server/conf/grakn.properties"), 
@@ -83,7 +83,7 @@ public class TestSnippetJava {
 }
 """
 
-java_snippet_test_method_template = """
+graql_java_test_method_template = """
     @Test
     public void test() {
         // PAGE COMMENT PLACEHOLDER
@@ -110,7 +110,7 @@ for markdown_file in markdown_files:
 
 test_methods = ""
 for i, snippet in enumerate(snippets):
-    test_method = java_snippet_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+    test_method = graql_java_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
     test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
     test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
 
@@ -126,8 +126,8 @@ for i, snippet in enumerate(snippets):
 
 test_methods = test_methods.replace("&lt;", "<").replace("&gt;", ">")
 
-java_snippet_test_class = java_snippet_test_class_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
+graql_java_test_class = graql_java_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
 
 
-with open(generated_test_path, "w") as generated_test_file:
-    generated_test_file.write(java_snippet_test_class)
+with open(output_path, "w") as output_file:
+    output_file.write(graql_java_test_class)

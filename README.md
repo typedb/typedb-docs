@@ -211,5 +211,5 @@ Client API reference files are accessible via [`03-client-api/references`](03-cl
 - Code blocks whose language is not `java`, `javascript` or `python` will not be tested.
 - Code blocks that follow the `<!-- test-ignore --> flag, will not be tested.
 - Code blocks that follow the `<!-- test-delay --> flag, with the flag expected to be removed in the next major or minor release.
-- Code blocks of `java`, `javascript` or `python` that are not preceded by any test flags, will be tested as snippets. Learn more about [Snippet Tests](test/snippet/README.md).
+- Code blocks of `java`, `javascript` or `python` that are not preceded by any test flags, will be tested as snippets. Learn more about [Snippet Tests](test/query/README.md).
 - Code blocks that follow the `<!-- test-standalone file-name.extension --> flag, will be tested as standalones. Learn more about [Standalone Tests](test/standalone/README.md).
