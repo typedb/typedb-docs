@@ -40,7 +40,7 @@ genrule(
 
 java_test(
     name = "graql-lang",
-    test_class = "grakn.doc.test.GraqlLangTest",
+    test_class = "grakn.doc.test.query.GraqlLangTest",
     srcs = [":graql-lang-tests"],
     deps = [
         "@graknlabs_client_java//:client-java",
