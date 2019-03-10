@@ -26,7 +26,7 @@ Add the `<!-- test-example <FileName.java> -->` immediately before the intended 
 
 ### 2. Add the Test Method Placeholder
 
-Add a JUnit test method in the corresponding test class (ie. [`test/standalone/java/PhoneCalls.java`](java/PhoneCallsTest.java) or [`test/standalone/java/SocialNetwork.java`](java/SocialNetworkTest.java))
+Add a JUnit test method in the corresponding test class (ie. [`test/example/java/PhoneCalls.java`](java/PhoneCallsTest.java) or [`test/example/java/SocialNetwork.java`](java/SocialNetworkTest.java))
 
 #### Format:
 
@@ -42,7 +42,7 @@ Java tests run based on their alphabetic order. This is to speed up the tests, b
 
 ### 3. Add the Bazel Data Item
 
-Add `generated/FileName.java` to the list of the `data` property of the corresponding `java_test` rule (ie. `standalone-java-social-network` or `standalone-java-phone-calls`) contained within [`test/standalone/java/BUILD`](java/BUILD).
+Add `generated/FileName.java` to the list of the `data` property of the corresponding `java_test` rule (ie. `standalone-java-social-network` or `standalone-java-phone-calls`) contained within [`test/example/java/BUILD`](java/BUILD).
 
 
 ## Add a Javascript Standalone Test
@@ -62,7 +62,7 @@ Add the `<!-- test-example <fileName.js> -->` immediately before the intended co
 
 ### 2. Add the Test Method Placeholder
 
-Add a Jasmine `spect` in the relevant `describe` of corresponding test file (ie. [`test/standalone/nodejs/phoneCallsTemplate.js`](nodejs/phoneCallsTemplate.js) or [`test/standalone/nodejs/socialNetworkTemplate.js`](nodejs/socialNetworkTemplate.js))
+Add a Jasmine `spect` in the relevant `describe` of corresponding test file (ie. [`test/example/nodejs/phoneCallsTemplate.js`](nodejs/phoneCallsTemplate.js) or [`test/example/nodejs/socialNetworkTemplate.js`](nodejs/socialNetworkTemplate.js))
 
 #### Format:
 
@@ -72,7 +72,7 @@ it("tests fileName.js", async function() {
 });
 ```
 
-By doing this, `test/standalone/nodejs/generate_standalone_tests.py`:
+By doing this, `test/example/nodejs/generate_standalone_tests.py`:
 1. identifies the `fileName.js` standalone in the `.md` files
 2. post-processes it to ensure the main function call is prefixed with `await`
 3. places the processed standalone content in place of the `// fileName.js`
@@ -96,7 +96,7 @@ Add the `<!-- test-example <file_name.py> -->` immediately before the intended c
 
 ### 2. Add the Test Method Placeholder
 
-Add a `unittest` method in the corresponding test file (ie. [`test/standalone/python/phone_calls.py`](python/phone_calls.py) or [`test/standalone/python/social_network.py`](python/social_network.py))
+Add a `unittest` method in the corresponding test file (ie. [`test/example/python/phone_calls.py`](python/phone_calls.py) or [`test/example/python/social_network.py`](python/social_network.py))
 
 #### Format:
 
@@ -109,4 +109,4 @@ Python tests run based on their alphabetic order. This is to speed up the tests,
 
 ### 3. Add the Bazel Data Item
 
-Add `generated/file_name.py` to the list of the `data` property of the corresponding `py_test` rule (ie. `standalone-python-social-network` or `standalone-python-phone-calls`) contained within [`test/standalone/python/BUILD`](python/BUILD).
+Add `generated/file_name.py` to the list of the `data` property of the corresponding `py_test` rule (ie. `standalone-python-social-network` or `standalone-python-phone-calls`) contained within [`test/example/python/BUILD`](python/BUILD).

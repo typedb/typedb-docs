@@ -70,7 +70,7 @@ node_repositories()
 
 npm_install(
     name = "nodejs_dependencies",
-    package_json = "//test/standalone/nodejs:package.json",
+    package_json = "//test/example/nodejs:package.json",
     data = [
       "@build_bazel_rules_nodejs//internal/babel_library:package.json",
       "@build_bazel_rules_nodejs//internal/babel_library:babel.js",
@@ -88,7 +88,7 @@ pip_repositories()
 
 pip_import(
     name = "local_pypi_dependencies",
-    requirements = "//test/standalone/python:requirements.txt",
+    requirements = "//test/example/python:requirements.txt",
 )
 
 load("@local_pypi_dependencies//:requirements.bzl", "pip_install")
