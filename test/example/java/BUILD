@@ -1,13 +1,13 @@
-################################
-# phone_calls Standalones Test #
-################################
+############################
+# Phone Calls Example Test #
+############################
 
 java_test(
     name = "phone-calls",
-    test_class = "grakn.doc.test.example.TestStandalonePhoneCalls",
+    test_class = "grakn.doc.test.example.PhoneCallsTest",
     srcs = [
         "PhoneCallsTest.java",
-        ":phone-calls-tests"
+        ":phone-calls-tests",
     ],
     deps = [
         "@graknlabs_client_java//:client-java",
@@ -57,17 +57,17 @@ genrule(
 
 java_test(
     name = "social-network",
-    test_class = "grakn.doc.test.example.TestStandaloneSocialNetwork",
+    test_class = "grakn.doc.test.example.SocialNetworkTest",
     srcs = [
         "SocialNetworkTest.java",
-        ":social-network-tests"
+        ":social-network-tests",
     ],
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//concept:concept",
         "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server"
+        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server",
     ],
     classpath_resources = [
         "@graknlabs_grakn_core//test-integration/resources:logback-test",
@@ -75,7 +75,7 @@ java_test(
     data = [
         "//test/conf:cassandra-embedded.yaml",
         "//test/conf:grakn.properties",
-        "//files:social-network-kg"
+        "//files:social-network-kg",
     ]
 )
 
@@ -92,6 +92,6 @@ genrule(
         # client-api/java
         "GraknQuickstartA.java",
         "GraknQuickstartB.java",
-        "GraknQuickstartC.java"
+        "GraknQuickstartC.java",
     ]
 )

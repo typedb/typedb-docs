@@ -36,19 +36,14 @@ commands:
       command:
         type: string
     steps:
-      - run:
-          command: |
-            bazel run @graknlabs_build_tools//ci:run-bazel-rbe << parameters.command >>
+      - run: bazel run @graknlabs_build_tools//ci:run-bazel-rbe << parameters.command >>
 
   run-grakn-server:
     steps:
-      - run:
-          name: Grakn Server - Start
-          command: |
-            bazel build @graknlabs_grakn_core//:assemble-linux-targz
-            mkdir dist
-            tar -xvzf bazel-genfiles/external/graknlabs_grakn_core/grakn-core-all-linux.tar.gz -C ./dist/
-            nohup ./dist/grakn-core-all-linux/grakn server start
+      - run-bazel-rbe:
+          command: bazel build @graknlabs_grakn_core//:assemble-linux-targz
+      - run: mkdir dist & tar -xvzf bazel-genfiles/external/graknlabs_grakn_core/grakn-core-all-linux.tar.gz -C ./dist/
+      - run: nohup ./dist/grakn-core-all-linux/grakn server start
 
 jobs:
   build:
@@ -76,41 +71,32 @@ jobs:
       - run-bazel-rbe:
           command: bazel test //test/query:graql-java --test_output=errors
 
-  test-example-phone-calls-java:
+  test-example-java:
     machine: true
     steps:
       - checkout
       - install-bazel
       - run-grakn-server
-      - run: bazel test //test/example/java:phone-calls --test_output=streamed
+      - run: bazel test //test/example/java:phone-calls --test_output=errors
+      - run: bazel test //test/example/java:social-network --test_output=errors
 
-  test-example-phone-calls-nodejs:
+  test-example-nodejs:
     machine: true
     steps:
       - checkout
       - install-bazel
       - run-grakn-server
-      - run: bazel test //test/example/nodejs:standalone-nodejs-phone-calls --test_output=streamed
+      - run: bazel test //test/example/nodejs:standalone-nodejs-phone-calls --test_output=errors
+      - run: bazel test //test/example/nodejs:standalone-nodejs-social-network --test_output=errors
 
-  test-example-phone-calls-python:
+  test-example-python:
     machine: true
     steps:
       - checkout
       - install-bazel
       - run-grakn-server
-      - run: bazel test //test/example/python:standalone-python-phone-calls --test_output=streamed
-
-
-  test-example-social-network:
-    machine: true
-    steps:
-      - checkout
-      - install-bazel
-      - run-grakn-server
-      - run: bazel test //test/example/java:social-network --test_output=streamed
-      - run: bazel test //test/example/nodejs:standalone-nodejs-social-network --test_output=streamed
-      - run: bazel test //test/example/python:standalone-python-social-network --test_output=streamed
-
+      - run: bazel test //test/example/python:standalone-python-phone-calls --test_output=errors
+      - run: bazel test //test/example/python:standalone-python-social-network --test_output=errors
 
   release-staging:
     machine: true
@@ -133,17 +119,16 @@ jobs:
             mkdir docs
             cd docs
             python ../.circleci/deploy-docs.py master
-    
+
 workflows:
   docs:
     jobs:
       - build
       - test-query-graql-lang
       - test-query-graql-java
-      - test-example-phone-calls-java
-      - test-example-phone-calls-nodejs
-      - test-example-phone-calls-python
-      - test-example-social-network
+      - test-example-java
+      - test-example-nodejs
+      - test-example-python
       - release-staging:
           filters:
             branches:
@@ -152,10 +137,9 @@ workflows:
             - build
             - test-query-graql-lang
             - test-query-graql-java
-            - test-example-phone-calls-java
-            - test-example-phone-calls-nodejs
-            - test-example-phone-calls-python
-            - test-example-social-network
+            - test-example-java
+            - test-example-nodejs
+            - test-example-python
       - release-production:
           filters:
             branches:
@@ -164,7 +148,6 @@ workflows:
             - build
             - test-query-graql-lang
             - test-query-graql-java
-            - test-example-phone-calls-java
-            - test-example-phone-calls-nodejs
-            - test-example-phone-calls-python
-            - test-example-social-network
+            - test-example-java
+            - test-example-nodejs
+            - test-example-python
