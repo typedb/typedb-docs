@@ -26,14 +26,14 @@ First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-th
 
 In the interpreter or in your source, import `grakn`.
 
-<!-- test-standalone social_network_python_client_a.py -->
+<!-- test-example social_network_python_client_a.py -->
 ```python
 import grakn
 ```
 
 Instantiate a client and open a session.
 
-<!-- test-standalone social_network_python_client_b.py -->
+<!-- test-example social_network_python_client_b.py -->
 ```python
 import grakn
 
@@ -53,7 +53,7 @@ client = grakn.Grakn(uri="localhost:48555", credentials={"username": "<username>
 
 Create transactions to use for reading and writing data.
 
-<!-- test-standalone social_network_python_client_c.py -->
+<!-- test-example social_network_python_client_c.py -->
 ```python
 import grakn
 
@@ -76,7 +76,7 @@ with client.session(keyspace="social_network") as session:
 
 Running basic retrieval and insertion queries.
 
-<!-- test-standalone social_network_python_client_d.py -->
+<!-- test-example social_network_python_client_d.py -->
 ```python
 import grakn
 

@@ -80,7 +80,7 @@ graql_lang_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = ('<!-- test-(delay|ignore|standalone.*) -->\n```graql\n((\n|.)+?)```'
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```graql\n((\n|.)+?)```'
                             +
                             '|(```graql\n' +
                             '((\n|.)+?)' +  # group containing snippet

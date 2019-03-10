@@ -435,7 +435,7 @@ Here is how our `migrate.js` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
-<!-- test-standalone phoneCallsCSVMigration.js -->
+<!-- test-example phoneCallsCSVMigration.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const fs = require("fs");
@@ -569,7 +569,7 @@ buildPhoneCallGraph();
 [tab:end]
 
 [tab:JSON]
-<!-- test-standalone phoneCallsJSONMigration.js -->
+<!-- test-example phoneCallsJSONMigration.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const fs = require("fs");
@@ -705,7 +705,7 @@ buildPhoneCallGraph();
 [tab:end]
 
 [tab:XML]
-<!-- test-standalone phoneCallsXMLMigration.js -->
+<!-- test-example phoneCallsXMLMigration.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const fs = require("fs");

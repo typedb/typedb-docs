@@ -44,7 +44,7 @@ First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-th
 
 Import `grakn.client.GraknClient`, instantiate a client and open a session to a [keyspace](/docs/management/keyspace).
 
-<!-- test-standalone GraknQuickstartA.java -->
+<!-- test-example GraknQuickstartA.java -->
 ```java
 package grakn.examples;
 
@@ -71,7 +71,7 @@ Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client()
 
 Create transactions to use for reading and writing data.
 
-<!-- test-standalone GraknQuickstartB.java -->
+<!-- test-example GraknQuickstartB.java -->
 ```java
 package grakn.examples;
 
@@ -102,7 +102,7 @@ public class GraknQuickstartB {
 
 Running basic retrieval and insertion queries.
 
-<!-- test-standalone GraknQuickstartC.java -->
+<!-- test-example GraknQuickstartC.java -->
 ```java
 package grakn.examples;
 

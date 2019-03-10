@@ -67,7 +67,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsFirstQuery.java -->
+<!-- test-example PhoneCallsFirstQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -118,7 +118,7 @@ public class PhoneCallsFirstQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsFirstQuery.js -->
+<!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const client = new Grakn("localhost:48555");
@@ -162,7 +162,7 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_first_query.py -->
+<!-- test-example phone_calls_first_query.py -->
 ```python
 import grakn
 
@@ -237,7 +237,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsSecondQuery.java -->
+<!-- test-example PhoneCallsSecondQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -290,7 +290,7 @@ public class PhoneCallsSecondQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsSecondQuery.js -->
+<!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const client = new Grakn("localhost:48555");
@@ -336,7 +336,7 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_second_query.py -->
+<!-- test-example phone_calls_second_query.py -->
 ```python
 import grakn
 
@@ -407,7 +407,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsThirdQuery.java -->
+<!-- test-example PhoneCallsThirdQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -457,7 +457,7 @@ public class PhoneCallsThirdQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsThirdQuery.js -->
+<!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const client = new Grakn("localhost:48555");
@@ -500,7 +500,7 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_third_query.py -->
+<!-- test-example phone_calls_third_query.py -->
 ```python
 import grakn
 
@@ -575,7 +575,7 @@ get $phone-number-a, $phone-number-b;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsForthQuery.java -->
+<!-- test-example PhoneCallsForthQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -629,7 +629,7 @@ public class PhoneCallsForthQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsForthQuery.js -->
+<!-- test-example phoneCallsForthQuery.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const client = new Grakn("localhost:48555");
@@ -676,7 +676,7 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_forth_query.py -->
+<!-- test-example phone_calls_forth_query.py -->
 ```python
 import grakn
 
@@ -769,7 +769,7 @@ get $duration; mean $duration;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsFifthQuery.java -->
+<!-- test-example PhoneCallsFifthQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -840,7 +840,7 @@ public class PhoneCallsFifthQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsFifthQuery.js -->
+<!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const client = new Grakn("localhost:48555");
@@ -906,7 +906,7 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_fifth_query.py -->
+<!-- test-example phone_calls_fifth_query.py -->
 ```python
 import grakn
 

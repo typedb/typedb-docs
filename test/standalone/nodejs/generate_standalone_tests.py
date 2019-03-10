@@ -5,7 +5,7 @@ test_template_path = sys.argv[1]
 generated_path = sys.argv[2]
 markdown_files = sys.argv[3:]
 
-pattern_to_find_standalones = ('<!-- test-standalone ' +
+pattern_to_find_standalones = ('<!-- test-example ' +
                                '(.*)' +  # group containing filename
                                '\s-->\n```.*\n+' +
                                '((\n|.)+?)' +  # group containing standalone

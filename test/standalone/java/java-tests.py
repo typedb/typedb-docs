@@ -10,7 +10,7 @@ for arg in sys.argv:
     else:
         generated_test_paths.append(arg)
 
-pattern_to_find_standalones = ('<!-- test-standalone ' +
+pattern_to_find_standalones = ('<!-- test-example ' +
                                '(.*)' +  # group containing filename
                                '\s-->\n```.*\n+' +
                                '((\n|.)+?)' +  # group containing standalone

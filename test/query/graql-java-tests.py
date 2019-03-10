@@ -92,7 +92,7 @@ graql_java_test_method_template = """
     }
 """
 
-pattern_to_find_snippets = ('<!-- test-(delay|ignore|standalone.*) -->\n```java\n((\n|.)+?)```'
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```java\n((\n|.)+?)```'
                             +
                             '|(```java\n' +
                             '((\n|.)+?)' +  # group containing snippet

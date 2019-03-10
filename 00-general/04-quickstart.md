@@ -114,7 +114,7 @@ The result contains the following answers.
 
 #### Retrieve all employments using [Client Java](/docs/client-api/java)
 
-<!-- test-standalone SocialNetworkQuickstartQuery.java -->
+<!-- test-example SocialNetworkQuickstartQuery.java -->
 ```java
 package grakn.examples;
 
@@ -153,7 +153,7 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 
 #### Lazily retrieve all photos and videos that have been found funny by women sing [Client Python](/docs/client-api/python)
 
-<!-- test-standalone social_network_quickstart_query.py -->
+<!-- test-example social_network_quickstart_query.py -->
 ```python
 import grakn
 
@@ -176,7 +176,7 @@ with client.session(keyspace = "social_network") as session:
 
 #### Retrieve the average salary of all employees at Pharos using [Client Node.js](/docs/client-api/nodejs)
 
-<!-- test-standalone socialNetworkQuickstartQuery.js -->
+<!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
 const Grakn = require("grakn-client");
 const client = new Grakn("localhost:48555");

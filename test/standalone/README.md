@@ -14,12 +14,12 @@ The steps to configure a Java standalone for testing are as follows:
 
 ### 1. Add the Flag
 
-Add the `<!-- test-standalone <FileName.java> -->` immediately before the intended code block. `FileName` must be unique among all Java standalones.
+Add the `<!-- test-example <FileName.java> -->` immediately before the intended code block. `FileName` must be unique among all Java standalones.
 
 #### Example:
 
     ```
-    <!-- test-standalone FileName.java -->
+    <!-- test-example FileName.java -->
     ```java
     ...
     ```
@@ -51,11 +51,11 @@ The steps to configure a Javascript standalone for testing are as follows:
 
 ### 1. Add the Flag
 
-Add the `<!-- test-standalone <fileName.js> -->` immediately before the intended code block. `fileName` must be unique among all Java standalones.
+Add the `<!-- test-example <fileName.js> -->` immediately before the intended code block. `fileName` must be unique among all Java standalones.
 
 #### Example:
 
-    <!-- test-standalone <fileName.js> -->
+    <!-- test-example <fileName.js> -->
     ```javascript
     ...
     ```
@@ -85,11 +85,11 @@ The steps to configure a Python standalone for testing are as follows:
 
 ### 1. Add the Flag
 
-Add the `<!-- test-standalone <file_name.py> -->` immediately before the intended code block. `file_name` must be unique among all Java standalones.
+Add the `<!-- test-example <file_name.py> -->` immediately before the intended code block. `file_name` must be unique among all Java standalones.
 
 #### Example:
 
-    <!-- test-standalone <file_name.py> -->
+    <!-- test-example <file_name.py> -->
     ```python
     ...
     ```
