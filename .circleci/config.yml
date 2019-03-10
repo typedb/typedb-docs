@@ -76,7 +76,7 @@ jobs:
       - run-bazel-rbe:
           command: bazel test //test/query:graql-java --test_output=errors
 
-  test-standalone-java-phone-calls:
+  test-example-phone-calls-java:
     machine: true
     steps:
       - checkout
@@ -84,7 +84,7 @@ jobs:
       - run-grakn-server
       - run: bazel test //test/example/java:phone-calls --test_output=streamed
 
-  test-standalone-nodejs-phone-calls:
+  test-example-phone-calls-nodejs:
     machine: true
     steps:
       - checkout
@@ -92,7 +92,7 @@ jobs:
       - run-grakn-server
       - run: bazel test //test/example/nodejs:standalone-nodejs-phone-calls --test_output=streamed
 
-  test-standalone-python-phone-calls:
+  test-example-phone-calls-python:
     machine: true
     steps:
       - checkout
@@ -101,7 +101,7 @@ jobs:
       - run: bazel test //test/example/python:standalone-python-phone-calls --test_output=streamed
 
 
-  test-standalone-social-network:
+  test-example-social-network:
     machine: true
     steps:
       - checkout
@@ -140,10 +140,10 @@ workflows:
       - build
       - test-query-graql-lang
       - test-query-graql-java
-      - test-standalone-java-phone-calls
-      - test-standalone-nodejs-phone-calls
-      - test-standalone-python-phone-calls
-      - test-standalone-social-network
+      - test-example-phone-calls-java
+      - test-example-phone-calls-nodejs
+      - test-example-phone-calls-python
+      - test-example-social-network
       - release-staging:
           filters:
             branches:
@@ -152,10 +152,10 @@ workflows:
             - build
             - test-query-graql-lang
             - test-query-graql-java
-            - test-standalone-java-phone-calls
-            - test-standalone-nodejs-phone-calls
-            - test-standalone-python-phone-calls
-            - test-standalone-social-network
+            - test-example-phone-calls-java
+            - test-example-phone-calls-nodejs
+            - test-example-phone-calls-python
+            - test-example-social-network
       - release-production:
           filters:
             branches:
@@ -164,7 +164,7 @@ workflows:
             - build
             - test-query-graql-lang
             - test-query-graql-java
-            - test-standalone-java-phone-calls
-            - test-standalone-nodejs-phone-calls
-            - test-standalone-python-phone-calls
-            - test-standalone-social-network
+            - test-example-phone-calls-java
+            - test-example-phone-calls-nodejs
+            - test-example-phone-calls-python
+            - test-example-social-network
