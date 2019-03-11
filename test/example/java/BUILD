@@ -33,10 +33,10 @@ java_test(
 genrule(
     name = "phone-calls-tests",
     srcs = [
-        "java-tests.py",
+        "java_tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location java-tests.py) $(OUTS) $(locations //:content)",
+    cmd = "python $(location java_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         ## examples/migration-java
         "PhoneCallsCSVMigration.java",
@@ -82,10 +82,10 @@ java_test(
 genrule(
     name = "social-network-tests",
     srcs = [
-        "java-tests.py",
+        "java_tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location java-tests.py) $(OUTS) $(locations //:content)",
+    cmd = "python $(location java_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         # general/quickstart
         "SocialNetworkQuickstartQuery.java",

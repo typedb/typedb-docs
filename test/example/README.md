@@ -96,7 +96,7 @@ Add the `<!-- test-example <file_name.py> -->` immediately before the intended c
 
 ### 2. Add the Test Method Placeholder
 
-Add a `unittest` method in the corresponding test file (ie. [`test/example/python/phone_calls.py`](python/phone_calls.py) or [`test/example/python/social_network.py`](python/social_network.py))
+Add a `unittest` method in the corresponding test file (ie. [`test/example/python/phone_calls.py`](python/phone_calls_test.py) or [`test/example/python/social_network.py`](python/social_network_test.py))
 
 #### Format:
 

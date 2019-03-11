@@ -23,11 +23,11 @@ jasmine_node_test(
 genrule(
     name = "phone-calls-tests",
     srcs = [
-        "nodejs-tests.py",
+        "nodejs_tests.py",
         "PhoneCalls.template.js",
         "//:content"
     ],
-    cmd = "python $(location nodejs-tests.py) $(location PhoneCalls.template.js) $(location PhoneCalls.test.js) $(locations //:content)",
+    cmd = "python $(location nodejs_tests.py) $(location PhoneCalls.template.js) $(location PhoneCalls.test.js) $(locations //:content)",
     outs = ["PhoneCalls.test.js"]
 )
 
@@ -49,10 +49,10 @@ jasmine_node_test(
 genrule(
     name = "social-network-tests",
     srcs = [
-        "nodejs-tests.py",
+        "nodejs_tests.py",
         "SocialNetwork.template.js",
         "//:content"
     ],
-    cmd = "python $(location nodejs-tests.py) $(location SocialNetwork.template.js) $(location SocialNetwork.test.js) $(locations //:content)",
+    cmd = "python $(location nodejs_tests.py) $(location SocialNetwork.template.js) $(location SocialNetwork.test.js) $(locations //:content)",
     outs = ["SocialNetwork.test.js"]
 )

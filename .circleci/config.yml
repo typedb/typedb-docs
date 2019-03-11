@@ -95,8 +95,8 @@ jobs:
       - checkout
       - install-bazel
       - run-grakn-server
-      - run: bazel test //test/example/python:standalone-python-phone-calls --test_output=errors
-      - run: bazel test //test/example/python:standalone-python-social-network --test_output=errors
+      - run: bazel test //test/example/python:phone-calls --test_output=errors
+      - run: bazel test //test/example/python:social-network --test_output=errors
 
   release-staging:
     machine: true

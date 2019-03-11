@@ -2,7 +2,7 @@ import grakn
 import unittest
 
 
-class TestStandaloneSocialNetwork(unittest.TestCase):
+class SocialNetworkTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

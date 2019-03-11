@@ -2,7 +2,7 @@ import grakn
 import unittest
 
 
-class TestStandalonePhoneCalls(unittest.TestCase):
+class PhoneCallsTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
