@@ -11,7 +11,7 @@ methods:
       method: session.transaction().read();
     javascript:
       <<: *method-transaction-read
-      method: await session.transaction(Grakn.txType.READ);
+      method: await session.transaction().read();
       # method: await session.transaction().read();
     python:
       <<: *method-transaction-read
@@ -29,7 +29,7 @@ methods:
       method: session.transaction().write();
     javascript:
       <<: *method-transaction-write
-      method: await session.transaction(Grakn.txType.WRITE);
+      method: await session.transaction().write();
       # method: await session.transaction().write();
     python:
       <<: *method-transaction-write

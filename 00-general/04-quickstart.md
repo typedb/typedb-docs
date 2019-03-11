@@ -155,11 +155,11 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 
 <!-- test-example social_network_quickstart_query.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 
-client = grakn.Grakn(uri = "localhost:48555")
+with GraknClient(uri="localhost:48555") as client:
 with client.session(keyspace = "social_network") as session:
-  with session.transaction(grakn.TxType.READ) as transaction:
+  with session.transaction().read() as transaction:
     query = '''
       match
         $pos isa media;
@@ -178,12 +178,12 @@ with client.session(keyspace = "social_network") as session:
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
-const Grakn = require("grakn-client");
-const client = new Grakn("localhost:48555");
+const GraknClient = require("grakn-client");
 
 async function getAverageSalaryAt (orgName) {
-	const session = client.session("social_network");
-	const transaction = await session.transaction(Grakn.txType.READ)
+    const client = new GraknClient("localhost:48555");
+	const session = await client.session("social_network");
+	const transaction = await session.transaction().read()
 	const query = `
 		match
 			$org isa organisation, has name "${orgName}";
@@ -199,6 +199,7 @@ async function getAverageSalaryAt (orgName) {
 	}
 	await transaction.close();
 	await session.close();
+	client.close();
 }
 
 getAverageSalaryAt("Pharos"); // asynchronous call

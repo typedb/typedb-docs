@@ -24,21 +24,22 @@ In your source, require `grakn`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
-const Grakn = require("grakn-client");
+const GraknClient = require("grakn-client");
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const Grakn = require("grakn-client");
+const GraknClient = require("grakn-client");
 
 async function openSession (keyspace) {
-	const client = new Grakn("localhost:48555");
+	const client = new GraknClient("localhost:48555");
 	const session = await client.session(keyspace);
 	// session is open
 	await session.close();
 	//session is closed
+	client.close();
 };
 
 openSession("social_network");
@@ -48,30 +49,32 @@ We can also pass the credentials, as specified when [configuring authentication 
 
 <!-- test-ignore -->
 ```javascript
-const client = new Grakn("localhost:48555", { "username": "<username>", "password": "<password>" });
+const client = new GraknClient("localhost:48555", { "username": "<username>", "password": "<password>" });
 ```
 
 Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const Grakn = require("grakn-client");
+const GraknClient = require("grakn-client");
 
 async function createTransactions (keyspace) {
-	const client = new Grakn("localhost:48555");
+	const client = new GraknClient("localhost:48555");
 	const session = await client.session(keyspace);
 
 	// creating a write transaction
-	const writeTransaction = await session.transaction(Grakn.txType.WRITE); // write transaction is open
+	const writeTransaction = await session.transaction().write(); // write transaction is open
 	// to persist changes, write transaction must always be committed/closed
 	await writeTransaction.commit();
 
 	// creating a read transaction
-	const readTransaction = await session.transaction(Grakn.txType.READ); // read transaction is open
+	const readTransaction = await session.transaction().read(); // read transaction is open
 	// read transaction must always be closed
 	await readTransaction.close();
 	// a session must always be closed
 	await session.close();
+	// a client must always be closed
+	client.close();
 }
 
 createTransactions("social_network");
@@ -81,14 +84,14 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const Grakn = require("grakn-client");
+const GraknClient = require("grakn-client");
 
 async function runBasicQueries (keyspace) {
-	const client = new Grakn("localhost:48555");
+	const client = new GraknClient("localhost:48555");
 	const session = await client.session(keyspace);
 
 	// Insert a person using a WRITE transaction
-	const writeTransaction = await session.transaction(Grakn.txType.WRITE);
+	const writeTransaction = await session.transaction().write();
 	const insertIterator = await writeTransaction.query('insert $x isa person, has email "x@email.com";');
 	const concepts = await insertIterator.collectConcepts()
 	console.log("Inserted a person with ID: " + concepts[0].id);
@@ -96,7 +99,7 @@ async function runBasicQueries (keyspace) {
 	await writeTransaction.commit();
 
 	// Retrieve persons using a READ only transaction
-	const readTransaction = await session.transaction(Grakn.txType.READ);
+	const readTransaction = await session.transaction().read();
 
 	// We can either query and consume the iterator lazily
 	let answerIterator = await readTransaction.query("match $x isa person; get; limit 10;");
@@ -117,6 +120,8 @@ async function runBasicQueries (keyspace) {
 	await readTransaction.close();
 	// a session must always be closed
 	await session.close();
+	// a client must always be closed
+	client.close();
 }
 
 runBasicQueries("social_network");
