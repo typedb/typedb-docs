@@ -35,38 +35,38 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 ## Include the Data Files
 
-Pick one of the data formats below and download the files. After you download them, place the four files under the `phone_calls/data` directory. We need these to load their data into our `phone_calls` knowledge graph.
+Pick one of the data formats below and download the files. After you download them, place the four files under the `files/phone-calls/data` directory. We need these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
 
-**JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/calls.json)
+**JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
 
-**XML** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/companies.xml) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/people.xml) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/contracts.xml) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/calls.xml)
+**XML** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.xml)
 
 ## Set up the migration mechanism
 
 All code that follows is to be written in `phone_calls/migrate.py`.
 
 ```python
-import grakn
+from grakn.client import GraknClient
 
 inputs = [
-  {
-    "data_path": "files/phone-calls/data/companies",
-    "template": company_template
-  },
-  {
-    "data_path": "files/phone-calls/data/people",
-    "template": person_template
-  },
-  {
-    "data_path": "files/phone-calls/data/contracts",
-    "template": contract_template
-  },
-  {
-    "data_path": "files/phone-calls/data/calls",
-    "template": call_template
-  }
+    {
+        "data_path": "files/phone-calls/data/companies",
+        "template": company_template
+    },
+    {
+        "data_path": "files/phone-calls/data/people",
+        "template": person_template
+    },
+    {
+        "data_path": "files/phone-calls/data/contracts",
+        "template": contract_template
+    },
+    {
+        "data_path": "files/phone-calls/data/calls",
+        "template": call_template
+    }
 ]
 
 build_phone_call_graph(inputs)
@@ -83,14 +83,14 @@ Let’s move on.
 ## build_phone_call_graph(inputs)
 
 ```python
-import grakn
+from grakn.client import GraknClient
 
 def build_phone_call_graph(inputs):
-  client = grakn.Grakn(uri = "localhost:48555")
-  with client.session(keyspace = "phone_calls") as session:
-    for input in inputs:
-      print("Loading from [" + input["data_path"] + "] into Grakn ...")
-      load_data_into_grakn(input, session)
+    with GraknClient(uri="localhost:48555") as client:
+        with client.session(keyspace = "phone_calls") as session:
+            for input in inputs:
+                print("Loading from [" + input["data_path"] + "] into Grakn ...")
+                load_data_into_grakn(input, session)
 
 # ...
 ```
@@ -107,16 +107,16 @@ What happens in this function, is as follows:
 
 ```python
 def load_data_into_grakn(input, session):
-  items = parse_data_to_dictionaries(input)
+    items = parse_data_to_dictionaries(input)
 
-  for item in items:
-    with session.transaction(grakn.TxType.WRITE) as tx:
-      graql_insert_query = input["template"](item)
-      print("Executing Graql Query: " + graql_insert_query)
-      tx.query(graql_insert_query)
-      tx.commit()
+    for item in items:
+        with session.transaction().write() as transaction:
+            graql_insert_query = input["template"](item)
+            print("Executing Graql Query: " + graql_insert_query)
+            transaction.query(graql_insert_query)
+            transaction.commit()
 
-  print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
 # ...
 ```
@@ -124,7 +124,7 @@ def load_data_into_grakn(input, session):
 In order to load data from each file into Grakn, we need to:
 
 1.  retrieve a list containing dictionaries, each of which represents a data item. We do this by calling `parse_data_to_dictionaries(input)`
-2.  for each dictionary in `items`: a) create a transaction `tx`, which closes once used, b) construct the `graql_insert_query` using the corresponding template function, c) execute the query and d)commit the transaction.
+2.  for each dictionary in `items`: a) create a `transaction`, which closes once used, b) construct the `graql_insert_query` using the corresponding template function, c) execute the query and d)commit the transaction.
 
 <div class="note">
 [Important]
@@ -143,7 +143,7 @@ We need 4 of them. Let’s go through them one by one.
 
 ```python
 def company_template(company):
-  return 'insert $company isa company, has name "' + company["name"] + '";'
+    return 'insert $company isa company, has name "' + company["name"] + '";'
 ```
 
 Example:
@@ -162,20 +162,20 @@ insert $company isa company, has name "Telecom";
 
 ```python
 def person_template(person):
-  # insert person
-  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
-  if "first_name" in person:
-    # person is a customer
-    graql_insert_query += ", has is-customer true"
-    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ', has city "' + person["city"] + '"'
-    graql_insert_query += ", has age " + str(person["age"])
-  else:
-    # person is not a customer
-    graql_insert_query += ", has is-customer false"
-  graql_insert_query += ";"
-  return graql_insert_query
+    # insert person
+    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    if "first_name" in person:
+        # person is a customer
+        graql_insert_query += ", has is-customer true"
+        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        graql_insert_query += ', has city "' + person["city"] + '"'
+        graql_insert_query += ", has age " + str(person["age"])
+    else:
+        # person is not a customer
+        graql_insert_query += ", has is-customer false"
+    graql_insert_query += ";"
+    return graql_insert_query
 ```
 
 Example:
@@ -205,22 +205,21 @@ insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last
 ### contractTemplate
 
 ```python
-
 def person_template(person):
-  # insert person
-  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
-  if "first_name" in person:
-    # person is a customer
-    graql_insert_query += ", has is-customer true"
-    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ', has city "' + person["city"] + '"'
-    graql_insert_query += ", has age " + str(person["age"])
-  else:
-    # person is not a customer
-    graql_insert_query += ", has is-customer false"
-  graql_insert_query += ";"
-  return graql_insert_query
+    # insert person
+    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    if "first_name" in person:
+        # person is a customer
+        graql_insert_query += ", has is-customer true"
+        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        graql_insert_query += ', has city "' + person["city"] + '"'
+        graql_insert_query += ", has age " + str(person["age"])
+    else:
+        # person is not a customer
+        graql_insert_query += ", has is-customer false"
+    graql_insert_query += ";"
+    return graql_insert_query
 ```
 
 Example:
@@ -239,13 +238,13 @@ match $company isa company, has name "Telecom"; $customer isa person, has phone-
 
 ```python
 def call_template(call):
-  # match caller
-  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
-  # match callee
-  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
-  # insert call
-  graql_insert_query += " insert $call(caller: $caller, callee: $callee) isa call; $call has started-at " + call["started_at"] + "; $call has duration " + str(call["duration"]) + ";"
-  return graql_insert_query
+    # match caller
+    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    # match callee
+    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    # insert call
+    graql_insert_query += " insert $call(caller: $caller, callee: $callee) isa call; $call has started-at " + call["started_at"] + "; $call has duration " + str(call["duration"]) + ";"
+    return graql_insert_query
 ```
 
 Example:
@@ -274,7 +273,7 @@ The implementation for `parse_data_to_dictionaries(input)` differs based on the 
 We use Python’s built-in [`csv` library](https://docs.python.org/3/library/csv.html#dialects-and-formatting-parameters). Let’s import the module for it.
 
 ```python
-import grakn
+from grakn.client import GraknClient
 import csv
 
 #...
@@ -284,13 +283,12 @@ Moving on, we write the implementation of `parse_data_to_dictionaries(input)` fo
 
 ```python
 def parse_data_to_dictionaries(input):
-  items = []
-  with open(input["data_path"] + ".csv") as data:
-    for row in csv.DictReader(data, skipinitialspace = True)
-      item = { key: value for key, value in row.items() }
-      items.append(item)
-  return items
-
+    items = []
+    with open(input["data_path"] + ".csv") as data:
+        for row in csv.DictReader(data, skipinitialspace = True):
+            item = { key: value for key, value in row.items() }
+            items.append(item)
+    return items
 ```
 
 Besides this function, we need to make one more change.
@@ -308,7 +306,7 @@ We use [ijson](https://pypi.org/project/ijson/), an iterative JSON parser with a
 Via the terminal, while in the `phone_calls` directory, run `pip3 install ijson` and import the module for it.
 
 ```python
-import grakn
+from grakn.client import GraknClient
 import ijson
 
 # ...
@@ -320,11 +318,11 @@ We use Python’s built-in [`xml.etree.cElementTree` library](https://docs.pytho
 
 ```python
 def parse_data_to_dictionaries(input):
-  items = []
-  with open(input["data_path"] + ".json") as data:
-    for item in ijson.items(data, "item"):
-      items.append(item)
-  return items
+    items = []
+    with open(input["data_path"] + ".json") as data:
+        for item in ijson.items(data, "item"):
+            items.append(item)
+    return items
 ```
 [tab:end]
 
@@ -335,26 +333,26 @@ For parsing XML data, we need to know the target tag name. This needs to be spec
 # ...
 
 inputs = [
-  {
-    "data_path": "files/phone-calls/data/companies",
-    "template": company_template,
-    "selector": "company"
-  },
-  {
-    "data_path": "files/phone-calls/data/people",
-    "template": person_template,
-    "selector": "person"
-  },
-  {
-    "data_path": "files/phone-calls/data/contracts",
-    "template": contract_template,
-    "selector": "contract"
-  },
-  {
-    "data_path": "files/phone-calls/data/calls",
-    "template": call_template,
-    "selector": "call"
-  }
+    {
+        "data_path": "files/phone-calls/data/companies",
+        "template": company_template,
+        "selector": "company"
+    },
+    {
+        "data_path": "files/phone-calls/data/people",
+        "template": person_template,
+        "selector": "person"
+    },
+    {
+        "data_path": "files/phone-calls/data/contracts",
+        "template": contract_template,
+        "selector": "contract"
+    },
+    {
+        "data_path": "files/phone-calls/data/calls",
+        "template": call_template,
+        "selector": "call"
+    }
 ]
 
 # ...
@@ -366,33 +364,33 @@ The implementation below, although, not the most generic, performs well with ver
 
 ```python
 def parse_data_to_dictionaries(input):
-  items = []
-  with open(input["data_path"] + ".xml", "rb") as inputfile:
-    ## we are in the file
-    keep_adding_lines = False
-    for line in inputfile:
-      if "<" + input["selector"] + ">" in str(line):
-        ## now: at the start of a new target tag
-        buffer = line
-        keep_adding_lines = True
-      elif "</" + input["selector"]  + ">" in str(line):
-        ## now: the tag is complete
-        buffer += line
+    items = []
+    with open(input["data_path"] + ".xml", "rb") as inputfile:
+        ## we are in the file
         keep_adding_lines = False
-        ## convert the buffer (string) to a strurctured tag
-        tnode = et.fromstring(buffer)
-        ## parse the tag to a dictionary
-        item = {}
-        for element in tnode.getchildren():
-          item[element.tag] = element.text
-        ## append the item to the list
-        items.append(item)
-        ## delete the buffer to free the memory
-        del buffer
-      elif keep_adding_lines:
-        ## now: inside the target tag
-        buffer += line
-  return items
+        for line in inputfile:
+            if "<" + input["selector"] + ">" in str(line):
+                ## now: at the start of a new target tag
+                buffer = line
+                keep_adding_lines = True
+            elif "</" + input["selector"]  + ">" in str(line):
+                ## now: the tag is complete
+                buffer += line
+                keep_adding_lines = False
+                ## convert the buffer (string) to a strurctured tag
+                tnode = et.fromstring(buffer)
+                ## parse the tag to a dictionary
+                item = {}
+                for element in tnode.getchildren():
+                    item[element.tag] = element.text
+                ## append the item to the list
+                items.append(item)
+                ## delete the buffer to free the memory
+                del buffer
+            elif keep_adding_lines:
+                ## now: inside the target tag
+                buffer += line
+    return items
 ```
 [tab:end]
 
@@ -407,92 +405,92 @@ Here is how our `migrate.py` looks like for each data format.
 [tab:CSV]
 <!-- test-example phone_calls_csv_migration.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 import csv
 
 def build_phone_call_graph(inputs):
-  client = grakn.Grakn(uri = "localhost:48555")
-  with client.session(keyspace = "phone_calls") as session:
-    for input in inputs:
-      print("Loading from [" + input["data_path"] + "] into Grakn ...")
-      load_data_into_grakn(input, session)
+    with GraknClient(uri="localhost:48555") as client:
+        with client.session(keyspace = "phone_calls") as session:
+            for input in inputs:
+                print("Loading from [" + input["data_path"] + "] into Grakn ...")
+                load_data_into_grakn(input, session)
 
 def load_data_into_grakn(input, session):
-  items = parse_data_to_dictionaries(input)
+    items = parse_data_to_dictionaries(input)
 
-  for item in items:
-    with session.transaction(grakn.TxType.WRITE) as tx:
-      graql_insert_query = input["template"](item)
-      print("Executing Graql Query: " + graql_insert_query)
-      tx.query(graql_insert_query)
-      tx.commit()
+    for item in items:
+        with session.transaction().write() as transaction:
+            graql_insert_query = input["template"](item)
+            print("Executing Graql Query: " + graql_insert_query)
+            transaction.query(graql_insert_query)
+            transaction.commit()
 
-  print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
 def company_template(company):
-  return 'insert $company isa company, has name "' + company["name"] + '";'
+    return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
-  # insert person
-  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
-  if person["first_name"] == "":
-    # person is not a customer
-    graql_insert_query += ", has is-customer false"
-  else:
-    # person is a customer
-    graql_insert_query += ", has is-customer true"
-    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ', has city "' + person["city"] + '"'
-    graql_insert_query += ", has age " + str(person["age"])
-  graql_insert_query += ";"
-  return graql_insert_query
+    # insert person
+    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    if person["first_name"] == "":
+        # person is not a customer
+        graql_insert_query += ", has is-customer false"
+    else:
+        # person is a customer
+        graql_insert_query += ", has is-customer true"
+        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        graql_insert_query += ', has city "' + person["city"] + '"'
+        graql_insert_query += ", has age " + str(person["age"])
+    graql_insert_query += ";"
+    return graql_insert_query
 
 def contract_template(contract):
-  # match company
-  graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
-  # match person
-  graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
-  # insert contract
-  graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-  return graql_insert_query
+    # match company
+    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    # match person
+    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    # insert contract
+    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
+    return graql_insert_query
 
 def call_template(call):
-  # match caller
-  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
-  # match callee
-  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
-  # insert call
-  graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
-                         "$call has started-at " + call["started_at"] + "; " +
-                         "$call has duration " + str(call["duration"]) + ";")
-  return graql_insert_query
+    # match caller
+    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    # match callee
+    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    # insert call
+    graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
+                           "$call has started-at " + call["started_at"] + "; " +
+                           "$call has duration " + str(call["duration"]) + ";")
+    return graql_insert_query
 
 def parse_data_to_dictionaries(input):
-  items = []
-  with open(input["data_path"] + ".csv") as data: # 1
-    for row in csv.DictReader(data, skipinitialspace = True):
-      item = { key: value for key, value in row.items() }
-      items.append(item) # 2
-  return items
+    items = []
+    with open(input["data_path"] + ".csv") as data: # 1
+        for row in csv.DictReader(data, skipinitialspace = True):
+            item = { key: value for key, value in row.items() }
+            items.append(item) # 2
+    return items
 
 inputs = [
-  {
-    "data_path": "files/phone-calls/data/companies",
-    "template": company_template
-  },
-  {
-    "data_path": "files/phone-calls/data/people",
-    "template": person_template
-  },
-  {
-    "data_path": "files/phone-calls/data/contracts",
-    "template": contract_template
-  },
-  {
-    "data_path": "files/phone-calls/data/calls",
-    "template": call_template
-  }
+    {
+        "data_path": "files/phone-calls/data/companies",
+        "template": company_template
+    },
+    {
+        "data_path": "files/phone-calls/data/people",
+        "template": person_template
+    },
+    {
+        "data_path": "files/phone-calls/data/contracts",
+        "template": contract_template
+    },
+    {
+        "data_path": "files/phone-calls/data/calls",
+        "template": call_template
+    }
 ]
 
 build_phone_call_graph(inputs=inputs)
@@ -502,91 +500,91 @@ build_phone_call_graph(inputs=inputs)
 [tab:JSON]
 <!-- test-example phone_calls_json_migration.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 import ijson
 
 def build_phone_call_graph(inputs):
-  client = grakn.Grakn(uri = "localhost:48555")
-  with client.session(keyspace = "phone_calls") as session:
-    for input in inputs:
-      print("Loading from [" + input["data_path"] + "] into Grakn ...")
-      load_data_into_grakn(input, session)
+    with GraknClient(uri="localhost:48555") as client:
+        with client.session(keyspace = "phone_calls") as session:
+            for input in inputs:
+                print("Loading from [" + input["data_path"] + "] into Grakn ...")
+                load_data_into_grakn(input, session)
 
 def load_data_into_grakn(input, session):
-  items = parse_data_to_dictionaries(input)
+    items = parse_data_to_dictionaries(input)
 
-  for item in items:
-    with session.transaction(grakn.TxType.WRITE) as tx:
-      graql_insert_query = input["template"](item)
-      print("Executing Graql Query: " + graql_insert_query)
-      tx.query(graql_insert_query)
-      tx.commit()
+    for item in items:
+        with session.transaction().write() as transaction:
+            graql_insert_query = input["template"](item)
+            print("Executing Graql Query: " + graql_insert_query)
+            transaction.query(graql_insert_query)
+            transaction.commit()
 
-  print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
 def company_template(company):
-  return 'insert $company isa company, has name "' + company["name"] + '";'
+    return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
-  # insert person
-  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
-  if "first_name" in person:
-    # person is a customer
-    graql_insert_query += ", has is-customer true"
-    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ', has city "' + person["city"] + '"'
-    graql_insert_query += ", has age " + str(person["age"])
-  else:
-    # person is not a customer
-    graql_insert_query += ", has is-customer false"
-  graql_insert_query += ";"
-  return graql_insert_query
+    # insert person
+    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    if "first_name" in person:
+        # person is a customer
+        graql_insert_query += ", has is-customer true"
+        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        graql_insert_query += ', has city "' + person["city"] + '"'
+        graql_insert_query += ", has age " + str(person["age"])
+    else:
+        # person is not a customer
+        graql_insert_query += ", has is-customer false"
+    graql_insert_query += ";"
+    return graql_insert_query
 
 def contract_template(contract):
-  # match company
-  graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
-  # match person
-  graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
-  # insert contract
-  graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-  return graql_insert_query
+    # match company
+    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    # match person
+    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    # insert contract
+    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
+    return graql_insert_query
 
 def call_template(call):
-  # match caller
-  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
-  # match callee
-  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
-  # insert call
-  graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
-                         "$call has started-at " + call["started_at"] + "; " +
-                         "$call has duration " + str(call["duration"]) + ";")
-  return graql_insert_query
+    # match caller
+    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    # match callee
+    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    # insert call
+    graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
+                           "$call has started-at " + call["started_at"] + "; " +
+                           "$call has duration " + str(call["duration"]) + ";")
+    return graql_insert_query
 
 def parse_data_to_dictionaries(input):
-  items = []
-  with open(input["data_path"] + ".json") as data:
-    for item in ijson.items(data, "item"):
-      items.append(item)
-  return items
+    items = []
+    with open(input["data_path"] + ".json") as data:
+        for item in ijson.items(data, "item"):
+            items.append(item)
+    return items
 
 inputs = [
-  {
-    "data_path": "files/phone-calls/data/companies",
-    "template": company_template
-  },
-  {
-    "data_path": "files/phone-calls/data/people",
-    "template": person_template
-  },
-  {
-    "data_path": "files/phone-calls/data/contracts",
-    "template": contract_template
-  },
-  {
-    "data_path": "files/phone-calls/data/calls",
-    "template": call_template
-  }
+    {
+        "data_path": "files/phone-calls/data/companies",
+        "template": company_template
+    },
+    {
+        "data_path": "files/phone-calls/data/people",
+        "template": person_template
+    },
+    {
+        "data_path": "files/phone-calls/data/contracts",
+        "template": contract_template
+    },
+    {
+        "data_path": "files/phone-calls/data/calls",
+        "template": call_template
+    }
 ]
 
 build_phone_call_graph(inputs)
@@ -596,114 +594,114 @@ build_phone_call_graph(inputs)
 [tab:XML]
 <!-- test-example phone_calls_xml_migration.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 import xml.etree.cElementTree as et
 
 def build_phone_call_graph(inputs):
-  client = grakn.Grakn(uri = "localhost:48555")
-  with client.session(keyspace = "phone_calls") as session:
-    for input in inputs:
-      print("Loading from [" + input["data_path"] + "] into Grakn ...")
-      load_data_into_grakn(input, session)
+    with GraknClient(uri="localhost:48555") as client:
+        with client.session(keyspace = "phone_calls") as session:
+            for input in inputs:
+                print("Loading from [" + input["data_path"] + "] into Grakn ...")
+                load_data_into_grakn(input, session)
 
 def load_data_into_grakn(input, session):
-  items = parse_data_to_dictionaries(input)
+    items = parse_data_to_dictionaries(input)
 
-  for item in items:
-    with session.transaction(grakn.TxType.WRITE) as tx:
-      graql_insert_query = input["template"](item)
-      print("Executing Graql Query: " + graql_insert_query)
-      tx.query(graql_insert_query)
-      tx.commit()
+    for item in items:
+        with session.transaction().write() as transaction:
+            graql_insert_query = input["template"](item)
+            print("Executing Graql Query: " + graql_insert_query)
+            transaction.query(graql_insert_query)
+            transaction.commit()
 
-  print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
 def company_template(company):
-  return 'insert $company isa company, has name "' + company["name"] + '";'
+    return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
-  # insert person
-  graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
-  if "first_name" in person:
-    # person is a customer
-    graql_insert_query += ", has is-customer true"
-    graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-    graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-    graql_insert_query += ', has city "' + person["city"] + '"'
-    graql_insert_query += ", has age " + str(person["age"])
-  else:
-    # person is not a customer
-    graql_insert_query += ", has is-customer false"
-  graql_insert_query += ";"
-  return graql_insert_query
+    # insert person
+    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    if "first_name" in person:
+        # person is a customer
+        graql_insert_query += ", has is-customer true"
+        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        graql_insert_query += ', has city "' + person["city"] + '"'
+        graql_insert_query += ", has age " + str(person["age"])
+    else:
+        # person is not a customer
+        graql_insert_query += ", has is-customer false"
+    graql_insert_query += ";"
+    return graql_insert_query
 
 def contract_template(contract):
-  # match company
-  graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
-  # match person
-  graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
-  # insert contract
-  graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-  return graql_insert_query
+    # match company
+    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    # match person
+    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    # insert contract
+    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
+    return graql_insert_query
 
 def call_template(call):
-  # match caller
-  graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
-  # match callee
-  graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
-  # insert call
-  graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
-                         "$call has started-at " + call["started_at"] + "; " +
-                         "$call has duration " + str(call["duration"]) + ";")
-  return graql_insert_query
+    # match caller
+    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    # match callee
+    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    # insert call
+    graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
+                           "$call has started-at " + call["started_at"] + "; " +
+                           "$call has duration " + str(call["duration"]) + ";")
+    return graql_insert_query
 
 def parse_data_to_dictionaries(input):
-  items = []
-  with open(input["data_path"] + ".xml", "rb") as inputfile:
-    append = False
-    for line in inputfile:
-      if "<" + input["selector"] + ">" in str(line):
-        ## start of a new xml tag
-        buffer = line
-        append = True
-      elif "</" + input["selector"]  + ">" in str(line):
-        ## we got a complete xml tag
-        buffer += line
+    items = []
+    with open(input["data_path"] + ".xml", "rb") as inputfile:
         append = False
-        tnode = et.fromstring(buffer)
-        ## parse the tag to a dictionary and append to tiems
-        item = {}
-        for element in tnode.getchildren():
-          item[element.tag] = element.text
-        items.append(item)
-        ## delete the buffer to free the memory
-        del buffer
-      elif append:
-        ## inside the current xml tag
-        buffer += line
-  return items
+        for line in inputfile:
+            if "<" + input["selector"] + ">" in str(line):
+                ## start of a new xml tag
+                buffer = line
+                append = True
+            elif "</" + input["selector"]  + ">" in str(line):
+                ## we got a complete xml tag
+                buffer += line
+                append = False
+                tnode = et.fromstring(buffer)
+                ## parse the tag to a dictionary and append to tiems
+                item = {}
+                for element in tnode.getchildren():
+                    item[element.tag] = element.text
+                items.append(item)
+                ## delete the buffer to free the memory
+                del buffer
+            elif append:
+                ## inside the current xml tag
+                buffer += line
+    return items
 
 inputs = [
-  {
-    "data_path": "files/phone-calls/data/companies",
-    "template": company_template,
-    "selector": "company"
-  },
-  {
-    "data_path": "files/phone-calls/data/people",
-    "template": person_template,
-    "selector": "person"
-  },
-  {
-    "data_path": "files/phone-calls/data/contracts",
-    "template": contract_template,
-    "selector": "contract"
-  },
-  {
-    "data_path": "files/phone-calls/data/calls",
-    "template": call_template,
-    "selector": "call"
-  }
+    {
+        "data_path": "files/phone-calls/data/companies",
+        "template": company_template,
+        "selector": "company"
+    },
+    {
+        "data_path": "files/phone-calls/data/people",
+        "template": person_template,
+        "selector": "person"
+    },
+    {
+        "data_path": "files/phone-calls/data/contracts",
+        "template": contract_template,
+        "selector": "contract"
+    },
+    {
+        "data_path": "files/phone-calls/data/calls",
+        "template": call_template,
+        "selector": "call"
+    }
 ]
 
 build_phone_call_graph(inputs)

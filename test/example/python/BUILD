@@ -20,9 +20,8 @@ py_test(
         "@graknlabs_client_python//:client_python",
         requirement("ijson")
     ],
-    data = [
-        "//files:phone-calls-kg"
-    ]
+    data = ["//files:phone-calls-kg"],
+    imports = [":phone-calls-tests"]
 )
 
 genrule(
@@ -58,7 +57,8 @@ py_test(
         ":social-network-tests",
     ],
     deps = ["@graknlabs_client_python//:client_python"],
-    data = ["//files:social-network-kg"]
+    data = ["//files:social-network-kg"],
+    imports = [":social-network-tests"]
 )
 
 genrule(
