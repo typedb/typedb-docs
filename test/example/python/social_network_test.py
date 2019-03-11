@@ -10,11 +10,11 @@ class SocialNetworkTest(unittest.TestCase):
             define_query = schema.read()
 
             with GraknClient(uri="localhost:48555") as client:
-            with client.session("social_network") as session:
-                with session.transaction().write() as transaction:
-                    transaction.query(define_query)
-                    transaction.commit()
-                    print("Loaded the social_network schema")
+                with client.session("social_network") as session:
+                    with session.transaction().write() as transaction:
+                        transaction.query(define_query)
+                        transaction.commit()
+                        print("Loaded the social_network schema")
 
     def test_social_network_quickstart_query(self):
         import social_network_quickstart_query
@@ -34,8 +34,8 @@ class SocialNetworkTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         with GraknClient(uri="localhost:48555") as client:
-        client.keyspaces().delete("social_network")
-        print("Deleted the social_network keyspace")
+            client.keyspaces().delete("social_network")
+            print("Deleted the social_network keyspace")
 
 
 if __name__ == '__main__':

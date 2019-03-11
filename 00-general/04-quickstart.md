@@ -158,20 +158,20 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:48555") as client:
-with client.session(keyspace = "social_network") as session:
-  with session.transaction().read() as transaction:
-    query = '''
-      match
-        $pos isa media;
-        $fun isa emotion;
-        $fun "funny";
-        $per has gender "female";
-        (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
-      get $pos;
-    '''
-    answer_iterator = transaction.query(query)
-    for answer in answer_iterator:
-      print(answer.map().get("pos").id)
+    with client.session(keyspace = "social_network") as session:
+      with session.transaction().read() as transaction:
+        query = '''
+          match
+            $pos isa media;
+            $fun isa emotion;
+            $fun "funny";
+            $per has gender "female";
+            (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
+          get $pos;
+        '''
+        answer_iterator = transaction.query(query)
+        for answer in answer_iterator:
+          print(answer.map().get("pos").id)
 ```
 
 #### Retrieve the average salary of all employees at Pharos using [Client Node.js](/docs/client-api/nodejs)
