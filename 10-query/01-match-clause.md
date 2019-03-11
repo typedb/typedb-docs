@@ -5,58 +5,56 @@ permalink: /docs/query/match-clause
 ---
 
 ## Match Clause
-Match clauses are used to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
-By defining the [schema](/docs/schema/overview), we effectively define a vocabulary to be used to describe concepts of our domain. 
+We use match clauses to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
+By defining the [schema](/docs/schema/overview), we effectively define a vocabulary to be used to describe concepts of our domain.
 
-Once the schema is defined, we can form graph patterns that we want to search for in our knowledge graph. We do that by using match clauses.
-Each match clause represents a particular graph pattern via its corresponding query pattern. The match clauses are then executed as a part of Get query returning tuples of instances fulfilling the specified pattern.
-
+Once the schema is defined, we can form graph patterns for which we want to search within our knowledge graph. We do that by using match clauses.
+Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](/docs/schema/get-query), [Insert](/docs/schema/insert-query), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
 
 ## Query pattern anatomy
-As we have seen before, at the core of each query sits a query pattern that describes a subgraph of our particular interest. Here we examine the structure of query patterns closer. In general patterns can be thought of as 
-different arrangements of collection of statements. Graql statements constitute the smallest building blocks of queries. Let's have a look at one then:
+As we have seen before, at the core of each query sits a query pattern that describes a subgraph of our particular interest. Here we examine the structure of query patterns closer. In general patterns can be thought of as different arrangements of statement collections. Graql statements constitute the smallest building blocks of queries. Let's have a close look at the constructs of a basic match clause.
 
 ![Statement structure](/docs/images/query/statement-structure.png)
 
-  * Each statement starts with a __variable__ (V) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
+- Each statement starts with a **variable** (V) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
 
-  * The variable is followed by a comma-separated list of __properties__ (`P1`, `P2`, `P3`) describing the concepts the variable refers to. Here we can see that all concepts `$p` refers to must be of type `person` 
-  and have an attribute of type `name` and value `Bob` attached. Additionally we request the concepts to have an attribute of type `phone-number` attached and we signal that we want to fetch them as well by defining an extra `$phone` variable.
-  Consequently, after performing a match on this statement, we should obtain pairs of concepts that satisfy our statement.
-  
-  * we mark the end of the statement with a semi-colon `;`.
-  
-There is some freedom in forming and composing our statements. For example we could write our single statement with three properties as three combined statements:
+- The variable is followed by a comma-separated list of **properties** (`P1`, `P2`, `P3`) describing the concepts the variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type `person`. The matched instances are expected to own an attribute of type `name` with value of `"Bob"`. Additionally, we require the concepts to own an attribute of type `phone-number` with any value. We signal that we want to fetch the owned `phone-number`s as well by defining an extra `$phone` variable.
+Consequently, after performing a match on this statement, we should obtain pairs of concepts that satisfy our statement.
 
-```
+- We mark the end of the statement with a semi-colon `;`.
+
+There is some freedom in forming and composing our statements. For example, as shown below, we could write our single statement with three properties as three combined statements.
+
+<!-- test-ignore -->
+```graql
 $p isa person;
 $p has name 'Bob';
 $p has phone-number $phone;
 ```
 
-Consequently, we arrive at the subject of pattern composition. We already know that statements are the smallest building blocks, however we have a number of possibilities of arranging them together. 
-In that way, we can express more complex pattern scenarios and their corresponding subgraphs. We allow the following ways to arrange statements together:
+Consequently, we arrive at the subject of pattern composition. We already know that statements are the smallest building blocks, however we have a number of possibilities for arranging them together. By doing so, we can express more complex pattern scenarios and their corresponding subgraphs. We allow the following ways to arrange statements together.
 
+![Pattern structure](/docs/images/query/pattern-structure.png)
 
-![Pattern structure](/docs/images/query/pattern-structure.png) 
+1. **Statement**: simplest possible arrangement - a single basic building block as [explained above](#Query pattern anatomy).
+2. **Conjunction**: set of patterns where to satisfy a match, **all** patterns must be matched. We form conjunctions by separating the partaking patterns with semi-colons `;`.
+3. **Disjunction**: set of patterns where to satisfy a match, **at least one** pattern must be matched. We form disjunctions by enclosing the partaking patterns within curly braces and interleaving them with the `or` keyword.
+4. **Negation**: defines a conjunctive pattern that explicitly defines conditions **not** to be met. We form negations by defining the pattern of interest inside a `not {};` block.
 
-1. Statement - simplest possible arrangement - a single basic building block as explained above.
-2. Conjunction - set of patterns where to satisfy a match all patterns must be matched. We form conjunctions by separating the partaking patterns with semi-colons `;`.
-3. Disjunction - set of patterns where to satisfy a match at least one pattern must be matched. We form disjunctions by enclosing the partaking patterns within curly braces and interleaving them with an `or` keyword.
-4. Negation - defines a conjunctive pattern that explicitly defines conditions not to be met. We form negations by defining the pattern of interest inside a `not{};` block.
-
-To illustrate the possibilities better, we will now look at an example pattern:
+To better illustrate the possibilities, we will now look at an example of an expressive pattern.
 
 ![Example pattern](/docs/images/query/example-pattern.png)
-The pattern describes pairs of `person` that are married,  went to the same `school` and are employed by the same `company`. 
-The pattern additionally specifies the company to be either `Pharos` or `Cybersafe` with the school not being the `HCC` one. Additionally the pattern 
+
+The pattern above describes pairs of instances of `person` who are married, went to the same `school` and are employed by the same `organisation`.
+The pattern additionally specifies the employer to be either `Pharos` or `Cybersafe`, and the school to not be named `HCC`. Additionally the pattern
 asks to fetch the `full-name` of each of the people in the pair.
-The pattern is a conjunction of four different patterns: 
-- conjunction `C1` - specifies the variables for people, school and organisation, specifies their types and asks for `full-name`s of people.
-- disjunction `D` - specifies that the companies of interest are either `Pharos` or `Cybersafe`
-- negation `N` - specifies that we are not interested in the `HCC` school
-- conjunction `C2` - defines the pattern requiring the people to be married (`marriage` relationship), attend the same school (`school-course-enrollment` relationship) and
-work at the same company (`employment` relationship)
+
+The pattern is a conjunction of four different pattern types:
+- **Conjunction 1** specifies the variables for people, school and organisation, specifies their types and asks for `full-name`s of people.
+- **Disjunction** specifies that the companies of interest are either `Pharos` or `Cybersafe`.
+- **Negation** specifies that we are not interested in the people who attended the school named `HCC`.
+- **conjunction** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `school-course-enrollment` relationship, and
+work at the same organisation via the `employment` relationship.
 
 In the subsequent sections, we shall see how to match specific graph patterns.
 
