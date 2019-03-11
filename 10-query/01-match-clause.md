@@ -20,7 +20,7 @@ different arrangements of collection of statements. Graql statements constitute 
 
   * Each statement starts with a __variable__ (V) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
 
-  * The variable is followed by a comma-separated list of properties (P1, P2, P3) describing the concepts the variable refers to. Here we can see that all concepts `$p` refers to must be of type `person` 
+  * The variable is followed by a comma-separated list of __properties__ (`P1`, `P2`, `P3`) describing the concepts the variable refers to. Here we can see that all concepts `$p` refers to must be of type `person` 
   and have an attribute of type `name` and value `Bob` attached. Additionally we request the concepts to have an attribute of type `phone-number` attached and we signal that we want to fetch them as well by defining an extra `$phone` variable.
   Consequently, after performing a match on this statement, we should obtain pairs of concepts that satisfy our statement.
   
@@ -28,10 +28,10 @@ different arrangements of collection of statements. Graql statements constitute 
   
 There is some freedom in forming and composing our statements. For example we could write our single statement with three properties as three combined statements:
 
-```graql
+```
 $p isa person;
 $p has name 'Bob';
-$p has phone-nunmber $phone;
+$p has phone-number $phone;
 ```
 
 Consequently, we arrive at the subject of pattern composition. We already know that statements are the smallest building blocks, however we have a number of possibilities of arranging them together. 
@@ -40,9 +40,9 @@ In that way, we can express more complex pattern scenarios and their correspondi
 
 ![Pattern structure](/docs/images/query/pattern-structure.png) 
 
-1. Statement - single basic building block as explained above.
+1. Statement - simplest possible arrangement - a single basic building block as explained above.
 2. Conjunction - set of patterns where to satisfy a match all patterns must be matched. We form conjunctions by separating the partaking patterns with semi-colons `;`.
-3. Disjunction - set of patterns where to satisfy a match at least one pattern must be matched. We form disjunctions by ienclosing the partaking patterns within curly braces and interleaving them with an `or` keyword.
+3. Disjunction - set of patterns where to satisfy a match at least one pattern must be matched. We form disjunctions by enclosing the partaking patterns within curly braces and interleaving them with an `or` keyword.
 4. Negation - defines a conjunctive pattern that explicitly defines conditions not to be met. We form negations by defining the pattern of interest inside a `not{};` block.
 
 To illustrate the possibilities better, we will now look at an example pattern:
