@@ -4,33 +4,61 @@ pageTitle: Match Clause
 permalink: /docs/query/match-clause
 ---
 
-## Match Concept Types and Their Instances
-`match` clause describes a pattern in the knowledge graph. In other words, it uses the semantics of the knowledge graph as defined in the [schema](/docs/schema/overview) to find a specific match. We can use the `match` clause to target instances of data or concepts defined in the schema.
+## Match Clause
+Match clauses are used to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
+By defining the [schema](/docs/schema/overview), we effectively define a vocabulary to be used to describe concepts of our domain. 
 
-<div class = "note">
-[Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
-</div>
+Once the schema is defined, we can form graph patterns that we want to search for in our knowledge graph. We do that by using match clauses.
+Each match clause represents a particular graph pattern via its corresponding query pattern. The match clauses are then executed as a part of Get query returning tuples of instances fulfilling the specified pattern.
 
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
-</div>
 
-<div class = "note">
-[Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
-</div>
+## Query pattern anatomy
+As we have seen before, at the core of each query sits a query pattern that describes a subgraph of our particular interest. Here we examine the structure of query patterns closer. In general patterns can be thought of as 
+different arrangements of collection of statements. Graql statements constitute the smallest building blocks of queries. Let's have a look at one then:
 
-## Variables
-Graql assigns instances of data and schema concepts to variables. A Graql variable is prefixed with `$` and is simply a placeholder for an instance of a concept type or simply a hard-coded value.
+![Statement structure](/docs/images/query/statement-structure.png)
 
-In case of a hard-coded value, the accepted datatypes are:
-- `long`: a 64-bit signed integer.
-- `double`: a double-precision floating point number, including a decimal point.
-- `string`: enclosed in double `"` or single `'` quotes
-- `boolean`: `true` or `false`
-- `date`: a date or date-time in ISO 8601 format
+  * Each statement starts with a __variable__ (V) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
+
+  * The variable is followed by a comma-separated list of properties (P1, P2, P3) describing the concepts the variable refers to. Here we can see that all concepts `$p` refers to must be of type `person` 
+  and have an attribute of type `name` and value `Bob` attached. Additionally we request the concepts to have an attribute of type `phone-number` attached and we signal that we want to fetch them as well by defining an extra `$phone` variable.
+  Consequently, after performing a match on this statement, we should obtain pairs of concepts that satisfy our statement.
+  
+  * we mark the end of the statement with a semi-colon `;`.
+  
+There is some freedom in forming and composing our statements. For example we could write our single statement with three properties as three combined statements:
+
+```graql
+$p isa person;
+$p has name 'Bob';
+$p has phone-nunmber $phone;
+```
+
+Consequently, we arrive at the subject of pattern composition. We already know that statements are the smallest building blocks, however we have a number of possibilities of arranging them together. 
+In that way, we can express more complex pattern scenarios and their corresponding subgraphs. We allow the following ways to arrange statements together:
+
+
+![Pattern structure](/docs/images/query/pattern-structure.png) 
+
+1. Statement - single basic building block as explained above.
+2. Conjunction - set of patterns where to satisfy a match all patterns must be matched. We form conjunctions by separating the partaking patterns with semi-colons `;`.
+3. Disjunction - set of patterns where to satisfy a match at least one pattern must be matched. We form disjunctions by ienclosing the partaking patterns within curly braces and interleaving them with an `or` keyword.
+4. Negation - defines a conjunctive pattern that explicitly defines conditions not to be met. We form negations by defining the pattern of interest inside a `not{};` block.
+
+To illustrate the possibilities better, we will now look at an example pattern:
+
+![Example pattern](/docs/images/query/example-pattern.png)
+The pattern describes pairs of `person` that are married,  went to the same `school` and are employed by the same `company`. 
+The pattern additionally specifies the company to be either `Pharos` or `Cybersafe` with the school not being the `HCC` one. Additionally the pattern 
+asks to fetch the `full-name` of each of the people in the pair.
+The pattern is a conjunction of four different patterns: 
+- conjunction `C1` - specifies the variables for people, school and organisation, specifies their types and asks for `full-name`s of people.
+- disjunction `D` - specifies that the companies of interest are either `Pharos` or `Cybersafe`
+- negation `N` - specifies that we are not interested in the `HCC` school
+- conjunction `C2` - defines the pattern requiring the people to be married (`marriage` relationship), attend the same school (`school-course-enrollment` relationship) and
+work at the same company (`employment` relationship)
+
+In the subsequent sections, we shall see how to match specific graph patterns.
 
 ## Match Instances of Concept Types
 What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we learn about [using _get_ for retrieval of information from the knowledge graph](/docs/query/get-query).
@@ -525,6 +553,21 @@ This matches all concept types that own `title` as their attribute.
 
 ## Examples
 To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](/docs/examples/queries).
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
+</div>
 
 ## Summary
 We learned how to use the `match` clause to write intuitive statements that describe a desired pattern in the knowledge graph and fill in the variables that hold the data we would like to acquire.
