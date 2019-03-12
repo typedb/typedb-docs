@@ -11,12 +11,10 @@ methods:
       method: session.transaction().read();
     javascript:
       <<: *method-transaction-read
-      method: await session.transaction(Grakn.txType.READ);
-      # method: await session.transaction().read();
+      method: await session.transaction().read();
     python:
       <<: *method-transaction-read
-      method: session.transaction(Grakn.TxType.READ)
-      # method: session.transaction().read()
+      method: session.transaction().read()
 
   - method:
     common: &method-transaction-write
@@ -29,12 +27,10 @@ methods:
       method: session.transaction().write();
     javascript:
       <<: *method-transaction-write
-      method: await session.transaction(Grakn.txType.WRITE);
-      # method: await session.transaction().write();
+      method: await session.transaction().write();
     python:
       <<: *method-transaction-write
-      method: session.transaction(Grakn.TxType.WRITE)
-      # method: session.transaction().write()
+      method: session.transaction().write()
 
   - method:
     common: &method-close

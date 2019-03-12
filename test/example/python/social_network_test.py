@@ -1,4 +1,4 @@
-import grakn
+from grakn.client import GraknClient
 import unittest
 
 
@@ -9,12 +9,12 @@ class SocialNetworkTest(unittest.TestCase):
         with open('files/social-network/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            client = grakn.Grakn(uri="localhost:48555")
-            with client.session("social_network") as session:
-                with session.transaction(grakn.TxType.WRITE) as transaction:
-                    transaction.query(define_query)
-                    transaction.commit()
-                    print("Loaded the social_network schema")
+            with GraknClient(uri="localhost:48555") as client:
+                with client.session("social_network") as session:
+                    with session.transaction().write() as transaction:
+                        transaction.query(define_query)
+                        transaction.commit()
+                        print("Loaded the social_network schema")
 
     def test_social_network_quickstart_query(self):
         import social_network_quickstart_query
@@ -33,9 +33,9 @@ class SocialNetworkTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        client = grakn.Grakn(uri="localhost:48555")
-        client.keyspaces().delete("social_network")
-        print("Deleted the social_network keyspace")
+        with GraknClient(uri="localhost:48555") as client:
+            client.keyspaces().delete("social_network")
+            print("Deleted the social_network keyspace")
 
 
 if __name__ == '__main__':

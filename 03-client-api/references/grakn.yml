@@ -19,13 +19,13 @@ methods:
         - "[Client](#client-api-title-client) object"
     java:
       <<: *method-client
-      method: "new Grakn(String uri);"
+      method: new GraknClient(String uri);
       accepts:
         param1:
           <<: *accepts-client-uri
     javascript:
       <<: *method-client
-      method: new Grakn(uri, credentials);
+      method: new GraknClient(uri, credentials);
       accepts:
         <<: *accepts-client
         param2:
@@ -33,7 +33,7 @@ methods:
           type: '{ username: "", password: "" }'
     python:
       <<: *method-client
-      method: grakn.Grakn(uri="", credientials = {})
+      method: GraknClient(uri="", credientials = {})
       accepts:
         <<: *accepts-client
         param2:

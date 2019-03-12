@@ -461,7 +461,7 @@ public class PhoneCallsMigration {
 In order to load data from each file into Grakn, we need to:
 
 1. retrieve an `ArrayList` of JSON objects, each of which represents a data item. We do this by calling `parseDataToJson(input)`, and
-2. for each JSON object in `items`: a) create a transaction `tx`, b) construct the `graqlInsertQuery` using the corresponding `template`, c) run the `query` and d)`commit` the transaction.
+2. for each JSON object in `items`: a) create a `transaction`, b) construct the `graqlInsertQuery` using the corresponding `template`, c) run the `query` and d)`commit` the transaction.
 
 <div class="note">
 [Important]
