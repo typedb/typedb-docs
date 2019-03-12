@@ -1,11 +1,11 @@
-#####################
-# Java Snippet Test #
-#####################
+#########################
+# Graql Java Query Test #
+#########################
 
 java_test(
-    name = "snippet-java",
-    test_class = "generated.TestSnippetJava",
-    srcs = [":generate-test-snippet-java"],
+    name = "graql-java",
+    test_class = "grakn.doc.test.query.GraqlJavaTest",
+    srcs = [":graql-java-tests"],
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
@@ -19,29 +19,29 @@ java_test(
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
-        "//test/grakn-test-server/conf:cassandra-embedded.yaml",
-        "//test/grakn-test-server/conf:grakn.properties"
+        "//test/conf:cassandra-embedded.yaml",
+        "//test/conf:grakn.properties"
     ]
 )
 
 genrule(
-    name = "generate-test-snippet-java",
+    name = "graql-java-tests",
     srcs = [
-        "generate-test-snippet-java.py",
+        "graql-java-tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location generate-test-snippet-java.py) $@ $(locations //:content)",
-    outs = ["generated/TestSnippetJava.java"]
+    cmd = "python $(location graql-java-tests.py) $@ $(locations //:content)",
+    outs = ["GraqlJavaTest.java"]
 )
 
-######################
-# Graql Snippet Test #
-######################
+#########################
+# Graql Lang Query Test #
+#########################
 
 java_test(
-    name = "snippet-graql",
-    test_class = "generated.TestSnippetGraql",
-    srcs = [":generate-test-snippet-graql"],
+    name = "graql-lang",
+    test_class = "grakn.doc.test.query.GraqlLangTest",
+    srcs = [":graql-lang-tests"],
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
@@ -55,17 +55,17 @@ java_test(
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
-        "//test/grakn-test-server/conf:cassandra-embedded.yaml",
-        "//test/grakn-test-server/conf:grakn.properties"
+        "//test/conf:cassandra-embedded.yaml",
+        "//test/conf:grakn.properties"
     ]
 )
 
 genrule(
-    name = "generate-test-snippet-graql",
+    name = "graql-lang-tests",
     srcs = [
-        "generate-test-snippet-graql.py",
+        "graql-lang-tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location generate-test-snippet-graql.py) $@ $(locations //:content)",
-    outs = ["generated/TestSnippetGraql.java"]
+    cmd = "python $(location graql-lang-tests.py) $@ $(locations //:content)",
+    outs = ["GraqlLangTest.java"]
 )

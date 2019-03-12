@@ -10,7 +10,7 @@ for arg in sys.argv:
     else:
         generated_test_paths.append(arg)
 
-pattern_to_find_standalones = ('<!-- test-standalone ' +
+pattern_to_find_standalones = ('<!-- test-example ' +
                                '(.*)' +  # group containing filename
                                '\s-->\n```.*\n+' +
                                '((\n|.)+?)' +  # group containing standalone
@@ -30,5 +30,5 @@ for markdown_file in markdown_files:
             if corresponding_path:
                 with open(corresponding_path, "w") as generated_file:
                     standalone = standalone[1].replace("&lt;", "<").replace("&gt;", ">")  # replace html unicodes
-                    standalone = re.sub(r"package .*?;", "package generated;", standalone)  # replace package name with that of bazel's
+                    standalone = re.sub(r"package .*?;", "package grakn.doc.test.example;", standalone)  # replace package name with that of bazel's
                     generated_file.write(standalone)

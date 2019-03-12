@@ -1,45 +1,32 @@
 import re
 import sys
 
-generated_test_path, markdown_files = sys.argv[1], sys.argv[2:]
+output_path, markdown_files = sys.argv[1], sys.argv[2:]
 
-java_snippet_test_class_template = """
-package generated;
+graql_lang_test_template = """
+package grakn.doc.test.query;
 
 import grakn.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
-
 import graql.lang.Graql;
-import static graql.lang.Graql.*;
 import graql.lang.query.GraqlQuery;
-import graql.lang.query.GraqlCompute;
-import graql.lang.query.GraqlDefine;
-import graql.lang.query.GraqlUndefine;
-import graql.lang.query.GraqlGet;
-import graql.lang.query.GraqlDelete;
-import graql.lang.query.GraqlInsert;
-import graql.lang.query.GraqlCompute.Argument;
-import static graql.lang.query.GraqlCompute.Argument.*;
-import static graql.lang.Graql.Token.Compute.Algorithm.*;
-import static graql.lang.Graql.Token.Order.*;
-
 import org.junit.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
+import java.util.stream.Stream;
 
-public class TestSnippetJava {
+public class GraqlLangTest {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer(
-        Paths.get("test/grakn-test-server/conf/grakn.properties"), 
-        Paths.get("test/grakn-test-server/conf/cassandra-embedded.yaml")
+        Paths.get("test/conf/grakn.properties"), 
+        Paths.get("test/conf/cassandra-embedded.yaml")
     );
 
     static GraknClient client;
-    static GraknClient.Session session ;
+    static GraknClient.Session session;
     GraknClient.Transaction transaction;
 
 
@@ -65,12 +52,12 @@ public class TestSnippetJava {
     }
 
     @Before
-    public void openTransaction(){
+    public void openTransaction() {
         transaction = session.transaction().write();
     }
 
     @After
-    public void abortTransaction(){
+    public void abortTransaction() {
         transaction.abort();
     }
 
@@ -83,18 +70,19 @@ public class TestSnippetJava {
 }
 """
 
-java_snippet_test_method_template = """
+graql_lang_test_method_template = """
     @Test
     public void test() {
         // PAGE COMMENT PLACEHOLDER
-        // QUERY OBJECTS PLACEHOLDER
-        // EXECUTE PLACEHOLDER
+        String queries = "// QUERIES PLACEHOLDER";
+        Stream<GraqlQuery> parsedQuery = Graql.parseList(queries);
+        parsedQuery.forEach(query -> transaction.execute(query));
     }
 """
 
-pattern_to_find_snippets = ('<!-- test-(delay|ignore|standalone.*) -->\n```java\n((\n|.)+?)```'
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```graql\n((\n|.)+?)```'
                             +
-                            '|(```java\n' +
+                            '|(```graql\n' +
                             '((\n|.)+?)' +  # group containing snippet
                             '```)')
 
@@ -110,24 +98,21 @@ for markdown_file in markdown_files:
 
 test_methods = ""
 for i, snippet in enumerate(snippets):
-    test_method = java_snippet_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+
+    # turn into a singe line + remove comments + escape double quotes
+    graql_lines = []
+    for line in snippet.get("code").split("\n"):
+        line = line.replace("\t", "")
+        if "#" not in line:
+            graql_lines.append(line.replace('"', "\\\""))
+    final_snippet = " ".join(graql_lines)
+
+    test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
     test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
-    test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
-
-    # add execute statements
-    pattern_to_find_query_object_vars = '^Graql[A-Z].*?\s(.*)\s='
-    matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
-    execute_statements = ""
-    for variable in matches:
-        execute_statements += "transaction.execute(" + variable + ");\n"
-
-    test_method = test_method.replace("// EXECUTE PLACEHOLDER", execute_statements)
+    test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add query objects
     test_methods += test_method
 
-test_methods = test_methods.replace("&lt;", "<").replace("&gt;", ">")
+graql_lang_test_class = graql_lang_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
 
-java_snippet_test_class = java_snippet_test_class_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
-
-
-with open(generated_test_path, "w") as generated_test_file:
-    generated_test_file.write(java_snippet_test_class)
+with open(output_path, "w") as output_file:
+    output_file.write(graql_lang_test_class)

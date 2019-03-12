@@ -67,7 +67,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsFirstQuery.java -->
+<!-- test-example PhoneCallsFirstQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -118,14 +118,14 @@ public class PhoneCallsFirstQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsFirstQuery.js -->
+<!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
-const Grakn = require("grakn-client");
-const client = new Grakn("localhost:48555");
-const session = client.session("phone_calls");
+const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
-	const transaction = await session.transaction(Grakn.txType.READ);
+    const client = new GraknClient("localhost:48555");
+    const session = await client.session("phone_calls");
+	const transaction = await session.transaction().read();
 
   	let query = [
     	"match",
@@ -155,6 +155,7 @@ async function ExecuteMatchQuery() {
 
   	await transaction.close();
   	await session.close();
+  	client.close();
 }
 
 ExecuteMatchQuery();
@@ -162,32 +163,32 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_first_query.py -->
+<!-- test-example phone_calls_first_query.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as transaction:
-    query = [
-      'match',
-      '  $customer isa person, has phone-number $phone-number;',
-      '  $company isa company, has name "Telecom";',
-      '  (customer: $customer, provider: $company) isa contract;',
-      '  $target isa person, has phone-number "+86 921 547 9004";',
-      '  (caller: $customer, callee: $target) isa call, has started-at $started-at;',
-      '  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;',
-      'get $phone-number;'
-    ]
+with GraknClient(uri="localhost:48555") as client:
+    with client.session(keyspace = "phone_calls") as session:
+        with session.transaction().read() as transaction:
+            query = [
+                'match',
+                '  $customer isa person, has phone-number $phone-number;',
+                '  $company isa company, has name "Telecom";',
+                '  (customer: $customer, provider: $company) isa contract;',
+                '  $target isa person, has phone-number "+86 921 547 9004";',
+                '  (caller: $customer, callee: $target) isa call, has started-at $started-at;',
+                '  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;',
+                'get $phone-number;'
+            ]
 
-    print("\nQuery:\n", "\n".join(query))
-    query = "".join(query)
+            print("\nQuery:\n", "\n".join(query))
+            query = "".join(query)
 
-    iterator = transaction.query(query)
-    answers = iterator.collect_concepts()
-    result = [ answer.value() for answer in answers ]
+            iterator = transaction.query(query)
+            answers = iterator.collect_concepts()
+            result = [ answer.value() for answer in answers ]
 
-    print("\nResult:\n", result)
+            print("\nResult:\n", result)
 ```
 [tab:end]
 
@@ -237,7 +238,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsSecondQuery.java -->
+<!-- test-example PhoneCallsSecondQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -290,14 +291,14 @@ public class PhoneCallsSecondQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsSecondQuery.js -->
+<!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
-const Grakn = require("grakn-client");
-const client = new Grakn("localhost:48555");
-const session = client.session("phone_calls");
+const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
-	const transaction = await session.transaction(Grakn.txType.READ);
+    const client = new GraknClient("localhost:48555");
+    const session = await client.session("phone_calls");
+	const transaction = await session.transaction().read();
 
   	let query = [
 		"match ",
@@ -329,6 +330,7 @@ async function ExecuteMatchQuery() {
 
   	await transaction.close();
   	await session.close();
+  	client.close();
 }
 
 ExecuteMatchQuery();
@@ -336,34 +338,34 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_second_query.py -->
+<!-- test-example phone_calls_second_query.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as transaction:
-    query = [
-      'match ',
-      '  $suspect isa person, has city "London", has age > 50;',
-      '  $company isa company, has name "Telecom";',
-      '  (customer: $suspect, provider: $company) isa contract;',
-      '  $pattern-callee isa person, has age < 20;',
-      '  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;',
-      '  $target isa person, has phone-number $phone-number, has is-customer false;',
-      '  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;',
-      '  $target-call-date > $pattern-call-date;',
-      'get $phone-number;'
-    ]
-
-    print("\nQuery:\n", "\n".join(query))
-    query = "".join(query)
-
-    iterator = transaction.query(query)
-    answers = iterator.collect_concepts()
-    result = [ answer.value() for answer in answers ]
-
-    print("\nResult:\n", result)
+with GraknClient(uri="localhost:48555") as client:
+    with client.session(keyspace = "phone_calls") as session:
+      with session.transaction().read() as transaction:
+        query = [
+          'match ',
+          '  $suspect isa person, has city "London", has age > 50;',
+          '  $company isa company, has name "Telecom";',
+          '  (customer: $suspect, provider: $company) isa contract;',
+          '  $pattern-callee isa person, has age < 20;',
+          '  (caller: $suspect, callee: $pattern-callee) isa call, has started-at $pattern-call-date;',
+          '  $target isa person, has phone-number $phone-number, has is-customer false;',
+          '  (caller: $suspect, callee: $target) isa call, has started-at $target-call-date;',
+          '  $target-call-date > $pattern-call-date;',
+          'get $phone-number;'
+        ]
+    
+        print("\nQuery:\n", "\n".join(query))
+        query = "".join(query)
+    
+        iterator = transaction.query(query)
+        answers = iterator.collect_concepts()
+        result = [ answer.value() for answer in answers ]
+    
+        print("\nResult:\n", result)
 ```
 [tab:end]
 
@@ -407,7 +409,7 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsThirdQuery.java -->
+<!-- test-example PhoneCallsThirdQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -457,14 +459,14 @@ public class PhoneCallsThirdQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsThirdQuery.js -->
+<!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
-const Grakn = require("grakn-client");
-const client = new Grakn("localhost:48555");
-const session = client.session("phone_calls");
+const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
-	const transaction = await session.transaction(Grakn.txType.READ);
+    const client = new GraknClient("localhost:48555");
+    const session = await client.session("phone_calls");
+	const transaction = await session.transaction().read();
 
 	let query = [
 		"match ",
@@ -493,6 +495,7 @@ async function ExecuteMatchQuery() {
 
 	transaction.close();
   	await session.close();
+  	client.close();
 }
 
 ExecuteMatchQuery();
@@ -500,31 +503,31 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_third_query.py -->
+<!-- test-example phone_calls_third_query.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as transaction:
-    query = [
-      'match ',
-      '  $common-contact isa person, has phone-number $phone-number;',
-      '  $customer-a isa person, has phone-number "+7 171 898 0853";',
-      '  $customer-b isa person, has phone-number "+370 351 224 5176";',
-      '  (caller: $customer-a, callee: $common-contact) isa call;',
-      '  (caller: $customer-b, callee: $common-contact) isa call;',
-      'get $phone-number;'
-    ]
+with GraknClient(uri="localhost:48555") as client:
+    with client.session(keyspace = "phone_calls") as session:
+        with session.transaction().read() as transaction:
+            query = [
+                'match ',
+                '  $common-contact isa person, has phone-number $phone-number;',
+                '  $customer-a isa person, has phone-number "+7 171 898 0853";',
+                '  $customer-b isa person, has phone-number "+370 351 224 5176";',
+                '  (caller: $customer-a, callee: $common-contact) isa call;',
+                '  (caller: $customer-b, callee: $common-contact) isa call;',
+                'get $phone-number;'
+            ]
 
-    print("\nQuery:\n", "\n".join(query))
-    query = "".join(query)
+            print("\nQuery:\n", "\n".join(query))
+            query = "".join(query)
 
-    iterator = transaction.query(query)
-    answers = iterator.collect_concepts()
-    result = [ answer.value() for answer in answers ]
+            iterator = transaction.query(query)
+            answers = iterator.collect_concepts()
+            result = [ answer.value() for answer in answers ]
 
-    print("\nResult:\n", result)
+            print("\nResult:\n", result)
 ```
 [tab:end]
 
@@ -575,7 +578,7 @@ get $phone-number-a, $phone-number-b;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsForthQuery.java -->
+<!-- test-example PhoneCallsForthQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -629,14 +632,14 @@ public class PhoneCallsForthQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsForthQuery.js -->
+<!-- test-example phoneCallsForthQuery.js -->
 ```javascript
-const Grakn = require("grakn-client");
-const client = new Grakn("localhost:48555");
-const session = client.session("phone_calls");
+const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
-	const transaction = await session.transaction(Grakn.txType.READ);
+    const client = new GraknClient("localhost:48555");
+    const session = await client.session("phone_calls");
+	const transaction = await session.transaction().read();
 
   	let query = [
     	"match ",
@@ -669,6 +672,7 @@ async function ExecuteMatchQuery() {
 
 	await transaction.close();
   	await session.close();
+  	client.close();
 }
 
 ExecuteMatchQuery();
@@ -676,35 +680,35 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_forth_query.py -->
+<!-- test-example phone_calls_forth_query.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as transaction:
-    query = [
-        'match ',
-        '  $target isa person, has phone-number "+48 894 777 5173";',
-        '  $company isa company, has name "Telecom";',
-        '  $customer-a isa person, has phone-number $phone-number-a;',
-        '  (customer: $customer-a, provider: $company) isa contract;',
-        '  (caller: $customer-a, callee: $target) isa call;',
-        '  $customer-b isa person, has phone-number $phone-number-b;',
-        '  (customer: $customer-b, provider: $company) isa contract;',
-        '  (caller: $customer-b, callee: $target) isa call;',
-        '  (caller: $customer-a, callee: $customer-b) isa call;',
-        'get $phone-number-a, $phone-number-b;'
-    ]
+with GraknClient(uri="localhost:48555") as client:
+    with client.session(keyspace = "phone_calls") as session:
+        with session.transaction().read() as transaction:
+            query = [
+                'match ',
+                '  $target isa person, has phone-number "+48 894 777 5173";',
+                '  $company isa company, has name "Telecom";',
+                '  $customer-a isa person, has phone-number $phone-number-a;',
+                '  (customer: $customer-a, provider: $company) isa contract;',
+                '  (caller: $customer-a, callee: $target) isa call;',
+                '  $customer-b isa person, has phone-number $phone-number-b;',
+                '  (customer: $customer-b, provider: $company) isa contract;',
+                '  (caller: $customer-b, callee: $target) isa call;',
+                '  (caller: $customer-a, callee: $customer-b) isa call;',
+                'get $phone-number-a, $phone-number-b;'
+            ]
 
-    print("\nQuery:\n", "\n".join(query))
-    query = "".join(query)
+            print("\nQuery:\n", "\n".join(query))
+            query = "".join(query)
 
-    iterator = transaction.query(query)
-    answers = iterator.collect_concepts()
-    result = [ answer.value() for answer in answers ]
+            iterator = transaction.query(query)
+            answers = iterator.collect_concepts()
+            result = [ answer.value() for answer in answers ]
 
-    print("\nResult:\n", result)
+            print("\nResult:\n", result)
 ```
 [tab:end]
 
@@ -769,7 +773,7 @@ get $duration; mean $duration;
 
 <div class="tabs dark">
 [tab:Java]
-<!-- test-standalone PhoneCallsFifthQuery.java -->
+<!-- test-example PhoneCallsFifthQuery.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -840,14 +844,14 @@ public class PhoneCallsFifthQuery {
 [tab:end]
 
 [tab:Node.js]
-<!-- test-standalone phoneCallsFifthQuery.js -->
+<!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
-const Grakn = require("grakn-client");
-const client = new Grakn("localhost:48555");
-const session = client.session("phone_calls");
+const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
-	const transaction = await session.transaction(Grakn.txType.READ);
+	const client = new GraknClient("localhost:48555");
+    const session = await client.session("phone_calls");
+    const transaction = await session.transaction().read();
 
   	let firstQuery = [
 		'match',
@@ -899,6 +903,7 @@ async function ExecuteMatchQuery() {
 
 	await transaction.close();
   	await session.close();
+  	client.close();
 }
 
 ExecuteMatchQuery();
@@ -906,53 +911,53 @@ ExecuteMatchQuery();
 [tab:end]
 
 [tab:Python]
-<!-- test-standalone phone_calls_fifth_query.py -->
+<!-- test-example phone_calls_fifth_query.py -->
 ```python
-import grakn
+from grakn.client import GraknClient
 
-client = grakn.Grakn(uri = "localhost:48555")
-with client.session(keyspace = "phone_calls") as session:
-  with session.transaction(grakn.TxType.READ) as transaction:
-    first_query = [
-      'match',
-      '  $customer isa person, has age < 20;',
-      '  $company isa company, has name "Telecom";',
-      '  (customer: $customer, provider: $company) isa contract;',
-      '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
-      'get $duration; mean $duration;'
-    ]
+with GraknClient(uri="localhost:48555") as client:
+    with client.session(keyspace = "phone_calls") as session:
+        with session.transaction().read() as transaction:
+            first_query = [
+                'match',
+                '  $customer isa person, has age < 20;',
+                '  $company isa company, has name "Telecom";',
+                '  (customer: $customer, provider: $company) isa contract;',
+                '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
+                'get $duration; mean $duration;'
+            ]
 
-    print("\nQuery:\n", "\n".join(first_query))
-    first_query = "".join(first_query)
+            print("\nQuery:\n", "\n".join(first_query))
+            first_query = "".join(first_query)
 
-    first_answer = list(transaction.query(first_query))
-    first_result = 0
-    if len(first_answer) > 0:
-      first_result = first_answer.number()
+            first_answer = list(transaction.query(first_query))
+            first_result = 0
+            if len(first_answer) > 0:
+                first_result = first_answer.number()
 
-    result = ("Customers aged under 20 have made calls with average duration of "
-             + str(round(first_result)) + " seconds.\n")
+            result = ("Customers aged under 20 have made calls with average duration of "
+                      + str(round(first_result)) + " seconds.\n")
 
-    second_query = [
-      'match ',
-      '  $customer isa person, has age > 40;',
-      '  $company isa company, has name "Telecom";',
-      '  (customer: $customer, provider: $company) isa contract;',
-      '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
-      'get $duration; mean $duration;'
-    ]
-    print("\nQuery:\n", "\n".join(second_query))
-    second_query = "".join(second_query)
+            second_query = [
+                'match ',
+                '  $customer isa person, has age > 40;',
+                '  $company isa company, has name "Telecom";',
+                '  (customer: $customer, provider: $company) isa contract;',
+                '  (caller: $customer, callee: $anyone) isa call, has duration $duration;',
+                'get $duration; mean $duration;'
+            ]
+            print("\nQuery:\n", "\n".join(second_query))
+            second_query = "".join(second_query)
 
-    second_answer = list(transaction.query(second_query))
-    second_result = 0
-    if len(second_answer) > 0:
-      second_result = second_answer.number()
+            second_answer = list(transaction.query(second_query))
+            second_result = 0
+            if len(second_answer) > 0:
+                second_result = second_answer.number()
 
-    result += ("Customers aged above 40 have made calls with average duration of "
-              + str(round(second_result)) + " seconds.\n")
+            result += ("Customers aged above 40 have made calls with average duration of "
+                       + str(round(second_result)) + " seconds.\n")
 
-    print("\nResult:\n", result)
+            print("\nResult:\n", result)
 ```
 [tab:end]
 

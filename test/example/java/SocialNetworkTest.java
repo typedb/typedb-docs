@@ -1,4 +1,4 @@
-package generated;
+package grakn.doc.test.example;
 
 import grakn.client.GraknClient;
 import graql.lang.Graql;
@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 import org.junit.*;
 
-public class TestStandaloneSocialNetwork {
+public class SocialNetworkTest {
 
     @BeforeClass
     public static void loadSocialNetwork() {

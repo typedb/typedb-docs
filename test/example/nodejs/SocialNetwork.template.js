@@ -10,7 +10,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 beforeAll(async function() {
     const client = new Grakn("localhost:48555");
     const session = await client.session("social_network");
-    const transaction = await session.transaction(Grakn.txType.WRITE);
+    const transaction = await session.transaction().write();
     const defineQuery = fs.readFileSync("files/social-network/schema.gql", "utf8");
     await transaction.query(defineQuery);
     await transaction.commit();

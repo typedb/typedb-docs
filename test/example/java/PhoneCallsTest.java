@@ -1,4 +1,4 @@
-package generated;
+package grakn.doc.test.example;
 
 import grakn.client.GraknClient;
 
@@ -17,7 +17,7 @@ import org.junit.runners.MethodSorters;
 import javax.xml.stream.XMLStreamException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestStandalonePhoneCalls {
+public class PhoneCallsTest {
 
     @BeforeClass
     public static void loadPhoneCalls() {
@@ -32,13 +32,10 @@ public class TestStandalonePhoneCalls {
             transaction.commit();
             session.close();
             client.close();
-            System.out.println("Loaded the phone_calls schema");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     @Test
     public void testAPhoneCallsFirtstQuery() {
@@ -85,6 +82,5 @@ public class TestStandalonePhoneCalls {
         GraknClient client = new GraknClient("localhost:48555");
         client.keyspaces().delete("phone_calls");
         client.close();
-        System.out.println("Deleted the phone_calls keyspace");
     }
 }

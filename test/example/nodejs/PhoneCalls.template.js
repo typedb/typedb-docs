@@ -7,12 +7,12 @@ jasmine.getEnv().addReporter(tapReporter)
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 
-// TODO set explicit order of executation for tests
+// TODO set explicit order of execution for tests
 
 beforeAll(async function() {
     const client = new Grakn("localhost:48555");
     const session = await client.session("phone_calls");
-    const transaction = await session.transaction(Grakn.txType.WRITE);
+    const transaction = await session.transaction().write();
     const defineQuery = fs.readFileSync("files/phone-calls/schema.gql", "utf8");
     await transaction.query(defineQuery);
     await transaction.commit();

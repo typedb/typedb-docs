@@ -14,19 +14,19 @@ The steps to configure a Java standalone for testing are as follows:
 
 ### 1. Add the Flag
 
-Add the `<!-- test-standalone <FileName.java> -->` immediately before the intended code block. `FileName` must be unique among all Java standalones.
+Add the `<!-- test-example <FileName.java> -->` immediately before the intended code block. `FileName` must be unique among all Java standalones.
 
 #### Example:
 
     ```
-    <!-- test-standalone FileName.java -->
+    <!-- test-example FileName.java -->
     ```java
     ...
     ```
 
 ### 2. Add the Test Method Placeholder
 
-Add a JUnit test method in the corresponding test class (ie. [`test/standalone/java/PhoneCalls.java`](java/PhoneCalls.java) or [`test/standalone/java/SocialNetwork.java`](java/SocialNetwork.java))
+Add a JUnit test method in the corresponding test class (ie. [`test/example/java/PhoneCalls.java`](java/PhoneCallsTest.java) or [`test/example/java/SocialNetwork.java`](java/SocialNetworkTest.java))
 
 #### Format:
 
@@ -42,7 +42,7 @@ Java tests run based on their alphabetic order. This is to speed up the tests, b
 
 ### 3. Add the Bazel Data Item
 
-Add `generated/FileName.java` to the list of the `data` property of the corresponding `java_test` rule (ie. `standalone-java-social-network` or `standalone-java-phone-calls`) contained within [`test/standalone/java/BUILD`](java/BUILD).
+Add `generated/FileName.java` to the list of the `data` property of the corresponding `java_test` rule (ie. `standalone-java-social-network` or `standalone-java-phone-calls`) contained within [`test/example/java/BUILD`](java/BUILD).
 
 
 ## Add a Javascript Standalone Test
@@ -51,18 +51,18 @@ The steps to configure a Javascript standalone for testing are as follows:
 
 ### 1. Add the Flag
 
-Add the `<!-- test-standalone <fileName.js> -->` immediately before the intended code block. `fileName` must be unique among all Java standalones.
+Add the `<!-- test-example <fileName.js> -->` immediately before the intended code block. `fileName` must be unique among all Java standalones.
 
 #### Example:
 
-    <!-- test-standalone <fileName.js> -->
+    <!-- test-example <fileName.js> -->
     ```javascript
     ...
     ```
 
 ### 2. Add the Test Method Placeholder
 
-Add a Jasmine `spect` in the relevant `describe` of corresponding test file (ie. [`test/standalone/nodejs/phoneCallsTemplate.js`](nodejs/phoneCallsTemplate.js) or [`test/standalone/nodejs/socialNetworkTemplate.js`](nodejs/socialNetworkTemplate.js))
+Add a Jasmine `spect` in the relevant `describe` of corresponding test file (ie. [`test/example/nodejs/PhoneCalls.template.js`](nodejs/PhoneCalls.template.js) or [`test/example/nodejs/SocialNetwork.template.js`](nodejs/SocialNetwork.template.js))
 
 #### Format:
 
@@ -72,7 +72,7 @@ it("tests fileName.js", async function() {
 });
 ```
 
-By doing this, `test/standalone/nodejs/generate_standalone_tests.py`:
+By doing this, `test/example/nodejs/generate_standalone_tests.py`:
 1. identifies the `fileName.js` standalone in the `.md` files
 2. post-processes it to ensure the main function call is prefixed with `await`
 3. places the processed standalone content in place of the `// fileName.js`
@@ -85,18 +85,18 @@ The steps to configure a Python standalone for testing are as follows:
 
 ### 1. Add the Flag
 
-Add the `<!-- test-standalone <file_name.py> -->` immediately before the intended code block. `file_name` must be unique among all Java standalones.
+Add the `<!-- test-example <file_name.py> -->` immediately before the intended code block. `file_name` must be unique among all Java standalones.
 
 #### Example:
 
-    <!-- test-standalone <file_name.py> -->
+    <!-- test-example <file_name.py> -->
     ```python
     ...
     ```
 
 ### 2. Add the Test Method Placeholder
 
-Add a `unittest` method in the corresponding test file (ie. [`test/standalone/python/phone_calls.py`](python/phone_calls.py) or [`test/standalone/python/social_network.py`](python/social_network.py))
+Add a `unittest` method in the corresponding test file (ie. [`test/example/python/phone_calls.py`](python/phone_calls_test.py) or [`test/example/python/social_network.py`](python/social_network_test.py))
 
 #### Format:
 
@@ -109,4 +109,4 @@ Python tests run based on their alphabetic order. This is to speed up the tests,
 
 ### 3. Add the Bazel Data Item
 
-Add `generated/file_name.py` to the list of the `data` property of the corresponding `py_test` rule (ie. `standalone-python-social-network` or `standalone-python-phone-calls`) contained within [`test/standalone/python/BUILD`](python/BUILD).
+Add `generated/file_name.py` to the list of the `data` property of the corresponding `py_test` rule (ie. `standalone-python-social-network` or `standalone-python-phone-calls`) contained within [`test/example/python/BUILD`](python/BUILD).

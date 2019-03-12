@@ -461,7 +461,7 @@ public class PhoneCallsMigration {
 In order to load data from each file into Grakn, we need to:
 
 1. retrieve an `ArrayList` of JSON objects, each of which represents a data item. We do this by calling `parseDataToJson(input)`, and
-2. for each JSON object in `items`: a) create a transaction `tx`, b) construct the `graqlInsertQuery` using the corresponding `template`, c) run the `query` and d)`commit` the transaction.
+2. for each JSON object in `items`: a) create a `transaction`, b) construct the `graqlInsertQuery` using the corresponding `template`, c) run the `query` and d)`commit` the transaction.
 
 <div class="note">
 [Important]
@@ -755,7 +755,7 @@ Here is how our `Migrate.java` looks like for each data format.
 <div class="tabs dark">
 
 [tab:CSV]
-<!-- test-standalone PhoneCallsCSVMigration.java -->
+<!-- test-example PhoneCallsCSVMigration.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -953,7 +953,7 @@ public class PhoneCallsCSVMigration {
 [tab:end]
 
 [tab:JSON]
-<!-- test-standalone PhoneCallsJSONMigration.java -->
+<!-- test-example PhoneCallsJSONMigration.java -->
 ```java
 package grakn.example.phoneCalls;
 
@@ -1157,7 +1157,7 @@ public class PhoneCallsJSONMigration {
 [tab:end]
 
 [tab:XML]
-<!-- test-standalone PhoneCallsXMLMigration.java -->
+<!-- test-example PhoneCallsXMLMigration.java -->
 ```java
 package grakn.example.phoneCalls;
 
