@@ -16,7 +16,7 @@ As we have seen before, at the core of each query sits a query pattern that desc
 
 ![Statement structure](/docs/images/query/statement-structure.png)
 
-- Each statement starts with a **variable** (V) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
+- Each statement starts with a **variable** (`V`) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
 
 - The variable is followed by a comma-separated list of **properties** (`P1`, `P2`, `P3`) describing the concepts the variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type `person`. The matched instances are expected to own an attribute of type `name` with the value of `"Bob"`. Additionally, we require the concepts to own an attribute of type `phone-number` with any value. We signal that we want to fetch the owned `phone-number`s as well by defining an extra `$phone` variable.
 Consequently, after performing a match on this statement, we should obtain pairs of concepts that satisfy our statement.
@@ -53,7 +53,7 @@ The pattern is a conjunction of four different pattern types:
 - **Conjunction 1** specifies the variables for people, school and organisation, specifies their types and asks for `full-name`s of people.
 - **Disjunction** specifies that the companies of interest are either `Pharos` or `Cybersafe`.
 - **Negation** specifies that we are not interested in the people who attended the school named `HCC`.
-- **conjunction** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `school-course-enrollment` relationship, and
+- **Conjunction 2** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `school-course-enrollment` relationship, and
 work at the same organisation via the `employment` relationship.
 
 In the subsequent sections, we shall see how to match specific graph patterns.
