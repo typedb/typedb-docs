@@ -44,7 +44,7 @@ GraqlDelete delete_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
-InsertQuery insert_query = Graql.match(
+GraqlInsert insert_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely")
 ).insert(
   var("org").has("registration-number", "81726354")
