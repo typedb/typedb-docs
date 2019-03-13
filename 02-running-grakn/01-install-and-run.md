@@ -30,7 +30,7 @@ Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-
 
 As a superuser, add the repo:
 ```
-# yum-config-manager --add-repo http://repo.grakn.ai/repository/meta/grakn-core.repo
+# yum-config-manager --add-repo https://repo.grakn.ai/repository/meta/grakn-core.repo
 ```
 
 Update the package cache:
