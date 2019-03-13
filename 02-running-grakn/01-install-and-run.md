@@ -24,6 +24,67 @@ Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip
 Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
 [tab:end]
 
+[tab:CentOS]
+
+### To download the latest release
+
+As a superuser, add the repo:
+```
+# yum-config-manager --add-repo https://repo.grakn.ai/repository/meta/grakn-core.repo
+```
+
+Update the package cache:
+```
+# yum update
+```
+
+Install Grakn Server and Grakn Console:
+```
+# yum install grakn-core-server grakn-core-console
+```
+
+Having installed Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
+
+[tab:end]
+
+[tab:Ubuntu]
+
+### To download the latest release
+
+As a superuser, add the repo:
+```
+sudo bash <<EOF
+echo "deb [ arch=all ] https://repo.grakn.ai/repository/deb/ trusty main" >> /etc/apt/sources.list.d/grakn-core.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
+EOF
+```
+
+Update the package cache:
+```
+# apt update
+```
+
+Install Grakn Server and Grakn Console:
+```
+# apt install grakn-core-server grakn-core-console
+```
+
+Having installed Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
+
+[tab:end]
+
+[tab:Docker]
+
+Run :
+```
+$ docker run -d -p 48555:48555 graknlabs/grakn
+```
+
+
+Having started Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
+
+[tab:end]
+
 [tab:Linux]
 
 ### To download the latest release
