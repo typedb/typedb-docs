@@ -54,7 +54,7 @@ Having installed Grakn, we can now interact with the [Grakn server](#start-the-g
 As a superuser, add the repo:
 ```
 sudo bash <<EOF
-echo "deb https://repo.grakn.ai/repository/deb/ trusty main" >> /etc/apt/sources.list.d/grakn-core.list
+echo "deb [ arch=all ] https://repo.grakn.ai/repository/deb/ trusty main" >> /etc/apt/sources.list.d/grakn-core.list
 apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
 EOF
 ```
