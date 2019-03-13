@@ -34,7 +34,7 @@ In most cases, a concept type is expected to own only one instance of an attribu
 match $org isa organisation, has name "Medicely", has registration-number $rn via $r; delete $r;
 
 ## inserting the new
-match $org isa organisation id V17391; insert $org has registration-number "81726354";
+match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
 ```
 [tab:end]
 
@@ -45,7 +45,7 @@ GraqlDelete delete_query = Graql.match(
 ).delete("r");
 
 InsertQuery insert_query = Graql.match(
-  var("org").isa("organisation").id(ConceptId.of("V17391")
+  var("org").isa("organisation").has("name", "Medicely")
 ).insert(
   var("org").has("registration-number", "81726354")
 );
