@@ -2,6 +2,7 @@
 pageTitle: Rules
 keywords: graql, rule, reasoning, automated reasoning
 longTailKeywords: grakn reasoning, grakn automated reasoning, grakn rules
+Summary: Taking advantage of automated reasoning with Rules in Grakn.
 permalink: /docs/schema/rules
 ---
 

@@ -2,6 +2,7 @@
 pageTitle: Migrating CSV, JSON and XML Data with Client Java
 keywords: grakn, examples, migration, java
 longTailKeywords: grakn java migration
+Summary: Learn how to use Client Java to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
 permalink: /docs/examples/phone-calls-migration-java
 ---
 

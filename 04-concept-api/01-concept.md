@@ -2,6 +2,7 @@
 pageTitle: Concept
 keywords: grakn, concept, api, methods
 longTailKeywords: grakn concept, concept methods, grakn concept methods
+Summary: Methods and props available on a Concept object.
 toc: true
 permalink: /docs/concept-api/concept
 ---

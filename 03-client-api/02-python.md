@@ -2,6 +2,7 @@
 pageTitle: Client Python
 keywords: grakn, client, python
 longTailKeywords: grakn python client, grakn client python, client python, python client
+Summary: API Reference of Grakn Client Python.
 permalink: /docs/client-api/python
 ---
 

@@ -2,6 +2,7 @@
 pageTitle: Concept API
 keywords: grakn, concept, api
 longTailKeywords: grakn concept api, concept api
+Summary: Concept Hierarchy in Grakn.
 toc: false
 permalink: /docs/concept-api/overview
 ---

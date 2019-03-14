@@ -2,6 +2,7 @@
 pageTitle: Insert Query
 keywords: graql, insert query, insertion
 longTailKeywords: grakn insert data, graql insert query, graql create instances
+Summary: Insert queries in Grakn.
 permalink: /docs/query/insert-query
 ---
 

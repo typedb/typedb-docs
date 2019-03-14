@@ -2,6 +2,7 @@
 pageTitle: Graql Queries
 keywords: graql, query, reserved keywords
 longTailKeywords: graql queries, graql query structure, graql reserved keywords
+Summary: Introduction to Graql queries.
 permalink: /docs/query/overview
 ---
 

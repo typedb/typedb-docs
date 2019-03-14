@@ -2,6 +2,7 @@
 pageTitle: Grakn KGMS
 keywords: grakn, kgms, knowledge graph management system, scalability, elastic throughput, cluster management
 longTailKeywords: grakn kgms, grakn knowledge graph management system, grakn enterprise
+Summary: Features available exclusively on Grakn KGMS.
 toc: false
 permalink: /docs/cloud-deployment/kgms
 ---

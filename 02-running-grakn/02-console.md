@@ -2,6 +2,7 @@
 pageTitle: Grakn Console
 keywords: grakn, console
 longTailKeywords: load schema into grakn, create grakn keyspace, grakn console
+summary: List of options and commands for the Grakn Console.
 toc: false
 permalink: /docs/running-grakn/console
 ---

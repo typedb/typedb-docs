@@ -2,6 +2,7 @@
 pageTitle: Client Java
 keywords: grakn, client, java
 longTailKeywords: grakn java client, grakn client java, client java, java client
+Summary: API Reference of Grakn Client Java.
 permalink: /docs/client-api/java
 ---
 

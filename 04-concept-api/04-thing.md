@@ -2,6 +2,7 @@
 pageTitle: Thing
 keywords: grakn, thing, api, methods, attribute
 longTailKeywords: grakn thing, grakn attribute, grakn relation, grakn thing methods, grakn attribute methods, grakn relation methods
+Summary: Methods available on Thing objects.
 toc: true
 permalink: /docs/concept-api/thing
 ---

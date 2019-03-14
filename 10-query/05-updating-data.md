@@ -2,6 +2,7 @@
 pageTitle: Updating Data
 keywords: graql, update query, modification
 longTailKeywords: grakn update data, graql update query, graql update instances
+Summary: Updating data in Grakn.
 permalink: /docs/query/updating-data
 ---
 

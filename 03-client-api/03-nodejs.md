@@ -2,6 +2,7 @@
 pageTitle: Client Node.js
 keywords: grakn, client, node.js
 longTailKeywords: grakn node.js client, grakn client node.js, client node.js, python node.js
+Summary: API Reference of Grakn Client Node.js.
 permalink: /docs/client-api/nodejs
 ---
 

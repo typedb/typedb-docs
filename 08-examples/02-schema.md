@@ -2,6 +2,7 @@
 pageTitle: Defining a Sample Schema
 keywords: grakn, examples, schema
 longTailKeywords: grakn examples, grakn schema example
+Summary: Learn how to define a simple schema in Grakn.
 permalink: /docs/examples/phone-calls-schema
 ---
 

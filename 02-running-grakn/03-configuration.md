@@ -2,6 +2,7 @@
 pageTitle: Configuring Grakn
 keywords: grakn, configure
 longTailKeywords: configure grakn, grakn configuration
+summary: Configure the Grakn Server based on your production and development needs.
 permalink: /docs/running-grakn/configuration
 ---
 

@@ -2,6 +2,7 @@
 pageTitle: Migrating CSV, JSON and XML Data with Client Node.js
 keywords: grakn, examples, migration, node.js
 longTailKeywords: grakn node.js migration
+Summary: Learn how to use Client Node.js to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
 permalink: /docs/examples/phone-calls-migration-nodejs
 ---
 

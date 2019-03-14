@@ -2,6 +2,7 @@
 pageTitle: Investigating Results
 keywords: grakn, workbase, investigation
 longTailKeywords: grakn investigate nodes, workbase investigation
+Summary: Using Workbase to investigate nodes in a Grakn Knowledge Graph.
 toc: false
 permalink: /docs/workbase/investigation
 ---

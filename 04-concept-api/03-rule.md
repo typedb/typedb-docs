@@ -2,6 +2,7 @@
 pageTitle: Rule
 keywords: grakn, rule, api, methods
 longTailKeywords: grakn rule, rule methods, grakn rule methods
+Summary: Methods available on a Rule object.
 toc: false
 permalink: /docs/concept-api/rule
 ---

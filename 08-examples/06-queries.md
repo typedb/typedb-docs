@@ -2,6 +2,7 @@
 pageTitle: Queries the Phone Calls Knowledge Graph
 keywords: grakn, examples, queries
 longTailKeywords: grakn query example
+Summary: Learn how to obtain insights by writing expressive Graql queries.
 permalink: /docs/examples/phone-calls-queries
 ---
 

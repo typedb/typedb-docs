@@ -2,10 +2,11 @@
 pageTitle: Amazon Web Services Deployment
 keywords: grakn, cloud, deployment, amazon web services, aws, kgms
 longTailKeywords: grakn cloud deployment, grakn on the cloud, grakn kgms on the cloud, grakn kgms aws, grakn aws
+Summary: Learn how to deploy Grakn KGMS on Amazon Web Services.
 permalink: /docs/cloud-deployment/aws
 ---
 
-## Deploying Grakn on AWS
+## Deploy Grakn on AWS
 
 As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.amazon.com/marketplace/pp/B07H8RMX5X) is a straight-forward process.
 
@@ -112,7 +113,7 @@ As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.
 
 </div>
 
-## Running Grakn
+## Run Grakn
 Once the deployment is complete, a Grakn Cluster starts automatically. There is no need for starting Grakn Servers manually.
 
 <div class="note">
@@ -284,7 +285,7 @@ For more information check out AWS documentation on [Starting and Stopping Insta
 [slide:end]
 </div>
 
-## Running Grakn
+## Run Grakn
 Once the deployment is complete, Grakn starts automatically. There is no need for starting Grakn Servers manually.
 
 ## Default Credentials
@@ -293,7 +294,7 @@ When deploying an AMI, the default password is the instance id with username bei
 [tab:end]
 </div>
 
-## Logging into a node
+## Log into a node
 For a more direct interaction with the database, we need to log into one of the cluster nodes. To do so, we need to run the `ssh` as shown below.
 
 ```
@@ -311,16 +312,16 @@ While [logged into a node](#logging-into-a-node), run `grakn cluster status`. Th
 
 ![Cluster Health Check](/docs/images/cloud-deployment/aws_cluster_health_check.png)
 
-## Accessing Grakn Console
+## Access Grakn Console
 While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
 
-## Accessing Grakn Console
+## Access Graql Console
 While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
 
 ## Configuring Grakn
 To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).
 
-## Signing up For Enterprise Support
+## Sign up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).
 
 <hr style="margin-top: 40px">

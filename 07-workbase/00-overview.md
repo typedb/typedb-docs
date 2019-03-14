@@ -2,6 +2,7 @@
 pageTitle: Grakn Workbase
 keywords: grakn, workbase, visualiser, visualisation, visualizer, visualization
 longTailKeywords: grakn workbase, grakn visualiser, grakn visualisation, grakn visualizer, grakn visualization
+Summary: An overview of Grakn Workbase.
 toc: false
 permalink: /docs/workbase/overview
 ---

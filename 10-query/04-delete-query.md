@@ -2,6 +2,7 @@
 pageTitle: Delete Query
 keywords: graql, delete query, deletion
 longTailKeywords: grakn delete data, graql delete query, graql delete instances
+Summary: Delete queries in Grakn.
 permalink: /docs/query/delete-query
 ---
 

@@ -2,6 +2,7 @@
 pageTitle: Managing Keyspaces
 keywords: grakn, keyspace
 longTailKeywords: grakn keyspace
+Summary: Creating, listing, cleaning and deleting Grakn Keyspaces.
 toc: false
 permalink: /docs/management/keyspace
 ---

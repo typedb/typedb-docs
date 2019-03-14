@@ -2,6 +2,7 @@
 pageTitle: Match Clause
 keywords: graql, query, match, pattern, statement, variable
 longTailKeywords: graql match, graql match get, graql patterns, graql statements, graql variables
+Summary: Targeting instances of data that match expressive patterns in Grakn.
 permalink: /docs/query/match-clause
 ---
 

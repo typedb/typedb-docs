@@ -2,6 +2,7 @@
 pageTitle: Schema
 keywords: graql, schema, type hierarchy, reserved keywords
 longTailKeywords: graql schema, graql type hierarchy, graql data model, graql reserved keyword
+Summary: Introduction to the Grakn Schema.
 permalink: /docs/schema/overview
 ---
 
