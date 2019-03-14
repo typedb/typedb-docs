@@ -42,10 +42,32 @@ graknlabs_bazel_distribution()
 ####################
 
 # Load additional build tools, such bazel-deps and unused-deps
-load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_common", "bazel_deps", "bazel_toolchain")
+load("@graknlabs_build_tools//bazel:dependencies.bzl",
+     "bazel_common", "bazel_deps", "bazel_toolchain", "bazel_rules_python")
 bazel_common()
 bazel_deps()
 bazel_toolchain()
+bazel_rules_python()
+
+load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
+pip_repositories()
+
+# Python dependencies for @graknlabs_build_tools and @graknlabs_bazel_distribution
+
+pip_import(
+    name = "graknlabs_build_tools_ci_pip",
+    requirements = "@graknlabs_build_tools//ci:requirements.txt",
+)
+load("@graknlabs_build_tools_ci_pip//:requirements.bzl", graknlabs_build_tools_ci_pip_install = "pip_install")
+graknlabs_build_tools_ci_pip_install()
+
+pip_import(
+    # TODO: bazel-distribution's pip_import should be called graknlabs_bazel_distribution_pip, set in client-python
+    name = "pypi_deployment_dependencies",
+    requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
+)
+load("@pypi_deployment_dependencies//:requirements.bzl", graknlabs_bazel_distribution_pip_install = "pip_install")
+graknlabs_bazel_distribution_pip_install()
 
 
 ###########################
@@ -79,12 +101,6 @@ npm_install(
 )
 
 # for Python
-
-load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_rules_python")
-bazel_rules_python()
-
-load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
-pip_repositories()
 
 pip_import(
     name = "local_pypi_dependencies",
@@ -140,19 +156,14 @@ graql_dependencies()
 # Load Client Python dependencies #
 ###################################
 
-# TODO: client python's pip_import should be called pypi_dependencies_grakn_client
+# TODO: client-python's pip_import should be called graknlabs_client_python_pip
 pip_import(
     name = "pypi_dependencies",
     requirements = "@graknlabs_client_python//:requirements.txt",
 )
 
-pip_import(
-    name = "pypi_deployment_dependencies",
-    requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
-)
-
-load("@pypi_dependencies//:requirements.bzl", client_python_pip_install = "pip_install")
-client_python_pip_install()
+load("@pypi_dependencies//:requirements.bzl", graknlabs_client_python_pip_install = "pip_install")
+graknlabs_client_python_pip_install()
 
 
 #####################################
