@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Configuration
 pageTitle: Configuring Grakn
+keywords: grakn, configure
+longTailKeywords: configure grakn, grakn configuration
 permalink: /docs/running-grakn/configuration
 ---
 

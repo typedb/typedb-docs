@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Migrate - Node.js
 pageTitle: Migrating CSV, JSON and XML Data with Client Node.js
+keywords: grakn, examples, migration, node.js
+longTailKeywords: grakn node.js migration
 permalink: /docs/examples/phone-calls-migration-nodejs
 ---
 

@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Migrate - Python
 pageTitle: Migrating CSV, JSON and XML Data with Client Python
+keywords: grakn, examples, migration, python
+longTailKeywords: grakn python migration
 permalink: /docs/examples/phone-calls-migration-python
 ---
 

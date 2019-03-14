@@ -1,7 +1,7 @@
 ---
-sidebarTitle: AWS
 pageTitle: Amazon Web Services Deployment
-summary:
+keywords: grakn, cloud, deployment, amazon web services, aws, kgms
+longTailKeywords: grakn cloud deployment, grakn on the cloud, grakn kgms on the cloud, grakn kgms aws, grakn aws
 permalink: /docs/cloud-deployment/aws
 ---
 

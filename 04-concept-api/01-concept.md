@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Concept
 pageTitle: Concept
-permalink: /docs/concept-api/concept
+keywords: grakn, concept, api, methods
+longTailKeywords: grakn concept, concept methods, grakn concept methods
 toc: true
+permalink: /docs/concept-api/concept
 ---
 
 ## Concept Methods & Props

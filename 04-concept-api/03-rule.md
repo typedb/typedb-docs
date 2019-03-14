@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Rule
 pageTitle: Rule
-permalink: /docs/concept-api/rule
+keywords: grakn, rule, api, methods
+longTailKeywords: grakn rule, rule methods, grakn rule methods
 toc: false
+permalink: /docs/concept-api/rule
 ---
 
 ## Rule Methods

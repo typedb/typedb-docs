@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Aggregate
 pageTitle: Aggregate Query
+keywords: graql, aggregate query, calculation, statistics
+longTailKeywords: grakn aggregate data, graql aggregate query, graql statistics
 permalink: /docs/query/aggregate-query
 ---
 

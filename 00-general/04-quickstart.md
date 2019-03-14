@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Quickstart
 pageTitle: Quickstart
+keywords: getting started, grakn, graql, tutorial, quickstart, overview
+longTailKeywords: get started with grakn, grakn tutorial, grakn quickstart, learn grakn
 permalink: /docs/general/quickstart
 ---
 

@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Google Cloud
 pageTitle: Google Cloud Deployment
+keywords: grakn, cloud, deployment, google cloud, kgms
+longTailKeywords: grakn cloud deployment, grakn on the cloud, grakn kgms on the cloud, grakn kgms google cloud, grakn google cloud
 permalink: /docs/cloud-deployment/google-cloud
 ---
 

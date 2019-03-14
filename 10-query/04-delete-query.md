@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Delete
 pageTitle: Delete Query
+keywords: graql, delete query, deletion
+longTailKeywords: grakn delete data, graql delete query, graql delete instances
 permalink: /docs/query/delete-query
 ---
 

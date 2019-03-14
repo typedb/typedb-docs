@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Compute
 pageTitle: Compute Query
+keywords: graql, compute query, shortest path, cluster, centrality, statistics
+longTailKeywords: grakn compute data, graql compute statistics, graql compute shortest path, graql compute centrality, graql compute cluster
 permalink: /docs/query/compute-query
 ---
 

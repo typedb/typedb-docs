@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Users
 pageTitle: Managing Users
-permalink: /docs/management/users
+keywords: grakn, management, authentication, users
+longTailKeywords: grakn managing users, grakn authentication, grakn users
 toc: false
+permalink: /docs/management/users
 ---
 
 ## Managing Users [KGMS ONLY]

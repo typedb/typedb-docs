@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Investigation
 pageTitle: Investigating Results
-permalink: /docs/workbase/investigation
+keywords: grakn, workbase, investigation
+longTailKeywords: grakn investigate nodes, workbase investigation
 toc: false
+permalink: /docs/workbase/investigation
 ---
 
 ## Investigate

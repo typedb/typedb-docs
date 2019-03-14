@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Overview
 pageTitle: Phone Calls Knowledge Graph
+keywords: grakn, examples, migration, queries, schema
+longTailKeywords: grakn examples, grakn migration, grakn query examples, grakn schema example
 permalink: /docs/examples/phone-calls-overview
 ---
 

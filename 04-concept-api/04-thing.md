@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Thing
 pageTitle: Thing
-permalink: /docs/concept-api/thing
+keywords: grakn, thing, api, methods, attribute
+longTailKeywords: grakn thing, grakn attribute, grakn relation, grakn thing methods, grakn attribute methods, grakn relation methods
 toc: true
+permalink: /docs/concept-api/thing
 ---
 
 ## Thing Methods

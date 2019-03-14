@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Queries
 pageTitle: Queries the Phone Calls Knowledge Graph
+keywords: grakn, examples, queries
+longTailKeywords: grakn query example
 permalink: /docs/examples/phone-calls-queries
 ---
 

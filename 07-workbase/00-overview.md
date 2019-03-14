@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Overview
 pageTitle: Grakn Workbase
-permalink: /docs/workbase/overview
+keywords: grakn, workbase, visualiser, visualisation, visualizer, visualization
+longTailKeywords: grakn workbase, grakn visualiser, grakn visualisation, grakn visualizer, grakn visualization
 toc: false
+permalink: /docs/workbase/overview
 ---
 
 ## What is Workbase?

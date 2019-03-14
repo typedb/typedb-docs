@@ -1,7 +1,7 @@
 ---
-sidebarTitle: Migrate - Java
 pageTitle: Migrating CSV, JSON and XML Data with Client Java
-
+keywords: grakn, examples, migration, java
+longTailKeywords: grakn java migration
 permalink: /docs/examples/phone-calls-migration-java
 ---
 

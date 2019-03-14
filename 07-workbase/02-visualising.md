@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Visualisation
 pageTitle: Visualising Results
-permalink: /docs/workbase/visualisation
+keywords: grakn, workbase, visualisation
+longTailKeywords: grakn visualise graph, visualise grakn, visualise grakn graph, workbase visualisation, grakn visualize graph, visualize grakn, visualize grakn graph, workbase visualization
 toc: false
+permalink: /docs/workbase/visualisation
 ---
 
 ## Visualise
@@ -67,13 +68,8 @@ Workbase allows visualisation of answers returned by [Graql queries](/docs/query
 [slide:end]
 <!-- -->
 [slide:start]
-<<<<<<< HEAD
 [body:start]![Launch](/docs/images/workbase/1.1.1/visualise_types-select.png)[body:end]
 [footer:start]We can then click on any of the Concept Types which may be an entity, an attribute or a relationship.[footer:end]
-=======
-[body:start]![Launch](/docs/images/workbase/types_select.png)[body:end]
-[footer:start]We can then click on any of the Concept Types which may be an entity, an attribute or a relation.[footer:end]
->>>>>>> 9b0d32d6d262336d84b33380cae01d110fc55c04
 [slide:end]
 <!-- -->
 [slide:start]

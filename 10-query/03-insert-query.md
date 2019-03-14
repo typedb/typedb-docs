@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Insert
 pageTitle: Insert Query
+keywords: graql, insert query, insertion
+longTailKeywords: grakn insert data, graql insert query, graql create instances
 permalink: /docs/query/insert-query
 ---
 

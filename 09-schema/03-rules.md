@@ -1,6 +1,7 @@
 ---
-sidebarTitle: Rules
 pageTitle: Rules
+keywords: graql, rule, reasoning, automated reasoning
+longTailKeywords: grakn reasoning, grakn automated reasoning, grakn rules
 permalink: /docs/schema/rules
 ---
 

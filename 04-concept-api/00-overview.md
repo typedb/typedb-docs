@@ -1,8 +1,9 @@
 ---
-sidebarTitle: Overview
 pageTitle: Concept API
-permalink: /docs/concept-api/overview
+keywords: grakn, concept, api
+longTailKeywords: grakn concept api, concept api
 toc: false
+permalink: /docs/concept-api/overview
 ---
 
 ## Concept Architecture
