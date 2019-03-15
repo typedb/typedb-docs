@@ -6,33 +6,49 @@ permalink: /docs/schema/overview
 
 ## Why Use a Schema?
 
-Schema isa a mean to address the problems of managing and handling unstructured or loosely structured data.
+Schema isa a means to address the problems of managing and handling unstructured or loosely structured data.
 
 ![Unstructured problems](/docs/images/schema/unstructured-problems.png)
 
-The common problems we encounter when dealing with unstructured or loosely structured data are :
-- The problem of data integrity
-As the data is weakly tied to any particular structure it is hard or even impossible to control the state and validity of the data. As a result we have no guarantees on data consistency and validity.
-- The problem of data accessibility and retrieval
-With the lack of any high-level structure comes the lack of possibility to query the data meaningfully. This is either because our data structure is too low level to express complex queries or that handling the complexity of such queries becomes a problem.
+The common problems we encounter when dealing with unstructured or loosely structured data are:
+- Integrity
+- Accessibility and retrieval
+- Maintenance
+- Deferring responsibility
+
+Consequently:
+- When data is weakly tied to any particular structure it is hard or even impossible to control the state and validity of the data.
+As a result we have no guarantees on data consistency and validity.
+
+- With the lack of any high-level structure comes the lack of possibility to query the data meaningfully.
+This is either because our data structure is too low level to express complex queries or that handling the complexity of such queries becomes a problem.
 Consequently we might be forced to ask simple questions only.
-- The problem of data maintenance
-This problem is tied to the integrity problem. Since we have little control over the structure of our data it is hard to maintain either requiring data changes to be carried out with surgical precision or making them difficult since data pollution needs to be taken care of.
+
+- The problem of maintenance is directly coupled with the integrity problem.
+When we have little control over the structure of our data it is hard to alter that structure over time as requirements change. As a consequence,
+data changes need to be carried out with surgical precision or risk data pollution.
+
 - Starting with loose or no schema only defers the responsibility of schema definition and enforcement in time.
-In production systems we cannot afford not having control over you data. As a result, the schema logic needs to be incorporated at the app level instead of being handled by the database.
+In production systems we cannot afford to lose control over data. If the database doesn't take responsibility for schema definition and enforcement,
+that means that the schema logic needs to be incorporated at the app level.
 
-A Grakn schema is the blueprint of a Grakn knowledge graph. Using a highly flexible language, we define a schema to model a domain true to nature. Highly interconnected data cannot be stored at scale without an underlying structure - one that is capable of expressing the complexity of the dataset, is easy to understand, and can be extended programmatically, at runtime.
+A Grakn schema is the blueprint of a Grakn knowledge graph. Using a highly flexible language, we define a schema to model a domain true to nature.
+Highly interconnected data cannot be stored at scale without an underlying structure - one that is capable of expressing the complexity of the dataset, is easy to understand, and can be extended programmatically, at runtime.
 
-The schema defines a specific, explicit, high-level structure of data that is enforced across the dataset. This allows to provide logical integrity and consistency guarantees of our data. Any attempt to add data not conforming to the defined schema is a schema violation and is not allowed.
+The schema defines a specific, explicit, high-level structure of data that is enforced across the dataset.
+This allows the database to provide logical integrity guarantees and consistency guarantees for our data
+Any attempt to add data not conforming to the defined schema is a schema violation and is not allowed.
 
 A well-constructed schema enables writing intuitive queries. Given such schema, you often find yourself writing queries that map seamlessly with how you form them as questions in your mind.
 
-Last and certainly not least, the schema sets the basis for performing automated reasoning over the represented data. It enables the extraction of implicit information from explicitly stored data - a powerful feature of Grakn that facilitates knowledge discovery and implementation of business logic inside the database.
+Last and certainly not least, the schema sets the basis for performing automated reasoning over the represented data.
+It enables the extraction of implicit information from explicitly stored data - a powerful feature of Grakn that facilitates
+knowledge discovery and the implementation of business logic inside the database.
 
 ## What is a Grakn schema
 Grakn schema is an inherent part of the knowledge graph that describes how the data is and can be structured.
 
-If you know a bit about other schema first database knowledge systems, you know that normally database design involves three schemas:
+If you know a bit about other schema-first database knowledge systems, you know that normally database design involves three schemas:
 
   1. _A high-level conceptual schema_, that models your problem and usually involves some variation of the entity-relation model
 
@@ -57,26 +73,29 @@ Types constitute the core of your schema. They provide the necessary vocabulary 
 
 __Entities__ are the main actors in our domain. These are usually the type of things we want to know about. Entity types provide means of classifying the objects in our domain.
 
-__Relationships__ are things that connect other concepts. Each relationship can connect a number of things, as specified in your schema. The character of participation in a relationship is characterised by roles that can be played in that relationship. Each relationship is required to
+__Relations__ connect other things together. Each relation can connect a number of things.
+The character of participation in a relation is characterised by a __role__ that can be played in that relation. Each relation is required to
 have at least one role.
 
-__Attributes__ are used to characterise concepts with small pieces of data to other (think of numbers, strings, dates etc.). They allow to attach values of specified datatype to our instances.
+__Attributes__ are used to characterise concepts with small pieces of data (think of numbers, strings, dates etc.). Consequently, by defining attributes we can attach values of a specified datatype to our instances.
 
 Apart from serving as a mean of classification, types also define behaviours of their instances. Consequently, types can define the following behaviours:
 
-__has [attribute type]__ - the ability to have an attribute of specified type attached to an instance
+__has [attribute type]__ - the ability to have an attribute of a specified type attached to an instance.
 
-__plays [role]__ - the ability to participate in relationships that allow for that role to be played
+__plays [role]__ - the ability to participate in relations that allow for that role to be played.
 
-__relates [role]__ (only relationships) - the ability of other instances to play this role in instances of this relationship type
+__relates [role]__ (only relation) - the ability of other instances to play this role in instances of this relation type.
 
 ### Type Hierarchies
-Besides the modularity that the concept types provide, we are free to form subtype relations between concept types. For a given child concept type subtyping a parent concept type, the child concept type inherits the attributes owned and roles played by the parent type.
-The mechanism is analogous of subclassing known in Object Oriented Programming. Each concept type can have only a single parent type - multiple inheritance is not supported. 
+Besides the modularity that the concept types provide, we are free to form subtype relationships between concept types. For a given child concept type subtyping a parent concept type, the child concept type inherits the attributes owned and roles played by the parent type.
+The mechanism is analogous to subclassing in Object Oriented Programming. Each concept type can have only a single parent type - multiple inheritance is not supported. 
 Subtyping not only allows us to mirror the true nature of a dataset as perceived in the real world, but also enables automated reasoning.
 
 ### Roles
-_Roles_ specify the nature of the connection between instances. They are not types themselves: you cannot have a thing which is an instance of a role, but you will be able to have things playing a role in a specific relationship. In your schema, we will need to specify what role relates to each relationship type and who can play this role. Thanks to roles, you will be able to guarantee the logical integrity of your data, avoiding to have a marriage between a cat and a building, for example, unless you specifically allow such a thing in the schema.
+_Roles_ specify the nature of the connection between instances. They are not types themselves: you cannot have a thing which is an instance of a role, but you will be able to have things playing a role in a specific relation.
+In your schema, we will need to specify what role relates to each relation type and who can play this role.
+Thanks to roles, you will be able to guarantee the logical integrity of your data, having a `marriage` between a `person` and a `building`, for example, unless you specifically allow such a thing in the schema.
 
 ### Rules
 Lastly, the Grakn schema is completed with [**Graql Rules**](/docs/schema/rules). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
