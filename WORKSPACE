@@ -37,9 +37,9 @@ load("@graknlabs_build_tools//distribution:dependencies.bzl", "graknlabs_bazel_d
 graknlabs_bazel_distribution()
 
 
-####################
-# Load Build Tools #
-####################
+###########################
+# Load Bazel Dependencies #
+###########################
 
 # Load additional build tools, such bazel-deps and unused-deps
 load("@graknlabs_build_tools//bazel:dependencies.bzl",
@@ -52,7 +52,10 @@ bazel_rules_python()
 load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
 pip_repositories()
 
-# Python dependencies for @graknlabs_build_tools and @graknlabs_bazel_distribution
+
+#################################
+# Load Build Tools Dependencies #
+#################################
 
 pip_import(
     name = "graknlabs_build_tools_ci_pip",
@@ -72,7 +75,7 @@ graknlabs_bazel_distribution_pip_install()
 
 
 ###########################
-# Load Local dependencies #
+# Load Local Dependencies #
 ###########################
 
 # for Java
@@ -113,9 +116,9 @@ test_example_pip_install = "pip_install")
 test_example_pip_install()
 
 
-#######################################
-# Load compiler dependencies for GRPC #
-#######################################
+##########################
+# Load GRPC Dependencies #
+##########################
 
 load("@graknlabs_build_tools//grpc:dependencies.bzl", "grpc_dependencies")
 grpc_dependencies()
@@ -129,7 +132,7 @@ java_grpc_compile()
 
 
 ################################
-# Load Grakn Core dependencies #
+# Load Grakn Core Dependencies #
 ################################
 
 load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl",
@@ -141,7 +144,7 @@ bazel_rules_docker()
 
 
 ###########################
-# Load Graql dependencies #
+# Load Graql Dependencies #
 ###########################
 
 # Load ANTLR dependencies for Bazel
@@ -158,7 +161,7 @@ graknlabs_graql_maven_dependencies()
 
 
 ###################################
-# Load Client Python dependencies #
+# Load Client Python Dependencies #
 ###################################
 
 pip_import(
@@ -172,7 +175,7 @@ graknlabs_client_python_pip_install()
 
 
 #####################################
-# Load Bazel common workspace rules #
+# Load Bazel Common Workspace Rules #
 #####################################
 
 # TODO: Figure out why this cannot be loaded at earlier at the top of the file
