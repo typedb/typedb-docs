@@ -1,8 +1,10 @@
 ---
-sidebarTitle: Schema Designer
 pageTitle: Schema
-permalink: /docs/workbase/schema-designer
+keywords: grakn, workbase, schema designer
+longTailKeywords: grakn design schema, workbase schema designer
+Summary: Using Workbase to design a schema.
 toc: false
+permalink: /docs/workbase/schema-designer
 ---
 
 ## Design a Schema

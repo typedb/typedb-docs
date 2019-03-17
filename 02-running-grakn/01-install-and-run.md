@@ -1,13 +1,14 @@
 ---
-sidebarTitle: Install & Run
 pageTitle: Install and Run Grakn
-permalink: /docs/running-grakn/install-and-run
+keywords: setup, getting started, grakn, download, install, server, linux, mac, windows
+longTailKeywords: grakn on linux, grakn on mac, grakn on windows, start grakn server
+summary: Install and run the Grakn Server on Linux, Mac or Windows.
 toc: false
+permalink: /docs/running-grakn/install-and-run
 ---
 
 ## System Requirements
 Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
-
 
 ## Download and Install Grakn
 <div class="tabs light">

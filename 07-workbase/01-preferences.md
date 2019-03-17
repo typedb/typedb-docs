@@ -1,8 +1,10 @@
 ---
-sidebarTitle: Connection
 pageTitle: Configuring Connection
-permalink: /docs/workbase/connection
+keywords: grakn, workbase, workbase preferences
+longTailKeywords: grakn workbase preferences, grakn workbase connection, grakn workbase manage keyspaces
+Summary: Working with the preferences panel in Grakn Workbase.
 toc: false
+permalink: /docs/workbase/connection
 ---
 
 ## Connect to Grakn
