@@ -1,10 +1,12 @@
 ---
-sidebarTitle: Google Cloud
 pageTitle: Google Cloud Deployment
+keywords: grakn, cloud, deployment, google cloud, kgms
+longTailKeywords: grakn cloud deployment, grakn on the cloud, grakn kgms on the cloud, grakn kgms google cloud, grakn google cloud
+Summary: Learn how to deploy Grakn KGMS on Google Cloud.
 permalink: /docs/cloud-deployment/google-cloud
 ---
 
-## Deploying Grakn on Google Cloud
+## Deploy Grakn on Google Cloud
 
 As illustrated below, deploying [Grakn KGMS on Google Cloud](https://console.cloud.google.com/marketplace/details/grakn-public/grakn-kgms-premium) is a straight-forward process.
 
@@ -158,16 +160,16 @@ While [logged into a node](#logging-into-a-node), run `grakn cluster status`. Th
 
 ![Cluster Health Check](/docs/images/cloud-deployment/gc_cluster_health_check.png)
 
-## Accessing Grakn Console
+## Access Grakn Console
 While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
 
-## Accessing Grakn Console
+## Access Grakn Console
 While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
 
 ## Configuring Grakn
 To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).
 
-## Signing up For Enterprise Support
+## Sign up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).
 
 <hr style="margin-top: 40px">

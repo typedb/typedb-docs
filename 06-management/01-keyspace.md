@@ -1,8 +1,10 @@
 ---
-sidebarTitle: Keyspace
 pageTitle: Managing Keyspaces
-permalink: /docs/management/keyspace
+keywords: grakn, keyspace
+longTailKeywords: grakn keyspace
+Summary: Creating, listing, cleaning and deleting Grakn Keyspaces.
 toc: false
+permalink: /docs/management/keyspace
 ---
 
 ## What is a Keyspace?

@@ -1,8 +1,8 @@
 exports_files(["requirements.txt"])
 
 load("@io_bazel_rules_python//python:python.bzl", "py_library", "py_test")
-load("@pypi_dependencies//:requirements.bzl", "requirement")
-load("@local_pypi_dependencies//:requirements.bzl", "requirement")
+load("@test_example_pip//:requirements.bzl",
+       test_example_requirement = "requirement")
 
 
 ############################
@@ -18,10 +18,10 @@ py_test(
     ],
     deps = [
         "@graknlabs_client_python//:client_python",
-        requirement("ijson")
+        test_example_requirement("ijson")
     ],
     data = ["//files:phone-calls-kg"],
-    imports = [":phone-calls-tests"]
+    imports = ["."]
 )
 
 genrule(
@@ -58,7 +58,7 @@ py_test(
     ],
     deps = ["@graknlabs_client_python//:client_python"],
     data = ["//files:social-network-kg"],
-    imports = [":social-network-tests"]
+    imports = ["."]
 )
 
 genrule(

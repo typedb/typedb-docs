@@ -1,6 +1,8 @@
 ---
-sidebarTitle: Get
 pageTitle: Get Query
+keywords: graql, get query, retrieval, modifier
+longTailKeywords: grakn retrieve data, grakn read data, graql get query, graql modifiers, graql offset, graql sort, graql limit
+Summary: Get (retrieval) queries and modifiers in Grakn.
 permalink: /docs/query/get-query
 ---
 
