@@ -11,16 +11,18 @@ permalink: /docs/query/overview
 Graql is the query language for the Grakn knowledge graph. Whether it's through the [Grakn Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 **Graql is declarative**.
-When writing Graql queries, you simply describe **what** information you would like to retrieve, rather than **how** should it be obtained. 
-Once we specify the target information to retrieve, the Graql query processor will take care of finding an optimal way to retrieve it.
+
+When writing Graql queries, you simply describe **what** information you would like to retrieve, rather than **how** should it be obtained. Once we specify the target information to retrieve, the Graql query processor will take care of finding an optimal way to retrieve it.
 
 **Graql is intuitive**.
+
 Graql was designed to provide a high-level query language interface with a clear and human-readable syntax. By defining high-level application-specific [schema](/docs/schema/overview),
 we effectively define our own vocabulary to talk about the domain of interest. By introduction of an explicit data model tightly reflected in the structure of the query language,
 formulating queries comes naturally as it is reminiscent of building ordinary sentences about our domain. The more tightly the schema represents our domain of interest,
 the more intuitive writing and reading Graql queries become.
 
 **Graql serves as both the Data Manipulation Language (DML) as well as the Data Definition Language (DDL)**
+
 Graql is a language that provides you with a complete set of tools to perform all data-oriented tasks.
 This includes defining the schema, retrieving information as well as creating and manipulating data. 
 
