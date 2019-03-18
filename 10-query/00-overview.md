@@ -8,8 +8,7 @@ permalink: /docs/query/overview
 
 ## Graql Query Language
 
-Graql is the query language for the Grakn knowledge graph. Whether it's through the [Grakn Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), 
-Grakn accepts instructions and provides answers only in its own language - Graql.
+Graql is the query language for the Grakn knowledge graph. Whether it's through the [Grakn Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 **Graql is declarative**.
 When writing Graql queries, you simply describe **what** information you would like to retrieve, rather than **how** should it be obtained. 
