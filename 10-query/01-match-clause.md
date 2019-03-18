@@ -7,6 +7,7 @@ permalink: /docs/query/match-clause
 ---
 
 ## Match Clause
+<<<<<<< HEAD
 We use match clauses to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
 By defining the [schema](/docs/schema/overview), we effectively define a vocabulary to be used to describe concepts of our domain.
 
@@ -35,6 +36,13 @@ $p has phone-number $phone;
 ```
 
 Consequently, we arrive at the subject of pattern composition. We already know that statements are the smallest building blocks, however, we have a number of possibilities for arranging them together. By doing so, we can express more complex pattern scenarios and their corresponding subgraphs. We allow the following ways to arrange statements together.
+=======
+Match clauses are used to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
+By defining the [schema](/docs/schema/overview), we effectively define a vocabulary to be used to describe concepts of our domain. 
+Once the schema is defined, we can form graph patterns that we want to search for in our knowledge graph. We do that by using match clauses.
+Each match clause represents a particular graph pattern. The match clauses are then executed as a part of Get query returning tuples of instances fulfilling the specified pattern.
+
+>>>>>>> 98af036179ccd878be6e0a37194741ca6a88c836
 
 ![Pattern structure](/docs/images/query/pattern-structure.png)
 
