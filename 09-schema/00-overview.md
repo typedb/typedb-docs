@@ -11,24 +11,19 @@ Schema isa a means to address the problems of managing and handling unstructured
 ![Unstructured problems](/docs/images/schema/unstructured-problems.png)
 
 The common problems we encounter when dealing with unstructured or loosely structured data are:
-- Integrity
-- Accessibility and retrieval
-- Maintenance
-- Deferring responsibility
 
-Consequently:
-- When data is weakly tied to any particular structure it is hard or even impossible to control the state and validity of the data.
+- __Integrity__ - when data is weakly tied to any particular structure it is hard or even impossible to control the state and validity of the data.
 As a result we have no guarantees on data consistency and validity.
 
-- With the lack of any high-level structure comes the lack of possibility to query the data meaningfully.
+- __Accessibility and retrieval__ - with the lack of any high-level structure comes the lack of possibility to query the data meaningfully.
 This is either because our data structure is too low level to express complex queries or that handling the complexity of such queries becomes a problem.
 Consequently we might be forced to ask simple questions only.
 
-- The problem of maintenance is directly coupled with the integrity problem.
+- __Maintenance__ - the problem is directly coupled with the integrity problem.
 When we have little control over the structure of our data it is hard to alter that structure over time as requirements change. As a consequence,
 data changes need to be carried out with surgical precision or risk data pollution.
 
-- Starting with loose or no schema only defers the responsibility of schema definition and enforcement in time.
+- __Deferring responsibility__ - starting with loose or no schema only defers the responsibility of schema definition and enforcement in time.
 In production systems we cannot afford to lose control over data. If the database doesn't take responsibility for schema definition and enforcement,
 that means that the schema logic needs to be incorporated at the app level.
 
@@ -36,7 +31,7 @@ A Grakn schema is the blueprint of a Grakn knowledge graph. Using a highly flexi
 Highly interconnected data cannot be stored at scale without an underlying structure - one that is capable of expressing the complexity of the dataset, is easy to understand, and can be extended programmatically, at runtime.
 
 The schema defines a specific, explicit, high-level structure of data that is enforced across the dataset.
-This allows the database to provide logical integrity guarantees and consistency guarantees for our data
+This allows the database to provide logical integrity guarantees and consistency guarantees for our data.
 Any attempt to add data not conforming to the defined schema is a schema violation and is not allowed.
 
 A well-constructed schema enables writing intuitive queries. Given such schema, you often find yourself writing queries that map seamlessly with how you form them as questions in your mind.
@@ -73,9 +68,8 @@ Types constitute the core of your schema. They provide the necessary vocabulary 
 
 __Entities__ are the main actors in our domain. These are usually the type of things we want to know about. Entity types provide means of classifying the objects in our domain.
 
-__Relations__ connect other things together. Each relation can connect a number of things.
-The character of participation in a relation is characterised by a __role__ that can be played in that relation. Each relation is required to
-have at least one role.
+__Relations__ connect other things together. Each relation can connect a number of things. A thing's participation in a relation is characterised by a __role__ that can be played in that relation.
+Each relation is required to have at least one role.
 
 __Attributes__ are used to characterise concepts with small pieces of data (think of numbers, strings, dates etc.). Consequently, by defining attributes we can attach values of a specified datatype to our instances.
 
@@ -95,7 +89,7 @@ Subtyping not only allows us to mirror the true nature of a dataset as perceived
 ### Roles
 _Roles_ specify the nature of the connection between instances. They are not types themselves: you cannot have a thing which is an instance of a role, but you will be able to have things playing a role in a specific relation.
 In your schema, we will need to specify what role relates to each relation type and who can play this role.
-Thanks to roles, you will be able to guarantee the logical integrity of your data, having a `marriage` between a `person` and a `building`, for example, unless you specifically allow such a thing in the schema.
+Thanks to roles, you will be able to guarantee the logical integrity of your data, disallowing a `marriage` between a `person` and a `building`, for example, unless you specifically allow such a thing in the schema.
 
 ### Rules
 Lastly, the Grakn schema is completed with [**Graql Rules**](/docs/schema/rules). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
