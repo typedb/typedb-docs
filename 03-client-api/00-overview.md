@@ -1,7 +1,8 @@
 ---
-sidebarTitle: Overview
 pageTitle: Grakn Clients
-
+keywords: grakn, client, api, grpc
+longTailKeywords: grakn client api, grakn api, client api, grakn client architecture, grakn session, grakn transaction
+Summary: All you need to know about the architecture of a Grakn Client.
 permalink: /docs/client-api/overview
 ---
 

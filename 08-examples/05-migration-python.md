@@ -1,6 +1,8 @@
 ---
-sidebarTitle: Migrate - Python
 pageTitle: Migrating CSV, JSON and XML Data with Client Python
+keywords: grakn, examples, migration, python
+longTailKeywords: grakn python migration
+Summary: Learn how to use Client Python to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
 permalink: /docs/examples/phone-calls-migration-python
 ---
 

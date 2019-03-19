@@ -10,12 +10,12 @@ jasmine_node_test(
     name = "phone-calls",
     srcs = [":phone-calls-tests"],
     deps = [
-        "@nodejs_dependencies//jasmine",
-        "@nodejs_dependencies//jasmine-reporters",
-        "@nodejs_dependencies//grakn-client",
-        "@nodejs_dependencies//papaparse",
-        "@nodejs_dependencies//stream-json",
-        "@nodejs_dependencies//xml-stream"
+        "@test_example_npm//jasmine",
+        "@test_example_npm//jasmine-reporters",
+        "@test_example_npm//grakn-client",
+        "@test_example_npm//papaparse",
+        "@test_example_npm//stream-json",
+        "@test_example_npm//xml-stream"
     ],
     data = ["//files:phone-calls-kg"]
 )
@@ -39,9 +39,9 @@ jasmine_node_test(
     name = "social-network",
     srcs = [":social-network-tests"],
     deps = [
-        "@nodejs_dependencies//jasmine",
-        "@nodejs_dependencies//grakn-client",
-        "@nodejs_dependencies//jasmine-reporters"
+        "@test_example_npm//jasmine",
+        "@test_example_npm//grakn-client",
+        "@test_example_npm//jasmine-reporters"
     ],
     data = ["//files:social-network-kg"]
 )

@@ -37,19 +37,45 @@ load("@graknlabs_build_tools//distribution:dependencies.bzl", "graknlabs_bazel_d
 graknlabs_bazel_distribution()
 
 
-####################
-# Load Build Tools #
-####################
+###########################
+# Load Bazel Dependencies #
+###########################
 
 # Load additional build tools, such bazel-deps and unused-deps
-load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_common", "bazel_deps", "bazel_toolchain")
+load("@graknlabs_build_tools//bazel:dependencies.bzl",
+     "bazel_common", "bazel_deps", "bazel_toolchain", "bazel_rules_python")
 bazel_common()
 bazel_deps()
 bazel_toolchain()
+bazel_rules_python()
+
+load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
+pip_repositories()
+
+
+#################################
+# Load Build Tools Dependencies #
+#################################
+
+pip_import(
+    name = "graknlabs_build_tools_ci_pip",
+    requirements = "@graknlabs_build_tools//ci:requirements.txt",
+)
+load("@graknlabs_build_tools_ci_pip//:requirements.bzl",
+graknlabs_build_tools_ci_pip_install = "pip_install")
+graknlabs_build_tools_ci_pip_install()
+
+pip_import(
+    name = "graknlabs_bazel_distribution_pip",
+    requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
+)
+load("@graknlabs_bazel_distribution_pip//:requirements.bzl",
+graknlabs_bazel_distribution_pip_install = "pip_install")
+graknlabs_bazel_distribution_pip_install()
 
 
 ###########################
-# Load Local dependencies #
+# Load Local Dependencies #
 ###########################
 
 # for Java
@@ -69,7 +95,7 @@ load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
 node_repositories()
 
 npm_install(
-    name = "nodejs_dependencies",
+    name = "test_example_npm",
     package_json = "//test/example/nodejs:package.json",
     data = [
       "@build_bazel_rules_nodejs//internal/babel_library:package.json",
@@ -80,48 +106,45 @@ npm_install(
 
 # for Python
 
-load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_rules_python")
-bazel_rules_python()
-
-load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
-pip_repositories()
-
 pip_import(
-    name = "local_pypi_dependencies",
+    name = "test_example_pip",
     requirements = "//test/example/python:requirements.txt",
 )
 
-load("@local_pypi_dependencies//:requirements.bzl", "pip_install")
-pip_install()
+load("@test_example_pip//:requirements.bzl",
+test_example_pip_install = "pip_install")
+test_example_pip_install()
 
 
-#######################################
-# Load compiler dependencies for GRPC #
-#######################################
+##########################
+# Load GRPC Dependencies #
+##########################
 
 load("@graknlabs_build_tools//grpc:dependencies.bzl", "grpc_dependencies")
 grpc_dependencies()
 
-load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", com_github_grpc_grpc_bazel_grpc_deps = "grpc_deps")
-com_github_grpc_grpc_bazel_grpc_deps()
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl",
+com_github_grpc_grpc_deps = "grpc_deps")
+com_github_grpc_grpc_deps()
 
 load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
 java_grpc_compile()
 
 
 ################################
-# Load Grakn Core dependencies #
+# Load Grakn Core Dependencies #
 ################################
 
-load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl", grakn_core_dependencies = "maven_dependencies")
-grakn_core_dependencies()
+load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl",
+graknlabs_grakn_core_maven_dependencies = "maven_dependencies")
+graknlabs_grakn_core_maven_dependencies()
 
 load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_rules_docker")
 bazel_rules_docker()
 
 
 ###########################
-# Load Graql dependencies #
+# Load Graql Dependencies #
 ###########################
 
 # Load ANTLR dependencies for Bazel
@@ -132,31 +155,27 @@ antlr_dependencies()
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies()
 
-load("@graknlabs_graql//dependencies/maven:dependencies.bzl", graql_dependencies = "maven_dependencies")
-graql_dependencies()
+load("@graknlabs_graql//dependencies/maven:dependencies.bzl",
+graknlabs_graql_maven_dependencies = "maven_dependencies")
+graknlabs_graql_maven_dependencies()
 
 
 ###################################
-# Load Client Python dependencies #
+# Load Client Python Dependencies #
 ###################################
 
-# TODO: client python's pip_import should be called pypi_dependencies_grakn_client
 pip_import(
-    name = "pypi_dependencies",
+    name = "graknlabs_client_python_pip",
     requirements = "@graknlabs_client_python//:requirements.txt",
 )
 
-pip_import(
-    name = "pypi_deployment_dependencies",
-    requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
-)
-
-load("@pypi_dependencies//:requirements.bzl", client_python_pip_install = "pip_install")
-client_python_pip_install()
+load("@graknlabs_client_python_pip//:requirements.bzl",
+graknlabs_client_python_pip_install = "pip_install")
+graknlabs_client_python_pip_install()
 
 
 #####################################
-# Load Bazel common workspace rules #
+# Load Bazel Common Workspace Rules #
 #####################################
 
 # TODO: Figure out why this cannot be loaded at earlier at the top of the file

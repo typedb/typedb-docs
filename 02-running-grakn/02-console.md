@@ -1,15 +1,14 @@
 ---
-sidebarTitle: Console
 pageTitle: Grakn Console
-summary:
-permalink: /docs/running-grakn/console
+keywords: grakn, console
+longTailKeywords: load schema into grakn, create grakn keyspace, grakn console
+summary: List of options and commands for the Grakn Console.
 toc: false
+permalink: /docs/running-grakn/console
 ---
 
 ## What is the Grakn Console?
 The Grakn Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
-
-<!-- keyspace -> kbase -->
 
 ## Console Options {#console-options}
 
