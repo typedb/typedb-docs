@@ -18,25 +18,19 @@
 
 version: 2.1
 commands:
-  install-bazel:
+  install-bazel-linux-rbe:
     steps:
-      - run:
-          name: Install bazel and RBE credential
-          command: |
-            # Install bazel
-            curl -OL https://github.com/bazelbuild/bazel/releases/download/0.20.0/bazel-0.20.0-installer-linux-x86_64.sh
-            chmod +x bazel-0.20.0-installer-linux-x86_64.sh
-            sudo ./bazel-0.20.0-installer-linux-x86_64.sh
-
-            # Install RBE credential
-            bazel run @graknlabs_build_tools//ci:install-bazel-rbe-credential
+      - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
+      - run: bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh
+      - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-rbe.sh
+      - run: bash ./install-bazel-rbe.sh && rm ./install-bazel-rbe.sh
 
   run-bazel-rbe:
     parameters:
       command:
         type: string
     steps:
-      - run: bazel run @graknlabs_build_tools//ci:run-bazel-rbe << parameters.command >>
+      - run: bazel run @graknlabs_build_tools//ci:run-bazel-rbe -- << parameters.command >>
 
   run-grakn-server:
     steps:
@@ -48,77 +42,76 @@ commands:
 jobs:
   build:
     machine: true
-    working_directory: ~/grakn
+    working_directory: ~/docs
     steps:
+      - install-bazel-linux-rbe
       - checkout
-      - install-bazel
       - run-bazel-rbe:
           command: bazel build //...
 
   test-query-graql-lang:
     machine: true
+    working_directory: ~/docs
     steps:
+      - install-bazel-linux-rbe
       - checkout
-      - install-bazel
       - run-bazel-rbe:
           command: bazel test //test/query:graql-lang --test_output=errors
 
   test-query-graql-java:
     machine: true
+    working_directory: ~/docs
     steps:
+      - install-bazel-linux-rbe
       - checkout
-      - install-bazel
       - run-bazel-rbe:
           command: bazel test //test/query:graql-java --test_output=errors
 
   test-example-java:
     machine: true
+    working_directory: ~/docs
     steps:
+      - install-bazel-linux-rbe
       - checkout
-      - install-bazel
       - run-grakn-server
       - run: bazel test //test/example/java:phone-calls --test_output=errors
       - run: bazel test //test/example/java:social-network --test_output=errors
 
   test-example-nodejs:
     machine: true
+    working_directory: ~/docs
     steps:
+      - install-bazel-linux-rbe
       - checkout
-      - install-bazel
       - run-grakn-server
       - run: bazel test //test/example/nodejs:phone-calls --test_output=errors
       - run: bazel test //test/example/nodejs:social-network --test_output=errors
 
   test-example-python:
     machine: true
+    working_directory: ~/docs
     steps:
+      - install-bazel-linux-rbe
       - checkout
-      - install-bazel
       - run-grakn-server
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
 
   release-staging:
     machine: true
+    working_directory: ~/docs
     steps:
       - checkout
-      - run:
-          name: Deploy docs to staging by updating the docs submodule in web-dev/development
-          command: |
-            mkdir docs
-            cd docs
-            python ../.circleci/deploy-docs.py development
+      - run: mkdir docs && cd docs
+      - run: python ../.circleci/deploy-docs.py development
 
   release-production:
     machine: true
+    working_directory: ~/docs
     steps:
       - checkout
-      - run:
-          name: Deploy docs to production by updating the docs submodule in web-dev/master
-          command: |
-            mkdir docs
-            cd docs
-            python ../.circleci/deploy-docs.py master
+      - run: mkdir docs && cd docs
+      - run: python ../.circleci/deploy-docs.py master
 
 workflows:
   docs:
