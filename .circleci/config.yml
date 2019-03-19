@@ -102,16 +102,14 @@ jobs:
     working_directory: ~/docs
     steps:
       - checkout
-      - run: mkdir docs && cd docs
-      - run: python ../.circleci/deploy-docs.py development
+      - run: python .circleci/deploy-docs.py development
 
   release-production:
     machine: true
     working_directory: ~/docs
     steps:
       - checkout
-      - run: mkdir docs && cd docs
-      - run: python ../.circleci/deploy-docs.py master
+      - run: python .circleci/deploy-docs.py master
 
 workflows:
   docs:
