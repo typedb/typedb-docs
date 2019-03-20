@@ -155,4 +155,4 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api.html language = "java" %}
+{% include client_api_template.html language = "java" %}
