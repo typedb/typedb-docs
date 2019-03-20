@@ -102,14 +102,14 @@ jobs:
     working_directory: ~/docs
     steps:
       - checkout
-      - run: python .circleci/deploy-docs.py development
+      - run: bazel run @graknlabs_build_tools//ci:release-docs -- development $CIRCLE_SHA1
 
   release-production:
     machine: true
     working_directory: ~/docs
     steps:
       - checkout
-      - run: python .circleci/deploy-docs.py master
+      - run: bazel run @graknlabs_build_tools//ci:release-docs -- master $CIRCLE_SHA1
 
 workflows:
   docs:
