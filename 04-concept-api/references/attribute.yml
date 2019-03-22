@@ -38,14 +38,14 @@ methods:
       <<: *method-owners
       method: attribute.owners();
       return:
-        - "Stream of [`Thing`](/docs/concept-api/thing?lang=java) objects"
+        - "Stream of [`Thing`](/docs/concept-api/thing?tab=java) objects"
     javascript:
       <<: *method-owners
       method: await attribute.owners();
       return:
-        - "Iterator of [`Thing`](/docs/concept-api/thing?lang=javascript) objects"
+        - "Iterator of [`Thing`](/docs/concept-api/thing?tab=javascript) objects"
     python:
       <<: *method-owners
       method: attribute.owners()
       return:
-        - "Iterator of [`Thing`](/docs/concept-api/thing?lang=python) objects"
+        - "Iterator of [`Thing`](/docs/concept-api/thing?tab=python) objects"

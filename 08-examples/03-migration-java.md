@@ -1394,4 +1394,4 @@ Lastly, we ran the `main` method which fired the `connectAndMigrate` method with
 
 ## Next
 
-Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?lang=java).
+Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?tab=java).
