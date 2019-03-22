@@ -69,7 +69,7 @@ Workbase allows visualisation of answers returned by [Graql queries](/docs/query
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/types_select.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/visualise_types-select.png)[body:end]
 [footer:start]We can then click on any of the Concept Types which may be an entity, an attribute or a relation.[footer:end]
 [slide:end]
 <!-- -->
