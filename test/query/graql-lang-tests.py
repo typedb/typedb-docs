@@ -80,6 +80,15 @@ graql_lang_test_method_template = """
     }
 """
 
+graql_lang_pattern_test_method_template = """
+    @Test
+    public void test() {
+        // PAGE COMMENT PLACEHOLDER
+        String queries = "// QUERIES PLACEHOLDER";
+        Pattern pattern = Graql.parsePattern(queries);
+    }
+"""
+
 pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```graql\n((\n|.)+?)```'
                             +
                             '|(```graql\n' +
@@ -107,7 +116,12 @@ for i, snippet in enumerate(snippets):
             graql_lines.append(line.replace('"', "\\\""))
     final_snippet = " ".join(graql_lines)
 
-    test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+    keywords =["match", "define", "insert", "compute"]
+    if any(keyword in snippet for keyword in keywords):
+        test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+    else:
+        test_method = graql_lang_pattern_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+
     test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
     test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add query objects
     test_methods += test_method

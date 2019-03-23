@@ -38,12 +38,32 @@ Person($x), ¬Employment($x, employer: $y)
 
 i.e. we look for the following Graql pattern:
 
-```
-$x isa person
-not {
-    (employee: $x, employer: $y) isa employment;
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+{
+    $x isa person;
+    not {
+        (employee: $x, employer: $y) isa employment;
+    };
 };
 ```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern = Graql.and(
+        Graql.var("x").isa("person"), 
+        Graql.not(
+            Graql.var().isa("employment")
+                .rel("employee", Graql.var("x"))
+                .rel("employer", Graql.var("y"))
+            )
+        );
+```
+[tab:end]
+</div>
 
 Please note that the `$y` variable inside the negation block is not bound. This is of great importance when discussing the meaning of negation. 
 If we were to interpret the query using the simple complement semantics we would arrive at a conclusion that unemployed people are people for which there exists 
@@ -90,7 +110,10 @@ not {
 
 The variables in the negation block are local to the negation block. Consequently, executing the query:
 
-```
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
 match
 $x isa person
 not {
@@ -98,6 +121,22 @@ not {
 };
 get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query = Graql.match(
+    Graql.and(
+        Graql.var("x").isa("person"), 
+        Graql.not(
+            Graql.var().isa("employment")
+                .rel("employee", Graql.var("x"))
+                .rel("employer", Graql.var("y"))
+        )
+    ).get());
+```
+[tab:end]
+</div>
 
 will yield a list of concepts assigned to the `$x` variable.
 
@@ -105,7 +144,8 @@ Should we decide that our unemployment pattern is a common one, we might decide 
 set of bound variables has only one element, it is more convenient to define it in terms of a type. 
 Defining the unemployment in terms of a rule and the freshly introduced negation block we can then write: 
 
-```
+```graql
+define
 unemployed sub entity;
 unemployment sub rule,
 when {
@@ -121,19 +161,52 @@ then {
 
 Consequently, our unemployment query pattern simply becomes:
 
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+{
+    $x isa person;
+    $x isa unemployed;
+};
 ```
-$x isa person;
-$x isa unemployed;
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern = Graql.and(
+    Graql.var("x").isa("person"), 
+    Graql.var("x").isa("unemployed")
+);
 ```
+[tab:end]
 
 Negation blocks are not tied to relations. We are free to define our patterns inside the negation blocks as long as they are conjunctive. For example we can use negation
 blocks to perform exclusions, e.g. the query pattern to list all non-English speaking employees can read:
 
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+{
+    (employee: $x) isa employment;
+    (speaker: $x, spoken: $y) isa speaking-of-language;
+    not { $y == "English";};
+};
 ```
-(employee: $x) isa employment;
-(speaker: $x, spoken: $y) isa speaking-of-language;
-not { $y == "English";};
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern = Graql.and(
+    Graql.var().isa("employment").rel("employee", Graql.var("x")),
+    Graql.var().isa("speaking-of-language")
+        .rel("speaker", Graql.var("x"))
+        .rel("spoken", Graql.var("y")),
+    Graql.not(Graql.var("y").val("English"))
+);
 ```
+[tab:end]
 
 We shall now see how we can form more complex patterns with negation. Let's say we want to find people that are orphans:
 
@@ -143,10 +216,12 @@ Person($x), ¬Parentship($x, father: $y), ¬Parentship($x, mother: $y)
 
 To express that in Graql, we require two negation blocks:
 
-```
-$x isa person;
-not { ($x, father: $y) isa parentship;};
-not { ($x, mother: $y) isa parentship;}; 
+```graql
+{
+    $x isa person;
+    not { ($x, father: $y) isa parentship;};
+    not { ($x, mother: $y) isa parentship;};
+}; 
 ```
 
 which is equivalent to saying:
@@ -159,7 +234,8 @@ not { $x isa person-with-a-mother;};
 
 Now let's look at how we arrive at the answers if we execute this as a match query. To do this we will go through
 the set difference computation procedure. Let's define a set `P` to be the set of all people, i.e. a set that is the answer set to a query:
-```
+
+```graql
 match $x isa person;get;
 ```
  
@@ -173,6 +249,7 @@ and finally a set `M` as the set of people having a mother which can be defined 
 ```
 match $x isa person-with-a-mother;get;
 ```
+
 We can illustrate the relationships between the sets with a suitable Venn diagram:
 
 ![Calculating the P \ F \ M set difference](/docs/images/query/PFM.png)
@@ -204,7 +281,7 @@ M = {Bob}
 
 Consequently, the final result of the match query:
 
-```
+```graql
 match
 $x isa person;
 not { ($x, father: $y) isa parentship;};
@@ -220,17 +297,19 @@ A = P \ F \ M = {Charlie}
 
 Now let's complicate things a little and see what happens if we bind the `$y` variable for parents, i. e. if we consider a query pattern:
 
-```
-$x isa person;
-$y isa person;
-not { ($x, father: $y) isa parentship;};
-not { ($x, mother: $y) isa parentship;};
+```graql
+{
+    $x isa person;
+    $y isa person;
+    not { ($x, father: $y) isa parentship;};
+    not { ($x, mother: $y) isa parentship;};
+};
 ```
 
 Upon inspection, we can see that in this case our three sets are different. Let's define them as `P'`, `M'` amd `F'`.
 The first difference is that an element of each set is a pair (2-tuple). Our set of people `P` corresponds to the answer set of a match query:
 
-```
+```graql
 match
 $x isa person;
 $y isa person;
@@ -258,7 +337,7 @@ M' = {(B, C)}
 
 Now, executing our query pattern as an ordinary match-get query:
 
-```
+```graql
 match
 $x isa person;
 $y isa person;
@@ -281,7 +360,7 @@ A'' = P' \ F' \ M' =
 However! If we now do a projection onto the `$x` variable to compare the results with our previous query variant where 
 the `$y` variable is unbounded, i.e. if we execute:
 
-```
+```graql
 match
 $x isa person;
 not { ($x, father: $y) isa parentship;};
@@ -301,11 +380,13 @@ As a result, extra care should be taken and thought given when formulating queri
 One might be tempted to put the two negation blocks into one. Let's look at the outcome of that. If we define:
 
 
-```
-$x isa person;
-not { 
-    ($x, father: $y) isa parentship;
-    ($x, mother: $z) isa parentship;
+```graql
+{
+    $x isa person;
+    not { 
+        ($x, father: $y) isa parentship;
+        ($x, mother: $z) isa parentship;
+    };
 };
 ```
 noting that this time we need to pick a fresh variable for mother as we are in the same negation block. The meaning of this pattern is the following. From all people,
@@ -314,11 +395,13 @@ remove the people that have both a mother and a father. As a result our answer s
 We can go further than that. Negation blocks in queries can be nested. Consequently, if we wanted to find people whose father is unemployed we can write something
 like this:
 
-```
-$x isa person;
-not { 
-    ($x, father: $y) isa parentship;
-    not { ($y) isa employment; };
+```graql
+{
+    $x isa person;
+    not { 
+        ($x, father: $y) isa parentship;
+        not { ($y) isa employment; };
+    };
 };
 ```
 
@@ -346,7 +429,9 @@ We will illustrate the use of negation with rules with a graphical example.
 
 Let us define a network of nodes with possible links between nodes:
 
-```
+```graql
+define
+
 traversable sub entity,
     has index;
     plays from,
@@ -359,7 +444,9 @@ link sub relation, relates from, relates to;
 
 Then we can define two nodes as being reachable if there exists a link between them:
 
-```
+```graql
+define
+
 reachable sub relation, relates from, relates to;
 reachabilityA sub rule,
 when {
@@ -381,7 +468,9 @@ then {
 
 Consequently, with the use of negation we can define links that are indirect:
 
-```
+```graql
+define
+
 indirect-link sub relation, relates from, relates to;
 indirect-link-rule sub rule,
 when {
@@ -395,7 +484,9 @@ then {
 
 We can mark the unreachable nodes by defining the following rule:
 
-```
+```graql
+define
+
 unreachable sub relation, relates from, relates to;
 unreachability-rule sub rule,
 when {
@@ -435,7 +526,9 @@ bird(X) :- penguin(X)
 
 We can capture this information in Graql terms. Defining our little schema first:
 
-```
+```graql
+define
+
 bird sub entity;
 penguin sub bird;
 flies sub entity;
@@ -444,7 +537,9 @@ abnormal isa entity;
 
 Accompanying it with relevant rules:
 
-```
+```graql
+define
+
 flying-rule sub rule,
 when{
     $x isa bird;
@@ -464,29 +559,29 @@ then{
 ```
 Let's now say that we there is a bird which we will call Tweety:
 
-```
+```graql
 insert $x isa bird;
 ```
 
 In consequence of the above knowledge, we can establish that Tweety flies, i.e. if we query:
 
-```
+```graql
 match $x isa flies; get;
 ```
 
 our single Tweety bird concept will be returned. Let us now look what will happen if we add an extra bit of information.
 We will specialise Tweety to be a penguin:
 
-```
+```graql
 match $x isa bird; delete;
 insert $x isa penguin;
 ```
 
 If we now repeat our flying query:
  
- ```
- match $x isa flies; get;
- ```
+```graql
+match $x isa flies; get;
+```
  
 we will receive no answers. Consequently our previously derived fact of Tweety being able to fly no longer holds.
 
