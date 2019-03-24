@@ -562,12 +562,14 @@ then{
 ```
 Let's now say that we there is a bird which we will call Tweety:
 
+<!-- test-ignore -->
 ```graql
 insert $x isa bird;
 ```
 
 In consequence of the above knowledge, we can establish that Tweety flies, i.e. if we query:
 
+<!-- test-ignore -->
 ```graql
 match $x isa flies; get;
 ```
@@ -575,6 +577,7 @@ match $x isa flies; get;
 our single Tweety bird concept will be returned. Let us now look what will happen if we add an extra bit of information.
 We will specialise Tweety to be a penguin:
 
+<!-- test-ignore -->
 ```graql
 match $x isa bird; delete;
 insert $x isa penguin;
@@ -582,6 +585,7 @@ insert $x isa penguin;
 
 If we now repeat our flying query:
  
+<!-- test-ignore -->
 ```graql
 match $x isa flies; get;
 ```
