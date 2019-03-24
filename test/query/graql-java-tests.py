@@ -18,6 +18,7 @@ import graql.lang.query.GraqlGet;
 import graql.lang.query.GraqlDelete;
 import graql.lang.query.GraqlInsert;
 import graql.lang.query.GraqlCompute.Argument;
+import graql.lang.pattern.Pattern;
 import org.junit.*;
 
 import java.io.*;

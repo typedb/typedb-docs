@@ -118,7 +118,7 @@ for i, snippet in enumerate(snippets):
     final_snippet = " ".join(graql_lines)
 
     keywords =["match", "define", "insert", "compute"]
-    if any(keyword in snippet for keyword in keywords):
+    if any(keyword in final_snippet for keyword in keywords):
         test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
     else:
         test_method = graql_lang_pattern_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name

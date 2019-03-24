@@ -80,7 +80,7 @@ Person($x), ¬???($x)
 In Graql terms it's equivalent to the pattern:
 
 ```
-$x isa person
+$x isa person;
 not { ($x) isa ???;};
 ```
 
@@ -101,10 +101,12 @@ semantics unambiguously. As a result, the unemployment is evaluated according to
 set of people we subtract the set of people being in employment relations. Please note that this example illustrates the basic mechanism of how patterns with negation are interpreted. 
 The rule interpretation above is for understanding purposes only. As a user the only thing we need to type is our query pattern:
 
-```
-$x isa person
-not {
-    (employee: $x, employer: $y) isa employment;
+```graql
+{
+    $x isa person;
+    not {
+        (employee: $x, employer: $y) isa employment;
+    };
 };
 ```
 
@@ -115,7 +117,7 @@ The variables in the negation block are local to the negation block. Consequentl
 [tab:Graql]
 ```graql
 match
-$x isa person
+$x isa person;
 not {
     (employee: $x, employer: $y) isa employment;
 };
@@ -133,7 +135,8 @@ GraqlGet query = Graql.match(
                 .rel("employee", Graql.var("x"))
                 .rel("employer", Graql.var("y"))
         )
-    ).get());
+    )
+).get();
 ```
 [tab:end]
 </div>
@@ -236,7 +239,7 @@ Now let's look at how we arrive at the answers if we execute this as a match que
 the set difference computation procedure. Let's define a set `P` to be the set of all people, i.e. a set that is the answer set to a query:
 
 ```graql
-match $x isa person;get;
+match $x isa person; get;
 ```
  
 a set `F` as the set of people having a father, i. e. a set that is the answer set of a query: 
@@ -427,22 +430,21 @@ However, when inserting negation blocks in rules, currently the following restri
 
 We will illustrate the use of negation with rules with a graphical example.
 
-Let us define a network of nodes with possible links between nodes:
+Let us define a network of nodes with possible edges between nodes:
 
 ```graql
 define
 
 traversable sub entity,
-    has index;
     plays from,
     plays to;
 
 node sub traversable;
 
-link sub relation, relates from, relates to;
+edge sub relation, relates from, relates to;
 ```
 
-Then we can define two nodes as being reachable if there exists a link between them:
+Then we can define two nodes as being reachable if there exists a edge between them:
 
 ```graql
 define
@@ -450,7 +452,7 @@ define
 reachable sub relation, relates from, relates to;
 reachabilityA sub rule,
 when {
-    (from: $x, to: $y) isa link;
+    (from: $x, to: $y) isa edge;
 },
 then {
     (from: $x, to: $y) isa reachable;
@@ -458,7 +460,7 @@ then {
 
 reachabilityB sub rule,
 when {
-    (from: $x, to: $z) isa link;
+    (from: $x, to: $z) isa edge;
     (from: $z, to: $y) isa reachable;
 },
 then {
@@ -466,19 +468,19 @@ then {
 };
 ```
 
-Consequently, with the use of negation we can define links that are indirect:
+Consequently, with the use of negation we can define edges that are indirect:
 
 ```graql
 define
 
-indirect-link sub relation, relates from, relates to;
-indirect-link-rule sub rule,
+indirect-edge sub relation, relates from, relates to;
+indirect-edge-rule sub rule,
 when {
     (from: $x, to: $y) isa reachable;
-    not {(from: $x, to: $y) isa link;};
+    not {(from: $x, to: $y) isa edge;};
 },
 then {
-    (from: $x, to: $y) isa indirect-link;
+    (from: $x, to: $y) isa indirect-edge;
 };
 ```
 
@@ -532,7 +534,8 @@ define
 bird sub entity;
 penguin sub bird;
 flies sub entity;
-abnormal isa entity;
+abnormal sub entity;
+
 ```
 
 Accompanying it with relevant rules:
