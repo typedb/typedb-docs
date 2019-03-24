@@ -22,7 +22,7 @@ permalink: /docs/client-api/java
 [tab:Grakn Core]
 ```xml
 <dependency>
-  <groupId>grakn.core</groupId>
+  <groupId>io.grakn.core</groupId>
   <artifactId>client</artifactId>
   <version>1.5.0</version>
 </dependency>
