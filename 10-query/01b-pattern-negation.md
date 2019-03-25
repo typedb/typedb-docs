@@ -79,14 +79,16 @@ Person($x), ¬???($x)
 
 In Graql terms it's equivalent to the pattern:
 
-```
+<!-- test-ignore -->
+```graql
 $x isa person;
 not { ($x) isa ???;};
 ```
 
 with the question relation defined in terms of a rule:
 
-```
+<!-- test-ignore -->
+```graql
 negation-block sub rule,
 when {
     (employee: $x, employer: $y) isa employment;
@@ -219,6 +221,9 @@ Person($x), ¬Parentship($x, father: $y), ¬Parentship($x, mother: $y)
 
 To express that in Graql, we require two negation blocks:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 {
     $x isa person;
@@ -226,10 +231,31 @@ To express that in Graql, we require two negation blocks:
     not { ($x, mother: $y) isa parentship;};
 }; 
 ```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern =Graql.and(
+    Graql.var("x").isa("person"),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("father", Graql.var("y"))
+    ),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("mother", Graql.var("y"))
+    )
+);
+```
+[tab:end]
+</div>
 
 which is equivalent to saying:
 
-```
+<!-- test-ignore -->
+```graql
 $x isa person;
 not { $x isa person-with-a-father;};
 not { $x isa person-with-a-mother;};
@@ -238,18 +264,31 @@ not { $x isa person-with-a-mother;};
 Now let's look at how we arrive at the answers if we execute this as a match query. To do this we will go through
 the set difference computation procedure. Let's define a set `P` to be the set of all people, i.e. a set that is the answer set to a query:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 match $x isa person; get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query = Graql.match(Graql.var("x").isa("person")).get();
+```
+[tab:end]
+</div>
  
 a set `F` as the set of people having a father, i. e. a set that is the answer set of a query: 
 
-```
+<!-- test-ignore -->
+```graql
 match $x isa person-with-a-father;get;
 ```
 and finally a set `M` as the set of people having a mother which can be defined in terms of a query:
 
-```
+<!-- test-ignore -->
+```graql
 match $x isa person-with-a-mother;get;
 ```
 
@@ -284,13 +323,36 @@ M = {Bob}
 
 Consequently, the final result of the match query:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
-match
-$x isa person;
-not { ($x, father: $y) isa parentship;};
-not { ($x, mother: $y) isa parentship;};
-get; 
+{
+    $x isa person;
+    not { ($x, father: $y) isa parentship;};
+    not { ($x, mother: $y) isa parentship;};
+}; 
 ```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern =Graql.and(
+    Graql.var("x").isa("person"),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("father", Graql.var("y"))
+    ),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("mother", Graql.var("y"))
+    )
+);
+```
+[tab:end]
+</div>
 
 will only have the Charlie concept as the result obtained by computing the set difference:
 
@@ -300,24 +362,64 @@ A = P \ F \ M = {Charlie}
 
 Now let's complicate things a little and see what happens if we bind the `$y` variable for parents, i. e. if we consider a query pattern:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 {
     $x isa person;
     $y isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-};
+}; 
 ```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern =Graql.and(
+    Graql.var("x").isa("person"),
+    Graql.var("y").isa("person"), 
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("father", Graql.var("y"))
+    ),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("mother", Graql.var("y"))
+    )
+);
+```
+[tab:end]
+</div>
 
 Upon inspection, we can see that in this case our three sets are different. Let's define them as `P'`, `M'` amd `F'`.
 The first difference is that an element of each set is a pair (2-tuple). Our set of people `P` corresponds to the answer set of a match query:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 match
 $x isa person;
 $y isa person;
 get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query = Graql.match(
+    Graql.and(
+        Graql.var("x").isa("person"),
+        Graql.var("y").isa("person"), 
+    )
+).get();
+```
+[tab:end]
+</div>
 
 As a result, we have (abbreviating the names for clarity):
 
@@ -340,14 +442,38 @@ M' = {(B, C)}
 
 Now, executing our query pattern as an ordinary match-get query:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
-match
-$x isa person;
-$y isa person;
-not { ($x, father: $y) isa parentship;};
-not { ($x, mother: $y) isa parentship;};
-get;
+{
+    $x isa person;
+    $y isa person;
+    not { ($x, father: $y) isa parentship;};
+    not { ($x, mother: $y) isa parentship;};
+}; 
 ```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern =Graql.and(
+    Graql.var("x").isa("person"),
+    Graql.var("y").isa("person"), 
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("father", Graql.var("y"))
+    ),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("mother", Graql.var("y"))
+    )
+);
+```
+[tab:end]
+</div>
 
 we yield the following concept pairs mapped to `$x` and `$y` variables:
 
@@ -363,6 +489,9 @@ A'' = P' \ F' \ M' =
 However! If we now do a projection onto the `$x` variable to compare the results with our previous query variant where 
 the `$y` variable is unbounded, i.e. if we execute:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 match
 $x isa person;
@@ -370,18 +499,39 @@ not { ($x, father: $y) isa parentship;};
 not { ($x, mother: $y) isa parentship;};
 get $x;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query = Graql.match(
+    Graql.and(
+        Graql.var("x").isa("person"), 
+        Graql.not(
+            Graql.var().isa("parentship")
+                .rel(Graql.var("x"))
+                .rel("father", Graql.var("y"))
+        ),
+        Graql.not(
+            Graql.var().isa("parentship")
+                .rel(Graql.var("x"))
+                .rel("mother", Graql.var("y"))
+        )
+    )
+).get();
+```
+[tab:end]
 
 we will get the following concepts in return:
 
 ```
 A' = P' \ F' \ M' | x = {A, B, C}
 ```
+
 which is clearly different to the anticipated result of `A = {C}` - our answer set is not a set of orphans, instead 
 it is a projection from a set of people pairs where pairs playing in `parentship` relation excluded. 
 As a result, extra care should be taken and thought given when formulating queries with negation blocks.
 
 One might be tempted to put the two negation blocks into one. Let's look at the outcome of that. If we define:
-
 
 ```graql
 {
@@ -392,6 +542,38 @@ One might be tempted to put the two negation blocks into one. Let's look at the 
     };
 };
 ```
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+{
+    $x isa person;
+    not { 
+        ($x, father: $y) isa parentship;
+        ($x, mother: $z) isa parentship;
+    };
+};
+```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern = Graql.and(
+    Graql.var("x").isa("person"),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("father", Graql.var("y")),
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("mother", Graql.var("y"))
+    )
+);
+```
+[tab:end]
+
+
 noting that this time we need to pick a fresh variable for mother as we are in the same negation block. The meaning of this pattern is the following. From all people,
 remove the people that have both a mother and a father. As a result our answer set will contain people that have at most one parent.
 
@@ -407,6 +589,37 @@ like this:
     };
 };
 ```
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+{
+    $x isa person;
+    not { 
+        ($x, father: $y) isa parentship;
+        not { ($y) isa employment; };
+    };
+};
+```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern = Graql.and(
+    Graql.var("x").isa("person"),
+    Graql.not(
+        Graql.var().isa("parentship")
+            .rel(Graql.var("x"))
+            .rel("father", Graql.var("y")),
+        Graql.not(
+            Graql.var().isa("employment")
+                .rel(Graql.var("y"))
+        )
+    )
+);
+```
+[tab:end]
 
 Please note, nesting of negation blocks is only allowed in queries, but not in rules.
 
