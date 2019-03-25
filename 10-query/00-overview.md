@@ -22,25 +22,22 @@ Graql is a language that provides you with a complete set of tools to perform al
 
 ## The structure of a Graql query
 
-The image below illustrates the constructs of various Graql queries.
+The image below illustrates the structure of various Graql queries.
 
 ![Query structure](/docs/images/query/query-structure.png)
 
-In the following sections, we learn how to write Graql queries of different types in order to:
-- retrieve data
-    * [Get](/docs/query/get-query) back desired data instances and schema definitions
-    * [Aggregate](/docs/query/aggregate-query) values over a specific set of data
-    * [Compute](/docs/query/compute-query) distributed analytics over a large set of data
+As shown in the image above, Graql queries are categorized into two main types:
+- **Data Definition**:
+  - **[Define](/docs/query/schema/concepts#define)**: adds definition of a concept type to the schema.
+  - **[Undefine](/docs/query/schema/concepts#undefine)**: removes definition of a concept type from the schema.
 
-- define and undefine schema definitions
-    * [Define/Undefine](/docs/query/schema/concepts) new instances of concept types into the knowledge graph
-
-- insert and remove instances of data
-    * [Insert](/docs/query/insert-query) new instances of concept types into the knowledge graph
-    * [Delete](/docs/query/delete-query) instances of concept types from the knowledge graph
-
-- manipulate data
-    * [Update](/docs/query/update-query) instances of concept types
+- **Data Manipulation**:
+  - **[Get](/docs/query/get-query)**: returns the data instances or concept types that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
+  - **[Delete](/docs/query/delete-query)**: removes the data instances assigned to the given variable that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
+  - **[Insert](/docs/query/insert-query)**: inserts a data instance according to the given statement(s), optionally, preceded by a `match` clause.
+  - **[Group](/docs/query/aggregate-query#grouping-answers)**: always as a part of a `get` query, returns the results grouped by the given variable, optionally mapped to the count of each group.
+  - **[Aggregate Values](/docs/query/aggregate-query#aggregate-values-over-a-dataset)**: always as a part of a `get` query, returns the statistical value of numeric attributes based on the given aggregate function.
+  - **[Compute Statistics](/docs/query/compute-query)**: computes paths between two instances, clusters and centrality.
 
 ## Graql Answers
 
