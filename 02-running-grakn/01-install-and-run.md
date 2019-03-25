@@ -35,10 +35,9 @@ Install Grakn Server and Grakn Console:
 
 As a superuser, add the repo:
 ```
-sudo bash <<EOF
-echo "deb [ arch=all ] https://repo.grakn.ai/repository/deb/ trusty main" >> /etc/apt/sources.list.d/grakn-core.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
-EOF
+sudo apt install software-properties-common
+sudo add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/deb/ trusty main'
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
 ```
 
 Update the package cache:
