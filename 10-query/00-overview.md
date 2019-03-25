@@ -9,7 +9,7 @@ Graql is the language for the Grakn knowledge graph. Whether it's through the [G
 
 **Graql is declarative**. In simple terms, when writing Graql code, you simply describe _what_ you would like to achieve, rather than _how_ it's going to get there. The implementation of a Graql query is hidden under the hood and never affects you as the developer.
 
-**Graql is intuitive**. Graql queries can look a lot like questions the same way they are formed in mind, as opposed to a complicated series of statements that are difficult to follow and, at scale, become confusing It's important to note that the intuitiveness of a Graql query originates from the [schema](/docs/schema/overview). The better the knowledge graph represents the reality of its dataset via its schema, the more intuitive writing and reading Graql queries become.
+**Graql is intuitive**. Graql queries can look a lot like questions the same way they are formed in mind, as opposed to a complicated series of statements that are difficult to follow and, at scale, become confusing. It's important to note that the intuitiveness of a Graql query originates from the [schema](/docs/schema/overview). The better the knowledge graph represents the reality of its dataset via its schema, the more intuitive writing and reading Graql queries become.
 
 In this section, we learn how a Graql query can be written to:
 - [Match](/docs/query/match-clause) specific patterns in the data and schema

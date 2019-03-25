@@ -147,7 +147,7 @@ public class Queries {
 }
 ```
 
-#### Lazily retrieve all photos and videos that have been found funny by women sing [Client Python](/docs/client-api/python)
+#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](/docs/client-api/python)
 
 <!-- ignore-test -->
 ```python
