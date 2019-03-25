@@ -28,13 +28,13 @@ Let's look at the anatomy of a typical Get query:
 
 The important parts were marked with numbers. As a result, we have:
 
-1. The **`match` keyword** that indicates what follows is a pattern expected to be looked for within the knowledge graph. The `match` keyword and the preceding pattern, commonly known as the _match clause_, is always accompanied by a _query keyword_. In the example above, that query keyword happens to be `get`. `match` may also be accompanied with, `insert` and `delete`.
+1. The **`match` keyword** that is followed by the pattern to look for within the knowledge graph. The `match` keyword and the following pattern, commonly known as the _match clause_, is always accompanied by a _query keyword_. In the example above, that query keyword happens to be `get`. `match` may also be accompanied with, `insert` and `delete`.
 
-2. The **query pattern** that describes the part of the knowledge graph we are interested in. Notice that unlike most other query languages, **the order of patterns in a Graql query does not matter**. The system will take care of putting it in the correct order and execute the query in the most efficient way it can.
+2. The **query pattern** that describes the part of the knowledge graph we are interested in. Notice that unlike most other query languages, **the order of patterns in a Graql query does not matter**. The system takes care of putting it in the correct order and executing the query in the most efficient way it can.
 
 3. The **query keyword** that specifies what the query actually does. In the case of `get` and `delete` queries, the keyword is followed by variables previously defined in the match clause. In the case of `insert` queries, what follows is one or more statements that describe the instances to be inserted.
 
-4. One or more optional **modifiers** specify any modification operation to be carried out on the results. Here we can control the order in which they should be displayed, the number of results you want or a specific offset.
+4. One or more optional **modifiers** specify any modification operation to be carried out on the results. Here we can control the order in which the results must be displayed, the number of results we want and/or a specific offset.
 
 In the following sections, we learn how to create Graql queries of different types in order to:
 - retrieve data

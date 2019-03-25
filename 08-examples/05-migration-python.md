@@ -732,4 +732,4 @@ Lastly, we ran `python3 migrate.py` which fired the `build_phone_call_graph` fun
 
 ## Next
 
-Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?lang=python).
+Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?tab=python).

@@ -882,4 +882,4 @@ Lastly, we ran `npm run migrate.js` which fired the `buildPhoneCallGraph` functi
 
 ## Next
 
-Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?lang=javascript).
+Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?tab=javascript).

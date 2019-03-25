@@ -7,17 +7,17 @@ methods:
       <<: *method-create
       method: relationType.create();
       returns:
-        - "[`Relation`](/docs/concept-api/thing?lang=java#relation-methods) object"
+        - "[`Relation`](/docs/concept-api/thing?tab=java#relation-methods) object"
     javascript:
       <<: *method-create
       method: await relationType.create();
       returns:
-        - "[`Relation`](/docs/concept-api/thing?lang=nodejs#relation-methods) object"
+        - "[`Relation`](/docs/concept-api/thing?tab=nodejs#relation-methods) object"
     python:
       <<: *method-create
       method: relation_type.create()
       returns:
-        - "[`Relation`](/docs/concept-api/thing?lang=python#relation-methods) object"
+        - "[`Relation`](/docs/concept-api/thing?tab=python#relation-methods) object"
 
   - method:
     common: &method-roles
@@ -27,17 +27,17 @@ methods:
       <<: *method-roles
       method: relationType.roles();
       returns:
-        - "Stream of [`Role`](/docs/concept-api/type?javalang=#role-methods) objects"
+        - "Stream of [`Role`](/docs/concept-api/type?javatab=#role-methods) objects"
     javascript:
       <<: *method-roles
       method: await relationType.roles();
       returns:
-        - "Iterator of [`Role`](/docs/concept-api/type?javascriptlang=#role-methods) objects"
+        - "Iterator of [`Role`](/docs/concept-api/type?javascripttab=#role-methods) objects"
     python:
       <<: *method-roles
       method: relation_type.roles()
       returns:
-        - "Iterator of [`Role`](/docs/concept-api/type?lang=python#role-methods) objects"
+        - "Iterator of [`Role`](/docs/concept-api/type?tab=python#role-methods) objects"
 
   - method:
     common: &method-relates
@@ -54,7 +54,7 @@ methods:
       <<: *method-relates
       method: relationType.relates(Role role);
       returns:
-        - "[`RelationType`](/docs/concept-api/type?lang=java#relationtype-methods) object"
+        - "[`RelationType`](/docs/concept-api/type?tab=java#relationtype-methods) object"
     javascript:
       <<: *method-relates
       method: await relationType.relates(role);
@@ -64,7 +64,7 @@ methods:
       <<: *method-relates
       method: relation_type.relates(role)
       returns:
-        - "[`RelationType`](/docs/concept-api/type?lang=python#relationtype-methods) object"
+        - "[`RelationType`](/docs/concept-api/type?tab=python#relationtype-methods) object"
 
   - method:
     common: &method-unrelate
@@ -81,7 +81,7 @@ methods:
       <<: *method-unrelate
       method: relationType.unrelate(Role role);
       returns:
-        - "[`RelationType`](/docs/concept-api/type?lang=java#relationtype-methods) object"
+        - "[`RelationType`](/docs/concept-api/type?tab=java#relationtype-methods) object"
     javascript:
       <<: *method-unrelate
       method: await relationType.unrelate(role);
@@ -91,4 +91,4 @@ methods:
       <<: *method-unrelate
       method: relation_type.unrelate(role)
       returns:
-        - "[`RelationType`](/docs/concept-api/type?lang=python#relationtype-methods) object"
+        - "[`RelationType`](/docs/concept-api/type?tab=python#relationtype-methods) object"

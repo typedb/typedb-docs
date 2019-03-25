@@ -153,7 +153,7 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 }
 ```
 
-#### Lazily retrieve all photos and videos that have been found funny by women sing [Client Python](/docs/client-api/python)
+#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](/docs/client-api/python)
 
 <!-- test-example social_network_quickstart_query.py -->
 ```python

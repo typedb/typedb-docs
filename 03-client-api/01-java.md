@@ -22,7 +22,7 @@ permalink: /docs/client-api/java
 [tab:Grakn Core]
 ```xml
 <dependency>
-  <groupId>grakn.core</groupId>
+  <groupId>io.grakn.core</groupId>
   <artifactId>client</artifactId>
   <version>1.5.0</version>
 </dependency>
@@ -159,4 +159,4 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 - [Aggregate](/docs/query/aggregate-query)
 - [Compute](/docs/query/compute-query)
 
-{% include client_api.html language = "java" %}
+{% include client_api_template.html language = "java" %}

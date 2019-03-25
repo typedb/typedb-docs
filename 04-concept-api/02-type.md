@@ -91,12 +91,12 @@ toc: true
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?lang=java#concept-api-java-method-retrieve-the-label)
-- [type.label(Label.of(label));](?lang=java#concept-api-java-method-rename-the-label)
-- [sup();](?lang=java#concept-api-java-method-retrieve-direct-supertype)
-- [sup(Type type);](?lang=java#concept-api-java-method-change-direct-supertype)
-- [sups();](?lang=java#concept-api-java-method-retrieve-all-supertypes)
-- [subs();](?lang=java#concept-api-java-method-retrieve-all-subtypes)
+- [label();](?tab=java#concept-api-java-method-retrieve-the-label)
+- [type.label(Label.of(label));](?tab=java#concept-api-java-method-rename-the-label)
+- [sup();](?tab=java#concept-api-java-method-retrieve-direct-supertype)
+- [sup(Type type);](?tab=java#concept-api-java-method-change-direct-supertype)
+- [sups();](?tab=java#concept-api-java-method-retrieve-all-supertypes)
+- [subs();](?tab=java#concept-api-java-method-retrieve-all-subtypes)
 </div>
 
 {% include api/generic.html data=site.data.concept_api.role language="java" class_prefix="concept-api-java" %}
@@ -106,12 +106,12 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?lang=javascript#concept-api-nodejs-method-retrieve-the-label)
-- [type.label(Label.of(label));](?lang=javascript#concept-api-nodejs-method-rename-the-label)
-- [sup();](?lang=javascript#concept-api-nodejs-method-retrieve-direct-supertype)
-- [sup(Type type);](?lang=javascript#concept-api-nodejs-method-change-direct-supertype)
-- [sups();](?lang=javascript#concept-api-nodejs-method-retrieve-all-supertypes)
-- [subs();](?lang=javascript#concept-api-nodejs-method-retrieve-all-subtypes)
+- [label();](?tab=javascript#concept-api-nodejs-method-retrieve-the-label)
+- [type.label(Label.of(label));](?tab=javascript#concept-api-nodejs-method-rename-the-label)
+- [sup();](?tab=javascript#concept-api-nodejs-method-retrieve-direct-supertype)
+- [sup(Type type);](?tab=javascript#concept-api-nodejs-method-change-direct-supertype)
+- [sups();](?tab=javascript#concept-api-nodejs-method-retrieve-all-supertypes)
+- [subs();](?tab=javascript#concept-api-nodejs-method-retrieve-all-subtypes)
 </div>
 {% include api/generic.html data=site.data.concept_api.role language="javascript" class_prefix="concept-api-nodejs" %}
 [tab:end]
@@ -120,12 +120,12 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?lang=python#concept-api-python-method-retrieve-the-label)
-- [type.label(Label.of(label));](?lang=python#concept-api-python-method-rename-the-label)
-- [sup();](?lang=python#concept-api-python-method-retrieve-direct-supertype)
-- [sup(Type type);](?lang=python#concept-api-python-method-change-direct-supertype)
-- [sups();](?lang=python#concept-api-python-method-retrieve-all-supertypes)
-- [subs();](?lang=python#concept-api-python-method-retrieve-all-subtypes)
+- [label();](?tab=python#concept-api-python-method-retrieve-the-label)
+- [type.label(Label.of(label));](?tab=python#concept-api-python-method-rename-the-label)
+- [sup();](?tab=python#concept-api-python-method-retrieve-direct-supertype)
+- [sup(Type type);](?tab=python#concept-api-python-method-change-direct-supertype)
+- [sups();](?tab=python#concept-api-python-method-retrieve-all-supertypes)
+- [subs();](?tab=python#concept-api-python-method-retrieve-all-subtypes)
 </div>
 {% include api/generic.html data=site.data.concept_api.role language="python" class_prefix="concept-api-python" %}
 [tab:end]
