@@ -95,6 +95,7 @@ $ docker run -d -p 48555:48555 graknlabs/grakn
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
 
 [tab:end]
+</div>
 
 ## Start the Grakn Server
 If you have installed Grakn using Homebrew, to start the Grakn Server, run `grakn server start`.
