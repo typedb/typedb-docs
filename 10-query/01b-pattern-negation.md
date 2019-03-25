@@ -54,10 +54,11 @@ i.e. we look for the following Graql pattern:
 [tab:Java]
 ```java
 Pattern pattern = Graql.and(
-        Graql.var("x").isa("person"), 
-        Graql.not(
-            Graql.var().isa("employment").rel("employee", Graql.var("x")).rel("employer", Graql.var("y")))
-        );
+    Graql.var("x").isa("person"), 
+    Graql.not(
+        Graql.var().isa("employment").rel("employee", Graql.var("x")).rel("employer", Graql.var("y"))
+    )
+);
 ```
 [tab:end]
 </div>
@@ -78,8 +79,10 @@ In Graql terms it's equivalent to the pattern:
 
 <!-- test-ignore -->
 ```graql
-$x isa person;
-not { ($x) isa ???;};
+{
+    $x isa person;
+    not { ($x) isa ???;};
+};
 ```
 
 with the question relation defined in terms of a rule:
@@ -87,12 +90,12 @@ with the question relation defined in terms of a rule:
 <!-- test-ignore -->
 ```graql
 negation-block sub rule,
-when {
-    (employee: $x, employer: $y) isa employment;
-},
-then {
-    ($x) isa ???;
-};
+    when {
+        (employee: $x, employer: $y) isa employment;
+    },
+    then {
+        ($x) isa ???;
+    };
 ```
 
 In this way, we have no problems defining the projection or join operations as these are handled by the native rule semantics. Consquently we can proceed with the set difference
@@ -116,10 +119,10 @@ The variables in the negation block are local to the negation block. Consequentl
 [tab:Graql]
 ```graql
 match
-$x isa person;
-not {
+    $x isa person;
+    not {
     (employee: $x, employer: $y) isa employment;
-};
+    };
 get;
 ```
 [tab:end]
@@ -150,15 +153,15 @@ Defining the unemployment in terms of a rule and the freshly introduced negation
 define
 unemployed sub entity;
 unemployment sub rule,
-when {
-    $x isa person;
-    not{
-        (employee: $x, employer: $y) isa employment;
+    when {
+        $x isa person;
+        not{
+            (employee: $x, employer: $y) isa employment;
+        };
+    },
+    then {
+        $x isa unemployed;
     };
-},
-then {
-    $x isa unemployed;
-};
 ```
 
 Consequently, our unemployment query pattern simply becomes:
@@ -253,9 +256,11 @@ which is equivalent to saying:
 
 <!-- test-ignore -->
 ```graql
-$x isa person;
-not { $x isa person-with-a-father;};
-not { $x isa person-with-a-mother;};
+{
+    $x isa person;
+    not { $x isa person-with-a-father;};
+    not { $x isa person-with-a-mother;};
+};
 ```
 
 Now let's look at how we arrive at the answers if we execute this as a match query. To do this we will go through
@@ -479,9 +484,9 @@ the `$y` variable is unbounded, i.e. if we execute:
 [tab:Graql]
 ```graql
 match
-$x isa person;
-not { ($x, father: $y) isa parentship;};
-not { ($x, mother: $y) isa parentship;};
+    $x isa person;
+    not { ($x, father: $y) isa parentship;};
+    not { ($x, mother: $y) isa parentship;};
 get $x;
 ```
 [tab:end]
@@ -644,21 +649,21 @@ define
 
 reachable sub relation, relates from, relates to;
 reachabilityA sub rule,
-when {
-    (from: $x, to: $y) isa edge;
-},
-then {
-    (from: $x, to: $y) isa reachable;
-};
+    when {
+        (from: $x, to: $y) isa edge;
+    },
+    then {
+        (from: $x, to: $y) isa reachable;
+    };
 
 reachabilityB sub rule,
-when {
-    (from: $x, to: $z) isa edge;
-    (from: $z, to: $y) isa reachable;
-},
-then {
-    (from: $x, to: $y) isa reachable;
-};
+    when {
+        (from: $x, to: $z) isa edge;
+        (from: $z, to: $y) isa reachable;
+    },
+    then {
+        (from: $x, to: $y) isa reachable;
+    };
 ```
 
 Consequently, with the use of negation we can define edges that are indirect:
@@ -668,13 +673,13 @@ define
 
 indirect-edge sub relation, relates from, relates to;
 indirect-edge-rule sub rule,
-when {
-    (from: $x, to: $y) isa reachable;
-    not {(from: $x, to: $y) isa edge;};
-},
-then {
-    (from: $x, to: $y) isa indirect-edge;
-};
+    when {
+        (from: $x, to: $y) isa reachable;
+        not {(from: $x, to: $y) isa edge;};
+    },
+    then {
+        (from: $x, to: $y) isa indirect-edge;
+    };
 ```
 
 We can mark the unreachable nodes by defining the following rule:
@@ -684,14 +689,14 @@ define
 
 unreachable sub relation, relates from, relates to;
 unreachability-rule sub rule,
-when {
-    $x isa node;
-    $y isa node;
-    not {(from: $x, to: $y) isa reachable;};
-},
-then {
-    (from: $x, to: $y) isa unreachable;
-};
+    when {
+        $x isa node;
+        $y isa node;
+        not {(from: $x, to: $y) isa reachable;};
+    },
+    then {
+        (from: $x, to: $y) isa unreachable;
+    };
 ```
 
 Please note the explicit addition of the `node` types in the body of the rule. This is to to ensure the boundedness condition
@@ -737,21 +742,21 @@ Accompanying it with relevant rules:
 define
 
 flying-rule sub rule,
-when{
-    $x isa bird;
-    not {$x isa abnormal;};
-},
-then{
-    $x isa flies;
-};
+    when{
+        $x isa bird;
+        not {$x isa abnormal;};
+    },
+    then{
+        $x isa flies;
+    };
 
 abnormal-rule sub rule,
-when{
-    $x isa penguin;
-},
-then{
-    $x isa abnormal;
-};
+    when{
+        $x isa penguin;
+    },
+    then{
+        $x isa abnormal;
+    };
 ```
 Let's now say that we there is a bird which we will call Tweety:
 
