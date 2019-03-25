@@ -56,10 +56,7 @@ i.e. we look for the following Graql pattern:
 Pattern pattern = Graql.and(
         Graql.var("x").isa("person"), 
         Graql.not(
-            Graql.var().isa("employment")
-                .rel("employee", Graql.var("x"))
-                .rel("employer", Graql.var("y"))
-            )
+            Graql.var().isa("employment").rel("employee", Graql.var("x")).rel("employer", Graql.var("y")))
         );
 ```
 [tab:end]
@@ -340,14 +337,10 @@ Consequently, the final result of the match query:
 Pattern pattern =Graql.and(
     Graql.var("x").isa("person"),
     Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("father", Graql.var("y"))
+        Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
     ),
     Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("mother", Graql.var("y"))
+        Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
     )
 );
 ```
@@ -381,14 +374,10 @@ Pattern pattern =Graql.and(
     Graql.var("x").isa("person"),
     Graql.var("y").isa("person"), 
     Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("father", Graql.var("y"))
+        Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
     ),
     Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("mother", Graql.var("y"))
+        Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
     )
 );
 ```
@@ -414,7 +403,7 @@ get;
 GraqlGet query = Graql.match(
     Graql.and(
         Graql.var("x").isa("person"),
-        Graql.var("y").isa("person"), 
+        Graql.var("y").isa("person")
     )
 ).get();
 ```
@@ -461,14 +450,10 @@ Pattern pattern =Graql.and(
     Graql.var("x").isa("person"),
     Graql.var("y").isa("person"), 
     Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("father", Graql.var("y"))
+        Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
     ),
     Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("mother", Graql.var("y"))
+        Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
     )
 );
 ```
@@ -507,14 +492,10 @@ GraqlGet query = Graql.match(
     Graql.and(
         Graql.var("x").isa("person"), 
         Graql.not(
-            Graql.var().isa("parentship")
-                .rel(Graql.var("x"))
-                .rel("father", Graql.var("y"))
+            Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
         ),
         Graql.not(
-            Graql.var().isa("parentship")
-                .rel(Graql.var("x"))
-                .rel("mother", Graql.var("y"))
+            Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
         )
     )
 ).get();
@@ -561,14 +542,14 @@ One might be tempted to put the two negation blocks into one. Let's look at the 
 ```java
 Pattern pattern = Graql.and(
     Graql.var("x").isa("person"),
-    Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("father", Graql.var("y")),
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("mother", Graql.var("y"))
-    )
+    Graql.and(
+        Graql.not(
+            Graql.and(
+                Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y")),
+                Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
+            )
+        )
+   )
 );
 ```
 [tab:end]
@@ -609,12 +590,11 @@ like this:
 Pattern pattern = Graql.and(
     Graql.var("x").isa("person"),
     Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("father", Graql.var("y")),
-        Graql.not(
-            Graql.var().isa("employment")
-                .rel(Graql.var("y"))
+        Graql.and(
+            Graql.var().isa("parentship")
+                .rel(Graql.var("x"))
+                .rel("father", Graql.var("y")),
+            Graql.not(Graql.var().isa("employment").rel(Graql.var("y")))
         )
     )
 );
