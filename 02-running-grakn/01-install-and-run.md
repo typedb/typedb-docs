@@ -12,22 +12,9 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 
 ## Download and Install Grakn
 <div class="tabs light">
-[tab:Mac OS X]
+[tab:Linux]
 
-### To download the latest release
-#### Using Homebrew
-```
-$ brew install grakn
-```
-#### Manual Download
-Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
-
-Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
-[tab:end]
-
-[tab:CentOS]
-
-### To download the latest release
+#### Using RPM/Yum
 
 As a superuser, add the repo:
 ```
@@ -44,13 +31,7 @@ Install Grakn Server and Grakn Console:
 # yum install grakn-core-server grakn-core-console
 ```
 
-Having installed Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
-
-[tab:end]
-
-[tab:Ubuntu]
-
-### To download the latest release
+#### Using Debian
 
 As a superuser, add the repo:
 ```
@@ -70,9 +51,39 @@ Install Grakn Server and Grakn Console:
 # apt install grakn-core-server grakn-core-console
 ```
 
-Having installed Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
+#### Manual Download
+
+Download the [latest release](https://grakn.ai/download?os=linux#core), unzip it in a location on your machine that is easily accessible via terminal.
+
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
 
 [tab:end]
+
+[tab:Mac OS X]
+
+#### Using Homebrew
+```
+$ brew tap graknlabs/tap
+$ brew tap-pin graknlabs/tap
+$ brew install grakn-core
+```
+
+#### Manual Download
+Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
+
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
+
+[tab:end]
+
+[tab:Windows]
+
+#### Manual Download
+Download the [latest release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
+
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
+
+[tab:end]
+
 
 [tab:Docker]
 
@@ -81,29 +92,9 @@ Run :
 $ docker run -d -p 48555:48555 graknlabs/grakn
 ```
 
-
-Having started Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
-
-[tab:end]
-
-[tab:Linux]
-
-### To download the latest release
-Download the [latest release](https://grakn.ai/download?os=linux#core), unzip it in a location on your machine that is easily accessible via terminal.
-
-Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
 
 [tab:end]
-
-[tab:Windows]
-
-### To download the latest release
-Download the [latest release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
-
-Having downloaded Grakn, we can now interact with the [Grakn server](#start-the-grakn-server) and the [Graql console](/docs/running-grakn/console).
-
-[tab:end]
-</div>
 
 ## Start the Grakn Server
 If you have installed Grakn using Homebrew, to start the Grakn Server, run `grakn server start`.
