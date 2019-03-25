@@ -54,17 +54,17 @@ Modify `pom.xml` to include the latest version of Grakn Core, Graql and Grakn Cl
   	</properties>
   	<dependencies>
     	<dependency>
-            <groupId>grakn.core</groupId>
+            <groupId>io.grakn.core</groupId>
             <artifactId>concept</artifactId>
             <version>1.5.0</version>
         </dependency>
         <dependency>
-            <groupId>graql</groupId>
+            <groupId>io.graql</groupId>
             <artifactId>lang</artifactId>
             <version>1.5.0</version>
         </dependency>
         <dependency>
-            <groupId>grakn.client</groupId>
+            <groupId>io.grakn.client</groupId>
             <artifactId>api</artifactId>
             <version>1.5.0</version>
         </dependency>
@@ -1394,4 +1394,4 @@ Lastly, we ran the `main` method which fired the `connectAndMigrate` method with
 
 ## Next
 
-Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?lang=java).
+Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?tab=java).
