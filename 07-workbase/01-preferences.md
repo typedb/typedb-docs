@@ -11,14 +11,9 @@ permalink: /docs/workbase/connection
 Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) and interacts with [keyspaces](/docs/management/keyspace). In this short section, we learn how to configure this connection and select a keyspace to interact with.
 
 ### Start Workbase for Grakn Core
-<div class="slideshow">
 
-[slide:start]
-[body:start]![Connection](/docs/images/workbase/preferences_core-login.png)[body:end]
+![Connection](/docs/images/workbase/preferences_core-login.png)[body:end]
 [footer:start]We can specify the host and port when we start workbase.[footer:end]
-[slide:end]
-
-</div>
 
 ### Start Workbase for Grakn KGMS [KGMS ONLY]
 <div class="slideshow">
