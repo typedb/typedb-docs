@@ -4,11 +4,10 @@ keywords: grakn, thing, api, methods, attribute
 longTailKeywords: grakn thing, grakn attribute, grakn relation, grakn thing methods, grakn attribute methods, grakn relation methods
 Summary: Methods available on Thing objects.
 toc: true
-permalink: /docs/concept-api/thing
 ---
 
 ## Thing Methods
-`Thing` has all the [`Concept` methods](/docs/concept-api/concept) plus what follows.
+`Thing` has all the [`Concept` methods](../04-concept-api/01-concept.md) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
@@ -27,7 +26,7 @@ permalink: /docs/concept-api/thing
 </div>
 
 ## Attribute Methods
-`Attribute` has all the [`Thing` methods](/docs/concept-api/concept) plus what follows.
+`Attribute` has all the [`Thing` methods](../04-concept-api/01-concept.md) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
@@ -46,7 +45,7 @@ permalink: /docs/concept-api/thing
 </div>
 
 ## Relation Methods
-`Relation` has all the [`Thing` methods](/docs/concept-api/concept) plus what follows.
+`Relation` has all the [`Thing` methods](../04-concept-api/01-concept.md) plus what follows.
 
 <div class="tabs light" data-no-parse>
 

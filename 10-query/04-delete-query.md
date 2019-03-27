@@ -3,26 +3,25 @@ pageTitle: Delete Query
 keywords: graql, delete query, deletion
 longTailKeywords: grakn delete data, graql delete query, graql delete instances
 Summary: Delete queries in Grakn.
-permalink: /docs/query/delete-query
 ---
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `delete` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `delete` query, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java#client-api-method-eagerly-execute-of-a-graql-query.md) method on the query object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs#client-api-method-lazily-execute-a-graql-query.md) function available on the [`transaction`](../03-client-api/03-nodejs#client-api-title-transaction.md) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python#client-api-method-lazily-execute-a-graql-query.md) method available on the [`transaction`](../03-client-api/02-python#client-api-title-transaction.md) object.
 </div>
 
 ## Delete Instances of an Entity Type
-To delete an instance of an entity type from the knowledge graph, we use a [match clause](/docs/query/match-clause) followed by the `delete` keyword and the variable to be deleted.
+To delete an instance of an entity type from the knowledge graph, we use a [match clause](../10-query/01-match-clause.md) followed by the `delete` keyword and the variable to be deleted.
 
 <div class="tabs dark">
 
@@ -70,7 +69,7 @@ GraqlDelete query = Graql.match(
 This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Pharos"`.
 
 ## Delete Associations with Attributes
-Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](/docs/schema/concepts#define-an-attribute) in a Grakn knowledge graph prior to performing `delete` queries on them.
+Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](../09-schema/01-concepts.md#define-an-attribute) in a Grakn knowledge graph prior to performing `delete` queries on them.
 
 To delete only the association that a thing has with an attribute, we use the `via` keyword to capture and delete the relation between the owner and the owned attribute - NOT the instance of the attribute type itself, as doing so disowns the instance from any other instance that may have owned it.
 
@@ -99,4 +98,4 @@ If we had instead written the query as `match $t isa travel, has start-date $st;
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.
 
-Next, we learn how to [update data](/docs/query/updating-data) in a Grakn knowledge graph.
+Next, we learn how to [update data](../10-query/05-updating-data.md) in a Grakn knowledge graph.

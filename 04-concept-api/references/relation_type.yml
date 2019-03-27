@@ -7,17 +7,17 @@ methods:
       <<: *method-create
       method: relationType.create();
       returns:
-        - "[`Relation`](/docs/concept-api/thing?tab=java#relation-methods) object"
+        - "[`Relation`](../04-concept-api/04-thing?tab=java#relation-methods.md) object"
     javascript:
       <<: *method-create
       method: await relationType.create();
       returns:
-        - "[`Relation`](/docs/concept-api/thing?tab=nodejs#relation-methods) object"
+        - "[`Relation`](../04-concept-api/04-thing?tab=nodejs#relation-methods.md) object"
     python:
       <<: *method-create
       method: relation_type.create()
       returns:
-        - "[`Relation`](/docs/concept-api/thing?tab=python#relation-methods) object"
+        - "[`Relation`](../04-concept-api/04-thing?tab=python#relation-methods.md) object"
 
   - method:
     common: &method-roles

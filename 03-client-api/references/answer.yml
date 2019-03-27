@@ -54,7 +54,7 @@ types:
         java:
           <<: *method-conceptmap-map
           method: answer.map();
-          description: Produces a Map where keys are variable names and values are [`concept`]](/docs/concept-api/concept)s.
+          description: Produces a Map where keys are variable names and values are [`concept`]](../04-concept-api/01-concept.md)s.
           returns:
             - "`Map<Variable, Concept>"
         javascript:
@@ -229,7 +229,7 @@ types:
         common: &method-answergroup-owner
           title: Retrieve the concept that is the group owner ## !!! synced with codeKeywordsToLink
           returns:
-            - "[Concept](/docs/concept-api/concept)"
+            - "[Concept](../04-concept-api/01-concept.md)"
         java:
           <<: *method-answergroup-owner
           method: answer.owner();

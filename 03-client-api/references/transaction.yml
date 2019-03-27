@@ -140,17 +140,17 @@ methods:
       <<: *method-getConcept
       method: transaction.getConcept(ConceptId.of(String id));
       returns:
-        - "[`<T extends Concept>`](/docs/concept-api/concept) object or `NULL`"
+        - "[`<T extends Concept>`](../04-concept-api/01-concept.md) object or `NULL`"
     javascript:
       <<: *method-getConcept
       method: await transaction.getConcept(id);
       returns:
-        - "[`Concept`](/docs/concept-api/concept) object or `null`"
+        - "[`Concept`](../04-concept-api/01-concept.md) object or `null`"
     python:
       <<: *method-getConcept
       method: 'transaction.get_concept(id)'
       returns:
-        - "[`Concept`](/docs/concept-api/concept) object or `None`"
+        - "[`Concept`](../04-concept-api/01-concept.md) object or `None`"
 
   - method:
     common: &method-getSchemaConcept
@@ -198,17 +198,17 @@ methods:
           <<: *accepts-getAttributesByValue-value
           type: "String &#124; Date &#124; long &#124; double &#124; boolean"
       returns:
-        -  "[`Collection<Attribute>`](/docs/concept-api/thing#attribute-methods)"
+        -  "[`Collection<Attribute>`](../04-concept-api/04-thing#attribute-methods.md)"
     javascript:
       <<: *method-getAttributesByValue
       method: await transaction.getAttributesByValue(value, datatype);
       returns:
-        - Iterator of [`Attribute`](/docs/concept-api/thing#attribute-methods)s
+        - Iterator of [`Attribute`](../04-concept-api/04-thing#attribute-methods.md)s
     python:
       <<: *method-getAttributesByValue
       method: transaction.get_attributes_by_value(value, datatype)
       returns:
-        - Iterator of [`Attribute`](/docs/concept-api/thing#attribute-methods)s
+        - Iterator of [`Attribute`](../04-concept-api/04-thing#attribute-methods.md)s
 
   - method:
     common: &method-putEntity
@@ -337,7 +337,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`Rule`](/docs/concept-api/rule) object"
+        - "[`Rule`](../04-concept-api/03-rule.md) object"
     java:
       <<: *method-putRule
       method: transaction.putRule(Label.of(String label), Pattern when, Pattern then);

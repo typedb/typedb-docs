@@ -3,20 +3,19 @@ pageTitle: Match Clause
 keywords: graql, query, match, pattern, statement, variable
 longTailKeywords: graql match, graql match get, graql patterns, graql statements, graql variables
 Summary: Targeting instances of data that match expressive patterns in Grakn.
-permalink: /docs/query/match-clause
 ---
 
 ## Match Clause
 We use match clauses to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
-By defining the [schema](/docs/schema/overview), we effectively define a vocabulary to be used to describe concepts of our domain.
+By defining the [schema](../09-schema/00-overview.md.md), we effectively define a vocabulary to be used to describe concepts of our domain.
 
 Once the schema is defined, we can form graph patterns for which we want to search within our knowledge graph. We do that by using match clauses.
-Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](/docs/schema/get-query), [Insert](/docs/schema/insert-query), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
+Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../10-schema/02-get-query.md), [Insert](../10-query/03-insert-query.md), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
 
 ## Query pattern anatomy
 As we have seen before, at the core of each query sits a query pattern that describes a subgraph of our particular interest. Here we examine the structure of query patterns closer. In general, patterns can be thought of as different arrangements of statement collections. Graql statements constitute the smallest building blocks of queries. Let's have a close look at the constructs of a basic match clause.
 
-![Statement structure](/docs/images/query/statement-structure.png)
+![Statement structure](../images/query/statement-structure.png)
 
 - Each statement starts with a **variable** (`V`) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
 
@@ -36,7 +35,7 @@ $p has phone-number $phone;
 
 Consequently, we arrive at the subject of pattern composition. We already know that statements are the smallest building blocks, however, we have a number of possibilities for arranging them together. By doing so, we can express more complex pattern scenarios and their corresponding subgraphs. We allow the following ways to arrange statements together.
 
-![Pattern structure](/docs/images/query/pattern-structure.png)
+![Pattern structure](../images/query/pattern-structure.png)
 
 1. **Statement**: simplest possible arrangement - a single basic building block as [explained above](#Query pattern anatomy).
 2. **Conjunction**: a set of patterns where to satisfy a match, **all** patterns must be matched. We form conjunctions by separating the partaking patterns with semi-colons `;`.
@@ -45,7 +44,7 @@ Consequently, we arrive at the subject of pattern composition. We already know t
 
 To better illustrate the possibilities, we will now look at an example of an expressive pattern.
 
-![Example pattern](/docs/images/query/example-pattern.png)
+![Example pattern](../images/query/example-pattern.png)
 
 The pattern above describes pairs of instances of `person` who are married, went to the same `school` and are employed by the same `organisation`.
 The pattern additionally specifies the employer to be either `Pharos` or `Cybersafe`, and the school to not be named `HCC`. Additionally the pattern
@@ -61,7 +60,7 @@ work at the same organisation via the `employment` relationship.
 In the subsequent sections, we shall see how to match specific graph patterns.
 
 ## Match Instances of Concept Types
-What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we learn about [using _get_ for the retrieval of information from the knowledge graph](/docs/query/get-query).
+What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we learn about [using _get_ for the retrieval of information from the knowledge graph](../10-query/02-get-query.md).
 
 ### Match instances of an entity
 Matching instances of an entity type is easy. We do so by using a variable followed by the `isa` keyword and the label of the entity type.
@@ -109,7 +108,7 @@ GraqlGet query = Graql.match(
 We soon learn [how to target attributes of a specific value](#match-instances-of-an-attribute).
 
 ### Match instances of a relation
-Because of the [dependent nature of relations](/docs/schema/concepts#define-a-relation), matching them is slightly different to matching entities and attributes.
+Because of the [dependent nature of relations](../09-schema/01-concepts.md#define-a-relation), matching them is slightly different to matching entities and attributes.
 
 <div class="tabs dark">
 
@@ -368,7 +367,7 @@ GraqlGet query = Graql.match(
 </div>
 
 ### Instances of a direct type
-The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](/docs/schema/concepts#subtype-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
+The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](../09-schema/01-concepts.md#subtype-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
 
 <div class="tabs dark">
 
@@ -416,9 +415,9 @@ GraqlGet query = Graql.match(
 When matching an instance of an attribute type based on its value or simply comparing two variables, the following comparators may be used: `==`, `!=`, `>`, `>=`, `<` and `<=`.
 
 ## Match Schema Concepts
-In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we learn about [how to use the get keyword](/docs/query/get-query).
+In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we learn about [how to use the get keyword](../10-query/02-get-query.md).
 
-Having fully understood the [schema concepts](/docs/schema/concepts) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema statements.
+Having fully understood the [schema concepts](../09-schema/01-concepts.md) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema statements.
 
 ### Subtypes of a given type
 To match all concepts of a given type, we use the `sub` keyword. Here are the examples for matching subtypes of all concept types, including `thing` that is a supertype to all other types.
@@ -485,7 +484,7 @@ GraqlGet query = Graql.match(
 This matches all roles of the `employment` relation - `employer` and `employee`.
 
 #### Subroles of a given role in a super-relation
-When we learned about [subtyping relations](/docs/schema/concepts#subtype-a-relation), we saw that a role related to a sub-relation is linked to a corresponding parent's role using the `as` keyword. We can use the same keyword in a `match` clause to match the corresponding role in the given sub-relation.
+When we learned about [subtyping relations](../09-schema/01-concepts.md#subtype-a-relation), we saw that a role related to a sub-relation is linked to a corresponding parent's role using the `as` keyword. We can use the same keyword in a `match` clause to match the corresponding role in the given sub-relation.
 
 <div class="tabs dark">
 
@@ -556,20 +555,20 @@ To see some `get` queries powered by complex and expressive `match` clauses, che
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java#client-api-method-eagerly-execute-of-a-graql-query.md) method on the query object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs#client-api-method-lazily-execute-a-graql-query.md) function available on the [`transaction`](../03-client-api/03-nodejs#client-api-title-transaction.md) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python#client-api-method-lazily-execute-a-graql-query.md) method available on the [`transaction`](../03-client-api/02-python#client-api-title-transaction.md) object.
 </div>
 
 ## Summary
 We learned how to use the `match` clause to write intuitive statements that describe a desired pattern in the knowledge graph and fill in the variables that hold the data we would like to acquire.
 
-Next, we learn how to use the `match` clause in conjunction with Graql queries to carry out instructions - starting with the [get query](/docs/query/get-query).
+Next, we learn how to use the `match` clause in conjunction with Graql queries to carry out instructions - starting with the [get query](../10-query/02-get-query.md).

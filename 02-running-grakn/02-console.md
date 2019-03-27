@@ -4,11 +4,10 @@ keywords: grakn, console
 longTailKeywords: load schema into grakn, create grakn keyspace, grakn console
 summary: List of options and commands for the Grakn Console.
 toc: false
-permalink: /docs/running-grakn/console
 ---
 
 ## What is the Grakn Console?
-The Grakn Console, along with the [Grakn Clients](/docs/client-api/overview) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
+The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.md) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
 
 ## Console Options {#console-options}
 
@@ -30,7 +29,7 @@ To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option f
 ```
 
 ### Loading a schema into a keyspace
-To load a [schema](/docs/schema/overview) into a keyspace, we use the `--file` (or `-f`) option followed by the path to the schema (`.gql`) file. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) into which the schema should be loaded. Note that if the keyspace has not yet been created, this command also creates a new keyspace with the given name.
+To load a [schema](../09-schema/00-overview.md.md) into a keyspace, we use the `--file` (or `-f`) option followed by the path to the schema (`.gql`) file. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) into which the schema should be loaded. Note that if the keyspace has not yet been created, this command also creates a new keyspace with the given name.
 
 ```
 ./grakn console -k keyspace_name --file path/to/schema.gql
@@ -55,7 +54,7 @@ To find out which version of Grakn is installed, we use the `--version` (or `-v`
 
 ## Console Commands {#console-commands}
 
-Once inside the console, besides [Graql queries](/docs/query/overview), we can run the following commands.
+Once inside the console, besides [Graql queries](../10-query/00-overview.md), we can run the following commands.
 
 | Option     | Description                                                                                                                                                                           |
 |------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -3,31 +3,30 @@ pageTitle: Schema Concepts
 keywords: graql, schema, type hierarchy, concept, define
 longTailKeywords: graql schema, graql define query, graql type hierarchy, graql concepts, graql define entity, graql define relation, graql define attribute, graql schema definition
 Summary: A comprehensive guide on defining Schema Concepts in Grakn.
-permalink: /docs/schema/concepts
 ---
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing `define` and `undefine` queries, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `define` and `undefine` queries, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java#client-api-method-eagerly-execute-of-a-graql-query.md) method on the query object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs#client-api-method-lazily-execute-a-graql-query.md) function available on the [`transaction`](../03-client-api/03-nodejs#client-api-title-transaction.md) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python#client-api-method-lazily-execute-a-graql-query.md) method available on the [`transaction`](../03-client-api/02-python#client-api-title-transaction.md) object.
 </div>
 
 <!-- !!! synced with codeKeywordsToLink -->
 ## Define
-As the name suggests, we use the `define` keyword to develop the [schema](/docs/schema/overview) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
+As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md.md) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [Grakn Console](/docs/running-grakn/console) as well as the Grakn Clients [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).
+We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-running-grakn/02-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java#client-api-method-manipulate-the-schema-programatically.md), [Python](../03-client-api/02-python#client-api-method-lazily-execute-a-graql-query.md) and [Node.js](../03-client-api/03-nodejs#client-api-method-lazily-execute-a-graql-query.md).
 
 <div class="note">
 [Important]
@@ -762,7 +761,7 @@ As the name suggests, we use the `undefine` keyword to remove the definition of 
 <div class="note">
 [Important]
 Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
-When using one of the [Grakn Clients](/docs/client-api/overview), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Grakn Console](/docs/running-grakn/console), we use the `commit` command.
+When using one of the [Grakn Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Grakn Console](../02-running-grakn/02-console.md), we use the `commit` command.
 </div>
 
 ### Undefine an attribute's association
@@ -830,4 +829,4 @@ When the concept type to be undefined is a supertype to something else, we must 
 ## Summary
 We learned that a Grakn schema is essentially a collection of Entities, Relations, and Attributes - what we call the Grakn Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
 
-In the next section, we learn about one last addition to the schema - [Graql Rules](/docs/schema/rules).
+In the next section, we learn about one last addition to the schema - [Graql Rules](../09-schema/02-rules.md).

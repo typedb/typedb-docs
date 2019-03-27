@@ -3,24 +3,23 @@ pageTitle: Migrating CSV, JSON and XML Data with Client Python
 keywords: grakn, examples, migration, python
 longTailKeywords: grakn python migration
 Summary: Learn how to use Client Python to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
-permalink: /docs/examples/phone-calls-migration-python
 ---
 
 ## Goal
 
-In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](/docs/examples/phone-calls-schema) using [Client Python](/docs/client-api/python).
+In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](../08-examples/01-phone-calls-schema.md) using [Client Python](../03-client-api/02-python.md).
 
 ## A Quick Look at the Schema
 
 Before we get started with migration, let’s have a quick reminder of how the schema for the `phone_calls` knowledge graph looks like.
 
-![The Visualised Schema](/docs/images/examples/phone_calls_schema.png)
+![The Visualised Schema](../images/examples/phone_calls_schema.png)
 
 ## An Overview
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our Grakn [keyspace](/docs/management/keyspace). To do this, we use [Client Python](/docs/client-api/python).
+1.  we need a way to talk to our Grakn [keyspace](../06-management/01-keyspace.md). To do this, we use [Client Python](../03-client-api/02-python.md).
 2.  we go through each data file, extracting each data item and parsing it to a Python dictionary.
 3.  we pass each data item (in the form of a Python dictionary) to its corresponding template function, which in turn gives us the constructed Graql query for inserting that item into Grakn.
 4.  we execute each of those queries to load the data into our target keyspace — `phone_calls`.
@@ -31,7 +30,7 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 1.  Create a directory named `phone_calls` on your desktop.
 2.  cd to the phone_calls directory via terminal.
-3.  Run `pip3 install grakn` to install the Grakn [Client Python](/docs/client-api/python).
+3.  Run `pip3 install grakn` to install the Grakn [Client Python](../03-client-api/02-python.md).
 4.  Open the `phone_calls` directory in your favourite text editor.
 5.  Create a `migrate.py` file in the root directory. This is where we’re going to write all our code.
 
@@ -732,4 +731,4 @@ Lastly, we ran `python3 migrate.py` which fired the `build_phone_call_graph` fun
 
 ## Next
 
-Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?tab=python).
+Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](../08-examples/05-phone-calls-queries.md?tab=python).

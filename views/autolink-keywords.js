@@ -20,7 +20,7 @@ codeKeywordsToLink = {
         // order matters for functionality. keywords that need to turn into a link first. example: undefine before define
         {
             titles: ["undefine"],
-            baseUrl: "/docs/schema/concepts",
+            baseUrl: "../09-schema/01-concepts.md",
             syntaxedAs: ["graql-keyword", "string"],
             anchor: "#undefine",
             languages: ["graql",  "java", "javascript", "python"]
@@ -52,7 +52,7 @@ codeKeywordsToLink = {
         // alphabetic order only required for readability
         {
             titles: ["count", "sum", "min", "max", "mean", "median", "std"],
-            baseUrl: "/docs/query/aggregate-query",
+            baseUrl: "../10-query/06-aggregate-query.md",
             syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
             languages: ["graql", "java", "javascript", "python"]
@@ -83,7 +83,7 @@ codeKeywordsToLink = {
         },
         {
             titles: ["compute"],
-            baseUrl: "/docs/query/compute-query",
+            baseUrl: "../10-query/07-compute-query",
             syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "#compute-statistics",
             languages: ["graql", "java", "javascript", "python"]
@@ -96,14 +96,14 @@ codeKeywordsToLink = {
         },
         {
             titles: ["define"],
-            baseUrl: "/docs/schema/concepts",
+            baseUrl: "../09-schema/01-concepts.md",
             syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "#define",
             languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["delete"],
-            baseUrl: "/docs/query/delete-query",
+            baseUrl: "../10-query/04-delete-query.md",
             syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
             languages: ["graql", "java", "javascript", "python"]
@@ -128,7 +128,7 @@ codeKeywordsToLink = {
         },
         {
             titles: ["get"],
-            baseUrl: "/docs/query/get-query",
+            baseUrl: "../10-query/02-get-query.md",
             syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
             languages: ["graql", "java", "javascript", "python"]
@@ -141,14 +141,14 @@ codeKeywordsToLink = {
         },
         {
             titles: ["insert"],
-            baseUrl: "/docs/query/insert-query",
+            baseUrl: "../10-query/03-insert-query.md",
             syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
             languages: ["graql", "java", "javascript", "python"]
         },
         {
             titles: ["match"],
-            baseUrl: "/docs/query/match-clause",
+            baseUrl: "../10-query/01-match-clause.md",
             syntaxedAs: ["function", "graql-keyword", "string"],
             anchor: "",
             languages: ["graql", "java", "javascript", "python"]
@@ -203,7 +203,7 @@ codeKeywordsToLink = {
         },
         {
             titles: ["rule"],
-            baseUrl: "/docs/schema/rules",
+            baseUrl: "../09-schema/02-rules.md",
             syntaxedAs: ["graql-keyword", "string"],
             anchor: "",
             languages: ["graql", "javascript", "python"],

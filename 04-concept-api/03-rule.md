@@ -4,11 +4,10 @@ keywords: grakn, rule, api, methods
 longTailKeywords: grakn rule, rule methods, grakn rule methods
 Summary: Methods available on a Rule object.
 toc: false
-permalink: /docs/concept-api/rule
 ---
 
 ## Rule Methods
-`Rule` has all the [`Concept` methods](/docs/concept-api/concept) plus what follows.
+`Rule` has all the [`Concept` methods](../04-concept-api/01-concept.md) plus what follows.
 
 <div class="tabs light" data-no-parse>
 

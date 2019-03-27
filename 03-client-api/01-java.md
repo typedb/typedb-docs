@@ -3,7 +3,6 @@ pageTitle: Client Java
 keywords: grakn, client, java
 longTailKeywords: grakn java client, grakn client java, client java, java client
 Summary: API Reference of Grakn Client Java.
-permalink: /docs/client-api/java
 ---
 
 ## Dependencies
@@ -44,7 +43,7 @@ permalink: /docs/client-api/java
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-Import `grakn.client.GraknClient`, instantiate a client and open a session to a [keyspace](/docs/management/keyspace).
+Import `grakn.client.GraknClient`, instantiate a client and open a session to a [keyspace](../06-management/01-keyspace.md).
 
 <!-- test-example GraknQuickstartA.java -->
 ```java
@@ -63,7 +62,7 @@ public class GraknQuickstartA {
 }
 ```
 
-[KGMS ONLY] Using Client Java 1.4.3, we can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users).
+[KGMS ONLY] Using Client Java 1.4.3, we can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md).
 
 <!-- test-ignore -->
 ```java
@@ -149,14 +148,14 @@ public class GraknQuickstartC {
 Remember that transactions always need to be closed. Commiting a write transaction closes it. A read transaction, however, must be explicitly clased by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
 
 To view examples of running various Graql queries using the Grakn Client Java, head over to their dedicated documentation pages as listed below.
 
-- [Insert](/docs/query/insert-query)
-- [Get](/docs/query/get-query)
-- [Delete](/docs/query/delete-query)
-- [Aggregate](/docs/query/aggregate-query)
-- [Compute](/docs/query/compute-query)
+- [Insert](../10-query/03-insert-query.md)
+- [Get](../10-query/02-get-query.md)
+- [Delete](../10-query/04-delete-query.md)
+- [Aggregate](../10-query/06-aggregate-query.md)
+- [Compute](../10-query/07-compute-query)
 
 {% include client_api_template.html language = "java" %}

@@ -3,12 +3,11 @@ pageTitle: Graql Queries
 keywords: graql, query, reserved keywords
 longTailKeywords: graql queries, graql query structure, graql reserved keywords
 Summary: Introduction to Graql queries.
-permalink: /docs/query/overview
 ---
 
 ## Graql Query Language
 
-Graql is the query language for the Grakn knowledge graph. Whether it's through the [Grakn Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
+Graql is the query language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 **Graql is declarative**.
 
@@ -16,7 +15,7 @@ When writing Graql queries, you simply describe **what** information you would l
 
 **Graql is intuitive**.
 
-Graql was designed to provide a high-level query language interface with a clear and human-readable syntax. By defining high-level application-specific [schema](/docs/schema/overview),
+Graql was designed to provide a high-level query language interface with a clear and human-readable syntax. By defining high-level application-specific [schema](../09-schema/00-overview.md.md),
 we effectively define our own vocabulary to talk about the domain of interest. By introduction of an explicit data model tightly reflected in the structure of the query language,
 formulating queries comes naturally as it is reminiscent of building ordinary sentences about our domain. The more tightly the schema represents our domain of interest,
 the more intuitive writing and reading Graql queries become.
@@ -31,7 +30,7 @@ This includes defining the schema, retrieving information as well as creating an
 
 Let's look at the anatomy of a typical Match-Get query:
 
-![Query structure](/docs/images/query/query-structure.png)
+![Query structure](../images/query/query-structure.png)
 
 The important parts were marked with numbers, as a result we have:
 
@@ -53,24 +52,24 @@ The important parts were marked with numbers, as a result we have:
 
 In the following sections, we learn how to create Graql queries of different types in order to:
 - retrieve data
-    * [Match](/docs/query/match-clause) specific patterns in the data and schema   
-    * [Get](/docs/query/get-query) back desired data/knowledge
-    * [Aggregate](/docs/query/aggregate-query) values over a set of data
-    * [Compute](/docs/query/compute-query) distributed analytics over a large set of data
+    * [Match](../10-query/01-match-clause.md) specific patterns in the data and schema   
+    * [Get](../10-query/02-get-query.md) back desired data/knowledge
+    * [Aggregate](../10-query/06-aggregate-query.md) values over a set of data
+    * [Compute](../10-query/07-compute-query) distributed analytics over a large set of data
 
 - define and undefine schema
     * [Define/Undefine](/docs/query/schema/concepts) new instances of concept types into the knowledge graph
 
 - insert and remove data
-    * [Insert](/docs/query/insert-query) new instances of concept types into the knowledge graph
-    * [Delete](/docs/query/delete-query) instances of concept types from the knowledge graph
+    * [Insert](../10-query/03-insert-query.md) new instances of concept types into the knowledge graph
+    * [Delete](../10-query/04-delete-query.md) instances of concept types from the knowledge graph
 
 - manipulate data
     * [Update](/docs/query/update-query) instances of concept types
 
 ## Graql Answers
 
-Some Graql queries such as `get`, `aggregate` and `compute` are expected to return an answer. Depending on the type of query, the structure of the answer may be different (more on Answer types in the [Client API](/docs/client-api/overview#investigating-answers) section). As a part of the [Concept API](/docs/concept-api/overview), we can call various methods on the concepts contained in an answer to retrieve more explicit and implicit knowledge about them and their surroundings.
+Some Graql queries such as `get`, `aggregate` and `compute` are expected to return an answer. Depending on the type of query, the structure of the answer may be different (more on Answer types in the [Client API](../03-client-api/00-overview#investigating-answers.md) section). As a part of the [Concept API](../04-concept-api/00-overview.md), we can call various methods on the concepts contained in an answer to retrieve more explicit and implicit knowledge about them and their surroundings.
 
 ## Reserved Keywords
 

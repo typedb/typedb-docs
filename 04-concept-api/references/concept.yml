@@ -174,7 +174,7 @@ methods:
       description: Casts the concept as Thing so that we can call the Thing methods on it.
       method: concept.asThing();
       returns:
-        - "[`Thing`](/docs/concept-api/thing?tab=java) object"
+        - "[`Thing`](../04-concept-api/04-thing?tab=java.md) object"
     java:
       <<: *method-asThing
 
@@ -234,7 +234,7 @@ methods:
       description: Casts the concept as Attribute so that we can call the Attribute methods on it.
       method: concept.asAttribute();
       returns:
-        - "[`Attribute`](/docs/concept-api/thing?tab=java#attribute-methods) object"
+        - "[`Attribute`](../04-concept-api/04-thing?tab=java#attribute-methods.md) object"
     java:
       <<: *method-asAttribute
 
@@ -244,7 +244,7 @@ methods:
       description: Casts the concept as Relation so that we can call the Relation methods on it.
       method: concept.asRelation();
       returns:
-        - "[`Relation`](/docs/concept-api/thing?tab=java#relation-methods) object"
+        - "[`Relation`](../04-concept-api/04-thing?tab=java#relation-methods.md) object"
     java:
       <<: *method-asRelation
 
@@ -254,7 +254,7 @@ methods:
         description: Casts the concept as Relation so that we can call the Relation methods on it.
         method: concept.asRelation();
         returns:
-          - "[`Rule`](/docs/concept-api/rule?tab=java) object"
+          - "[`Rule`](../04-concept-api/03-rule?tab=java.md) object"
       java:
         <<: *method-asRelation
 
