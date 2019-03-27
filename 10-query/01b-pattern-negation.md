@@ -19,7 +19,7 @@ The intuitive meaning of a negated pattern is that of a complement. However rela
 the definition of a domain of values with respect to which the complement is computed. Even in this case we end up with an infinite relation which leaves 
 the projection or join operations unapplicable. As a result, we understand pattern negation in terms of computation of set differences. The set-difference semantics
 are different to the perhaps familiar semantics of _Negation-as-Failure_ of Prolog and in this chapter we will attempt to provide a clear explanation of the meaning
-of pattern negation in Graql.
+of pattern negation in 
 
 Let us consider the relation of unemployment which can be trivially understood as the absence of employment. We define negation blocks by enclosing patterns with
 curly braces and preceding them with a `not` keyword:
@@ -53,10 +53,10 @@ i.e. we look for the following Graql pattern:
 
 [tab:Java]
 ```java
-Pattern pattern = Graql.and(
-    Graql.var("x").isa("person"), 
-    Graql.not(
-        Graql.var().isa("employment").rel("employee", Graql.var("x")).rel("employer", Graql.var("y"))
+Pattern pattern = and(
+    var("x").isa("person"), 
+    not(
+        var().isa("employment").rel("employee", var("x")).rel("employer", var("y"))
     )
 );
 ```
@@ -130,12 +130,12 @@ get;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-    Graql.and(
-        Graql.var("x").isa("person"), 
-        Graql.not(
-            Graql.var().isa("employment")
-                .rel("employee", Graql.var("x"))
-                .rel("employer", Graql.var("y"))
+    and(
+        var("x").isa("person"), 
+        not(
+            var().isa("employment")
+                .rel("employee", var("x"))
+                .rel("employer", var("y"))
         )
     )
 ).get();
@@ -149,6 +149,9 @@ Should we decide that our unemployment pattern is a common one, we might decide 
 set of bound variables has only one element, it is more convenient to define it in terms of a type. 
 Defining the unemployment in terms of a rule and the freshly introduced negation block we can then write: 
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 define
 unemployed sub entity;
@@ -163,6 +166,28 @@ unemployment sub rule,
         $x isa unemployed;
     };
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDefine query = Graql.define(
+    type("unemployed").sub("entity"),
+    type("unemployment").sub("rule")
+        .when(
+            and(
+                var("x").isa("person"),
+                not(
+                    var().isa("employment").rel("employee", "x").rel("employer", "y")
+                )
+            )
+        )
+        .then(
+            var("x").isa("person")
+        )
+);
+```
+[tab:end]
+</div>
 
 Consequently, our unemployment query pattern simply becomes:
 
@@ -179,9 +204,9 @@ Consequently, our unemployment query pattern simply becomes:
 
 [tab:Java]
 ```java
-Pattern pattern = Graql.and(
-    Graql.var("x").isa("person"), 
-    Graql.var("x").isa("unemployed")
+Pattern pattern = and(
+    var("x").isa("person"), 
+    var("x").isa("unemployed")
 );
 ```
 [tab:end]
@@ -203,12 +228,12 @@ blocks to perform exclusions, e.g. the query pattern to list all non-English spe
 
 [tab:Java]
 ```java
-Pattern pattern = Graql.and(
-    Graql.var().isa("employment").rel("employee", Graql.var("x")),
-    Graql.var().isa("speaking-of-language")
-        .rel("speaker", Graql.var("x"))
-        .rel("spoken", Graql.var("y")),
-    Graql.not(Graql.var("y").val("English"))
+Pattern pattern = and(
+    var().isa("employment").rel("employee", var("x")),
+    var().isa("speaking-of-language")
+        .rel("speaker", var("x"))
+        .rel("spoken", var("y")),
+    not(var("y").val("English"))
 );
 ```
 [tab:end]
@@ -235,17 +260,17 @@ To express that in Graql, we require two negation blocks:
 
 [tab:Java]
 ```java
-Pattern pattern =Graql.and(
-    Graql.var("x").isa("person"),
-    Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("father", Graql.var("y"))
+Pattern pattern = and(
+    var("x").isa("person"),
+    not(
+        var().isa("parentship")
+            .rel(var("x"))
+            .rel("father", var("y"))
     ),
-    Graql.not(
-        Graql.var().isa("parentship")
-            .rel(Graql.var("x"))
-            .rel("mother", Graql.var("y"))
+    not(
+        var().isa("parentship")
+            .rel(var("x"))
+            .rel("mother", var("y"))
     )
 );
 ```
@@ -276,7 +301,7 @@ match $x isa person; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(Graql.var("x").isa("person")).get();
+GraqlGet query = match(var("x").isa("person")).get();
 ```
 [tab:end]
 </div>
@@ -339,13 +364,13 @@ Consequently, the final result of the match query:
 
 [tab:Java]
 ```java
-Pattern pattern =Graql.and(
-    Graql.var("x").isa("person"),
-    Graql.not(
-        Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
+Pattern pattern = and(
+    var("x").isa("person"),
+    not(
+        var().isa("parentship").rel(var("x")).rel("father", var("y"))
     ),
-    Graql.not(
-        Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
+    not(
+        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
     )
 );
 ```
@@ -375,14 +400,14 @@ Now let's complicate things a little and see what happens if we bind the `$y` va
 
 [tab:Java]
 ```java
-Pattern pattern =Graql.and(
-    Graql.var("x").isa("person"),
-    Graql.var("y").isa("person"), 
-    Graql.not(
-        Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
+Pattern pattern =and(
+    var("x").isa("person"),
+    var("y").isa("person"), 
+    not(
+        var().isa("parentship").rel(var("x")).rel("father", var("y"))
     ),
-    Graql.not(
-        Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
+    not(
+        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
     )
 );
 ```
@@ -406,9 +431,9 @@ get;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-    Graql.and(
-        Graql.var("x").isa("person"),
-        Graql.var("y").isa("person")
+    and(
+        var("x").isa("person"),
+        var("y").isa("person")
     )
 ).get();
 ```
@@ -451,14 +476,14 @@ Now, executing our query pattern as an ordinary match-get query:
 
 [tab:Java]
 ```java
-Pattern pattern =Graql.and(
-    Graql.var("x").isa("person"),
-    Graql.var("y").isa("person"), 
-    Graql.not(
-        Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
+Pattern pattern = and(
+    var("x").isa("person"),
+    var("y").isa("person"), 
+    not(
+        var().isa("parentship").rel(var("x")).rel("father", var("y"))
     ),
-    Graql.not(
-        Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
+    not(
+        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
     )
 );
 ```
@@ -494,15 +519,13 @@ get $x;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-    Graql.and(
-        Graql.var("x").isa("person"), 
-        Graql.not(
-            Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y"))
+        var("x").isa("person"), 
+        not(
+            var().isa("parentship").rel(var("x")).rel("father", var("y"))
         ),
-        Graql.not(
-            Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
+        not(
+            var().isa("parentship").rel(var("x")).rel("mother", var("y"))
         )
-    )
 ).get();
 ```
 [tab:end]
@@ -519,16 +542,6 @@ As a result, extra care should be taken and thought given when formulating queri
 
 One might be tempted to put the two negation blocks into one. Let's look at the outcome of that. If we define:
 
-```graql
-{
-    $x isa person;
-    not { 
-        ($x, father: $y) isa parentship;
-        ($x, mother: $z) isa parentship;
-    };
-};
-```
-
 <div class="tabs dark">
 
 [tab:Graql]
@@ -545,13 +558,13 @@ One might be tempted to put the two negation blocks into one. Let's look at the 
 
 [tab:Java]
 ```java
-Pattern pattern = Graql.and(
-    Graql.var("x").isa("person"),
-    Graql.and(
-        Graql.not(
-            Graql.and(
-                Graql.var().isa("parentship").rel(Graql.var("x")).rel("father", Graql.var("y")),
-                Graql.var().isa("parentship").rel(Graql.var("x")).rel("mother", Graql.var("y"))
+Pattern pattern = and(
+    var("x").isa("person"),
+    and(
+        not(
+            and(
+                var().isa("parentship").rel(var("x")).rel("father", var("y")),
+                var().isa("parentship").rel(var("x")).rel("mother", var("y"))
             )
         )
    )
@@ -566,16 +579,6 @@ remove the people that have both a mother and a father. As a result our answer s
 We can go further than that. Negation blocks in queries can be nested. Consequently, if we wanted to find people whose father is unemployed we can write something
 like this:
 
-```graql
-{
-    $x isa person;
-    not { 
-        ($x, father: $y) isa parentship;
-        not { ($y) isa employment; };
-    };
-};
-```
-
 <div class="tabs dark">
 
 [tab:Graql]
@@ -592,14 +595,14 @@ like this:
 
 [tab:Java]
 ```java
-Pattern pattern = Graql.and(
-    Graql.var("x").isa("person"),
-    Graql.not(
-        Graql.and(
-            Graql.var().isa("parentship")
-                .rel(Graql.var("x"))
-                .rel("father", Graql.var("y")),
-            Graql.not(Graql.var().isa("employment").rel(Graql.var("y")))
+Pattern pattern = and(
+    var("x").isa("person"),
+    not(
+        and(
+            var().isa("parentship")
+                .rel(var("x"))
+                .rel("father", var("y")),
+            not(var().isa("employment").rel(var("y")))
         )
     )
 );
@@ -630,6 +633,9 @@ We will illustrate the use of negation with rules with a graphical example.
 
 Let us define a network of nodes with possible edges between nodes:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 define
 
@@ -641,9 +647,24 @@ node sub traversable;
 
 edge sub relation, relates from, relates to;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDefine query = Graql.define(
+    type("traversable").sub("entity").plays("from").plays("to"),
+    type("node").sub("traversable"), 
+    type("edge").sub("relation").relates("from").relates("to")
+);
+```
+[tab:end]
+</div>
 
 Then we can define two nodes as being reachable if there exists a edge between them:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 define
 
@@ -665,9 +686,39 @@ reachabilityB sub rule,
         (from: $x, to: $y) isa reachable;
     };
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDefine query = Graql.define(
+    type("reachable").sub("relation").relates("from").relates("to"),
+    type("reachabilityA").sub("rule")
+        .when(
+            var().isa("edge").rel("from", "x").rel("to", "y")   
+        )
+        .then(
+            var().isa("reachable").rel("from", "x").rel("to", "y")
+        ),
+    type("reachabilityB").sub("rule")
+        .when(
+            and(
+                var().isa("edge").rel("from", "x").rel("to", "z"),
+                var().isa("reachable").rel("from", "z").rel("to", "y")
+            )
+        )
+        .then(
+            var().isa("reachable").rel("from", "x").rel("to", "y")
+        )        
+);
+```
+[tab:end]
+</div>
 
 Consequently, with the use of negation we can define edges that are indirect:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 define
 
@@ -681,9 +732,34 @@ indirect-edge-rule sub rule,
         (from: $x, to: $y) isa indirect-edge;
     };
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDefine query = Graql.define(
+    type("indirect-edge").sub("relation").relates("from").relates("to"),
+    type("indirect-edge-rule").sub("rule")
+        .when(
+            and(
+                var().isa("reachable").rel("from", "x").rel("to", "y"),
+                not(
+                    var().isa("edge").rel("from", "x").rel("to", "y")
+                )
+            )
+        )
+        .then(
+            var().isa("indirect-edge").rel("from", "x").rel("to", "y")
+        )
+);
+```
+[tab:end]
+</div>
 
 We can mark the unreachable nodes by defining the following rule:
 
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 define
 
@@ -698,6 +774,29 @@ unreachability-rule sub rule,
         (from: $x, to: $y) isa unreachable;
     };
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDefine query = Graql.define(
+    type("unreachable").sub("relation").relates("from").relates("to"),
+    type("unreachability-rule").sub("rule")
+        .when(
+            and(
+                var("x").isa("node"),
+                var("y").isa("node"),
+                not(
+                    var().isa("unreachable").rel("from", "x").rel("to", "y")
+                )
+            )
+        )
+        .then(
+            var().isa("reachable").rel("from", "x").rel("to", "y")
+        )
+);
+```
+[tab:end]
+</div>
 
 Please note the explicit addition of the `node` types in the body of the rule. This is to to ensure the boundedness condition
 is satisfied as well as to maintain the expected meaning of the `unreachable` relation.
