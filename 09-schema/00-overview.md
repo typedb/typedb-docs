@@ -7,7 +7,7 @@ Summary: Introduction to the Grakn Schema.
 
 ## Why Use a Schema?
 
-Schema isa a means to address the problems of managing and handling unstructured or loosely structured data.
+Schema is a a means to address the problems of managing and handling unstructured or loosely structured data.
 
 ![Unstructured problems](../images/schema/unstructured-problems.png)
 
