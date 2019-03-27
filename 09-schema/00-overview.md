@@ -93,7 +93,7 @@ In your schema, we will need to specify what role relates to each relation type 
 Thanks to roles, you will be able to guarantee the logical integrity of your data, disallowing a `marriage` between a `person` and a `building`, for example, unless you specifically allow such a thing in the schema.
 
 ### Rules
-Lastly, the Grakn schema is completed with [**Graql Rules**](../09-schema/02-rules.md). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
+Lastly, the Grakn schema is completed with [**Graql Rules**](../09-schema/03-rules.md). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
 
 
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset.
@@ -109,7 +109,7 @@ Once we have defined the schema, the next immediate step is to load it into Grak
 To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a Grakn knowledge graph, check out the [Migration Mechanism](...) followed by a comprehensive [tutorial](...) in the language of your choice.
 
 ## Query the schema
-In the next section we learn how to [insert](../10-query/03-insert-query.md), [get](../10-query/02-get-query.md), [delete](../10-query/04-delete-query.md), [update](/docs/query/update-data), [aggregate](../10-query/06-aggregate-query.md) and [compute](../10-query/07-compute-query) data represented by a schema.
+In the next section we learn how to [insert](../10-query/03-insert-query.md), [get](../10-query/02-get-query.md), [delete](../10-query/04-delete-query.md), [update](/docs/query/update-data), [aggregate](../10-query/06-aggregate-query.md) and [compute](../10-query/07-compute-query.md) data represented by a schema.
 
 ## Reserved Keywords
 The following keywords are reserved and meant to only be used by Graql in the schema.
@@ -135,4 +135,4 @@ when, then
 ## Summary
 The Grakn schema sets the foundation for a Grakn knowledge graph. When modelled thoroughly, the schema provides us with a knowledge graph that benefits from logical integrity, is flexible towards change, capable of automated reasoning, and enables writing intuitive queries.
 
-In the next section, we learn about the members of a schema - [Concept Types](../09-schema/01-concepts.md) and [Rules](../09-schema/02-rules.md).
+In the next section, we learn about the members of a schema - [Concept Types](../09-schema/01-concepts.md) and [Rules](../09-schema/03-rules.md).

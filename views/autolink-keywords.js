@@ -203,7 +203,7 @@ codeKeywordsToLink = {
         },
         {
             titles: ["rule"],
-            baseUrl: "../09-schema/02-rules.md",
+            baseUrl: "../09-schema/03-rules.md",
             syntaxedAs: ["graql-keyword", "string"],
             anchor: "",
             languages: ["graql", "javascript", "python"],

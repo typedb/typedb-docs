@@ -230,4 +230,4 @@ This query returns the total number of instances of `employment` mapped to their
 ## Summary
 We use an aggregate query to calculate a certain variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
 
-Next, we learn how to [compute values over a large set of data](../10-query/07-compute-query) in a knowledge graph.
+Next, we learn how to [compute values over a large set of data](../10-query/07-compute-query.md) in a knowledge graph.

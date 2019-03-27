@@ -15,7 +15,7 @@ Anything in Grakn, whether a type or an instance of data, is a [Concept](../04-c
 
 **Thing** refers to an instance of data that is an instantiation of a Concept Type.
 
-**Rule** refers to a [Graql Rule](../09-schema/02-rules.md).
+**Rule** refers to a [Graql Rule](../09-schema/03-rules.md).
 
 <div class="note">
 [Important]

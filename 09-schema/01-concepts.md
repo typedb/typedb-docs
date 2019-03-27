@@ -829,4 +829,4 @@ When the concept type to be undefined is a supertype to something else, we must 
 ## Summary
 We learned that a Grakn schema is essentially a collection of Entities, Relations, and Attributes - what we call the Grakn Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
 
-In the next section, we learn about one last addition to the schema - [Graql Rules](../09-schema/02-rules.md).
+In the next section, we learn about one last addition to the schema - [Graql Rules](../09-schema/03-rules.md).

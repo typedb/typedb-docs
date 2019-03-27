@@ -11,39 +11,42 @@ class LinksTest(unittest.TestCase):
         pattern_to_find_links = '(\[[^\]]*?\]\(\.\.\/)((\d+-[^\/\)]*(\/|))+)\)'
         pattern_to_find_anchors = '#+\s(.*)'
 
-        links_and_anchors = {}
+        pages = {}
 
-        for markdown_file in glob.iglob('./**/*.md'):
-            markdown_file = markdown_file.replace("./", "")
+        for markdown_path in glob.iglob('./**/*.md'):
+            title = markdown_path.replace("./", "")
 
-            links_and_anchors[markdown_file] = {"links": [], "anchors": []}
+            pages[title] = {"links": [], "anchors": []}
 
-            with open(markdown_file) as file:
-                content = file.read()
+            with open(markdown_path) as markdown_file:
+                content = markdown_file.read()
                 link_matches = re.findall(pattern_to_find_links, content)
                 for match in link_matches:
-                    links_and_anchors[markdown_file]["links"].append(match[1])
+                    link = match[1]
+                    pages[title]["links"].append(link)
 
                 anchor_matches = re.findall(pattern_to_find_anchors, content)
                 for match in anchor_matches:
                     anchor = match.replace(r"^[^a-zA-Z]+", "").replace(r" ", "-").lower()
                     anchor = re.sub("[^a-zA-Z0-9 -]+", "", anchor)
 
-                    links_and_anchors[markdown_file]["anchors"].append(anchor)
+                    pages[title]["anchors"].append(anchor)
 
         errors = []
 
-        for page_title, page_details in links_and_anchors.items():
-            for link in page_details["links"]:
-                page_url = link.split("#")[0]
+        for title, links_and_anchors in pages.items():
+            for link in links_and_anchors["links"]:
+                link_page = link.split("#")[0]
+                link_page = link_page.split("?")[0]  # remove params
 
-                if page_url not in links_and_anchors:
-                    errors.append("The link [" + page_url + "] found in [" + page_title + "] is broken.")
+                if link_page not in pages:
+                    errors.append("The link [" + link_page + "] found in [" + title + "] is broken.")
 
-                if len(link.split("#")) > 1:
-                    page_anchor = link.split("#")[1]
-                    if page_url in links_and_anchors and page_anchor not in links_and_anchors[page_url]["anchors"]:
-                        errors.append("The anchor [" + page_anchor + "] of the link [" + page_url + "] found in [" + page_title + "] is broken.")
+                link_has_anchor = len(link.split("#")) > 1
+                if link_has_anchor:
+                    link_anchor = link.split("#")[1]
+                    if link_page in pages and link_anchor not in pages[link_page]["anchors"]:
+                        errors.append("The anchor [" + link_anchor + "] of the link [" + link_page + "] found in [" + title + "] is broken.")
         pp.pprint(errors)
         self.assertEqual(errors, [])
 

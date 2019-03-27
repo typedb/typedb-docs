@@ -247,7 +247,7 @@ commit
 ```
 
 ### Store Knowledge
-Grakn is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a Grakn knowledge graph is made via pre-defined [Rules](../09-schema/02-rules.md).
+Grakn is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a Grakn knowledge graph is made via pre-defined [Rules](../09-schema/03-rules.md).
 
 Let's look at some simple examples of how Grakn uses rules for reasoning over explicit data.
 
@@ -314,7 +314,7 @@ Similar to the first rule, the answer we're asking for here, was never injected 
 
 ### Distributed Analytics With Grakn
 
-The [Graql compute queries](../10-query/07-compute-query) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
+The [Graql compute queries](../10-query/07-compute-query.md) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
 
 Let's look at a few examples of running `compute` on the `genealogy` knowledge graph.
 
@@ -330,7 +330,7 @@ compute mean of salary, in employment;
 compute count in travel;
 ```
 
-#### Find the [shortest path](../10-query/07-compute-query#compute-the-shortest-path) between two instances
+#### Find the [shortest path](../10-query/07-compute-query.md#compute-the-shortest-path) between two instances
 
 ```graql
 match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
@@ -351,7 +351,7 @@ compute path from V446496, to V229424;
 {V184392, V442424, V90344}
 ```
 
-#### [Identify clusters](../10-query/07-compute-query#identify-clusters) in a subgraph
+#### [Identify clusters](../10-query/07-compute-query.md#identify-clusters) in a subgraph
 ```graql
 compute cluster in [person, employment, organisation], using connected-component;
 ```

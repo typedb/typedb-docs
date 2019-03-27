@@ -55,7 +55,7 @@ In the following sections, we learn how to create Graql queries of different typ
     * [Match](../10-query/01-match-clause.md) specific patterns in the data and schema   
     * [Get](../10-query/02-get-query.md) back desired data/knowledge
     * [Aggregate](../10-query/06-aggregate-query.md) values over a set of data
-    * [Compute](../10-query/07-compute-query) distributed analytics over a large set of data
+    * [Compute](../10-query/07-compute-query.md) distributed analytics over a large set of data
 
 - define and undefine schema
     * [Define/Undefine](/docs/query/schema/concepts) new instances of concept types into the knowledge graph
