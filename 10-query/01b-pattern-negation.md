@@ -130,13 +130,11 @@ get;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-    and(
-        var("x").isa("person"), 
-        not(
-            var().isa("employment")
-                .rel("employee", var("x"))
-                .rel("employer", var("y"))
-        )
+    var("x").isa("person"), 
+    not(
+        var().isa("employment")
+            .rel("employee", var("x"))
+            .rel("employer", var("y"))
     )
 ).get();
 ```
@@ -431,10 +429,8 @@ get;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-    and(
-        var("x").isa("person"),
-        var("y").isa("person")
-    )
+    var("x").isa("person"),
+    var("y").isa("person")
 ).get();
 ```
 [tab:end]
@@ -519,13 +515,13 @@ get $x;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-        var("x").isa("person"), 
-        not(
-            var().isa("parentship").rel(var("x")).rel("father", var("y"))
-        ),
-        not(
-            var().isa("parentship").rel(var("x")).rel("mother", var("y"))
-        )
+    var("x").isa("person"), 
+    not(
+        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+    ),
+    not(
+        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+    )
 ).get();
 ```
 [tab:end]
