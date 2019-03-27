@@ -12,15 +12,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.thing language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.thing language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.thing language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.thing language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.thing language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.thing language="python" %}
 [tab:end]
 
 </div>
@@ -31,15 +31,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.attribute language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.attribute language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.attribute language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.attribute language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.attribute language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.attribute language="python" %}
 [tab:end]
 
 </div>
@@ -50,15 +50,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.relation language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.relation language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relation language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.relation language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.relation language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.relation language="python" %}
 [tab:end]
 
 </div>

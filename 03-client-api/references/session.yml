@@ -5,7 +5,7 @@ methods:
       title: Open a read transaction ## !!! synced with codeKeywordsToLink
       description: Opens a read transaction to perform read queries on the keyspace connected to the session.
       returns:
-        - "[Transaction](#client-api-title-transaction) object"
+        - "[Transaction](#transaction) object"
     java:
       <<: *method-transaction-read
       method: session.transaction().read();
@@ -21,7 +21,7 @@ methods:
       title: Open a write transaction ## !!! synced with codeKeywordsToLink
       description: Opens a write transaction to perform write queries on the keyspace connected to the session.
       returns:
-        - "[Transaction](#client-api-title-transaction) object"
+        - "[Transaction](#transaction) object"
     java:
       <<: *method-transaction-write
       method: session.transaction().write();

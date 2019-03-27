@@ -16,7 +16,7 @@ methods:
           required: false
           default: N/A
       returns:
-        - "[Client](#client-api-title-client) object"
+        - "[Client](#client) object"
     java:
       <<: *method-client
       method: new GraknClient(String uri);

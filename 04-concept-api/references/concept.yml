@@ -209,16 +209,6 @@ methods:
       <<: *method-asRelationType
 
   - method:
-    common: &method-asAttributeType
-      title: Cast the concept as AttributeType
-      description: Casts the concept as AttributeType so that we can call the AttributeType methods on it.
-      method: concept.asAttributeType();
-      returns:
-        - "[`AttributeType`](/docs/concept-api/type?tab=java#attributetype-methods) object"
-    java:
-      <<: *method-asAttributeType
-
-  - method:
     common: &method-asEntity
       title: Cast the concept as Entity
       description: Casts the concept as Entity so that we can call the Entity methods on it.

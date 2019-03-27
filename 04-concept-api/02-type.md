@@ -12,15 +12,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.type language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.type language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.type language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.type language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.type language="python" %}
 [tab:end]
 
 </div>
@@ -31,15 +31,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.entity_type language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.entity_type language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.entity_type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.entity_type language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.entity_type language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.entity_type language="python" %}
 [tab:end]
 
 </div>
@@ -50,15 +50,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.attribute_type language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.attribute_type language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.attribute_type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.attribute_type language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.attribute_type language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.attribute_type language="python" %}
 [tab:end]
 
 </div>
@@ -69,15 +69,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.relation_type language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.relation_type language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.relation_type language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.relation_type language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.relation_type language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.relation_type language="python" %}
 [tab:end]
 
 </div>
@@ -99,7 +99,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 - [subs();](?tab=java#concept-api-java-method-retrieve-all-subtypes)
 </div>
 
-{% include api/generic.html data=site.data.concept_api.role language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.role language="java" %}
 [tab:end]
 
 [tab:Javascript]
@@ -113,7 +113,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 - [sups();](?tab=javascript#concept-api-nodejs-method-retrieve-all-supertypes)
 - [subs();](?tab=javascript#concept-api-nodejs-method-retrieve-all-subtypes)
 </div>
-{% include api/generic.html data=site.data.concept_api.role language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.role language="javascript" %}
 [tab:end]
 
 [tab:Python]
@@ -127,7 +127,7 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 - [sups();](?tab=python#concept-api-python-method-retrieve-all-supertypes)
 - [subs();](?tab=python#concept-api-python-method-retrieve-all-subtypes)
 </div>
-{% include api/generic.html data=site.data.concept_api.role language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.role language="python" %}
 [tab:end]
 
 </div>

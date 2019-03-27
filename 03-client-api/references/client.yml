@@ -14,7 +14,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[Session](#client-api-title-session) object"
+        - "[Session](#session) object"
     java:
       <<: *method-session
       method: client.session(String keyspace);

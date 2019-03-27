@@ -16,7 +16,7 @@ methods:
           description: Determines if the query should apply inference.
           required: true
       returns:
-        - "[Iterator](#client-api-title-iterator) of Answer"
+        - "[Iterator](#iterator) of Answer"
     java:
       <<: *method-lazyquery
       method: transaction.stream(GraqlQuery query, boolean infer);
@@ -346,13 +346,13 @@ methods:
         param2:
           name: when
           description: The pattern describing the when body of the rule.
-          type: "[`graql.lang.pattern.Pattern`](#client-api-title-graql)"
+          type: "[`graql.lang.pattern.Pattern`](#graql)"
           required: true
           default: N/A
         param3:
           name: then
           description: The pattern describing the then body of the rule.
-          type: "[`graql.lang.pattern.Pattern`](#client-api-title-graql)"
+          type: "[`graql.lang.pattern.Pattern`](#graql)"
           required: true
           default: N/A
     javascript:

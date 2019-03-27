@@ -12,15 +12,15 @@ toc: true
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.concept_api.concept language="java" class_prefix="concept-api-java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.concept language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.concept_api.concept language="javascript" class_prefix="concept-api-nodejs" %}
+{% include api/generic.html data=site.data.04_concept_api.references.concept language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.concept_api.concept language="python" class_prefix="concept-api-python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.concept language="python" %}
 [tab:end]
 
 </div>
