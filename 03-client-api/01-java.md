@@ -182,14 +182,14 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.grakn language="java" class_prefix="client-api" %}
+{% include api/generic.html data=site.data.references.03_client_api.grakn language="java" class_prefix="client-api" %}
 
-{% include api/generic.html data=site.data.03_client_api.client language="java" class_prefix="client-api" %}
+{% include api/generic.html data=site.data.references.03_client_api.client language="java" class_prefix="client-api" %}
 
-{% include api/generic.html data=site.data.03_client_api.session language="java" class_prefix="client-api" %}
+{% include api/generic.html data=site.data.references.03_client_api.session language="java" class_prefix="client-api" %}
 
-{% include api/generic.html data=site.data.03_client_api.transaction language="java" class_prefix="client-api" %}
+{% include api/generic.html data=site.data.references.03_client_api.transaction language="java" class_prefix="client-api" %}
 
-{% include api/generic.html data=site.data.03_client_api.graql language="java" class_prefix="client-api" %}
+{% include api/generic.html data=site.data.references.03_client_api.graql language="java" class_prefix="client-api" %}
 
-{% include api/answers.html data=site.data.03_client_api.answer language="java" class_prefix="client-api" %}
+{% include api/answers.html data=site.data.references.03_client_api.answer language="java" class_prefix="client-api" %}
