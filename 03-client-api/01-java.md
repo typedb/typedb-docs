@@ -3,6 +3,26 @@ pageTitle: Client Java
 keywords: grakn, client, java
 longTailKeywords: grakn java client, grakn client java, client java, java client
 Summary: API Reference of Grakn Client Java.
+templatePath: 03-client-api/references/
+templates:
+  -
+    title: answer.yml
+    headerAt: types, methods, java, title
+  -
+    title: client.yml
+    headerAt: methods, java, title
+  -
+    title: grakn.yml
+    headerAt: methods, java, title
+  -
+    title: graql.yml
+    headerAt: methods, java, title
+  -
+    title: iterator.yml
+    headerAt: methods, java, title
+  -
+    title: session.yml
+    headerAt: methods, java, title
 ---
 
 ## Dependencies
@@ -158,4 +178,18 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 - [Aggregate](../10-query/06-aggregate-query.md)
 - [Compute](../10-query/07-compute-query.md)
 
-{% include client_api_template.html language = "java" %}
+<hr style="margin-top: 40px;" />
+
+## API Reference
+
+{% include api/generic.html data=site.data.03_client_api.grakn language="java" class_prefix="client-api" %}
+
+{% include api/generic.html data=site.data.03_client_api.client language="java" class_prefix="client-api" %}
+
+{% include api/generic.html data=site.data.03_client_api.session language="java" class_prefix="client-api" %}
+
+{% include api/generic.html data=site.data.03_client_api.transaction language="java" class_prefix="client-api" %}
+
+{% include api/generic.html data=site.data.03_client_api.graql language="java" class_prefix="client-api" %}
+
+{% include api/answers.html data=site.data.03_client_api.answer language="java" class_prefix="client-api" %}
