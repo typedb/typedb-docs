@@ -66,7 +66,7 @@ with GraknClient(uri="localhost:48555") as client:
             ## write transaction is open
             ## write transaction must always be committed (closed)
             write_transaction.commit()
-    
+
         ## creating a read transaction
         with session.transaction().read() as read_transaction:
             ## read transaction is open
@@ -126,4 +126,19 @@ To view examples of running various Graql queries using the Grakn Client Python,
 - [Aggregate](../10-query/06-aggregate-query.md)
 - [Compute](../10-query/07-compute-query.md)
 
-{% include client_api_template.html language = "python" %}
+<hr style="margin-top: 40px;" />
+
+## API Reference
+
+{% include api/generic.html data=site.data.03_client_api.references.grakn language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.client language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.session language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.transaction language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.iterator language="python" %}
+
+{% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
+

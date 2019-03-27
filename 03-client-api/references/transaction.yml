@@ -3,7 +3,7 @@ title: "Transaction"
 methods:
   - method:
     common: &method-lazyquery
-      title: Lazily execute a Graql query ## !!! synced with codeKeywordsToLink
+      title: Lazily execute a Graql query
       description: Performs a Graql query on the and retrieves answers lazily.
       accepts: &accepts-lazyquery
         param1: &accepts-lazyquery-query
@@ -81,7 +81,7 @@ methods:
 
   - method:
     common: &method-commit
-      title: Commit a write transaction ## !!! synced with codeKeywordsToLink
+      title: Commit a write transaction
       description: |
         Commits the changes made on the local keyspace (via the caller transaction), to the original keyspace.
         **Whether or not the transaction is commited successfully, it gets closed after the commit call.**
@@ -125,7 +125,7 @@ methods:
 
   - method:
     common: &method-getConcept
-      title: Retrieve a concept by id ## !!! synced with codeKeywordsToLink
+      title: Retrieve a concept by id
       description: >
         Retrieves the concept that has the given Grakn id.
         The concept in question, may be a concept type or an instance of one.
@@ -154,7 +154,7 @@ methods:
 
   - method:
     common: &method-getSchemaConcept
-      title: Retrieve a schema concept by label ## !!! synced with codeKeywordsToLink
+      title: Retrieve a schema concept by label
       accepts:
         param:
           name: label
@@ -176,7 +176,7 @@ methods:
 
   - method:
     common: &method-getAttributesByValue
-      title: Retrieve an attribute by value ## !!! synced with codeKeywordsToLink
+      title: Retrieve an attribute by value
       accepts:
         param1: &accepts-getAttributesByValue-value
           name: value
@@ -235,7 +235,7 @@ methods:
 
   - method:
     common: &method-putRelationType
-      title: Create or retrieve a RelationType ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve a RelationType
       description: Creates a new RelationType if none exists with the given label, otherwise retrieves the existing one.
       accepts:
         param:
@@ -258,7 +258,7 @@ methods:
 
   - method:
     common: &method-putAttributeType
-      title: Create or retrieve an AttributeType ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve an AttributeType
       description: Creates a new AttributeType if none exists with the given label, or retrieves the existing one.
       accepts: &accepts-putAttributeType
         param1:
@@ -292,7 +292,7 @@ methods:
 
   - method:
     common: &method-putRole
-      title: Create or retrieve a Role ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve a Role
       description: Creates a new Role if none exists with the given label, otherwise retrieves the existing one.
       accepts:
         param:
@@ -315,7 +315,7 @@ methods:
 
   - method:
     common: &method-putRule
-      title: Create or retrieve a Rule ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve a Rule
       description: Creates a new Rule if none exists with the given label, or retrieves the existing one.
       accepts: &accepts-putRule
         param1:

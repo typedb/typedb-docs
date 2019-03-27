@@ -9,7 +9,7 @@ toc: false
 ## What is the Grakn Console?
 The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.md) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
 
-## Console Options {#console-options}
+## Console Options
 
 The options accepted by the `grakn console` command are as follows.
 
@@ -52,7 +52,7 @@ If we intend to ignore [inferred instances of data](...) when querying the knowl
 ### Viewing the Grakn's version
 To find out which version of Grakn is installed, we use the `--version` (or `-v`) option. -->
 
-## Console Commands {#console-commands}
+## Console Commands
 
 Once inside the console, besides [Graql queries](../10-query/00-overview.md), we can run the following commands.
 

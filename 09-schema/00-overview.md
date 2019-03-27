@@ -65,7 +65,7 @@ Everything that describes our domain in a Grakn Knowledge Graph is a concept. Th
 We refer to data instances as things - they can be thought of as instances of types defined in the schema.
 
 ### Types
-Types constitute the core of your schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](../09-schema/01-concepts.md#entity), [Relationships](../09-schema/01-concepts.md#relationship), and [Attributes](../09-schema/01-concepts.md#attribute):
+Types constitute the core of your schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](../09-schema/01-concepts.md#entity), [Relationships](../09-schema/01-concepts.md#relation), and [Attributes](../09-schema/01-concepts.md#attribute):
 
 __Entities__ are the main actors in our domain. These are usually the type of things we want to know about. Entity types provide means of classifying the objects in our domain.
 
@@ -100,7 +100,7 @@ In the sections that follow, by looking at various real-world examples, we learn
 
 
 ## (un)Define the schema programmatically
-In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](../03-client-api/01-java.md#client-api-method-manipulate-the-schema-programatically), [Python](../03-client-api/02-python.md#client-api-method-lazily-execute-a-graql-query) and [Node.js](../03-client-api/03-nodejs.md#client-api-method-lazily-execute-a-graql-query).
+In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](../03-client-api/01-java.md#graql), [Python](../03-client-api/02-python.md#lazily-execute-a-graql-query) and [Node.js](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query).
 
 ## Load the schema
 Once we have defined the schema, the next immediate step is to load it into Grakn. Learn how to [load the schema via the Grakn Console](../02-running-grakn/02-console.md#console-options).

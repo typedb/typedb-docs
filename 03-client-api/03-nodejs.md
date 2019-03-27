@@ -142,4 +142,17 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 - [Aggregate](../10-query/06-aggregate-query.md)
 - [Compute](../10-query/07-compute-query.md)
 
-{% include client_api_template.html language = "javascript" %}
+## API Reference
+
+{% include api/generic.html data=site.data.03_client_api.references.grakn language="nodejs" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.client language="nodejs" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.session language="nodejs" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.transaction language="nodejs" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.iterator language="nodejs" %}
+
+{% include api/answers.html data=site.data.03_client_api.references.answer language="nodejs" %}
+

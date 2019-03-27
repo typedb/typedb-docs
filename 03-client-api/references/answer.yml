@@ -46,7 +46,7 @@ mappings:
 
 types:
   - type1:
-    title: ConceptMap ## !!! synced with codeKeywordsToLink
+    title: ConceptMap
     methods:
       - method:
         common: &method-conceptmap-map
@@ -180,7 +180,7 @@ types:
     methods:
       - method:
         common: &method-conceptsetmeasure-measurement
-          title: Retrieve the numeric value of a centrality computation ## !!! synced with codeKeywordsToLink
+          title: Retrieve the numeric value of a centrality computation
         java:
           <<: *method-conceptsetmeasure-measurement
           method: answer.measurement();
@@ -227,7 +227,7 @@ types:
     methods:
       - method:
         common: &method-answergroup-owner
-          title: Retrieve the concept that is the group owner ## !!! synced with codeKeywordsToLink
+          title: Retrieve the concept that is the group owner
           returns:
             - "[Concept](../04-concept-api/01-concept.md)"
         java:
@@ -268,11 +268,11 @@ types:
           <<: *method-explanation-python
 
   - type7:
-    title: Explanation ## !!! synced with codeKeywordsToLink
+    title: Explanation
     methods:
       - method:
         common: &method-explanation-querypattern
-          title: Retrieve a Graql explanation of the answer ## !!! synced with codeKeywordsToLink
+          title: Retrieve a Graql explanation of the answer
         java:
           <<: *method-explanation-querypattern
           method: explanation.getPattern();
@@ -291,7 +291,7 @@ types:
 
       - method:
         common: &method-explanation-answers
-          title: Retrieve source facts of inference ## !!! synced with codeKeywordsToLink
+          title: Retrieve source facts of inference
           description: Provides a list of answers from which the inferred answer is derived.
         java:
           <<: *method-explanation-answers
