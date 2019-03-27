@@ -40,7 +40,7 @@ Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-ru
 
 [slide:start]
 [body:start]![Connection](../images/workbase/1.1.1/preferences_configure-host-port.png)[body:end]
-[footer:start]This will show us the preferences panel where we can modify the host and port as per our [custom configuration of Grakn Server](../02-running-grakn/03-configuration##host-and-port.md)[footer:end]
+[footer:start]This will show us the preferences panel where we can modify the host and port as per our [custom configuration of Grakn Server](../02-running-grakn/03-configuration.md#host-and-port)[footer:end]
 [slide:end]
 
 [slide:start]

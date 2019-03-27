@@ -7,26 +7,26 @@ Summary: A comprehensive guide on defining Schema Concepts in Grakn.
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `define` and `undefine` queries, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java#client-api-method-eagerly-execute-of-a-graql-query.md) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `define` and `undefine` queries, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs#client-api-method-lazily-execute-a-graql-query.md) function available on the [`transaction`](../03-client-api/03-nodejs#client-api-title-transaction.md) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#client-api-title-transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python#client-api-method-lazily-execute-a-graql-query.md) method available on the [`transaction`](../03-client-api/02-python#client-api-title-transaction.md) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#client-api-title-transaction) object.
 </div>
 
 <!-- !!! synced with codeKeywordsToLink -->
 ## Define
-As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md.md) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
+As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-running-grakn/02-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java#client-api-method-manipulate-the-schema-programatically.md), [Python](../03-client-api/02-python#client-api-method-lazily-execute-a-graql-query.md) and [Node.js](../03-client-api/03-nodejs#client-api-method-lazily-execute-a-graql-query.md).
+We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-running-grakn/02-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java.md#client-api-method-manipulate-the-schema-programatically), [Python](../03-client-api/02-python.md#client-api-method-lazily-execute-a-graql-query) and [Node.js](../03-client-api/03-nodejs.md#client-api-method-lazily-execute-a-graql-query).
 
 <div class="note">
 [Important]

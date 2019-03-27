@@ -15,7 +15,7 @@ When writing Graql queries, you simply describe **what** information you would l
 
 **Graql is intuitive**.
 
-Graql was designed to provide a high-level query language interface with a clear and human-readable syntax. By defining high-level application-specific [schema](../09-schema/00-overview.md.md),
+Graql was designed to provide a high-level query language interface with a clear and human-readable syntax. By defining high-level application-specific [schema](../09-schema/00-overview.md),
 we effectively define our own vocabulary to talk about the domain of interest. By introduction of an explicit data model tightly reflected in the structure of the query language,
 formulating queries comes naturally as it is reminiscent of building ordinary sentences about our domain. The more tightly the schema represents our domain of interest,
 the more intuitive writing and reading Graql queries become.
@@ -69,7 +69,7 @@ In the following sections, we learn how to create Graql queries of different typ
 
 ## Graql Answers
 
-Some Graql queries such as `get`, `aggregate` and `compute` are expected to return an answer. Depending on the type of query, the structure of the answer may be different (more on Answer types in the [Client API](../03-client-api/00-overview#investigating-answers.md) section). As a part of the [Concept API](../04-concept-api/00-overview.md), we can call various methods on the concepts contained in an answer to retrieve more explicit and implicit knowledge about them and their surroundings.
+Some Graql queries such as `get`, `aggregate` and `compute` are expected to return an answer. Depending on the type of query, the structure of the answer may be different (more on Answer types in the [Client API](../03-client-api/00-overview.md#investigating-answers) section). As a part of the [Concept API](../04-concept-api/00-overview.md), we can call various methods on the concepts contained in an answer to retrieve more explicit and implicit knowledge about them and their surroundings.
 
 ## Reserved Keywords
 

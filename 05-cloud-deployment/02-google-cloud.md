@@ -109,7 +109,7 @@ As part of the deployment, Google Cloud produces the default credentials with us
 
 ![Default Credentials](../images/cloud-deployment/gc_default_password.png)
 
-We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](../06-management/02-users#update-a-user.md) `grakn` giving it a new secured password.
+We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](../06-management/02-users.md#update-a-user) `grakn` giving it a new secured password.
 
 ## Logging into a node
 For a more direct interaction with the database, we need to log into a node. To do so, we need to start an `ssh` session as illustrated below.
@@ -166,7 +166,7 @@ While [logged into a node](#logging-into-a-node), run `grakn console start`. Thi
 While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](../02-running-grakn/02-console.md) where we can interact with and perform [queries](../10-query/00-overview.md) on our [keyspaces](../06-management/01-keyspace.md).
 
 ## Configuring Grakn
-To ensure Grakn behaves according to your specific needs, you may [configure Grakn](../02-running-grakn/03-configuration.md). One important attribute in Grakn configuration file, is the [path to the data directory](../02-running-grakn/03-configuration#where-data-is-stored.md).
+To ensure Grakn behaves according to your specific needs, you may [configure Grakn](../02-running-grakn/03-configuration.md). One important attribute in Grakn configuration file, is the [path to the data directory](../02-running-grakn/03-configuration.md#where-data-is-stored).
 
 ## Sign up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).

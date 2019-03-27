@@ -59,7 +59,7 @@ Workbase allows visualisation of answers returned by [Graql queries](../10-query
 
 [slide:start]
 [body:start]![Graql editor](../images/workbase/1.1.1/visualise_types.png)[body:end]
-[footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can explore the [Concept Types](../09-schema/01-concepts.md) as defined in the [schema](../09-schema/00-overview.md.md).[footer:end]
+[footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can explore the [Concept Types](../09-schema/01-concepts.md) as defined in the [schema](../09-schema/00-overview.md).[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]

@@ -29,7 +29,7 @@ To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option f
 ```
 
 ### Loading a schema into a keyspace
-To load a [schema](../09-schema/00-overview.md.md) into a keyspace, we use the `--file` (or `-f`) option followed by the path to the schema (`.gql`) file. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) into which the schema should be loaded. Note that if the keyspace has not yet been created, this command also creates a new keyspace with the given name.
+To load a [schema](../09-schema/00-overview.md) into a keyspace, we use the `--file` (or `-f`) option followed by the path to the schema (`.gql`) file. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) into which the schema should be loaded. Note that if the keyspace has not yet been created, this command also creates a new keyspace with the given name.
 
 ```
 ./grakn console -k keyspace_name --file path/to/schema.gql

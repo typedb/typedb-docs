@@ -7,7 +7,7 @@ Summary: Targeting instances of data that match expressive patterns in Grakn.
 
 ## Match Clause
 We use match clauses to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
-By defining the [schema](../09-schema/00-overview.md.md), we effectively define a vocabulary to be used to describe concepts of our domain.
+By defining the [schema](../09-schema/00-overview.md), we effectively define a vocabulary to be used to describe concepts of our domain.
 
 Once the schema is defined, we can form graph patterns for which we want to search within our knowledge graph. We do that by using match clauses.
 Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../10-schema/02-get-query.md), [Insert](../10-query/03-insert-query.md), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
@@ -555,17 +555,17 @@ To see some `get` queries powered by complex and expressive `match` clauses, che
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java#client-api-method-eagerly-execute-of-a-graql-query.md) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs#client-api-method-lazily-execute-a-graql-query.md) function available on the [`transaction`](../03-client-api/03-nodejs#client-api-title-transaction.md) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#client-api-title-transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python#client-api-method-lazily-execute-a-graql-query.md) method available on the [`transaction`](../03-client-api/02-python#client-api-title-transaction.md) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#client-api-title-transaction) object.
 </div>
 
 ## Summary
