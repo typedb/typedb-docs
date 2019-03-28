@@ -11,62 +11,33 @@ permalink: /docs/query/overview
 Graql is the query language for the Grakn knowledge graph. Whether it's through the [Grakn Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 **Graql is declarative**.
-
-When writing Graql queries, you simply describe **what** information you would like to retrieve, rather than **how** should it be obtained. Once we specify the target information to retrieve, the Graql query processor will take care of finding an optimal way to retrieve it.
+When writing Graql queries, we simply describe **what** information we would like to retrieve, rather than **how** should it be obtained.
+Once we specify the target information to retrieve, the Graql query processor will take care of finding an optimal way to retrieve it.
 
 **Graql is intuitive**.
-
-Graql was designed to provide a high-level query language interface with a clear and human-readable syntax. By defining high-level application-specific [schema](/docs/schema/overview),
-we effectively define our own vocabulary to talk about the domain of interest. By introduction of an explicit data model tightly reflected in the structure of the query language,
-formulating queries comes naturally as it is reminiscent of building ordinary sentences about our domain. The more tightly the schema represents our domain of interest,
-the more intuitive writing and reading Graql queries become.
+Graql was designed to provide a high-level query language interface with clear and human-readable syntax. By defining high-level application-specific [schema](/docs/schema/overview), we effectively define our own vocabulary to talk about the domain of interest. By introduction of an explicit data model tightly reflected in the structure of the query language, formulating queries comes naturally as it is reminiscent of building ordinary sentences about our domain. The more tightly the schema represents our domain of interest, the more intuitive writing and reading Graql queries become.
 
 **Graql serves as both the Data Manipulation Language (DML) as well as the Data Definition Language (DDL)**
-
-Graql is a language that provides you with a complete set of tools to perform all data-oriented tasks.
-This includes defining the schema, retrieving information as well as creating and manipulating data. 
-
+Graql is a language that provides you with a complete set of tools to perform all data-oriented tasks. This includes defining the schema, retrieving information as well as creating and manipulating data.
 
 ## The structure of a Graql query
 
-Let's look at the anatomy of a typical Match-Get query:
+The image below illustrates the structure of various Graql queries.
 
 ![Query structure](/docs/images/query/query-structure.png)
 
-The important parts were marked with numbers, as a result we have:
+As shown in the image above, Graql queries are categorized into two main types:
+- **Data Definition**:
+  - **[Define](/docs/query/schema/concepts#define)**: adds definition of a concept type to the schema.
+  - **[Undefine](/docs/query/schema/concepts#undefine)**: removes definition of a concept type from the schema.
 
-  1. A **query keyword** specifying the query type and subsequently the nature of the operation we want the query to carry out.
-  In that way we can differentiate between data manipulation and update operations(`match`, `compute`), as well as data definition operations (`define`, `insert`).
-  The `match` keyword indicates that the we intend to match the following pattern within the knowledge graph.
-  The `match` keyword and the preceding pattern, commonly known as the _match clause_, is always accompanied by a _query action keyword_.
-  In the example above, that query action keyword happens to be `get`. `match` may also be accompanied with, `insert` and `delete`.
-  
-  1. A **query pattern** part. The pattern describes the part of the knowledge graph we are interested in.
-  Notice that differently from what normally happens with query languages, **the order of patterns in a Graql query does not matter**.
-  The system will take care of putting it in the correct order and execute the query in the most efficient way it can.
-
-  1. A mandatory **query action keyword** that actually specifies what the query does. In the case of `get` and `delete` queries,
-  the keyword can be optionally followed by variables of interest defined in the match clause. In the case of `insert` queries,
-  what follows is one or more statements that describes the pattern to be inserted.
-  
-  1. One or more optional **modifiers**. This specify any modification operation to be carried out on our results. Here we can control the order in which they should be displayed, the number of results you want or a specific offset.
-
-In the following sections, we learn how to create Graql queries of different types in order to:
-- retrieve data
-    * [Match](/docs/query/match-clause) specific patterns in the data and schema   
-    * [Get](/docs/query/get-query) back desired data/knowledge
-    * [Aggregate](/docs/query/aggregate-query) values over a set of data
-    * [Compute](/docs/query/compute-query) distributed analytics over a large set of data
-
-- define and undefine schema
-    * [Define/Undefine](/docs/query/schema/concepts) new instances of concept types into the knowledge graph
-
-- insert and remove data
-    * [Insert](/docs/query/insert-query) new instances of concept types into the knowledge graph
-    * [Delete](/docs/query/delete-query) instances of concept types from the knowledge graph
-
-- manipulate data
-    * [Update](/docs/query/update-query) instances of concept types
+- **Data Manipulation**:
+  - **[Get](/docs/query/get-query)**: returns the data instances or concept types that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
+  - **[Delete](/docs/query/delete-query)**: removes the data instances assigned to the given variable that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
+  - **[Insert](/docs/query/insert-query)**: inserts a data instance according to the given statement(s), optionally, preceded by a `match` clause.
+  - **[Group](/docs/query/aggregate-query#grouping-answers)**: always as a part of a `get` query, returns the results grouped by the given variable, optionally mapped to the count of each group.
+  - **[Aggregate Values](/docs/query/aggregate-query#aggregate-values-over-a-dataset)**: always as a part of a `get` query, returns the statistical value of numeric attributes based on the given aggregate function.
+  - **[Compute Statistics](/docs/query/compute-query)**: computes paths between two instances, clusters and centrality.
 
 ## Graql Answers
 
@@ -90,5 +61,4 @@ offset, order
 regex
 std, sum
 to
-val
 ```
