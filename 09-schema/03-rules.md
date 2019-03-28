@@ -3,7 +3,6 @@ pageTitle: Rules
 keywords: graql, rule, reasoning, automated reasoning
 longTailKeywords: grakn reasoning, grakn automated reasoning, grakn rules
 Summary: Taking advantage of automated reasoning with Rules in Grakn.
-permalink: /docs/schema/rules
 ---
 
 ## What is a Rule?
@@ -69,17 +68,17 @@ GraqlDefine query = Graql.define(
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `define` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `define` query, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a `define` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `define` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a `define` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `define` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 The Graql rule above is telling Grakn the following:
@@ -90,7 +89,7 @@ when
 then
 : those people (`$x` and `$y`) must be siblings.
 
-If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](/docs/query/match-clause).
+If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](../10-query/01-match-clause.md).
 
 In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
 
@@ -129,9 +128,9 @@ The following are the types of one single statement that can be set as the concl
 - inserting a relation. Example: `($x, $y) isa siblings;`.
 
 ## Deleting Rules
-Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](/docs/schema/concepts#undefine).
+Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](../09-schema/01-concepts.md#undefine).
 
 ## Summary
 Rules are a powerful tool that reason over the explicitly stored data and produce and store implicit knowledge at run-time.
 
-In the next section, we learn how to [perform read and write instructions over a knowledge graph](/docs/query/overview) that is represented by a schema.
+In the next section, we learn how to [perform read and write instructions over a knowledge graph](../10-query/00-overview.md) that is represented by a schema.

@@ -7,17 +7,17 @@ methods:
       <<: *method-rolePlayersMap
       method: relation.rolePlayersMap();
       returns:
-        - 'Map<[`Role`](/docs/concept-api/type?tab=java#role-methods), Set<[`Thing`](/docs/concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`Role`](/docs/concept-api/type?tab=java#role-methods), Set<[`Thing`](../04-concept-api/04-thing?tab=java#thing-methods.md)>>'
     javascript:
       <<: *method-rolePlayersMap
       method: await relation.rolePlayersMap();
       returns:
-        - 'Map<[`Role`](/docs/concept-api/type?tab=java#role-methods), Set<[`Thing`](/docs/concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`Role`](/docs/concept-api/type?tab=java#role-methods), Set<[`Thing`](../04-concept-api/04-thing?tab=java#thing-methods.md)>>'
     python:
       <<: *method-rolePlayersMap
       method: relation.role_players_map()
       returns:
-        - Dict[[`Role`](/docs/concept-api/type?tab=java#role-methods), set[[`Thing`](/docs/concept-api/thing?tab=java#thing-methods)]]
+        - Dict[[`Role`](/docs/concept-api/type?tab=java#role-methods), set[[`Thing`](../04-concept-api/04-thing?tab=java#thing-methods.md)]]
 
   - method:
     common: &method-rolePlayers
@@ -37,7 +37,7 @@ methods:
           <<: *accepts-rolePlayers-role
           type: "[`Role`](/docs/concept-api/type?tab=java#role-methods)"
       returns:
-        - "Stream of [`Thing`](/docs/concept-api/thing?tab=java) objects"
+        - "Stream of [`Thing`](../04-concept-api/04-thing?tab=java.md) objects"
     javascript:
       <<: *method-rolePlayers
       method: await relation.rolePlayers(role);
@@ -46,7 +46,7 @@ methods:
           <<: *accepts-rolePlayers-role
           type: "[`Role`](/docs/concept-api/type?tab=javascript#role-methods)"
       returns:
-        - "Iterator of [`Thing`](/docs/concept-api/thing?tab=java) objects"
+        - "Iterator of [`Thing`](../04-concept-api/04-thing?tab=java.md) objects"
     python:
       <<: *method-rolePlayers
       method: relation.role_players(role)
@@ -55,7 +55,7 @@ methods:
           <<: *accepts-rolePlayers-role
           type: "[`Role`](/docs/concept-api/type?tab=python#role-methods)"
       returns:
-        - "Iterator of [`Thing`](/docs/concept-api/thing?tab=java) objects"
+        - "Iterator of [`Thing`](../04-concept-api/04-thing?tab=java.md) objects"
 
   - method:
     common: &method-assign
@@ -81,9 +81,9 @@ methods:
           type: "[`Role`](/docs/concept-api/type?tab=java#role-methods)"
         param2:
           <<: *accepts-assign-thing
-          type: "[`Thing`](/docs/concept-api/thing?tab=java)"
+          type: "[`Thing`](../04-concept-api/04-thing?tab=java.md)"
       returns:
-        - '[`Relation`](/docs/concept-api/thing#relation-methods) object'
+        - '[`Relation`](../04-concept-api/04-thing#relation-methods.md) object'
     javascript:
       <<: *method-assign
       method: await relation.assign(role, thing);
@@ -93,7 +93,7 @@ methods:
           type: "[`Role`](/docs/concept-api/type?tab=javascript#role-methods)"
         param2:
           <<: *accepts-assign-thing
-          type: "[`Thing`](/docs/concept-api/thing?tab=javascript)"
+          type: "[`Thing`](../04-concept-api/04-thing?tab=javascript.md)"
       returns:
         - "`void`"
     python:
@@ -105,9 +105,9 @@ methods:
           type: "[`Role`](/docs/concept-api/type?tab=python#role-methods)"
         param2:
           <<: *accepts-assign-thing
-          type: "[`Thing`](/docs/concept-api/thing?tab=python)"
+          type: "[`Thing`](../04-concept-api/04-thing?tab=python.md)"
       returns:
-        - '[`Relation`](/docs/concept-api/thing#relation-methods) object'
+        - '[`Relation`](../04-concept-api/04-thing#relation-methods.md) object'
 
   - method:
     common: &method-unassign
@@ -122,7 +122,7 @@ methods:
         param2: &accepts-unassign-thing
           name: thing
           description: The instance to no longer play the `role` in this Relation.
-          type: "[`Thing`](/docs/concept-api/thing)"
+          type: "[`Thing`](../04-concept-api/04-thing.md)"
           required: true
           default: N/A
     java:
@@ -134,9 +134,9 @@ methods:
           type: "[`Role`](/docs/concept-api/type?tab=java#role-methods)"
         param2:
           <<: *accepts-unassign-thing
-          type: "[`Thing`](/docs/concept-api/thing?tab=java)"
+          type: "[`Thing`](../04-concept-api/04-thing?tab=java.md)"
       returns:
-        - '[`Relation`](/docs/concept-api/thing#relation-methods) object'
+        - '[`Relation`](../04-concept-api/04-thing#relation-methods.md) object'
     javascript:
       <<: *method-unassign
       method: await relation.unassign(role, thing);
@@ -146,7 +146,7 @@ methods:
           type: "[`Role`](/docs/concept-api/type?tab=javascript#role-methods)"
         param2:
           <<: *accepts-unassign-thing
-          type: "[`Thing`](/docs/concept-api/thing?tab=javascript)"
+          type: "[`Thing`](../04-concept-api/04-thing?tab=javascript.md)"
       returns:
         - "`void`"
     python:
@@ -158,6 +158,6 @@ methods:
           type: "[`Role`](/docs/concept-api/type?tab=python#role-methods)"
         param2:
           <<: *accepts-unassign-thing
-          type: "[`Thing`](/docs/concept-api/thing?tab=python)"
+          type: "[`Thing`](../04-concept-api/04-thing?tab=python.md)"
       returns:
-        - "[`Relation`](/docs/concept-api/thing#relation-methods) object"
+        - "[`Relation`](../04-concept-api/04-thing#relation-methods.md) object"

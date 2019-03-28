@@ -12,41 +12,41 @@ description:
 mappings:
   -
     query: define
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: undefine
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: get
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: insert
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: delete
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: "aggregate count/min/max/sum/mean/std"
-    answer: "[Numeric](#client-api-title-numeric)"
+    answer: "[Numeric](#numeric)"
   -
     query: aggregate group
-    answer: "[AnswerGroup](#client-api-title-answergroup)"
+    answer: "[AnswerGroup](#answergroup)"
   -
     query: "compute count/min/max/sum/mean/std"
-    answer: "[Numeric](#client-api-title-numeric)"
+    answer: "[Numeric](#numeric)"
   -
     query: compute path
-    answer: "[ConceptList](#client-api-title-conceptlist)"
+    answer: "[ConceptList](#conceptlist)"
   -
     query: compute cluster
-    answer: "[ConceptSet](#client-api-title-conceptset)"
+    answer: "[ConceptSet](#conceptset)"
   -
     query: compute centrality
-    answer: "[ConceptSetMeasure](#client-api-title-conceptsetmeasure)"
+    answer: "[ConceptSetMeasure](#conceptsetmeasure)"
 
 types:
   - type1:
-    title: ConceptMap ## !!! synced with codeKeywordsToLink
+    title: ConceptMap
     methods:
       - method:
         common: &method-conceptmap-map
@@ -54,7 +54,7 @@ types:
         java:
           <<: *method-conceptmap-map
           method: answer.map();
-          description: Produces a Map where keys are variable names and values are [`concept`]](/docs/concept-api/concept)s.
+          description: Produces a Map where keys are variable names and values are [`concept`]](../04-concept-api/01-concept.md)s.
           returns:
             - "`Map<Variable, Concept>"
         javascript:
@@ -75,7 +75,7 @@ types:
           title: Explaining an inferred answer
           description: Provides an explanation on the inference of the concept in the answer, if the concept is in fact inferred.
           returns:
-            - "[Explanation](#client-api-title-explanation)"
+            - "[Explanation](#explanation)"
             - "null"
         java: &method-explanation-java
           <<: *method-explanation
@@ -180,7 +180,7 @@ types:
     methods:
       - method:
         common: &method-conceptsetmeasure-measurement
-          title: Retrieve the numeric value of a centrality computation ## !!! synced with codeKeywordsToLink
+          title: Retrieve the numeric value of a centrality computation
         java:
           <<: *method-conceptsetmeasure-measurement
           method: answer.measurement();
@@ -227,9 +227,9 @@ types:
     methods:
       - method:
         common: &method-answergroup-owner
-          title: Retrieve the concept that is the group owner ## !!! synced with codeKeywordsToLink
+          title: Retrieve the concept that is the group owner
           returns:
-            - "[Concept](/docs/concept-api/concept)"
+            - "[Concept](../04-concept-api/01-concept.md)"
         java:
           <<: *method-answergroup-owner
           method: answer.owner();
@@ -268,16 +268,16 @@ types:
           <<: *method-explanation-python
 
   - type7:
-    title: Explanation ## !!! synced with codeKeywordsToLink
+    title: Explanation
     methods:
       - method:
         common: &method-explanation-querypattern
-          title: Retrieve a Graql explanation of the answer ## !!! synced with codeKeywordsToLink
+          title: Retrieve a Graql explanation of the answer
         java:
           <<: *method-explanation-querypattern
           method: explanation.getPattern();
           returns:
-            - "[`Graql.Pattern`](#client-api-title-graql)"
+            - "[`Graql.Pattern`](#graql)"
         javascript:
           <<: *method-explanation-querypattern
           method: answer.queryPattern();
@@ -291,20 +291,20 @@ types:
 
       - method:
         common: &method-explanation-answers
-          title: Retrieve source facts of inference ## !!! synced with codeKeywordsToLink
+          title: Retrieve source facts of inference
           description: Provides a list of answers from which the inferred answer is derived.
         java:
           <<: *method-explanation-answers
           method: explanation.getAnswers();
           returns:
-            - "[`List<ConceptMap>`](#client-api-title-conceptmap)"
+            - "[`List<ConceptMap>`](#conceptmap)"
         javascript:
           <<: *method-explanation-answers
           method: explanation.answers();
           returns:
-            - Array of [`ConceptMap`](#client-api-title-conceptmap)
+            - Array of [`ConceptMap`](#conceptmap)
         python:
           <<: *method-explanation-answers
           method: explanation.answers()
           returns:
-            - List of [`ConceptMap`](#client-api-title-conceptmap)
+            - List of [`ConceptMap`](#conceptmap)

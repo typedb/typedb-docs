@@ -3,14 +3,13 @@ pageTitle: Schema
 keywords: graql, schema, type hierarchy, reserved keywords
 longTailKeywords: graql schema, graql type hierarchy, graql data model, graql reserved keyword
 Summary: Introduction to the Grakn Schema.
-permalink: /docs/schema/overview
 ---
 
 ## Why Use a Schema?
 
 Schema is a a means to address the problems of managing and handling unstructured or loosely structured data.
 
-![Unstructured problems](/docs/images/schema/unstructured-problems.png)
+![Unstructured problems](../images/schema/unstructured-problems.png)
 
 The common problems we encounter when dealing with unstructured or loosely structured data are:
 
@@ -66,7 +65,7 @@ Everything that describes our domain in a Grakn Knowledge Graph is a concept. Th
 We refer to data instances as things - they can be thought of as instances of types defined in the schema.
 
 ### Types
-Types constitute the core of your schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](/docs/schema/concepts#entity), [Relationships](/docs/schema/concepts#relationship), and [Attributes](/docs/schema/concepts#attribute):
+Types constitute the core of your schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](../09-schema/01-concepts.md#entity), [Relationships](../09-schema/01-concepts.md#relation), and [Attributes](../09-schema/01-concepts.md#attribute):
 
 __Entities__ are the main actors in our domain. These are usually the type of things we want to know about. Entity types provide means of classifying the objects in our domain.
 
@@ -94,23 +93,23 @@ In your schema, we will need to specify what role relates to each relation type 
 Thanks to roles, you will be able to guarantee the logical integrity of your data, disallowing a `marriage` between a `person` and a `building`, for example, unless you specifically allow such a thing in the schema.
 
 ### Rules
-Lastly, the Grakn schema is completed with [**Graql Rules**](/docs/schema/rules). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
+Lastly, the Grakn schema is completed with [**Graql Rules**](../09-schema/03-rules.md). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
 
 
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset.
 
 
 ## (un)Define the schema programmatically
-In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](/docs/client-api/java#client-api-method-manipulate-the-schema-programatically), [Python](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) and [Node.js](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query).
+In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](../03-client-api/01-java.md#graql), [Python](../03-client-api/02-python.md#lazily-execute-a-graql-query) and [Node.js](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query).
 
 ## Load the schema
-Once we have defined the schema, the next immediate step is to load it into Grakn. Learn how to [load the schema via the Grakn Console](/docs/running-grakn/console#console-options).
+Once we have defined the schema, the next immediate step is to load it into Grakn. Learn how to [load the schema via the Grakn Console](../02-running-grakn/02-console.md#console-options).
 
 ## Migrate Data
 To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a Grakn knowledge graph, check out the [Migration Mechanism](...) followed by a comprehensive [tutorial](...) in the language of your choice.
 
 ## Query the schema
-In the next section we learn how to [insert](/docs/query/insert-query), [get](/docs/query/get-query), [delete](/docs/query/delete-query), [update](/docs/query/update-data), [aggregate](/docs/query/aggregate-query) and [compute](/docs/query/compute-query) data represented by a schema.
+In the next section we learn how to [insert](../10-query/03-insert-query.md), [get](../10-query/02-get-query.md), [delete](../10-query/04-delete-query.md), [update](/docs/query/update-data), [aggregate](../10-query/06-aggregate-query.md) and [compute](../10-query/07-compute-query.md) data represented by a schema.
 
 ## Reserved Keywords
 The following keywords are reserved and meant to only be used by Graql in the schema.
@@ -136,4 +135,4 @@ when, then
 ## Summary
 The Grakn schema sets the foundation for a Grakn knowledge graph. When modelled thoroughly, the schema provides us with a knowledge graph that benefits from logical integrity, is flexible towards change, capable of automated reasoning, and enables writing intuitive queries.
 
-In the next section, we learn about the members of a schema - [Concept Types](/docs/schema/concepts) and [Rules](/docs/schema/rules).
+In the next section, we learn about the members of a schema - [Concept Types](../09-schema/01-concepts.md) and [Rules](../09-schema/03-rules.md).

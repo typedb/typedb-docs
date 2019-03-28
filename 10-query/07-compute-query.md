@@ -3,22 +3,21 @@ pageTitle: Compute Query
 keywords: graql, compute query, shortest path, cluster, centrality, statistics
 longTailKeywords: grakn compute data, graql compute statistics, graql compute shortest path, graql compute centrality, graql compute cluster
 Summary: Compute statistics, shortest path, clusters and centrality in Grakn.
-permalink: /docs/query/compute-query
 ---
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `compute` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `compute` query, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on the query object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a compute` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Computing Distributed Analytics Over a Large Dataset
@@ -192,11 +191,11 @@ GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496");
 [tab:end]
 </div>
 
-Running the above query in [Grakn Console](/docs/running-grakn/console),returns a list of ids that that represents the instances placed on the shortest path between the two.
+Running the above query in [Grakn Console](../02-running-grakn/02-console.md),returns a list of ids that that represents the instances placed on the shortest path between the two.
 
-When we execute this query in the [Grakn Workbase](/docs/workbase/overview), the result is as follows:
+When we execute this query in the [Grakn Workbase](../07-workbase/00-overview.md), the result is as follows:
 
-![shortest path in workbase](/docs/images/query/compute_path.png)
+![shortest path in workbase](../images/query/compute_path.png)
 
 ### Specify a whitelist
 When looking for the shortest path, we may need to constraint the shortest path to only include certain types. In other words, when given a whitelist of types, Grakn ignores any other path that leads to a type not included in the list. To do this, we use the `in` keyword followed by the list of allowed types.
@@ -218,11 +217,11 @@ GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496").i
 [tab:end]
 </div>
 
-Given the two `person` instances with ids of `V229424` and `v446496`, running the above query in [Grakn Console](/docs/running-grakn/console) returns a list of ids representing the shortest path between them. The list includes only the ids of instances that are of type `person` and `friendship`, as specified via the `in` keyword. Any other indirect association between the given persons is ignored when looking for the shortest path.
+Given the two `person` instances with ids of `V229424` and `v446496`, running the above query in [Grakn Console](../02-running-grakn/02-console.md) returns a list of ids representing the shortest path between them. The list includes only the ids of instances that are of type `person` and `friendship`, as specified via the `in` keyword. Any other indirect association between the given persons is ignored when looking for the shortest path.
 
-When we execute this query in the [Grakn Workbase](/docs/workbase/overview), the result is as follows:
+When we execute this query in the [Grakn Workbase](../07-workbase/00-overview.md), the result is as follows:
 
-![subgraph shortest path in workbase](/docs/images/query/compute_path_subgraph.png)
+![subgraph shortest path in workbase](../images/query/compute_path_subgraph.png)
 
 <div class="note">
 [Note]
@@ -418,4 +417,4 @@ This query retrieves the set of concept IDs that belong to clusters which includ
 ## Summary
 We use a compute query to run distributed analytics on the entire knowledge graph or a large subset of it filtered by a concept type. This statistical analytics include statistical function, shortest path, centrality and cluster
 
-Next, we learn about the [Concept API](/docs/concept-api/overview) and how it is used via the [Grakn Clients](/docs/client-api/overview) to retrieve information on a specific instance and its surroundings.
+Next, we learn about the [Concept API](../04-concept-api/00-overview.md) and how it is used via the [Grakn Clients](../03-client-api/00-overview.md) to retrieve information on a specific instance and its surroundings.

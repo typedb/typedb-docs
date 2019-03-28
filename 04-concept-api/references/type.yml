@@ -494,14 +494,14 @@ methods:
       <<: *method-instances
       method: type.instances();
       returns:
-        - "Stream of [`Thing`](/docs/concept-api/thing?tab=java) objects"
+        - "Stream of [`Thing`](../04-concept-api/04-thing?tab=java.md) objects"
     javascript:
       <<: *method-instances
       method: await type.instances();
       returns:
-        - "Iterator of [`Thing`](/docs/concept-api/thing?tab=javascript) objects"
+        - "Iterator of [`Thing`](../04-concept-api/04-thing?tab=javascript.md) objects"
     python:
       <<: *method-instances
       method: type.instances()
       returns:
-        - "Iterator of [`Thing`](/docs/concept-api/thing?tab=python) objects"
+        - "Iterator of [`Thing`](../04-concept-api/04-thing?tab=python.md) objects"

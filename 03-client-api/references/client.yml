@@ -2,7 +2,7 @@ title: "Client"
 methods:
   - method:
     common: &method-session
-      title: Create a session/keyspace ## !!! synced with codeKeywordsToLink
+      title: Create a session/keyspace
       description: >
         Opens a communication tunnel (session) to the given keyspace on the running Grakn server.
         **If no keyspace with the given name exists, a new one is created.**
@@ -14,7 +14,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[Session](#client-api-title-session) object"
+        - "[Session](#session) object"
     java:
       <<: *method-session
       method: client.session(String keyspace);
@@ -27,7 +27,7 @@ methods:
 
   - method:
     common: &method-keyspaces-retrieve
-      title: Retrieve all keyspaces ## !!! synced with codeKeywordsToLink
+      title: Retrieve all keyspaces
       description: Retrieves the name of all keyspaces running on the Grakn server.
     java:
       <<: *method-keyspaces-retrieve
@@ -47,7 +47,7 @@ methods:
 
   - method:
     common: &method-keyspaces-delete
-      title: Delete a keyspace ## !!! synced with codeKeywordsToLink
+      title: Delete a keyspace
       description: Deletes a keyspace with the given name.
       accepts: &accepts-keyspaces-delete
         param: &accepts-keyspaces-delete-keyspace
