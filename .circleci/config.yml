@@ -103,7 +103,7 @@ jobs:
     steps:
       - install-bazel-linux-rbe
       - checkout
-      - run: bazel test //test/links/:test --test_output=errors
+      - run: bazel test //test/links:test --test_output=errors
 
   release-staging:
     machine: true
