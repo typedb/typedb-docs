@@ -18,7 +18,7 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 
 As a superuser, add the repo:
 ```
-# yum-config-manager --add-repo https://repo.grakn.ai/repository/meta/grakn-core.repo
+# yum-config-manager --add-repo https://repo.grakn.ai/repository/meta/rpm.repo
 ```
 
 Update the package cache:
@@ -36,7 +36,7 @@ Install Grakn Server and Grakn Console:
 As a superuser, add the repo:
 ```
 # apt install software-properties-common
-# add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/deb/ trusty main'
+# add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/apt/ trusty main'
 # apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
 ```
 
