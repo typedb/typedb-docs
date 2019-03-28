@@ -12,7 +12,7 @@ pattern_to_find_template_calls = '\{%\sinclude\s.*?\s%\}'
 
 pages = {}
 
-# populate the `pages` dictiony with anchors and links of each
+# populate the `pages` dictionary with anchors and links of each
 for markdown_path in glob.iglob('./**/*.md'):
     title = markdown_path.replace("./", "")
 
@@ -69,8 +69,8 @@ class LinksTest(unittest.TestCase):
                         link_anchor = link.split("#")[1]
                         if link_page in pages and link_anchor not in pages[link_page]["anchors"]:
                             errors.append("The anchor [" + link_anchor + "] of the link [" + link_page + "] found in [" + title + "] is broken.")
-            print(errors)
-            self.assertEqual(len(errors), 0)
+
+            self.assertEqual(len(errors), 0, msg=errors)
 
         def test_autolinks(self):
             errors = []
@@ -114,8 +114,8 @@ class LinksTest(unittest.TestCase):
                                 errors.append("The link [" + client_url + "] found in [" + autolink_keywords_path + "] is broken.")
                             elif client_url in pages and anchor and anchor not in pages[client_url]["anchors"]:
                                 errors.append("The anchor [" + anchor + "] of the link [" + client_url + "] found in [" + autolink_keywords_path + "] is broken.")
-            print(errors)
-            self.assertEqual(len(errors), 0)
+
+            self.assertEqual(len(errors), 0, msg=errors)
 
 
 if __name__ == '__main__':
