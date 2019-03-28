@@ -33,7 +33,7 @@ methods:
           <<: *accepts-relations-param-roles
           type: "Varargs of [`Role`](/docs/concept-api/type?tab=java#role-methods) objects"
       returns:
-        - "Stream of [`Relation`](/docs/concept-api/thing?tab=java#relation-methods) objects"
+        - "Stream of [`Relation`](../04-concept-api/04-thing?tab=java#relation-methods.md) objects"
     javascript:
       <<: *method-relations
       method: await thing.relations(roles);
@@ -42,7 +42,7 @@ methods:
           <<: *accepts-relations-param-roles
           type: "Array of [`Role`](/docs/concept-api/type?tab=javascript#role-methods)s"
       returns:
-        - "Iterator of [`Relation`](/docs/concept-api/thing?tab=javascript#relation-methods) objects"
+        - "Iterator of [`Relation`](../04-concept-api/04-thing?tab=javascript#relation-methods.md) objects"
     python:
       <<: *method-relations
       method: thing.relations(roles)
@@ -51,7 +51,7 @@ methods:
           <<: *accepts-relations-param-roles
           type: "List of [`Role`](/docs/concept-api/type?tab=python#role-methods)s"
       returns:
-        - "Iterator of [`Relation`](/docs/concept-api/thing?tab=python#relation-methods) objects"
+        - "Iterator of [`Relation`](../04-concept-api/04-thing?tab=python#relation-methods.md) objects"
 
   - method:
     common: &method-roles
@@ -92,7 +92,7 @@ methods:
           name: attributeTypes
           type: "Varargs of [`AttributeType`](/docs/concept-api/type?tab=java#attributetype-methods)s"
       returns:
-        - "Stream of [`Attribute`](/docs/concept-api/thing?tab=java#attribute-methods) objects"
+        - "Stream of [`Attribute`](../04-concept-api/04-thing?tab=java#attribute-methods.md) objects"
     javascript:
       <<: *method-attributes
       method: await thing.attributes(attributeTypes);
@@ -103,7 +103,7 @@ methods:
           name: attributeTypes
           type: "Array of [`AttributeType`](/docs/concept-api/type?tab=javascript#attributetype-methods)s"
       returns:
-        - "Iterator of [`Attribute`](/docs/concept-api/thing?tab=javascript#attribute-methods) objects"
+        - "Iterator of [`Attribute`](../04-concept-api/04-thing?tab=javascript#attribute-methods.md) objects"
     python:
       <<: *method-attributes
       method: thing.attributes(attribute_types)
@@ -114,7 +114,7 @@ methods:
           name: attribute_types
           type: "List of [`AttributeType`](/docs/concept-api/type?tab=pyhthon#attributetype-methods)s"
       returns:
-        - "Iterator of [`Attribute`](/docs/concept-api/thing?tab=pyhthon#attribute-methods) objects"
+        - "Iterator of [`Attribute`](../04-concept-api/04-thing?tab=pyhthon#attribute-methods.md) objects"
 
   - method:
     common: &method-keys
@@ -135,7 +135,7 @@ methods:
           name: attributeTypes
           type: "Array of [`AttributeType`](/docs/concept-api/type?tab=java#attributetype-methods)s"
       returns:
-        - "Stream of [`Attribute`](/docs/concept-api/thing?tab=java#attribute-methods) objects"
+        - "Stream of [`Attribute`](../04-concept-api/04-thing?tab=java#attribute-methods.md) objects"
     javascript:
       <<: *method-keys
       method: await thing.keys(attributeTypes);
@@ -146,7 +146,7 @@ methods:
           name: attributeTypes
           type: "Array of [`AttributeType`](/docs/concept-api/type?tab=javascript#attributetype-methods)s"
       returns:
-        - "Iterator of [`Attribute`](/docs/concept-api/thing?tab=javascript#attribute-methods) objects"
+        - "Iterator of [`Attribute`](../04-concept-api/04-thing?tab=javascript#attribute-methods.md) objects"
     python:
       <<: *method-keys
       method: thing.keys(attribute_types)
@@ -157,7 +157,7 @@ methods:
           name: attribute_types
           type: "List of [`AttributeType`](/docs/concept-api/type?tab=python#attributetype-methods)s"
       returns:
-        - "Iterator of [`Attribute`](/docs/concept-api/thing?tab=python#attribute-methods) objects"
+        - "Iterator of [`Attribute`](../04-concept-api/04-thing?tab=python#attribute-methods.md) objects"
 
   - method:
     common: &method-has
@@ -175,27 +175,27 @@ methods:
       accepts:
         param:
           <<: *accepts-has-attribute
-          type: "[`Attribute`](/docs/concept-api/thing?tab=java#attribute-methods)"
+          type: "[`Attribute`](../04-concept-api/04-thing?tab=java#attribute-methods.md)"
       returns:
-        - "[`Thing`](/docs/concept-api/thing?tab=java) object"
+        - "[`Thing`](../04-concept-api/04-thing?tab=java.md) object"
     javascript:
       <<: *method-has
       method: await thing.has(attribute);
       accepts:
         param:
           <<: *accepts-has-attribute
-          type: "[`Attribute`](/docs/concept-api/thing?tab=javascript#attribute-methods)"
+          type: "[`Attribute`](../04-concept-api/04-thing?tab=javascript#attribute-methods.md)"
       returns:
-        - "[`Thing`](/docs/concept-api/thing?tab=javascript) object"
+        - "[`Thing`](../04-concept-api/04-thing?tab=javascript.md) object"
     python:
       <<: *method-has
       method: thing.has(attribute)
       accepts:
         param:
           <<: *accepts-has-attribute
-          type: "[`Attribute`](/docs/concept-api/thing?tab=python#attribute-methods)"
+          type: "[`Attribute`](../04-concept-api/04-thing?tab=python#attribute-methods.md)"
       returns:
-        - "[`Thing`](/docs/concept-api/thing?tab=python) object"
+        - "[`Thing`](../04-concept-api/04-thing?tab=python.md) object"
 
   - method:
     common: &method-unhas
@@ -205,29 +205,29 @@ methods:
         param:
           name: attribute
           description: The Attribute to be disowned from this Thing.
-          type: "[`Attribute`](/docs/concept-api/thing#attribute-methods)"
+          type: "[`Attribute`](../04-concept-api/04-thing#attribute-methods.md)"
           required: true
           default: N/A
     java:
       <<: *method-unhas
       method: thing.unhas(Attribute attribute);
       returns:
-        - "[`Thing`](/docs/concept-api/thing?tab=java) object"
+        - "[`Thing`](../04-concept-api/04-thing?tab=java.md) object"
     javascript:
       <<: *method-unhas
       method: await thing.unhas(attribute);
       returns:
-        - "[`Thing`](/docs/concept-api/thing?tab=javascript) object"
+        - "[`Thing`](../04-concept-api/04-thing?tab=javascript.md) object"
     python:
       <<: *method-unhas
       method: thing.unhas(attribute)
       returns:
-        - "[`Thing`](/docs/concept-api/thing?tab=python) object"
+        - "[`Thing`](../04-concept-api/04-thing?tab=python.md) object"
 
   - method:
     common: &method-isInferred
       title: Check if inferred
-      description: Checks if this Thing is inferred by a [Reasoning Rule](/docs/schema/rules).
+      description: Checks if this Thing is inferred by a [Reasoning Rule](../09-schema/03-rules.md).
       returns:
         - boolean
     java:

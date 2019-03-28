@@ -115,6 +115,15 @@ load("@test_example_pip//:requirements.bzl",
 test_example_pip_install = "pip_install")
 test_example_pip_install()
 
+pip_import(
+    name = "test_links_pip",
+    requirements = "//test/links:requirements.txt",
+)
+
+load("@test_links_pip//:requirements.bzl",
+test_links_pip_install = "pip_install")
+test_links_pip_install()
+
 
 ##########################
 # Load GRPC Dependencies #

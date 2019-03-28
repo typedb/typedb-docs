@@ -4,7 +4,6 @@ keywords: setup, getting started, grakn, download, install, server, linux, mac, 
 longTailKeywords: grakn on linux, grakn on mac, grakn on windows, start grakn server
 summary: Install and run the Grakn Server on Linux, Mac or Windows.
 toc: false
-permalink: /docs/running-grakn/install-and-run
 ---
 
 ## System Requirements
@@ -54,7 +53,7 @@ Install Grakn Server and Grakn Console:
 
 Download the [latest release](https://grakn.ai/download?os=linux#core), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
 [tab:end]
 
@@ -70,7 +69,7 @@ $ brew install grakn-core
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
 [tab:end]
 
@@ -79,7 +78,7 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
 [tab:end]
 
@@ -91,7 +90,7 @@ Run :
 $ docker run -d -p 48555:48555 graknlabs/grakn
 ```
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](/docs/running-grakn/console).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
 [tab:end]
 </div>
@@ -114,4 +113,4 @@ Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder 
 ## Summary
 So far we have learned how to download/install Grakn and run the Grakn Server.
 
-Next, we learn how to [configure the Grakn Server](/docs/running-grakn/configuration) and [interact with a Grakn knowledge graph via the Grakn Console](/docs/running-grakn/console).
+Next, we learn how to [configure the Grakn Server](../02-running-grakn/03-configuration.md) and [interact with a Grakn knowledge graph via the Grakn Console](../02-running-grakn/02-console.md).

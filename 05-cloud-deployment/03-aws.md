@@ -3,7 +3,6 @@ pageTitle: Amazon Web Services Deployment
 keywords: grakn, cloud, deployment, amazon web services, aws, kgms
 longTailKeywords: grakn cloud deployment, grakn on the cloud, grakn kgms on the cloud, grakn kgms aws, grakn aws
 Summary: Learn how to deploy Grakn KGMS on Amazon Web Services.
-permalink: /docs/cloud-deployment/aws
 ---
 
 ## Deploy Grakn on AWS
@@ -17,97 +16,97 @@ As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.
 
 [slide:start]
 [header:start]Visit KGMS on AWS[header:end]
-[body:start]![KGMS listing on AWS Marketplace](/docs/images/cloud-deployment/aws_listing.png)[body:end]
+[body:start]![KGMS listing on AWS Marketplace](../images/cloud-deployment/aws_listing.png)[body:end]
 [footer:start]Visit the [KGMS listing on AWS Marketplace](https://aws.amazon.com/marketplace/pp/B07H8RMX5X).[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Subscribe[header:end]
-[body:start]![Subscribe](/docs/images/cloud-deployment/aws_subscribe.png)[body:end]
+[body:start]![Subscribe](../images/cloud-deployment/aws_subscribe.png)[body:end]
 [footer:start]Click on **Continue to Subscribe**.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Accept Terms[header:end]
-[body:start]![Accept Terms](/docs/images/cloud-deployment/aws_accept_terms.png)[body:end]
+[body:start]![Accept Terms](../images/cloud-deployment/aws_accept_terms.png)[body:end]
 [footer:start]Review the pricing information and click on **Accept Terms** to continue.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Subscribing[header:end]
-[body:start]![Subscribing](/docs/images/cloud-deployment/aws_subscribing.png)[body:end]
+[body:start]![Subscribing](../images/cloud-deployment/aws_subscribing.png)[body:end]
 [footer:start]We now need to wait while Amazon processes our request to subscribe to Grakn KGMS.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Configure[header:end]
-[body:start]![Configure](/docs/images/cloud-deployment/aws_configure.png)[body:end]
+[body:start]![Configure](../images/cloud-deployment/aws_configure.png)[body:end]
 [footer:start]Click on **Continue to Configuration**[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Select CloudFormation[header:end]
-[body:start]![Select CloudFormation](/docs/images/cloud-deployment/aws_fulfillment_cf.png)[body:end]
+[body:start]![Select CloudFormation](../images/cloud-deployment/aws_fulfillment_cf.png)[body:end]
 [footer:start]Select _CloudFormation_ as the _Fulfillment Option_.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Confirm Configuration[header:end]
-[body:start]![Confirm Configuration](/docs/images/cloud-deployment/aws_cf_configure.png)[body:end]
+[body:start]![Confirm Configuration](../images/cloud-deployment/aws_cf_configure.png)[body:end]
 [footer:start]We can now adjust the configuration based on our needs.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Continue to Launch[header:end]
-[body:start]![Continue to Launch](/docs/images/cloud-deployment/aws_cf_launch_a.png)[body:end]
+[body:start]![Continue to Launch](../images/cloud-deployment/aws_cf_launch_a.png)[body:end]
 [footer:start]Click on **Continue to Launch**.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Action: CloudFormation[header:end]
-[body:start]![Action: CloudFormation](/docs/images/cloud-deployment/aws_cf_launch_b.png)[body:end]
+[body:start]![Action: CloudFormation](../images/cloud-deployment/aws_cf_launch_b.png)[body:end]
 [footer:start]Select _Launch CloudFormation_ as the _Action_.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Launch[header:end]
-[body:start]![Launch ](/docs/images/cloud-deployment/aws_cf_launch_c.png)[body:end]
+[body:start]![Launch ](../images/cloud-deployment/aws_cf_launch_c.png)[body:end]
 [footer:start]Select _Launch CloudFormation_ as the _Action_.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Select Template[header:end]
-[body:start]![Select Template](/docs/images/cloud-deployment/aws_cf_template.png)[body:end]
+[body:start]![Select Template](../images/cloud-deployment/aws_cf_template.png)[body:end]
 [footer:start]We can select a template of our choice or simply click on **Next** to continue with the pre-selected template.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Specify Details[header:end]
-[body:start]![Specify Details](/docs/images/cloud-deployment/aws_cf_details.png)[body:end]
+[body:start]![Specify Details](../images/cloud-deployment/aws_cf_details.png)[body:end]
 [footer:start]Specify the stack details and parameters and click on **Next** to continue. Note that all fields are required.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Specify Options[header:end]
-[body:start]![Specify Options](/docs/images/cloud-deployment/aws_cf_options.png)[body:end]
+[body:start]![Specify Options](../images/cloud-deployment/aws_cf_options.png)[body:end]
 [footer:start]Explore and specify the available options to your liking and click on **Next** to continue.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Review & Confirm[header:end]
-[body:start]![Review & Confirm](/docs/images/cloud-deployment/aws_cf_review.png)[body:end]
+[body:start]![Review & Confirm](../images/cloud-deployment/aws_cf_review.png)[body:end]
 [footer:start]Review all details and options for verification and click on **Create** to continue.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Wait for Stack Creation[header:end]
-[body:start]![Wait for Stack Creation](/docs/images/cloud-deployment/aws_cf_stacks_a.png)[body:end]
+[body:start]![Wait for Stack Creation](../images/cloud-deployment/aws_cf_stacks_a.png)[body:end]
 [footer:start]Once the stack creation form is successfully submitted, we be redirected to the Stacks page. Although it may seem as the stack has not been created, Amazon is processing the stack creation and after a short while ...[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]View the Stack[header:end]
-[body:start]![View the Stack](/docs/images/cloud-deployment/aws_cf_stacks_b.png)[body:end]
+[body:start]![View the Stack](../images/cloud-deployment/aws_cf_stacks_b.png)[body:end]
 [footer:start]The newly created stack is displayed and we can click on its name to view its status and details.[footer:end]
 [slide:end]
 
@@ -128,25 +127,25 @@ As part of the deployment, AWS produces the default password with username being
 
 [slide:start]
 [header:start]View the Stack Details[header:end]
-[body:start]![View the Stack Details](/docs/images/cloud-deployment/aws_cf_select_stack.png)[body:end]
+[body:start]![View the Stack Details](../images/cloud-deployment/aws_cf_select_stack.png)[body:end]
 [footer:start]Click on the stack's name to view its details.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Expand Outputs[header:end]
-[body:start]![Expand Outputs](/docs/images/cloud-deployment/aws_cf_stack_output.png)[body:end]
+[body:start]![Expand Outputs](../images/cloud-deployment/aws_cf_stack_output.png)[body:end]
 [footer:start]Expand _Outputs_.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Expand Outputs[header:end]
-[body:start]![Expand Outputs](/docs/images/cloud-deployment/aws_cf_stack_password.png)[body:end]
+[body:start]![Expand Outputs](../images/cloud-deployment/aws_cf_stack_password.png)[body:end]
 [footer:start]The password for username `grakn` is the value of the `GraknUserPassword`.[footer:end]
 [slide:end]
 
 </div>
 
-We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](/docs/management/users#update-a-user) `grakn` giving it a new secured password.
+We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](../06-management/02-users.md#update-a-user) `grakn` giving it a new secured password.
 
 ## Scale the Cluster
 Grakn cluster is deployed within an Auto Scaling Group which allows us to adjust the number of instances in the cluster in a straight-forward manner.
@@ -156,19 +155,19 @@ Auto Scaling Groups group together EC2 instances that share similar characterist
 
 [slide:start]
 [header:start]Navigate to Auto Scaling Groups[header:end]
-[body:start]![Navigate to Auto Scaling Groups](/docs/images/cloud-deployment/aws_cf_auto_scaling.png)[body:end]
+[body:start]![Navigate to Auto Scaling Groups](../images/cloud-deployment/aws_cf_auto_scaling.png)[body:end]
 [footer:start]In the AWS Console, click on **Auto Scaling Groups** under _Auto Scaling_.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Edit the Cluster[header:end]
-[body:start]![Edit the Cluster](/docs/images/cloud-deployment/aws_cf_auto_scaling_edit_a.png)[body:end]
+[body:start]![Edit the Cluster](../images/cloud-deployment/aws_cf_auto_scaling_edit_a.png)[body:end]
 [footer:start]Having selected the Grakn Cluster, click on **Edit** under _Actions_.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Modify Desired Capacity[header:end]
-[body:start]![Modify Desired Capacity](/docs/images/cloud-deployment/aws_cf_auto_scaling_edit_b.png)[body:end]
+[body:start]![Modify Desired Capacity](../images/cloud-deployment/aws_cf_auto_scaling_edit_b.png)[body:end]
 [footer:start]We can now change the values of _Desired Capacity_ as well as _min_ and _max_. For more information, refer to [AWS Documentation on Auto Scaling Groups](https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroup.html).[footer:end]
 [slide:end]
 
@@ -220,67 +219,67 @@ For more information check out AWS documentation on [Starting and Stopping Insta
 
 [slide:start]
 [header:start]Visit KGMS on AWS[header:end]
-[body:start]![KGMS listing on AWS Marketplace](/docs/images/cloud-deployment/aws_listing.png)[body:end]
+[body:start]![KGMS listing on AWS Marketplace](../images/cloud-deployment/aws_listing.png)[body:end]
 [footer:start]Visit the [KGMS listing on AWS Marketplace](https://aws.amazon.com/marketplace/pp/B07H8RMX5X).[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Subscribe[header:end]
-[body:start]![Subscribe](/docs/images/cloud-deployment/aws_subscribe.png)[body:end]
+[body:start]![Subscribe](../images/cloud-deployment/aws_subscribe.png)[body:end]
 [footer:start]Click on **Continue to Subscribe**.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Accept Terms[header:end]
-[body:start]![Accept Terms](/docs/images/cloud-deployment/aws_accept_terms.png)[body:end]
+[body:start]![Accept Terms](../images/cloud-deployment/aws_accept_terms.png)[body:end]
 [footer:start]Review the pricing information and click on **Accept Terms** to continue.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Subscribing[header:end]
-[body:start]![Subscribing](/docs/images/cloud-deployment/aws_subscribing.png)[body:end]
+[body:start]![Subscribing](../images/cloud-deployment/aws_subscribing.png)[body:end]
 [footer:start]We now need to wait while Amazon processes our request to subscribe to Grakn KGMS.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Configure[header:end]
-[body:start]![Configure](/docs/images/cloud-deployment/aws_configure.png)[body:end]
+[body:start]![Configure](../images/cloud-deployment/aws_configure.png)[body:end]
 [footer:start]Review the Click on **Continue to Configuration**[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Select CloudFormation[header:end]
-[body:start]![Select CloudFormation](/docs/images/cloud-deployment/aws_fulfillment_ami.png)[body:end]
+[body:start]![Select CloudFormation](../images/cloud-deployment/aws_fulfillment_ami.png)[body:end]
 [footer:start]Select _Amazon Machine Image_ as the _Fulfillment Option_.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Confirm Configuration[header:end]
-[body:start]![Confirm Configuration](/docs/images/cloud-deployment/aws_ami_configure.png)[body:end]
+[body:start]![Confirm Configuration](../images/cloud-deployment/aws_ami_configure.png)[body:end]
 [footer:start]We can now adjust the configuration based on our needs.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Continue to Launch[header:end]
-[body:start]![Continue to Launch](/docs/images/cloud-deployment/aws_ami_launch_a.png)[body:end]
+[body:start]![Continue to Launch](../images/cloud-deployment/aws_ami_launch_a.png)[body:end]
 [footer:start]Click on **Continue to Launch**.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Action: CloudFormation[header:end]
-[body:start]![Action: CloudFormation](/docs/images/cloud-deployment/aws_ami_launch_b.png)[body:end]
+[body:start]![Action: CloudFormation](../images/cloud-deployment/aws_ami_launch_b.png)[body:end]
 [footer:start]Select _Launch From Website as the _Action_ and fill in the rest of the form. Once happy with all the options, click on **Launch** to continue.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Launch[header:end]
-[body:start]![Launch ](/docs/images/cloud-deployment/aws_ami_launch_c.png)[body:end]
+[body:start]![Launch ](../images/cloud-deployment/aws_ami_launch_c.png)[body:end]
 [footer:start]An instance of Grakn is now deployed on EC2.[footer:end]
 [slide:end]
 
 [slide:start]
 [header:start]Select Template[header:end]
-[body:start]![Select Template](/docs/images/cloud-deployment/aws_ami_console.png)[body:end]
+[body:start]![Select Template](../images/cloud-deployment/aws_ami_console.png)[body:end]
 [footer:start]By navigating to the [EC2 Console](https://console.aws.amazon.com/ec2/v2/home), we can view the running instance..[footer:end]
 [slide:end]
 </div>
@@ -304,22 +303,22 @@ ssh -i <path to the private key> ubuntu@<grakn instance DNS name or IP address>
 The private key in question is the one that was specified as the `KeyPairName` stack parameter.
 
 We can retrieve the DNS name or IP address by navigating to list of EC2 instances on AWS as illustrated below.
-![Grakn EC2 Instances](/docs/images/cloud-deployment/aws_instance_dns_ip.png)
+![Grakn EC2 Instances](../images/cloud-deployment/aws_instance_dns_ip.png)
 
 
 ## Cluster Health Check
 While [logged into a node](#logging-into-a-node), run `grakn cluster status`. This outputs the list of all nodes, as shown below, with the first column indicating the Status (**U**p/**D**own) and State (**N**ormal/**L**eaving/**J**oining/**M**oving).
 
-![Cluster Health Check](/docs/images/cloud-deployment/aws_cluster_health_check.png)
+![Cluster Health Check](../images/cloud-deployment/aws_cluster_health_check.png)
 
 ## Access Grakn Console
-While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
+While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](../06-management/02-users.md).
 
 ## Access Graql Console
-While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
+While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](../02-running-grakn/02-console.md) where we can interact with and perform [queries](../10-query/00-overview.md) on our [keyspaces](../06-management/01-keyspace.md).
 
 ## Configuring Grakn
-To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).
+To ensure Grakn behaves according to your specific needs, you may [configure Grakn](../02-running-grakn/03-configuration.md). One important attribute in Grakn configuration file, is the [path to the data directory](../02-running-grakn/03-configuration.md#where-data-is-stored).
 
 ## Sign up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).

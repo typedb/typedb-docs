@@ -3,7 +3,6 @@ pageTitle: Defining a Sample Schema
 keywords: grakn, examples, schema
 longTailKeywords: grakn examples, grakn schema example
 Summary: Learn how to define a simple schema in Grakn.
-permalink: /docs/examples/phone-calls-schema
 ---
 
 ## The Goal
@@ -38,9 +37,9 @@ Now that we have a good understanding of our dataset, we can go ahead and write 
 
 But first, let’s visualise the reality of our dataset.
 
-![The Visualised Schema](/docs/images/examples/phone_calls_schema.png)
+![The Visualised Schema](../images/examples/phone_calls_schema.png)
 
-By looking at this visualised schema, we can identify the [Concepts](/docs/schema/concepts).
+By looking at this visualised schema, we can identify the [Concepts](../09-schema/01-concepts.md).
 
 **call** is of type **relation** that has two role players:
 - **person** who plays the role of a **caller**, and
@@ -245,6 +244,6 @@ Lastly, we loaded the schema into a Grakn keyspace and ran a generic match query
 ## Next
 Now that we have a model for our knowledge graph, aka. the schema, we can go ahead and migrate some actual data into it so that we can proceed to query for those insights. Pick the client of your choice to continue with migration.
 
-- [Java](/docs/examples/phone-calls-migration-java)
-- [Node.js](/docs/examples/phone-calls-migration-nodejs)
-- [Python](/docs/examples/phone-calls-migration-python)
+- [Java](../08-examples/02-phone-calls-migration-java.md)
+- [Node.js](../08-examples/03-phone-calls-migration-nodejs.md)
+- [Python](../08-examples/04-phone-calls-migration-python.md)

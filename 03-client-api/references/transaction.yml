@@ -3,7 +3,7 @@ title: "Transaction"
 methods:
   - method:
     common: &method-lazyquery
-      title: Lazily execute a Graql query ## !!! synced with codeKeywordsToLink
+      title: Lazily execute a Graql query
       description: Performs a Graql query on the and retrieves answers lazily.
       accepts: &accepts-lazyquery
         param1: &accepts-lazyquery-query
@@ -16,7 +16,7 @@ methods:
           description: Determines if the query should apply inference.
           required: true
       returns:
-        - "[Iterator](#client-api-title-iterator) of Answer"
+        - "[Iterator](#iterator) of Answer"
     java:
       <<: *method-lazyquery
       method: transaction.stream(GraqlQuery query, boolean infer);
@@ -58,7 +58,7 @@ methods:
 
   - method:
     common: &method-execute
-      title: Eagerly execute of a Graql query
+      title: Eagerly execute a Graql query
       description: Executes a Graql query and retrieves all answers at once.
       accepts:
         param1:
@@ -81,7 +81,7 @@ methods:
 
   - method:
     common: &method-commit
-      title: Commit a write transaction ## !!! synced with codeKeywordsToLink
+      title: Commit a write transaction
       description: |
         Commits the changes made on the local keyspace (via the caller transaction), to the original keyspace.
         **Whether or not the transaction is commited successfully, it gets closed after the commit call.**
@@ -125,7 +125,7 @@ methods:
 
   - method:
     common: &method-getConcept
-      title: Retrieve a concept by id ## !!! synced with codeKeywordsToLink
+      title: Retrieve a concept by id
       description: >
         Retrieves the concept that has the given Grakn id.
         The concept in question, may be a concept type or an instance of one.
@@ -140,21 +140,21 @@ methods:
       <<: *method-getConcept
       method: transaction.getConcept(ConceptId.of(String id));
       returns:
-        - "[`<T extends Concept>`](/docs/concept-api/concept) object or `NULL`"
+        - "[`<T extends Concept>`](../04-concept-api/01-concept.md) object or `NULL`"
     javascript:
       <<: *method-getConcept
       method: await transaction.getConcept(id);
       returns:
-        - "[`Concept`](/docs/concept-api/concept) object or `null`"
+        - "[`Concept`](../04-concept-api/01-concept.md) object or `null`"
     python:
       <<: *method-getConcept
       method: 'transaction.get_concept(id)'
       returns:
-        - "[`Concept`](/docs/concept-api/concept) object or `None`"
+        - "[`Concept`](../04-concept-api/01-concept.md) object or `None`"
 
   - method:
     common: &method-getSchemaConcept
-      title: Retrieve a schema concept by label ## !!! synced with codeKeywordsToLink
+      title: Retrieve a schema concept by label
       accepts:
         param:
           name: label
@@ -176,7 +176,7 @@ methods:
 
   - method:
     common: &method-getAttributesByValue
-      title: Retrieve an attribute by value ## !!! synced with codeKeywordsToLink
+      title: Retrieve an attribute by value
       accepts:
         param1: &accepts-getAttributesByValue-value
           name: value
@@ -198,17 +198,17 @@ methods:
           <<: *accepts-getAttributesByValue-value
           type: "String &#124; Date &#124; long &#124; double &#124; boolean"
       returns:
-        -  "[`Collection<Attribute>`](/docs/concept-api/thing#attribute-methods)"
+        -  "[`Collection<Attribute>`](../04-concept-api/04-thing#attribute-methods.md)"
     javascript:
       <<: *method-getAttributesByValue
       method: await transaction.getAttributesByValue(value, datatype);
       returns:
-        - Iterator of [`Attribute`](/docs/concept-api/thing#attribute-methods)s
+        - Iterator of [`Attribute`](../04-concept-api/04-thing#attribute-methods.md)s
     python:
       <<: *method-getAttributesByValue
       method: transaction.get_attributes_by_value(value, datatype)
       returns:
-        - Iterator of [`Attribute`](/docs/concept-api/thing#attribute-methods)s
+        - Iterator of [`Attribute`](../04-concept-api/04-thing#attribute-methods.md)s
 
   - method:
     common: &method-putEntity
@@ -235,7 +235,7 @@ methods:
 
   - method:
     common: &method-putRelationType
-      title: Create or retrieve a RelationType ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve a RelationType
       description: Creates a new RelationType if none exists with the given label, otherwise retrieves the existing one.
       accepts:
         param:
@@ -258,7 +258,7 @@ methods:
 
   - method:
     common: &method-putAttributeType
-      title: Create or retrieve an AttributeType ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve an AttributeType
       description: Creates a new AttributeType if none exists with the given label, or retrieves the existing one.
       accepts: &accepts-putAttributeType
         param1:
@@ -292,7 +292,7 @@ methods:
 
   - method:
     common: &method-putRole
-      title: Create or retrieve a Role ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve a Role
       description: Creates a new Role if none exists with the given label, otherwise retrieves the existing one.
       accepts:
         param:
@@ -315,7 +315,7 @@ methods:
 
   - method:
     common: &method-putRule
-      title: Create or retrieve a Rule ## !!! synced with codeKeywordsToLink
+      title: Create or retrieve a Rule
       description: Creates a new Rule if none exists with the given label, or retrieves the existing one.
       accepts: &accepts-putRule
         param1:
@@ -337,7 +337,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`Rule`](/docs/concept-api/rule) object"
+        - "[`Rule`](../04-concept-api/03-rule.md) object"
     java:
       <<: *method-putRule
       method: transaction.putRule(Label.of(String label), Pattern when, Pattern then);
@@ -346,13 +346,13 @@ methods:
         param2:
           name: when
           description: The pattern describing the when body of the rule.
-          type: "[`graql.lang.pattern.Pattern`](#client-api-title-graql)"
+          type: "[`graql.lang.pattern.Pattern`](#graql)"
           required: true
           default: N/A
         param3:
           name: then
           description: The pattern describing the then body of the rule.
-          type: "[`graql.lang.pattern.Pattern`](#client-api-title-graql)"
+          type: "[`graql.lang.pattern.Pattern`](#graql)"
           required: true
           default: N/A
     javascript:
