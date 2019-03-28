@@ -89,7 +89,7 @@ async function buildPhoneCallGraph(inputs) {
     const session = client.session("phone_calls");
 
     for (input of inputs) {
-        await loadDataIntoGrakn(parsingInput, session);
+        await loadDataIntoGrakn(input, session);
     }
     session.close();
 }
