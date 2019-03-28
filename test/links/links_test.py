@@ -48,6 +48,7 @@ for markdown_path in glob.iglob('./**/*.md'):
                         anchor = found_title.replace(r" ", "-").replace(r"/", "-").lower()
                         pages[title]["anchors"].append(anchor)
 
+
 class LinksTest(unittest.TestCase):
 
         def test_native_links(self):
