@@ -33,7 +33,7 @@ Let us have a look at an example. We want to express the fact that two given peo
 - they share the same father
 
 To express those two facts in Graql, we can write:
-
+<!-- test-delay -->
 ```graql
 (mother: $m, $x) isa parentship;
 (mother: $m, $y) isa parentship;
@@ -117,6 +117,7 @@ In this example, siblings data is not explicitly stored anywhere in the knowledg
 
 To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
 
+<!-- test-delay -->
 ```graql
 undefine people-with-same-parents-are-siblings sub rule;
 ```
@@ -129,7 +130,7 @@ When using one of the Grakn Clients, to commit changes, we call the `commit()` m
 
 ## Functional Interpretation
 Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
-
+<!-- test-delay -->
 ```graql
 (mother: $m, $x) isa parentship;
 (mother: $m, $y) isa parentship;
@@ -144,9 +145,9 @@ To simplify this logic even further, you can think of the [siblings example](#de
 for a given (m, f, x, y) tuple
 
 if (parentship(m, x)
-  && parentship(m, y) 
+  && parentship(m, y)
   && parentship(f, x)
-  && parentship(f, y) 
+  && parentship(f, y)
   && x != y) {
      siblings(x, y) will return true
 }
