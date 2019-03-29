@@ -17,36 +17,36 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 
 As a superuser, add the repo:
 ```
-# yum-config-manager --add-repo https://repo.grakn.ai/repository/meta/rpm.repo
+sudo yum-config-manager --add-repo https://repo.grakn.ai/repository/meta/rpm.repo
 ```
 
 Update the package cache:
 ```
-# yum update
+sudo yum update
 ```
 
 Install Grakn Server and Grakn Console:
 ```
-# yum install grakn-core-all
+sudo yum install grakn-core-all
 ```
 
 #### Using Debian
 
 As a superuser, add the repo:
 ```
-# apt install software-properties-common
-# apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
-# add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/apt/ trusty main'
+sudo apt install software-properties-common
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
+sudo add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/apt/ trusty main'
 ```
 
 Update the package cache:
 ```
-# apt update
+sudo apt update
 ```
 
 Install Grakn Server and Grakn Console:
 ```
-# apt install grakn-core-all
+sudo apt install grakn-core-all
 ```
 
 #### Manual Download
@@ -87,7 +87,7 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 
 Run :
 ```
-$ docker run -d -p 48555:48555 graknlabs/grakn
+docker run -d -p 48555:48555 graknlabs/grakn
 ```
 
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
