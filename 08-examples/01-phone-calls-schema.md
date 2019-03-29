@@ -188,13 +188,13 @@ For the rest of these instructions, I assume that you have downloaded the Grakn 
 ./grakn console --keyspace phone_calls --file path/to/the/schema.gql
 ```
 
-**4 -** Open the Graql console in interactive mode. Run:
+**4 -** Open the Grakn console in interactive mode. Run:
 
 ```
 ./grakn console --keyspace phone_calls
 ```
 
-**5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Graql console, run:
+**5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Grakn console, run:
 
 ```graql
 match $x sub thing; get;

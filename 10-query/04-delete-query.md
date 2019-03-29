@@ -5,23 +5,8 @@ longTailKeywords: grakn delete data, graql delete query, graql delete instances
 Summary: Delete queries in Grakn.
 ---
 
-<div class = "note">
-[Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `delete` query, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on the query object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
-</div>
-
 ## Delete Instances of an Entity Type
-To delete an instance of an entity type from the knowledge graph, we use a [match clause](../10-query/01-match-clause.md) followed by the `delete` keyword and the variable to be deleted.
+To delete an instance of an entity type from the knowledge graph, we use a [match clause](../10-query/01-match-clause.md) followed by the `delete` keyword and the variable to be deleted. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <div class="tabs dark">
 
@@ -94,6 +79,23 @@ GraqlDelete query = Graql.match(
 This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22`, captures the association between the attribute and the owner as the variable `$r` and finally deletes `$r`. This ensures that the attribute instance of type `start-date` and value `2013-12-22` remains associated with any other instance that may own it.
 
 If we had instead written the query as `match $t isa travel, has start-date $st;  $st == 2013-12-22"; delete $st;`, we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
+
+## Clients Guide
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `delete` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+</div>
 
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.

@@ -5,27 +5,15 @@ longTailKeywords: grakn compute data, graql compute statistics, graql compute sh
 Summary: Compute statistics, shortest path, clusters and centrality in Grakn.
 ---
 
-<div class = "note">
-[Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `compute` query, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on the query object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
-</div>
-
 ## Computing Distributed Analytics Over a Large Dataset
 In this section, we learn how to use the `compute` queries in a Grakn knowledge graph to:
 - calculate statistical values over a large set of data,
 - find the shortest path between two instances of data,
 - find the most important instance in the entire knowledge graph or a subset of it, and
 - identify clusters of interconnected instances or those that are tightly linked within a network.
+
+
+To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <!-- In a dedicated section, we learn more about the significance and use cases of [Distributed Analaytics]() in a Grakn knowledge graph. -->
 
@@ -413,6 +401,23 @@ GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "friendship"
 </div>
 
 This query retrieves the set of concept IDs that belong to clusters which include instances of `person` and `friendship` concept types and all have a minimum degree of 3.
+
+## Clients Guide
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `compute` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+</div>
 
 ## Summary
 We use a compute query to run distributed analytics on the entire knowledge graph or a large subset of it filtered by a concept type. This statistical analytics include statistical function, shortest path, centrality and cluster

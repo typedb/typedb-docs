@@ -5,23 +5,8 @@ longTailKeywords: grakn update data, graql update query, graql update instances
 Summary: Updating data in Grakn.
 ---
 
-<div class = "note">
-[Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `insert` and `delete` queries, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on the query object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
-</div>
-
 ## Update Instances of Concept Types
-In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](../10-query/04-delete-query.md) the current instance followed by [inserting](../10-query/03-insert-query.md) the new instance.
+In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](../10-query/04-delete-query.md) the current instance followed by [inserting](../10-query/03-insert-query.md) the new instance. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 ## Update Instances of an Attribute Type
 In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](../10-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../10-query/03-insert-query.md#insert-instances-of-an-attribute-type).
@@ -134,6 +119,24 @@ GraqlDelete delete_query = Graql.match(
 </div>
 
 This query updates the `employee` roleplayer of the `employment` relation where the `employer` is an `organisation` named `"Wieth Souhe"`.
+
+## Clients Guide
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `insert` and `delete` queries, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+</div>
+
 
 ## Summary
 Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](../09-schema/01-concepts.md). Simply put, to update is essentially to first `delete` and then `insert`.
