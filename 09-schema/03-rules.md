@@ -119,6 +119,7 @@ In this example, siblings data is not explicitly stored anywhere in the knowledg
 
 To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
 
+<!-- test-delay -->
 ```graql
 undefine people-with-same-parents-are-siblings sub rule;
 ```
