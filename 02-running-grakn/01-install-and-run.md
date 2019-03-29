@@ -1,6 +1,6 @@
 ---
 pageTitle: Install and Run Grakn
-keywords: setup, getting started, grakn, download, install, server, linux, mac, windows
+keywords: setup, getting started, grakn, download, install, server, linux, mac, windows, docker
 longTailKeywords: grakn on linux, grakn on mac, grakn on windows, start grakn server
 summary: Install and run the Grakn Server on Linux, Mac or Windows.
 toc: false
