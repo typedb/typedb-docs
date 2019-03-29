@@ -4,25 +4,6 @@ keywords: grakn, client, java
 longTailKeywords: grakn java client, grakn client java, client java, java client
 Summary: API Reference of Grakn Client Java.
 templatePath: 03-client-api/references/
-templates:
-  -
-    title: answer.yml
-    headerAt: types, methods, java, title
-  -
-    title: client.yml
-    headerAt: methods, java, title
-  -
-    title: grakn.yml
-    headerAt: methods, java, title
-  -
-    title: graql.yml
-    headerAt: methods, java, title
-  -
-    title: iterator.yml
-    headerAt: methods, java, title
-  -
-    title: session.yml
-    headerAt: methods, java, title
 ---
 
 ## Dependencies

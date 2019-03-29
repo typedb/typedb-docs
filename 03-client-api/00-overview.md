@@ -14,21 +14,21 @@ In this section and the following pages, we learn the mechanism that a Grakn cli
 All Grakn Clients share a common architecture. Simply put, the main components of a Grakn client are the `client` itself, `session` and `transaction`.
 
 ### Client
-A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server). We would then use this connection to manage keyspaces and creating sessions.
+A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server). We would then use this connection to manage keyspaces and open sessions.
 
 ### Session
-A session is responsible for connecting our application to a particular keyspace. This connection would then allow creating transactions. We can think of a session as a two-way long-lasting tunnel that connects our application to a particular keyspace on the Grakn server.
+A session is responsible for connecting our application to a particular keyspace. This connection would then allow opening transactions to carry out queries. We can think of a session as a two-way long-lasting tunnel that connects our application to a particular keyspace on the Grakn server.
 
 ### Transaction
-A transaction is responsible for performing write and read operations over the concepts types and instances. When executing a query to retrieve data, an iterator is returned, which can then be consumed to execute a request on the server to return the next concrete result. Simply put, Grakn is lazy in retrieving answers.
+A transaction is responsible for performing write and read operations over the concepts types and instances within the connected keyspace. When executing a query to retrieve data, an iterator is returned, which can then be lazily consumed to execute a request on the server to return the next concrete result.
 
 ### Investigating Answers
-Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. These answers, regardless of their type, contain concepts. We can then use the methods introduced bt the [Concept API](../04-concept-api/00-overview.md) to obtain more information about the retrieved concept and its surroundings. Furthermore, the Concept API allows us to traverse the neighbours of a specific concept instance to obtain more insights.
+Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. These answers, regardless of their type, all contain concepts. We can then use the methods introduced by the [Concept API](../04-concept-api/00-overview.md) to obtain more information about the retrieved concept and its surroundings. Furthermore, the Concept API allows us to traverse the neighbours of a specific concept instance to obtain more insights.
 
 ## Best Practices
 To avoid running into issues and make the most out of using a Grakn client, keep in mind the following points.
 
-**Keep one session open per keypsace**. A session creates a local copy of the keyspace. That means, if more than one session is opened on the same keyspace, the changes in one is not reflected in the others. Therefore, it's best to always keep only one session open on a particular keyspace.
+**Keep one session open per keypsace per client**. A session creates a local copy of the keyspace. That means, if more than one session is opened on the same keyspace, the changes in one is not reflected in the others. Therefore, it's best to always keep only one session open on a particular keyspace.
 
 **Close the session on keyspace A before creating another one on keyspace B**. Although it is possible and arguably sensible to have multiple sessions opened on different keyspaces, to utilise resources, it is recommended to keep only one session opened at a time on a Grakn server.
 
@@ -46,4 +46,4 @@ Grakn Clients are built using [gRPC](https://grpc.io/). Creating a new client is
 ## Summary
 A Grakn Client is meant to be used at the application layer for the purpose of managing and performing operations over keyspaces that live on the Grakn server.
 
-Next, we learn about how to set up and use the Grakn Clients. Pick a language of your choice to continue - [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) or [Python](../03-client-api/02-python.md).
+Next, we learn how to set up and use the Grakn Clients. Pick a language of your choice to continue - [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) or [Python](../03-client-api/02-python.md).
