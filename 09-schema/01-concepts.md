@@ -740,7 +740,6 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-<!-- !!! synced with codeKeywordsToLink -->
 ## Undefine
 As the name suggests, we use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
 
