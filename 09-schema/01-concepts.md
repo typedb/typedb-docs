@@ -20,7 +20,6 @@ Summary: A comprehensive guide on defining Schema Concepts in Grakn.
 **For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
-<!-- !!! synced with codeKeywordsToLink -->
 ## Define
 As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
 
@@ -754,7 +753,6 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-<!-- !!! synced with codeKeywordsToLink -->
 ## Undefine
 As the name suggests, we use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
 
