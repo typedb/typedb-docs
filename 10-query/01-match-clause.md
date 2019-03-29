@@ -57,7 +57,7 @@ The pattern is a conjunction of four different pattern types:
 - **Conjunction 2** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `school-course-enrollment` relationship, and
 work at the same organisation via the `employment` relationship.
 
-In the subsequent sections, we shall see how to match specific graph patterns.
+In the subsequent sections, we shall see how to match specific graph patterns. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 ## Match Instances of Concept Types
 What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we learn about [using _get_ for the retrieval of information from the knowledge graph](../10-query/02-get-query.md).
@@ -553,9 +553,11 @@ This matches all concept types that own `title` as their attribute.
 ## Examples
 To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](/docs/examples/queries).
 
+## Clients Guide
+
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`withTx().execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on the query object.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
