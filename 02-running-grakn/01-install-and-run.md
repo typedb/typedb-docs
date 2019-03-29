@@ -27,7 +27,7 @@ Update the package cache:
 
 Install Grakn Server and Grakn Console:
 ```
-# yum install grakn-core-server grakn-core-console
+# yum install grakn-core-all
 ```
 
 #### Using Debian
@@ -35,8 +35,8 @@ Install Grakn Server and Grakn Console:
 As a superuser, add the repo:
 ```
 # apt install software-properties-common
-# add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/apt/ trusty main'
 # apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
+# add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/apt/ trusty main'
 ```
 
 Update the package cache:
@@ -46,7 +46,7 @@ Update the package cache:
 
 Install Grakn Server and Grakn Console:
 ```
-# apt install grakn-core-server grakn-core-console
+# apt install grakn-core-all
 ```
 
 #### Manual Download
