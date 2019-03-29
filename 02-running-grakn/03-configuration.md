@@ -5,18 +5,23 @@ longTailKeywords: configure grakn, grakn configuration
 summary: Configure the Grakn Server based on your production and development needs.
 ---
 
-## Grakn Configuring
-In this section, we learn about how we can configure Grakn to have it tailored to our production and development needs.
-
+## Configure Grakn
+In this section, we learn how to configure Grakn to have it tailored to our production and development needs.
 Prior to starting, the Grakn Server and Console read configurations from a file named `grakn.properties`. The location of this file varies based on how Grakn has been installed.
 
-If installed via Homebrew, we can find this file in the following directory.
+If downloaded manually, we can find the configuration file in the `conf` directory inside the unzipped folder.
+
+If installed using Homebrew:
 
 ```
 /usr/local/Cellar/grakn/{installed-version}/libexec/conf/
 ```
 
-If downloaded manually, we can find the configuration file in the `conf` directory inside the unzipped folder.
+If installed using RPM or APT:
+
+```
+/opt/grakn/core/conf/grakn.properties
+```
 
 <div class="note">
 [Note]
@@ -30,7 +35,7 @@ The `knowledge-base.default-keyspace` config sets the default keyspace that the 
 Grakn uses sharding to mitigate against supernodes. The `knowledge-base.sharding-threshold` config specifies the number of instances after which Grakn shards any type node. A larger threshold increases runtime as a Grakn knowledge graph grows while decreasing the likelihood of supernodes. A smaller threshold creates supernodes more frequently. The default value is `10000`.
 
 ## Where data is stored
-The `data-dir` config sets the path to the directory where the data for all keyspaces gets stored. The default value is `db/`.
+The `data-dir` config sets the path to the directory where the data for all keyspaces gets stored. The default value is `server/db/`.
 
 <div class="note">
 [Important]
