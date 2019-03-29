@@ -30,7 +30,7 @@ Install Grakn Server and Grakn Console:
 sudo yum install grakn-core-all
 ```
 
-#### Using Debian
+#### Using APT
 
 As a superuser, add the repo:
 ```

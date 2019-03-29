@@ -17,7 +17,7 @@ If installed using Homebrew:
 /usr/local/Cellar/grakn/{installed-version}/libexec/conf/
 ```
 
-If installed using RPM/Yum or Debian:
+If installed using RPM or APT:
 
 ```
 /opt/grakn/core/conf/grakn.properties
