@@ -26,7 +26,29 @@ rule-label sub rule,
   };
 ```
 
-Let's look an example.
+Each hashed line corresponds to a single Graql statement. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should be atomic - each rule can derive a single fact only. If our use case requires a rule with a disjunction in the "when" part, please notice that, when using the disjunctive normal form, it can be decomposed into series of conjunctive rules.
+
+Let us have a look at an example. We want to express the fact that two given people are siblings. As we all know, for two people to be siblings, we need the following facts to be true:
+- they share the same mother
+- they share the same father
+
+To express those two facts in Graql, we can write:
+<!-- test-delay -->
+```graql
+(mother: $m, $x) isa parentship;
+(mother: $m, $y) isa parentship;
+(father: $f, $x) isa parentship;
+(father: $f, $y) isa parentship;
+$x != $y;
+```
+
+If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](/docs/query/match-clause). Please note the variable inequality requirement. Without it, $x and $y can still be mapped to the same concept. Those requirements will serve as our `when` part of the rule. What remains to be done is to define the conclusion of our requirements - the fact that two people are siblings. We do it simply by writing the relevant relation pattern:
+
+```
+(sibling: $x, sibling: $y) isa siblings;
+```
+
+Combining all this information we can finally define our rule as following.
 
 <div class="tabs dark">
 
@@ -93,17 +115,42 @@ If you find the Graql code above unfamiliar, don't be concerned. We soon learn a
 
 In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
 
-<!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
+## Delete a Rule
 
-## The Underlying Logic
-Under the hood, rules are restricted to be definite Horn Clauses. In simple terms, the Graql statements placed in the `when` body form one single condition where all statements must be true for the rule to apply. The `then` body, on the other hand, is restricted to contain one single statement only.
+To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
+
+```graql
+undefine people-with-same-parents-are-siblings sub rule;
+```
+
+<div class="note">
+[Important]
+Don't forget to `commit` after executing a `undefine` query. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
+When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
+</div>
+
+## Functional Interpretation
+Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
+<!-- test-delay -->
+```graql
+(mother: $m, $x) isa parentship;
+(mother: $m, $y) isa parentship;
+(father: $f, $x) isa parentship;
+(father: $f, $y) isa parentship;
+$x != $y;
+```
 
 To simplify this logic even further, you can think of the [siblings example](#define-a-rule) in form of an `if` statement like so:
 <!-- test-ignore -->
 ```java
-if (is-m-mother-of-x && is-m-mother-of-y && is-f-father-of-x && is-f-father-of-y && is-x-different-to-y) {
-    are-x-and-y-siblings = true;
-    // any more assignments break the rule!
+for a given (m, f, x, y) tuple
+
+if (parentship(m, x)
+  && parentship(m, y)
+  && parentship(f, x)
+  && parentship(f, y)
+  && x != y) {
+     siblings(x, y) will return true
 }
 ```
 
