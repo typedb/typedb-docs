@@ -1,50 +1,37 @@
 ---
-sidebarTitle: Update
 pageTitle: Updating Data
-permalink: /docs/query/updating-data
+keywords: graql, update query, modification
+longTailKeywords: grakn update data, graql update query, graql update instances
+Summary: Updating data in Grakn.
 ---
 
-<div class = "note">
-[Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing `insert` and `delete` queries, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
-</div>
-
 ## Update Instances of Concept Types
-In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](/docs/query/delete-query) the current instance followed by [inserting](/docs/query/insert-query) the new instance.
+In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](../10-query/04-delete-query.md) the current instance followed by [inserting](../10-query/03-insert-query.md) the new instance. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 ## Update Instances of an Attribute Type
-In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](/docs/query/delete-query#delete-associations-with-attributes) and then [insert the new instance of the attribute](/docs/query/insert-query#insert-instances-of-an-attribute-type).
+In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](../10-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../10-query/03-insert-query.md#insert-instances-of-an-attribute-type).
 
 <div class="tabs dark">
 
 [tab:Graql]
+
 ```graql
 ## deleting the old
-match $org isa organisation id V17391, has registration-number $rn via $r; delete $r;
+match $org isa organisation, has name "Medicely", has registration-number $rn via $r; delete $r;
 
 ## inserting the new
-match $org isa organisation id V17391; insert $org has registration-number "81726354";
+match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-DeleteQuery delete_query = Graql.match(
-  var("org").isa("organisation").id(ConceptId.of("V17391")).has(Label.of("registration-number"), var("rn"), var("r"))
+GraqlDelete delete_query = Graql.match(
+  var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
 ).delete("r");
 
-InsertQuery insert_query = Graql.match(
-  var("org").isa("organisation").id(ConceptId.of("V17391")
+GraqlInsert insert_query = Graql.match(
+  var("org").isa("organisation").has("name", "Medicely")
 ).insert(
   var("org").has("registration-number", "81726354")
 );
@@ -62,22 +49,28 @@ There may also be cases where we need to update the value of all instances of an
 
 [tab:Graql]
 ```graql
-match $m isa media, has caption $c; $c contains "inappropriate word"; insert $m has caption "deleted";
+## inserting the new
+match
+  $m isa media, has caption $c;
+  $c contains "inappropriate word";
+insert $m has caption "deleted";
+
+## deleting the old
 match $c isa caption; $c contains "inappropriate word"; delete $c;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-InsertQuery query = Graql.match(
+GraqlInsert insert_query = Graql.match(
   var("m").isa("media").has("caption", var("c")),
-  var("c").val(contains("inappropriate word"))
+  var("c").contains("inappropriate word")
 ).insert(
   var("m").has("caption", "deleted")
 );
 
-DeleteQuery delete_query = Graql.match(
-  var("c").isa("caption").val(contains("inappropriate word"))
+GraqlDelete delete_query = Graql.match(
+  var("c").isa("caption").contains("inappropriate word")
 ).delete("c");
 ```
 [tab:end]
@@ -85,8 +78,8 @@ DeleteQuery delete_query = Graql.match(
 
 This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
-### Update the roleplayers of a relationship
-To change the roleplayers of a given relationship, we first need to [delete the instances of the relationship](/docs/query/delete-query#delete-instances-of-a-relationship-type) with the current roleplayers and [insert the new instance of the relationship](/docs/query/insert-query#insert-instances-of-a-relationship-type) with the new roleplayers.
+### Update the roleplayers of a relation
+To change the roleplayers of a given relation, we first need to [delete the instances of the relation](../10-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current roleplayers and [insert the new instance of the relation](../10-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
 
 <div class="tabs dark">
 
@@ -109,14 +102,14 @@ delete $emp;
 
 [tab:Java]
 ```java
-InsertQuery insert_query = Graql.match(
+GraqlInsert insert_query = Graql.match(
   var("p").isa("person").has("name", "Amabo"),
   var("org").isa("organisation").has("name", "Wieth Souhe")
 ).insert(
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
 );
 
-DeleteQuery delete_query = Graql.match(
+GraqlDelete delete_query = Graql.match(
   var("p").isa("person").has("name", "Prumt"),
   var("org").isa("organisation").has("name", "Wieth Souhe"),
   var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
@@ -125,9 +118,27 @@ DeleteQuery delete_query = Graql.match(
 [tab:end]
 </div>
 
-This query updates the `employee` roleplayer of the `employment` relationship where the `employer` is an `organisation` named `"Wieth Souhe"`.
+This query updates the `employee` roleplayer of the `employment` relation where the `employer` is an `organisation` named `"Wieth Souhe"`.
+
+## Clients Guide
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `insert` and `delete` queries, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `insert` and `delete` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+</div>
+
 
 ## Summary
-Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](/docs/schema/concepts). Simply put, to update is essentially to first `delete` and then `insert`.
+Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](../09-schema/01-concepts.md). Simply put, to update is essentially to first `delete` and then `insert`.
 
-Next, we learn how to [aggregate values over a set of data](/docs/query/aggregate-query) in a Grakn knowledge graph.
+Next, we learn how to [aggregate values over a set of data](../10-query/06-aggregate-query.md) in a Grakn knowledge graph.

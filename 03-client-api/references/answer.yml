@@ -12,64 +12,70 @@ description:
 mappings:
   -
     query: define
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: undefine
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: get
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: insert
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: delete
-    answer: "[ConceptMap](#client-api-title-conceptmap)"
+    answer: "[ConceptMap](#conceptmap)"
   -
     query: "aggregate count/min/max/sum/mean/std"
-    answer: "[Value](#client-api-title-value)"
+    answer: "[Numeric](#numeric)"
   -
     query: aggregate group
-    answer: "[AnswerGroup](#client-api-title-answergroup)"
+    answer: "[AnswerGroup](#answergroup)"
   -
     query: "compute count/min/max/sum/mean/std"
-    answer: "[Value](#client-api-title-value)"
+    answer: "[Numeric](#numeric)"
   -
     query: compute path
-    answer: "[ConceptList](#client-api-title-conceptlist)"
+    answer: "[ConceptList](#conceptlist)"
   -
     query: compute cluster
-    answer: "[ConceptSet](#client-api-title-conceptset)"
+    answer: "[ConceptSet](#conceptset)"
   -
     query: compute centrality
-    answer: "[ConceptSetMeasure](#client-api-title-conceptsetmeasure)"
+    answer: "[ConceptSetMeasure](#conceptsetmeasure)"
+
 types:
   - type1:
-    title: ConceptMap ## !!! synced with codeKeywordsToLink
+    title: ConceptMap
     methods:
       - method:
         common: &method-conceptmap-map
-          title: Retrieve a map of Variable => Concept from the ConceptMap answer
-          returns:
-            - 'Map ({variable_name: [Concept](/docs/concept-api/concept)})'
+          title: Retrieve a mapping of variables to concepts
         java:
           <<: *method-conceptmap-map
           method: answer.map();
-          description: Produces a Map where keys are variable names and values are concepts
+          description: Produces a Map where keys are variable names and values are [`concept`]](../04-concept-api/01-concept.md)s.
+          returns:
+            - "`Map<Variable, Concept>"
         javascript:
           <<: *method-conceptmap-map
           method: answer.map();
           description: Produces a Javascript object where keys are variable names and values are concepts
+          returns:
+            - "`Map<String, Concept>`"
         python:
           <<: *method-conceptmap-map
           method: answer.map()
           description: Produces a dictionary where keys are variable names and values are concepts
+          returns:
+            - Dictionary of String to Concept
+
       - method:
         common: &method-explanation
           title: Explaining an inferred answer
           description: Provides an explanation on the inference of the concept in the answer, if the concept is in fact inferred.
           returns:
-            - "[Explanation](#client-api-title-explanation)"
+            - "[Explanation](#explanation)"
             - "null"
         java: &method-explanation-java
           <<: *method-explanation
@@ -80,8 +86,9 @@ types:
         python: &method-explanation-python
           <<: *method-explanation
           method: answer.explanation()
+
   - type2:
-    title: Value
+    title: Numeric
     methods:
       - method:
         common: &method-value-number
@@ -103,6 +110,7 @@ types:
           returns:
             - int
             - float
+
       - method:
         java:
           <<: *method-explanation-java
@@ -110,6 +118,7 @@ types:
           <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
+
   - type3:
     title: ConceptList
     methods:
@@ -131,6 +140,7 @@ types:
           method: answer.list()
           returns:
             - List of String
+
       - method:
         java:
           <<: *method-explanation-java
@@ -138,6 +148,7 @@ types:
           <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
+
   - type4:
     title: ConceptSet
     methods:
@@ -155,6 +166,7 @@ types:
         python:
           <<: *method-conceptset-set
           method: answer.set()
+
       - method:
         java:
           <<: *method-explanation-java
@@ -162,12 +174,13 @@ types:
           <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
+
   - type5:
     title: ConceptSetMeasure
     methods:
       - method:
         common: &method-conceptsetmeasure-measurement
-          title: Retrieve the numeric value of a centrality computation ## !!! synced with codeKeywordsToLink
+          title: Retrieve the numeric value of a centrality computation
         java:
           <<: *method-conceptsetmeasure-measurement
           method: answer.measurement();
@@ -185,6 +198,7 @@ types:
           returns:
             - int
             - float
+
       - method:
         common: &method-conceptsetmeasure-set
           title: Retrieve a set of ids of concepts after a centrality computation
@@ -199,6 +213,7 @@ types:
         python:
           <<: *method-conceptsetmeasure-set
           method: answer.set()
+
       - method:
         java:
           <<: *method-explanation-java
@@ -206,14 +221,15 @@ types:
           <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
+
   - type6:
     title: AnswerGroup
     methods:
       - method:
         common: &method-answergroup-owner
-          title: Retrieve the concept that is the group owner ## !!! synced with codeKeywordsToLink
+          title: Retrieve the concept that is the group owner
           returns:
-            - "[Concept](/docs/concept-api/concept)"
+            - "[Concept](../04-concept-api/01-concept.md)"
         java:
           <<: *method-answergroup-owner
           method: answer.owner();
@@ -223,6 +239,7 @@ types:
         python:
           <<: *method-answergroup-owner
           method: answer.owner()
+
       - method:
         common: &method-answergroup-answers
           title: Retrieve the answers of the group
@@ -241,6 +258,7 @@ types:
           method: answer.answers()
           returns:
             - List of Answer
+
       - method:
         java:
           <<: *method-explanation-java
@@ -248,37 +266,45 @@ types:
           <<: *method-explanation-nodejs
         python:
           <<: *method-explanation-python
+
   - type7:
-    title: Explanation ## !!! synced with codeKeywordsToLink
+    title: Explanation
     methods:
       - method:
         common: &method-explanation-querypattern
-          title: Retrieve a Graql explanation of the answer ## !!! synced with codeKeywordsToLink
-          returns:
-            - String
+          title: Retrieve a Graql explanation of the answer
         java:
           <<: *method-explanation-querypattern
-          method: answer.query_pattern();
+          method: explanation.getPattern();
+          returns:
+            - "[`Graql.Pattern`](#graql)"
         javascript:
           <<: *method-explanation-querypattern
           method: answer.queryPattern();
+          returns:
+            - String
         python:
           <<: *method-explanation-querypattern
           method: answer.query_pattern()
+          returns:
+            - String
+
       - method:
         common: &method-explanation-answers
-          title: Retrieve source facts of inference ## !!! synced with codeKeywordsToLink
+          title: Retrieve source facts of inference
           description: Provides a list of answers from which the inferred answer is derived.
-          method: answer.answers()
         java:
           <<: *method-explanation-answers
+          method: explanation.getAnswers();
           returns:
-            - Array of [Answer](#client-api-title-answer)
+            - "[`List<ConceptMap>`](#conceptmap)"
         javascript:
           <<: *method-explanation-answers
+          method: explanation.answers();
           returns:
-            - Array of [Answer](#client-api-title-answer)
+            - Array of [`ConceptMap`](#conceptmap)
         python:
           <<: *method-explanation-answers
+          method: explanation.answers()
           returns:
-            - List of [Answer](#client-api-title-answer)
+            - List of [`ConceptMap`](#conceptmap)

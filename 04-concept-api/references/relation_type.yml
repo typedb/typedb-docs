@@ -1,0 +1,94 @@
+methods:
+  - method:
+    common: &method-create
+      title: Create instance
+      description: Creates and returns an instance of this RelationType.
+    java:
+      <<: *method-create
+      method: relationType.create();
+      returns:
+        - "[`Relation`](../04-concept-api/04-thing?tab=java#relation-methods.md) object"
+    javascript:
+      <<: *method-create
+      method: await relationType.create();
+      returns:
+        - "[`Relation`](../04-concept-api/04-thing?tab=nodejs#relation-methods.md) object"
+    python:
+      <<: *method-create
+      method: relation_type.create()
+      returns:
+        - "[`Relation`](../04-concept-api/04-thing?tab=python#relation-methods.md) object"
+
+  - method:
+    common: &method-roles
+      title: Retrieve roles
+      description: Retrieve roles that this RelationType relates to.
+    java:
+      <<: *method-roles
+      method: relationType.roles();
+      returns:
+        - "Stream of [`Role`](/docs/concept-api/type?javatab=#role-methods) objects"
+    javascript:
+      <<: *method-roles
+      method: await relationType.roles();
+      returns:
+        - "Iterator of [`Role`](/docs/concept-api/type?javascripttab=#role-methods) objects"
+    python:
+      <<: *method-roles
+      method: relation_type.roles()
+      returns:
+        - "Iterator of [`Role`](/docs/concept-api/type?tab=python#role-methods) objects"
+
+  - method:
+    common: &method-relates
+      title: Set new role
+      description: Sets the new role that this RelationType relates to.
+      accepts:
+        param:
+          name: role
+          description: The new role for the RelationType to relate to.
+          type: Role
+          required: true
+          default: N/A
+    java:
+      <<: *method-relates
+      method: relationType.relates(Role role);
+      returns:
+        - "[`RelationType`](/docs/concept-api/type?tab=java#relationtype-methods) object"
+    javascript:
+      <<: *method-relates
+      method: await relationType.relates(role);
+      returns:
+        - "`void`"
+    python:
+      <<: *method-relates
+      method: relation_type.relates(role)
+      returns:
+        - "[`RelationType`](/docs/concept-api/type?tab=python#relationtype-methods) object"
+
+  - method:
+    common: &method-unrelate
+      title: Remove role
+      description: Disallows this RelationType from relating to the given role.
+      accepts:
+        param:
+          name: role
+          description: The role to not relate to the relation type.
+          type: Role
+          required: true
+          default: N/A
+    java:
+      <<: *method-unrelate
+      method: relationType.unrelate(Role role);
+      returns:
+        - "[`RelationType`](/docs/concept-api/type?tab=java#relationtype-methods) object"
+    javascript:
+      <<: *method-unrelate
+      method: await relationType.unrelate(role);
+      returns:
+        - "`void`"
+    python:
+      <<: *method-unrelate
+      method: relation_type.unrelate(role)
+      returns:
+        - "[`RelationType`](/docs/concept-api/type?tab=python#relationtype-methods) object"

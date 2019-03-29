@@ -1,51 +1,41 @@
 methods:
   - method:
-    common: &method-grakn
-      title: Creating an instance of Grakn
-      description: In order to communicate with Grakn keyspaces via sessions and transactions, we first need to instantiate a Grakn client. The created object connects our application with the running Grakn server.
-      accepts: &accepts-grakn
-        param1:
+    common: &method-client
+      title: Instantiating a Grakn client
+      description: In order to communicate with Grakn keyspaces via sessions and transactions, we first need to instantiate a Grakn client. The created object connects our application with the running Grakn Server.
+      accepts: &accepts-client
+        param1: &accepts-client-uri
           name: uri
-          description: The URI (host:port) on which the Grakn Server is running
+          description: The host:port on which the Grakn Server is running
           type: String
           required: true
           default: localhost:48555
-        param2: &accepts-grakn-credentials
+        param2: &accepts-client-credentials
           name: credentials
           description: The username and password required for connecting to the Grakn Server
           required: false
           default: N/A
       returns:
-        - "[Client](#client-api-title-client) object"
+        - "[Client](#client) object"
     java:
-      <<: *method-grakn
-      method: "new Grakn(new SimpleURI(host, port));"
+      <<: *method-client
+      method: new GraknClient(String uri);
       accepts:
         param1:
-          name: host
-          description: The host address on which the Grakn Server is running
-          type: String
-          required: true
-          default: localhost
-        param2:
-          name: port
-          description: The port on which the Grakn server is running
-          type: int
-          required: true
-          default: 48555
+          <<: *accepts-client-uri
     javascript:
-      <<: *method-grakn
-      method: new Grakn(uri, credentials);
+      <<: *method-client
+      method: new GraknClient(uri, credentials);
       accepts:
-        <<: *accepts-grakn
+        <<: *accepts-client
         param2:
-          <<: *accepts-grakn-credentials
+          <<: *accepts-client-credentials
           type: '{ username: "", password: "" }'
     python:
-      <<: *method-grakn
-      method: grakn.Grakn(uri = "", credientials = {})
+      <<: *method-client
+      method: GraknClient(uri="", credientials = {})
       accepts:
-        <<: *accepts-grakn
+        <<: *accepts-client
         param2:
-          <<: *accepts-grakn-credentials
+          <<: *accepts-client-credentials
           type: '{ "username": "", "password": "" }'
