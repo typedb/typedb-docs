@@ -6,11 +6,19 @@ description:
     To use Graql, we first add it as a dependency to our `pom.xml`.
 
     ```xml
-    <dependency>
-        <groupId>io.graql</groupId>
-        <artifactId>lang</artifactId>
-        <version>1.0.0</version>
-    </dependency>
+    <repositories>
+        <repository>
+            <id>repo.grakn.ai</id>
+            <url>https://repo.grakn.ai/repository/maven/</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>io.graql</groupId>
+            <artifactId>lang</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
     ```
 
     The we import `Graql`.
