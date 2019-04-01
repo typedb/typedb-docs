@@ -3,6 +3,7 @@ pageTitle: Quickstart
 keywords: getting started, grakn, graql, tutorial, quickstart, overview
 longTailKeywords: get started with grakn, grakn tutorial, grakn quickstart, learn grakn
 summary: Learn about the constructs of the Grakn Schema, visualise a knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with Grakn.
+toc: false
 ---
 
 ### An Overview
@@ -210,7 +211,7 @@ getAverageSalaryAt("Pharos"); // asynchronous call
 We can create and delete instances of data in a Grakn knowledge graph by running [insert](../10-query/03-insert-query.md) and [delete](../10-query/04-delete-query.md) queries. Let's give them a try using the Console.
 
 #### Insert an instance of type person
-
+<!-- ignore-test -->
 ```graql
 insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male", has email "johnyjj@gmail.com";
 ```
@@ -236,7 +237,7 @@ commit
 ```
 
 #### Delete the newly added person
-
+<!-- ignore-test -->
 ```graql
 match $per isa person, has full-name "Johny Jimbly Joe"; delete $per;
 ```

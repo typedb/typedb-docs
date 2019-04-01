@@ -8,15 +8,15 @@ Summary: Taking advantage of automated reasoning with Rules in Grakn.
 ## What is a Rule?
 Grakn is capable of reasoning over data via pre-defined rules. Graql rules look for a given pattern in the dataset and when found, create the given queryable relation. Automated reasoning provided by rules is performed at query (run) time. Rules not only allow shortening and simplifying commonly-used queries but also enable knowledge discovery and implementation of business logic at the database level.
 
-When you query the knowledge graph for certain information, Grakn returns a complete set of answers. These answers contain explicit matches as well as implicit ones that have been inferred by the rules included in the schema.
+The rule-based reasoning allows automated capture and evolution of patterns within the knowledge graph. Graql reasoning is performed at query time and is guaranteed to be complete. Thanks to the reasoning facility, common patterns in the knowledge graph can be defined and associated with existing schema elements. The association happens by means of rules. This not only allows us to compress and simplify typical queries, but offers the ability to derive new non-trivial information by combining defined patterns. Once a given query is executed, Graql will not only query the knowledge graph for exact matches but will also inspect the defined rules to check whether additional information can be found (inferred) by combining the patterns defined in the rules. The completeness property of Graql reasoning guarantees that, for a given content of the knowledge graph and the defined rule set, the query result shall contain all possible answers derived by combining database lookups and rule applications.
 
-In this section, we learn more about how rules are constructed and how they are meant to be used.
+In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
 
 ## Define a Rule
 Defining a Graql rule begins with a given label followed by `sub rule`, the `when` body as the condition, and the `then` body as the conclusion.
 <!-- test-ignore -->
 ```graql
-define
+define 
 
 rule-label sub rule,
   when {
@@ -57,7 +57,7 @@ Combining all this information we can finally define our rule as following.
 define
 
 people-with-same-parents-are-siblings sub rule,
-  when {
+when {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;
     (father: $f, $x) isa parentship;
@@ -65,7 +65,7 @@ people-with-same-parents-are-siblings sub rule,
     $x != $y;
   }, then {
     ($x, $y) isa siblings;
-  };
+};
 ```
 [tab:end]
 
@@ -103,13 +103,11 @@ GraqlDefine query = Graql.define(
 **For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `define` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
-The Graql rule above is telling Grakn the following:
+Please note that facts defined via rules are in general not stored in the knowledge graph. In this example, siblings data is not explicitly stored anywhere in the knowledge graph. However by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
 
-when
-: there are two different people (`$x` and `$y`) who have the same mother `$m` and the same father `$f`,
+<!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
 
-then
-: those people (`$x` and `$y`) must be siblings.
+## Retrieve a Rule
 
 If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](../10-query/01-match-clause.md).
 
@@ -179,6 +177,6 @@ The following are the types of one single statement that can be set as the concl
 Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](../09-schema/01-concepts.md#undefine).
 
 ## Summary
-Rules are a powerful tool that reason over the explicitly stored data and produce and store implicit knowledge at run-time.
+Rules are a powerful tool that allows to reason over the explicitly stored data and produce implicit knowledge at run-time.
 
 In the next section, we learn how to [perform read and write instructions over a knowledge graph](../10-query/00-overview.md) that is represented by a schema.

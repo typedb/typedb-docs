@@ -69,11 +69,16 @@ brew install grakn-core
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
 
+<div class="note">
+[Warning]
+At the moment, to avoid encountering a permission error, you need to unzip the downloaded distribution using the `unzip` command via terminal, i.e. `unzip grakn-core-all-mac.zip`. This is a known issue that is expected to be resolved with the next release.
+</div>
+
+
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
 [tab:end]
 
-[tab:Windows]
 
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
@@ -85,9 +90,26 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 
 [tab:Docker]
 
-Run :
+#### Without an External Volume
+
+For testing purposes, run:
 ```
-docker run -d -p 48555:48555 graknlabs/grakn
+docker pull graknlabs/grakn:1.5.0
+docker run -d -p 48555:48555 graknlabs/grakn:1.5.0
+```
+
+<div class="note">
+[Note]
+Running the instance without specifying a volume does NOT save the data if the instance is killed.
+</div>
+
+#### With an External Volume
+
+To ensure that data is preserved even when the instance is killed or restarted, run:
+
+```
+docker pull graknlabs/grakn:1.5.0
+docker run -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 48555:48555 graknlabs/grakn:1.5.0
 ```
 
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
