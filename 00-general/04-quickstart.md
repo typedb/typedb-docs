@@ -3,6 +3,7 @@ pageTitle: Quickstart
 keywords: getting started, grakn, graql, tutorial, quickstart, overview
 longTailKeywords: get started with grakn, grakn tutorial, grakn quickstart, learn grakn
 summary: Learn about the constructs of the Grakn Schema, visualise a knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with Grakn.
+toc: false
 ---
 
 ### An Overview
