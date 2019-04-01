@@ -2,13 +2,12 @@
 
 This repository contains all content that powers the Grakn Documentation Portal, accessible at [dev.grakn.ai](http://dev.grakn.ai).
 
-
 ## Contribute
 
-- Fork this repository
-- Read the [Contribution Guidelines]() carefully
+- Fork this repository.
+- Read the [Contribution Guidelines](#contribution-guidelines) carefully.
 - Make the desired changes.
-- Issue pull request(s) and select the `base` branch in accordance with the Branch Classifications.
+- Issue pull request(s) and select the `base` branch in accordance with the [Branch Classifications](#branch-classifications).
 
 ## Branch Classifications
 
@@ -25,12 +24,12 @@ PRs that have the `master` branch as their _base_, contain one or more of the fo
 - updating images
 - other changes of the same nature
 
-Given a PR made on `master` that can and should be reflected in the next release as well, a second identical (or slightly different) PR needs to be made on one of the `development` branches. The steps required to issue the second PR is as follows. While on the _head_ branch of the first PR, run:
+Given a PR made on `master` that can and should be reflected in the next release as well, a second identical (or slightly different) PR needs to be made on the [`development` branch](#development). The steps required to issue the second PR is as follows. While on the _head_ branch of the first PR, run:
 1. `git checkout development`
 2. `git pull <name of the graknlabs/docs remote> development`
 3. `git checkout -b <name of the branch to be the head of the upcoming PR>`
-4. `git cherry-pick <SHA of the commit that represents the beginning of your change in previous PR>..<SHA of the commit that represents the beginning of your change in previous PR>`
-5. commit any other changes that are exclusive to the next release
+4. `git cherry-pick <SHA of the commit that represents the beginning of changes in the previous (master) PR>..<SHA of the commit that represents the end of changes in previous (master) PR>`
+5. commit any other changes that are exclusive for the next release
 5. `git push <name of the fork remote> <name of the current branch>`
 6. issue the PR and select `development` as the _base_ branch
 
@@ -55,49 +54,52 @@ PRs that have the `development` branch as their _base_, contain changes that are
 **Files and directories**
 
 - Separate words with hyphens (`-`).
-- Keep file and directory names compact: in most cases, one or two words that best describe the contained content. Never use more than three words.
+- Keep file and directory names compact: in most cases, one or two words that best describe the contained content. Never use more than three words unless the file is a tutorial page or a Workbase screenshot.
 - Choosing the same name for different files located in different directories is acceptable. (eg: `files/social-network/schema.gql` and `files/phone-calls/schema.gql`).
 - For naming images, refer to the [Images Guidelines](#images).
-
 
 **Headlines**
 
 - Headlines should be phrased in a way that when read the user can determine the question that the text is meant to answer. They should describe a use-case.
-- Use primitive verbs (eg: _Manage Keyspaces_ as opposed to _Managing Keyspaces_).
+- Use primitive verbs (eg: _Manage Keyspaces_ as opposed to _Managing Keyspaces_) or _Keyspace Management_.
 
 ### Using Images
 
 - The name of directories placed under `images/`, corresponds to the name of the section as displayed in the sidebar.
 - Name of images, while remaining concise, should be to some level descriptive of their content (eg: `compute_path.png` and `compute_path_subgraph.png` as opposed to `compute_0.png` and `compute_1.png`).
 - When an image is used across multiple pages, the **same** image file should be referenced, rather than duplicating the image.
+- The source file used to generate an image is to be located under `images/source/<section-name>`.
+- The source file must always contain the latest changes present in its corresponding image.
 - Screenshots of Workbase should be:
   - named after the UI/UX components of the software itself. (eg: `graql-editor_clear-query.png`).
-  - taken at the screen resolution of 1280 x 720.
-  - image size of 1147 x 671.
+  - taken at the screen resolution of 1280 x 720 pixels.
+  - of size, 1147 x 671 pixels.
   - consistent in their paddings (position of Workbase's layout within the screenshot).
 
 ### Writing Style
 
 **Spelling**
 
-Use American.git st
+Use American.
 
 **Headings**
-- There are only two levels of headings used across all markdown files:
+- There are three levels of headings used across all markdown files:
   - h2 (`##`)
   - h3 (`###`)
+  - h4 (`####`)
 - Use Title Case.
-- `###` always comes after a `##`.
+- `####` always comes after a `###` which always comes after a `##`.
 
 **Verbs and Pronouns**
 
 - With rare exceptions, the consistent tense used should be the present tense. (ex: _It returns_ as opposed to _It will return_).
-- In most cases, the consistent pronoun is `we`. In individual cases, `you` may better convey the message. Never use `I`.
+- In most cases, the consistent pronoun is `we`. In special cases, `you` may better convey the message. Never use `I`.
 
 **Lists (Bullet points)**
-- When the list item completes the unfinished sentence before the list, end the list item with a period.
-- When the concatenation of list items construct one long sentence, end each list items with a comma with the last one ending with a period.
-- Have an introductory sentence prior to the list, when possible.
+- When the list item completes the unfinished sentence before the list, end the list item with a period and start each item in lowercase.
+- When the concatenation of list items construct one long sentence, end each list items with a comma with the last one ending with a period and start each item in lowercase.
+- In cases other than the two described above, start the item with a capital letter and do not end the item with a full stop or a comma.
+- Have an introductory sentence prior to the list, when possible. Always end the introductory sentence with a `:`.
 
 **Footer Notes and Captions**
 - When using a phrase, do not end the line with a period (eg: `Computation of shortest path in Workbase`).
@@ -129,11 +131,20 @@ Use American.git st
 - To automatically link a code keyword to its corresponding documentation, review and maintain the [`views/autolink-keywords.js`](views/autolink-keywords.js)
 - Use ` `` ` within the text, to add inline code. Language is not specified for inline code.
 
+**Image Captions**
+
+In the line coming immediately after the image, use the following structure for adding a caption.
+
+```
+[caption:The desired caption goes here.]
+```
+
+
 **Tabbed Content**
 To add tabbed content, use the following structure.
 
 ```html
-<div class="tabs light">
+<div class="tabs [light|dark]">
 [tab:Title 1]
 ...
 [tab:end]
@@ -147,10 +158,10 @@ To add tabbed content, use the following structure.
 [tab:end]
 </div>
 ```
-- Avoid indents inside the `div` tag.
+- Avoid indents inside the `div` tag, unless they appear inside a code block.
 - When the tabbed content is solely a code block, use the `dark` mode (`class`).
 - When the tabbed content includes text, use the `light` mode (`class`).
-- In rare occasions, when the tabbed content is solely a Liquid `include` tag, add `data-no-parse` to the `div`.
+- In rare occasions, when the tabbed content is solely a Liquid `include` tag, add `data-no-parse` to the `div` tag.
 
 **Slideshow**
 
@@ -174,7 +185,7 @@ To add slideshows, use the following structure.
 </div>
 ```
 
-- `header` and `footer` is not required, but encouraged.
+- `header` and `footer` are not required, but encouraged.
 
 **Colored Panels**
 
@@ -199,6 +210,10 @@ To add an inline coloured label, use the following structure.
 
 In order for the above to be presented as a coloured label, the `Label Title` must be included in the `labelsList` accessible in [`views/colored-labels.js`](views/colored-labels.js).
 
+### Sidebar
+
+To add sections/pages to the sidebar, modify the [`sidebar.yml`](views/sidebar.yml).
+
 ### API References
 
 API references are written and maintained in `.yml` files. In order to work, with these files, you need to have a solid understanding of yaml anchors and references.
@@ -207,9 +222,12 @@ Client API reference files are accessible via [`03-client-api/references`](03-cl
 
 ### Tests
 
+- A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a Graql query.
+- A code block of `graql` that is not preceded by any test flags, will be tested as a _query_. Such code blocks are expected to contain pure Graql code that represents a complete query.
+- A code block that follow the `<!-- test-example file-name.extension --> flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
+  - a running Grakn Server
+  - the schema loaded into the target keyspace
 - Code blocks that have no language name, will not be tested.
 - Code blocks whose language is not `java`, `javascript` or `python` will not be tested.
 - Code blocks that follow the `<!-- test-ignore --> flag, will not be tested.
-- Code blocks that follow the `<!-- test-delay --> flag, with the flag expected to be removed in the next major or minor release.
-- Code blocks of `java`, `javascript` or `python` that are not preceded by any test flags, will be tested as snippets. Learn more about [Query Tests](test/query/README.md).
-- Code blocks that follow the `<!-- test-example file-name.extension --> flag, will be tested as standalones. Learn more about [Example Tests](test/example/README.md).
+- Code blocks that follow the `<!-- test-delay --> flag, will not be tested. The flag is expected to be removed in the next major or minor release.
