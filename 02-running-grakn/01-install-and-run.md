@@ -84,23 +84,28 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=windows#core), unzip it in a location on your machine that is easily accessible via command prompt.
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
+Having downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
 [tab:end]
 
 
 [tab:Docker]
 
+To pull the Grakn Docker image, run:
+
+```
+docker pull graknlabs/grakn:1.5.0
+```
+
 #### Without an External Volume
 
 For testing purposes, run:
 ```
-docker pull graknlabs/grakn:1.5.0
-docker run -d -p 48555:48555 graknlabs/grakn:1.5.0
+docker run --name grakn -d -p 48555:48555 graknlabs/grakn:1.5.0
 ```
 
 <div class="note">
-[Note]
+[Warning]
 Running the instance without specifying a volume does NOT save the data if the instance is killed.
 </div>
 
@@ -109,27 +114,31 @@ Running the instance without specifying a volume does NOT save the data if the i
 To ensure that data is preserved even when the instance is killed or restarted, run:
 
 ```
-docker pull graknlabs/grakn:1.5.0
-docker run -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 48555:48555 graknlabs/grakn:1.5.0
+docker run --name grakn -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 48555:48555 graknlabs/grakn:1.5.0
 ```
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
+Having started the instance, the Grakn Server is expected to be running on port `48555` on your machine.
 
+To interact with the [Grakn Console](../02-running-grakn/02-console.md), run:
+
+```
+docker exec -ti grakn bash -c '/grakn-core-all-linux/grakn console'
+```
 [tab:end]
 </div>
 
 ## Start the Grakn Server
-If you have installed Grakn using Homebrew, to start the Grakn Server, run `grakn server start`.
+If you have installed Grakn using a package manager, to start the Grakn Server, run `grakn server start`.
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server start`.
 
 ## Stop the Grakn Server
-If you have installed Grakn using Homebrew, to stop the Grakn Server, run `grakn server stop`.
+If you have installed Grakn using a package manager, to stop the Grakn Server, run `grakn server stop`.
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server stop`.
 
 ## Check the Server Status
-If you have installed Grakn using Homebrew, to check the status of the Grakn Server, run `grakn server status`.
+If you have installed Grakn using a package manager, to check the status of the Grakn Server, run `grakn server status`.
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server status`.
 
