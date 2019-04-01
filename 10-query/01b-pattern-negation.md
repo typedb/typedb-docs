@@ -67,41 +67,17 @@ Please note that the `$y` variable inside the negation block is not bound. This 
 If we were to interpret the query using the simple complement semantics we would arrive at a conclusion that unemployed people are people for which there exists 
 a company that doesn't hire them - it would get evaluated to all `($x, $y)` pairs where `$x` is a person and `$y` isa a company that is not 
 in an employment relation with `$x`. What we do instead is we interpret the negation block as some relation of arity equal to the number of variables that are bound
-to non-negated statements. This imposes a requirment of at least one variable in the negation block being bound to a variable outside the block.
+to non-negated statements. This imposes a requirement of at least one variable in the negation block being bound to a variable outside the block.
 Here our only bound variable is `$x`. Consequently we can think of the query as:
 
 ```
-Person($x), ¬???($x)
-???($x) :- Employment($x, employer:$y)
+Person($x), ¬SomeRelation($x)
+SomeRelation($x) :- Employment(employee: $x, employer: $y)
 ```
 
-In Graql terms it's equivalent to the pattern:
-
-<!-- test-ignore -->
-```graql
-{
-    $x isa person;
-    not { ($x) isa ???;};
-};
-```
-
-with the question relation defined in terms of a rule:
-
-<!-- test-ignore -->
-```graql
-negation-block sub rule,
-    when {
-        (employee: $x, employer: $y) isa employment;
-    },
-    then {
-        ($x) isa ???;
-    };
-```
-
-In this way, we have no problems defining the projection or join operations as these are handled by the native rule semantics. Consquently we can proceed with the set difference
+In this way, we have no problems defining the projection or join operations as these are handled by the native rule semantics. Consequently we can proceed with the set difference
 semantics unambiguously. As a result, the unemployment is evaluated according to our expectation of unemployment as an absence of being part of any employment - from the
-set of people we subtract the set of people being in employment relations. Please note that this example illustrates the basic mechanism of how patterns with negation are interpreted. 
-The rule interpretation above is for understanding purposes only. As a user the only thing we need to type is our query pattern:
+set of people we subtract the set of people being in employment relations. Consequently, as a user the only thing we need to type is our query pattern:
 
 ```graql
 {
@@ -275,9 +251,34 @@ Pattern pattern = and(
 [tab:end]
 </div>
 
-which is equivalent to saying:
+which is equivalent to having two extra specific types in the schema:
 
-<!-- test-ignore -->
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+define
+
+person-with-a-father sub entity;
+person-with-a-mother sub entity;
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDefine query = Graql.define(
+    type("person-with-a-father").sub("entity"),
+    type("person-with-a-mother").sub("entity"),
+);
+```
+[tab:end]
+</div>
+
+and then defining a pattern:
+
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 {
     $x isa person;
@@ -285,6 +286,19 @@ which is equivalent to saying:
     not { $x isa person-with-a-mother;};
 };
 ```
+[tab:end]
+
+[tab:Java]
+```java
+Pattern pattern = and(
+    var("x").isa("person"),
+    not(var("x").isa("person-with-a-father")),
+    not(var("x").isa("person-with-a-mother"))
+);
+```
+[tab:end]
+</div>
+
 
 Now let's look at how we arrive at the answers if we execute this as a match query. To do this we will go through
 the set difference computation procedure. Let's define a set `P` to be the set of all people, i.e. a set that is the answer set to a query:
@@ -306,16 +320,37 @@ GraqlGet query = match(var("x").isa("person")).get();
  
 a set `F` as the set of people having a father, i. e. a set that is the answer set of a query: 
 
-<!-- test-ignore -->
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 match $x isa person-with-a-father;get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query = match(var("x").isa("person-with-a-father")).get();
+```
+[tab:end]
+</div>
+
 and finally a set `M` as the set of people having a mother which can be defined in terms of a query:
 
-<!-- test-ignore -->
+<div class="tabs dark">
+
+[tab:Graql]
 ```graql
 match $x isa person-with-a-mother;get;
 ```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query = match(var("x").isa("person-with-a-mother")).get();
+```
+[tab:end]
+</div>
 
 We can illustrate the relationships between the sets with a suitable Venn diagram:
 
@@ -610,6 +645,7 @@ Please note, nesting of negation blocks is only allowed in queries, but not in r
 ## Negation blocks: DOs and DONTs
 
 Please note, the following restrictions apply to negation blocks:
+- **for queries with negation blocks, reasoning needs to be turned ON**
 - for each negation block in a query, at least one variable in the negation block must be bound to a statement outside of the negation block
 This ensures that set difference operations are performed on sets that are not disjoint.
 - variables in negation blocks are local to the block they are defined in
