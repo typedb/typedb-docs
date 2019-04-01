@@ -21,21 +21,37 @@ templatePath: 03-client-api/references/
 
 [tab:Grakn Core]
 ```xml
-<dependency>
-  <groupId>io.grakn.core</groupId>
-  <artifactId>client</artifactId>
-  <version>1.5.0</version>
-</dependency>
+<repositories>
+    <repository>
+        <id>repo.grakn.ai</id>
+        <url>https://repo.grakn.ai/repository/maven/</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>io.grakn.core</groupId>
+        <artifactId>client</artifactId>
+        <version>1.5.0</version>
+    </dependency>
+</dependencies>
 ```
 [tab:end]
 
 [tab:Grakn KGMS]
 ```xml
-<dependency>
-  <groupId>ai.grakn.kgms</groupId>
-  <artifactId>grakn-kgms</artifactId>
-  <version>1.4.3</version>
-</dependency>
+<repositories>
+    <repository>
+        <id>mavencentral</id>
+        <url>https://oss.sonatype.org/content/repositories/releases</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>ai.grakn.kgms</groupId>
+        <artifactId>client</artifactId>
+        <version>1.4.3</version>
+    </dependency>
+</dependencies>
 ```
 [tab:end]
 
