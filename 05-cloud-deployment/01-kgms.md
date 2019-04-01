@@ -1,7 +1,8 @@
 ---
-sidebarTitle: KGMS
 pageTitle: Grakn KGMS
-permalink: /docs/cloud-deployment/kgms
+keywords: grakn, kgms, knowledge graph management system, scalability, elastic throughput, cluster management
+longTailKeywords: grakn kgms, grakn knowledge graph management system, grakn enterprise
+Summary: Features available exclusively on Grakn KGMS.
 toc: false
 ---
 
@@ -18,7 +19,7 @@ Grakn Knowledge Graph Management System is an extension of Grakn that is aimed f
 **Grakn KGMS is Secure**. Providing user management, Grakn KGMS ensures that only the authenticated users gain access to the database.
 
 ## Deployment Options
-Grakn KGMS may be deployed on [Google Cloud Hosting](/docs/cloud-deployment/google-cloud) and [Amazon Web Services](/docs/cloud-deployment/aws).
+Grakn KGMS may be deployed on [Google Cloud Hosting](../05-cloud-deployment/02-google-cloud.md) and [Amazon Web Services](../05-cloud-deployment/03-aws.md).
 
 ## Enterprise Grade Support
 By using Grakn KGMS on the cloud, your team is entitled to Enterprise-Grade Support with access to a dedicated [support portal](https://support.grakn.ai/auth/login) and faster response time and problem resolution.

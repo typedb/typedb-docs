@@ -1,12 +1,13 @@
 ---
-sidebarTitle: Users
 pageTitle: Managing Users
-permalink: /docs/management/users
+keywords: grakn, management, authentication, users
+longTailKeywords: grakn managing users, grakn authentication, grakn users
+Summary: User authentication in Grakn KGMS.
 toc: false
 ---
 
 ## Managing Users [KGMS ONLY]
-The ability to manage users and authenticate their access to the [keyspaces](/docs/management/keyspace) of a Grakn Server running on the cloud, is limited to [KGMS](/docs/cloud-deployment/kgms) users only. To do this, we first need to enter the `grakn console start`. We can then use the following commands to manage users and their credentials.
+The ability to manage users and authenticate their access to [keyspaces](../06-management/01-keyspace.md) of a Grakn Server running on the cloud, is limited to [KGMS](../05-cloud-deployment/01-kgms.md) users only. To do this, we first need to enter the Grakn Console by running `grakn console start`. We can then use the following commands to manage users and their credentials.
 
 ### Create a new user
 ```

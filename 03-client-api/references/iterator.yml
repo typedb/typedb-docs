@@ -1,13 +1,13 @@
 
-title: Iterator ## !!! synced with codeKeywordsToLink
+title: Iterator
 description:
-  javascript: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>async iterator.next()</code> method."
+  javascript: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>await iterator.next()</code> method."
   python: "In addition to the methods below, the items in an Iterator can be consumed individually using <code>next(iterator)</code> method."
 methods:
   - method:
     common: &method-collect
       title: Convert the iterator into array
-      method: async iterator.collect();
+      method: await iterator.collect();
       description: Consumes the iterator and collects all the elements into an array.
       returns:
         - Array of IteratorEelement
@@ -15,16 +15,16 @@ methods:
       <<: *method-collect
   - method:
     common: &method-collectConcepts
-      title: Consume the iterator eagerly ## !!! synced with codeKeywordsToLink
+      title: Consume the iterator eagerly
     javascript:
       <<: *method-collectConcepts
       description: Consumes the iterator and collects all Concepts into an array.
-      method: async iterator.collectConcepts();
+      method: await iterator.collectConcepts();
       returns:
-        - "Array of [Concept](/docs/concept-api/concept)"
+        - "Array of [Concept](../04-concept-api/01-concept.md)"
     python:
       <<: *method-collectConcepts
       description: Consumes the iterator and collects all Concepts into a list.
       method: iterator.collect_concepts();
       returns:
-        - "List of [Concept](/docs/concept-api/concept)"
+        - "List of [Concept](../04-concept-api/01-concept.md)"

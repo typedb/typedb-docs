@@ -2,49 +2,50 @@ methods:
   - method:
     common: &method-value
       title: Retrieve value
-      description: Retrieves the value which the attribute holds.
+      description: Retrieves the value which the Attribute instance holds.
     java:
       <<: *method-value
       method: attribute.value();
       return:
-        - String
-        - Long
-        - Float
-        - Boolean
-        - Date
+        - "`String`"
+        - "`Long`"
+        - "`float`"
+        - "`boolean`"
+        - "`Date`"
     javascript:
       <<: *method-value
-      method: async attribute.value();
+      method: await attribute.value();
       return:
-        - String
-        - Number
-        - boolean
-        - Date
+        - "`String`"
+        - "`Number`"
+        - "`boolean`"
+        - "`Date`"
     python:
       <<: *method-value
       method: attribute.value()
       return:
-        - String
-        - int
-        - float
-        - boolean
-        - Date
+        - "`String`"
+        - "`int`"
+        - "`float`"
+        - "`boolean`"
+        - "`Date`"
+
   - method:
     common: &method-owners
       title: Retrieve owners
-      description: Retrieves the things that own the attribute.
+      description: Retrieves the instances that own this Attribute.
     java:
       <<: *method-owners
       method: attribute.owners();
       return:
-        - "Stream of [Thing](/docs/concept-api/thing?lang=java) objects"
+        - "Stream of [`Thing`](../04-concept-api/04-thing?tab=java.md) objects"
     javascript:
       <<: *method-owners
-      method: async attribute.owners();
+      method: await attribute.owners();
       return:
-        - "[Iterator](/docs/client-api/nodejs#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=javascript) objects"
+        - "Iterator of [`Thing`](../04-concept-api/04-thing?tab=javascript.md) objects"
     python:
       <<: *method-owners
       method: attribute.owners()
       return:
-        - "[Iterator](/docs/client-api/python#client-api-title-iterator) of [Thing](/docs/concept-api/thing?lang=python) objects"
+        - "Iterator of [`Thing`](../04-concept-api/04-thing?tab=python.md) objects"

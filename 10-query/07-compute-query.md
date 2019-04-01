@@ -1,23 +1,9 @@
 ---
-sidebarTitle: Compute
 pageTitle: Compute Query
-permalink: /docs/query/compute-query
+keywords: graql, compute query, shortest path, cluster, centrality, statistics
+longTailKeywords: grakn compute data, graql compute statistics, graql compute shortest path, graql compute centrality, graql compute cluster
+Summary: Compute statistics, shortest path, clusters and centrality in Grakn.
 ---
-
-<div class = "note">
-[Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `compute` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eager-executation-of-a-graql-query) method on the query object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a compute` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
-</div>
 
 ## Computing Distributed Analytics Over a Large Dataset
 In this section, we learn how to use the `compute` queries in a Grakn knowledge graph to:
@@ -25,6 +11,9 @@ In this section, we learn how to use the `compute` queries in a Grakn knowledge 
 - find the shortest path between two instances of data,
 - find the most important instance in the entire knowledge graph or a subset of it, and
 - identify clusters of interconnected instances or those that are tightly linked within a network.
+
+
+To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <!-- In a dedicated section, we learn more about the significance and use cases of [Distributed Analaytics]() in a Grakn knowledge graph. -->
 
@@ -46,8 +35,7 @@ compute count in person;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(COUNT)
-                          .in("person");
+GraqlCompute.Statistics query = Graql.compute().count().in("person");
 ```
 [tab:end]
 </div>
@@ -71,9 +59,7 @@ compute sum of salary, in employment;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(SUM)
-                          .of("salary")
-                          .in("employment");
+GraqlCompute.Statistics query = Graql.compute().sum().of("salary").in("employment");
 ```
 [tab:end]
 </div>
@@ -91,9 +77,7 @@ compute max of score, in school-course-enrollment;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(MAX)
-                          .of("score")
-                          .in("school-course-enrollment");
+GraqlCompute.Statistics query = Graql.compute().max().of("score").in("school-course-enrollment");
 ```
 [tab:end]
 </div>
@@ -111,9 +95,7 @@ compute min of ranking, in school;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(MIN)
-                          .of("ranking")
-                          .in("school");
+GraqlCompute.Statistics query = Graql.compute().min().of("ranking").in("school");
 ```
 [tab:end]
 </div>
@@ -131,9 +113,7 @@ compute mean of salary, in employment;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(MEAN)
-                          .of("salary")
-                          .in("employment");
+GraqlCompute.Statistics query = Graql.compute().mean().of("salary").in("employment");
 ```
 [tab:end]
 </div>
@@ -151,9 +131,7 @@ compute median of score, in school-course-enrollment;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(MEDIAN)
-                          .of("score")
-                          .in("school-course-enrollment");
+GraqlCompute.Statistics query = Graql.compute().median().of("score").in("school-course-enrollment");
 ```
 [tab:end]
 </div>
@@ -171,9 +149,7 @@ compute std of salary, in employment;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(STD)
-                          .of("salary")
-                          .in("employment");
+GraqlCompute.Statistics query = Graql.compute().std().of("salary").in("employment");
 ```
 [tab:end]
 </div>
@@ -189,25 +165,25 @@ We can use the compute query to find the shortest path between two instances of 
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-delay -->
 ```graql
-compute path from V229424, to v446496;
+compute path from V229424, to V446496;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
-ComputeQuery query = Graql.compute(PATH)
-                          .from(ConceptId.of("V229424"))
-                          .to(ConceptId.of("v446496"));
+GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496");
 ```
 [tab:end]
 </div>
 
-Running the above query in [Grakn Console](/docs/running-grakn/console),returns a list of ids that that represents the instances placed on the shortest path between the two.
+Running the above query in [Grakn Console](../02-running-grakn/02-console.md),returns a list of ids that that represents the instances placed on the shortest path between the two.
 
-When we execute this query in the [Grakn Workbase](/docs/workbase/overview), the result is as follows:
+When we execute this query in the [Grakn Workbase](../07-workbase/00-overview.md), the result is as follows:
 
-![shortest path in workbase](/docs/images/query/compute_path.png)
+![shortest path in workbase](../images/query/compute_path.png)
 
 ### Specify a whitelist
 When looking for the shortest path, we may need to constraint the shortest path to only include certain types. In other words, when given a whitelist of types, Grakn ignores any other path that leads to a type not included in the list. To do this, we use the `in` keyword followed by the list of allowed types.
@@ -215,26 +191,25 @@ When looking for the shortest path, we may need to constraint the shortest path 
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-delay -->
 ```graql
-compute path from V229424, to v446496, in [person, friendship];
+compute path from V229424, to V446496, in [person, friendship];
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
-ComputeQuery query = Graql.compute(PATH)
-                          .from(ConceptId.of("V229424"))
-                          .to(ConceptId.of("v446496"))
-                          .in("person","car", "company", "employment");
+GraqlCompute.Path query = Graql.compute().path().from("V229424").to("v446496").in("person","friendship");
 ```
 [tab:end]
 </div>
 
-Given the two `person` instances with ids of `V229424` and `v446496`, running the above query in [Grakn Console](/docs/running-grakn/console) returns a list of ids representing the shortest path between them. The list includes only the ids of instances that are of type `person` and `friendship`, as specified via the `in` keyword. Any other indirect association between the given persons is ignored when looking for the shortest path.
+Given the two `person` instances with ids of `V229424` and `v446496`, running the above query in [Grakn Console](../02-running-grakn/02-console.md) returns a list of ids representing the shortest path between them. The list includes only the ids of instances that are of type `person` and `friendship`, as specified via the `in` keyword. Any other indirect association between the given persons is ignored when looking for the shortest path.
 
-When we execute this query in the [Grakn Workbase](/docs/workbase/overview), the result is as follows:
+When we execute this query in the [Grakn Workbase](../07-workbase/00-overview.md), the result is as follows:
 
-![subgraph shortest path in workbase](/docs/images/query/compute_path_subgraph.png)
+![subgraph shortest path in workbase](../images/query/compute_path_subgraph.png)
 
 <div class="note">
 [Note]
@@ -257,8 +232,7 @@ compute centrality using degree;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(CENTRALITY)
-                          .using(DEGREE);
+GraqlCompute.Centrality query = Graql.compute().centrality().using(DEGREE);
 ```
 [tab:end]
 </div>
@@ -278,9 +252,7 @@ compute centrality in [organisation, person, employment], using degree;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(CENTRALITY)
-                          .in("organisation", "person", "employment")
-                          .using(DEGREE);
+GraqlCompute.Centrality query = Graql.compute().centrality().in("organisation", "person", "employment").using(DEGREE);
 ```
 [tab:end]
 </div>
@@ -288,7 +260,7 @@ ComputeQuery query = Graql.compute(CENTRALITY)
 This query returns a map of instances ordered ascendingly by degree. The instances included in the answers are those of types `organisation`, `person` and `employment`.
 
 #### Of a given type
-Consider the example above. What we are really interested in is the company with the most number of employees, but we are also getting the employee and employment instances in the answers. What if we only want to get the centrality of a given type based on its relationship with other types without getting irrelevant answers. To do this, we use the `of` keyword.
+Consider the example above. What we are really interested in is the company with the most number of employees, but we are also getting the employee and employment instances in the answers. What if we only want to get the centrality of a given type based on its relation with other types without getting irrelevant answers. To do this, we use the `of` keyword.
 
 <div class="tabs dark">
 
@@ -300,10 +272,7 @@ compute centrality of organisation, in [organisation, person, employment], using
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(CENTRALITY)
-                          .of("organisation")
-                          .in("organisation", "person", "employment")
-                          .using(DEGREE);
+GraqlCompute.Centrality query = Graql.compute().centrality().of("organisation").in("organisation", "person", "employment").using(DEGREE);
 ```
 [tab:end]
 </div>
@@ -323,8 +292,7 @@ compute centrality using k-core;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(CENTRALITY)
-                          .using(K_CORE);
+GraqlCompute.Centrality query = Graql.compute().centrality().using(K_CORE);
 ```
 [tab:end]
 </div>
@@ -344,9 +312,7 @@ compute centrality using k-core, where min-k=5;
 
 [tab:Java]
 ```java
-ComputeQuery query = Graql.compute(CENTRALITY)
-                          .using(K_CORE)
-                          .where(min_k(5));
+GraqlCompute.Centrality query = Graql.compute().centrality().using(K_CORE).where(min_k(5));
 ```
 [tab:end]
 </div>
@@ -367,9 +333,7 @@ compute cluster in [person, employment, organisation], using connected-component
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "employment", "organisation")
-                                      .using(CONNECTED_COMPONENT);
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "employment", "organisation").using(CONNECTED_COMPONENT);
 ```
 [tab:end]
 </div>
@@ -389,10 +353,7 @@ compute cluster in [person, employment, organisation], using connected-component
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "employment", "organisation")
-                                      .using(CONNECTED_COMPONENT)
-                                      .where(contains(ConceptId.of("V12488")));
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "employment", "organisation").using(CONNECTED_COMPONENT).where(Argument.contains("V12488"));
 ```
 [tab:end]
 </div>
@@ -414,39 +375,51 @@ compute cluster in [person, friendship], using k-core;
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "friendship")
-                                      .using(K_CORE);
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "friendship").using(K_CORE);
 ```
 [tab:end]
 </div>
 
 This query retrieves the set of concept IDs that belong to clusters which include instances of `person` and `friendship`. The identified clusters all have a minimum degree of 2.
 
-#### Specify the minimum k value
-To compute clusters using coreness with a given minimum `k` value, we use of the `where` keyword followed by an assignment of `min-k`.
+#### Specify the k value
+To compute clusters using coreness with a given  `k` value, we use of the `where` keyword followed by an assignment of `k`.
 
 <div class="tabs dark">
 
 [tab:Graql]
 ```graql
-compute cluster, in [person, friendship], using k-core, where min-k=3;
+compute cluster in [person, friendship], using k-core, where k=3;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-ComputeQuery&lt;ConceptSet&gt; query = Graql.compute(CLUSTER)
-                                      .in("person", "friendship")
-                                      .using(K_CORE)
-                                      .where(min_k(5));
+GraqlCompute.Cluster query = Graql.compute().cluster().in("person", "friendship").using(K_CORE).where(k(5));
 ```
 [tab:end]
 </div>
 
 This query retrieves the set of concept IDs that belong to clusters which include instances of `person` and `friendship` concept types and all have a minimum degree of 3.
 
+## Clients Guide
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `compute` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `compute` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+</div>
+
 ## Summary
 We use a compute query to run distributed analytics on the entire knowledge graph or a large subset of it filtered by a concept type. This statistical analytics include statistical function, shortest path, centrality and cluster
 
-Next, we learn about the [Concept API](/docs/concept-api/overview) and how it is used via the [Grakn Clients](/docs/client-api/overview) to retrieve information on a specific instance and its surroundings.
+Next, we learn about the [Concept API](../04-concept-api/00-overview.md) and how it is used via the [Grakn Clients](../03-client-api/00-overview.md) to retrieve information on a specific instance and its surroundings.
