@@ -268,7 +268,7 @@ person-with-a-mother sub entity;
 ```java
 GraqlDefine query = Graql.define(
     type("person-with-a-father").sub("entity"),
-    type("person-with-a-mother").sub("entity"),
+    type("person-with-a-mother").sub("entity")
 );
 ```
 [tab:end]

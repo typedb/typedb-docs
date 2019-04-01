@@ -204,6 +204,9 @@ define
 		relates son as child,
 		relates daughter as child;
 
+	person-with-a-mother sub entity;
+	person-with-a-father sub entity;
+
 	genderizeParentships1
 	when{
 		(parent: $p, child: $c) isa parentship;
