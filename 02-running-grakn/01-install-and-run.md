@@ -87,7 +87,8 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 
 Run :
 ```
-docker run -d -p 48555:48555 graknlabs/grakn
+docker pull graknlabs/grakn:1.5.0
+docker run -d -p 48555:48555 graknlabs/grakn:1.5.0
 ```
 
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
