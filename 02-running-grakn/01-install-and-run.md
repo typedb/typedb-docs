@@ -69,6 +69,12 @@ brew install grakn-core
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
 
+<div class="note">
+[Warning]
+At the moment, to avoid encountering a permission error, you need to unzip the downloaded distribution using the `unzip` command via terminal, i.e. `unzip grakn-core-all-mac.zip`. This is a known issue that is expected to be resolved with the next release.
+</div>
+
+
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
 [tab:end]
