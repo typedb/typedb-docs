@@ -85,10 +85,26 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 
 [tab:Docker]
 
-Run :
+#### Without an External Volume
+
+For testing purposes, run:
 ```
 docker pull graknlabs/grakn:1.5.0
 docker run -d -p 48555:48555 graknlabs/grakn:1.5.0
+```
+
+<div class="note">
+[Note]
+Running the container without specifying a volume does NOT save the data if the instance is killed.
+</div>
+
+#### With an External Volume
+
+To ensure that data is preserved even when the instance is killed or restarted, run:
+
+```
+docker pull graknlabs/grakn:1.5.0
+docker run -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 48555:48555 graknlabs/grakn:1.5.0
 ```
 
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
