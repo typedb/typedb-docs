@@ -63,7 +63,7 @@ person sub entity,
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network-schema.gql`](/docs/files/social-network-schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [keyspace](../06-management/01-keyspace.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-running-grakn/02-console.md).
+First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [keyspace](../06-management/01-keyspace.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-running-grakn/02-console.md).
 
 <div class="note">
 [Note]
@@ -77,7 +77,7 @@ While in the unzipped directory of the Grakn distribution, via terminal, run:
 ```
 
 ### Load the Dataset
-Download the [`social-network-data.gql`](/docs/files/social-network-data.gql){:target="_blank"} and load it into the same keyspace. Run:
+Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same keyspace. Run:
 
 ```
 ./grakn console --keyspace social_network --file path-to-the-social-network/data.gql
