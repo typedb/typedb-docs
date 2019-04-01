@@ -10,14 +10,10 @@ toc: false
 Workbase allows the visualisation and design of a grakn schema.
 
 ### Navigate to the Schema Designer
-<div class="slideshow">
 
-[slide:start]
-[body:start]![schema designer](/docs/images/workbase/schema_btn.png)[body:end]
-[footer:start]We can access the schema designer by clicking the top left **schema desinger** icon.[footer:end]
-[slide:end]
+![schema designer](/docs/images/workbase/schema_btn.png)
+[caption: We can access the schema designer by clicking the top left **schema desinger** icon.]
 
-</div>
 
 ### Define New Entity Type
 <div class="slideshow">
@@ -174,11 +170,7 @@ Workbase allows the visualisation and design of a grakn schema.
 </div>
 
 ### Delete
-<div class="slideshow">
 
-[slide:start]
-[body:start]![schema designer](/docs/images/workbase/schema_delete.png)[body:end]
-[footer:start]We may delete an existing schema concept type by right-clicking on the node and clicking **Delete**.[footer:end]
-[slide:end]
+![schema designer](/docs/images/workbase/schema_delete.png)
+[caption: We may delete an existing schema concept type by right-clicking on the node and clicking **Delete**.]
 
-</div>

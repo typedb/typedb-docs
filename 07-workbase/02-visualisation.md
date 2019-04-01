@@ -38,13 +38,13 @@ Workbase allows visualisation of answers returned by [Graql queries](../10-query
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-clear.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-clear-graph.png)[body:end]
 [footer:start]To clear the results, we need to click on the **refresh** button.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
 
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-minimise.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-minimise-btn.png)[body:end]
 [footer:start]We can also minimise the Graql Editor to focus on the visualised results.[footer:end]
 [slide:end]
 <!-- -->

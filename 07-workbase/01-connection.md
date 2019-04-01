@@ -11,18 +11,15 @@ Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-ru
 
 ### Start Workbase for Grakn Core
 
-![Connection](/docs/images/workbase/preferences_core-login.png)[body:end]
-[footer:start]We can specify the host and port when we start workbase.[footer:end]
+![Connection](/docs/images/workbase/preferences_core-login.png)
+[caption: We can specify the host and port when we start workbase.]
+
 
 ### Start Workbase for Grakn KGMS [KGMS ONLY]
-<div class="slideshow">
 
-[slide:start]
-[body:start]![Connection](/docs/images/workbase/preferences_kgms-login.png)[body:end]
-[footer:start]We can specify the host, port, username and password when we start workbase.[footer:end]
-[slide:end]
+![Connection](/docs/images/workbase/preferences_kgms-login.png)
+[caption: We can specify the host, port, username and password when we start workbase.]
 
-</div>
 
 ### Configure Connection
 <div class="slideshow">
