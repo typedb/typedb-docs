@@ -3,14 +3,13 @@ pageTitle: Client Python
 keywords: grakn, client, python
 longTailKeywords: grakn python client, grakn client python, client python, python client
 Summary: API Reference of Grakn Client Python.
-permalink: /docs/client-api/python
 ---
 
 ## Dependencies
 
 | Client Python  | Grakn Core                  | Grakn KGMS   | Python |
 | :------------: | :-------------------------: | :----------: | :----: |
-| 1.5.0          | 1.5.0                       | N/A          | >= 2.7 |
+| 1.5.1          | 1.5.0                       | N/A          | >= 2.7 |
 | 1.4.2          | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0, 1.4.3 | >= 3.6 |
 | 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3        | >= 3.6 |
 
@@ -47,7 +46,7 @@ with GraknClient(uri="localhost:48555") as client:
 ## client is closed
 ```
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users), into the client constructor as a dictionary.
+We can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md), into the client constructor as a dictionary.
 
 <!-- test-ignore -->
 ```python
@@ -67,7 +66,7 @@ with GraknClient(uri="localhost:48555") as client:
             ## write transaction is open
             ## write transaction must always be committed (closed)
             write_transaction.commit()
-    
+
         ## creating a read transaction
         with session.transaction().read() as read_transaction:
             ## read transaction is open
@@ -117,14 +116,29 @@ with GraknClient(uri="localhost:48555") as client:
 Remember that transactions always need to be closed. The safest way is to use the `with ...` syntax which auto-closes at the end of the `with` block. Otherwise, remember to call `transaction.close()` explicitly.
 </div>
 
-Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
 
 To view examples of running various Graql queries using the Grakn Client Python, head over to their dedicated documentation pages as listed below.
 
-- [Insert](/docs/query/insert-query)
-- [Get](/docs/query/get-query)
-- [Delete](/docs/query/delete-query)
-- [Aggregate](/docs/query/aggregate-query)
-- [Compute](/docs/query/compute-query)
+- [Insert](../10-query/03-insert-query.md)
+- [Get](../10-query/02-get-query.md)
+- [Delete](../10-query/04-delete-query.md)
+- [Aggregate](../10-query/06-aggregate-query.md)
+- [Compute](../10-query/07-compute-query.md)
 
-{% include client_api_template.html language = "python" %}
+<hr style="margin-top: 40px;" />
+
+## API Reference
+
+{% include api/generic.html data=site.data.03_client_api.references.grakn language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.client language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.session language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.transaction language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.iterator language="python" %}
+
+{% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
+

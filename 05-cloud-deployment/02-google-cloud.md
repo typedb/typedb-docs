@@ -3,7 +3,6 @@ pageTitle: Google Cloud Deployment
 keywords: grakn, cloud, deployment, google cloud, kgms
 longTailKeywords: grakn cloud deployment, grakn on the cloud, grakn kgms on the cloud, grakn kgms google cloud, grakn google cloud
 Summary: Learn how to deploy Grakn KGMS on Google Cloud.
-permalink: /docs/cloud-deployment/google-cloud
 ---
 
 ## Deploy Grakn on Google Cloud
@@ -16,7 +15,7 @@ As illustrated below, deploying [Grakn KGMS on Google Cloud](https://console.clo
 
 [header:start]Visit KGMS on Google Cloud[header:end]
 
-[body:start]![Visit KGMS on Google Cloud](/docs/images/cloud-deployment/gc_listing_a.png)[body:end]
+[body:start]![Visit KGMS on Google Cloud](../images/cloud-deployment/gc_listing_a.png)[body:end]
 
 [footer:start]
 Visit the [KGMS listing on GCP Marketplace](https://console.cloud.google.com/marketplace/details/grakn-public/grakn-kgms-premium)
@@ -28,7 +27,7 @@ Visit the [KGMS listing on GCP Marketplace](https://console.cloud.google.com/mar
 
 [header:start]Launch[header:end]
 
-[body:start]![Launch](/docs/images/cloud-deployment/gc_listing_b.png)[body:end]
+[body:start]![Launch](../images/cloud-deployment/gc_listing_b.png)[body:end]
 
 [footer:start]Click on **LAUNCH ON COMPUTE ENGINE**[footer:end]
 
@@ -38,7 +37,7 @@ Visit the [KGMS listing on GCP Marketplace](https://console.cloud.google.com/mar
 
 [header:start]Configure[header:end]
 
-[body:start]![Configure](/docs/images/cloud-deployment/gc_new_deployment_a.png)[body:end]
+[body:start]![Configure](../images/cloud-deployment/gc_new_deployment_a.png)[body:end]
 
 [footer:start]Adjust the settings based on your requirements. You may also refer to the [best practices](#best-practices) for deploying Grakn KGMS on Google Cloud.[footer:end]
 
@@ -48,7 +47,7 @@ Visit the [KGMS listing on GCP Marketplace](https://console.cloud.google.com/mar
 
 [header:start]Configure Firewall Settings[header:end]
 
-[body:start]![Configure Firewall Settings](/docs/images/cloud-deployment/gc_new_deployment_b.png)[body:end]
+[body:start]![Configure Firewall Settings](../images/cloud-deployment/gc_new_deployment_b.png)[body:end]
 
 [footer:start]
 In order to connect to the Grakn Server from outside the cluster, you need to _Allow TCP port 48555 traffic_.
@@ -60,7 +59,7 @@ In order to connect to the Grakn Server from outside the cluster, you need to _A
 
 [header:start]Configure Firewall Settings[header:end]
 
-[body:start]![Configure Firewall Settings](/docs/images/cloud-deployment/gc_new_deployment_c.png)[body:end]
+[body:start]![Configure Firewall Settings](../images/cloud-deployment/gc_new_deployment_c.png)[body:end]
 
 [footer:start]You can then click on _More_ to restrict access to certain IP addresses.[footer:end]
 
@@ -70,7 +69,7 @@ In order to connect to the Grakn Server from outside the cluster, you need to _A
 
 [header:start]Deploy[header:end]
 
-[body:start]![Deploy](/docs/images/cloud-deployment/gc_new_deployment_d.png)[body:end]
+[body:start]![Deploy](../images/cloud-deployment/gc_new_deployment_d.png)[body:end]
 
 [footer:start]When satisfied with the configuration, click on **Deploy**.[footer:end]
 
@@ -80,7 +79,7 @@ In order to connect to the Grakn Server from outside the cluster, you need to _A
 
 [header:start]Finishing Deployment[header:end]
 
-[body:start]![Finishing Deployment](/docs/images/cloud-deployment/gc_finishing_deployment.png)[body:end]
+[body:start]![Finishing Deployment](../images/cloud-deployment/gc_finishing_deployment.png)[body:end]
 
 [footer:start]That is all! Your cluster deployment is now pending.[footer:end]
 
@@ -90,7 +89,7 @@ In order to connect to the Grakn Server from outside the cluster, you need to _A
 
 [header:start]Default Password[header:end]
 
-[body:start]![Default Password](/docs/images/cloud-deployment/gc_default_password.png)[body:end]
+[body:start]![Default Password](../images/cloud-deployment/gc_default_password.png)[body:end]
 
 [footer:start]Take note of the default password, as we need this to for the initial authentication.[footer:end]
 
@@ -108,9 +107,9 @@ Once deployed, it takes some time for the cluster to fully bootup and synchronis
 ## Default Credentials
 As part of the deployment, Google Cloud produces the default credentials with username being `grakn` and the password as displayed on the post-deployment screen. We need these credentials to access the Graql and Grakn consoles.
 
-![Default Credentials](/docs/images/cloud-deployment/gc_default_password.png)
+![Default Credentials](../images/cloud-deployment/gc_default_password.png)
 
-We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](/docs/management/users#update-a-user) `grakn` giving it a new secured password.
+We strongly encourage changing the default password. To do this, we need to first [access Grakn Console](#accessing-grakn-console) and then [update the user](../06-management/02-users.md#update-a-user) `grakn` giving it a new secured password.
 
 ## Logging into a node
 For a more direct interaction with the database, we need to log into a node. To do so, we need to start an `ssh` session as illustrated below.
@@ -121,7 +120,7 @@ For a more direct interaction with the database, we need to log into a node. To 
 
 [header:start]SSH Options[header:end]
 
-[body:start]![SSH Options](/docs/images/cloud-deployment/gc_ssh_options.png)[body:end]
+[body:start]![SSH Options](../images/cloud-deployment/gc_ssh_options.png)[body:end]
 
 [footer:start]
 Click on the dropdown caret. Choose an option. For the purpose of this demonstration, we use (the first option) an in-browser terminal for the SSH session.
@@ -133,7 +132,7 @@ Click on the dropdown caret. Choose an option. For the purpose of this demonstra
 
 [header:start]Connecting[header:end]
 
-[body:start]![Connecting](/docs/images/cloud-deployment/gc_ssh_connecting.png)[body:end]
+[body:start]![Connecting](../images/cloud-deployment/gc_ssh_connecting.png)[body:end]
 
 [footer:start]
 Wait while a secured connection is being made.
@@ -145,7 +144,7 @@ Wait while a secured connection is being made.
 
 [header:start]we are in![header:end]
 
-[body:start]![we are in!](/docs/images/cloud-deployment/gc_ssh_connected.png)[body:end]
+[body:start]![we are in!](../images/cloud-deployment/gc_ssh_connected.png)[body:end]
 
 [footer:start]
 We are now inside the node and can directly interact with the database.
@@ -158,16 +157,16 @@ We are now inside the node and can directly interact with the database.
 ## Cluster Health Check
 While [logged into a node](#logging-into-a-node), run `grakn cluster status`. This outputs the list of all nodes, as shown below, with the first column indicating the Status (**U**p/**D**own) and State (**N**ormal/**L**eaving/**J**oining/**M**oving).
 
-![Cluster Health Check](/docs/images/cloud-deployment/gc_cluster_health_check.png)
+![Cluster Health Check](../images/cloud-deployment/gc_cluster_health_check.png)
 
 ## Access Grakn Console
-While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](/docs/management/users).
+While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](../06-management/02-users.md).
 
 ## Access Grakn Console
-While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](/docs/running-grakn/console) where we can interact with and perform [queries](/docs/query/overview) on our [keyspaces](/docs/management/keyspace).
+While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](../02-running-grakn/02-console.md) where we can interact with and perform [queries](../10-query/00-overview.md) on our [keyspaces](../06-management/01-keyspace.md).
 
 ## Configuring Grakn
-To ensure Grakn behaves according to your specific needs, you may [configure Grakn](/docs/running-grakn/configuration). One important attribute in Grakn configuration file, is the [path to the data directory](/docs/running-grakn/configuration#where-data-is-stored).
+To ensure Grakn behaves according to your specific needs, you may [configure Grakn](../02-running-grakn/03-configuration.md). One important attribute in Grakn configuration file, is the [path to the data directory](../02-running-grakn/03-configuration.md#where-data-is-stored).
 
 ## Sign up For Enterprise Support
 As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).

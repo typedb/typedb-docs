@@ -3,7 +3,6 @@ pageTitle: Quickstart
 keywords: getting started, grakn, graql, tutorial, quickstart, overview
 longTailKeywords: get started with grakn, grakn tutorial, grakn quickstart, learn grakn
 summary: Learn about the constructs of the Grakn Schema, visualise a knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with Grakn.
-permalink: /docs/general/quickstart
 ---
 
 ### An Overview
@@ -12,11 +11,11 @@ In this tutorial, we go through creating and interacting with a Grakn knowledge 
 Let's get started!
 
 ### Run Grakn
-[Install Grakn](/docs/running-grakn/install-and-run#system-requirements) and start the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server).
+[Install Grakn](../02-running-grakn/01-install-and-run.md#system-requirements) and start the [Grakn Server](../02-running-grakn/01-install-and-run.md#start-the-grakn-server).
 
 
 ### The Schema
-A [Grakn schema](/docs/schema/overview) is the blueprint of a Grakn knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
+A [Grakn schema](../09-schema/00-overview.md) is the blueprint of a Grakn knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
 
 ```graql
 define
@@ -60,39 +59,39 @@ person sub entity,
     plays list-owner;
 ```
 
-The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](/docs/running-grakn/console) or one of the [Grakn Clients](/docs/client-api/overview), Grakn accepts instructions and provides answers only in its own language - Graql.
+The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network-schema.gql`](/docs/files/social-network-schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we are going to load this schema into a [keyspace](/docs/management/keyspace). To do this, we need to use the non-interactive mode of the [Grakn Console](/docs/running-grakn/console).
+First, download the [`social-network-schema.gql`](/docs/files/social-network-schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [keyspace](../06-management/01-keyspace.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-running-grakn/02-console.md).
 
 <div class="note">
 [Note]
-Feel free to study the content of `social-network-schema.gql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [Grakn Workbase](/docs/workbase/overview).
+Feel free to study the content of `social-network-schema.gql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [Grakn Workbase](../07-workbase/00-overview.md).
 </div>
 
 While in the unzipped directory of the Grakn distribution, via terminal, run:
 
 ```
-./grakn console --keyspace social_network --file path-to-the/social-network-schema.gql
+./grakn console --keyspace social_network --file path-to-the-social-network/schema.gql
 ```
 
 ### Load the Dataset
 Download the [`social-network-data.gql`](/docs/files/social-network-data.gql){:target="_blank"} and load it into the same keyspace. Run:
 
 ```
-./grakn console --keyspace social_network --file path-to-the-data.gql
+./grakn console --keyspace social_network --file path-to-the-social-network/data.gql
 ```
 
-As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](/docs/query/insert-query) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](/docs/client-api/overview) to [migrate](/docs/examples/phone-calls-overview#whats-covered) the dataset into the target Grakn knowledge graph.
+As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../10-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target keyspace.
 
 ### Query the Knowledge Graph
-Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Grakn Console](/docs/running-grakn/console), [Grakn Workbase](/docs/workbase/overview) or one of the [Grakn Clients](/docs/client-api/overview).
+Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Grakn Console](../02-running-grakn/02-console.md), [Grakn Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md).
 
-Let's see an example of running [Graql get queries](/docs/query/get-query) via each of these interfaces.
+Let's see an example of running [Graql get queries](../10-query/02-get-query.md) via each of these interfaces.
 
-#### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](/docs/running-grakn/console)
+#### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-running-grakn/02-console.md)
 
-Enter the `social_network` keyspace using console.
+Enter the `social_network` keyspace using the Console.
 ```
 $ ./grakn console -k social_network
 ```
@@ -110,11 +109,11 @@ The result contains the following answers.
 {$fn "Miriam Morton" isa full-name;}
 ```
 
-#### Visualise all friendships using [Workbase](/docs/workbase/overview)
+#### Visualise all friendships using [Workbase](../07-workbase/00-overview.md)
 
-![Visualise all married people](/docs/images/quickstart/workbase_sample_query.png)
+![Visualise all married people](../images/quickstart/workbase_sample_query.png)
 
-#### Retrieve all employments using [Client Java](/docs/client-api/java)
+#### Retrieve all employments using [Client Java](../03-client-api/01-java.md)
 
 <!-- test-example SocialNetworkQuickstartQuery.java -->
 ```java
@@ -153,7 +152,7 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 }
 ```
 
-#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](/docs/client-api/python)
+#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](../03-client-api/02-python.md)
 
 <!-- test-example social_network_quickstart_query.py -->
 ```python
@@ -176,7 +175,7 @@ with GraknClient(uri="localhost:48555") as client:
           print(answer.map().get("pos").id)
 ```
 
-#### Retrieve the average salary of all employees at Pharos using [Client Node.js](/docs/client-api/nodejs)
+#### Retrieve the average salary of all employees at Pharos using [Client Node.js](../03-client-api/03-nodejs.md)
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
@@ -208,7 +207,7 @@ getAverageSalaryAt("Pharos"); // asynchronous call
 ```
 
 ### Insert and Delete Data
-We can create and delete instances of data in a Grakn knowledge graph by running [insert](/docs/query/insert-query) and [delete](/docs/query/delete-query) queries. Let's give them a try using the console.
+We can create and delete instances of data in a Grakn knowledge graph by running [insert](../10-query/03-insert-query.md) and [delete](../10-query/04-delete-query.md) queries. Let's give them a try using the Console.
 
 #### Insert an instance of type person
 
@@ -248,7 +247,7 @@ commit
 ```
 
 ### Store Knowledge
-Grakn is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a Grakn knowledge graph is made via pre-defined [Rules](/docs/schema/rules).
+Grakn is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a Grakn knowledge graph is made via pre-defined [Rules](../09-schema/03-rules.md).
 
 Let's look at some simple examples of how Grakn uses rules for reasoning over explicit data.
 
@@ -315,7 +314,7 @@ Similar to the first rule, the answer we're asking for here, was never injected 
 
 ### Distributed Analytics With Grakn
 
-The [Graql compute queries](/docs/query/compute-query) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
+The [Graql compute queries](../10-query/07-compute-query.md) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
 
 Let's look at a few examples of running `compute` on the `genealogy` knowledge graph.
 
@@ -331,7 +330,7 @@ compute mean of salary, in employment;
 compute count in travel;
 ```
 
-#### Find the [shortest path](/docs/query/compute-query#compute-the-shortest-path) between two instances
+#### Find the [shortest path](../10-query/07-compute-query.md#compute-the-shortest-path) between two instances
 
 ```graql
 match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
@@ -352,7 +351,7 @@ compute path from V446496, to V229424;
 {V184392, V442424, V90344}
 ```
 
-#### [Identify clusters](/docs/query/compute-query#identify-clusters) in a subgraph
+#### [Identify clusters](../10-query/07-compute-query.md#identify-clusters) in a subgraph
 ```graql
 compute cluster in [person, employment, organisation], using connected-component;
 ```
@@ -370,7 +369,7 @@ compute cluster in [person, employment, organisation], using connected-component
 
 ### Where Next?
 
-- [Grakn Schema](/docs/schema/overview)
-- [Graql Queries](/docs/query/overview)
-- [Workbase](/docs/workbase/overview)
-- [Examples](/docs/examples/phone-calls-overview)
+- [Grakn Schema](../09-schema/00-overview.md)
+- [Graql Queries](../10-query/00-overview.md)
+- [Workbase](../07-workbase/00-overview.md)
+- [Examples](../08-examples/00-phone-calls-overview.md)

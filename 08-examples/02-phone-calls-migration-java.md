@@ -3,24 +3,23 @@ pageTitle: Migrating CSV, JSON and XML Data with Client Java
 keywords: grakn, examples, migration, java
 longTailKeywords: grakn java migration
 Summary: Learn how to use Client Java to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
-permalink: /docs/examples/phone-calls-migration-java
 ---
 
 ## Goal
 
-In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](/docs/examples/phone-calls-schema) using [Client Java](/docs/client-api/java).
+In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](../08-examples/01-phone-calls-schema.md) using [Client Java](../03-client-api/01-java.md).
 
 ## A Quick Look at the Schema
 
 Before we get started with migration, let’s have a quick reminder of how the schema for the `phone_calls` knowledge graph looks like.
 
-![The Visualised Schema](/docs/images/examples/phone_calls_schema.png)
+![The Visualised Schema](../images/examples/phone_calls_schema.png)
 
 ## An Overview
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our Grakn [keyspace](/docs/management/keyspace). To do this, we use [Client Java](/docs/client-api/java).
+1.  we need a way to talk to our Grakn [keyspace](../06-management/01-keyspace.md). To do this, we use [Client Java](../03-client-api/01-java.md).
 2.  we go through each data file, extracting each data item and parsing it to a JSON object.
 3.  we pass each data item (in the form of a JSON object) to its corresponding template. What the template returns is the Graql query for inserting that item into Grakn.
 4.  we execute each of those queries to load the data into our target keyspace — `phone_calls`.
@@ -39,13 +38,13 @@ Modify `pom.xml` to include the latest version of Grakn Core, Graql and Grakn Cl
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-  	<groupId>ai.grakn.examples</groupId>
+  	<groupId>io.grakn.examples</groupId>
   	<artifactId>migrate-csv-to-grakn</artifactId>
-  	<version>1.0-SNAPSHOT</version>
+  	<version>1.0.0</version>
   	<repositories>
     	<repository>
-      		<id>releases</id>
-      		<url>https://oss.sonatype.org/content/repositories/releases</url>
+      		<id>repo.grakn.ai</id>
+            <url>https://repo.grakn.ai/repository/maven/</url>
     	</repository>
   	</repositories>
   	<properties>
@@ -1394,4 +1393,4 @@ Lastly, we ran the `main` method which fired the `connectAndMigrate` method with
 
 ## Next
 
-Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](/docs/examples/phone-calls-queries?tab=java).
+Now that we have some actual data in our knowledge graph, we can go ahead and [query for insights](../08-examples/05-phone-calls-queries.md?tab=java).

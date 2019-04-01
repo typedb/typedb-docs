@@ -20,3 +20,23 @@ filegroup(
     ),
     visibility = ["//visibility:public"]
 )
+
+filegroup(
+    name = "template",
+    srcs = glob(
+        ["*/**/*.yml"],
+        exclude=[
+            "bazel-bin/**/*.yml",
+            "bazel-out/**/*.yml",
+            "bazel-docs/**/*.yml",
+            ".runfiles/**/*.yml"
+        ]
+    ),
+    visibility = ["//visibility:public"]
+)
+
+filegroup(
+    name = "autolink-keywords",
+    srcs = ["views/autolink-keywords.js"],
+    visibility = ["//visibility:public"]
+)

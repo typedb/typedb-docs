@@ -3,7 +3,6 @@ pageTitle: Queries the Phone Calls Knowledge Graph
 keywords: grakn, examples, queries
 longTailKeywords: grakn query example
 Summary: Learn how to obtain insights by writing expressive Graql queries.
-permalink: /docs/examples/phone-calls-queries
 ---
 
 ## Goal
@@ -61,11 +60,11 @@ get $phone-number;
 
 #### Try it yourself
 
-![phone_calls query #1 Workbase](/docs/images/examples/phone_calls_query_1_workbase.png)
-[caption:Using [Workbase](/docs/workbase/overview)]
+![phone_calls query #1 Workbase](../images/examples/phone_calls_query_1_workbase.png)
+[caption:Using [Workbase](../07-workbase/00-overview.md)]
 
-![phone_calls query #1 Console](/docs/images/examples/phone_calls_query_1_console.png)
-[caption:Using [Grakn Console](/docs/running-grakn/console)]
+![phone_calls query #1 Console](../images/examples/phone_calls_query_1_console.png)
+[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -232,11 +231,11 @@ get $phone-number;
 
 #### Try it yourself
 
-![phone_calls query #2 Workbase](/docs/images/examples/phone_calls_query_2_workbase.png)
-[caption:Using [Workbase](/docs/workbase/overview)]
+![phone_calls query #2 Workbase](../images/examples/phone_calls_query_2_workbase.png)
+[caption:Using [Workbase](../07-workbase/00-overview.md)]
 
-![phone_calls query #2 Console](/docs/images/examples/phone_calls_query_2_console.png)
-[caption:Using [Grakn Console](/docs/running-grakn/console)]
+![phone_calls query #2 Console](../images/examples/phone_calls_query_2_console.png)
+[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -403,11 +402,11 @@ get $phone-number;
 
 #### Try it yourself
 
-![phone_calls query #3 Workbase](/docs/images/examples/phone_calls_query_3_workbase.png)
-[caption:Using [Workbase](/docs/workbase/overview)]
+![phone_calls query #3 Workbase](../images/examples/phone_calls_query_3_workbase.png)
+[caption:Using [Workbase](../07-workbase/00-overview.md)]
 
-![phone_calls query #3 Console](/docs/images/examples/phone_calls_query_3_console.png)
-[caption:Using [Grakn Console](/docs/running-grakn/console)]
+![phone_calls query #3 Console](../images/examples/phone_calls_query_3_console.png)
+[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -572,11 +571,11 @@ get $phone-number-a, $phone-number-b;
 
 #### Try it yourself
 
-![phone_calls query #4 Workbase](/docs/images/examples/phone_calls_query_4_workbase.png)
-[caption:Using [Workbase](/docs/workbase/overview)]
+![phone_calls query #4 Workbase](../images/examples/phone_calls_query_4_workbase.png)
+[caption:Using [Workbase](../07-workbase/00-overview.md)]
 
-![phone_calls query #4 Console](/docs/images/examples/phone_calls_query_4_console.png)
-[caption:Using [Grakn Console](/docs/running-grakn/console)]
+![phone_calls query #4 Console](../images/examples/phone_calls_query_4_console.png)
+[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -770,8 +769,8 @@ get $duration; mean $duration;
 
 #### Try it yourself
 
-![phone_calls query #5 Console](/docs/images/examples/phone_calls_query_5_console.png)
-[caption:Using [Grakn Console](/docs/running-grakn/console)]
+![phone_calls query #5 Console](../images/examples/phone_calls_query_5_console.png)
+[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
 
 <div class="tabs dark">
 [tab:Java]

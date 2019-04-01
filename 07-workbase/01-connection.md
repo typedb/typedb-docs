@@ -4,11 +4,10 @@ keywords: grakn, workbase, workbase preferences
 longTailKeywords: grakn workbase preferences, grakn workbase connection, grakn workbase manage keyspaces
 Summary: Working with the preferences panel in Grakn Workbase.
 toc: false
-permalink: /docs/workbase/connection
 ---
 
 ## Connect to Grakn
-Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) and interacts with [keyspaces](/docs/management/keyspace). In this short section, we learn how to configure this connection and select a keyspace to interact with.
+Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) and interacts with [keyspaces](../06-management/01-keyspace.md). In this short section, we learn how to configure this connection and select a keyspace to interact with.
 
 ### Start Workbase for Grakn Core
 

@@ -3,26 +3,10 @@ pageTitle: Get Query
 keywords: graql, get query, retrieval, modifier
 longTailKeywords: grakn retrieve data, grakn read data, graql get query, graql modifiers, graql offset, graql sort, graql limit
 Summary: Get (retrieval) queries and modifiers in Grakn.
-permalink: /docs/query/get-query
 ---
 
-<div class = "note">
-[Note]
-**For those developing with Client [Java](/docs/client-api/java)**: Executing a `get` query, is as simple as calling the [`withTx().execute()`](/docs/client-api/java#client-api-method-eagerly-execute-of-a-graql-query) method on the query object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](/docs/client-api/nodejs)**: Executing a `get` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/nodejs#client-api-method-lazily-execute-a-graql-query) function available on the [`transaction`](/docs/client-api/nodejs#client-api-title-transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](/docs/client-api/python)**: Executing a `get` query, is as simple as passing the Graql(string) query to the [`query()`](/docs/client-api/python#client-api-method-lazily-execute-a-graql-query) method available on the [`transaction`](/docs/client-api/python#client-api-title-transaction) object.
-</div>
-
 ## Retrieve Concept Types and Their Instances
-The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause.
+The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 ## Get the Variables
 Any variable that has been specified in the `match` clause can be returned as the answers of the `get` query. Let's look at an example of how variables can be asked for in the answer.
@@ -123,7 +107,26 @@ GraqlGet query = Graql.match(
 
 This returns 10 instances of the `person` (entity) type starting from the 6th person ordered by their `full-name`.
 
+
+## Clients Guide
+
+<div class = "note">
+[Note]
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `get` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `get` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+</div>
+
+<div class = "note">
+[Note]
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `get` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+</div>
+
 ## Summary
 A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order` and `offset` to retrieve an optionally ordered subset of the matched instances.
 
-Next, we learn how to [insert data](/docs/query/insert-query) into a Grakn knowledge graph.
+Next, we learn how to [insert data](../10-query/03-insert-query.md) into a Grakn knowledge graph.
+

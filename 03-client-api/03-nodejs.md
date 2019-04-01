@@ -3,14 +3,13 @@ pageTitle: Client Node.js
 keywords: grakn, client, node.js
 longTailKeywords: grakn node.js client, grakn client node.js, client node.js, python node.js
 Summary: API Reference of Grakn Client Node.js.
-permalink: /docs/client-api/nodejs
 ---
 
 ## Dependencies
 
 | Client Node.js | Grakn Core                  | Grakn KGMS   |  Node  |
 | :------------: | :-------------------------: | :----------: | :----: |
-| 1.5.0          | 1.5.0                       | N/A          | >= 6.5 |
+| 1.5.1          | 1.5.0                       | N/A          | >= 6.5 |
 | 1.2.4 to 1.3.1 | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0        | >= 6.5 |
 | 1.2.0 to 1.2.2 | 1.2.0                       | 1.2.0        | >= 6.5 |
 
@@ -47,7 +46,7 @@ async function openSession (keyspace) {
 openSession("social_network");
 ```
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](/docs/management/users), into the initial constructor as a Javascript object.
+We can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md), into the initial constructor as a Javascript object.
 
 <!-- test-ignore -->
 ```javascript
@@ -134,13 +133,26 @@ runBasicQueries("social_network");
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](/docs/concept-api/overview) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
 
 To view examples of running various Graql queries using the Grakn Client Node.js, head over to their dedicated documentation pages as listed below:
-- [Insert](/docs/query/insert-query)
-- [Get](/docs/query/get-query)
-- [Delete](/docs/query/delete-query)
-- [Aggregate](/docs/query/aggregate-query)
-- [Compute](/docs/query/compute-query)
+- [Insert](../10-query/03-insert-query.md)
+- [Get](../10-query/02-get-query.md)
+- [Delete](../10-query/04-delete-query.md)
+- [Aggregate](../10-query/06-aggregate-query.md)
+- [Compute](../10-query/07-compute-query.md)
 
-{% include client_api_template.html language = "javascript" %}
+## API Reference
+
+{% include api/generic.html data=site.data.03_client_api.references.grakn language="javascript" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.client language="javascript" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.session language="javascript" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.transaction language="javascript" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.iterator language="javascript" %}
+
+{% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}
+

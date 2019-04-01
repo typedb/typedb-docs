@@ -97,13 +97,25 @@ jobs:
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
 
+  test-links:
+    machine: true
+    working_directory: ~/docs
+    steps:
+      - install-bazel-linux-rbe
+      - checkout
+      - run: bazel test //test/links:test --test_output=errors
+
   release-staging:
     machine: true
     working_directory: ~/docs
     steps:
       - install-bazel-linux-rbe
       - checkout
-      - run: bazel run @graknlabs_build_tools//ci:release-docs -- development $CIRCLE_SHA1
+      - run: |
+          export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME_GRABL
+          export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL_GRABL
+          export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN_GRABL
+          bazel run @graknlabs_build_tools//ci:release-docs -- development $CIRCLE_SHA1
 
   release-production:
     machine: true
@@ -111,7 +123,11 @@ jobs:
     steps:
       - install-bazel-linux-rbe
       - checkout
-      - run: bazel run @graknlabs_build_tools//ci:release-docs -- master $CIRCLE_SHA1
+      - run: |
+          export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME_GRABL
+          export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL_GRABL
+          export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN_GRABL
+          bazel run @graknlabs_build_tools//ci:release-docs -- master $CIRCLE_SHA1
 
 workflows:
   docs:
@@ -122,6 +138,7 @@ workflows:
       - test-example-java
       - test-example-nodejs
       - test-example-python
+      - test-links
       - release-staging:
           filters:
             branches:
@@ -133,6 +150,7 @@ workflows:
             - test-example-java
             - test-example-nodejs
             - test-example-python
+            - test-links
       - release-production:
           filters:
             branches:
@@ -144,3 +162,4 @@ workflows:
             - test-example-java
             - test-example-nodejs
             - test-example-python
+            - test-links

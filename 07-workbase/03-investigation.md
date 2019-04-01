@@ -4,11 +4,10 @@ keywords: grakn, workbase, investigation
 longTailKeywords: grakn investigate nodes, workbase investigation
 Summary: Using Workbase to investigate nodes in a Grakn Knowledge Graph.
 toc: false
-permalink: /docs/workbase/investigation
 ---
 
 ## Investigate
-Once we have executed a [Graql query](/docs/query/overview) and visualised its result, we can then investigate each node further to obtain more insights.
+Once we have executed a [Graql query](../10-query/00-overview.md) and visualised its result, we can then investigate each node further to obtain more insights.
 
 ### Configure Display Settings
 Having selected a node, we can choose what colour it should be presented in and what attributes should be displayed on the node.

@@ -4,11 +4,10 @@ keywords: grakn, workbase, visualisation
 longTailKeywords: grakn visualise graph, visualise grakn, visualise grakn graph, workbase visualisation, grakn visualize graph, visualize grakn, visualize grakn graph, workbase visualization
 Summary: Using Workbase to visualise a Grakn Knowledge Graph.
 toc: false
-permalink: /docs/workbase/visualisation
 ---
 
 ## Visualise
-Workbase allows visualisation of answers returned by [Graql queries](/docs/query/overview). These include _custom_ and _pre-defined type-based_ queries.
+Workbase allows visualisation of answers returned by [Graql queries](../10-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
 
 ### Execute Custom Queries
 <div class="slideshow">
