@@ -95,7 +95,7 @@ docker run -d -p 48555:48555 graknlabs/grakn:1.5.0
 
 <div class="note">
 [Note]
-Running the image without specifying a volume does NOT save the data if the instance is killed.
+Running the instance without specifying a volume does NOT save the data if the instance is killed.
 </div>
 
 #### With an External Volume
