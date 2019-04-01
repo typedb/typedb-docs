@@ -54,7 +54,7 @@ To find out which version of Grakn is installed, we use the `--version` (or `-v`
 
 ## Console Commands
 
-Once inside the console, besides [Graql queries](../10-query/00-overview.md), we can run the following commands.
+Once inside the console, besides [Graql queries](../11-query/00-overview.md), we can run the following commands.
 
 | Option     | Description                                                                                                                                                                           |
 |------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
