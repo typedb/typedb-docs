@@ -6,7 +6,7 @@ Summary: Delete queries in Grakn.
 ---
 
 ## Delete Instances of an Entity Type
-To delete an instance of an entity type from the knowledge graph, we use a [match clause](../10-query/01-match-clause.md) followed by the `delete` keyword and the variable to be deleted. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To delete an instance of an entity type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and the variable to be deleted. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <div class="tabs dark">
 
@@ -100,4 +100,4 @@ If we had instead written the query as `match $t isa travel, has start-date $st;
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.
 
-Next, we learn how to [update data](../10-query/05-updating-data.md) in a Grakn knowledge graph.
+Next, we learn how to [update data](../11-query/05-updating-data.md) in a Grakn knowledge graph.

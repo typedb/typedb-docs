@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## Visualise
-Workbase allows visualisation of answers returned by [Graql queries](../10-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
+Workbase allows visualisation of answers returned by [Graql queries](../11-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
 
 ### Execute Custom Queries
 <div class="slideshow">

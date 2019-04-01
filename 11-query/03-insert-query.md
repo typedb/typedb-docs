@@ -6,7 +6,7 @@ Summary: Insert queries in Grakn.
 ---
 
 ## Insert Instances of an Entity Type
-To insert an instance of an entity type into the knowledge graph, we use the `insert` keyword followed by a series of statements that are similar to [match patterns](../10-query/01-match-clause.md#match-instances-of-an-entity). To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To insert an instance of an entity type into the knowledge graph, we use the `insert` keyword followed by a series of statements that are similar to [match patterns](../11-query/01-match-clause.md#match-instances-of-an-entity). To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <div class="tabs dark">
 
@@ -50,7 +50,7 @@ GraqlInsert query = Graql.insert(
 </div>
 
 ## Insert Instances of a Relation Type
-Given the dependent nature of relations, inserting an instance of a relation is quite different from that of an entity. The roles of a relation to be inserted are expected to be played by instances that already exist in the knowledge graph. Therefore inserting a relation is always preceded by matching the roleplayers - what is commonly called the `match insert`. What follows the `insert` keyword, is a series of statements that are similar to the [match patterns](../10-query/01-match-clause.md#match-instances-of-a-relation).
+Given the dependent nature of relations, inserting an instance of a relation is quite different from that of an entity. The roles of a relation to be inserted are expected to be played by instances that already exist in the knowledge graph. Therefore inserting a relation is always preceded by matching the roleplayers - what is commonly called the `match insert`. What follows the `insert` keyword, is a series of statements that are similar to the [match patterns](../11-query/01-match-clause.md#match-instances-of-a-relation).
 
 <div class="tabs dark">
 
@@ -102,4 +102,4 @@ This `match insert` query:
 ## Summary
 An `insert` query optionally preceded by a `match` clause is used to insert a data instance into the knowledge graph.
 
-Next, we learn how to [delete data](../10-query/04-delete-query.md) from a knowledge graph.
+Next, we learn how to [delete data](../11-query/04-delete-query.md) from a knowledge graph.

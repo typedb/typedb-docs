@@ -31,12 +31,12 @@ As shown in the image above, Graql queries are categorized into two main types:
   - **[Undefine](../09-schema/01-concepts.md#undefine)**: removes definition of a concept type from the schema.
 
 - **Data Manipulation**:
-  - **[Get](../10-query/02-get-query.md)**: returns the data instances or concept types that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
-  - **[Delete](../10-query/04-delete-query.md)**: removes the data instances assigned to the given variable that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
-  - **[Insert](../10-query/03-insert-query.md)**: inserts a data instance according to the given statement(s), optionally, preceded by a `match` clause.
-  - **[Group](../10-query/06-aggregate-query.md#grouping-answers)**: always as a part of a `get` query, returns the results grouped by the given variable, optionally mapped to the count of each group.
-  - **[Aggregate Values](../10-query/06-aggregate-query.md#aggregate-values-over-a-dataset)**: always as a part of a `get` query, returns the statistical value of numeric attributes based on the given aggregate function.
-  - **[Compute Statistics](../10-query/07-compute-query.md)**: computes paths between two instances, clusters and centrality.
+  - **[Get](../11-query/02-get-query.md)**: returns the data instances or concept types that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
+  - **[Delete](../11-query/04-delete-query.md)**: removes the data instances assigned to the given variable that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
+  - **[Insert](../11-query/03-insert-query.md)**: inserts a data instance according to the given statement(s), optionally, preceded by a `match` clause.
+  - **[Group](../11-query/06-aggregate-query.md#grouping-answers)**: always as a part of a `get` query, returns the results grouped by the given variable, optionally mapped to the count of each group.
+  - **[Aggregate Values](../11-query/06-aggregate-query.md#aggregate-values-over-a-dataset)**: always as a part of a `get` query, returns the statistical value of numeric attributes based on the given aggregate function.
+  - **[Compute Statistics](../11-query/07-compute-query.md)**: computes paths between two instances, clusters and centrality.
 
 ## Graql Answers
 
