@@ -355,7 +355,7 @@ GraqlGet query = match(var("x").isa("person-with-a-mother")).get();
 
 We can illustrate the relationships between the sets with a suitable Venn diagram:
 
-![Calculating the P \ F \ M set difference](/docs/images/query/PFM.png)
+![Calculating the P \ F \ M set difference](/docs/images/pattern/pfm.png)
 
 Consequently, our set of answers of our match pattern is defined as `A = P \ F \ M`. As a result, from the set of all people we subtract those who have a father and those who have a mother.
 Please note that the scope of variables in a negation block is local to the negation block. As a result the above pattern does not look for people that do not have a mother and a father that is the same person.
