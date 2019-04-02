@@ -9,6 +9,7 @@ package grakn.doc.test.query;
 import grakn.client.GraknClient;
 import grakn.core.rule.GraknTestServer;
 import graql.lang.Graql;
+import graql.lang.pattern.Pattern;
 import graql.lang.query.GraqlQuery;
 import org.junit.*;
 
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 public class GraqlLangTest {
     @ClassRule
     public static final GraknTestServer server = new GraknTestServer(
-        Paths.get("test/conf/grakn.properties"), 
+        Paths.get("test/conf/grakn.properties"),
         Paths.get("test/conf/cassandra-embedded.yaml")
     );
 
@@ -40,11 +41,11 @@ public class GraqlLangTest {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
             transaction.execute((GraqlQuery) Graql.parse(query));
-            
+
             encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
             query = new String(encoded, StandardCharsets.UTF_8);
             transaction.execute((GraqlQuery) Graql.parse(query));
-            
+
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,6 +81,15 @@ graql_lang_test_method_template = """
     }
 """
 
+graql_lang_pattern_test_method_template = """
+    @Test
+    public void test() {
+        // PAGE COMMENT PLACEHOLDER
+        String queries = "// QUERIES PLACEHOLDER";
+        Pattern pattern = Graql.parsePattern(queries);
+    }
+"""
+
 pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```graql\n((\n|.)+?)```'
                             +
                             '|(```graql\n' +
@@ -107,7 +117,12 @@ for i, snippet in enumerate(snippets):
             graql_lines.append(line.replace('"', "\\\""))
     final_snippet = " ".join(graql_lines)
 
-    test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+    keywords =["match", "define", "insert", "compute"]
+    if any(keyword in final_snippet for keyword in keywords):
+        test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+    else:
+        test_method = graql_lang_pattern_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+
     test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
     test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add query objects
     test_methods += test_method
