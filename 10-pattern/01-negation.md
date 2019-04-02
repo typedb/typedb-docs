@@ -182,6 +182,7 @@ Pattern pattern = and(
 );
 ```
 [tab:end]
+</div>
 
 Negation blocks are not tied to relations. We are free to define our patterns inside the negation blocks as long as they are conjunctive. For example, we can use negation
 blocks to perform exclusions, e.g. the query pattern to list all non-English speaking employees can read:
@@ -209,6 +210,7 @@ Pattern pattern = and(
 );
 ```
 [tab:end]
+</div>
 
 We shall now see how we can form more complex patterns with negation. Let's say we want to find people that are orphans:
 
@@ -558,6 +560,7 @@ GraqlGet query = Graql.match(
 ).get();
 ```
 [tab:end]
+</div>
 
 we will get the following concepts in return:
 
@@ -599,7 +602,7 @@ Pattern pattern = and(
 );
 ```
 [tab:end]
-
+</div>
 
 noting that this time we need to pick a fresh variable for mother as we are in the same negation block. The meaning of this pattern is the following. From all people,
 remove the people that have both a mother and a father. As a result, our answer set will contain people that have at most one parent.
@@ -636,6 +639,7 @@ Pattern pattern = and(
 );
 ```
 [tab:end]
+</div>
 
 Please note, nesting of negation blocks is only allowed in queries, but not in rules.
 
