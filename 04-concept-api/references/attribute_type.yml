@@ -87,7 +87,7 @@ methods:
   - method:
     common: &method-regex-retrieve
       title: Retrieve regex
-      description: Retrieves the regex that all instacnes of this AttributeType must conform to.
+      description: Retrieves the regex that all instances of this AttributeType must conform to.
     java:
       <<: *method-regex-retrieve
       method: attributeType.regex();
@@ -110,7 +110,7 @@ methods:
   - method:
     common: &method-regex-set
       title: Set regex
-      description: Set the regex that all instacnes of this AttributeType must conform to.
+      description: Set the regex that all instances of this AttributeType must conform to.
       accepts:
         param:
           name: regex
