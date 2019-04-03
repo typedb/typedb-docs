@@ -7,34 +7,63 @@ Summary: Query Language Overview.
 
 ## Graql Query Language
 
-Graql is the query language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
+Graql is the query language for the Grakn knowledge graph. The majority of the interaction with Grakn happens via the query language - whether it is through the [Grakn Console](../02-running-grakn/02-console.md) or one of the [Grakn Clients](../03-client-api/00-overview.md).
+Therefore, in this section we aim to give an overview of the query language.
+
+
+## Graql design motivations
+
+**Simplicity**
+
+Graql was designed to be intuitive and simple such that it can offer extensive capabilities within a short learning time. By learning a handful of simple keywords the user can already write complex and expressive queries whereas advanced features can be learnt on the fly and depending on needs.
+
+**Close to natural language**
+
+We wanted the user to be able to talk about domains of interest in a language he is familiar with. Making the language schema-first allows that as for each specific application, the user defines his own domain vocabulary - the schema, which is explicitly reflected in the query language.
+
+**Human-readable and concise**
+
+We wanted the language to be clean and readable for a majority of users. As a results, we used keywords that occur in everyday conversations to create basic constructs of the language. In that way, writing queries feels more natural and aligned with creating normal sentences.
+
+**High-level semantics**
+
+One of the main design goals was to abstract the graph structure details from the user so that we don't have to think about the underlying representation in terms of nodes and edges. Instead we can focus on the high-level representation which is aligned with a specific domain.
+
+## Why to use Graql
 
 **Graql is declarative**.
+
 When writing Graql queries, we simply describe **what** information we would like to retrieve, rather than **how** should it be obtained.
 Once we specify the target information to retrieve, the Graql query processor will take care of finding an optimal way to retrieve it.
 
 **Graql is schema-first**
-All Graql queries operate based on a user-defined, application-specific [schema](../09-schema/00-overview.md) that defines and controls the high-level vocabulary of our domain.
+
+All Graql queries operate based on a user-defined, application-specific [schema](../09-schema/00-overview.md) that defines and controls the high-level vocabulary of our domain. Thanks to schema we can provide data integrity and consistency guarantees as well as explicit semantics for the queries.
 
 **Graql is intuitive**.
+
 Graql was designed to provide a high-level query language interface with clear and human-readable syntax. By defining the high-level application-specific, we define our own vocabulary to talk about the domain of interest. As a result, formulating queries comes naturally as it is reminiscent of building ordinary sentences about our domain. The more tightly the schema represents our domain of interest, the more intuitive writing and reading Graql queries become.
 
 **Graql serves as both the Data Manipulation Language (DML) as well as the Data Definition Language (DDL)**
+
 Graql is a language that provides you with a complete set of tools to perform all data-oriented tasks. This includes defining the schema, retrieving information as well as creating and manipulating data.
 
-## Language overview
+**Rooted in logics**
+Graql takes great inspiration from logics and logic languages such as Datalog or Prolog. People familiarised with those topics should feel at home when using graql.
 
-In the following sections we will go through the following aspects of the language:
 
-- **Data Definition**:
-  - **[Define](../09-schema/01-concepts.md#define)**: adds definition of a concept type to the schema.
-  - **[Undefine](../09-schema/01-concepts.md#undefine)**: removes definition of a concept type from the schema.
+## Language features
+**Expressive querying in near natural language**
+Being schema-first with the Extended Entity-Relationship model as a data model, Graql is a simple yet expressive query language where writing queries closely mimicks writing sentences in natural languages.
 
-- **Data Manipulation**:
-  - **[Get](../11-query/02-get-query.md)**: returns the data instances or concept types that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
-  - **[Delete](../11-query/04-delete-query.md)**: removes the data instances assigned to the given variable that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
-  - **[Insert](../11-query/03-insert-query.md)**: inserts a data instance according to the given statement(s), optionally, preceded by a `match` clause.
-  - **[Group](../11-query/06-aggregate-query.md#grouping-answers)**: always as a part of a `get` query, returns the results grouped by the given variable, optionally mapped to the count of each group.
-  - **[Aggregate Values](../11-query/06-aggregate-query.md#aggregate-values-over-a-dataset)**: always as a part of a `get` query, returns the statistical value of numeric attributes based on the given aggregate function.
-  - **[Compute S
+**Lazy execution**
+All queries are evaluated in a call-by-need strategy - the answer retrieval is delayed until needed. This allows to stream query answers, define answer pipelines and control flows and avoid needless answer evaluations.
 
+**Rule-based reasoning as an integral part of the language**
+Graql is equipped with rule-based reasoning facilities by design. This allows to perform deductive inference tasks seamlessly by writing standard queries.
+
+**Support for recursion**
+Graql queries allow for recursive constructs which are expressed via suitably defined rules. General forms of recursion are allowed - first order, mutual, transitive and beyond.
+
+**Support for negation**
+Graql is equipped with a negation operator allowing for formulating queries involving exclusions.
