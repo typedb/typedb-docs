@@ -136,11 +136,11 @@ Remember that transactions always need to be closed. Committing a write transact
 Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
 
 To view examples of running various Graql queries using the Grakn Client Node.js, head over to their dedicated documentation pages as listed below:
-- [Insert](../11-query/03-insert-query.md)
-- [Get](../11-query/02-get-query.md)
-- [Delete](../11-query/04-delete-query.md)
-- [Aggregate](../11-query/06-aggregate-query.md)
-- [Compute](../11-query/07-compute-query.md)
+- [Insert](../12-query/03-insert-query.md)
+- [Get](../12-query/02-get-query.md)
+- [Delete](../12-query/04-delete-query.md)
+- [Aggregate](../12-query/06-aggregate-query.md)
+- [Compute](../12-query/07-compute-query.md)
 
 ## API Reference
 

@@ -6,10 +6,10 @@ Summary: Updating data in Grakn.
 ---
 
 ## Update Instances of Concept Types
-In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](../11-query/04-delete-query.md) the current instance followed by [inserting](../11-query/03-insert-query.md) the new instance. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](../12-query/04-delete-query.md) the current instance followed by [inserting](../12-query/03-insert-query.md) the new instance. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 ## Update Instances of an Attribute Type
-In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type).
+In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](../12-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../12-query/03-insert-query.md#insert-instances-of-an-attribute-type).
 
 <div class="tabs dark">
 
@@ -79,7 +79,7 @@ GraqlDelete delete_query = Graql.match(
 This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
 ### Update the roleplayers of a relation
-To change the roleplayers of a given relation, we first need to [delete the instances of the relation](../11-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current roleplayers and [insert the new instance of the relation](../11-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
+To change the roleplayers of a given relation, we first need to [delete the instances of the relation](../12-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current roleplayers and [insert the new instance of the relation](../12-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
 
 <div class="tabs dark">
 
@@ -139,6 +139,6 @@ This query updates the `employee` roleplayer of the `employment` relation where 
 
 
 ## Summary
-Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](../09-schema/01-concepts.md). Simply put, to update is essentially to first `delete` and then `insert`.
+Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](../10-schema/01-concepts.md). Simply put, to update is essentially to first `delete` and then `insert`.
 
-Next, we learn how to [aggregate values over a set of data](../11-query/06-aggregate-query.md) in a Grakn knowledge graph.
+Next, we learn how to [aggregate values over a set of data](../12-query/06-aggregate-query.md) in a Grakn knowledge graph.

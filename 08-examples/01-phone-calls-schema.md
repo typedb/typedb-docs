@@ -39,7 +39,7 @@ But first, let’s visualise the reality of our dataset.
 
 ![The Visualised Schema](../images/examples/phone_calls_schema.png)
 
-By looking at this visualised schema, we can identify the [Concepts](../09-schema/01-concepts.md).
+By looking at this visualised schema, we can identify the [Concepts](../10-schema/01-concepts.md).
 
 **call** is of type **relation** that has two role players:
 - **person** who plays the role of a **caller**, and

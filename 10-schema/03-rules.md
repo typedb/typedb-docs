@@ -109,7 +109,7 @@ Please note that facts defined via rules are in general not stored in the knowle
 
 ## Retrieve a Rule
 
-If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](../11-query/01-match-clause.md).
+If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](../12-query/01-match-clause.md).
 
 In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
 
@@ -174,9 +174,9 @@ The following are the types of one single statement that can be set as the concl
 - inserting a relation. Example: `($x, $y) isa siblings;`.
 
 ## Deleting Rules
-Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](../09-schema/01-concepts.md#undefine).
+Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](../10-schema/01-concepts.md#undefine).
 
 ## Summary
 Rules are a powerful tool that allows to reason over the explicitly stored data and produce implicit knowledge at run-time.
 
-In the next section, we learn how to [perform read and write instructions over a knowledge graph](../11-query/00-overview.md) that is represented by a schema.
+In the next section, we learn how to [perform read and write instructions over a knowledge graph](../12-query/00-overview.md) that is represented by a schema.

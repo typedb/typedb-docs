@@ -78,14 +78,14 @@ class LinksTest(unittest.TestCase):
             # the following mappings are required because links included in autolink-keywords.js are post-processed,
             # whereas we're comparing them against raw links found in markdown files
             url_mapping = {
-                "../schema/concepts": "09-schema/01-concepts.md",
-                "../schema/rules": "09-schema/03-rules.md",
-                "../query/match-clause": "11-query/01-match-clause.md",
-                "../query/get-query": "11-query/02-get-query.md",
-                "../query/insert-query": "11-query/03-insert-query.md",
-                "../query/delete-query": "11-query/04-delete-query.md",
-                "../query/aggregate-query": "11-query/06-aggregate-query.md",
-                "../query/compute-query": "11-query/07-compute-query.md"
+                "../schema/concepts": "10-schema/01-concepts.md",
+                "../schema/rules": "10-schema/03-rules.md",
+                "../query/match-clause": "12-query/01-match-clause.md",
+                "../query/get-query": "12-query/02-get-query.md",
+                "../query/insert-query": "12-query/03-insert-query.md",
+                "../query/delete-query": "12-query/04-delete-query.md",
+                "../query/aggregate-query": "12-query/06-aggregate-query.md",
+                "../query/compute-query": "12-query/07-compute-query.md"
             }
             client_page_mapping = {
                 "java": "01-java.md",

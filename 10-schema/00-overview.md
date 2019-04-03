@@ -51,7 +51,7 @@ Everything that describes a domain in a Grakn Knowledge Graph is a concept. This
 We refer to a data instance as a _thing_ - they can be thought of as instances of types defined in the schema.
 
 ### Types
-Types constitute the core of the schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](../09-schema/01-concepts.md#entity), [Relations](../09-schema/01-concepts.md#relation), and [Attributes](../09-schema/01-concepts.md#attribute):
+Types constitute the core of the schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](../10-schema/01-concepts.md#entity), [Relations](../10-schema/01-concepts.md#relation), and [Attributes](../10-schema/01-concepts.md#attribute):
 
 **Entities** are the main actors in our domain. These are usually the type of things we want to know about. Entity types provide means of classifying the objects in our domain.
 
@@ -77,7 +77,7 @@ _Roles_ specify the nature of the connection between instances. They are not typ
 In the schema, we need to specify what role relates to each relation type and who can play this role. Thanks to roles, we are able to guarantee the logical integrity of our data, disallowing a `marriage` between a `person` and a `building`, for example. Unless we specifically allow such a relationship in the schema.
 
 ### Rules
-Lastly, the Grakn schema is completed with [**Graql Rules**](../09-schema/03-rules.md). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
+Lastly, the Grakn schema is completed with [**Graql Rules**](../10-schema/03-rules.md). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in Grakn.
 
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset of any complexity.
 
@@ -91,7 +91,7 @@ Once we have defined the schema, the next immediate step is to load it into Grak
 To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a Grakn knowledge graph, check out the [Migration Mechanism](...) followed by a comprehensive [tutorial](...) in the language of your choice.
 
 ## Query the schema
-In the next section we learn how to [insert](../11-query/03-insert-query.md), [get](../11-query/02-get-query.md), [delete](../11-query/04-delete-query.md), [update](/docs/query/update-data), [aggregate](../11-query/06-aggregate-query.md) and [compute](../11-query/07-compute-query.md) data represented by a schema.
+In the next section we learn how to [insert](../12-query/03-insert-query.md), [get](../12-query/02-get-query.md), [delete](../12-query/04-delete-query.md), [update](/docs/query/update-data), [aggregate](../12-query/06-aggregate-query.md) and [compute](../12-query/07-compute-query.md) data represented by a schema.
 
 ## Reserved Keywords
 The following keywords are reserved and meant to only be used by Graql in the schema.
@@ -117,4 +117,4 @@ when, then
 ## Summary
 The Grakn schema sets the foundation for a Grakn knowledge graph. When modelled thoroughly, the schema provides us with a knowledge graph that benefits from logical integrity, is flexible towards change, capable of automated reasoning, and enables writing intuitive queries.
 
-In the next section, we learn about the members of a schema - [Concept Types](../09-schema/01-concepts.md) and [Rules](../09-schema/03-rules.md).
+In the next section, we learn about the members of a schema - [Concept Types](../10-schema/01-concepts.md) and [Rules](../10-schema/03-rules.md).

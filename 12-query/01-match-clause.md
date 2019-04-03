@@ -7,15 +7,15 @@ Summary: Targeting instances of data that match expressive patterns in Grakn.
 
 ## Match Clause
 We use match clauses to retrieve data instances and schema types that follow a particular pattern. Using match clauses forms the basis of our data retrieval.
-By defining the [schema](../09-schema/00-overview.md), we effectively define a vocabulary to be used to describe concepts of our domain.
+By defining the [schema](../10-schema/00-overview.md), we effectively define a vocabulary to be used to describe concepts of our domain.
 
 Once the schema is defined, we can form graph patterns for which we want to search within our knowledge graph. We do that by using match clauses.
-Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../11-query/02-get-query.md), [Insert](../11-query/03-insert-query.md), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
+Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../12-query/02-get-query.md), [Insert](../12-query/03-insert-query.md), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
 
 In the subsequent sections, we shall see how to match specific graph patterns. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 ## Match Instances of Concept Types
-What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we learn about [using _get_ for the retrieval of information from the knowledge graph](../11-query/02-get-query.md).
+What follows in this section, describes how we can use the `match` keyword to find instances of data that we are interested in. What we choose to do with the matched result, is out of the scope of this section. But for the sake of completeness, we end each `match` clause with `get;`. In the next section, we learn about [using _get_ for the retrieval of information from the knowledge graph](../12-query/02-get-query.md).
 
 ### Match instances of an entity
 Matching instances of an entity type is easy. We do so by using a variable followed by the `isa` keyword and the label of the entity type.
@@ -63,7 +63,7 @@ GraqlGet query = Graql.match(
 We soon learn [how to target attributes of a specific value](#match-instances-of-an-attribute).
 
 ### Match instances of a relation
-Because of the [dependent nature of relations](../09-schema/01-concepts.md#define-a-relation), matching them is slightly different to matching entities and attributes.
+Because of the [dependent nature of relations](../10-schema/01-concepts.md#define-a-relation), matching them is slightly different to matching entities and attributes.
 
 <div class="tabs dark">
 
@@ -322,7 +322,7 @@ GraqlGet query = Graql.match(
 </div>
 
 ### Instances of a direct type
-The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](../09-schema/01-concepts.md#subtype-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
+The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](../10-schema/01-concepts.md#subtype-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
 
 <div class="tabs dark">
 
@@ -370,9 +370,9 @@ GraqlGet query = Graql.match(
 When matching an instance of an attribute type based on its value or simply comparing two variables, the following comparators may be used: `==`, `!=`, `>`, `>=`, `<` and `<=`.
 
 ## Match Schema Concepts
-In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we learn about [how to use the get keyword](../11-query/02-get-query.md).
+In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we learn about [how to use the get keyword](../12-query/02-get-query.md).
 
-Having fully understood the [schema concepts](../09-schema/01-concepts.md) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema statements.
+Having fully understood the [schema concepts](../10-schema/01-concepts.md) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema statements.
 
 ### Subtypes of a given type
 To match all concepts of a given type, we use the `sub` keyword. Here are the examples for matching subtypes of all concept types, including `thing` that is a supertype to all other types.
@@ -439,7 +439,7 @@ GraqlGet query = Graql.match(
 This matches all roles of the `employment` relation - `employer` and `employee`.
 
 #### Subroles of a given role in a super-relation
-When we learned about [subtyping relations](../09-schema/01-concepts.md#subtype-a-relation), we saw that a role related to a sub-relation is linked to a corresponding parent's role using the `as` keyword. We can use the same keyword in a `match` clause to match the corresponding role in the given sub-relation.
+When we learned about [subtyping relations](../10-schema/01-concepts.md#subtype-a-relation), we saw that a role related to a sub-relation is linked to a corresponding parent's role using the `as` keyword. We can use the same keyword in a `match` clause to match the corresponding role in the given sub-relation.
 
 <div class="tabs dark">
 
@@ -528,4 +528,4 @@ To see some `get` queries powered by complex and expressive `match` clauses, che
 ## Summary
 We learned how to use the `match` clause to write intuitive statements that describe a desired pattern in the knowledge graph and fill in the variables that hold the data we would like to acquire.
 
-Next, we learn how to use the `match` clause in conjunction with Graql queries to carry out instructions - starting with the [get query](../11-query/02-get-query.md).
+Next, we learn how to use the `match` clause in conjunction with Graql queries to carry out instructions - starting with the [get query](../12-query/02-get-query.md).

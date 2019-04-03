@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## Investigate
-Once we have executed a [Graql query](../11-query/00-overview.md) and visualised its result, we can then investigate each node further to obtain more insights.
+Once we have executed a [Graql query](../12-query/00-overview.md) and visualised its result, we can then investigate each node further to obtain more insights.
 
 ### Configure Display Settings
 Having selected a node, we can choose what colour it should be presented in and what attributes should be displayed on the node.

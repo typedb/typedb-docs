@@ -128,5 +128,5 @@ This returns 10 instances of the `person` (entity) type starting from the 6th pe
 ## Summary
 A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order` and `offset` to retrieve an optionally ordered subset of the matched instances.
 
-Next, we learn how to [insert data](../11-query/03-insert-query.md) into a Grakn knowledge graph.
+Next, we learn how to [insert data](../12-query/03-insert-query.md) into a Grakn knowledge graph.
 

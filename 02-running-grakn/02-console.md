@@ -29,7 +29,7 @@ To enter an existing or new keyspace, we use the `--keyspace` (or `-k`) option f
 ```
 
 ### Loading a schema into a keyspace
-To load a [schema](../09-schema/00-overview.md) into a keyspace, we use the `--file` (or `-f`) option followed by the path to the schema (`.gql`) file. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) into which the schema should be loaded. Note that if the keyspace has not yet been created, this command also creates a new keyspace with the given name.
+To load a [schema](../10-schema/00-overview.md) into a keyspace, we use the `--file` (or `-f`) option followed by the path to the schema (`.gql`) file. In addition, we need to [select the keyspace](#selecting/creating-a-keyspace) into which the schema should be loaded. Note that if the keyspace has not yet been created, this command also creates a new keyspace with the given name.
 
 ```
 ./grakn console -k keyspace_name --file path/to/schema.gql
@@ -54,7 +54,7 @@ To find out which version of Grakn is installed, we use the `--version` (or `-v`
 
 ## Console Commands
 
-Once inside the console, besides [Graql queries](../11-query/00-overview.md), we can run the following commands.
+Once inside the console, besides [Graql queries](../12-query/00-overview.md), we can run the following commands.
 
 | Option     | Description                                                                                                                                                                           |
 |------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

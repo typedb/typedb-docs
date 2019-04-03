@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## Visualise
-Workbase allows visualisation of answers returned by [Graql queries](../11-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
+Workbase allows visualisation of answers returned by [Graql queries](../12-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
 
 ### Execute Custom Queries
 <div class="slideshow">
@@ -58,8 +58,13 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 <div class="slideshow">
 
 [slide:start]
+<<<<<<< HEAD
 [body:start]![Graql editor](/docs/images/workbase/visualise_types.png)[body:end]
 [footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can explore the [Concept Types](/docs/schema/concepts) as defined in the [schema](/docs/schema/overview).[footer:end]
+=======
+[body:start]![Graql editor](../images/workbase/1.1.1/visualise_types.png)[body:end]
+[footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can explore the [Concept Types](../10-schema/01-concepts.md) as defined in the [schema](../10-schema/00-overview.md).[footer:end]
+>>>>>>> 335b895... reorganise sections
 [slide:end]
 <!-- -->
 [slide:start]

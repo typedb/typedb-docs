@@ -6,7 +6,7 @@ Summary: Delete queries in Grakn.
 ---
 
 ## Delete Instances of an Entity Type
-To delete an instance of an entity type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and the variable to be deleted. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To delete an instance of an entity type from the knowledge graph, we use a [match clause](../12-query/01-match-clause.md) followed by the `delete` keyword and the variable to be deleted. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <div class="tabs dark">
 
@@ -54,7 +54,7 @@ GraqlDelete query = Graql.match(
 This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Pharos"`.
 
 ## Delete Associations with Attributes
-Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](../09-schema/01-concepts.md#define-an-attribute) in a Grakn knowledge graph prior to performing `delete` queries on them.
+Attributes with the same value are shared among their owners. It's important that one understands thoroughly how [attributes are defined](../10-schema/01-concepts.md#define-an-attribute) in a Grakn knowledge graph prior to performing `delete` queries on them.
 
 To delete only the association that a thing has with an attribute, we use the `via` keyword to capture and delete the relation between the owner and the owned attribute - NOT the instance of the attribute type itself, as doing so disowns the instance from any other instance that may have owned it.
 
@@ -100,4 +100,4 @@ If we had instead written the query as `match $t isa travel, has start-date $st;
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.
 
-Next, we learn how to [update data](../11-query/05-updating-data.md) in a Grakn knowledge graph.
+Next, we learn how to [update data](../12-query/05-updating-data.md) in a Grakn knowledge graph.

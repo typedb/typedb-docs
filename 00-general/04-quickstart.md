@@ -16,7 +16,7 @@ Let's get started!
 
 
 ### The Schema
-A [Grakn schema](../09-schema/00-overview.md) is the blueprint of a Grakn knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
+A [Grakn schema](../10-schema/00-overview.md) is the blueprint of a Grakn knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
 
 ```graql
 define
@@ -83,12 +83,12 @@ Download the [`social-network/data.gql`](../files/social-network/data.gql){:targ
 ./grakn console --keyspace social_network --file path-to-the-social-network/data.gql
 ```
 
-As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target keyspace.
+As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../12-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target keyspace.
 
 ### Query the Knowledge Graph
 Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Grakn Console](../02-running-grakn/02-console.md), [Grakn Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md).
 
-Let's see an example of running [Graql get queries](../11-query/02-get-query.md) via each of these interfaces.
+Let's see an example of running [Graql get queries](../12-query/02-get-query.md) via each of these interfaces.
 
 #### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-running-grakn/02-console.md)
 
@@ -208,7 +208,7 @@ getAverageSalaryAt("Pharos"); // asynchronous call
 ```
 
 ### Insert and Delete Data
-We can create and delete instances of data in a Grakn knowledge graph by running [insert](../11-query/03-insert-query.md) and [delete](../11-query/04-delete-query.md) queries. Let's give them a try using the Console.
+We can create and delete instances of data in a Grakn knowledge graph by running [insert](../12-query/03-insert-query.md) and [delete](../12-query/04-delete-query.md) queries. Let's give them a try using the Console.
 
 #### Insert an instance of type person
 <!-- ignore-test -->
@@ -248,7 +248,7 @@ commit
 ```
 
 ### Store Knowledge
-Grakn is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a Grakn knowledge graph is made via pre-defined [Rules](../09-schema/03-rules.md).
+Grakn is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a Grakn knowledge graph is made via pre-defined [Rules](../10-schema/03-rules.md).
 
 Let's look at some simple examples of how Grakn uses rules for reasoning over explicit data.
 
@@ -315,7 +315,7 @@ Similar to the first rule, the answer we're asking for here, was never injected 
 
 ### Distributed Analytics With Grakn
 
-The [Graql compute queries](../11-query/07-compute-query.md) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
+The [Graql compute queries](../12-query/07-compute-query.md) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
 
 Let's look at a few examples of running `compute` on the `genealogy` knowledge graph.
 
@@ -331,7 +331,7 @@ compute mean of salary, in employment;
 compute count in travel;
 ```
 
-#### Find the [shortest path](../11-query/07-compute-query.md#compute-the-shortest-path) between two instances
+#### Find the [shortest path](../12-query/07-compute-query.md#compute-the-shortest-path) between two instances
 
 ```graql
 match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
@@ -352,7 +352,7 @@ compute path from V446496, to V229424;
 {V184392, V442424, V90344}
 ```
 
-#### [Identify clusters](../11-query/07-compute-query.md#identify-clusters) in a subgraph
+#### [Identify clusters](../12-query/07-compute-query.md#identify-clusters) in a subgraph
 ```graql
 compute cluster in [person, employment, organisation], using connected-component;
 ```
@@ -370,7 +370,7 @@ compute cluster in [person, employment, organisation], using connected-component
 
 ### Where Next?
 
-- [Grakn Schema](../09-schema/00-overview.md)
-- [Graql Queries](../11-query/00-overview.md)
+- [Grakn Schema](../10-schema/00-overview.md)
+- [Graql Queries](../12-query/00-overview.md)
 - [Workbase](../07-workbase/00-overview.md)
 - [Examples](../08-examples/00-phone-calls-overview.md)

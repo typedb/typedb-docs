@@ -38,7 +38,7 @@ Once we specify the target information to retrieve, the Graql query processor wi
 
 **Graql is schema-first**
 
-All Graql queries operate based on a user-defined, application-specific [schema](../09-schema/00-overview.md) that defines and controls the high-level vocabulary of our domain. Thanks to schema we can provide data integrity and consistency guarantees as well as explicit semantics for the queries.
+All Graql queries operate based on a user-defined, application-specific [schema](../10-schema/00-overview.md) that defines and controls the high-level vocabulary of our domain. Thanks to schema we can provide data integrity and consistency guarantees as well as explicit semantics for the queries.
 
 **Graql is intuitive**.
 

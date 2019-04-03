@@ -6,7 +6,7 @@ Summary: A comprehensive guide on defining Schema Concepts in Grakn.
 ---
 
 ## Define
-As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
+As the name suggests, we use the `define` keyword to develop the [schema](../10-schema/00-overview.md) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
@@ -831,4 +831,4 @@ When the concept type to be undefined is a supertype to something else, we must 
 ## Summary
 We learned that a Grakn schema is essentially a collection of Entities, Relations, and Attributes - what we call the Grakn Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
 
-In the next section, we learn about one last addition to the schema - [Graql Rules](../09-schema/03-rules.md).
+In the next section, we learn about one last addition to the schema - [Graql Rules](../10-schema/03-rules.md).

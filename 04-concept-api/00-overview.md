@@ -11,11 +11,11 @@ Anything in Grakn, whether a concept type or a data instance, is a [Concept](../
 
 ![Concept Hierarchy](../images/concept-api/overview_hierarchy.png)
 
-**Type** refers to a Concept Type as defined in the [schema](../09-schema/00-overview.md#grakn-data-model).
+**Type** refers to a Concept Type as defined in the [schema](../10-schema/00-overview.md#grakn-data-model).
 
 **Thing** refers to an instance of data that is an instantiation of a Concept Type.
 
-**Rule** refers to a [Graql Rule](../09-schema/03-rules.md).
+**Rule** refers to a [Graql Rule](../10-schema/03-rules.md).
 
 <div class="note">
 [Important]
