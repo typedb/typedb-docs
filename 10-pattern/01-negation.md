@@ -324,7 +324,7 @@ a set `F` as the set of people having a father, i. e. a set that is the answer s
 
 [tab:Graql]
 ```graql
-match $x isa person-with-a-father;get;
+match $x isa person-with-a-father; get;
 ```
 [tab:end]
 
@@ -341,7 +341,7 @@ and finally a set `M` as the set of people having a mother which can be defined 
 
 [tab:Graql]
 ```graql
-match $x isa person-with-a-mother;get;
+match $x isa person-with-a-mother; get;
 ```
 [tab:end]
 
