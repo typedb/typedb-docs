@@ -2,7 +2,7 @@
 pageTitle: Rules
 keywords: graql, rule, reasoning, automated reasoning
 longTailKeywords: grakn reasoning, grakn automated reasoning, grakn rules
-Summary: Taking advantage of automated reasoning with Rules in Grakn.
+Summary: Automated reasoning with Rules in Grakn.
 ---
 
 ## What is a Rule?
@@ -31,15 +31,18 @@ Each hashed line corresponds to a single Graql statement. In Graql, the "when" p
 Let us have a look at an example. We want to express the fact that two given people are siblings. As we all know, for two people to be siblings, we need the following facts to be true:
 - they share the same mother
 - they share the same father
+- they are not the same person
 
-To express those two facts in Graql, we can write:
+To express those facts in Graql, we can write:
 <!-- test-delay -->
 ```graql
-(mother: $m, $x) isa parentship;
-(mother: $m, $y) isa parentship;
-(father: $f, $x) isa parentship;
-(father: $f, $y) isa parentship;
-$x != $y;
+{
+    (mother: $m, $x) isa parentship;
+    (mother: $m, $y) isa parentship;
+    (father: $f, $x) isa parentship;
+    (father: $f, $y) isa parentship;
+    $x != $y;
+};
 ```
 
 If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](/docs/query/match-clause). Please note the variable inequality requirement. Without it, $x and $y can still be mapped to the same concept. Those requirements will serve as our `when` part of the rule. What remains to be done is to define the conclusion of our requirements - the fact that two people are siblings. We do it simply by writing the relevant relation pattern:
@@ -63,7 +66,7 @@ when {
     (father: $f, $x) isa parentship;
     (father: $f, $y) isa parentship;
     $x != $y;
-  }, then {
+}, then {
     ($x, $y) isa siblings;
 };
 ```
@@ -72,35 +75,21 @@ when {
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("people-with-same-parents-are-siblings").sub("rule").when(
-    and(
-      var().rel("mother", "m").rel("x").isa("parentship"),
-      var().rel("mother", "m").rel("y").isa("parentship"),
-      var().rel("father", "f").rel("x").isa("parentship"),
-      var().rel("father", "f").rel("y").isa("parentship"),
-      var("x").neq("y")
+  type("people-with-same-parents-are-siblings").sub("rule")
+    .when(
+        and(
+            var().rel("mother", "m").rel("x").isa("parentship"),
+            var().rel("mother", "m").rel("y").isa("parentship"),
+            var().rel("father", "f").rel("x").isa("parentship"),
+            var().rel("father", "f").rel("y").isa("parentship"),
+            var("x").neq("y")
+        )
+    ).then(
+        var().isa("siblings").rel("x").rel("y")
     )
-  ).then(
-    var().isa("siblings").rel("x").rel("y")
-  )
 );
 ```
 [tab:end]
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `define` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `define` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
-</div>
-
-<div class = "note">
-[Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `define` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 Please note that facts defined via rules are in general not stored in the knowledge graph. In this example, siblings data is not explicitly stored anywhere in the knowledge graph. However by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
@@ -115,7 +104,8 @@ In this example, siblings data is not explicitly stored anywhere in the knowledg
 
 ## Delete a Rule
 
-To delete rules we refer to them by their label and use the undefine keyword. For the case of the rules defined above, to delete them we write:
+Rules like any other schema members can be undefined. Consequently, to delete rules we refer to them by their label and use the [undefine keyword](../09-schema/01-concepts.md#undefine).
+For the case of the rule defined above, to delete it we write:
 
 <!-- test-delay -->
 ```graql
@@ -132,11 +122,13 @@ When using one of the Grakn Clients, to commit changes, we call the `commit()` m
 Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
 <!-- test-delay -->
 ```graql
-(mother: $m, $x) isa parentship;
-(mother: $m, $y) isa parentship;
-(father: $f, $x) isa parentship;
-(father: $f, $y) isa parentship;
-$x != $y;
+{
+    (mother: $m, $x) isa parentship;
+    (mother: $m, $y) isa parentship;
+    (father: $f, $x) isa parentship;
+    (father: $f, $y) isa parentship;
+    $x != $y;
+};
 ```
 
 To simplify this logic even further, you can think of the [siblings example](#define-a-rule) in form of an `if` statement like so:
@@ -167,14 +159,6 @@ where `q`s and the `p` are atoms that each correspond to a single Graql statemen
 The implication form of Horn clauses aligns more naturally with Graql semantics as we define the rules in terms of the “when” and “then” blocks which directly correspond to the antecedent and consequent of the implication respectively.
 </div>
 
-### What goes in the then body
-The following are the types of one single statement that can be set as the conclusion of a rule in the `then` body:
-- setting the type. Example: `$x isa person;`,
-- assigning an explicit value to an attribute. Example: `$x has flag "incomplete";`, or
-- inserting a relation. Example: `($x, $y) isa siblings;`.
-
-## Deleting Rules
-Rules like any other concept types can be undefined. To do so, we use the [undefine keyword](../09-schema/01-concepts.md#undefine).
 
 ## Summary
 Rules are a powerful tool that allows to reason over the explicitly stored data and produce implicit knowledge at run-time.
