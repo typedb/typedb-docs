@@ -49,7 +49,7 @@ Graql was designed to provide a high-level query language interface with clear a
 Graql is a language that provides you with a complete set of tools to perform all data-oriented tasks. This includes defining the schema, retrieving information as well as creating and manipulating data.
 
 **Rooted in logics**
-Graql takes great inspiration from logics and logic languages such as Datalog or Prolog. People familiarised with those topics should feel at home when using graql.
+Graql takes great inspiration from logics and logic languages such as Datalog or Prolog. People familiarised with those topics should feel at home when using Graql.
 
 
 ## Language features
@@ -58,9 +58,6 @@ Being schema-first with the Extended Entity-Relationship model as a data model, 
 
 **Strong abstraction over low-level details**
 Graql provides a high-level abstraction over the graph and query structure, allowing for simpler expressions of complex constructs, while the system determines the most optimal query execution.
-
-**Lazy execution**
-All queries are evaluated in a call-by-need strategy - the answer retrieval is delayed until needed. This allows to stream query answers, define answer pipelines and control flows and avoid needless answer evaluations.
 
 **Rule-based reasoning as an integral part of the language**
 Graql is equipped with rule-based reasoning facilities by design. This allows to perform deductive inference tasks seamlessly by writing standard queries.
@@ -73,3 +70,6 @@ Graql queries allow for recursive constructs which are expressed via suitably de
 
 **Support for negation**
 Graql is equipped with a negation operator allowing for formulating queries involving exclusions.
+
+**Lazy execution**
+All queries are evaluated in a call-by-need strategy - the answer retrieval is delayed until needed. This allows to stream query answers, define answer pipelines and control flows and avoid needless answer evaluations.
