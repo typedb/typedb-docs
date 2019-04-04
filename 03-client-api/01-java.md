@@ -30,7 +30,7 @@ templatePath: 03-client-api/references/
 <dependencies>
     <dependency>
         <groupId>io.grakn.core</groupId>
-        <artifactId>client</artifactId>
+        <artifactId>api</artifactId>
         <version>1.5.0</version>
     </dependency>
 </dependencies>
