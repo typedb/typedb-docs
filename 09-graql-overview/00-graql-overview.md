@@ -56,11 +56,17 @@ Graql takes great inspiration from logics and logic languages such as Datalog or
 **Expressive querying in near natural language**
 Being schema-first with the Extended Entity-Relationship model as a data model, Graql is a simple yet expressive query language where writing queries closely mimicks writing sentences in natural languages.
 
+**Strong abstraction over low-level details**
+Graql provides a high-level abstraction over the graph and query structure, allowing for simpler expressions of complex constructs, while the system determines the most optimal query execution.
+
 **Lazy execution**
 All queries are evaluated in a call-by-need strategy - the answer retrieval is delayed until needed. This allows to stream query answers, define answer pipelines and control flows and avoid needless answer evaluations.
 
 **Rule-based reasoning as an integral part of the language**
 Graql is equipped with rule-based reasoning facilities by design. This allows to perform deductive inference tasks seamlessly by writing standard queries.
+
+**Distributed analytics as a n integral part of the language**
+Graql provides out-of-the-box distributed analytics (Pregel and MapReduce) algorithms, accessible through the language through simple queries.
 
 **Support for recursion**
 Graql queries allow for recursive constructs which are expressed via suitably defined rules. General forms of recursion are allowed - first order, mutual, transitive and beyond.
