@@ -73,3 +73,18 @@ Graql is equipped with a negation operator allowing for formulating queries invo
 
 **Lazy execution**
 All queries are evaluated in a call-by-need strategy - the answer retrieval is delayed until needed. This allows to stream query answers, define answer pipelines and control flows and avoid needless answer evaluations.
+
+## Where next
+In the following sections we go over the structure of the language in detail. Especially we will focus on the following key areas:
+
+- [schema definition](../10-schema/00-overview.md)
+
+All operations in Graql begin with the definition of a application-specific schema which quantifies the vocabulary of our domain.
+
+- structure and creation of [patterns](../11-pattern/00-overview.md)
+
+Patterns serve as basic building blocks in query creation. Therefore, we describe their structure, types and provide guidelines to expressing the infromation we are interested in.
+
+- creation and execution of [queries](../12-query/00-overview.md)
+
+In this section we go over different query types and their uses.
