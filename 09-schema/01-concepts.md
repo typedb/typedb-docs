@@ -79,6 +79,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
+### Assign an attribute to a attribute as a unique identifier
 To assign a unique attribute to an entity, we use the `key` keyword followed by the attribute's label.
 
 <div class="tabs dark">
@@ -378,6 +379,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
+### Assign an attribute to a relation as a unique identifier
 To assign a unique attribute to a relation, we use the `key` keyword followed by the attribute's label.
 
 <div class="tabs dark">
