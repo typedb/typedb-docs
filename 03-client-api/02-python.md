@@ -25,7 +25,7 @@ pip3 install grakn-client
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In the interpreter or in your source, import `grakn`.
+In the interpreter or in your source, import `GraknClient` from `grakn.client`.
 
 <!-- test-example social_network_python_client_a.py -->
 ```python
