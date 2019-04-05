@@ -374,46 +374,69 @@ In this section, we learn how we can use the `match` keyword to find patterns in
 
 Having fully understood the [schema concepts](../09-schema/01-concepts.md) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema statements.
 
-### Subtypes of a given type
-To match all concepts of a given type, we use the `sub` keyword. Here are the examples for matching subtypes of all concept types, including `thing` that is a supertype to all other types.
+### Direct and indirect subtypes of a given type
+To match all schema concepts of a given type, **all the way down the type hierarchy**, we use the `sub` keyword.
 
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x sub thing; get;
-match $x sub attribute; get;
-match $x sub entity; get;
-match $x sub role; get;
-match $x sub relation; get;
+match $x sub post; get;
 ```
 [tab:end]
 
 [tab:Java]
-<!-- test-edge-case -->
-<!-- ignore-test -->
 ```java
 GraqlGet query_a = Graql.match(
-  var("x").sub("thing")
-).get();
-
-GraqlGet query_b = Graql.match(
-  var("x").sub("attribute")
-).get();
-
-GraqlGet query_c = Graql.match(
-  var("x").sub("entity")
-).get();
-
-GraqlGet query_d = Graql.match(
-  var("x").sub("role")
-).get();
-
-GraqlGet query_e = Graql.match(
-  var("x").sub("relation")
+  var("x").sub("post")
 ).get();
 ```
 [tab:end]
 </div>
+
+Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as all concept types that are subtypes of `post`, directly (i.e. `media`, `comment`, `album` and `status-update`) and indirectly (i.e. `photo` and `video`).
+
+### Direct subtypes of a given type
+To match the schema concepts of a given type, **only one level down the type hierarchy**, we use the `sub!` keyword.
+
+<div class="tabs dark">
+[tab:Graql]
+```graql
+match $x sub! post; get;
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query_a = Graql.match(
+  var("x").subX("post")
+).get();
+```
+[tab:end]
+</div>
+
+Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as the concept types that subtype `post` directly (i.e. `media`, `comment`, `album` and `status-update`).
+
+### A given type
+To match only the given type and NOT any of its subtypes, we use the `type` keyword.
+
+<div class="tabs dark">
+[tab:Graql]
+```graql
+match $x sub! post; get;
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query_a = Graql.match(
+  var("x").subX("post")
+).get();
+```
+[tab:end]
+</div>
+
+Running the above query, returns only the concept type that has the label `post`.
+
 
 ### Roles of a given relation
 Given a particular relation, we can use the `relates` keyword to match all roles related to the given relation type.
@@ -426,7 +449,6 @@ match employment relates $x; get;
 ```
 [tab:end]
 
-[tab:Java]
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
