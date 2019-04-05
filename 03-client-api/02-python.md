@@ -15,11 +15,11 @@ Summary: API Reference of Grakn Client Python.
 
 ## Installation
 ```
-pip install grakn
+pip install grakn-client
 ```
 If multiple Python versions are available, you may wish to use
 ```
-pip3 install grakn
+pip3 install grakn-client
 ```
 
 ## Quickstart
