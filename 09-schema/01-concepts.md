@@ -1,6 +1,6 @@
 ---
 pageTitle: Schema Concepts
-keywords: graql, schema, type hierarchy, concept, define
+keywords: graql, schema, type hierarchy, concept, define, sub, key, abstract,relates, plays, datatype, regex, define, undefine
 longTailKeywords: graql schema, graql define query, graql type hierarchy, graql concepts, graql define entity, graql define relation, graql define attribute, graql schema definition
 Summary: A comprehensive guide on defining Schema Concepts in Grakn.
 ---
