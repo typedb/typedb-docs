@@ -9,7 +9,6 @@ Summary: Statistical queries in Grakn.
 In this section, we learn how to get Grakn to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
 To perform aggregation in Grakn, we first write a [`match` clause](../11-query/01-match-clause.md) to describe the set of data, then follow that by [`get`](../11-query/02-get-query.md) to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate function to perform on the variable of interest.
 
-
 To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 ### Count
@@ -36,7 +35,10 @@ GraqlGet.Aggregate query = Graql.match(
 [tab:end]
 </div>
 
-Optionally, `count` accepts a variable as an argument.
+<div class="note">
+[Note]
+When more than one variable follows the `get` keyword, the `count` function is applied on the unique set of the retrieved variables. This is also the case, when no variable follows `get`, which actually means all matched variables are included.
+</div>
 
 ### Sum
 We use the `sum` function to get the sum of the specified `long` or `double` matched variable.
