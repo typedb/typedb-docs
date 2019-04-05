@@ -15,13 +15,13 @@ Summary: API Reference of Grakn Client Node.js.
 
 ## Installation
 ```
-npm install grakn
+npm install grakn-client
 ```
 
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running..
 
-In your source, require `grakn`.
+In your source, require `grakn-client`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
