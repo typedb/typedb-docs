@@ -1,6 +1,6 @@
 ---
 pageTitle: Schema Concepts
-keywords: graql, schema, type hierarchy, concept, define
+keywords: graql, schema, type hierarchy, concept, define, sub, key, abstract,relates, plays, datatype, regex, define, undefine
 longTailKeywords: graql schema, graql define query, graql type hierarchy, graql concepts, graql define entity, graql define relation, graql define attribute, graql schema definition
 Summary: A comprehensive guide on defining Schema Concepts in Grakn.
 ---
@@ -79,6 +79,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
+### Assign an attribute to an entity as a unique identifier
 To assign a unique attribute to an entity, we use the `key` keyword followed by the attribute's label.
 
 <div class="tabs dark">
@@ -378,6 +379,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
+### Assign an attribute to a relation as a unique identifier
 To assign a unique attribute to a relation, we use the `key` keyword followed by the attribute's label.
 
 <div class="tabs dark">
