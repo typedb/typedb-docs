@@ -29,7 +29,7 @@ templatePath: 03-client-api/references/
 </repositories>
 <dependencies>
     <dependency>
-        <groupId>io.grakn.core</groupId>
+        <groupId>io.grakn.client</groupId>
         <artifactId>api</artifactId>
         <version>1.5.0</version>
     </dependency>
