@@ -1,7 +1,10 @@
 ---
 name: Bug Report
 about: Report a bug here, or visit discuss.grakn.ai for troubleshooting discussions
+title: ''
 labels: bug
+assignees: ''
+
 ---
 
 Please replace every line in curly brackets { like this } with appropriate answers, and remove this line.
@@ -10,26 +13,15 @@ Please replace every line in curly brackets { like this } with appropriate answe
 
 { Please provide a clear and concise description of the bug. }
 
-## Environment
+## Location of Content
 
-1. OS (where Grakn server runs): { e.g. Mac OS 10, Windows 10, Ubuntu 16.4, etc. }
-2. Grakn version (and platform): { e.g. Grakn Core 1.4, or Grakn KGMS 1.4.3 on Google Cloud }
-3. Grakn client: { e.g. client-java, client-python, client-nodejs, or console }
-4. Other environment details:
+{ Please provide the link to the specific part of the page in question. }
 
-## Reproducible Steps
-
-Steps to create the smallest reproducible scenario:
-1. { e.g. Run ... }
-2. { e.g. Load ... }
-3. { e.g. Query ... }
-4. { e.g. See error ... }
-
-## Expected Output
+## Expected Content
 
 { Please describe what you expected to happen. }
 
-## Actual Output
+## Actual Content
 
 { Please describe what actually happened. }
  
