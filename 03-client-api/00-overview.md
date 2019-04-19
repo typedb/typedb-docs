@@ -41,7 +41,7 @@ Grakn currently supports clients for:
 - [Python](../03-client-api/02-python.md)
 
 ## Building Your Own Grakn Client
-Grakn Clients are built using [gRPC](https://grpc.io/). Creating a new client is a straightforward task. In a blog post, [Joshua Send](https://blog.grakn.ai/@joshuasend) takes us through the process of building the Grakn Client Python as a comprehensive guide for [building a Grakn client of your own](https://blog.grakn.ai/grakn-python-driver-how-to-roll-your-own-b010bbd73023).
+Creating a new Grakn client is discussed [here](04-new-client.md).
 
 ## Summary
 A Grakn Client is meant to be used at the application layer for the purpose of managing and performing operations over keyspaces that live on the Grakn server.
