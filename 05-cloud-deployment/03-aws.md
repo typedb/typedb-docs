@@ -248,8 +248,8 @@ For more information check out AWS documentation on [Starting and Stopping Insta
 [slide:end]
 
 [slide:start]
-[header:start]Select CloudFormation[header:end]
-[body:start]![Select CloudFormation](../images/cloud-deployment/aws_fulfillment_ami.png)[body:end]
+[header:start]Select Amazon Machine Image[header:end]
+[body:start]![Select Amazon Machine Image](../images/cloud-deployment/aws_fulfillment_ami.png)[body:end]
 [footer:start]Select _Amazon Machine Image_ as the _Fulfillment Option_.[footer:end]
 [slide:end]
 
@@ -278,8 +278,8 @@ For more information check out AWS documentation on [Starting and Stopping Insta
 [slide:end]
 
 [slide:start]
-[header:start]Select Template[header:end]
-[body:start]![Select Template](../images/cloud-deployment/aws_ami_console.png)[body:end]
+[header:start]Monitor the Status of the Launched Instance[header:end]
+[body:start]![Monitor the Status of the Launched Instance](../images/cloud-deployment/aws_ami_console.png)[body:end]
 [footer:start]By navigating to the [EC2 Console](https://console.aws.amazon.com/ec2/v2/home), we can view the running instance..[footer:end]
 [slide:end]
 </div>
