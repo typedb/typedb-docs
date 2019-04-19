@@ -15,7 +15,7 @@ handled on the server, and executed via [gRPC](https://grpc.io/). So, to get sta
 that gRPC and the underlying [protobuf](https://github.com/google/protobuf) messages support our language of choice.
 Many languages also have non-official support for these protocols. Finally, we need to double check for compatible language versions.
 
-## Depending on Grakn gRPC and Protobuf Definitions
+## Depend on Grakn gRPC and Protobuf Definitions
 For development purposes, it may be sufficient to manually compile and copy-paste Grakn's 
 [protobuf definitions](https://github.com/graknlabs/grakn/tree/master/protocol). 
 
@@ -79,7 +79,7 @@ Key advantages of gRPC are:
 Grakn's protocol doesn't use any complex components of gRPC like channel multiplexing. Instead, it takes full advantage
 of the ability to create complex and strongly typed messages that are streamed between the client and the server.
 
-### Understanding the Grakn gRPC protocol
+### Understand the Grakn gRPC protocol
 
 The full protocol definition is in Grakn's [git repository](https://github.com/graknlabs/grakn/tree/master/protocol).
 To become familiar with the protocol structure, let's look at the following excerpt from `Session.proto`. This section examines 
@@ -158,6 +158,7 @@ Since all Grakn clients are implemented similarly, the following piece of Python
 ```python
 # make sure we've run `pip3 install grakn-client` and have Grakn running
 from grakn.client import GraknClient, DataType
+
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
     with session.transaction().read() as read_transaction:   
@@ -235,6 +236,7 @@ For instance, in Python, the next element in an iterator is retrieved by calling
 ```python
 # make sure we've run `pip3 install grakn-client` and have Grakn running
 from grakn.client import GraknClient, DataType
+
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
     with session.transaction().read() as read_transaction:   
