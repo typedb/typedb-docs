@@ -45,7 +45,8 @@ User interactions flow through these components:
 * Queries on `Transaction` generally return lazy iterators of `Answer` types, which can contain `Concept` instances.
 * Objects from the `Concept` hierarchy can be thought of client-side representations of instances on the server and expose their own API.
 
-And this is the `Concept` hierarchy that should be implemented:
+And this is the `Concept` hierarchy that should be implemented - note that it is an extension of the user-facing, simpler hierarchy seen
+[here](../04-concept-api/00-overview.md):
 ```
                              Concept
                             /        \
