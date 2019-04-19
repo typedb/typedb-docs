@@ -7,7 +7,7 @@ Summary: Writing clients in new languages
 
 ## Introduction
 
-Creating a client for your chosen language is straightforward! This page will guide you through the components and
+Creating a client for your chosen language is straightforward! This page guides you through the components and
 protocols that need to be implemented.
 
 A Grakn client fundamentally is a lightweight frontend to the Grakn server. Almost all operations are actually
@@ -15,6 +15,16 @@ handled on the server, and executed via [gRPC](https://grpc.io/). So, to get sta
 that gRPC and the underlying [protobuf](https://github.com/google/protobuf) messages support your language of choice.
 Many languages also have non-official support for these protocols. Finally, double check you have a compatible language version.
 
+## Depending on Grakn gRPC and Protobuf Definitions
+For development purposes, it may be sufficient to manually compile and copy-paste Grakn's 
+[protobuf definitions](https://github.com/graknlabs/grakn/tree/master/protocol). 
+
+A more reliable method is to stay in sync with protocol changes via a package manager.
+Grakn's build system is [Bazel](https://bazel.build/), and offers one approach. If you would like to use a different package manager, 
+the Grakn team may also be able to help by setting up a distribution channel for your chosen language's compiled protobuf files.
+In this case, please get in touch!
+
+ 
 ## Architecture
 
 As touched on in the [Overview page](00-overview.md), Grakn clients have the following central components the user interacts with
@@ -25,7 +35,7 @@ As touched on in the [Overview page](00-overview.md), Grakn clients have the fol
 * `Concept`
 * `Answer`
 
-To maintain consistency across languages, we aim to implement this interface in all future clients as well.
+To maintain consistency across languages, all Grakn clients should aim to implement this interface.
 
 User interactions flow through these components:
 
@@ -61,21 +71,20 @@ corresponds to an RPC call to the server. So, the chief remaining concern is und
 
 ### gRPC Summary
 Key advantages of gRPC are:
-* HTTP 2.0 based, supporting bidirectional streaming
-* Define services and messages using protocol buffer syntax and definitions
-* Can be compiled to a variety of language stubs.
+* Support for bidirectional streaming via HTTP 2.0
+* Definition of services and messages using protocol buffer syntax and definitions
+* Compilation to a variety of language stubs
 
-Our clients don't use any complex components of gRPC like channel multiplexing. Instead, we take full advantage
+Grakn's protocol doesn't use any complex components of gRPC like channel multiplexing. Instead, it takes full advantage
 of the ability to create complex and strongly typed messages that are streamed between the client and the server.
 
 ### Understanding the Grakn gRPC protocol
 
-The full protocol definition is in our [git repository](https://github.com/graknlabs/grakn/tree/master/protocol).
+The full protocol definition is in Grakn's [git repository](https://github.com/graknlabs/grakn/tree/master/protocol).
+To become familiar with the protocol structure, let's look at the following excerpt from `Session.proto`. This section examines 
+the process of getting attributes of a specific value from a transaction - the relevant RPC messages are marked with `==>`.
 
-To become familiar with the protocol structure, let's look at the following excerpt from `Session.proto`. We will be looking 
-at the process of getting attributes of a specific value from a transaction - the relevant RPC messages are in **bold**.
-
-```
+```proto
 service SessionService {
     ...
     rpc transaction (stream Transaction.Req) returns (stream Transaction.Res);
@@ -89,10 +98,10 @@ message Transaction {
             Open.Req open_req = 1;
             Commit.Req commit_req = 2;
             Query.Req query_req = 3;
-            **Iter.Req iterate_req = 4;**
+==>            Iter.Req iterate_req = 4;
             GetSchemaConcept.Req getSchemaConcept_req = 5;
             GetConcept.Req getConcept_req = 6;
-            **GetAttributes.Req getAttributes_req = 7;**
+==>            GetAttributes.Req getAttributes_req = 7;
             ...
          }
     }
@@ -100,11 +109,11 @@ message Transaction {
             oneof res {
                 Open.Res open_res = 1;
                 Commit.Res commit_res = 2;
-                Query.Iter query_iter = 3;
-                **Iter.Res iterate_res = 4;**
+==>                Query.Iter query_iter = 3;
+                Iter.Res iterate_res = 4;
                 GetSchemaConcept.Res getSchemaConcept_res = 5;
                 GetConcept.Res getConcept_res = 6;
-                **GetAttributes.Iter getAttributes_iter = 7;**
+==>                GetAttributes.Iter getAttributes_iter = 7;
                    ...
             }
     }
@@ -117,7 +126,7 @@ message Transaction {
             oneof res {
                 bool done = 1;
                 Query.Iter.Res query_iter_res = 2;
-                **GetAttributes.Iter.Res getAttributes_iter_res = 3;**
+==>                GetAttributes.Iter.Res getAttributes_iter_res = 3;
                 Method.Iter.Res conceptMethod_iter_res = 4;
             }
         }
@@ -136,29 +145,31 @@ message Transaction {
     }
 ```
 
-This definition tells us that we have one `transaction` RPC endpoint, which is a bi-directional streams that takes messages
+This definition states there is one `transaction` RPC endpoint, which is a bi-directional streams that takes messages
 of type `Transaction.Req` and returns messages of type `Transaction.Res`. These types permit a variety of different 
-bodies, and we can trace through the definition to determine how to build messages, and what the expected responses are.
+bodies, and one can trace through the definition to determine how to build messages, and what the expected responses are.
 To understand what exactly this means, let's look at a detailed example.
 
 
 ### Get Attributes by Value 
-Since all our clients are implemented similarly, the following piece of Python is representative:
-```
+Since all Grakn clients are implemented similarly, the following piece of Python is representative:
+<!-- test-example create_new_driver_1.py -->
+```python
 # make sure you've run `pip3 install grakn-client` and have Grakn running
 from grakn.client import GraknClient, DataType
 client = GraknClient(uri="localhost:48555")
-with client.session(keyspace="test") as session:
-    with session.transaction().read() as tx:   
-        iter = **tx.get_attributes_by_value(“John”, DataType.STRING)**
+with client.session(keyspace="social_network") as session:
+    with session.transaction().read() as read_transaction:   
+        answer_iterator = read_transaction.get_attributes_by_value("Canada", DataType.STRING)
+client.close()
 ```
 
-Here, we want to retrieve all the attributes that have string values called “John” in the keyspace "test". 
+Here, the client attempts to retrieve all the attributes that have string values called `"Canada"` in the keyspace `"social_network"`. 
 The first gRPC message created is a a `Transaction.Req` from `Session.proto`, which needs to have the `getAttributes_req` field populated.
 This, in turn has the type `GetAttributes.Req`, which has a single field called `value`. `value` is a `ValueObject`, 
 which is defined in the `Concept.proto` file (excerpt below):
 
-```
+```proto
 message Concept {
     string id = 1;
     BASE_TYPE baseType = 2;
@@ -184,26 +195,27 @@ message ValueObject {
 }
 ```
 
-In this case, the `ValueObject` needs to the string field populated with “John”.
+In this case, the `ValueObject` needs to the string field populated with `“Canada”`.
 
 In Python, printing the full constructed message should produce something like this:
 ```
 {                            # type Transaction.Req
   getAttributes_req {        # type GetAttributes.Req
     value {                  # type ValueObject (from Concept.proto)
-      string : "John"
+      string : "Canada"
     }
   }
 }
 ``` 
 
-gRPC implementations differ in how to compose these messages together, so check the relevant docs.
- In python, each of these compound messages needs to be instantiated and embedded using `CopyFrom` or `MergeFrom` 
+gRPC implementations differ in how to compose these messages together, so check the relevant docs
+(these [tutorials](https://developers.google.com/protocol-buffers/docs/tutorials) are a good starting point).
+In python, each of these compound messages needs to be instantiated and embedded using `CopyFrom` or `MergeFrom` 
 ([Python Protobuf docs](https://developers.google.com/protocol-buffers/docs/pythontutorial)).
 
 
-The message that is returned will be a `Transaction.Req`. But which field will be populated? 
-You can get this from our naming conventions: It should be the one with type `GetAttributes.Iter`, with a single field called `id`.
+The message that is returned is a `Transaction.Req`. But which field is populated? 
+You can get this from the naming conventions: It should be the one with type `GetAttributes.Iter`, with a single field called `id`.
 
 ```
 {                            # type Transaction.Res
@@ -215,15 +227,19 @@ You can get this from our naming conventions: It should be the one with type `Ge
 
 ### Lazy Responses
 One key reason for using bidirectional streaming is lazy evaluation of queries. The id returned above represents an iterator on the server,
-which we can repeatedly request to retrieve the actual `Attribute` instances. This can be wrapped up on the client side as a local iterator. 
-For instance, in Python, next element in an iterator by calling `next(attribute_iterator)`
+which can be repeatedly requested to retrieve the actual `Attribute` instances. This can be wrapped up on the client side as a local iterator. 
+For instance, in Python, the next element in an iterator is retrieved by calling `next(attribute_iterator)`
 
-```
-...
-with client.session(keyspace="test") as session:
-    with session.transaction(grakn.TxType.READ) as tx:   
-        attribute_iterator = tx.get_attributes_by_value(...)
-        attr = next(attribute_iterator)
+<!-- test-example create_new_driver_2.py -->
+```python
+# make sure you've run `pip3 install grakn-client` and have Grakn running
+from grakn.client import GraknClient, DataType
+client = GraknClient(uri="localhost:48555")
+with client.session(keyspace="social_network") as session:
+    with session.transaction().read() as read_transaction:   
+        answer_iterator = read_transaction.get_attributes_by_value("Canada", DataType.STRING)
+        attr = next(answer_iterator)
+client.close()
 ```
 
 The `next(attribute_iterator)` needs create a new gRPC message with the following format:
@@ -248,17 +264,18 @@ Which returns
 }
 ```
 
-Now we have the first Concept definition, although it has arrived as a gRPC message. 
-We can unpack the id and baseType into local objects and present them to the user (Using `baseType` here, we can construct
-a local `Attribute` object from the `Concept` hierarchy).
+This is the definition of the first Concept! However, it has arrived as a gRPC message, and
+should be unpacked into a local object and presented to the user. Specifically, the `baseType` signals which
+class from the `Concept` hierarchy should be instantiated - here it should be `Attribute`. The base type mapping
+can be defined from the `Concept.BaseType` enum in `Concept.proto`. 
 
-The next time `next(attribute_iterator)` is called, we repeat the process of making an `iterate_req`
+The next time `next(attribute_iterator)` is called, repeat the process of making an `iterate_req`
 and unpacking the returned message into a local object.
  
  
 ### gRPC Definition Structure
 
-Finally, here is the layout of our protocol. Most interactions happen via messages defined in `Session.proto`.
+Finally, here is the layout of the protocol. Most interactions happen via messages defined in `Session.proto`.
 The sub-messages used in later interactions are further defined in `Answer.proto` and `Concept.proto`. `Keyspace.proto`
 is separate - operations on keyspaces do not require sessions or transactions to be active.
 
@@ -272,13 +289,13 @@ protocol/
     ├── Answer.proto            # Response messsages, e.g. maps, sets, lists of Concepts, among others
     └── Concept.proto           # Messages implementing the ConceptAPI (methods directly on concepts)
 ```
- 
+
 ## Tests
 
 As the main means of interacting with Grakn, testing is an especially important part of the clients. Luckily, 
-although not few, these tests are generally quite short. We recommend looking at the testing performed in the
+although not few, these tests are generally quite short. It's recommend to mirror the testing performed in the
 official clients such as [Python](https://github.com/graknlabs/client-python/tree/master/tests/integration) or 
-[Node](https://github.com/graknlabs/client-nodejs/tree/master/tests/service) to get an idea of coverage. Most of these
+[Node](https://github.com/graknlabs/client-nodejs/tree/master/tests/service). Most of these
 should be simple to translate!
 
 
