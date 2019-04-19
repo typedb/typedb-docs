@@ -31,6 +31,13 @@ class SocialNetworkTest(unittest.TestCase):
     def test_social_network_python_client_d(self):
         import social_network_python_client_d
 
+    def test_social_network_create_new_client_a(self):
+        import social_network_create_new_client_a
+
+    def test_social_network_create_new_client_b(self):
+        import social_network_create_new_client_b
+
+
     @classmethod
     def tearDownClass(cls):
         with GraknClient(uri="localhost:48555") as client:
