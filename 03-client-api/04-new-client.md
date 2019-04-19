@@ -1,27 +1,27 @@
 ---
 pageTitle: New Grakn Clients
-keywords: grakn, grpc
-longTailKeywords:
-Summary: Writing clients in new languages
+keywords: grpc, protobuf, client, driver
+longTailKeywords: grakn client, grakn driver, client development, new client, client implementation
+Summary: Guide to writing clients in new languages
 ---
 
 ## Introduction
 
-Creating a client for your chosen language is straightforward! This page guides you through the components and
+Creating a client for our chosen language is straightforward! This page is a guide for the components and
 protocols that need to be implemented.
 
 A Grakn client fundamentally is a lightweight frontend to the Grakn server. Almost all operations are actually
-handled on the server, and executed via [gRPC](https://grpc.io/). So, to get started, you'll need to confirm
-that gRPC and the underlying [protobuf](https://github.com/google/protobuf) messages support your language of choice.
-Many languages also have non-official support for these protocols. Finally, double check you have a compatible language version.
+handled on the server, and executed via [gRPC](https://grpc.io/). So, to get started, we'll need to confirm
+that gRPC and the underlying [protobuf](https://github.com/google/protobuf) messages support our language of choice.
+Many languages also have non-official support for these protocols. Finally, we need to double check for compatible language versions.
 
 ## Depending on Grakn gRPC and Protobuf Definitions
 For development purposes, it may be sufficient to manually compile and copy-paste Grakn's 
 [protobuf definitions](https://github.com/graknlabs/grakn/tree/master/protocol). 
 
 A more reliable method is to stay in sync with protocol changes via a package manager.
-Grakn's build system is [Bazel](https://bazel.build/), and offers one approach. If you would like to use a different package manager, 
-the Grakn team may also be able to help by setting up a distribution channel for your chosen language's compiled protobuf files.
+Grakn's build system is [Bazel](https://bazel.build/), and offers one approach. If we'd would like to use a different package manager, 
+the Grakn team may also be able to help by setting up a distribution channel for our chosen language's compiled protobuf files.
 In this case, please get in touch!
 
  
@@ -156,7 +156,7 @@ To understand what exactly this means, let's look at a detailed example.
 Since all Grakn clients are implemented similarly, the following piece of Python is representative:
 <!-- test-example social_network_create_new_client_a.py -->
 ```python
-# make sure you've run `pip3 install grakn-client` and have Grakn running
+# make sure we've run `pip3 install grakn-client` and have Grakn running
 from grakn.client import GraknClient, DataType
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
@@ -216,7 +216,7 @@ In python, each of these compound messages needs to be instantiated and embedded
 
 
 The message that is returned is a `Transaction.Req`. But which field is populated? 
-You can get this from the naming conventions: It should be the one with type `GetAttributes.Iter`, with a single field called `id`.
+We can get this from the naming conventions: It should be the one with type `GetAttributes.Iter`, with a single field called `id`.
 
 ```python
 {                            # type Transaction.Res
@@ -233,7 +233,7 @@ For instance, in Python, the next element in an iterator is retrieved by calling
 
 <!-- test-example social_network_create_new_client_b.py -->
 ```python
-# make sure you've run `pip3 install grakn-client` and have Grakn running
+# make sure we've run `pip3 install grakn-client` and have Grakn running
 from grakn.client import GraknClient, DataType
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
@@ -302,5 +302,5 @@ should be simple to translate!
 
 
 ## Reach out!
-If you're planning on implementing a client for your custom language, we'd love to hear about it! We are also happy
+If you're planning on implementing a client for custom language, the Grakn team love to hear about it, and are happy
 to help iron out misunderstandings and hopefully, get your work into the official Grakn repositories!
