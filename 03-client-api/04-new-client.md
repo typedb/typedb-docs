@@ -1,5 +1,5 @@
 ---
-pageTitle: New Language Clients
+pageTitle: New Grakn Clients
 keywords: grakn, grpc
 longTailKeywords:
 Summary: Writing clients in new languages
@@ -154,7 +154,7 @@ To understand what exactly this means, let's look at a detailed example.
 
 ### Get Attributes by Value 
 Since all Grakn clients are implemented similarly, the following piece of Python is representative:
-<!-- test-example create_new_driver_1.py -->
+<!-- test-example social_network_create_new_client_a.py -->
 ```python
 # make sure you've run `pip3 install grakn-client` and have Grakn running
 from grakn.client import GraknClient, DataType
@@ -199,7 +199,7 @@ message ValueObject {
 In this case, the `ValueObject` needs to the string field populated with `“Canada”`.
 
 In Python, printing the full constructed message should produce something like this:
-```
+```python
 {                            # type Transaction.Req
   getAttributes_req {        # type GetAttributes.Req
     value {                  # type ValueObject (from Concept.proto)
@@ -218,7 +218,7 @@ In python, each of these compound messages needs to be instantiated and embedded
 The message that is returned is a `Transaction.Req`. But which field is populated? 
 You can get this from the naming conventions: It should be the one with type `GetAttributes.Iter`, with a single field called `id`.
 
-```
+```python
 {                            # type Transaction.Res
   getAttributes_iter {       # type GetAttributes.iter
     id: 1
@@ -231,7 +231,7 @@ One key reason for using bidirectional streaming is lazy evaluation of queries. 
 which can be repeatedly requested to retrieve the actual `Attribute` instances. This can be wrapped up on the client side as a local iterator. 
 For instance, in Python, the next element in an iterator is retrieved by calling `next(attribute_iterator)`
 
-<!-- test-example create_new_driver_2.py -->
+<!-- test-example social_network_create_new_client_b.py -->
 ```python
 # make sure you've run `pip3 install grakn-client` and have Grakn running
 from grakn.client import GraknClient, DataType
@@ -239,12 +239,13 @@ client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
     with session.transaction().read() as read_transaction:   
         answer_iterator = read_transaction.get_attributes_by_value("Canada", DataType.STRING)
-        attr = next(answer_iterator)
+        for attr in answer_iterator:
+            print(attr)
 client.close()
 ```
 
 The `next(attribute_iterator)` needs create a new gRPC message with the following format:
-```
+```python
 {                            # type Transaction.Req
   iterate_req {              # type Iter.Req
     id : 1                   # or whatever the iterator ID is
@@ -253,7 +254,7 @@ The `next(attribute_iterator)` needs create a new gRPC message with the followin
 ```
 
 Which returns
-```
+```python
 {                              # type Transaction.Req
   iterate_res {                # type Iter.Res
     getAttributes_iter_res {   # type GetAttributes.Iter.Res
