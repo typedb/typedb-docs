@@ -63,8 +63,8 @@ As illustrated below, deploying [Grakn KGMS on Amazon Web Services](https://aws.
 [slide:end]
 
 [slide:start]
-[header:start]Action: CloudFormation[header:end]
-[body:start]![Action: CloudFormation](../images/cloud-deployment/aws_cf_launch_b.png)[body:end]
+[header:start]Select Launch CloudFormation[header:end]
+[body:start]![Select Launch CloudFormation](../images/cloud-deployment/aws_cf_launch_b.png)[body:end]
 [footer:start]Select _Launch CloudFormation_ as the _Action_.[footer:end]
 [slide:end]
 
