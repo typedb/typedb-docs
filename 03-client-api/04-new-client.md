@@ -83,7 +83,7 @@ of the ability to create complex and strongly typed messages that are streamed b
 
 The full protocol definition is in Grakn's [git repository](https://github.com/graknlabs/grakn/tree/master/protocol).
 To become familiar with the protocol structure, let's look at the following excerpt from `Session.proto`. This section examines 
-the process of getting attributes of a specific value from a transaction - the relevant RPC messages are marked with `==>`.
+the process of getting attributes of a specific value from a transaction - the relevant RPC messages are marked with `<==`.
 
 ```proto
 service SessionService {
@@ -99,10 +99,10 @@ message Transaction {
             Open.Req open_req = 1;
             Commit.Req commit_req = 2;
             Query.Req query_req = 3;
-==>            Iter.Req iterate_req = 4;
+            Iter.Req iterate_req = 4; // <==
             GetSchemaConcept.Req getSchemaConcept_req = 5;
             GetConcept.Req getConcept_req = 6;
-==>            GetAttributes.Req getAttributes_req = 7;
+            GetAttributes.Req getAttributes_req = 7; // <==
             ...
          }
     }
@@ -110,11 +110,11 @@ message Transaction {
             oneof res {
                 Open.Res open_res = 1;
                 Commit.Res commit_res = 2;
-==>                Query.Iter query_iter = 3;
+                Query.Iter query_iter = 3; // <==
                 Iter.Res iterate_res = 4;
                 GetSchemaConcept.Res getSchemaConcept_res = 5;
                 GetConcept.Res getConcept_res = 6;
-==>                GetAttributes.Iter getAttributes_iter = 7;
+                GetAttributes.Iter getAttributes_iter = 7; // <==
                    ...
             }
     }
@@ -127,7 +127,7 @@ message Transaction {
             oneof res {
                 bool done = 1;
                 Query.Iter.Res query_iter_res = 2;
-==>                GetAttributes.Iter.Res getAttributes_iter_res = 3;
+                GetAttributes.Iter.Res getAttributes_iter_res = 3; // <==
                 Method.Iter.Res conceptMethod_iter_res = 4;
             }
         }
