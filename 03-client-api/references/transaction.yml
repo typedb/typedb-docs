@@ -140,17 +140,17 @@ methods:
       <<: *method-getConcept
       method: transaction.getConcept(ConceptId.of(String id));
       returns:
-        - "[`<T extends Concept>`](../04-concept-api/01-concept.md) object or `NULL`"
+        - "[`<T extends Concept>`](../concept-api/concept) object or `NULL`"
     javascript:
       <<: *method-getConcept
       method: await transaction.getConcept(id);
       returns:
-        - "[`Concept`](../04-concept-api/01-concept.md) object or `null`"
+        - "[`Concept`](../concept-api/concept) object or `null`"
     python:
       <<: *method-getConcept
       method: 'transaction.get_concept(id)'
       returns:
-        - "[`Concept`](../04-concept-api/01-concept.md) object or `None`"
+        - "[`Concept`](../concept-api/concept) object or `None`"
 
   - method:
     common: &method-getSchemaConcept
@@ -163,7 +163,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[Type](/docs/concept-api/type) object"
+        - "[Type](../concept-api/type) object"
     java:
       <<: *method-getSchemaConcept
       method: transaction.getSchemaConcept(Label.of(String label));
@@ -198,17 +198,17 @@ methods:
           <<: *accepts-getAttributesByValue-value
           type: "String &#124; Date &#124; long &#124; double &#124; boolean"
       returns:
-        -  "[`Collection<Attribute>`](../04-concept-api/04-thing#attribute-methods.md)"
+        -  "[`Collection<Attribute>`](../concept-api/thing#attribute-methods)"
     javascript:
       <<: *method-getAttributesByValue
       method: await transaction.getAttributesByValue(value, datatype);
       returns:
-        - Iterator of [`Attribute`](../04-concept-api/04-thing#attribute-methods.md)s
+        - Iterator of [`Attribute`](../concept-api/thing#attribute-methods)s
     python:
       <<: *method-getAttributesByValue
       method: transaction.get_attributes_by_value(value, datatype)
       returns:
-        - Iterator of [`Attribute`](../04-concept-api/04-thing#attribute-methods.md)s
+        - Iterator of [`Attribute`](../concept-api/thing#attribute-methods)s
 
   - method:
     common: &method-putEntity
@@ -222,7 +222,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`EntityType`](/docs/concept-api/type#entitytype-methods) object"
+        - "[`EntityType`](../concept-api/type#entitytype-methods) object"
     java:
       <<: *method-putEntity
       method: transaction.putEntityType(Label.of(String label));
@@ -245,7 +245,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`RelationType`](/docs/concept-api/type#relation-methods) object"
+        - "[`RelationType`](../concept-api/type#relation-methods) object"
     java:
       <<: *method-putRelationType
       method: transaction.putRelationType(Label.of(String label));
@@ -274,7 +274,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`AttributeType`](/docs/concept-api/type#attributetype-methods) object"
+        - "[`AttributeType`](../concept-api/type#attributetype-methods) object"
     java:
       <<: *method-putAttributeType
       method: transaction.putAttributeType(Label.of(String label), AttributeType.DataType<V> dataType)
@@ -302,7 +302,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`Role`](/docs/concept-api/type#role-methods) object"
+        - "[`Role`](../concept-api/type#role-methods) object"
     java:
       <<: *method-putRole
       method: transaction.putRole(Label.of(String label));
@@ -337,7 +337,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`Rule`](../04-concept-api/03-rule.md) object"
+        - "[`Rule`](../concept-api/03-rule) object"
     java:
       <<: *method-putRule
       method: transaction.putRule(Label.of(String label), Pattern when, Pattern then);

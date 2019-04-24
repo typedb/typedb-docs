@@ -2,7 +2,7 @@ methods:
   - method:
     common: &method-when
       title: Retrieve the when body
-      description: Retrieves the statements that constructs the when body of thia rule.
+      description: Retrieves the statements that constructs the when body of the rule.
       returns:
         - "`String`"
     java:
@@ -17,7 +17,7 @@ methods:
   - method:
     common: &method-then
       title: Retrieve the then body
-      description: Retrieves the single statement that constructs the then body of this rule.
+      description: Retrieves the single statement that constructs the then body of the rule.
       returns:
         - "`String`"
     java:
