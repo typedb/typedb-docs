@@ -12,6 +12,11 @@ pattern_to_find_template_calls = '\{%\sinclude\s.*?\s%\}'
 
 pages = {}
 
+def anchorize_heading(heading):
+    anchor = heading.replace(r"^[^a-zA-Z]+", "").replace(r" ", "-").lower()
+    anchor = re.sub("[^a-zA-Z0-9 -]+", "", anchor)
+    return anchor
+
 # populate the `pages` dictionary with anchors and links of each
 for markdown_path in glob.iglob('./**/*.md'):
     title = markdown_path.replace("./", "")
@@ -27,9 +32,7 @@ for markdown_path in glob.iglob('./**/*.md'):
 
         anchor_matches = re.findall(pattern_to_find_anchors, content)
         for match in anchor_matches:
-            anchor = match.replace(r"^[^a-zA-Z]+", "").replace(r" ", "-").lower()
-            anchor = re.sub("[^a-zA-Z0-9 -]+", "", anchor)
-            pages[title]["anchors"].append(anchor)
+            pages[title]["anchors"].append(anchorize_heading(match))
 
         template_call_matches = re.findall(pattern_to_find_template_calls, content)
         for template_call in template_call_matches:
@@ -49,8 +52,7 @@ for markdown_path in glob.iglob('./**/*.md'):
                     yaml_content = yaml.load(open(yaml_file_path), Loader=yaml.CLoader)
                     # looks for the value of all keys named `title`, convert them to an id and add them as anchors
                     for found_title in nested_lookup("title", yaml_content):
-                        anchor = found_title.replace(r" ", "-").replace(r"/", "-").lower()
-                        pages[title]["anchors"].append(anchor)
+                        pages[title]["anchors"].append(anchorize_heading(found_title))
 
 
 class LinksTest(unittest.TestCase):

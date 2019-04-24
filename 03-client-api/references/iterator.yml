@@ -10,7 +10,7 @@ methods:
       method: await iterator.collect();
       description: Consumes the iterator and collects all the elements into an array.
       returns:
-        - Array of IteratorEelement
+        - Array of IteratorElement
     javascript:
       <<: *method-collect
   - method:
@@ -21,10 +21,10 @@ methods:
       description: Consumes the iterator and collects all Concepts into an array.
       method: await iterator.collectConcepts();
       returns:
-        - "Array of [Concept](../04-concept-api/01-concept.md)"
+        - "Array of [Concept](../concept-api/concept)"
     python:
       <<: *method-collectConcepts
       description: Consumes the iterator and collects all Concepts into a list.
       method: iterator.collect_concepts();
       returns:
-        - "List of [Concept](../04-concept-api/01-concept.md)"
+        - "List of [Concept](../concept-api/concept)"
