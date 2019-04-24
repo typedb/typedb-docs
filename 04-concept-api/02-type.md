@@ -91,8 +91,8 @@ toc: true
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?tab=java#retrieve-the-label)
-- [type.label(Label.of(label));](?tab=java#rename-the-label)
+- [label();](?tab=java#retrieve-label)
+- [type.label(Label.of(label));](?tab=java#rename-label)
 - [sup();](?tab=java#retrieve-direct-supertype)
 - [sup(Type type);](?tab=java#change-direct-supertype)
 - [sups();](?tab=java#retrieve-all-supertypes)
@@ -106,8 +106,8 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?tab=javascript#retrieve-the-label)
-- [type.label(Label.of(label));](?tab=javascript#rename-the-label)
+- [label();](?tab=javascript#retrieve-label)
+- [type.label(Label.of(label));](?tab=javascript#rename-label)
 - [sup();](?tab=javascript#retrieve-direct-supertype)
 - [sup(Type type);](?tab=javascript#change-direct-supertype)
 - [sups();](?tab=javascript#retrieve-all-supertypes)
@@ -120,8 +120,8 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?tab=python#retrieve-the-label)
-- [type.label(Label.of(label));](?tab=python#rename-the-label)
+- [label();](?tab=python#retrieve-label)
+- [type.label(Label.of(label));](?tab=python#rename-label)
 - [sup();](?tab=python#retrieve-direct-supertype)
 - [sup(Type type);](?tab=python#change-direct-supertype)
 - [sups();](?tab=python#retrieve-all-supertypes)
