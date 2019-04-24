@@ -15,7 +15,7 @@ Keyspaces are isolated from one another. Even when running on the same Grakn Ser
 </div>
 
 ### Creating a Keyspace
-We can create a new a keyspace via the Grakn Clients [Java](../03-client-api/01-java.md#create-a-session-keyspace), [Node.js](../03-client-api/03-nodejs.md#create-a-session-keyspace) and [Python](../03-client-api/02-python.md#create-a-session-keyspace) and [Grakn Console](../02-running-grakn/02-console.md#console-options).
+We can create a new a keyspace via the Grakn Clients [Java](../03-client-api/01-java.md#create-a-sessionkeyspace), [Node.js](../03-client-api/03-nodejs.md#create-a-sessionkeyspace) and [Python](../03-client-api/02-python.md#create-a-sessionkeyspace) and [Grakn Console](../02-running-grakn/02-console.md#console-options).
 
 ### Listing All Keyspaces
 We can list all keyspaces of the running Grakn server via the Grakn Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-keyspaces) and [Python](../03-client-api/02-python.md#retrieve-all-keyspaces), as well as [Workbase](../07-workbase/01-connection.md#select-a-keyspace).
