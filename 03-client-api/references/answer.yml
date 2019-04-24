@@ -71,6 +71,25 @@ types:
             - Dictionary of String to Concept
 
       - method:
+        common: &method-conceptmap-get
+          title: Retrieve a concept corresponding to a specific variable
+          description: Retrieve a concept for a given variable name without explicitly retriving the map
+          accepts: &method-conceptmap-get-var
+            param1:
+              name: var
+              description: The string representation of a variable
+              type: String
+          returns:
+            - "[`Concept`](../concept-api/concept)"
+        java:
+          <<: *method-conceptmap-get
+          method: answer.get(var)
+        python:
+          <<: *method-conceptmap-get
+          method: answer.get(var)
+
+
+      - method:
         common: &method-explanation
           title: Explaining an inferred answer
           description: Provides an explanation on the inference of the concept in the answer, if the concept is in fact inferred.

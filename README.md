@@ -2,6 +2,8 @@
 
 This repository contains all content that powers the Grakn Documentation Portal, accessible at [dev.grakn.ai](http://dev.grakn.ai).
 
+---
+
 ## Contribute
 
 - Fork this repository.
@@ -9,9 +11,11 @@ This repository contains all content that powers the Grakn Documentation Portal,
 - Make the desired changes.
 - Issue pull request(s) and select the `base` branch in accordance with the [Branch Classifications](#branch-classifications).
 
-## Branch Classifications
+---
 
-The classification of the branches and the purpose of each is as follows:
+## Branch Definitions
+
+This repository will have at most 2 branches, `master` and `development`, which are describe below.
 
 ### Master
 
@@ -39,6 +43,8 @@ The development branch contains the content of the documentation for the next im
 PRs that have the `development` branch as their _base_, contain changes that are either:
 - previously made on `master` and should also be reflected for the next release, or
 - meant to introduce a new future/change that will only be available as a part of the next release
+
+---
 
 ## Contribution Guidelines
 

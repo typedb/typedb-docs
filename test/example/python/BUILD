@@ -76,5 +76,8 @@ genrule(
         "social_network_python_client_b.py",
         "social_network_python_client_c.py",
         "social_network_python_client_d.py",
+        # client-api/new-client
+        "social_network_create_new_client_a.py",
+        "social_network_create_new_client_b.py"
     ]
 )

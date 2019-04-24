@@ -91,6 +91,8 @@ Having downloaded Grakn, we can now start the [Server](#start-the-grakn-server) 
 
 [tab:Docker]
 
+#### Using Docker
+
 To pull the Grakn Docker image, run:
 
 ```

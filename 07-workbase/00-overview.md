@@ -17,6 +17,13 @@ Workbase is the newest member of the Grakn family of products and will undergo h
 In the next release, Workbase will include the graphical interface for designing and visualising the schema. The future releases of Workbase are aimed at enabling write operations as well.
 </div>
 
+## Dependencies
+
+| Workbase       | Grakn Core          | Grakn KGMS          |
+| :------------: | :-----------------: | :-----------------: |
+| 1.2.0          | 1.5.0, 1.5.1        | N/A                 |
+| 1.0.0 to 1.1.1 | 1.4.0, 1.4.2, 1.4.3 | 1.4.0, 1.4.2, 1.4.3 |
+
 ## Download Workbase
 Grakn Workbase is available for Linux, Mac and Windows. Head over to the [Download Center](https://grakn.ai/download#workbase) to download and install the latest release of Workbase.
 
