@@ -212,7 +212,7 @@ codeKeywordsToLink = {
         {
             "titles": ["session"],
             "syntaxedAs": ["function"],
-            "anchor": "#create-a-session-keyspace",
+            "anchor": "#create-a-sessionkeyspace",
             "languages": ["java", "javascript", "python"]
         },
         {

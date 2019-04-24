@@ -245,7 +245,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`RelationType`](../concept-api/type#relation-methods) object"
+        - "[`RelationType`](../concept-api/type#relationtype-methods) object"
     java:
       <<: *method-putRelationType
       method: transaction.putRelationType(Label.of(String label));
@@ -337,7 +337,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "[`Rule`](../concept-api/03-rule) object"
+        - "[`Rule`](../concept-api/rule) object"
     java:
       <<: *method-putRule
       method: transaction.putRule(Label.of(String label), Pattern when, Pattern then);

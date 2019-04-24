@@ -91,12 +91,12 @@ toc: true
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?tab=java#concept-api-java-method-retrieve-the-label)
-- [type.label(Label.of(label));](?tab=java#concept-api-java-method-rename-the-label)
-- [sup();](?tab=java#concept-api-java-method-retrieve-direct-supertype)
-- [sup(Type type);](?tab=java#concept-api-java-method-change-direct-supertype)
-- [sups();](?tab=java#concept-api-java-method-retrieve-all-supertypes)
-- [subs();](?tab=java#concept-api-java-method-retrieve-all-subtypes)
+- [label();](?tab=java#retrieve-the-label)
+- [type.label(Label.of(label));](?tab=java#rename-the-label)
+- [sup();](?tab=java#retrieve-direct-supertype)
+- [sup(Type type);](?tab=java#change-direct-supertype)
+- [sups();](?tab=java#retrieve-all-supertypes)
+- [subs();](?tab=java#retrieve-all-subtypes)
 </div>
 
 {% include api/generic.html data=site.data.04_concept_api.references.role language="java" %}
@@ -106,12 +106,12 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?tab=javascript#concept-api-nodejs-method-retrieve-the-label)
-- [type.label(Label.of(label));](?tab=javascript#concept-api-nodejs-method-rename-the-label)
-- [sup();](?tab=javascript#concept-api-nodejs-method-retrieve-direct-supertype)
-- [sup(Type type);](?tab=javascript#concept-api-nodejs-method-change-direct-supertype)
-- [sups();](?tab=javascript#concept-api-nodejs-method-retrieve-all-supertypes)
-- [subs();](?tab=javascript#concept-api-nodejs-method-retrieve-all-subtypes)
+- [label();](?tab=javascript#retrieve-the-label)
+- [type.label(Label.of(label));](?tab=javascript#rename-the-label)
+- [sup();](?tab=javascript#retrieve-direct-supertype)
+- [sup(Type type);](?tab=javascript#change-direct-supertype)
+- [sups();](?tab=javascript#retrieve-all-supertypes)
+- [subs();](?tab=javascript#retrieve-all-subtypes)
 </div>
 {% include api/generic.html data=site.data.04_concept_api.references.role language="javascript" %}
 [tab:end]
@@ -120,12 +120,12 @@ At the moment, `Role` inherits an intermediary class which, for the sake of simp
 <div class="note">
 [Important]
 At the moment, `Role` inherits an intermediary class which, for the sake of simplicity, has not been documented. Therefore, besides the `Concept` methods, Role inherits the following methods from the `Type` class.
-- [label();](?tab=python#concept-api-python-method-retrieve-the-label)
-- [type.label(Label.of(label));](?tab=python#concept-api-python-method-rename-the-label)
-- [sup();](?tab=python#concept-api-python-method-retrieve-direct-supertype)
-- [sup(Type type);](?tab=python#concept-api-python-method-change-direct-supertype)
-- [sups();](?tab=python#concept-api-python-method-retrieve-all-supertypes)
-- [subs();](?tab=python#concept-api-python-method-retrieve-all-subtypes)
+- [label();](?tab=python#retrieve-the-label)
+- [type.label(Label.of(label));](?tab=python#rename-the-label)
+- [sup();](?tab=python#retrieve-direct-supertype)
+- [sup(Type type);](?tab=python#change-direct-supertype)
+- [sups();](?tab=python#retrieve-all-supertypes)
+- [subs();](?tab=python#retrieve-all-subtypes)
 </div>
 {% include api/generic.html data=site.data.04_concept_api.references.role language="python" %}
 [tab:end]
