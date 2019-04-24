@@ -75,6 +75,7 @@ public class GraknQuickstartA {
         // session is open
         session.close();
         // session is closed
+        client.close();
     }
 }
 ```
@@ -113,6 +114,7 @@ public class GraknQuickstartB {
         readTransaction.close();
 
         session.close();
+        client.close();
     }
 }
 
@@ -156,6 +158,7 @@ public class GraknQuickstartC {
     // a read transaction and session must always be closed
     readTransaction.close();
     session.close();
+    client.close();
   }
 }
 
