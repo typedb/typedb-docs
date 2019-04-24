@@ -56,7 +56,7 @@ types:
           method: answer.map();
           description: Produces a Map where keys are variable names and values are [`concept`](../concept-api/concept)s.
           returns:
-            - "`Map<Variable, Concept>"
+            - "Map<Variable, Concept>"
         javascript:
           <<: *method-conceptmap-map
           method: answer.map();
