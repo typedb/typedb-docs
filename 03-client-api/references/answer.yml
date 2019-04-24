@@ -80,7 +80,7 @@ types:
               description: The string representation of a variable
               type: String
           returns:
-            - [`Concept`](../concept-api/concept)
+            - "[`Concept`](../concept-api/concept)"
         java:
           <<: *method-conceptmap-get
           method: answer.get(var)
