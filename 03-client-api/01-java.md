@@ -162,7 +162,7 @@ public class GraknQuickstartC {
 ```
 <div class="note">
 [Important]
-Remember that transactions always need to be closed. Commiting a write transaction closes it. A read transaction, however, must be explicitly clased by calling the `close()` method on it.
+Remember that transactions always need to be closed. Commiting a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
 Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
