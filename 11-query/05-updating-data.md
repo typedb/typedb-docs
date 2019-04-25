@@ -95,7 +95,7 @@ insert $emp (employer: $org, $employee: $p) isa employment;
 match
   $p isa person, has name "Prumt";
   $org isa organisation, has name "Etihw Esouh";
-  $emp (employer: $org, $employee: $p) isa employment;
+  $emp (employer: $org, employee: $p) isa employment;
 delete $emp;
 ```
 [tab:end]
