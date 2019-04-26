@@ -71,11 +71,13 @@ import grakn.client.GraknClient;
 public class GraknQuickstartA {
     public static void main(String[] args) {
         GraknClient client = new GraknClient("localhost:48555");
+        // client is open
         GraknClient.Session session = client.session("social_network");
         // session is open
         session.close();
         // session is closed
         client.close();
+        // client is closed
     }
 }
 ```
@@ -155,7 +157,7 @@ public class GraknQuickstartC {
     Stream<ConceptMap> answers = readTransaction.stream(getQuery);
     answers.forEach(answer -> System.out.println(answer.get("p").id()));
 
-    // a read transaction and session must always be closed
+    // transactions, sessions and clients must always be closed
     readTransaction.close();
     session.close();
     client.close();
