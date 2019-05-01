@@ -24,7 +24,7 @@ For the rest of this post, we go through each of these questions to:
 - write them in [Graql](http://dev.grakn.ai/academy/graql-intro.html), and
 - assess their result.
 
-Make sure you have the [Visualisation Dashboard](http://dev.grakn.ai/docs/visualisation-dashboard/visualiser) (at [localhost:4567](http://localhost:4567/)) opened in your browser, while phone_calls selected as the keyspace (in the top-right hand corner).
+Make sure you have the Workbase open, with phone_calls selected as the keyspace (in the top-right hand corner).
 
 Let’s begin.
 
