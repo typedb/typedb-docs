@@ -83,7 +83,7 @@ methods:
         - void
     javascript:
       <<: *method-close
-      method: await client.close();
+      method: client.close();
       returns:
         - void
     python:
