@@ -30,7 +30,7 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 1.  Create a directory named `phone_calls` on your desktop.
 2.  cd to the phone_calls directory via terminal.
-3.  Run `pip3 install grakn` to install the Grakn [Client Python](../03-client-api/02-python.md).
+3.  Run `pip3 install grakn-client` to install the Grakn [Client Python](../03-client-api/02-python.md).
 4.  Open the `phone_calls` directory in your favourite text editor.
 5.  Create a `migrate.py` file in the root directory. This is where we’re going to write all our code.
 
@@ -38,7 +38,7 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 Pick one of the data formats below and download the files. After you download them, place the four files under the `files/phone-calls/data` directory. We need these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
 
 **JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
 
@@ -155,7 +155,8 @@ Example:
 ```
 
 - Comes out:
-```python
+
+```graql
 insert $company isa company, has name "Telecom";
 ```
 
@@ -187,8 +188,9 @@ Example:
 ```
 
 - Comes out:
-```python
-insert $person isa person has phone-number "+44 091 xxx";
+
+```graql
+insert $person isa person, has phone-number "+44 091 xxx";
 ```
 
 or:
@@ -199,8 +201,9 @@ or:
 ```
 
 - Comes out:
-```python
-insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
+
+```graql
+insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ### contractTemplate
@@ -231,7 +234,8 @@ Example:
 ```
 
 - Comes out:
-```python
+
+```graql
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
@@ -256,7 +260,8 @@ Example:
 ```
 
 - Comes out:
-```python
+
+```graql
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
 
