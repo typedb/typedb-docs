@@ -38,7 +38,7 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 Pick one of the data formats below and download the files. After you download them, place the four files under the `files/phone-calls/data` directory. We need these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
 
 **JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
 
