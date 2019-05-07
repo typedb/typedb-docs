@@ -112,9 +112,9 @@ jobs:
       - install-bazel-linux-rbe
       - checkout
       - run: |
-          export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME_GRABL
-          export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL_GRABL
-          export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN_GRABL
+          export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
+          export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
+          export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
           bazel run @graknlabs_build_tools//ci:release-docs -- development $CIRCLE_SHA1
 
   release-production:
@@ -124,9 +124,9 @@ jobs:
       - install-bazel-linux-rbe
       - checkout
       - run: |
-          export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME_GRABL
-          export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL_GRABL
-          export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN_GRABL
+          export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
+          export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
+          export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
           bazel run @graknlabs_build_tools//ci:release-docs -- master $CIRCLE_SHA1
 
 workflows:
