@@ -48,11 +48,6 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-<div class="note">
-[Note]
-Although, in the example above, we have assigned the `full-name` attribute to the `person` entity, it is yet to be defined. We soon learn how to [define an attribute](#define-an-attribute).
-</div>
-
 ### Assign an attribute to an entity
 We can assign any number of attributes to an entity. To do so, we use the `has` keyword followed by the attribute's label.
 
