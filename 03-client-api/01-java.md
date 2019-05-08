@@ -30,19 +30,9 @@ templatePath: 03-client-api/references/
 </repositories>
 <dependencies>
     <dependency>
-        <groupId>io.grakn.client</groupId>
-        <artifactId>api</artifactId>
-        <version>1.5.2</version>
-    </dependency>
-    <dependency>
-        <groupId>io.grakn.core</groupId>
-        <artifactId>concept</artifactId>
-        <version>1.5.2</version>
-    </dependency>
-    <dependency>
-        <groupId>io.graql</groupId>
-        <artifactId>lang</artifactId>
-        <version>1.0.1</version>
+        &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
+        &lt;artifactId&gt;api&lt;/artifactId&gt;
+        <version>1.5.0</version>
     </dependency>
 </dependencies>
 ```
@@ -58,8 +48,8 @@ templatePath: 03-client-api/references/
 </repositories>
 <dependencies>
     <dependency>
-        <groupId>ai.grakn.kgms</groupId>
-        <artifactId>client</artifactId>
+        &lt;groupId&gt;ai.grakn.kgms&lt;/groupId&gt;
+        &lt;artifactId&gt;client&lt;/artifactId&gt;
         <version>1.4.3</version>
     </dependency>
 </dependencies>
