@@ -159,8 +159,8 @@ While [logged into a node](#logging-into-a-node), run `grakn cluster status`. Th
 
 ![Cluster Health Check](../images/cloud-deployment/gc_cluster_health_check.png)
 
-## Access Grakn Console
-While [logged into a node](#logging-into-a-node), run `grakn console start`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn Console where, for instance, we may manage [authentication](../06-management/02-users.md).
+## Access Grakn User Management Console
+While [logged into a node](#logging-into-a-node), run `grakn user-management`. This requires us to enter our credentials. If this is our first login, we need to enter the [default credentials](#default-credentials). Once authenticated, we are in the Grakn User Management Console where we may manage [users and authentication](../06-management/02-users.md).
 
 ## Access Grakn Console
 While [logged into a node](#logging-into-a-node), we can enter the [Grakn Console](../02-running-grakn/02-console.md) where we can interact with and perform [queries](../11-query/00-overview.md) on our [keyspaces](../06-management/01-keyspace.md).
