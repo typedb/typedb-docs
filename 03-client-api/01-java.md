@@ -32,7 +32,7 @@ templatePath: 03-client-api/references/
     <dependency>
         &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
         &lt;artifactId&gt;api&lt;/artifactId&gt;
-        <version>1.5.0</version>
+        <version>1.5.2</version>
     </dependency>
 </dependencies>
 ```
