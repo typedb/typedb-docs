@@ -34,6 +34,16 @@ templatePath: 03-client-api/references/
         &lt;artifactId&gt;api&lt;/artifactId&gt;
         <version>1.5.2</version>
     </dependency>
+    <dependency>
+        &lt;groupId&gt;io.grakn.core&lt;/groupId&gt;
+        &lt;artifactId&gt;concept&lt;/artifactId&gt;
+        <version>1.5.3</version>
+    </dependency>
+    <dependency>
+        &lt;groupId&gt;io.graql&lt;/groupId&gt;
+        &lt;artifactId&gt;lang&lt;/artifactId&gt;
+        <version>1.0.1</version>
+    </dependency>
 </dependencies>
 ```
 [tab:end]
