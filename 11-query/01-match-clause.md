@@ -31,7 +31,7 @@ match $p isa person; get;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-  Graql.var("p").isa("person")
+  var("p").isa("person")
 ).get();
 ```
 [tab:end]
