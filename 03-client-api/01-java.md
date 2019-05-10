@@ -8,15 +8,15 @@ templatePath: 03-client-api/references/
 
 ## Dependencies
 
-| Client Java | Grakn Core | Grakn KGMS |
-| :---------: | :--------: | :--------: |
-| 1.5.2       | 1.5.2      | 1.5.2      |
-| 1.5.0       | 1.5.0      | N/A        |
-| 1.4.3       | 1.4.3      | 1.4.3      |
-| 1.4.2       | 1.4.2      | 1.2.0      |
-| 1.4.1       | 1.4.0      | 1.2.0      |
-| 1.4.0       | 1.4.0      | 1.2.0      |
-| 1.3.0       | 1.3.0      | 1.2.0      |
+| Client Java | Grakn Core   | Grakn KGMS |
+| :---------: | :-----------:| :--------: |
+| 1.5.2       | 1.5.2, 1.5.3 | 1.5.2      |
+| 1.5.0       | 1.5.0        | N/A        |
+| 1.4.3       | 1.4.3        | 1.4.3      |
+| 1.4.2       | 1.4.2        | 1.2.0      |
+| 1.4.1       | 1.4.0        | 1.2.0      |
+| 1.4.0       | 1.4.0        | 1.2.0      |
+| 1.3.0       | 1.3.0        | 1.2.0      |
 
 <div class="tabs dark">
 
@@ -32,7 +32,7 @@ templatePath: 03-client-api/references/
     <dependency>
         &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
         &lt;artifactId&gt;api&lt;/artifactId&gt;
-        <version>1.5.0</version>
+        <version>1.5.2</version>
     </dependency>
 </dependencies>
 ```
