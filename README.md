@@ -13,22 +13,16 @@ This repository contains all content that powers the Grakn Documentation Portal,
 
 ---
 
-## Branch Definitions
+## Branches
 
-This repository will have at most 2 branches, `master` and `development`, which are describe below.
+At any given time, this repository has at least 1 and at most 2 branches, i.e. `master` and `development`.
 
-### Master
+### Master Branch
 
-The master branch contains the content for the live documentation of the current release.
-PRs that have the `master` branch as their _base_, contain one or more of the following changes:
-- fixing a linguistic mistake
-- reflecting a change in the terminology
-- rephrasing textual content
-- adding complementary content to an existing feature
-- updating images
-- other changes of the same nature
+The master branch contains the content for the live documentation of the current release. Unless the changes to be made in docs, are with regards to the documentaton of a new feature that is yet to be released, they are all meant to be made on the _master_ branch.
 
-Given a PR made on `master` that can and should be reflected in the next release as well, a second identical (or slightly different) PR needs to be made on the [`development` branch](#development). The steps required to issue the second PR is as follows. While on the _head_ branch of the first PR, run:
+If at the time of submitting changes to _master_, the _development_ is also present, then changes made on the master branch need to be made on the development branch as well. To avoid bring unwanted changes to the developmet branch, commits need to be cherry picked for the PR with _development_ as its base. The steps to accomplish this are as follows.
+
 1. `git checkout development`
 2. `git pull <name of the graknlabs/docs remote> development`
 3. `git checkout -b <name of the branch to be the head of the upcoming PR>`
@@ -98,8 +92,9 @@ Use American.
 
 **Verbs and Pronouns**
 
-- With rare exceptions, the consistent tense used should be the present tense. (ex: _It returns_ as opposed to _It will return_).
+- With rare exceptions, the consistent tense used should be the present tense. (eg: _It returns_ as opposed to _It will return_).
 - In most cases, the consistent pronoun is `we`. In special cases, `you` may better convey the message. Never use `I`.
+- When speaking of the characteristics or capabilities of Grakn and Graql or any of their components, the subject pronoun, if used, should be within the terminology, as opposed to `we`. (eg: _Graql_ has three types of statements, as opposed to _We_ have three types of statements)
 
 **Lists (Bullet points)**
 - When the list item completes the unfinished sentence before the list, end the list item with a period and start each item in lowercase.
@@ -119,6 +114,22 @@ Use American.
 - Prefer short sentences to long ones. Only use complex sentence structures (multiple sentences divided by `,`, `;` or `-`), as last resort.
 - Keep sentences concise. If a part of a sentence is adding no value to the point that the sentence is meant to deliver, remove it.
 - Avoid the assumption that a sentence is self-explanatory. Even if explained in an earlier sentence, repeat yourself to ensure the sentence can be well-understood, without requiring reference to an earlier text.
+
+### Cross-referencing
+Most of the time, when we mention something that is explained in a previous or next page, we need to leave a reference (by turning the word or phrase into a link) to that page and sometimes to a partiular heading, if need to be.
+
+### Flow and Headings
+The choice and order of headings, should provide the reader with seamless flow that offers a high-level understanding of what that page is about. By doing this, we would also make it easier for the readers to find what they are looking for, if that is why they are visiting the page.
+
+Every heading is turned into an anchor, which in turn:
+- provides visitors with a table of content, that is essentially the summary of the page.
+- enables cross-referencing one or more words to a specific block of text on the same or other pages.
+- allows the community to leave references to specific parts of the docs when providing answers or suggestions on different platforms.
+
+### Keywords
+All terminologies used within a page almost always need to be included as the keywords in the front matter of the markdown file.
+The `keywords` attribute contains a comma-separated list of single-word keywords and/or multiple words that are expected to be searched in combination.
+The `longTailKeywords` attribute contains a comma-separated list of keywords that form sensible combinations of the keyword items. They may also be any phrase that the user may search which relates to the page.
 
 <!-- **Grakn Terminology**
 
