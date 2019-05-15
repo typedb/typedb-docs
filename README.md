@@ -31,7 +31,7 @@ If at the time of submitting changes to _master_, the _development_ is also pres
 5. `git push <name of the fork remote> <name of the current branch>`
 6. issue the PR and select `development` as the _base_ branch
 
-### Development
+### Development Branch
 
 The development branch contains the content of the documentation for the next immediate release.
 PRs that have the `development` branch as their _base_, contain changes that are either:
