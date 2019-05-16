@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## What is the Grakn Console?
-The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.md) and [Workbase](...), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
+The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.md) and [Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given keyspace that contains the Grakn knowledge graph.
 
 ## Console Options
 
