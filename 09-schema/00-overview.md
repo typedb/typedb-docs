@@ -88,10 +88,10 @@ In the following sections, we learn how to define a schema using Graql code in a
 Once we have defined the schema, the next immediate step is to load it into Grakn. Learn how to [load the schema via the Grakn Console](../02-running-grakn/02-console.md#console-options).
 
 ## Migrate Data
-To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a Grakn knowledge graph, check out the [Migration Mechanism](...) followed by a comprehensive [tutorial](...) in the language of your choice.
+To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a Grakn knowledge graph, check out the [migration tutorials](../08-examples/00-phone-calls-overview.md) in the language of your choice.
 
 ## Query the schema
-In the next section we learn how to [insert](../11-query/03-insert-query.md), [get](../11-query/02-get-query.md), [delete](../11-query/04-delete-query.md), [update](/docs/query/update-data), [aggregate](../11-query/06-aggregate-query.md) and [compute](../11-query/07-compute-query.md) data represented by a schema.
+In the next section we learn how to [insert](../11-query/03-insert-query.md), [get](../11-query/02-get-query.md), [delete](../11-query/04-delete-query.md), [update](../11-query/05-updating-data.md), [aggregate](../11-query/06-aggregate-query.md) and [compute](../11-query/07-compute-query.md) data represented by a schema.
 
 ## Reserved Keywords
 The following keywords are reserved and meant to only be used by Graql in the schema.
