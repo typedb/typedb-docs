@@ -1,5 +1,7 @@
 # GRAKN.AI Documentation
 
+[![CircleCI](https://circleci.com/gh/graknlabs/docs/tree/master.svg?style=shield)](https://circleci.com/gh/graknlabs/docs)
+
 This repository contains all content that powers the Grakn Documentation Portal, accessible at [dev.grakn.ai](http://dev.grakn.ai).
 
 ---
