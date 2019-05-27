@@ -15,6 +15,7 @@ filegroup(
             "bazel-bin/**/*.md",
             "bazel-out/**/*.md",
             "bazel-docs/**/*.md",
+            "bazel-genfiles/**/*.md",
             ".runfiles/**/*.md"
         ]
     ),
