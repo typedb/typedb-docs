@@ -322,7 +322,7 @@ While [logged into a node](#logging-into-a-node), we can enter the [Grakn Consol
 To ensure Grakn behaves according to your specific needs, you may [configure Grakn](../02-running-grakn/03-configuration.md). One important attribute in Grakn configuration file, is the [path to the data directory](../02-running-grakn/03-configuration.md#where-data-is-stored).
 
 ## Sign up For Enterprise Support
-As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](...).
+As a user of Grakn KGMS on Google Cloud, you are entitled to [premium enterprise support](http://grakn.ai/support).
 
 <hr style="margin-top: 40px">
 
