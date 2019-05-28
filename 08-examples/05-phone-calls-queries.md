@@ -24,7 +24,7 @@ For the rest of this post, we go through each of these questions to:
 - write them in [Graql](http://dev.grakn.ai/academy/graql-intro.html), and
 - assess their result.
 
-Make sure you have the [Visualisation Dashboard](http://dev.grakn.ai/docs/visualisation-dashboard/visualiser) (at [localhost:4567](http://localhost:4567/)) opened in your browser, while phone_calls selected as the keyspace (in the top-right hand corner).
+Make sure you have [Grakn Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [Grakn Server](../02-running-grakn/01-install-and-run.md#start-the-grakn-server) and `phone_calls` is the [selected keyspace](../07-workbase/01-connection.md#select-a-keyspace).
 
 Let’s begin.
 
@@ -68,9 +68,10 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
+
 <!-- test-example PhoneCallsFirstQuery.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -239,9 +240,10 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
+
 <!-- test-example PhoneCallsSecondQuery.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -358,14 +360,14 @@ with GraknClient(uri="localhost:48555") as client:
           '  $target-call-date > $pattern-call-date;',
           'get $phone-number;'
         ]
-    
+
         print("\nQuery:\n", "\n".join(query))
         query = "".join(query)
-    
+
         iterator = transaction.query(query)
         answers = iterator.collect_concepts()
         result = [ answer.value() for answer in answers ]
-    
+
         print("\nResult:\n", result)
 ```
 [tab:end]
@@ -410,9 +412,10 @@ get $phone-number;
 
 <div class="tabs dark">
 [tab:Java]
+
 <!-- test-example PhoneCallsThirdQuery.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -579,9 +582,10 @@ get $phone-number-a, $phone-number-b;
 
 <div class="tabs dark">
 [tab:Java]
+
 <!-- test-example PhoneCallsForthQuery.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.ConceptMap;
@@ -774,9 +778,10 @@ get $duration; mean $duration;
 
 <div class="tabs dark">
 [tab:Java]
+
 <!-- test-example PhoneCallsFifthQuery.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import grakn.core.concept.answer.Numeric;

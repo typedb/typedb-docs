@@ -29,8 +29,8 @@ Before moving on, make sure you have **npm** installed and the [**Grakn Server**
 ## Get Started
 
 1.  Create a directory named `phone_calls` on your desktop.
-2.  cd to the `phone_calls` directory via terminal.
-3.  Run `npm install grakn` to install the Grakn [Client Node.js](../03-client-api/03-nodejs.md).
+2.  `cd` to the `phone_calls` directory via terminal.
+3.  Run `npm install grakn-client` to install the Grakn [Client Node.js](../03-client-api/03-nodejs.md).
 4.  Open the `phone_calls` directory in your favourite text editor.
 5.  Create a `migrate.js` file in the root directory. This is where we’re going to write all our code.
 
@@ -38,7 +38,7 @@ Before moving on, make sure you have **npm** installed and the [**Grakn Server**
 
 Pick one of the data formats below and download the files. After you download them, place the four files under the `files/phone-calls/data` directory. We use these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
 
 **JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
 
@@ -91,7 +91,8 @@ async function buildPhoneCallGraph(inputs) {
     for (input of inputs) {
         await loadDataIntoGrakn(input, session);
     }
-    session.close();
+    await session.close();
+    client.close();
 }
 ```
 
@@ -149,12 +150,14 @@ function companyTemplate(company) {
 Example:
 
 - Goes in:
+
 ```javascript
 { name: "Telecom" }
 ```
 
 - Comes out:
-```javascript
+
+```graql
 insert $company isa company, has name "Telecom";
 ```
 
@@ -193,8 +196,9 @@ Example:
 ```
 
 - Comes out:
-```javascript
-insert $person has phone-number "+44 091 xxx";
+
+```graql
+insert $person isa person, has phone-number "+44 091 xxx";
 ```
 
 or:
@@ -205,8 +209,9 @@ or:
 ```
 
 - Comes out:
-```javascript
-insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
+
+```graql
+insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ### contractTemplate
@@ -233,7 +238,8 @@ Example:
 ```
 
 - Comes out:
-```javascript
+
+```graql
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
@@ -263,7 +269,8 @@ Example:
 ```
 
 - Comes out:
-```javascript
+
+```graql
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
 

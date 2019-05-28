@@ -95,11 +95,11 @@ Next, add a new file called `logback.xml` with the content below and place it un
 
 Pick one of the data formats below and download the files. After you download them, place the four files under the `phone_calls/data` directory. We use these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/csv/data/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
 
-**JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/json/data/calls.json)
+**JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
 
-**XML** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/companies.xml) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/people.xml) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/contracts.xml) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/nodejs/migration/xml/data/calls.xml)
+**XML** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.xml)
 
 ## Specify Details For Each Data File
 
@@ -171,7 +171,7 @@ public class PhoneCallsMigration {
 ```java
 // imports
 
-public class Migration {
+public class PhoneCallsMigration {
   abstract static class Input {...}
   public static void main(String[] args) {...}
 
@@ -200,7 +200,7 @@ Given the company,
 ```
 
 `input.template(company)` returns
-<!-- test-ignore -->
+
 ```graql
 insert $company isa company, has name "Telecom";
 ```
@@ -260,9 +260,9 @@ Given the person,
 ```
 
 `input.template(person)` returns
-<!-- test-ignore -->
+
 ```graql
-insert $person has phone-number "+44 091 xxx";
+insert $person isa person, has phone-number "+44 091 xxx";
 ```
 
 And given the person,
@@ -273,9 +273,9 @@ And given the person,
 ```
 
 `input.template(person)` returns
-<!-- test-ignore -->
+
 ```graql
-insert $person has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
+insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ## Input Instance For a Contract
@@ -321,7 +321,7 @@ Given the contract,
 ```
 
 `input.template(contract)` returns
-<!-- test-ignore -->
+
 ```graql
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
@@ -371,7 +371,7 @@ Given the call,
 ```
 
 `input.template(call)` returns
-<!-- test-ignore -->
+
 ```graql
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
@@ -387,7 +387,7 @@ import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
-public class Migration {
+public class PhoneCallsMigration {
 	abstract static class Input {...}
 
   	public static void main(String[] args) {
@@ -757,7 +757,7 @@ Here is how our `Migrate.java` looks like for each data format.
 [tab:CSV]
 <!-- test-example PhoneCallsCSVMigration.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
@@ -955,7 +955,7 @@ public class PhoneCallsCSVMigration {
 [tab:JSON]
 <!-- test-example PhoneCallsJSONMigration.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
@@ -1159,7 +1159,7 @@ public class PhoneCallsJSONMigration {
 [tab:XML]
 <!-- test-example PhoneCallsXMLMigration.java -->
 ```java
-package grakn.example.phoneCalls;
+package io.grakn.example.phoneCalls;
 
 import grakn.client.GraknClient;
 import graql.lang.query.GraqlInsert;
