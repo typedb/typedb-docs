@@ -10,8 +10,13 @@ pattern_to_find_links = '(\[[^\]]*?\]\(\.\.\/)((\d+-[^\/\)]*(\/|))+)\)'
 pattern_to_find_anchors = '#+\s(.*)'
 pattern_to_find_template_calls = '\{%\sinclude\s.*?\s%\}'
 
+## TODO: require at least one `.md` to exist within the link path, that is accepts: [aaa](../bb.md)
+## the \s at the start ensures that the format something["key"](argument) can still be used within code blocks
+pattern_to_find_invalid_links = '\s(\[[^\]]*?\]\((?!.*(../|#|http://|https://)).*?\))' ## accepts: [aaa](../bb), [aaa](#bb), [aaa](http://bb) and [aaa](https://bb)
+
 pages = {}
 
+## converts a heading (i.e. a phrase) into a id-like anchor
 def anchorize_heading(heading):
     anchor = heading.replace(r"^[^a-zA-Z]+", "").replace(r" ", "-").lower()
     anchor = re.sub("[^a-zA-Z0-9 -]+", "", anchor)
@@ -21,7 +26,7 @@ def anchorize_heading(heading):
 for markdown_path in glob.iglob('./**/*.md'):
     title = markdown_path.replace("./", "")
 
-    pages[title] = {"links": [], "anchors": []}
+    pages[title] = {"links": [], "anchors": [], "invalids": []}
 
     with open(markdown_path) as markdown_file:
         content = markdown_file.read()
@@ -29,6 +34,10 @@ for markdown_path in glob.iglob('./**/*.md'):
         for match in link_matches:
             link = match[1]
             pages[title]["links"].append(link)
+
+        invalid_matches = re.findall(pattern_to_find_invalid_links, content)
+        for match in invalid_matches:
+            pages[title]["invalids"].append(match)
 
         anchor_matches = re.findall(pattern_to_find_anchors, content)
         for match in anchor_matches:
@@ -59,18 +68,27 @@ class LinksTest(unittest.TestCase):
 
         def test_native_links(self):
             errors = []
-            for title, links_and_anchors in pages.items():
-                for link in links_and_anchors["links"]:
+            for pageTitle, pageLinkDetails in pages.items():
+                for link in pageLinkDetails["links"]:
                     link_page = link.split("#")[0]
                     link_page = link_page.split("?")[0]  # removes params
                     if link_page not in pages:
-                        errors.append("The link [" + link_page + "] found in [" + title + "] is broken.")
+                        errors.append("The link [" + link_page + "] found in [" + pageTitle + "] is broken.")
 
                     link_has_anchor = len(link.split("#")) > 1
                     if link_has_anchor:
                         link_anchor = link.split("#")[1]
                         if link_page in pages and link_anchor not in pages[link_page]["anchors"]:
-                            errors.append("The anchor [" + link_anchor + "] of the link [" + link_page + "] found in [" + title + "] is broken.")
+                            errors.append("The anchor [" + link_anchor + "] of the link [" + link_page + "] found in [" + pageTitle + "] is broken.")
+
+            self.assertEqual(len(errors), 0, msg=errors)
+
+        def test_invalid_links(self):
+            errors = []
+            for pageTitle, pageLinkDetails in pages.items():
+                for invalidLink in pageLinkDetails["invalids"]:
+                    # print(pageLinkDetails["invalids"])
+                    errors.append("The link [" + invalidLink[0] + "] found in [" + pageTitle + "] is invalid.")
 
             self.assertEqual(len(errors), 0, msg=errors)
 

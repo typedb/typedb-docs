@@ -7,7 +7,7 @@ Summary: Learn how to obtain insights by writing expressive Graql queries.
 
 ## Goal
 
-When we [modelled and loaded the schema into Grakn](./defining-the-schema), we had some insights in mind that we wanted to obtain from `phone_calls`; the knowledge graph.
+When we [modelled and loaded the schema into Grakn](../defining-the-schema), we had some insights in mind that we wanted to obtain from `phone_calls`; the knowledge graph.
 
 Let’s revise:
 

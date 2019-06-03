@@ -265,7 +265,7 @@ Example:
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
 
-We’ve now created a template for each and all four concepts that were [previously](./defining-the-schema) defined in the schema.
+We’ve now created a template for each and all four concepts that were [previously](../defining-the-schema) defined in the schema.
 
 It’s time for the implementation of `parse_data_to_dictionaries(input)`.
 

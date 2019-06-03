@@ -27,7 +27,7 @@ In this case, please get in touch!
  
 ## Architecture
 
-As touched on in the [Overview page](00-overview.md), Grakn clients have the following central components the user interacts with
+As touched on in the [Overview page](../03-client-api/00-overview.md), Grakn clients have the following central components the user interacts with
 
 * `GraknClient`
 * `Session`

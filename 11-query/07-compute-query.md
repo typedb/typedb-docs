@@ -15,8 +15,6 @@ In this section, we learn how to use the `compute` queries in a Grakn knowledge 
 
 To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
-<!-- In a dedicated section, we learn more about the significance and use cases of [Distributed Analaytics]() in a Grakn knowledge graph. -->
-
 ## Compute Statistics
 Computing simple statistics, such as the mean and standard deviations of small datasets, is an easy task given isolated instances. But what about when the knowledge graph becomes so large that it has to be distributed across many machines? What if the values to be calculated correspond to many different types?
 
