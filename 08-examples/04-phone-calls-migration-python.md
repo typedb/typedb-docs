@@ -197,7 +197,7 @@ or:
 
 - Goes in:
 ```python
-{ "firs_name": "Jackie", "last_name": "Joe", "city": "Jimo", "age": 77, "phone_number": "+00 091 xxx"}
+{ "first_name": "Jackie", "last_name": "Joe", "city": "Jimo", "age": 77, "phone_number": "+00 091 xxx"}
 ```
 
 - Comes out:
@@ -209,20 +209,13 @@ insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jacki
 ### contractTemplate
 
 ```python
-def person_template(person):
-    # insert person
-    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
-    if "first_name" in person:
-        # person is a customer
-        graql_insert_query += ", has is-customer true"
-        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-        graql_insert_query += ', has city "' + person["city"] + '"'
-        graql_insert_query += ", has age " + str(person["age"])
-    else:
-        # person is not a customer
-        graql_insert_query += ", has is-customer false"
-    graql_insert_query += ";"
+def contract_template(contract):
+    # match company
+    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    # match person
+    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    # insert contract
+    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
     return graql_insert_query
 ```
 

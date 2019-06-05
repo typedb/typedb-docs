@@ -310,7 +310,7 @@ compute centrality using k-core, where min-k=5;
 
 [tab:Java]
 ```java
-GraqlCompute.Centrality query = Graql.compute().centrality().using(K_CORE).where(min_k(5));
+GraqlCompute.Centrality query = Graql.compute().centrality().using(K_CORE).where(minK(5));
 ```
 [tab:end]
 </div>
