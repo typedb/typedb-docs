@@ -94,8 +94,6 @@ GraqlDefine query = Graql.define(
 
 Please note that facts defined via rules are in general not stored in the knowledge graph. In this example, siblings data is not explicitly stored anywhere in the knowledge graph. However by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
 
-<!-- This is a basic example of how Graql rules can be useful. In a dedicated section, we learn about rules by looking at more examples of [rule-based automated reasoning](...). -->
-
 ## Retrieve a Rule
 
 If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](../11-query/01-match-clause.md).

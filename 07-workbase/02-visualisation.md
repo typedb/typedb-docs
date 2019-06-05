@@ -166,7 +166,7 @@ To navigate between Graql queries that we have previously executed, while in the
 <!-- -->
 [slide:start]
 [body:start]![Graql editor](/docs/images/workbase/visualise_query-settings-neighbour-limit.png)[body:end]
-[footer:start]For the same reason, we may want to limit the number of neighbours to view when [investigating nodes](...). For this, we specify the **Neighbour Limit**.[footer:end]
+[footer:start]For the same reason, we may want to limit the number of neighbours to view when [investigating nodes](../07-workbase/03-investigation.md). For this, we specify the **Neighbour Limit**.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]

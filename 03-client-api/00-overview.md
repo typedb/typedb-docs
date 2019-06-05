@@ -41,7 +41,7 @@ Grakn currently supports clients for:
 - [Python](../03-client-api/02-python.md)
 
 ## Building Your Own Grakn Client
-Creating a new Grakn client is discussed [here](04-new-client.md).
+Creating a new Grakn client is discussed [here](../03-client-api/04-new-client.md).
 
 ## Summary
 A Grakn Client is meant to be used at the application layer for the purpose of managing and performing operations over keyspaces that live on the Grakn server.
