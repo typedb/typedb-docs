@@ -67,8 +67,8 @@ get $phone-number;
 [caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
 
 <div class="tabs dark">
-[tab:Java]
 
+[tab:Java]
 <!-- test-example PhoneCallsFirstQuery.java -->
 ```java
 package io.grakn.example.phoneCalls;
@@ -86,7 +86,7 @@ public class PhoneCallsFirstQuery {
         GraknClient.Session session = client.session("phone_calls");
         GraknClient.Transaction transaction = session.transaction().write();
 
-        List<String> queryAsList = Arrays.asList(
+        List&gt;String&lt; queryAsList = Arrays.asList(
                 "match",
                 "  $customer isa person, has phone-number $phone-number;",
                 "  $company isa company, has name \"Telecom\";",
@@ -100,9 +100,9 @@ public class PhoneCallsFirstQuery {
         System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
         String query = String.join("", queryAsList);
 
-        List<String> result = new ArrayList<>();
+        List&gt;String&lt; result = new ArrayList<>();
 
-        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        List&gt;ConceptMap&lt; answers = transaction.execute((GraqlGet) parse(query));
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asAttribute().value().toString()
@@ -258,7 +258,7 @@ public class PhoneCallsSecondQuery {
         GraknClient.Session session = client.session("phone_calls");
         GraknClient.Transaction transaction = session.transaction().write();
 
-        List<String> queryAsList = Arrays.asList(
+        List&gt;String&lt; queryAsList = Arrays.asList(
                 "match ",
                 "  $suspect isa person, has city \"London\", has age > 50;",
                 "  $company isa company, has name \"Telecom\";",
@@ -274,9 +274,9 @@ public class PhoneCallsSecondQuery {
         System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
         String query = String.join("", queryAsList);
 
-        List<String> result = new ArrayList<>();
+        List&gt;String&lt; result = new ArrayList<>();
 
-        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        List&gt;ConceptMap&lt; answers = transaction.execute((GraqlGet) parse(query));
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asAttribute().value().toString()
@@ -430,7 +430,7 @@ public class PhoneCallsThirdQuery {
         GraknClient.Session session = client.session("phone_calls");
         GraknClient.Transaction transaction = session.transaction().write();
 
-        List<String> queryAsList = Arrays.asList(
+        List&gt;String&lt; queryAsList = Arrays.asList(
                 "match ",
                 "  $common-contact isa person, has phone-number $phone-number;",
                 "  $customer-a isa person, has phone-number \"+7 171 898 0853\";",
@@ -443,9 +443,9 @@ public class PhoneCallsThirdQuery {
         System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
         String query = String.join("", queryAsList);
 
-        List<String> result = new ArrayList<>();
+        List&gt;String&lt; result = new ArrayList<>();
 
-        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        List&gt;ConceptMap&lt; answers = transaction.execute((GraqlGet) parse(query));
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asAttribute().value().toString()
@@ -601,7 +601,7 @@ public class PhoneCallsForthQuery {
         GraknClient.Session session = client.session("phone_calls");
         GraknClient.Transaction transaction = session.transaction().write();
 
-        List<String> queryAsList = Arrays.asList(
+        List&gt;String&lt; queryAsList = Arrays.asList(
                 "match ",
                 "  $target isa person, has phone-number \"+48 894 777 5173\";",
                 "  $company isa company, has name \"Telecom\";",
@@ -618,9 +618,9 @@ public class PhoneCallsForthQuery {
         System.out.println("\nQuery:\n" + String.join("\n", queryAsList));
         String query = String.join("", queryAsList);
 
-        Set<String> result = new HashSet<>();
+        Set&gt;String&lt; result = new HashSet<>();
 
-        List<ConceptMap> answers = transaction.execute((GraqlGet) parse(query));
+        List&gt;ConceptMap&lt; answers = transaction.execute((GraqlGet) parse(query));
         for (ConceptMap answer : answers) {
             result.add(answer.get("phone-number-a").asAttribute().value().toString());
             result.add(answer.get("phone-number-b").asAttribute().value().toString());
@@ -796,7 +796,7 @@ public class PhoneCallsFifthQuery {
         GraknClient.Session session = client.session("phone_calls");
         GraknClient.Transaction transaction = session.transaction().write();
 
-        List<String> firstQueryAsList = Arrays.asList(
+        List&gt;String&lt; firstQueryAsList = Arrays.asList(
                 "match",
                 "  $customer isa person, has age < 20;",
                 "  $company isa company, has name \"Telecom\";",
@@ -817,7 +817,7 @@ public class PhoneCallsFifthQuery {
 
         String result = "Customers aged under 20 have made calls with average duration of " + fisrtResult + " seconds.\n";
 
-        List<String> secondQueryAsList = Arrays.asList(
+        List&gt;String&lt; secondQueryAsList = Arrays.asList(
                 "match",
                 "  $customer isa person, has age > 40;",
                 "  $company isa company, has name \"Telecom\";",
