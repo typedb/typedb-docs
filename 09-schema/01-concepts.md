@@ -598,7 +598,7 @@ define
 
 emotion sub attribute,
   datatype string,
-  regex "[like, love, funny, shocking, sad, angry]";
+  regex "^(like|love|funny|shocking|sad|angry)$";
 ```
 [tab:end]
 
