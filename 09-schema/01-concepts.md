@@ -588,7 +588,7 @@ GraqlDefine query = Graql.define(
 An instance of a `person` can have one instance of `phone-number`, or two or three, ... you get the idea.
 
 ### Restrict attribute's value by Regex
-Optionally, we can specify a Regex that the values of an attribute type must conform to. To do this, we use the `regex` keyword followed by the Regex pattern at the end of the attribute's definition.
+Optionally, we can specify a Regex that the values of an attribute type must conform to. To do this, we use the `regex` keyword followed by a [Java Regex Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
 
 <div class="tabs dark">
 
