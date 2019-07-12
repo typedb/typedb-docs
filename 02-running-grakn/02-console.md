@@ -16,9 +16,9 @@ The options accepted by the `grakn console` command are as follows.
 | Option               | Alias | Mode            | Used with     | Description                                                                             |
 |----------------------|-------|-----------------|---------------|---------------------------------------------------------------------------------------- |
 | `--keyspace <name>`  | `-k`  | interactive     | -             | Enters console with the given keyspace. If none found with the given name, creates one. |
-| `--file <path>`      | `-f`  | non-interactive |` - -keyspace` | Loads the given schema into the given keyspace.                                         |
-| `--uri <address>`    | `-r`  | interactive     | `- -keyspace` | Enters the console connected to the given keyspace hosted remotely.                     |
-| `--no-infer`         | `-n`  | interactive     | `- -keyspace` | Enters the console connected to the given keyspace with inference disabled.             |
+| `--file <path>`      | `-f`  | non-interactive |` --keyspace` | Loads the given schema into the given keyspace.                                         |
+| `--uri <address>`    | `-r`  | interactive     | `--keyspace` | Enters the console connected to the given keyspace hosted remotely.                     |
+| `--no-infer`         | `-n`  | interactive     | `--keyspace` | Enters the console connected to the given keyspace with inference disabled.             |
 | `--version`          | `-v`  | non-interactive | -             | Prints version of the running Grakn.                                                    |
 
 
