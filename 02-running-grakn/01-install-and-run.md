@@ -12,6 +12,19 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 ## Download and Install Grakn
 <div class="tabs light">
 [tab:Linux]
+  
+#### Using RPM/DNF
+
+As a superuser, add the repo:
+```
+sudo dnf config-manager --add-repo https://repo.grakn.ai/repository/meta/rpm.repo
+```
+
+Install Grakn Server and Grakn Console:
+```
+sudo dnf install grakn-core-all
+```
+
 
 #### Using RPM/Yum
 
