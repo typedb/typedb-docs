@@ -65,6 +65,12 @@ sudo apt install grakn-core-all
 #### Manual Download
 
 Download the [latest release](https://grakn.ai/download?os=linux#core), unzip it in a location on your machine that is easily accessible via terminal.
+Install using soft link. Below is example for 1.5.7 version 
+...
+sudo tar -xzf grakn-core-all-linux-1.5.7.tar.gz -C /opt
+rm grakn-core-all-linux-1.5.7.tar.gz 
+sudo ln -s /opt/grakn-core-all-linux-1.5.7/grakn /usr/bin/grakn
+...
 
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
