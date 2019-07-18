@@ -21,9 +21,9 @@ At any given time, this repository has at least 1 and at most 2 branches, i.e. `
 
 ### Master Branch
 
-The master branch contains the content for the live documentation of the current release. Unless the changes to be made in docs, are with regards to the documentaton of a new feature that is yet to be released, they are all meant to be made on the _master_ branch.
+The master branch contains the content for the live documentation of the current release. Unless the changes to be made in docs, are with regards to the documentation of a new feature that is yet to be released, they are all meant to be made on the _master_ branch.
 
-If at the time of submitting changes to _master_, the _development_ is also present, then changes made on the master branch need to be made on the development branch as well. To avoid bring unwanted changes to the developmet branch, commits need to be cherry picked for the PR with _development_ as its base. The steps to accomplish this are as follows.
+If at the time of submitting changes to _master_, the _development_ is also present, then changes made on the master branch need to be made on the development branch as well. To avoid bring unwanted changes to the development branch, commits need to be cherry-picked for the PR with _development_ as its base. The steps to accomplish this are as follows.
 
 1. `git checkout development`
 2. `git pull <name of the graknlabs/docs remote> development`
@@ -36,7 +36,7 @@ If at the time of submitting changes to _master_, the _development_ is also pres
 ### Development Branch
 
 The development branch contains the content of the documentation for the next immediate release.
-PRs that have the `development` branch as their _base_, contain changes that are either:
+PRs that have the `development` branch as their _base_, contains changes that are either:
 - previously made on `master` and should also be reflected for the next release, or
 - meant to introduce a new future/change that will only be available as a part of the next release
 
@@ -102,7 +102,7 @@ Use American.
 - When the list item completes the unfinished sentence before the list, end the list item with a period and start each item in lowercase.
 - When the concatenation of list items construct one long sentence, end each list items with a comma with the last one ending with a period and start each item in lowercase.
 - In cases other than the two described above, start the item with a capital letter and do not end the item with a full stop or a comma.
-- Have an introductory sentence prior to the list, when possible. Always end the introductory sentence with a `:`.
+- Have an introductory sentence before the list, when possible. Always end the introductory sentence with a `:`.
 
 **Footer Notes and Captions**
 - When using a phrase, do not end the line with a period (eg: `Computation of shortest path in Workbase`).
@@ -110,7 +110,7 @@ Use American.
 
 **Formulations**
 - Use paragraphs to provide clarity and flow.
-- Fist sentence should describe the content of the entire paragraph at a high level.
+- First sentence should describe the content of the entire paragraph at a high level.
 - Avoid placing critical information in the middle or end of long paragraphs.
 - Keep paragraphs short (up to 4 lines), when possible.
 - Prefer short sentences to long ones. Only use complex sentence structures (multiple sentences divided by `,`, `;` or `-`), as last resort.
@@ -118,10 +118,10 @@ Use American.
 - Avoid the assumption that a sentence is self-explanatory. Even if explained in an earlier sentence, repeat yourself to ensure the sentence can be well-understood, without requiring reference to an earlier text.
 
 ### Cross-referencing
-Most of the time, when we mention something that is explained in a previous or next page, we need to leave a reference (by turning the word or phrase into a link) to that page and sometimes to a partiular heading, if need to be.
+Most of the time, when we mention something that is explained in a previous or next page, we need to leave a reference (by turning the word or phrase into a link) to that page and sometimes to a particular heading, if need to be.
 
 ### Flow and Headings
-The choice and order of headings, should provide the reader with seamless flow that offers a high-level understanding of what that page is about. By doing this, we would also make it easier for the readers to find what they are looking for, if that is why they are visiting the page.
+The choice and order of headings should provide the reader with a seamless flow that offers a high-level understanding of what that page is about. By doing this, we would also make it easier for the readers to find what they are looking for, if that is why they are visiting the page.
 
 Every heading is turned into an anchor, which in turn:
 - provides visitors with a table of content, that is essentially the summary of the page.
@@ -217,7 +217,7 @@ To add a coloured panel, use the following structure.
  </div>
 ```
 
-In order for the above html/markdown to be presented as a coloured panel, `predefined-title` must map to an object contained within `coloredPanels` accessible in [`views/colored-panels.js`](views/colored-panels.js).
+For the above html/markdown to be presented as a coloured panel, `predefined-title` must map to an object contained within `coloredPanels` accessible in [`views/colored-panels.js`](views/colored-panels.js).
 
 **Colored Labels**
 
@@ -227,23 +227,32 @@ To add an inline coloured label, use the following structure.
 [Label Title]
 ```
 
-In order for the above to be presented as a coloured label, the `Label Title` must be included in the `labelsList` accessible in [`views/colored-labels.js`](views/colored-labels.js).
+For the above to be presented as a coloured label, the `Label Title` must be included in the `labelsList` accessible in [`views/colored-labels.js`](views/colored-labels.js).
 
 ### Sidebar
 
 To add sections/pages to the sidebar, modify the [`sidebar.yml`](views/sidebar.yml).
 
+### Compatibility Tables
+
+The documentation of each interface to Grakn (i.e. clients, workbase, console, etc), contains a compatibility table that needs to be updated with upon every release of the interface itself, Grakn Core or Grakn KGMS. The convention in constructing these tables is as follows:
+
+- The first column is dedicated to the versions of the interface, where each cell contains one single version number, except for the last row(s) (to avoid lengthy tables).
+- Second and third columns are dedicated to Grakn Core and Grakn KGMS, respectively, where each cell may contain one or more version numbers.
+  -  If there need to be 2 version numbers, they are to be separated by a `, ` (e.g. `1.5.2, 1.5.3`).
+  -  If there need to be more than 2 version numbers, a range is provided (e.g. `1.5.4 to 1.5.7`).
+
 ### API References
 
-API references are written and maintained in `.yml` files. In order to work, with these files, you need to have a solid understanding of yaml anchors and references.
+API references are written and maintained in `.yml` files. To work, with these files, you need to have a solid understanding of YAML anchors and references.
 
 Client API reference files are accessible via [`03-client-api/references`](03-client-api/references) and Concept API references via [`04-concept-api/references`](04-client-api/references).
 
 ### Tests
 
 - A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a Graql query.
-- A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`, `compute`). Otherwise it will be tested as a pattern.
-- A code block that follow the `<!-- test-example file-name.extension --> flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
+- A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`, `compute`). Otherwise, it will be tested as a pattern.
+- A code block that follows the `<!-- test-example file-name.extension --> flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
   - a running Grakn Server
   - the schema loaded into the target keyspace
 - Code blocks that have no language name, will not be tested.
