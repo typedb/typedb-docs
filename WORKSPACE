@@ -89,21 +89,17 @@ maven_dependencies()
 load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_rules_nodejs")
 bazel_rules_nodejs()
 
-load("@build_bazel_rules_nodejs//:package.bzl", "rules_nodejs_dependencies")
-rules_nodejs_dependencies()
-
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
 node_repositories()
 
-npm_install(
-    name = "test_example_npm",
+yarn_install(
+    name = "npm",
     package_json = "//test/example/nodejs:package.json",
-    data = [
-      "@build_bazel_rules_nodejs//internal/babel_library:package.json",
-      "@build_bazel_rules_nodejs//internal/babel_library:babel.js",
-      "@build_bazel_rules_nodejs//internal/babel_library:yarn.lock"
-    ]
+    yarn_lock = "//test/example/nodejs:yarn.lock"
 )
+
+load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
+install_bazel_dependencies()
 
 # for Python
 
