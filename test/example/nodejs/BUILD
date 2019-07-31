@@ -1,6 +1,6 @@
-exports_files(["package.json"])
+exports_files(["package.json", "yarn.lock"])
 
-load("@build_bazel_rules_nodejs//:defs.bzl", "jasmine_node_test")
+load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
 
 ################################
 # phone_calls Standalones Test #
@@ -10,12 +10,12 @@ jasmine_node_test(
     name = "phone-calls",
     srcs = [":phone-calls-tests"],
     deps = [
-        "@test_example_npm//jasmine",
-        "@test_example_npm//jasmine-reporters",
-        "@test_example_npm//grakn-client",
-        "@test_example_npm//papaparse",
-        "@test_example_npm//stream-json",
-        "@test_example_npm//xml-stream"
+        "@npm//jasmine",
+        "@npm//jasmine-reporters",
+        "@npm//grakn-client",
+        "@npm//papaparse",
+        "@npm//stream-json",
+        "@npm//xml-stream"
     ],
     data = ["//files:phone-calls-kg"]
 )
@@ -39,9 +39,9 @@ jasmine_node_test(
     name = "social-network",
     srcs = [":social-network-tests"],
     deps = [
-        "@test_example_npm//jasmine",
-        "@test_example_npm//grakn-client",
-        "@test_example_npm//jasmine-reporters"
+        "@npm//jasmine",
+        "@npm//grakn-client",
+        "@npm//jasmine-reporters"
     ],
     data = ["//files:social-network-kg"]
 )
