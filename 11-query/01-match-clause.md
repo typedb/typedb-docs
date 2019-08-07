@@ -216,7 +216,7 @@ GraqlGet query = Graql.match(
 This matches instances of any attribute type whose value contains the substring `"+44"`.
 
 #### With a given regex
-The value of an attribute can also be matched using a regex.
+The value of an attribute can also be matched using a regex. We allow the range of [Java Regex Patterns](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
 
 <div class="tabs dark">
 
