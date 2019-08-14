@@ -17,7 +17,7 @@ Many languages also have non-official support for these protocols. Finally, we n
 
 ## Depend on Grakn gRPC and Protobuf Definitions
 For development purposes, it may be sufficient to manually compile and copy-paste Grakn's 
-[protobuf definitions](https://github.com/graknlabs/grakn/tree/master/protocol). 
+[protobuf definitions](https://github.com/graknlabs/protocol). 
 
 A more reliable method is to stay in sync with protocol changes via a package manager.
 Grakn's build system is [Bazel](https://bazel.build/), and offers one approach. If we'd would like to use a different package manager, 
