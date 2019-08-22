@@ -1,4 +1,4 @@
-# GRAKN.AI Documentation
+# Grakn Documentation
 
 [![CircleCI](https://circleci.com/gh/graknlabs/docs/tree/master.svg?style=shield)](https://circleci.com/gh/graknlabs/docs)
 
