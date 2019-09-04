@@ -109,14 +109,14 @@ Having downloaded Grakn, we can now start the [Server](#start-the-grakn-server) 
 To pull the Grakn Docker image, run:
 
 ```
-docker pull graknlabs/grakn:1.5.3
+docker pull graknlabs/grakn:latest
 ```
 
 #### Without an External Volume
 
 For testing purposes, run:
 ```
-docker run --name grakn -d -p 48555:48555 graknlabs/grakn:1.5.3
+docker run --name grakn -d -p 48555:48555 graknlabs/grakn:latest
 ```
 
 <div class="note">
@@ -129,7 +129,7 @@ Running the instance without specifying a volume does NOT save the data if the i
 To ensure that data is preserved even when the instance is killed or restarted, run:
 
 ```
-docker run --name grakn -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 48555:48555 graknlabs/grakn:1.5.3
+docker run --name grakn -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 48555:48555 graknlabs/grakn:latest
 ```
 
 Having started the instance, the Grakn Server is expected to be running on port `48555` on your machine.
