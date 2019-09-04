@@ -9,7 +9,7 @@ summary: Configure the Grakn Server based on your production and development nee
 In this section, we learn how to configure Grakn to have it tailored to our production and development needs.
 Prior to starting, the Grakn Server and Console read configurations from a file named `grakn.properties`. The location of this file varies based on how Grakn has been installed.
 
-If downloaded manually, we can find the configuration file in the `conf` directory inside the unzipped folder.
+If downloaded manually, we can find the configuration file in the `server/conf` directory inside the unzipped folder.
 
 If installed using Homebrew:
 
