@@ -5,7 +5,7 @@ const reporters = require('jasmine-reporters');
 const tapReporter = new reporters.TapReporter();
 jasmine.getEnv().addReporter(tapReporter)
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 700000;
 
 // TODO set explicit order of execution for tests
 
