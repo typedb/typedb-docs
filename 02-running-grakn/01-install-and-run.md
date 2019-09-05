@@ -47,7 +47,7 @@ sudo yum install grakn-core-all
 
 As a superuser, add the repo:
 ```
-sudo apt install software-properties-common
+sudo apt install software-properties-common apt-transport-https
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
 sudo add-apt-repository 'deb [ arch=all ] https://repo.grakn.ai/repository/apt/ trusty main'
 ```
