@@ -99,7 +99,7 @@ If you find the Graql code above unfamiliar, don't be concerned. We soon learn a
 In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
 
 ## Retrieve a Rule
-To provide a quick preview of you can use the following Graql queries to retrieve rules:
+To provide a quick preview of how you can use the following Graql queries to retrieve rules:
 
 ```graql
 match $r sub rule; get;  # retrieve all rules
