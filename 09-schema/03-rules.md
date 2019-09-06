@@ -106,7 +106,7 @@ match $r sub rule; get;  # retrieve all rules
 match $r type people-with-same-parents-are-siblings; get; # retrieve the specific rule
 ```
 
-Remember that rules are part of the schema and can be queried the same way as other schema concepts described [in Graql Match documentation](../11-query/01-match-clause.md).
+Remember that rules are part of the schema and can be queried the same way as other schema concepts described in [Graql Match documentation](../11-query/01-match-clause.md).
 
 ## Delete a Rule
 
