@@ -94,16 +94,19 @@ GraqlDefine query = Graql.define(
 
 Please note that facts defined via rules are in general not stored in the knowledge graph. In this example, siblings data is not explicitly stored anywhere in the knowledge graph. However by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
 
-## Retrieve a Rule
+If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](../11-query/01-match-clause.md).
 
-If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](../11-query/01-match-clause.md). To provide a quick preview you can use the following Graql queries to retrieve rules:
+In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
+
+## Retrieve a Rule
+To provide a quick preview of you can use the following Graql queries to retrieve rules:
 
 ```graql
 match $r sub rule; get;  # retrieve all rules
 match $r type people-with-same-parents-are-siblings; get; # retrieve the specific rule
 ```
 
-In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
+Remember that rules are part of the schema and can be queried the same way as other schema concepts described [in Graql Match documentation](../11-query/01-match-clause.md).
 
 ## Delete a Rule
 
