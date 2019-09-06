@@ -102,8 +102,10 @@ In this example, siblings data is not explicitly stored anywhere in the knowledg
 To provide a quick preview of how you can use the following Graql queries to retrieve rules:
 
 ```graql
-match $r sub rule; get;  # retrieve all rules
-match $r type people-with-same-parents-are-siblings; get; # retrieve the specific rule
+# retrieve all rules
+match $r sub rule; get;  
+# retrieve the specific rule
+match $r type people-with-same-parents-are-siblings; get; 
 ```
 
 Remember that rules are part of the schema and can be queried the same way as other schema concepts described in [Graql Match documentation](../11-query/01-match-clause.md).
