@@ -21,7 +21,8 @@ In the next release, Workbase will include the graphical interface for designing
 
 | Workbase       | Grakn Core          | Grakn KGMS          |
 | :------------: | :-----------------: | :-----------------: |
-| 1.2.2          | 1.5.3 to 1.5.8      | 1.5.2 to 1.5.8      |
+| 1.2.3          | 1.5.3 to 1.5.8      | 1.5.2 to 1.5.8      |
+| 1.2.2          | 1.5.3 to 1.5.7      | 1.5.2 to 1.5.7      |
 | 1.2.1          | 1.5.2               | 1.5.2               |
 | 1.2.0          | 1.5.0, 1.5.1        | N/A                 |
 | 1.0.0 to 1.1.1 | 1.4.0 to 1.4.3      | 1.4.0 to 1.4.3      |
