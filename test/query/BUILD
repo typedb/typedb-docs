@@ -20,7 +20,7 @@ java_test(
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
         "//test/conf:cassandra-embedded.yaml",
-        "//test/conf:grakn.properties"
+        "@graknlabs_grakn_core//server:conf/grakn.properties"
     ]
 )
 
@@ -56,7 +56,7 @@ java_test(
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
         "//test/conf:cassandra-embedded.yaml",
-        "//test/conf:grakn.properties"
+        "@graknlabs_grakn_core//server:conf/grakn.properties"
     ]
 )
 
