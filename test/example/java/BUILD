@@ -26,7 +26,7 @@ java_test(
     data = [
         "//files:phone-calls-kg",
         "//test/conf:cassandra-embedded.yaml",
-        "//test/conf:grakn.properties",
+        "@graknlabs_grakn_core//server:conf/grakn.properties",
     ]
 )
 
@@ -74,7 +74,7 @@ java_test(
     ],
     data = [
         "//test/conf:cassandra-embedded.yaml",
-        "//test/conf:grakn.properties",
+        "@graknlabs_grakn_core//server:conf/grakn.properties",
         "//files:social-network-kg",
     ]
 )

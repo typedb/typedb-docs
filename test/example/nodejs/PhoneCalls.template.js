@@ -17,6 +17,7 @@ beforeAll(async function() {
     await transaction.query(defineQuery);
     await transaction.commit();
     await session.close();
+    await client.close();
     console.log("Loaded the phone_calls schema");
 });
 
@@ -60,4 +61,5 @@ afterAll(async function() {
     const client = new Grakn("localhost:48555");
     await client.keyspaces().delete("phone_calls");
     console.log("Deleted the phone_calls keyspace");
+    await client.close();
 });
