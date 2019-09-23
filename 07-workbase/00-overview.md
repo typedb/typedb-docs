@@ -11,12 +11,6 @@ The Grakn Workbase, along with the [Grakn Console](../02-running-grakn/02-consol
 Workbase allows us to execute Graql [`get`](../11-query/02-get-query.md) and [`compute path`](../11-query/07-compute-query.md#compute-the-shortest-path) queries, and visualise and investigate their results.
 Whether you need a tool to test and experiment with your newly created Grakn knowledge graph, or that you prefer a graphical interface for reading data from Grakn, you will find Workbase extremely useful.
 
-<div class="note">
-[Important]
-Workbase is the newest member of the Grakn family of products and will undergo heavy development in years to come. At the moment, Workbase may only be used to _read_ data from a Grakn knowledge graph.
-In the next release, Workbase will include the graphical interface for designing and visualising the schema. The future releases of Workbase are aimed at enabling write operations as well.
-</div>
-
 ## Dependencies
 
 | Workbase       | Grakn Core          | Grakn KGMS          |
