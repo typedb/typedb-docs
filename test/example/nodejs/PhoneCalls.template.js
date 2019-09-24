@@ -5,11 +5,9 @@ const reporters = require('jasmine-reporters');
 const tapReporter = new reporters.TapReporter();
 jasmine.getEnv().addReporter(tapReporter)
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 700000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 
-// TODO set explicit order of execution for tests
-
-beforeAll(async function() {
+const loadSchema = async () => {
     const client = new Grakn("localhost:48555");
     const session = await client.session("phone_calls");
     const transaction = await session.transaction().write();
@@ -19,9 +17,19 @@ beforeAll(async function() {
     await session.close();
     await client.close();
     console.log("Loaded the phone_calls schema");
-});
+};
+
+const deleteKeyspace = async () => {
+    const client = new Grakn("localhost:48555");
+    await client.keyspaces().delete("phone_calls");
+    console.log("Deleted the phone_calls keyspace");
+    await client.close();
+}
+
 
 describe("Query example for phone_calls", function() {
+    beforeAll(async function() { await loadSchema(); });
+
     it("tests phoneCallsFirstQuery.js", async function() {
         // phoneCallsFirstQuery.js
     });
@@ -41,25 +49,25 @@ describe("Query example for phone_calls", function() {
     it("tests phoneCallsFifthQuery.js", async function() {
         // phoneCallsFifthQuery.js
     });
+
+    afterAll(async function() { await deleteKeyspace(); });
 });
 
 describe("Migration of data into phone_calls", function() {
+    beforeAll(async function() { await loadSchema(); });
+    
     it("tests phoneCallsCSVMigration.js", async function() {
         // phoneCallsCSVMigration.js
     });
-
+    
     it("tests phoneCallsJSONMigration.js", async function() {
         // phoneCallsJSONMigration.js
     });
-
+    
     it("phoneCallsXMLMigration.js", async function() {
         // phoneCallsXMLMigration.js
     });
+
+    afterAll(async function() { await deleteKeyspace(); });
 });
 
-afterAll(async function() {
-    const client = new Grakn("localhost:48555");
-    await client.keyspaces().delete("phone_calls");
-    console.log("Deleted the phone_calls keyspace");
-    await client.close();
-});
