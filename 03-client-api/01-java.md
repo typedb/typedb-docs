@@ -10,7 +10,7 @@ templatePath: 03-client-api/references/
 
 | Client Java | Grakn Core     | Grakn KGMS     |
 | :---------: | :-------------:| :------------: |
-| 1.5.4       | 1.5.8          | 1.5.8          |
+| 1.5.4, 1.5.5| 1.5.8, 1.5.9   | 1.5.8          |
 | 1.5.3       | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
 | 1.5.2       | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
 | 1.5.0       | 1.5.0          | N/A            |
@@ -32,19 +32,19 @@ templatePath: 03-client-api/references/
 </repositories>
 <dependencies>
     <dependency>
-        &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
-        &lt;artifactId&gt;api&lt;/artifactId&gt;
-        <version>1.5.2</version>
-    </dependency>
-    <dependency>
         &lt;groupId&gt;io.grakn.core&lt;/groupId&gt;
-        &lt;artifactId&gt;concept&lt;/artifactId&gt;
-        <version>1.5.3</version>
+        &lt;artifactId&gt;grakn-concept&lt;/artifactId&gt;
+        <version>1.5.9</version>
     </dependency>
     <dependency>
         &lt;groupId&gt;io.graql&lt;/groupId&gt;
-        &lt;artifactId&gt;lang&lt;/artifactId&gt;
-        <version>1.0.1</version>
+        &lt;artifactId&gt;graql-lang&lt;/artifactId&gt;
+        <version>1.0.3</version>
+    </dependency>
+    <dependency>
+        &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
+        &lt;artifactId&gt;grakn-client&lt;/artifactId&gt;
+        <version>1.5.5</version>
     </dependency>
 </dependencies>
 ```
