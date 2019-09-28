@@ -16,8 +16,8 @@ with open(test_template_path, "r") as template_file:
     template_content = template_file.read()
 
 for markdown_file in markdown_files:
-    with open(markdown_file, "r", encoding="utf-8") as file:
-        matches = re.findall(pattern_to_find_standalones, file.read())
+    with open(markdown_file) as file:
+        matches = re.findall(pattern_to_find_standalones, file.read().decode("utf-8"))
         for standalone in matches:
             standalone_filename = standalone[0]
             standalone_content = standalone[1]
