@@ -17,7 +17,7 @@ pattern_to_find_standalones = ('<!-- test-example ' +
                                '```')
 standalones = []
 for markdown_file in markdown_files:
-    with open(markdown_file) as file:
+    with open(markdown_file, encoding='utf-8') as file:
         matches = re.findall(pattern_to_find_standalones, file.read())
         for standalone in matches:
             standalone_filename = standalone[0]

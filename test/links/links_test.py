@@ -28,7 +28,7 @@ for markdown_path in glob.iglob('./**/*.md'):
 
     pages[title] = {"links": [], "anchors": [], "invalids": []}
 
-    with open(markdown_path) as markdown_file:
+    with open(markdown_path, encoding='utf-8') as markdown_file:
         content = markdown_file.read()
         link_matches = re.findall(pattern_to_find_links, content)
         for match in link_matches:
