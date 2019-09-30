@@ -10,7 +10,8 @@ py_test(
     srcs = ["links_test.py"],
     deps = [
         test_links_requirement("PyYAML"),
-        test_links_requirement("nested-lookup")
+        test_links_requirement("nested-lookup"),
+        test_links_requirement("six")
     ],
     data = [
         "//:content",

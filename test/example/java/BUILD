@@ -36,7 +36,7 @@ genrule(
         "java_tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location java_tests.py) $(OUTS) $(locations //:content)",
+    cmd = "$(location java_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         ## examples/migration-java
         "PhoneCallsCSVMigration.java",
@@ -85,7 +85,7 @@ genrule(
         "java_tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location java_tests.py) $(OUTS) $(locations //:content)",
+    cmd = "$(location java_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         # general/quickstart
         "SocialNetworkQuickstartQuery.java",
