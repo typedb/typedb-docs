@@ -1,6 +1,7 @@
 const fs = require('fs')
 const Grakn = require("grakn-client");
 const reporters = require('jasmine-reporters');
+const assert = require('assert');
 
 const tapReporter = new reporters.TapReporter();
 jasmine.getEnv().addReporter(tapReporter)
@@ -8,15 +9,19 @@ jasmine.getEnv().addReporter(tapReporter)
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 
 const loadSchema = async () => {
-    const client = new Grakn("localhost:48555");
-    const session = await client.session("phone_calls");
-    const transaction = await session.transaction().write();
-    const defineQuery = fs.readFileSync("files/phone-calls/schema.gql", "utf8");
-    await transaction.query(defineQuery);
-    await transaction.commit();
-    await session.close();
-    await client.close();
-    console.log("Loaded the phone_calls schema");
+    try {
+        const client = new Grakn("localhost:48555");
+        const session = await client.session("phone_calls");
+        const transaction = await session.transaction().write();
+        const defineQuery = fs.readFileSync("files/phone-calls/schema.gql", "utf8");
+        await transaction.query(defineQuery);
+        await transaction.commit();
+        await session.close();
+        await client.close();
+        console.log("Loaded the phone_calls schema");
+    } catch (e) {
+        console.log("loading the phone_Calls schema FAILED: ", e);
+    }
 };
 
 const deleteKeyspace = async () => {
@@ -28,7 +33,10 @@ const deleteKeyspace = async () => {
 
 
 describe("Query example for phone_calls", function() {
-    beforeAll(async function() { await loadSchema(); });
+    beforeAll(async function() {
+        await assert.doesNotReject(() => loadSchema());
+        //  await loadSchema(); 
+    });
 
     it("tests phoneCallsFirstQuery.js", async function() {
         // phoneCallsFirstQuery.js
