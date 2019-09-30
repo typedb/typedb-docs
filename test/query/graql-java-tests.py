@@ -101,7 +101,7 @@ pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```java\n((
 
 snippets = []
 for markdown_file in markdown_files:
-    with open(markdown_file) as file:
+    with open(markdown_file, encoding='utf-8') as file:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
             flag_type = snippet[0]
