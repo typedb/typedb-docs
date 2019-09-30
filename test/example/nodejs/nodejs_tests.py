@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import re
 import sys
 
@@ -16,7 +18,7 @@ with open(test_template_path, "r") as template_file:
     template_content = template_file.read()
 
 for markdown_file in markdown_files:
-    with open(markdown_file) as file:
+    with open(markdown_file, encoding='utf-8') as file:
         matches = re.findall(pattern_to_find_standalones, file.read())
         for standalone in matches:
             standalone_filename = standalone[0]

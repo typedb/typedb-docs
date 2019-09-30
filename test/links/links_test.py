@@ -28,7 +28,7 @@ for markdown_path in glob.iglob('./**/*.md'):
 
     pages[title] = {"links": [], "anchors": [], "invalids": []}
 
-    with open(markdown_path) as markdown_file:
+    with open(markdown_path, encoding='utf-8') as markdown_file:
         content = markdown_file.read()
         link_matches = re.findall(pattern_to_find_links, content)
         for match in link_matches:
@@ -58,7 +58,7 @@ for markdown_path in glob.iglob('./**/*.md'):
                     new_yaml_file_name = yaml_file_name.replace("-", "_")
                     yaml_file_path = yaml_file_path.replace(yaml_file_name, new_yaml_file_name)
 
-                    yaml_content = yaml.load(open(yaml_file_path), Loader=yaml.CLoader)
+                    yaml_content = yaml.load(open(yaml_file_path), Loader=yaml.FullLoader)
                     # looks for the value of all keys named `title`, convert them to an id and add them as anchors
                     for found_title in nested_lookup("title", yaml_content):
                         pages[title]["anchors"].append(anchorize_heading(found_title))

@@ -30,7 +30,7 @@ genrule(
         "python_tests.py",
         "//:content"
     ],
-    cmd = "python $(location python_tests.py) $(OUTS) $(locations //:content)",
+    cmd = "$(location python_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         ## examples/migration-python
         "phone_calls_csv_migration.py",
@@ -67,7 +67,7 @@ genrule(
         "python_tests.py",
         "//:content"
     ],
-    cmd = "python $(location python_tests.py) $(OUTS) $(locations //:content)",
+    cmd = "$(location python_tests.py) $(OUTS) $(locations //:content)",
     outs = [
         # general/quickstart
         "social_network_quickstart_query.py",

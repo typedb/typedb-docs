@@ -28,7 +28,7 @@ genrule(
         "PhoneCalls.template.js",
         "//:content"
     ],
-    cmd = "python $(location nodejs_tests.py) $(location PhoneCalls.template.js) $(location PhoneCalls.test.js) $(locations //:content)",
+    cmd = "$(location nodejs_tests.py) $(location PhoneCalls.template.js) $(location PhoneCalls.test.js) $(locations //:content)",
     outs = ["PhoneCalls.test.js"]
 )
 
@@ -54,6 +54,6 @@ genrule(
         "SocialNetwork.template.js",
         "//:content"
     ],
-    cmd = "python $(location nodejs_tests.py) $(location SocialNetwork.template.js) $(location SocialNetwork.test.js) $(locations //:content)",
+    cmd = "$(location nodejs_tests.py) $(location SocialNetwork.template.js) $(location SocialNetwork.test.js) $(locations //:content)",
     outs = ["SocialNetwork.test.js"]
 )
