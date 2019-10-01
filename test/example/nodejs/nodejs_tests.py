@@ -14,7 +14,7 @@ pattern_to_find_standalones = ('<!-- test-example ' +
                                '```')
 standalones = []
 
-with open(test_template_path, "r") as template_file:
+with open(test_template_path, encoding='utf-8') as template_file:
     template_content = template_file.read()
 
 for markdown_file in markdown_files:

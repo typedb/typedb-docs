@@ -113,7 +113,7 @@ class LinksTest(unittest.TestCase):
                 "javascript": "03-nodejs.md",
             }
 
-            with open(autolink_keywords_path) as autolink_keywords_file:
+            with open(autolink_keywords_path, encoding='utf-8') as autolink_keywords_file:
                 content = autolink_keywords_file.read().split("codeKeywordsToLink = ")[1]
                 content = re.sub(r'\/\/\s.*', '', content)  # removes comments
                 autolink_keywords = ast.literal_eval(content)  # converts string to dict

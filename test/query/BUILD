@@ -30,7 +30,7 @@ genrule(
         "graql-java-tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location graql-java-tests.py) $@ $(locations //:content)",
+    cmd = "python3 $(location graql-java-tests.py) $@ $(locations //:content)",
     outs = ["GraqlJavaTest.java"]
 )
 
@@ -66,6 +66,6 @@ genrule(
         "graql-lang-tests.py",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python $(location graql-lang-tests.py) $@ $(locations //:content)",
+    cmd = "python3 $(location graql-lang-tests.py) $@ $(locations //:content)",
     outs = ["GraqlLangTest.java"]
 )
