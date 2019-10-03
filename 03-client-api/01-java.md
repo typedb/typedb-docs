@@ -146,7 +146,7 @@ import graql.lang.Graql;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlGet;
 import graql.lang.query.GraqlInsert;
-import grakn.core.concept.answer.ConceptMap;
+import grakn.client.answer.ConceptMap;
 
 import java.util.List;
 import java.util.stream.Stream;
