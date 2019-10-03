@@ -123,7 +123,7 @@ package grakn.examples;
 import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlGet;
-import grakn.core.concept.answer.ConceptMap;
+import grakn.client.answer.ConceptMap;
 
 import java.util.List;
 
