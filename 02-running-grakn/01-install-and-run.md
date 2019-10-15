@@ -75,7 +75,7 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 #### Using Homebrew
 ```
 brew tap graknlabs/tap
-brew tap-pin graknlabs/tap
+cd /usr/local/Homebrew/Library/Taps/graknlabs/homebrew-tap/formula
 brew install grakn-core
 ```
 
