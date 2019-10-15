@@ -75,8 +75,7 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 #### Using Homebrew
 ```
 brew tap graknlabs/tap
-brew tap-pin graknlabs/tap
-brew install grakn-core
+brew install graknlabs/tap/grakn-core
 ```
 
 #### Manual Download

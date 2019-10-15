@@ -1,5 +1,6 @@
 import re
 import sys
+from io import open
 
 output_path, markdown_files = sys.argv[1], sys.argv[2:]
 
