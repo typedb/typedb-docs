@@ -14,6 +14,7 @@ java_test(
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//server:server",
         "@graknlabs_grakn_core//test-integration/rule:grakn-test-server",
+        "@graknlabs_grakn_core//kb",
         "//dependencies/maven/artifacts/org/sharegov:mjson",
         "//dependencies/maven/artifacts/com/google/code/gson:gson",
         "//dependencies/maven/artifacts/com/univocity:univocity-parsers",
