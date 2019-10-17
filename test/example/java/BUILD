@@ -12,7 +12,6 @@ java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//concept:concept",
         "@graknlabs_grakn_core//server:server",
         "@graknlabs_grakn_core//test-integration/rule:grakn-test-server",
         "//dependencies/maven/artifacts/org/sharegov:mjson",
@@ -65,7 +64,6 @@ java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//concept:concept",
         "@graknlabs_grakn_core//server:server",
         "@graknlabs_grakn_core//test-integration/rule:grakn-test-server",
     ],
