@@ -590,7 +590,7 @@ package io.grakn.example.phoneCalls;
 import grakn.client.GraknClient;
 import grakn.client.answer.ConceptMap;
 import graql.lang.query.GraqlGet;
-import grakn.core.server.exception.TransactionException;
+import grakn.core.kb.server.exception.TransactionException;
 import static graql.lang.Graql.*;
 
 import java.util.*;
