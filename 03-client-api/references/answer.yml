@@ -112,19 +112,17 @@ types:
         common: &method-void-message
           title: Retrieve the status message 
           description: Retrieves the message describing the status of the query.
+          method: answer.message();
         java:
           <<: *method-void-message
-          method: answer.message();
           returns:
             - "`String`"
         javascript:
           <<: *method-void-message
-          method: await answer.message();
           returns:
             - "`String`"
         python:
           <<: *method-void-message
-          method: answer.message()
           returns:
             - "string"
 
