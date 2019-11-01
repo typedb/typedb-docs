@@ -24,7 +24,7 @@ mappings:
     answer: "[ConceptMap](#conceptmap)"
   -
     query: delete
-    answer: "[ConceptMap](#conceptmap)"
+    answer: "[Void](#void)"
   -
     query: "aggregate count/min/max/sum/mean/std"
     answer: "[Numeric](#numeric)"
@@ -88,7 +88,6 @@ types:
           <<: *method-conceptmap-get
           method: answer.get(var)
 
-
       - method:
         common: &method-explanation
           title: Explaining an inferred answer
@@ -106,7 +105,29 @@ types:
           <<: *method-explanation
           method: answer.explanation()
 
-  - type2:
+  # TO BE UNCOMMENTED UPON THE RELEASE OF 1.6.0 CLIENTS
+  # - type2:
+  #   title: Void
+  #   methods:
+  #     - method:
+  #       common: &method-void-message
+  #         title: Retrieve the status message 
+  #         description: Retrieves the message describing the status of the query.
+  #         method: answer.message();
+  #       java:
+  #         <<: *method-void-message
+  #         returns:
+  #           - "`String`"
+  #       javascript:
+  #         <<: *method-void-message
+  #         returns:
+  #           - "`String`"
+  #       python:
+  #         <<: *method-void-message
+  #         returns:
+  #           - "string"
+
+  - type3:
     title: Numeric
     methods:
       - method:
@@ -138,7 +159,7 @@ types:
         python:
           <<: *method-explanation-python
 
-  - type3:
+  - type4:
     title: ConceptList
     methods:
       - method:
@@ -168,7 +189,7 @@ types:
         python:
           <<: *method-explanation-python
 
-  - type4:
+  - type5:
     title: ConceptSet
     methods:
       - method:
@@ -194,7 +215,7 @@ types:
         python:
           <<: *method-explanation-python
 
-  - type5:
+  - type6:
     title: ConceptSetMeasure
     methods:
       - method:
@@ -241,7 +262,7 @@ types:
         python:
           <<: *method-explanation-python
 
-  - type6:
+  - type7:
     title: AnswerGroup
     methods:
       - method:
@@ -286,7 +307,7 @@ types:
         python:
           <<: *method-explanation-python
 
-  - type7:
+  - type8:
     title: Explanation
     methods:
       - method:
