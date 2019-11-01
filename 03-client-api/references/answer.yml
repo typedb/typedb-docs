@@ -105,27 +105,26 @@ types:
           <<: *method-explanation
           method: answer.explanation()
 
-  # TO BE UNCOMMENTED UPON THE RELEASE OF 1.6.0 CLIENTS
-  # - type2:
-  #   title: Void
-  #   methods:
-  #     - method:
-  #       common: &method-void-message
-  #         title: Retrieve the status message 
-  #         description: Retrieves the message describing the status of the query.
-  #         method: answer.message();
-  #       java:
-  #         <<: *method-void-message
-  #         returns:
-  #           - "`String`"
-  #       javascript:
-  #         <<: *method-void-message
-  #         returns:
-  #           - "`String`"
-  #       python:
-  #         <<: *method-void-message
-  #         returns:
-  #           - "string"
+  - type2:
+    title: Void
+    methods:
+      - method:
+        common: &method-void-message
+          title: Retrieve the status message 
+          description: Retrieves the message describing the status of the query.
+          method: answer.message();
+        java:
+          <<: *method-void-message
+          returns:
+            - "`String`"
+        javascript:
+          <<: *method-void-message
+          returns:
+            - "`String`"
+        python:
+          <<: *method-void-message
+          returns:
+            - "string"
 
   - type3:
     title: Numeric
