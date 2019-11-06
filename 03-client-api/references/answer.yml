@@ -53,19 +53,19 @@ types:
           title: Retrieve a mapping of variables to concepts
         java:
           <<: *method-conceptmap-map
-          method: answer.map();
+          method: conceptmap.map();
           description: Produces a Map where keys are variable names and values are [`concept`](../concept-api/concept)s.
           returns:
             - "Map<Variable, Concept>"
         javascript:
           <<: *method-conceptmap-map
-          method: answer.map();
+          method: conceptmap.map();
           description: Produces a Javascript object where keys are variable names and values are concepts
           returns:
             - "`Map<String, Concept>`"
         python:
           <<: *method-conceptmap-map
-          method: answer.map()
+          method: conceptmap.map()
           description: Produces a dictionary where keys are variable names and values are concepts
           returns:
             - Dictionary of String to Concept
@@ -74,7 +74,7 @@ types:
         common: &method-conceptmap-get
           title: Retrieve a concept corresponding to a specific variable
           description: Retrieve a concept for a given variable name without explicitly retriving the map
-          accepts: &method-conceptmap-get-var
+          accepts:
             param1:
               name: var
               description: The string representation of a variable
@@ -83,27 +83,60 @@ types:
             - "[`Concept`](../concept-api/concept)"
         java:
           <<: *method-conceptmap-get
-          method: answer.get(var)
+          method: conceptmap.get(var)
         python:
           <<: *method-conceptmap-get
-          method: answer.get(var)
+          method: conceptmap.get(var)
+
+      - method:
+          common: &method-conceptmap-query-pattern
+            title: Query pattern that leads to this variable-to-ID mapping (`.map()`)
+            description: The query pattern, present when this concept map has an explanation, that led to this answer
+            returns:
+              - String
+          java:
+            <<: *method-conceptmap-query-pattern
+            method: conceptmap.queryPattern();
+            -returns:
+              - "[`Graql.Pattern`](#graql)"
+          javascript:
+            <<: *method-conceptmap-query-pattern
+            method: conceptmap.queryPattern();
+          python:
+            <<: *method-conceptmap-query-pattern
+            method: conceptmap.query_pattern()
+
+      - method:
+        common: &method-conceptmap-has-explanation
+          title: Check if an explanation is available for this answer
+          description: A boolean flag that tells whether there is an explanation that could be retrieved for this concept map
+          returns:
+            - "`boolean`"
+        java:
+          <<: *method-conceptmap-has-explanation
+          method: conceptmap.hasExplanation();
+        javascript:
+          <<: *method-conceptmap-has-explanation
+          method: conceptmap.hasExplanation();
+        python:
+          <<: *method-conceptmap-has-explanation
+          method: conceptmap.has_explanation()
 
       - method:
         common: &method-explanation
-          title: Explaining an inferred answer
-          description: Provides an explanation on the inference of the concept in the answer, if the concept is in fact inferred.
+          title: Explanation of a ConceptMap
+          description: Retrieve the Explanation associated with an explainable ConceptMap
           returns:
             - "[Explanation](#explanation)"
-            - "null"
-        java: &method-explanation-java
+        java:
           <<: *method-explanation
-          method: answer.explanation();
-        javascript: &method-explanation-nodejs
+          method: conceptmap.explanation();
+        javascript:
           <<: *method-explanation
-          method: answer.explanation();
-        python: &method-explanation-python
+          method: await conceptmap.explanation();
+        python:
           <<: *method-explanation
-          method: answer.explanation()
+          method: conceptmap.explanation()
 
   # TO BE UNCOMMENTED UPON THE RELEASE OF 1.6.0 CLIENTS
   # - type2:
@@ -151,13 +184,6 @@ types:
             - int
             - float
 
-      - method:
-        java:
-          <<: *method-explanation-java
-        javascript:
-          <<: *method-explanation-nodejs
-        python:
-          <<: *method-explanation-python
 
   - type4:
     title: ConceptList
@@ -181,13 +207,6 @@ types:
           returns:
             - List of String
 
-      - method:
-        java:
-          <<: *method-explanation-java
-        javascript:
-          <<: *method-explanation-nodejs
-        python:
-          <<: *method-explanation-python
 
   - type5:
     title: ConceptSet
@@ -207,13 +226,6 @@ types:
           <<: *method-conceptset-set
           method: answer.set()
 
-      - method:
-        java:
-          <<: *method-explanation-java
-        javascript:
-          <<: *method-explanation-nodejs
-        python:
-          <<: *method-explanation-python
 
   - type6:
     title: ConceptSetMeasure
@@ -254,13 +266,6 @@ types:
           <<: *method-conceptsetmeasure-set
           method: answer.set()
 
-      - method:
-        java:
-          <<: *method-explanation-java
-        javascript:
-          <<: *method-explanation-nodejs
-        python:
-          <<: *method-explanation-python
 
   - type7:
     title: AnswerGroup
@@ -299,52 +304,25 @@ types:
           returns:
             - List of Answer
 
-      - method:
-        java:
-          <<: *method-explanation-java
-        javascript:
-          <<: *method-explanation-nodejs
-        python:
-          <<: *method-explanation-python
-
   - type8:
     title: Explanation
     methods:
       - method:
-        common: &method-explanation-querypattern
-          title: Retrieve a Graql explanation of the answer
-        java:
-          <<: *method-explanation-querypattern
-          method: explanation.getPattern();
-          returns:
-            - "[`Graql.Pattern`](#graql)"
-        javascript:
-          <<: *method-explanation-querypattern
-          method: answer.queryPattern();
-          returns:
-            - String
-        python:
-          <<: *method-explanation-querypattern
-          method: answer.query_pattern()
-          returns:
-            - String
-
-      - method:
-        common: &method-explanation-answers
+        common: &method-explanation-get-answers
           title: Retrieve source facts of inference
           description: Provides a list of answers from which the inferred answer is derived.
         java:
-          <<: *method-explanation-answers
+          <<: *method-explanation-get-answers
           method: explanation.getAnswers();
           returns:
             - "[`List<ConceptMap>`](#conceptmap)"
         javascript:
-          <<: *method-explanation-answers
-          method: explanation.answers();
+          <<: *method-explanation-get-answers
+          method: explanation.getAnswers();
           returns:
             - Array of [`ConceptMap`](#conceptmap)
         python:
-          <<: *method-explanation-answers
-          method: explanation.answers()
+          <<: *method-explanation-get-answers
+          method: explanation.getAnswers()
           returns:
             - List of [`ConceptMap`](#conceptmap)
