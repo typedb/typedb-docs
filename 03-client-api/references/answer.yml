@@ -125,7 +125,7 @@ types:
       - method:
         common: &method-explanation
           title: Explanation of a ConceptMap
-          description: Retrieve the Explanation associated with an explainable ConceptMap
+          description: Retrieve the Explanation associated with an explainable ConceptMap. Performs round trip to server.
           returns:
             - "[Explanation](#explanation)"
         java:
@@ -323,6 +323,6 @@ types:
             - Array of [`ConceptMap`](#conceptmap)
         python:
           <<: *method-explanation-get-answers
-          method: explanation.getAnswers()
+          method: explanation.get_answers()
           returns:
             - List of [`ConceptMap`](#conceptmap)
