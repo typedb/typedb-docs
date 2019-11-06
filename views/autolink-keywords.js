@@ -46,7 +46,7 @@ codeKeywordsToLink = {
         {
             "titles": ["queryPattern", "query_pattern", "getPattern"],
             "syntaxedAs": ["function"],
-            "anchor": "#retrieve-a-graql-explanation-of-the-answer",
+            "anchor": "#query-pattern-that-leads-to-the-conceptmap",
             "languages": ["java", "javascript", "python"]
         },
         // alphabetic order only required for readability

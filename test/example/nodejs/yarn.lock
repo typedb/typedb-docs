@@ -315,9 +315,17 @@ graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
-"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-50bf470c5c801ae45694e934c164cefcf1b972dd.tgz":
-  version "0.0.0-50bf470c5c801ae45694e934c164cefcf1b972dd"
-  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-50bf470c5c801ae45694e934c164cefcf1b972dd.tgz#4dd560a3739af957694ab18e6dc6f80230b3e812"
+grakn-client@1.5.6:
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/grakn-client/-/grakn-client-1.5.6.tgz#9154b61cf19590d1d35598168ceb83ad6d65fa99"
+  integrity sha512-TDxXrBBw19fNUvHRWSGFcU1tFAfPBaoBHKG54u/SUCJEw328Ol0TiGQxzcvXQRdZ6ecGuD9Pdvz2hLClCBIPDw==
+  dependencies:
+    google-protobuf "^3.6.0"
+    grpc "^1.22.2"
+
+"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-36f3791e8e21f6949dc9dbf695bcaaacaa497a79.tgz":
+  version "0.0.0-36f3791e8e21f6949dc9dbf695bcaaacaa497a79"
+  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-36f3791e8e21f6949dc9dbf695bcaaacaa497a79.tgz#be07af886887f97b608409c23b4249bc5c0313ca"
   dependencies:
     google-protobuf "^3.6.0"
     grpc "^1.22.2"
@@ -869,7 +877,7 @@ path-key@^2.0.0, path-key@^2.0.1:
   resolved "https://registry.yarnpkg.com/path-key/-/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
   integrity sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=
 
-path-parse@^1.0.5, path-parse@^1.0.6:
+path-parse@^1.0.5:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
@@ -984,7 +992,7 @@ resolve@^1.10.0:
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.12.0.tgz#3fc644a35c84a48554609ff26ec52b66fa577df6"
   integrity sha512-B/dOmuoAik5bKcD6s6nXDCjzUKnaDvdkRyAk6rsmsKLipWj4797iothd7jmmUhWTfinVMU+wc56rYKsit2Qy4w==
   dependencies:
-    grakn-client "1.5.6"
+    path-parse "^1.0.6"
 
 rimraf@^2.6.1, rimraf@^2.6.2:
   version "2.7.1"

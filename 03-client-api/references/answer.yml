@@ -90,8 +90,8 @@ types:
 
       - method:
           common: &method-conceptmap-query-pattern
-            title: Query pattern that leads to this variable-to-ID mapping (`.map()`)
-            description: The query pattern, present when this concept map has an explanation, that led to this answer
+            title: Query pattern that leads to the conceptmap
+            description: The query pattern, present when this concept map has an explanation, that led to this answer map (`.map()`)
             returns:
               - String
           java:
