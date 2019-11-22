@@ -97,28 +97,28 @@ In the next section we learn how to [insert](../11-query/03-insert-query.md), [g
 The following keywords are reserved and meant to only be used by Graql.
 <!-- test-ignore -->
 ```graql
-// QUERY COMMANDS
-match, get, define, undefine, insert, delete, compute;
-
-// NATIVE TYPES
+## Native types
 thing, entity, attribute, relation, role, rule
 
-// DELETE AND GET QUERY MODIFIERS
-offset, limit, sort, group, asc, desc
-
-// STATEMENT PROPERTIES
-abstract, via, as, id, type, isa, isa!, sub, sub!, key, has, plays, relates, datatype, regex, when, then
-
-// COMPUTE 
-centrality, using
-
-// OPERATORS
-or, not, like
-
-// DATA TYPES
+## Data types
 long, double, string, boolean, date
 
-// LITERAL VALUES
+## Query commands
+define, undefine, match, get, insert, delete, compute;
+
+## Delete and get query modifiers
+offset, limit, group, sort, asc, desc
+
+## Compute query 
+centrality, using
+
+## Statement properties
+abstract, via, as, id, type, isa, isa!, sub, sub!, key, has, plays, relates, datatype, regex, when, then
+
+## Operators
+or, not, like
+
+## Literal values
 true, false
 ```
 
