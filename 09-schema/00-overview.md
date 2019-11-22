@@ -94,24 +94,32 @@ To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a
 In the next section we learn how to [insert](../11-query/03-insert-query.md), [get](../11-query/02-get-query.md), [delete](../11-query/04-delete-query.md), [update](../11-query/05-updating-data.md), [aggregate](../11-query/06-aggregate-query.md) and [compute](../11-query/07-compute-query.md) data represented by a schema.
 
 ## Reserved Keywords
-The following keywords are reserved and meant to only be used by Graql in the schema.
+The following keywords are reserved and meant to only be used by Graql.
 <!-- test-ignore -->
 ```graql
-## Datatypes
-datatype
-boolean, double, long, string, date
+// QUERY COMMANDS
+match, get, define, undefine, insert, delete, compute;
+
+// NATIVE TYPES
+thing, entity, attribute, relation, role, rule
+
+// DELETE AND GET QUERY MODIFIERS
+offset, limit, sort, group, asc, desc
+
+// STATEMENT PROPERTIES
+abstract, via, as, id, type, isa, isa!, sub, sub!, key, has, plays, relates, datatype, regex, when, then
+
+// COMPUTE 
+centrality, using
+
+// OPERATORS
+or, not, like
+
+// DATA TYPES
+long, double, string, boolean, date
+
+// LITERAL VALUES
 true, false
-regex
-
-## Schema definition
-has,
-abstract, isa,
-key,
-plays,
-relates
-
-## Rules definitions
-when, then
 ```
 
 ## Summary
