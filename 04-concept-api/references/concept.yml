@@ -248,3 +248,37 @@ methods:
       java:
         <<: *method-asRelation
 
+  - method:
+    common: &method-delete
+      title: Delete concept
+      method: concept.delete();
+      returns:
+        - "`null`"
+    java:
+      <<: *method-delete
+    javascript:
+      <<: *method-isRule
+      method: await concept.delete();
+      returns:
+        - "`void`"
+    python:
+      <<: *method-isRule
+      method: concept.delete()
+      returns:
+        - "`None`"
+        
+  - method:
+    common: &method-isDeleted
+      title: Check if the concept has been deleted
+      method: concept.isDeleted();
+      returns:
+        - "`boolean`"
+    java:
+      <<: *method-isDeleted
+      method: concept.isDeleted()
+    javascript:
+      <<: *method-isDeleted
+      method: await concept.isDeleted();
+    python:
+      <<: *method-isDeleted
+      method: concept.is_deleted()
