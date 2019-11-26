@@ -148,6 +148,12 @@ codeKeywordsToLink = {
             "languages": ["graql", "java", "javascript", "python"]
         },
         {
+            "titles": ["isOpen", "is_open"],
+            "syntaxedAs": ["function"],
+            "anchor": "#checks-if-the-transaction-is-open",
+            "languages": ["java", "javascript", "python"]
+        },
+        {
             "titles": ["match"],
             "baseUrl": "../query/match-clause",
             "syntaxedAs": ["function", "graql-keyword", "string"],
