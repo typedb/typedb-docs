@@ -258,40 +258,40 @@ GraqlGet query = Graql.match(
 </div>
 
 #### Owners with attributes of given values
-We can also match instances that own an attribute with a specific value.
+We can also match instances that own an attribute with a specific value or range of values.
 
 <div class="tabs dark">
 
 [tab:Graql]
 ```graql
-match $p isa person, has nickname "Mitzi", has phone-number contains "+44"; get;
+match $s isa school, has ranking < 100; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-  var("p").isa("person").has("nickname", "Mitzi").has("phone-number", Graql.contains("+44"))
+  var("s").isa("school").has("ranking", Graql.lt(100))
 ).get();
 ```
 [tab:end]
 </div>
 
-But if in this example, we still want to know how old exactly each John is? we can separate the condition like so.
+But if in this example, we still want to know the ranking of each matched school? we split the variable assignment and the condition like so.
 
 <div class="tabs dark">
 
 [tab:Graql]
 ```graql
-match $p isa person, has nickname "Mitzi", has phone-number $pn; $pn contains "+44"; get;
+match $s isa school, has ranking $r; $r < 100; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-  var("p").isa("person").has("nickname", "Mitzi").has("phone-number", var("pn")),
-  var("pn").contains("+44")
+  var("s").isa("school").has("ranking", var("r"))
+  var("r").lt(100)
 ).get();
 ```
 [tab:end]
