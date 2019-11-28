@@ -52,20 +52,20 @@ Modify `pom.xml` to include the latest version of Grakn Core, Graql and Grakn Cl
     	<maven.compiler.target>1.7</maven.compiler.target>
   	</properties>
   	<dependencies>
-    	<dependency>
-            <groupId>io.grakn.core</groupId>
-            <artifactId>grakn-concept</artifactId>
-            <version>1.5.9</version>
+        <dependency>
+            <groupId>io.grakn.protocol</groupId>
+            <artifactId>grakn-protocol</artifactId>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>io.graql</groupId>
             <artifactId>graql-lang</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>io.grakn.client</groupId>
             <artifactId>grakn-client</artifactId>
-            <version>1.5.5</version>
+            <version>1.6.0</version>
         </dependency>
   	</dependencies>
 </project>
