@@ -128,15 +128,15 @@ methods:
       title: Checks if the transaction is open
       returns:
         - "`boolean`"
-    # java:
-    #   <<: *method-isOpen
-    #   method: transaction.isOpen();
+    java:
+      <<: *method-isOpen
+      method: transaction.isOpen();
     javascript:
       <<: *method-isOpen
       method: await transaction.isOpen();
-    # python:
-    #   <<: *method-isOpen
-    #   method: transaction.is_open()
+    python:
+      <<: *method-isOpen
+      method: transaction.is_open()
 
   - method:
     common: &method-getConcept

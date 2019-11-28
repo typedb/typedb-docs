@@ -939,7 +939,7 @@ with GraknClient(uri="localhost:48555") as client:
             first_answer = list(transaction.query(first_query))
             first_result = 0
             if len(first_answer) > 0:
-                first_result = first_answer.number()
+                first_result = first_answer[0].number()
 
             result = ("Customers aged under 20 have made calls with average duration of "
                       + str(round(first_result)) + " seconds.\n")
@@ -958,7 +958,7 @@ with GraknClient(uri="localhost:48555") as client:
             second_answer = list(transaction.query(second_query))
             second_result = 0
             if len(second_answer) > 0:
-                second_result = second_answer.number()
+                second_result = second_answer[0].number()
 
             result += ("Customers aged above 40 have made calls with average duration of "
                        + str(round(second_result)) + " seconds.\n")
