@@ -290,7 +290,7 @@ match $s isa school, has ranking $r; $r < 100; get;
 [tab:Java]
 ```java
 GraqlGet query = Graql.match(
-  var("s").isa("school").has("ranking", var("r"))
+  var("s").isa("school").has("ranking", var("r")),
   var("r").lt(100)
 ).get();
 ```
