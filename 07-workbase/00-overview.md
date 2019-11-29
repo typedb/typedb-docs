@@ -15,7 +15,7 @@ Whether you need a tool to test and experiment with your newly created Grakn kno
 
 | Workbase       | Grakn Core          | Grakn KGMS          |
 | :------------: | :-----------------: | :-----------------: |
-| 1.2.6          | 1.5.9               | 1.5.8               |
+| 1.2.6          | 1.5.9               | N/A                 |
 | 1.2.5          | 1.5.9               | 1.5.8               |
 | 1.2.4          | 1.5.9               | 1.5.8               |
 | 1.2.3          | 1.5.8, 1.5.9        | 1.5.8               |
