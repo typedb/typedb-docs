@@ -257,12 +257,12 @@ methods:
     java:
       <<: *method-delete
     javascript:
-      <<: *method-isRule
+      <<: *method-delete
       method: await concept.delete();
       returns:
         - "`void`"
     python:
-      <<: *method-isRule
+      <<: *method-delete
       method: concept.delete()
       returns:
         - "`None`"
