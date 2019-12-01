@@ -37,7 +37,7 @@ methods:
       title: Close a session
       description: |
         Closes the session.
-        **Before openning a new session, the currently open session should first be closed.**
+        **Before openning a new session, the session currently open should first be closed.**
     java:
       <<: *method-close
       method: session.close();
