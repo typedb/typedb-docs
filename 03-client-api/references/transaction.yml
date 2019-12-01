@@ -4,7 +4,7 @@ methods:
   - method:
     common: &method-lazyquery
       title: Lazily execute a Graql query
-      description: Performs a Graql query on the and retrieves answers lazily.
+      description: Performs a Graql query in the transaction and retrieves answers lazily.
       accepts: &accepts-lazyquery
         param1: &accepts-lazyquery-query
           name: query
@@ -106,7 +106,7 @@ methods:
       title: Close a read transaction
       description: |
         Closes the transaction.
-        **The currently open transaction must always be closed before opening another one.**
+        **The transaction currently open must always be closed before opening another one.**
     java:
       <<: *method-close
       method: transaction.close();
@@ -143,7 +143,7 @@ methods:
       title: Retrieve a concept by id
       description: >
         Retrieves the concept that has the given Grakn id.
-        The concept in question, may be a concept type or an instance of one.
+        The concept in question may be a concept type or an instance of one.
       accepts:
         param:
           name: id
