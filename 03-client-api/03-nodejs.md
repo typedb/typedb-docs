@@ -23,9 +23,9 @@ npm install grakn-client
 ```
 
 ## Quickstart
-First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running..
+First make sure that the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In your source, require `grakn-client`.
+In your source, make `grakn-client` a requirement.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
