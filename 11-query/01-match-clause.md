@@ -422,12 +422,13 @@ To match only the given type and NOT any of its subtypes, we use the `type` keyw
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x sub! post; get;
+match $x type post; get;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
+//Is this correct? It's same as above.
 GraqlGet query_a = Graql.match(
   var("x").subX("post")
 ).get();
