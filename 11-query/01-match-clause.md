@@ -414,7 +414,7 @@ GraqlGet query_a = Graql.match(
 [tab:end]
 </div>
 
-Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as the concept types that subtype `post` directlly (i.e. `media`, `comment`, `album` and `status-update`) or through any of its typetypes (i.e. `photo` and `video`).
+Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as the concept types that subtype `post` directly (i.e. `media`, `comment`, `album` and `status-update`) or through any of its subtypes (i.e. `photo` and `video`).
 
 ### A given type
 To match only the given type and not any of its subtypes, we use the `type` keyword.
