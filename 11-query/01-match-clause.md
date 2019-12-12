@@ -396,7 +396,7 @@ GraqlGet query_a = Graql.match(
 Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as all concept types that are subtypes of `post`, directly (i.e. `media`, `comment`, `album` and `status-update`) and indirectly (i.e. `photo` and `video`).
 
 ### Direct subtypes of a given type
-To match the schema concepts of a given type, **only one level down the type hierarchy**, we use the `sub!` keyword.
+To match the schema concepts of a given type, **all the way down its type hierarchy**, we use the `sub!` keyword.
 
 <div class="tabs dark">
 [tab:Graql]
@@ -414,10 +414,10 @@ GraqlGet query_a = Graql.match(
 [tab:end]
 </div>
 
-Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as the concept types that subtype `post` directly (i.e. `media`, `comment`, `album` and `status-update`).
+Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as the concept types that subtype `post` directlly (i.e. `media`, `comment`, `album` and `status-update`) or through any of its typetypes (i.e. `photo` and `video`).
 
 ### A given type
-To match only the given type and NOT any of its subtypes, we use the `type` keyword.
+To match only the given type and not any of its subtypes, we use the `type` keyword.
 
 <div class="tabs dark">
 [tab:Graql]
@@ -428,9 +428,8 @@ match $x type post; get;
 
 [tab:Java]
 ```java
-//Is this correct? It's same as above.
 GraqlGet query_a = Graql.match(
-  var("x").subX("post")
+  var("x").type("post")
 ).get();
 ```
 [tab:end]
