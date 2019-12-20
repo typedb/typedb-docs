@@ -11,12 +11,9 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 
 ## Download and Install Grakn
 
-<div class="note">
-[Warning]
-Upgrading an existing installation to Grakn Core 1.6.x.
+### Upgrading an Existing Installation to Grakn Core 1.6.x.
 
 There has been an internal storage change in Grakn Core 1.6.x. Please back up your existing data and run the following step before doing the upgrade:
-</div>
 
 1. Download [Apache Cassandra 3.11.x](http://www.apache.org/dyn/closer.lua/cassandra/3.11.5/apache-cassandra-3.11.5-bin.tar.gz) and untar it
 2. Start Grakn: `grakn server start`
