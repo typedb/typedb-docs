@@ -8,19 +8,19 @@ Summary: Updating data in Grakn.
 ## Update Instances of Concepts
 
 In a Grakn Knowledge Graph, each instance is a "fact". Relations and entities are extensible, by adding role players to them over time (establishing new "facts").
-Each attribute value is a single fact as well, that other concepts can own. Updating an attribute value directly therfore means changing the attribute value for ALL owners of this attribute value! Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.
+Each attribute value is a single fact as well, that other concepts can own. Updating an attribute value directly therefore means changing the attribute value for ALL owners of this attribute value! Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.
 
 To try the following examples with one of the Grakn clients, follow these [Clients Guide](#clients-guide).
 
 ## Update attribute owned by a concept
-Usually, we want to change the value of a attribute that is associated to another instance. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type).
+Usually, we want to change the value of an attribute that is associated to another instance. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type).
 
 <div class="tabs dark">
 
 [tab:Graql]
 
 ```graql
-## deleting the old
+## disconnecting from the old attribute value
 match $org isa organisation, has name "Medicely", has registration-number $rn via $r; delete $r;
 
 ## connect the new attribute value
@@ -47,7 +47,7 @@ This query first deletes the association that the `organisation` with id `V17391
 
 
 ### Update all instances of a given attribute
-There may also be cases where we need to update the value of all instances of an attribute type. This amounts to "rewriting" the value of an attribute fact. To do so, we first assign the new instance of the given attribute to all instances that own the old instance, and then delete the old instance of the attribute type.
+There may also be cases where we need to update the value of all instances of an attribute type. This amounts to _rewriting_ the value of an attribute fact. To do so, we first assign the new instance of the given attribute to all instances that own the old instance, and then delete the old instance of the attribute type.
 
 <div class="tabs dark">
 
@@ -82,8 +82,8 @@ GraqlDelete delete_query = Graql.match(
 
 This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
-### Updating a relation by changing the role players
-We can add role players with a match for a relation and a new concept to add as a role player, and then inserting the new role player into the same relation.
+### Update a relation by changing its role players
+We can add role players to a relation by `match`ing the relation and the concept that will be the new role player, and then insert the new role player into the same relation.
 
 <div class="tabs dark">
 
