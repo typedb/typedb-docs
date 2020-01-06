@@ -7,7 +7,8 @@ Summary: Updating data in Grakn.
 
 ## Update Instances of Concepts
 
-In a Grakn Knowledge Graph, each instance is a "fact". In particular, each attribute value is a single fact that all instances wish to own will connect to. Updating an attribute value directly then means changing the attribute value for ALL owners of this attribute value! Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.
+In a Grakn Knowledge Graph, each instance is a "fact". Relations and entities are extensible, by adding role players to them over time (establishing new "facts").
+Each attribute value is a single fact as well, that other concepts can own. Updating an attribute value directly therfore means changing the attribute value for ALL owners of this attribute value! Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.
 
 To try the following examples with one of the Grakn clients, follow these [Clients Guide](#clients-guide).
 
