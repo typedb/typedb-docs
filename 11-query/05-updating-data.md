@@ -101,7 +101,7 @@ insert $emp ($employee: $p2) isa employment;
 [tab:Java]
 ```java
 GraqlInsert insert_query = Graql.match(
- var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
+ var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p")),
   var("p").isa("person"),
   var("p2").isa("person"),
   var("p").neq(var("p2"))
