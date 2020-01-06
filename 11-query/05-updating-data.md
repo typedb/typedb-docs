@@ -5,11 +5,14 @@ longTailKeywords: grakn update data, graql update query, graql update instances
 Summary: Updating data in Grakn.
 ---
 
-## Update Instances of Concept Types
-In a Grakn Knowledge Graph, updating a data instance is essentially [deleting](../11-query/04-delete-query.md) the current instance followed by [inserting](../11-query/03-insert-query.md) the new instance. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+## Update Instances of Concepts
 
-## Update Instances of an Attribute Type
-In most cases, a concept type is expected to own only one instance of an attribute and, therefore, the value of its attribute may need to be updated. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type).
+In a Grakn Knowledge Graph, each instance is a "fact". In particular, each attribute value is a single fact that all instances wish to own will connect to. Updating an attribute value directly then means changing the attribute value for ALL owners of this attribute value! Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.
+
+To try the following examples with one of the Grakn clients, follow these [Clients Guide](#clients-guide).
+
+## Update attribute owned by a concept
+Usually, we want to change the value of a attribute that is associated to another instance. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type).
 
 <div class="tabs dark">
 
@@ -19,7 +22,7 @@ In most cases, a concept type is expected to own only one instance of an attribu
 ## deleting the old
 match $org isa organisation, has name "Medicely", has registration-number $rn via $r; delete $r;
 
-## inserting the new
+## connect the new attribute value
 match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
 ```
 [tab:end]
@@ -43,7 +46,7 @@ This query first deletes the association that the `organisation` with id `V17391
 
 
 ### Update all instances of a given attribute
-There may also be cases where we need to update the value of all instances of an attribute type. To do so, we first assign the new instance of the given attribute to all instances that own the old instance, and then delete the old instance of the attribute type.
+There may also be cases where we need to update the value of all instances of an attribute type. This amounts to "rewriting" the value of an attribute fact. To do so, we first assign the new instance of the given attribute to all instances that own the old instance, and then delete the old instance of the attribute type.
 
 <div class="tabs dark">
 
@@ -78,8 +81,37 @@ GraqlDelete delete_query = Graql.match(
 
 This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
-### Update the roleplayers of a relation
-To change the roleplayers of a given relation, we first need to [delete the instances of the relation](../11-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current roleplayers and [insert the new instance of the relation](../11-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
+### Updating a relation by changing the role players
+We can add role players with a match for a relation and a new concept to add as a role player, and then inserting the new role player into the same relation.
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+## inserting the new role player into some theoretical multi-employment relation
+match
+  $emp (employer: $org, $employee: $p) isa employment;
+  $p2 isa person;
+  $p2 != $p;
+insert $emp ($employee: $p2) isa employment;
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlInsert insert_query = Graql.match(
+ var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
+  var("p").isa("person"),
+  var("p2").isa("person"),
+  var("p").neq(var("p2"))
+).insert(
+  var("emp").isa("employment").rel("employee", var("p2"))
+);
+```
+[tab:end]
+</div>
+
+However, to modify or delete role players, the current limitations require us to [delete the instances of the relation](../11-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current roleplayers and [insert the new instance of the relation](../11-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
 
 <div class="tabs dark">
 
