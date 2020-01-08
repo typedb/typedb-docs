@@ -7,7 +7,7 @@ Summary: Grakn examples showcasing schema definition, data migration and retriev
 
 ## What's covered?
 
-In the following three sections, we tegether:
+In the following three sections, we together:
 
 1. Define the [schema](../08-examples/01-phone-calls-schema.md) for our `phone_calls` knowledge graph
 2. Migrate csv, json or xml data to the knowledge graph using clients [Java](../08-examples/02-phone-calls-migration-java.md), [Node.js](../08-examples/03-phone-calls-migration-nodejs.md) and [Python](../08-examples/04-phone-calls-migration-python.md)
