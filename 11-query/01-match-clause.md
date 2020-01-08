@@ -372,7 +372,7 @@ When matching an instance of an attribute type based on its value or simply comp
 ## Match Schema Concepts
 In this section, we learn how we can use the `match` keyword to find patterns in the schema of a Grakn knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we learn about [how to use the get keyword](../11-query/02-get-query.md).
 
-Having fully understood the [schema concepts](../09-schema/01-concepts.md) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, were the-blank is a Graql variable and the sentences are different parts of the schema statements.
+Having fully understood the [schema concepts](../09-schema/01-concepts.md) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, where the-blank is a Graql variable and the sentences are different parts of the schema statements.
 
 ### Direct and indirect subtypes of a given type
 To match all schema concepts of a given type, **all the way down the type hierarchy**, we use the `sub` keyword.
