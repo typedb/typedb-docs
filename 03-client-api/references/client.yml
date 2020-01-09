@@ -75,7 +75,7 @@ methods:
   - method:
     common: &method-close
       title: Close a client
-      description: Before instantiating a new client, the currently open client should first be closed.
+      description: Before instantiating a new client, the client that's currently open should first be closed.
     java:
       <<: *method-close
       method: client.close();
