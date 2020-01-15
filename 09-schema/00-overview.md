@@ -85,7 +85,7 @@ In the sections that follow, by looking at various real-world examples, we learn
 In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](../03-client-api/01-java.md#graql), [Python](../03-client-api/02-python.md#lazily-execute-a-graql-query) and [Node.js](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query).
 
 ## Load the schema
-Once we have defined the schema, the next immediate step is to load it into Grakn. We can do this using the Grakn Console that comes in the Grakn distribution. In general, the command will look something like `grakn console -f <path to schema file`. The  [Grakn Console](../02-running-grakn/02-console.md#console-options) documentation provides further options.
+Once we have defined the schema, the next immediate step is to load it into Grakn. We can do this using the Grakn Console that comes in the Grakn distribution. The command looks something like `grakn console -f <path to schema file>`, where `<path to schema file>` is the location of the `schema.gql`. The  [Grakn Console](../02-running-grakn/02-console.md#console-options) documentation provides further options.
 
 ## Migrate Data
 To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a Grakn knowledge graph, check out the [migration tutorials](../08-examples/00-phone-calls-overview.md) in the language of your choice.
