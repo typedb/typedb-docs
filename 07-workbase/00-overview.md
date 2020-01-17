@@ -11,6 +11,20 @@ The Grakn Workbase, along with the [Grakn Console](../02-running-grakn/02-consol
 Workbase allows us to execute Graql [`get`](../11-query/02-get-query.md) and [`compute path`](../11-query/07-compute-query.md#compute-the-shortest-path) queries, and visualise and investigate their results.
 Whether you need a tool to test and experiment with your newly created Grakn knowledge graph, or that you prefer a graphical interface for reading data from Grakn, you will find Workbase extremely useful.
 
+<div class="note">
+[Important]
+As of Grakn 1.6.0, _explanations_ of inferred concepts can behave unexpectedly. Explanations of inferred relations will not show source relations in the visualiser, if the rule `when` clause that produced the relation is not tagged with a variable. For example:
+  ```
+  when { (less: $x, more: $y) isa greater-than; (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
+  ```
+  Asking workbase to explain inferred transitive `($x, $z)` relations does not produce the source relations, unless labeling them with some other variables:
+    ```
+  when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
+  ```
+  
+  Note that this can have a performance impact, so in production we recommend only leaving the relation variables as required.
+</div>
+
 ## Dependencies
 
 | Workbase       | Grakn Core          | Grakn KGMS          |
