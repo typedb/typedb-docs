@@ -60,7 +60,7 @@ Modify `pom.xml` to include the latest version of Grakn Core, Graql and Grakn Cl
         <dependency>
             <groupId>io.grakn.client</groupId>
             <artifactId>grakn-client</artifactId>
-            <version>1.6.1</version>
+            <version>1.6.2</version>
         </dependency>
   	</dependencies>
 </project>
