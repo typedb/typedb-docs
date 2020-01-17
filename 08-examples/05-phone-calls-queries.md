@@ -590,13 +590,12 @@ package io.grakn.example.phoneCalls;
 import grakn.client.GraknClient;
 import grakn.client.answer.ConceptMap;
 import graql.lang.query.GraqlGet;
-import grakn.core.kb.server.exception.TransactionException;
 import static graql.lang.Graql.*;
 
 import java.util.*;
 
 public class PhoneCallsForthQuery {
-    public static void main(String[] args) throws TransactionException {
+    public static void main(String[] args) {
         GraknClient client = new GraknClient("localhost:48555");
         GraknClient.Session session = client.session("phone_calls");
         GraknClient.Transaction transaction = session.transaction().write();
