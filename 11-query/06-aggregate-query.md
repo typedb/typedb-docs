@@ -171,9 +171,9 @@ We use the `group` function, optionally followed by another aggregate function, 
 ```graql
 match
   $per isa person;
-  $scc isa school-course, has title $tit;
+  $scc isa school-course, has title $title;
   (student: $per, enrolled-course: $scc) isa school-course-enrollment;
-get; group $tit;
+get; group $title;
 ```
 [tab:end]
 
@@ -181,9 +181,9 @@ get; group $tit;
 ```java
 GraqlGet.Group query = Graql.match(
   var("per").isa("person"),
-  var("scc").isa("school-course").has("title", var("tit")),
+  var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
-).get().group("tit");
+).get().group("title");
 ```
 [tab:end]
 </div>
@@ -196,9 +196,9 @@ This query returns all instances of `person` grouped by the `title` of their `sc
 ```graql
 match
   $per isa person;
-  $scc isa school-course, has title $tit;
+  $scc isa school-course, has title $title;
   (student: $per, enrolled-course: $scc) isa school-course-enrollment;
-get; group $tit; count;
+get; group $title; count;
 ```
 [tab:end]
 
@@ -206,9 +206,9 @@ get; group $tit; count;
 ```java
 GraqlGet.Group.Aggregate query = Graql.match(
   var("per").isa("person"),
-  var("scc").isa("school-course").has("title", var("tit")),
+  var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
-).get().group("tit").count();
+).get().group("title").count();
 ```
 [tab:end]
 </div>
