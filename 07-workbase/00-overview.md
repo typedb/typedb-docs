@@ -29,7 +29,7 @@ As of Grakn 1.6.0, _explanations_ of inferred concepts can behave unexpectedly. 
 
 | Workbase       | Grakn Core          | Grakn KGMS          |
 | :------------: | :-----------------: | :-----------------: |
-| 1.2.7          | 1.6.1, 1.6.2        | N/A                 |
+| 1.2.7          | 1.6.1, 1.6.2        | 1.6.2               |
 | 1.2.6          | 1.5.9               | N/A                 |
 | 1.2.5          | 1.5.9               | 1.5.8               |
 | 1.2.4          | 1.5.9               | 1.5.8               |
