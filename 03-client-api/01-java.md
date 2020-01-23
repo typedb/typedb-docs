@@ -60,7 +60,7 @@ templatePath: 03-client-api/references/
     <dependency>
         &lt;groupId&gt;ai.grakn.kgms&lt;/groupId&gt;
         &lt;artifactId&gt;client&lt;/artifactId&gt;
-        <version>1.4.3</version>
+        <version>1.6.2</version>
     </dependency>
 </dependencies>
 ```
