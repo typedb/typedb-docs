@@ -95,6 +95,11 @@ brew tap graknlabs/tap
 brew install graknlabs/tap/grakn-core
 ```
 
+To upgrade an existing installation via brew:
+```
+brew upgrade graknlabs/tap/grakn-core
+```
+
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
 
