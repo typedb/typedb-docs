@@ -14,13 +14,16 @@ Whether you need a tool to test and experiment with your newly created Grakn kno
 <div class="note">
 [Important]
 As of Grakn 1.6.0, _explanations_ of inferred concepts can behave unexpectedly. Explanations of inferred relations will not show source relations in the visualiser, if the rule `when` clause that produced the relation is not tagged with a variable. For example:
-  ```
-  when { (less: $x, more: $y) isa greater-than; (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
-  ```
-  Asking workbase to explain inferred transitive `($x, $z)` relations does not produce the source relations, unless labeling them with some other variables:
-    ```
-  when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
-  ```
+  
+```
+when { (less: $x, more: $y) isa greater-than; (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
+```
+
+Asking workbase to explain inferred transitive `($x, $z)` relations does not produce the source relations, unless labeling them with some other variables:
+
+```
+when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
+```
   
   Note that this can have a performance impact, so in production we recommend only leaving the relation variables as required.
 </div>
