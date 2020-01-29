@@ -11,6 +11,9 @@ The Grakn Workbase, along with the [Grakn Console](../02-running-grakn/02-consol
 Workbase allows us to execute Graql [`get`](../11-query/02-get-query.md) and [`compute path`](../11-query/07-compute-query.md#compute-the-shortest-path) queries, and visualise and investigate their results.
 Whether you need a tool to test and experiment with your newly created Grakn knowledge graph, or that you prefer a graphical interface for reading data from Grakn, you will find Workbase extremely useful.
 
+## Download Workbase
+Grakn Workbase is available for Linux, Mac and Windows. Head over to the [Download Center](https://grakn.ai/download#workbase) to download and install the latest release of Workbase.
+
 <div class="note">
 [Important]
 As of Grakn 1.6.0, _explanations_ of inferred concepts can behave unexpectedly. Explanations of inferred relations will not show source relations in the visualiser, if the rule `when` clause that produced the relation is not tagged with a variable. For example:
@@ -42,7 +45,5 @@ when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa g
 | 1.2.0          | 1.5.0, 1.5.1        | N/A                 |
 | 1.0.0 to 1.1.1 | 1.4.0 to 1.4.3      | 1.4.0 to 1.4.3      |
 
-## Download Workbase
-Grakn Workbase is available for Linux, Mac and Windows. Head over to the [Download Center](https://grakn.ai/download#workbase) to download and install the latest release of Workbase.
 
 In the sections that follow, we learn how to [connect](../07-workbase/01-connection.md) Workbase with the Grakn Server, execute and [visualise](../07-workbase/02-visualisation.md) queries, interact with the visualiser to [investigate](../07-workbase/03-investigation.md) the results and use the [schema designer](../07-workbase/04-schema-designer.md).
