@@ -292,7 +292,7 @@ people-gone-to-the-same-school sub rule,
   when {
     (student: $p1, enrolled-course: $c1) isa school-course-enrollment;
     (student: $p2, enrolled-course: $c2) isa school-course-enrollment;
-    (offered-course: $c1, offering-school: $s) isa school-course-oferring;
+    (offered-course: $c1, offering-school: $s) isa school-course-offering;
     (offered-course: $c2, offering-school: $s) isa school-course-offrring;
     $p1 != $p2;
   }, then {
