@@ -555,7 +555,7 @@ GraqlDefine query = Graql.define(
 
 <div class="note">
 [Important]
-Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a relational database. In this example, the attribute `start-date` with the value of, for instance `2019-01-01`, exists only once in the knowledge graph and shared among any number of instances that may own it. This is useful when we need to query the knowledge graph for anything that has the `start-date` attribute with value `2019-01-01`. In this case, we would get all the residencies and travels that started on the first day of 2019. It's important to remember this when performing write operations on instances of an attribute type.
+Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a relational database. In this example, the attribute `start-date` with the value of, for instance `2020-01-01`, exists only once in the knowledge graph and shared among any number of instances that may own it. This is useful when we need to query the knowledge graph for anything that has the `start-date` attribute with value `2020-01-01`. In this case, we would get all the residencies and travels that started on the first day of 2020. It's important to remember this when performing write operations on instances of an attribute type.
 </div>
 
 **A concept type can have any number of the same attribute that holds different values.** In other words, a concept type has a many-to-many relation with its attributes.
