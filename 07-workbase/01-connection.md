@@ -14,6 +14,8 @@ Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-ru
 ![Connection](/docs/images/workbase/preferences_core-login.png)
 [caption: We can specify the host and port when we start workbase.]
 
+FIXME: need to state how to start workbase and which port it runs on by default
+
 
 ### Start Workbase for Grakn KGMS [KGMS ONLY]
 
