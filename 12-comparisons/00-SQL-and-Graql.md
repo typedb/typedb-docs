@@ -15,16 +15,16 @@ Graql is the query language used in Grakn. Just as SQL is the standard query lan
 
 In 1970, a [paper](https://dl.acm.org/doi/10.1145/362384.362685) was published by an Oxford educated mathematician called [Edgar Codd](https://en.wikipedia.org/wiki/Edgar_F._Codd), known as "Ted", and in it, he introduced two languages -- a relational algebra and a relational calculus to express extremely complex queries. When they came out, they were considered to be a strange kind of mathematical notation. To build these ideas out into a database management system, Ted created a research group called [System R](https://en.wikipedia.org/wiki/IBM_System_R), based out of the IBM research facilities in San Jose. 
 
-Back then, databases were mainly based on [navigational](https://databasemanagement.fandom.com/wiki/Navigational_Database), [network](https://www.techopedia.com/definition/20971/network-database) and [hierarchical](https://www.techopedia.com/definition/19782/hierarchical-database) models, where we needed to know the physical data layer before we could write a navigational plan to describe your query. Ted, however, saw the inherent complexity in this and wanted to make it easier to write database queries.
+Back then, databases were mainly based on [navigational](https://databasemanagement.fandom.com/wiki/Navigational_Database), [network](https://www.techopedia.com/definition/20971/network-database) and [hierarchical](https://www.techopedia.com/definition/19782/hierarchical-database) models, where we needed to know the physical data layer before we could write a navigational plan to describe our query. Ted, however, saw the inherent complexity in this and wanted to make it easier to write database queries.
 
-However, as Ted's ideas were based on mathematical notation and symbolism, they were not very accessible, so two System R members addressed this issue by creating a simple query language -- [SEQL](https://dl.acm.org/doi/10.1145/800296.811515). As this new language was based exclusively on English words, this became the breakthrough that made it so much easier for people to understand the simplicity of Ted's ideas. 
+However, as Ted's ideas were based on mathematical notation and mathematical symbolism, they were difficult to understand and not very accessible to most people, so two System R members addressed this issue by creating a simple query language -- [SEQL](https://dl.acm.org/doi/10.1145/800296.811515). As this new language was based exclusively on English words, this became the breakthrough that made it so much easier for people to understand the simplicity of Ted's ideas. 
 
-By the late 1970s, relational databases had grown in popularity, and the world came to accept how much more superior SQL and the relational model were over its predecessors. The story since then is well known -- relational databases have become the standard for building software as the world ushered into the computer revolution.
+By the late 1970s, relational databases had grown in popularity, and the world came to accept how much more superior SQL and the relational model were over its predecessors. The story since then is well known -- relational databases have become the standard for building software as the world ushered into the digital revolution.
 
 ### The Essence of SQL and Graql
 In understanding Graql, it's useful to look at the underlying ideas that created SQL, as both are conceptually closely related. The essence of both Graql and SQL can be summarised as such: 
 1. **A language that can be read and understood intuitively.** We say a language fulfils these criteria when it appears simple, maintainable and has a degree of similarity to natural text. 
-2. **A language that enables to ask questions at a higher-level.** We refer to a language that allows the user to describe operations at a new and higher semantic level. 
+2. **A language that enables to ask questions at a higher-level.** Here we refer to a language that allows the user to describe operations at a new and higher semantic level. 
 3. **A language where the system figures out how to do lower level operations.** As the user describes these higher-level operations, the system takes care of operations without the user having to think of them. 
 
 In this sense, both SQL and Graql are languages that abstract away lower level operations. In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. A similar thing can be said about Python, for example, a high level programming language that has enabled millions of programmers to build software without having to worry about lower level operations that are abstracted away.  
@@ -37,7 +37,7 @@ First, let's look at how data modelling compares between the SQL and Graql. We u
 
 ### Modelling in SQL
 
-If we are implementing this model in a relational database, we first go through a normalisation process. We begin at [First Normal Form](https://en.wikipedia.org/wiki/First_normal_form) (1NF) and by looking for functional dependencies, transitive dependencies, etc, we eventually get to our desired [Third Normal Form](https://en.wikipedia.org/wiki/Third_normal_form) (3NF). 
+If we are implementing this model in a relational database, we first go through a normalisation process. We begin at [First Normal Form](https://en.wikipedia.org/wiki/First_normal_form) (1NF) and by looking for things such as functional dependencies and transitive dependencies, we eventually get to our desired [Third Normal Form](https://en.wikipedia.org/wiki/Third_normal_form) (3NF). 
 
 ![ER Diagram Example](../images/comparisons/normalisation.png)
 
@@ -57,7 +57,7 @@ This means that we entirely skip out the normalisation process that we discussed
 
 ### Defining Schemas in SQL and Graql
 
-Now let's look at some real data. Anyone who has studied SQl is probably familiar with the Northwind dataset. It contains sales data for Northwind Traders, a fictitious specialty foods export-import company. 
+Now let's look at some real data. Anyone who has studied SQL is probably familiar with the Northwind dataset. It contains sales data for Northwind Traders, a fictitious specialty foods export-import company. 
 
 ![ER Diagram Example](../images/comparisons/northwind.png)
 
@@ -155,7 +155,7 @@ get $a, $v;
 
 Let's look at some of the most commonly used operators in SQL and how these look like in Graql. In doing so, we're going to look at how to think about a query conceptually, instead of looking at the actual code. In this way, the difference between a Graql and a SQL query is that in Graql we think of queries at a conceptual level; the same way how we semantically think about a question, rather than imposing a tabular structure over it. 
 
-On the left, the tabular representation of the query in SQL is shown, and on the right the conceptual representation of the query in Graql (squares are entities, diamonds relations and circles attributes).
+In figures below, on the left side, the tabular representation of the query in SQL is shown, and on the right the conceptual representation of the query in Graql (squares are entities, diamonds relations and circles attributes).
 
 #### Projection
 
@@ -209,7 +209,7 @@ If we take the `suppliers`, `products`, `employees`, `orders` and `customers` ta
 1. `Product`: We map this entity directly to the `products` table (using the singular term instead). 
 2. `Order`: This maps directly to the `orders` table. 
 3. `Employee`: This also maps directly to the `employees` table.
-4. `Company`: As both the `suppliers` and `customers` table refer to companies, we decided to model them as one entity type. We can define a company as a supplier or a customer with roles (see below). 
+4. `Company`: As both the `suppliers` and `customers` table refer to companies, we decide to model them as one entity type. We can define a company as a supplier or a customer with roles (see below). 
 
 We then create the following relations and corresponding roles: 
 1. `Sale`: We can model this relation as ternary (learn more about [hypergraphs](https://blog.grakn.ai/modelling-data-with-hypergraphs-edff1e12edf0)), as a sale occurs between an `Order` (playing the `placed-order` role), `Company` (playing the `customer` role) and an `Employee` (playing the role of `seller`). 
@@ -236,7 +236,7 @@ product sub entity,
   plays stock;
 ```
 
-And we define the relations like so: 
+And we define the relations: 
 
 ```graql
 sale sub relation, 
@@ -299,11 +299,11 @@ get $eid;
 
 ### Type Based Reasoning
 
-In Graql, we can create type hierarchies to increase the expressivity of our model. We cannot do this in SQL. For example, we could extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
+In Graql, we can create type hierarchies to increase the expressivity of our model. We cannot do this in SQL. For example, we can extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
 
 ![ER Diagram Example](../images/comparisons/type-hierarchy.png)
 
-And in Graql we define it as such: 
+And in Graql we define it as follows: 
 
 ```graql
 define 
@@ -400,7 +400,7 @@ get $ci;
 
 In conclusion, Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or our application layer. Pushing this logic down into Grakn allows us to write easier queries at a higher-level of expressivity.
 
-There is much more to Graql than what we've tried to show in here. Hopefully this comparison has, at least, shown the similarities and differences between both languages.  
+There is much more to Graql than what we've tried to show in here. Hopefully this comparison has, at least, shown the high level similarities and differences between both languages.  
 
 ## Resources
 
