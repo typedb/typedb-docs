@@ -67,6 +67,7 @@ How do we go about defining the `products` table shown above in Graql and SQL? B
 
 [tab:Graql]
 
+<!-- test-ignore -->
 ```graql
 define 
 product sub entity, 
@@ -98,7 +99,7 @@ CREATE TABLE products (
 );
 ```
 
-[tab:end] g
+[tab:end] 
 </div>
 
 Here we can see that the SQL table has three attributes, each with their own datatype, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related relation in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `product-assignment`. Please note that in Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. Another important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
@@ -122,6 +123,7 @@ VALUES (12, 'Chocolade', 42, 421)
 
 In Graql we do something slightly different. We first match for the `Confections` category, assign the result to the variable `$c`, and then insert the new data. 
 
+<!-- test-ignore -->
 ```graql
 match 
 $c isa category, 
@@ -146,6 +148,7 @@ WHERE condition;
 
 The equivalent expression in Graql is the `match-get` expression. 
 
+<!-- test-ignore -->
 ```Graql
 match 
 $a isa thing,
@@ -220,25 +223,26 @@ This is what we've just modelled:
 
 ![ER Diagram Example](../images/comparisons/hyper-relations.png)
 
-Let's look how this looks in Graql. First, we define the entities and their corresponding roles.
+Let's look how this looks in Graql. First, we define the entities and their corresponding roles. Then, we define the relations and declare the attributes: 
 
+<!-- test-ignore -->
 ```graql
 define 
+
 employee sub entity, 
   plays product-assignment; 
+
 company sub entity, 
   plays supplier,
   plays customer; 
+
 order sub entity, 
   plays placed-order; 
+
 product sub entity, 
   plays product-sold,
   plays stock;
-```
 
-And we define the relations: 
-
-```graql
 sale sub relation, 
   relates seller, 
   relates supplier,
@@ -254,6 +258,9 @@ containing sub relation,
 stocking sub relation, 
   relates stock, 
   relates supplier;
+
+ quantity sub attribute, datatype double; 
+ unit-price sub attribute, datatype double; 
 ```
 
 ### Traversal Queries
@@ -282,12 +289,13 @@ FROM Employees
 [tab:end]
 
 [tab:Graql]
+<!-- test-ignore -->
 ```graql
 match 
 $s isa employee, 
   has employee-id $eid; 
 $c isa company,
-  has city “London”; 
+  has city "London"; 
 $r1 ($s, $c) isa sale; 
 $cd isa customer-demographic, 
   has customer-description "x"; 
@@ -305,6 +313,7 @@ In Graql, we can create type hierarchies to increase the expressivity of our mod
 
 And in Graql we define it as follows: 
 
+<!-- test-ignore -->
 ```graql
 define 
 organisation sub entity; 
@@ -318,6 +327,7 @@ organisation sub entity;
 
 With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/docs/schema/rules)) to abstract and modularise our business logic. SQL does not support rules. For example, if we know that location `x` is contained in `y`, which in turn is contained in `z`, we can create a rule that infers that `x` is also contained in `z`. Writing this in Graql looks like this: 
 
+<!-- test-ignore -->
 ```graql
 transitive-location sub rule, 
 when { 
@@ -346,6 +356,7 @@ FROM Employee
 
 Having defined the `transitive-location` rule in Graql, we can now directly relate the employee to the region (abstracting away the territory to region connection avoiding us having to make multiple joins): 
 
+<!-- test-ignore -->
 ```graql
 match 
 $e isa employee, has employee-id $eid; 
@@ -388,6 +399,7 @@ FROM Charities
 ```
 
 In Graql, we simply write: 
+<!-- test-ignore -->
 ```graql
 match 
 $c isa organisation, has org-id $ci; 
