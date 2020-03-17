@@ -21,7 +21,8 @@ py_test(
         test_example_requirement("ijson")
     ],
     data = ["//files:phone-calls-kg"],
-    imports = ["."]
+    imports = ["."],
+    python_version = "PY2",
 )
 
 genrule(
@@ -58,7 +59,8 @@ py_test(
     ],
     deps = ["@graknlabs_client_python//:client_python"],
     data = ["//files:social-network-kg"],
-    imports = ["."]
+    imports = ["."],
+    python_version = "PY2",
 )
 
 genrule(
