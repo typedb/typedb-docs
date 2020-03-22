@@ -7,9 +7,9 @@ Summary: Comparing SQL to Graql.
 
 ## Comparing SQL to Graql
 
-Using SQL to query relational databases is easy. As a declarative language, it’s straightforward to write queries and build powerful applications. However, relational databases struggle when working with complex data. When querying such data in SQL, challenges arise especially in the modelling and querying of the data.
+Since the 1970s, SQL has been the de facto language to work with databases. As a declarative language, it’s straightforward to write queries and build powerful applications. However, relational databases struggle when working with complex data. When querying such data in SQL, challenges arise especially in the modelling and querying of the data.
 
-Graql is the query language used in Grakn. Just as SQL is the standard query language in relational databases, Graql is Grakn’s query language. It’s a declarative language, and allows us to model, query and reason over our data. In this documentation, we look at how Graql compares to SQL. We look at the common concepts, but mostly talk about the differences between the two.
+Graql is the query language used in Grakn. Just as SQL is the standard query language in relational databases, Graql is Grakn’s query language. It’s a declarative language, and allows us to model, query and reason over our data. Here, we look at how Graql compares to SQL. We look at the common concepts, but mostly talk about the differences between the two.
 
 ### SQL and the Relational Model
 
@@ -19,13 +19,13 @@ Back then, databases were mainly based on [navigational](https://databasemanagem
 
 However, as Ted's ideas were based on mathematical notation and mathematical symbolism, they were difficult to understand and not very accessible to most people, so two System R members addressed this issue by creating a simple query language -- [SEQL](https://dl.acm.org/doi/10.1145/800296.811515). As this new language was based exclusively on English words, this became the breakthrough that made it so much easier for people to understand the simplicity of Ted's ideas. 
 
-By the late 1970s, relational databases had grown in popularity, and the world came to accept how much more superior SQL and the relational model were over its predecessors. The story since then is well known -- relational databases have become the standard for building software as the world ushered into the digital revolution.
+By the late 1970s, relational databases had grown in popularity, and the world came to accept just how superior SQL and the relational model were to its predecessors. The story since then is well known -- relational databases have become the standard for building software as the world ushered into the digital revolution.
 
 ### The Essence of SQL and Graql
-In understanding Graql, it's useful to look at the underlying ideas that created SQL, as both are conceptually closely related. The essence of both Graql and SQL can be summarised as such: 
+In understanding Graql, it's useful to look at the underlying ideas that created SQL, as they are conceptually closely related. The essence of both Graql and SQL can be summarised as such: 
 1. **A language that can be read and understood intuitively.** We say a language fulfils these criteria when it appears simple, maintainable and has a degree of similarity to natural text. 
-2. **A language that enables to ask questions at a higher-level.** Here we refer to a language that allows the user to describe operations at a new and higher semantic level. 
-3. **A language where the system figures out how to do lower level operations.** As the user describes these higher-level operations, the system takes care of operations without the user having to think of them. 
+2. **A language that enables asking questions at a higher-level.** Here we refer to a language that allows the user to describe operations at a new and higher semantic level. 
+3. **A language where the system figures out how to do lower level operations.** As the user describes higher-level operations, the system takes care of operations without the user having to think of them. 
 
 In this sense, both SQL and Graql are languages that abstract away lower level operations. In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. A similar thing can be said about Python, for example, a high level programming language that has enabled millions of programmers to build software without having to worry about lower level operations that are abstracted away.  
 
@@ -41,17 +41,17 @@ If we are implementing this model in a relational database, we first go through 
 
 ![ER Diagram Example](../images/comparisons/normalisation.png)
 
-After this normalisation process, we get to our logical model in 3NF and implement it in a relational database. We have gone from our conceptual model (ER diagram) to the logical model (3NF), without ever needing to go down to the physical level of the database. This was precisely the breakthrough that the relational model brought us -- abstracting away the phsyical level. We call this the physical independence of data. 
+After this normalisation process, we get to our logical model in 3NF and implement it in a relational database. We have gone from our conceptual model (ER diagram) to the logical model (3NF), without ever needing to go down to the physical level of the database. This was precisely the breakthrough that the relational model brought us -- abstracting away the physical level. We call this the physical independence of data. 
 
 ![ER Diagram Example](../images/comparisons/architecture.png)
 
 ### Modelling in Graql
 
-Now let's look at how this compares to Graql. We can map any ER Diagram directly to how we implement it in Graql. That means no normalisation is required. Below is an example that looks at a specific part of the ER Diagram shown above. Unlike SQL, where we need to impose a tabular structure over our model, Graql enables us to create a direct mapping of the ER Diagram with entities, relations, attributes and roles, to how we are implementing it later in code. 
+Now let's look at how this compares to Graql. We can map any ER Diagram directly to how we implement it in Graql, which means we don't need to go through a normalisation process. Below we can see how a specific part of the earlier ER Diagram is modelled. We avoid the need to do any normalisation, as Graql enables us to create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we are implementing it later in code. This is different to SQL, where we need to impose a tabular structure over our model.
 
 ![ER Diagram Example](../images/comparisons/er-graql.png)
 
-This means that we entirely skip out the normalisation process that we discussed earlier, necessary in SQL to get to our logical model, and we can keep working at the conceptual model. In other words, Graql abstracts away both the logical and physical model. In this sense, where SQL gave us the physical independence of data, Graql gives us the logical independence of data. 
+This means that we entirely skip out the normalisation process required by SQL, and we keep working at the conceptual model. In other words, Graql abstracts away both the logical and physical model. In this sense, where SQL gave us the physical independence of data, Graql gives us the logical independence of data. 
 
 ![ER Diagram Example](../images/comparisons/architecture-2.png)
 
@@ -265,7 +265,7 @@ stocking sub relation,
 
 ### Traversal Queries
 
-Writing a traversal query in SQL means we leverage the `JOIN` operator. Below is a SQL to Graql comparison of the following question: 
+Writing a traversal query in SQL means we leverage the `JOIN` operator. Below is a comparison between SQL and Graql for the following question: 
 
 ```Return all employee IDs who sold to a customer based in London, and has customer demographic "x"```
 
@@ -307,7 +307,7 @@ get $eid;
 
 ### Type Based Reasoning
 
-In Graql, we can create type hierarchies to increase the expressivity of our model. We cannot do this in SQL. For example, we can extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
+In Graql, we can create type hierarchies to increase the expressivity of our model. Unlike in SQL, in Graql we have the capability to increase the expressivity of our model by creating a type hierarchy. For example, we can extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
 
 ![ER Diagram Example](../images/comparisons/type-hierarchy.png)
 
@@ -325,7 +325,7 @@ organisation sub entity;
 
 ### Rule Based Reasoning
 
-With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/docs/schema/rules)) to abstract and modularise our business logic. SQL does not support rules. For example, if we know that location `x` is contained in `y`, which in turn is contained in `z`, we can create a rule that infers that `x` is also contained in `z`. Writing this in Graql looks like this: 
+With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/docs/schema/rules)) to abstract and modularise our business logic. SQL does not support rules. For example, if we know that location `x` is contained in `y`, which in turn is contained in `z`, we can create a rule that recursively infers that `x` is also contained in `z`. Writing this in Graql looks like this: 
 
 <!-- test-ignore -->
 ```graql
@@ -410,21 +410,12 @@ $r2 ($c, $e) isa sale;
 get $ci;
 ```
 
-In conclusion, Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or our application layer. Pushing this logic down into Grakn allows us to write easier queries at a higher-level of expressivity.
+In conclusion, Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or our application layer. Pushing this logic down into Grakn allows us to write simpler queries at a higher-level of expressivity.
 
-There is much more to Graql than what we've tried to show in here. Hopefully this comparison has, at least, shown the high level similarities and differences between both languages.  
+There is much more to Graql than what we've tried to show in here. Hopefully this comparison has, at least, given the high level similarities and differences between both languages.  
 
 ## Resources
 
 - [Grakn Quickstart](https://dev.grakn.ai/docs/general/quickstart)
 - [Modelling in Grakn](https://dev.grakn.ai/docs/schema/overview)
 - [The Grakn Ontology: Simplicity and Maintainability](https://blog.grakn.ai/the-grakn-ai-ontology-simplicity-and-maintainability-ab78340f5ff6)
-
-
-
-
-
-
-
-
-
