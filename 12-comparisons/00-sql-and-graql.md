@@ -46,7 +46,7 @@ If we are implementing this model in a relational database, we first go through 
 After this normalisation process, we get to our logical model in 3NF and implement it in a relational database. We have gone from our conceptual model (ER diagram) to the logical model (3NF), without ever needing to go down to the physical level of the database. This was precisely the breakthrough that the relational model brought us -- abstracting away the physical level. We call this the physical independence of data. 
 
 ![Physical Independence of data](../images/comparisons/architecture.png)
-*SQL givus us the Physical Independence of Data.*
+*SQL gives us the Physical Independence of Data.*
 
 ### Modelling in Graql
 
@@ -108,7 +108,7 @@ CREATE TABLE products (
 [tab:end] 
 </div>
 
-Here we can see that the SQL table has three attributes, each with their own datatype, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `product-assignment`. Please note that in Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply ommitted from the graph. Another important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
+Here we can see that the SQL table has three attributes, each with their own datatype, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `product-assignment`. Please note that in Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply omitted from the graph. Another important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
 
 ## Writing and Reading (Relationally)
 
@@ -124,7 +124,7 @@ FROM category
 WHERE category.CategoryName = "Confections";
 
 INSERT INTO products
-VALUES (12, "Chocolade", 42, 421)
+VALUES (12, "Chocolate", 42, 421)
 ```
 
 In Graql we do something slightly different. We first match for the `Confections` category, assign the result to the variable `$c`, and then insert the new data. 
@@ -138,7 +138,7 @@ $c isa category,
 insert 
 $p isa product,
   has product-id 12, 
-  has product-name "Chocolade", 
+  has product-name "Chocolate", 
   has quantity-per-unit 421;   
 ```
 
@@ -188,7 +188,7 @@ This SQL operator gives us a table with rows from a specified table to a specifi
 
 #### Union
 
-This SQL operator returns the rows of the tables that appear in either or both of the two specified tables. In Graql, we ask for entities and their attributes that are connected to one or two other entites through a relation. 
+This SQL operator returns the rows of the tables that appear in either or both of the two specified tables. In Graql, we ask for entities and their attributes that are connected to one or two other entities through a relation. 
 
 ```Get all the different cities in which suppliers and customers are located.```
 
@@ -206,7 +206,7 @@ This SQL operator returns a table with all rows that appear in both of two speci
 
 #### Join
 
-The most famous SQL operator, a join returns a table containing all possible rows that are a combination of two rows, one from each of two specified tables, such that two rows contributing to any given result row have common values for the common attributes of the two tables. In Graql, we ask for the entities and their attributes that are connected through a specific relation. This means that we don't need any join tables at all, not for 1-1 relations, 1-many relations, or many-manay relations. The concept is no longer needed in Grakn. 
+The most famous SQL operator, a join returns a table containing all possible rows that are a combination of two rows, one from each of two specified tables, such that two rows contributing to any given result row have common values for the common attributes of the two tables. In Graql, we ask for the entities and their attributes that are connected through a specific relation. This means that we don't need any join tables at all, not for 1-1 relations, 1-many relations, or many-many relations. The concept is no longer needed in Grakn. 
 
 ```Get all the different cities in which suppliers and customers are located.```
 
@@ -431,7 +431,7 @@ In conclusion, we've seen how:
 
 Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or our application layer. Pushing this logic down into Grakn allows us to write simpler queries at a higher-level of expressivity.
 
-There is much more to Graql than what we've tried to show in here. Hopefully this comparison has, at least, given the high level similarities and differences between both languages.  
+There is much more to Graql than what we've tried to show here. Hopefully this comparison has, at least, given the high level similarities and differences between both languages.  
 
 ## Resources
 
