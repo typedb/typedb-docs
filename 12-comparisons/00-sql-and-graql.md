@@ -307,7 +307,7 @@ get $eid;
 
 ### Type Based Reasoning
 
-In Graql, we can create type hierarchies to increase the expressivity of our model. Unlike in SQL, in Graql we have the capability to increase the expressivity of our model by creating a type hierarchy. For example, we can extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
+Unlike in SQL, in Graql we have the capability to increase the expressivity of our model by creating a type hierarchy. For example, we can extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
 
 ![ER Diagram Example](../images/comparisons/type-hierarchy.png)
 
