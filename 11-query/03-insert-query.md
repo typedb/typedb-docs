@@ -80,6 +80,55 @@ This `match insert` query:
 3. Inserts an `employment` relation with `$org` and `$person` as its roleplayers, assigned to variable `$new-employment`.
 4. Inserts the ownership of `reference-id` with value `WGFTSH` to the `$new-employment` relation instance.
 
+### Duplicate Role Players
+
+As of Grakn 1.7.0, relations are allowed to have duplicate role players. This means the following would be valid in Grakn:
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+match
+  $org isa organisation, has name "Facelook";
+  $person isa person, has email "tanya.arnold@gmail.com";
+insert $fake-duplicate-employment (employer: $org, employee: $person, employee: $person) isa employment;
+  $new-employment has reference-id "WGFTSH";
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlInsert query = Graql.match(
+  var("org").isa("organisation").has("name", "Facelook"),
+  var("person").isa("person").has("email", "tanya.arnold@gmail.com")
+).insert(
+  var("fake-duplicate-employment").isa("employment").rel("employer", "org").rel("employee", "person").rel("employee", "person").has("reference-id", "WGFTSH")
+);
+```
+[tab:end]
+</div>
+
+As a consequence, you can query for the duplicate role player as a duplicate role player and get an answer back:
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+match $fake-employment (employee: $x, employee: $x) isa employment; get;
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlGet query = Graql.match(
+  var("fake-employment").isa("employment").rel("employee", "x").rel("employee", "x")
+).get();
+```
+[tab:end]
+</div>
+
+This can be useful when modeling reflexive relations, for example.
+
 ## Clients Guide
 
 <div class = "note">
