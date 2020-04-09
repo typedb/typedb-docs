@@ -257,7 +257,7 @@ GraqlDefine query = Graql.define(
 
 The roles `employee` and `employer` are now ready to be played by other concept types in the schema.
 
-### Roleplayers of a relation
+### Role players of a relation
 Entities, attributes, and even other relations can play a role in a relation. To do this we make use of the `plays` keyword followed by the role's label.
 
 We have already seen how to [define an entity to play a role](#entity-to-play-a-role) and soon learn how to [define an attribute to play a role](#define-an-attribute-to-play-a-role) as well. But what about a relation that plays a role in another relation?
@@ -299,11 +299,11 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-In the example above, the `friendship` relation plays the role of the `requested-friendship` in the `friend-request` relation. The other two roleplayers in a `friend-request` are 1) the `person` who plays the `friendship-requester` role and 2) another `person` whole plays the `friendship-respondent` role.
+In the example above, the `friendship` relation plays the role of the `requested-friendship` in the `friend-request` relation. The other two role players in a `friend-request` are 1) the `person` who plays the `friendship-requester` role and 2) another `person` whole plays the `friendship-respondent` role.
 
 Once the `friend-request` is accepted, then those two `person`s play the role of `friend` in the `friendship` relation.
 
-### A relation with many roleplayers
+### A relation with many role players
 A relation can relate to any number of roles. The example below illustrates a three-way relation.
 
 <div class="tabs dark">
@@ -777,7 +777,7 @@ It's important to note that `underfine [label] sub [type] has [attribute's label
 </div>
 
 ### Undefine a relation
-Given the dependent nature of relations, before undefining the relation itself, we must first undefine the association of its roles with the relation as well as the association of the roleplayers with the roles. Given an `employment` relation, we would undefine it as shown below.
+Given the dependent nature of relations, before undefining the relation itself, we must first undefine the association of its roles with the relation as well as the association of the role players with the roles. Given an `employment` relation, we would undefine it as shown below.
 
 <div class="tabs dark">
 

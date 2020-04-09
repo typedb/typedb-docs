@@ -112,7 +112,7 @@ GraqlInsert insert_query = Graql.match(
 [tab:end]
 </div>
 
-However, to modify or delete role players, the current limitations require us to [delete the instances of the relation](../11-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current roleplayers and [insert the new instance of the relation](../11-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
+However, to modify or delete role players, the current limitations require us to [delete the instances of the relation](../11-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current role players and [insert the new instance of the relation](../11-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
 
 <div class="tabs dark">
 

@@ -48,7 +48,7 @@ GraqlInsert query = Graql.insert(
 </div>
 
 ## Insert Instances of a Relation Type
-Given the dependent nature of relations, inserting an instance of a relation is quite different from that of an entity. The roles of a relation to be inserted are expected to be played by instances that already exist in the knowledge graph. Therefore inserting a relation is always preceded by matching the roleplayers - what is commonly called the `match insert`. What follows the `insert` keyword, is a series of statements that are similar to the [match patterns](../11-query/01-match-clause.md#match-instances-of-a-relation).
+Given the dependent nature of relations, inserting an instance of a relation is quite different from that of an entity. The roles of a relation to be inserted are expected to be played by instances that already exist in the knowledge graph. Therefore inserting a relation is always preceded by matching the role players - what is commonly called the `match insert`. What follows the `insert` keyword, is a series of statements that are similar to the [match patterns](../11-query/01-match-clause.md#match-instances-of-a-relation).
 
 <div class="tabs dark">
 
@@ -77,12 +77,17 @@ GraqlInsert query = Graql.match(
 This `match insert` query:
 1. Matches the `organisation` that plays `employer`, assigned to variable `$org`.
 2. Matches the `person` that plays `employee`, assigned to variable `$person`.
-3. Inserts an `employment` relation with `$org` and `$person` as its roleplayers, assigned to variable `$new-employment`.
+3. Inserts an `employment` relation with `$org` and `$person` as its role players, assigned to variable `$new-employment`.
 4. Inserts the ownership of `reference-id` with value `WGFTSH` to the `$new-employment` relation instance.
 
 ### Duplicate Role Players
 
-As of Grakn 1.7.0, relations are allowed to have duplicate role players. This means the following would be valid in Grakn:
+<div class="note">
+    [New Behavior as of Grakn Core 1.7.0]
+    As of Grakn 1.7.0, relations are allowed to have duplicate role players. 
+</div>
+
+This means the following would be valid:
 
 <div class="tabs dark">
 

@@ -1,7 +1,7 @@
 methods:
   - method:
     common: &method-rolePlayersMap
-      title: Retrieve roleplayers per role
+      title: Retrieve role players per role
       description: Retrieves a map of all instances involved in the Relation and the role each play.
     java:
       <<: *method-rolePlayersMap
@@ -21,12 +21,12 @@ methods:
 
   - method:
     common: &method-rolePlayers
-      title: Retrieve roleplayers
+      title: Retrieve role players
       description: Retrieves all roleplayers of this this Relation, optionally filtered by given a role.
       accepts:
         param: &accepts-rolePlayers-role
           name: role
-          description: The role to filter the roleplayers by.
+          description: The role to filter the role players by.
           required: false
           default: N/A
     java:

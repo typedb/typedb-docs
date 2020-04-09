@@ -107,7 +107,7 @@ GraqlGet query = Graql.match(
 We soon learn [how to target attributes of a specific value](#match-instances-of-an-attribute).
 
 #### Leave the relation instance unassigned
-Assigning a relation to a variable is optional. We may only be interested in the roleplayers of a certain relation. In such a case, we would write the above match clause like so:
+Assigning a relation to a variable is optional. We may only be interested in the role players of a certain relation. In such a case, we would write the above match clause like so:
 
 <div class="tabs dark">
 
@@ -483,7 +483,7 @@ GraqlGet query = Graql.match(
 
 This matches all the roles that correspond to the `located-subject` role of the relation which `location-of-office` subtypes. In this case, the super-relation being `location-of-everything` and the matched role being `located-subject`.
 
-### Roleplayers of a given role
+### Role players of a given role
 Given a role, we can match the concept types that play the given role by using the `plays` keyword.
 
 <div class="tabs dark">
