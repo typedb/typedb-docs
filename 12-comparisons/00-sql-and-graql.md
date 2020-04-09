@@ -15,7 +15,7 @@ Graql is the query language used in [Grakn](https://github.com/graknlabs/grakn).
 - Languages that attempt to enable asking questions at a higher-level
 - Languages where the system figures out how to do lower-level operations
 
-In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. In this documentation, while we look at specific common concepts, we focus on comparing and exploring the differences beteween the two languages. 
+In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. In this documentation, while we look at specific common concepts, we focus on comparing and exploring the differences between the two languages. 
 
 ### The Origin of SQL and the Relational Model
 
