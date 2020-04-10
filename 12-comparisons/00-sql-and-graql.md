@@ -148,7 +148,7 @@ The basic operational construct in SQL is the `SELECT - WHERE - FROM` expression
 
 ```SQL
 SELECT column1, column2, …
-FROM table_name;
+FROM table_name
 WHERE condition;
 ```
 
