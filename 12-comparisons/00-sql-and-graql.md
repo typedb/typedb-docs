@@ -163,7 +163,7 @@ The basic operational construct in SQL is the `SELECT - WHERE - FROM` expression
 
 ```SQL
 SELECT column1, column2, …
-FROM table_name;
+FROM table_name
 WHERE condition;
 ```
 
@@ -378,7 +378,8 @@ FROM Employee
   INNER JOIN Territories AS Te ON
     Te.TerritoryID = Et.TerritoryID 
   INNER JOIN Region AS Re ON
-    Re.RegionDescription = 'x'
+    Re.RegionID = Te.RegionID 
+    AND Re.RegionDescription = 'x'
 ```
 
 Having defined the `transitive-location` rule in Graql, we can now directly relate the employee to the region (abstracting away the territory to region connection avoiding us having to make multiple joins): 
@@ -405,11 +406,12 @@ FROM Companies
   INNER JOIN Employees ON 
     Orders.OrgId = Employees.OrgId
   INNER JOIN EmployeeTerritories AS Et ON
-    Employee.EmployeeID = Et.EmployeeID 
+    Employees.EmployeeID = Et.EmployeeID 
   INNER JOIN Territories AS Te ON
     Te.TerritoryID = Et.TerritoryID 
   INNER JOIN Region AS Re ON
-    Re.RegionDescription = 'x'
+    Re.RegionID = Te.RegionID 
+    AND Re.RegionDescription = 'x'
 UNION 
 SELECT Charities.OrgID 
 FROM Charities
@@ -418,11 +420,12 @@ FROM Charities
   INNER JOIN Employees ON 
     Orders.OrgId = Employees.OrgId
   INNER JOIN EmployeeTerritories AS Et ON
-    Employee.EmployeeID = Et.EmployeeID 
+    Employees.EmployeeID = Et.EmployeeID 
   INNER JOIN Territories AS Te ON
     Te.TerritoryID = Et.TerritoryID 
   INNER JOIN Region AS Re ON
-    Re.RegionDescription = 'x'
+    Re.RegionID = Te.RegionID 
+    AND Re.RegionDescription = 'x'
 ```
 
 In Graql, we simply write: 
