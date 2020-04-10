@@ -22,9 +22,4 @@ methods:
       method: await iterator.collectConcepts();
       returns:
         - "Array of [Concept](../concept-api/concept)"
-    python:
-      <<: *method-collectConcepts
-      description: Consumes the iterator and collects all Concepts into a list.
-      method: iterator.collect_concepts();
-      returns:
-        - "List of [Concept](../concept-api/concept)"
+

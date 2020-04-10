@@ -1,9 +1,12 @@
+#!/usr/bin/env python2
+
 import unittest
 import glob
 import re
 import os
 import yaml
 import ast
+from io import open
 from nested_lookup import nested_lookup
 
 pattern_to_find_links = '(\[[^\]]*?\]\(\.\.\/)((\d+-[^\/\)]*(\/|))+)\)'

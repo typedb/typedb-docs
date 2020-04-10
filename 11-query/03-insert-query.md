@@ -25,9 +25,7 @@ GraqlInsert query = Graql.insert(
 [tab:end]
 </div>
 
-This `match insert` query:
-1. Assigns the `surname` attribute of a `person` with `id` of `V41016` to variable `$s`.
-2. Inserts a `person` entity with the `surname` attribute holding the value of the variable `$s`.
+This `insert` query inserts a `person` with a `full-name` attribute of `John Parkson`, an `email` attribute of `john.parkson@gmail.com` and a phone number of `+44-1234-567890`.
 
 ## Insert Instances of an Attribute Type
 Similar to inserting an instance of an entity, to insert an instance of an attribute, we use the `insert` keyword followed by the variable pattern to describe the attribute of interest and its value.
@@ -68,19 +66,19 @@ insert $new-employment (employer: $org, employee: $person) isa employment;
 ```java
 GraqlInsert query = Graql.match(
   var("org").isa("organisation").has("name", "Facelook"),
-  var("p").isa("person").has("email", "tanya.arnold@gmail.com")
+  var("person").isa("person").has("email", "tanya.arnold@gmail.com")
 ).insert(
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p").has("reference-id", "WGFTSH")
+  var("new-employment").isa("employment").rel("employer", "org").rel("employee", "person").has("reference-id", "WGFTSH")
 );
 ```
 [tab:end]
 </div>
 
 This `match insert` query:
-1. Matches the `organisation` that plays `employer`, assigned to variable `$c`.
-2. Matches the `person` that plays `employee`, assigned to variable `$p`.
-3. Inserts an `employment` relation with `$c` and `$p` as its roleplayers, assigned to variable `$emp`.
-4. Inserts the ownership of `reference-id` with value `WGFTSH` by to the `$emp` relation instance.
+1. Matches the `organisation` that plays `employer`, assigned to variable `$org`.
+2. Matches the `person` that plays `employee`, assigned to variable `$person`.
+3. Inserts an `employment` relation with `$org` and `$person` as its roleplayers, assigned to variable `$new-employment`.
+4. Inserts the ownership of `reference-id` with value `WGFTSH` to the `$new-employment` relation instance.
 
 ## Clients Guide
 
