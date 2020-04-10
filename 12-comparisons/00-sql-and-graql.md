@@ -264,7 +264,7 @@ sale sub relation,
 containing sub relation, 
   has quantity,
   has unit-price,
-  relates containing-product, 
+  relates contained-product, 
   relates containing-order;
 
 stocking sub relation, 
