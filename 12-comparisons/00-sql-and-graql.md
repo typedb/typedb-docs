@@ -228,7 +228,7 @@ If we take the `suppliers`, `products`, `employees`, `orders` and `customers` ta
 We then create the following relations and corresponding roles: 
 1. `Sale`: We can model this relation as ternary (learn more about [hypergraphs](https://blog.grakn.ai/modelling-data-with-hypergraphs-edff1e12edf0)), as a sale occurs between an `Order` (playing the `placed-order` role), `Company` (playing the `customer` role) and an `Employee` (playing the role of `seller`). 
 2. `Stocking`: This relation relates to a `Product` (playing the role of `stock`) which is being stocked by another `Company`, which plays the role of `supplier`.
-3. `Containing`: We define this relation between the entity `Order` (playing the role of `containing-role`) and `Product` (role of `contained-product`), because an order can contain multiple products. We also add two attributes to this relation: `quantity` and `unit-price`. 
+3. `Containing`: We define this relation between the entity `Order` (playing the role of `containing-order`) and `Product` (role of `containing-product`), because an order can contain multiple products. We also add two attributes to this relation: `quantity` and `unit-price`. 
 
 This is what we've just modelled: 
 
@@ -253,7 +253,7 @@ order sub entity,
   plays containing-order; 
 
 product sub entity, 
-  plays contained-product,
+  plays containing-product,
   plays stock;
 
 sale sub relation, 
