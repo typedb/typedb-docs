@@ -7,9 +7,15 @@ Summary: Comparing SQL to Graql.
 
 ## Comparing SQL to Graql
 
-Since the 1970s, SQL has been the de facto language to work with databases. As a declarative language, it’s straightforward to write queries and build powerful applications. However, relational databases struggle when working with complex data. When querying such data in SQL, challenges arise especially in the modelling and querying of the data.
+Since the 1970s, SQL has been the de facto language to work with databases. As a declarative language, it’s straightforward to write queries and build powerful applications. However, relational databases struggle when working with interconnected and complex data. When working with such data in SQL, challenges arise especially in the modelling and querying of the data.
 
-Graql is the query language used in Grakn. Just as SQL is the standard query language in relational databases, Graql is Grakn’s query language. It’s a declarative language, and allows us to model, query and reason over our data. Here, we look at how Graql compares to SQL. We look at the common concepts, but mostly talk about the differences between the two.
+Graql is the query language used in [Grakn](https://github.com/graknlabs/grakn). Just as SQL is the standard query language in relational databases, Graql is Grakn’s query language. Both SQL and Graql are declarative query languages that abstract away lower-level operations. Both are:
+
+- Languages that attempt be readable and understandable
+- Languages that attempt to enable asking questions at a higher-level
+- Languages where the system figures out how to do lower-level operations
+
+In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. In this documentation, while we look at specific common concepts, we focus on comparing and exploring the differences between the two languages. 
 
 ### The Origin of SQL and the Relational Model
 
@@ -19,7 +25,7 @@ Back then, databases were mainly based on [navigational](https://databasemanagem
 
 However, as Ted's ideas were based on mathematical notation and mathematical symbolism, they were difficult to understand and not very accessible to most people, so two System R members addressed this issue by creating a simple query language -- [SEQL](https://dl.acm.org/doi/10.1145/800296.811515). As this new language was based exclusively on English words, this became the breakthrough that made it so much easier for people to understand the simplicity of Ted's ideas. 
 
-By the late 1970s, relational databases had grown in popularity, and the world came to accept just how superior SQL and the relational model were to its predecessors. The story since then is well known -- relational databases have become the standard for building software as the world ushered into the digital revolution.
+By the late 1970s, relational databases had grown in popularity, and the world came to accept just how superior SQL and the relational model were to its predecessors. The story since then is well known -- relational databases have become the standard for building software as the world was ushered into the digital revolution.
 
 ### The Essence of SQL and Graql
 In understanding Graql, it's useful to look at the underlying ideas that created SQL, as they are conceptually closely related. The essence of both Graql and SQL can be summarised as such: 
@@ -29,12 +35,12 @@ In understanding Graql, it's useful to look at the underlying ideas that created
 
 In this sense, both SQL and Graql are languages that abstract away lower-level operations. In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. This means they become enabled to create value, while those who could already use them can now do things much faster. A similar thing can be said about Python, for example, a high level programming language that has enabled millions of programmers to build software without having to worry about lower-level operations that are abstracted away.  
 
-## Data Modelling 
+## Modelling and Defining Schema 
 
-First, let's look at how data modelling compares between the SQL and Graql. We use the [Entity Relationship Diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model) (ER Diagram) as it's the most common modelling tool in use. A basic model is composed of entity types and the relationships that can exist between them. Below is an example ER Diagram. We call this the conceptual model.
+First, let's look at how data modelling compares between SQL and Graql. We use the [Entity Relationship Diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model) (ER Diagram) as it's the most common modelling tool in use. A basic model is composed of entity types and the relationships that can exist between them. Below is an example ER Diagram. We call this the conceptual model.
 
 ![ER Diagram Example](../images/comparisons/er-diagram.png)
-*ER Diagram Example.*
+*ER Diagram Example. Squares are entities, diamonds are relations and circles are attributes.*
 
 ### Modelling in SQL
 
@@ -50,12 +56,12 @@ After this normalisation process, we get to our logical model in 3NF and impleme
 
 ### Modelling in Graql
 
-Now let's look at how this compares to Graql. We can map any ER Diagram directly to how we implement it in Graql, which means we don't need to go through a normalisation process. Below we can see how a specific part of the earlier ER Diagram is modelled. We avoid the need to do any normalisation, as Graql enables us to create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we are implementing it later in code. This is different to SQL, where we need to impose a tabular structure over our model as a logical layer (as described above).
+Now let's look at how this compares to Graql. *We can map any ER Diagram directly to how we implement it in Graql*, which means we don't need to go through a normalisation process. Below we can see how a specific part of the earlier ER Diagram is modelled. We avoid the need to do any normalisation, as **Graql enables us to create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we are implementing it later in code**. This is different to SQL, where we need to impose a tabular structure over our model as a logical layer (as described above).
 
 ![ER Diagram Example](../images/comparisons/er-graql.png)
 *ER diagram (left) to Graql model (right).*
 
-This means we entirely skip out the normalisation process required in SQL, and we keep working at the conceptual model. In other words, Graql abstracts away both the logical and physical model. In this sense, where SQL gave us the physical independence of data, Graql gives us the logical independence of data. 
+This means we entirely skip out the normalisation process required in SQL, and we keep working at the conceptual model. In other words, Graql abstracts away both the logical and physical model. **In this sense, where SQL gave us the physical independence of data, Graql gives us the logical independence of data.**
 
 ![Logical Independence of Data](../images/comparisons/architecture-2.png)
 *By modelling at the conceptual level, Graql gives us an abstraction over the logical model.*
@@ -79,7 +85,6 @@ define
 product sub entity, 
   key product-id, 
   has product-name, 
-  has supplier-id, 
   has quantity-per-unit, 
   plays product-assignment; 
 
@@ -108,15 +113,25 @@ CREATE TABLE products (
 [tab:end] 
 </div>
 
-Here we can see that the SQL table has three attributes, each with their own datatype, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `product-assignment`. Please note that in Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply omitted from the graph. Another important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
+A few important points: 
 
-## Writing and Reading (Relationally)
+- Here we can see that the SQL table has three attributes, each with their own datatype, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. 
+- In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `product-assignment`. 
+- In Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply omitted from the graph. 
+- Finally, an important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
+
+To summarise:
+
+- Modeling an ER diagram into SQL involves a normalisation process from 1NF to 3NF
+- The ER diagram maps naturally to Graql, and there is no need to perform any kind of normalisation
+
+## Reading and Writing Data
 
 ### Inserting Data
 
 Let's look at how we write and read data using relational operators. First, using the Northwind schema, let's insert the following data: a new `product` with name `Chocolate`, product id `12`, quantity per unit `421` and category name `Confections`.
 
-In SQL, we want to first fetch the ID of `Confections` before inserting it.
+In SQL, we do two queries. First, we fetch the ID of `Confections` and then we insert the new row. 
 
 ```SQL
 SELECT category.categoryID
@@ -127,7 +142,7 @@ INSERT INTO products
 VALUES (12, "Chocolate", 42, 421)
 ```
 
-In Graql we do something slightly different. We first match for the `Confections` category, assign the result to the variable `$c`, and then insert the new data. 
+In Graql we do something different. We first match for the `Confections` category, assign the result to the variable `$c`, and then insert the new data. 
 
 <!-- test-ignore -->
 ```graql
@@ -162,9 +177,9 @@ $a isa thing,
 get $a, $v;
 ```
 
-Let's look at some of the most commonly used operators in SQL and how these look like in Graql. In doing so, we're going to look at how to think about a query conceptually, instead of looking at the actual code. In this way, the difference between a Graql and a SQL query is that in Graql we think of queries at a conceptual level; the same way how we semantically think about a question, rather than imposing a tabular structure over it. 
+Let's look at some of the most commonly used operators in SQL and how these look in Graql. In doing so, we're going to look at how to think about a query conceptually, instead of looking at the actual code. In this way, the difference between a Graql and a SQL query is that in Graql we think of queries at a conceptual level; the same way we semantically think about a question, rather than imposing a tabular structure over it. 
 
-In figures below, on the left side, the tabular representation of the query in SQL is shown, and on the right the conceptual representation of the query in Graql (squares are entities, diamonds are relations and circles are attributes).
+In the figures below, on the left side, the tabular representation of the query in SQL is shown, and on the right the conceptual representation of the query in Graql (squares are entities, diamonds are relations and circles are attributes).
 
 #### Projection
 
@@ -213,9 +228,9 @@ The most famous SQL operator, a join returns a table containing all possible row
 ![Join](../images/comparisons/join.png)
 *Table join (left) and the equivalent operation in Graql (right).*
 
-## Hypergraph and Automated Reasoning
+## Modelling at a Higher-Level in Graql: Hypergraph and Automated Reasoning
 
-Compared to SQL, Graql allows us to model at a higher level of abstraction. This means that when we think about queries, we shouldn't actually think in terms of relational operators, as we've just done in the previous section. Instead, we should rethink our model and leverage Graql's expressivity. So, let's revisit the Northwind dataset and think how we can model it differently. In particular, let's look at how we make use of Grakn's hypergraph and reasoning capabilities. 
+Compared to SQL, Graql allows us to model at a higher level of abstraction. This means that when we think about queries, we shouldn't actually think in terms of relational operators, as we've just done in the previous section. Instead, we should rethink our model and leverage Graql's expressivity. So, let's revisit the Northwind dataset and think about how we can model it differently. In particular, let's look at how we make use of Grakn's hypergraph and reasoning capabilities. 
 
 ### Modelling in Graql 
 
@@ -363,7 +378,8 @@ FROM Employee
   INNER JOIN Territories AS Te ON
     Te.TerritoryID = Et.TerritoryID 
   INNER JOIN Region AS Re ON
-    Re.RegionDescription = 'x'
+    Re.RegionID = Te.RegionID 
+    AND Re.RegionDescription = 'x'
 ```
 
 Having defined the `transitive-location` rule in Graql, we can now directly relate the employee to the region (abstracting away the territory to region connection avoiding us having to make multiple joins): 
@@ -390,11 +406,12 @@ FROM Companies
   INNER JOIN Employees ON 
     Orders.OrgId = Employees.OrgId
   INNER JOIN EmployeeTerritories AS Et ON
-    Employee.EmployeeID = Et.EmployeeID 
+    Employees.EmployeeID = Et.EmployeeID 
   INNER JOIN Territories AS Te ON
     Te.TerritoryID = Et.TerritoryID 
   INNER JOIN Region AS Re ON
-    Re.RegionDescription = 'x'
+    Re.RegionID = Te.RegionID 
+    AND Re.RegionDescription = 'x'
 UNION 
 SELECT Charities.OrgID 
 FROM Charities
@@ -403,11 +420,12 @@ FROM Charities
   INNER JOIN Employees ON 
     Orders.OrgId = Employees.OrgId
   INNER JOIN EmployeeTerritories AS Et ON
-    Employee.EmployeeID = Et.EmployeeID 
+    Employees.EmployeeID = Et.EmployeeID 
   INNER JOIN Territories AS Te ON
     Te.TerritoryID = Et.TerritoryID 
   INNER JOIN Region AS Re ON
-    Re.RegionDescription = 'x'
+    Re.RegionID = Te.RegionID 
+    AND Re.RegionDescription = 'x'
 ```
 
 In Graql, we simply write: 
@@ -425,11 +443,11 @@ get $ci;
 ### Conclusion
 
 In conclusion, we've seen how: 
-- Graql provides a high-level abstraction for data modelling
-- Graql lets us create conceptual models by giving us the physical independence of data
-- Grakn's reasoning engine simplifies our queries 
+- *Graql provides a higher-level abstraction for working with data.* Graql makes it easier to model and query for complex data. 
+- *Graql lets us create conceptual models giving us the physical independence of data.* By implementing a concept level schema, Graql abstracts away the logical model. This means we no longer need to normalise our data.
+- *Grakn's reasoning engine simplifies our queries.* By using an automated reasoner, Grakn pushes down lower level operations and enables us to work at a higher level of abstraction.
 
-Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or our application layer. Pushing this logic down into Grakn allows us to write simpler queries at a higher-level of expressivity.
+Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or application layer. Pushing this logic down into Grakn allows us to write simpler queries at a higher-level of expressivity.
 
 There is much more to Graql than what we've tried to show here. Hopefully this comparison has, at least, given the high level similarities and differences between both languages.  
 
