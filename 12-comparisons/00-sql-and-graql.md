@@ -443,9 +443,9 @@ get $ci;
 ### Conclusion
 
 In conclusion, we've seen how: 
-- *Graql provides a higher-level abstraction for working with data.* Graql makes it easier to model and query for complex data. 
-- *Graql lets us create conceptual models giving us the physical independence of data.* By implementing a concept level schema, Graql abstracts away the logical model. This means we no longer need to normalise our data.
-- *Grakn's reasoning engine simplifies our queries.* By using an automated reasoner, Grakn pushes down lower level operations and enables us to work at a higher level of abstraction.
+- **Graql provides a higher-level abstraction for working with data.** Graql makes it easier to model and query for complex data. 
+- **Graql lets us create conceptual models giving us the physical independence of data.** By implementing a concept level schema, Graql abstracts away the logical model. This means we no longer need to normalise our data.
+- **Grakn's reasoning engine simplifies our queries.** By using an automated reasoner, Grakn pushes down lower level operations and enables us to work at a higher level of abstraction.
 
 Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or application layer. Pushing this logic down into Grakn allows us to write simpler queries at a higher-level of expressivity.
 
