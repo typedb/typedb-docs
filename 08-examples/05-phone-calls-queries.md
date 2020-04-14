@@ -187,7 +187,7 @@ with GraknClient(uri="localhost:48555") as client:
             query = "".join(query)
 
             iterator = transaction.query(query)
-            answers = iterator.collect_concepts()
+            answers = [ans.get("phone-number") for ans in iterator]
             result = [ answer.value() for answer in answers ]
 
             print("\nResult:\n", result)
@@ -365,7 +365,7 @@ with GraknClient(uri="localhost:48555") as client:
         query = "".join(query)
 
         iterator = transaction.query(query)
-        answers = iterator.collect_concepts()
+        answers = [ans.get("phone-number") for ans in iterator]
         result = [ answer.value() for answer in answers ]
 
         print("\nResult:\n", result)
@@ -528,7 +528,7 @@ with GraknClient(uri="localhost:48555") as client:
             query = "".join(query)
 
             iterator = transaction.query(query)
-            answers = iterator.collect_concepts()
+            answers = [ans.get("phone-number") for ans in iterator]
             result = [ answer.value() for answer in answers ]
 
             print("\nResult:\n", result)
@@ -709,9 +709,10 @@ with GraknClient(uri="localhost:48555") as client:
             query = "".join(query)
 
             iterator = transaction.query(query)
-            answers = iterator.collect_concepts()
+            answers = []
+            for answer in iterator:
+                answers.extend(answer.map().values())
             result = [ answer.value() for answer in answers ]
-
             print("\nResult:\n", result)
 ```
 [tab:end]

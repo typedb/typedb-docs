@@ -70,10 +70,10 @@ codeKeywordsToLink = {
             "languages": ["java", "javascript", "python"]
         },
         {
-            "titles": ["collectConcepts", "collect_concepts"],
+            "titles": ["collectConcepts"],
             "syntaxedAs": ["function"],
             "anchor": "#consume-the-iterator-eagerly",
-            "languages": ["javascript", "python"]
+            "languages": ["javascript"]
         },
         {
             "titles": ["commit"],
