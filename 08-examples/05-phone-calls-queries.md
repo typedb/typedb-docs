@@ -713,7 +713,6 @@ with GraknClient(uri="localhost:48555") as client:
             for answer in iterator:
                 answers.extend(answer.map().values())
             result = [ answer.value() for answer in answers ]
-
             print("\nResult:\n", result)
 ```
 [tab:end]
