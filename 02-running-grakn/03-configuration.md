@@ -20,7 +20,7 @@ If installed using Homebrew:
 If installed using RPM or APT:
 
 ```
-/opt/grakn/core/conf/grakn.properties
+/opt/grakn/core/server/conf/grakn.properties
 ```
 
 <div class="note">
