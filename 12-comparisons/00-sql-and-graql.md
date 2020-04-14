@@ -214,7 +214,7 @@ This SQL operator returns the rows of the tables that appear in either or both o
 
 This SQL operator returns a table with all rows that appear in both of two specified tables. In Graql, we ask for an entity that is connected to two specific entities through a relation.
 
-```Get all the different cities in which suppliers and customers are located.```
+```Get all the cities in which suppliers and customers are simultaneously located.```
 
 ![Intersect](../images/comparisons/intersect.png)
 *Table intersection (left) and the equivalent operation in Graql (right).*
