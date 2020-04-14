@@ -36,8 +36,9 @@ commands:
     steps:
       - run-bazel-rbe:
           command: bazel build @graknlabs_grakn_core//:assemble-linux-targz
-      - run: mkdir dist && tar -xvzf bazel-genfiles/external/graknlabs_grakn_core/grakn-core-all-linux.tar.gz -C ./dist/
+      - run: mkdir dist && tar -xvzf bazel-bin/external/graknlabs_grakn_core/grakn-core-all-linux.tar.gz -C ./dist/
       - run: nohup ./dist/grakn-core-all-linux/grakn server start
+      - run: sleep 60
 
 jobs:
   build:
@@ -84,7 +85,6 @@ jobs:
       - install-bazel-linux-rbe
       - checkout
       - run-grakn-server
-      - run: sleep 60
       - run: bazel test //test/example/nodejs:phone-calls --test_output=errors
       - run: bazel test //test/example/nodejs:social-network --test_output=errors
 
@@ -94,6 +94,7 @@ jobs:
     steps:
       - install-bazel-linux-rbe
       - checkout
+      - run: pyenv global 2.7.12 3.5.2
       - run-grakn-server
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
@@ -104,6 +105,7 @@ jobs:
     steps:
       - install-bazel-linux-rbe
       - checkout
+      - run: pyenv global 2.7.12 3.5.2
       - run: bazel test //test/links:test --test_output=errors
 
   release-staging:
