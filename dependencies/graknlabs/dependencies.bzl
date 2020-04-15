@@ -17,6 +17,14 @@
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
+# TODO(vmax): replace with version from @graknlabs_grakn_core once it's released
+def graknlabs_grabl_tracing():
+    git_repository(
+        name = "graknlabs_grabl_tracing",
+        remote = "https://github.com/graknlabs/grabl-tracing",
+        commit = "42f507d6b973cbc87d18a27ee83121c791295184"
+    )
+
 def graknlabs_build_tools():
     git_repository(
         name = "graknlabs_build_tools",
