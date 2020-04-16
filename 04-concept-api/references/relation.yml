@@ -7,17 +7,17 @@ methods:
       <<: *method-rolePlayersMap
       method: relation.rolePlayersMap();
       returns:
-        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Set<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), List<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     javascript:
       <<: *method-rolePlayersMap
       method: await relation.rolePlayersMap();
       returns:
-        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Set<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Array<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     python:
       <<: *method-rolePlayersMap
       method: relation.role_players_map()
       returns:
-        - Dict[[`Role`](../concept-api/type?tab=java#role-methods), set[[`Thing`](../concept-api/thing?tab=java#thing-methods)]]
+        - Dict[[`Role`](../concept-api/type?tab=java#role-methods), List[[`Thing`](../concept-api/thing?tab=java#thing-methods)]]
 
   - method:
     common: &method-rolePlayers
