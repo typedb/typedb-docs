@@ -33,4 +33,6 @@ Once inside the console, besides [Graql queries](../11-query/00-overview.md), we
 | `editor`   | Opens the text-editor specified by the `$EDITOR` environment variable (vim by default). We can then write queries in multiple lines that get executed as soon as we exit the editor.  |
 | `clear`    | Clears the console from any previous queries, answers and commands.                                                                                                                   |
 | `clean`    | Meant to be used with caution, removes not only the data but also the schema of the knowledge graph contained within the keyspace.                                                    |
+| `keyspace list`               | List keyspaces available in this Grakn server                                                                                                                      |
+| `keyspace delete ksp_name`    | Delete a keyspace with name `ksp_name` on this Grakn server (irreversible!)                                                                                        |
 | `exit`     | Exists the console.                                                                                                                                                                   |
