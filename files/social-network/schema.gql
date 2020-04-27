@@ -195,6 +195,18 @@ define
 			(mutual-birthed-child: $p1, mutual-birthed-child: $p2, mutual-birth-location: $l, mutual-birth: $b1, mutual-birth: $b2) isa birth-mutuality;
 		};
 
+################
+## PARENTSHIP ##
+################
+
+	person sub entity,
+		plays parent,
+		plays father,
+		plays mother,
+		plays child,
+		plays son,
+		plays daughter;
+
     parentship sub relation,
   		relates parent,
 		relates child,
@@ -206,41 +218,41 @@ define
 	person-with-a-mother sub entity;
 	person-with-a-father sub entity;
 
-	genderizeParentships1
-	when{
-		(parent: $p, child: $c) isa parentship;
-		$p has gender 'male';
-		$c has gender 'male';
-	}, then{
-		(father: $p, son: $c) isa parentship;
-	};
+	genderizeParentships1 sub rule,
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'male';
+			$c has gender 'male';
+		}, then {
+			(father: $p, son: $c) isa parentship;
+		};
 
-	genderizeParentships2
-	when{
-		(parent: $p, child: $c) isa parentship;
-		$p has gender 'male';
-		$c has gender 'female';
-	}, then{
-		(father: $p, daughter: $c) isa parentship;
-	};
+	genderizeParentships2 sub rule,
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'male';
+			$c has gender 'female';
+		}, then {
+			(father: $p, daughter: $c) isa parentship;
+		};
 
-	genderizeParentships3
-	when{
-		(parent: $p, child: $c) isa parentship;
-		$p has gender 'female';
-		$c has gender 'male';
-	}, then{
-		(mother: $p, son: $c) isa parentship;
-	};
+	genderizeParentships3 sub rule,
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'female';
+			$c has gender 'male';
+		}, then {
+			(mother: $p, son: $c) isa parentship;
+		};
 
-	genderizeParentships4
-	when{
-		(parent: $p, child: $c) isa parentship;
-		$p has gender 'female';
-		$c has gender 'female';
-	}, then{
-		(mother: $p, daughter: $c) isa parentship;
-	};
+	genderizeParentships4 sub rule,
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'female';
+			$c has gender 'female';
+		}, then {
+			(mother: $p, daughter: $c) isa parentship;
+		};
 
 ###############
 ## RESIDENCY ##
