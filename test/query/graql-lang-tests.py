@@ -59,8 +59,8 @@ public class GraqlLangTest {
     }
 
     @After
-    public void abortTransaction() {
-        transaction.abort();
+    public void closeTransaction() {
+        transaction.close();
     }
 
     @AfterClass
