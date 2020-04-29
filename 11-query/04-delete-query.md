@@ -142,6 +142,11 @@ in the `delete` block, though being as specific as possible is recommended.
 </div>
 
 ## Summary
-The `delete` query preceded by a `match` clause is used to delete one or more data instances from the knowledge graph.
+The `delete` query preceded by a `match` clause is used to delete one or more facts from the knowledge graph.
+
+We can delete instances by using `$var isa [your type]`: an `isa` will always indicate removal of an instance and all its edges.
+Additionally, we can remove just attribute ownerships using the `has` statement in the `delete` clause. Removing
+a role player from a relation can similarly be achieved by using role player syntax: `delete $r ([some role]: $player);` without
+an `isa` statement.
 
 Next, we learn how to [update data](../11-query/05-updating-data.md) in a Grakn knowledge graph.
