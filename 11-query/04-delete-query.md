@@ -5,8 +5,9 @@ longTailKeywords: grakn delete data, graql delete query, graql delete instances
 Summary: Delete queries in Grakn.
 ---
 
-## Delete Instances of an Entity Type
-To delete an instance of an entity type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and statements indicating data to delete. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+## Delete Instances of a Type
+To delete an instance of a any type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and statements indicating data to delete.
+To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <div class="tabs dark">
 
@@ -29,8 +30,7 @@ This deletes a particular instance of the `person` type with the id of `V41016`.
 the parser to remove the instance of data represented by the variable `$p`. If we don't know the type, we can usually use `thing`,
 the supertype of all data instances.
 
-## Delete Instances of a Relation Type
-To delete an instance of a relation type, similar to deleting an entity type, we first `match` and then `delete`.
+Deleting an instance of a relation type follows exactly the same style: 
 
 <div class="tabs dark">
 
@@ -55,16 +55,20 @@ GraqlDelete query = Graql.match(
 
 This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Pharos"`.
 
+Attributes are normally owned by other concepts (ie. `$x has attribute $a`). This means we can both delete an attribute
+ownership, as in the next section, or delete the instance itself following the above style of using `isa` in the delete block.
+
 ## Delete Attribute Ownerships
 We can remove the ownership of an attribute by another concept in the same way it is inserted or queried: using the `has` clause.
 
-Note that attributes with the same value are shared among their owners, so we can't just delete the attribute directly. It's important that one understands thoroughly how [attributes are defined](../09-schema/01-concepts.md#define-an-attribute).
+Note that attributes with the same value are shared among their owners, so usually shouldn't delete the attribute directly. 
+It's important that one understands thoroughly how [attributes are defined](../09-schema/01-concepts.md#define-an-attribute).
 
 <div class="tabs dark">
 
 [tab:Graql]
 ```graql
-match $t isa travel, has start-date $d; $d 2013-12-22; delete $t has $d;
+match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
 ```
 [tab:end]
 
@@ -73,15 +77,52 @@ match $t isa travel, has start-date $d; $d 2013-12-22; delete $t has $d;
 GraqlDelete query = Graql.match(
   var("t").isa("travel").has("start-date", var("st")),
   var("st").val(LocalDate.of(2013, 12, 22).atStartOfDay())
-).delete(var("r").has(var("st")));
+).delete(var("t").has(var("st")));
 ```
 [tab:end]
 </div>
 
-TODO continue from here:
-This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22`, captures the association between the attribute and the owner as the variable `$r` and finally deletes `$r`. This ensures that the attribute instance of type `start-date` and value `2013-12-22` remains associated with any other instance that may own it.
+This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22` in the `match` clause. 
+We then disassociate the `travel` instance `$t` from the `start-date` attribute `$st` with the `delete $t has $st` clause.
 
-If we had instead written the query as `match $t isa travel, has start-date $st;  $st == 2013-12-22"; delete $st;`, we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
+This will _not_ delete the entire instance of type `start-date` and value `2013-12-22` - it remains associated with any other instance that may own it.
+
+If we had instead written the query as `match $t isa travel, has start-date $st;  $st == 2013-12-22"; delete $st isa start-date;`, 
+we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
+
+## Delete Role Players from Relations
+
+In Grakn, existing relations can be extended with new role players, or shrunk by removing role players. If we had an employment relation,
+and the employer company merged with another and needed to be reassigned to the new company, we would first have to remove
+the prior company from the employment relation.
+
+To do this, we mirror the `delete` syntax with what the `insert` syntax looks like.
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+match
+  $org isa organisation, has name "Pharos";
+  $emp (employer: $org, employee: $p) isa employment;
+delete $emp (employer: $org);
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDelete query = Graql.match(
+  var("org").isa("organisation").has("name", "Pharos"),
+  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
+).delete(var("emp").rel("employer", "org"));
+```
+[tab:end]
+</div>
+
+This Graql query will find all employments where the employer is an organisation with the name `Pharos`. It will then
+remove the organisation from the employment relation. It is required to provide the role that the role player is playing
+in the `delete` statement. If the role is unknown, it is possible to use the generic `role` supertype
+in the `delete` block, though being as specific as possible is recommended.
 
 ## Clients Guide
 
