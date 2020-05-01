@@ -7,7 +7,7 @@ Summary: Updating data in Grakn.
 
 ## Update Instances of Concepts
 
-In a Grakn Knowledge Graph, each instance is a "fact". Relations and entities are extensible and reducible, by adding or removing role players to them over time.
+In a Grakn knowledge graph, each instance is a "fact". Relations and entities are extensible and reducible, by adding or removing role players to them over time.
 Each attribute value can be owned and the ownership can be removed or added: updating an attribute value directly therefore means changing the attribute value for ALL owners of this attribute value! 
 Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. 
 Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.

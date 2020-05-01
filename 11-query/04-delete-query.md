@@ -6,7 +6,7 @@ Summary: Delete queries in Grakn.
 ---
 
 ## Delete Instances of a Type
-To delete an instance of a any type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and statements indicating data to delete.
+To delete an instance of a type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and statements indicating data to delete.
 To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
 <div class="tabs dark">
@@ -56,7 +56,7 @@ GraqlDelete query = Graql.match(
 This deletes all instances of the `employment` type where the `employer` is an `organisation` with `name` of `"Pharos"`.
 
 Attributes are normally owned by other concepts (ie. `$x has attribute $a`). This means we can both delete an attribute
-ownership, as in the next section, or delete the instance itself following the above style of using `isa` in the delete block.
+ownership, as in the next section, or delete the instance itself following the above style of using `isa` in the delete clause.
 
 ## Delete Attribute Ownerships
 We can remove the ownership of an attribute by another concept in the same way it is inserted or queried: using the `has` clause.
@@ -92,11 +92,11 @@ we would have deleted the instance of `start-date` with value `2013-12-22` and i
 
 ## Delete Role Players from Relations
 
-In Grakn, existing relations can be extended with new role players, or shrunk by removing role players. If we had an employment relation,
-and the employer company merged with another and needed to be reassigned to the new company, we would first have to remove
-the prior company from the employment relation.
+In Grakn, existing relations can be extended with new role players, or shrunk by removing role players.
+If an employer merged with another, we may have to reassign all existing `employment` relations to the new company.
 
-To do this, we mirror the `delete` syntax with what the `insert` syntax looks like.
+To remove the old employer from the employment relation, we mirror the `delete` syntax with what the `insert` syntax 
+for role players looks like.
 
 <div class="tabs dark">
 
