@@ -9,6 +9,9 @@ Summary: Delete queries in Grakn.
 To delete an instance of a type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and statements indicating data to delete.
 To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
+Match-Delete queries are NOT lazy: the `match` will be fully evaluated and answers recorded, and each answer will in turn have
+the operations specified in the `delete` clause applied. This avoids modifying the graph while traversing it.
+
 <div class="tabs dark">
 
 [tab:Graql]
