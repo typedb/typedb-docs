@@ -518,7 +518,13 @@ The data types available in a Grakn knowledge graph are:
 - `double`: a double-precision floating point number, including a decimal point.
 - `string`: enclosed in double `"` or single `'` quotes
 - `boolean`: `true` or `false`
-- `date`: a date or date-time in ISO 8601 format
+- `date`: a date or date-time in the following formats:
+    - `yyyy-mm-dd`
+    - `yyyy-mm-ddThh:mm`
+    - `yyyy-mm-ddThh:mm:ss`
+    - `yyyy-mm-ddThh:mm:ss.f`
+    - `yyyy-mm-ddThh:mm:ss.ff`
+    - `yyyy-mm-ddThh:mm:ss.fff`
 
 **The same attribute can be owned by different concept types.**.
 
