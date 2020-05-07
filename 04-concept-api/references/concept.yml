@@ -25,7 +25,7 @@ methods:
 
   - method:
     common: &method-isType
-      title: Check if concept is a Type
+      title: Check if concept is a Type (Local)
       returns:
         - "`boolean`"
     java:
@@ -40,7 +40,7 @@ methods:
 
   - method:
     common: &method-isThing
-      title: Check if concept is a Thing
+      title: Check if concept is a Thing (Local)
       returns:
         - "`boolean`"
     java:
@@ -55,7 +55,7 @@ methods:
 
   - method:
     common: &method-isEntityType
-      title: Check if concept is an EntityType
+      title: Check if concept is an EntityType (Local)
       returns:
         - "`boolean`"
     java:
@@ -70,7 +70,7 @@ methods:
 
   - method:
     common: &method-isAttributeType
-      title: Check if concept is an AttributeType
+      title: Check if concept is an AttributeType (Local)
       returns:
         - "`boolean`"
     java:
@@ -85,7 +85,7 @@ methods:
 
   - method:
     common: &method-isRelationType
-      title: Check if concept is a RelationType
+      title: Check if concept is a RelationType (Local)
       returns:
         - "`boolean`"
     java:
@@ -100,7 +100,7 @@ methods:
 
   - method:
     common: &method-isEntity
-      title: Check if concept is an Entity
+      title: Check if concept is an Entity (Local)
       returns:
         - "`boolean`"
     java:
@@ -115,7 +115,7 @@ methods:
 
   - method:
     common: &method-isAttribute
-      title: Check if concept is an Attribute
+      title: Check if concept is an Attribute (Local)
       returns:
         - "`boolean`"
     java:
@@ -130,7 +130,7 @@ methods:
 
   - method:
     common: &method-isRelation
-      title: Check if concept is a Relation
+      title: Check if concept is a Relation (Local)
       returns:
         - "`boolean`"
     java:
@@ -145,7 +145,7 @@ methods:
 
   - method:
     common: &method-isRule
-      title: Check if concept is a Rule
+      title: Check if concept is a Rule (Local)
       returns:
         - "`boolean`"
     java:
@@ -160,7 +160,7 @@ methods:
 
   - method:
     common: &method-asType
-      title: Cast the concept as Type
+      title: Cast the concept as Type (Local)
       description: Casts the concept as Type so that we can call the Type methods on it.
       method: concept.asType();
       returns:
@@ -170,7 +170,7 @@ methods:
 
   - method:
     common: &method-asThing
-      title: Cast the concept as Thing
+      title: Cast the concept as Thing (Local)
       description: Casts the concept as Thing so that we can call the Thing methods on it.
       method: concept.asThing();
       returns:
@@ -180,7 +180,7 @@ methods:
 
   - method:
     common: &method-asEntityType
-      title: Cast the concept as EntityType
+      title: Cast the concept as EntityType (Local)
       description: Casts the concept as EntityType so that we can call the EntityType methods on it.
       method: concept.asEntityType();
       returns:
@@ -190,7 +190,7 @@ methods:
 
   - method:
     common: &method-asAttributeType
-      title: Cast the concept as AttributeType
+      title: Cast the concept as AttributeType (Local)
       description: Casts the concept as AttributeType so that we can call the AttributeType methods on it.
       method: concept.asAttributeType();
       returns:
@@ -200,7 +200,7 @@ methods:
 
   - method:
     common: &method-asRelationType
-      title: Cast the concept as RelationType
+      title: Cast the concept as RelationType (Local)
       description: Casts the concept as RelationType so that we can call the RelationType methods on it.
       method: concept.asRelationType();
       returns:
@@ -210,7 +210,7 @@ methods:
 
   - method:
     common: &method-asEntity
-      title: Cast the concept as Entity
+      title: Cast the concept as Entity (Local)
       description: Casts the concept as Entity so that we can call the Entity methods on it.
       method: concept.asEntity();
       returns:
@@ -220,7 +220,7 @@ methods:
 
   - method:
     common: &method-asAttribute
-      title: Cast the concept as Attribute
+      title: Cast the concept as Attribute (Local)
       description: Casts the concept as Attribute so that we can call the Attribute methods on it.
       method: concept.asAttribute();
       returns:
@@ -230,7 +230,7 @@ methods:
 
   - method:
     common: &method-asRelation
-      title: Cast the concept as Relation
+      title: Cast the concept as Relation (Local)
       description: Casts the concept as Relation so that we can call the Relation methods on it.
       method: concept.asRelation();
       returns:
@@ -240,7 +240,7 @@ methods:
 
   - method:
       common: &method-asRule
-        title: Cast the concept as Rule
+        title: Cast the concept as Rule (Local)
         description: Casts the concept as Relation so that we can call the Relation methods on it.
         method: concept.asRelation();
         returns:

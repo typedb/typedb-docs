@@ -1,8 +1,8 @@
 methods:
   - method:
     common: &method-label-retrieve
-      title: Retrieve label
-      descriotion: Retrieves the unique label of the type.
+      title: Retrieve label (Local)
+      description: Retrieves the unique label of the type.
       returns:
         - String
     java:
@@ -136,7 +136,7 @@ methods:
 
   - method:
     common: &method-isImplicit
-      title: Check if type is implicit
+      title: Check if type is implicit (Local)
       description: Checks if the type has been created, under the hood, by Grakn (i.e. `implicit`).
       returns:
         - "`boolean`"

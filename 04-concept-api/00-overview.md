@@ -19,7 +19,9 @@ Anything in Grakn, whether a concept type or a data instance, is a [Concept](../
 
 <div class="note">
 [Important]
-The methods called on Concepts are bound to the [transaction](../03-client-api/00-overview.md#transaction) that was used to retrieve the concept initially. As soon as the transaction in question is closed, methods can no longer be called on the retrieved Concepts. To continue using the Concept API on a concept, we must retrieve that concept again with a newly created transaction.
+In order to run Concept API methods, a live [transaction](../03-client-api/00-overview.md#transaction) is required (to execute the method RPCs). Concepts returned from a method will be bound to the same transaction as the concept that was used to call the method.
+
+Since Grakn 1.7.0, queries return some additional information about attribute values and types so that they do not need to be retreived using separate RPCs. Most clients will instead return a `Local` concept that is limited to retrieving this data. In order to make concept RPC calls, a `Remote` concept can be created from the `Local` one. See the client specific documentation for more details.
 </div>
 
 In the sections that follow, we learn about the methods available on [Concept](../04-concept-api/01-concept.md), [Type](../04-concept-api/02-type.md#type-methods), [EntityType](../04-concept-api/02-type.md#entitytype-methods), [AttributeType](../04-concept-api/02-type.md#attributetype-methods), [RelationType](../04-concept-api/02-type.md#relationtype-methods), [Thing](../04-concept-api/04-thing.md#thing-methods), [Attribute](../04-concept-api/04-thing.md#attribute-methods), [Relation](../04-concept-api/04-thing.md#relation-methods) and [Rule](../04-concept-api/03-rule.md).

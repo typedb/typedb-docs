@@ -167,10 +167,15 @@ load("@graknlabs_grakn_core//dependencies/graknlabs:dependencies.bzl",
 "graknlabs_common", "graknlabs_console", "graknlabs_grabl_tracing")
 graknlabs_common()
 graknlabs_console()
+graknlabs_grabl_tracing()
 
 load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl",
 graknlabs_grakn_core_maven_dependencies = "maven_dependencies")
 graknlabs_grakn_core_maven_dependencies()
+
+load("@graknlabs_grabl_tracing//dependencies/maven:dependencies.bzl",
+graknlabs_grabl_tracing_maven_dependencies = "maven_dependencies")
+graknlabs_grabl_tracing_maven_dependencies()
 
 load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_rules_docker")
 bazel_rules_docker()
