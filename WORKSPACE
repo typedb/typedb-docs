@@ -23,10 +23,11 @@ workspace(name = "graknlabs_docs")
 ################################
 
 load("//dependencies/graknlabs:dependencies.bzl",
-     "graknlabs_grakn_core", "graknlabs_client_java", "graknlabs_client_python", "graknlabs_build_tools")
+     "graknlabs_grakn_core", "graknlabs_client_java", "graknlabs_client_python", "graknlabs_client_nodejs", "graknlabs_build_tools")
 graknlabs_grakn_core()
 graknlabs_client_java()
 graknlabs_client_python()
+graknlabs_client_nodejs()
 graknlabs_build_tools()
 
 load("@graknlabs_grakn_core//dependencies/graknlabs:dependencies.bzl", "graknlabs_graql", "graknlabs_protocol")
@@ -73,6 +74,16 @@ load("@graknlabs_bazel_distribution_pip//:requirements.bzl",
 graknlabs_bazel_distribution_pip_install = "pip_install")
 graknlabs_bazel_distribution_pip_install()
 
+#################################
+# Load Client Java dependencies #
+#################################
+load("@graknlabs_client_java//dependencies/maven:dependencies.bzl",
+    graknlabs_client_java_maven_dependencies = "maven_dependencies")
+graknlabs_client_java_maven_dependencies()
+
+load("@graknlabs_client_java//dependencies/graknlabs:dependencies.bzl", "graknlabs_protocol", "graknlabs_grabl_tracing")
+graknlabs_protocol()
+graknlabs_grabl_tracing()
 
 ###########################
 # Load Local Dependencies #
