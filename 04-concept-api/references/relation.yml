@@ -1,32 +1,32 @@
 methods:
   - method:
     common: &method-rolePlayersMap
-      title: Retrieve roleplayers per role
+      title: Retrieve role players per role
       description: Retrieves a map of all instances involved in the Relation and the role each play.
     java:
       <<: *method-rolePlayersMap
       method: relation.rolePlayersMap();
       returns:
-        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Set<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), List<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     javascript:
       <<: *method-rolePlayersMap
       method: await relation.rolePlayersMap();
       returns:
-        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Set<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Array<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     python:
       <<: *method-rolePlayersMap
       method: relation.role_players_map()
       returns:
-        - Dict[[`Role`](../concept-api/type?tab=java#role-methods), set[[`Thing`](../concept-api/thing?tab=java#thing-methods)]]
+        - Dict[[`Role`](../concept-api/type?tab=java#role-methods), List[[`Thing`](../concept-api/thing?tab=java#thing-methods)]]
 
   - method:
     common: &method-rolePlayers
-      title: Retrieve roleplayers
+      title: Retrieve role players
       description: Retrieves all roleplayers of this this Relation, optionally filtered by given a role.
       accepts:
         param: &accepts-rolePlayers-role
           name: role
-          description: The role to filter the roleplayers by.
+          description: The role to filter the role players by.
           required: false
           default: N/A
     java:
