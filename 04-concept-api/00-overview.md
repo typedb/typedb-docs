@@ -33,7 +33,7 @@ In order to make use of this benefit, *queries always return local concepts* so 
 
 ### Local Concept API
 
-For the *local* Concept API, each concept must contain all of the information that can be returned from the concept API methods from the point that it is created. This information will not be updated as the concept changes on the server, so it may become out of date once the transaction has ended or if changes have been made during the transaction. Local concepts are not bound to a transaction, so they can be safely used even after the transaction, session or client has been closed. This also means that **local concepts can never return remote concepts**: if you are using local concepts, you are guaranteed that no additional network operations will be made and therefore that no blocking is necessary.
+For the *local* Concept API, each concept must contain all of the information that can be returned from the concept API methods from the point that it is created. This information will not be updated as the concept changes on the server, so it may become out of date once the transaction has ended or if changes have been made during the transaction. Local concepts are not bound to a transaction, so they can be safely used even after the transaction, session or client has been closed; local concepts never perform network operations.
 
 When reading the Concept API documentation, look for the **(Local)** tag to indicate that a method is available on *both local and remote* concepts. All other methods are only available on remote concepts and will fail if used on local concepts.
 
@@ -48,7 +48,7 @@ The remote concept API allows a user to make simple requests to the Grakn server
 
 Remote concepts must be linked to a **Transaction** in order to make calls. When remote concepts are returned by a Transaction method or a Remote Concept API method, they will inherit the same Transaction as the transaction/concept the method was called on. *When the Transaction is closed, the remote concept methods can no longer be used **except for the `id()` method***.
 
-Some remote concept methods are update, insert or delete operation, and will therefore fail if used on a concept that is linked to a *Read* transaction.
+Some remote concept methods are update, insert or delete operations, and will therefore fail if used on a concept that is linked to a *Read* transaction.
 
 <div class="note">
 [Important]
