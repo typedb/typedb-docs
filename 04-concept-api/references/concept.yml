@@ -22,6 +22,22 @@ methods:
         - "`ConceptId`"
     java:
       <<: *method-id
+  
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the concept.
+      description: The remote version uses the given transaction to execute every method call.
+      returns:
+        - "`RemoteConcept`"
+    java:
+      <<: *method-asRemote
+      method: concept.asRemote(tx);
+    javascript:
+      <<: *method-asRemote
+      method: concept.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: concept.as_remote(tx)
 
   - method:
     common: &method-isType
