@@ -83,8 +83,8 @@ This `match insert` query:
 ### Duplicate Role Players
 
 <div class="note">
-    [Note]
-    As of Grakn 1.7.0, relations are allowed to have duplicate role players. 
+[Note]
+As of Grakn 1.7.0, relations are allowed to have duplicate role players. 
 </div>
 
 This means we can model true reflexive relations. Taking `friendship` as an example
