@@ -83,7 +83,7 @@ This `match insert` query:
 ### Duplicate Role Players
 
 <div class="note">
-    [New Behavior as of Grakn Core 1.7.0]
+    [Note]
     As of Grakn 1.7.0, relations are allowed to have duplicate role players. 
 </div>
 
