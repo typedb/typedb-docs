@@ -715,7 +715,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-What this definition means is that `birth-date`, `start-date` and `end-date` are all inherently subtypes of `event-date`. They inherit the datatype of `event-name` as well as its contextuality.
+What this definition means is that `birth-date`, `start-date` and `end-date` are all inherently subtypes of `event-date`. They inherit the datatype of `event-date` as well as its contextuality.
 
 The ability to subtype attributes not only helps mirror the reality of our dataset but also enables automated reasoning using type hierarchies.
 
