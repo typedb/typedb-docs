@@ -19,7 +19,7 @@ methods:
         - "[Iterator](#iterator) of Answer"
     java:
       <<: *method-lazyquery
-      method: transaction.stream(GraqlQuery query, boolean infer);
+      method: transaction.stream(GraqlQuery query, boolean infer).get();
       accepts:
         <<: *accepts-lazyquery
         param1:
@@ -47,7 +47,7 @@ methods:
           default: '{ infer: true }'
     python:
       <<: *method-lazyquery
-      method: 'transaction.query(query, infer=True)'
+      method: 'transaction.query(query, infer=True).get()'
       accepts:
         <<: *accepts-lazyquery
         param2:
@@ -77,7 +77,7 @@ methods:
         - List<?> (type of elements in the list is dependent on the type of the executed query)
     java:
       <<: *method-execute
-      method: 'transaction.execute(GraqlQuery query, boolean infer);'
+      method: 'transaction.execute(GraqlQuery query, boolean infer).get();'
 
   - method:
     common: &method-commit

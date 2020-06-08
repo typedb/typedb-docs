@@ -22,6 +22,9 @@ A session is responsible for connecting our application to a particular keyspace
 ### Transaction
 A transaction is responsible for performing write and read operations over the concepts types and instances within the connected keyspace. When executing a query to retrieve data, an iterator is returned, which can then be lazily consumed to execute a request on the server to return the next concrete result.
 
+### Futures and Async Queries
+Queries can be computed asynchronously on the grakn server whilst local processing takes place. In order to execute async queries, clients may wrap the result in an async task wrapping object, such as a Promise or Future, depending on the convention in the given language. When a transaction is committed or closed, all currently processing asynchronous queries are completed first.
+
 ### Investigating Answers
 Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. These answers, regardless of their type, all contain concepts. We can then use the methods introduced by the [Concept API](../04-concept-api/00-overview.md) to obtain more information about the retrieved concept and its surroundings. Furthermore, the Concept API allows us to traverse the neighbours of a specific concept instance to obtain more insights.
 
@@ -33,6 +36,8 @@ To avoid running into issues and make the most out of using a Grakn client, keep
 **Close the session on keyspace A before creating another one on keyspace B**. Although it is possible and arguably sensible to have multiple sessions opened on different keyspaces, to utilise resources, it is recommended to keep only one session opened at a time on a Grakn server.
 
 **Keep the number of operations per transaction minimal**. Although it is technically possible to commit a write transaction once after many operations, it is not recommended. To avoid lengthy rollbacks, running out of memory and conflicting operations, it is best to keep the number of queries per transaction minimal, ideally to one query per transaction.
+
+**Take advantage of asynchronous queries where possible.** This will cut down on network round-trip time and increase your throughput where possible. All queries can safely be made asynchronous, as they will automatically wait for previous queries to finishe on the server-side.
 
 ## Available Clients
 Grakn currently supports clients for:
