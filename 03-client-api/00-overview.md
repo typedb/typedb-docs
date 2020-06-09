@@ -37,7 +37,7 @@ To avoid running into issues and make the most out of using a Grakn client, keep
 
 **Keep the number of operations per transaction minimal**. Although it is technically possible to commit a write transaction once after many operations, it is not recommended. To avoid lengthy rollbacks, running out of memory and conflicting operations, it is best to keep the number of queries per transaction minimal, ideally to one query per transaction.
 
-**Take advantage of asynchronous queries where possible.** This will cut down on network round-trip time and increase your throughput where possible. All queries can safely be made asynchronous, as they will automatically wait for previous queries to finishe on the server-side.
+**Take advantage of asynchronous queries where possible.** This cuts down on network round-trip time and increase your throughput where possible. All queries can safely be made asynchronous, as they will automatically wait for previous queries to finished on the server-side.
 
 ## Available Clients
 Grakn currently supports clients for:
