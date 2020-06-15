@@ -71,7 +71,7 @@ It's important that one understands thoroughly how [attributes are defined](../0
 
 [tab:Graql]
 ```graql
-match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
+match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date $st;
 ```
 [tab:end]
 
