@@ -120,8 +120,9 @@ load("@test_links_pip//:requirements.bzl",
 test_links_pip_install = "pip_install")
 test_links_pip_install()
 
+
 ##############################
-# Load Protocol dependencies #
+# Load Protocol Dependencies #
 ##############################
 
 load("@graknlabs_build_tools//grpc:dependencies.bzl", "grpc_dependencies")
@@ -145,6 +146,9 @@ graknlabs_client_java_maven_dependencies()
 load("@graknlabs_client_java//dependencies/graknlabs:dependencies.bzl", "graknlabs_grabl_tracing")
 graknlabs_grabl_tracing()
 
+load("@graknlabs_grabl_tracing//dependencies/maven:dependencies.bzl",
+graknlabs_grabl_tracing_maven_dependencies = "maven_dependencies")
+graknlabs_grabl_tracing_maven_dependencies()
 ################################
 # Load Grakn Core Dependencies #
 ################################

@@ -67,7 +67,7 @@ when {
     (father: $f, $y) isa parentship;
     $x != $y;
 }, then {
-    ($x, $y) isa siblings;
+    (sibling: $x, sibling: $y) isa siblings;
 };
 ```
 [tab:end]

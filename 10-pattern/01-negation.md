@@ -16,9 +16,9 @@ b) Show me text-only timelines (no videos or images)
 
 c) All single people who have posted a photo in a forum
 
-The intuitive meaning of a negated pattern is that of a compliment. However, relation complement is not a clearly defined term as it requires the definition of a domain of values with respect to which the complement is computed. Even in this case, we end up with an infinite relation which leaves the projection or join operations unapplicable. As a result, we understand pattern negation in terms of computation of set differences. The set-difference semantics
+The intuitive meaning of a negated pattern is that of a complement. However, a relation complement is not a clearly defined term as it requires the definition of a domain of values with respect to which the complement is computed. Even in this case, we end up with an infinite relation which leaves the projection or join operations unapplicable. As a result, we understand pattern negation in terms of computation of set differences. The set-difference semantics
 are different to the perhaps familiar semantics of _Negation-as-Failure_ of Prolog and in this chapter, we will attempt to provide a clear explanation of the meaning
-of pattern negation in 
+of pattern negation in Grakn. 
 
 Let us consider the relation of unemployment which can be trivially understood as the absence of employment. We define negation blocks by enclosing patterns with
 curly braces and preceding them with a `not` keyword:
@@ -647,8 +647,8 @@ Please note, nesting of negation blocks is only allowed in queries, but not in r
 
 Please note, the following restrictions apply to negation blocks:
 - **for queries with negation blocks, reasoning needs to be turned ON**
-- for each negation block in a query, at least one variable in the negation block must be bound to a statement outside of the negation block
-This ensures that set difference operations are performed on sets that are not disjoint.
+- for each negation block in a query, at least one variable in the negation block must be bound to a statement outside of the negation block.
+This ensures that set difference operations are performed on sets that are not disjoint
 - variables in negation blocks are local to the block they are defined in
 - only conjunctive statements are allowed within negation blocks
 

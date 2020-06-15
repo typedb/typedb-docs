@@ -1,8 +1,8 @@
 methods:
   - method:
     common: &method-type
-      title: Retrieve type
-      description: Retrieves the type which this Thing belongs to.
+      title: Retrieve type (Local)
+      description: Retrieves the type which this Thing belongs to. When this thing is a local concept, the returned concept is also local.
       returns:
         - "[`Type`](../concept-api/type) object"
     java:
@@ -226,7 +226,7 @@ methods:
 
   - method:
     common: &method-isInferred
-      title: Check if inferred
+      title: Check if inferred (Local)
       description: Checks if this Thing is inferred by a [Reasoning Rule](../schema/rules).
       returns:
         - boolean

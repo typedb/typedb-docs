@@ -17,15 +17,19 @@ Grakn Workbase is available for Linux, Mac and Windows. Head over to the [Downlo
 <div class="note">
 [Important]
 As of Grakn 1.6.0, _explanations_ of inferred concepts can behave unexpectedly. Explanations of inferred relations will not show source relations in the visualiser, if the rule `when` clause that produced the relation is not tagged with a variable. For example:
-  
-```
-when { (less: $x, more: $y) isa greater-than; (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
+
+<!-- test-ignore -->
+```graql
+when { (less: $x, more: $y) isa greater-than; (less: $y, more: $z) isa greater-than; },
+then { (less: $x, more: $z) isa greater-than; };
 ```
 
 Asking workbase to explain inferred transitive `($x, $z)` relations does not produce the source relations, unless labeling them with some other variables:
 
-```
-when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa greater-than; } then { (less: $x, more: $z) isa greater-than; }
+<!-- test-ignore -->
+```graql
+when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa greater-than; },
+then { (less: $x, more: $z) isa greater-than; };
 ```
   
   Note that this can have a performance impact, so in production we recommend only leaving the relation variables as required.
@@ -35,6 +39,8 @@ when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa g
 
 | Workbase       | Grakn Core          | Grakn KGMS          |
 | :------------: | :-----------------: | :-----------------: |
+| 1.2.9          | 1.7.0 to 1.7.2      | N/A                 |
+| 1.2.8          | 1.7.0 to 1.7.2      | N/A                 |
 | 1.2.7          | 1.6.1, 1.6.2        | 1.6.2               |
 | 1.2.6          | 1.5.9               | N/A                 |
 | 1.2.5          | 1.5.9               | 1.5.8               |

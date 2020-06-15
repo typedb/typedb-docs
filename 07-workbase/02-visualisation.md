@@ -171,7 +171,7 @@ To navigate between Graql queries that we have previously executed, while in the
 <!-- -->
 [slide:start]
 [body:start]![Graql editor](/docs/images/workbase/visualise_query-settings-roleplayers.png)[body:end]
-[footer:start]Lastly, we can choose to view or hide the roleplayers.[footer:end]
+[footer:start]Lastly, we can choose to view or hide the role players.[footer:end]
 [slide:end]
 
 </div>
