@@ -8,7 +8,7 @@ graql_lang_test_template = """
 package grakn.doc.test.query;
 
 import grakn.client.GraknClient;
-import grakn.core.rule.GraknTestServer;
+import grakn.core.test.rule.GraknTestServer;
 import graql.lang.Graql;
 import graql.lang.pattern.Pattern;
 import graql.lang.query.GraqlQuery;
@@ -41,11 +41,11 @@ public class GraqlLangTest {
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((GraqlQuery) Graql.parse(query));
+            transaction.execute((GraqlQuery) Graql.parse(query)).get();
 
             encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
             query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((GraqlQuery) Graql.parse(query));
+            transaction.execute((GraqlQuery) Graql.parse(query)).get();
 
             transaction.commit();
         } catch (IOException e) {
@@ -78,7 +78,7 @@ graql_lang_test_method_template = """
         // PAGE COMMENT PLACEHOLDER
         String queries = "// QUERIES PLACEHOLDER";
         Stream<GraqlQuery> parsedQuery = Graql.parseList(queries);
-        parsedQuery.forEach(query -> transaction.execute(query));
+        parsedQuery.forEach(query -> transaction.execute(query).get());
     }
 """
 
@@ -125,7 +125,7 @@ for i, snippet in enumerate(snippets):
         test_method = graql_lang_pattern_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
 
     test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
-    test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add query objects
+    test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add  objects
     test_methods += test_method
 
 graql_lang_test_class = graql_lang_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)

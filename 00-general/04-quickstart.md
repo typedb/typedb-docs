@@ -139,7 +139,7 @@ public class SocialNetworkQuickstartQuery extends Throwable {
                 var("org").has("name", var("org-n"))
         ).get();
 
-        List<ConceptMap> answers = transaction.execute(query);
+        List<ConceptMap> answers = transaction.execute(query).get();
 
         for (ConceptMap answer : answers) {
             System.out.println(answer.get("per-fn").asAttribute().value());
@@ -171,7 +171,7 @@ with GraknClient(uri="localhost:48555") as client:
             (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
           get $pos;
         '''
-        answer_iterator = transaction.query(query)
+        answer_iterator = transaction.query(query).get()
         for answer in answer_iterator:
           print(answer.map().get("pos").id)
 ```

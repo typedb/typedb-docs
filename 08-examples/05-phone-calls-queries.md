@@ -102,7 +102,7 @@ public class PhoneCallsFirstQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query));
+        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asAttribute().value().toString()
@@ -143,7 +143,7 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query(query);
+  	const iterator = await transaction.query(query).get();
 	const answers = await iterator.collect();
 	const result = await Promise.all(
 		answers.map(answer =>
@@ -276,7 +276,7 @@ public class PhoneCallsSecondQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query));
+        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asAttribute().value().toString()
@@ -364,7 +364,7 @@ with GraknClient(uri="localhost:48555") as client:
         print("\nQuery:\n", "\n".join(query))
         query = "".join(query)
 
-        iterator = transaction.query(query)
+        iterator = transaction.query(query).get()
         answers = [ans.get("phone-number") for ans in iterator]
         result = [ answer.value() for answer in answers ]
 
@@ -445,7 +445,7 @@ public class PhoneCallsThirdQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query));
+        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asAttribute().value().toString()
@@ -527,7 +527,7 @@ with GraknClient(uri="localhost:48555") as client:
             print("\nQuery:\n", "\n".join(query))
             query = "".join(query)
 
-            iterator = transaction.query(query)
+            iterator = transaction.query(query).get()
             answers = [ans.get("phone-number") for ans in iterator]
             result = [ answer.value() for answer in answers ]
 
@@ -619,7 +619,7 @@ public class PhoneCallsForthQuery {
 
         Set&lt;String&gt; result = new HashSet<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query));
+        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
         for (ConceptMap answer : answers) {
             result.add(answer.get("phone-number-a").asAttribute().value().toString());
             result.add(answer.get("phone-number-b").asAttribute().value().toString());
@@ -708,7 +708,7 @@ with GraknClient(uri="localhost:48555") as client:
             print("\nQuery:\n", "\n".join(query))
             query = "".join(query)
 
-            iterator = transaction.query(query)
+            iterator = transaction.query(query).get()
             answers = []
             for answer in iterator:
                 answers.extend(answer.map().values())
@@ -809,7 +809,7 @@ public class PhoneCallsFifthQuery {
 
         String firstQuery = String.join("", firstQueryAsList);
 
-        List<Numeric> firstAnswers = transaction.execute((GraqlGet.Aggregate) parse(firstQuery));
+        List<Numeric> firstAnswers = transaction.execute((GraqlGet.Aggregate) parse(firstQuery)).get();
         float fisrtResult = 0;
         if (firstAnswers.size() > 0) {
             fisrtResult = firstAnswers.get(0).number().floatValue();
@@ -832,7 +832,7 @@ public class PhoneCallsFifthQuery {
         String secondQuery = String.join("", secondQueryAsList);
 
         float secondResult = 0;
-        List<Numeric> secondAnswers = transaction.execute((GraqlGet.Aggregate) parse(secondQuery));
+        List<Numeric> secondAnswers = transaction.execute((GraqlGet.Aggregate) parse(secondQuery)).get();
         if (secondAnswers.size() > 0) {
             secondResult = secondAnswers.get(0).number().floatValue();
         }
@@ -936,7 +936,7 @@ with GraknClient(uri="localhost:48555") as client:
             print("\nQuery:\n", "\n".join(first_query))
             first_query = "".join(first_query)
 
-            first_answer = list(transaction.query(first_query))
+            first_answer = list(transaction.query(first_query).get())
             first_result = 0
             if len(first_answer) > 0:
                 first_result = first_answer[0].number()

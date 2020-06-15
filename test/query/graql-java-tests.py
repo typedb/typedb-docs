@@ -8,7 +8,7 @@ graql_java_test_template = """
 package grakn.doc.test.query;
 
 import grakn.client.GraknClient;
-import grakn.core.rule.GraknTestServer;
+import grakn.core.test.rule.GraknTestServer;
 
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;

@@ -78,7 +78,7 @@ GraqlInsert insert_query = Graql.match(
 
 GraqlDelete delete_query = Graql.match(
   var("c").isa("caption").contains("inappropriate word")
-).delete(var("c").isa("caption"))
+).delete(var("c").isa("caption"));
 ```
 [tab:end]
 </div>
@@ -141,14 +141,14 @@ delete
 ```java
 GraqlInsert query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
-  var("new-org").isa("organisation").has("name", "Medicely")
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p"),
+  var("new-org").isa("organisation").has("name", "Medicely"),
+  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
 ).insert(var("emp").rel("employer", "new-org"));
 
 GraqlDelete query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
-  var("new-org").isa("organisation").has("name", "Medicely")
-  var("emp").isa("employment").rel("employer", "org").rel("employer", "new-org").rel("employee", "p"),
+  var("new-org").isa("organisation").has("name", "Medicely"),
+  var("emp").isa("employment").rel("employer", "org").rel("employer", "new-org").rel("employee", "p")
 ).delete(var("emp").rel("employer", "org"));
 ```
 [tab:end]
