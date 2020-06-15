@@ -29,7 +29,7 @@ GraqlDelete query = Graql.match(
 [tab:end]
 </div>
 
-This deletes a particular instance of the `person` type with the id of `V41016`. We must write the `isa` clause to tell
+This deletes a particular instance of the `person` type with the email `raphael.santos@gmail.com`. We must write the `isa` clause to tell
 the parser to remove the instance of data represented by the variable `$p`. If we don't know the type, we can usually use `thing`,
 the supertype of all data instances.
 
@@ -80,13 +80,13 @@ match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
 GraqlDelete query = Graql.match(
   var("t").isa("travel").has("start-date", var("st")),
   var("st").val(LocalDate.of(2013, 12, 22).atStartOfDay())
-).delete(var("t").has(var("st")));
+).delete(var("t").has("start-date", var("st")));
 ```
 [tab:end]
 </div>
 
 This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22` in the `match` clause. 
-We then disassociate the `travel` instance `$t` from the `start-date` attribute `$st` with the `delete $t has $st` clause.
+We then disassociate the `travel` instance `$t` from the `start-date` attribute `$st` with the `delete $t has start-date $st` clause.
 
 This will _not_ delete the entire instance of type `start-date` and value `2013-12-22` - it remains associated with any other instance that may own it.
 
