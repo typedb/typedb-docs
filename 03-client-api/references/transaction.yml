@@ -12,14 +12,14 @@ methods:
           type: String
           required: true
           default: N/A
-        param2: &accepts-lazyquery-inference
-          description: Determines if the query should apply inference.
-          required: true
+        param2: &accepts-lazyquery-options
+          description: Specifcy query options
+          required: false
       returns:
-        - "[Iterator](#iterator) of Answer"
+        - "Future [Iterator](#iterator) of Answer"
     java:
       <<: *method-lazyquery
-      method: transaction.stream(GraqlQuery query, boolean infer);
+      method: transaction.stream(GraqlQuery query, Options queryOptions);
       accepts:
         <<: *accepts-lazyquery
         param1:
@@ -28,33 +28,43 @@ methods:
           required: True
           default: N/A
         param2:
-          <<: *accepts-lazyquery-inference
-          name: infer
-          type: boolean
-          default: True
+          <<: *accepts-lazyquery-options
+          name: options
+          type: Options
+          default: default Options
       returns:
-        - Stream<?> (type of elements in the stream is dependent on the type of the executed query)
+        - Future<Stream<?>> (type of elements in the stream is dependent on the type of the executed query). Use `.get()` to retrieve the stream.
     javascript:
       <<: *method-lazyquery
       method: 'await transaction.query(query, options);'
       accepts:
         <<: *accepts-lazyquery
         param2:
-          <<: *accepts-lazyquery-inference
+          <<: *accepts-lazyquery-options
           name: options
-          type: '{ infer: true }'
-          required: true
-          default: '{ infer: true }'
+          type: Options Object
+          required: false
+          default: '{ infer: true , explain: false, batchSize: 50 }'
     python:
       <<: *method-lazyquery
-      method: 'transaction.query(query, infer=True)'
+      method: 'transaction.query(query, infer=True, explain=False, batch_size=50)'
       accepts:
         <<: *accepts-lazyquery
         param2:
-          <<: *accepts-lazyquery-inference
+          <<: *accepts-lazyquery-options
           name: infer
           type: boolean
           default: True
+        param3:
+          <<: *accepts-lazyquery-options
+          name: explain
+          type: boolean
+          default: False
+        param4:
+          <<: *accepts-lazyquery-options
+          name: batch_size
+          type: int > 1 or "ALL"
+          default: 50
 
   - method:
     common: &method-execute
@@ -74,10 +84,16 @@ methods:
           required: false
           default: true
       returns:
-        - List<?> (type of elements in the list is dependent on the type of the executed query)
+        - Future<List<?>> (type of elements in the list is dependent on the type of the executed query). Use `.get()` to retrieve the list.
     java:
       <<: *method-execute
-      method: 'transaction.execute(GraqlQuery query, boolean infer);'
+      method: 'transaction.execute(GraqlQuery query, Options queryOptions);'
+    python:
+      <<: *method-execute
+      method: 'transaction.execute(query, infer=True, explain=False, batch_size=50);'
+    javascript:
+      <<: *method-execute
+      method: 'transaction.execute(query, queryOptions);'
 
   - method:
     common: &method-commit
