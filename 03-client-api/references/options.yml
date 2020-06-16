@@ -1,0 +1,55 @@
+
+title: Options
+description:
+  common: >
+    The query options are set to specific defaults in the server when not explicitly declared by the user.
+  java: >
+    The transaction query options object `Transaction.Options` can be used to override the default server behaviour
+    query processing.
+
+    The server defaults are:
+    `infer = true`
+    `explain = false`
+    `batchSize = 50`
+
+  python: >
+    The transaction query optional parameters can be used to override the default server behaviour for query processing.
+    The server defaults are:
+
+    `infer = true`
+    `explain = false`
+    `batchSize = 50`
+
+  javascript: >
+    The transaction query options Object can be used to override the default server behaviour for query processing.
+    Provide an object mapping the allowed keys: `infer`, `explain`, and `batchSize`.
+
+    The server defaults are:
+    `infer = true`
+    `explain = false`
+    `batchSize = 50`
+
+
+methods:
+  - method:
+    java:
+      title: Explicitly enable or disable inference
+      description: Override the server defaults to enable or disable inference for the provided query
+      accepts:
+        param1:
+          name: enabled
+          type: boolean
+          required: true
+      returns:
+        - "Transaction.Options (#options)"
+  - method:
+    java:
+      title: Explicitly enable or disable explanations
+      description: Override the server defaults to enable or disable explanation availability for the provided query.
+      accepts:
+        param1:
+          name: enabled
+          type: boolean
+          required: true
+      returns:
+        - "Transaction.Options (#options)"

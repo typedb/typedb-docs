@@ -31,7 +31,7 @@ methods:
           <<: *accepts-lazyquery-options
           name: options
           type: Options
-          default: default Options
+          default: default Options - uses server defaults
       returns:
         - Future<Stream<?>> (type of elements in the stream is dependent on the type of the executed query). Use `.get()` to retrieve the stream.
     javascript:
@@ -42,29 +42,31 @@ methods:
         param2:
           <<: *accepts-lazyquery-options
           name: options
-          type: Options Object
+          type: Options object
           required: false
-          default: '{ infer: true , explain: false, batchSize: 50 }'
     python:
       <<: *method-lazyquery
-      method: 'transaction.query(query, infer=True, explain=False, batch_size=50)'
+      method: 'transaction.query(query, infer=SERVER_DEFAULT, explain=SERVER_DEFAULT, batch_size=SERVER_DEFAULT)'
       accepts:
         <<: *accepts-lazyquery
         param2:
           <<: *accepts-lazyquery-options
           name: infer
           type: boolean
-          default: True
+          required: false
+          default: SERVER_DEFAULT
         param3:
           <<: *accepts-lazyquery-options
           name: explain
           type: boolean
-          default: False
+          required: false
+          default: SERVER_DEFAULT
         param4:
           <<: *accepts-lazyquery-options
           name: batch_size
-          type: int > 1 or "ALL"
-          default: 50
+          type: int > 1 or "all"
+          required: false
+          default: SERVER_DEFAULT
 
   - method:
     common: &method-execute
