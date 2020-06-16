@@ -23,7 +23,7 @@ Usually, we want to change the value of an attribute that is associated to anoth
 
 ```graql
 ## disconnecting from the old attribute value
-match $org isa organisation, has name "Medicely", has registration-number $rn; delete $org has $rn;
+match $org isa organisation, has name "Medicely", has registration-number $rn; delete $org has registration-number $rn;
 
 ## connect the new attribute value
 match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
@@ -129,7 +129,7 @@ insert
   $emp (employer: $new-org);
 
 match
-  $emp (employer: $org, employer: $new-org; employee: $p) isa employment;
+  $emp (employer: $org, employer: $new-org: employee: $p) isa employment;
   $org isa organisation, has name "Pharos";
   $new-org isa organisation, has name "Medicely";
 delete

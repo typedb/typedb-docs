@@ -239,7 +239,7 @@ commit
 #### Delete the newly added person
 <!-- ignore-test -->
 ```graql
-match $per isa person, has full-name "Johny Jimbly Joe"; delete $per;
+match $per isa person, has full-name "Johny Jimbly Joe"; delete $per isa person;
 ```
 
 <!-- test-ignore -->
