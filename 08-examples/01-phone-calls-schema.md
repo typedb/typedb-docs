@@ -148,23 +148,23 @@ person sub entity,
     has is-customer;
 
   name sub attribute,
-	  datatype string;
+	  value string;
   started-at sub attribute,
-	  datatype date;
+	  value date;
   duration sub attribute,
-	  datatype long;
+	  value long;
   first-name sub attribute,
-	  datatype string;
+	  value string;
   last-name sub attribute,
-	  datatype string;
+	  value string;
   phone-number sub attribute,
-	  datatype string;
+	  value string;
   city sub attribute,
-	  datatype string;
+	  value string;
   age sub attribute,
-	  datatype long;
+	  value long;
   is-customer sub attribute,
-	  datatype boolean;
+	  value boolean;
 ```
 
 Note that we don't need to define an id attribute. Grakn takes care of that for us.
@@ -221,15 +221,6 @@ The result should be as follows:
 {$x label duration sub attribute;}
 {$x label phone-number sub attribute;}
 {$x label is-customer sub attribute;}
-{$x label "@has-started-at" sub "@has-attribute";}
-{$x label "@has-first-name" sub "@has-attribute";}
-{$x label "@has-city" sub "@has-attribute";}
-{$x label "@has-name" sub "@has-attribute";}
-{$x label "@has-duration" sub "@has-attribute";}
-{$x label "@has-age" sub "@has-attribute";}
-{$x label "@has-last-name" sub "@has-attribute";}
-{$x label "@has-phone-number" sub "@has-attribute";}
-{$x label "@has-is-customer" sub "@has-attribute";}
 ```
 
 ## To Recap

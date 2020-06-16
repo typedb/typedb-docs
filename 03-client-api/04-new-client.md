@@ -157,12 +157,12 @@ Since all Grakn clients are implemented similarly, the following piece of Python
 <!-- test-example social_network_create_new_client_a.py -->
 ```python
 # make sure we've run `pip3 install grakn-client` and have Grakn running
-from grakn.client import GraknClient, DataType
+from grakn.client import GraknClient, ValueType 
 
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
     with session.transaction().read() as read_transaction:   
-        answer_iterator = read_transaction.get_attributes_by_value("Canada", DataType.STRING)
+        answer_iterator = read_transaction.get_attributes_by_value("Canada", ValueType.STRING)
 client.close()
 ```
 
@@ -235,12 +235,12 @@ For instance, in Python, the next element in an iterator is retrieved by calling
 <!-- test-example social_network_create_new_client_b.py -->
 ```python
 # make sure we've run `pip3 install grakn-client` and have Grakn running
-from grakn.client import GraknClient, DataType
+from grakn.client import GraknClient, ValueType
 
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
     with session.transaction().read() as read_transaction:   
-        answer_iterator = read_transaction.get_attributes_by_value("Canada", DataType.STRING)
+        answer_iterator = read_transaction.get_attributes_by_value("Canada", ValueType.STRING)
         for attr in answer_iterator:
             print(attr)
 client.close()

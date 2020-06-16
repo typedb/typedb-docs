@@ -69,20 +69,20 @@ methods:
         - "`None`"
 
   - method:
-    common: &method-datatype
-      title: Retrieve datatype
-      description: Retrieves the datatype given to this AttributeType.
+    common: &method-valueType
+      title: Retrieve valuetype
+      description: Retrieves the valuetype given to this AttributeType.
       returns:
         - "`String`"
     java:
-      <<: *method-datatype
-      method: attributeType.dataType();
+      <<: *method-valueType
+      method: attributeType.valueType();
     javascript:
-      <<: *method-datatype
-      method: await attributeType.dataType();
+      <<: *method-valueType
+      method: await attributeType.valueType();
     python:
-      <<: *method-datatype
-      method: attributeType.data_type()
+      <<: *method-valueType
+      method: attributeType.value_type()
 
   - method:
     common: &method-regex-retrieve

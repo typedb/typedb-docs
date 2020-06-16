@@ -22,11 +22,11 @@ A [Grakn schema](../09-schema/00-overview.md) is the blueprint of a Grakn knowle
 define
 
 title sub attribute,
-  datatype string;
+  value string;
 
 event-date sub attribute,
   abstract,
-  datatype date;
+  value datetime;
 approved-date sub event-date;
 
 ## an abstract relation, only to be subtyped by other relations
