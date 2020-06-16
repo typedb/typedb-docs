@@ -150,7 +150,7 @@ person sub entity,
   name sub attribute,
 	  value string;
   started-at sub attribute,
-	  value date;
+	  value datetime;
   duration sub attribute,
 	  value long;
   first-name sub attribute,

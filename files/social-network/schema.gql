@@ -13,7 +13,7 @@ define
 
 	event-date sub attribute,
 		abstract,
-		value date;
+		value datetime;
 	approved-date sub event-date;
 	birth-date sub event-date;
 	start-date sub event-date;
@@ -21,7 +21,7 @@ define
 	engagement-date sub event-date;
 
 	published-date sub attribute,
-		value date;
+		value datetime;
 
 	reference-id sub attribute,
 		value string;
