@@ -34,7 +34,7 @@ match $org isa organisation, has name "Medicely"; insert $org has registration-n
 ```java
 GraqlDelete delete_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"))
-).delete(var("r").has("registration-number", var("org")));
+).delete(var("org").has("registration-number", var("rn")));
 
 GraqlInsert insert_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely")
