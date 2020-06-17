@@ -143,7 +143,7 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query(query).get();
+  	const iterator = await transaction.query(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
 		answers.map(answer =>
