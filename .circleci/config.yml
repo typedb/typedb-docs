@@ -94,7 +94,6 @@ jobs:
     steps:
       - install-bazel-linux-rbe
       - checkout
-      - run: pyenv global 3.5.2
       - run-grakn-server
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
@@ -105,7 +104,6 @@ jobs:
     steps:
       - install-bazel-linux-rbe
       - checkout
-      - run: pyenv global 3.5.2
       - run: bazel test //test/links:test --test_output=errors
 
   release-staging:
