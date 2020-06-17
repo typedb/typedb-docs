@@ -19,5 +19,5 @@ py_test(
         "//:template",
         "//:autolink-keywords"
     ],
-    python_version = "PY2",
+    python_version = "PY3",
 )

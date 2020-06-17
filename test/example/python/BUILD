@@ -24,7 +24,7 @@ py_test(
     ],
     data = ["//files:phone-calls-kg"],
     imports = ["."],
-    python_version = "PY2",
+    python_version = "PY3",
 )
 
 genrule(
@@ -62,7 +62,7 @@ py_test(
     deps = ["@graknlabs_client_python//:client_python"],
     data = ["//files:social-network-kg"],
     imports = ["."],
-    python_version = "PY2",
+    python_version = "PY3",
 )
 
 genrule(
