@@ -22,8 +22,8 @@ commands:
     steps:
       - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
       - run: bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh
-      - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-rbe.sh
-      - run: bash ./install-bazel-rbe.sh && rm ./install-bazel-rbe.sh
+#      - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-rbe.sh
+#      - run: bash ./install-bazel-rbe.sh && rm ./install-bazel-rbe.sh
 
   run-bazel-rbe:
     parameters:
@@ -92,7 +92,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-#      - install-bazel-linux-rbe
+      - install-bazel-linux-rbe
       - checkout
       - run-grakn-server
 #      - run: pyenv global 3.5.2 2.7.12
