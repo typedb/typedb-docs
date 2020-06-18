@@ -102,29 +102,34 @@ pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```java\n((
 
 snippets = []
 for markdown_file in markdown_files:
+    snippets.append([])
     with open(markdown_file, encoding='utf-8') as file:
         matches = re.findall(pattern_to_find_snippets, file.read())
         for snippet in matches:
             flag_type = snippet[0]
             if snippet[4] != "":
-                snippets.append({"code": snippet[4], "page": markdown_file})
+                snippets[-1].append({"code": snippet[4], "page": markdown_file})
 
 
 test_methods = ""
-for i, snippet in enumerate(snippets):
-    test_method = graql_java_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
-    test_method = test_method.replace("test() {", "test_" + str(i) + "() {")  # change page name comment
-    test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
+for snippets_in_page in snippets:
+    for i, snippet in enumerate(snippets_in_page):
+        page = snippet["page"]
+        page = page.replace("/", "__").replace("-","_").split(".")[0]
+        test_name = "test__{0}__graql_java__{1}".format(page, i)
+        test_method = graql_java_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+        test_method = test_method.replace("test() {", test_name + "() {")  # change page name comment
+        test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
 
-    # add execute statements
-    pattern_to_find_query_object_vars = '^Graql[A-Z].*?\s(.*)\s='
-    matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
-    execute_statements = ""
-    for variable in matches:
-        execute_statements += "transaction.execute(" + variable + ");\n"
+        # add execute statements
+        pattern_to_find_query_object_vars = '^Graql[A-Z].*?\s(.*)\s='
+        matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
+        execute_statements = ""
+        for variable in matches:
+            execute_statements += "transaction.execute(" + variable + ");\n"
 
-    test_method = test_method.replace("// EXECUTE PLACEHOLDER", execute_statements)
-    test_methods += test_method
+        test_method = test_method.replace("// EXECUTE PLACEHOLDER", execute_statements)
+        test_methods += test_method
 
 test_methods = test_methods.replace("&lt;", "<").replace("&gt;", ">")
 
