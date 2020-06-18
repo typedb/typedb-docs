@@ -550,7 +550,7 @@ travel sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("start-date").sub("attribute").value("date"),
+  type("start-date").sub("attribute").value("datetime"),
   type("residency").sub("relation").has("start-date"),
   type("travel").sub("relation").has("start-date")
 );
