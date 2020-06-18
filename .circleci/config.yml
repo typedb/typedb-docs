@@ -92,10 +92,10 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+#      - install-bazel-linux-rbe
       - checkout
       - run-grakn-server
-      - run: pyenv global 3.5.2 2.7.12
+#      - run: pyenv global 3.5.2 2.7.12
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
 

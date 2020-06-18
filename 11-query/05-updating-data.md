@@ -85,7 +85,7 @@ GraqlDelete delete_query = Graql.match(
 
 This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
-### Update a relation by changing its role players
+### Extending a relation with a new role player
 We can add role players to a relation by `match`ing the relation and the concept that will be the new role player, and then insert the new role player into the same relation.
 
 <div class="tabs dark">
@@ -115,7 +115,10 @@ GraqlInsert insert_query = Graql.match(
 [tab:end]
 </div>
 
-To replace a role player, we combine the steps for extending the relation, with steps for removing a role player:
+
+### Modifying a relation's role player
+
+To replace a role player, we combine the steps for extending the relation, with steps for [deleting a role player](04-delete-query.md#delete-role-players-from-relations):
 
 <div class="tabs dark">
 
