@@ -44,6 +44,7 @@ methods:
           name: options
           type: Options object
           required: false
+          default: Undefined options - uses server defaults
     python:
       <<: *method-lazyquery
       method: 'transaction.query(query, infer=SERVER_DEFAULT, explain=SERVER_DEFAULT, batch_size=SERVER_DEFAULT)'

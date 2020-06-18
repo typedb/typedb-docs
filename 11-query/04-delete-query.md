@@ -64,8 +64,7 @@ ownership, as in the next section, or delete the instance itself following the a
 ## Delete Attribute Ownerships
 We can remove the ownership of an attribute by another concept in the same way it is inserted or queried: using the `has` clause.
 
-Note that attributes with the same value are shared among their owners, so usually shouldn't delete the attribute directly. 
-It's important that one understands thoroughly how [attributes are defined](../09-schema/01-concepts.md#define-an-attribute).
+Note that attributes with the same value and type are shared among their owners. For this reason, usually, an attribute is not deleted directly. 
 
 <div class="tabs dark">
 

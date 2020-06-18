@@ -115,7 +115,7 @@ GraqlInsert insert_query = Graql.match(
 [tab:end]
 </div>
 
-To replace a role player, we combine extending the relation with removing a role player:
+To replace a role player, we combine the steps for extending the relation, with steps for removing a role player:
 
 <div class="tabs dark">
 
@@ -154,7 +154,7 @@ GraqlDelete deleteQuery = Graql.match(
 [tab:end]
 </div>
 
-After these queries, all employments by the organisation named `Pharos` were replaced with the organisation name `Medicely`.
+After these queries, all employments by the organisation named `Pharos` were replaced employments by the organisation named `Medicely`.
 
 ## Clients Guide
 
