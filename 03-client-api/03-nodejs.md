@@ -158,6 +158,8 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 
 {% include api/generic.html data=site.data.03_client_api.references.transaction language="javascript" %}
 
+{% include api/generic.html data=site.data.03_client_api.references.options language="javascript" %}
+
 {% include api/generic.html data=site.data.03_client_api.references.iterator language="javascript" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}

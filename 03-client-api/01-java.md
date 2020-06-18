@@ -206,6 +206,8 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 
 {% include api/generic.html data=site.data.03_client_api.references.transaction language="java" %}
 
+{% include api/generic.html data=site.data.03_client_api.references.options language="java" %}
+
 {% include api/generic.html data=site.data.03_client_api.references.graql language="java" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="java" %}

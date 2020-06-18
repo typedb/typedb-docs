@@ -18,7 +18,11 @@ description:
 
     `infer = true`
     `explain = false`
-    `batchSize = 50`
+    `batch_size = 50`
+
+    `batch_size` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
+    client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
+    until the batch is computed.
 
   javascript: >
     The transaction query options Object can be used to override the default server behaviour for query processing.
@@ -29,10 +33,15 @@ description:
     `explain = false`
     `batchSize = 50`
 
+    `batchSize` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
+    client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
+    until the batch is computed.
+
 
 methods:
   - method:
     java:
+      method: Transaction.Options.infer(boolean enabled)
       title: Explicitly enable or disable inference
       description: Override the server defaults to enable or disable inference for the provided query
       accepts:
@@ -44,12 +53,42 @@ methods:
         - "Transaction.Options (#options)"
   - method:
     java:
+      method: Transaction.Options.explain(boolean enabled)
       title: Explicitly enable or disable explanations
       description: Override the server defaults to enable or disable explanation availability for the provided query.
       accepts:
         param1:
           name: enabled
           type: boolean
+          required: true
+      returns:
+        - "Transaction.Options (#options)"
+  - method:
+    java:
+      method: Transaction.Options.batchSize(int size)
+      title: Explicitly set query batch iteration to a certain size
+      description: >
+        Override the server defaults for answer batch streaming. This tells the server to pre-compute and stream this
+        number of answers at a time. These are buffered in the client until read. A larger batch size causes the server
+        to compute more answers at a time, blocking the transaction until the batch is computed.
+      accepts:
+        param1:
+          name: enabled
+          type: int
+          required: true
+      returns:
+        - "Transaction.Options (#options)"
+  - method:
+    java:
+      method: Transaction.Options.batchSize(BatchSize batchSize)
+      title: Explicitly set query batch iteration size with available Enum values
+      description: >
+        Use a pre-set non-integer Enum provided by the Options object, such as ALL, which streams all
+        answers from the server without any further round trips from the client.
+      accepts:
+        param1:
+          name: batchSize
+          type: BatchSize
           required: true
       returns:
         - "Transaction.Options (#options)"
