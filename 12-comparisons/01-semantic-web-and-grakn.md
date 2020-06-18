@@ -337,7 +337,7 @@ PREFIX movie: <http://example.com/moviedb/0.1/>
 SELECT ?actor
 WHERE {
 	  ?actor movie:playedIn movie:Giant .
-	  NOT EXISTS {?actor movie:diedOn ?deathdate .} 
+	  NOT EXISTS {?actor movie:diedOn ?deathdate .
 }
 ```
 
@@ -381,7 +381,7 @@ To do the same in Grakn, we would write this:
 ```graql
 define 
 animal sub entity; 
-horse sub animal;`
+horse sub animal;
 ```
 
 RDFS also allows for sub-typing of `Properties`: 
@@ -432,7 +432,7 @@ company      rdf:type  rdfs:Class
 government   rdf:type  rdfs:Class
 
 employer     rdf:type         rdfs:Class
-employer     rdfs:subClassOf  government
+employer     rdfs:subClassOf  company
 employer     rdfs:subClassOf  government
 ```
 
@@ -657,15 +657,15 @@ OWL also provides a construct to model equivalent properties. This states that t
 :borrows owl:equivalentProperty :checkedOut .
 ```
 
-This can be represented with a rule in Grakn, where can infer a new relation `check-out` like this:
+This can be represented with a rule in Grakn, where can infer a new relation `checked-out` like this:
 
 <!-- test-ignore -->
 ```graql
 when {
-    (borrower: $x, borrowing: $ y) isa borrowing;
+    (borrower: $x, borrowing: $y) isa borrowing;
 }, 
 then {
-    (checking-out: $x, checked-out: $y) isa check-out;
+    (checking-out: $x, checked-out: $y) isa checked-out;
 };
 ```
 
