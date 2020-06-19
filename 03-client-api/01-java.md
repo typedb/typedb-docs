@@ -6,10 +6,7 @@ Summary: API Reference of Grakn Client Java.
 templatePath: 03-client-api/references/
 ---
 
-
-[Compatibility Table](#dependencies)
-
-
+## Installation
 <div class="tabs dark">
 
 [tab:Grakn Core]
@@ -54,6 +51,8 @@ templatePath: 03-client-api/references/
 [tab:end]
 
 </div>
+
+[Compatibility Table](#dependencies)
 
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
