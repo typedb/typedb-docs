@@ -8,10 +8,8 @@ templatePath: 03-client-api/references/
 
 ## Installation
 
+#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
 
-<div class="tabs dark">
-
-[tab:Maven Dependencies]
 ```xml
 <repositories>
     <repository>
@@ -21,26 +19,13 @@ templatePath: 03-client-api/references/
 </repositories>
 <dependencies>
     <dependency>
-        &lt;groupId&gt;io.graql&lt;/groupId&gt;
-        &lt;artifactId&gt;graql-lang&lt;/artifactId&gt;
-        <version>{version}</version>
-    </dependency>
-    <dependency>
         &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
         &lt;artifactId&gt;grakn-client&lt;/artifactId&gt;
         <version>{version}</version>
     </dependency>
 </dependencies>
 ```
-[tab:end]
 
-</div>
-
-<p style="font-size: 16px">
-
- [Compatibility Table](#dependencies)
- 
-</p>
 
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.

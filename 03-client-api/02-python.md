@@ -5,6 +5,10 @@ longTailKeywords: grakn python client, grakn client python, client python, pytho
 Summary: API Reference of Grakn Client Python.
 ---
 ## Installation
+
+#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
+
+
 ```
 pip install grakn-client
 ```
@@ -12,10 +16,6 @@ If multiple Python versions are available, you may wish to use
 ```
 pip3 install grakn-client
 ```
-
-<p style="font-size: 16px">
-[Compatibility Table](#dependencies)
-</p>
 
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.

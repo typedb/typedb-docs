@@ -6,13 +6,14 @@ Summary: API Reference of Grakn Client Node.js.
 ---
 
 ## Installation
+
+#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
+
+
 ```
 npm install grakn-client
 ```
 
-<p style="font-size: 16px">
-[Compatibility Table](#dependencies)
-</p>
 ## Quickstart
 First make sure that the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
