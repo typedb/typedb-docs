@@ -7,8 +7,11 @@ templatePath: 03-client-api/references/
 ---
 
 ## Installation
+
+
 <div class="tabs dark">
 
+[tab:Maven Dependencies]
 ```xml
 <repositories>
     <repository>
@@ -29,9 +32,14 @@ templatePath: 03-client-api/references/
     </dependency>
 </dependencies>
 ```
+[tab:end]
+
 </div>
+
 <p style="font-size: 16px">
-[Compatibility Table](#dependencies)
+
+ [Compatibility Table](#dependencies)
+ 
 </p>
 
 ## Quickstart
