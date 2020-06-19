@@ -4,23 +4,6 @@ keywords: grakn, client, python
 longTailKeywords: grakn python client, grakn client python, client python, python client
 Summary: API Reference of Grakn Client Python.
 ---
-
-## Dependencies
-
-| Client Python  | Grakn Core                  | Grakn KGMS     | Python |
-| :------------: | :-------------------------: | :----------:   | :----: |
-| 1.8.0          | 1.8.0                       | N/A            | >= 3.5 |
-| 1.7.2          | 1.7.1, 1.7.2                | N/A            | >= 2.7 |
-| 1.7.1          | 1.7.1                       | N/A            | >= 2.7 |
-| 1.7.0          | 1.7.1                       | N/A            | >= 2.7 |
-| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2          | >= 2.7 |
-| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8          | >= 2.7 |
-| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 2.7 |
-| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2          | >= 2.7 |
-| 1.5.1          | 1.5.0                       | N/A            | >= 2.7 |
-| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3   | >= 3.6 |
-| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3          | >= 3.6 |
-
 ## Installation
 ```
 pip install grakn-client
@@ -29,6 +12,9 @@ If multiple Python versions are available, you may wish to use
 ```
 pip3 install grakn-client
 ```
+
+[Compatibility Table](#dependencies)
+
 
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
@@ -152,3 +138,19 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
 
+
+## Dependencies
+
+| Client Python  | Grakn Core                  | Grakn KGMS     | Python |
+| :------------: | :-------------------------: | :----------:   | :----: |
+| 1.8.0          | 1.8.0                       | N/A            | >= 3.5 |
+| 1.7.2          | 1.7.1, 1.7.2                | N/A            | >= 2.7 |
+| 1.7.1          | 1.7.1                       | N/A            | >= 2.7 |
+| 1.7.0          | 1.7.1                       | N/A            | >= 2.7 |
+| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2          | >= 2.7 |
+| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8          | >= 2.7 |
+| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 2.7 |
+| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2          | >= 2.7 |
+| 1.5.1          | 1.5.0                       | N/A            | >= 2.7 |
+| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3   | >= 3.6 |
+| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3          | >= 3.6 |

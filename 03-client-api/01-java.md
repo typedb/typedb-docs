@@ -6,25 +6,9 @@ Summary: API Reference of Grakn Client Java.
 templatePath: 03-client-api/references/
 ---
 
-## Dependencies
 
-| Client Java | Grakn Core     | Grakn KGMS     |
-| :---------: | :-------------:| :------------: |
-| 1.8.0       | 1.8.0          | N/A            |
-| 1.7.3       | 1.7.1, 1.7.2   | N/A            |
-| 1.7.2       | 1.7.1, 1.7.2   | N/A            |
-| 1.6.2       | 1.6.2          | 1.6.2          |
-| 1.6.1       | 1.6.0, 1.6.1   | N/A            |
-| 1.5.5       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.4       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.3       | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
-| 1.5.2       | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
-| 1.5.0       | 1.5.0          | N/A            |
-| 1.4.3       | 1.4.3          | 1.4.3          |
-| 1.4.2       | 1.4.2          | 1.2.0          |
-| 1.4.1       | 1.4.0          | 1.2.0          |
-| 1.4.0       | 1.4.0          | 1.2.0          |
-| 1.3.0       | 1.3.0          | 1.2.0          |
+[Compatibility Table](#dependencies)
+
 
 <div class="tabs dark">
 
@@ -211,3 +195,26 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 {% include api/generic.html data=site.data.03_client_api.references.graql language="java" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="java" %}
+
+
+ 
+## Dependencies
+
+| Client Java | Grakn Core     | Grakn KGMS     |
+| :---------: | :-------------:| :------------: |
+| 1.8.1       | 1.8.0          | N/A            |
+| 1.8.0       | 1.8.0          | N/A            |
+| 1.7.3       | 1.7.1, 1.7.2   | N/A            |
+| 1.7.2       | 1.7.1, 1.7.2   | N/A            |
+| 1.6.2       | 1.6.2          | 1.6.2          |
+| 1.6.1       | 1.6.0, 1.6.1   | N/A            |
+| 1.5.5       | 1.5.8, 1.5.9   | 1.5.8          |
+| 1.5.4       | 1.5.8, 1.5.9   | 1.5.8          |
+| 1.5.3       | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
+| 1.5.2       | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
+| 1.5.0       | 1.5.0          | N/A            |
+| 1.4.3       | 1.4.3          | 1.4.3          |
+| 1.4.2       | 1.4.2          | 1.2.0          |
+| 1.4.1       | 1.4.0          | 1.2.0          |
+| 1.4.0       | 1.4.0          | 1.2.0          |
+| 1.3.0       | 1.3.0          | 1.2.0          |

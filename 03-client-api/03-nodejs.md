@@ -5,24 +5,12 @@ longTailKeywords: grakn node.js client, grakn client node.js, client node.js, py
 Summary: API Reference of Grakn Client Node.js.
 ---
 
-## Dependencies
-
-| Client Node.js | Grakn Core                  | Grakn KGMS     |  Node  |
-| :------------: | :-------------------------: | :------------: | :----: |
-| 1.8.0          | 1.8.0                       | N/A            | >= 6.5 |
-| 1.7.0          | 1.7.1, 1.7.2                | N/A            | >= 6.5 |
-| 1.6.0          | 1.6.0 to 1.6.2              | 1.6.2          | >= 6.5 |
-| 1.5.6          | 1.5.8, 1.5.9                | 1.5.8          | >= 6.5 |
-| 1.5.5          | 1.5.8, 1.5.9                | 1.5.8          | >= 6.5 |
-| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 6.5 |
-| 1.5.1          | 1.5.0, 1.5.1                | N/A            | >= 6.5 |
-| 1.2.4 to 1.3.1 | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0          | >= 6.5 |
-| 1.2.0 to 1.2.2 | 1.2.0                       | 1.2.0          | >= 6.5 |
-
 ## Installation
 ```
 npm install grakn-client
 ```
+
+[Compatibility Table](#dependencies)
 
 ## Quickstart
 First make sure that the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
@@ -163,3 +151,19 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 {% include api/generic.html data=site.data.03_client_api.references.iterator language="javascript" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}
+
+
+## Dependencies
+
+| Client Node.js | Grakn Core                  | Grakn KGMS     |  Node  |
+| :------------: | :-------------------------: | :------------: | :----: |
+| 1.8.0          | 1.8.0                       | N/A            | >= 6.5 |
+| 1.7.0          | 1.7.1, 1.7.2                | N/A            | >= 6.5 |
+| 1.6.0          | 1.6.0 to 1.6.2              | 1.6.2          | >= 6.5 |
+| 1.5.6          | 1.5.8, 1.5.9                | 1.5.8          | >= 6.5 |
+| 1.5.5          | 1.5.8, 1.5.9                | 1.5.8          | >= 6.5 |
+| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 6.5 |
+| 1.5.1          | 1.5.0, 1.5.1                | N/A            | >= 6.5 |
+| 1.2.4 to 1.3.1 | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0          | >= 6.5 |
+| 1.2.0 to 1.2.2 | 1.2.0                       | 1.2.0          | >= 6.5 |
+
