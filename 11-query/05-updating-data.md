@@ -118,7 +118,7 @@ GraqlInsert insert_query = Graql.match(
 
 ### Modifying a relation's role player
 
-To replace a role player, we combine the steps for extending the relation, with steps for [deleting a role player](04-delete-query.md#delete-role-players-from-relations):
+To replace a role player, we combine the steps for extending the relation, with steps for [deleting a role player](../11-query/04-delete-query.md#delete-role-players-from-relations):
 
 <div class="tabs dark">
 

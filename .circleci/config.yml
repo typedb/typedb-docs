@@ -18,13 +18,11 @@
 
 version: 2.1
 commands:
-  install-bazel-linux-rbe:
+  install-bazel:
     steps:
       - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
       - run: bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh
-      - run: eval "$(pyenv init -)" && pyenv global 3.5.2 2.7.12
-#      - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-rbe.sh
-#      - run: bash ./install-bazel-rbe.sh && rm ./install-bazel-rbe.sh
+      - run: pyenv install 3.4.3 && pyenv global 3.4.3 2.7.12
 
   run-bazel-rbe:
     parameters:
@@ -46,7 +44,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-bazel-rbe:
           command: bazel build //...
@@ -55,7 +53,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-bazel-rbe:
           command: bazel test //test/query:graql-lang --test_output=errors
@@ -64,7 +62,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-bazel-rbe:
           command: bazel test //test/query:graql-java --test_output=errors
@@ -73,7 +71,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-grakn-server
       - run: bazel test //test/example/java:phone-calls --test_output=errors
@@ -83,7 +81,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-grakn-server
       - run: bazel test //test/example/nodejs:phone-calls --test_output=errors
@@ -93,10 +91,9 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-grakn-server
-#      - run: pyenv global 3.5.2 2.7.12
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
 
@@ -104,7 +101,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run: bazel test //test/links:test --test_output=errors
 
@@ -112,7 +109,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run: |
           export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
@@ -124,7 +121,7 @@ jobs:
     machine: true
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run: |
           export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
