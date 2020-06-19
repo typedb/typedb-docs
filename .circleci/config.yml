@@ -42,7 +42,7 @@ commands:
 jobs:
   build:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -52,7 +52,7 @@ jobs:
 
   test-query-graql-lang:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -62,7 +62,7 @@ jobs:
 
   test-query-graql-java:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -72,7 +72,7 @@ jobs:
 
   test-example-java:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -83,7 +83,7 @@ jobs:
 
   test-example-nodejs:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -94,7 +94,7 @@ jobs:
 
   test-example-python:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -105,7 +105,7 @@ jobs:
 
   test-links:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -114,7 +114,7 @@ jobs:
 
   release-staging:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
@@ -127,7 +127,7 @@ jobs:
 
   release-production:
     machine: 
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
