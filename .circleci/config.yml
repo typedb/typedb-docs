@@ -18,12 +18,11 @@
 
 version: 2.1
 commands:
-  install-bazel-linux-rbe:
+  install-bazel:
     steps:
       - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
       - run: bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh
-      - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-rbe.sh
-      - run: bash ./install-bazel-rbe.sh && rm ./install-bazel-rbe.sh
+      - run: pyenv global system system
 
   run-bazel-rbe:
     parameters:
@@ -42,77 +41,83 @@ commands:
 
 jobs:
   build:
-    machine: true
+    machine: 
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-bazel-rbe:
           command: bazel build //...
 
   test-query-graql-lang:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-bazel-rbe:
           command: bazel test //test/query:graql-lang --test_output=errors
 
   test-query-graql-java:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-bazel-rbe:
           command: bazel test //test/query:graql-java --test_output=errors
 
   test-example-java:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-grakn-server
       - run: bazel test //test/example/java:phone-calls --test_output=errors
       - run: bazel test //test/example/java:social-network --test_output=errors
 
   test-example-nodejs:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run-grakn-server
       - run: bazel test //test/example/nodejs:phone-calls --test_output=errors
       - run: bazel test //test/example/nodejs:social-network --test_output=errors
 
   test-example-python:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
-      - run: pyenv global 2.7.12 3.5.2
       - run-grakn-server
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
 
   test-links:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
-      - run: pyenv global 2.7.12 3.5.2
       - run: bazel test //test/links:test --test_output=errors
 
   release-staging:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run: |
           export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
@@ -121,10 +126,11 @@ jobs:
           bazel run @graknlabs_build_tools//ci:release-docs -- development $CIRCLE_SHA1
 
   release-production:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel-linux-rbe
+      - install-bazel
       - checkout
       - run: |
           export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME

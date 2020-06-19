@@ -1,6 +1,6 @@
 ---
 pageTitle: Schema Concepts
-keywords: graql, schema, type hierarchy, concept, define, sub, key, abstract,relates, plays, datatype, regex, define, undefine
+keywords: graql, schema, type hierarchy, concept, define, sub, key, abstract,relates, plays, valuetype, regex, define, undefine
 longTailKeywords: graql schema, graql define query, graql type hierarchy, graql concepts, graql define entity, graql define relation, graql define attribute, graql schema definition
 Summary: A comprehensive guide on defining Schema Concepts in Grakn.
 ---
@@ -318,7 +318,7 @@ reaction sub relation,
   relates reacted-by;
 
 emotion sub attribute,
-  datatype string,
+  value string,
   plays reacted-emotion;
 
 post sub entity,
@@ -333,7 +333,7 @@ person sub entity,
 ```java
 GraqlDefine query = Graql.define(
   type("reaction").sub("relation").relates("reacted-emotion").relates("reacted-to").relates("reacted-by"),
-  type("emotion").sub("attribute").datatype("string").plays("reacted-emotion"),
+  type("emotion").sub("attribute").value("string").plays("reacted-emotion"),
   type("post").sub("entity").plays("reacted-to"),
   type("person").sub("entity").plays("reacted-by")
 );
@@ -488,7 +488,7 @@ GraqlDefine query = Graql.define(
 An attribute is a piece of information that determines the property of an element in the domain. For example, `name`, `language` and `age`. These attributes can be assigned to anything that needs them as a property.
 
 ### Define an attribute
-To define a new attribute, we use the `sub` keyword followed by `attribute`, `datatype` and the type of the desired value.
+To define a new attribute, we use the `sub` keyword followed by `attribute`, `value` and the type of the desired value.
 
 <div class="tabs dark">
 
@@ -497,14 +497,14 @@ To define a new attribute, we use the `sub` keyword followed by `attribute`, `da
 define
 
 name sub attribute,
-	datatype string;
+	value string;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("name").sub("attribute").datatype("string")
+  type("name").sub("attribute").value("string")
 );
 ```
 
@@ -518,7 +518,7 @@ The data types available in a Grakn knowledge graph are:
 - `double`: a double-precision floating point number, including a decimal point.
 - `string`: enclosed in double `"` or single `'` quotes
 - `boolean`: `true` or `false`
-- `date`: a date or date-time in the following formats:
+- `datetime`: a date or date-time in the following formats:
     - `yyyy-mm-dd`
     - `yyyy-mm-ddThh:mm`
     - `yyyy-mm-ddThh:mm:ss`
@@ -535,7 +535,7 @@ The data types available in a Grakn knowledge graph are:
 define
 
 start-date sub attribute,
-	datatype date;
+	value datetime;
 
 residency sub relation,
   ## roles and other attributes
@@ -550,7 +550,7 @@ travel sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("start-date").sub("attribute").datatype("date"),
+  type("start-date").sub("attribute").value("datetime"),
   type("residency").sub("relation").has("start-date"),
   type("travel").sub("relation").has("start-date")
 );
@@ -573,7 +573,7 @@ Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a 
 define
 
 phone-number sub attribute,
-	datatype string;
+	value string;
 
 person sub entity,
   has phone-number;
@@ -583,7 +583,7 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("phone-number").sub("attribute").datatype("string"),
+  type("phone-number").sub("attribute").value("string"),
   type("person").sub("entity").has("phone-number")
 );
 ```
@@ -603,7 +603,7 @@ Optionally, we can specify a Regex that the values of an attribute type must con
 define
 
 emotion sub attribute,
-  datatype string,
+  value string,
   regex "^(like|love|funny|shocking|sad|angry)$";
 ```
 [tab:end]
@@ -611,7 +611,7 @@ emotion sub attribute,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("emotion").sub("attribute").datatype("string").regex("[like, love, funny, shocking, sad, angry]")
+  type("emotion").sub("attribute").value("string").regex("[like, love, funny, shocking, sad, angry]")
 );
 ```
 
@@ -632,19 +632,19 @@ Let's go through a simple example of how an attribute can own an attribute of it
 ```graql
 define
 
-content sub attribute, datatype string,
+content sub attribute, value string,
   has language;
 
 language sub attribute,
-	datatype string;
+	value string;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("content").sub("attribute").datatype("string").has("language"),
-  type("language").sub("attribute").datatype("string")
+  type("content").sub("attribute").value("string").has("language"),
+  type("language").sub("attribute").value("string")
 );
 ```
 
@@ -662,7 +662,7 @@ An attribute can play a role in a relation. To define the role played by an attr
 ```graql
 define
 
-language sub attribute, datatype string,
+language sub attribute, value string,
   plays spoken;
 
 person sub entity,
@@ -677,7 +677,7 @@ speaking-of-language sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("language").sub("attribute").datatype("string").plays("spoken"),
+  type("language").sub("attribute").value("string").plays("spoken"),
   type("person").sub("entity").plays("speaker"),
   type("speaking-of-language").sub("relation").relates("speaker").relates("spoken")
 );```
@@ -686,7 +686,7 @@ GraqlDefine query = Graql.define(
 </div>
 
 ### Subtype an attribute
-We can define an attribute to inherit the datatype, attributes owned and roles played by another attribute.
+We can define an attribute to inherit the valuetype, attributes owned and roles played by another attribute.
 
 <div class="tabs dark">
 
@@ -695,7 +695,7 @@ We can define an attribute to inherit the datatype, attributes owned and roles p
 define
 
 event-date sub attribute,
-	datatype date;
+	value datetime;
 birth-date sub event-date;
 start-date sub event-date;
 end-date sub event-date;
@@ -705,7 +705,7 @@ end-date sub event-date;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").datatype("date"),
+  type("event-date").sub("attribute").value("datetime"),
   type("birth-date").sub("event-date"),
   type("start-date").sub("event-date"),
   type("end-date").sub("event-date")
@@ -715,7 +715,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-What this definition means is that `birth-date`, `start-date` and `end-date` are all inherently subtypes of `event-date`. They inherit the datatype of `event-date` as well as its contextuality.
+What this definition means is that `birth-date`, `start-date` and `end-date` are all inherently subtypes of `event-date`. They inherit the value type of `event-date` as well as its contextuality.
 
 The ability to subtype attributes not only helps mirror the reality of our dataset but also enables automated reasoning using type hierarchies.
 
@@ -729,14 +729,14 @@ There may be scenarios where a parent attribute is only defined for other attrib
 define
 
 event-date sub attribute, abstract,
-	datatype date;
+	value datetime;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").datatype("date")
+  type("event-date").sub("attribute").value("datetime")
 );
 ```
 

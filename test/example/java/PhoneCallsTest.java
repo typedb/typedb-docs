@@ -38,7 +38,7 @@ public class PhoneCallsTest {
     }
 
     @Test
-    public void testAPhoneCallsFirtstQuery() {
+    public void testAPhoneCallsFirstQuery() {
         PhoneCallsFirstQuery.main(new String[]{});
     }
 

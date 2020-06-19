@@ -10,10 +10,10 @@ java_test(
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server"
+        "@graknlabs_grakn_core//test/rule:grakn-test-server"
     ],
     classpath_resources = [
-        "@graknlabs_grakn_core//test-integration/resources:logback-test",
+        "@graknlabs_grakn_core//test/resources:logback-test",
     ],
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
@@ -45,10 +45,10 @@ java_test(
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
         "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server"
+        "@graknlabs_grakn_core//test/rule:grakn-test-server"
     ],
     classpath_resources = [
-        "@graknlabs_grakn_core//test-integration/resources:logback-test",
+        "@graknlabs_grakn_core//test/resources:logback-test",
     ],
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD

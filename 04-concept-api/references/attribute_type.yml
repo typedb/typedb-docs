@@ -7,7 +7,7 @@ methods:
         param: &accepts-create-value
           name: value
           description: The value for the new attribute instance to hold.
-          type: String &#124; boolean &#124; integer &#124; float &#124; date
+          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
           required: true
           default: N/A
     java:
@@ -16,7 +16,7 @@ methods:
       accepts:
         param:
           <<: *accepts-create-value
-          type: String &#124; boolean &#124; long &#124; double &#124; Date
+          type: String &#124; boolean &#124; long &#124; double &#124; datetime
       returns:
         - "[`Attribute`](../concept-api/thing?tab=java#attribute-methods) object"
     javascript:
@@ -25,7 +25,7 @@ methods:
       accepts:
         param:
           <<: *accepts-create-value
-          type: String &#124; boolean &#124; integer &#124; float &#124; date
+          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
       returns:
         - "[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) object"
     python:
@@ -34,7 +34,7 @@ methods:
       accepts:
         param:
           <<: *accepts-create-value
-          type: String &#124; boolean &#124; integer &#124; float &#124; date
+          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
       returns:
         - "[`Attribute`](../concept-api/thing?tab=python#attribute-methods) object"
 
@@ -46,7 +46,7 @@ methods:
         param:
           name: value
           description: The value for the instance of this AttributeType to retrieve.
-          type: String &#124; boolean &#124; integer &#124; float &#124; date
+          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
           required: true
           default: N/A
     java:
@@ -69,20 +69,20 @@ methods:
         - "`None`"
 
   - method:
-    common: &method-datatype
-      title: Retrieve datatype
-      description: Retrieves the datatype given to this AttributeType.
+    common: &method-valueType
+      title: Retrieve valuetype
+      description: Retrieves the valuetype given to this AttributeType.
       returns:
         - "`String`"
     java:
-      <<: *method-datatype
-      method: attributeType.dataType();
+      <<: *method-valueType
+      method: attributeType.valueType();
     javascript:
-      <<: *method-datatype
-      method: await attributeType.dataType();
+      <<: *method-valueType
+      method: await attributeType.valueType();
     python:
-      <<: *method-datatype
-      method: attributeType.data_type()
+      <<: *method-valueType
+      method: attributeType.value_type()
 
   - method:
     common: &method-regex-retrieve

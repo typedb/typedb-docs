@@ -58,7 +58,7 @@ Types constitute the core of the schema. They provide the necessary vocabulary t
 **Relations** connect other things together. Each relation can connect a number of things. A thing's participation in a relation is characterised by a **role** that can be played in that relation.
 Each relation is required to have at least one role.
 
-**Attributes** are used to characterise concepts with small pieces of data (think of numbers, strings, dates etc.). Consequently, by defining attributes we can attach values of a specified datatype to our instances.
+**Attributes** are used to characterise concepts with small pieces of data (think of numbers, strings, dates etc.). Consequently, by defining attributes we can attach values of a specified value type to our instances.
 
 Apart from serving as a mean of classification, types also define behaviours of their instances. Consequently, types can define the following behaviours:
 
@@ -101,7 +101,7 @@ The following keywords are reserved and meant to only be used by Graql.
 thing, entity, attribute, relation, role, rule
 
 ## Data types
-long, double, string, boolean, date
+long, double, string, boolean, datetime
 
 ## Query commands
 define, undefine, match, get, insert, delete, compute;
@@ -113,7 +113,7 @@ offset, limit, group, sort, asc, desc
 centrality, using
 
 ## Statement properties
-abstract, via, as, id, type, isa, isa!, sub, sub!, key, has, plays, relates, datatype, regex, when, then
+abstract, as, id, type, isa, isa!, sub, sub!, key, has, plays, relates, value, regex, when, then
 
 ## Operators
 or, not, like

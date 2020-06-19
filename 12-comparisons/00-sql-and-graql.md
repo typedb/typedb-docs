@@ -88,9 +88,9 @@ product sub entity,
   has quantity-per-unit, 
   plays product-assignment; 
 
-product-id sub attribute, datatype double; 
-product-name sub attribute, datatype string; 
-quantity-per-unit sub attribute, datatype double;
+product-id sub attribute, value double; 
+product-name sub attribute, value string; 
+quantity-per-unit sub attribute, value double;
 
 assignment sub relation, 
   relates assigned-category, 
@@ -115,7 +115,7 @@ CREATE TABLE products (
 
 A few important points: 
 
-- Here we can see that the SQL table has three attributes, each with their own datatype, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. 
+- Here we can see that the SQL table has three attributes, each with their own value type, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. 
 - In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `product-assignment`. 
 - In Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply omitted from the graph. 
 - Finally, an important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
@@ -286,8 +286,8 @@ stocking sub relation,
   relates stock, 
   relates supplier;
 
- quantity sub attribute, datatype double; 
- unit-price sub attribute, datatype double; 
+ quantity sub attribute, value double; 
+ unit-price sub attribute, value double; 
 ```
 
 ### Traversal Queries

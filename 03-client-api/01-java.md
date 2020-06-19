@@ -6,27 +6,10 @@ Summary: API Reference of Grakn Client Java.
 templatePath: 03-client-api/references/
 ---
 
-## Dependencies
+## Installation
 
-| Client Java | Grakn Core     | Grakn KGMS     |
-| :---------: | :-------------:| :------------: |
-| 1.7.2       | 1.7.1          | N/A            |
-| 1.6.2       | 1.6.2          | 1.6.2          |
-| 1.6.1       | 1.6.0, 1.6.1   | N/A            |
-| 1.5.5       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.4       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.3       | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
-| 1.5.2       | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
-| 1.5.0       | 1.5.0          | N/A            |
-| 1.4.3       | 1.4.3          | 1.4.3          |
-| 1.4.2       | 1.4.2          | 1.2.0          |
-| 1.4.1       | 1.4.0          | 1.2.0          |
-| 1.4.0       | 1.4.0          | 1.2.0          |
-| 1.3.0       | 1.3.0          | 1.2.0          |
+#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
 
-<div class="tabs dark">
-
-[tab:Grakn Core]
 ```xml
 <repositories>
     <repository>
@@ -36,38 +19,13 @@ templatePath: 03-client-api/references/
 </repositories>
 <dependencies>
     <dependency>
-        &lt;groupId&gt;io.graql&lt;/groupId&gt;
-        &lt;artifactId&gt;graql-lang&lt;/artifactId&gt;
-        <version>1.0.5</version>
-    </dependency>
-    <dependency>
         &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
         &lt;artifactId&gt;grakn-client&lt;/artifactId&gt;
-        <version>1.6.2</version>
+        <version>{version}</version>
     </dependency>
 </dependencies>
 ```
-[tab:end]
 
-[tab:Grakn KGMS]
-```xml
-<repositories>
-    <repository>
-        <id>mavencentral</id>
-        <url>https://oss.sonatype.org/content/repositories/releases</url>
-    </repository>
-</repositories>
-<dependencies>
-    <dependency>
-        &lt;groupId&gt;ai.grakn.kgms&lt;/groupId&gt;
-        &lt;artifactId&gt;client&lt;/artifactId&gt;
-        <version>1.6.2</version>
-    </dependency>
-</dependencies>
-```
-[tab:end]
-
-</div>
 
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
@@ -158,7 +116,7 @@ public class GraknQuickstartC {
     // Insert a person using a WRITE transaction
     GraknClient.Transaction writeTransaction = session.transaction().write();
     GraqlInsert insertQuery = Graql.insert(var("x").isa("person").has("email", "x@email.com"));
-    List<ConceptMap> insertedId = writeTransaction.execute(insertQuery);
+    List<ConceptMap> insertedId = writeTransaction.execute(insertQuery).get();
     System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").id());
     // to persist changes, a write transaction must always be committed (closed)
     writeTransaction.commit();
@@ -166,7 +124,7 @@ public class GraknQuickstartC {
     // Read the person using a READ only transaction
     GraknClient.Transaction readTransaction = session.transaction().read();
     GraqlGet getQuery = Graql.match(var("p").isa("person")).get().limit(10);
-    Stream<ConceptMap> answers = readTransaction.stream(getQuery);
+    Stream<ConceptMap> answers = readTransaction.stream(getQuery).get();
     answers.forEach(answer -> System.out.println(answer.get("p").id()));
 
     // transactions, sessions and clients must always be closed
@@ -204,6 +162,31 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 
 {% include api/generic.html data=site.data.03_client_api.references.transaction language="java" %}
 
+{% include api/generic.html data=site.data.03_client_api.references.options language="java" %}
+
 {% include api/generic.html data=site.data.03_client_api.references.graql language="java" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="java" %}
+
+
+ 
+## Dependencies
+
+| Client Java | Grakn Core     | Grakn KGMS     |
+| :---------: | :-------------:| :------------: |
+| 1.8.1       | 1.8.0          | N/A            |
+| 1.8.0       | 1.8.0          | N/A            |
+| 1.7.3       | 1.7.1, 1.7.2   | N/A            |
+| 1.7.2       | 1.7.1, 1.7.2   | N/A            |
+| 1.6.2       | 1.6.2          | 1.6.2          |
+| 1.6.1       | 1.6.0, 1.6.1   | N/A            |
+| 1.5.5       | 1.5.8, 1.5.9   | 1.5.8          |
+| 1.5.4       | 1.5.8, 1.5.9   | 1.5.8          |
+| 1.5.3       | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
+| 1.5.2       | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
+| 1.5.0       | 1.5.0          | N/A            |
+| 1.4.3       | 1.4.3          | 1.4.3          |
+| 1.4.2       | 1.4.2          | 1.2.0          |
+| 1.4.1       | 1.4.0          | 1.2.0          |
+| 1.4.0       | 1.4.0          | 1.2.0          |
+| 1.3.0       | 1.3.0          | 1.2.0          |
