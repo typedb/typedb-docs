@@ -1,7 +1,7 @@
 
 title: Options
 description:
-  java: |
+  java: |-
     The transaction query options object `Transaction.Options` can be used to override the default server behaviour
     query processing.
 
@@ -10,7 +10,7 @@ description:
     `explain = false`
     `batchSize = 50`
 
-  python: |
+  python: |-
     The transaction query optional parameters can be used to override the default server behaviour for query processing.
     The server defaults are:
 
@@ -23,7 +23,7 @@ description:
     client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
     until the batch is computed.
 
-  javascript: |
+  javascript: |-
     The transaction query options Object can be used to override the default server behaviour for query processing.
     Provide an object mapping the allowed keys: `infer`, `explain`, and `batchSize`.
 
