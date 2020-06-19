@@ -9,7 +9,6 @@ templatePath: 03-client-api/references/
 ## Installation
 <div class="tabs dark">
 
-[tab:Grakn Core]
 ```xml
 <repositories>
     <repository>
@@ -30,26 +29,6 @@ templatePath: 03-client-api/references/
     </dependency>
 </dependencies>
 ```
-[tab:end]
-
-[tab:Grakn KGMS]
-```xml
-<repositories>
-    <repository>
-        <id>mavencentral</id>
-        <url>https://oss.sonatype.org/content/repositories/releases</url>
-    </repository>
-</repositories>
-<dependencies>
-    <dependency>
-        &lt;groupId&gt;ai.grakn.kgms&lt;/groupId&gt;
-        &lt;artifactId&gt;client&lt;/artifactId&gt;
-        <version>{version}</version>
-    </dependency>
-</dependencies>
-```
-[tab:end]
-
 </div>
 <p style="font-size: 16px">
 [Compatibility Table](#dependencies)
