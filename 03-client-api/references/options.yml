@@ -15,7 +15,6 @@ description:
 
   python: |
     The transaction query optional parameters can be used to override the default server behaviour for query processing.
-    The server defaults are:
 
     The server defaults are:
 
@@ -27,11 +26,12 @@ description:
 
     `batch_size` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
     client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
-    until the batch is computed.
+    until the batch is computed. Use `Transaction.Options.BATCH_ALL` to retrieve all answers from the server
+    with a single client-side request.
 
   javascript: |
     The transaction query options Object can be used to override the default server behaviour for query processing.
-    Provide an object mapping the allowed keys: `infer`, `explain`, and `batchSize`.
+    We can provide any of the allowed keys: `infer`, `explain`, and `batchSize`.
 
     The server defaults are:
 
@@ -43,9 +43,8 @@ description:
 
     `batchSize` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
     client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
-    until the batch is computed.
-
-
+    until the batch is computed. Use `batchSize : "all"` to retrieve all answers from the server  with a single
+    client-side request.
 
 methods:
   - method:
