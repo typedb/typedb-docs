@@ -21,12 +21,12 @@ templatePath: 03-client-api/references/
     <dependency>
         &lt;groupId&gt;io.graql&lt;/groupId&gt;
         &lt;artifactId&gt;graql-lang&lt;/artifactId&gt;
-        <version>1.0.5</version>
+        <version>{version}</version>
     </dependency>
     <dependency>
         &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
         &lt;artifactId&gt;grakn-client&lt;/artifactId&gt;
-        <version>1.6.2</version>
+        <version>{version}</version>
     </dependency>
 </dependencies>
 ```
@@ -44,15 +44,16 @@ templatePath: 03-client-api/references/
     <dependency>
         &lt;groupId&gt;ai.grakn.kgms&lt;/groupId&gt;
         &lt;artifactId&gt;client&lt;/artifactId&gt;
-        <version>1.6.2</version>
+        <version>{version}</version>
     </dependency>
 </dependencies>
 ```
 [tab:end]
 
 </div>
-
+<p style="font-size: 16px">
 [Compatibility Table](#dependencies)
+</p>
 
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.

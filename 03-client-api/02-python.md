@@ -13,8 +13,9 @@ If multiple Python versions are available, you may wish to use
 pip3 install grakn-client
 ```
 
+<p style="font-size: 16px">
 [Compatibility Table](#dependencies)
-
+</p>
 
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
