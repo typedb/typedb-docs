@@ -3,34 +3,35 @@ title: Options
 description:
   java: >
     The transaction query options object `Transaction.Options` can be used to override the default server behaviour
-    query processing.
-
-    The server defaults are:
-    `infer = true`
-    `explain = false`
+    query processing. \n
+    \n
+    The server defaults are: \n
+    `infer = true` \n
+    `explain = false` \n
     `batchSize = 50`
 
   python: >
     The transaction query optional parameters can be used to override the default server behaviour for query processing.
-    The server defaults are:
-
-    `infer = true`
-    `explain = false`
-    `batch_size = 50`
-
+    The server defaults are: \n
+    \n
+    The server defaults are:  \n
+    `infer = True`            \n
+    `explain = False`         \n
+    `batch_size = 50`          \n
+    \n
     `batch_size` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
     client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
     until the batch is computed.
 
   javascript: >
     The transaction query options Object can be used to override the default server behaviour for query processing.
-    Provide an object mapping the allowed keys: `infer`, `explain`, and `batchSize`.
-
-    The server defaults are:
-    `infer = true`
-    `explain = false`
-    `batchSize = 50`
-
+    Provide an object mapping the allowed keys: `infer`, `explain`, and `batchSize`.\n
+    \n
+    The server defaults are:  \n
+    `infer = true`            \n
+    `explain = false`         \n
+    `batchSize = 50`          \n
+    \n
     `batchSize` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
     client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
     until the batch is computed.
@@ -46,9 +47,10 @@ methods:
         param1:
           name: enabled
           type: boolean
+          description: explicitly set inference on or off for this query
           required: true
       returns:
-        - "Transaction.Options (#options)"
+        - "[Transaction.Options](#options)"
   - method:
     java:
       method: Transaction.Options.explain(boolean enabled)
@@ -58,9 +60,10 @@ methods:
         param1:
           name: enabled
           type: boolean
+          description: explicitly set explanations on or off for this query
           required: true
       returns:
-        - "Transaction.Options (#options)"
+        - "[Transaction.Options](#options)"
   - method:
     java:
       method: Transaction.Options.batchSize(int size)
@@ -75,7 +78,7 @@ methods:
           type: int
           required: true
       returns:
-        - "Transaction.Options (#options)"
+        - "[Transaction.Options](#options)"
   - method:
     java:
       method: Transaction.Options.batchSize(BatchSize batchSize)
