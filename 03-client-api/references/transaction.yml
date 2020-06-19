@@ -30,7 +30,7 @@ methods:
         param2:
           <<: *accepts-lazyquery-options
           name: options
-          type: [Options](#options)
+          type: Options
           default: default Options - uses server defaults
       returns:
         - Future<Stream<?>> (type of elements in the stream is dependent on the type of the executed query). Use `.get()` to retrieve the stream.
