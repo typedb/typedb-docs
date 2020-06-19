@@ -100,7 +100,6 @@ jobs:
       - install-bazel
       - checkout
       - run-grakn-server
-      - run: pyenv global system 2.7.12
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
 
