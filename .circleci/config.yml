@@ -22,7 +22,7 @@ commands:
     steps:
       - run: curl -OL https://raw.githubusercontent.com/graknlabs/build-tools/master/ci/install-bazel-linux.sh
       - run: bash ./install-bazel-linux.sh && rm ./install-bazel-linux.sh
-      - run: pyenv install 3.4.3 && pyenv global 3.4.3 2.7.12
+#      - run: pyenv install 3.4.3 && pyenv global 3.4.3 2.7.12
 
   run-bazel-rbe:
     parameters:
@@ -88,7 +88,8 @@ jobs:
       - run: bazel test //test/example/nodejs:social-network --test_output=errors
 
   test-example-python:
-    machine: true
+    machine:
+      image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
       - install-bazel
