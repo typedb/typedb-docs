@@ -183,7 +183,7 @@ This states that *JK Rowling wrote Harry Potter*. However, we may want to qualif
 ```xml
 bio:n1 bio:author lit:JKRowling .
 bio:n1 bio:title "Harry Potter" .
-bio:n1 bio:publicationDate 2000 .     
+bio:n1 bio:publicationDate 2000 .			
 ```
 
 In Grakn, given its concept level schema, the need for reification doesn't exist and we can represent higher order relationships natively. *JK Rowling wrote Harry Potter* would be expressed like this: 
@@ -211,7 +211,7 @@ Sometimes in RDF we don't want to give a URI or a literal. In such cases we are 
 ```xml
 lit: HarryPotter bio:name lit:"Harry Potter" .
 lit:HarryPotter lit:hasInspiration [a :Man; 
-              bio:livesIn geo:England] .
+							bio:livesIn geo:England] .
 ```
 
 As Grakn doesn't live on the web, the idea of a blank node doesn't directly translate to Grakn. While in RDF we use a blank node to indicate the existing of a *thing* for which we don't have a URI, there are multiple ways how this could be done in Grakn. If, as in the example above, we're using a blank node to indicate that we don't know anything else about that man, other than that he lives in England, we represent this as follows:
@@ -265,10 +265,10 @@ PREFIX vCard: <http://www.w3.org/2001/vcard-rdf/3.0#>
 
 SELECT ?whom
 WHERE {
-   ?person rdf:type  foaf:Person .
-   ?person vcard:family-name "Smith" .
+	 ?person rdf:type  foaf:Person .
+	 ?person vcard:family-name "Smith" .
      ?person vcard:given-name  "Adam" .
-   ?person foaf:knows ?whom .
+	 ?person foaf:knows ?whom .
  }
 ```
 
@@ -336,8 +336,8 @@ PREFIX movie: <http://example.com/moviedb/0.1/>
 
 SELECT ?actor
 WHERE {
-    ?actor movie:playedIn movie:Giant .
-    NOT EXISTS {?actor movie:diedOn ?deathdate .
+	  ?actor movie:playedIn movie:Giant .
+	  NOT EXISTS {?actor movie:diedOn ?deathdate .
 }
 ```
 
@@ -483,9 +483,9 @@ In the example above, `rdfs:domain` can be translated to Grakn by saying that wh
 <!-- test-ignore -->
 ```graql
 when {
-  $b has published-date $pd; 
+	$b has published-date $pd; 
 }, then {
-  (published-book: $b) is publishing; 
+	(published-book: $b) is publishing; 
 }; 
 ```
 
@@ -494,9 +494,9 @@ The example of `rdfs:range` can be created with the following Grakn rule, which 
 <!-- test-ignore -->
 ```graql
 when {
-  $r (brother: $p) isa siblingship; 
+	$r (brother: $p) isa siblingship; 
 }, then {
-  $p has gender "male";  
+	$p has gender "male";  
 }; 
 ```
 
@@ -521,9 +521,9 @@ To do the same in Grakn, we can write a rule that finds all entities with an att
 <!-- test-ignore -->
 ```graql
 when {
-  $s has next-departure $nd; 
+	$s has next-departure $nd; 
 }, then {
-  (departing-vessel: $s) isa departure; 
+	(departing-vessel: $s) isa departure; 
 }; 
 ```
 
@@ -620,10 +620,10 @@ In Grakn, a rule would be created to represent the transitivity:
 <!-- test-ignore -->
 ```graql
 when {
-  $r1 (located: $a, locating: $b); 
-  $r2 (located: $b, locating: $c);  
+	$r1 (located: $a, locating: $b); 
+	$r2 (located: $b, locating: $c); 	
 }, then {
-  (located: $a, locating: $c);
+	(located: $a, locating: $c);
 }; 
 ```
 
@@ -721,10 +721,10 @@ This assigns the class `:Mother` if the resource is both `:Female` and `Parent`.
 ```graql
 when {
     $p isa person, has gender "female"; 
-    (mother: $p) isa motherhood; 
+		(mother: $p) isa motherhood; 
 }, 
 then {
-     (parent: $p) isa parenthood; 
+	   (parent: $p) isa parenthood; 
 };
 ```
 
@@ -767,7 +767,7 @@ when {
     $w isa red-wine; 
 }, 
 then {
-    $w has color "red"; 
+	  $w has color "red"; 
 };
 ```
 
@@ -777,7 +777,7 @@ The `owl:hasSelf` restriction can state that someone who is a narcissist loves t
 
 ```xml
 :Narcissist rdfs:subClassOf
-    [ owl:hasSelf true ; owl:onProperty :loves ]
+		[ owl:hasSelf true ; owl:onProperty :loves ]
 ```
 
 This could be represented in Grakn: 
@@ -788,7 +788,7 @@ when {
     $n isa narcissist; 
 }, 
 then {
-    (loving: $n) isa loves; 
+	  (loving: $n) isa loves; 
 };
 ```
 
@@ -814,9 +814,9 @@ This code snippet in SHACL shows how the data needs to adhere to certain restric
 ] .
 
 :Company a sh:Shape ;
-  sh:property [
-    sh:path     schema:name ;
-    sh:datatype xsd:string;
+	sh:property [
+		sh:path     schema:name ;
+		sh:datatype xsd:string;
 ] .
 ```
 
@@ -826,13 +826,13 @@ In Grakn, this validation takes place in Graql's schema language. A `Person` ent
 ```graql
 define 
 person sub entity, 
-  plays employee; 
+	plays employee; 
 company sub entity, 
-  has name,
-  plays employer; 
+	has name,
+	plays employer; 
 employment sub relation, 
-  relates employer,
-  relates employee;
+	relates employer,
+	relates employee;
 name sub attribute, value string; 
 ```
 
