@@ -43,7 +43,7 @@ Instead, Grakn provides the user with just one technology that can replace many 
 ![Architecture Comparison](../images/comparisons/sem-web-architecture.png)
 *Instead of RDF, SPARQL, RDFS, OWL and SHACL, we use Grakn and Graql.*
 
-In short, Grakn is a logical database in the form of a knowledge graph that implements a concept-level schema. This knowledge representation system is then interpreted by an automated reasoning engine that performs automated deductive reasoning during query runtime in a distributed environment. The querying, schema and reasoning all happen through Grakn's query language — Graql. 
+In short, Grakn is a distributed logical database in the form of a knowledge graph that implements a concept-level schema. This knowledge representation system is then interpreted by an automated reasoning engine that performs automated deductive reasoning during query runtime. The querying, schema and reasoning all happen through Grakn's query language — Graql. 
 
 The formal foundations of Grakn's concept level schema are provided by the *hypergraph*, which plays the same role as the relational model for relational databases, directed graphs in the Semantic Web and property graphs for graph databases. Hypergraphs generalise the common notion of what an edge is. In RDF and property graphs, an edge is just a *pair* of vertices. Instead, a *hypergraph* is a *set* of vertices, which can be further structured. The benefits over a directed graph model include:
 
@@ -79,7 +79,7 @@ As we can see, RDF gives up in compactness what it gains in flexibility. This me
 ![RDF Model](../images/comparisons/rdf-1.png)
 *Graphical representation of RDF triples.*
 
-Grakn doesn't work with triples. Instead, it exposes a **conceptual level entity-relationship model**. So, instead of modelling in subject-predicate-object form, Grakn represents our data at a higher level, with entities, relations, roles and attributes. For the example above, we would say there are two `person` entities, which have `name` attributes and are related through a `knows` relation. 
+Grakn doesn't work with triples. Instead, it exposes a **concept level entity-relationship model**. So, instead of modelling in subject-predicate-object form, Grakn represents our data at a higher level, with entities, relations, roles and attributes. For the example above, we would say there are two `person` entities, which have `name` attributes and are related through a `knows` relation. 
 
 <!-- test-ignore -->
 ```graql
@@ -107,7 +107,7 @@ As mentioned, Grakn's data model is based on hyper-graphs. While in RDF an edge 
 ![Hyper-relation](../images/comparisons/sem-web-hyper-relation.png)
 *Example of a hyper-relation in Grakn.*
 
-A hyper-relation can simply be seen as a collection of role-role-player pairs of arbitrary cardinality. As hyper-relations cannot be represented natively in a labelled directed graph, the above example in RDF can end up looking like this: 
+A hyper-relation can simply be seen as a collection of a role & role-player pairs of arbitrary cardinality. As hyper-relations cannot be represented natively in a labelled directed graph, the above example in RDF can end up looking like this: 
 
 ![Hyper-relation in RDF](../images/comparisons/sem-web-hyper-relation2.png)
 *Representation of hyper-relations in RDF.*
@@ -124,7 +124,7 @@ Due to the public nature of the Web, RDF uses namespaces to interpret and identi
 rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#
 ```
 
-As Grakn doesn't operate on the web, there isn't a need for URIs. A related concept is that of `keyspaces`, which are logical databases within a Grakn instance. Unlike an RDF `namespace` these cannot talk to each other. 
+As Grakn doesn't operate on the web, there isn't a need for URIs. A related concept is that of `keyspaces`, which are logically separate databases within a Grakn instance. Unlike an RDF `namespace` these cannot talk to each other. 
 
 ### Serialisation
 
@@ -183,7 +183,7 @@ This states that *JK Rowling wrote Harry Potter*. However, we may want to qualif
 ```xml
 bio:n1 bio:author lit:JKRowling .
 bio:n1 bio:title "Harry Potter" .
-bio:n1 bio:publicationDate 2000 .			
+bio:n1 bio:publicationDate 2000 .     
 ```
 
 In Grakn, given its concept level schema, the need for reification doesn't exist and we can represent higher order relationships natively. *JK Rowling wrote Harry Potter* would be expressed like this: 
@@ -211,7 +211,7 @@ Sometimes in RDF we don't want to give a URI or a literal. In such cases we are 
 ```xml
 lit: HarryPotter bio:name lit:"Harry Potter" .
 lit:HarryPotter lit:hasInspiration [a :Man; 
-							bio:livesIn geo:England] .
+              bio:livesIn geo:England] .
 ```
 
 As Grakn doesn't live on the web, the idea of a blank node doesn't directly translate to Grakn. While in RDF we use a blank node to indicate the existing of a *thing* for which we don't have a URI, there are multiple ways how this could be done in Grakn. If, as in the example above, we're using a blank node to indicate that we don't know anything else about that man, other than that he lives in England, we represent this as follows:
@@ -265,10 +265,10 @@ PREFIX vCard: <http://www.w3.org/2001/vcard-rdf/3.0#>
 
 SELECT ?whom
 WHERE {
-	 ?person rdf:type  foaf:Person .
-	 ?person vcard:family-name "Smith" .
+   ?person rdf:type  foaf:Person .
+   ?person vcard:family-name "Smith" .
      ?person vcard:given-name  "Adam" .
-	 ?person foaf:knows ?whom .
+   ?person foaf:knows ?whom .
  }
 ```
 
@@ -336,8 +336,8 @@ PREFIX movie: <http://example.com/moviedb/0.1/>
 
 SELECT ?actor
 WHERE {
-	  ?actor movie:playedIn movie:Giant .
-	  NOT EXISTS {?actor movie:diedOn ?deathdate .
+    ?actor movie:playedIn movie:Giant .
+    NOT EXISTS {?actor movie:diedOn ?deathdate .
 }
 ```
 
@@ -483,9 +483,9 @@ In the example above, `rdfs:domain` can be translated to Grakn by saying that wh
 <!-- test-ignore -->
 ```graql
 when {
-	$b has published-date $pd; 
+  $b has published-date $pd; 
 }, then {
-	(published-book: $b) is publishing; 
+  (published-book: $b) is publishing; 
 }; 
 ```
 
@@ -494,9 +494,9 @@ The example of `rdfs:range` can be created with the following Grakn rule, which 
 <!-- test-ignore -->
 ```graql
 when {
-	$r (brother: $p) isa siblingship; 
+  $r (brother: $p) isa siblingship; 
 }, then {
-	$p has gender "male";  
+  $p has gender "male";  
 }; 
 ```
 
@@ -521,9 +521,9 @@ To do the same in Grakn, we can write a rule that finds all entities with an att
 <!-- test-ignore -->
 ```graql
 when {
-	$s has next-departure $nd; 
+  $s has next-departure $nd; 
 }, then {
-	(departing-vessel: $s) isa departure; 
+  (departing-vessel: $s) isa departure; 
 }; 
 ```
 
@@ -536,7 +536,7 @@ $s isa vessel, has name "QEII", has next-departure "Mar 4, 2010";
 
 Grakn infers that the vessel QEII plays the role of `departing-vessel` in a `departure` relation, the equivalent in this case of the `nextDeparture` class. 
 
-The use of `rdfs:domain` and `rdfs:range` are useful in the context of the web, where federated data can often be found to be incomplete. As Grakn doesn't live on the web, the need for these concepts is reduced. Plus, most of this inferred data is already natively represented in Grakn's conceptual model. A lot of this is due to its higher level model and the usage of rules. Therefore, directly mapping `rdfs:range` and `rdfs:domain` to a concept in Grakn is usually naive and leads to redundancies. Instead, translating these concepts into Grakn should be done on a case by case basis using rules and roles. 
+The use of `rdfs:domain` and `rdfs:range` are useful in the context of the web, where federated data can often be found to be incomplete. As Grakn doesn't live on the web, the need for these concepts is reduced. Further, most of this inferred data is already natively represented in Grakn's conceptual model. A lot of this is due to its higher level model and the usage of rules. Therefore, directly mapping `rdfs:range` and `rdfs:domain` to a concept in Grakn is usually naive and leads to redundancies. Instead, translating these concepts into Grakn should be done on a case by case basis using rules and roles. 
 
 ## OWL
 
@@ -550,7 +550,7 @@ The result is that OWL struggles to maintain a satisfactory balance between expr
 
 OWL adopts open world assumptions, instead of Grakn's closed world assumptions. This means that in an example where OWL has the constraint: *Every parent must have at least one child*, if we have a person with no children, this is still consistent with the constraint, as we may not yet know about John's children. However, with Grakn's closed world assumption, if there are no actual mentions of John's children, this means he really doesn't have any children and isn't a parent. 
 
-Open world assumptions lend itself well for the open-ended web, which includes incomplete information from multiple sources, which is why OWL provides many concepts to manage and deal with this incompleteness. However, because of this open world assumption, OWL makes it hard to validate consistency of data. That's why relational databases maintain schema constraints to guarantee the quality of data. Grakn combines both styles of reasoning: ontological style open world inference, and schema like closed world constraint checking. 
+Open world assumptions lend themselves well for the open-ended web, which includes incomplete information from multiple sources, which is why OWL provides many concepts to manage and deal with this incompleteness. However, because of this open world assumption, OWL makes it hard to validate consistency of data. That's why relational databases maintain schema constraints to guarantee the quality of data. Grakn combines both styles of reasoning: ontological style open world inference, and schema like closed world constraint checking. 
 
 Everything put together, OWL has a very high entry threshold for non-logicians. As it's based on description logic, developers avoid using OWL as it's non-trivial to understand the language and its intended behaviour. Because of this, Grakn's knowledge representation formalisms remain lightweight, providing semantic capabilities to a much larger audience than that of OWL. **In other words, Grakn is simpler to use than OWL.** 
 
@@ -620,10 +620,10 @@ In Grakn, a rule would be created to represent the transitivity:
 <!-- test-ignore -->
 ```graql
 when {
-	$r1 (located: $a, locating: $b); 
-	$r2 (located: $b, locating: $c); 	
+  $r1 (located: $a, locating: $b); 
+  $r2 (located: $b, locating: $c);  
 }, then {
-	(located: $a, locating: $c);
+  (located: $a, locating: $c);
 }; 
 ```
 
@@ -715,16 +715,16 @@ If we use `owl:intersectionOf` with this example:
 :Mother rdfs:subClassOf [ owl:interesctionOf ( :Female :Parent ) ]
 ```
 
-This assigns the class `:Mother` if the resource is both `:Female` and `Parent`. In Grakn we can choose to use a rule to represent this: 
+This assigns the class `:Mother` if the resource is both `:Female` and `Parent`. In Grakn we can choose to use a rule, containing a conjunctive condition to represent this:
 
 <!-- test-ignore -->
 ```graql
 when {
     $p isa person, has gender "female"; 
-		(mother: $p) isa motherhood; 
+    (mother: $p) isa motherhood; 
 }, 
 then {
-	   (parent: $p) isa parenthood; 
+     (parent: $p) isa parenthood; 
 };
 ```
 
@@ -736,7 +736,7 @@ If we have this example of `owl:unionOf`:
 :Person owl:equivalentClass [ owl:unionOf (: Woman :Man ) ]
 ```
 
-This assigns the class `:Person` if the resource is either class `:Woman` or `:Man`. In Grakn this inference can be modelled using a type inheritance: 
+This assigns the class `:Person` if the resource is either class `:Woman` or `:Man`. In Grakn, if we wanted to achieve the same, one way would be to use a type inheritance:
 
 <!-- test-ignore -->
 ```graql
@@ -767,7 +767,7 @@ when {
     $w isa red-wine; 
 }, 
 then {
-	  $w has color "red"; 
+    $w has color "red"; 
 };
 ```
 
@@ -777,7 +777,7 @@ The `owl:hasSelf` restriction can state that someone who is a narcissist loves t
 
 ```xml
 :Narcissist rdfs:subClassOf
-		[ owl:hasSelf true ; owl:onProperty :loves ]
+    [ owl:hasSelf true ; owl:onProperty :loves ]
 ```
 
 This could be represented in Grakn: 
@@ -788,7 +788,7 @@ when {
     $n isa narcissist; 
 }, 
 then {
-	  (loving: $n) isa loves; 
+    (loving: $n) isa loves; 
 };
 ```
 
@@ -814,26 +814,26 @@ This code snippet in SHACL shows how the data needs to adhere to certain restric
 ] .
 
 :Company a sh:Shape ;
-	sh:property [
-		sh:path     schema:name ;
-		sh:datatype xsd:string;
+  sh:property [
+    sh:path     schema:name ;
+    sh:datatype xsd:string;
 ] .
 ```
 
-In Grakn, this validation takes place in Graql's schema language. A `Person` entity is defined as only playing the role `employee` in an `employment` relation, which is related to a `company` entity through the role of `employer`, and includes an attribute of type `name` and datatype `string`. 
+In Grakn, this validation takes place in Graql's schema language. A `Person` entity is defined as only playing the role `employee` in an `employment` relation, which is related to a `company` entity through the role of `employer`, and includes an attribute of type `name` and value `string`. 
 
 <!-- test-ignore -->
 ```graql
 define 
 person sub entity, 
-	plays employee; 
+  plays employee; 
 company sub entity, 
-	has name,
-	plays employer; 
+  has name,
+  plays employer; 
 employment sub relation, 
-	relates employer,
-	relates employee;
-name sub attribute, datatype string; 
+  relates employer,
+  relates employee;
+name sub attribute, value string; 
 ```
 
 ## Conclusions
@@ -842,9 +842,8 @@ In conclusion, we've see how:
 
 1. Compared to the Semantic Web, **Grakn reduces the complexity while maintaining a high degree of expressivity.** With Grakn, we avoid having to learn different Semantic Web Standards, each with high levels of complexity. This reduces the barrier to entry. 
 2. **Grakn provides a higher-level abstraction for working with complex data** than Semantic Web Standards. With RDF we model the world in triples, which is a lower level data model than Grakn's entity-relation concept level schema. Modelling and querying for higher order relationships and complex data is native in Grakn. 
-3. **Semantic Web Standards are built for the Web, Grakn works for closed world systems with private data.** The former was designed to work for linked data on an open web with incomplete data, while Grakn works like a traditional database management system in a closed world environment.
+3. **Semantic Web Standards are built for the Web, Grakn works for closed world systems.** The former was designed to work for linked data on an open web with incomplete data, while Grakn works like a traditional database management system in a closed world environment.
 
 Grakn provides us with one language that gives us a concept-level model, a type system, a query language, a reasoning engine and schema verification. To do the same with Semantic Web Standards requires multiple Standards and their respective implementations, each with their own inherent complexities. In particular, OWL is extremely feature rich, which has resulted in a high degree of complexity making it unsuitable for most software applications. Instead, Grakn provides a suitable balance between complexity and expressivity when it comes to working with knowledge representation and automated reasoning. 
 
 This comparison has aimed to provide high level similarities and differences between both technologies, but, of course, there is more to Grakn and The Semantic Web than what we’ve tried to show here. 
-
