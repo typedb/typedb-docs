@@ -785,10 +785,10 @@ This could be represented in Grakn:
 <!-- test-ignore -->
 ```graql
 when {
-    $n isa narcissist; 
+	$n isa narcissist; 
 }, 
 then {
-	  (loving: $n) isa loves; 
+	(loving: $n) isa loves; 
 };
 ```
 
