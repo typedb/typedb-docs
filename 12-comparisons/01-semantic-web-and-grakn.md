@@ -267,7 +267,7 @@ SELECT ?whom
 WHERE {
 	 ?person rdf:type  foaf:Person .
 	 ?person vcard:family-name "Smith" .
-     ?person vcard:given-name  "Adam" .
+    	 ?person vcard:given-name  "Adam" .
 	 ?person foaf:knows ?whom .
  }
 ```
@@ -289,16 +289,16 @@ PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX  foaf: <http://xmlns.com/foaf/0.1/>
  
 SELECT  ?director ?movie
-WHERE{
-?actor     rdf:type             foaf:Man ;
-           movie:name          "James Dean" ;
-           movie:playedIn       ?movie .
-?actress   movie:playedIn       ?movie ;
-           rdf:type             foaf:Woman ;
-           movie:playedIn       ?anotherMovie .
-?JohnFord  rdf:type             foaf:Man ;
-           movie:name           "John Ford" .
-?anotherMovie movie:directedBy  ?JohnFord .
+WHERE{	
+?actor    	 rdf:type             foaf:Man ;
+          	 movie:name          "James Dean" ;
+          	 movie:playedIn       ?movie .
+?actress  	 movie:playedIn       ?movie ;
+          	 rdf:type             foaf:Woman ;
+          	 movie:playedIn       ?anotherMovie .
+?JohnFord 	 rdf:type             foaf:Man ;
+          	 movie:name           "John Ford" .
+?anotherMovie	 movie:directedBy  ?JohnFord .
 }
 ```
 
@@ -699,11 +699,11 @@ In Grakn a rule can be used:
 <!-- test-ignore -->
 ```graql
 when {
-    (father: $x, child: $ y) isa fatherhood;
-    (father: $d, child: $ y) isa fatherhood;
+	(father: $x, child: $ y) isa fatherhood;
+	(father: $d, child: $ y) isa fatherhood;
 }, 
 then {
-    (father: $x, father: $y) isa same-father;
+	(father: $x, father: $y) isa same-father;
 };
 ```
 
@@ -720,11 +720,11 @@ This assigns the class `:Mother` if the resource is both `:Female` and `Parent`.
 <!-- test-ignore -->
 ```graql
 when {
-    $p isa person, has gender "female"; 
-		(mother: $p) isa motherhood; 
+	$p isa person, has gender "female"; 
+	(mother: $p) isa motherhood; 
 }, 
 then {
-	   (parent: $p) isa parenthood; 
+	(parent: $p) isa parenthood; 
 };
 ```
 
@@ -764,10 +764,10 @@ In Grakn, a rule can be used to represent this:
 <!-- test-ignore -->
 ```graql
 when {
-    $w isa red-wine; 
+	$w isa red-wine; 
 }, 
 then {
-	  $w has color "red"; 
+	$w has color "red"; 
 };
 ```
 
@@ -777,7 +777,7 @@ The `owl:hasSelf` restriction can state that someone who is a narcissist loves t
 
 ```xml
 :Narcissist rdfs:subClassOf
-		[ owl:hasSelf true ; owl:onProperty :loves ]
+	[ owl:hasSelf true ; owl:onProperty :loves ]
 ```
 
 This could be represented in Grakn: 
@@ -808,15 +808,15 @@ This code snippet in SHACL shows how the data needs to adhere to certain restric
 
 ```xml
 :Person a sh:NodeShape, rdfs:Class ;
-  sh:property [
-    sh:path schema:worksFor ;
-    sh:node :Company ;
+	sh:property [
+	sh:path schema:worksFor ;
+	sh:node :Company ;
 ] .
 
 :Company a sh:Shape ;
 	sh:property [
-		sh:path     schema:name ;
-		sh:datatype xsd:string;
+	sh:path     schema:name ;
+	sh:datatype xsd:string;
 ] .
 ```
 
