@@ -1,6 +1,8 @@
 exports_files(["requirements.txt"])
 
-load("@io_bazel_rules_python//python:python.bzl", "py_library", "py_test")
+load("@rules_python//python:pip.bzl", "pip3_import")
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+
 load("@test_example_pip//:requirements.bzl",
        test_example_requirement = "requirement")
 
@@ -22,7 +24,7 @@ py_test(
     ],
     data = ["//files:phone-calls-kg"],
     imports = ["."],
-    python_version = "PY2",
+    python_version = "PY3",
 )
 
 genrule(
@@ -60,7 +62,7 @@ py_test(
     deps = ["@graknlabs_client_python//:client_python"],
     data = ["//files:social-network-kg"],
     imports = ["."],
-    python_version = "PY2",
+    python_version = "PY3",
 )
 
 genrule(

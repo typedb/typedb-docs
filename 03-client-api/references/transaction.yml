@@ -12,14 +12,14 @@ methods:
           type: String
           required: true
           default: N/A
-        param2: &accepts-lazyquery-inference
-          description: Determines if the query should apply inference.
-          required: true
+        param2: &accepts-lazyquery-options
+          description: Specifcy query options
+          required: false
       returns:
-        - "[Iterator](#iterator) of Answer"
+        - "Future [Iterator](#iterator) of Answer"
     java:
       <<: *method-lazyquery
-      method: transaction.stream(GraqlQuery query, boolean infer);
+      method: transaction.stream(GraqlQuery query, Options queryOptions);
       accepts:
         <<: *accepts-lazyquery
         param1:
@@ -28,33 +28,46 @@ methods:
           required: True
           default: N/A
         param2:
-          <<: *accepts-lazyquery-inference
-          name: infer
-          type: boolean
-          default: True
+          <<: *accepts-lazyquery-options
+          name: options
+          type: Options
+          default: default Options - uses server defaults
       returns:
-        - Stream<?> (type of elements in the stream is dependent on the type of the executed query)
+        - Future<Stream<?>> (type of elements in the stream is dependent on the type of the executed query). Use `.get()` to retrieve the stream.
     javascript:
       <<: *method-lazyquery
       method: 'await transaction.query(query, options);'
       accepts:
         <<: *accepts-lazyquery
         param2:
-          <<: *accepts-lazyquery-inference
+          <<: *accepts-lazyquery-options
           name: options
-          type: '{ infer: true }'
-          required: true
-          default: '{ infer: true }'
+          type: Options object
+          required: false
+          default: Undefined options - uses server defaults
     python:
       <<: *method-lazyquery
-      method: 'transaction.query(query, infer=True)'
+      method: 'transaction.query(query, infer=SERVER_DEFAULT, explain=SERVER_DEFAULT, batch_size=SERVER_DEFAULT)'
       accepts:
         <<: *accepts-lazyquery
         param2:
-          <<: *accepts-lazyquery-inference
+          <<: *accepts-lazyquery-options
           name: infer
           type: boolean
-          default: True
+          required: false
+          default: SERVER_DEFAULT
+        param3:
+          <<: *accepts-lazyquery-options
+          name: explain
+          type: boolean
+          required: false
+          default: SERVER_DEFAULT
+        param4:
+          <<: *accepts-lazyquery-options
+          name: batch_size
+          type: int > 1 or "all"
+          required: false
+          default: SERVER_DEFAULT
 
   - method:
     common: &method-execute
@@ -74,10 +87,16 @@ methods:
           required: false
           default: true
       returns:
-        - List<?> (type of elements in the list is dependent on the type of the executed query)
+        - Future<List<?>> (type of elements in the list is dependent on the type of the executed query). Use `.get()` to retrieve the list.
     java:
       <<: *method-execute
-      method: 'transaction.execute(GraqlQuery query, boolean infer);'
+      method: 'transaction.execute(GraqlQuery query, Options queryOptions);'
+    python:
+      <<: *method-execute
+      method: 'transaction.execute(query, infer=True, explain=False, batch_size=50);'
+    javascript:
+      <<: *method-execute
+      method: 'transaction.execute(query, queryOptions);'
 
   - method:
     common: &method-commit
@@ -194,13 +213,13 @@ methods:
         param1: &accepts-getAttributesByValue-value
           name: value
           description: The value of the attribute to retrieve.
-          type: String, long, double, boolean or date
+          type: String, long, double, boolean or datetime
           required: true
           default: N/A
         param2:
-          name: datatype
-          description: The datatype of the attribute to retrieve
-          type: grakn.DataType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATE
+          name: valuetype
+          description: The valuetype of the attribute to retrieve
+          type: grakn.ValueType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATETIME
           required: true
           default: N/A
     java:
@@ -209,17 +228,17 @@ methods:
       accepts:
         param:
           <<: *accepts-getAttributesByValue-value
-          type: "String &#124; Date &#124; long &#124; double &#124; boolean"
+          type: "String &#124; Datetime &#124; long &#124; double &#124; boolean"
       returns:
         -  "[`Collection<Attribute>`](../concept-api/thing#attribute-methods)"
     javascript:
       <<: *method-getAttributesByValue
-      method: await transaction.getAttributesByValue(value, datatype);
+      method: await transaction.getAttributesByValue(value, valuetype);
       returns:
         - Iterator of [`Attribute`](../concept-api/thing#attribute-methods)s
     python:
       <<: *method-getAttributesByValue
-      method: transaction.get_attributes_by_value(value, datatype)
+      method: transaction.get_attributes_by_value(value, valuetype)
       returns:
         - Iterator of [`Attribute`](../concept-api/thing#attribute-methods)s
 
@@ -280,22 +299,22 @@ methods:
           type: String
           required: true
           default: N/A
-        param2: &accepts-putAttributeType-datatype
-          name: datatype
-          description: The datatype of the attribute to create or retrieve.
-          type: grakn.DataType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATE
+        param2: &accepts-putAttributeType-valuetype
+          name: valuetype
+          description: The valuetype of the attribute to create or retrieve.
+          type: grakn.ValueType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATETIME
           required: true
           default: N/A
       returns:
         - "[`AttributeType`](../concept-api/type#attributetype-methods) object"
     java:
       <<: *method-putAttributeType
-      method: transaction.putAttributeType(Label.of(String label), AttributeType.DataType<V> dataType)
+      method: transaction.putAttributeType(Label.of(String label), AttributeType.ValueType<V> valueType)
       accepts:
         <<: *accepts-putAttributeType
         param2:
-          <<: *accepts-putAttributeType-datatype
-          type: "AttributeType.DataType<String &#124; Date &#124; long &#124; double &#124; boolean>"
+          <<: *accepts-putAttributeType-valuetype
+          type: "AttributeType.ValueType<String &#124; Datetime &#124; long &#124; double &#124; boolean>"
     javascript:
       <<: *method-putAttributeType
       method: await transaction.putAttributeType(label);

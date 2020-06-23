@@ -22,11 +22,11 @@ A [Grakn schema](../09-schema/00-overview.md) is the blueprint of a Grakn knowle
 define
 
 title sub attribute,
-  datatype string;
+  value string;
 
 event-date sub attribute,
   abstract,
-  datatype date;
+  value datetime;
 approved-date sub event-date;
 
 ## an abstract relation, only to be subtyped by other relations
@@ -139,7 +139,7 @@ public class SocialNetworkQuickstartQuery extends Throwable {
                 var("org").has("name", var("org-n"))
         ).get();
 
-        List<ConceptMap> answers = transaction.execute(query);
+        List<ConceptMap> answers = transaction.execute(query).get();
 
         for (ConceptMap answer : answers) {
             System.out.println(answer.get("per-fn").asAttribute().value());
@@ -171,7 +171,7 @@ with GraknClient(uri="localhost:48555") as client:
             (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
           get $pos;
         '''
-        answer_iterator = transaction.query(query)
+        answer_iterator = transaction.query(query).get()
         for answer in answer_iterator:
           print(answer.map().get("pos").id)
 ```
@@ -239,7 +239,7 @@ commit
 #### Delete the newly added person
 <!-- ignore-test -->
 ```graql
-match $per isa person, has full-name "Johny Jimbly Joe"; delete $per;
+match $per isa person, has full-name "Johny Jimbly Joe"; delete $per isa person;
 ```
 
 <!-- test-ignore -->

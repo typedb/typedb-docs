@@ -59,7 +59,7 @@ Workbase allows the visualisation and design of a grakn schema.
 [slide:end]
 
 [slide:start]
-[body:start]![schema designer](/docs/images/workbase/schema_define-attribute-name-datatype.png)[body:end]
+[body:start]![schema designer](/docs/images/workbase/schema_define-attribute-name-valuetype.png)[body:end]
 [footer:start]We can specify the name of the attribute and the data type.[footer:end]
 [slide:end]
 

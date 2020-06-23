@@ -4,21 +4,11 @@ keywords: grakn, client, python
 longTailKeywords: grakn python client, grakn client python, client python, python client
 Summary: API Reference of Grakn Client Python.
 ---
-
-## Dependencies
-
-| Client Python  | Grakn Core                  | Grakn KGMS     | Python |
-| :------------: | :-------------------------: | :----------:   | :----: |
-| 1.7.0          | 1.7.1                       | N/A            | >= 2.7 |
-| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2          | >= 2.7 |
-| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8          | >= 2.7 |
-| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 2.7 |
-| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2          | >= 2.7 |
-| 1.5.1          | 1.5.0                       | N/A            | >= 2.7 |
-| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3   | >= 3.6 |
-| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3          | >= 3.6 |
-
 ## Installation
+
+#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
+
+
 ```
 pip install grakn-client
 ```
@@ -90,7 +80,7 @@ with GraknClient(uri="localhost:48555") as client:
     with client.session(keyspace="social_network") as session:
         ## Insert a Person using a WRITE transaction
         with session.transaction().write() as write_transaction:
-            insert_iterator = write_transaction.query('insert $x isa person, has email "x@email.com";')
+            insert_iterator = write_transaction.query('insert $x isa person, has email "x@email.com";').get()
             concepts = [ans.get("x") for ans in insert_iterator]
             print("Inserted a person with ID: {0}".format(concepts[0].id))
             ## to persist changes, write transaction must always be committed (closed)
@@ -98,7 +88,7 @@ with GraknClient(uri="localhost:48555") as client:
 
         ## Read the person using a READ only transaction
         with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;")
+            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
 
             for answer in answer_iterator:
                 person = answer.map().get("x")
@@ -106,7 +96,7 @@ with GraknClient(uri="localhost:48555") as client:
 
         ## Or query and consume the iterator immediately collecting all the results
         with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;")
+            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
             persons = [ans.get("x") for ans in answer_iterator]
             for person in persons:
                 print("Retrieved person with id "+ person.id)
@@ -143,7 +133,25 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 {% include api/generic.html data=site.data.03_client_api.references.transaction language="python" %}
 
+{% include api/generic.html data=site.data.03_client_api.references.options language="python" %}
+
 {% include api/generic.html data=site.data.03_client_api.references.iterator language="python" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
 
+
+## Dependencies
+
+| Client Python  | Grakn Core                  | Grakn KGMS     | Python |
+| :------------: | :-------------------------: | :----------:   | :----: |
+| 1.8.0          | 1.8.0                       | N/A            | >= 3.5 |
+| 1.7.2          | 1.7.1, 1.7.2                | N/A            | >= 2.7 |
+| 1.7.1          | 1.7.1                       | N/A            | >= 2.7 |
+| 1.7.0          | 1.7.1                       | N/A            | >= 2.7 |
+| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2          | >= 2.7 |
+| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8          | >= 2.7 |
+| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 2.7 |
+| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2          | >= 2.7 |
+| 1.5.1          | 1.5.0                       | N/A            | >= 2.7 |
+| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3   | >= 3.6 |
+| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3          | >= 3.6 |
