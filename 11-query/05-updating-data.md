@@ -7,13 +7,15 @@ Summary: Updating data in Grakn.
 
 ## Update Instances of Concepts
 
-In a Grakn Knowledge Graph, each instance is a "fact". Relations and entities are extensible, by adding role players to them over time (establishing new "facts").
-Each attribute value is a single fact as well, that other concepts can own. Updating an attribute value directly therefore means changing the attribute value for ALL owners of this attribute value! Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.
+In a Grakn knowledge graph, each instance is a "fact". Relations and entities are extensible and reducible, by adding or removing role players to them over time.
+Each attribute value can be owned and the ownership can be removed or added: updating an attribute value directly therefore means changing the attribute value for ALL owners of this attribute value! 
+Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. 
+Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself.
 
 To try the following examples with one of the Grakn clients, follow these [Clients Guide](#clients-guide).
 
 ## Update attribute owned by a concept
-Usually, we want to change the value of an attribute that is associated to another instance. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-associations-with-attributes) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type).
+Usually, we want to change the value of an attribute that is associated to another instance. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-attribute-ownerships) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type).
 
 <div class="tabs dark">
 
@@ -21,7 +23,7 @@ Usually, we want to change the value of an attribute that is associated to anoth
 
 ```graql
 ## disconnecting from the old attribute value
-match $org isa organisation, has name "Medicely", has registration-number $rn via $r; delete $r;
+match $org isa organisation, has name "Medicely", has registration-number $rn; delete $org has registration-number $rn;
 
 ## connect the new attribute value
 match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
@@ -31,8 +33,8 @@ match $org isa organisation, has name "Medicely"; insert $org has registration-n
 [tab:Java]
 ```java
 GraqlDelete delete_query = Graql.match(
-  var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"), var("r"))
-).delete("r");
+  var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"))
+).delete(var("org").has("registration-number", var("rn")));
 
 GraqlInsert insert_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely")
@@ -43,11 +45,12 @@ GraqlInsert insert_query = Graql.match(
 [tab:end]
 </div>
 
-This query first deletes the association that the `organisation` with id `V17391` has with the instance of the `registration-number` attribute type by using the `via` keyword and then continues to insert the new instance of the `registration-number` to be owned by the same instance of `organisation`.
+This query first deletes the association that the `organisation` with id `V17391` has with the instance of the `registration-number` attribute type and then continues to insert the new instance of the `registration-number` to be owned by the same instance of `organisation`.
 
 
 ### Update all instances of a given attribute
-There may also be cases where we need to update the value of all instances of an attribute type. This amounts to _rewriting_ the value of an attribute fact. To do so, we first assign the new instance of the given attribute to all instances that own the old instance, and then delete the old instance of the attribute type.
+There may also be cases where we need to update the value of all instances of an attribute type. This amounts to _rewriting_ the value of an attribute fact. 
+To do so, we first assign the new instance of the given attribute to all instances that own the old instance, and then delete the old instance of the attribute type.
 
 <div class="tabs dark">
 
@@ -60,7 +63,7 @@ match
 insert $m has caption "deleted";
 
 ## deleting the old
-match $c isa caption; $c contains "inappropriate word"; delete $c;
+match $c isa caption; $c contains "inappropriate word"; delete $c isa caption;
 ```
 [tab:end]
 
@@ -75,14 +78,14 @@ GraqlInsert insert_query = Graql.match(
 
 GraqlDelete delete_query = Graql.match(
   var("c").isa("caption").contains("inappropriate word")
-).delete("c");
+).delete(var("c").isa("caption"));
 ```
 [tab:end]
 </div>
 
 This query first looks for any instance of type `media` that owns the `caption` attribute containing an `"inappropriate word"` and then inserts the new instance of the `caption` attribute with the value of `"deleted"` to be owned by the matched owners. Finally, it deletes all instances of `caption` with the value of `"inappropriate word"`.
 
-### Update a relation by changing its role players
+### Extending a relation with a new role player
 We can add role players to a relation by `match`ing the relation and the concept that will be the new role player, and then insert the new role player into the same relation.
 
 <div class="tabs dark">
@@ -112,46 +115,49 @@ GraqlInsert insert_query = Graql.match(
 [tab:end]
 </div>
 
-However, to modify or delete role players, the current limitations require us to [delete the instances of the relation](../11-query/04-delete-query.md#delete-instances-of-a-relation-type) with the current role players and [insert the new instance of the relation](../11-query/03-insert-query.md#insert-instances-of-a-relation-type) with the new roleplayers.
+
+### Modifying a relation's role player
+
+To replace a role player, we combine the steps for extending the relation, with steps for [deleting a role player](../11-query/04-delete-query.md#delete-role-players-from-relations):
 
 <div class="tabs dark">
 
 [tab:Graql]
 ```graql
-## inserting the new
 match
-  $p isa person, has name "Amabo";
-  $org isa organisation, has name "Etihw Esouh";
-insert $emp (employer: $org, $employee: $p) isa employment;
-
-## deleting the old
-match
-  $p isa person, has name "Prumt";
-  $org isa organisation, has name "Etihw Esouh";
+  $org isa organisation, has name "Pharos";
+  $new-org isa organisation, has name "Medicely";
   $emp (employer: $org, employee: $p) isa employment;
-delete $emp;
+insert
+  $emp (employer: $new-org);
+
+match
+  $emp (employer: $org, employer: $new-org, employee: $p) isa employment;
+  $org isa organisation, has name "Pharos";
+  $new-org isa organisation, has name "Medicely";
+delete
+  $emp (employer: $org);
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlInsert insert_query = Graql.match(
-  var("p").isa("person").has("name", "Amabo"),
-  var("org").isa("organisation").has("name", "Wieth Souhe")
-).insert(
-  var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
-);
+GraqlInsert query = Graql.match(
+  var("org").isa("organisation").has("name", "Pharos"),
+  var("new-org").isa("organisation").has("name", "Medicely"),
+  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
+).insert(var("emp").rel("employer", "new-org"));
 
-GraqlDelete delete_query = Graql.match(
-  var("p").isa("person").has("name", "Prumt"),
-  var("org").isa("organisation").has("name", "Wieth Souhe"),
-  var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p"))
-).delete("emp");
+GraqlDelete deleteQuery = Graql.match(
+  var("org").isa("organisation").has("name", "Pharos"),
+  var("new-org").isa("organisation").has("name", "Medicely"),
+  var("emp").isa("employment").rel("employer", "org").rel("employer", "new-org").rel("employee", "p")
+).delete(var("emp").rel("employer", "org"));
 ```
 [tab:end]
 </div>
 
-This query updates the `employee` roleplayer of the `employment` relation where the `employer` is an `organisation` named `"Wieth Souhe"`.
+After these queries, all employments by the organisation named `Pharos` were replaced employments by the organisation named `Medicely`.
 
 ## Clients Guide
 
@@ -172,6 +178,10 @@ This query updates the `employee` roleplayer of the `employment` relation where 
 
 
 ## Summary
-Due to the expressivity of Graql, updating instances requires a thorough understanding of the underlying logic as explained when [defining the schema](../09-schema/01-concepts.md). Simply put, to update is essentially to first `delete` and then `insert`.
+Updating data in Graql is usually a two step process: a `match-delete` followed by a `match-insert`. You can use these queries to
+add and remove role players from relations, or add and remove ownerships of attributes. Attribute values themselves can be treated
+as immutable, and changing their values amounts to deleting the value and moving all the ownerships of the old value to some 
+new value.
+
 
 Next, we learn how to [aggregate values over a set of data](../11-query/06-aggregate-query.md) in a Grakn knowledge graph.

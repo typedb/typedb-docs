@@ -23,11 +23,10 @@ workspace(name = "graknlabs_docs")
 ################################
 
 load("//dependencies/graknlabs:dependencies.bzl",
-     "graknlabs_grakn_core", "graknlabs_client_java", "graknlabs_client_python", "graknlabs_client_nodejs", "graknlabs_build_tools")
+     "graknlabs_grakn_core", "graknlabs_client_java", "graknlabs_client_python", "graknlabs_build_tools")
 graknlabs_grakn_core()
 graknlabs_client_java()
 graknlabs_client_python()
-graknlabs_client_nodejs()
 graknlabs_build_tools()
 
 load("@graknlabs_grakn_core//dependencies/graknlabs:dependencies.bzl", "graknlabs_graql", "graknlabs_protocol")
@@ -50,7 +49,7 @@ bazel_deps()
 bazel_toolchain()
 bazel_rules_python()
 
-load("@io_bazel_rules_python//python:pip.bzl", "pip_repositories", "pip_import")
+load("@rules_python//python:pip.bzl", "pip_repositories", "pip3_import")
 pip_repositories()
 
 
@@ -58,7 +57,7 @@ pip_repositories()
 # Load Build Tools Dependencies #
 #################################
 
-pip_import(
+pip3_import(
     name = "graknlabs_build_tools_ci_pip",
     requirements = "@graknlabs_build_tools//ci:requirements.txt",
 )
@@ -66,7 +65,7 @@ load("@graknlabs_build_tools_ci_pip//:requirements.bzl",
 graknlabs_build_tools_ci_pip_install = "pip_install")
 graknlabs_build_tools_ci_pip_install()
 
-pip_import(
+pip3_import(
     name = "graknlabs_bazel_distribution_pip",
     requirements = "@graknlabs_bazel_distribution//pip:requirements.txt",
 )
@@ -74,16 +73,6 @@ load("@graknlabs_bazel_distribution_pip//:requirements.bzl",
 graknlabs_bazel_distribution_pip_install = "pip_install")
 graknlabs_bazel_distribution_pip_install()
 
-#################################
-# Load Client Java dependencies #
-#################################
-load("@graknlabs_client_java//dependencies/maven:dependencies.bzl",
-    graknlabs_client_java_maven_dependencies = "maven_dependencies")
-graknlabs_client_java_maven_dependencies()
-
-load("@graknlabs_client_java//dependencies/graknlabs:dependencies.bzl", "graknlabs_protocol", "graknlabs_grabl_tracing")
-graknlabs_protocol()
-graknlabs_grabl_tracing()
 
 ###########################
 # Load Local Dependencies #
@@ -113,7 +102,7 @@ install_bazel_dependencies()
 
 # for Python
 
-pip_import(
+pip3_import(
     name = "test_example_pip",
     requirements = "//test/example/python:requirements.txt",
 )
@@ -122,7 +111,7 @@ load("@test_example_pip//:requirements.bzl",
 test_example_pip_install = "pip_install")
 test_example_pip_install()
 
-pip_import(
+pip3_import(
     name = "test_links_pip",
     requirements = "//test/links:requirements.txt",
 )
@@ -146,36 +135,34 @@ com_github_grpc_grpc_deps()
 load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
 java_grpc_compile()
 
+#################################
+# Load Client-Java dependencies #
+#################################
 
-################################
-# Load Client Java dependencies #
-################################
+load("@graknlabs_client_java//dependencies/maven:dependencies.bzl",
+graknlabs_client_java_maven_dependencies = "maven_dependencies",)
+graknlabs_client_java_maven_dependencies()
 
 load("@graknlabs_client_java//dependencies/graknlabs:dependencies.bzl", "graknlabs_grabl_tracing")
 graknlabs_grabl_tracing()
 
-load("@graknlabs_client_java//dependencies/maven:dependencies.bzl",
-graknlabs_client_java_maven_dependencies = "maven_dependencies")
-graknlabs_client_java_maven_dependencies()
-
-
+load("@graknlabs_grabl_tracing//dependencies/maven:dependencies.bzl",
+graknlabs_grabl_tracing_maven_dependencies = "maven_dependencies")
+graknlabs_grabl_tracing_maven_dependencies()
 ################################
 # Load Grakn Core Dependencies #
 ################################
 
 load("@graknlabs_grakn_core//dependencies/graknlabs:dependencies.bzl",
-"graknlabs_common", "graknlabs_console", "graknlabs_grabl_tracing")
+"graknlabs_common", "graknlabs_console", "graknlabs_protocol")
 graknlabs_common()
 graknlabs_console()
-graknlabs_grabl_tracing()
+graknlabs_protocol()
 
 load("@graknlabs_grakn_core//dependencies/maven:dependencies.bzl",
 graknlabs_grakn_core_maven_dependencies = "maven_dependencies")
 graknlabs_grakn_core_maven_dependencies()
 
-load("@graknlabs_grabl_tracing//dependencies/maven:dependencies.bzl",
-graknlabs_grabl_tracing_maven_dependencies = "maven_dependencies")
-graknlabs_grabl_tracing_maven_dependencies()
 
 load("@graknlabs_build_tools//bazel:dependencies.bzl", "bazel_rules_docker")
 bazel_rules_docker()
@@ -204,7 +191,7 @@ graknlabs_graql_maven_dependencies()
 # Load Client Python Dependencies #
 ###################################
 
-pip_import(
+pip3_import(
     name = "graknlabs_client_python_pip",
     requirements = "@graknlabs_client_python//:requirements.txt",
 )
