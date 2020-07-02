@@ -736,7 +736,7 @@ If we have this example of `owl:unionOf`:
 :Person owl:equivalentClass [ owl:unionOf (: Woman :Man ) ]
 ```
 
-This assigns the class `:Person` if the resource is either class `:Woman` or `:Man`. In Grakn, if we wanted to achieve the same, one way would be to use a type inheritance:
+This infers the class `:Person` if the resource is either class `:Woman` or `:Man`. Grakn doesn't have a direct equivalent with `owl:equivalentClass`, but there is some coverage offered by rules. As `sub` is an equivalent of `subClassOf`, the above can be achieved in Grakn with: 
 
 <!-- test-ignore -->
 ```graql
@@ -744,6 +744,8 @@ person sub entity;
 man sub person;
 woman sub person; 
 ```
+
+In this case, we can also create an instance of a `person` that is neither a `woman` or a `man`. If we don't want this, then we can add the word keyword `abstract` and make the `person` class abstract, which would make the definitions equivalent. 
 
 ### HasValue
 
