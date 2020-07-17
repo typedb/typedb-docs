@@ -76,17 +76,9 @@ load("@graknlabs_dependencies_ci_pip//:requirements.bzl",
 graknlabs_dependencies_ci_pip_install = "pip_install")
 graknlabs_dependencies_ci_pip_install()
 
-# Load Docker
-load("@graknlabs_dependencies//distribution/docker:deps.bzl", docker_deps = "deps")
-docker_deps()
-
 # Load Checkstyle
 load("@graknlabs_dependencies//tool/checkstyle:deps.bzl", checkstyle_deps = "deps")
 checkstyle_deps()
-
-# Load Sonarcloud
-load("@graknlabs_dependencies//tool/sonarcloud:deps.bzl", "sonarcloud_dependencies")
-sonarcloud_dependencies()
 
 # Load Unused Deps
 load("@graknlabs_dependencies//tool/unuseddeps:deps.bzl", unuseddeps_deps = "deps")
@@ -105,31 +97,6 @@ pip3_import(
 load("@graknlabs_bazel_distribution_pip//:requirements.bzl",
 graknlabs_bazel_distribution_pip_install = "pip_install")
 graknlabs_bazel_distribution_pip_install()
-
-load("@graknlabs_bazel_distribution//github:dependencies.bzl", "tcnksm_ghr")
-tcnksm_ghr()
-
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-git_repository(
-    name = "io_bazel_skydoc",
-    remote = "https://github.com/graknlabs/skydoc.git",
-    branch = "experimental-skydoc-allow-dep-on-bazel-tools",
-)
-
-load("@io_bazel_skydoc//:setup.bzl", "skydoc_repositories")
-skydoc_repositories()
-
-load("@io_bazel_rules_sass//:package.bzl", "rules_sass_dependencies")
-rules_sass_dependencies()
-
-load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
-sass_repositories()
-
-load("@graknlabs_bazel_distribution//common:dependencies.bzl", "bazelbuild_rules_pkg")
-bazelbuild_rules_pkg()
-
-load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
-rules_pkg_dependencies()
 
 ###############################
 # Load @graknlabs_client_java #
