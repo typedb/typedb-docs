@@ -32,7 +32,7 @@ commands:
     steps:
       - run: bazel run @graknlabs_build_tools//ci:run-bazel-rbe -- << parameters.command >>
 
-  run-grakn:
+  run-grakn-server:
     steps:
       - run-bazel:
           command: bazel run //test:grakn-extractor -- dist/grakn-core-all-linux
