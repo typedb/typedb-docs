@@ -92,7 +92,7 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; get; sort $fn; offset 100; limit 10;
+match $p isa person, has full-name $fn; get; sort $fn; offset 6; limit 10;
 ```
 [tab:end]
 
