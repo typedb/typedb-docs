@@ -25,20 +25,18 @@ commands:
       - run: curl -OL https://raw.githubusercontent.com/graknlabs/dependencies/master/tool/bazelinstall/rbe.sh
       - run: bash ./rbe.sh && rm ./rbe.sh
 
-  run-bazel-rbe:
+  run-bazel:
     parameters:
       command:
         type: string
     steps:
-      - run: bazel run @graknlabs_build_tools//ci:run-bazel-rbe -- << parameters.command >>
+      - run: bazel run @graknlabs_dependencies//tool/bazelrun:rbe -- << parameters.command >>
 
   run-grakn-server:
     steps:
-      - run-bazel-rbe:
-          command: bazel build @graknlabs_grakn_core//:assemble-linux-targz
-      - run: mkdir dist && tar -xvzf bazel-bin/external/graknlabs_grakn_core/grakn-core-all-linux.tar.gz -C ./dist/
+      - run-bazel:
+          command: bazel run //:grakn-extractor -- dist/grakn-core-all-linux
       - run: nohup ./dist/grakn-core-all-linux/grakn server start
-      - run: sleep 60
 
 jobs:
   build:
@@ -48,8 +46,16 @@ jobs:
     steps:
       - install-bazel
       - checkout
-      - run-bazel-rbe:
+      - run-bazel:
           command: bazel build //...
+      - run:
+          name: Verify dependencies/maven/snapshot.json
+          command: |
+            dependencies/maven/update.sh
+            git diff --exit-code dependencies/maven/artifacts.snapshot
+      - run:
+          command: bazel run @graknlabs_dependencies//tool/unuseddeps:unused-deps -- list
+          no_output_timeout: 30m
 
   test-query-graql-lang:
     machine:
@@ -58,7 +64,7 @@ jobs:
     steps:
       - install-bazel
       - checkout
-      - run-bazel-rbe:
+      - run-bazel:
           command: bazel test //test/query:graql-lang --test_output=errors
 
   test-query-graql-java:
@@ -68,7 +74,7 @@ jobs:
     steps:
       - install-bazel
       - checkout
-      - run-bazel-rbe:
+      - run-bazel:
           command: bazel test //test/query:graql-java --test_output=errors
 
   test-example-java:

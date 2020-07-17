@@ -12,20 +12,13 @@ java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//server:server",
-        "//dependencies/maven/artifacts/org/sharegov:mjson",
-        "//dependencies/maven/artifacts/com/google/code/gson:gson",
-        "//dependencies/maven/artifacts/com/univocity:univocity-parsers",
-        "//dependencies/maven/artifacts/javax/xml/stream:stax-api",
-        "@graknlabs_grakn_core//test/rule:grakn-test-server",
-    ],
-    classpath_resources = [
-        "@graknlabs_grakn_core//test/resources:logback-test",
+        "@maven//:org_sharegov_mjson",
+        "@maven//:com_google_code_gson_gson",
+        "@maven//:com_univocity_univocity_parsers",
+        "@maven//:javax_xml_stream_stax_api",
     ],
     data = [
         "//files:phone-calls-kg",
-        "//test/conf:cassandra-embedded.yaml",
-        "@graknlabs_grakn_core//server:conf/grakn.properties",
     ]
 )
 
@@ -64,15 +57,8 @@ java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test/rule:grakn-test-server",
-    ],
-    classpath_resources = [
-        "@graknlabs_grakn_core//test/resources:logback-test",
     ],
     data = [
-        "//test/conf:cassandra-embedded.yaml",
-        "@graknlabs_grakn_core//server:conf/grakn.properties",
         "//files:social-network-kg",
     ]
 )

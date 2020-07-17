@@ -7,6 +7,8 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
+load("@graknlabs_dependencies//distribution/artifact:rules.bzl", "artifact_extractor")
+
 filegroup(
     name = "content",
     srcs = glob(
@@ -39,4 +41,9 @@ filegroup(
     name = "autolink-keywords",
     srcs = ["views/autolink-keywords.js"],
     visibility = ["//visibility:public"]
+)
+
+artifact_extractor(
+    name = "grakn-extractor",
+    artifact = "@graknlabs_grakn_core_artifact//file",
 )
