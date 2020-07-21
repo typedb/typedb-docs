@@ -79,6 +79,32 @@ grakn server schema [keyspace] > [keyspace].gql
 grakn server export [keyspace] [keyspace].grakn
 ```
 
+## Dealing With Migration Issues
+
+### Migration Errors
+
+If you encounter migration errors, follow this checklist:
+
+* Ensure that you are running the correct Grakn command (the binary in the Grakn directory of the server you are exporting from or importing to.)
+* Ensure that the schema has been imported correctly to the new keyspace.
+* Ensure that the correct data import path was specified.
+* Ensure that the data was correctly exported by checking the filesize.
+* Ensure that any changed labels are remapped in the import options.
+
+If you have any further errors, please join one of our communities and ask for assistance.
+
+### Incompatible Schema
+
+Between versions, some schemas will become incompatible due to syntax change. Whilst most issues can be corrected in the schema before importing it, it is possible for a label to become invalid (if the label becomes a keyword in a new version). In order to handle this scenario, we have added an option to import from 1.8 onwards that allows you to remap labels during the import.
+
+```
+grakn server import <keyspace> <file>.grakn <old_label>=<new_label>...
+```
+
+### Implicit Relations
+
+Schemas that use implicit relations in 1.7 and earlier (e.g. `@has-attribute`) are not supported by migration tools since they were removed in 1.8. It is therefore recommended that you convert any usage of implicit relations to real relations before migrating to 1.8.
+
 ## About `.grakn` Files
 
 For advanced users, operating on the `.grakn` file directly may be useful, such as to refactor various elements for a new schema. The format is a delimited protobuf stream of `Item`s which are defined (along with a more detailed description of the protocol rules) in the Grakn core source code at `server/migrate/proto/data.proto`.
