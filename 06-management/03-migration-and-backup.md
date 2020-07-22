@@ -10,10 +10,10 @@ toc: false
 
 Some versions of Grakn include tools to backup and migrate data between versions of grakn that are not data-level compatible. Please note the chart below for which versions are data-level compatible:
 
-| Data-level Versions | Versions at Data-level | Latest Version With Migration Available |
-| ------------------- | ---------------------- | --------------------------------------- |
-| 1.7                 | 1.5.x, 1.6.x, 1.7.x    | 1.7.3                                   |
-| 1.8                 | 1.8.x                  | 1.8.1                                   |
+| Data-level Versions | Versions at Data-level | Earliest Version With Migration Available |
+| ------------------- | ---------------------- | ----------------------------------------- |
+| 1.7                 | 1.5.x, 1.6.x, 1.7.x    | 1.7.3                                     |
+| 1.8                 | 1.8.x                  | 1.8.1                                     |
 
 When migrating data between versions of grakn with the same data-level, you should instead copy your `server/db/cassandra/data` directory from one installation to the other, as this will be faster and can be done to move from a version of Grakn without migration tools to a one which has them.
 
