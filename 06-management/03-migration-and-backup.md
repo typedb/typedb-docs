@@ -15,7 +15,9 @@ Some versions of Grakn include tools to backup and migrate data between versions
 | 1.7                 | 1.5.x, 1.6.x, 1.7.x    | 1.7.3                                     |
 | 1.8                 | 1.8.x                  | 1.8.1                                     |
 
-When migrating data between versions of grakn with the same data-level, you should instead copy your `server/db/cassandra/data` directory from one installation to the other, as this will be faster and can be done to move from a version of Grakn without migration tools to a one which has them.
+When migrating data between versions of grakn with the same data-level, you should instead copy your `server/db` directory from one installation to the other, as this will be faster and can be done to move from a version of Grakn without migration tools to a one which has them.
+
+If you are migrating from 1.6.x or below to 1.8.x, you must first do a `server/db` copy migration into a 1.7.3 version of Grakn to be able to export it.
 
 <div class="note">
 [Important]
@@ -37,6 +39,8 @@ You can import a backup using:
 ```
 grakn server import [keyspace] [filename].grakn
 ```
+
+These paths are relative to the current working directory of the CLI. The CLI expands the relative path to an absolute path for the server, which does the file writing directly, so you must ensure that the path is writable by the server process and should avoid symblic links where possible.
 
 Importing a backup will not delete existing data in the keyspace, so you should clean the keyspace using console and reload the schema prior to the operation.
 
@@ -107,4 +111,4 @@ Schemas that use implicit relations in 1.7 and earlier (e.g. `@has-attribute`) a
 
 ## About `.grakn` Files
 
-For advanced users, operating on the `.grakn` file directly may be useful, such as to refactor various elements for a new schema. The format is a delimited protobuf stream of `Item`s which are defined (along with a more detailed description of the protocol rules) in the Grakn core source code at `server/migrate/proto/data.proto`.
+The format is a delimited protobuf stream of `Item`s which are defined (along with a more detailed description of the protocol rules) in the Grakn core source code at `server/migrate/proto/data.proto`. The output file is uncompressed so it is recommended that you compress it for use in backups and transferring across a network. Deflate/ZIP compression works well in our experience, as it compresses labels efficiently.
