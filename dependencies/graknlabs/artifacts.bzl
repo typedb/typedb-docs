@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 #
 # Copyright (C) 2020 Grakn Labs
 #
@@ -16,4 +15,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-bazel run @graknlabs_dependencies//library/maven:update
+load("@graknlabs_dependencies//distribution/artifact:rules.bzl", "artifact_file")
+
+def graknlabs_grakn_core_artifact():
+    artifact_file(
+        name = "graknlabs_grakn_core_artifact",
+        group_name = "graknlabs_grakn_core",
+        artifact_name = "grakn-core-all-linux-{version}.tar.gz",
+#        tag = "1.8.1",
+        commit = "1907219673534b9ce7dc1cd8901bbc759b1cc3c8"
+    )
