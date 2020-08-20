@@ -25,12 +25,12 @@ commands:
       - run: curl -OL https://raw.githubusercontent.com/graknlabs/dependencies/master/tool/bazelinstall/rbe.sh
       - run: bash ./rbe.sh && rm ./rbe.sh
 
-  run-bazel-rbe:
+  run-bazel:
     parameters:
       command:
         type: string
     steps:
-      - run: bazel run @graknlabs_build_tools//ci:run-bazel-rbe -- << parameters.command >>
+      - run: bazel run @graknlabs_dependencies//tool/bazelrun:rbe -- << parameters.command >>
 
   run-grakn-server:
     steps:
@@ -47,7 +47,7 @@ jobs:
     steps:
       - install-bazel
       - checkout
-      - run-bazel-rbe:
+      - run-bazel:
           command: bazel build //...
 
   test-query-graql-lang:
@@ -57,7 +57,7 @@ jobs:
     steps:
       - install-bazel
       - checkout
-      - run-bazel-rbe:
+      - run-bazel:
           command: bazel test //test/query:graql-lang --test_output=errors
 
   test-query-graql-java:
@@ -67,7 +67,7 @@ jobs:
     steps:
       - install-bazel
       - checkout
-      - run-bazel-rbe:
+      - run-bazel:
           command: bazel test //test/query:graql-java --test_output=errors
 
   test-example-java:
@@ -123,7 +123,7 @@ jobs:
           export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
           export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
           export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-          bazel run @graknlabs_build_tools//ci:release-docs -- development $CIRCLE_SHA1
+          bazel run @graknlabs_dependencies//tool/release:docs -- development $CIRCLE_SHA1
 
   release-production:
     machine:
@@ -136,7 +136,7 @@ jobs:
           export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
           export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
           export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-          bazel run @graknlabs_build_tools//ci:release-docs -- master $CIRCLE_SHA1
+          bazel run @graknlabs_dependencies//tool/release:docs -- master $CIRCLE_SHA1
 
 workflows:
   docs:
