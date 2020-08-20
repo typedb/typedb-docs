@@ -22,6 +22,5 @@ def graknlabs_grakn_core_artifact():
         name = "graknlabs_grakn_core_artifact",
         group_name = "graknlabs_grakn_core",
         artifact_name = "grakn-core-all-linux-{version}.tar.gz",
-#        tag = "1.8.1",
-        commit = "1907219673534b9ce7dc1cd8901bbc759b1cc3c8"
+        tag = "1.8.1",
     )
