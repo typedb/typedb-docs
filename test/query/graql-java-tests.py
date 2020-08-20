@@ -7,9 +7,10 @@ output_path, markdown_files = sys.argv[1], sys.argv[2:]
 graql_java_test_template = """
 package grakn.doc.test.query;
 
-import grakn.client.GraknClient;
-import grakn.core.test.rule.GraknTestServer;
+import grakn.common.test.server.GraknProperties;
+import grakn.common.test.server.GraknSetup;
 
+import grakn.client.GraknClient;
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
 import graql.lang.query.GraqlCompute;
@@ -28,26 +29,26 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
+import java.util.concurrent.TimeoutException;
+import java.io.IOException;
+
 import static graql.lang.Graql.*;
 import static graql.lang.Graql.Token.Compute.Algorithm.*;
 import static graql.lang.Graql.Token.Order.*;
 import static graql.lang.query.GraqlCompute.Argument.*;
 
 public class GraqlJavaTest {
-    @ClassRule
-    public static final GraknTestServer server = new GraknTestServer(
-        Paths.get("external/graknlabs_grakn_core/server/conf/grakn.properties"), 
-        Paths.get("test/conf/cassandra-embedded.yaml")
-    );
 
     static GraknClient client;
     static GraknClient.Session session ;
     GraknClient.Transaction transaction;
 
-
     @BeforeClass
-    public static void loadSocialNetwork() {
-        client = new GraknClient(server.grpcUri().toString());
+    public static void loadSocialNetwork() throws InterruptedException, IOException, TimeoutException {
+        GraknSetup.bootup();
+        String address = System.getProperty(GraknProperties.GRAKN_ADDRESS);
+        
+        client = new GraknClient(address);
         session = client.session("social_network");
         GraknClient.Transaction transaction = session.transaction().write();
 
@@ -77,8 +78,9 @@ public class GraqlJavaTest {
     }
 
     @AfterClass
-    public static void closeSession() {
-        session.close();
+    public static void cleanUp() throws InterruptedException, TimeoutException, IOException {
+        client.close();
+        GraknSetup.shutdown();
     }
 
     // TEST METHODS PLACEHOLDER
