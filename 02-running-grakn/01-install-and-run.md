@@ -6,26 +6,15 @@ summary: Install and run the Grakn Server on Linux, Mac or Windows.
 toc: false
 ---
 
+<div class="note">
+[Note]
+Follow [these instructions](#upgrade-an-existing-grakn-core-15x-installation-to-16x) to upgrade an existing Grakn Core 1.5.x installation to 1.6.x.
+</div>
+
 ## System Requirements
 Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
 ## Download and Install Grakn
-
-### Upgrading an Existing Installation to Grakn Core 1.6.x.
-
-There has been an internal storage change in Grakn Core 1.6.x. Please back up your existing data and run the following step before doing the upgrade:
-
-1. Download [Apache Cassandra 3.11.x](http://www.apache.org/dyn/closer.lua/cassandra/3.11.5/apache-cassandra-3.11.5-bin.tar.gz) and untar it
-2. Start Grakn: `grakn server start`
-3. Update Storage's setting and flush the change:
-```
-$ cd apache-cassandra-<version>
-$ bin/cqlsh localhost -e "update system.local set cluster_name = 'Grakn Cluster' where key='local';"
-$ bin/nodetool flush -- system
-```
-3. Stop Grakn: `grakn server stop`
-
-Once done, you are safe to upgrade as described in the next section.
 
 <div class="tabs light">
 [tab:Linux]
@@ -177,6 +166,22 @@ Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder 
 If you have installed Grakn using a package manager, to check the status of the Grakn Server, run `grakn server status`.
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server status`.
+
+## Upgrade an Existing Grakn Core 1.5.x Installation to 1.6.x
+
+There has been an internal storage change in Grakn Core 1.6.x. Please back up your existing data and run the following step before doing the upgrade:
+
+1. Download [Apache Cassandra 3.11.x](http://www.apache.org/dyn/closer.lua/cassandra/3.11.5/apache-cassandra-3.11.5-bin.tar.gz) and untar it
+2. Start Grakn: `grakn server start`
+3. Update Storage's setting and flush the change:
+```
+$ cd apache-cassandra-<version>
+$ bin/cqlsh localhost -e "update system.local set cluster_name = 'Grakn Cluster' where key='local';"
+$ bin/nodetool flush -- system
+```
+3. Stop Grakn: `grakn server stop`
+
+Once done, you are safe to upgrade as described in the next section.
 
 ## Summary
 So far we have learned how to download/install Grakn and run the Grakn Server.

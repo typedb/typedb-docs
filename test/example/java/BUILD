@@ -1,8 +1,31 @@
+#
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#
+
+load("@graknlabs_common//test/server:rules.bzl", "grakn_test")
+
 ############################
 # Phone Calls Example Test #
 ############################
 
-java_test(
+grakn_test(
     name = "phone-calls",
     test_class = "grakn.doc.test.example.PhoneCallsTest",
     srcs = [
@@ -17,6 +40,7 @@ java_test(
         "@maven//:com_univocity_univocity_parsers",
         "@maven//:javax_xml_stream_stax_api",
     ],
+    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
     data = [
         "//files:phone-calls-kg",
     ]
@@ -46,8 +70,7 @@ genrule(
 ###################################
 # social_network Standalones Test #
 ###################################
-
-java_test(
+grakn_test(
     name = "social-network",
     test_class = "grakn.doc.test.example.SocialNetworkTest",
     srcs = [
@@ -58,10 +81,12 @@ java_test(
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
     ],
+    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
     data = [
         "//files:social-network-kg",
     ]
 )
+
 
 genrule(
     name = "social-network-tests",
