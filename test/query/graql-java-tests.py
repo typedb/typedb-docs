@@ -2,90 +2,9 @@ import re
 import sys
 from io import open
 
-output_path, markdown_files = sys.argv[1], sys.argv[2:]
+graql_java_test_template_path, output_path, markdown_files = sys.argv[1], sys.argv[2], sys.argv[3:]
 
-graql_java_test_template = """
-package grakn.doc.test.query;
-
-import grakn.common.test.server.GraknProperties;
-import grakn.common.test.server.GraknSetup;
-
-import grakn.client.GraknClient;
-import graql.lang.Graql;
-import graql.lang.query.GraqlQuery;
-import graql.lang.query.GraqlCompute;
-import graql.lang.query.GraqlDefine;
-import graql.lang.query.GraqlUndefine;
-import graql.lang.query.GraqlGet;
-import graql.lang.query.GraqlDelete;
-import graql.lang.query.GraqlInsert;
-import graql.lang.query.GraqlCompute.Argument;
-import graql.lang.pattern.Pattern;
-import org.junit.*;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-
-import java.util.concurrent.TimeoutException;
-import java.io.IOException;
-
-import static graql.lang.Graql.*;
-import static graql.lang.Graql.Token.Compute.Algorithm.*;
-import static graql.lang.Graql.Token.Order.*;
-import static graql.lang.query.GraqlCompute.Argument.*;
-
-public class GraqlJavaTest {
-
-    static GraknClient client;
-    static GraknClient.Session session ;
-    GraknClient.Transaction transaction;
-
-    @BeforeClass
-    public static void loadSocialNetwork() throws InterruptedException, IOException, TimeoutException {
-        GraknSetup.bootup();
-        String address = System.getProperty(GraknProperties.GRAKN_ADDRESS);
-        
-        client = new GraknClient(address);
-        session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction().write();
-
-        try {
-            byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
-            String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((GraqlQuery) Graql.parse(query));
-            
-            encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
-            query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((GraqlQuery) Graql.parse(query));
-            
-            transaction.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Before
-    public void openTransaction(){
-        transaction = session.transaction().write();
-    }
-
-    @After
-    public void closeTransaction(){
-        transaction.close();
-    }
-
-    @AfterClass
-    public static void cleanUp() throws InterruptedException, TimeoutException, IOException {
-        client.close();
-        GraknSetup.shutdown();
-    }
-
-    // TEST METHODS PLACEHOLDER
-}
-"""
+graql_java_test_template = open(graql_java_test_template_path, 'r').read()
 
 graql_java_test_method_template = """
     @Test

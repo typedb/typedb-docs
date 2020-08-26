@@ -44,9 +44,10 @@ genrule(
     name = "graql-java-tests",
     srcs = [
         "graql-java-tests.py",
+        "templates/GraqlJavaTest.java",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python3 $(location graql-java-tests.py) $@ $(locations //:content)",
+    cmd = "python3 $(location graql-java-tests.py) $(location templates/GraqlJavaTest.java) $@ $(locations //:content)",
     outs = ["GraqlJavaTest.java"]
 )
 
@@ -73,8 +74,9 @@ genrule(
     name = "graql-lang-tests",
     srcs = [
         "graql-lang-tests.py",
+        "templates/GraqlLangTest.java",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python3 $(location graql-lang-tests.py) $@ $(locations //:content)",
+    cmd = "python3 $(location graql-lang-tests.py) $(location templates/GraqlLangTest.java) $@ $(locations //:content) ",
     outs = ["GraqlLangTest.java"]
 )

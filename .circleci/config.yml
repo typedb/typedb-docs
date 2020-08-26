@@ -34,10 +34,9 @@ commands:
 
   run-grakn-server:
     steps:
-      - run: bazel build @graknlabs_grakn_core_artifact//file
-      - run: mkdir dist && tar -xvzf bazel-docs/external/graknlabs_grakn_core_artifact/file/grakn-core-all-linux-*.tar.gz -C ./dist/ && mv ./dist/grakn-core-all-linux-* ./dist/grakn-core-all-linux
+      - run-bazel:
+          command: bazel run //:grakn-extractor -- dist/grakn-core-all-linux
       - run: nohup ./dist/grakn-core-all-linux/grakn server start
-      - run: sleep 60
 
 jobs:
   build:
@@ -49,6 +48,14 @@ jobs:
       - checkout
       - run-bazel:
           command: bazel build //...
+      - run:
+          name: Verify dependencies/maven/snapshot.json
+          command: |
+            dependencies/maven/update.sh
+            git diff --exit-code dependencies/maven/artifacts.snapshot
+      - run:
+          command: bazel run @graknlabs_dependencies//tool/unuseddeps:unused-deps -- list
+          no_output_timeout: 30m
 
   test-query-graql-lang:
     machine:

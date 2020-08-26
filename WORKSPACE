@@ -17,7 +17,6 @@
 
 workspace(name = "graknlabs_docs")
 
-
 ################################
 # Load @graknlabs_dependencies #
 ################################
@@ -202,9 +201,8 @@ load("//dependencies/maven:artifacts.bzl", graknlabs_docs_artifacs = "artifacts"
 yarn_install(
     name = "npm",
     package_json = "//test/example/nodejs:package.json",
-    yarn_lock = "//test/example/nodejs:yarn.lock"
+    yarn_lock = "//test/example/nodejs:yarn.lock",
 )
-
 load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
 install_bazel_dependencies()
 
@@ -213,11 +211,9 @@ pip3_import(
     name = "test_example_pip",
     requirements = "//test/example/python:requirements.txt",
 )
-
 load("@test_example_pip//:requirements.bzl",
 test_example_pip_install = "pip_install")
 test_example_pip_install()
-
 pip3_import(
     name = "test_links_pip",
     requirements = "//test/links:requirements.txt",
