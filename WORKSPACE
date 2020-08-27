@@ -15,7 +15,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-workspace(name = "graknlabs_docs")
+workspace(
+    name = "graknlabs_docs",
+    managed_directories = {"@npm": ["test/example/nodejs/node_modules"]}
+)
 
 ################################
 # Load @graknlabs_dependencies #
@@ -59,7 +62,7 @@ kt_register_toolchains()
 # Load //builder/nodejs
 load("@graknlabs_dependencies//builder/nodejs:deps.bzl", nodejs_deps = "deps")
 nodejs_deps()
-load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
 
 # Load //builder/python
 load("@graknlabs_dependencies//builder/python:deps.bzl", python_deps = "deps")
@@ -117,11 +120,26 @@ github_deps()
 # Load @graknlabs dependencies #
 ################################
 
-load("//dependencies/graknlabs:repositories.bzl", "graknlabs_common")
+load("//dependencies/graknlabs:repositories.bzl", "graknlabs_common",  "graknlabs_client_python", "graknlabs_client_java")
 graknlabs_common()
-
-load("//dependencies/graknlabs:repositories.bzl", "graknlabs_client_python")
 graknlabs_client_python()
+graknlabs_client_java()
+load("@graknlabs_client_java//dependencies/graknlabs:repositories.bzl", "graknlabs_graql", "graknlabs_protocol", "graknlabs_grabl_tracing")
+graknlabs_graql()
+graknlabs_protocol()
+graknlabs_grabl_tracing()
+
+# load artifacts
+load("//dependencies/graknlabs:artifacts.bzl", "graknlabs_grakn_core_artifact")
+graknlabs_grakn_core_artifact()
+
+# load maven dependencies
+load("@graknlabs_client_java//dependencies/maven:artifacts.bzl", graknlabs_client_java_artifacts = "artifacts")
+load("@graknlabs_graql//dependencies/maven:artifacts.bzl", graknlabs_graql_artifacts = "artifacts")
+load("@graknlabs_grabl_tracing//dependencies/maven:artifacts.bzl", graknlabs_grabl_tracing_artifacts = "artifacts")
+load("//dependencies/maven:artifacts.bzl", graknlabs_docs_artifacs = "artifacts")
+
+# load client-python dependencies
 pip3_import(
     name = "graknlabs_client_python_pip",
     requirements = "@graknlabs_client_python//:requirements.txt",
@@ -130,28 +148,7 @@ load("@graknlabs_client_python_pip//:requirements.bzl",
 graknlabs_client_python_pip_install = "pip_install")
 graknlabs_client_python_pip_install()
 
-load("//dependencies/graknlabs:repositories.bzl", "graknlabs_client_java")
-graknlabs_client_java()
-load("@graknlabs_client_java//dependencies/maven:artifacts.bzl", graknlabs_client_java_artifacts = "artifacts")
-
-load("@graknlabs_client_java//dependencies/graknlabs:repositories.bzl", "graknlabs_graql")
-graknlabs_graql()
-load("@graknlabs_graql//dependencies/maven:artifacts.bzl", graknlabs_graql_artifacts = "artifacts")
-
-load("@graknlabs_client_java//dependencies/graknlabs:repositories.bzl", "graknlabs_protocol")
-graknlabs_protocol()
-
-load("@graknlabs_client_java//dependencies/graknlabs:repositories.bzl", "graknlabs_grabl_tracing")
-graknlabs_grabl_tracing()
-load("@graknlabs_grabl_tracing//dependencies/maven:artifacts.bzl", graknlabs_grabl_tracing_artifacts = "artifacts")
-
-load("//dependencies/graknlabs:artifacts.bzl", "graknlabs_grakn_core_artifact")
-graknlabs_grakn_core_artifact()
-
-# Maven artifacts
-load("//dependencies/maven:artifacts.bzl", graknlabs_docs_artifacs = "artifacts")
-
-# for Node
+# for Node documentation
 yarn_install(
     name = "npm",
     package_json = "//test/example/nodejs:package.json",
@@ -160,7 +157,7 @@ yarn_install(
 load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
 install_bazel_dependencies()
 
-# for Python
+# for Python documentation
 pip3_import(
     name = "test_example_pip",
     requirements = "//test/example/python:requirements.txt",
