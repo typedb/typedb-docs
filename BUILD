@@ -55,6 +55,5 @@ filegroup(
         "@graknlabs_dependencies//tool/bazelrun:rbe",
         "@graknlabs_dependencies//tool/unuseddeps:unused-deps",
         "@graknlabs_dependencies//tool/release:docs",
-        "@graknlabs_dependencies//tool/release:docs",
     ],
 )
