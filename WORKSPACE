@@ -183,7 +183,7 @@ test_links_pip_install()
 
 load("@graknlabs_dependencies//library/maven:rules.bzl", "maven")
 maven(
-    graknlabs_dependencies_artifacts +
+    graknlabs_dependencies_tool_maven_artifacts +
     graknlabs_grabl_tracing_artifacts +
     graknlabs_graql_artifacts +
     graknlabs_client_java_artifacts +
