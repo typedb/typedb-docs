@@ -7,7 +7,7 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
-load("@graknlabs_dependencies//distribution/artifact:rules.bzl", "artifact_extractor")
+load("@graknlabs_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
 
 filegroup(
     name = "content",
