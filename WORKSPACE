@@ -70,10 +70,6 @@ python_deps()
 load("@rules_python//python:pip.bzl", "pip_repositories", "pip3_import")
 pip_repositories()
 
-# Load //distribution/docker
-load("@graknlabs_dependencies//distribution/docker:deps.bzl", docker_deps = "deps")
-docker_deps()
-
 # Load //tool/common
 load("@graknlabs_dependencies//tool/common:deps.bzl", "graknlabs_dependencies_ci_pip",
 graknlabs_dependencies_tool_maven_artifacts = "maven_artifacts")
@@ -92,29 +88,6 @@ unuseddeps_deps()
 # Load //tool/sonarcloud
 load("@graknlabs_dependencies//tool/sonarcloud:deps.bzl", "sonarcloud_dependencies")
 sonarcloud_dependencies()
-
-######################################
-# Load @graknlabs_bazel_distribution #
-######################################
-
-load("@graknlabs_dependencies//distribution:deps.bzl", "graknlabs_bazel_distribution")
-graknlabs_bazel_distribution()
-
-# Load //common
-load("@graknlabs_bazel_distribution//common:deps.bzl", "rules_pkg")
-rules_pkg()
-load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
-rules_pkg_dependencies()
-
-# Load //pip
-load("@graknlabs_bazel_distribution//pip:deps.bzl", pip_deps = "deps")
-pip_deps()
-load("@graknlabs_bazel_distribution_pip//:requirements.bzl", graknlabs_bazel_distribution_pip_install = "pip_install")
-graknlabs_bazel_distribution_pip_install()
-
-# Load //github
-load("@graknlabs_bazel_distribution//github:deps.bzl", github_deps = "deps")
-github_deps()
 
 ################################
 # Load @graknlabs dependencies #
