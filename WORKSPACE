@@ -89,6 +89,25 @@ unuseddeps_deps()
 load("@graknlabs_dependencies//tool/sonarcloud:deps.bzl", "sonarcloud_dependencies")
 sonarcloud_dependencies()
 
+######################################
+# Load @graknlabs_bazel_distribution #
+######################################
+
+load("@graknlabs_dependencies//distribution:deps.bzl", "graknlabs_bazel_distribution")
+graknlabs_bazel_distribution()
+
+# Load //common
+load("@graknlabs_bazel_distribution//common:deps.bzl", "rules_pkg")
+rules_pkg()
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+rules_pkg_dependencies()
+
+# Load //pip
+load("@graknlabs_bazel_distribution//pip:deps.bzl", pip_deps = "deps")
+pip_deps()
+load("@graknlabs_bazel_distribution_pip//:requirements.bzl", graknlabs_bazel_distribution_pip_install = "pip_install")
+graknlabs_bazel_distribution_pip_install()
+
 ################################
 # Load @graknlabs dependencies #
 ################################
