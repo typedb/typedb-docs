@@ -1,6 +1,6 @@
 exports_files(["package.json", "yarn.lock"])
 
-load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+load("@npm//@bazel/jasmine:index.bzl", "jasmine_node_test")
 
 ################################
 # phone_calls Standalones Test #
