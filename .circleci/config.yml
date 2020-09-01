@@ -32,6 +32,13 @@ commands:
     steps:
       - run: bazel run @graknlabs_dependencies//tool/bazelrun:rbe -- << parameters.command >>
 
+  install-artifact-credentials:
+    steps:
+      - run: |
+          ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME \
+          ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD \
+          bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
+
   run-grakn-server:
     steps:
       - run-bazel:
@@ -44,8 +51,9 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel
       - checkout
+      - install-bazel
+      - install-artifact-credentials
       - run-bazel:
           command: bazel build //...
       - run:
@@ -62,8 +70,9 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel
       - checkout
+      - install-bazel
+      - install-artifact-credentials
       - run-bazel:
           command: bazel test //test/query:graql-lang --test_output=errors
 
@@ -72,8 +81,9 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel
       - checkout
+      - install-bazel
+      - install-artifact-credentials
       - run-bazel:
           command: bazel test //test/query:graql-java --test_output=errors
 
@@ -82,8 +92,9 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel
       - checkout
+      - install-bazel
+      - install-artifact-credentials
       - run-grakn-server
       - run: bazel test //test/example/java:phone-calls --test_output=errors
       - run: bazel test //test/example/java:social-network --test_output=errors
@@ -93,8 +104,9 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel
       - checkout
+      - install-bazel
+      - install-artifact-credentials
       - run-grakn-server
       - run: bazel test //test/example/nodejs:phone-calls --test_output=errors
       - run: bazel test //test/example/nodejs:social-network --test_output=errors
@@ -104,8 +116,9 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel
       - checkout
+      - install-bazel
+      - install-artifact-credentials
       - run-grakn-server
       - run: bazel test //test/example/python:phone-calls --test_output=errors
       - run: bazel test //test/example/python:social-network --test_output=errors
@@ -115,8 +128,9 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/docs
     steps:
-      - install-bazel
       - checkout
+      - install-bazel
+      - install-artifact-credentials
       - run: bazel test //test/links:test --test_output=errors
 
   release-staging:
