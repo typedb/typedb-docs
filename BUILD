@@ -7,7 +7,7 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
-load("@graknlabs_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
+load("@graknlabs_dependencies//distribution/artifact:rules.bzl", "artifact_extractor")
 
 filegroup(
     name = "content",
@@ -46,14 +46,4 @@ filegroup(
 artifact_extractor(
     name = "grakn-extractor",
     artifact = "@graknlabs_grakn_core_artifact//file",
-)
-
-# CI targets that are not declared in any BUILD file, but are called externally
-filegroup(
-    name = "ci",
-    data = [
-        "@graknlabs_dependencies//tool/bazelrun:rbe",
-        "@graknlabs_dependencies//tool/unuseddeps:unused-deps",
-        "@graknlabs_dependencies//tool/release:docs",
-    ],
 )
