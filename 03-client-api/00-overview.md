@@ -38,9 +38,7 @@ To avoid running into issues and make the most out of using a Grakn client, keep
 
 **Keep one session open per keypsace per client**. A session creates a local copy of the keyspace. That means, if more than one session is opened on the same keyspace, the changes in one is not reflected in the others. Therefore, it's best to always keep only one session open on a particular keyspace.
 
-**Close the session on keyspace A before creating another one on keyspace B**. Although it is possible and arguably sensible to have multiple sessions opened on different keyspaces, to utilise resources, it is recommended to keep only one session opened at a time on a Grakn server.
-
-**Keep the number of operations per transaction minimal**. Although it is technically possible to commit a write transaction once after many operations, it is not recommended. To avoid lengthy rollbacks, running out of memory and conflicting operations, it is best to keep the number of queries per transaction minimal, ideally to one query per transaction.
+**Keep the number of operations per transaction minimal**. Although it is possible to commit a write transaction once after many operations, long transactions can lead to memory issues and computational overheads due to conflicting operations between transactions. It is best to keep the number of queries per transaction minimal, even one query per transaction where feasible. This also makes re-trying transactions that fail due to write-write conflicts much simpler in application code.
 
 **Take advantage of asynchronous queries where possible.** This cuts down and masks network round-trip costs and increases your throughput. All queries can safely be made asynchronous, as async queries within a transaction are executed sequentially on the server-side.
 
