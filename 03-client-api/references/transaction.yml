@@ -91,12 +91,6 @@ methods:
     java:
       <<: *method-execute
       method: 'transaction.execute(GraqlQuery query, Options queryOptions);'
-    python:
-      <<: *method-execute
-      method: 'transaction.execute(query, infer=True, explain=False, batch_size=50);'
-    javascript:
-      <<: *method-execute
-      method: 'transaction.execute(query, queryOptions);'
 
   - method:
     common: &method-commit
