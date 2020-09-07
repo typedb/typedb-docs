@@ -24,6 +24,7 @@ The Concept API architecture is implemented in 2 ways in each client: **local** 
 The benefit of using local concepts is that time spend waiting for round-trips to the server is eliminated: all of the information required is fetched in one go during the query. Calls to methods on the *remote* concept API must make at least one full round-trip to the server to fetch a result, which will include at least the network latency between your client and the Grakn server.
 
 <div class="note">
+[Note]
 As an example, if you were to make 1,000 calls method calls Remote Concept API and your latency (ping) between client is 10ms, you would spend a total of 10 seconds waiting for network round-trips.
 
 Where efficiency is a concern, especially when dealing with large numbers of results, we recommend that you include the required information to fetch in the query, rather than using the Remote Concept API.
