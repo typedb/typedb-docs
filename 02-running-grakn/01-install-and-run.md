@@ -91,9 +91,9 @@ brew upgrade graknlabs/tap/grakn-core
 
 <div class="note">
 [Warning]
-Grakn 1.8.2 and earlier have [a bug](https://github.com/graknlabs/grakn/issues/5882) where upgrading or uninstalling Grakn via Homebrew
-would clean the data. Grakn 1.8.3 fixes the problem by removing `db` and `logs` folders (so you should still backup before upgrading!)
-and symlinking them into a location that should be persistent between upgrades (`/usr/local/var/grakn-core/db`).
+Grakn 1.8.2 and earlier have [a bug](https://github.com/graknlabs/grakn/issues/5882) where the data is not preserved when upgrading or uninstalling. This problem has been fixed from Grakn 1.8.3 upwards.
+
+Therefore, if you are upgrading from 1.8.2 or older, please make sure to back up the data by following [this instruction](http://dev.grakn.ai/docs/management/migration-and-backup#upgrading-grakn-with-homebrew).
 </div>
 
 #### Manual Download
