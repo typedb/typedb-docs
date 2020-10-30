@@ -48,7 +48,7 @@ Importing a backup will not delete existing data in the keyspace, so you should 
 
 ### Schema Migration
 
-The first step of migraiton is to migrate your schema. The  `grakn server schema` command allows you to get the current schema of a Grakn keyspace as a single Graql `define` query. This schema query can then be loaded via `grakn console` to the new server.
+The first step of migration is to migrate your schema. The  `grakn server schema` command allows you to get the current schema of a Grakn keyspace as a single Graql `define` query. This schema query can then be loaded via `grakn console` to the new server.
 
 You can skip the step of exporting schema if you already have a copy of your schema to import.
 
