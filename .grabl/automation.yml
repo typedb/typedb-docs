@@ -12,12 +12,12 @@ build:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
-        bazel test //test/query:graql-lang --config=rbe --test_output=errors
+        bazel test //test/query:graql-lang --test_output=errors
     test-query-graql-java:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
-        bazel test //test/query:graql-java --config=rbe --test_output=errors
+        bazel test //test/query:graql-java --test_output=errors
     test-example-java:
       machine: graknlabs-ubuntu-20.04
       type: foreground
