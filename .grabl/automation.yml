@@ -38,6 +38,7 @@ build:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        pyenv global system
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         nohup ./dist/grakn-core-all-linux/grakn server start
         bazel test //test/example/python:phone-calls --test_output=errors
