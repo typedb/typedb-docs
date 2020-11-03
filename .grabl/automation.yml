@@ -1,0 +1,86 @@
+build:
+  correctness:
+    build:
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      script: |
+        bazel build //...
+        dependencies/maven/update.sh
+        git diff --exit-code dependencies/maven/artifacts.snapshot
+        bazel run @graknlabs_dependencies//tool/unuseddeps:unused-deps -- list
+    test-query-graql-lang:
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      script: |
+        bazel test //test/query:graql-lang --test_output=errors
+    test-query-graql-java:
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      script: |
+        bazel test //test/query:graql-java --test_output=errors
+    test-example-java:
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      script: |
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
+        nohup ./dist/grakn-core-all-linux/grakn server start
+        bazel test //test/example/java:phone-calls --test_output=errors
+        bazel test //test/example/java:social-network --test_output=errors
+    test-example-nodejs:
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      script: |
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
+        nohup ./dist/grakn-core-all-linux/grakn server start
+        bazel test //test/example/nodejs:phone-calls --test_output=errors
+        bazel test //test/example/nodejs:social-network --test_output=errors
+    test-example-python:
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      script: |
+        pyenv global system
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
+        nohup ./dist/grakn-core-all-linux/grakn server start
+        bazel test //test/example/python:phone-calls --test_output=errors
+        bazel test //test/example/python:social-network --test_output=errors
+    test-links:
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      script: |
+        bazel test //test/links:test --test_output=errors
+    release-staging:
+      filter:
+        owner: graknlabs
+        branch: development
+      machine: graknlabs-ubuntu-20.04
+      type: foreground
+      dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links, release-staging]
+      script: |
+        export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
+        export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
+        export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
+        bazel run @graknlabs_dependencies//tool/release:docs -- development $CIRCLE_SHA1
+    
+  execution:
+    - build
+    - test-query-graql-lang
+    - test-query-graql-java
+    - test-example-java
+    - test-example-nodejs
+    - test-example-python
+    - test-links
+    - release-staging
+
+
+release:
+  filter:
+    owner: graknlabs
+    branch: master
+  deployment:
+    deploy-github:
+      machine: graknlabs-ubuntu-20.04
+      script: |
+        export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
+        export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
+        export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
+        bazel run @graknlabs_dependencies//tool/release:docs -- master $CIRCLE_SHA1
