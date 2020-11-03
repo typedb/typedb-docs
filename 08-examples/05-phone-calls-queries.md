@@ -21,7 +21,7 @@ For the rest of this post, we go through each of these questions to:
 
 - understand their business value,
 - write them as a statement,
-- write them in [Graql](http://dev.grakn.ai/academy/graql-intro.html), and
+- write them in [Graql](https://dev.grakn.ai/docs/query/overview), and
 - assess their result.
 
 Make sure you have [Grakn Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [Grakn Server](../02-running-grakn/01-install-and-run.md#start-the-grakn-server) and `phone_calls` is the [selected keyspace](../07-workbase/01-connection.md#select-a-keyspace).
