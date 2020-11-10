@@ -159,7 +159,7 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 
 | Client Node.js | Grakn Core                  | Grakn KGMS     |  Node  |
 | :------------: | :-------------------------: | :------------: | :----: |
-| 1.8.0          | 1.8.0                       | N/A            | >= 6.5 |
+| 1.8.0          | 1.8.0 to 1.8.4              | N/A            | >= 6.5 |
 | 1.7.0          | 1.7.1, 1.7.2                | N/A            | >= 6.5 |
 | 1.6.0          | 1.6.0 to 1.6.2              | 1.6.2          | >= 6.5 |
 | 1.5.6          | 1.5.8, 1.5.9                | 1.5.8          | >= 6.5 |
