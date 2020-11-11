@@ -79,6 +79,9 @@ release:
   filter:
     owner: graknlabs
     branch: master
+  validation:
+    validate-dummy:
+      machine: graknlabs-ubuntu-20.04
   deployment:
     deploy-github:
       machine: graknlabs-ubuntu-20.04
