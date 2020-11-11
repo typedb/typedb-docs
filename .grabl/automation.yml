@@ -82,6 +82,8 @@ release:
   validation:
     validate-dummy:
       machine: graknlabs-ubuntu-20.04
+      script: |
+        echo dummy
   deployment:
     deploy-github:
       machine: graknlabs-ubuntu-20.04
