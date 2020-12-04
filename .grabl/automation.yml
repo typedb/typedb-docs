@@ -57,7 +57,7 @@ build:
         branch: development
       machine: graknlabs-ubuntu-20.04
       type: foreground
-      dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links, release-staging]
+      dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
       script: |
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
