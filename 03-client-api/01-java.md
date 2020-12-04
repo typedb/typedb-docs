@@ -174,6 +174,8 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 
 | Client Java | Grakn Core     | Grakn KGMS     |
 | :---------: | :-------------:| :------------: |
+| 1.8.3       | 1.8.0 to 1.8.4 | N/A            |
+| 1.8.2       | 1.8.0, 1.8.1   | N/A            |
 | 1.8.1       | 1.8.0          | N/A            |
 | 1.8.0       | 1.8.0          | N/A            |
 | 1.7.3       | 1.7.1, 1.7.2   | N/A            |

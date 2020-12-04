@@ -89,6 +89,13 @@ To upgrade an existing installation via brew:
 brew upgrade graknlabs/tap/grakn-core
 ```
 
+<div class="note">
+[Warning]
+Grakn 1.8.2 and earlier have [a bug](https://github.com/graknlabs/grakn/issues/5882) where the data is not preserved when upgrading or uninstalling. This problem has been fixed from Grakn 1.8.3 upwards.
+
+Therefore, if you are upgrading from 1.8.2 or older, please make sure to back up the data by following [this instruction](http://dev.grakn.ai/docs/management/migration-and-backup#upgrading-grakn-with-homebrew).
+</div>
+
 #### Manual Download
 Download the [latest release](https://grakn.ai/download?os=mac_os_x#core), unzip it in a location on your machine that is easily accessible via terminal.
 
