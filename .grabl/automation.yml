@@ -1,7 +1,21 @@
 config:
   version-candidate: VERSION
+  dependencies:
+    dependencies: [build]
+    common: [release]
+    client-java: [release]
+    client-python: [release]
+    client-nodejs: [release]
 
 build:
+  quality:
+    filter:
+      owner: graknlabs
+      branch: master
+    dependency-analysis:
+      machine: graknlabs-ubuntu-20.04-java11
+      script: |
+        bazel run @graknlabs_dependencies//grabl/analysis:dependency-analysis
   correctness:
     build:
       machine: graknlabs-ubuntu-20.04
