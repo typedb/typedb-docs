@@ -21,6 +21,9 @@ build:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel build //...
         dependencies/maven/update.sh
         git diff --exit-code dependencies/maven/artifacts.snapshot
@@ -29,16 +32,25 @@ build:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel test //test/query:graql-lang --test_output=errors
     test-query-graql-java:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel test //test/query:graql-java --test_output=errors
     test-example-java:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         nohup ./dist/grakn-core-all-linux/grakn server start
         bazel test //test/example/java:phone-calls --test_output=errors
@@ -47,6 +59,9 @@ build:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         nohup ./dist/grakn-core-all-linux/grakn server start
         bazel test //test/example/nodejs:phone-calls --test_output=errors
@@ -55,6 +70,9 @@ build:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         pyenv global system
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         nohup ./dist/grakn-core-all-linux/grakn server start
@@ -64,6 +82,9 @@ build:
       machine: graknlabs-ubuntu-20.04
       type: foreground
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel test //test/links:test --test_output=errors
     release-staging:
       filter:
@@ -73,6 +94,9 @@ build:
       type: foreground
       dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
       script: |
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
@@ -105,4 +129,7 @@ release:
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
+        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run @graknlabs_dependencies//tool/release:docs -- master $CIRCLE_SHA1
