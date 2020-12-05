@@ -19,13 +19,22 @@
 #
 #
 
-load("@graknlabs_common//test/server:rules.bzl", "grakn_test")
+load("@graknlabs_common//test/server:rules.bzl", "grakn_java_test", "native_grakn_artifact")
 
 ############################
 # Phone Calls Example Test #
 ############################
 
-grakn_test(
+native_grakn_artifact(
+    name = "native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    visibility = ["//test:__subpackages__"],
+)
+
+
+grakn_java_test(
     name = "phone-calls",
     test_class = "grakn.doc.test.example.PhoneCallsTest",
     srcs = [
@@ -40,7 +49,7 @@ grakn_test(
         "@maven//:com_univocity_univocity_parsers",
         "@maven//:javax_xml_stream_stax_api",
     ],
-    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
+    native_grakn_artifact = ":native-grakn-artifact",
     data = [
         "//files:phone-calls-kg",
     ]
@@ -70,7 +79,7 @@ genrule(
 ###################################
 # social_network Standalones Test #
 ###################################
-grakn_test(
+grakn_java_test(
     name = "social-network",
     test_class = "grakn.doc.test.example.SocialNetworkTest",
     srcs = [
@@ -81,7 +90,7 @@ grakn_test(
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
     ],
-    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
+    native_grakn_artifact = ":native-grakn-artifact",
     data = [
         "//files:social-network-kg",
     ]

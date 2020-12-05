@@ -122,8 +122,8 @@ graknlabs_protocol()
 graknlabs_grabl_tracing()
 
 # load artifacts
-load("//dependencies/graknlabs:artifacts.bzl", "graknlabs_grakn_core_artifact")
-graknlabs_grakn_core_artifact()
+load("//dependencies/graknlabs:artifacts.bzl", "graknlabs_grakn_core_artifacts")
+graknlabs_grakn_core_artifacts()
 
 # load maven dependencies
 load("@graknlabs_client_java//dependencies/maven:artifacts.bzl", graknlabs_client_java_artifacts = "artifacts")
@@ -146,8 +146,6 @@ yarn_install(
     package_json = "//test/example/nodejs:package.json",
     yarn_lock = "//test/example/nodejs:yarn.lock",
 )
-load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
-install_bazel_dependencies()
 
 # for Python documentation
 pip3_import(

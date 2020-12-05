@@ -19,12 +19,21 @@
 #
 #
 
-load("@graknlabs_common//test/server:rules.bzl", "grakn_test")
+load("@graknlabs_common//test/server:rules.bzl", "grakn_java_test", "native_grakn_artifact")
+
+
+native_grakn_artifact(
+    name = "native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    visibility = ["//test:__subpackages__"],
+)
 
 #########################
 # Graql Java Query Test #
 #########################
-grakn_test(
+grakn_java_test(
     name = "graql-java",
     test_class = "grakn.doc.test.query.GraqlJavaTest",
     srcs = [":graql-java-tests"],
@@ -32,7 +41,7 @@ grakn_test(
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
     ],
-    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
+    native_grakn_artifact = ":native-grakn-artifact",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
@@ -54,7 +63,7 @@ genrule(
 #########################
 # Graql Lang Query Test #
 #########################
-grakn_test(
+grakn_java_test(
     name = "graql-lang",
     test_class = "grakn.doc.test.query.GraqlLangTest",
     srcs = [":graql-lang-tests"],
@@ -62,7 +71,7 @@ grakn_test(
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
     ],
-    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
+    native_grakn_artifact = ":native-grakn-artifact",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
