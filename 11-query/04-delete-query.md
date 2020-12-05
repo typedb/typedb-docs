@@ -50,7 +50,7 @@ delete $emp isa employment;
 ```java
 GraqlDelete query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
+  var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").isa("employment"));
 ```
 [tab:end]
@@ -78,7 +78,7 @@ match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date
 ```java
 GraqlDelete query = Graql.match(
   var("t").isa("travel").has("start-date", var("st")),
-  var("st").val(LocalDate.of(2013, 12, 22).atStartOfDay())
+  var("st").eq(LocalDate.of(2013, 12, 22).atStartOfDay())
 ).delete(var("t").has("start-date", var("st")));
 ```
 [tab:end]
@@ -115,7 +115,7 @@ delete $emp (employer: $org);
 ```java
 GraqlDelete query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
+  var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").rel("employer", "org"));
 ```
 [tab:end]

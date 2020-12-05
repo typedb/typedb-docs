@@ -40,6 +40,9 @@ grakn_java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
+        "@graknlabs_graql//java/common",
+        "@graknlabs_graql//java/pattern",
+        "@graknlabs_graql//java/query",
     ],
     native_grakn_artifact = ":native-grakn-artifact",
     data = [
@@ -70,6 +73,8 @@ grakn_java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
+        "@graknlabs_graql//java/query",
+        "@graknlabs_graql//java/pattern"
     ],
     native_grakn_artifact = ":native-grakn-artifact",
     data = [

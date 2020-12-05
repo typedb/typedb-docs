@@ -30,9 +30,9 @@ match $p isa person; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person")
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -52,9 +52,9 @@ match $p isa person, has full-name $n; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person").has("full-name", var("n"))
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -75,9 +75,9 @@ match $emp (employer: $x, employee: $y) isa employment; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("emp").isa("employment").rel("employer", "x").rel("employee", "y")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("emp").rel("employer", "x").rel("employee", "y").isa("employment")
+).get("emp");
 ```
 [tab:end]
 </div>
@@ -97,9 +97,9 @@ match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; g
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref"))
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("emp").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref")).isa("employment")
+).get("emp");
 ```
 [tab:end]
 </div>
@@ -119,9 +119,10 @@ match (employer: $x, employee: $y) isa employment; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var().isa("employment").rel("employer", "x").rel("employee", "y")
-).get();
+// FIXME(vmax): anonymous variables are not allowed 
+//GraqlMatch.Filtered query = Graql.match(
+//  var().isa("employment").rel("employer", "x").rel("employee", "y")
+//).get();
 ```
 [tab:end]
 </div>
@@ -139,9 +140,9 @@ match $fr ($x, $y) isa friendship; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("fr").isa("friendship").rel("x").rel("y")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("fr").rel("x").rel("y").isa("friendship")
+).get("fr");
 ```
 [tab:end]
 </div>
@@ -162,9 +163,9 @@ match $x "like"; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").val("like")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").eq("like")
+).get("x");
 ```
 [tab:end]
 </div>
@@ -184,9 +185,9 @@ match $n isa nickname; $n "Mitzi"; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").isa("nickname").val("Mitzi")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").eq("Mitzi").isa("nickname")
+).get("x");
 ```
 [tab:end]
 </div>
@@ -206,9 +207,9 @@ match $phone-number contains "+44"; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("phone-number").contains("+44")
-).get();
+).get("phone-number");
 ```
 [tab:end]
 </div>
@@ -228,9 +229,9 @@ match $x like "(Miriam Morton|Solomon Tran)"; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("phone-number").regex("(Miriam Morton|Solomon Tran)")
-).get();
+).get("phone-number");
 ```
 [tab:end]
 </div>
@@ -250,9 +251,9 @@ match $p isa person, has nickname $nn, has full-name $fn; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person").has("nickname", var("nn")).has("full-name", var("fn"))
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -270,9 +271,9 @@ match $s isa school, has ranking < 100; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("s").isa("school").has("ranking", Graql.lt(100))
-).get();
+).get("s");
 ```
 [tab:end]
 </div>
@@ -289,10 +290,10 @@ match $s isa school, has ranking $r; $r < 100; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("s").isa("school").has("ranking", var("r")),
   var("r").lt(100)
-).get();
+).get("s");
 ```
 [tab:end]
 </div>
@@ -310,13 +311,13 @@ match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn cont
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person").has("full-name", var("fn")),
   or(
     var("fn").contains("Miriam"),
     var("fn").contains("Solomon")
   )
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -334,9 +335,9 @@ match $rr isa! romantic-relationship; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("rr").isaX("romantic-relationship")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("rr").isa("romantic-relationship")
+).get("rr");
 ```
 [tab:end]
 </div>
@@ -359,9 +360,9 @@ match $x id V41016; get;
 [tab:Java]
 <!-- test-ignore -->
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("x").id("V41016")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -386,9 +387,9 @@ match $x sub post; get;
 
 [tab:Java]
 ```java
-GraqlGet query_a = Graql.match(
+GraqlMatch.Filtered query_a = Graql.match(
   var("x").sub("post")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -407,9 +408,9 @@ match $x sub! post; get;
 
 [tab:Java]
 ```java
-GraqlGet query_a = Graql.match(
+GraqlMatch.Filtered query_a = Graql.match(
   var("x").subX("post")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -428,9 +429,9 @@ match $x type post; get;
 
 [tab:Java]
 ```java
-GraqlGet query_a = Graql.match(
+GraqlMatch.Filtered query_a = Graql.match(
   var("x").type("post")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -451,9 +452,9 @@ match employment relates $x; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   type("employment").relates(var("x"))
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -473,10 +474,10 @@ match location-of-office relates $x as located-subject; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   type("location-of-office").relates(var("x")),
   var("x").sub("located-subject")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -496,9 +497,10 @@ match $x plays employee; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").plays("employee")
-).get();
+// FIXME(vmax): fill in needed relation
+GraqlMatch.Filtered query = Graql.match(
+  var("x").plays("FIXME", "employee")
+).get("x");
 ```
 [tab:end]
 </div>
@@ -518,9 +520,9 @@ match $x has title; get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").has("title")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").has("title", var())
+).get("x");
 ```
 [tab:end]
 </div>

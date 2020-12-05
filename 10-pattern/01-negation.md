@@ -55,7 +55,7 @@ i.e. we look for the following Graql pattern:
 Pattern pattern = and(
     var("x").isa("person"), 
     not(
-        var().isa("employment").rel("employee", var("x")).rel("employer", var("y"))
+        var().rel("employee", var("x")).rel("employer", var("y")).isa("employment")
     )
 );
 ```
@@ -104,14 +104,15 @@ get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
     var("x").isa("person"), 
     not(
-        var().isa("employment")
+        var()
             .rel("employee", var("x"))
             .rel("employer", var("y"))
+            .isa("employment")
     )
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -144,12 +145,12 @@ unemployment sub rule,
 ```java
 GraqlDefine query = Graql.define(
     type("unemployed").sub("entity"),
-    type("unemployment").sub("rule")
+    rule("unemployment")
         .when(
             and(
                 var("x").isa("person"),
                 not(
-                    var().isa("employment").rel("employee", "x").rel("employer", "y")
+                    var().rel("employee", "x").rel("employer", "y").isa("employment")
                 )
             )
         )
@@ -202,11 +203,12 @@ blocks to perform exclusions, e.g. the query pattern to list all non-English spe
 [tab:Java]
 ```java
 Pattern pattern = and(
-    var().isa("employment").rel("employee", var("x")),
-    var().isa("speaking-of-language")
+    var().rel("employee", var("x")).isa("employment"),
+    var()
         .rel("speaker", var("x"))
-        .rel("spoken", var("y")),
-    not(var("y").val("English"))
+        .rel("spoken", var("y"))
+        .isa("speaking-of-language"),
+    not(var("y").eq("English"))
 );
 ```
 [tab:end]
@@ -237,14 +239,16 @@ To express that in Graql, we require two negation blocks:
 Pattern pattern = and(
     var("x").isa("person"),
     not(
-        var().isa("parentship")
+        var()
             .rel(var("x"))
             .rel("father", var("y"))
+            .isa("parentship")
     ),
     not(
-        var().isa("parentship")
+        var()
             .rel(var("x"))
             .rel("mother", var("y"))
+            .isa("parentship")
     )
 );
 ```
@@ -313,7 +317,7 @@ match $x isa person; get;
 
 [tab:Java]
 ```java
-GraqlGet query = match(var("x").isa("person")).get();
+GraqlMatch.Filtered query = match(var("x").isa("person")).get("x");
 ```
 [tab:end]
 </div>
@@ -330,7 +334,7 @@ match $x isa person-with-a-father; get;
 
 [tab:Java]
 ```java
-GraqlGet query = match(var("x").isa("person-with-a-father")).get();
+GraqlMatch.Filtered query = match(var("x").isa("person-with-a-father")).get("x");
 ```
 [tab:end]
 </div>
@@ -347,7 +351,7 @@ match $x isa person-with-a-mother; get;
 
 [tab:Java]
 ```java
-GraqlGet query = match(var("x").isa("person-with-a-mother")).get();
+GraqlMatch.Filtered query = match(var("x").isa("person-with-a-mother")).get("x");
 ```
 [tab:end]
 </div>
@@ -400,10 +404,10 @@ Consequently, the final result of the match query:
 Pattern pattern = and(
     var("x").isa("person"),
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
 );
 ```
@@ -437,10 +441,10 @@ Pattern pattern =and(
     var("x").isa("person"),
     var("y").isa("person"), 
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
 );
 ```
@@ -463,10 +467,10 @@ get;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
     var("x").isa("person"),
     var("y").isa("person")
-).get();
+).get("x", "y");
 ```
 [tab:end]
 </div>
@@ -511,10 +515,10 @@ Pattern pattern = and(
     var("x").isa("person"),
     var("y").isa("person"), 
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
 );
 ```
@@ -549,15 +553,15 @@ get $x;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
     var("x").isa("person"), 
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -594,8 +598,8 @@ Pattern pattern = and(
     and(
         not(
             and(
-                var().isa("parentship").rel(var("x")).rel("father", var("y")),
-                var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+                var().rel(var("x")).rel("father", var("y")).isa("parentship"),
+                var().rel(var("x")).rel("mother", var("y")).isa("parentship")
             )
         )
    )
@@ -630,10 +634,11 @@ Pattern pattern = and(
     var("x").isa("person"),
     not(
         and(
-            var().isa("parentship")
+            var()
                 .rel(var("x"))
-                .rel("father", var("y")),
-            not(var().isa("employment").rel(var("y")))
+                .rel("father", var("y"))
+                .isa("parentship"),
+            not(var().rel(var("y")).isa("employment"))
         )
     )
 );
@@ -685,7 +690,8 @@ edge sub relation, relates from, relates to;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-    type("traversable").sub("entity").plays("from").plays("to"),
+    // FIXME(vmax): fill in needed relation
+    type("traversable").sub("entity").plays("FIXME", "from").plays("FIXME", "to"),
     type("node").sub("traversable"), 
     type("edge").sub("relation").relates("from").relates("to")
 );
@@ -725,22 +731,23 @@ reachabilityB sub rule,
 ```java
 GraqlDefine query = Graql.define(
     type("reachable").sub("relation").relates("from").relates("to"),
-    type("reachabilityA").sub("rule")
+    rule("reachabilityA")
         .when(
-            var().isa("edge").rel("from", "x").rel("to", "y")   
+            // FIXME(vmax): I'm not totally sure about .asConjunction()
+            var().rel("from", "x").rel("to", "y").isa("edge").asConjunction()
         )
         .then(
-            var().isa("reachable").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("reachable")
         ),
-    type("reachabilityB").sub("rule")
+    rule("reachabilityB")
         .when(
             and(
-                var().isa("edge").rel("from", "x").rel("to", "z"),
-                var().isa("reachable").rel("from", "z").rel("to", "y")
+                var().rel("from", "x").rel("to", "z").isa("edge"),
+                var().rel("from", "z").rel("to", "y").isa("reachable")
             )
         )
         .then(
-            var().isa("reachable").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("reachable")
         )        
 );
 ```
@@ -771,17 +778,17 @@ indirect-edge-rule sub rule,
 ```java
 GraqlDefine query = Graql.define(
     type("indirect-edge").sub("relation").relates("from").relates("to"),
-    type("indirect-edge-rule").sub("rule")
+    rule("indirect-edge-rule")
         .when(
             and(
-                var().isa("reachable").rel("from", "x").rel("to", "y"),
+                var().rel("from", "x").rel("to", "y").isa("reachable"),
                 not(
-                    var().isa("edge").rel("from", "x").rel("to", "y")
+                    var().rel("from", "x").rel("to", "y").isa("edge")
                 )
             )
         )
         .then(
-            var().isa("indirect-edge").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("indirect-edge")
         )
 );
 ```
@@ -813,18 +820,18 @@ unreachability-rule sub rule,
 ```java
 GraqlDefine query = Graql.define(
     type("unreachable").sub("relation").relates("from").relates("to"),
-    type("unreachability-rule").sub("rule")
+    rule("unreachability-rule")
         .when(
             and(
                 var("x").isa("node"),
                 var("y").isa("node"),
                 not(
-                    var().isa("unreachable").rel("from", "x").rel("to", "y")
+                    var().rel("from", "x").rel("to", "y").isa("unreachable")
                 )
             )
         )
         .then(
-            var().isa("reachable").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("reachable")
         )
 );
 ```

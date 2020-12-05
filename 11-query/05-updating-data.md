@@ -77,7 +77,7 @@ GraqlInsert insert_query = Graql.match(
 );
 
 GraqlDelete delete_query = Graql.match(
-  var("c").isa("caption").contains("inappropriate word")
+  var("c").contains("inappropriate word").isa("caption")
 ).delete(var("c").isa("caption"));
 ```
 [tab:end]
@@ -104,12 +104,12 @@ insert $emp ($employee: $p2) isa employment;
 [tab:Java]
 ```java
 GraqlInsert insert_query = Graql.match(
- var("emp").isa("employment").rel("employer", var("org")).rel("employee", var("p")),
+ var("emp").rel("employer", var("org")).rel("employee", var("p")).isa("employment"),
   var("p").isa("person"),
   var("p2").isa("person"),
   var("p").neq(var("p2"))
 ).insert(
-  var("emp").isa("employment").rel("employee", var("p2"))
+  var("emp").rel("employee", var("p2")).isa("employment")
 );
 ```
 [tab:end]
@@ -145,13 +145,13 @@ delete
 GraqlInsert query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("new-org").isa("organisation").has("name", "Medicely"),
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
+  var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).insert(var("emp").rel("employer", "new-org"));
 
 GraqlDelete deleteQuery = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("new-org").isa("organisation").has("name", "Medicely"),
-  var("emp").isa("employment").rel("employer", "org").rel("employer", "new-org").rel("employee", "p")
+  var("emp").rel("employer", "org").rel("employer", "new-org").rel("employee", "p").isa("employment")
 ).delete(var("emp").rel("employer", "org"));
 ```
 [tab:end]

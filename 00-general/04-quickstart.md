@@ -120,30 +120,32 @@ The result contains the following answers.
 ```java
 package grakn.examples;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import static graql.lang.Graql.*;
-import graql.lang.query.GraqlGet;
-import grakn.client.answer.ConceptMap;
+import graql.lang.query.GraqlMatch;
+import grakn.client.concept.answer.ConceptMap;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SocialNetworkQuickstartQuery extends Throwable {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
-        GraqlGet query = match(
+        GraqlMatch.Filtered query = match(
                 var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
                 var("per").has("full-name", var("per-fn")),
                 var("org").has("name", var("org-n"))
-        ).get();
+        ).get("per-fn", "org-n");
 
-        List<ConceptMap> answers = transaction.execute(query).get();
+        List<ConceptMap> answers = transaction.query().match(query).collect(Collectors.toList());
 
         for (ConceptMap answer : answers) {
-            System.out.println(answer.get("per-fn").asAttribute().value());
-            System.out.println(answer.get("org-n").asAttribute().value());
+            System.out.println(answer.get("per-fn").asThing().asAttribute().getValue());
+            System.out.println(answer.get("org-n").asThing().asAttribute().getValue());
             System.out.println(" - - - - - - - - ");
         }
 
@@ -161,7 +163,7 @@ from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:48555") as client:
     with client.session(keyspace = "social_network") as session:
-      with session.transaction().read() as transaction:
+      with session.transaction(Grakn.Transaction.Type.READ) as transaction:
         query = '''
           match
             $pos isa media;
@@ -185,7 +187,7 @@ const GraknClient = require("grakn-client");
 async function getAverageSalaryAt (orgName) {
     const client = new GraknClient("localhost:48555");
 	const session = await client.session("social_network");
-	const transaction = await session.transaction().read()
+	const transaction = await session.transaction(Grakn.Transaction.Type.READ)
 	const query = `
 		match
 			$org isa organisation, has name "${orgName}";

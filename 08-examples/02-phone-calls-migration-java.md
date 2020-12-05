@@ -378,7 +378,7 @@ Now that we have the datapath and template defined for each of our data files, w
 <!-- test-ignore -->
 ```java
 // other imports
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -391,8 +391,8 @@ public class PhoneCallsMigration {
   	}
 
   	static void connectAndMigrate(Collection<Input> inputs) {
-    	GraknClient client = new GraknClient("localhost:48555");
-		GraknClient.Session session = client.session("phone_calls");
+    	Grakn.Client client = new GraknClient("localhost:48555");
+		Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
 		for (Input input : inputs) {
 			System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
@@ -440,10 +440,10 @@ public class PhoneCallsMigration {
   	static void loadDataIntoGrakn(Input input, Grakn.Session session) {
   	  	ArrayList<Json> items = parseDataToJson(input);
 		for (Json item : items) {
-			GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+			Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 			String graqlInsertQuery = input.template(item);
 			System.out.println("Executing Graql Query: " + graqlInsertQuery);
-			transaction.execute((GraqlInsert) parse(graqlInsertQuery));
+			transaction.query().insert((GraqlInsert) parseQuery(graqlInsertQuery));
 			transaction.commit();
 		}
   		System.out.println("\nInserted " + items.size() + " items from [ " + input.getDataPath() + "] into Grakn.\n");
@@ -754,7 +754,8 @@ Here is how our `Migrate.java` looks like for each data format.
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -807,8 +808,8 @@ public class PhoneCallsCSVMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {
             System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
@@ -897,13 +898,13 @@ public class PhoneCallsCSVMigration {
      * @param session off of which a transaction is created
      * @throws UnsupportedEncodingException
      */
-    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws FileNotFoundException {
+    static void loadDataIntoGrakn(Input input, Grakn.Session session) throws FileNotFoundException {
         ArrayList<Json> items = parseDataToJson(input); // 1
         for (Json item : items) {
-            GraknClient.Transaction transaction = session.transaction().write(); // 2a
+            Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE); // 2a
             String graqlInsertQuery = input.template(item); // 2b
             System.out.println("Executing Graql Query: " + graqlInsertQuery);
-            transaction.execute((GraqlInsert) parse(graqlInsertQuery)); // 2c
+            transaction.query().insert((GraqlInsert) parseQuery(graqlInsertQuery)); // 2c
             transaction.commit(); // 2d
 
         }
@@ -952,7 +953,8 @@ public class PhoneCallsCSVMigration {
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -1004,8 +1006,8 @@ public class PhoneCallsJSONMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws IOException {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {
             System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
@@ -1094,13 +1096,13 @@ public class PhoneCallsJSONMigration {
      * @param session off of which a transaction is created
      * @throws UnsupportedEncodingException
      */
-    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws IOException {
+    static void loadDataIntoGrakn(Input input, Grakn.Session session) throws IOException {
         ArrayList<Json> items = parseDataToJson(input); // 1
         for (Json item : items) {
-            GraknClient.Transaction transaction = session.transaction().write(); // 2a
+            Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE); // 2a
             String graqlInsertQuery = input.template(item); // 2b
             System.out.println("Executing Graql Query: " + graqlInsertQuery);
-            transaction.execute((GraqlInsert) parse(graqlInsertQuery)); // 2c
+            transaction.query().insert((GraqlInsert) parseQuery(graqlInsertQuery)); // 2c
             transaction.commit(); // 2d
 
         }
@@ -1156,7 +1158,8 @@ public class PhoneCallsJSONMigration {
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import graql.lang.query.GraqlInsert;
 import static graql.lang.Graql.*;
 
@@ -1212,8 +1215,8 @@ public class PhoneCallsXMLMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, XMLStreamException {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {
             System.out.println("Loading from [" + input.getDataPath() + "] into Grakn ...");
@@ -1301,13 +1304,13 @@ public class PhoneCallsXMLMigration {
      * @param session off of which a transaction is created
      * @throws UnsupportedEncodingException
      */
-    static void loadDataIntoGrakn(Input input, GraknClient.Session session) throws FileNotFoundException, XMLStreamException {
+    static void loadDataIntoGrakn(Input input, Grakn.Session session) throws FileNotFoundException, XMLStreamException {
         ArrayList<Json> items = parseDataToJson(input); // 1
         for (Json item : items) {
-            GraknClient.Transaction transaction = session.transaction().write(); // 2a
+            Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE); // 2a
             String graqlInsertQuery = input.template(item); // 2b
             System.out.println("Executing Graql Query: " + graqlInsertQuery);
-            transaction.execute((GraqlInsert) parse(graqlInsertQuery)); // 2c
+            transaction.query().insert(parseQuery(graqlInsertQuery)); // 2c
             transaction.commit(); // 2d
 
         }

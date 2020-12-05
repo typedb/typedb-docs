@@ -44,6 +44,8 @@ grakn_java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
+        "@graknlabs_graql//java/common",
+        "@graknlabs_graql//java/query",
         "@maven//:org_sharegov_mjson",
         "@maven//:com_google_code_gson_gson",
         "@maven//:com_univocity_univocity_parsers",
@@ -89,6 +91,8 @@ grakn_java_test(
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
+        "@graknlabs_graql//java/query",
+        "@graknlabs_graql//java/common",
     ],
     native_grakn_artifact = ":native-grakn-artifact",
     data = [

@@ -8,13 +8,13 @@ methods:
         - "[Transaction](#transaction) object"
     java:
       <<: *method-transaction-read
-      method: session.transaction().read();
+      method: session.transaction(Grakn.Transaction.Type.READ);
     javascript:
       <<: *method-transaction-read
-      method: await session.transaction().read();
+      method: await session.transaction(Grakn.Transaction.Type.READ);
     python:
       <<: *method-transaction-read
-      method: session.transaction().read()
+      method: session.transaction(Grakn.Transaction.Type.READ)
 
   - method:
     common: &method-transaction-write
@@ -24,13 +24,13 @@ methods:
         - "[Transaction](#transaction) object"
     java:
       <<: *method-transaction-write
-      method: session.transaction().write();
+      method: session.transaction(Grakn.Transaction.Type.WRITE);
     javascript:
       <<: *method-transaction-write
-      method: await session.transaction().write();
+      method: await session.transaction(Grakn.Transaction.Type.WRITE);
     python:
       <<: *method-transaction-write
-      method: session.transaction().write()
+      method: session.transaction(Grakn.Transaction.Type.WRITE)
 
   - method:
     common: &method-close

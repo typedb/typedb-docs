@@ -67,7 +67,7 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("person").sub("entity").has("full-name").has("nickname").has("gender")
+  type("person").sub("entity").owns("full-name").owns("nickname").owns("gender")
 );
 ```
 
@@ -91,7 +91,7 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("person").sub("entity").key("email")
+  type("person").sub("entity").owns("email", true)
 );
 ```
 
@@ -125,10 +125,11 @@ organisation sub entity,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("person").sub("entity").plays("employee"),
-  type("organisation").sub("entity").plays("employer")
-);
+// FIXME(vmax): roleplayers are scoped now, so this is impossible
+//GraqlDefine query = Graql.define(
+//  type("person").sub("entity").plays("employee"),
+//  type("organisation").sub("entity").plays("employer")
+//);
 ```
 
 [tab:end]
@@ -171,9 +172,10 @@ photo sub media;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("post").sub("entity").plays("replied-to").plays("tagged-in").plays("reacted-to"),
-  type("comment").sub("post").has("content").plays("attached-to"),
-  type("media").sub("post").has("caption").has("file").plays("attached"),
+  // FIXME(vmax): fill in needed relation
+  type("post").sub("entity").plays("FIXME", "replied-to").plays("FIXME", "tagged-in").plays("FIXME", "reacted-to"),
+  type("comment").sub("post").owns("content").plays("FIXME", "attached-to"),
+  type("media").sub("post").owns("caption").owns("file").plays("FIXME", "attached"),
   type("video").sub("media"),
   type("photo").sub("media")
 );
@@ -290,9 +292,10 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friendship").sub("relation").relates("friend").plays("requested-friendship"),
-  type("friend-request").sub("relation").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent"),
-  type("person").sub("entity").plays("friend").plays("friendship-requester").plays("friendship-respondent")
+  // FIXME(vmax): fill in needed relation
+  type("friendship").sub("relation").relates("FIXME", "friend").plays("FIXME", "requested-friendship"),
+  type("friend-request").sub("relation").relates("FIXME", "requested-friendship").relates("FIXME","friendship-requester").relates("FIXME","friendship-respondent"),
+  type("person").sub("entity").plays("FIXME","friend").plays("FIXME","friendship-requester").plays("FIXME","friendship-respondent")
 );
 ```
 
@@ -333,9 +336,9 @@ person sub entity,
 ```java
 GraqlDefine query = Graql.define(
   type("reaction").sub("relation").relates("reacted-emotion").relates("reacted-to").relates("reacted-by"),
-  type("emotion").sub("attribute").value("string").plays("reacted-emotion"),
-  type("post").sub("entity").plays("reacted-to"),
-  type("person").sub("entity").plays("reacted-by")
+  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).plays("reaction", "reacted-emotion"),
+  type("post").sub("entity").plays("reaction", "reacted-to"),
+  type("person").sub("entity").plays("reaction", "reacted-by")
 );
 ```
 
@@ -367,7 +370,7 @@ friend-request sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friend-request").sub("relation").has("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
+  type("friend-request").sub("relation").owns("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
 );
 ```
 
@@ -393,7 +396,7 @@ employment sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("employment").sub("relation").key("reference-id").relates("employer").relates("employee")
+  type("employment").sub("relation").owns("reference-id", true).relates("employer").relates("employee")
 );
 ```
 
@@ -504,7 +507,7 @@ name sub attribute,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("name").sub("attribute").value("string")
+  type("name").sub("attribute").value(GraqlArg.ValueType.STRING)
 );
 ```
 
@@ -550,9 +553,9 @@ travel sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("start-date").sub("attribute").value("datetime"),
-  type("residency").sub("relation").has("start-date"),
-  type("travel").sub("relation").has("start-date")
+  type("start-date").sub("attribute").value(GraqlArg.ValueType.DATETIME),
+  type("residency").sub("relation").owns("start-date"),
+  type("travel").sub("relation").owns("start-date")
 );
 ```
 
@@ -583,8 +586,8 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("phone-number").sub("attribute").value("string"),
-  type("person").sub("entity").has("phone-number")
+  type("phone-number").sub("attribute").value(GraqlArg.ValueType.STRING),
+  type("person").sub("entity").owns("phone-number")
 );
 ```
 
@@ -611,7 +614,7 @@ emotion sub attribute,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("emotion").sub("attribute").value("string").regex("[like, love, funny, shocking, sad, angry]")
+  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).regex("[like, love, funny, shocking, sad, angry]")
 );
 ```
 
@@ -643,8 +646,8 @@ language sub attribute,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("content").sub("attribute").value("string").has("language"),
-  type("language").sub("attribute").value("string")
+  type("content").sub("attribute").value(GraqlArg.ValueType.STRING).owns("language"),
+  type("language").sub("attribute").value(GraqlArg.ValueType.STRING)
 );
 ```
 
@@ -677,8 +680,8 @@ speaking-of-language sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("language").sub("attribute").value("string").plays("spoken"),
-  type("person").sub("entity").plays("speaker"),
+  type("language").sub("attribute").value(GraqlArg.ValueType.STRING).plays("speaking-of-language", "spoken"),
+  type("person").sub("entity").plays("speaking-of-language", "speaker"),
   type("speaking-of-language").sub("relation").relates("speaker").relates("spoken")
 );```
 
@@ -705,7 +708,7 @@ end-date sub event-date;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").value("datetime"),
+  type("event-date").sub("attribute").value(GraqlArg.ValueType.DATETIME),
   type("birth-date").sub("event-date"),
   type("start-date").sub("event-date"),
   type("end-date").sub("event-date")
@@ -736,7 +739,7 @@ event-date sub attribute, abstract,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").value("datetime")
+  type("event-date").sub("attribute").value(GraqlArg.ValueType.DATETIME)
 );
 ```
 
@@ -768,7 +771,7 @@ person has nickname;
 [tab:Java]
 ```java
 GraqlUndefine query = Graql.undefine(
-  type("person").has("nickname")
+  type("person").owns("nickname")
 );
 ```
 
@@ -801,8 +804,8 @@ undefine
 ```java
 GraqlUndefine query = Graql.undefine(
   type("speaking-of-language").relates("speaker").relates("spoken"),
-  type("person").plays("speaker"),
-  type("language").plays("spoken"),
+  type("person").plays("speaking-of-language", "speaker"),
+  type("language").plays("speaking-of-language", "spoken"),
   type("speaker").sub("role"),
   type("spoken").sub("role"),
   type("speaking-of-language").sub("relation")

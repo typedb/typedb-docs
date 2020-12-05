@@ -161,7 +161,7 @@ from grakn.client import GraknClient, ValueType
 
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
-    with session.transaction().read() as read_transaction:   
+    with session.transaction(Grakn.Transaction.Type.READ) as read_transaction:   
         answer_iterator = read_transaction.get_attributes_by_value("Canada", ValueType.STRING)
 client.close()
 ```
@@ -239,7 +239,7 @@ from grakn.client import GraknClient, ValueType
 
 client = GraknClient(uri="localhost:48555")
 with client.session(keyspace="social_network") as session:
-    with session.transaction().read() as read_transaction:   
+    with session.transaction(Grakn.Transaction.Type.READ) as read_transaction:   
         answer_iterator = read_transaction.get_attributes_by_value("Canada", ValueType.STRING)
         for attr in answer_iterator:
             print(attr)

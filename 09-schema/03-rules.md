@@ -75,7 +75,7 @@ when {
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("people-with-same-parents-are-siblings").sub("rule")
+  rule("people-with-same-parents-are-siblings")
     .when(
         and(
             var().rel("mother", "m").rel("x").isa("parentship"),
@@ -85,7 +85,7 @@ GraqlDefine query = Graql.define(
             var("x").neq("y")
         )
     ).then(
-        var().isa("siblings").rel("x").rel("y")
+        var().rel("x").rel("y").isa("siblings")
     )
 );
 ```

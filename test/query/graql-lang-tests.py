@@ -11,8 +11,10 @@ graql_lang_test_method_template = """
     public void test() {
         // PAGE COMMENT PLACEHOLDER
         String queries = "// QUERIES PLACEHOLDER";
-        Stream<GraqlQuery> parsedQuery = Graql.parseList(queries);
-        parsedQuery.forEach(query -> transaction.execute(query).get());
+        Stream<GraqlQuery> parsedQuery = Graql.parseQueries(queries);
+        parsedQuery.forEach(query -> {
+           runQuery(transaction, query);
+        });
     }
 """
 

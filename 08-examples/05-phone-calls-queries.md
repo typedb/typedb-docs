@@ -73,18 +73,20 @@ get $phone-number;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
-import grakn.client.answer.ConceptMap;
-import graql.lang.query.GraqlGet;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
+import grakn.client.concept.answer.ConceptMap;
+import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneCallsFirstQuery {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match",
@@ -102,10 +104,10 @@ public class PhoneCallsFirstQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
+        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query)).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
             result.add(
-                    answer.get("phone-number").asAttribute().value().toString()
+                    answer.get("phone-number").asThing().asAttribute().getValue().toString()
             );
         }
 
@@ -126,8 +128,8 @@ const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:48555");
-    const session = await client.session("phone_calls");
-	const transaction = await session.transaction().read();
+    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
+	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
 
   	let query = [
     	"match",
@@ -171,7 +173,7 @@ from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:48555") as client:
     with client.session(keyspace = "phone_calls") as session:
-        with session.transaction().read() as transaction:
+        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             query = [
                 'match',
                 '  $customer isa person, has phone-number $phone-number;',
@@ -245,18 +247,20 @@ get $phone-number;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
-import grakn.client.answer.ConceptMap;
-import graql.lang.query.GraqlGet;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
+import grakn.client.concept.answer.ConceptMap;
+import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneCallsSecondQuery {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -276,10 +280,10 @@ public class PhoneCallsSecondQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
+        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query)).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
             result.add(
-                    answer.get("phone-number").asAttribute().value().toString()
+                    answer.get("phone-number").asThing().asAttribute().getValue().toString()
             );
         }
 
@@ -300,8 +304,8 @@ const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:48555");
-    const session = await client.session("phone_calls");
-	const transaction = await session.transaction().read();
+    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
+	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
 
   	let query = [
 		"match ",
@@ -347,7 +351,7 @@ from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:48555") as client:
     with client.session(keyspace = "phone_calls") as session:
-      with session.transaction().read() as transaction:
+      with session.transaction(Grakn.Transaction.Type.READ) as transaction:
         query = [
           'match ',
           '  $suspect isa person, has city "London", has age > 50;',
@@ -417,18 +421,20 @@ get $phone-number;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
-import grakn.client.answer.ConceptMap;
-import graql.lang.query.GraqlGet;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
+import grakn.client.concept.answer.ConceptMap;
+import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneCallsThirdQuery {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -445,10 +451,10 @@ public class PhoneCallsThirdQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
+        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query)).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
             result.add(
-                    answer.get("phone-number").asAttribute().value().toString()
+                    answer.get("phone-number").asThing().asAttribute().getValue().toString()
             );
         }
 
@@ -469,8 +475,8 @@ const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:48555");
-    const session = await client.session("phone_calls");
-	const transaction = await session.transaction().read();
+    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
+	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
 
 	let query = [
 		"match ",
@@ -513,7 +519,7 @@ from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:48555") as client:
     with client.session(keyspace = "phone_calls") as session:
-        with session.transaction().read() as transaction:
+        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             query = [
                 'match ',
                 '  $common-contact isa person, has phone-number $phone-number;',
@@ -587,18 +593,20 @@ get $phone-number-a, $phone-number-b;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
-import grakn.client.answer.ConceptMap;
-import graql.lang.query.GraqlGet;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
+import grakn.client.concept.answer.ConceptMap;
+import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneCallsForthQuery {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -619,10 +627,10 @@ public class PhoneCallsForthQuery {
 
         Set&lt;String&gt; result = new HashSet<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.execute((GraqlGet) parse(query)).get();
+        List&lt;ConceptMap&gt; answers = transaction.query().match((GraqlMatch.Unfiltered) parseQuery(query)).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
-            result.add(answer.get("phone-number-a").asAttribute().value().toString());
-            result.add(answer.get("phone-number-b").asAttribute().value().toString());
+            result.add(answer.get("phone-number-a").asThing().asAttribute().getValue().toString());
+            result.add(answer.get("phone-number-b").asThing().asAttribute().getValue().toString());
         }
 
         System.out.println("\nResult:\n" + String.join(", ", result));
@@ -642,8 +650,8 @@ const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:48555");
-    const session = await client.session("phone_calls");
-	const transaction = await session.transaction().read();
+    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
+	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
 
   	let query = [
     	"match ",
@@ -690,7 +698,7 @@ from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:48555") as client:
     with client.session(keyspace = "phone_calls") as session:
-        with session.transaction().read() as transaction:
+        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             query = [
                 'match ',
                 '  $target isa person, has phone-number "+48 894 777 5173";',
@@ -783,18 +791,21 @@ get $duration; mean $duration;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.GraknClient;
-import grakn.client.answer.Numeric;
-import graql.lang.query.GraqlGet;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
+import grakn.client.concept.answer.ConceptMap;
+import grakn.client.concept.answer.AnswerGroup;
+import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneCallsFifthQuery {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
         List&lt;String&gt; firstQueryAsList = Arrays.asList(
                 "match",
@@ -809,10 +820,11 @@ public class PhoneCallsFifthQuery {
 
         String firstQuery = String.join("", firstQueryAsList);
 
-        List<Numeric> firstAnswers = transaction.execute((GraqlGet.Aggregate) parse(firstQuery)).get();
+        List<ConceptMap> firstAnswers = transaction.query().match(parseQuery(firstQuery)).collect(Collectors.toList());
         float fisrtResult = 0;
         if (firstAnswers.size() > 0) {
-            fisrtResult = firstAnswers.get(0).number().floatValue();
+            // FIXME(vmax): figure this out once API for aggregations is there
+            // fisrtResult = firstAnswers.get(0).number().floatValue();
         }
 
         String result = "Customers aged under 20 have made calls with average duration of " + fisrtResult + " seconds.\n";
@@ -832,9 +844,10 @@ public class PhoneCallsFifthQuery {
         String secondQuery = String.join("", secondQueryAsList);
 
         float secondResult = 0;
-        List<Numeric> secondAnswers = transaction.execute((GraqlGet.Aggregate) parse(secondQuery)).get();
+        List<ConceptMap> secondAnswers = transaction.query().match(parseQuery(secondQuery)).collect(Collectors.toList());
         if (secondAnswers.size() > 0) {
-            secondResult = secondAnswers.get(0).number().floatValue();
+            // FIXME(vmax): figure this out once API for aggregations is there
+            // secondResult = secondAnswers.get(0).number().floatValue();
         }
 
         result += "Customers aged over 40 have made calls with average duration of " + secondResult + " seconds.\n";
@@ -856,8 +869,8 @@ const GraknClient = require("grakn-client");
 
 async function ExecuteMatchQuery() {
 	const client = new GraknClient("localhost:48555");
-    const session = await client.session("phone_calls");
-    const transaction = await session.transaction().read();
+    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
+    const transaction = await session.transaction(Grakn.Transaction.Type.READ);
 
   	let firstQuery = [
 		'match',
@@ -923,7 +936,7 @@ from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:48555") as client:
     with client.session(keyspace = "phone_calls") as session:
-        with session.transaction().read() as transaction:
+        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             first_query = [
                 'match',
                 '  $customer isa person, has age < 20;',
