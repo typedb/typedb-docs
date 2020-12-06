@@ -131,7 +131,7 @@ import java.util.stream.Collectors;
 
 public class SocialNetworkQuickstartQuery extends Throwable {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
@@ -161,7 +161,7 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 ```python
 from grakn.client import GraknClient
 
-with GraknClient(uri="localhost:48555") as client:
+with GraknClient(uri="localhost:1729") as client:
     with client.session(keyspace = "social_network") as session:
       with session.transaction(Grakn.Transaction.Type.READ) as transaction:
         query = '''
@@ -185,7 +185,7 @@ with GraknClient(uri="localhost:48555") as client:
 const GraknClient = require("grakn-client");
 
 async function getAverageSalaryAt (orgName) {
-    const client = new GraknClient("localhost:48555");
+    const client = new GraknClient("localhost:1729");
 	const session = await client.session("social_network");
 	const transaction = await session.transaction(Grakn.Transaction.Type.READ)
 	const query = `

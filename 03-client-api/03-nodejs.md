@@ -31,7 +31,7 @@ Instantiate a client and open a session.
 const GraknClient = require("grakn-client");
 
 async function openSession (keyspace) {
-	const client = new GraknClient("localhost:48555");
+	const client = new GraknClient("localhost:1729");
 	const session = await client.session(keyspace);
 	// session is open
 	await session.close();
@@ -46,7 +46,7 @@ We can also pass the credentials, as specified when [configuring authentication 
 
 <!-- test-ignore -->
 ```javascript
-const client = new GraknClient("localhost:48555", { "username": "<username>", "password": "<password>" });
+const client = new GraknClient("localhost:1729", { "username": "<username>", "password": "<password>" });
 ```
 
 Create transactions to use for reading and writing data.
@@ -56,7 +56,7 @@ Create transactions to use for reading and writing data.
 const GraknClient = require("grakn-client");
 
 async function createTransactions (keyspace) {
-	const client = new GraknClient("localhost:48555");
+	const client = new GraknClient("localhost:1729");
 	const session = await client.session(keyspace);
 
 	// creating a write transaction
@@ -84,7 +84,7 @@ Running basic retrieval and insertion queries.
 const GraknClient = require("grakn-client");
 
 async function runBasicQueries (keyspace) {
-	const client = new GraknClient("localhost:48555");
+	const client = new GraknClient("localhost:1729");
 	const session = await client.session(keyspace);
 
 	// Insert a person using a WRITE transaction

@@ -41,7 +41,7 @@ import grakn.client.rpc.GraknClient;
 
 public class GraknQuickstartA {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         // client is open
         Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
         // session is open
@@ -57,7 +57,7 @@ public class GraknQuickstartA {
 
 <!-- test-ignore -->
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
+SimpleURI localGrakn = new SimpleURI("localhost", 1729);
 Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client();
 ```
 
@@ -72,7 +72,7 @@ import grakn.client.rpc.GraknClient;
 
 public class GraknQuickstartB {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
 
         // creating a write transaction
@@ -114,7 +114,7 @@ import java.util.stream.Collectors;
 
 public class GraknQuickstartC {
   public static void main(String[] args) {
-    Grakn.Client client = new GraknClient("localhost:48555");
+    Grakn.Client client = new GraknClient("localhost:1729");
     Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
 
     // Insert a person using a WRITE transaction

@@ -391,7 +391,7 @@ public class PhoneCallsMigration {
   	}
 
   	static void connectAndMigrate(Collection<Input> inputs) {
-    	Grakn.Client client = new GraknClient("localhost:48555");
+    	Grakn.Client client = new GraknClient("localhost:1729");
 		Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
 		for (Input input : inputs) {
@@ -413,7 +413,7 @@ public class PhoneCallsMigration {
 
 The following happens in this method:
 
-1. A Grakn Client instance `client` is created, connected to the server we have running locally at `localhost:48555`.
+1. A Grakn Client instance `client` is created, connected to the server we have running locally at `localhost:1729`.
 2. A `session` is created, connected to the keyspace `phone_calls`.
 3. For each `input` object in the `inputs` collection, we call the `loadDataIntoGrakn(input, session)`. This takes care of loading the data as specified in the `input` object into our keyspace.
 4. Finally, the `session` and `client` are both closed.
@@ -808,7 +808,7 @@ public class PhoneCallsCSVMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {
@@ -1006,7 +1006,7 @@ public class PhoneCallsJSONMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws IOException {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {
@@ -1215,7 +1215,7 @@ public class PhoneCallsXMLMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, XMLStreamException {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {

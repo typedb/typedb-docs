@@ -42,7 +42,7 @@ public class GraqlLangTest {
     @BeforeClass
     public static void loadSocialNetwork() throws Exception {
 //        GraknSetup.bootup();
-        String address = "localhost:48555";
+        String address = "localhost:1729";
 
         client = new GraknClient(address);
         session = client.session("social_network", Grakn.Session.Type.SCHEMA);

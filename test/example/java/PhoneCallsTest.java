@@ -23,7 +23,7 @@ public class PhoneCallsTest {
 
     @BeforeClass
     public static void loadPhoneCalls() {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.SCHEMA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
@@ -82,7 +82,7 @@ public class PhoneCallsTest {
 
     @AfterClass
     public static void cleanPhoneCalls() {
-        Grakn.Client client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         client.databases().delete("phone_calls");
         client.close();
     }

@@ -50,7 +50,7 @@ Visit the [KGMS listing on GCP Marketplace](https://console.cloud.google.com/mar
 [body:start]![Configure Firewall Settings](../images/cloud-deployment/gc_new_deployment_b.png)[body:end]
 
 [footer:start]
-In order to connect to the Grakn Server from outside the cluster, you need to _Allow TCP port 48555 traffic_.
+In order to connect to the Grakn Server from outside the cluster, you need to _Allow TCP port 1729 traffic_.
 [footer:end]
 
 [slide:end]
