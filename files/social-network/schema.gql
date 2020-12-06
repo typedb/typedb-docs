@@ -68,28 +68,28 @@ define
 
 	language sub attribute,
 		value string,
-		plays spoken,
-		plays mutual-language;
+		plays speaking-of-language:spoken,
+		plays speaking-language-mutuality:mutual-language;
 
 	content sub attribute,
 		value string,
-		has language;
+		owns language;
 
 	emotion sub attribute,
 		value string,
 		regex "^(like|love|funny|shocking|sad|angry)$",
-		plays reacted-emotion;
+		plays reaction:reacted-emotion;
 
 	link sub attribute,
 		value string,
-		plays attached;
+		plays attachment:attached;
 
 	person sub entity,
-		has full-name,
-		has nickname,
-		has gender,
-		has phone-number,
-		key email;
+		owns full-name,
+		owns nickname,
+		owns gender,
+		owns phone-number,
+		owns email @key;
 
 ###################
 ## GENERIC TYPES ##
@@ -109,9 +109,9 @@ define
 		relates owned;
 
 	location sub entity,
-		key name,
-		plays subordinate-location,
-		plays superior-location;
+		owns name @key,
+		plays location-hierarchy:subordinate-location,
+		plays location-hierarchy:superior-location;
 
 	request sub relation,
 		relates approved-subject,
@@ -120,9 +120,9 @@ define
 
 	periodic-event sub relation,
 		abstract,
-		has start-date,
-		has end-date,
-		plays overlapped-event;
+		owns start-date,
+		owns end-date,
+		plays event-overlapping:overlapped-event;
 
 	########################
 	## events overlapping ##
@@ -162,18 +162,18 @@ define
 		relates birth-location as subject-location;
 
 	birth sub relation,
-		has birth-date,
+		owns birth-date,
 		relates birthed-child,
-		plays located-birth,
-		plays mutual-birth;
+		plays location-of-birth:located-birth,
+		plays mutual-birth:mutual-birth;
 
 	person sub entity,
-		plays birthed-child,
-		plays mutual-birthed-child;
+		plays birth:birthed-child,
+		plays birth-mutuality:mutual-birthed-child;
 
 	location sub entity,
-		plays birth-location,
-		plays mutual-birth-location;
+		plays location-of-birth:birth-location,
+		plays birth-mutuality:mutual-birth-location;
 
 	##############################
 	## birth location in common ##
@@ -200,12 +200,12 @@ define
 ################
 
 	person sub entity,
-		plays parent,
-		plays father,
-		plays mother,
-		plays child,
-		plays son,
-		plays daughter;
+		plays parentship:parent,
+		plays parentship:father,
+		plays parentship:mother,
+		plays parentship:child,
+		plays parentship:son,
+		plays parentship:daughter;
 
     parentship sub relation,
   		relates parent,
@@ -272,16 +272,16 @@ define
 
 	residency sub periodic-event,
 		relates resident,
-		plays located-residence,
-		plays mutual-residency;
+		plays location-of-residence:located-residence,
+		plays residence-mutuality:mutual-residency;
 
 	person sub entity,
-		plays resident,
-		plays mutual-resident;
+		plays residency:resident,
+		plays residence-mutuality:mutual-resident;
 
 	location sub entity,
-		plays residence,
-		plays mutual-residence;
+		plays location-of-residence:residence,
+		plays residence-mutuality:mutual-residence;
 
 	#########################
 	## residence in common ##
@@ -323,33 +323,33 @@ define
 		relates school-location as subject-location;
 
 	school-course-enrollment sub periodic-event,
-		has graduated,
-		has score,
+		owns graduated,
+		owns score,
 		relates student,
 		relates enrolled-course,
 		relates enrolling-school,
-		plays mutual-course-enrollment;
+		plays course-enrollment-mutuality:mutual-course-enrollment;
 
 	school sub entity,
-		key name,
-		has ranking,
-		plays offering-school,
-		plays located-school,
-		plays enrolling-school,
-		plays mutual-school;
+		owns name @key,
+		owns ranking,
+		plays school-course-offering:offering-school,
+		plays location-of-school:located-school,
+		plays school-course-enrollment:enrolling-school,
+		plays school-mutuality:mutual-school;
 
 	school-course sub entity,
-		key title,
-		plays offered-course,
-		plays enrolled-course;
+		owns title @key,
+		plays school-course-offering:offered-course,
+		plays school-course-enrollment:enrolled-course;
 
 	person sub entity,
-		plays student,
-		plays schoolmate,
-		plays coursemate;
+		plays school-course-enrollment:student,
+		plays school-mutuality:schoolmate,
+		plays course-enrollment-mutuality:coursemate;
 
 	location sub entity,
-		plays school-location;
+		plays location-of-school:school-location;
 
 	##########################
 	## school offerings ##
@@ -416,16 +416,16 @@ define
 
 	travel sub periodic-event,
 		relates traveler,
-		plays located-travel,
-		plays mutual-travel;
+		plays location-of-travel:located-travel,
+		plays travel-mutuality:mutual-travel;
 
 	person sub entity,
-		plays traveler,
-		plays mutual-traveler;
+		plays travel:traveler,
+		plays travel-mutuality:mutual-traveler;
 
 	location sub entity,
-		plays travel-location,
-		plays mutual-travel-location;
+		plays location-of-travel:travel-location,
+		plays travel-mutuality:mutual-travel-location;
 
 	#######################
 	## travels in common ##
@@ -466,12 +466,12 @@ define
 # get;
 
 	employment sub periodic-event,
-		key reference-id,
-		has salary,
+		owns reference-id @key,
+		owns salary,
 		relates employer,
 		relates employee,
 		relates offered-position,
-		plays mutual-employment;
+		plays employment-mutuality:mutual-employment;
 
 	location-of-office sub location-of-everything,
 		relates located-office as located-subject,
@@ -482,28 +482,28 @@ define
 		relates owned-office as owned;
 
 	work-position sub entity,
-		key title,
-		plays offered-position,
-		plays mutual-position;
+		owns title @key,
+		plays employment:offered-position,
+		plays work-position-mutuality:mutual-position;
 
 	organisation sub entity,
-		key name,
-		key registration-number,
-		plays office-owner,
-		plays employer,
-		plays mutual-organisation;
+		owns name @key,
+		owns registration-number @key,
+		plays office-ownership:office-owner,
+		plays employment:employer,
+		plays employment-mutuality:mutual-organisation;
 
 	office sub entity,
-	    key registration-number,
-		plays owned-office,
-		plays located-office;
+	    owns registration-number @key,
+		plays office-ownership:owned-office,
+		plays location-of-office:located-office;
 
 	location sub entity,
-		plays office-location;
+		plays location-of-office:office-location;
 
 	person sub entity,
-		plays employee,
-		plays mutual-employee;
+		plays employment:employee,
+		plays employment-mutuality:mutual-employee;
 
 	##########################
 	## employment in common ##
@@ -552,11 +552,11 @@ define
 	speaking-of-language sub relation,
 		relates speaker,
 		relates spoken,
-		plays mutual-language-speaking;
+		plays speaking-language-mutuality:mutual-language-speaking;
 
 	person sub entity,
-		plays speaker,
-		plays mutual-speaker;
+		plays speaking-of-language:speaker,
+		plays speaking-language-mutuality:mutual-speaker;
 
 	##################################
 	## speaking languages in common ##
@@ -588,10 +588,10 @@ define
 # get;
 
 	romantic-relationship sub relation,
-		has start-date,
-		has end-date,
-		has engaged,
-		has engagement-date,
+		owns start-date,
+		owns end-date,
+		owns engaged,
+		owns engagement-date,
 		relates partner;
 
 	open-relationship sub romantic-relationship,
@@ -604,19 +604,19 @@ define
 		relates partner;
 
 	marriage sub relation,
-		has start-date,
-		has end-date,
-		has separated,
-		has divorced,
+		owns start-date,
+		owns end-date,
+		owns separated,
+		owns divorced,
 		relates husband,
 		relates wife,
 		relates spouse;
 
 	person sub entity,
-		plays partner,
-		plays spouse,
-		plays wife,
-		plays husband;
+		plays romantic-relationship:partner,
+		plays marriage:spouse,
+		plays marriage:wife,
+		plays marriage:husband;
 
 ################
 ## FRIENDSHIP ##
@@ -633,27 +633,27 @@ define
 
 	friendship sub relation,
 		relates friend,
-		plays approved-friendship,
-		plays listed-friendship;
+		plays friend-request:approved-friendship,
+		plays friends-list:listed-friendship;
 
 	friend-request sub request,
-		has approved-date,
+		owns approved-date,
 		relates approved-friendship as approved-subject,
 		relates friendship-requester as requester,
 		relates friendship-respondent as respondent;
 
 	friends-list sub relation,
-		has title,
+		owns title,
 		relates list-owner,
 		relates listed-friendship;
 
 	person sub entity,
-		plays friend,
-		plays friendship-requester,
-		plays friendship-respondent,
-		plays list-owner,
-		plays mutual-friend,
-		plays one-degree-friend;
+		plays friendship:friend,
+		plays friend-request:friendship-requester,
+		plays friend-request:friendship-respondent,
+		plays friends-list:list-owner,
+		plays mutual-friendship:mutual-friend,
+		plays mutual-friendship:one-degree-friend;
 
 	#######################
 	## mutual friendship ##
@@ -691,23 +691,23 @@ define
 		relates owned-group as owned;
 
 	group-membership sub relation,
-		has approved-date,
-		plays approved-group-membership,
+		owns approved-date,
+		plays group-membership-request:approved-group-membership,
 		relates group-member,
 		relates membership-grouping;
 
 	group-membership-request sub request,
-		has approved-date,
+		owns approved-date,
 		relates approved-group-membership as approved-subject,
 		relates group-membership-requester as requester,
 		relates group-membership-respondent as respondent;
 
 	social-group sub entity,
 		abstract,
-		key name,
-		plays owned-group,
-		plays membership-grouping,
-		plays shared-in;
+		owns name @key,
+		plays group-ownership:owned-group,
+		plays group-membership:membership-grouping,
+		plays sharing:shared-in;
 
 	public-group sub social-group;
 
@@ -716,10 +716,10 @@ define
 	secret-group sub social-group;
 
 	person sub entity,
-		plays group-owner,
-		plays group-member,
-		plays group-membership-requester,
-		plays group-membership-respondent;
+		plays group-ownership:group-owner,
+		plays group-membership:group-member,
+		plays group-membership-request:group-membership-requester,
+		plays group-membership-request:group-membership-respondent;
 
 	#####################################
 	## public group membership request ##
@@ -762,12 +762,12 @@ define
 		relates owned-timeline as owned;
 
 	timeline sub entity,
-	    key identifier,
-		plays owned-timeline,
-		plays shared-in;
+	    owns identifier @key,
+		plays timeline-ownership:owned-timeline,
+		plays sharing:shared-in;
 
 	person sub entity,
-		plays timeline-owner;
+		plays timeline-ownership:timeline-owner;
 
 ##########
 ## POST ##
@@ -810,46 +810,46 @@ define
 
 	post sub entity,
 		abstract,
-		key identifier,
-		plays permitted-content,
-		plays shared-content,
-		plays replied-to,
-		plays tagged-in,
-		plays reacted-to;
+		owns identifier @key,
+		plays permitted-to-see:permitted-content,
+		plays sharing:shared-content,
+		plays reply:replied-to,
+		plays tagging:tagged-in,
+		plays reaction:reacted-to;
 
 	status-update sub post,
-		has content,
-		plays attached-to;
+		owns content,
+		plays attachment:attached-to;
 
 	comment sub post,
-		has content,
-		plays reply-content,
-		plays attached-to;
+		owns content,
+		plays reply:reply-content,
+		plays attachment:attached-to;
 
 	media-ownership sub ownership,
 		relates media-owner as owner,
 		relates owned-media as owned;
 
 	album sub post,
-		has title,
-		has published-date,
-		plays media-owner;
+		owns title,
+		owns published-date,
+		plays media-ownership:media-owner;
 
 	media sub post,
 		abstract,
-		has caption,
-		has file,
-		plays owned-media,
-		plays attached;
+		owns caption,
+		owns file,
+		plays media-ownership:owned-media,
+		plays attachment:attached;
 
 	video sub media;
 
 	photo sub media;
 
 	person sub entity,
-		plays tagged,
-		plays reacted-by,
-		plays replied-by;
+		plays tagging:tagged,
+		plays reaction:reacted-by,
+		plays reply:replied-by;
 
 #############
 ## SHARING ##
@@ -906,13 +906,13 @@ define
 		relates permission-grantee;
 
 	person sub entity,
-		plays shared-by,
-		plays shared-with,
-		plays hidden-from,
-		plays permission-grantee;
+		plays sharing:shared-by,
+		plays inclusive-sharing:shared-with,
+		plays friends-with-exclusion-sharing:hidden-from,
+		plays permitted-to-see:permission-grantee;
 
 	public-user sub entity,
-		plays permission-grantee;
+		plays permitted-to-see:permission-grantee;
 
 	###########################
 	## posts view permission ##

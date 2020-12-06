@@ -45,6 +45,7 @@ public class GraqlLangTest {
         String address = "localhost:1729";
 
         client = new GraknClient(address);
+        client.databases().create("social_network");
         session = client.session("social_network", Grakn.Session.Type.SCHEMA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
@@ -76,6 +77,7 @@ public class GraqlLangTest {
     @AfterClass
     public static void closeSession() throws Exception {
         session.close();
+        client.databases().delete("social_network");
 //        GraknSetup.shutdown();
     }
 
