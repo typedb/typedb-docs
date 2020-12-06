@@ -3,8 +3,7 @@ define
 ################
 ## ATTRIBUTES ##
 ################
-	name sub attribute,
-		value string;
+	name sub attribute, value string;
 	full-name sub name;
 	nickname sub name;
 
@@ -131,7 +130,7 @@ define
 	event-overlapping sub relation,
 		relates overlapped-event;
 
-	events-overlap sub rule,
+	rule events-overlap:
 		when {
 			$e1 isa periodic-event;
 			$e1 has start-date $sd1, has end-date $ed1;
@@ -140,7 +139,7 @@ define
 			$sd2 > $sd1;
 			$sd2 < $ed1;
 			$e1 != $e2;
-		}, then {
+		} then {
 			(overlapped-event: $e1, overlapped-event: $e2) isa event-overlapping;
 		};
 
@@ -165,7 +164,7 @@ define
 		owns birth-date,
 		relates birthed-child,
 		plays location-of-birth:located-birth,
-		plays mutual-birth:mutual-birth;
+		plays birth-mutuality:mutual-birth;
 
 	person sub entity,
 		plays birth:birthed-child,
@@ -184,14 +183,14 @@ define
 		relates mutual-birth-location,
 		relates mutual-birth;
 
-	people-born-at-the-same-location sub rule,
+	rule people-born-at-the-same-location:
 		when {
 			$b1 (birthed-child: $p1) isa birth;
 			$b2 (birthed-child: $p2) isa birth;
 			($b1, birth-location: $l) isa location-of-birth;
 			($b2, birth-location: $l) isa location-of-birth;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-birthed-child: $p1, mutual-birthed-child: $p2, mutual-birth-location: $l, mutual-birth: $b1, mutual-birth: $b2) isa birth-mutuality;
 		};
 
@@ -210,47 +209,47 @@ define
     parentship sub relation,
   		relates parent,
 		relates child,
-		relates father as parent,
-		relates mother as parent,
-		relates son as child,
-		relates daughter as child;
+		relates father,
+		relates mother,
+		relates son,
+		relates daughter;
 
 	person-with-a-mother sub entity;
 	person-with-a-father sub entity;
 
-	genderizeParentships1 sub rule,
+	rule genderizeParentships1:
 		when {
 			(parent: $p, child: $c) isa parentship;
 			$p has gender 'male';
 			$c has gender 'male';
-		}, then {
+		} then {
 			(father: $p, son: $c) isa parentship;
 		};
 
-	genderizeParentships2 sub rule,
+	rule genderizeParentships2:
 		when {
 			(parent: $p, child: $c) isa parentship;
 			$p has gender 'male';
 			$c has gender 'female';
-		}, then {
+		} then {
 			(father: $p, daughter: $c) isa parentship;
 		};
 
-	genderizeParentships3 sub rule,
+	rule genderizeParentships3:
 		when {
 			(parent: $p, child: $c) isa parentship;
 			$p has gender 'female';
 			$c has gender 'male';
-		}, then {
+		} then {
 			(mother: $p, son: $c) isa parentship;
 		};
 
-	genderizeParentships4 sub rule,
+	rule genderizeParentships4:
 		when {
 			(parent: $p, child: $c) isa parentship;
 			$p has gender 'female';
 			$c has gender 'female';
-		}, then {
+		} then {
 			(mother: $p, daughter: $c) isa parentship;
 		};
 
@@ -292,14 +291,14 @@ define
 		relates mutual-residency,
 		relates mutual-residence;
 
-	people-resided-at-the-same-location sub rule,
+	rule people-resided-at-the-same-location:
 		when {
 			$r1 (resident: $p1) isa residency;
 			$r2 (resident: $p2) isa residency;
 			($r1, residence: $l) isa location-of-residence;
 			($r2, residence: $l) isa location-of-residence;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-resident: $p1, mutual-resident: $p2, mutual-residence: $l, mutual-residency: $r1, mutual-residency: $r2) isa residence-mutuality;
 		};
 
@@ -359,10 +358,10 @@ define
 		relates offering-school,
 		relates offered-course;
 
-	school-offers-the-enrolled-courses sub rule,
+	rule school-offers-the-enrolled-courses:
 		when {
 			(student: $p, enrolled-course: $c, enrolling-school: $s) isa school-course-enrollment;
-		}, then {
+		} then {
 			(offering-school: $s, offered-course: $c) isa school-course-offering;
 		};
 
@@ -374,14 +373,14 @@ define
 		relates schoolmate,
 		relates mutual-school;
 
-	people-gone-to-the-same-school sub rule,
+	rule people-gone-to-the-same-school:
 		when {
 			(student: $p1, enrolled-course: $c1) isa school-course-enrollment;
 			(student: $p2, enrolled-course: $c2) isa school-course-enrollment;
 			(offered-course: $c1, offering-school: $s) isa school-course-offering;
 			(offered-course: $c2, offering-school: $s) isa school-course-offering;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(schoolmate: $p1, schoolmate: $p2, mutual-school: $s) isa school-mutuality;
 		};
 
@@ -389,12 +388,12 @@ define
 		relates coursemate,
 		relates mutual-course-enrollment;
 
-	people-taken-the-same-course sub rule,
+	rule people-taken-the-same-course:
 		when {
 			$sce1 (student: $p1, enrolled-course: $sc) isa school-course-enrollment;
 			$sce2 (student: $p2, enrolled-course: $sc) isa school-course-enrollment;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(coursemate: $p1, coursemate: $p2, mutual-course-enrollment: $sce1, mutual-course-enrollment: $sce2) isa course-enrollment-mutuality;
 		};
 
@@ -436,14 +435,14 @@ define
 		relates mutual-travel,
 		relates mutual-travel-location;
 
-	people-traveled-to-the-same-location sub rule,
+	rule people-traveled-to-the-same-location:
 		when {
 			$t1 (traveler: $p1) isa travel;
 			$t2 (traveler: $p2) isa travel;
 			($t1, travel-location: $l) isa location-of-travel;
 			($t2, travel-location: $l) isa location-of-travel;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-traveler: $p1, mutual-traveler: $p2, mutual-travel-location: $l, mutual-travel: $t1, mutual-travel: $t2) isa travel-mutuality;
 		};
 
@@ -514,12 +513,12 @@ define
 		relates mutual-employment,
 		relates mutual-organisation;
 
-	people-work-at-the-same-organisation sub rule,
+	rule people-work-at-the-same-organisation:
 		when {
 			$e1 (employee: $p1, employer: $o) isa employment;
 			$e2 (employee: $p2, employer: $o) isa employment;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-employee: $p1, mutual-employee: $p2, mutual-organisation: $o, mutual-employment: $e1, mutual-employment: $e2) isa employment-mutuality;
 		};
 
@@ -528,12 +527,12 @@ define
 		relates mutual-employment,
 		relates mutual-position;
 
-	people-work-at-the-same-position sub rule,
+	rule people-work-at-the-same-position:
 		when {
 			$e1 (employee: $p1, offered-position: $p) isa employment;
 			$e2 (employee: $p2, offered-position: $p) isa employment;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-employee: $p1, mutual-employee: $p2, mutual-position: $p, mutual-employment: $e1, mutual-employment: $e2) isa work-position-mutuality;
 		};
 
@@ -567,12 +566,12 @@ define
 		relates mutual-language-speaking,
 		relates mutual-language;
 
-	people-speak-the-same-language sub rule,
+	rule people-speak-the-same-language:
 		when {
 			$sol1 (speaker: $p1, spoken: $l) isa speaking-of-language;
 			$sol2 (speaker: $p2, spoken: $l) isa speaking-of-language;
 			$p1 != $p2;
-		}, then {
+		} then {
 			(mutual-speaker: $p1, mutual-speaker: $p2, mutual-language: $l, mutual-language-speaking: $sol1, mutual-language-speaking: $sol2) isa speaking-language-mutuality;
 		};
 
@@ -594,14 +593,11 @@ define
 		owns engagement-date,
 		relates partner;
 
-	open-relationship sub romantic-relationship,
-		relates partner;
+	open-relationship sub romantic-relationship;
 
-	domestic-relationship sub romantic-relationship,
-		relates partner;
+	domestic-relationship sub romantic-relationship;
 
-	complicated-relationship sub romantic-relationship,
-		relates partner;
+	complicated-relationship sub romantic-relationship;
 
 	marriage sub relation,
 		owns start-date,
@@ -663,11 +659,11 @@ define
 		relates mutual-friend,
 		relates one-degree-friend;
 
-	people-have-mutual-friends sub rule,
+	rule people-have-mutual-friends:
 		when {
 			($p1, $p2) isa friendship;
 			($p2, $p3) isa friendship;
-		}, then {
+		} then {
 			(one-degree-friend: $p1, one-degree-friend: $p3, mutual-friend: $p2) isa mutual-friendship;
 		};
 
@@ -725,12 +721,12 @@ define
 	## public group membership request ##
 	#####################################
 
-	public-group-membership-is-automatically-approved sub rule,
+	rule public-group-membership-is-automatically-approved:
 		when {
 			$group isa public-group;
 			(group-owner: $owner, owned-group: $group) isa group-ownership;
 			$membership (group-member: $member, membership-grouping: $group) isa group-membership;
-		}, then {
+		} then {
 			(approved-group-membership: $membership, group-membership-requester: $member, group-membership-respondent: $owner) isa group-membership-request;
 		};
 
@@ -738,11 +734,11 @@ define
 	## group owner is always member ##
 	###################################
 
-	group-owner-is-always-member sub rule,
+	rule group-owner-is-always-member:
 		when {
 			$group isa social-group;
 			(group-owner: $owner, owned-group: $group) isa group-ownership;
-		}, then {
+		} then {
 			(group-member: $owner, membership-grouping: $group) isa group-membership;
 		};
 
@@ -874,32 +870,17 @@ define
 		relates shared-by,
 		relates shared-in;
 
-	public-sharing sub sharing,
-		relates shared-content,
-		relates shared-by,
-		relates shared-in;
+	public-sharing sub sharing;
 
-	friends-sharing sub sharing,
-		relates shared-content,
-		relates shared-by,
-		relates shared-in;
+	friends-sharing sub sharing;
 
 	inclusive-sharing sub sharing,
-		relates shared-content,
-		relates shared-by,
-		relates shared-in,
 		relates shared-with;
 
 	friends-with-exclusion-sharing sub sharing,
-		relates shared-content,
-		relates shared-by,
-		relates shared-in,
 		relates hidden-from;
 
-	private-sharing sub sharing,
-		relates shared-content,
-		relates shared-in,
-		relates shared-by;
+	private-sharing sub sharing;
 
 	permitted-to-see sub relation,
 		relates permitted-content,
@@ -918,50 +899,50 @@ define
 	## posts view permission ##
 	###########################
 
-	public-permission sub rule,
+	rule public-permission:
 		when {
 			(shared-content: $sc) isa public-sharing;
 			$pu isa public-user;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $pu) isa permitted-to-see;
 		};
 
-	friends-permission sub rule,
+	rule friends-permission:
 		when {
 			(shared-content: $sc, shared-by: $sb) isa friends-sharing;
 			(friend: $sb, $f) isa friendship;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
 		};
 
-	inclusive-permissions sub rule,
+	rule inclusive-permissions:
 		when {
 			(shared-content: $sc, shared-with: $sw) isa inclusive-sharing;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $sw) isa permitted-to-see;
 		};
 
-	friends-excluded-permission sub rule,
+	rule friends-excluded-permission:
 		when {
 			(shared-content: $sc, shared-by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
 			(friend: $sb, $f) isa friendship;
 			$f != $hf;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
 		};
 
-	private-permission sub rule,
+	rule private-permission:
 		when {
 			(shared-content: $sc, shared-by: $sb) isa private-sharing;
 			$pu isa public-user;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
 		};
 
-	author-permission sub rule,
+	rule author-permission:
 		when {
 			(shared-content: $sc, shared-by: $sb) isa sharing;
 			$pu isa public-user;
-		}, then {
+		} then {
 			(permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
 		};
