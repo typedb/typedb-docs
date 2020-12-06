@@ -4,8 +4,8 @@ define
 ## ATTRIBUTES ##
 ################
 	name sub attribute, value string;
-	full-name sub name;
-	nickname sub name;
+	full-name sub attribute, value string;
+	nickname sub attribute, value string;
 
 	title sub attribute,
 		value string;
@@ -865,7 +865,8 @@ define
 # get;
 
 	sharing sub relation,
-		abstract,
+#       FIXME(vmax): figure this out
+#		abstract,
 		relates shared-content,
 		relates shared-by,
 		relates shared-in;
@@ -899,45 +900,45 @@ define
 	## posts view permission ##
 	###########################
 
-	rule public-permission:
-		when {
-			(shared-content: $sc) isa public-sharing;
-			$pu isa public-user;
-		} then {
-			(permitted-content: $sc, permission-grantee: $pu) isa permitted-to-see;
-		};
+#	rule public-permission:
+#		when {
+#			(shared-content: $sc) isa public-sharing;
+#			$pu isa public-user;
+#		} then {
+#			(permitted-content: $sc, permission-grantee: $pu) isa permitted-to-see;
+#		};
 
-	rule friends-permission:
-		when {
-			(shared-content: $sc, shared-by: $sb) isa friends-sharing;
-			(friend: $sb, $f) isa friendship;
-		} then {
-			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
-		};
+#	rule friends-permission:
+#		when {
+#			(shared-content: $sc, shared-by: $sb) isa friends-sharing;
+#			(friend: $sb, $f) isa friendship;
+#		} then {
+#			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
+#		};
 
-	rule inclusive-permissions:
-		when {
-			(shared-content: $sc, shared-with: $sw) isa inclusive-sharing;
-		} then {
-			(permitted-content: $sc, permission-grantee: $sw) isa permitted-to-see;
-		};
+#	rule inclusive-permissions:
+#		when {
+#			(shared-content: $sc, shared-with: $sw) isa inclusive-sharing;
+#		} then {
+#			(permitted-content: $sc, permission-grantee: $sw) isa permitted-to-see;
+#		};
 
-	rule friends-excluded-permission:
-		when {
-			(shared-content: $sc, shared-by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
-			(friend: $sb, $f) isa friendship;
-			$f != $hf;
-		} then {
-			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
-		};
-
-	rule private-permission:
-		when {
-			(shared-content: $sc, shared-by: $sb) isa private-sharing;
-			$pu isa public-user;
-		} then {
-			(permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
-		};
+#	rule friends-excluded-permission:
+#		when {
+#			(shared-content: $sc, shared-by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
+#			(friend: $sb, $f) isa friendship;
+#			$f != $hf;
+#		} then {
+#			(permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
+#		};
+#
+#	rule private-permission:
+#		when {
+#			(shared-content: $sc, shared-by: $sb) isa private-sharing;
+#			$pu isa public-user;
+#		} then {
+#			(permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
+#		};
 
 	rule author-permission:
 		when {
