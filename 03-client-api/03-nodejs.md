@@ -99,7 +99,7 @@ async function runBasicQueries (keyspace) {
 	const readTransaction = await session.transaction().read();
 
 	// We can either query and consume the iterator lazily
-	let answerIterator = await readTransaction.query("match $x isa person; get; limit 10;");
+	let answerIterator = await readTransaction.query("match $x isa person; get $x; limit 10;");
 	let aConceptMapAnswer = await answerIterator.next();
 	while (aConceptMapAnswer != null) {
 		// get the next `x`
@@ -109,7 +109,7 @@ async function runBasicQueries (keyspace) {
 	}
 
 	// Or query and consume the iterator immediately collecting all the results
-	answerIterator = await readTransaction.query("match $x isa person; get; limit 10;");
+	answerIterator = await readTransaction.query("match $x isa person; get $x; limit 10;");
 	const persons = await answerIterator.collectConcepts();
 	persons.forEach( person => { console.log("Retrieved person with id "+ person.id) });
 

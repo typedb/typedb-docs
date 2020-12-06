@@ -44,7 +44,7 @@ We can chose to limit the number of answers in the results. To do this, we use t
 
 [tab:Graql]
 ```graql
-match $p isa person; get; limit 1;
+match $p isa person; get $p; limit 1;
 ```
 [tab:end]
 
@@ -65,7 +65,7 @@ To order the answers by a particular variable, we use the `order` keyword follow
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; get; sort $fn asc;
+match $p isa person, has full-name $fn; get $fn; sort $fn asc;
 ```
 [tab:end]
 
@@ -92,7 +92,7 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; get; sort $fn; offset 6; limit 10;
+match $p isa person, has full-name $fn; get $fn; sort $fn; offset 6; limit 10;
 ```
 [tab:end]
 

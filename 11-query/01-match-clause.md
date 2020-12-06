@@ -423,7 +423,7 @@ To match only the given type and not any of its subtypes, we use the `type` keyw
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x type post; get;
+match $x type post; get $x;
 ```
 [tab:end]
 

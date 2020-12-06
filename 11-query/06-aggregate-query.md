@@ -198,7 +198,7 @@ match
   $per isa person;
   $scc isa school-course, has title $title;
   (student: $per, enrolled-course: $scc) isa school-course-enrollment;
-get; group $title; count;
+get $scc; group $title; count;
 ```
 [tab:end]
 

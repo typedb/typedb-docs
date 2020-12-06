@@ -88,7 +88,7 @@ with GraknClient(uri="localhost:1729") as client:
 
         ## Read the person using a READ only transaction
         with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
+            answer_iterator = read_transaction.query("match $x isa person; get $x; limit 10;").get()
 
             for answer in answer_iterator:
                 person = answer.map().get("x")
@@ -96,7 +96,7 @@ with GraknClient(uri="localhost:1729") as client:
 
         ## Or query and consume the iterator immediately collecting all the results
         with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
+            answer_iterator = read_transaction.query("match $x isa person; get $x; limit 10;").get()
             persons = [ans.get("x") for ans in answer_iterator]
             for person in persons:
                 print("Retrieved person with id "+ person.id)
