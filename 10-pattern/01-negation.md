@@ -194,7 +194,7 @@ blocks to perform exclusions, e.g. the query pattern to list all non-English spe
 {
     (employee: $x) isa employment;
     (speaker: $x, spoken: $y) isa speaking-of-language;
-    not { $y == "English";};
+    not { $y "English";};
 }
 ```
 [tab:end]
