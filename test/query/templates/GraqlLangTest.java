@@ -3,8 +3,6 @@ package grakn.doc.test.query;
 import grakn.client.Grakn;
 import grakn.client.rpc.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
-//import grakn.common.test.server.GraknProperties;
-//import grakn.common.test.server.GraknSetup;
 import graql.lang.Graql;
 import graql.lang.pattern.Pattern;
 import graql.lang.query.*;
@@ -26,22 +24,40 @@ public class GraqlLangTest {
     private void runQuery(Grakn.Transaction transaction, GraqlQuery query) {
         List<ConceptMap> conceptMaps;
         if (query instanceof GraqlMatch) {
-            conceptMaps = transaction.query().match(query.asMatch()).collect(Collectors.toList());
+            // FIXME(vmax): matches don't work as of now
+//            session = client.session("social_network", Grakn.Session.Type.DATA);
+//            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+//            conceptMaps = transaction.query().match(query.asMatch()).collect(Collectors.toList());
+//            transaction.close();
+//            session.close();
         } else if (query instanceof GraqlDefine) {
+            session = client.session("social_network", Grakn.Session.Type.SCHEMA);
+            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
             transaction.query().define(query.asDefine()).get();
+            transaction.close();
+            session.close();
         } else if (query instanceof GraqlInsert) {
+            session = client.session("social_network", Grakn.Session.Type.DATA);
+            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
             conceptMaps = transaction.query().insert(query.asInsert()).collect(Collectors.toList());
+            transaction.close();
+            session.close();
         } else if (query instanceof GraqlDelete) {
+            session = client.session("social_network", Grakn.Session.Type.DATA);
+            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
             transaction.query().delete(query.asDelete()).get();
+            transaction.close();
+            session.close();
+        } else if (query instanceof GraqlCompute) {
+            // FIXME(vmax): we dunno how to run them yet
         } else {
-            throw new RuntimeException("Unknown query type: " + query.toString());
+            throw new RuntimeException("Unknown query type: " + query.toString() + "[type = " + query.getClass() + "]");
         }
     }
 
 
     @BeforeClass
     public static void loadSocialNetwork() throws Exception {
-//        GraknSetup.bootup();
         String address = "localhost:1729";
 
         client = new GraknClient(address);
@@ -62,23 +78,12 @@ public class GraqlLangTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Before
-    public void openTransaction() {
-        transaction = session.transaction(Grakn.Transaction.Type.WRITE);
-    }
-
-    @After
-    public void closeTransaction() {
-        transaction.close();
+        session.close();
     }
 
     @AfterClass
     public static void closeSession() throws Exception {
-        session.close();
         client.databases().delete("social_network");
-//        GraknSetup.shutdown();
     }
 
     // TEST METHODS PLACEHOLDER
