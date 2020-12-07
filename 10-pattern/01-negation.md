@@ -46,7 +46,7 @@ i.e. we look for the following Graql pattern:
     not {
         (employee: $x, employer: $y) isa employment;
     };
-};
+}
 ```
 [tab:end]
 
@@ -98,7 +98,7 @@ match
     not {
         (employee: $x, employer: $y) isa employment;
     };
-get;
+get $x;
 ```
 [tab:end]
 
@@ -170,7 +170,7 @@ Consequently, our unemployment query pattern simply becomes:
 {
     $x isa person;
     $x isa unemployed;
-};
+}
 ```
 [tab:end]
 
@@ -195,7 +195,7 @@ blocks to perform exclusions, e.g. the query pattern to list all non-English spe
     (employee: $x) isa employment;
     (speaker: $x, spoken: $y) isa speaking-of-language;
     not { $y == "English";};
-};
+}
 ```
 [tab:end]
 
@@ -229,7 +229,7 @@ To express that in Graql, we require two negation blocks:
     $x isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -287,7 +287,7 @@ and then defining a pattern:
     $x isa person;
     not { $x isa person-with-a-father;};
     not { $x isa person-with-a-mother;};
-};
+}
 ```
 [tab:end]
 
@@ -394,7 +394,7 @@ Consequently, the final result of the match query:
     $x isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -430,7 +430,7 @@ Now let's complicate things a little and see what happens if we bind the `$y` va
     $y isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -460,7 +460,7 @@ The first difference is that an element of each set is a pair (2-tuple). Our set
 match
 $x isa person;
 $y isa person;
-get;
+get $x, $y;
 ```
 [tab:end]
 
@@ -504,7 +504,7 @@ Now, executing our query pattern as an ordinary match-get query:
     $y isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -586,7 +586,7 @@ One might be tempted to put the two negation blocks into one. Let's look at the 
         ($x, father: $y) isa parentship;
         ($x, mother: $z) isa parentship;
     };
-};
+}
 ```
 [tab:end]
 
@@ -623,7 +623,7 @@ like this:
         ($x, father: $y) isa parentship;
         not { ($y) isa employment; };
     };
-};
+}
 ```
 [tab:end]
 
@@ -677,8 +677,8 @@ Let us define a network of nodes with possible edges between nodes:
 define
 
 traversable sub entity,
-    plays from,
-    plays to;
+    plays edge:from,
+    plays edge:to;
 
 node sub traversable;
 
