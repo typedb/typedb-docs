@@ -261,12 +261,12 @@ course-enrollment-mutuality sub relation,
   relates coursemate,
   relates mutual-course-enrollment;
 
-people-taken-the-same-course sub rule,
+rule people-taken-the-same-course:
   when {
     $sce1 (student: $p1, enrolled-course: $sc) isa school-course-enrollment;
     $sce2 (student: $p2, enrolled-course: $sc) isa school-course-enrollment;
     $p1 != $p2;
-  }, then {
+  } then {
     (coursemate: $p1, coursemate: $p2, mutual-course-enrollment: $sce1, mutual-course-enrollment: $sce2) isa course-enrollment-mutuality;
   };
 ```
@@ -290,14 +290,14 @@ school-mutuality sub relation,
   relates schoolmate,
   relates mutual-school;
 
-people-gone-to-the-same-school sub rule,
+rule people-gone-to-the-same-school:
   when {
     (student: $p1, enrolled-course: $c1) isa school-course-enrollment;
     (student: $p2, enrolled-course: $c2) isa school-course-enrollment;
     (offered-course: $c1, offering-school: $s) isa school-course-offering;
     (offered-course: $c2, offering-school: $s) isa school-course-offering;
     $p1 != $p2;
-  }, then {
+  } then {
     (schoolmate: $p1, schoolmate: $p2, mutual-school: $s) isa school-mutuality;
   };
 ```

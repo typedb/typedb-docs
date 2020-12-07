@@ -356,11 +356,11 @@ With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/doc
 
 <!-- test-ignore -->
 ```graql
-transitive-location sub rule, 
+rule transitive-location: 
 when { 
   (located: $x, locating: $y) isa locates; 
   (located: $y, locating: $z) isa locates; 
-}, then { 
+} then { 
   (located: $x, locating: $z) isa locates; 
 };
 ```

@@ -128,14 +128,13 @@ Defining the unemployment in terms of a rule and the freshly introduced negation
 ```graql
 define
 unemployed sub entity;
-unemployment sub rule,
+rule unemployment:
     when {
         $x isa person;
         not{
             (employee: $x, employer: $y) isa employment;
         };
-    },
-    then {
+    } then {
         $x isa unemployed;
     };
 ```
@@ -708,20 +707,18 @@ Then we can define two nodes as being reachable if there exists an edge between 
 define
 
 reachable sub relation, relates from, relates to;
-reachabilityA sub rule,
+rule reachabilityA:
     when {
         (from: $x, to: $y) isa edge;
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa reachable;
     };
 
-reachabilityB sub rule,
+rule reachabilityB:
     when {
         (from: $x, to: $z) isa edge;
         (from: $z, to: $y) isa reachable;
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa reachable;
     };
 ```
@@ -763,12 +760,11 @@ Consequently, with the use of negation we can define edges that are indirect:
 define
 
 indirect-edge sub relation, relates from, relates to;
-indirect-edge-rule sub rule,
+rule indirect-edge-rule:
     when {
         (from: $x, to: $y) isa reachable;
         not {(from: $x, to: $y) isa edge;};
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa indirect-edge;
     };
 ```
@@ -804,13 +800,12 @@ We can mark the unreachable nodes by defining the following rule:
 define
 
 unreachable sub relation, relates from, relates to;
-unreachability-rule sub rule,
+rule unreachability-rule:
     when {
         $x isa node;
         $y isa node;
         not {(from: $x, to: $y) isa reachable;};
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa unreachable;
     };
 ```

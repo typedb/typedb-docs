@@ -13,15 +13,15 @@ The rule-based reasoning allows automated capture and evolution of patterns with
 In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
 
 ## Define a Rule
-Defining a Graql rule begins with a given label followed by `sub rule`, the `when` body as the condition, and the `then` body as the conclusion.
+Defining a Graql rule begins with a `rule` followed by a given label, the `when` body as the condition, and the `then` body as the conclusion.
 <!-- test-ignore -->
 ```graql
 define 
 
-rule-label sub rule,
+rule rule-label:
   when {
     ## the condition
-  }, then {
+  } then {
     ## the conclusion
   };
 ```
@@ -59,14 +59,14 @@ Combining all this information we can finally define our rule as following.
 ```graql
 define
 
-people-with-same-parents-are-siblings sub rule,
+rule people-with-same-parents-are-siblings:
 when {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;
     (father: $f, $x) isa parentship;
     (father: $f, $y) isa parentship;
     $x != $y;
-}, then {
+} then {
     (sibling: $x, sibling: $y) isa siblings;
 };
 ```
