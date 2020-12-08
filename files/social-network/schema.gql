@@ -204,7 +204,8 @@ define
 		plays parentship:mother,
 		plays parentship:child,
 		plays parentship:son,
-		plays parentship:daughter;
+		plays parentship:daughter,
+		plays siblings:sibling;
 
     parentship sub relation,
   		relates parent,
@@ -213,6 +214,9 @@ define
 		relates mother,
 		relates son,
 		relates daughter;
+
+	siblings sub relation,
+	    relates sibling;
 
 	person-with-a-mother sub entity;
 	person-with-a-father sub entity;

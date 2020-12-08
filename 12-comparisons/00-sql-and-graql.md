@@ -257,19 +257,19 @@ Let’s see how this looks in Graql:
 define 
 
 employee sub entity, 
-  plays seller; 
+  plays sale:seller; 
 
 company sub entity, 
-  plays supplier,
-  plays customer; 
+  plays stocking:supplier,
+  plays sale:customer; 
 
 order sub entity, 
-  plays placed-order,
-  plays containing-order; 
+  plays sale:placed-order,
+  plays containing:containing-order; 
 
 product sub entity, 
-  plays containing-product,
-  plays stock;
+  plays containing:containing-product,
+  plays stocking:stock;
 
 sale sub relation, 
   relates placed-order,

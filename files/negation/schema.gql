@@ -1,0 +1,9 @@
+define
+
+traversable sub entity,
+    plays edge:from,
+    plays edge:to;
+node sub traversable;
+
+edge sub relation, relates from, relates to;
+reachable sub relation, relates from, relates to;
