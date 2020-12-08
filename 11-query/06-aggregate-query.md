@@ -21,7 +21,7 @@ We use the `count` function to get the number of the specified matched variable.
 match
   $sce isa school-course-enrollment, has score $sco;
   $sco > 7.0;
-get; count;
+get $sco; count;
 ```
 [tab:end]
 
@@ -143,7 +143,7 @@ We use the `median` function to get the median value among the specified `long` 
 ```graql
 match
   $org isa organisation, has name $orn;
-  $orn == "Facelook";
+  $orn "Facelook";
   (employer: $org, employee: $per) isa employment;
   ($per) isa school-course-enrollment, has score $sco;
 get $sco; median $sco;
@@ -173,7 +173,7 @@ match
   $per isa person;
   $scc isa school-course, has title $title;
   (student: $per, enrolled-course: $scc) isa school-course-enrollment;
-get; group $title;
+get $scc, $title; group $title;
 ```
 [tab:end]
 
@@ -183,7 +183,7 @@ GraqlMatch.Unfiltered.Group query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
-).get("scc").group("title");
+).get("scc", "title").group("title");
 ```
 [tab:end]
 </div>
@@ -198,7 +198,7 @@ match
   $per isa person;
   $scc isa school-course, has title $title;
   (student: $per, enrolled-course: $scc) isa school-course-enrollment;
-get $scc; group $title; count;
+get $scc, $title; group $title; count;
 ```
 [tab:end]
 
@@ -208,7 +208,7 @@ GraqlMatch.Unfiltered.Group.Aggregate query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
-).get("scc").group("title").count();
+).get("scc", "title").group("title").count();
 ```
 [tab:end]
 </div>

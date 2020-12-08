@@ -24,7 +24,7 @@ Matching instances of an entity type is easy. We do so by using a variable follo
 
 [tab:Graql]
 ```graql
-match $p isa person; get;
+match $p isa person; get $p;
 ```
 [tab:end]
 
@@ -46,7 +46,7 @@ To only match the instances of entities that own a specific attribute, we use th
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $n; get;
+match $p isa person, has full-name $n; get $p;
 ```
 [tab:end]
 
@@ -69,7 +69,7 @@ Because of the [dependent nature of relations](../09-schema/01-concepts.md#defin
 
 [tab:Graql]
 ```graql
-match $emp (employer: $x, employee: $y) isa employment; get;
+match $emp (employer: $x, employee: $y) isa employment; get $emp;
 ```
 [tab:end]
 
@@ -91,7 +91,7 @@ To only match the instances of relations that own a specific attribute, we use t
 
 [tab:Graql]
 ```graql
-match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; get;
+match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; get $emp;
 ```
 [tab:end]
 
@@ -113,7 +113,7 @@ Assigning a relation to a variable is optional. We may only be interested in the
 
 [tab:Graql]
 ```graql
-match (employer: $x, employee: $y) isa employment; get;
+match (employer: $x, employee: $y) isa employment;
 ```
 [tab:end]
 
@@ -134,7 +134,7 @@ We can always choose to not include the label of roles when matching a relation.
 
 [tab:Graql]
 ```graql
-match $fr ($x, $y) isa friendship; get;
+match $fr ($x, $y) isa friendship; get $fr;
 ```
 [tab:end]
 
@@ -157,7 +157,7 @@ We can match instances of attributes type based on their value regardless of the
 
 [tab:Graql]
 ```graql
-match $x "like"; get;
+match $x "like"; get $x;
 ```
 [tab:end]
 
@@ -179,7 +179,7 @@ We can match instances of attributes based on their value regardless of what con
 
 [tab:Graql]
 ```graql
-match $n isa nickname; $n "Mitzi"; get;
+match $n isa nickname; $n "Mitzi"; get $n;
 ```
 [tab:end]
 
@@ -201,7 +201,7 @@ To match all instances of attribute types that contain a substring, we use the `
 
 [tab:Graql]
 ```graql
-match $phone-number contains "+44"; get;
+match $phone-number contains "+44"; get $phone-number;
 ```
 [tab:end]
 
@@ -223,7 +223,7 @@ The value of an attribute can also be matched using a regex. We allow the range 
 
 [tab:Graql]
 ```graql
-match $x like "(Miriam Morton|Solomon Tran)"; get;
+match $x like "(Miriam Morton|Solomon Tran)"; get $x;
 ```
 [tab:end]
 
@@ -245,7 +245,7 @@ To match instances of a concept type that owns multiple attributes, we can simpl
 
 [tab:Graql]
 ```graql
-match $p isa person, has nickname $nn, has full-name $fn; get;
+match $p isa person, has nickname $nn, has full-name $fn; get $p;
 ```
 [tab:end]
 
@@ -265,7 +265,7 @@ We can also match instances that own an attribute with a specific value or range
 
 [tab:Graql]
 ```graql
-match $s isa school, has ranking < 100; get;
+match $s isa school, has ranking < 100; get $s;
 ```
 [tab:end]
 
@@ -284,7 +284,7 @@ But if in this example, we still want to know the ranking of each matched school
 
 [tab:Graql]
 ```graql
-match $s isa school, has ranking $r; $r < 100; get;
+match $s isa school, has ranking $r; $r < 100; get $s;
 ```
 [tab:end]
 
@@ -305,7 +305,7 @@ By default, a collection of patterns in a `match` clause constructs conjunction 
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get;
+match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get $p;
 ```
 [tab:end]
 
@@ -329,7 +329,7 @@ The type that an instance belongs to may be a subtype of another. This means whe
 
 [tab:Graql]
 ```graql
-match $rr isa! romantic-relationship; get;
+match $rr isa! romantic-relationship; get $rr;
 ```
 [tab:end]
 
@@ -381,7 +381,7 @@ To match all schema concepts of a given type, **all the way down the type hierar
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x sub post; get;
+match $x sub post; get $x;
 ```
 [tab:end]
 
@@ -402,7 +402,7 @@ To match the schema concepts of a given type, **all the way down its type hierar
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x sub! post; get;
+match $x sub! post; get $x;
 ```
 [tab:end]
 
@@ -446,7 +446,7 @@ Given a particular relation, we can use the `relates` keyword to match all roles
 
 [tab:Graql]
 ```graql
-match employment relates $x; get;
+match employment relates $x; get $x;
 ```
 [tab:end]
 
@@ -468,7 +468,7 @@ When we learned about [subtyping relations](../09-schema/01-concepts.md#subtype-
 
 [tab:Graql]
 ```graql
-match location-of-office relates $x as located-subject; get;
+match location-of-office relates $x as located-subject; get $x;
 ```
 [tab:end]
 
@@ -491,15 +491,14 @@ Given a role, we can match the concept types that play the given role by using t
 
 [tab:Graql]
 ```graql
-match $x plays employee; get;
+match $x plays employment:employee; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-// FIXME(vmax): fill in needed relation
 GraqlMatch.Filtered query = Graql.match(
-  var("x").plays("FIXME", "employee")
+  var("x").plays("employment", "employee")
 ).get("x");
 ```
 [tab:end]
@@ -514,14 +513,14 @@ Given an attribute type, we can match the concept types that own the given attri
 
 [tab:Graql]
 ```graql
-match $x has title; get;
+match $x has title $t; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlMatch.Filtered query = Graql.match(
-  var("x").has("title", var())
+  var("x").has("title", var("t"))
 ).get("x");
 ```
 [tab:end]

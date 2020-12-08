@@ -58,9 +58,9 @@ We can assign any number of attributes to an entity. To do so, we use the `has` 
 define
 
 person sub entity,
-  has full-name,
-  has nickname,
-  has gender;
+  owns full-name,
+  owns nickname,
+  owns gender;
 ```
 [tab:end]
 
@@ -84,7 +84,7 @@ To assign a unique attribute to an entity, we use the `key` keyword followed by 
 define
 
 person sub entity,
-    key email;
+    owns email @key;
 ```
 [tab:end]
 
@@ -116,20 +116,19 @@ An entity can play a role in a relation. To define the role played by an entity,
 define
 
 person sub entity,
-  plays employee;
+  plays employment:employee;
 
 organisation sub entity,
-  plays employer;
+  plays employment:employer;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-// FIXME(vmax): roleplayers are scoped now, so this is impossible
-//GraqlDefine query = Graql.define(
-//  type("person").sub("entity").plays("employee"),
-//  type("organisation").sub("entity").plays("employer")
-//);
+GraqlDefine query = Graql.define(
+  type("person").sub("entity").plays("employment", "employee"),
+  type("organisation").sub("entity").plays("employment", "employer")
+);
 ```
 
 [tab:end]
@@ -150,18 +149,18 @@ We can define an entity to inherit all attributes owned and roles played by anot
 define
 
 post sub entity,
-  plays replied-to,
-  plays tagged-in,
-  plays reacted-to;
+  plays reply:replied-to,
+  plays tagging:tagged-in,
+  plays reaction:reacted-to;
 
 comment sub post,
-  has content,
-  plays attached-to;
+  owns content,
+  plays attachment:attached-to;
 
 media sub post,
-  has caption,
-  has file,
-  plays attached;
+  owns caption,
+  owns file,
+  plays attachment:attached;
 
 video sub media;
 
@@ -173,9 +172,9 @@ photo sub media;
 ```java
 GraqlDefine query = Graql.define(
   // FIXME(vmax): fill in needed relation
-  type("post").sub("entity").plays("FIXME", "replied-to").plays("FIXME", "tagged-in").plays("FIXME", "reacted-to"),
-  type("comment").sub("post").owns("content").plays("FIXME", "attached-to"),
-  type("media").sub("post").owns("caption").owns("file").plays("FIXME", "attached"),
+  type("post").sub("entity").plays("reply", "replied-to").plays("tagging", "tagged-in").plays("reaction", "reacted-to"),
+  type("comment").sub("post").owns("content").plays("attachment", "attached-to"),
+  type("media").sub("post").owns("caption").owns("file").plays("attachment", "attached"),
   type("video").sub("media"),
   type("photo").sub("media")
 );
@@ -275,7 +274,7 @@ define
 
 friendship sub relation,
   relates friend,
-  plays requested-friendship;
+  plays friend-request:requested-friendship;
 
 friend-request sub relation,
   relates requested-friendship,
@@ -283,19 +282,18 @@ friend-request sub relation,
   relates friendship-respondent;
 
 person sub entity,
-  plays friend,
-  plays friendship-requester,
-  plays friendship-respondent;
+  plays friendship:friend,
+  plays friend-request:friendship-requester,
+  plays friend-request:friendship-respondent;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  // FIXME(vmax): fill in needed relation
-  type("friendship").sub("relation").relates("FIXME", "friend").plays("FIXME", "requested-friendship"),
-  type("friend-request").sub("relation").relates("FIXME", "requested-friendship").relates("FIXME","friendship-requester").relates("FIXME","friendship-respondent"),
-  type("person").sub("entity").plays("FIXME","friend").plays("FIXME","friendship-requester").plays("FIXME","friendship-respondent")
+  type("friendship").sub("relation").relates("friend").plays("friend-request", "requested-friendship"),
+  type("friend-request").sub("relation").relates("requested-friendship").relates("friendship-requester").relates("friendship", "respondent"),
+  type("person").sub("entity").plays("friendship", "friend").plays("friend-request", "friendship-requester").plays("friend-request", "friendship-respondent")
 );
 ```
 
@@ -322,13 +320,13 @@ reaction sub relation,
 
 emotion sub attribute,
   value string,
-  plays reacted-emotion;
+  plays reaction:reacted-emotion;
 
 post sub entity,
-  plays reacted-to;
+  plays reaction:reacted-to;
 
 person sub entity,
-  plays reacted-by;
+  plays reaction:reacted-by;
 ```
 [tab:end]
 
@@ -360,7 +358,7 @@ We can assign any number of attributes to a relation. To do so, we use the `has`
 define
 
 friend-request sub relation,
-  has approved-date,
+  owns approved-date,
   relates requested-friendship,
   relates friendship-requester,
   relates friendship-respondent;
@@ -387,7 +385,7 @@ To assign a unique attribute to a relation, we use the `key` keyword followed by
 define
 
 employment sub relation,
-  key reference-id,
+  owns reference-id @key,
   relates employer,
   relates employee;
 ```
@@ -542,11 +540,11 @@ start-date sub attribute,
 
 residency sub relation,
   ## roles and other attributes
-  has start-date;
+  owns start-date;
 
 travel sub relation,
   ## roles and other attributes
-  has start-date;
+  owns start-date;
 ```
 [tab:end]
 
@@ -579,7 +577,7 @@ phone-number sub attribute,
 	value string;
 
 person sub entity,
-  has phone-number;
+  owns phone-number;
 ```
 [tab:end]
 
@@ -636,7 +634,7 @@ Let's go through a simple example of how an attribute can own an attribute of it
 define
 
 content sub attribute, value string,
-  has language;
+  owns language;
 
 language sub attribute,
 	value string;
@@ -666,10 +664,10 @@ An attribute can play a role in a relation. To define the role played by an attr
 define
 
 language sub attribute, value string,
-  plays spoken;
+  plays speaking-of-language:spoken;
 
 person sub entity,
-  plays speaker;
+  plays speaking-of-language:speaker;
 
 speaking-of-language sub relation,
   relates speaker,
@@ -764,7 +762,7 @@ We can undefine the association that a type has with an attribute.
 ```graql
 undefine
 
-person has nickname;
+person owns nickname;
 ```
 [tab:end]
 
@@ -794,8 +792,8 @@ Given the dependent nature of relations, before undefining the relation itself, 
 ```graql
 undefine
 
-    speaking-of-language relates speaker; person plays speaker; speaker sub role;
-    speaking-of-language relates spoken; language plays spoken; spoken sub role;
+    speaking-of-language relates speaker; person plays speaking-of-language:speaker;
+    speaking-of-language relates spoken; language plays speaking-of-language:spoken;
     speaking-of-language sub relation;
 ```
 [tab:end]

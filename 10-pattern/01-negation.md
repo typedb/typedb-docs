@@ -84,7 +84,7 @@ set of people we subtract the set of people being in employment relations. Conse
     not {
         (employee: $x, employer: $y) isa employment;
     };
-};
+}
 ```
 
 The variables in the negation block are local to the negation block. Consequently, executing the query:
@@ -126,8 +126,9 @@ Defining the unemployment in terms of a rule and the freshly introduced negation
 
 [tab:Graql]
 ```graql
+# FIXME(vmax): figure out what 'unemployment' is supposed to be
 define
-unemployed sub entity;
+unemployed sub attribute, value boolean;
 rule unemployment:
     when {
         $x isa person;
@@ -135,7 +136,7 @@ rule unemployment:
             (employee: $x, employer: $y) isa employment;
         };
     } then {
-        $x isa unemployed;
+        $x has unemployed true;
     };
 ```
 [tab:end]

@@ -32,15 +32,15 @@ approved-date sub event-date;
 ## an abstract relation, only to be subtyped by other relations
 request sub relation,
   abstract,
-  has approved-date,
+  owns approved-date,
   relates approved-subject,
   relates requester,
   relates respondent;
 
 friendship sub relation,
     relates friend,
-    plays approved-friendship,
-    plays listed-friendship;
+    plays friend-request:approved-friendship,
+    plays friends-list:listed-friendship;
 
 ## an example of subtyping in Grakn
 friend-request sub request,
@@ -49,15 +49,15 @@ friend-request sub request,
     relates friendship-respondent as respondent;
 
 friends-list sub relation,
-    has title,
+    owns title,
     relates list-owner,
     relates listed-friendship;
 
 person sub entity,
-    plays friend,
-    plays friendship-requester,
-    plays friendship-respondent,
-    plays list-owner;
+    plays friendship:friend,
+    plays friend-request:friendship-requester,
+    plays friend-request:friendship-respondent,
+    plays friends-list:list-owner;
 ```
 
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
@@ -336,7 +336,7 @@ compute count in travel;
 #### Find the [shortest path](../11-query/07-compute-query.md#compute-the-shortest-path) between two instances
 
 ```graql
-match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
+match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get $x, $y;
 ```
 
 <!-- test-ignore -->

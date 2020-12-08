@@ -103,9 +103,9 @@ To provide a quick preview of how you can use the following Graql queries to ret
 
 ```graql
 # retrieve all rules
-match $r sub rule; get;  
+match $r sub rule; get $r;  
 # retrieve the specific rule
-match $r type people-born-at-the-same-location; get; 
+match $r type people-born-at-the-same-location; get $r; 
 ```
 
 Remember that rules are part of the schema and can be queried the same way as other schema concepts described in [Graql Match documentation](../11-query/01-match-clause.md).

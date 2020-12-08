@@ -46,7 +46,7 @@ match
   (customer: $customer, provider: $company) isa contract;
   $target isa person, has phone-number "+86 921 547 9004";
   (caller: $customer, callee: $target) isa call, has started-at $started-at;
-  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;
+  $min-date 2018-09-14T17:18:49; $started-at > $min-date;
 get $phone-number;
 ```
 

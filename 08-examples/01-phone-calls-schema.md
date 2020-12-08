@@ -78,15 +78,15 @@ define
     relates callee;
 
   company sub entity,
-    plays provider;
+    plays contract:provider;
 
   person sub entity,
-    plays customer,
-    plays caller,
-    plays callee;
+    plays contract:customer,
+    plays call:caller,
+    plays call:callee;
 ```
 
-To define the attributes, we use the has keyword.
+To define the attributes, we use the owns keyword.
 
 ```graql
 define
@@ -98,23 +98,23 @@ define
   call sub relation,
     relates provider,
     relates customer,
-    has started-at,
-    has duration;
+    owns started-at,
+    owns duration;
 
   company sub entity,
-    plays provider,
-    has name;
+    plays contract:provider,
+    owns name;
 
   person sub entity,
-    plays customer,
-    plays caller,
-    plays callee,
-    has first-name,
-    has last-name,
-    has phone-number,
-    has city,
-    has age,
-    has is-customer;
+    plays contract:customer,
+    plays call:caller,
+    plays call:callee,
+    owns first-name,
+    owns last-name,
+    owns phone-number,
+    owns city,
+    owns age,
+    owns is-customer;
 ```
 
 Lastly, we need to define the type of each attribute.
@@ -129,23 +129,23 @@ define
   call sub relation,
     relates caller,
     relates callee,
-    has started-at,
-    has duration;
+    owns started-at,
+    owns duration;
 
   company sub entity,
-    plays provider,
-    has name;
+    plays contract:provider,
+    owns name;
 
 person sub entity,
-    plays customer,
-    plays caller,
-    plays callee,
-    has first-name,
-    has last-name,
-    has phone-number,
-    has city,
-    has age,
-    has is-customer;
+    plays contract:customer,
+    plays call:caller,
+    plays call:callee,
+    owns first-name,
+    owns last-name,
+    owns phone-number,
+    owns city,
+    owns age,
+    owns is-customer;
 
   name sub attribute,
 	  value string;
@@ -197,7 +197,7 @@ For the rest of these instructions, I assume that you have downloaded the Grakn 
 **5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Grakn console, run:
 
 ```graql
-match $x sub thing; get;
+match $x sub thing; get $x;
 ```
 
 The result should be as follows:

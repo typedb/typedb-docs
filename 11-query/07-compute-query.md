@@ -345,7 +345,7 @@ We can retrieve a cluster that contains a given instance, by using the `where` k
 
 [tab:Graql]
 ```graql
-compute cluster in [person, employment, organisation], using connected-component, where contains=V12488;
+compute cluster in [person, employment, organisation], using connected-component, where contains=0x12488;
 ```
 [tab:end]
 

@@ -117,7 +117,7 @@ As a consequence, you can query for the duplicate role player as a duplicate rol
 
 [tab:Graql]
 ```graql
-match $friendship (friend: $p, friend: $p) isa friendship; get;
+match $friendship (friend: $p, friend: $p) isa friendship; get $friendship;
 ```
 [tab:end]
 
