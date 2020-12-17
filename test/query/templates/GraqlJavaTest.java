@@ -2,8 +2,6 @@ package grakn.doc.test.query;
 
 import grakn.client.Grakn;
 import grakn.client.rpc.GraknClient;
-//import grakn.common.test.server.GraknProperties;
-//import grakn.common.test.server.GraknSetup;
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
 import graql.lang.query.GraqlCompute;
@@ -31,9 +29,6 @@ import static graql.lang.common.GraqlArg.Order.*;
 import static graql.lang.query.GraqlCompute.Argument.*;
 import static graql.lang.query.GraqlCompute.Argument.*;
 import static graql.lang.Graql.*;
-//import static graql.lang.Graql.Token.Compute.Algorithm.*;
-//import static graql.lang.Graql.Token.Order.*;
-//import static graql.lang.query.GraqlCompute.Argument.*;
 
 public class GraqlJavaTest {
     static Grakn.Client client;
