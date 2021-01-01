@@ -13,12 +13,12 @@ build:
       owner: graknlabs
       branch: master
     dependency-analysis:
-      machine: graknlabs-ubuntu-20.04-java11
+      image: graknlabs-ubuntu-20.04-java11
       script: |
         bazel run @graknlabs_dependencies//grabl/analysis:dependency-analysis
   correctness:
     build:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       script: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
@@ -29,7 +29,7 @@ build:
         git diff --exit-code dependencies/maven/artifacts.snapshot
         bazel run @graknlabs_dependencies//tool/unuseddeps:unused-deps -- list
     test-query-graql-lang:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       script: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
@@ -37,7 +37,7 @@ build:
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel test //test/query:graql-lang --test_output=errors
     test-query-graql-java:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       script: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
@@ -45,7 +45,7 @@ build:
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel test //test/query:graql-java --test_output=errors
     test-example-java:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       script: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
@@ -56,7 +56,7 @@ build:
         bazel test //test/example/java:phone-calls --test_output=errors
         bazel test //test/example/java:social-network --test_output=errors
     test-example-nodejs:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       script: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
@@ -67,7 +67,7 @@ build:
         bazel test //test/example/nodejs:phone-calls --test_output=errors
         bazel test //test/example/nodejs:social-network --test_output=errors
     test-example-python:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       script: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
@@ -79,7 +79,7 @@ build:
         bazel test //test/example/python:phone-calls --test_output=errors
         bazel test //test/example/python:social-network --test_output=errors
     test-links:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       script: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
@@ -90,7 +90,7 @@ build:
       filter:
         owner: graknlabs
         branch: development
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       type: foreground
       dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
       script: |
@@ -119,12 +119,12 @@ release:
     branch: master
   validation:
     validate-dummy:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       script: |
         echo dummy
   deployment:
     deploy-github:
-      machine: graknlabs-ubuntu-20.04
+      image: graknlabs-ubuntu-20.04
       script: |
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
