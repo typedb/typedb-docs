@@ -101,7 +101,7 @@ build:
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-        bazel run @graknlabs_dependencies//tool/release:docs -- development $CIRCLE_SHA1
+        bazel run @graknlabs_dependencies//tool/release:docs -- development $GRABL_COMMIT
     
   execution:
     - build
