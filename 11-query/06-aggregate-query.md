@@ -21,16 +21,16 @@ We use the `count` function to get the number of the specified matched variable.
 match
   $sce isa school-course-enrollment, has score $sco;
   $sco > 7.0;
-get; count;
+get $sco; count;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet.Aggregate query = Graql.match(
+GraqlMatch.Unfiltered.Aggregate query = Graql.match(
   var("sce").isa("school-course-enrollment").has("score", var("sco")),
   var("sco").gt(7.0)
-).get().count();
+).get("sce").count();
 ```
 [tab:end]
 </div>
@@ -57,9 +57,9 @@ get $sal; sum $sal;
 
 [tab:Java]
 ```java
-GraqlGet.Aggregate query = Graql.match(
+GraqlMatch.Unfiltered.Aggregate query = Graql.match(
   var("org").isa("organisation").has("name", var("orn")),
-  var("orn").val("Medicely"),
+  var("orn").eq("Medicely"),
   var().rel("org").isa("employment").has("salary", var("sal"))
 ).get("sal").sum("sal");
 ```
@@ -81,7 +81,7 @@ get $ran; max $ran;
 
 [tab:Java]
 ```java
-GraqlGet.Aggregate query = Graql.match(
+GraqlMatch.Unfiltered.Aggregate query = Graql.match(
   var("sch").isa("school").has("ranking", var("ran"))
 ).get("ran").max("ran");
 ```
@@ -104,7 +104,7 @@ get $sal; min $sal;
 
 [tab:Java]
 ```java
-GraqlGet.Aggregate query = Graql.match(
+GraqlMatch.Unfiltered.Aggregate query = Graql.match(
   var().rel(var("per")).isa("marriage"),
   var().rel(var("per")).isa("employment").has("salary", var("sal"))
 ).get("sal").min("sal");
@@ -127,7 +127,7 @@ get $sal; mean $sal;
 
 [tab:Java]
 ```java
-GraqlGet.Aggregate query = Graql.match(
+GraqlMatch.Unfiltered.Aggregate query = Graql.match(
   var("emp").isa("employment").has("salary", var("sal"))
 ).get("sal").mean("sal");
 ```
@@ -143,7 +143,7 @@ We use the `median` function to get the median value among the specified `long` 
 ```graql
 match
   $org isa organisation, has name $orn;
-  $orn == "Facelook";
+  $orn "Facelook";
   (employer: $org, employee: $per) isa employment;
   ($per) isa school-course-enrollment, has score $sco;
 get $sco; median $sco;
@@ -152,9 +152,9 @@ get $sco; median $sco;
 
 [tab:Java]
 ```java
-GraqlGet.Aggregate query = Graql.match(
+GraqlMatch.Unfiltered.Aggregate query = Graql.match(
   var("org").isa("organisation").has("name", var("orn")),
-  var("orn").val("Facelook"),
+  var("orn").eq("Facelook"),
   var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
   var().rel(var("per")).isa("school-course-enrollment").has("score", var("sco"))
 ).get("sco").median("sco");
@@ -173,17 +173,17 @@ match
   $per isa person;
   $scc isa school-course, has title $title;
   (student: $per, enrolled-course: $scc) isa school-course-enrollment;
-get; group $title;
+get $scc, $title; group $title;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet.Group query = Graql.match(
+GraqlMatch.Unfiltered.Group query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
-).get().group("title");
+).get("scc", "title").group("title");
 ```
 [tab:end]
 </div>
@@ -198,17 +198,17 @@ match
   $per isa person;
   $scc isa school-course, has title $title;
   (student: $per, enrolled-course: $scc) isa school-course-enrollment;
-get; group $title; count;
+get $scc, $title; group $title; count;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet.Group.Aggregate query = Graql.match(
+GraqlMatch.Unfiltered.Group.Aggregate query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
-).get().group("title").count();
+).get("scc", "title").group("title").count();
 ```
 [tab:end]
 </div>

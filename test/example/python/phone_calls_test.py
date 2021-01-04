@@ -9,7 +9,7 @@ class PhoneCallsTest(unittest.TestCase):
         with open('files/phone-calls/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            with GraknClient(uri="localhost:48555") as client:
+            with GraknClient(uri="localhost:1729") as client:
                 with client.session(keyspace="phone_calls") as session:
                     with session.transaction().write() as transaction:
                         transaction.query(define_query)
@@ -42,7 +42,7 @@ class PhoneCallsTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        with GraknClient(uri="localhost:48555") as client:
+        with GraknClient(uri="localhost:1729") as client:
             client.keyspaces().delete("phone_calls")
             print("Deleted the phone_calls keyspace")
 

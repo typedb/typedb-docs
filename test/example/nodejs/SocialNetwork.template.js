@@ -8,7 +8,7 @@ jasmine.getEnv().addReporter(tapReporter)
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 
 beforeAll(async function() {
-    const client = new Grakn("localhost:48555");
+    const client = new Grakn("localhost:1729");
     const session = await client.session("social_network");
     const transaction = await session.transaction().write();
     const defineQuery = fs.readFileSync("files/social-network/schema.gql", "utf8");
@@ -43,7 +43,7 @@ describe("Client Quickstart Tests", function() {
 });
 
 afterAll(async function() {
-    const client = new Grakn("localhost:48555");
+    const client = new Grakn("localhost:1729");
     await client.keyspaces().delete("social_network");
     console.log("Deleted the social_network keyspace");
 });

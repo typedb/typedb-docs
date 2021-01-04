@@ -133,7 +133,7 @@ docker pull graknlabs/grakn:latest
 
 For testing purposes, run:
 ```
-docker run --name grakn -d -p 48555:48555 graknlabs/grakn:latest
+docker run --name grakn -d -p 1729:1729 graknlabs/grakn:latest
 ```
 
 <div class="note">
@@ -146,10 +146,10 @@ Running the instance without specifying a volume does NOT save the data if the i
 To ensure that data is preserved even when the instance is killed or restarted, run:
 
 ```
-docker run --name grakn -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 48555:48555 graknlabs/grakn:latest
+docker run --name grakn -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 1729:1729 graknlabs/grakn:latest
 ```
 
-Having started the instance, the Grakn Server is expected to be running on port `48555` on your machine.
+Having started the instance, the Grakn Server is expected to be running on port `1729` on your machine.
 
 To interact with the [Grakn Console](../02-running-grakn/02-console.md), run:
 

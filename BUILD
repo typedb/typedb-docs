@@ -7,6 +7,7 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
+load("@graknlabs_common//test/server:rules.bzl", "native_grakn_artifact")
 load("@graknlabs_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
 
 filegroup(
@@ -14,9 +15,7 @@ filegroup(
     srcs = glob(
         ["*/**/*.md"],
         exclude=[
-            "bazel-bin/**/*.md",
-            "bazel-out/**/*.md",
-            "bazel-docs/**/*.md",
+	    "bazel-*/**/*.md",
             ".runfiles/**/*.md"
         ]
     ),
@@ -43,10 +42,19 @@ filegroup(
     visibility = ["//visibility:public"]
 )
 
+native_grakn_artifact(
+    name = "native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    visibility = ["//test:__subpackages__"],
+)
+
 artifact_extractor(
     name = "grakn-extractor",
-    artifact = "@graknlabs_grakn_core_artifact//file",
+    artifact = ":native-grakn-artifact",
 )
+
 
 # CI targets that are not declared in any BUILD file, but are called externally
 filegroup(

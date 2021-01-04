@@ -1,34 +1,37 @@
 package grakn.doc.test.example;
 
-import grakn.client.GraknClient;
-
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import graql.lang.Graql;
-import graql.lang.query.GraqlQuery;
+import graql.lang.common.GraqlArg;
+import graql.lang.query.builder.Sortable;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.junit.*;
-import org.junit.runners.MethodSorters;
-
-import javax.xml.stream.XMLStreamException;
-
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PhoneCallsTest {
 
     @BeforeClass
     public static void loadPhoneCalls() {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("phone_calls");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.SCHEMA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+
 
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((GraqlQuery) Graql.parse(query));
+            transaction.query().define(Graql.parseQuery(query));
             transaction.commit();
             session.close();
             client.close();
@@ -79,8 +82,8 @@ public class PhoneCallsTest {
 
     @AfterClass
     public static void cleanPhoneCalls() {
-        GraknClient client = new GraknClient("localhost:48555");
-        client.keyspaces().delete("phone_calls");
+        Grakn.Client client = new GraknClient("localhost:1729");
+        client.databases().delete("phone_calls");
         client.close();
     }
 }

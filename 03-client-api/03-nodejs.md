@@ -31,7 +31,7 @@ Instantiate a client and open a session.
 const GraknClient = require("grakn-client");
 
 async function openSession (keyspace) {
-	const client = new GraknClient("localhost:48555");
+	const client = new GraknClient("localhost:1729");
 	const session = await client.session(keyspace);
 	// session is open
 	await session.close();
@@ -46,7 +46,7 @@ We can also pass the credentials, as specified when [configuring authentication 
 
 <!-- test-ignore -->
 ```javascript
-const client = new GraknClient("localhost:48555", { "username": "<username>", "password": "<password>" });
+const client = new GraknClient("localhost:1729", { "username": "<username>", "password": "<password>" });
 ```
 
 Create transactions to use for reading and writing data.
@@ -56,7 +56,7 @@ Create transactions to use for reading and writing data.
 const GraknClient = require("grakn-client");
 
 async function createTransactions (keyspace) {
-	const client = new GraknClient("localhost:48555");
+	const client = new GraknClient("localhost:1729");
 	const session = await client.session(keyspace);
 
 	// creating a write transaction
@@ -84,7 +84,7 @@ Running basic retrieval and insertion queries.
 const GraknClient = require("grakn-client");
 
 async function runBasicQueries (keyspace) {
-	const client = new GraknClient("localhost:48555");
+	const client = new GraknClient("localhost:1729");
 	const session = await client.session(keyspace);
 
 	// Insert a person using a WRITE transaction
@@ -99,7 +99,7 @@ async function runBasicQueries (keyspace) {
 	const readTransaction = await session.transaction().read();
 
 	// We can either query and consume the iterator lazily
-	let answerIterator = await readTransaction.query("match $x isa person; get; limit 10;");
+	let answerIterator = await readTransaction.query("match $x isa person; get $x; limit 10;");
 	let aConceptMapAnswer = await answerIterator.next();
 	while (aConceptMapAnswer != null) {
 		// get the next `x`
@@ -109,7 +109,7 @@ async function runBasicQueries (keyspace) {
 	}
 
 	// Or query and consume the iterator immediately collecting all the results
-	answerIterator = await readTransaction.query("match $x isa person; get; limit 10;");
+	answerIterator = await readTransaction.query("match $x isa person; get $x; limit 10;");
 	const persons = await answerIterator.collectConcepts();
 	persons.forEach( person => { console.log("Retrieved person with id "+ person.id) });
 

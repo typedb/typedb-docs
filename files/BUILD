@@ -1,3 +1,7 @@
+exports_files([
+    "negation/schema.gql"
+])
+
 filegroup(
     name = "social-network-kg",
     srcs = ["social-network/schema.gql"],

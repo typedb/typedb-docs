@@ -26,8 +26,8 @@ get $x-fn, $y-fn, $y-pn;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("fr").isa("friendship").rel("x").rel("y"),
+GraqlMatch.Filtered query = Graql.match(
+  var("fr").rel("x").rel("y").isa("friendship"),
   var("x").isa("person").has("full-name", var("x-fn")),
   var("x-fn").contains("Miriam"),
   var("y").isa("person").has("full-name", var("y-fn")).has("phone-number", var("y-pn"))
@@ -44,15 +44,15 @@ We can chose to limit the number of answers in the results. To do this, we use t
 
 [tab:Graql]
 ```graql
-match $p isa person; get; limit 1;
+match $p isa person; get $p; limit 1;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Limited query = Graql.match(
   var("p").isa("person")
-).get().limit(1);
+).get("p").limit(1);
 ```
 [tab:end]</div>
 
@@ -65,15 +65,15 @@ To order the answers by a particular variable, we use the `order` keyword follow
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; get; sort $fn asc;
+match $p isa person, has full-name $fn; get $fn; sort $fn asc;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Sorted query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
-).get().sort("fn", ASC);
+).get("fn").sort("fn", ASC);
 ```
 [tab:end]
 </div>
@@ -92,15 +92,15 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; get; sort $fn; offset 6; limit 10;
+match $p isa person, has full-name $fn; get $fn; sort $fn; offset 6; limit 10;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Limited query = Graql.match(
   var("p").isa("person").has("full-name", var("fn"))
-).get().sort("fn").offset(6).limit(10);
+).get("fn").sort("fn").offset(6).limit(10);
 ```
 [tab:end]
 </div>

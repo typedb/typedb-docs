@@ -43,7 +43,7 @@ For production use, it is recommended that the `data-dir` is set to a path outsi
 </div>
 
 ## Host and port
-The `server.host` and `grpc.port` configs set the IP address and the port on which the Grakn Server listens to. The default values are `0.0.0.0` and `48555` respectively.
+The `server.host` and `grpc.port` configs set the IP address and the port on which the Grakn Server listens to. The default values are `0.0.0.0` and `1729` respectively.
 
 ## Where logs are stored
 The `log.dirs` config holds the path to the directory where the logs get stored. The default value is `logs/`.

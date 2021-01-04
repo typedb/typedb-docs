@@ -32,15 +32,15 @@ approved-date sub event-date;
 ## an abstract relation, only to be subtyped by other relations
 request sub relation,
   abstract,
-  has approved-date,
+  owns approved-date,
   relates approved-subject,
   relates requester,
   relates respondent;
 
 friendship sub relation,
     relates friend,
-    plays approved-friendship,
-    plays listed-friendship;
+    plays friend-request:approved-friendship,
+    plays friends-list:listed-friendship;
 
 ## an example of subtyping in Grakn
 friend-request sub request,
@@ -49,15 +49,15 @@ friend-request sub request,
     relates friendship-respondent as respondent;
 
 friends-list sub relation,
-    has title,
+    owns title,
     relates list-owner,
     relates listed-friendship;
 
 person sub entity,
-    plays friend,
-    plays friendship-requester,
-    plays friendship-respondent,
-    plays list-owner;
+    plays friendship:friend,
+    plays friend-request:friendship-requester,
+    plays friend-request:friendship-respondent,
+    plays friends-list:list-owner;
 ```
 
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
@@ -120,30 +120,32 @@ The result contains the following answers.
 ```java
 package grakn.examples;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import static graql.lang.Graql.*;
-import graql.lang.query.GraqlGet;
-import grakn.client.answer.ConceptMap;
+import graql.lang.query.GraqlMatch;
+import grakn.client.concept.answer.ConceptMap;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SocialNetworkQuickstartQuery extends Throwable {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction().write();
+        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
-        GraqlGet query = match(
+        GraqlMatch.Filtered query = match(
                 var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
                 var("per").has("full-name", var("per-fn")),
                 var("org").has("name", var("org-n"))
-        ).get();
+        ).get("per-fn", "org-n");
 
-        List<ConceptMap> answers = transaction.execute(query).get();
+        List<ConceptMap> answers = transaction.query().match(query).collect(Collectors.toList());
 
         for (ConceptMap answer : answers) {
-            System.out.println(answer.get("per-fn").asAttribute().value());
-            System.out.println(answer.get("org-n").asAttribute().value());
+            System.out.println(answer.get("per-fn").asThing().asAttribute().getValue());
+            System.out.println(answer.get("org-n").asThing().asAttribute().getValue());
             System.out.println(" - - - - - - - - ");
         }
 
@@ -159,9 +161,9 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 ```python
 from grakn.client import GraknClient
 
-with GraknClient(uri="localhost:48555") as client:
+with GraknClient(uri="localhost:1729") as client:
     with client.session(keyspace = "social_network") as session:
-      with session.transaction().read() as transaction:
+      with session.transaction(Grakn.Transaction.Type.READ) as transaction:
         query = '''
           match
             $pos isa media;
@@ -183,9 +185,9 @@ with GraknClient(uri="localhost:48555") as client:
 const GraknClient = require("grakn-client");
 
 async function getAverageSalaryAt (orgName) {
-    const client = new GraknClient("localhost:48555");
+    const client = new GraknClient("localhost:1729");
 	const session = await client.session("social_network");
-	const transaction = await session.transaction().read()
+	const transaction = await session.transaction(Grakn.Transaction.Type.READ)
 	const query = `
 		match
 			$org isa organisation, has name "${orgName}";
@@ -259,12 +261,12 @@ course-enrollment-mutuality sub relation,
   relates coursemate,
   relates mutual-course-enrollment;
 
-people-taken-the-same-course sub rule,
+rule people-taken-the-same-course:
   when {
     $sce1 (student: $p1, enrolled-course: $sc) isa school-course-enrollment;
     $sce2 (student: $p2, enrolled-course: $sc) isa school-course-enrollment;
     $p1 != $p2;
-  }, then {
+  } then {
     (coursemate: $p1, coursemate: $p2, mutual-course-enrollment: $sce1, mutual-course-enrollment: $sce2) isa course-enrollment-mutuality;
   };
 ```
@@ -288,14 +290,14 @@ school-mutuality sub relation,
   relates schoolmate,
   relates mutual-school;
 
-people-gone-to-the-same-school sub rule,
+rule people-gone-to-the-same-school:
   when {
     (student: $p1, enrolled-course: $c1) isa school-course-enrollment;
     (student: $p2, enrolled-course: $c2) isa school-course-enrollment;
     (offered-course: $c1, offering-school: $s) isa school-course-offering;
     (offered-course: $c2, offering-school: $s) isa school-course-offering;
     $p1 != $p2;
-  }, then {
+  } then {
     (schoolmate: $p1, schoolmate: $p2, mutual-school: $s) isa school-mutuality;
   };
 ```
@@ -334,7 +336,7 @@ compute count in travel;
 #### Find the [shortest path](../11-query/07-compute-query.md#compute-the-shortest-path) between two instances
 
 ```graql
-match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get;
+match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get $x, $y;
 ```
 
 <!-- test-ignore -->

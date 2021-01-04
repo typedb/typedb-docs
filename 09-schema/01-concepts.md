@@ -58,16 +58,16 @@ We can assign any number of attributes to an entity. To do so, we use the `has` 
 define
 
 person sub entity,
-  has full-name,
-  has nickname,
-  has gender;
+  owns full-name,
+  owns nickname,
+  owns gender;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("person").sub("entity").has("full-name").has("nickname").has("gender")
+  type("person").sub("entity").owns("full-name").owns("nickname").owns("gender")
 );
 ```
 
@@ -84,14 +84,14 @@ To assign a unique attribute to an entity, we use the `key` keyword followed by 
 define
 
 person sub entity,
-    key email;
+    owns email @key;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("person").sub("entity").key("email")
+  type("person").sub("entity").owns("email", true)
 );
 ```
 
@@ -116,18 +116,18 @@ An entity can play a role in a relation. To define the role played by an entity,
 define
 
 person sub entity,
-  plays employee;
+  plays employment:employee;
 
 organisation sub entity,
-  plays employer;
+  plays employment:employer;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("person").sub("entity").plays("employee"),
-  type("organisation").sub("entity").plays("employer")
+  type("person").sub("entity").plays("employment", "employee"),
+  type("organisation").sub("entity").plays("employment", "employer")
 );
 ```
 
@@ -149,18 +149,18 @@ We can define an entity to inherit all attributes owned and roles played by anot
 define
 
 post sub entity,
-  plays replied-to,
-  plays tagged-in,
-  plays reacted-to;
+  plays reply:replied-to,
+  plays tagging:tagged-in,
+  plays reaction:reacted-to;
 
 comment sub post,
-  has content,
-  plays attached-to;
+  owns content,
+  plays attachment:attached-to;
 
 media sub post,
-  has caption,
-  has file,
-  plays attached;
+  owns caption,
+  owns file,
+  plays attachment:attached;
 
 video sub media;
 
@@ -171,9 +171,10 @@ photo sub media;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("post").sub("entity").plays("replied-to").plays("tagged-in").plays("reacted-to"),
-  type("comment").sub("post").has("content").plays("attached-to"),
-  type("media").sub("post").has("caption").has("file").plays("attached"),
+  // FIXME(vmax): fill in needed relation
+  type("post").sub("entity").plays("reply", "replied-to").plays("tagging", "tagged-in").plays("reaction", "reacted-to"),
+  type("comment").sub("post").owns("content").plays("attachment", "attached-to"),
+  type("media").sub("post").owns("caption").owns("file").plays("attachment", "attached"),
   type("video").sub("media"),
   type("photo").sub("media")
 );
@@ -273,7 +274,7 @@ define
 
 friendship sub relation,
   relates friend,
-  plays requested-friendship;
+  plays friend-request:requested-friendship;
 
 friend-request sub relation,
   relates requested-friendship,
@@ -281,18 +282,18 @@ friend-request sub relation,
   relates friendship-respondent;
 
 person sub entity,
-  plays friend,
-  plays friendship-requester,
-  plays friendship-respondent;
+  plays friendship:friend,
+  plays friend-request:friendship-requester,
+  plays friend-request:friendship-respondent;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friendship").sub("relation").relates("friend").plays("requested-friendship"),
-  type("friend-request").sub("relation").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent"),
-  type("person").sub("entity").plays("friend").plays("friendship-requester").plays("friendship-respondent")
+  type("friendship").sub("relation").relates("friend").plays("friend-request", "requested-friendship"),
+  type("friend-request").sub("relation").relates("requested-friendship").relates("friendship-requester").relates("friendship", "respondent"),
+  type("person").sub("entity").plays("friendship", "friend").plays("friend-request", "friendship-requester").plays("friend-request", "friendship-respondent")
 );
 ```
 
@@ -319,13 +320,13 @@ reaction sub relation,
 
 emotion sub attribute,
   value string,
-  plays reacted-emotion;
+  plays reaction:reacted-emotion;
 
 post sub entity,
-  plays reacted-to;
+  plays reaction:reacted-to;
 
 person sub entity,
-  plays reacted-by;
+  plays reaction:reacted-by;
 ```
 [tab:end]
 
@@ -333,9 +334,9 @@ person sub entity,
 ```java
 GraqlDefine query = Graql.define(
   type("reaction").sub("relation").relates("reacted-emotion").relates("reacted-to").relates("reacted-by"),
-  type("emotion").sub("attribute").value("string").plays("reacted-emotion"),
-  type("post").sub("entity").plays("reacted-to"),
-  type("person").sub("entity").plays("reacted-by")
+  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).plays("reaction", "reacted-emotion"),
+  type("post").sub("entity").plays("reaction", "reacted-to"),
+  type("person").sub("entity").plays("reaction", "reacted-by")
 );
 ```
 
@@ -357,7 +358,7 @@ We can assign any number of attributes to a relation. To do so, we use the `has`
 define
 
 friend-request sub relation,
-  has approved-date,
+  owns approved-date,
   relates requested-friendship,
   relates friendship-requester,
   relates friendship-respondent;
@@ -367,7 +368,7 @@ friend-request sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friend-request").sub("relation").has("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
+  type("friend-request").sub("relation").owns("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
 );
 ```
 
@@ -384,7 +385,7 @@ To assign a unique attribute to a relation, we use the `key` keyword followed by
 define
 
 employment sub relation,
-  key reference-id,
+  owns reference-id @key,
   relates employer,
   relates employee;
 ```
@@ -393,7 +394,7 @@ employment sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("employment").sub("relation").key("reference-id").relates("employer").relates("employee")
+  type("employment").sub("relation").owns("reference-id", true).relates("employer").relates("employee")
 );
 ```
 
@@ -504,7 +505,7 @@ name sub attribute,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("name").sub("attribute").value("string")
+  type("name").sub("attribute").value(GraqlArg.ValueType.STRING)
 );
 ```
 
@@ -539,20 +540,20 @@ start-date sub attribute,
 
 residency sub relation,
   ## roles and other attributes
-  has start-date;
+  owns start-date;
 
 travel sub relation,
   ## roles and other attributes
-  has start-date;
+  owns start-date;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("start-date").sub("attribute").value("datetime"),
-  type("residency").sub("relation").has("start-date"),
-  type("travel").sub("relation").has("start-date")
+  type("start-date").sub("attribute").value(GraqlArg.ValueType.DATETIME),
+  type("residency").sub("relation").owns("start-date"),
+  type("travel").sub("relation").owns("start-date")
 );
 ```
 
@@ -576,15 +577,15 @@ phone-number sub attribute,
 	value string;
 
 person sub entity,
-  has phone-number;
+  owns phone-number;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("phone-number").sub("attribute").value("string"),
-  type("person").sub("entity").has("phone-number")
+  type("phone-number").sub("attribute").value(GraqlArg.ValueType.STRING),
+  type("person").sub("entity").owns("phone-number")
 );
 ```
 
@@ -611,7 +612,7 @@ emotion sub attribute,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("emotion").sub("attribute").value("string").regex("[like, love, funny, shocking, sad, angry]")
+  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).regex("[like, love, funny, shocking, sad, angry]")
 );
 ```
 
@@ -633,7 +634,7 @@ Let's go through a simple example of how an attribute can own an attribute of it
 define
 
 content sub attribute, value string,
-  has language;
+  owns language;
 
 language sub attribute,
 	value string;
@@ -643,8 +644,8 @@ language sub attribute,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("content").sub("attribute").value("string").has("language"),
-  type("language").sub("attribute").value("string")
+  type("content").sub("attribute").value(GraqlArg.ValueType.STRING).owns("language"),
+  type("language").sub("attribute").value(GraqlArg.ValueType.STRING)
 );
 ```
 
@@ -663,10 +664,10 @@ An attribute can play a role in a relation. To define the role played by an attr
 define
 
 language sub attribute, value string,
-  plays spoken;
+  plays speaking-of-language:spoken;
 
 person sub entity,
-  plays speaker;
+  plays speaking-of-language:speaker;
 
 speaking-of-language sub relation,
   relates speaker,
@@ -677,8 +678,8 @@ speaking-of-language sub relation,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("language").sub("attribute").value("string").plays("spoken"),
-  type("person").sub("entity").plays("speaker"),
+  type("language").sub("attribute").value(GraqlArg.ValueType.STRING).plays("speaking-of-language", "spoken"),
+  type("person").sub("entity").plays("speaking-of-language", "speaker"),
   type("speaking-of-language").sub("relation").relates("speaker").relates("spoken")
 );```
 
@@ -705,7 +706,7 @@ end-date sub event-date;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").value("datetime"),
+  type("event-date").sub("attribute").value(GraqlArg.ValueType.DATETIME),
   type("birth-date").sub("event-date"),
   type("start-date").sub("event-date"),
   type("end-date").sub("event-date")
@@ -736,7 +737,7 @@ event-date sub attribute, abstract,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").value("datetime")
+  type("event-date").sub("attribute").value(GraqlArg.ValueType.DATETIME)
 );
 ```
 
@@ -761,14 +762,14 @@ We can undefine the association that a type has with an attribute.
 ```graql
 undefine
 
-person has nickname;
+person owns nickname;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlUndefine query = Graql.undefine(
-  type("person").has("nickname")
+  type("person").owns("nickname")
 );
 ```
 
@@ -789,11 +790,7 @@ Given the dependent nature of relations, before undefining the relation itself, 
 
 [tab:Graql]
 ```graql
-undefine
-
-    speaking-of-language relates speaker; person plays speaker; speaker sub role;
-    speaking-of-language relates spoken; language plays spoken; spoken sub role;
-    speaking-of-language sub relation;
+undefine speaking-of-language sub relation;
 ```
 [tab:end]
 
@@ -801,8 +798,8 @@ undefine
 ```java
 GraqlUndefine query = Graql.undefine(
   type("speaking-of-language").relates("speaker").relates("spoken"),
-  type("person").plays("speaker"),
-  type("language").plays("spoken"),
+  type("person").plays("speaking-of-language", "speaker"),
+  type("language").plays("speaking-of-language", "spoken"),
   type("speaker").sub("role"),
   type("spoken").sub("role"),
   type("speaking-of-language").sub("relation")

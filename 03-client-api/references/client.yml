@@ -31,17 +31,17 @@ methods:
       description: Retrieves the name of all keyspaces running on the Grakn server.
     java:
       <<: *method-keyspaces-retrieve
-      method: client.keyspaces().retrieve();
+      method: client.databases().retrieve();
       returns:
         - List of Strings
     javascript:
       <<: *method-keyspaces-retrieve
-      method: await client.keyspaces().retrieve();
+      method: await client.databases().retrieve();
       returns:
         - Array of Strings
     python:
       <<: *method-keyspaces-retrieve
-      method: client.keyspaces().retrieve()
+      method: client.databases().retrieve()
       returns:
         - List of Strings
 
@@ -58,17 +58,17 @@ methods:
           default: N/A
     java:
       <<: *method-keyspaces-delete
-      method: client.keyspaces().delete(String keyspace);
+      method: client.databases().delete(String keyspace);
       returns:
         - void
     javascript:
       <<: *method-keyspaces-delete
-      method: await client.keyspaces().delete("keyspace name");
+      method: await client.databases().delete("keyspace name");
       returns:
         - void
     python:
       <<: *method-keyspaces-delete
-      method: client.keyspaces().delete("keyspace name")
+      method: client.databases().delete("keyspace name")
       returns:
         - None
 

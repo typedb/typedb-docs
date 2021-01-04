@@ -1,13 +1,18 @@
 package grakn.doc.test.example;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import graql.lang.Graql;
+import graql.lang.common.GraqlArg;
 import graql.lang.query.GraqlQuery;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
+
+import static graql.lang.Graql.*;
 
 import org.junit.*;
 
@@ -15,14 +20,13 @@ public class SocialNetworkTest {
 
     @BeforeClass
     public static void loadSocialNetwork() {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("social_network");
-        GraknClient.Transaction transaction = session.transaction().write();
-
+        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
+        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.execute((GraqlQuery) Graql.parse(query));
+            transaction.query().define(Graql.parseQuery(query));
             transaction.commit();
             session.close();
             System.out.println("Loaded the social_network schema");
@@ -45,8 +49,8 @@ public class SocialNetworkTest {
 
     @AfterClass
     public static void cleanSocialNetwork() {
-        GraknClient client = new GraknClient("localhost:48555");
-        client.keyspaces().delete("social_network");
+        Grakn.Client client = new GraknClient("localhost:1729");
+        client.databases().delete("social_network");
         System.out.println("Deleted the social_network keyspace");
     }
 }

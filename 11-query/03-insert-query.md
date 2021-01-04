@@ -41,7 +41,7 @@ insert $x isa emotion; $x "like";
 [tab:Java]
 ```java
 GraqlInsert query = Graql.insert(
-  var("x").isa("emotion").val("like")
+  var("x").eq("like").isa("emotion")
 );
 ```
 [tab:end]
@@ -68,7 +68,7 @@ GraqlInsert query = Graql.match(
   var("org").isa("organisation").has("name", "Facelook"),
   var("person").isa("person").has("email", "tanya.arnold@gmail.com")
 ).insert(
-  var("new-employment").isa("employment").rel("employer", "org").rel("employee", "person").has("reference-id", "WGFTSH")
+  var("new-employment").rel("employer", "org").rel("employee", "person").has("reference-id", "WGFTSH").isa("employment")
 );
 ```
 [tab:end]
@@ -105,7 +105,7 @@ insert
 GraqlInsert query = Graql.match(
   var("person").isa("person")
 ).insert(
-  var("reflexive-friendship").isa("friendship").rel("friend", "person").rel("friend", "person")
+  var("reflexive-friendship").rel("friend", "person").rel("friend", "person").isa("friendship")
 );
 ```
 [tab:end]
@@ -117,15 +117,15 @@ As a consequence, you can query for the duplicate role player as a duplicate rol
 
 [tab:Graql]
 ```graql
-match $friendship (friend: $p, friend: $p) isa friendship; get;
+match $friendship (friend: $p, friend: $p) isa friendship; get $friendship;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("friendship").isa("friendship").rel("friend", "p").rel("friend", "p")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("friendship").rel("friend", "p").rel("friend", "p").isa("friendship")
+).get("friendship");
 ```
 [tab:end]
 </div>

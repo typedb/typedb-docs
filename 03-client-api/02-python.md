@@ -33,7 +33,7 @@ Instantiate a client and open a session.
 ```python
 from grakn.client import GraknClient
 
-with GraknClient(uri="localhost:48555") as client:
+with GraknClient(uri="localhost:1729") as client:
     with client.session(keyspace="social_network") as session:
         ## session is open
         pass
@@ -45,7 +45,7 @@ We can also pass the credentials, as specified when [configuring authentication 
 
 <!-- test-ignore -->
 ```python
-client = GraknClient(uri="localhost:48555", credentials={"username": "<username>", "password": "<password>"})
+client = GraknClient(uri="localhost:1729", credentials={"username": "<username>", "password": "<password>"})
 ```
 
 Create transactions to use for reading and writing data.
@@ -54,7 +54,7 @@ Create transactions to use for reading and writing data.
 ```python
 from grakn.client import GraknClient
 
-with GraknClient(uri="localhost:48555") as client:
+with GraknClient(uri="localhost:1729") as client:
     with client.session(keyspace="social_network") as session:
         ## creating a write transaction
         with session.transaction().write() as write_transaction:
@@ -76,7 +76,7 @@ Running basic retrieval and insertion queries.
 ```python
 from grakn.client import GraknClient
 
-with GraknClient(uri="localhost:48555") as client:
+with GraknClient(uri="localhost:1729") as client:
     with client.session(keyspace="social_network") as session:
         ## Insert a Person using a WRITE transaction
         with session.transaction().write() as write_transaction:
@@ -88,7 +88,7 @@ with GraknClient(uri="localhost:48555") as client:
 
         ## Read the person using a READ only transaction
         with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
+            answer_iterator = read_transaction.query("match $x isa person; get $x; limit 10;").get()
 
             for answer in answer_iterator:
                 person = answer.map().get("x")
@@ -96,7 +96,7 @@ with GraknClient(uri="localhost:48555") as client:
 
         ## Or query and consume the iterator immediately collecting all the results
         with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
+            answer_iterator = read_transaction.query("match $x isa person; get $x; limit 10;").get()
             persons = [ans.get("x") for ans in answer_iterator]
             for person in persons:
                 print("Retrieved person with id "+ person.id)

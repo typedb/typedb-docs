@@ -257,19 +257,19 @@ Let’s see how this looks in Graql:
 define 
 
 employee sub entity, 
-  plays seller; 
+  plays sale:seller; 
 
 company sub entity, 
-  plays supplier,
-  plays customer; 
+  plays stocking:supplier,
+  plays sale:customer; 
 
 order sub entity, 
-  plays placed-order,
-  plays containing-order; 
+  plays sale:placed-order,
+  plays containing:containing-order; 
 
 product sub entity, 
-  plays containing-product,
-  plays stock;
+  plays containing:containing-product,
+  plays stocking:stock;
 
 sale sub relation, 
   relates placed-order,
@@ -356,11 +356,11 @@ With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/doc
 
 <!-- test-ignore -->
 ```graql
-transitive-location sub rule, 
+rule transitive-location: 
 when { 
   (located: $x, locating: $y) isa locates; 
   (located: $y, locating: $z) isa locates; 
-}, then { 
+} then { 
   (located: $x, locating: $z) isa locates; 
 };
 ```

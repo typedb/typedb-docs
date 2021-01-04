@@ -87,7 +87,7 @@ Let’s move on.
 from grakn.client import GraknClient
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
+    with GraknClient(uri="localhost:1729") as client:
         with client.session(keyspace = "phone_calls") as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
@@ -408,7 +408,7 @@ from grakn.client import GraknClient
 import csv
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
+    with GraknClient(uri="localhost:1729") as client:
         with client.session(keyspace = "phone_calls") as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
@@ -503,7 +503,7 @@ from grakn.client import GraknClient
 import ijson
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
+    with GraknClient(uri="localhost:1729") as client:
         with client.session(keyspace = "phone_calls") as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
@@ -597,7 +597,7 @@ from grakn.client import GraknClient
 import xml.etree.cElementTree as et
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
+    with GraknClient(uri="localhost:1729") as client:
         with client.session(keyspace = "phone_calls") as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")

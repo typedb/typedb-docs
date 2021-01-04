@@ -36,13 +36,14 @@ Import `grakn.client.GraknClient`, instantiate a client and open a session to a 
 ```java
 package grakn.examples;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 
 public class GraknQuickstartA {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
+        Grakn.Client client = new GraknClient("localhost:1729");
         // client is open
-        GraknClient.Session session = client.session("social_network");
+        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
         // session is open
         session.close();
         // session is closed
@@ -56,7 +57,7 @@ public class GraknQuickstartA {
 
 <!-- test-ignore -->
 ```java
-SimpleURI localGrakn = new SimpleURI("localhost", 48555);
+SimpleURI localGrakn = new SimpleURI("localhost", 1729);
 Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client();
 ```
 
@@ -66,21 +67,22 @@ Create transactions to use for reading and writing data.
 ```java
 package grakn.examples;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 
 public class GraknQuickstartB {
     public static void main(String[] args) {
-        GraknClient client = new GraknClient("localhost:48555");
-        GraknClient.Session session = client.session("social_network");
+        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
 
         // creating a write transaction
-        GraknClient.Transaction writeTransaction = session.transaction().write();
+        Grakn.Transaction writeTransaction = session.transaction(Grakn.Transaction.Type.WRITE);
         // write transaction is open
         // write transaction must always be committed (closed)
         writeTransaction.commit();
 
         // creating a read transaction
-        GraknClient.Transaction readTransaction = session.transaction().read();
+        Grakn.Transaction readTransaction = session.transaction(Grakn.Transaction.Type.READ);
         // read transaction is open
         // read transaction must always be closed
         readTransaction.close();
@@ -98,34 +100,36 @@ Running basic retrieval and insertion queries.
 ```java
 package grakn.examples;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.rpc.GraknClient;
 import graql.lang.Graql;
 import static graql.lang.Graql.*;
-import graql.lang.query.GraqlGet;
+import graql.lang.query.GraqlMatch;
 import graql.lang.query.GraqlInsert;
-import grakn.client.answer.ConceptMap;
+import grakn.client.concept.answer.ConceptMap;
 
 import java.util.List;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class GraknQuickstartC {
   public static void main(String[] args) {
-    GraknClient client = new GraknClient("localhost:48555");
-    GraknClient.Session session = client.session("social_network");
+    Grakn.Client client = new GraknClient("localhost:1729");
+    Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
 
     // Insert a person using a WRITE transaction
-    GraknClient.Transaction writeTransaction = session.transaction().write();
+    Grakn.Transaction writeTransaction = session.transaction(Grakn.Transaction.Type.WRITE);
     GraqlInsert insertQuery = Graql.insert(var("x").isa("person").has("email", "x@email.com"));
-    List<ConceptMap> insertedId = writeTransaction.execute(insertQuery).get();
-    System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").id());
+    List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
+    System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").asThing().getIID());
     // to persist changes, a write transaction must always be committed (closed)
     writeTransaction.commit();
 
     // Read the person using a READ only transaction
-    GraknClient.Transaction readTransaction = session.transaction().read();
-    GraqlGet getQuery = Graql.match(var("p").isa("person")).get().limit(10);
-    Stream<ConceptMap> answers = readTransaction.stream(getQuery).get();
-    answers.forEach(answer -> System.out.println(answer.get("p").id()));
+    Grakn.Transaction readTransaction = session.transaction(Grakn.Transaction.Type.READ);
+    GraqlMatch.Limited getQuery = Graql.match(var("p").isa("person")).get("p").limit(10);
+    Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
+    answers.forEach(answer -> System.out.println(answer.get("p").asThing().getIID()));
 
     // transactions, sessions and clients must always be closed
     readTransaction.close();

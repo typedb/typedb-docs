@@ -8,7 +8,7 @@ jasmine.getEnv().addReporter(tapReporter)
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 
 const loadSchema = async () => {
-    const client = new Grakn("localhost:48555");
+    const client = new Grakn("localhost:1729");
     const session = await client.session("phone_calls");
     const transaction = await session.transaction().write();
     const defineQuery = fs.readFileSync("files/phone-calls/schema.gql", "utf8");
@@ -20,7 +20,7 @@ const loadSchema = async () => {
 };
 
 const deleteKeyspace = async () => {
-    const client = new Grakn("localhost:48555");
+    const client = new Grakn("localhost:1729");
     await client.keyspaces().delete("phone_calls");
     console.log("Deleted the phone_calls keyspace");
     await client.close();

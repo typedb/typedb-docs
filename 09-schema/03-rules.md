@@ -13,15 +13,15 @@ The rule-based reasoning allows automated capture and evolution of patterns with
 In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
 
 ## Define a Rule
-Defining a Graql rule begins with a given label followed by `sub rule`, the `when` body as the condition, and the `then` body as the conclusion.
+Defining a Graql rule begins with a `rule` followed by a given label, the `when` body as the condition, and the `then` body as the conclusion.
 <!-- test-ignore -->
 ```graql
 define 
 
-rule-label sub rule,
+rule rule-label:
   when {
     ## the condition
-  }, then {
+  } then {
     ## the conclusion
   };
 ```
@@ -59,14 +59,14 @@ Combining all this information we can finally define our rule as following.
 ```graql
 define
 
-people-with-same-parents-are-siblings sub rule,
+rule people-with-same-parents-are-siblings:
 when {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;
     (father: $f, $x) isa parentship;
     (father: $f, $y) isa parentship;
     $x != $y;
-}, then {
+} then {
     (sibling: $x, sibling: $y) isa siblings;
 };
 ```
@@ -75,7 +75,7 @@ when {
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("people-with-same-parents-are-siblings").sub("rule")
+  rule("people-with-same-parents-are-siblings")
     .when(
         and(
             var().rel("mother", "m").rel("x").isa("parentship"),
@@ -85,7 +85,7 @@ GraqlDefine query = Graql.define(
             var("x").neq("y")
         )
     ).then(
-        var().isa("siblings").rel("x").rel("y")
+        var().rel("x").rel("y").isa("siblings")
     )
 );
 ```
@@ -103,9 +103,9 @@ To provide a quick preview of how you can use the following Graql queries to ret
 
 ```graql
 # retrieve all rules
-match $r sub rule; get;  
+match $r sub rule; get $r;  
 # retrieve the specific rule
-match $r type people-born-at-the-same-location; get; 
+match $r type people-born-at-the-same-location; get $r; 
 ```
 
 Remember that rules are part of the schema and can be queried the same way as other schema concepts described in [Graql Match documentation](../11-query/01-match-clause.md).
