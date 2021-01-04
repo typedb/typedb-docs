@@ -790,11 +790,7 @@ Given the dependent nature of relations, before undefining the relation itself, 
 
 [tab:Graql]
 ```graql
-undefine
-
-    speaking-of-language relates speaker; person plays speaking-of-language:speaker;
-    speaking-of-language relates spoken; language plays speaking-of-language:spoken;
-    speaking-of-language sub relation;
+undefine speaking-of-language sub relation;
 ```
 [tab:end]
 
