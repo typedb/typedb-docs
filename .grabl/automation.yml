@@ -14,13 +14,13 @@ build:
       branch: master
     dependency-analysis:
       image: graknlabs-ubuntu-20.04-java11
-      script: |
+      command: |
         bazel run @graknlabs_dependencies//grabl/analysis:dependency-analysis
   correctness:
     build:
       image: graknlabs-ubuntu-20.04
       type: foreground
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -31,7 +31,7 @@ build:
     test-query-graql-lang:
       image: graknlabs-ubuntu-20.04
       type: foreground
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -39,7 +39,7 @@ build:
     test-query-graql-java:
       image: graknlabs-ubuntu-20.04
       type: foreground
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -47,7 +47,7 @@ build:
     test-example-java:
       image: graknlabs-ubuntu-20.04
       type: foreground
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -58,7 +58,7 @@ build:
     test-example-nodejs:
       image: graknlabs-ubuntu-20.04
       type: foreground
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -69,7 +69,7 @@ build:
     test-example-python:
       image: graknlabs-ubuntu-20.04
       type: foreground
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -81,7 +81,7 @@ build:
     test-links:
       image: graknlabs-ubuntu-20.04
       type: foreground
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -94,7 +94,7 @@ build:
       type: foreground
       # FIXME: even with tests broken, we still want to release to staging
       # dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
-      script: |
+      command: |
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -121,12 +121,12 @@ release:
   validation:
     validate-dummy:
       image: graknlabs-ubuntu-20.04
-      script: |
+      command: |
         echo dummy
   deployment:
     deploy-github:
       image: graknlabs-ubuntu-20.04
-      script: |
+      command: |
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
