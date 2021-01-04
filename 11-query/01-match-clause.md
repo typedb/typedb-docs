@@ -467,12 +467,14 @@ When we learned about [subtyping relations](../09-schema/01-concepts.md#subtype-
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-delay -->
 ```graql
 match location-of-office relates $x as located-subject; get $x;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
 GraqlMatch.Filtered query = Graql.match(
   type("location-of-office").relates(var("x")),
