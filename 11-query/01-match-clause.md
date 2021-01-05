@@ -469,7 +469,7 @@ When we learned about [subtyping relations](../09-schema/01-concepts.md#subtype-
 [tab:Graql]
 <!-- test-delay -->
 ```graql
-match location-of-office relates $x as located-subject; get $x;
+match friend-request relates $x as located; get $x;
 ```
 [tab:end]
 
@@ -477,14 +477,13 @@ match location-of-office relates $x as located-subject; get $x;
 <!-- test-delay -->
 ```java
 GraqlMatch.Filtered query = Graql.match(
-  type("location-of-office").relates(var("x")),
-  var("x").sub("located-subject")
+  type("friend-request").relates(var("x"), "subject")
 ).get("x");
 ```
 [tab:end]
 </div>
 
-This matches all the roles that correspond to the `located-subject` role of the relation which `location-of-office` subtypes. In this case, the super-relation being `location-of-everything` and the matched role being `located-subject`.
+This matches all the roles that correspond to the `subject` role of the relation which `friend-request` subtypes. In this case, the super-relation being `request` and the matched role being `friendship`.
 
 ### Role players of a given role
 Given a role, we can match the concept types that play the given role by using the `plays` keyword.

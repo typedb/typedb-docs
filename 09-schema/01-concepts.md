@@ -149,13 +149,13 @@ We can define an entity to inherit all attributes owned and roles played by anot
 define
 
 post sub entity,
-  plays reply:replied-to,
-  plays tagging:tagged-in,
-  plays reaction:reacted-to;
+  plays reply:to,
+  plays tagging:in,
+  plays reaction:to;
 
 comment sub post,
   owns content,
-  plays attachment:attached-to;
+  plays attachment:to;
 
 media sub post,
   owns caption,
@@ -172,8 +172,8 @@ photo sub media;
 ```java
 GraqlDefine query = Graql.define(
   // FIXME(vmax): fill in needed relation
-  type("post").sub("entity").plays("reply", "replied-to").plays("tagging", "tagged-in").plays("reaction", "reacted-to"),
-  type("comment").sub("post").owns("content").plays("attachment", "attached-to"),
+  type("post").sub("entity").plays("reply", "to").plays("tagging", "in").plays("reaction", "to"),
+  type("comment").sub("post").owns("content").plays("attachment", "to"),
   type("media").sub("post").owns("caption").owns("file").plays("attachment", "attached"),
   type("video").sub("media"),
   type("photo").sub("media")
@@ -185,7 +185,7 @@ GraqlDefine query = Graql.define(
 
 As you can see in the example above, when defining entities, what follows the `sub` keyword can be a label previously given to another entity. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent.
 
-In this example, `comment` and `media` are both considered to be subtypes of `post`. Similarly `video` and `photo` are subtypes of `media` and so are defined that way. Therefore, although not defined explicitly, we are right to assume that `comment`, `media`, `video` and `photo` all play the roles `replied-to`, `tagged-in` and `reacted-to`. However, the role `attached` and the attributes `caption` and `file` are played and owned only by the `media` entity and its subtypes. Similarly, the role `attached-to` and the attribute `content` are played and owned only by the `comment` entity.
+In this example, `comment` and `media` are both considered to be subtypes of `post`. Similarly `video` and `photo` are subtypes of `media` and so are defined that way. Therefore, although not defined explicitly, we are right to assume that `comment`, `media`, `video` and `photo` all play the roles `to`, `in` and `to`. However, the role `attached` and the attributes `caption` and `file` are played and owned only by the `media` entity and its subtypes. Similarly, the role `to` and the attribute `content` are played and owned only by the `comment` entity.
 
 <div class="note">
 [Note]
@@ -278,13 +278,13 @@ friendship sub relation,
 
 friend-request sub relation,
   relates requested-friendship,
-  relates friendship-requester,
-  relates friendship-respondent;
+  relates requester,
+  relates respondent;
 
 person sub entity,
   plays friendship:friend,
-  plays friend-request:friendship-requester,
-  plays friend-request:friendship-respondent;
+  plays friend-request:requester,
+  plays friend-request:respondent;
 ```
 [tab:end]
 
@@ -292,15 +292,15 @@ person sub entity,
 ```java
 GraqlDefine query = Graql.define(
   type("friendship").sub("relation").relates("friend").plays("friend-request", "requested-friendship"),
-  type("friend-request").sub("relation").relates("requested-friendship").relates("friendship-requester").relates("friendship", "respondent"),
-  type("person").sub("entity").plays("friendship", "friend").plays("friend-request", "friendship-requester").plays("friend-request", "friendship-respondent")
+  type("friend-request").sub("relation").relates("requested-friendship").relates("requester").relates("friendship", "respondent"),
+  type("person").sub("entity").plays("friendship", "friend").plays("friend-request", "requester").plays("friend-request", "respondent")
 );
 ```
 
 [tab:end]
 </div>
 
-In the example above, the `friendship` relation plays the role of the `requested-friendship` in the `friend-request` relation. The other two role players in a `friend-request` are 1) the `person` who plays the `friendship-requester` role and 2) another `person` whole plays the `friendship-respondent` role.
+In the example above, the `friendship` relation plays the role of the `requested-friendship` in the `friend-request` relation. The other two role players in a `friend-request` are 1) the `person` who plays the `requester` role and 2) another `person` whole plays the `respondent` role.
 
 Once the `friend-request` is accepted, then those two `person`s play the role of `friend` in the `friendship` relation.
 
@@ -314,29 +314,29 @@ A relation can relate to any number of roles. The example below illustrates a th
 define
 
 reaction sub relation,
-  relates reacted-emotion,
-  relates reacted-to,
-  relates reacted-by;
+  relates emotion,
+  relates to,
+  relates by;
 
 emotion sub attribute,
   value string,
-  plays reaction:reacted-emotion;
+  plays reaction:emotion;
 
 post sub entity,
-  plays reaction:reacted-to;
+  plays reaction:to;
 
 person sub entity,
-  plays reaction:reacted-by;
+  plays reaction:by;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("reaction").sub("relation").relates("reacted-emotion").relates("reacted-to").relates("reacted-by"),
-  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).plays("reaction", "reacted-emotion"),
-  type("post").sub("entity").plays("reaction", "reacted-to"),
-  type("person").sub("entity").plays("reaction", "reacted-by")
+  type("reaction").sub("relation").relates("emotion").relates("to").relates("by"),
+  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).plays("reaction", "emotion"),
+  type("post").sub("entity").plays("reaction", "to"),
+  type("person").sub("entity").plays("reaction", "by")
 );
 ```
 
@@ -344,9 +344,9 @@ GraqlDefine query = Graql.define(
 </div>
 
 In the example above, the `reaction` relation relates to three roles:
-1. `reacted-emotion` role played by an `emotion` attribute.
-2. `reacted-to` role played by a `post` entity.
-3. `reacted-by` role played by a `person` entity.
+1. `emotion` role played by an `emotion` attribute.
+2. `to` role played by a `post` entity.
+3. `by` role played by a `person` entity.
 
 ### Assign an attribute to a relation
 We can assign any number of attributes to a relation. To do so, we use the `has` keyword followed by the attribute's label.
@@ -360,15 +360,15 @@ define
 friend-request sub relation,
   owns approved-date,
   relates requested-friendship,
-  relates friendship-requester,
-  relates friendship-respondent;
+  relates requester,
+  relates respondent;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friend-request").sub("relation").owns("approved-date").relates("requested-friendship").relates("friendship-requester").relates("friendship-respondent")
+  type("friend-request").sub("relation").owns("approved-date").relates("requested-friendship").relates("requester").relates("respondent")
 );
 ```
 
@@ -409,7 +409,7 @@ Although, in the example above, we have assigned the attributes to the `friend-r
 </div>
 
 ### Subtype a relation
-We can define a relation to inherit all attributes owned, and roles related to and played by another relation. Let's take a look at an example of subtyping an `affiliation` relation.
+We can define a relation to inherit all attributes owned, and roles related to and played by another relation. Let's take a look at an example of subtyping a `friend-request` relation.
 
 <div class="tabs dark">
 
@@ -417,29 +417,28 @@ We can define a relation to inherit all attributes owned, and roles related to a
 ```graql
 define
 
-location-of-everything sub relation,
-  relates located-subject,
-  relates subject-location;
+request sub relation,
+  abstract,
+  relates subject,
+  relates requester,
+  relates respondent;
 
-location-of-birth sub location-of-everything,
-  relates located-birth as located-subject,
-  relates birth-location as subject-location;
+friend-request sub request,
+  owns approved-date,
+  relates friendship as subject;
 
-location-of-residence sub location-of-everything,
-  relates located-residence as located-subject,
-  relates residence as subject-location;
+membership-request sub request,
+  owns approved-date,
+  relates approved as subject;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("location-of-everything").sub("relation").relates("located-subject").relates("subject-location"),
-  type("located-birth").sub("located-subject"),
-  type("birth-location").sub("subject-location"),
-  type("location-of-birth").sub("location-of-everything").relates("located-birth").relates("birth-location"),
-  type("located-residence").sub("located-subject"),
-  type("residence").sub("subject-location")
+  type("request").sub("relation").relates("subject").relates("requester").relates("respondent"),
+  type("friend-request").sub("request").relates("friendship", "subject"),
+  type("membership-request").sub("request").relates("approved", "subject"),
 );
 ```
 
@@ -448,7 +447,7 @@ GraqlDefine query = Graql.define(
 
 As you can see in the example above, when defining relations, what follows the `sub` keyword can be a label previously given to another relation. By subtyping a parent relation, the children inherit all attributes owned and roles played by their parent.
 
-In this example, `location-of-birth` and `location-of-residence` are both considered to be subtypes of `location-of-everything` and so are defined that way. Modelling these relations in this way, not only allows us to query for locations of birth and residence separately, but also allows us to query for all the associations that a given person has with a given location.
+In this example, `friend-request` and `membership-request` are both considered to be subtypes of `request` and so are defined that way. Modelling these relations in this way, not only allows us to query for locations of birth and residence separately, but also allows us to query for all the associations that a given person has with a given location.
 
 Note the use of the `as` keyword. This is necessary to determine the correspondence between the role of the child and that of the parent.
 
@@ -460,7 +459,7 @@ All roles defined to relate to the parent relation must also be defined to relat
 The ability to subtype relations not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
 
 #### Define an abstract relation
-There may be scenarios where a parent relation is only defined for other relations to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define the `location-of-everything` relation type to be abstract. By doing so, we are indicating that no data instances of the `location-of-everything` relation are allowed to be created, leaving us with instances of `location-of-birth` and `location-of-residence` only.
+There may be scenarios where a parent relation is only defined for other relations to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define the `localisation` relation type to be abstract. By doing so, we are indicating that no data instances of the `request` relation are allowed to be created, leaving us with instances of `friend-request` and `membership-request` only.
 
 <div class="tabs dark">
 
@@ -468,16 +467,18 @@ There may be scenarios where a parent relation is only defined for other relatio
 ```graql
 define
 
-location-of-everything sub relation, abstract,
-  relates located-subject,
-  relates subject-location;
+request sub relation,
+  abstract,
+  relates subject,
+  relates requester,
+  relates respondent;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("location-of-everything").sub("relation").isAbstract().relates("located-subject").relates("subject-location")
+  type("request").sub("relation").isAbstract().relates("subject").relates("requester").relates("respondent")
 );
 ```
 
@@ -664,23 +665,23 @@ An attribute can play a role in a relation. To define the role played by an attr
 define
 
 language sub attribute, value string,
-  plays speaking-of-language:spoken;
+  plays fluency:language;
 
 person sub entity,
-  plays speaking-of-language:speaker;
+  plays fluency:speaker;
 
-speaking-of-language sub relation,
+fluency sub relation,
   relates speaker,
-  relates spoken;
+  relates language;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("language").sub("attribute").value(GraqlArg.ValueType.STRING).plays("speaking-of-language", "spoken"),
-  type("person").sub("entity").plays("speaking-of-language", "speaker"),
-  type("speaking-of-language").sub("relation").relates("speaker").relates("spoken")
+  type("language").sub("attribute").value(GraqlArg.ValueType.STRING).plays("fluency", "language"),
+  type("person").sub("entity").plays("fluency", "speaker"),
+  type("fluency").sub("relation").relates("speaker").relates("language")
 );```
 
 [tab:end]
@@ -790,19 +791,19 @@ Given the dependent nature of relations, before undefining the relation itself, 
 
 [tab:Graql]
 ```graql
-undefine speaking-of-language sub relation;
+undefine fluency sub relation;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlUndefine query = Graql.undefine(
-  type("speaking-of-language").relates("speaker").relates("spoken"),
-  type("person").plays("speaking-of-language", "speaker"),
-  type("language").plays("speaking-of-language", "spoken"),
+  type("fluency").relates("speaker").relates("language"),
+  type("person").plays("fluency", "speaker"),
+  type("language").plays("fluency", "language"),
   type("speaker").sub("role"),
-  type("spoken").sub("role"),
-  type("speaking-of-language").sub("relation")
+  type("language").sub("role"),
+  type("fluency").sub("relation")
 );
 ```
 [tab:end]
