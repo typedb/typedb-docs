@@ -3,7 +3,7 @@ methods:
   - method:
     common: &method-transaction-read
       title: Open a read transaction
-      description: Opens a read transaction to perform read queries on the keyspace connected to the session.
+      description: Opens a read transaction to perform read queries on the database connected to the session.
       returns:
         - "[Transaction](#transaction) object"
     java:
@@ -19,7 +19,7 @@ methods:
   - method:
     common: &method-transaction-write
       title: Open a write transaction
-      description: Opens a write transaction to perform write queries on the keyspace connected to the session.
+      description: Opens a write transaction to perform write queries on the database connected to the session.
       returns:
         - "[Transaction](#transaction) object"
     java:

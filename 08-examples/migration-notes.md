@@ -34,4 +34,4 @@ Although it is possible to rely on Grakn for checking for pre-existence of a par
 
 ### Execution
 
-Lastly, the list(s) containing the Graql insert queries are passed on to a function that uses a transaction to execute bulks of the queries on the given keyspace. This step can be performed concurrently for better performance, given that the order of the queries being executed is taken into account.
+Lastly, the list(s) containing the Graql insert queries are passed on to a function that uses a transaction to execute bulks of the queries on the given database. This step can be performed concurrently for better performance, given that the order of the queries being executed is taken into account.

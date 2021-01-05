@@ -30,9 +30,9 @@ Instantiate a client and open a session.
 ```javascript
 const GraknClient = require("grakn-client");
 
-async function openSession (keyspace) {
+async function openSession (database) {
 	const client = new GraknClient("localhost:1729");
-	const session = await client.session(keyspace);
+	const session = await client.session(database);
 	// session is open
 	await session.close();
 	//session is closed
@@ -55,9 +55,9 @@ Create transactions to use for reading and writing data.
 ```javascript
 const GraknClient = require("grakn-client");
 
-async function createTransactions (keyspace) {
+async function createTransactions (database) {
 	const client = new GraknClient("localhost:1729");
-	const session = await client.session(keyspace);
+	const session = await client.session(database);
 
 	// creating a write transaction
 	const writeTransaction = await session.transaction().write(); // write transaction is open
@@ -83,9 +83,9 @@ Running basic retrieval and insertion queries.
 ```javascript
 const GraknClient = require("grakn-client");
 
-async function runBasicQueries (keyspace) {
+async function runBasicQueries (database) {
 	const client = new GraknClient("localhost:1729");
-	const session = await client.session(keyspace);
+	const session = await client.session(database);
 
 	// Insert a person using a WRITE transaction
 	const writeTransaction = await session.transaction().write();
@@ -157,7 +157,7 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 
 ## Dependencies
 
-| Client Node.js | Grakn Core                  | Grakn KGMS     |  Node  |
+| Client Node.js | Grakn Core                  | Grakn Cluster     |  Node  |
 | :------------: | :-------------------------: | :------------: | :----: |
 | 1.8.0          | 1.8.0 to 1.8.4              | N/A            | >= 6.5 |
 | 1.7.0          | 1.7.1, 1.7.2                | N/A            | >= 6.5 |

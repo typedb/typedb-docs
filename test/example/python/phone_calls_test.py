@@ -10,7 +10,7 @@ class PhoneCallsTest(unittest.TestCase):
             define_query = schema.read()
 
             with GraknClient(uri="localhost:1729") as client:
-                with client.session(keyspace="phone_calls") as session:
+                with client.session(database="phone_calls") as session:
                     with session.transaction().write() as transaction:
                         transaction.query(define_query)
                         transaction.commit()
@@ -43,8 +43,8 @@ class PhoneCallsTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         with GraknClient(uri="localhost:1729") as client:
-            client.keyspaces().delete("phone_calls")
-            print("Deleted the phone_calls keyspace")
+            client.databases().delete("phone_calls")
+            print("Deleted the phone_calls database")
 
 
 if __name__ == '__main__':

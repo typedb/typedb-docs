@@ -19,10 +19,10 @@ const loadSchema = async () => {
     console.log("Loaded the phone_calls schema");
 };
 
-const deleteKeyspace = async () => {
+const deleteDatabase = async () => {
     const client = new Grakn("localhost:1729");
-    await client.keyspaces().delete("phone_calls");
-    console.log("Deleted the phone_calls keyspace");
+    await client.databases().delete("phone_calls");
+    console.log("Deleted the phone_calls database");
     await client.close();
 }
 
@@ -50,7 +50,7 @@ describe("Query example for phone_calls", function() {
         // phoneCallsFifthQuery.js
     });
 
-    afterAll(async function() { await deleteKeyspace(); });
+    afterAll(async function() { await deleteDatabase(); });
 });
 
 describe("Migration of data into phone_calls", function() {
@@ -68,6 +68,6 @@ describe("Migration of data into phone_calls", function() {
         // phoneCallsXMLMigration.js
     });
 
-    afterAll(async function() { await deleteKeyspace(); });
+    afterAll(async function() { await deleteDatabase(); });
 });
 

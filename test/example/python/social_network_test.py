@@ -41,8 +41,8 @@ class SocialNetworkTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         with GraknClient(uri="localhost:1729") as client:
-            client.keyspaces().delete("social_network")
-            print("Deleted the social_network keyspace")
+            client.databases().delete("social_network")
+            print("Deleted the social_network database")
 
 
 if __name__ == '__main__':

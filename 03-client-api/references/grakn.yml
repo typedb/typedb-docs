@@ -2,7 +2,7 @@ methods:
   - method:
     common: &method-client
       title: Instantiating a Grakn client
-      description: In order to communicate with Grakn keyspaces via sessions and transactions, we first need to instantiate a Grakn client. The created object connects our application with the running Grakn Server.
+      description: In order to communicate with Grakn databases via sessions and transactions, we first need to instantiate a Grakn client. The created object connects our application with the running Grakn Server.
       accepts: &accepts-client
         param1: &accepts-client-uri
           name: uri

@@ -68,7 +68,7 @@ batchlog_replay_throttle_in_kb: 1024
 # - AllowAllAuthenticator performs no checks - set it to disable authentication.
 # - PasswordAuthenticator relies on username/password pairs to authenticate
 #   users. It keeps usernames and hashed passwords in system_auth.credentials table.
-#   Please increase system_auth keyspace replication factor if you use this authenticator.
+#   Please increase system_auth database replication factor if you use this authenticator.
 authenticator: AllowAllAuthenticator
 
 # Authorization backend, implementing IAuthorizer; used to limit access/provide permissions
@@ -77,7 +77,7 @@ authenticator: AllowAllAuthenticator
 #
 # - AllowAllAuthorizer allows any action to any user - set it to disable authorization.
 # - CassandraAuthorizer stores permissions in system_auth.permissions table. Please
-#   increase system_auth keyspace replication factor if you use this authorizer.
+#   increase system_auth database replication factor if you use this authorizer.
 authorizer: AllowAllAuthorizer
 
 # Validity period for permissions cache (fetching permissions can be an
@@ -408,7 +408,7 @@ thrift_framed_transport_size_in_mb: 15
 
 # Set to true to have Cassandra create a hard link to each sstable
 # flushed or streamed locally in a backups/ subdirectory of the
-# keyspace data.  Removing these links is the operator's
+# database data.  Removing these links is the operator's
 # responsibility.
 incremental_backups: false
 
@@ -418,7 +418,7 @@ incremental_backups: false
 # is a data format change.
 snapshot_before_compaction: false
 
-# Whether or not a snapshot is taken of the data before keyspace truncation
+# Whether or not a snapshot is taken of the data before database truncation
 # or dropping of column families. The STRONGLY advised default of true
 # should be used to provide data safety. If you set this flag to false, you will
 # lose data on truncation or drop.
@@ -609,12 +609,12 @@ request_scheduler: org.apache.cassandra.scheduler.NoScheduler
 #    throttle_limit: 80
 #    default_weight: 5
 #    weights:
-#      Keyspace1: 1
-#      Keyspace2: 5
+#      Database1: 1
+#      Database2: 5
 
 # request_scheduler_id -- An identifier based on which to perform
-# the request scheduling. Currently the only valid option is keyspace.
-# request_scheduler_id: keyspace
+# the request scheduling. Currently the only valid option is database.
+# request_scheduler_id: database
 
 # Enable or disable inter-node encryption
 # Default settings are TLS v1, RSA 1024-bit keys (it is imperative that

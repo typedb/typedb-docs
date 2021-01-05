@@ -30,7 +30,7 @@ templatePath: 03-client-api/references/
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-Import `grakn.client.GraknClient`, instantiate a client and open a session to a [keyspace](../06-management/01-keyspace.md).
+Import `grakn.client.GraknClient`, instantiate a client and open a session to a [database](../06-management/01-database.md).
 
 <!-- test-example GraknQuickstartA.java -->
 ```java
@@ -53,7 +53,7 @@ public class GraknQuickstartA {
 }
 ```
 
-[KGMS ONLY] Using Client Java 1.4.3, we can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md).
+[Cluster ONLY] Using Client Java 1.4.3, we can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md).
 
 <!-- test-ignore -->
 ```java
@@ -176,7 +176,7 @@ To view examples of running various Graql queries using the Grakn Client Java, h
  
 ## Dependencies
 
-| Client Java | Grakn Core     | Grakn KGMS     |
+| Client Java | Grakn Core     | Grakn Cluster     |
 | :---------: | :-------------:| :------------: |
 | 1.8.3       | 1.8.0 to 1.8.4 | N/A            |
 | 1.8.2       | 1.8.0, 1.8.1   | N/A            |

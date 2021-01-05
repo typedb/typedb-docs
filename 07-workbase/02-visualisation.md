@@ -14,7 +14,7 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 
 [slide:start]
 [body:start]![Graql editor](/docs/images/workbase/visualise_graql-editor.png)[body:end]
-[footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can write queries of our own in the Graql Editor.[footer:end]
+[footer:start][Having selected the database](/docs/workbase/preferences#selecting-a-database), we can write queries of our own in the Graql Editor.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
@@ -59,7 +59,7 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 
 [slide:start]
 [body:start]![Graql editor](/docs/images/workbase/visualise_types.png)[body:end]
-[footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can explore the [Concept Types](/docs/schema/concepts) as defined in the [schema](/docs/schema/overview).[footer:end]
+[footer:start][Having selected the database](/docs/workbase/preferences#selecting-a-database), we can explore the [Concept Types](/docs/schema/concepts) as defined in the [schema](/docs/schema/overview).[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
@@ -181,7 +181,7 @@ To navigate between Graql queries that we have previously executed, while in the
 
 [slide:start]
 [body:start]![tabs](/docs/images/workbase/visualise_tabs.png)[body:end]
-[footer:start]To visualise multiple queries or keyspaces at the same time, we can create a new tab by clicking the **plus** icon on the bottom left.[footer:end]
+[footer:start]To visualise multiple queries or databases at the same time, we can create a new tab by clicking the **plus** icon on the bottom left.[footer:end]
 [slide:end]
 
 [slide:start]

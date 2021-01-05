@@ -96,7 +96,7 @@ methods:
     common: &method-commit
       title: Commit a write transaction
       description: |
-        Commits the changes made on the local keyspace (via the caller transaction), to the original keyspace.
+        Commits the changes made on the local database (via the caller transaction), to the original database.
         **Whether or not the transaction is commited successfully, it gets closed after the commit call.**
     java:
       <<: *method-commit

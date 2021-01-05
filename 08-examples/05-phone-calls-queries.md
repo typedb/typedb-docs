@@ -24,7 +24,7 @@ For the rest of this post, we go through each of these questions to:
 - write them in [Graql](https://dev.grakn.ai/docs/query/overview), and
 - assess their result.
 
-Make sure you have [Grakn Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [Grakn Server](../02-running-grakn/01-install-and-run.md#start-the-grakn-server) and `phone_calls` is the [selected keyspace](../07-workbase/01-connection.md#select-a-keyspace).
+Make sure you have [Grakn Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [Grakn Server](../02-running-grakn/01-install-and-run.md#start-the-grakn-server) and `phone_calls` is the [selected database](../07-workbase/01-connection.md#select-a-database).
 
 Let’s begin.
 
@@ -172,7 +172,7 @@ ExecuteMatchQuery();
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace = "phone_calls") as session:
+    with client.session(database = "phone_calls") as session:
         with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             query = [
                 'match',
@@ -350,7 +350,7 @@ ExecuteMatchQuery();
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace = "phone_calls") as session:
+    with client.session(database = "phone_calls") as session:
       with session.transaction(Grakn.Transaction.Type.READ) as transaction:
         query = [
           'match ',
@@ -518,7 +518,7 @@ ExecuteMatchQuery();
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace = "phone_calls") as session:
+    with client.session(database = "phone_calls") as session:
         with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             query = [
                 'match ',
@@ -697,7 +697,7 @@ ExecuteMatchQuery();
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace = "phone_calls") as session:
+    with client.session(database = "phone_calls") as session:
         with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             query = [
                 'match ',
@@ -935,7 +935,7 @@ ExecuteMatchQuery();
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace = "phone_calls") as session:
+    with client.session(database = "phone_calls") as session:
         with session.transaction(Grakn.Transaction.Type.READ) as transaction:
             first_query = [
                 'match',

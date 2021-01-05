@@ -34,7 +34,7 @@ Instantiate a client and open a session.
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace="social_network") as session:
+    with client.session(database="social_network") as session:
         ## session is open
         pass
     ## session is closed
@@ -55,7 +55,7 @@ Create transactions to use for reading and writing data.
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace="social_network") as session:
+    with client.session(database="social_network") as session:
         ## creating a write transaction
         with session.transaction().write() as write_transaction:
             ## write transaction is open
@@ -77,7 +77,7 @@ Running basic retrieval and insertion queries.
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace="social_network") as session:
+    with client.session(database="social_network") as session:
         ## Insert a Person using a WRITE transaction
         with session.transaction().write() as write_transaction:
             insert_iterator = write_transaction.query('insert $x isa person, has email "x@email.com";').get()
@@ -142,7 +142,7 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 ## Dependencies
 
-| Client Python  | Grakn Core                  | Grakn KGMS     | Python        |
+| Client Python  | Grakn Core                  | Grakn Cluster     | Python        |
 | :------------: | :-------------------------: | :----------:   | :-----------: |
 | 1.8.0          | 1.8.0 to 1.8.4              | N/A            | >= 3.5, < 3.8 |
 | 1.7.2          | 1.7.1, 1.7.2                | N/A            | >= 2.7        |

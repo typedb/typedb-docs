@@ -16,7 +16,7 @@ To try the following examples with one of the Grakn clients, follows these [Clie
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `define` query. Otherwise, anything you have defined is NOT committed to the original keyspace that is running on the Grakn server.
+Don't forget to `commit` after executing a `define` query. Otherwise, anything you have defined is NOT committed to the original database that is running on the Grakn server.
 When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Grakn Console, we use the `commit` command.
 </div>
 
@@ -749,7 +749,7 @@ As the name suggests, we use the `undefine` keyword to remove the definition of 
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
+Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original database that is running on the Grakn server.
 When using one of the [Grakn Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Grakn Console](../02-running-grakn/02-console.md), we use the `commit` command.
 </div>
 
