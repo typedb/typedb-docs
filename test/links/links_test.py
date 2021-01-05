@@ -108,7 +108,6 @@ class LinksTest(unittest.TestCase):
                 "../query/insert-query": "11-query/03-insert-query.md",
                 "../query/delete-query": "11-query/04-delete-query.md",
                 "../query/aggregate-query": "11-query/06-aggregate-query.md",
-                "../query/compute-query": "11-query/07-compute-query.md"
             }
             client_page_mapping = {
                 "java": "01-java.md",

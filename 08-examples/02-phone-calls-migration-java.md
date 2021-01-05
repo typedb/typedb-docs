@@ -755,7 +755,7 @@ Here is how our `Migrate.java` looks like for each data format.
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -954,7 +954,7 @@ public class PhoneCallsCSVMigration {
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -1159,7 +1159,7 @@ public class PhoneCallsJSONMigration {
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import graql.lang.query.GraqlInsert;
 import static graql.lang.Graql.*;
 

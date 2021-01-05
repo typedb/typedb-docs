@@ -1,7 +1,7 @@
 package grakn.doc.test.query;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.Graql;
 import graql.lang.pattern.Pattern;

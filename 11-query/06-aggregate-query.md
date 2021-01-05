@@ -234,5 +234,3 @@ This query returns the total count of `person`s grouped by the `title` of their 
 
 ## Summary
 We use an aggregate query to calculate a certain variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
-
-Next, we learn how to [compute values over a large set of data](../11-query/07-compute-query.md) in a knowledge graph.

@@ -124,7 +124,7 @@ The result contains the following answers.
 package grakn.examples;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlMatch;
 import grakn.client.concept.answer.ConceptMap;
@@ -317,61 +317,6 @@ get $mate-1-fn, $mate-2-fn;
 ```
 
 Similar to the first rule, the answer we're asking for here, was never injected into the knowledge graph and is being inferred at query time by Grakn.
-
-### Distributed Analytics With Grakn
-
-The [Graql compute queries](../11-query/07-compute-query.md) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
-
-Let's look at a few examples of running `compute` on the `genealogy` knowledge graph.
-
-#### Retrieve the mean of an attribute owned by a given type
-
-```graql
-compute mean of salary, in employment;
-```
-
-#### Retrieve the total number of instances of a given type
-
-```graql
-compute count in travel;
-```
-
-#### Find the [shortest path](../11-query/07-compute-query.md#compute-the-shortest-path) between two instances
-
-```graql
-match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get $x, $y;
-```
-
-<!-- test-ignore -->
-```graql
-{$x id V446496 isa person; $y id V229424 isa person;}
-```
-
-<!-- test-ignore -->
-```graql
-compute path from V446496, to V229424;
-```
-
-<!-- test-ignore -->
-```graql
-{V184392, V442424, V90344}
-```
-
-#### [Identify clusters](../11-query/07-compute-query.md#identify-clusters) in a subgraph
-```graql
-compute cluster in [person, employment, organisation], using connected-component;
-```
-
-<!-- test-ignore -->
-```graql
-{V192656}
-{V663728, V266336, V262392, V680112, V479408}
-{V180272, V446496, V278672, V463024, V671920}
-{V172176}
-{V360448, V250104, V176176, V667824, V180368, V303200, V639152}
-{V647200, V295008, V237808, V225328, V364544, V372832, V356352, V167984, V266488, V299104, V663584}
-{V401584, V229424, V639008, V213040, V655392}
-```
 
 ### Where Next?
 
