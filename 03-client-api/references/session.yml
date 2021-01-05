@@ -8,13 +8,13 @@ methods:
         - "[Transaction](#transaction) object"
     java:
       <<: *method-transaction-read
-      method: session.transaction(Grakn.Transaction.Type.READ);
+      method: session.transaction(Grakn.Transaction.Type.READ, GraknOptions options);
     javascript:
       <<: *method-transaction-read
-      method: await session.transaction(Grakn.Transaction.Type.READ);
+      method: await session.transaction(Grakn.TransactionType.READ, options);
     python:
       <<: *method-transaction-read
-      method: session.transaction(Grakn.Transaction.Type.READ)
+      method: session.transaction(Grakn.Transaction.Type.READ, options)
 
   - method:
     common: &method-transaction-write
@@ -24,20 +24,80 @@ methods:
         - "[Transaction](#transaction) object"
     java:
       <<: *method-transaction-write
-      method: session.transaction(Grakn.Transaction.Type.WRITE);
+      method: session.transaction(Grakn.Transaction.Type.WRITE, GraknOptions options);
     javascript:
       <<: *method-transaction-write
-      method: await session.transaction(Grakn.Transaction.Type.WRITE);
+      method: await session.transaction(Grakn.TransactionType.WRITE, options);
     python:
       <<: *method-transaction-write
-      method: session.transaction(Grakn.Transaction.Type.WRITE)
+      method: session.transaction(Grakn.Transaction.Type.WRITE, options)
 
+  - method:
+    common: &method-isopen
+      title: Check if a session is open
+      description: |
+        Checks whether a session is presently open.
+    java:
+      <<: *method-isopen
+      method: session.isOpen();
+      returns:
+        - boolean
+    javascript:
+      <<: *method-isopen
+      method: await session.isOpen();
+      returns:
+        - boolean
+    python:
+      <<: *method-isopen
+      method: session.is_open()
+      returns:
+        - boolean
+  - method:
+    common: &method-type
+      title: Check the session's type.
+      description: |
+        Checks the current session's type.
+    java:
+      <<: *method-type
+      method: session.type();
+      returns:
+        - SessionType
+    javascript:
+      <<: *method-type
+      method: await session.type();
+      returns:
+        - SessionType
+    python:
+      <<: *method-type
+      method: session.type()
+      returns:
+        - SessionType
+  - method:
+    common: &method-database
+      title: Check the session's database.
+      description: |
+        Returns a string indicating what database the session is operating over.
+    java:
+      <<: *method-database
+      method: session.database();
+      returns:
+        - String
+    javascript:
+      <<: *method-database
+      method: session.database();
+      returns:
+        - String
+    python:
+      <<: *method-database
+      method: session.database()
+      returns:
+        - String
   - method:
     common: &method-close
       title: Close a session
       description: |
         Closes the session.
-        **Before openning a new session, the session currently open should first be closed.**
+        **Before opening a new session, the session currently open should first be closed.**
     java:
       <<: *method-close
       method: session.close();

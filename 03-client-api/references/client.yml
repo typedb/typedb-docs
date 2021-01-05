@@ -57,12 +57,39 @@ methods:
         - List of Strings
 
   - method:
+    common: &method-databases-contains
+      title: Check if a database exists
+      description: Checks if a database with the given name exists
+      accepts: &accepts-databases-contains
+        param: &accepts-databases-create-database
+          name: database
+          description: The database name to be checked.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-databases-contains
+      method: client.databases().contains(String database);
+      returns:
+        - boolean
+    javascript:
+      <<: *method-databases-contains
+      method: await client.databases().contains("database name");
+      returns:
+        - boolean
+    python:
+      <<: *method-databases-contains
+      method: client.databases().contains("database name")
+      returns:
+        - boolean
+
+  - method:
     common: &method-databases-create
-      title: Creat a database
+      title: Create a database
       description: Create a database with the given name.
       accepts: &accepts-databases-create
         param: &accepts-databases-create-database
-          name: keypsace
+          name: database
           description: The name of the database to be created.
           type: String
           required: true
@@ -89,7 +116,7 @@ methods:
       description: Deletes a database with the given name.
       accepts: &accepts-databases-delete
         param: &accepts-databases-delete-database
-          name: keypsace
+          name: database
           description: The name of the database to be deleted.
           type: String
           required: true
