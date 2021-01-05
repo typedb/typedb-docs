@@ -44,13 +44,6 @@ async function openSession (database) {
 openSession("social_network");
 ```
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md), into the initial constructor as a Javascript object.
-
-<!-- test-ignore -->
-```javascript
-const client = new GraknClient("localhost:1729", { "username": "<username>", "password": "<password>" });
-```
-
 Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
@@ -159,15 +152,16 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 
 ## Dependencies
 
-| Client Node.js | Grakn Core                  | Grakn Cluster     |  Node  |
-| :------------: | :-------------------------: | :------------: | :----: |
-| 1.8.0          | 1.8.0 to 1.8.4              | N/A            | >= 6.5 |
-| 1.7.0          | 1.7.1, 1.7.2                | N/A            | >= 6.5 |
-| 1.6.0          | 1.6.0 to 1.6.2              | 1.6.2          | >= 6.5 |
-| 1.5.6          | 1.5.8, 1.5.9                | 1.5.8          | >= 6.5 |
-| 1.5.5          | 1.5.8, 1.5.9                | 1.5.8          | >= 6.5 |
-| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 6.5 |
-| 1.5.1          | 1.5.0, 1.5.1                | N/A            | >= 6.5 |
-| 1.2.4 to 1.3.1 | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0          | >= 6.5 |
-| 1.2.0 to 1.2.2 | 1.2.0                       | 1.2.0          | >= 6.5 |
+| Client Node.js | Grakn Core                  | Grakn Cluster  |  Node     |
+| :------------: | :-------------------------: | :------------: | :-------: |
+| 2.0.0-alpha    | 2.0.0-alpha                 | N/A            | \>= 14.15 |
+| 1.8.0          | 1.8.0 to 1.8.4              | N/A            | \>= 6.5   |
+| 1.7.0          | 1.7.1, 1.7.2                | N/A            | \>= 6.5   |
+| 1.6.0          | 1.6.0 to 1.6.2              | 1.6.2          | \>= 6.5   |
+| 1.5.6          | 1.5.8, 1.5.9                | 1.5.8          | \>= 6.5   |
+| 1.5.5          | 1.5.8, 1.5.9                | 1.5.8          | \>= 6.5   |
+| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | \>= 6.5   |
+| 1.5.1          | 1.5.0, 1.5.1                | N/A            | \>= 6.5   |
+| 1.2.4 to 1.3.1 | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0          | \>= 6.5   |
+| 1.2.0 to 1.2.2 | 1.2.0                       | 1.2.0          | \>= 6.5   |
 

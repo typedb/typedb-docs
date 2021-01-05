@@ -2,48 +2,86 @@ title: "Client"
 methods:
   - method:
     common: &method-session
-      title: Create a session/database
+      title: Create a session for a database
       description: >
         Opens a communication tunnel (session) to the given database on the running Grakn server.
-        **If no database with the given name exists, a new one is created.**
       accepts: &accepts-session
-        param: &accepts-session-database
+        param1: &accepts-session-database
           name: database
           description: The name of the database with which the session connects.
           type: String
           required: true
           default: N/A
+        param2: &accepts-session-type
+          name: type
+          description: The type of session to be created (DATA or SCHEMA)
+          type: Grakn.SessionType
+          required: true
+          default: N/A
+        param3: &accepts-session-options
+          name: type
+          description: Options for the session.
+          type: GraknOptions
+          required: false
+          default: N/A
       returns:
         - "[Session](#session) object"
     java:
       <<: *method-session
-      method: client.session(String database);
+      method: client.session(String database, Grakn.SessionType sessionType, GraknOptions options);
     javascript:
       <<: *method-session
-      method: await client.session(database)
+      method: await client.session(database, sessionType, options)
     python:
       <<: *method-session
-      method: client.session(database)
+      method: client.session(database, session_type, options)
 
   - method:
-    common: &method-databases-retrieve
+    common: &method-databases-all
       title: Retrieve all databases
       description: Retrieves the name of all databases running on the Grakn server.
     java:
-      <<: *method-databases-retrieve
-      method: client.databases().retrieve();
+      <<: *method-databases-all
+      method: client.databases().all();
       returns:
         - List of Strings
     javascript:
-      <<: *method-databases-retrieve
-      method: await client.databases().retrieve();
+      <<: *method-databases-all
+      method: await client.databases().all();
       returns:
         - Array of Strings
     python:
-      <<: *method-databases-retrieve
-      method: client.databases().retrieve()
+      <<: *method-databases-all
+      method: client.databases().all()
       returns:
         - List of Strings
+
+  - method:
+    common: &method-databases-create
+      title: Creat a database
+      description: Create a database with the given name.
+      accepts: &accepts-databases-create
+        param: &accepts-databases-create-database
+          name: keypsace
+          description: The name of the database to be created.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-databases-create
+      method: client.databases().create(String database);
+      returns:
+        - void
+    javascript:
+      <<: *method-databases-create
+      method: await client.databases().create("database name");
+      returns:
+        - void
+    python:
+      <<: *method-databases-create
+      method: client.databases().create("database name")
+      returns:
+        - None
 
   - method:
     common: &method-databases-delete

@@ -2,47 +2,36 @@
 title: "Answer"
 description:
   common: &common-description >
-    The type of answers contained in the iterator depends on the type of the query that has returned the iterator.
-    The table below illustrates the answer types mapped to query types.
-  java: >
     The type of answers returned by execution of a query depends on the type of query executed.
     The table below illustrates the answer types mapped to query types.
+  java: *common-description
   javascript: *common-description
   python: *common-description
 mappings:
   -
     query: define
-    answer: "[ConceptMap](#conceptmap)"
+    answer: "(no return value)"
   -
     query: undefine
-    answer: "[ConceptMap](#conceptmap)"
+    answer: "(no return value)"
   -
-    query: get
-    answer: "[ConceptMap](#conceptmap)"
+    query: match
+    answer: "Stream/Iterator of [ConceptMap](#conceptmap)"
   -
     query: insert
-    answer: "[ConceptMap](#conceptmap)"
+    answer: "Stream/Iterator of [ConceptMap](#conceptmap)"
   -
     query: delete
-    answer: "[Void](#void)"
+    answer: "(no return value)"
+  -
+    query: group
+    answer: "Stream/Iterator of [ConceptMapGroup](#conceptmapgroup)"
   -
     query: "aggregate count/min/max/sum/mean/std"
     answer: "[Numeric](#numeric)"
   -
-    query: aggregate group
-    answer: "[AnswerGroup](#answergroup)"
-  -
-    query: "compute count/min/max/sum/mean/std"
-    answer: "[Numeric](#numeric)"
-  -
-    query: compute path
-    answer: "[ConceptList](#conceptlist)"
-  -
-    query: compute cluster
-    answer: "[ConceptSet](#conceptset)"
-  -
-    query: compute centrality
-    answer: "[ConceptSetMeasure](#conceptsetmeasure)"
+    query: group aggregate
+    answer: "Stream/Iterator of [NumericGroup](#numericgroup)"
 
 types:
   - type1:
@@ -53,27 +42,27 @@ types:
           title: Retrieve a mapping of variables to concepts
         java:
           <<: *method-conceptmap-map
-          method: conceptmap.map();
+          method: conceptMap.map();
           description: Produces a Map where keys are variable names and values are [`concept`](../concept-api/concept)s.
           returns:
-            - "Map<Variable, Concept>"
+            - "Map<String, Concept>"
         javascript:
           <<: *method-conceptmap-map
-          method: conceptmap.map();
-          description: Produces a Javascript object where keys are variable names and values are concepts
+          method: conceptMap.map();
+          description: Produces a Map where keys are variable names and values are [`concept`](../concept-api/concept)s.
           returns:
             - "`Map<String, Concept>`"
         python:
           <<: *method-conceptmap-map
-          method: conceptmap.map()
-          description: Produces a dictionary where keys are variable names and values are concepts
+          method: concept_map.map()
+          description: Produces a dictionary where keys are variable names and values are [`concept`](../concept-api/concept)s.
           returns:
             - Dictionary of String to Concept
 
       - method:
         common: &method-conceptmap-get
           title: Retrieve a concept corresponding to a specific variable
-          description: Retrieve a concept for a given variable name without explicitly retriving the map
+          description: Retrieve a concept for a given variable name
           accepts:
             param1:
               name: var
@@ -83,242 +72,125 @@ types:
             - "[`Concept`](../concept-api/concept)"
         java:
           <<: *method-conceptmap-get
-          method: conceptmap.get(var)
+          method: conceptMap.get(var)
         python:
           <<: *method-conceptmap-get
-          method: conceptmap.get(var)
+          method: conceptMap.get(var)
         javascript:
           <<: *method-conceptmap-get
-          method: conceptmap.get(var)
-
-      - method:
-          common: &method-conceptmap-query-pattern
-            title: Query pattern that leads to the conceptmap
-            description: The query pattern, present when this concept map has an explanation, that led to this answer map (`.map()`)
-            returns:
-              - String
-          java:
-            <<: *method-conceptmap-query-pattern
-            method: conceptmap.queryPattern();
-            -returns:
-              - "[`Graql.Pattern`](#graql)"
-          javascript:
-            <<: *method-conceptmap-query-pattern
-            method: conceptmap.queryPattern();
-          python:
-            <<: *method-conceptmap-query-pattern
-            method: conceptmap.query_pattern()
-
-      - method:
-        common: &method-conceptmap-has-explanation
-          title: Check if an explanation is available for this answer
-          description: A boolean flag that tells whether there is an explanation that could be retrieved for this concept map
-          returns:
-            - "`boolean`"
-        java:
-          <<: *method-conceptmap-has-explanation
-          method: conceptmap.hasExplanation();
-        python:
-          <<: *method-conceptmap-has-explanation
-          method: conceptmap.has_explanation()
-
-      - method:
-        common: &method-explanation
-          title: Explanation of a ConceptMap
-          description: Retrieve the Explanation associated with an explainable ConceptMap. Performs round trip to server.
-          returns:
-            - "[Explanation](#explanation)"
-        java:
-          <<: *method-explanation
-          method: conceptmap.explanation();
-        python:
-          <<: *method-explanation
-          method: conceptmap.explanation()
+          method: concept_map.get(var)
 
   - type2:
-    title: Void
-    methods:
-      - method:
-        common: &method-void-message
-          title: Retrieve the status message 
-          description: Retrieves the message describing the status of the query.
-          method: answer.message();
-        java:
-          <<: *method-void-message
-          returns:
-            - "`String`"
-        javascript:
-          <<: *method-void-message
-          returns:
-            - "`String`"
-        python:
-          <<: *method-void-message
-          returns:
-            - "string"
-
-  - type3:
     title: Numeric
     methods:
       - method:
-        common: &method-value-number
-          title: Retrieve nummeric value of an aggregate/computed answer
         java:
-          <<: *method-value-number
-          method: answer.number();
+          title: Retrieve numeric value of an aggregate answer as a long
+          method: numeric.asLong();
+          returns:
+            - long
+      - method:
+        java:
+          title: Retrieve numeric value of an aggregate answer as a double
+          method: numeric.asDouble();
+          returns:
+            - double
+      - method:
+        python:
+          title: Retrieve numeric value of an aggregate answer as an integer
+          method: numeric.as_int();
           returns:
             - int
+      - method:
+        python:
+          title: Retrieve numeric value of an aggregate answer as a float
+          method: numeric.as_float();
+          returns:
             - float
+      - method:
         javascript:
-          <<: *method-value-number
-          method: answer.number();
+          title: Retrieve numeric value of an aggregate answer
+          method: numeric.asNumber();
           returns:
             - number
-        python:
-          <<: *method-value-number
-          method: answer.number()
+      - method:
+        java:
+          title: Checks if the type of an aggregate answer is a long
+          method: numeric.isLong();
           returns:
-            - int
-            - float
+            - boolean
+      - method:
+        java:
+          title: Checks if the type of an aggregate answer is a double
+          method: numeric.isDouble();
+          returns:
+            - boolean
+      - method:
+        python:
+          title: Checks if the type of an aggregate answer is an integer
+          method: numeric.is_int();
+          returns:
+            - boolean
+      - method:
+        python:
+          title: Checks if the type of an aggregate answer is a float
+          method: numeric.is_float();
+          returns:
+            - boolean
+      - method:
+        javascript:
+          title: Checks if the type of an aggregate answer is a number
+          method: numeric.isNumber();
+          returns:
+            - boolean
+      - method:
+        common: &method-numeric-isnan
+          title: Checks if the type of an aggregate answer is not a number
+          returns:
+            - boolean
+        java:
+          <<: *method-numeric-isnan
+          method: conceptMapGroup.isNaN();
+        javascript:
+          <<: *method-numeric-isnan
+          method: conceptMapGroup.isNaN();
+        python:
+          <<: *method-numeric-isnan
+          method: concept_map_group.is_NaN()
 
-
-  - type4:
-    title: ConceptList
+  - type3:
+    title: ConceptMapGroup
     methods:
       - method:
-        common: &method-conceptlist-list
-          title: Retrieve ids of all concepts in a ConceptList answer
-        java:
-          <<: *method-conceptlist-list
-          method: answer.list();
-          returns:
-            - Array of String
-        javascript:
-          <<: *method-conceptlist-list
-          method: answer.list();
-          returns:
-            - Array of String
-        python:
-          <<: *method-conceptlist-list
-          method: answer.list()
-          returns:
-            - List of String
-
-
-  - type5:
-    title: ConceptSet
-    methods:
-      - method:
-        common: &method-conceptset-set
-          title: Retrieve set of ids of concepts after a cluster computation
-          returns:
-            - Set of String
-        java:
-          <<: *method-conceptset-set
-          method: answer.set();
-        javascript:
-          <<: *method-conceptset-set
-          method: answer.set();
-        python:
-          <<: *method-conceptset-set
-          method: answer.set()
-
-
-  - type6:
-    title: ConceptSetMeasure
-    methods:
-      - method:
-        common: &method-conceptsetmeasure-measurement
-          title: Retrieve the numeric value of a centrality computation
-        java:
-          <<: *method-conceptsetmeasure-measurement
-          method: answer.measurement();
-          returns:
-            - int
-            - float
-        javascript:
-          <<: *method-conceptsetmeasure-measurement
-          method: answer.measurement();
-          returns:
-            - number
-        python:
-          <<: *method-conceptsetmeasure-measurement
-          method: answer.measurement()
-          returns:
-            - int
-            - float
-
-      - method:
-        common: &method-conceptsetmeasure-set
-          title: Retrieve a set of ids of concepts after a centrality computation
-          returns:
-            - Set of String
-        java:
-          <<: *method-conceptsetmeasure-set
-          method: answer.set();
-        javascript:
-          <<: *method-conceptsetmeasure-set
-          method: answer.set()
-        python:
-          <<: *method-conceptsetmeasure-set
-          method: answer.set()
-
-
-  - type7:
-    title: AnswerGroup
-    methods:
-      - method:
-        common: &method-answergroup-owner
+        common: &method-conceptmapgroup-owner
           title: Retrieve the concept that is the group owner
           returns:
             - "[Concept](../concept-api/concept)"
         java:
-          <<: *method-answergroup-owner
-          method: answer.owner();
+          <<: *method-conceptmapgroup-owner
+          method: conceptMapGroup.owner();
         javascript:
-          <<: *method-answergroup-owner
-          method: answer.owner();
+          <<: *method-conceptmapgroup-owner
+          method: conceptMapGroup.owner();
         python:
-          <<: *method-answergroup-owner
-          method: answer.owner()
+          <<: *method-conceptmapgroup-owner
+          method: concept_map_group.owner()
 
       - method:
-        common: &method-answergroup-answers
-          title: Retrieve the answers of the group
+        common: &method-conceptmapgroup-conceptmaps
+          title: Retrieve the ConceptMaps of the group
         java:
-          <<: *method-answergroup-answers
-          method: answer.answers();
+          <<: *method-conceptmapgroup-conceptmaps
+          method: conceptMapGroup.conceptMaps();
           returns:
-            - Array of Answer
+            - Array of [`ConceptMap`](#conceptmap)s
         javascript:
-          <<: *method-answergroup-answers
-          method: answer.answers();
+          <<: *method-conceptmapgroup-conceptmaps
+          method: conceptMapGroup.conceptMaps();
           returns:
-            - Array of Answer
+            - Array of [`ConceptMap`](#conceptmap)s
         python:
-          <<: *method-answergroup-answers
-          method: answer.answers()
+          <<: *method-conceptmapgroup-conceptmaps
+            method: concept_map_group.concept_maps();
           returns:
-            - List of Answer
-
-  - type8:
-    title: Explanation
-    methods:
-      - method:
-        common: &method-explanation-get-answers
-          title: Retrieve source facts of inference
-          description: Provides a list of answers from which the inferred answer is derived.
-        java:
-          <<: *method-explanation-get-answers
-          method: explanation.getAnswers();
-          returns:
-            - "[`List<ConceptMap>`](#conceptmap)"
-        javascript:
-          <<: *method-explanation-get-answers
-          method: explanation.getAnswers();
-          returns:
-            - Array of [`ConceptMap`](#conceptmap)
-        python:
-          <<: *method-explanation-get-answers
-          method: explanation.get_answers()
-          returns:
-            - List of [`ConceptMap`](#conceptmap)
+            - List of [`ConceptMap`](#conceptmap)s
