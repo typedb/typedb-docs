@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## What is a Database?
-A database is the outermost container for data in a Grakn knowledge graph, corresponding closely to a relational _database_. As per a relational database, it is commonly known to be good practice to create a single database per application, but it is absolutely fine to create as many databases as your application needs. As a rule of thumb, it is recommended to start off with one database and create more if the requirement arises.
+A database is the outermost container for data in a Grakn knowledge graph. As per a relational database, it is commonly known to be good practice to create a single database per application, but it is absolutely fine to create as many databases as your application needs. As a rule of thumb, it is recommended to start off with one database and create more if the requirement arises.
 
 <div class="note">
 [Important]
@@ -20,7 +20,7 @@ We can create a new a database via the Grakn Clients [Java](../03-client-api/01-
 ### Listing All Databases
 We can list all databases of the running Grakn server via the Grakn Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [Workbase](../07-workbase/01-connection.md#select-a-database).
 
-### Cleaning a Keyspce
+### Cleaning a Database
 Cleaning the database, not to be confused with deletion, wipes out both the data and the schema contained within the database. We can clean a database via [Grakn Console](../02-running-grakn/02-console.md#console-commands).
 
 ### Deleting a Database
