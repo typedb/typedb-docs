@@ -17,11 +17,11 @@ npm install grakn-client
 ## Quickstart
 First make sure that the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In your source, require `grakn-client`.
+In your source, require `grakn-client/rpc/GraknClient`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const GraknClient = require("grakn-client/rpc/GraknClient");
 ```
 
 Instantiate a client and open a session.
@@ -29,6 +29,8 @@ Instantiate a client and open a session.
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
 const GraknClient = require("grakn-client");
+const Grakn = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function openSession (database) {
 	const client = new GraknClient("localhost:1729");
@@ -54,18 +56,20 @@ Create transactions to use for reading and writing data.
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
 const GraknClient = require("grakn-client");
+const Grakn = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function createTransactions (database) {
 	const client = new GraknClient("localhost:1729");
-	const session = await client.session(database);
+	const session = await client.session(database, SessionType.DATA);
 
 	// creating a write transaction
-	const writeTransaction = await session.transaction().write(); // write transaction is open
+	const writeTransaction = await session.transaction(TransactionType.WRITE); // write transaction is open
 	// to persist changes, write transaction must always be committed/closed
 	await writeTransaction.commit();
 
 	// creating a read transaction
-	const readTransaction = await session.transaction().read(); // read transaction is open
+	const readTransaction = await session.transaction(TransactionType.READ); // read transaction is open
 	// read transaction must always be closed
 	await readTransaction.close();
 	// a session must always be closed
@@ -81,36 +85,35 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const GraknClient = require("grakn-client/rpc/GraknClient");
+const Grakn = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function runBasicQueries (database) {
 	const client = new GraknClient("localhost:1729");
-	const session = await client.session(database);
+	const session = await client.session(database, SessionType.DATA);
 
 	// Insert a person using a WRITE transaction
-	const writeTransaction = await session.transaction().write();
-	const insertIterator = await writeTransaction.query('insert $x isa person, has email "x@email.com";');
-	const concepts = await insertIterator.collectConcepts()
+	const writeTransaction = await session.transaction(TransactionType.WRITE);
+	const insertStream = await writeTransaction.query().insert('insert $x isa person, has email "x@email.com";');
+	const concepts = await insertStream.collect()
 	console.log("Inserted a person with ID: " + concepts[0].id);
 	// to persist changes, a write transaction must always be committed (closed)
 	await writeTransaction.commit();
 
 	// Retrieve persons using a READ only transaction
-	const readTransaction = await session.transaction().read();
+	const readTransaction = await session.transaction(TransactionType.READ)
 
 	// We can either query and consume the iterator lazily
-	let answerIterator = await readTransaction.query("match $x isa person; get $x; limit 10;");
-	let aConceptMapAnswer = await answerIterator.next();
-	while (aConceptMapAnswer != null) {
-		// get the next `x`
-		const person = aConceptMapAnswer.map().get("x");
+	let answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
+	for await (let aConceptMapAnswer of answerStream) {
+		const person = aConceptMapAnswer.get("x");
 		console.log("Retrieved person with id "+ person.id);
-		aConceptMapAnswer = await answerIterator.next();
 	}
 
 	// Or query and consume the iterator immediately collecting all the results
-	answerIterator = await readTransaction.query("match $x isa person; get $x; limit 10;");
-	const persons = await answerIterator.collectConcepts();
+	answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
+	const persons = await answerStream.collect();
 	persons.forEach( person => { console.log("Retrieved person with id "+ person.id) });
 
 	// a read transaction must always be closed

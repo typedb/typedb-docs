@@ -87,6 +87,9 @@ types:
         python:
           <<: *method-conceptmap-get
           method: conceptmap.get(var)
+        javascript:
+          <<: *method-conceptmap-get
+          method: conceptmap.get(var)
 
       - method:
           common: &method-conceptmap-query-pattern
@@ -115,9 +118,6 @@ types:
         java:
           <<: *method-conceptmap-has-explanation
           method: conceptmap.hasExplanation();
-        javascript:
-          <<: *method-conceptmap-has-explanation
-          method: conceptmap.hasExplanation();
         python:
           <<: *method-conceptmap-has-explanation
           method: conceptmap.has_explanation()
@@ -131,9 +131,6 @@ types:
         java:
           <<: *method-explanation
           method: conceptmap.explanation();
-        javascript:
-          <<: *method-explanation
-          method: await conceptmap.explanation();
         python:
           <<: *method-explanation
           method: conceptmap.explanation()
