@@ -37,7 +37,7 @@ Import `grakn.client.GraknClient`, instantiate a client and open a session to a 
 package grakn.examples;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 
 public class GraknQuickstartA {
     public static void main(String[] args) {
@@ -53,14 +53,6 @@ public class GraknQuickstartA {
 }
 ```
 
-[Cluster ONLY] Using Client Java 1.4.3, we can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md).
-
-<!-- test-ignore -->
-```java
-SimpleURI localGrakn = new SimpleURI("localhost", 1729);
-Grakn grakn = new ClientFactory(localGrakn, "<username>", "<password>").client();
-```
-
 Create transactions to use for reading and writing data.
 
 <!-- test-example GraknQuickstartB.java -->
@@ -68,21 +60,23 @@ Create transactions to use for reading and writing data.
 package grakn.examples;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.Grakn.Session;
+import grakn.client.Grakn.Transaction;
+import grakn.client.GraknClient;
 
 public class GraknQuickstartB {
     public static void main(String[] args) {
         Grakn.Client client = new GraknClient("localhost:1729");
-        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
+        Session session = client.session("social_network", Session.Type.DATA);
 
         // creating a write transaction
-        Grakn.Transaction writeTransaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        Transaction writeTransaction = session.transaction(Transaction.Type.WRITE);
         // write transaction is open
         // write transaction must always be committed (closed)
         writeTransaction.commit();
 
         // creating a read transaction
-        Grakn.Transaction readTransaction = session.transaction(Grakn.Transaction.Type.READ);
+        Transaction readTransaction = session.transaction(Transaction.Type.READ);
         // read transaction is open
         // read transaction must always be closed
         readTransaction.close();
@@ -91,7 +85,6 @@ public class GraknQuickstartB {
         client.close();
     }
 }
-
 ```
 
 Running basic retrieval and insertion queries.
@@ -101,7 +94,9 @@ Running basic retrieval and insertion queries.
 package grakn.examples;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.Grakn.Session;
+import grakn.client.Grakn.Transaction;
+import grakn.client.GraknClient;
 import graql.lang.Graql;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlMatch;
@@ -115,10 +110,10 @@ import java.util.stream.Collectors;
 public class GraknQuickstartC {
   public static void main(String[] args) {
     Grakn.Client client = new GraknClient("localhost:1729");
-    Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
+    Session session = client.session("social_network", Session.Type.DATA);
 
     // Insert a person using a WRITE transaction
-    Grakn.Transaction writeTransaction = session.transaction(Grakn.Transaction.Type.WRITE);
+    Transaction writeTransaction = session.transaction(Transaction.Type.WRITE);
     GraqlInsert insertQuery = Graql.insert(var("x").isa("person").has("email", "x@email.com"));
     List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
     System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").asThing().getIID());
@@ -126,7 +121,7 @@ public class GraknQuickstartC {
     writeTransaction.commit();
 
     // Read the person using a READ only transaction
-    Grakn.Transaction readTransaction = session.transaction(Grakn.Transaction.Type.READ);
+    Transaction readTransaction = session.transaction(Transaction.Type.READ);
     GraqlMatch.Limited getQuery = Graql.match(var("p").isa("person")).get("p").limit(10);
     Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
     answers.forEach(answer -> System.out.println(answer.get("p").asThing().getIID()));
@@ -152,7 +147,6 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 - [Get](../11-query/02-get-query.md)
 - [Delete](../11-query/04-delete-query.md)
 - [Aggregate](../11-query/06-aggregate-query.md)
-- [Compute](../11-query/07-compute-query.md)
 
 <hr style="margin-top: 40px;" />
 
@@ -176,8 +170,9 @@ To view examples of running various Graql queries using the Grakn Client Java, h
  
 ## Dependencies
 
-| Client Java | Grakn Core     | Grakn Cluster     |
+| Client Java | Grakn Core     | Grakn Cluster  |
 | :---------: | :-------------:| :------------: |
+| 2.0.0-alpha | 2.0.0-alpha    | N/A            |
 | 1.8.3       | 1.8.0 to 1.8.4 | N/A            |
 | 1.8.2       | 1.8.0, 1.8.1   | N/A            |
 | 1.8.1       | 1.8.0          | N/A            |

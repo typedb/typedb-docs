@@ -74,7 +74,7 @@ get $phone-number;
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
@@ -248,7 +248,7 @@ get $phone-number;
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
@@ -422,7 +422,7 @@ get $phone-number;
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
@@ -594,7 +594,7 @@ get $phone-number-a, $phone-number-b;
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
@@ -792,7 +792,7 @@ get $duration; mean $duration;
 package io.grakn.example.phoneCalls;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import grakn.client.concept.answer.AnswerGroup;
 import graql.lang.query.GraqlMatch;

@@ -119,7 +119,6 @@ To view examples of running various Graql queries using the Grakn Client Python,
 - [Get](../11-query/02-get-query.md)
 - [Delete](../11-query/04-delete-query.md)
 - [Aggregate](../11-query/06-aggregate-query.md)
-- [Compute](../11-query/07-compute-query.md)
 
 <hr style="margin-top: 40px;" />
 

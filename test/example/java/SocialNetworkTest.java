@@ -1,7 +1,7 @@
 package grakn.doc.test.example;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import graql.lang.Graql;
 import graql.lang.common.GraqlArg;
 import graql.lang.query.GraqlQuery;
