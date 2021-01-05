@@ -124,7 +124,7 @@ Due to the public nature of the Web, RDF uses namespaces to interpret and identi
 rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#
 ```
 
-As Grakn doesn't operate on the web, there isn't a need for URIs. A related concept is that of `keyspaces`, which are logically separate databases within a Grakn instance. Unlike an RDF `namespace` these cannot talk to each other. 
+As Grakn doesn't operate on the web, there isn't a need for URIs. A related concept is that of `databases`, which are logically separate databases within a Grakn instance. Unlike an RDF `namespace` these cannot talk to each other. 
 
 ### Serialisation
 

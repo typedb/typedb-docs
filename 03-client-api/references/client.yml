@@ -2,14 +2,14 @@ title: "Client"
 methods:
   - method:
     common: &method-session
-      title: Create a session/keyspace
+      title: Create a session/database
       description: >
-        Opens a communication tunnel (session) to the given keyspace on the running Grakn server.
-        **If no keyspace with the given name exists, a new one is created.**
+        Opens a communication tunnel (session) to the given database on the running Grakn server.
+        **If no database with the given name exists, a new one is created.**
       accepts: &accepts-session
-        param: &accepts-session-keyspace
-          name: keyspace
-          description: The name of the keyspace with which the session connects.
+        param: &accepts-session-database
+          name: database
+          description: The name of the database with which the session connects.
           type: String
           required: true
           default: N/A
@@ -17,58 +17,58 @@ methods:
         - "[Session](#session) object"
     java:
       <<: *method-session
-      method: client.session(String keyspace);
+      method: client.session(String database);
     javascript:
       <<: *method-session
-      method: await client.session(keyspace)
+      method: await client.session(database)
     python:
       <<: *method-session
-      method: client.session(keyspace)
+      method: client.session(database)
 
   - method:
-    common: &method-keyspaces-retrieve
-      title: Retrieve all keyspaces
-      description: Retrieves the name of all keyspaces running on the Grakn server.
+    common: &method-databases-retrieve
+      title: Retrieve all databases
+      description: Retrieves the name of all databases running on the Grakn server.
     java:
-      <<: *method-keyspaces-retrieve
+      <<: *method-databases-retrieve
       method: client.databases().retrieve();
       returns:
         - List of Strings
     javascript:
-      <<: *method-keyspaces-retrieve
+      <<: *method-databases-retrieve
       method: await client.databases().retrieve();
       returns:
         - Array of Strings
     python:
-      <<: *method-keyspaces-retrieve
+      <<: *method-databases-retrieve
       method: client.databases().retrieve()
       returns:
         - List of Strings
 
   - method:
-    common: &method-keyspaces-delete
-      title: Delete a keyspace
-      description: Deletes a keyspace with the given name.
-      accepts: &accepts-keyspaces-delete
-        param: &accepts-keyspaces-delete-keyspace
+    common: &method-databases-delete
+      title: Delete a database
+      description: Deletes a database with the given name.
+      accepts: &accepts-databases-delete
+        param: &accepts-databases-delete-database
           name: keypsace
-          description: The name of the keyspace to be deleted.
+          description: The name of the database to be deleted.
           type: String
           required: true
           default: N/A
     java:
-      <<: *method-keyspaces-delete
-      method: client.databases().delete(String keyspace);
+      <<: *method-databases-delete
+      method: client.databases().delete(String database);
       returns:
         - void
     javascript:
-      <<: *method-keyspaces-delete
-      method: await client.databases().delete("keyspace name");
+      <<: *method-databases-delete
+      method: await client.databases().delete("database name");
       returns:
         - void
     python:
-      <<: *method-keyspaces-delete
-      method: client.databases().delete("keyspace name")
+      <<: *method-databases-delete
+      method: client.databases().delete("database name")
       returns:
         - None
 

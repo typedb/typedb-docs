@@ -51,6 +51,6 @@ public class SocialNetworkTest {
     public static void cleanSocialNetwork() {
         Grakn.Client client = new GraknClient("localhost:1729");
         client.databases().delete("social_network");
-        System.out.println("Deleted the social_network keyspace");
+        System.out.println("Deleted the social_network database");
     }
 }

@@ -40,7 +40,7 @@ To maintain consistency across languages, all Grakn clients should aim to implem
 User interactions flow through these components:
 
 * A `GraknClient` is instantiated with a URI and creates a GRPC channel to the server.
-* The `GraknClient` spawns one or more `Session`, which are long-lived connections to a specific keyspace in Grakn.
+* The `GraknClient` spawns one or more `Session`, which are long-lived connections to a specific database in Grakn.
 * The `Session` is used to create short-lived `Transaction` objects which allow interacting with data.
 * Queries on `Transaction` generally return lazy iterators of `Answer` types, which can contain `Concept` instances.
 * Objects from the `Concept` hierarchy can be thought of client-side representations of instances on the server and expose their own API.
@@ -160,13 +160,13 @@ Since all Grakn clients are implemented similarly, the following piece of Python
 from grakn.client import GraknClient, ValueType 
 
 client = GraknClient(uri="localhost:1729")
-with client.session(keyspace="social_network") as session:
+with client.session(database="social_network") as session:
     with session.transaction(Grakn.Transaction.Type.READ) as read_transaction:   
         answer_iterator = read_transaction.get_attributes_by_value("Canada", ValueType.STRING)
 client.close()
 ```
 
-Here, the client attempts to retrieve all the attributes that have string values called `"Canada"` in the keyspace `"social_network"`. 
+Here, the client attempts to retrieve all the attributes that have string values called `"Canada"` in the database `"social_network"`. 
 The first gRPC message created is a a `Transaction.Req` from `Session.proto`, which needs to have the `getAttributes_req` field populated.
 This, in turn has the type `GetAttributes.Req`, which has a single field called `value`. `value` is a `ValueObject`, 
 which is defined in the `Concept.proto` file (excerpt below):
@@ -238,7 +238,7 @@ For instance, in Python, the next element in an iterator is retrieved by calling
 from grakn.client import GraknClient, ValueType
 
 client = GraknClient(uri="localhost:1729")
-with client.session(keyspace="social_network") as session:
+with client.session(database="social_network") as session:
     with session.transaction(Grakn.Transaction.Type.READ) as read_transaction:   
         answer_iterator = read_transaction.get_attributes_by_value("Canada", ValueType.STRING)
         for attr in answer_iterator:
@@ -280,14 +280,14 @@ and unpacking the returned message into a local object.
 ### gRPC Definition Structure
 
 Finally, here is the layout of the protocol. Most interactions happen via messages defined in `Session.proto`.
-The sub-messages used in later interactions are further defined in `Answer.proto` and `Concept.proto`. `Keyspace.proto`
-is separate - operations on keyspaces do not require sessions or transactions to be active.
+The sub-messages used in later interactions are further defined in `Answer.proto` and `Concept.proto`. `Database.proto`
+is separate - operations on databases do not require sessions or transactions to be active.
 
 
 ```
 protocol/
-├── keyspace
-│   └── Keyspace.proto          # RPC endpoint for manually listing, creating, and deleting keyspaces
+├── database
+│   └── Database.proto          # RPC endpoint for manually listing, creating, and deleting databases
 └── session
     ├── Session.proto           # Entry point for sessions, transactions, and iterating responses
     ├── Answer.proto            # Response messsages, e.g. maps, sets, lists of Concepts, among others

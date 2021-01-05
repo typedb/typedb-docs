@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## Managing Users [Grakn Cluster ONLY]
-The ability to manage users and authenticate their access to [keyspaces](../06-management/01-keyspace.md) is limited to Grakn Cluster and is not available in Grakn Core.
+The ability to manage users and authenticate their access to [databases](../06-management/01-database.md) is limited to Grakn Cluster and is not available in Grakn Core.
 
 In order to manage users, we first need to enter the Grakn User Management Console by running `grakn user-management`. We can then use the following commands to manage user authentication.
 

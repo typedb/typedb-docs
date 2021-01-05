@@ -28,14 +28,14 @@ If installed using RPM or APT:
 In order for any new configuration to take affect, we must [stop](/docs/running-grakn/install-and-run/#stop-the-grakn-server) the Grakn Sever and [start](/docs/running-grakn/install-and-run/#start-the-grakn-server) it again.
 </div>
 
-## The default keyspace
-The `knowledge-base.default-keyspace` config sets the default keyspace that the Grakn Console falls back on when no [`--keyspace` option](../02-running-grakn/02-console.md#console-options) is specified. The default value is `grakn`.
+## The default database
+The `knowledge-base.default-database` config sets the default database that the Grakn Console falls back on when no [`--database` option](../02-running-grakn/02-console.md#console-options) is specified. The default value is `grakn`.
 
 ## Mitigating the supernode problem
 Grakn uses sharding to mitigate against supernodes. The `knowledge-base.sharding-threshold` config specifies the number of instances after which Grakn shards any type node. A larger threshold increases runtime as a Grakn knowledge graph grows while decreasing the likelihood of supernodes. A smaller threshold creates supernodes more frequently. The default value is `10000`.
 
 ## Where data is stored
-The `data-dir` config sets the path to the directory where the data for all keyspaces gets stored. The default value is `server/db/`.
+The `data-dir` config sets the path to the directory where the data for all databases gets stored. The default value is `server/db/`.
 
 <div class="note">
 [Important]

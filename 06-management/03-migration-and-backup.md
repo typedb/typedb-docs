@@ -31,31 +31,31 @@ The migration features describe beyond this point are designed for use with data
 You can backup your data in a version-independent file using:
 
 ```
-grakn server export [keyspace] [filename].grakn
+grakn server export [database] [filename].grakn
 ```
 
 You can import a backup using:
 
 ```
-grakn server import [keyspace] [filename].grakn
+grakn server import [database] [filename].grakn
 ```
 
 These paths are relative to the current working directory of the CLI. The CLI expands the relative path to an absolute path for the server, which does the file writing directly, so you must ensure that the path is writable by the server process and should avoid symblic links where possible.
 
-Importing a backup will not delete existing data in the keyspace, so you should clean the keyspace using console and reload the schema prior to the operation.
+Importing a backup will not delete existing data in the database, so you should clean the database using console and reload the schema prior to the operation.
 
 ## Migration
 
 ### Schema Migration
 
-The first step of migration is to migrate your schema. The  `grakn server schema` command allows you to get the current schema of a Grakn keyspace as a single Graql `define` query. This schema query can then be loaded via `grakn console` to the new server.
+The first step of migration is to migrate your schema. The  `grakn server schema` command allows you to get the current schema of a Grakn database as a single Graql `define` query. This schema query can then be loaded via `grakn console` to the new server.
 
 You can skip the step of exporting schema if you already have a copy of your schema to import.
 
 <!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
-old/grakn server schema [keyspace] > schema.gql
-new/grakn console --database-use [keyspace] --source schema.gql
+old/grakn server schema [database] > schema.gql
+new/grakn console --database-use [database] --source schema.gql
 ```
 
 ### Data Migration
@@ -63,11 +63,11 @@ new/grakn console --database-use [keyspace] --source schema.gql
 Data migration is performed using an export followed by an import.
 
 ```
-old/grakn server export [keyspace] data.grakn
-new/grakn server import [keyspace] data.grakn
+old/grakn server export [database] data.grakn
+new/grakn server import [database] data.grakn
 ```
 
-This requires your keyspace in the new grakn to have a valid schema that is compatible with your data. If a failure occurs during import, please check your keyspace has the schema you expect.
+This requires your database in the new grakn to have a valid schema that is compatible with your data. If a failure occurs during import, please check your database has the schema you expect.
 
 Once the data has been successfully imported, you can safely delete the temporary data file with `rm data.grakn`.
 
@@ -77,11 +77,11 @@ When upgrading a Grakn installation via homebrew, we recommend that you always b
 
 `cp -R /usr/local/Cellar/grakn-core/[version]/libexec ./grakn-backup`.
 
-Before upgrading, your should first export your schema and data. You should perform this step for every keyspace you want to upgrade.
+Before upgrading, your should first export your schema and data. You should perform this step for every database you want to upgrade.
 
 ```
-grakn server schema [keyspace] > [keyspace].gql
-grakn server export [keyspace] [keyspace].grakn
+grakn server schema [database] > [database].gql
+grakn server export [database] [database].grakn
 ```
 
 ## Dealing With Migration Issues
@@ -91,7 +91,7 @@ grakn server export [keyspace] [keyspace].grakn
 If you encounter migration errors, follow this checklist:
 
 * Ensure that you are running the correct Grakn command (the binary in the Grakn directory of the server you are exporting from or importing to.)
-* Ensure that the schema has been imported correctly to the new keyspace.
+* Ensure that the schema has been imported correctly to the new database.
 * Ensure that the correct data import path was specified.
 * Ensure that the data was correctly exported by checking the filesize.
 * Ensure that any changed labels are remapped in the import options.
@@ -103,7 +103,7 @@ If you have any further errors, please join one of our communities and ask for a
 Between versions, some schemas will become incompatible due to syntax change. Whilst most issues can be corrected in the schema before importing it, it is possible for a label to become invalid (if the label becomes a keyword in a new version). In order to handle this scenario, we have added an option to import from 1.8 onwards that allows you to remap labels during the import.
 
 ```
-grakn server import <keyspace> <file>.grakn <old_label>=<new_label>...
+grakn server import <database> <file>.grakn <old_label>=<new_label>...
 ```
 
 ### Implicit Relations

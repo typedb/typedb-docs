@@ -63,7 +63,7 @@ person sub entity,
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [keyspace](../06-management/01-keyspace.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-running-grakn/02-console.md).
+First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-running-grakn/02-console.md).
 
 <div class="note">
 [Note]
@@ -78,14 +78,14 @@ While in the unzipped directory of the Grakn distribution, via terminal, run:
 ```
 
 ### Load the Dataset
-Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same keyspace. Run:
+Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. Run:
 
 <!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
 ./grakn console --database-use social_network --source path-to-the-social-network/schema.gql
 ```
 
-As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target keyspace.
+As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
 
 ### Query the Knowledge Graph
 Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Grakn Console](../02-running-grakn/02-console.md), [Grakn Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md).
@@ -95,7 +95,7 @@ Let's see an example of running [Graql get queries](../11-query/02-get-query.md)
 #### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-running-grakn/02-console.md)
 
 <!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
-Enter the `social_network` keyspace using the Console.
+Enter the `social_network` database using the Console.
 ```
 $ ./grakn console --database-use social_network
 ```
@@ -165,7 +165,7 @@ public class SocialNetworkQuickstartQuery extends Throwable {
 from grakn.client import GraknClient
 
 with GraknClient(uri="localhost:1729") as client:
-    with client.session(keyspace = "social_network") as session:
+    with client.session(database = "social_network") as session:
       with session.transaction(Grakn.Transaction.Type.READ) as transaction:
         query = '''
           match
@@ -228,7 +228,7 @@ commit
 
 <div class="note">
 [Important]
-Any manipulation made in the schema or the data instances, is not persisted to the original keyspace until we run the `commit` command.
+Any manipulation made in the schema or the data instances, is not persisted to the original database until we run the `commit` command.
 </div>
 
 #### Associate the newly added person with a nickname

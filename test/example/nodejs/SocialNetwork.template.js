@@ -44,6 +44,6 @@ describe("Client Quickstart Tests", function() {
 
 afterAll(async function() {
     const client = new Grakn("localhost:1729");
-    await client.keyspaces().delete("social_network");
-    console.log("Deleted the social_network keyspace");
+    await client.databases().delete("social_network");
+    console.log("Deleted the social_network database");
 });

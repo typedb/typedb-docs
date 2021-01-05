@@ -122,7 +122,7 @@ undefine people-with-same-parents-are-siblings sub rule;
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `undefine` query. Otherwise, anything you have undefined is NOT committed to the original keyspace that is running on the Grakn server.
+Don't forget to `commit` after executing a `undefine` query. Otherwise, anything you have undefined is NOT committed to the original database that is running on the Grakn server.
 When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
 </div>
 

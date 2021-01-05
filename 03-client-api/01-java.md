@@ -30,7 +30,7 @@ templatePath: 03-client-api/references/
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-Import `grakn.client.GraknClient`, instantiate a client and open a session to a [keyspace](../06-management/01-keyspace.md).
+Import `grakn.client.GraknClient`, instantiate a client and open a session to a [database](../06-management/01-database.md).
 
 <!-- test-example GraknQuickstartA.java -->
 ```java

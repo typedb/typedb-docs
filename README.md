@@ -63,7 +63,7 @@ PRs that have the `development` branch as their _base_, contains changes that ar
 **Headlines**
 
 - Headlines should be phrased in a way that when read the user can determine the question that the text is meant to answer. They should describe a use-case.
-- Use primitive verbs (eg: _Manage Keyspaces_ as opposed to _Managing Keyspaces_) or _Keyspace Management_.
+- Use primitive verbs (eg: _Manage Databases_ as opposed to _Managing Databases_) or _Database Management_.
 
 ### Using Images
 
@@ -254,7 +254,7 @@ Client API reference files are accessible via [`03-client-api/references`](03-cl
 - A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`, `compute`). Otherwise, it will be tested as a pattern.
 - A code block that follows the `<!-- test-example file-name.extension -->` flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
   - a running Grakn Server
-  - the schema loaded into the target keyspace
+  - the schema loaded into the target database
 - Code blocks that have no language name, will not be tested.
 - Code blocks whose language is not `java`, `javascript` or `python` will not be tested.
 - Code blocks that follow the `<!-- test-ignore -->` flag, will not be tested.
