@@ -274,10 +274,10 @@ define
 
 friendship sub relation,
   relates friend,
-  plays friend-request:requested-friendship;
+  plays friend-request:friendship;
 
 friend-request sub relation,
-  relates requested-friendship,
+  relates friendship,
   relates requester,
   relates respondent;
 
@@ -359,7 +359,7 @@ define
 
 friend-request sub relation,
   owns approved-date,
-  relates requested-friendship,
+  relates friendship,
   relates requester,
   relates respondent;
 ```
