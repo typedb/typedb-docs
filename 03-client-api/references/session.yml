@@ -1,37 +1,48 @@
 title: "Session"
 methods:
   - method:
-    common: &method-transaction-read
-      title: Open a read transaction
-      description: Opens a read transaction to perform read queries on the database connected to the session.
+    common: &method-transaction
+      title: Open a transaction
+      description: Opens a transaction to perform read or write queries on the database connected to the session.
+      accepts:
+        param1:
+          name: transactionType
+          type: Transaction.Type
+          description: The type of transaction to be created (READ or WRITE).
+          required: true
+        param2:
+          name: type
+          description: Options for the session.
+          type: GraknOptions
+          required: false
+          default: N/A
       returns:
         - "[Transaction](#transaction) object"
     java:
-      <<: *method-transaction-read
-      method: session.transaction(Grakn.Transaction.Type.READ, GraknOptions options);
-    javascript:
-      <<: *method-transaction-read
-      method: await session.transaction(Grakn.TransactionType.READ, options);
+      <<: *method-transaction
+      method: session.transaction(Transaction.Type transactionType, GraknOptions options);
     python:
-      <<: *method-transaction-read
-      method: session.transaction(Grakn.Transaction.Type.READ, options)
-
+      <<: *method-transaction
+      method: session.transaction(transaction_type, options)
   - method:
-    common: &method-transaction-write
-      title: Open a write transaction
-      description: Opens a write transaction to perform write queries on the database connected to the session.
+    javascript:
+      title: Open a transaction
+      description: Opens a transaction to perform read or write queries on the database connected to the session.
+      accepts:
+        param1:
+          name: transactionType
+          type: Transaction.Type
+          description: The type of transaction to be created (READ or WRITE).
+          required: true
+        param2:
+          name: type
+          description: Options for the session.
+          type: GraknOptions
+          required: false
+          default: N/A
       returns:
         - "[Transaction](#transaction) object"
-    java:
-      <<: *method-transaction-write
-      method: session.transaction(Grakn.Transaction.Type.WRITE, GraknOptions options);
-    javascript:
-      <<: *method-transaction-write
-      method: await session.transaction(Grakn.TransactionType.WRITE, options);
-    python:
-      <<: *method-transaction-write
-      method: session.transaction(Grakn.Transaction.Type.WRITE, options)
-
+      method: await session.transaction(transactionType, options);
   - method:
     common: &method-isopen
       title: Check if a session is open
