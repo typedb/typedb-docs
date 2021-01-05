@@ -52,9 +52,10 @@ The first step of migration is to migrate your schema. The  `grakn server schema
 
 You can skip the step of exporting schema if you already have a copy of your schema to import.
 
+<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
 old/grakn server schema [keyspace] > schema.gql
-new/grakn console -k [keyspace] -f schema.gql
+new/grakn console --database-use [keyspace] --source schema.gql
 ```
 
 ### Data Migration

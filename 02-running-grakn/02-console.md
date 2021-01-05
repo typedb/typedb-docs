@@ -13,26 +13,25 @@ The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.m
 
 The options accepted by the `grakn console` command are as follows.
 
-| Option               | Alias | Mode            | Used with     | Description                                                                             |
-|----------------------|-------|-----------------|---------------|---------------------------------------------------------------------------------------- |
-| `--keyspace <name>`  | `-k`  | interactive     | -             | Enters console with the given keyspace. If none found with the given name, creates one. |
-| `--file <path>`      | `-f`  | non-interactive |` --keyspace` | Loads the given schema into the given keyspace.                                         |
-| `--address <address>`| `-r`  | interactive     | `--keyspace` | Enters the console connected to the given keyspace hosted remotely.                     |
-| `--no_infer`         | `-n`  | interactive     | `--keyspace` | Enters the console connected to the given keyspace with inference disabled.             |
-| `version`            | `-v`  | non-interactive | -             | Prints version of the running Grakn.                                                    |
+<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet; document once they are available -->
+| Option               | Alias | Mode            | Used with     | Description                                             |
+|----------------------|-------|-----------------|---------------|-------------------------------------------------------- |
+| `--help`             | `-h`  | non-interactive | -             | Display all options                                     |
+| `--server=<address>` |       | non-interactive | -             | Enters the console connected to server hosted remotely. |
+| `--version`          | `-V`  | non-interactive | -             | Prints version of the running Console.                  |
 
 
 ## Console Commands
 
+<!-- FIXME(vmax): currently we can only execute queries via transaction command, not directly -->
 Once inside the console, besides [Graql queries](../11-query/00-overview.md), we can run the following commands.
 
 | Option     | Description                                                                                                                                                                           |
 |------------| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `commit`   | Any write operations, executed via the console, affects only a local copy of the keyspace. This command commits all changes to the original keyspace running on the Grakn Server.     |
-| `rollback` | Undoes any changes made in the knowledge graph since the last `commit`.                                                                                                               |
-| `editor`   | Opens the text-editor specified by the `$EDITOR` environment variable (vim by default). We can then write queries in multiple lines that get executed as soon as we exit the editor.  |
-| `clear`    | Clears the console from any previous queries, answers and commands.                                                                                                                   |
-| `clean`    | Meant to be used with caution, removes not only the data but also the schema of the knowledge graph contained within the keyspace.                                                    |
-| `keyspace list`               | List keyspaces available in this Grakn server                                                                                                                      |
-| `keyspace delete ksp_name`    | Delete a keyspace with name `ksp_name` on this Grakn server (irreversible!)                                                                                        |
+| `database list`   |  List the databases on the server |
+| `database create <db>` | Create a database with name <db> on the server |
+| `database delete <db>`   | Delete a database with name <db> on the server |
+| `transaction <db> schema|data read|write`    | Start a transaction to database <db> with schema or data session, with read or write transaction |
+| `help`    | Print this help menu |
+| `clear`               | Clear console screen |
 | `exit`     | Exists the console.                                                                                                                                                                   |

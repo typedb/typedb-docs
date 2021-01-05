@@ -72,15 +72,17 @@ Feel free to study the content of `social-network-schema.gql`. The definitions h
 
 While in the unzipped directory of the Grakn distribution, via terminal, run:
 
+<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
-./grakn console --keyspace social_network --file path-to-the-social-network/schema.gql
+./grakn console --database-use social_network --source path-to-the-social-network/schema.gql
 ```
 
 ### Load the Dataset
 Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same keyspace. Run:
 
+<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
-./grakn console --keyspace social_network --file path-to-the-social-network/data.gql
+./grakn console --database-use social_network --source path-to-the-social-network/schema.gql
 ```
 
 As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target keyspace.
@@ -92,9 +94,10 @@ Let's see an example of running [Graql get queries](../11-query/02-get-query.md)
 
 #### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-running-grakn/02-console.md)
 
+<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 Enter the `social_network` keyspace using the Console.
 ```
-$ ./grakn console -k social_network
+$ ./grakn console --database-use social_network
 ```
 
 Write the query to retrieve the desired result.
