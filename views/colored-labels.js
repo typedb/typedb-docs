@@ -5,8 +5,8 @@
  */
 
 coloredLabels = {
-    "KGMS ONLY": {
+    "Cluster ONLY": {
         color: "#efb507",
-        url: "https://grakn.ai/grakn-kgms"
+        url: "https://grakn.ai/grakn-cluster"
     }
 }

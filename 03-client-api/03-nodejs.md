@@ -157,7 +157,7 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 
 ## Dependencies
 
-| Client Node.js | Grakn Core                  | Grakn KGMS     |  Node  |
+| Client Node.js | Grakn Core                  | Grakn Cluster     |  Node  |
 | :------------: | :-------------------------: | :------------: | :----: |
 | 1.8.0          | 1.8.0 to 1.8.4              | N/A            | >= 6.5 |
 | 1.7.0          | 1.7.1, 1.7.2                | N/A            | >= 6.5 |

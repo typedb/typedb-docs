@@ -37,7 +37,7 @@ then { (less: $x, more: $z) isa greater-than; };
 
 ## Dependencies
 
-| Workbase       | Grakn Core          | Grakn KGMS          |
+| Workbase       | Grakn Core          | Grakn Cluster          |
 | :------------: | :-----------------: | :-----------------: |
 | 1.3.5          | 1.8.0               | N/A                 |
 | 1.3.4          | 1.8.0               | N/A                 |
