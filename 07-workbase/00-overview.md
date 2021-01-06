@@ -7,7 +7,7 @@ toc: false
 ---
 
 <div class = "note">
-[Note]
+[Important]
 **There is not yet a release of Workbase that is compatible with Grakn 2.0, it will be ready soon!.
 </div>
 

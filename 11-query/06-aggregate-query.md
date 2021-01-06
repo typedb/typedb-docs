@@ -5,7 +5,7 @@ longTailKeywords: grakn aggregate data, graql aggregate query, graql statistics
 Summary: Statistical queries in Grakn.
 ---
 <div class = "note">
-[Note]
+[Important]
 **Aggregate queries are not yet available for Grakn 2.0, but will be ready soon.
 </div>
 
