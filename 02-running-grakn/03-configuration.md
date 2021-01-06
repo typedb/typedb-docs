@@ -15,7 +15,7 @@ If downloaded manually, we can find the configuration file in the `server/conf` 
 If installed using Homebrew:
 
 ```
-/usr/local/Cellar/grakn/{installed-version}/libexec/conf/
+/usr/local/Cellar/grakn/{version-number}/libexec/conf/
 ```
 
 If installed using RPM or APT:
@@ -39,7 +39,7 @@ The `server.data` config sets the path to the directory where the data for all d
 For production use, it is recommended that the `server.data` is set to a path outside of `$GRAKN_HOME`. This helps to make the process of upgrading Grakn easier.
 </div>
 
-## Host and port
+## Port number
 The `server.port` config sets the port on which the Grakn Server listens to (defaults to `1729`).
 Grakn listens on all IP addresses and will be publicly accessible if the port is exposed.
 
