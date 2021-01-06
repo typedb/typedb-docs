@@ -1,135 +1,232 @@
 methods:
   - method:
-    common: &method-create
-      title: Create instance
-      description: Creates and returns a new instance of this AttributeType with the given value.
-      accepts:
-        param: &accepts-create-value
-          name: value
-          description: The value for the new attribute instance to hold.
-          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
-          required: true
-          default: N/A
-    java:
-      <<: *method-create
-      method: attributeType.create(Object value);
-      accepts:
-        param:
-          <<: *accepts-create-value
-          type: String &#124; boolean &#124; long &#124; double &#124; datetime
-      returns:
-        - "[`Attribute`](../concept-api/thing?tab=java#attribute-methods) object"
-    javascript:
-      <<: *method-create
-      method: await attributeType.create(value);
-      accepts:
-        param:
-          <<: *accepts-create-value
-          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
-      returns:
-        - "[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) object"
-    python:
-      <<: *method-create
-      method: attribute_type.create(value)
-      accepts:
-        param:
-          <<: *accepts-create-value
-          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
-      returns:
-        - "[`Attribute`](../concept-api/thing?tab=python#attribute-methods) object"
-
-  - method:
-    common: &method-attribute
-      title: Retrieve instance by value
-      description: Retrieves the instance of this AttributeType with the given value.
-      accepts:
-        param:
-          name: value
-          description: The value for the instance of this AttributeType to retrieve.
-          type: String &#124; boolean &#124; integer &#124; float &#124; datetime
-          required: true
-          default: N/A
-    java:
-      <<: *method-attribute
-      method: attributeType.attribute(Object value);
-      returns:
-        - "[`Attribute`](../concept-api/thing?tab=java#attribute-methods) object"
-        - "NULL"
-    javascript:
-      <<: *method-attribute
-      method: await attributeType.attribute(value);
-      returns:
-        - "[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) object"
-        - "`null`"
-    python:
-      <<: *method-attribute
-      method: attribute_type.attribute(value)
-      returns:
-        - "[`Attribute`](../concept-api/thing?tab=python#attribute-methods) object"
-        - "`None`"
-
-  - method:
-    common: &method-valueType
+    common: &method-getvalueType
       title: Retrieve valuetype
       description: Retrieves the valuetype given to this AttributeType.
       returns:
         - "`String`"
     java:
-      <<: *method-valueType
-      method: attributeType.valueType();
+      <<: *method-getvalueType
+      method: attributeType.getValueType();
     javascript:
-      <<: *method-valueType
-      method: await attributeType.valueType();
+      <<: *method-getvalueType
+      method: await attributeType.getValueType();
     python:
-      <<: *method-valueType
-      method: attributeType.value_type()
+      <<: *method-getvalueType
+      method: attributeType.get_value_type()
 
   - method:
-    common: &method-regex-retrieve
-      title: Retrieve regex
-      description: Retrieves the regex that all instances of this AttributeType must conform to.
-    java:
-      <<: *method-regex-retrieve
-      method: attributeType.regex();
-      returns:
-        - "`String`"
-        - "`NULL`"
-    javascript:
-      <<: *method-regex-retrieve
-      method: await attributeType.regex();
-      returns:
-        - "`String`"
-        - "`None`"
-    python:
-      <<: *method-regex-retrieve
-      method: attribute_type.regex()
-      returns:
-        - "`String`"
-        - "`null`"
-
-  - method:
-    common: &method-regex-set
-      title: Set regex
-      description: Set the regex that all instances of this AttributeType must conform to.
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied AttributeType as the supertype of the current AttributeType
       accepts:
-        param:
-          name: regex
-          description: The regex that all instances of this AttributeType must conform to.
-          type: String
-          required: true
-          default: N/A
+        - param:
+            - name: attributeType
+            - description: The AttributeType to set as the supertype of this AttributeType
+            - type: AttributeType
+            - required: true
+            - default: N/A
     java:
-      <<: *method-regex-set
-      method: attributeType.regex(String regex);
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(AttributeType attributeType);
       returns:
-        - "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods) object"
+        - void
     javascript:
-      <<: *method-regex-set
-      method: await attributeType.regex(regex);
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(attributeType);
       returns:
         - void
     python:
-      <<: *method-regex-set
-      method: attribute_type.regex(regex)
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(attributeType)
       returns:
-        - "[`AttributeType`](../concept-api/type?tab=python#attributetype-methods) object"
+        - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the AttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`AttributeType`](../concept-api/type?tab=java#attribute-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`AttributeType`](../concept-api/type?tab=javascript#attribute-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`AttributeType`](../concept-api/type?tab=python#attribute-type-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this AttributeType
+      description: Retrieves all Attributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)
+  - method:
+    common: &method-getOwners
+      title: Retrieve owners of this Type of Attribute
+      description: Retrieve all Things that own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
+      accepts:
+        - param:
+          - name: onlyKey
+          - description: If true, only retrieve things that have an attribute of this type as a key.
+          - type: boolean
+          - required: false
+          - default: false
+    java:
+      <<: *method-getOwners
+      method: type.getOwners(boolean onlyKey);
+      returns:
+        - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
+    javascript:
+      <<: *method-getOwners
+      method: type.getOwners(onlyKey)
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`Thing`](../concept-api/thing?tab=javascript#thing-methods)>"
+    python:
+      <<: *method-getOwners
+      method: type.getOwners(onlyKey)
+      returns:
+        - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the AttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: attributeType.asRemote(Transaction tx);
+      returns:
+        - "`AttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: attributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: attributeType.as_remote(tx)
+
+  - method:
+    common: &method-isboolean
+      title: Check if value is of type boolean
+      description: Returns true if the value for attributes of this type is of type boolean. Otherwise, returns false.
+    java:
+      <<: *method-isboolean
+      method: attribute.isBoolean();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isboolean
+      method: attribute.isBoolean();
+      return:
+        - boolean
+    python:
+      <<: *method-isboolean
+      method: attribute.is_boolean()
+      return:
+        - boolean
+
+  - method:
+    common: &method-islong
+      title: Check if value is of type long
+      description: Returns true if the value for attributes of this type is of type long. Otherwise, returns false.
+    java:
+      <<: *method-islong
+      method: attribute.isLong();
+      return:
+        - boolean
+    javascript:
+      <<: *method-islong
+      method: attribute.isLong();
+      return:
+        - boolean
+    python:
+      <<: *method-islong
+      method: attribute.is_long()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isdouble
+      title: Check if value is of type double
+      description: Returns true if the value for attributes of this type is of type double. Otherwise, returns false.
+    java:
+      <<: *method-isdouble
+      method: attribute.isDouble();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isdouble
+      method: attribute.isDouble();
+      return:
+        - boolean
+    python:
+      <<: *method-isdouble
+      method: attribute.is_double()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isstring
+      title: Check if value is of type string
+      description: Returns true if the value for attributes of this type is of type string. Otherwise, returns false.
+    java:
+      <<: *method-isstring
+      method: attribute.isString();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isstring
+      method: attribute.isString();
+      return:
+        - boolean
+    python:
+      <<: *method-isstring
+      method: attribute.is_string()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isdatetime
+      title: Check if value is of type datetime
+      description: Returns true if the value for attributes of this type datetime. Otherwise, returns false.
+    java:
+      <<: *method-isdatetime
+      method: attribute.isDateTime();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isdatetime
+      method: attribute.isDateTime();
+      return:
+        - boolean
+    python:
+      <<: *method-isdatetime
+      method: attribute.is_datetime()
+      return:
+        - boolean

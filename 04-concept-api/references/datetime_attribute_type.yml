@@ -1,0 +1,165 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this DateTimeAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - DateTimeAttribute object
+      accepts: &method-put-accepts
+        param: &method-put-accepts-value
+          name: value
+          description: The value of the instance to be put
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: datetimeAttributeType.put(LocalDateTime value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: LocalDateTime
+    javascript:
+      <<: *method-put
+      method: await dateTimeAttributeType.put(value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: Date
+    python:
+      <<: *method-put
+      method: dateTimeAttributeType.put(value)
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: datetime
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if extant, of this DateTimeAttributeType with the specified value.
+      returns:
+        - DateTimeAttribute object
+      accepts: &method-get-accepts
+        param: &method-get-accepts-value
+          name: value
+          description: The value of the instance to be retrieved
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: datetimeAttributeType.get(LocalDateTime value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: LocalDateTime
+    javascript:
+      <<: *method-get
+      method: await dateTimeAttributeType.get(value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: number
+    python:
+      <<: *method-get
+      method: dateTimeAttributeType.get(value)
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: datetime
+
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied DatetimeAttributeType as the supertype of the current DateTimeAttributeType
+      accepts:
+        - param:
+            - name: dateTimeAttributeType
+            - description: The AttributeType to set as the supertype of this DateTimeAttributeType
+            - type: DateTimeAttributeType
+            - required: true
+            - default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(DatetimeAttributeType datetimeAttributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(datetimeAttributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(datetimeAttributeType)
+      returns:
+        - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the DatetimeAttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`DatetimeAttributeType`](../concept-api/type?tab=java#datetime-attribute-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`DateTimeAttributeType`](../concept-api/type?tab=javascript#datetime-attribute-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`DatetimeAttributeType`](../concept-api/type?tab=python#datetime-attribute-type-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this DatetimeAttributeType
+      description: Retrieves all DatetimeAttributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`DatetimeAttribute`](../concept-api/thing?tab=java#datetime-attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`DatetimeAttribute`](../concept-api/thing?tab=javascript#datetime-attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`DateTimeAttribute`](../concept-api/thing?tab=python#datetime-attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the DateTimeAttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteDatetimeAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: dateTimeAttributeType.asRemote(Transaction tx);
+      returns:
+        - "`DateTimeAttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: dateTimeAttributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: dateTimeAttributeType.as_remote(tx)

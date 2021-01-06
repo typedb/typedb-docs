@@ -1,0 +1,136 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this BooleanAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - BooleanAttribute object
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be put
+          type: Boolean
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: booleanAttributeType.put(boolean value);
+    javascript:
+      <<: *method-put
+      method: await booleanAttributeType.put(value);
+    python:
+      <<: *method-put
+      method: booleanAttributeType.put(value)
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if extant, of this BooleanAttributeType with the specified value.
+      returns:
+        - BooleanAttribute object
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be retrieved
+          type: boolean
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: booleanAttributeType.get(Boolean value);
+    javascript:
+      <<: *method-get
+      method: await booleanAttributeType.get(value);
+    python:
+      <<: *method-get
+      method: booleanAttributeType.get(value)
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied BooleanAttributeType as the supertype of the current BooleanAttributeType
+      accepts:
+        - param:
+            - name: booleanAttributeType
+            - description: The AttributeType to set as the supertype of this BooleanAttributeType
+            - type: BooleanAttributeType
+            - required: true
+            - default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(BooleanAttributeType booleanAttributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(booleanAttributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(booleanAttributeType)
+      returns:
+        - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the BooleanAttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`BooleanAttributeType`](../concept-api/type?tab=java#boolean-attribute-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`BooleanAttributeType`](../concept-api/type?tab=javascript#boolean-attribute-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`BooleanAttributeType`](../concept-api/type?tab=python#boolean-attribute-type-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this BooleanAttributeType
+      description: Retrieves all BooleanAttributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`BooleanAttribute`](../concept-api/thing?tab=java#boolean-attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`BooleanAttribute`](../concept-api/thing?tab=javascript#boolean-attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`BooleanAttribute`](../concept-api/thing?tab=python#boolean-attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the BooleanAttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteBooleanAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: booleanAttributeType.asRemote(Transaction tx);
+      returns:
+        - "`BooleanAttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: booleanAttributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: booleanAttributeType.as_remote(tx)
