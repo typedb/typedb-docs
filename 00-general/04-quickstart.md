@@ -70,19 +70,32 @@ First, download the [`social-network/schema.gql`](../files/social-network/schema
 Feel free to study the content of `social-network-schema.gql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [Grakn Workbase](../07-workbase/00-overview.md).
 </div>
 
-While in the unzipped directory of the Grakn distribution, via terminal, run:
+While in the unzipped directory of the Grakn distribution, via terminal, open the console:
 
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
-./grakn console --database-use social_network --source path-to-the-social-network/schema.gql
+./grakn console
+```
+Create a database called `social_network`:
+```
+> database create social_network
+```
+Open a schema write transaction:
+```
+> transaction social_network schema write
+```
+Inside that transaction, load the schema from file using the `source` command:
+```
+social_network::schema::write> source path-to-the-social-network/schema.gql
+> commit
 ```
 
 ### Load the Dataset
-Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. Run:
+Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_netowrk` database and use the `source` command to load the data from file:
 
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
-./grakn console --database-use social_network --source path-to-the-social-network/schema.gql
+> transaction social_network data write
+social_network::data::write> source path-to-the-social-network/schema.gql
+social_network::data::write> commit
 ```
 
 As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
@@ -94,18 +107,18 @@ Let's see an example of running [Graql get queries](../11-query/02-get-query.md)
 
 #### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-running-grakn/02-console.md)
 
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
-Enter the `social_network` database using the Console.
+Using the open console, ask for a read transaction for the `social_network` database:
 ```
-$ ./grakn console --database-use social_network
+> transaction social_network data read
+social_network::data::read>
 ```
 
-Write the query to retrieve the desired result.
+At the prompt, write this query to retrieve the desired results.
 ```graql
 match $tra (traveler: $per) isa travel; (located-travel: $tra, travel-location: $loc) isa location-of-travel; $loc has name "French Lick"; $per has full-name $fn; get $fn;
 ```
 
-The result contains the following answers.
+The result contains the following answers:
 <!-- test-ignore -->
 ```graql
 {$fn "Solomon Tran" isa full-name;}

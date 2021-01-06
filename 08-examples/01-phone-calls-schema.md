@@ -182,19 +182,24 @@ For the rest of these instructions, I assume that you have downloaded the Grakn 
 ./grakn server
 ```
 
-**3 -** Load the schema into a Grakn database. Run:
+**3 -** Load the schema into a Grakn database. In a separate terminal window, run:
 
 ```
-./grakn console --database phone_calls --file path/to/the/schema.gql
+./grakn console
+> database create phone_calls
+> transaction phone_calls schema write
+phone_calls:schema:write> source path/to/the/schema.gql
+> commit
 ```
 
-**4 -** Open the Grakn console in interactive mode. Run:
+**4 -** Open a schema read transaction. Run:
 
 ```
-./grakn console --database phone_calls
+> transaction phone_calls schema read
+phone_calls:schema:read>
 ```
 
-**5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Grakn console, run:
+**5 -** Make sure the schema is properly defined in our newly created knowledge graph. At the prompt, run:
 
 ```graql
 match $x sub thing; get $x;
@@ -221,6 +226,12 @@ The result should be as follows:
 {$x label duration sub attribute;}
 {$x label phone-number sub attribute;}
 {$x label is-customer sub attribute;}
+```
+
+**5 -** Close the transaction and exit the console:
+```
+phone_calls:schema:read> close
+> exit
 ```
 
 ## To Recap
