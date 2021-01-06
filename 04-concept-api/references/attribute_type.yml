@@ -1,5 +1,36 @@
 methods:
   - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this AttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - Attribute object
+    java:
+      <<: *method-put
+      method: attributeType.put(value);
+    javascript:
+      <<: *method-put
+      method: await attributeType.put(value);
+    python:
+      <<: *method-put
+      method: attributeType.put(value)
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if extant, of this AttributeType with the specified value.
+      returns:
+        - Attribute object
+    java:
+      <<: *method-put
+      method: attributeType.get(value);
+    javascript:
+      <<: *method-put
+      method: await attributeType.get(value);
+    python:
+      <<: *method-put
+      method: attributeType.get(value)
+  - method:
     common: &method-getvalueType
       title: Retrieve valuetype
       description: Retrieves the valuetype given to this AttributeType.
