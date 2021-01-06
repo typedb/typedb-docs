@@ -87,7 +87,7 @@ methods:
       returns:
         - Iterator of [`ThingType`](../concept-api/type?tab=python#thingtype-methods)
 
-- method:
+  - method:
     common: &method-getInstances
       title: Retrieve instances
       descriptions: Retrieve all instances of this ThingType.
@@ -334,27 +334,6 @@ methods:
       method: thing_type.get_plays()
       returns:
         - Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)
-
-  # TODO: delete this
-  - method:
-    common: &method-getOwns
-      title: Retrieve attributes
-      description: Retrieves attributes that the instances of this type are allowed to own.
-    java:
-      <<: *method-getOwns
-      method: type.attributes();
-      returns:
-        - "Stream of [`AttributeType`](../concept-api/type?tab=java#attributetype-methods) objects"
-    javascript:
-      <<: *method-getOwns
-      method: await type.attributes();
-      returns:
-        - "Iterator of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods) objects"
-    python:
-      <<: *method-getOwns
-      method: type.attributes()
-      returns:
-        - "Iterator of [`AttributeType`](../concept-api/type?tab=python#attributetype-methods) objects"
 
   - method:
     common: &method-getOwns
