@@ -329,7 +329,7 @@ define
 	school-course sub entity,
 		owns title @key,
 		plays school-course-offering:course,
-		plays studentship:course
+		plays studentship:course,
 		plays coursemates:course;
 
 	person sub entity,

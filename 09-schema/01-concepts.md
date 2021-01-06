@@ -438,7 +438,7 @@ membership-request sub request,
 GraqlDefine query = Graql.define(
   type("request").sub("relation").relates("subject").relates("requester").relates("respondent"),
   type("friend-request").sub("request").relates("friendship", "subject"),
-  type("membership-request").sub("request").relates("approved", "subject"),
+  type("membership-request").sub("request").relates("approved", "subject")
 );
 ```
 
