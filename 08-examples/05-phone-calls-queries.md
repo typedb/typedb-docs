@@ -104,7 +104,7 @@ public class PhoneCallsFirstQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query)).collect(Collectors.toList());
+        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query).asMatch()).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asThing().asAttribute().getValue().toString()
@@ -280,7 +280,7 @@ public class PhoneCallsSecondQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query)).collect(Collectors.toList());
+        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query).asMatch()).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asThing().asAttribute().getValue().toString()
@@ -451,7 +451,7 @@ public class PhoneCallsThirdQuery {
 
         List&lt;String&gt; result = new ArrayList<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query)).collect(Collectors.toList());
+        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query).asMatch()).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
             result.add(
                     answer.get("phone-number").asThing().asAttribute().getValue().toString()
@@ -627,7 +627,7 @@ public class PhoneCallsForthQuery {
 
         Set&lt;String&gt; result = new HashSet<>();
 
-        List&lt;ConceptMap&gt; answers = transaction.query().match((GraqlMatch.Unfiltered) parseQuery(query)).collect(Collectors.toList());
+        List&lt;ConceptMap&gt; answers = transaction.query().match(parseQuery(query).asMatch()).collect(Collectors.toList());
         for (ConceptMap answer : answers) {
             result.add(answer.get("phone-number-a").asThing().asAttribute().getValue().toString());
             result.add(answer.get("phone-number-b").asThing().asAttribute().getValue().toString());
@@ -794,7 +794,8 @@ package io.grakn.example.phoneCalls;
 import grakn.client.Grakn;
 import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
-import grakn.client.concept.answer.AnswerGroup;
+import grakn.client.concept.answer.ConceptMapGroup;
+import grakn.client.concept.answer.Numeric;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
@@ -820,14 +821,10 @@ public class PhoneCallsFifthQuery {
 
         String firstQuery = String.join("", firstQueryAsList);
 
-        List<ConceptMap> firstAnswers = transaction.query().match(parseQuery(firstQuery)).collect(Collectors.toList());
-        float fisrtResult = 0;
-        if (firstAnswers.size() > 0) {
-            // FIXME(vmax): figure this out once API for aggregations is there
-            // fisrtResult = firstAnswers.get(0).number().floatValue();
-        }
+        Numeric firstAnswer = transaction.query().match(parseQuery(firstQuery).asMatchAggregate()).get();
+        Number firstResult = firstAnswer.asNumber();
 
-        String result = "Customers aged under 20 have made calls with average duration of " + fisrtResult + " seconds.\n";
+        String result = "Customers aged under 20 have made calls with average duration of " + firstResult + " seconds.\n";
 
         List&lt;String&gt; secondQueryAsList = Arrays.asList(
                 "match",
@@ -843,12 +840,8 @@ public class PhoneCallsFifthQuery {
 
         String secondQuery = String.join("", secondQueryAsList);
 
-        float secondResult = 0;
-        List<ConceptMap> secondAnswers = transaction.query().match(parseQuery(secondQuery)).collect(Collectors.toList());
-        if (secondAnswers.size() > 0) {
-            // FIXME(vmax): figure this out once API for aggregations is there
-            // secondResult = secondAnswers.get(0).number().floatValue();
-        }
+        Numeric secondAnswer = transaction.query().match(parseQuery(secondQuery).asMatchAggregate()).get();
+        Number secondResult = secondAnswer.asNumber();
 
         result += "Customers aged over 40 have made calls with average duration of " + secondResult + " seconds.\n";
 

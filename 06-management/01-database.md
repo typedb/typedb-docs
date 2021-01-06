@@ -15,7 +15,7 @@ Databases are isolated from one another. Even when running on the same Grakn Ser
 </div>
 
 ### Creating a Database
-We can create a new a database via the Grakn Clients [Java](../03-client-api/01-java.md#create-a-sessiondatabase), [Node.js](../03-client-api/03-nodejs.md#create-a-sessiondatabase) and [Python](../03-client-api/02-python.md#create-a-sessiondatabase) and [Grakn Console](../02-running-grakn/02-console.md#console-options).
+We can create a new a database via the Grakn Clients [Java](../03-client-api/01-java.md#create-a-sessiondatabase), [Node.js](../03-client-api/03-nodejs.md#create-a-sessiondatabase) and [Python](../03-client-api/02-python.md#create-a-sessiondatabase) and [Grakn Console](../02-running-grakn/02-console.md).
 
 ### Listing All Databases
 We can list all databases of the running Grakn server via the Grakn Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [Workbase](../07-workbase/01-connection.md#select-a-database).

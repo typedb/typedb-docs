@@ -49,5 +49,5 @@ The pattern is a conjunction of four different pattern types:
 - **Conjunction 1** specifies the variables for people, school and organisation, specifies their types and asks for `full-name`s of people.
 - **Disjunction** specifies that the companies of interest are either `Pharos` or `Cybersafe`.
 - **Negation** specifies that we are not interested in the people who attended the school named `HCC`.
-- **Conjunction 2** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `school-course-enrollment` relationship, and
+- **Conjunction 2** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `studentship` relationship, and
 work at the same organisation via the `employment` relationship.

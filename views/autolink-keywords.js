@@ -82,13 +82,6 @@ codeKeywordsToLink = {
             "languages": ["java", "javascript", "python"]
         },
         {
-            "titles": ["compute"],
-            "baseUrl": "../query/compute-query",
-            "syntaxedAs": ["function", "graql-keyword", "string"],
-            "anchor": "#compute-statistics",
-            "languages": ["graql", "java", "javascript", "python"]
-        },
-        {
             "titles": ["ConceptMap", "concept_map", "conceptMap"],
             "syntaxedAs": ["uncategorised"],
             "anchor": "#conceptmap",
