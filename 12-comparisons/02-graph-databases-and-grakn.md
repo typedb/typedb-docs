@@ -416,12 +416,11 @@ For example, we could create a rule that infers the relation between siblings, i
 
 <!-- test-ignore -->
 ```graql
-siblingship-rule sub rule, 
+rule siblingship-rule: 
 when {
   (parent: $parent, child: $child1) isa parenthood;
   (parent: $parent, child: $child2) isa parenthood;
-},
-then {
+} then {
   (sibling: $child1, sibling: $child2) isa siblingship;
 };
 ```
@@ -480,14 +479,14 @@ In the first rule, we infer the `cousinship` relation. The logic is as follows:
 
 <!-- test-ignore -->
 ```graql
-cousin-inferred sub rule, 
+rule cousin-inferred: 
 when {
     $a isa person;
     $b isa person;
     $c isa person;
     $1 (parent: $a, child: $b) isa parenthood;
     $2 (uncle-aunt: $a, nephew-niece: $c) isa uncle-auntship;
-}, then {
+} then {
     (cousin: $b, cousin: $c) isa cousinship;
 };
 ```
@@ -499,14 +498,14 @@ One of the conditions of this rule is the `uncle-auntship` relation, which would
 
 <!-- test-ignore -->
 ```graql
-aunt-niece-rule sub rule, 
+rule aunt-niece-rule: 
 when {
     $a isa person; 
     $b isa person;
     $c isa person;
     $1 (parent: $b, child: $a) isa parenthood;
     $2 (sibling: $b, sibling: $c) isa siblingship;
-}, then {
+} then {
     (nephew-niece: $a, uncle-aunt: $c) isa uncle-auntship;
 };
 ```
@@ -533,14 +532,13 @@ The rule that infers the `overlaps` relation looks like this:
 
 <!-- test-ignore -->
 ```graql
-overlapping-schedule sub rule, 
+rule overlapping-schedule: 
 when {
   $schedule1 isa schedule, has end $1End; 
   $schedule2 isa schedule, has start $2Start, has end $2End; 
   $1End > $2Start; 
   $1End <= $2End; 
-},
-then {
+} then {
   ($schedule1, $schedule2) isa overlaps; 
 ); 
 ```
@@ -623,7 +621,7 @@ This `risk-factor` relation is an inferred relation that contains the logic nece
 
 <!-- test-ignore -->
 ```graql
-alcohol-risk-of-diabetes sub rule,
+rule alcohol-risk-of-diabetes:
 when {
     $person isa person;
     $c(consumer: $person, consumed-substance: $substance) isa consumption, has units-per-week $units;
@@ -631,11 +629,11 @@ when {
     $substance isa substance, has name "Alcohol";
     $disease isa disease, has name "Diabetes Type II";
     $disease2 isa disease, has name "Hypoglycemia";
-}, then {
+} then {
   (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa alcohol-risk-factor;
 };
 
-heriditary-risk-of-diabetes sub rule,
+rule: heriditary-risk-of-diabetes:
 when {
     $person isa person;
     $parent isa person;
@@ -643,11 +641,11 @@ when {
     (patient: $parent, diagnosed-disease: $disease) isa diagnosis;
     $disease isa disease, has name "Diabetes Type II";
     $disease2 isa disease, has name "Arthritis";
-}, then {
+} then {
   (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa hereditary-risk-factor;
 };
 
-smoking-risk-of-multiple-sclerosis sub rule,
+rule smoking-risk-of-multiple-sclerosis:
 when {
     $person isa person;
     (consumer: $person, consumed-substance: $substance) isa consumption, has units-per-week $units;
@@ -659,7 +657,7 @@ when {
     $disease4 isa disease, has name "Multiple Sclerosis";
     $disease5 isa disease, has name "Chronic Obstructive Pulmonary Disease";
     $disease6 isa disease, has name "Heart Disease";
-}, then {
+} then {
   (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2, risked-disease: $disease3,
   risked-disease: $disease4, risked-disease: $disease5, risked-disease: $disease6) isa smoking-risk-factor;
 };

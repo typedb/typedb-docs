@@ -194,7 +194,7 @@ blocks to perform exclusions, e.g. the query pattern to list all non-English spe
 ```graql
 {
     (employee: $x) isa employment;
-    (speaker: $x, spoken: $y) isa speaking-of-language;
+    (speaker: $x, language: $y) isa fluency;
     not { $y "English";};
 }
 ```
@@ -206,8 +206,8 @@ Pattern pattern = and(
     var().rel("employee", var("x")).isa("employment"),
     var()
         .rel("speaker", var("x"))
-        .rel("spoken", var("y"))
-        .isa("speaking-of-language"),
+        .rel("language", var("y"))
+        .isa("fluency"),
     not(var("y").eq("English"))
 );
 ```
