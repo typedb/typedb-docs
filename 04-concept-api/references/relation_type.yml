@@ -27,12 +27,12 @@ methods:
       <<: *method-getrelates
       method: relationType.getRelates();
       returns:
-        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javatab=#role-type-methods) objects"
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=java#role-type-methods) objects"
     javascript:
       <<: *method-getrelates
       method: relationType.getRelates();
       returns:
-        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javascripttab=#role-type-methods) objects"
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#role-type-methods) objects"
     python:
       <<: *method-getrelates
       method: relation_type.get_relates()
