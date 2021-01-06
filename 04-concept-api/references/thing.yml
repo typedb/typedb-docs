@@ -42,19 +42,186 @@ methods:
 
   - method:
     common: &method-type
-      title: Retrieve type (Local)
-      description: Retrieves the type which this Thing belongs to. When this thing is a local concept, the returned concept is also local.
+      title: Retrieve type
+      description: Retrieves the type which this Thing belongs to.
       returns:
-        - "[`Type`](../concept-api/type) object"
+        - "[`ThingType`](../concept-api/type)"
     java:
       <<: *method-type
-      method: thing.type();
+      method: thing.getType();
     javascript:
       <<: *method-type
-      method: await thing.type();
+      method: await thing.getType();
     python:
       <<: *method-type
-      method: thing.type()
+      method: thing.get_type()
+
+  - method:
+    common: &method-setHas
+      title: Assign attribute
+      description: Assigns an Attribute to be owned by this Thing.
+      accepts:
+        param: &accepts-setHas-attribute
+          name: attribute
+          description: The Attribute to be owned by this Thing.
+          required: true
+          default: N/A
+    java:
+      <<: *method-setHas
+      method: thing.setHas(Attribute<?> attribute);
+      accepts:
+        param:
+          <<: *accepts-setHas-attribute
+          type: "[`Attribute<?>`](../concept-api/thing?tab=java#attribute-methods)"
+      returns:
+        - "[`Thing`](../concept-api/thing?tab=java)"
+    javascript:
+      <<: *method-setHas
+      method: await thing.setHas(attribute);
+      accepts:
+        param:
+          <<: *accepts-setHas-attribute
+          type: "[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
+      returns:
+        - "[`Thing`](../concept-api/thing?tab=javascript)"
+    python:
+      <<: *method-setHas
+      method: thing.set_has(attribute)
+      accepts:
+        param:
+          <<: *accepts-setHas-attribute
+          type: "[`Attribute`](../concept-api/thing?tab=python#attribute-methods)"
+      returns:
+        - "[`Thing`](../concept-api/thing?tab=python)"
+
+  - method:
+    common: &method-unsetHas
+      title: Unassign attribute
+      description: Unassigns an Attribute from this Thing.
+      accepts:
+        param:
+          name: attribute
+          description: The Attribute to be disowned from this Thing.
+          type: "[`Attribute`](../concept-api/thing#attribute-methods)"
+          required: true
+          default: N/A
+    java:
+      <<: *method-unsetHas
+      method: thing.unsetHas(Attribute<?> attribute);
+      returns:
+        - "[`Thing`](../concept-api/thing?tab=java)"
+    javascript:
+      <<: *method-unsetHas
+      method: await thing.unsetHas(attribute);
+      returns:
+        - "[`Thing`](../concept-api/thing?tab=javascript)"
+    python:
+      <<: *method-unsetHas
+      method: thing.unset_has(attribute)
+      returns:
+        - "[`Thing`](../concept-api/thing?tab=python)"
+
+  - method:
+    common: &method-isInferred
+      title: Check if inferred
+      description: Checks if this Thing is inferred by a [Reasoning Rule](../schema/rules).
+      returns:
+        - boolean
+    java:
+      <<: *method-isInferred
+      method: thing.isInferred();
+    javascript:
+      <<: *method-isInferred
+      method: await thing.isInferred();
+    python:
+      <<: *method-isInferred
+      method: thing.is_inferred()
+
+  - method:
+    common: &method-getHasWithOnlyKey
+      title: Retrieve attributes
+      description: Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+      accepts: &accepts-getHasWithOnlyKey
+        param: &accepts-getHasWithOnlyKey-onlyKey
+          name: onlyKey
+          type: boolean
+          description: If set to `true`, only attributes owned as a key will be retrieved.
+          required: false
+          default: false
+    java:
+      <<: *method-getHasWithOnlyKey
+      method: thing.getHas(boolean onlyKey));
+      accepts:
+        <<: *accepts-getHasWithOnlyKey
+        param:
+          <<: *accepts-getHasWithOnlyKey-onlyKey
+      returns:
+        - Stream<[`Attribute<?>`](../concept-api/thing?tab=java#attribute-methods)>
+    javascript:
+      <<: *method-getHasWithOnlyKey
+      method: await thing.attributes(attributeTypes);
+      accepts:
+        <<: *accepts-getHasWithOnlyKey
+        param:
+          <<: *accepts-getHasWithOnlyKey-onlyKey
+          name: attributeTypes
+          type: "Array of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)s"
+      returns:
+        - "Iterator of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
+    python:
+      <<: *method-getHasWithOnlyKey
+      method: thing.attributes(attribute_types)
+      accepts:
+        <<: *accepts-getHasWithOnlyKey
+        param:
+          <<: *accepts-getHasWithOnlyKey-onlyKey
+          name: attribute_types
+          type: "List of [`AttributeType`](../concept-api/type?tab=pyhthon#attributetype-methods)s"
+      returns:
+        - "Iterator of [`Attribute`](../concept-api/thing?tab=pyhthon#attribute-methods) objects"
+
+  - method:
+    common: &method-getHasWithOnlyKey
+      title: Retrieve attributes
+      description: Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+      accepts: &accepts-getHasWithOnlyKey
+        param: &accepts-getHasWithOnlyKey-onlyKey
+          description: The AttributeTypes to filter the attributes by.
+          required: false
+          default: N/A
+    java:
+      <<: *method-getHasWithOnlyKey
+      method: thing.attributes(AttributeType... attributeTypes));
+      accepts:
+        <<: *accepts-getHasWithOnlyKey
+        param:
+          <<: *accepts-getHasWithOnlyKey-onlyKey
+          name: attributeTypes
+          type: "Varargs of [`AttributeType`](../concept-api/type?tab=java#attributetype-methods)s"
+      returns:
+        - "Stream of [`Attribute`](../concept-api/thing?tab=java#attribute-methods) objects"
+    javascript:
+      <<: *method-getHasWithOnlyKey
+      method: await thing.attributes(attributeTypes);
+      accepts:
+        <<: *accepts-getHasWithOnlyKey
+        param:
+          <<: *accepts-getHasWithOnlyKey-onlyKey
+          name: attributeTypes
+          type: "Array of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)s"
+      returns:
+        - "Iterator of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
+    python:
+      <<: *method-getHasWithOnlyKey
+      method: thing.attributes(attribute_types)
+      accepts:
+        <<: *accepts-getHasWithOnlyKey
+        param:
+          <<: *accepts-getHasWithOnlyKey-onlyKey
+          name: attribute_types
+          type: "List of [`AttributeType`](../concept-api/type?tab=pyhthon#attributetype-methods)s"
+      returns:
+        - "Iterator of [`Attribute`](../concept-api/thing?tab=pyhthon#attribute-methods) objects"
 
   - method:
     common: &method-relations
@@ -113,170 +280,3 @@ methods:
       method: thing.roles()
       returns:
         - "Iterator of [`Role`](../concept-api/type?tab=python#role-methods) objects"
-
-  - method:
-    common: &method-attributes
-      title: Retrieve attributes
-      description: Retrieves the Attributes that this Thing owns, optionally filtered by one or ore AttributeTypes.
-      accepts: &accepts-attributes
-        param: &accepts-attributes-param-types
-          description: The AttributeTypes to filter the attributes by.
-          required: false
-          default: N/A
-    java:
-      <<: *method-attributes
-      method: thing.attributes(AttributeType... attributeTypes));
-      accepts:
-        <<: *accepts-attributes
-        param:
-          <<: *accepts-attributes-param-types
-          name: attributeTypes
-          type: "Varargs of [`AttributeType`](../concept-api/type?tab=java#attributetype-methods)s"
-      returns:
-        - "Stream of [`Attribute`](../concept-api/thing?tab=java#attribute-methods) objects"
-    javascript:
-      <<: *method-attributes
-      method: await thing.attributes(attributeTypes);
-      accepts:
-        <<: *accepts-attributes
-        param:
-          <<: *accepts-attributes-param-types
-          name: attributeTypes
-          type: "Array of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)s"
-      returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
-    python:
-      <<: *method-attributes
-      method: thing.attributes(attribute_types)
-      accepts:
-        <<: *accepts-attributes
-        param:
-          <<: *accepts-attributes-param-types
-          name: attribute_types
-          type: "List of [`AttributeType`](../concept-api/type?tab=pyhthon#attributetype-methods)s"
-      returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=pyhthon#attribute-methods) objects"
-
-  - method:
-    common: &method-keys
-      title: Retrieve keys
-      description: Retrieves the Attributes that this Thing owns as its keys, optionally filtered by one or ore AttributeTypes.
-      accepts: &accepts-keys
-        param: &accepts-keys-param-types
-          description: The AttributeTypes to filter the keys by.
-          required: false
-          default: N/A
-    java:
-      <<: *method-keys
-      method: thing.keys(AttributeType... attributeTypes);
-      accepts:
-        <<: *accepts-keys
-        param:
-          <<: *accepts-keys-param-types
-          name: attributeTypes
-          type: "Array of [`AttributeType`](../concept-api/type?tab=java#attributetype-methods)s"
-      returns:
-        - "Stream of [`Attribute`](../concept-api/thing?tab=java#attribute-methods) objects"
-    javascript:
-      <<: *method-keys
-      method: await thing.keys(attributeTypes);
-      accepts:
-        <<: *accepts-keys
-        param:
-          <<: *accepts-keys-param-types
-          name: attributeTypes
-          type: "Array of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)s"
-      returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
-    python:
-      <<: *method-keys
-      method: thing.keys(attribute_types)
-      accepts:
-        <<: *accepts-keys
-        param:
-          <<: *accepts-keys-param-types
-          name: attribute_types
-          type: "List of [`AttributeType`](../concept-api/type?tab=python#attributetype-methods)s"
-      returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods) objects"
-
-  - method:
-    common: &method-has
-      title: Assign attribute
-      description: Assigns an Attribute to be owned by this Thing.
-      accepts:
-        param: &accepts-has-attribute
-          name: attribute
-          description: The Attribute to be owned by this Thing.
-          required: true
-          default: N/A
-    java:
-      <<: *method-has
-      method: thing.has(Attribute attribute);
-      accepts:
-        param:
-          <<: *accepts-has-attribute
-          type: "[`Attribute`](../concept-api/thing?tab=java#attribute-methods)"
-      returns:
-        - "[`Thing`](../concept-api/thing?tab=java) object"
-    javascript:
-      <<: *method-has
-      method: await thing.has(attribute);
-      accepts:
-        param:
-          <<: *accepts-has-attribute
-          type: "[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
-      returns:
-        - "[`Thing`](../concept-api/thing?tab=javascript) object"
-    python:
-      <<: *method-has
-      method: thing.has(attribute)
-      accepts:
-        param:
-          <<: *accepts-has-attribute
-          type: "[`Attribute`](../concept-api/thing?tab=python#attribute-methods)"
-      returns:
-        - "[`Thing`](../concept-api/thing?tab=python) object"
-
-  - method:
-    common: &method-unhas
-      title: Unassign attribute
-      description: Unassigns an Attribute from this Thing.
-      accepts:
-        param:
-          name: attribute
-          description: The Attribute to be disowned from this Thing.
-          type: "[`Attribute`](../concept-api/thing#attribute-methods)"
-          required: true
-          default: N/A
-    java:
-      <<: *method-unhas
-      method: thing.unhas(Attribute attribute);
-      returns:
-        - "[`Thing`](../concept-api/thing?tab=java) object"
-    javascript:
-      <<: *method-unhas
-      method: await thing.unhas(attribute);
-      returns:
-        - "[`Thing`](../concept-api/thing?tab=javascript) object"
-    python:
-      <<: *method-unhas
-      method: thing.unhas(attribute)
-      returns:
-        - "[`Thing`](../concept-api/thing?tab=python) object"
-
-  - method:
-    common: &method-isInferred
-      title: Check if inferred (Local)
-      description: Checks if this Thing is inferred by a [Reasoning Rule](../schema/rules).
-      returns:
-        - boolean
-    java:
-      <<: *method-isInferred
-      method: thing.isInferred();
-    javascript:
-      <<: *method-isInferred
-      method: await thing.isInferred();
-    python:
-      <<: *method-isInferred
-      method: thing.is_inferred()
