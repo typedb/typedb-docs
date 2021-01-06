@@ -36,7 +36,7 @@ Depending on the type of the query carried out by a transaction, we retrieve dif
 ## Best Practices
 To avoid running into issues and make the most out of using a Grakn client, keep in mind the following points.
 
-**Keep one session open per database per client**. A session creates a local copy of the database. That means, if more than one session is opened on the same database, the changes in one is not reflected in the others. Therefore, it's best to always keep only one session open on a particular database.
+**Keep one session open per database per client**. If more than one session is opened on the same database, the changes in one are not reflected in the others. Therefore, it's best to always keep only one session open on a particular database.
 
 **Keep the number of operations per transaction minimal**. Although it is possible to commit a write transaction once after many operations, long transactions can lead to memory issues and computational overheads due to conflicting operations between transactions. It is best to keep the number of queries per transaction minimal, even one query per transaction where feasible. This also makes re-trying transactions that fail due to write-write conflicts much simpler in application code.
 
