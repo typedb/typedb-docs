@@ -15,6 +15,121 @@ methods:
       <<: *method-getvalueType
       method: attributeType.get_value_type()
 
+  - method:
+      common: &method-setsupertype
+        title: Set Supertype
+        description: Sets the supplied AttributeType as the supertype of the current AttributeType
+        accepts:
+          - param:
+              - name: attributeType
+              - description: The AttributeType to set as the supertype of this AttributeType
+              - type: AttributeType
+              - required: true
+              - default: N/A
+      java:
+        <<: *method-setsupertype
+        method: attributeType.setSupertype(AttributeType attributeType);
+        returns:
+          - void
+      javascript:
+        <<: *method-setsupertype
+        method: attributeType.setSupertype(attributeType);
+        returns:
+          - void
+      python:
+        <<: *method-setsupertype
+        method: attributeType.set_supertype(attributeType)
+        returns:
+          - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the AttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`AttributeType`](../concept-api/type?tab=java#attribute-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`AttributeType`](../concept-api/type?tab=javascript#attribute-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`AttributeType`](../concept-api/type?tab=python#attribute-type-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this AttributeType
+      description: Retrieves all Attributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)
+  - method:
+    common: &method-getOwners
+      title: Retrieve owners of this Type of Attribute
+      description: Retrieve all Things that own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
+      accepts:
+        - param:
+          - name: onlyKey
+          - description: If true, only retrieve things that have an attribute of this type as a key.
+          - type: boolean
+          - required: false
+          - default: false
+    java:
+      <<: *method-getOwners
+      method: type.getOwners(boolean onlyKey);
+      returns:
+        - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
+    javascript:
+      <<: *method-getOwners
+      method: type.getOwners(onlyKey)
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`Thing`](../concept-api/thing?tab=javascript#thing-methods)>"
+    python:
+      <<: *method-getOwners
+      method: type.getOwners(onlyKey)
+      returns:
+        - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the AttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: attributeType.asRemote(Transaction tx);
+      returns:
+        - "`AttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: attributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: attributeType.as_remote(tx)
 
   - method:
     common: &method-isboolean

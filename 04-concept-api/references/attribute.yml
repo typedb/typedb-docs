@@ -58,7 +58,7 @@ methods:
         - "Iterator of [`Thing`](../concept-api/thing?tab=python) objects"
   - method:
     common: &method-asRemote
-      title: Get a Remote version of the concept.
+      title: Get a Remote version of the Attribute.
       description: The remote version uses the given transaction to execute every method call.
       accepts:
         param:
@@ -71,7 +71,7 @@ methods:
         - "`RemoteAttribute`"
     java:
       <<: *method-asRemote
-      method: concept.asRemote(tx);
+      method: concept.asRemote(Transaction tx);
       returns:
         - "`Attribute.Remote`"
     javascript:
