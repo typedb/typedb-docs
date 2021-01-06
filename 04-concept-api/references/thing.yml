@@ -16,6 +16,31 @@ methods:
       method: thing.get_iid()
 
   - method:
+    common: &method-asRemote
+      title: Get a Remote version of the Thing.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: tx
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteThing`"
+    java:
+      <<: *method-asRemote
+      method: thing.asRemote(tx);
+      returns:
+        - "`Thing.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: thing.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: thing.as_remote(tx)
+
+  - method:
     common: &method-type
       title: Retrieve type (Local)
       description: Retrieves the type which this Thing belongs to. When this thing is a local concept, the returned concept is also local.

@@ -5,7 +5,7 @@ methods:
       description: The remote version uses the given transaction to execute every method call.
       accepts:
         param:
-          name: transaction
+          name: tx
           description: The transaction to be used to make method calls.
           type: Transaction
           required: true

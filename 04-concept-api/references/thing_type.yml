@@ -3,6 +3,13 @@ methods:
     common: &method-asRemote
       title: Get a Remote version of the ThingType.
       description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: tx
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
       returns:
         - "`RemoteThingType`"
     java:
