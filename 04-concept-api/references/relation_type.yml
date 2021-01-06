@@ -69,27 +69,33 @@ methods:
   - method:
     common: &method-relates
       title: Set new role
-      description: Sets the new role that this RelationType relates to.
+      description: Sets the new role that this RelationType relates to. If you are setting an overriding type this way, you have to also pass the overridden type as a second argument.
       accepts:
         param:
-          name: role
+          name: label
           description: The new role for the RelationType to relate to.
-          type: RoleType
+          type: String
           required: true
+          default: N/A
+        param2:
+          name: overriddenRoleLabel
+          description: The label being overridden, if applicable
+          type: String
+          required: false
           default: N/A
     java:
       <<: *method-relates
-      method: relationType.setRelates(RoleType role);
+      method: relationType.setRelates(String label, String overriddenRoleLabel);
       returns:
         - void
     javascript:
       <<: *method-relates
-      method: await relationType.setRelates(role);
+      method: await relationType.setRelates(label, overriddenRoleLabel);
       returns:
         - void
     python:
       <<: *method-relates
-      method: relation_type.set_relates(role)
+      method: relation_type.set_relates(label, overriddenRoleLabel)
       returns:
         - None
 
@@ -119,3 +125,94 @@ methods:
       method: relation_type.unset_relates(role)
       returns:
         - None
+
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied RelationType as the supertype of the current RelationType
+      accepts:
+        - param:
+            - name: relationType
+            - description: The AttributeType to set as the supertype of this RelationType
+            - type: RelationType
+            - required: true
+            - default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(RelationType relationType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(relationType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(relationType)
+      returns:
+        - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the RelationType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`RelationType`](../concept-api/type?tab=java#relation-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`RelationType`](../concept-api/type?tab=javascript#relation-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`RelationType`](../concept-api/type?tab=python#relation-type-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this RelationType
+      description: Retrieves all DoubleAttributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`DoubleAttribute`](../concept-api/thing?tab=java#double-attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`DoubleAttribute`](../concept-api/thing?tab=javascript#double-attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`DoubleAttribute`](../concept-api/thing?tab=python#double-attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the RelationType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteRelationType`"
+    java:
+      <<: *method-asRemote
+      method: relationType.asRemote(Transaction tx);
+      returns:
+        - "`RelationType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: relationType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: relationType.as_remote(tx)
