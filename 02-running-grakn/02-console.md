@@ -34,6 +34,7 @@ Console implements database management commands and transaction querying command
 | `exit`                                    | Exit console                                                                                          |
 
 ### Transaction querying commands
+
 | Command         | Description                                             |
 |-----------------|---------------------------------------------------------|
 | `<query>`       | Run Graql query                                         |
