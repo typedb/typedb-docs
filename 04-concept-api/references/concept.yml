@@ -160,21 +160,6 @@ methods:
       method: concept.is_relation()
 
   - method:
-    common: &method-isRule
-      title: Check if concept is a Rule (Local)
-      returns:
-        - "`boolean`"
-    java:
-      <<: *method-isRule
-      method: concept.isRule();
-    javascript:
-      <<: *method-isRule
-      method: concept.isRule();
-    python:
-      <<: *method-isRule
-      method: concept.is_rule()
-
-  - method:
     common: &method-asType
       title: Cast the concept as Type (Local)
       description: Casts the concept as Type so that we can call the Type methods on it.
