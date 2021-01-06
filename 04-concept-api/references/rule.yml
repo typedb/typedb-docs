@@ -1,31 +1,134 @@
 methods:
   - method:
+    common: &method-getLabel
+      title: Retrieve label (Local)
+      description: Retrieves the unique label of the rule.
+      returns:
+        - String
+    java:
+      <<: *method-getLabel
+      method: rule.getLabel();
+    javascript:
+      <<: *method-getLabel
+      method: rule.getLabel();
+    python:
+      <<: *method-getLabel
+      method: rule.get_label()
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the rule.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: tx
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteRule`"
+    java:
+      <<: *method-asRemote
+      method: rule.asRemote(tx);
+      returns:
+        - "`Rule.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: rule.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: rule.as_remote(tx)
+
+  - method:
     common: &method-when
-      title: Retrieve the when body
+      title: Retrieve the when body (Local)
       description: Retrieves the statements that constructs the when body of the rule.
       returns:
         - "`String`"
     java:
       <<: *method-when
-      method: rule.when();
+      method: rule.getWhen();
     javascript:
       <<: *method-when
       method: await rule.getWhen();
     python:
       <<: *method-when
       method: rule.get_when()
+
   - method:
     common: &method-then
-      title: Retrieve the then body
+      title: Retrieve the then body (Local)
       description: Retrieves the single statement that constructs the then body of the rule.
       returns:
         - "`String`"
     java:
       <<: *method-then
-      method: rule.then();
+      method: rule.getThen();
     javascript:
       <<: *method-then
-      method: await rule.get_then();
+      method: await rule.getThen();
     python:
       <<: *method-then
-      method: rule.getThen()
+      method: rule.get_then()
+
+  - method:
+    common: &method-setLabel
+      title: Rename label
+      description: Renames the label of the rule. The new label must remain unqiue.
+      accepts:
+        param:
+          name: label
+          description: The new label to be given to the rule.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-setLabel
+      method: rule.setLabel(String label);
+      returns:
+        - "`void`"
+    javascript:
+      <<: *method-setLabel
+      method: await rule.setLabel(label);
+      returns:
+        - "`void`"
+    python:
+      <<: *method-setLabel
+      method: rule.set_label(label)
+      returns:
+        - "`None`"
+
+  - method:
+    common: &method-delete
+      title: Delete rule
+      method: rule.delete();
+      returns:
+        - "`null`"
+    java:
+      <<: *method-delete
+    javascript:
+      <<: *method-delete
+      method: await rule.delete();
+      returns:
+        - "`void`"
+    python:
+      <<: *method-delete
+      returns:
+        - "`None`"
+
+  - method:
+    common: &method-isDeleted
+      title: Check if the rule has been deleted
+      method: rule.isDeleted();
+      returns:
+        - "`boolean`"
+    java:
+      <<: *method-isDeleted
+    javascript:
+      <<: *method-isDeleted
+      method: await rule.isDeleted();
+    python:
+      <<: *method-isDeleted
+      method: concept.is_deleted()
+      
