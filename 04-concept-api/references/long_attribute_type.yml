@@ -72,3 +72,94 @@ methods:
         param:
           <<: *method-get-accepts-value
           type: int
+
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied LongAttributeType as the supertype of the current LongAttributeType
+      accepts:
+        - param:
+            - name: longAttributeType
+            - description: The AttributeType to set as the supertype of this LongAttributeType
+            - type: LongAttributeType
+            - required: true
+            - default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(LongAttributeType longAttributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(longAttributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(longAttributeType)
+      returns:
+        - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the LongAttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`LongAttributeType`](../concept-api/type?tab=java#long-attribute-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`LongAttributeType`](../concept-api/type?tab=javascript#long-attribute-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`LongAttributeType`](../concept-api/type?tab=python#long-attribute-type-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this LongAttributeType
+      description: Retrieves all LongAttributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`LongAttribute`](../concept-api/thing?tab=java#long-attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`LongAttribute`](../concept-api/thing?tab=javascript#long-attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`LongAttribute`](../concept-api/thing?tab=python#long-attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the LongAttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteLongAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: longAttributeType.asRemote(Transaction tx);
+      returns:
+        - "`LongAttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: longAttributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: longAttributeType.as_remote(tx)

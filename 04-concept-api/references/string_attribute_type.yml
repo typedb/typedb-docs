@@ -93,3 +93,94 @@ methods:
       method: string_attribute_type.set_regex(regex)
       returns:
         - void
+
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied StringAttributeType as the supertype of the current StringAttributeType
+      accepts:
+        - param:
+            - name: stringAttributeType
+            - description: The AttributeType to set as the supertype of this StringAttributeType
+            - type: StringAttributeType
+            - required: true
+            - default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(StringAttributeType stringAttributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(stringAttributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(stringAttributeType)
+      returns:
+        - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the StringAttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`StringAttributeType`](../concept-api/type?tab=java#string-attribute-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`StringAttributeType`](../concept-api/type?tab=javascript#string-attribute-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`StringAttributeType`](../concept-api/type?tab=python#string-attribute-type-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this StringAttributeType
+      description: Retrieves all StringAttributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`StringAttribute`](../concept-api/thing?tab=java#string-attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`StringAttribute`](../concept-api/thing?tab=javascript#string-attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`StringAttribute`](../concept-api/thing?tab=python#string-attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the StringAttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteStringAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: stringAttributeType.asRemote(Transaction tx);
+      returns:
+        - "`StringAttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: stringAttributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: stringAttributeType.as_remote(tx)

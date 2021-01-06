@@ -109,3 +109,28 @@ methods:
       method: type.get_instances()
       returns:
         - Iterator of [`BooleanAttribute`](../concept-api/thing?tab=python#boolean-attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the BooleanAttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteBooleanAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: booleanAttributeType.asRemote(Transaction tx);
+      returns:
+        - "`BooleanAttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: booleanAttributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: booleanAttributeType.as_remote(tx)
