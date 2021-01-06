@@ -26,6 +26,8 @@ templatePath: 03-client-api/references/
 </dependencies>
 ```
 
+### Grakn Core 2.0
+Grakn Core 2.0 is currently in alpha, and will be updated frequently - the latest release of Client Java 2.0 can be found at https://repo.grakn.ai/#browse/browse:maven:io%2Fgrakn%2Fclient%2Fgrakn-client.
 
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
@@ -170,24 +172,24 @@ To view examples of running various Graql queries using the Grakn Client Java, h
  
 ## Dependencies
 
-| Client Java | Grakn Core     | Grakn Cluster  |
-| :---------: | :-------------:| :------------: |
-| 2.0.0-alpha | 2.0.0-alpha    | N/A            |
-| 1.8.3       | 1.8.0 to 1.8.4 | N/A            |
-| 1.8.2       | 1.8.0, 1.8.1   | N/A            |
-| 1.8.1       | 1.8.0          | N/A            |
-| 1.8.0       | 1.8.0          | N/A            |
-| 1.7.3       | 1.7.1, 1.7.2   | N/A            |
-| 1.7.2       | 1.7.1, 1.7.2   | N/A            |
-| 1.6.2       | 1.6.2          | 1.6.2          |
-| 1.6.1       | 1.6.0, 1.6.1   | N/A            |
-| 1.5.5       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.4       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.3       | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
-| 1.5.2       | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
-| 1.5.0       | 1.5.0          | N/A            |
-| 1.4.3       | 1.4.3          | 1.4.3          |
-| 1.4.2       | 1.4.2          | 1.2.0          |
-| 1.4.1       | 1.4.0          | 1.2.0          |
-| 1.4.0       | 1.4.0          | 1.2.0          |
-| 1.3.0       | 1.3.0          | 1.2.0          |
+| Client Java   | Grakn Core     | Grakn Cluster  |
+| :---------:   | :-------------:| :------------: |
+| 2.0.0-alpha-2 | 2.0.0-alpha    | N/A            |
+| 1.8.3         | 1.8.0 to 1.8.4 | N/A            |
+| 1.8.2         | 1.8.0, 1.8.1   | N/A            |
+| 1.8.1         | 1.8.0          | N/A            |
+| 1.8.0         | 1.8.0          | N/A            |
+| 1.7.3         | 1.7.1, 1.7.2   | N/A            |
+| 1.7.2         | 1.7.1, 1.7.2   | N/A            |
+| 1.6.2         | 1.6.2          | 1.6.2          |
+| 1.6.1         | 1.6.0, 1.6.1   | N/A            |
+| 1.5.5         | 1.5.8, 1.5.9   | 1.5.8          |
+| 1.5.4         | 1.5.8, 1.5.9   | 1.5.8          |
+| 1.5.3         | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
+| 1.5.2         | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
+| 1.5.0         | 1.5.0          | N/A            |
+| 1.4.3         | 1.4.3          | 1.4.3          |
+| 1.4.2         | 1.4.2          | 1.2.0          |
+| 1.4.1         | 1.4.0          | 1.2.0          |
+| 1.4.0         | 1.4.0          | 1.2.0          |
+| 1.3.0         | 1.3.0          | 1.2.0          |
