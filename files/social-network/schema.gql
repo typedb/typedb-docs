@@ -602,7 +602,9 @@ define
 
 	friend-request sub request,
 		owns approved-date,
-		relates friendship as subject;
+		relates friendship as subject,
+		relates friend-requester as requester,
+		relates friend-respondent as respondent;
 
 	friendship-list sub relation,
 		owns title,
@@ -611,8 +613,8 @@ define
 
 	person sub entity,
 		plays friendship:friend,
-		plays friend-request:requester,
-		plays friend-request:respondent,
+		plays friend-request:friend-requester,
+		plays friend-request:friend-respondent,
 		plays friendship-list:owner,
 		plays mutual-friendship:mutual-friend,
 		plays mutual-friendship:one-degree-friend;
@@ -659,7 +661,9 @@ define
 
 	membership-request sub request,
 		owns approved-date,
-		relates approved as subject;
+		relates approved as subject,
+		relates membership-requester as requester,
+		relates membership-respondent as respondent;
 
 	social-group sub entity,
 		abstract,
@@ -677,8 +681,8 @@ define
 	person sub entity,
 		plays ownership:owner,
 		plays membership:member,
-		plays membership-request:requester,
-		plays membership-request:respondent;
+		plays membership-request:membership-requester,
+		plays membership-request:membership-respondent;
 
 	#####################################
 	## public group membership request ##
@@ -690,7 +694,7 @@ define
 			(owner: $owner, owned-group: $group) isa group-ownership;
 			$membership (member: $member, membership-group: $group) isa membership;
 		} then {
-			(approved: $membership, requester: $member, respondent: $owner) isa membership-request;
+			(approved: $membership, membership-requester: $member, membership-respondent: $owner) isa membership-request;
 		};
 
 	###################################

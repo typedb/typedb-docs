@@ -308,33 +308,33 @@ $dre-1 (partner: $per-6, partner: $per-8) isa domestic-relationship, has start-d
 $rre-1 (partner: $per-7, partner: $per-9) isa romantic-relationship, has start-date 2017-07-03;
 
 ## FRIENDSHIPS
-$fri-req-1 (requester: $per-1, respondent: $per-2, friendship: $fri-1) isa friend-request, has approved-date 2008-03-12;
+$fri-req-1 (friend-requester: $per-1, friend-respondent: $per-2, friendship: $fri-1) isa friend-request, has approved-date 2008-03-12;
 $fri-1 (friend: $per-1, friend: $per-2) isa friendship;
-$fri-req-2 (requester: $per-1, respondent: $per-3, friendship: $fri-2) isa friend-request, has approved-date 2008-03-01;
+$fri-req-2 (friend-requester: $per-1, friend-respondent: $per-3, friendship: $fri-2) isa friend-request, has approved-date 2008-03-01;
 $fri-2 (friend: $per-1, friend: $per-3) isa friendship;
-$fri-req-3 (requester: $per-2, respondent: $per-3, friendship: $fri-3) isa friend-request, has approved-date 2008-04-14;
+$fri-req-3 (friend-requester: $per-2, friend-respondent: $per-3, friendship: $fri-3) isa friend-request, has approved-date 2008-04-14;
 $fri-3 (friend: $per-2, friend: $per-3) isa friendship;
-$fri-req-4 (requester: $per-3, respondent: $per-5, friendship: $fri-4) isa friend-request, has approved-date 2008-03-19;
+$fri-req-4 (friend-requester: $per-3, friend-respondent: $per-5, friendship: $fri-4) isa friend-request, has approved-date 2008-03-19;
 $fri-4 (friend: $per-3, friend: $per-5) isa friendship;
-$fri-req-5 (requester: $per-2, respondent: $per-4, friendship: $fri-5) isa friend-request, has approved-date 2008-03-21;
+$fri-req-5 (friend-requester: $per-2, friend-respondent: $per-4, friendship: $fri-5) isa friend-request, has approved-date 2008-03-21;
 $fri-5 (friend: $per-2, friend: $per-4) isa friendship;
-$fri-req-6 (requester: $per-6, respondent: $per-8, friendship: $fri-6) isa friend-request, has approved-date 2008-04-25;
+$fri-req-6 (friend-requester: $per-6, friend-respondent: $per-8, friendship: $fri-6) isa friend-request, has approved-date 2008-04-25;
 $fri-6 (friend: $per-6, friend: $per-8) isa friendship;
-$fri-req-7 (requester: $per-6, respondent: $per-7, friendship: $fri-7) isa friend-request, has approved-date 2008-03-02;
+$fri-req-7 (friend-requester: $per-6, friend-respondent: $per-7, friendship: $fri-7) isa friend-request, has approved-date 2008-03-02;
 $fri-7 (friend: $per-6, friend: $per-7) isa friendship;
-$fri-req-8 (requester: $per-7, respondent: $per-9, friendship: $fri-8) isa friend-request, has approved-date 2008-03-22;
+$fri-req-8 (friend-requester: $per-7, friend-respondent: $per-9, friendship: $fri-8) isa friend-request, has approved-date 2008-03-22;
 $fri-8 (friend: $per-7, friend: $per-9) isa friendship;
-$fri-req-9 (requester: $per-10, respondent: $per-11, friendship: $fri-9) isa friend-request, has approved-date 2008-04-12;
+$fri-req-9 (friend-requester: $per-10, friend-respondent: $per-11, friendship: $fri-9) isa friend-request, has approved-date 2008-04-12;
 $fri-9 (friend: $per-10, friend: $per-11) isa friendship;
-$fri-req-10 (requester: $per-11, respondent: $per-13, friendship: $fri-10) isa friend-request, has approved-date 2008-03-24;
+$fri-req-10 (friend-requester: $per-11, friend-respondent: $per-13, friendship: $fri-10) isa friend-request, has approved-date 2008-03-24;
 $fri-10 (friend: $per-11, friend: $per-13) isa friendship;
-$fri-req-11 (requester: $per-13, respondent: $per-12, friendship: $fri-11) isa friend-request, has approved-date 2008-03-04;
+$fri-req-11 (friend-requester: $per-13, friend-respondent: $per-12, friendship: $fri-11) isa friend-request, has approved-date 2008-03-04;
 $fri-11 (friend: $per-13, friend: $per-12) isa friendship;
-$fri-req-12 (requester: $per-14, respondent: $per-15, friendship: $fri-12) isa friend-request, has approved-date 2008-03-15;
+$fri-req-12 (friend-requester: $per-14, friend-respondent: $per-15, friendship: $fri-12) isa friend-request, has approved-date 2008-03-15;
 $fri-12 (friend: $per-14, friend: $per-15) isa friendship;
-$fri-req-13 (requester: $per-15, respondent: $per-16, friendship: $fri-13) isa friend-request, has approved-date 2008-04-14;
+$fri-req-13 (friend-requester: $per-15, friend-respondent: $per-16, friendship: $fri-13) isa friend-request, has approved-date 2008-04-14;
 $fri-13 (friend: $per-15, friend: $per-16) isa friendship;
-$fri-req-14 (requester: $per-14, respondent: $per-16, friendship: $fri-14) isa friend-request, has approved-date 2008-03-12;
+$fri-req-14 (friend-requester: $per-14, friend-respondent: $per-16, friendship: $fri-14) isa friend-request, has approved-date 2008-03-12;
 $fri-14 (friend: $per-14, friend: $per-16) isa friendship;
 
 ## TIMELINES
@@ -383,11 +383,11 @@ $gro-1-mem-5 (member: $per-5, membership-group: $gro-1) isa membership;
 $gro-2 isa secret-group, has name "Commodo";
 $gow-2 (owner: $per-10, owned-group: $gro-2) isa group-ownership;
 $gro-2-mem-2 (member: $per-11, membership-group: $gro-2) isa membership;
-$gro-2-mem-2-req (approved: $gro-2-mem-2, requester: $per-11, respondent: $per-10) isa membership-request;
+$gro-2-mem-2-req (approved: $gro-2-mem-2, membership-requester: $per-11, membership-respondent: $per-10) isa membership-request;
 $gro-2-mem-3 (member: $per-13, membership-group: $gro-2) isa membership;
-$gro-2-mem-3-req (approved: $gro-2-mem-3, requester: $per-13, respondent: $per-10) isa membership-request;
+$gro-2-mem-3-req (approved: $gro-2-mem-3, membership-requester: $per-13, membership-respondent: $per-10) isa membership-request;
 $gro-2-mem-4 (member: $per-6, membership-group: $gro-2) isa membership;
-$gro-2-mem-4-req (approved: $gro-2-mem-4, requester: $per-6, respondent: $per-10) isa membership-request;
+$gro-2-mem-4-req (approved: $gro-2-mem-4, membership-requester: $per-6, membership-respondent: $per-10) isa membership-request;
 
 ## EMOTIONS
 $emo-1 isa emotion; $emo-1 "like";

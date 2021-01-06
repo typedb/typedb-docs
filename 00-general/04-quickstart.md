@@ -45,8 +45,8 @@ friendship sub relation,
 ## an example of subtyping in Grakn
 friend-request sub request,
     relates friendship as subject,
-    relates requester as requester,
-    relates respondent as respondent;
+    relates friend-requester as requester,
+    relates friend-respondent as respondent;
 
 friendship-list sub relation,
     owns title,
@@ -55,8 +55,8 @@ friendship-list sub relation,
 
 person sub entity,
     plays friendship:friend,
-    plays friend-request:requester,
-    plays friend-request:respondent,
+    plays friend-request:friend-requester,
+    plays friend-request:friend-respondent,
     plays friendship-list:owner;
 ```
 

@@ -425,20 +425,24 @@ request sub relation,
 
 friend-request sub request,
   owns approved-date,
-  relates friendship as subject;
+  relates friendship as subject,
+  relates friend-requester as requester,
+  relates friend-respondent as respondent;
 
 membership-request sub request,
   owns approved-date,
-  relates approved as subject;
+  relates approved as subject
+  relates membership-requester as requester,
+  relates membership-respondent as respondent;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("request").sub("relation").relates("subject").relates("requester").relates("respondent"),
-  type("friend-request").sub("request").relates("friendship", "subject"),
-  type("membership-request").sub("request").relates("approved", "subject")
+  type("request").isAbstract().sub("relation").relates("subject").relates("requester").relates("respondent"),
+  type("friend-request").sub("request").relates("friendship", "subject").relates("friend-requester", "requester").relates("friend-respondent","respondent"),
+  type("membership-request").sub("request").relates("approved", "subject").relates("membership-requester", "requester").relates("membership-respondent", "respondent")
 );
 ```
 
