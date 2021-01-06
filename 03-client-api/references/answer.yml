@@ -197,6 +197,6 @@ types:
             - Array of [`ConceptMap`](#conceptmap)s
         python:
           <<: *method-conceptmapgroup-conceptmaps
-            method: concept_map_group.concept_maps();
+          method: concept_map_group.concept_maps();
           returns:
             - List of [`ConceptMap`](#conceptmap)s
