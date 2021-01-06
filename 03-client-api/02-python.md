@@ -25,7 +25,7 @@ To install Client Python 2.0, use:
 pip install grakn-client=={version}
 ```
 
-where `version` is the latest release of Client Python 2.0, which can be found at https://pypi.org/project/grakn-client/#history.
+where `version` is the latest release of Client Python 2.0, which can be found on [PyPi](https://pypi.org/project/grakn-client/#history).
 
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.

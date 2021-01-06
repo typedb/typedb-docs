@@ -27,7 +27,7 @@ templatePath: 03-client-api/references/
 ```
 
 ### Grakn Core 2.0
-Grakn Core 2.0 is currently in alpha, and will be updated frequently - the latest release of Client Java 2.0 can be found at https://repo.grakn.ai/#browse/browse:maven:io%2Fgrakn%2Fclient%2Fgrakn-client.
+Grakn Core 2.0 is currently in alpha, and will be updated frequently - the latest release of Client Java 2.0 can be found in the Grakn [public Maven repository](https://repo.grakn.ai/#browse/browse:maven:io%2Fgrakn%2Fclient%2Fgrakn-client).
 
 ## Quickstart
 First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
