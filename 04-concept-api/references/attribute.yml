@@ -68,7 +68,7 @@ methods:
         - boolean
     javascript:
       <<: *method-isboolean
-      method: await attribute.isBoolean();
+      method: attribute.isBoolean();
       return:
         - boolean
     python:
@@ -88,7 +88,7 @@ methods:
         - boolean
     javascript:
       <<: *method-islong
-      method: await attribute.isLong();
+      method: attribute.isLong();
       return:
         - boolean
     python:
@@ -108,7 +108,7 @@ methods:
         - boolean
     javascript:
       <<: *method-isdouble
-      method: await attribute.isDouble();
+      method: attribute.isDouble();
       return:
         - boolean
     python:
@@ -128,7 +128,7 @@ methods:
         - boolean
     javascript:
       <<: *method-isstring
-      method: await attribute.isString();
+      method: attribute.isString();
       return:
         - boolean
     python:
@@ -148,7 +148,7 @@ methods:
         - boolean
     javascript:
       <<: *method-isdouble
-      method: await attribute.isDateTime();
+      method: attribute.isDateTime();
       return:
         - boolean
     python:
