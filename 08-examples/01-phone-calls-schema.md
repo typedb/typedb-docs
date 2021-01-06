@@ -179,7 +179,7 @@ For the rest of these instructions, I assume that you have downloaded the Grakn 
 **2 -** Run the Grakn server:
 
 ```
-./grakn server start
+./grakn server
 ```
 
 **3 -** Load the schema into a Grakn database. Run:

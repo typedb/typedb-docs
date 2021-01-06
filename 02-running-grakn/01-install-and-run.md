@@ -160,19 +160,13 @@ docker exec -ti grakn bash -c '/grakn-core-all-linux/grakn console'
 </div>
 
 ## Start the Grakn Server
-If you have installed Grakn using a package manager, to start the Grakn Server, run `grakn server start`.
+If you have installed Grakn using a package manager, to start the Grakn Server, run `grakn server`.
 
-Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server start`.
+Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server`.
 
 ## Stop the Grakn Server
-If you have installed Grakn using a package manager, to stop the Grakn Server, run `grakn server stop`.
+To stop the Grakn Server, press Ctrl-C in same terminal as the one where you started it in.
 
-Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server stop`.
-
-## Check the Server Status
-If you have installed Grakn using a package manager, to check the status of the Grakn Server, run `grakn server status`.
-
-Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server status`.
 
 ## Upgrade an Existing Grakn Core 1.5.x Installation to 1.6.x
 
