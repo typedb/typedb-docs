@@ -50,12 +50,21 @@ Importing a backup will not delete existing data in the database, so you should 
 
 The first step of migration is to migrate your schema. The  `grakn server schema` command allows you to get the current schema of a Grakn database as a single Graql `define` query. This schema query can then be loaded via `grakn console` to the new server.
 
-You can skip the step of exporting schema if you already have a copy of your schema to import.
-
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
+Export the old schema:
 ```
 old/grakn server schema [database] > schema.gql
-new/grakn console --database-use [database] --source schema.gql
+```
+
+You can skip the step of exporting schema if you already have a copy of your schema to import.
+
+If migrating from Grakn version <2.0 to version >2.0 you need to update your schema to conform to Grakn 2.0 syntax. 
+
+Import the new schema:
+```
+new/grakn console
+> create database [database] 
+> transaction [database] schema write
+[database]::schema::write> source schema.gql
 ```
 
 ### Data Migration

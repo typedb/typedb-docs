@@ -168,22 +168,6 @@ Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder 
 To stop the Grakn Server, press Ctrl-C in same terminal as the one where you started it in.
 
 
-## Upgrade an Existing Grakn Core 1.5.x Installation to 1.6.x
-
-There has been an internal storage change in Grakn Core 1.6.x. Please back up your existing data and run the following step before doing the upgrade:
-
-1. Download [Apache Cassandra 3.11.x](http://www.apache.org/dyn/closer.lua/cassandra/3.11.5/apache-cassandra-3.11.5-bin.tar.gz) and untar it
-2. Start Grakn: `grakn server start`
-3. Update Storage's setting and flush the change:
-```
-$ cd apache-cassandra-<version>
-$ bin/cqlsh localhost -e "update system.local set cluster_name = 'Grakn Cluster' where key='local';"
-$ bin/nodetool flush -- system
-```
-3. Stop Grakn: `grakn server stop`
-
-Once done, you are safe to upgrade as described in the next section.
-
 ## Summary
 So far we have learned how to download/install Grakn and run the Grakn Server.
 
