@@ -585,22 +585,22 @@ To do this in Grakn, the restriction is represented in the schema definition. `p
 <!-- test-ignore -->
 ```graql
 person sub entity, 
-plays person-child,
-plays person-parent; 
+plays child,
+plays parent; 
 
 animal sub entity,
-plays animal-child,
-plays animal-parent; 
+plays child,
+plays parent; 
 
 parentship sub relation, abstract;
 
 person-parentship sub parentship,
-relates person-child,
-relates person-parent; 
+relates child,
+relates parent; 
 
 animal-parentship sub parentship;
-relates animal-child,
-relates animal-parent; 
+relates child,
+relates parent; 
 ```
 
 ### Transitive Properties

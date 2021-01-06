@@ -19,7 +19,7 @@ We use the `count` function to get the number of the specified matched variable.
 [tab:Graql]
 ```graql
 match
-  $sce isa school-course-enrollment, has score $sco;
+  $sce isa studentship, has score $sco;
   $sco > 7.0;
 get $sco; count;
 ```
@@ -28,7 +28,7 @@ get $sco; count;
 [tab:Java]
 ```java
 GraqlMatch.Unfiltered.Aggregate query = Graql.match(
-  var("sce").isa("school-course-enrollment").has("score", var("sco")),
+  var("sce").isa("studentship").has("score", var("sco")),
   var("sco").gt(7.0)
 ).get("sce").count();
 ```
@@ -143,9 +143,9 @@ We use the `median` function to get the median value among the specified `long` 
 ```graql
 match
   $org isa organisation, has name $orn;
-  $orn "Facelook";
+  $orn = "Facelook";
   (employer: $org, employee: $per) isa employment;
-  ($per) isa school-course-enrollment, has score $sco;
+  ($per) isa studentship, has score $sco;
 get $sco; median $sco;
 ```
 [tab:end]
@@ -156,7 +156,7 @@ GraqlMatch.Unfiltered.Aggregate query = Graql.match(
   var("org").isa("organisation").has("name", var("orn")),
   var("orn").eq("Facelook"),
   var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
-  var().rel(var("per")).isa("school-course-enrollment").has("score", var("sco"))
+  var().rel(var("per")).isa("studentship").has("score", var("sco"))
 ).get("sco").median("sco");
 ```
 [tab:end]
@@ -172,7 +172,7 @@ We use the `group` function, optionally followed by another aggregate function, 
 match
   $per isa person;
   $scc isa school-course, has title $title;
-  (student: $per, enrolled-course: $scc) isa school-course-enrollment;
+  (student: $per, course: $scc) isa studentship;
 get $scc, $title; group $title;
 ```
 [tab:end]
@@ -182,7 +182,7 @@ get $scc, $title; group $title;
 GraqlMatch.Unfiltered.Group query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
-  var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
+  var().rel("student", var("per")).rel("course", var("scc")).isa("studentship")
 ).get("scc", "title").group("title");
 ```
 [tab:end]
@@ -197,7 +197,7 @@ This query returns all instances of `person` grouped by the `title` of their `sc
 match
   $per isa person;
   $scc isa school-course, has title $title;
-  (student: $per, enrolled-course: $scc) isa school-course-enrollment;
+  (student: $per, course: $scc) isa studentship;
 get $scc, $title; group $title; count;
 ```
 [tab:end]
@@ -207,7 +207,7 @@ get $scc, $title; group $title; count;
 GraqlMatch.Unfiltered.Group.Aggregate query = Graql.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
-  var().rel("student", var("per")).rel("enrolled-course", var("scc")).isa("school-course-enrollment")
+  var().rel("student", var("per")).rel("course", var("scc")).isa("studentship")
 ).get("scc", "title").group("title").count();
 ```
 [tab:end]
@@ -234,5 +234,3 @@ This query returns the total count of `person`s grouped by the `title` of their 
 
 ## Summary
 We use an aggregate query to calculate a certain variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
-
-Next, we learn how to [compute values over a large set of data](../11-query/07-compute-query.md) in a knowledge graph.

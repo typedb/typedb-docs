@@ -51,7 +51,7 @@ methods:
       description: Deletes a database with the given name.
       accepts: &accepts-databases-delete
         param: &accepts-databases-delete-database
-          name: keypsace
+          name: database
           description: The name of the database to be deleted.
           type: String
           required: true

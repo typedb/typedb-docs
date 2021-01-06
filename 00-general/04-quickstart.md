@@ -33,31 +33,31 @@ approved-date sub event-date;
 request sub relation,
   abstract,
   owns approved-date,
-  relates approved-subject,
+  relates subject,
   relates requester,
   relates respondent;
 
 friendship sub relation,
     relates friend,
-    plays friend-request:approved-friendship,
-    plays friends-list:listed-friendship;
+    plays friend-request:friendship,
+    plays friendship-list:listed;
 
 ## an example of subtyping in Grakn
 friend-request sub request,
-    relates approved-friendship as approved-subject,
-    relates friendship-requester as requester,
-    relates friendship-respondent as respondent;
+    relates friendship as subject,
+    relates friend-requester as requester,
+    relates friend-respondent as respondent;
 
-friends-list sub relation,
+friendship-list sub relation,
     owns title,
-    relates list-owner,
-    relates listed-friendship;
+    relates owner,
+    relates listed;
 
 person sub entity,
     plays friendship:friend,
-    plays friend-request:friendship-requester,
-    plays friend-request:friendship-respondent,
-    plays friends-list:list-owner;
+    plays friend-request:friend-requester,
+    plays friend-request:friend-respondent,
+    plays friendship-list:owner;
 ```
 
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
@@ -70,22 +70,35 @@ First, download the [`social-network/schema.gql`](../files/social-network/schema
 Feel free to study the content of `social-network-schema.gql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [Grakn Workbase](../07-workbase/00-overview.md).
 </div>
 
-While in the unzipped directory of the Grakn distribution, via terminal, run:
+While in the unzipped directory of the Grakn distribution, via terminal, open the console:
 
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
-./grakn console --database-use social_network --source path-to-the-social-network/schema.gql
+./grakn console
+```
+Create a database called `social_network`:
+```
+> database create social_network
+```
+Open a schema write transaction:
+```
+> transaction social_network schema write
+```
+Inside that transaction, load the schema from file using the `source` command:
+```
+social_network::schema::write> source path-to-the-social-network/schema.gql
+> commit
 ```
 
 ### Load the Dataset
-Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. Run:
+Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_netowrk` database and use the `source` command to load the data from file:
 
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
 ```
-./grakn console --database-use social_network --source path-to-the-social-network/schema.gql
+> transaction social_network data write
+social_network::data::write> source path-to-the-social-network/schema.gql
+social_network::data::write> commit
 ```
 
-As you may have guessed it, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
+As you may have guessed, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
 
 ### Query the Knowledge Graph
 Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Grakn Console](../02-running-grakn/02-console.md), [Grakn Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md).
@@ -94,18 +107,18 @@ Let's see an example of running [Graql get queries](../11-query/02-get-query.md)
 
 #### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-running-grakn/02-console.md)
 
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
-Enter the `social_network` database using the Console.
+Using the open console, ask for a read transaction for the `social_network` database:
 ```
-$ ./grakn console --database-use social_network
+> transaction social_network data read
+social_network::data::read>
 ```
 
-Write the query to retrieve the desired result.
+At the prompt, write this query to retrieve the desired results.
 ```graql
-match $tra (traveler: $per) isa travel; (located-travel: $tra, travel-location: $loc) isa location-of-travel; $loc has name "French Lick"; $per has full-name $fn; get $fn;
+match $tra (traveler: $per) isa travel; (located: $tra, location: $loc) isa localisation; $loc has name "French Lick"; $per has full-name $fn; get $fn;
 ```
 
-The result contains the following answers.
+The result contains the following answers:
 <!-- test-ignore -->
 ```graql
 {$fn "Solomon Tran" isa full-name;}
@@ -124,7 +137,7 @@ The result contains the following answers.
 package grakn.examples;
 
 import grakn.client.Grakn;
-import grakn.client.rpc.GraknClient;
+import grakn.client.GraknClient;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlMatch;
 import grakn.client.concept.answer.ConceptMap;
@@ -173,7 +186,7 @@ with GraknClient(uri="localhost:1729") as client:
             $fun isa emotion;
             $fun "funny";
             $per has gender "female";
-            (reacted-emotion: $fun, reacted-to: $pos, reacted-by: $per) isa reaction;
+            (emotion: $fun, to: $pos, by: $per) isa reaction;
           get $pos;
         '''
         answer_iterator = transaction.query(query).get()
@@ -260,26 +273,26 @@ Let's look at some simple examples of how Grakn uses rules for reasoning over ex
 ```graql
 define
 
-course-enrollment-mutuality sub relation,
+coursemates sub relation,
   relates coursemate,
-  relates mutual-course-enrollment;
+  relates course;
 
 rule people-taken-the-same-course:
   when {
-    $sce1 (student: $p1, enrolled-course: $sc) isa school-course-enrollment;
-    $sce2 (student: $p2, enrolled-course: $sc) isa school-course-enrollment;
+    $sce1 (student: $p1, course: $sc) isa studentship;
+    $sce2 (student: $p2, course: $sc) isa studentship;
     $p1 != $p2;
   } then {
-    (coursemate: $p1, coursemate: $p2, mutual-course-enrollment: $sce1, mutual-course-enrollment: $sce2) isa course-enrollment-mutuality;
+    (coursemate: $p1, coursemate: $p2, course: $sc) isa coursemates;
   };
 ```
 
-As you can see in the `social_network_data.gql` file, no instance of `course-enrollment-mutuality` was ever inserted. It's only the rule above that allows Grakn to infer this knowledge and know the answer to the following question at query time.
+As you can see in the `social_network_data.gql` file, no instance of `coursemates` was ever inserted. It's only the rule above that allows Grakn to infer this knowledge and know the answer to the following question at query time.
 
 ```graql
 match
   $per isa person, has full-name "Miriam Morton";
-  ($per, coursemate: $mate) isa course-enrollment-mutuality;
+  (coursemate: $per, coursemate: $mate) isa coursemates;
   $mate has full-name $mate-fn;
 get $mate-fn;
 ```
@@ -289,19 +302,19 @@ Given the second rule:
 ```graql
 define
 
-school-mutuality sub relation,
+schoolmates sub relation,
   relates schoolmate,
-  relates mutual-school;
+  relates school;
 
-rule people-gone-to-the-same-school:
+rule people-who-attended-the-same-school-are-schoolmates:
   when {
-    (student: $p1, enrolled-course: $c1) isa school-course-enrollment;
-    (student: $p2, enrolled-course: $c2) isa school-course-enrollment;
-    (offered-course: $c1, offering-school: $s) isa school-course-offering;
-    (offered-course: $c2, offering-school: $s) isa school-course-offering;
+    (student: $p1, course: $c1) isa studentship;
+    (student: $p2, course: $c2) isa studentship;
+    (course: $c1, school: $s) isa school-course-offering;
+    (course: $c2, school: $s) isa school-course-offering;
     $p1 != $p2;
   } then {
-    (schoolmate: $p1, schoolmate: $p2, mutual-school: $s) isa school-mutuality;
+    (schoolmate: $p1, schoolmate: $p2, school: $s) isa schoolmates;
   };
 ```
 
@@ -309,69 +322,14 @@ We can query for people who have attended the same school and taken the same cou
 
 ```graql
 match
-  (coursemate: $mate-1, coursemate: $mate-2) isa course-enrollment-mutuality;
-  (schoolmate: $mate-1, schoolmate: $mate-2) isa school-mutuality;
+  (coursemate: $mate-1, coursemate: $mate-2) isa coursemates;
+  (schoolmate: $mate-1, schoolmate: $mate-2) isa schoolmates;
   $mate-1 has full-name $mate-1-fn;
   $mate-2 has full-name $mate-2-fn;
 get $mate-1-fn, $mate-2-fn;
 ```
 
 Similar to the first rule, the answer we're asking for here, was never injected into the knowledge graph and is being inferred at query time by Grakn.
-
-### Distributed Analytics With Grakn
-
-The [Graql compute queries](../11-query/07-compute-query.md) are designed to traverse the knowledge graph in parallel over a large dataset, distributed across multiple machines. We can use the compute queries to retrieve statistical information, find the shortest path between any two nodes, identify significant nodes based on their centrality and identify clusters within the knowledge graph.
-
-Let's look at a few examples of running `compute` on the `genealogy` knowledge graph.
-
-#### Retrieve the mean of an attribute owned by a given type
-
-```graql
-compute mean of salary, in employment;
-```
-
-#### Retrieve the total number of instances of a given type
-
-```graql
-compute count in travel;
-```
-
-#### Find the [shortest path](../11-query/07-compute-query.md#compute-the-shortest-path) between two instances
-
-```graql
-match $x has full-name "Dominic Lyons"; $y has full-name "Haider Johnson"; get $x, $y;
-```
-
-<!-- test-ignore -->
-```graql
-{$x id V446496 isa person; $y id V229424 isa person;}
-```
-
-<!-- test-ignore -->
-```graql
-compute path from V446496, to V229424;
-```
-
-<!-- test-ignore -->
-```graql
-{V184392, V442424, V90344}
-```
-
-#### [Identify clusters](../11-query/07-compute-query.md#identify-clusters) in a subgraph
-```graql
-compute cluster in [person, employment, organisation], using connected-component;
-```
-
-<!-- test-ignore -->
-```graql
-{V192656}
-{V663728, V266336, V262392, V680112, V479408}
-{V180272, V446496, V278672, V463024, V671920}
-{V172176}
-{V360448, V250104, V176176, V667824, V180368, V303200, V639152}
-{V647200, V295008, V237808, V225328, V364544, V372832, V356352, V167984, V266488, V299104, V663584}
-{V401584, V229424, V639008, V213040, V655392}
-```
 
 ### Where Next?
 

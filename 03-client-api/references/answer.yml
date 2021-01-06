@@ -30,7 +30,7 @@ mappings:
     answer: "[Numeric](#numeric)"
   -
     query: aggregate group
-    answer: "[AnswerGroup](#answergroup)"
+    answer: "[ConceptMapGroup](#conceptmapgroup)"
   -
     query: "compute count/min/max/sum/mean/std"
     answer: "[Numeric](#numeric)"
@@ -267,38 +267,38 @@ types:
 
 
   - type7:
-    title: AnswerGroup
+    title: ConceptMapGroup
     methods:
       - method:
-        common: &method-answergroup-owner
+        common: &method-conceptmapgroup-owner
           title: Retrieve the concept that is the group owner
           returns:
             - "[Concept](../concept-api/concept)"
         java:
-          <<: *method-answergroup-owner
+          <<: *method-conceptmapgroup-owner
           method: answer.owner();
         javascript:
-          <<: *method-answergroup-owner
+          <<: *method-conceptmapgroup-owner
           method: answer.owner();
         python:
-          <<: *method-answergroup-owner
+          <<: *method-conceptmapgroup-owner
           method: answer.owner()
 
       - method:
-        common: &method-answergroup-answers
+        common: &method-conceptmapgroup-answers
           title: Retrieve the answers of the group
         java:
-          <<: *method-answergroup-answers
+          <<: *method-conceptmapgroup-answers
           method: answer.answers();
           returns:
             - Array of Answer
         javascript:
-          <<: *method-answergroup-answers
+          <<: *method-conceptmapgroup-answers
           method: answer.answers();
           returns:
             - Array of Answer
         python:
-          <<: *method-answergroup-answers
+          <<: *method-conceptmapgroup-answers
           method: answer.answers()
           returns:
             - List of Answer
