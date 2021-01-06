@@ -11,6 +11,11 @@ The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.m
 
 ## Command line arguments
 
+To open a console: 
+```
+/grakn console <option>
+```
+
 | Option               | Alias | Description                                             |
 |----------------------|-------|-------------------------------------------------------- |
 | `--server=<address>` |       | Server address to which the console will connect to.    |
@@ -22,6 +27,8 @@ The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.m
 Console implements database management commands and transaction querying commands. These commands are separated into two levels. Initially database management commands are available, and after opening a transaction, you can start using transaction querying commands.
 
 ### Database management commands
+
+Give any of these commands inside a console at the `>` prompt.
 
 | Command                                   | Description                                                                                           |
 |-------------------------------------------|-------------------------------------------------------------------------------------------------------|
@@ -35,6 +42,8 @@ Console implements database management commands and transaction querying command
 
 ### Transaction querying commands
 
+Give any of these commands inside a console at the `>` prompt.
+
 | Command         | Description                                             |
 |-----------------|---------------------------------------------------------|
 | `<query>`       | Run Graql query                                         |
@@ -45,3 +54,5 @@ Console implements database management commands and transaction querying command
 | `help`          | Print this help menu                                    |
 | `clear`         | Clear console screen                                    |
 | `exit`          | Exit console                                            |
+
+.
