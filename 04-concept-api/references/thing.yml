@@ -141,142 +141,169 @@ methods:
     common: &method-getHasWithOnlyKey
       title: Retrieve attributes
       description: Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
-      accepts: &accepts-getHasWithOnlyKey
-        param: &accepts-getHasWithOnlyKey-onlyKey
+      accepts:
+        param:
           name: onlyKey
           type: boolean
           description: If set to `true`, only attributes owned as a key will be retrieved.
           required: false
-          default: false
+          default: "`false`"
     java:
       <<: *method-getHasWithOnlyKey
       method: thing.getHas(boolean onlyKey));
-      accepts:
-        <<: *accepts-getHasWithOnlyKey
-        param:
-          <<: *accepts-getHasWithOnlyKey-onlyKey
       returns:
         - Stream<[`Attribute<?>`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getHasWithOnlyKey
-      method: await thing.attributes(attributeTypes);
-      accepts:
-        <<: *accepts-getHasWithOnlyKey
-        param:
-          <<: *accepts-getHasWithOnlyKey-onlyKey
-          name: attributeTypes
-          type: "Array of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)s"
+      method: await thing.getHas(onlyKey);
       returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
-    python:
-      <<: *method-getHasWithOnlyKey
-      method: thing.attributes(attribute_types)
-      accepts:
-        <<: *accepts-getHasWithOnlyKey
-        param:
-          <<: *accepts-getHasWithOnlyKey-onlyKey
-          name: attribute_types
-          type: "List of [`AttributeType`](../concept-api/type?tab=pyhthon#attributetype-methods)s"
-      returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=pyhthon#attribute-methods) objects"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
 
   - method:
-    common: &method-getHasWithOnlyKey
+    common: &method-getHasWithOneAttributeType
       title: Retrieve attributes
       description: Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
-      accepts: &accepts-getHasWithOnlyKey
-        param: &accepts-getHasWithOnlyKey-onlyKey
-          description: The AttributeTypes to filter the attributes by.
+      accepts: &accepts-getHasWithOneAttributeType
+        param: &accepts-getHasWithOneAttributeType-attributeType
+          name: attributeType
+          description: The AttributeType to filter the attributes by.
           required: false
-          default: N/A
+          default: "`null`"
     java:
-      <<: *method-getHasWithOnlyKey
-      method: thing.attributes(AttributeType... attributeTypes));
+      <<: *method-getHasWithOneAttributeType
+      method: thing.getHas(AttributeType attributeType);
       accepts:
-        <<: *accepts-getHasWithOnlyKey
+        <<: *accepts-getHasWithOneAttributeType
         param:
-          <<: *accepts-getHasWithOnlyKey-onlyKey
-          name: attributeTypes
-          type: "Varargs of [`AttributeType`](../concept-api/type?tab=java#attributetype-methods)s"
+          <<: *accepts-getHasWithOneAttributeType-attributeType
+          type: "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)"
       returns:
-        - "Stream of [`Attribute`](../concept-api/thing?tab=java#attribute-methods) objects"
+        - "Stream of [`Attribute`](../concept-api/thing?tab=java#attribute-methods)"
     javascript:
-      <<: *method-getHasWithOnlyKey
-      method: await thing.attributes(attributeTypes);
+      <<: *method-getHasWithOneAttributeType
+      method: await thing.getHas(attributeType);
       accepts:
-        <<: *accepts-getHasWithOnlyKey
+        <<: *accepts-getHasWithOneAttributeType
         param:
-          <<: *accepts-getHasWithOnlyKey-onlyKey
-          name: attributeTypes
-          type: "Array of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)s"
+          <<: *accepts-getHasWithOneAttributeType-attributeType
+          type: "[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
       returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
-    python:
-      <<: *method-getHasWithOnlyKey
-      method: thing.attributes(attribute_types)
-      accepts:
-        <<: *accepts-getHasWithOnlyKey
-        param:
-          <<: *accepts-getHasWithOnlyKey-onlyKey
-          name: attribute_types
-          type: "List of [`AttributeType`](../concept-api/type?tab=pyhthon#attributetype-methods)s"
-      returns:
-        - "Iterator of [`Attribute`](../concept-api/thing?tab=pyhthon#attribute-methods) objects"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
 
   - method:
-    common: &method-relations
+    common: &method-getHasWithAttributeTypes
+      title: Retrieve attributes
+      description: Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+      accepts: &accepts-getHasWithAttributeTypes
+        param: &accepts-getHasWithAttributeTypes-attributeTypes
+          name: attributeTypes
+          description: The AttributeTypes to filter the attributes by.
+          required: false
+          default: "(empty array)"
+    java:
+      <<: *method-getHasWithAttributeTypes
+      method: thing.getHas(AttributeType... attributeTypes);
+      accepts:
+        <<: *accepts-getHasWithAttributeTypes
+        param:
+          <<: *accepts-getHasWithAttributeTypes-attributeTypes
+          type: "[`AttributeType...`](../concept-api/type?tab=java#attributetype-methods)"
+      returns:
+        - "Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>"
+    javascript:
+      <<: *method-getHasWithAttributeTypes
+      method: await thing.getHas(attributeTypes);
+      accepts:
+        <<: *accepts-getHasWithAttributeTypes
+        param:
+          <<: *accepts-getHasWithAttributeTypes-attributeTypes
+          type: "Array of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
+
+  - method:
+    python:
+      title: Retrieve attributes
+      description: Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+      method: thing.get_has(attribute_type=None, attribute_types=[], only_key=False)
+      accepts:
+        param1:
+          name: attribute_type
+          type: "`AttributeType`"
+          description: The AttributeType to filter the attributes by.
+          required: false
+          default: "`None`"
+        param2:
+          name: attribute_types
+          type: "list of `AttributeType`"
+          description: The AttributeTypes to filter the attributes by.
+          required: false
+          default: "`[]`"
+        param3:
+          name: only_key
+          type: "`bool`"
+          description: If set to `True`, only attributes owned as a key will be retrieved.
+          required: false
+          default: "`False`"
+      returns:
+        - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)
+
+- method:
+    common: &method-getPlays
+      title: Retrieve roles
+      description: Retrieves the roles that this Thing plays.
+    java:
+      <<: *method-getPlays
+      method: thing.getPlays();
+      returns:
+        - "Stream of [`RoleType`](../concept-api/type?tab=java#roletype-methods)"
+    javascript:
+      <<: *method-getPlays
+      method: await thing.getPlays();
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-getPlays
+      method: thing.get_plays()
+      returns:
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
+
+  - method:
+    common: &method-getRelations
       title: Retrieve relations
       description: Retrieves all the Relations which this Thing plays a role in, optionally filtered by one or more given roles.
-      accepts: &accepts-relations
-        param: &accepts-relations-param-roles
-          name: roles
+      accepts: &accepts-getRelations
+        param: &accepts-getRelations-param-roleTypes
+          name: roleTypes
           description: The list of roles to filter the relations by.
           required: false
           default: N/A
     java:
-      <<: *method-relations
-      method: thing.relations(Role... roles);
+      <<: *method-getRelations
+      method: thing.getRelations(RoleType... roleTypes);
       accepts:
+        <<: *accepts-getRelations
         param:
-          <<: *accepts-relations-param-roles
-          type: "Varargs of [`Role`](../concept-api/type?tab=java#role-methods) objects"
+          <<: *accepts-getRelations-param-roleTypes
+          type: "[`RoleType...`](../concept-api/type?tab=java#roletype-methods) objects"
       returns:
-        - "Stream of [`Relation`](../concept-api/thing?tab=java#relation-methods) objects"
+        - Stream<[`Relation`](../concept-api/thing?tab=java#relation-methods)>
     javascript:
-      <<: *method-relations
-      method: await thing.relations(roles);
+      <<: *method-getRelations
+      method: await thing.getRelations(roleTypes);
+      accepts:
+        <<: *accepts-getRelations
+        param:
+          <<: *accepts-getRelations-param-roleTypes
+          type: "Array of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`Relation`](../concept-api/thing?tab=javascript#relation-methods) objects"
+    python:
+      <<: *method-getRelations
+      method: thing.get_relations(role_types)
       accepts:
         param:
-          <<: *accepts-relations-param-roles
-          type: "Array of [`Role`](../concept-api/type?tab=javascript#role-methods)s"
+          <<: *accepts-getRelations-param-roleTypes
+          type: "list of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
       returns:
-        - "Iterator of [`Relation`](../concept-api/thing?tab=javascript#relation-methods) objects"
-    python:
-      <<: *method-relations
-      method: thing.relations(roles)
-      accepts:
-        param:
-          <<: *accepts-relations-param-roles
-          type: "List of [`Role`](../concept-api/type?tab=python#role-methods)s"
-      returns:
-        - "Iterator of [`Relation`](../concept-api/thing?tab=python#relation-methods) objects"
-
-  - method:
-    common: &method-roles
-      title: Retrieve roles
-      description: Retrieves the roles that this Thing plays.
-    java:
-      <<: *method-roles
-      method: thing.roles();
-      returns:
-        - "Stream of [`Role`](../concept-api/type?tab=java#role-methods) objects"
-    javascript:
-      <<: *method-roles
-      method: await thing.roles();
-      returns:
-        - "Iterator of [`Role`](../concept-api/type?tab=javascript#role-methods) objects"
-    python:
-      <<: *method-roles
-      method: thing.roles()
-      returns:
-        - "Iterator of [`Role`](../concept-api/type?tab=python#role-methods) objects"
+        - "Iterator of [`Relation`](../concept-api/thing?tab=python#relation-methods)"
