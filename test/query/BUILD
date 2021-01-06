@@ -81,7 +81,8 @@ grakn_java_test(
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
         "//files:negation/schema.gql",
-    ]
+    ],
+    size = "large",
 )
 
 
