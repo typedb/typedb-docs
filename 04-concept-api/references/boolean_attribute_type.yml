@@ -73,39 +73,39 @@ methods:
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
-      description: Retrieves all direct and indirect subtypes of the AttributeType.
+      description: Retrieves all direct and indirect subtypes of the BooleanAttributeType.
     java:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`AttributeType`](../concept-api/type?tab=java#attribute-type-methods)>
+        - Stream<[`BooleanAttributeType`](../concept-api/type?tab=java#boolean-attribute-type-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`AttributeType`](../concept-api/type?tab=javascript#attribute-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream)<[`BooleanAttributeType`](../concept-api/type?tab=javascript#boolean-attribute-type-methods)>"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`AttributeType`](../concept-api/type?tab=python#attribute-type-methods)
+        - Iterator of [`BooleanAttributeType`](../concept-api/type?tab=python#boolean-attribute-type-methods)
 
   - method:
     common: &method-getInstances
-      title: Retrieve all instances of this AttributeType
-      description: Retrieves all Attributes that are instances of this Type.
+      title: Retrieve all instances of this BooleanAttributeType
+      description: Retrieves all BooleanAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: type.getInstances();
       returns:
-        - Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>
+        - Stream<[`BooleanAttribute`](../concept-api/thing?tab=java#boolean-attribute-methods)>
     javascript:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream)<[`BooleanAttribute`](../concept-api/thing?tab=javascript#boolean-attribute-methods)>"
     python:
       <<: *method-getInstances
       method: type.get_instances()
       returns:
-        - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)
+        - Iterator of [`BooleanAttribute`](../concept-api/thing?tab=python#boolean-attribute-methods)
