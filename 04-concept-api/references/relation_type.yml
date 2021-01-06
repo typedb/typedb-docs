@@ -19,25 +19,25 @@ methods:
       returns:
         - "[`Relation`](../concept-api/thing?tab=python#relation-methods) object"
 
-          - method:
-            common: &method-getrelates
-              title: Retrieve roles
-              description: Retrieve roles that this RelationType relates to.
-            java:
-              <<: *method-getrelates
-              method: relationType.getRelates();
-              returns:
-                - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javatab=#role-type-methods) objects"
-            javascript:
-              <<: *method-getrelates
-              method: relationType.getRelates();
-              returns:
-                - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javascripttab=#role-type-methods) objects"
-            python:
-              <<: *method-getrelates
-              method: relation_type.get_relates()
-              returns:
-                - "Iterator of [`RoleType`](../concept-api/type?tab=python#role-type-methods) objects"```
+  - method:
+    common: &method-getrelates
+      title: Retrieve roles
+      description: Retrieve roles that this RelationType relates to.
+    java:
+      <<: *method-getrelates
+      method: relationType.getRelates();
+      returns:
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javatab=#role-type-methods) objects"
+    javascript:
+      <<: *method-getrelates
+      method: relationType.getRelates();
+      returns:
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javascripttab=#role-type-methods) objects"
+    python:
+      <<: *method-getrelates
+      method: relation_type.get_relates()
+      returns:
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#role-type-methods) objects"
 
 
   - method:
