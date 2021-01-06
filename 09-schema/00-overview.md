@@ -104,13 +104,10 @@ thing, entity, attribute, relation, role, rule
 long, double, string, boolean, datetime
 
 ## Query commands
-define, undefine, match, get, insert, delete, compute;
+define, undefine, match, get, insert, delete;
 
 ## Delete and get query modifiers
 offset, limit, group, sort, asc, desc
-
-## Compute query 
-centrality, using
 
 ## Statement properties
 abstract, as, id, type, isa, isa!, sub, sub!, key, has, plays, relates, value, regex, when, then

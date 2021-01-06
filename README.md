@@ -251,7 +251,7 @@ Client API reference files are accessible via [`03-client-api/references`](03-cl
 ### Tests
 
 - A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a Graql query.
-- A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`, `compute`). Otherwise, it will be tested as a pattern.
+- A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`). Otherwise, it will be tested as a pattern.
 - A code block that follows the `<!-- test-example file-name.extension -->` flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
   - a running Grakn Server
   - the schema loaded into the target database

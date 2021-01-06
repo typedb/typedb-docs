@@ -72,10 +72,10 @@ methods:
       <<: *method-type
       method: session.type();
       returns:
-        - SessionType
+        - Session.Type
     javascript:
       <<: *method-type
-      method: await session.type();
+      method: session.type();
       returns:
         - SessionType
     python:

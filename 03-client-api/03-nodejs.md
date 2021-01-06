@@ -28,13 +28,13 @@ Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const GraknClient = require("grakn-client/rpc/GraknClient");
 const Grakn = require("grakn-client/Grakn");
 const { SessionType, TransactionType } = Grakn;
 
 async function openSession (database) {
 	const client = new GraknClient("localhost:1729");
-	const session = await client.session(database);
+	const session = await client.session(database, SessionType.READ);
 	// session is open
 	await session.close();
 	//session is closed
@@ -48,7 +48,7 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const GraknClient = require("grakn-client/rpc/GraknClient");
 const Grakn = require("grakn-client/Grakn");
 const { SessionType, TransactionType } = Grakn;
 
@@ -82,32 +82,32 @@ const GraknClient = require("grakn-client/rpc/GraknClient");
 const Grakn = require("grakn-client/Grakn");
 const { SessionType, TransactionType } = Grakn;
 
-async function runBasicQueries (database) {
+async function runBasicQueries(database) {
 	const client = new GraknClient("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 
 	// Insert a person using a WRITE transaction
 	const writeTransaction = await session.transaction(TransactionType.WRITE);
 	const insertStream = await writeTransaction.query().insert('insert $x isa person, has email "x@email.com";');
-	const concepts = await insertStream.collect()
-	console.log("Inserted a person with ID: " + concepts[0].id);
+	const conceptMaps = await insertStream.collect();
+	console.log("Inserted a person with ID: " + conceptMaps[0].get("x").getIID());
 	// to persist changes, a write transaction must always be committed (closed)
 	await writeTransaction.commit();
 
 	// Retrieve persons using a READ only transaction
-	const readTransaction = await session.transaction(TransactionType.READ)
+	const readTransaction = await session.transaction(TransactionType.READ);
 
 	// We can either query and consume the iterator lazily
-	let answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
-	for await (let aConceptMapAnswer of answerStream) {
+	const answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
+	for await (const aConceptMapAnswer of answerStream) {
 		const person = aConceptMapAnswer.get("x");
-		console.log("Retrieved person with id "+ person.id);
+		console.log("Retrieved person with id " + person.getIID());
 	}
 
 	// Or query and consume the iterator immediately collecting all the results
 	answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
-	const persons = await answerStream.collect();
-	persons.forEach( person => { console.log("Retrieved person with id "+ person.id) });
+	const persons = await answerStream.collect().map(conceptMap -> conceptMap.get("x"));
+	persons.forEach( person => { console.log("Retrieved person with id "+ person.getIID()) });
 
 	// a read transaction must always be closed
 	await readTransaction.close();
@@ -145,7 +145,7 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 
 {% include api/generic.html data=site.data.03_client_api.references.options language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.iterator language="javascript" %}
+{% include api/generic.html data=site.data.03_client_api.references.stream language="javascript" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}
 

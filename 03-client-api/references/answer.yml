@@ -96,6 +96,12 @@ types:
           returns:
             - double
       - method:
+        java:
+          title: Retrieve numeric value of an aggregate answer
+          method: numeric.asNumber();
+          returns:
+            - Number
+      - method:
         python:
           title: Retrieve numeric value of an aggregate answer as an integer
           method: numeric.as_int();

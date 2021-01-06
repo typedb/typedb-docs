@@ -1,0 +1,270 @@
+
+title: "ConceptManager"
+methods:
+  - method:
+    common: &method-getRootThingType
+      title: Retrieve the root ThingType
+      description: Retrieves the root ThingType, "thing".
+      returns:
+        - [`ThingType`](../concept-api/type#thingtype-methods)
+    java:
+      <<: *method-getRootThingType
+      method: transaction.concepts().getRootThingType();
+    javascript:
+      <<: *method-getRootThingType
+      method: await transaction.concepts().getRootThingType();
+    python:
+      <<: *method-getRootThingType
+      method: transaction.concepts().get_root_thing_type()
+
+  - method:
+    common: &method-getRootEntityType
+      title: Retrieve the root EntityType
+      description: Retrieves the root EntityType, "entity".
+      returns:
+        - [`EntityType`](../concept-api/type#entitytype-methods)
+    java:
+      <<: *method-getRootEntityType
+      method: transaction.concepts().getRootEntityType();
+    javascript:
+      <<: *method-getRootEntityType
+      method: await transaction.concepts().getRootEntityType();
+    python:
+      <<: *method-getRootEntityType
+      method: transaction.concepts().get_root_entity_type()
+
+  - method:
+    common: &method-getRootRelationType
+      title: Retrieve the root RelationType
+      description: Retrieves the root RelationType, "relation".
+      returns:
+        - [`RelationType`](../concept-api/type#relationtype-methods)
+    java:
+      <<: *method-getRootRelationType
+      method: transaction.concepts().getRootRelationType();
+    javascript:
+      <<: *method-getRootRelationType
+      method: await transaction.concepts().getRootRelationType();
+    python:
+      <<: *method-getRootRelationType
+      method: transaction.concepts().get_root_relation_type()
+
+  - method:
+    common: &method-getRootAttributeType
+      title: Retrieve the root AttributeType
+      description: Retrieves the root AttributeType, "attribute".
+      returns:
+        - [`AttributeType`](../concept-api/type#attributetype-methods)
+    java:
+      <<: *method-getRootAttributeType
+      method: transaction.concepts().getRootAttributeType();
+    javascript:
+      <<: *method-getRootAttributeType
+      method: await transaction.concepts().getRootAttributeType();
+    python:
+      <<: *method-getRootAttributeType
+      method: transaction.concepts().get_root_attribute_type()
+
+  - method:
+    common: &method-getEntityType
+      title: Retrieve an EntityType
+      description: Retrieves an EntityType by its label.
+      accepts:
+        param:
+          name: label
+          description: The label of the EntityType to retrieve.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - [`EntityType`](../concept-api/type#entitytype-methods)
+    java:
+      <<: *method-getEntityType
+      method: transaction.concepts().getEntityType(String label);
+    javascript:
+      <<: *method-getEntityType
+      method: await transaction.concepts().getEntityType(label);
+    python:
+      <<: *method-getEntityType
+      method: transaction.concepts().get_entity_type(label)
+
+  - method:
+    common: &method-putEntityType
+      title: Create or retrieve an EntityType
+      description: Creates a new EntityType if none exists with the given label, otherwise retrieves the existing one.
+      accepts:
+        param:
+          name: label
+          description: The label of the EntityType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - [`EntityType`](../concept-api/type#entitytype-methods)
+    java:
+      <<: *method-putEntityType
+      method: transaction.concepts().putEntityType(String label);
+    javascript:
+      <<: *method-putEntityType
+      method: await transaction.concepts().putEntityType(label);
+    python:
+      <<: *method-putEntityType
+      method: transaction.concepts().put_entity_type(label)
+
+  - method:
+    common: &method-getRelationType
+      title: Retrieve a RelationType
+      description: Retrieves a RelationType by its label.
+      accepts:
+        param:
+          name: label
+          description: The label of the RelationType to retrieve.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - [`RelationType`](../concept-api/type#relationtype-methods)
+    java:
+      <<: *method-getRelationType
+      method: transaction.concepts().getRelationType(String label);
+    javascript:
+      <<: *method-getRelationType
+      method: await transaction.concepts().getRelationType(label);
+    python:
+      <<: *method-getRelationType
+      method: transaction.concepts().get_relation_type(label)
+
+  - method:
+    common: &method-putRelationType
+      title: Create or retrieve a RelationType
+      description: Creates a new RelationType if none exists with the given label, otherwise retrieves the existing one.
+      accepts:
+        param:
+          name: label
+          description: The label of the RelationType to create or retrive.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - [`RelationType`](../concept-api/type#relationtype-methods)
+    java:
+      <<: *method-putRelationType
+      method: transaction.concepts().putRelationType(String label);
+    javascript:
+      <<: *method-putRelationType
+      method: await transaction.concepts().putRelationType(label);
+    python:
+      <<: *method-putRelationType
+      method: transaction.concepts().put_relation_type(label)
+
+  - method:
+    common: &method-getAttributeType
+      title: Retrieve an AttributeType
+      description: Retrieves an AttributeType by its label.
+      accepts:
+        param:
+          name: label
+          description: The label of the AttributeType to retrieve.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - [`AttributeType`](../concept-api/type#attributetype-methods)
+    java:
+      <<: *method-getAttributeType
+      method: transaction.concepts().getAttributeType(String label);
+    javascript:
+      <<: *method-getAttributeType
+      method: await transaction.concepts().getAttributeType(label);
+    python:
+      <<: *method-getAttributeType
+      method: transaction.concepts().get_attribute_type(label)
+
+  - method:
+    common: &method-putAttributeType
+      title: Create or retrieve an AttributeType
+      description: Creates a new AttributeType if none exists with the given label, or retrieves the existing one.
+      accepts: &accepts-putAttributeType
+        param1:
+          name: label
+          description: The label of the AttributeType to create or retrieve.
+          type: String
+          required: true
+          default: N/A
+        param2: &accepts-putAttributeType-valueType
+          name: valueType
+          description: The value type of the AttributeType to create or retrieve.
+          required: true
+          default: N/A
+      returns:
+        - [`AttributeType`](../concept-api/type#attributetype-methods)
+    java:
+      <<: *method-putAttributeType
+      method: transaction.concepts().putAttributeType(String label, AttributeType.ValueType valueType)
+      accepts:
+        <<: *accepts-putAttributeType
+        param2:
+          <<: *accepts-putAttributeType-valueType
+          type: AttributeType.ValueType (STRING &#124; DATETIME &#124; LONG &#124; DOUBLE &#124; BOOLEAN)
+    javascript:
+      <<: *method-putAttributeType
+      method: await transaction.concepts().putAttributeType(label, valueType)
+      accepts:
+        <<: *accepts-putAttributeType
+        param2:
+          <<: *accepts-putAttributeType-valueType
+          type: AttributeType.ValueType (STRING &#124; DATETIME &#124; LONG &#124; DOUBLE &#124; BOOLEAN)
+    python:
+      <<: *method-putAttributeType
+      method: await transaction.concepts().put_attribute_type(label, value_type)
+      accepts:
+        <<: *accepts-putAttributeType
+        param2:
+          <<: *accepts-putAttributeType-valueType
+          name: value_type
+          type: ValueType (STRING &#124; DATETIME &#124; LONG &#124; DOUBLE &#124; BOOLEAN)
+
+  - method:
+    common: &method-getThing
+      title: Retrieve a Thing
+      description: Retrieves the Thing that has the given Grakn internal ID.
+      accepts:
+        param:
+          name: iid
+          description: The IID of the concept to retrieve.
+          type: String
+          required: true
+          default: N/A
+      returns: [`Thing`](../concept-api/thing)
+    java:
+      <<: *method-getThing
+      method: transaction.concepts().getThing(String iid);
+    javascript:
+      <<: *method-getThing
+      method: await transaction.concepts().getThing(iid);
+    python:
+      <<: *method-getThing
+      method: transaction.concepts().get_thing(iid)
+
+  - method:
+    common: &method-getThingType
+      title: Retrieve a ThingType
+      description: Retrieves a ThingType by its label.
+      accepts:
+        param:
+          name: label
+          description: The label of the ThingType to retrieve.
+          type: String
+          required: true
+          default: N/A
+      returns:
+        - [`ThingType`](../concept-api/type#thingtype-methods)
+    java:
+      <<: *method-getThingType
+      method: transaction.concepts().getThingType(String label);
+    javascript:
+      <<: *method-getThingType
+      method: await transaction.concepts().getThingType(label);
+    python:
+      <<: *method-getThingType
+      method: transaction.concepts().get_thing_type(label)

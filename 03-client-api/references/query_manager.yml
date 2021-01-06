@@ -1,0 +1,378 @@
+
+title: "QueryManager"
+methods:
+  - method:
+    common: &method-match
+      title: Execute a Graql Match query
+      description: Performs a Graql Match query in the transaction.
+      accepts: &accepts-match
+        param1: &accepts-match-query
+          name: query
+          description: The Graql Match query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "`GraknOptions`"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-match
+      method: transaction.query().match(GraqlMatch query, GraknOptions options);
+      accepts:
+        <<: *accepts-match
+        param1:
+          <<: *accepts-match-query
+          type: "`GraqlMatch`"
+      returns:
+        - Stream<[ConceptMap](#conceptmap)>
+    javascript:
+      <<: *method-match
+      method: await transaction.query().match(query, options);
+      accepts:
+        <<: *accepts-match
+        param1:
+          <<: *accepts-match-query
+          type: "`string`"
+      returns:
+        - [Stream](#stream)<[ConceptMap](#conceptmap)>
+    python:
+      <<: *method-match
+      method: transaction.query().match(query, options)
+      accepts:
+        <<: *accepts-match
+        param1:
+          <<: *accepts-match-query
+          type: "`str`"
+      returns:
+        - Iterator<[ConceptMap](#conceptmap)>
+
+  - method:
+      common: &method-matchAggregate
+        title: Execute a Graql Match Aggregate query
+        description: Performs a Graql Match Aggregate query in the transaction.
+        accepts: &accepts-matchAggregate
+          param1: &accepts-matchAggregate-query
+            name: query
+            description: The Graql Match Aggregate query to be executed.
+            required: true
+            default: N/A
+          param2:
+            name: options
+            type: "`GraknOptions`"
+            description: Specify query options
+            required: false
+            default: default GraknOptions - uses server defaults
+      java:
+        <<: *method-matchAggregate
+        method: transaction.query().match(GraqlMatch.Aggregate query, GraknOptions options);
+        accepts:
+          <<: *accepts-matchAggregate
+          param1:
+            <<: *accepts-matchAggregate-query
+            type: "`GraqlMatch.Aggregate`"
+        returns:
+          - Future<[Numeric](#numeric)>
+      javascript:
+        <<: *method-matchAggregate
+        method: await transaction.query().matchAggregate(query, options);
+        accepts:
+          <<: *accepts-matchAggregate
+          param1:
+            <<: *accepts-matchAggregate-query
+            type: "`string`"
+        returns:
+          - [Numeric](#numeric)
+      python:
+        <<: *method-matchAggregate
+        method: transaction.query().match_aggregate(query, options)
+        accepts:
+          <<: *accepts-matchAggregate
+          param1:
+            <<: *accepts-matchAggregate-query
+            type: "`str`"
+        returns:
+          - [Numeric](#numeric)
+
+  - method:
+    common: &method-matchGroup
+      title: Execute a Graql Match Group query
+      description: Performs a Graql Match Group query in the transaction.
+      accepts: &accepts-matchGroup
+        param1: &accepts-matchGroup-query
+          name: query
+          description: The Graql Match Group query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "`GraknOptions`"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-matchGroup
+      method: transaction.query().match(GraqlMatch.Group query, GraknOptions options);
+      accepts:
+        <<: *accepts-matchGroup
+        param1:
+          <<: *accepts-matchGroup-query
+          type: "`GraqlMatch.Group`"
+      returns:
+        - Stream<[ConceptMapGroup](#conceptmapgroup)>
+    javascript:
+      <<: *method-matchGroup
+      method: await transaction.query().matchGroup(query, options);
+      accepts:
+        <<: *accepts-matchGroup
+        param1:
+          <<: *accepts-matchGroup-query
+          type: "`string`"
+      returns:
+        - [Stream](#stream)<[ConceptMapGroup](#conceptmapgroup)>
+    python:
+      <<: *method-matchGroup
+      method: transaction.query().match_group(query, options)
+      accepts:
+        <<: *accepts-matchGroup
+        param1:
+          <<: *accepts-matchGroup-query
+          type: "`str`"
+      returns:
+        - Iterator<[ConceptMapGroup](#conceptmapgroup)>
+
+  - method:
+    common: &method-matchGroupAggregate
+      title: Execute a Graql Match Group Aggregate query
+      description: Performs a Graql Match Group Aggregate query in the transaction.
+      accepts: &accepts-matchGroupAggregate
+        param1: &accepts-matchGroupAggregate-query
+          name: query
+          description: The Graql Match Group Aggregate query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "`GraknOptions`"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-matchGroupAggregate
+      method: transaction.query().match(GraqlMatch.Group.Aggregate query, GraknOptions options);
+      accepts:
+        <<: *accepts-matchGroupAggregate
+        param1:
+          <<: *accepts-matchGroupAggregate-query
+          type: "`GraqlMatch.Group.Aggregate`"
+      returns:
+        - Stream<[NumericGroup](#numericgroup)>
+    javascript:
+      <<: *method-matchGroupAggregate
+      method: await transaction.query().matchGroupAggregate(query, options);
+      accepts:
+        <<: *accepts-matchGroupAggregate
+        param1:
+          <<: *accepts-matchGroupAggregate-query
+          type: "`string`"
+      returns:
+        - [Stream](#stream)<[NumericGroup](#numericgroup)>
+    python:
+      <<: *method-matchGroupAggregate
+      method: transaction.query().match_group_aggregate(query, options)
+      accepts:
+        <<: *accepts-matchGroupAggregate
+        param1:
+          <<: *accepts-matchGroupAggregate-query
+          type: "`str`"
+      returns:
+        - Iterator<[NumericGroup](#numericgroup)>
+
+  - method:
+    common: &method-insert
+      title: Execute a Graql Insert query
+      description: Performs a Graql Insert query in the transaction.
+      accepts: &accepts-insert
+        param1: &accepts-insert-query
+          name: query
+          description: The Graql Insert query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "`GraknOptions`"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-insert
+      method: transaction.query().insert(GraqlInsert query, GraknOptions options);
+      accepts:
+        <<: *accepts-insert
+        param1:
+          <<: *accepts-insert-query
+          type: "`GraqlInsert`"
+      returns:
+        - Stream<[ConceptMap](#conceptmap)>
+    javascript:
+      <<: *method-insert
+      method: await transaction.query().insert(query, options);
+      accepts:
+        <<: *accepts-insert
+        param1:
+          <<: *accepts-insert-query
+          type: "`string`"
+      returns:
+        - [Stream](#stream)<[ConceptMap](#conceptmap)>
+    python:
+      <<: *method-insert
+      method: transaction.query().insert(query, options)
+      accepts:
+        <<: *accepts-insert
+        param1:
+          <<: *accepts-insert-query
+          type: "`str`"
+      returns:
+        - Iterator<[ConceptMap](#conceptmap)>
+
+  - method:
+    common: &method-delete
+      title: Execute a Graql Delete query
+      description: Performs a Graql Delete query in the transaction.
+      accepts: &accepts-delete
+        param1: &accepts-delete-query
+          name: query
+          description: The Graql Delete query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "`GraknOptions`"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-delete
+      method: transaction.query().delete(GraqlDelete query, GraknOptions options);
+      accepts:
+        <<: *accepts-delete
+        param1:
+          <<: *accepts-delete-query
+          type: "`GraqlDelete`"
+      returns:
+        - "`void`"
+    javascript:
+      <<: *method-delete
+      method: await transaction.query().delete(query, options);
+      accepts:
+        <<: *accepts-delete
+        param1:
+          <<: *accepts-delete-query
+          type: "`string`"
+      returns:
+        - "`void`"
+    python:
+      <<: *method-delete
+      method: transaction.query().delete(query, options)
+      accepts:
+        <<: *accepts-delete
+        param1:
+          <<: *accepts-delete-query
+          type: "`str`"
+      returns:
+        - "`None`"
+
+  - method:
+    common: &method-define
+      title: Execute a Graql Define query
+      description: Performs a Graql Define query in the transaction.
+      accepts: &accepts-define
+        param1: &accepts-define-query
+          name: query
+          description: The Graql Define query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "`GraknOptions`"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-define
+      method: transaction.query().define(GraqlDefine query, GraknOptions options);
+      accepts:
+        <<: *accepts-define
+        param1:
+          <<: *accepts-define-query
+          type: "`GraqlDefine`"
+      returns:
+        - "`void`"
+    javascript:
+      <<: *method-define
+      method: await transaction.query().define(query, options);
+      accepts:
+        <<: *accepts-define
+        param1:
+          <<: *accepts-define-query
+          type: "`string`"
+      returns:
+        - "`void`"
+    python:
+      <<: *method-define
+      method: transaction.query().define(query, options)
+      accepts:
+        <<: *accepts-define
+        param1:
+          <<: *accepts-define-query
+          type: "`str`"
+      returns:
+        - "`None`"
+
+  - method:
+    common: &method-undefine
+      title: Execute a Graql Undefine query
+      description: Performs a Graql Undefine query in the transaction.
+      accepts: &accepts-undefine
+        param1: &accepts-undefine-query
+          name: query
+          description: The Graql Undefine query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "`GraknOptions`"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-undefine
+      method: transaction.query().define(GraqlUndefine query, GraknOptions options);
+      accepts:
+        <<: *accepts-undefine
+        param1:
+          <<: *accepts-undefine-query
+          type: "`GraqlUndefine`"
+      returns:
+        - "`void`"
+    javascript:
+      <<: *method-undefine
+      method: await transaction.query().undefine(query, options);
+      accepts:
+        <<: *accepts-undefine
+        param1:
+          <<: *accepts-undefine-query
+          type: "`string`"
+      returns:
+        - "`void`"
+    python:
+      <<: *method-undefine
+      method: transaction.query().undefine(query, options)
+      accepts:
+        <<: *accepts-undefine
+        param1:
+          <<: *accepts-undefine-query
+          type: "`str`"
+      returns:
+        - "`None`"
