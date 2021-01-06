@@ -44,4 +44,68 @@ methods:
     python:
       <<: *method-get
       method: booleanAttributeType.get(value)
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied BooleanAttributeType as the supertype of the current BooleanAttributeType
+      accepts:
+        - param:
+            - name: booleanAttributeType
+            - description: The AttributeType to set as the supertype of this BooleanAttributeType
+            - type: BooleanAttributeType
+            - required: true
+            - default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(BooleanAttributeType booleanAttributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(booleanAttributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(booleanAttributeType)
+      returns:
+        - None
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the AttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.getSubtypes();
+      returns:
+        - Stream<[`AttributeType`](../concept-api/type?tab=java#attribute-type-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`AttributeType`](../concept-api/type?tab=javascript#attribute-type-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.get_subtypes()
+      returns:
+        - Iterator of [`AttributeType`](../concept-api/type?tab=python#attribute-type-methods)
 
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this AttributeType
+      description: Retrieves all Attributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.getInstances();
+      returns:
+        - Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.get_instances()
+      returns:
+        - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)

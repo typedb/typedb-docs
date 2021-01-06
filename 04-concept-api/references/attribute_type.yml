@@ -16,31 +16,31 @@ methods:
       method: attributeType.get_value_type()
 
   - method:
-      common: &method-setsupertype
-        title: Set Supertype
-        description: Sets the supplied AttributeType as the supertype of the current AttributeType
-        accepts:
-          - param:
-              - name: attributeType
-              - description: The AttributeType to set as the supertype of this AttributeType
-              - type: AttributeType
-              - required: true
-              - default: N/A
-      java:
-        <<: *method-setsupertype
-        method: attributeType.setSupertype(AttributeType attributeType);
-        returns:
-          - void
-      javascript:
-        <<: *method-setsupertype
-        method: attributeType.setSupertype(attributeType);
-        returns:
-          - void
-      python:
-        <<: *method-setsupertype
-        method: attributeType.set_supertype(attributeType)
-        returns:
-          - None
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied AttributeType as the supertype of the current AttributeType
+      accepts:
+        - param:
+            - name: attributeType
+            - description: The AttributeType to set as the supertype of this AttributeType
+            - type: AttributeType
+            - required: true
+            - default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(AttributeType attributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.setSupertype(attributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.set_supertype(attributeType)
+      returns:
+        - None
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
