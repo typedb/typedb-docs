@@ -1,5 +1,23 @@
 methods:
   - method:
+    common: &method-asRemote
+      title: Get a Remote version of the type.
+      description: The remote version uses the given transaction to execute every method call.
+      returns:
+        - "`RemoteType`"
+    java:
+      <<: *method-asRemote
+      method: type.asRemote(tx);
+      returns:
+        - "`Type.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: type.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: type.as_remote(tx)
+
+  - method:
     common: &method-getLabel
       title: Retrieve label (Local)
       description: Retrieves the unique label of the type.
@@ -108,7 +126,7 @@ methods:
         - Stream<[`Type`](../concept-api/type?tab=java#type-methods)>
     javascript:
       <<: *method-getSupertypes
-      method: await type.getSupertypes()
+      method: type.getSupertypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream)<[`Type`](../concept-api/type?tab=javascript#type-methods)>"
     python:
@@ -128,7 +146,7 @@ methods:
         - Stream<[`Type`](../concept-api/type?tab=java#type-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: await type.getSubtypes()
+      method: type.getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream)<[`Type`](../concept-api/type?tab=javascript#type-methods)>"
     python:
