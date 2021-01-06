@@ -19,25 +19,52 @@ methods:
       returns:
         - "[`Relation`](../concept-api/thing?tab=python#relation-methods) object"
 
+          - method:
+            common: &method-getrelates
+              title: Retrieve roles
+              description: Retrieve roles that this RelationType relates to.
+            java:
+              <<: *method-getrelates
+              method: relationType.getRelates();
+              returns:
+                - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javatab=#role-type-methods) objects"
+            javascript:
+              <<: *method-getrelates
+              method: await relationType.getRelates();
+              returns:
+                - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javascripttab=#role-type-methods) objects"
+            python:
+              <<: *method-getrelates
+              method: relation_type.get_relates()
+              returns:
+                - "Iterator of [`RoleType`](../concept-api/type?tab=python#role-type-methods) objects"```
+
+
   - method:
-    common: &method-roles
-      title: Retrieve roles
-      description: Retrieve roles that this RelationType relates to.
+    common: &method-getrelates-label
+      title: Retrieve specific role
+      description: Retrieve the role that this RelationType relates to, if extant, with the specified label.
+      accepts:
+        param:
+          name: label
+          description: Label of the role we wish to retrieve.
+          type: String
+          required: true
     java:
-      <<: *method-roles
-      method: relationType.roles();
+      <<: *method-getrelates-label
+      method: relationType.getRelates(String label);
       returns:
-        - "Stream of [`Role`](../concept-api/type?javatab=#role-methods) objects"
+        - "[`RoleType`](../concept-api/type?javatab=#role-type-methods)"
     javascript:
-      <<: *method-roles
-      method: await relationType.roles();
+      <<: *method-getrelates-label
+      method: await relationType.getRelates(label);
       returns:
-        - "Iterator of [`Role`](../concept-api/type?javascripttab=#role-methods) objects"
+        - "[`RoleType`](../concept-api/type?javascripttab=#role-type-methods)"
     python:
-      <<: *method-roles
-      method: relation_type.roles()
+      <<: *method-getrelates-label
+      method: relation_type.get_relates(label)
       returns:
-        - "Iterator of [`Role`](../concept-api/type?tab=python#role-methods) objects"
+        - "[`RoleType`](../concept-api/type?tab=python#role-type-methods)"
 
   - method:
     common: &method-relates
@@ -47,24 +74,24 @@ methods:
         param:
           name: role
           description: The new role for the RelationType to relate to.
-          type: Role
+          type: RoleType
           required: true
           default: N/A
     java:
       <<: *method-relates
-      method: relationType.relates(Role role);
+      method: relationType.setRelates(RoleType role);
       returns:
-        - "[`RelationType`](../concept-api/type?tab=java#relationtype-methods) object"
+        - void
     javascript:
       <<: *method-relates
-      method: await relationType.relates(role);
+      method: await relationType.setRelates(role);
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-relates
-      method: relation_type.relates(role)
+      method: relation_type.set_relates(role)
       returns:
-        - "[`RelationType`](../concept-api/type?tab=python#relationtype-methods) object"
+        - None
 
   - method:
     common: &method-unrelate
@@ -74,21 +101,21 @@ methods:
         param:
           name: role
           description: The role to not relate to the relation type.
-          type: Role
+          type: RoleType
           required: true
           default: N/A
     java:
       <<: *method-unrelate
-      method: relationType.unrelate(Role role);
+      method: relationType.unsetRelates(RoleType role);
       returns:
-        - "[`RelationType`](../concept-api/type?tab=java#relationtype-methods) object"
+        - void
     javascript:
       <<: *method-unrelate
-      method: await relationType.unrelate(role);
+      method: await relationType.unsetRelates(role);
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-unrelate
-      method: relation_type.unrelate(role)
+      method: relation_type.unset_relates(role)
       returns:
-        - "[`RelationType`](../concept-api/type?tab=python#relationtype-methods) object"
+        - None
