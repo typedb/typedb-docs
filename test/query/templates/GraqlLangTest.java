@@ -3,6 +3,9 @@ package grakn.doc.test.query;
 import grakn.client.Grakn;
 import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
+import grakn.client.concept.answer.ConceptMapGroup;
+import grakn.client.concept.answer.Numeric;
+import grakn.client.concept.answer.NumericGroup;
 import graql.lang.Graql;
 import graql.lang.pattern.Pattern;
 import graql.lang.query.*;
@@ -23,10 +26,35 @@ public class GraqlLangTest {
 
     private void runQuery(Grakn.Transaction transaction, GraqlQuery query) {
         List<ConceptMap> conceptMaps;
+        Numeric num;
         if (query instanceof GraqlMatch) {
             session = client.session("social_network", Grakn.Session.Type.DATA);
             transaction = session.transaction(Grakn.Transaction.Type.WRITE);
             conceptMaps = transaction.query().match(query.asMatch()).collect(Collectors.toList());
+            transaction.close();
+            session.close();
+        } else if (query instanceof GraqlMatch.Aggregate) {
+            session = client.session("social_network", Grakn.Session.Type.DATA);
+            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+            transaction.query().match(query.asMatchAggregate()).get();
+            transaction.close();
+            session.close();
+        } else if (query instanceof GraqlMatch.Group) {
+            session = client.session("social_network", Grakn.Session.Type.DATA);
+            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+            List<ConceptMapGroup> x = transaction.query().match(query.asMatchGroup()).collect(Collectors.toList());
+            transaction.close();
+            session.close();
+        } else if (query instanceof GraqlMatch.Aggregate) {
+            session = client.session("social_network", Grakn.Session.Type.DATA);
+            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+            num = transaction.query().match(query.asMatchAggregate()).get();
+            transaction.close();
+            session.close();
+        } else if (query instanceof GraqlMatch.Group.Aggregate) {
+            session = client.session("social_network", Grakn.Session.Type.DATA);
+            transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+            List<NumericGroup> x = transaction.query().match(query.asMatchGroupAggregate()).collect(Collectors.toList());
             transaction.close();
             session.close();
         } else if (query instanceof GraqlDefine) {
@@ -53,7 +81,7 @@ public class GraqlLangTest {
             transaction.query().delete(query.asDelete()).get();
             transaction.close();
             session.close();
-        } else if (query instanceof GraqlCompute || query instanceof GraqlMatch.Group || query instanceof GraqlMatch.Group.Aggregate || query instanceof GraqlMatch.Aggregate) {
+        } else if (query instanceof GraqlCompute) {
             // FIXME(vmax): we dunno how to run them yet
         } else {
             throw new RuntimeException("Unknown query type: " + query.toString() + "[type = " + query.getClass() + "]");

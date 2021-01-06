@@ -8,16 +8,18 @@ toc: false
 
 # Migration and Backup
 
-Some versions of Grakn include tools to backup and migrate data between versions of grakn that are not data-level compatible. Please note the chart below for which versions are data-level compatible:
+Grakn version 1.7.3 and later include tools to backup and migrate data between versions of grakn that are not data-level compatible. Please note the chart below for which versions are data-level compatible:
 
 | Data-level Versions | Versions at Data-level | Earliest Version With Migration Available |
 | ------------------- | ---------------------- | ----------------------------------------- |
 | 1.7                 | 1.5.x, 1.6.x, 1.7.x    | 1.7.3                                     |
 | 1.8                 | 1.8.x                  | 1.8.1                                     |
+| 2.0                 | 2.0.x                  | 2.0                                       |
 
-When migrating data between versions of grakn with the same data-level, you should instead copy your `server/db` directory from one installation to the other, as this will be faster and can be done to move from a version of Grakn without migration tools to a one which has them.
-
-If you are migrating from 1.6.x or below to 1.8.x, you must first do a `server/db` copy migration into a 1.7.3 version of Grakn to be able to export it.
+<div class="note">
+[Important]
+If you are migrating from 1.6.x or below to 2.0.x, you must first copy your `server/db` directory from your existing Grakn installation into an Grakn 1.7.3 installation. This will be fast and can be done to move from a version of Grakn without migration tools to one which has them. From 1.7.3 you are able to migrate to Grakn 2.0. 
+</div>
 
 <div class="note">
 [Important]
@@ -50,12 +52,21 @@ Importing a backup will not delete existing data in the database, so you should 
 
 The first step of migration is to migrate your schema. The  `grakn server schema` command allows you to get the current schema of a Grakn database as a single Graql `define` query. This schema query can then be loaded via `grakn console` to the new server.
 
-You can skip the step of exporting schema if you already have a copy of your schema to import.
-
-<!-- FIXME(vmax): console doesn't support `--database-use` and `--source` options yet -->
+Export the old schema:
 ```
 old/grakn server schema [database] > schema.gql
-new/grakn console --database-use [database] --source schema.gql
+```
+
+You can skip the step of exporting schema if you already have a copy of your schema to import.
+
+If migrating from Grakn version <2.0 to version >=2.0 you need to update your schema to conform to Grakn 2.0 syntax. 
+
+Once conforming to the new syntax, import the new schema:
+```
+new/grakn console
+> create database [database] 
+> transaction [database] schema write
+[database]::schema::write> source schema.gql
 ```
 
 ### Data Migration
