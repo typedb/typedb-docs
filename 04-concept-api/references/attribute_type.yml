@@ -101,17 +101,17 @@ methods:
       title: Check if value is of type datetime
       description: Returns true if the value for attributes of this type datetime. Otherwise, returns false.
     java:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.isDateTime();
       return:
         - boolean
     javascript:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.isDateTime();
       return:
         - boolean
     python:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.is_datetime()
       return:
         - boolean

@@ -56,6 +56,21 @@ methods:
       method: attribute.owners(ownerType)
       return:
         - "Iterator of [`Thing`](../concept-api/thing?tab=python) objects"
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the concept.
+      description: The remote version uses the given transaction to execute every method call.
+      returns:
+        - "`RemoteAttribute`"
+    java:
+      <<: *method-asRemote
+      method: attribute.asRemote(tx);
+    javascript:
+      <<: *method-asRemote
+      method: attribute.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: attribute.as_remote(tx)
 
   - method:
     common: &method-isboolean
