@@ -5,17 +5,17 @@ methods:
       description: Retrieves a map of all instances involved in the Relation and the role each play.
     java:
       <<: *method-rolePlayersMap
-      method: relation.rolePlayersMap();
+      method: relation.getPlayersByRoleType();
       returns:
         - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), List<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     javascript:
       <<: *method-rolePlayersMap
-      method: await relation.rolePlayersMap();
+      method: await relation.getPlayersByRoleType();
       returns:
         - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Array<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     python:
       <<: *method-rolePlayersMap
-      method: relation.role_players_map()
+      method: relation.get_players_by_role_type()
       returns:
         - Dict[[`Role`](../concept-api/type?tab=java#role-methods), List[[`Thing`](../concept-api/thing?tab=java#thing-methods)]]
 
@@ -46,7 +46,7 @@ methods:
           <<: *accepts-rolePlayers-role
           type: "[`Role`](../concept-api/type?tab=javascript#role-methods)"
       returns:
-        - "Iterator of [`Thing`](../concept-api/thing?tab=java) objects"
+        - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript) objects"
     python:
       <<: *method-rolePlayers
       method: relation.role_players(role)

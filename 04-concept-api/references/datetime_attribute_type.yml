@@ -1,0 +1,74 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this DateTimeAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - DateTimeAttribute object
+      accepts: &method-put-accepts
+        param: &method-put-accepts-value
+          name: value
+          description: The value of the instance to be put
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: datetimeAttributeType.put(LocalDateTime value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: LocalDateTime
+    javascript:
+      <<: *method-put
+      method: await dateTimeAttributeType.put(value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: Date
+    python:
+      <<: *method-put
+      method: dateTimeAttributeType.put(value)
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: datetime
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if extant, of this DateTimeAttributeType with the specified value.
+      returns:
+        - DateTimeAttribute object
+      accepts: &method-get-accepts
+        param: &method-get-accepts-value
+          name: value
+          description: The value of the instance to be retrieved
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: datetimeAttributeType.get(LocalDateTime value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: LocalDateTime
+    javascript:
+      <<: *method-get
+      method: await dateTimeAttributeType.get(value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: number
+    python:
+      <<: *method-get
+      method: dateTimeAttributeType.get(value)
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: datetime

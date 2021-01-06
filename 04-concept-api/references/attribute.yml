@@ -50,7 +50,7 @@ methods:
       <<: *method-owners
       method: await attribute.owners(ownerType);
       return:
-        - "[Stream](../concept-api/Stream?tab=javascript) of [`Thing`](../concept-api/thing?tab=javascript) objects"
+        - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript) objects"
     python:
       <<: *method-owners
       method: attribute.owners(ownerType)

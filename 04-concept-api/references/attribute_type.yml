@@ -1,36 +1,5 @@
 methods:
   - method:
-    common: &method-put
-      title: Put instance
-      description: Puts and returns a new instance of this AttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
-      returns:
-        - Attribute object
-    java:
-      <<: *method-put
-      method: attributeType.put(value);
-    javascript:
-      <<: *method-put
-      method: await attributeType.put(value);
-    python:
-      <<: *method-put
-      method: attributeType.put(value)
-
-  - method:
-    common: &method-get
-      title: Get instance
-      description: Returns the instance, if extant, of this AttributeType with the specified value.
-      returns:
-        - Attribute object
-    java:
-      <<: *method-put
-      method: attributeType.get(value);
-    javascript:
-      <<: *method-put
-      method: await attributeType.get(value);
-    python:
-      <<: *method-put
-      method: attributeType.get(value)
-  - method:
     common: &method-getvalueType
       title: Retrieve valuetype
       description: Retrieves the valuetype given to this AttributeType.
@@ -46,52 +15,103 @@ methods:
       <<: *method-getvalueType
       method: attributeType.get_value_type()
 
-  - method:
-    common: &method-regex-retrieve
-      title: Retrieve regex
-      description: Retrieves the regex that all instances of this AttributeType must conform to.
-    java:
-      <<: *method-regex-retrieve
-      method: attributeType.getRegex();
-      returns:
-        - "`String`"
-        - "`NULL`"
-    javascript:
-      <<: *method-regex-retrieve
-      method: await attributeType.getRegex();
-      returns:
-        - "`String`"
-        - "`None`"
-    python:
-      <<: *method-regex-retrieve
-      method: attribute_type.get_regex()
-      returns:
-        - "`String`"
-        - "`null`"
 
   - method:
-    common: &method-regex-set
-      title: Set regex
-      description: Set the regex that all instances of this AttributeType must conform to.
-      accepts:
-        param:
-          name: regex
-          description: The regex that all instances of this AttributeType must conform to.
-          type: String
-          required: true
-          default: N/A
+    common: &method-isboolean
+      title: Check if value is of type boolean
+      description: Returns true if the value for attributes of this type is of type boolean. Otherwise, returns false.
     java:
-      <<: *method-regex-set
-      method: attributeType.setRegex(String regex);
-      returns:
-        - void
+      <<: *method-isboolean
+      method: attribute.isBoolean();
+      return:
+        - boolean
     javascript:
-      <<: *method-regex-set
-      method: await attributeType.setRegex(regex);
-      returns:
-        - void
+      <<: *method-isboolean
+      method: attribute.isBoolean();
+      return:
+        - boolean
     python:
-      <<: *method-regex-set
-      method: attribute_type.set_regex(regex)
-      returns:
-        - void
+      <<: *method-isboolean
+      method: attribute.is_boolean()
+      return:
+        - boolean
+
+  - method:
+    common: &method-islong
+      title: Check if value is of type long
+      description: Returns true if the value for attributes of this type is of type long. Otherwise, returns false.
+    java:
+      <<: *method-islong
+      method: attribute.isLong();
+      return:
+        - boolean
+    javascript:
+      <<: *method-islong
+      method: attribute.isLong();
+      return:
+        - boolean
+    python:
+      <<: *method-islong
+      method: attribute.is_long()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isdouble
+      title: Check if value is of type double
+      description: Returns true if the value for attributes of this type is of type double. Otherwise, returns false.
+    java:
+      <<: *method-isdouble
+      method: attribute.isDouble();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isdouble
+      method: attribute.isDouble();
+      return:
+        - boolean
+    python:
+      <<: *method-isdouble
+      method: attribute.is_double()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isstring
+      title: Check if value is of type string
+      description: Returns true if the value for attributes of this type is of type string. Otherwise, returns false.
+    java:
+      <<: *method-isstring
+      method: attribute.isString();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isstring
+      method: attribute.isString();
+      return:
+        - boolean
+    python:
+      <<: *method-isstring
+      method: attribute.is_string()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isdatetime
+      title: Check if value is of type datetime
+      description: Returns true if the value for attributes of this type datetime. Otherwise, returns false.
+    java:
+      <<: *method-isdouble
+      method: attribute.isDateTime();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isdouble
+      method: attribute.isDateTime();
+      return:
+        - boolean
+    python:
+      <<: *method-isdouble
+      method: attribute.is_datetime()
+      return:
+        - boolean

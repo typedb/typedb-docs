@@ -1,0 +1,46 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this BooleanAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - BooleanAttribute object
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be put
+          type: Boolean
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: booleanAttributeType.put(boolean value);
+    javascript:
+      <<: *method-put
+      method: await booleanAttributeType.put(value);
+    python:
+      <<: *method-put
+      method: booleanAttributeType.put(value)
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if extant, of this BooleanAttributeType with the specified value.
+      returns:
+        - BooleanAttribute object
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be retrieved
+          type: boolean
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: booleanAttributeType.get(Boolean value);
+    javascript:
+      <<: *method-get
+      method: await booleanAttributeType.get(value);
+    python:
+      <<: *method-get
+      method: booleanAttributeType.get(value)

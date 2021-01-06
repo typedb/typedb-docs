@@ -1,0 +1,95 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this StringAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - StringAttribute object
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be put
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: stringAttributeType.put(String value);
+    javascript:
+      <<: *method-put
+      method: await stringAttributeType.put(value);
+    python:
+      <<: *method-put
+      method: stringAttributeType.put(value)
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if extant, of this StringAttributeType with the specified value.
+      returns:
+        - StringAttribute object
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be retrieved
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: stringAttributeType.get(String value);
+    javascript:
+      <<: *method-get
+      method: await stringAttributeType.get(value);
+    python:
+      <<: *method-get
+      method: stringAttributeType.get(value)
+  - method:
+    common: &method-regex-retrieve
+      title: Retrieve regex
+      description: Retrieves the regex that all instances of this StringAttributeType must conform to.
+    java:
+      <<: *method-regex-retrieve
+      method: stringAttributeType.getRegex();
+      returns:
+        - "`String`"
+        - "`NULL`"
+    javascript:
+      <<: *method-regex-retrieve
+      method: await stringAttributeType.getRegex();
+      returns:
+        - "`String`"
+        - "`None`"
+    python:
+      <<: *method-regex-retrieve
+      method: string_attribute_type.get_regex()
+      returns:
+        - "`String`"
+        - "`null`"
+
+  - method:
+    common: &method-regex-set
+      title: Set regex
+      description: Set the regex that all instances of this StringAttributeType must conform to.
+      accepts:
+        param:
+          name: regex
+          description: The regex that all instances of this StringAttributeType must conform to.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-regex-set
+      method: stringAttributeType.setRegex(String regex);
+      returns:
+        - void
+    javascript:
+      <<: *method-regex-set
+      method: await stringAttributeType.setRegex(regex);
+      returns:
+        - void
+    python:
+      <<: *method-regex-set
+      method: string_attribute_type.set_regex(regex)
+      returns:
+        - void
