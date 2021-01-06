@@ -6,7 +6,7 @@ methods:
       title: Retrieve the root ThingType
       description: Retrieves the root ThingType, "thing".
       returns:
-        - [`ThingType`](../concept-api/type#thingtype-methods)
+        - "[`ThingType`](../concept-api/type#thingtype-methods)"
     java:
       <<: *method-getRootThingType
       method: transaction.concepts().getRootThingType();
@@ -22,7 +22,7 @@ methods:
       title: Retrieve the root EntityType
       description: Retrieves the root EntityType, "entity".
       returns:
-        - [`EntityType`](../concept-api/type#entitytype-methods)
+        - "[`EntityType`](../concept-api/type#entitytype-methods)"
     java:
       <<: *method-getRootEntityType
       method: transaction.concepts().getRootEntityType();
@@ -38,7 +38,7 @@ methods:
       title: Retrieve the root RelationType
       description: Retrieves the root RelationType, "relation".
       returns:
-        - [`RelationType`](../concept-api/type#relationtype-methods)
+        - "[`RelationType`](../concept-api/type#relationtype-methods)"
     java:
       <<: *method-getRootRelationType
       method: transaction.concepts().getRootRelationType();
@@ -54,7 +54,7 @@ methods:
       title: Retrieve the root AttributeType
       description: Retrieves the root AttributeType, "attribute".
       returns:
-        - [`AttributeType`](../concept-api/type#attributetype-methods)
+        - "[`AttributeType`](../concept-api/type#attributetype-methods)"
     java:
       <<: *method-getRootAttributeType
       method: transaction.concepts().getRootAttributeType();
@@ -77,7 +77,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`EntityType`](../concept-api/type#entitytype-methods)
+        - "[`EntityType`](../concept-api/type#entitytype-methods)"
     java:
       <<: *method-getEntityType
       method: transaction.concepts().getEntityType(String label);
@@ -100,7 +100,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`EntityType`](../concept-api/type#entitytype-methods)
+        - "[`EntityType`](../concept-api/type#entitytype-methods)"
     java:
       <<: *method-putEntityType
       method: transaction.concepts().putEntityType(String label);
@@ -123,7 +123,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`RelationType`](../concept-api/type#relationtype-methods)
+        - "[`RelationType`](../concept-api/type#relationtype-methods)"
     java:
       <<: *method-getRelationType
       method: transaction.concepts().getRelationType(String label);
@@ -146,7 +146,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`RelationType`](../concept-api/type#relationtype-methods)
+        - "[`RelationType`](../concept-api/type#relationtype-methods)"
     java:
       <<: *method-putRelationType
       method: transaction.concepts().putRelationType(String label);
@@ -169,7 +169,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`AttributeType`](../concept-api/type#attributetype-methods)
+        - "[`AttributeType`](../concept-api/type#attributetype-methods)"
     java:
       <<: *method-getAttributeType
       method: transaction.concepts().getAttributeType(String label);
@@ -197,7 +197,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`AttributeType`](../concept-api/type#attributetype-methods)
+        - "[`AttributeType`](../concept-api/type#attributetype-methods)"
     java:
       <<: *method-putAttributeType
       method: transaction.concepts().putAttributeType(String label, AttributeType.ValueType valueType)
@@ -235,7 +235,7 @@ methods:
           type: String
           required: true
           default: N/A
-      returns: [`Thing`](../concept-api/thing)
+      returns: "[`Thing`](../concept-api/thing)"
     java:
       <<: *method-getThing
       method: transaction.concepts().getThing(String iid);
@@ -258,7 +258,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`ThingType`](../concept-api/type#thingtype-methods)
+        - "[`ThingType`](../concept-api/type#thingtype-methods)"
     java:
       <<: *method-getThingType
       method: transaction.concepts().getThingType(String label);

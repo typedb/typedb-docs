@@ -13,7 +13,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`Rule`](../concept-api/rule)
+        - "[`Rule`](../concept-api/rule)"
     java:
       <<: *method-getRule
       method: transaction.logic().getRule(String label);
@@ -48,7 +48,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - [`Rule`](../concept-api/rule)
+        - "[`Rule`](../concept-api/rule)"
     java:
       <<: *method-putRule
       method: transaction.logic().putRule(String label, Pattern when, Pattern then);

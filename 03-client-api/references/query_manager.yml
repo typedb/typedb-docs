@@ -36,7 +36,7 @@ methods:
           <<: *accepts-match-query
           type: "`string`"
       returns:
-        - [Stream](#stream)<[ConceptMap](#conceptmap)>
+        - "[Stream](#stream)<[ConceptMap](#conceptmap)>"
     python:
       <<: *method-match
       method: transaction.query().match(query, options)
@@ -46,7 +46,7 @@ methods:
           <<: *accepts-match-query
           type: "`str`"
       returns:
-        - Iterator<[ConceptMap](#conceptmap)>
+        - Iterator of [ConceptMap](#conceptmap)
 
   - method:
       common: &method-matchAggregate
@@ -83,7 +83,7 @@ methods:
             <<: *accepts-matchAggregate-query
             type: "`string`"
         returns:
-          - [Numeric](#numeric)
+          - "[Numeric](#numeric)"
       python:
         <<: *method-matchAggregate
         method: transaction.query().match_aggregate(query, options)
@@ -93,7 +93,7 @@ methods:
             <<: *accepts-matchAggregate-query
             type: "`str`"
         returns:
-          - [Numeric](#numeric)
+          - "[Numeric](#numeric)"
 
   - method:
     common: &method-matchGroup
@@ -130,7 +130,7 @@ methods:
           <<: *accepts-matchGroup-query
           type: "`string`"
       returns:
-        - [Stream](#stream)<[ConceptMapGroup](#conceptmapgroup)>
+        - "[Stream](#stream)<[ConceptMapGroup](#conceptmapgroup)>"
     python:
       <<: *method-matchGroup
       method: transaction.query().match_group(query, options)
@@ -140,7 +140,7 @@ methods:
           <<: *accepts-matchGroup-query
           type: "`str`"
       returns:
-        - Iterator<[ConceptMapGroup](#conceptmapgroup)>
+        - Iterator of [ConceptMapGroup](#conceptmapgroup)
 
   - method:
     common: &method-matchGroupAggregate
@@ -177,7 +177,7 @@ methods:
           <<: *accepts-matchGroupAggregate-query
           type: "`string`"
       returns:
-        - [Stream](#stream)<[NumericGroup](#numericgroup)>
+        - "[Stream](#stream)<[NumericGroup](#numericgroup)>"
     python:
       <<: *method-matchGroupAggregate
       method: transaction.query().match_group_aggregate(query, options)
@@ -187,7 +187,7 @@ methods:
           <<: *accepts-matchGroupAggregate-query
           type: "`str`"
       returns:
-        - Iterator<[NumericGroup](#numericgroup)>
+        - Iterator of [NumericGroup](#numericgroup)
 
   - method:
     common: &method-insert
@@ -224,7 +224,7 @@ methods:
           <<: *accepts-insert-query
           type: "`string`"
       returns:
-        - [Stream](#stream)<[ConceptMap](#conceptmap)>
+        - "[Stream](#stream)<[ConceptMap](#conceptmap)>"
     python:
       <<: *method-insert
       method: transaction.query().insert(query, options)
@@ -234,7 +234,7 @@ methods:
           <<: *accepts-insert-query
           type: "`str`"
       returns:
-        - Iterator<[ConceptMap](#conceptmap)>
+        - Iterator of [ConceptMap](#conceptmap)
 
   - method:
     common: &method-delete
