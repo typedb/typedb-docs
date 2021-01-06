@@ -25,6 +25,25 @@ toc: true
 
 </div>
 
+## Entity Methods
+`Entity` has all the [`Thing` methods](../04-concept-api/01-concept.md) plus what follows.
+
+<div class="tabs light" data-no-parse>
+
+[tab:Java]
+{% include api/generic.html data=site.data.04_concept_api.references.entity language="java" %}
+[tab:end]
+
+[tab:Javascript]
+{% include api/generic.html data=site.data.04_concept_api.references.entity language="javascript" %}
+[tab:end]
+
+[tab:Python]
+{% include api/generic.html data=site.data.04_concept_api.references.entity language="python" %}
+[tab:end]
+
+</div>
+
 ## Attribute Methods
 `Attribute` has all the [`Thing` methods](../04-concept-api/01-concept.md) plus what follows.
 
