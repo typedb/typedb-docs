@@ -1,11 +1,11 @@
 methods:
   - method:
-    common: &method-value
+    common: &method-getvalue
       title: Retrieve value (Local)
       description: Retrieves the value which the Attribute instance holds.
     java:
-      <<: *method-value
-      method: attribute.value();
+      <<: *method-getvalue
+      method: attribute.getValue();
       return:
         - "`String`"
         - "`Long`"
@@ -13,16 +13,16 @@ methods:
         - "`boolean`"
         - "`Date`"
     javascript:
-      <<: *method-value
-      method: await attribute.value();
+      <<: *method-getvalue
+      method: await attribute.getValue();
       return:
         - "`String`"
         - "`Number`"
         - "`boolean`"
         - "`Date`"
     python:
-      <<: *method-value
-      method: attribute.value()
+      <<: *method-getvalue
+      method: attribute.get_value()
       return:
         - "`String`"
         - "`int`"
@@ -34,18 +34,125 @@ methods:
     common: &method-owners
       title: Retrieve owners
       description: Retrieves the instances that own this Attribute.
+      accepts: &accepts-method-owners
+        param: &accepts-method-owners-type
+          name: ownerType
+          description: If specified, filter results for only owners of the given type
+          type: Type
+          required: false
+          default: N/A
     java:
       <<: *method-owners
-      method: attribute.owners();
+      method: attribute.owners(Type ownerType);
       return:
         - "Stream of [`Thing`](../concept-api/thing?tab=java) objects"
     javascript:
       <<: *method-owners
-      method: await attribute.owners();
+      method: await attribute.owners(ownerType);
       return:
-        - "Iterator of [`Thing`](../concept-api/thing?tab=javascript) objects"
+        - "[Stream](../concept-api/Stream?tab=javascript) of [`Thing`](../concept-api/thing?tab=javascript) objects"
     python:
       <<: *method-owners
-      method: attribute.owners()
+      method: attribute.owners(ownerType)
       return:
         - "Iterator of [`Thing`](../concept-api/thing?tab=python) objects"
+
+  - method:
+    common: &method-isboolean
+      title: Check if value is of type boolean
+      description: Returns true if the attribute value is of type boolean. Otherwise, returns false.
+    java:
+      <<: *method-isboolean
+      method: attribute.isBoolean();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isboolean
+      method: await attribute.isBoolean();
+      return:
+        - boolean
+    python:
+      <<: *method-isboolean
+      method: attribute.is_boolean()
+      return:
+        - boolean
+
+  - method:
+    common: &method-islong
+      title: Check if value is of type long
+      description: Returns true if the attribute value is of type long. Otherwise, returns false.
+    java:
+      <<: *method-islong
+      method: attribute.isLong();
+      return:
+        - boolean
+    javascript:
+      <<: *method-islong
+      method: await attribute.isLong();
+      return:
+        - boolean
+    python:
+      <<: *method-islong
+      method: attribute.is_long()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isdouble
+      title: Check if value is of type double
+      description: Returns true if the attribute value is of type double. Otherwise, returns false.
+    java:
+      <<: *method-isdouble
+      method: attribute.isDouble();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isdouble
+      method: await attribute.isDouble();
+      return:
+        - boolean
+    python:
+      <<: *method-isdouble
+      method: attribute.is_double()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isstring
+      title: Check if value is of type string
+      description: Returns true if the attribute value is of type string. Otherwise, returns false.
+    java:
+      <<: *method-isstring
+      method: attribute.isString();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isstring
+      method: await attribute.isString();
+      return:
+        - boolean
+    python:
+      <<: *method-isstring
+      method: attribute.is_string()
+      return:
+        - boolean
+
+  - method:
+    common: &method-isdatetime
+      title: Check if value is of type datetime
+      description: Returns true if the attribute value is of type datetime. Otherwise, returns false.
+    java:
+      <<: *method-isdouble
+      method: attribute.isDateTime();
+      return:
+        - boolean
+    javascript:
+      <<: *method-isdouble
+      method: await attribute.isDateTime();
+      return:
+        - boolean
+    python:
+      <<: *method-isdouble
+      method: attribute.is_datetime()
+      return:
+        - boolean
