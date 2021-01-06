@@ -3,11 +3,20 @@ methods:
     common: &method-asRemote
       title: Get a Remote version of the concept.
       description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
       returns:
         - "`RemoteConcept`"
     java:
       <<: *method-asRemote
       method: concept.asRemote(tx);
+      returns:
+        - "`Concept.Remote`"
     javascript:
       <<: *method-asRemote
       method: concept.asRemote(tx);
