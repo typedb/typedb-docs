@@ -1,5 +1,21 @@
 methods:
   - method:
+    common: &method-iid
+      title: Retrieves internal ID (Local)
+      description: Retrieves the unique id of the type.
+      returns:
+        - "string"
+    java:
+      <<: *method-iid
+      method: thing.getIID();
+    javascript:
+      <<: *method-iid
+      method: thing.getIID();
+    python:
+      <<: *method-iid
+      method: thing.get_iid()
+
+  - method:
     common: &method-type
       title: Retrieve type (Local)
       description: Retrieves the type which this Thing belongs to. When this thing is a local concept, the returned concept is also local.

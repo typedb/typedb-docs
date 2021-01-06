@@ -7,13 +7,13 @@ methods:
         - String
     java:
       <<: *method-label-retrieve
-      method: type.label();
+      method: type.getLabel();
     javascript:
       <<: *method-label-retrieve
-      method: await type.label();
+      method: await type.getLabel();
     python:
       <<: *method-label-retrieve
-      method: type.label()
+      method: type.get_label()
 
   - method:
     common: &method-label-rename

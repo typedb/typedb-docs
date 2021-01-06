@@ -1,0 +1,74 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this LongAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - LongAttribute object
+      accepts: &method-put-accepts
+        param: &method-put-accepts-value
+          name: value
+          description: The value of the instance to be put
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: longAttributeType.put(long value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: long
+    javascript:
+      <<: *method-put
+      method: await longAttributeType.put(value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: number
+    python:
+      <<: *method-put
+      method: longAttributeType.put(value)
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: int
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if extant, of this LongAttributeType with the specified value.
+      returns:
+        - LongAttribute object
+      accepts: &method-get-accepts
+        param: &method-get-accepts-value
+          name: value
+          description: The value of the instance to be retrieved
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: longAttributeType.get(long value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: long
+    javascript:
+      <<: *method-get
+      method: await longAttributeType.get(value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: number
+    python:
+      <<: *method-get
+      method: longAttributeType.get(value)
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: int
