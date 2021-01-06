@@ -4,10 +4,6 @@ keywords: graql, aggregate query, calculation, statistics
 longTailKeywords: grakn aggregate data, graql aggregate query, graql statistics
 Summary: Statistical queries in Grakn.
 ---
-<div class = "note">
-[Important]
-**Aggregate queries are not yet available for Grakn 2.0, but will be ready soon.
-</div>
 
 ## Aggregate Values Over a Dataset
 In this section, we learn how to get Grakn to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
