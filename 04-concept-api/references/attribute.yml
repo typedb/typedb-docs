@@ -48,7 +48,7 @@ methods:
         - "Stream of [`Thing`](../concept-api/thing?tab=java) objects"
     javascript:
       <<: *method-owners
-      method: await attribute.owners(ownerType);
+      method: attribute.owners(ownerType);
       return:
         - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript) objects"
     python:
@@ -60,18 +60,26 @@ methods:
     common: &method-asRemote
       title: Get a Remote version of the concept.
       description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
       returns:
         - "`RemoteAttribute`"
     java:
       <<: *method-asRemote
-      method: attribute.asRemote(tx);
+      method: concept.asRemote(tx);
+      returns:
+        - "`Attribute.Remote`"
     javascript:
       <<: *method-asRemote
-      method: attribute.asRemote(tx);
+      method: concept.asRemote(tx);
     python:
       <<: *method-asRemote
-      method: attribute.as_remote(tx)
-
+      method: concept.as_remote(tx)
   - method:
     common: &method-isboolean
       title: Check if value is of type boolean

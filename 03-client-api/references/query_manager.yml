@@ -29,7 +29,7 @@ methods:
         - Stream<[ConceptMap](#conceptmap)>
     javascript:
       <<: *method-match
-      method: await transaction.query().match(query, options);
+      method: transaction.query().match(query, options);
       accepts:
         <<: *accepts-match
         param1:
@@ -123,7 +123,7 @@ methods:
         - Stream<[ConceptMapGroup](#conceptmapgroup)>
     javascript:
       <<: *method-matchGroup
-      method: await transaction.query().matchGroup(query, options);
+      method: transaction.query().matchGroup(query, options);
       accepts:
         <<: *accepts-matchGroup
         param1:
@@ -170,7 +170,7 @@ methods:
         - Stream<[NumericGroup](#numericgroup)>
     javascript:
       <<: *method-matchGroupAggregate
-      method: await transaction.query().matchGroupAggregate(query, options);
+      method: transaction.query().matchGroupAggregate(query, options);
       accepts:
         <<: *accepts-matchGroupAggregate
         param1:
@@ -217,7 +217,7 @@ methods:
         - Stream<[ConceptMap](#conceptmap)>
     javascript:
       <<: *method-insert
-      method: await transaction.query().insert(query, options);
+      method: transaction.query().insert(query, options);
       accepts:
         <<: *accepts-insert
         param1:

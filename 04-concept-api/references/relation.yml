@@ -40,7 +40,7 @@ methods:
         - "Stream of [`Thing`](../concept-api/thing?tab=java) objects"
     javascript:
       <<: *method-rolePlayers
-      method: await relation.getPlayers(role);
+      method: relation.getPlayers(role);
       accepts:
         param:
           <<: *accepts-rolePlayers-role
