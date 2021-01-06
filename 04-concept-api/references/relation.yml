@@ -1,5 +1,24 @@
 methods:
   - method:
+    common: &method-type
+      title: Retrieve type
+      description: Retrieves the type which this Relation belongs to.
+    java:
+      <<: *method-type
+      method: relation.getType();
+      returns:
+        - "[`RelationType`](../concept-api/type?tab=java#relation-type-methods)"
+    javascript:
+      <<: *method-type
+      method: await relation.getType();
+      returns:
+        - "[`RelationType`](../concept-api/type?tab=javascript#relation-type-methods)"
+    python:
+      <<: *method-type
+      method: relation.get_type()
+      returns:
+        - "[`RelationType`](../concept-api/type?tab=python#relation-type-methods)"
+  - method:
     common: &method-rolePlayersMap
       title: Retrieve role players per role
       description: Retrieves a map of all instances involved in the Relation and the role each play.
@@ -164,3 +183,27 @@ methods:
           type: "[`Thing`](../concept-api/thing?tab=python)"
       returns:
         - None
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the Relation.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteRelation`"
+    java:
+      <<: *method-asRemote
+      method: relation.asRemote(Transaction tx);
+      returns:
+        - "`Relation.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: relation.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: relation.as_remote(tx)
