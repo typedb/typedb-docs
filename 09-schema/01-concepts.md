@@ -75,7 +75,7 @@ GraqlDefine query = Graql.define(
 </div>
 
 ### Assign an attribute to an entity as a unique identifier
-To assign a unique attribute to an entity, we use the `key` keyword followed by the attribute's label.
+To assign a unique attribute to an entity, we use the `owns` keyword followed by the attribute's label and the `@key` modifier.
 
 <div class="tabs dark">
 
