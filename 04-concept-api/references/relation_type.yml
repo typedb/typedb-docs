@@ -30,7 +30,7 @@ methods:
                 - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javatab=#role-type-methods) objects"
             javascript:
               <<: *method-getrelates
-              method: await relationType.getRelates();
+              method: relationType.getRelates();
               returns:
                 - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?javascripttab=#role-type-methods) objects"
             python:
