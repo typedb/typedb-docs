@@ -98,18 +98,6 @@ If you find the Graql code above unfamiliar, don't be concerned. We soon learn a
 
 In this example, siblings data is not explicitly stored anywhere in the knowledge graph. But by having included this rule in the schema, we can always know who the siblings are and use the `siblings` relation in our queries.
 
-## Retrieve a Rule
-To provide a quick preview of how you can use the following Graql queries to retrieve rules:
-
-```graql
-# retrieve all rules
-match $r sub rule; get $r;  
-# retrieve the specific rule
-match $r type people-born-at-the-same-location; get $r; 
-```
-
-Remember that rules are part of the schema and can be queried the same way as other schema concepts described in [Graql Match documentation](../11-query/01-match-clause.md).
-
 ## Delete a Rule
 
 Rules like any other schema members can be undefined. Consequently, to delete rules we refer to them by their label and use the [undefine keyword](../09-schema/01-concepts.md#undefine).
@@ -117,7 +105,7 @@ For the case of the rule defined above, to delete it we write:
 
 <!-- test-delay -->
 ```graql
-undefine people-with-same-parents-are-siblings sub rule;
+undefine rule people-with-same-parents-are-siblings;
 ```
 
 <div class="note">

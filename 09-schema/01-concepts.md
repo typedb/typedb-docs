@@ -431,7 +431,7 @@ friend-request sub request,
 
 membership-request sub request,
   owns approved-date,
-  relates approved as subject
+  relates approved as subject,
   relates membership-requester as requester,
   relates membership-respondent as respondent;
 ```
