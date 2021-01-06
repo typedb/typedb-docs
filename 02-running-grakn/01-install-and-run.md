@@ -6,11 +6,6 @@ summary: Install and run the Grakn Server on Linux, Mac or Windows.
 toc: false
 ---
 
-<div class="note">
-[Note]
-Follow [these instructions](#upgrade-an-existing-grakn-core-15x-installation-to-16x) to upgrade an existing Grakn Core 1.5.x installation to 1.6.x.
-</div>
-
 ## System Requirements
 Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
