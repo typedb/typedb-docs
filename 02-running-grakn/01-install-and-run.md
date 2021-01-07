@@ -149,7 +149,7 @@ Having started the instance, the Grakn Server is expected to be running on port 
 To interact with the [Grakn Console](../02-running-grakn/02-console.md), run:
 
 ```
-docker exec -ti grakn bash -c '/grakn-core-all-linux/grakn console'
+docker exec -ti grakn bash -c '/opt/grakn-core-all-linux/grakn console'
 ```
 [tab:end]
 </div>
