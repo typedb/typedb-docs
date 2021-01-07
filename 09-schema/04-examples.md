@@ -777,7 +777,7 @@ Here we have modelled a disease network for COVID-19 research. We get examples o
 - Grakn Rule
 - attributes asigned to a relation
 
-[Download](https://raw.githubusercontent.com/graknlabs/examples/master/schemas/biograkn-covid.gql)
+[Download](https://raw.githubusercontent.com/graknlabs/biograkn-covid/master/Schema/biograkn-covid.gql)
 
 ### Modelling A Phone Call Network
 
