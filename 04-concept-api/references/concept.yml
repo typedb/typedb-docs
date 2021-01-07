@@ -243,12 +243,12 @@ methods:
       <<: *method-delete
       method: await concept.delete();
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-delete
       method: concept.delete()
       returns:
-        - "`None`"
+        - None
         
   - method:
     common: &method-isDeleted

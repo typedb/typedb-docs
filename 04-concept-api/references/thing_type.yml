@@ -45,7 +45,7 @@ methods:
       method: thing_type.get_supertype()
       returns:
         - "[`ThingType`](../concept-api/type?tab=python#thingtype-methods)"
-        - "`None`"
+        - None
 
   - method:
     common: &method-getSupertypes
@@ -115,17 +115,17 @@ methods:
       <<: *method-setAbstract
       method: thingType.setAbstract();
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-setAbstract
       method: await thingType.setAbstract();
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-setAbstract
       method: thing_type.set_abstract()
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-unsetAbstract
@@ -135,17 +135,17 @@ methods:
       <<: *method-unsetAbstract
       method: thingType.unsetAbstract();
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-unsetAbstract
       method: await thingType.unsetAbstract();
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-unsetAbstract
       method: thing_type.unset_abstract()
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-setPlays
@@ -173,7 +173,7 @@ methods:
           type: "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
           default: "`null`"
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-setPlays
       method: await thingType.setPlays(roleType, overriddenType);
@@ -186,7 +186,7 @@ methods:
           type: "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
           default: "`undefined`"
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-setPlays
       method: thing_type.set_plays(role_type, overridden_type=None)
@@ -199,9 +199,9 @@ methods:
           <<: *accepts-setPlays-overriddenType
           name: overridden_type
           type: "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
-          default: "`None`"
+          default: None
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-setOwns
@@ -220,7 +220,7 @@ methods:
           required: false
           default: "`false`"
       returns:
-        - "`void`"
+        - void
     java:
       <<: *method-setOwns
       method: thingType.setOwns(AttributeType attributeType, boolean isKey);
@@ -262,7 +262,7 @@ methods:
           required: false
           default: "`false`"
       returns:
-        - "`void`"
+        - void
     java:
       <<: *method-setOwnsOverridden
       method: thingType.setOwns(AttributeType attributeType, AttributeType overriddenType, boolean isKey);
@@ -305,7 +305,7 @@ methods:
           type: "[`AttributeType`](../concept-api/type?tab=python#attributetype-methods)"
           description: The AttributeType that this attribute ownership overrides, if applicable.
           required: false
-          default: "`None`"
+          default: None
         param3:
           name: isKey
           type: bool
@@ -313,7 +313,7 @@ methods:
           required: false
           default: "`False`"
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-getPlays
@@ -406,7 +406,7 @@ methods:
           type: "`ValueType`"
           description: If specified, only attribute types of this ValueType will be retrieved.
           required: false
-          default: "`None`"
+          default: None
         param2:
           name: keys_only
           type: bool
@@ -434,7 +434,7 @@ methods:
           <<: *accepts-unsetPlays
           type: "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-unsetPlays
       method: await thingType.unsetPlays(role);
@@ -443,7 +443,7 @@ methods:
           <<: *accepts-unsetPlays
           type: "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-unsetPlays
       method: thing_type.unset_plays(role)
@@ -452,7 +452,7 @@ methods:
           <<: *accepts-unsetPlays
           type: "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-unsetOwns
@@ -472,7 +472,7 @@ methods:
           <<: *accepts-unsetOwns-attributeType
           type: "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)"
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-unsetOwns
       method: await thingType.unsetOwns(attributeType);
@@ -481,7 +481,7 @@ methods:
           <<: *accepts-unsetOwns-attributeType
           type: "[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-unsetOwns
       method: thing_type.unset_owns(attribute_type)
@@ -491,4 +491,4 @@ methods:
           name: attribute_type
           type: "[`AttributeType`](../concept-api/type?tab=python#attributetype-methods)"
       returns:
-        - "`None`"
+        - None

@@ -13,7 +13,7 @@ methods:
           default: N/A
         param2:
           name: options
-          type: "`GraknOptions`"
+          type: "[`GraknOptions`](#options)"
           description: Specify query options
           required: false
           default: default GraknOptions - uses server defaults
@@ -34,9 +34,9 @@ methods:
         <<: *accepts-match
         param1:
           <<: *accepts-match-query
-          type: "`string`"
+          type: string
       returns:
-        - "[Stream](#stream)<[ConceptMap](#conceptmap)>"
+        - "[Stream](#stream) of [ConceptMap](#conceptmap)"
     python:
       <<: *method-match
       method: transaction.query().match(query, options)
@@ -44,56 +44,56 @@ methods:
         <<: *accepts-match
         param1:
           <<: *accepts-match-query
-          type: "`str`"
+          type: string
       returns:
         - Iterator of [ConceptMap](#conceptmap)
 
   - method:
-      common: &method-matchAggregate
-        title: Execute a Graql Match Aggregate query
-        description: Performs a Graql Match Aggregate query in the transaction.
-        accepts: &accepts-matchAggregate
-          param1: &accepts-matchAggregate-query
-            name: query
-            description: The Graql Match Aggregate query to be executed.
-            required: true
-            default: N/A
-          param2:
-            name: options
-            type: "`GraknOptions`"
-            description: Specify query options
-            required: false
-            default: default GraknOptions - uses server defaults
-      java:
-        <<: *method-matchAggregate
-        method: transaction.query().match(GraqlMatch.Aggregate query, GraknOptions options);
-        accepts:
-          <<: *accepts-matchAggregate
-          param1:
-            <<: *accepts-matchAggregate-query
-            type: "`GraqlMatch.Aggregate`"
-        returns:
-          - Future<[Numeric](#numeric)>
-      javascript:
-        <<: *method-matchAggregate
-        method: await transaction.query().matchAggregate(query, options);
-        accepts:
-          <<: *accepts-matchAggregate
-          param1:
-            <<: *accepts-matchAggregate-query
-            type: "`string`"
-        returns:
-          - "[Numeric](#numeric)"
-      python:
-        <<: *method-matchAggregate
-        method: transaction.query().match_aggregate(query, options)
-        accepts:
-          <<: *accepts-matchAggregate
-          param1:
-            <<: *accepts-matchAggregate-query
-            type: "`str`"
-        returns:
-          - "[Numeric](#numeric)"
+    common: &method-matchAggregate
+      title: Execute a Graql Match Aggregate query
+      description: Performs a Graql Match Aggregate query in the transaction.
+      accepts: &accepts-matchAggregate
+        param1: &accepts-matchAggregate-query
+          name: query
+          description: The Graql Match Aggregate query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "[`GraknOptions`](#options)"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-matchAggregate
+      method: transaction.query().match(GraqlMatch.Aggregate query, GraknOptions options);
+      accepts:
+        <<: *accepts-matchAggregate
+        param1:
+          <<: *accepts-matchAggregate-query
+          type: "`GraqlMatch.Aggregate`"
+      returns:
+        - Future<[Numeric](#numeric)>
+    javascript:
+      <<: *method-matchAggregate
+      method: await transaction.query().matchAggregate(query, options);
+      accepts:
+        <<: *accepts-matchAggregate
+        param1:
+          <<: *accepts-matchAggregate-query
+          type: string
+      returns:
+        - "[Numeric](#numeric)"
+    python:
+      <<: *method-matchAggregate
+      method: transaction.query().match_aggregate(query, options)
+      accepts:
+        <<: *accepts-matchAggregate
+        param1:
+          <<: *accepts-matchAggregate-query
+          type: string
+      returns:
+        - "[Numeric](#numeric)"
 
   - method:
     common: &method-matchGroup
@@ -107,7 +107,7 @@ methods:
           default: N/A
         param2:
           name: options
-          type: "`GraknOptions`"
+          type: "[`GraknOptions`](#options)"
           description: Specify query options
           required: false
           default: default GraknOptions - uses server defaults
@@ -128,7 +128,7 @@ methods:
         <<: *accepts-matchGroup
         param1:
           <<: *accepts-matchGroup-query
-          type: "`string`"
+          type: string
       returns:
         - "[Stream](#stream)<[ConceptMapGroup](#conceptmapgroup)>"
     python:
@@ -138,7 +138,7 @@ methods:
         <<: *accepts-matchGroup
         param1:
           <<: *accepts-matchGroup-query
-          type: "`str`"
+          type: string
       returns:
         - Iterator of [ConceptMapGroup](#conceptmapgroup)
 
@@ -154,7 +154,7 @@ methods:
           default: N/A
         param2:
           name: options
-          type: "`GraknOptions`"
+          type: "[`GraknOptions`](#options)"
           description: Specify query options
           required: false
           default: default GraknOptions - uses server defaults
@@ -175,7 +175,7 @@ methods:
         <<: *accepts-matchGroupAggregate
         param1:
           <<: *accepts-matchGroupAggregate-query
-          type: "`string`"
+          type: string
       returns:
         - "[Stream](#stream)<[NumericGroup](#numericgroup)>"
     python:
@@ -185,7 +185,7 @@ methods:
         <<: *accepts-matchGroupAggregate
         param1:
           <<: *accepts-matchGroupAggregate-query
-          type: "`str`"
+          type: string
       returns:
         - Iterator of [NumericGroup](#numericgroup)
 
@@ -201,7 +201,7 @@ methods:
           default: N/A
         param2:
           name: options
-          type: "`GraknOptions`"
+          type: "[`GraknOptions`](#options)"
           description: Specify query options
           required: false
           default: default GraknOptions - uses server defaults
@@ -222,7 +222,7 @@ methods:
         <<: *accepts-insert
         param1:
           <<: *accepts-insert-query
-          type: "`string`"
+          type: string
       returns:
         - "[Stream](#stream)<[ConceptMap](#conceptmap)>"
     python:
@@ -232,7 +232,7 @@ methods:
         <<: *accepts-insert
         param1:
           <<: *accepts-insert-query
-          type: "`str`"
+          type: string
       returns:
         - Iterator of [ConceptMap](#conceptmap)
 
@@ -248,7 +248,7 @@ methods:
           default: N/A
         param2:
           name: options
-          type: "`GraknOptions`"
+          type: "[`GraknOptions`](#options)"
           description: Specify query options
           required: false
           default: default GraknOptions - uses server defaults
@@ -261,7 +261,7 @@ methods:
           <<: *accepts-delete-query
           type: "`GraqlDelete`"
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-delete
       method: await transaction.query().delete(query, options);
@@ -269,9 +269,9 @@ methods:
         <<: *accepts-delete
         param1:
           <<: *accepts-delete-query
-          type: "`string`"
+          type: string
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-delete
       method: transaction.query().delete(query, options)
@@ -279,9 +279,9 @@ methods:
         <<: *accepts-delete
         param1:
           <<: *accepts-delete-query
-          type: "`str`"
+          type: string
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-define
@@ -295,7 +295,7 @@ methods:
           default: N/A
         param2:
           name: options
-          type: "`GraknOptions`"
+          type: "[`GraknOptions`](#options)"
           description: Specify query options
           required: false
           default: default GraknOptions - uses server defaults
@@ -308,7 +308,7 @@ methods:
           <<: *accepts-define-query
           type: "`GraqlDefine`"
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-define
       method: await transaction.query().define(query, options);
@@ -316,9 +316,9 @@ methods:
         <<: *accepts-define
         param1:
           <<: *accepts-define-query
-          type: "`string`"
+          type: string
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-define
       method: transaction.query().define(query, options)
@@ -326,9 +326,9 @@ methods:
         <<: *accepts-define
         param1:
           <<: *accepts-define-query
-          type: "`str`"
+          type: string
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-undefine
@@ -342,7 +342,7 @@ methods:
           default: N/A
         param2:
           name: options
-          type: "`GraknOptions`"
+          type: "[`GraknOptions`](#options)"
           description: Specify query options
           required: false
           default: default GraknOptions - uses server defaults
@@ -355,7 +355,7 @@ methods:
           <<: *accepts-undefine-query
           type: "`GraqlUndefine`"
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-undefine
       method: await transaction.query().undefine(query, options);
@@ -363,9 +363,9 @@ methods:
         <<: *accepts-undefine
         param1:
           <<: *accepts-undefine-query
-          type: "`string`"
+          type: string
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-undefine
       method: transaction.query().undefine(query, options)
@@ -373,6 +373,6 @@ methods:
         <<: *accepts-undefine
         param1:
           <<: *accepts-undefine-query
-          type: "`str`"
+          type: string
       returns:
-        - "`None`"
+        - None

@@ -57,7 +57,7 @@ types:
           method: concept_map.map()
           description: Produces a dictionary where keys are variable names and values are [`concept`](../concept-api/concept)s.
           returns:
-            - Dictionary of String to Concept
+            - "Dictionary of String to [`Concept`](../concept-api/concept?tab=python#concept-methods)"
 
       - method:
         common: &method-conceptmap-get
@@ -68,17 +68,21 @@ types:
               name: var
               description: The string representation of a variable
               type: String
-          returns:
-            - "[`Concept`](../concept-api/concept)"
         java:
           <<: *method-conceptmap-get
           method: conceptMap.get(var)
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=java#concept-methods)"
         python:
           <<: *method-conceptmap-get
           method: conceptMap.get(var)
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=python#concept-methods)"
         javascript:
           <<: *method-conceptmap-get
           method: concept_map.get(var)
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
 
   - type2:
     title: Numeric
@@ -170,17 +174,21 @@ types:
       - method:
         common: &method-conceptmapgroup-owner
           title: Retrieve the concept that is the group owner
-          returns:
-            - "[Concept](../concept-api/concept)"
         java:
           <<: *method-conceptmapgroup-owner
           method: conceptMapGroup.owner();
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=java#concept-methods)"
         javascript:
           <<: *method-conceptmapgroup-owner
           method: conceptMapGroup.owner();
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
         python:
           <<: *method-conceptmapgroup-owner
           method: concept_map_group.owner()
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=python#concept-methods)"
 
       - method:
         common: &method-conceptmapgroup-conceptmaps
@@ -189,7 +197,7 @@ types:
           <<: *method-conceptmapgroup-conceptmaps
           method: conceptMapGroup.conceptMaps();
           returns:
-            - Array of [`ConceptMap`](#conceptmap)s
+            - List<[`ConceptMap`](#conceptmap)>
         javascript:
           <<: *method-conceptmapgroup-conceptmaps
           method: conceptMapGroup.conceptMaps();

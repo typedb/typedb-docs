@@ -87,17 +87,17 @@ methods:
       <<: *method-setLabel
       method: rule.setLabel(String label);
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-setLabel
       method: await rule.setLabel(label);
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-setLabel
       method: rule.set_label(label)
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-delete
@@ -111,11 +111,11 @@ methods:
       <<: *method-delete
       method: await rule.delete();
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-delete
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-isDeleted

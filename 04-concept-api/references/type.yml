@@ -71,17 +71,17 @@ methods:
       <<: *method-setLabel
       method: type.setLabel(String label);
       returns:
-        - "`void`"
+        - void
     javascript:
       <<: *method-setLabel
       method: await type.setLabel(label);
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-setLabel
       method: type.set_label(label)
       returns:
-        - "`None`"
+        - None
 
   - method:
     common: &method-isAbstract
@@ -120,7 +120,7 @@ methods:
       method: type.get_supertype()
       returns:
         - "[`Type`](../concept-api/type?tab=python#type-methods)"
-        - "`None`"
+        - None
 
   - method:
     common: &method-getSupertypes

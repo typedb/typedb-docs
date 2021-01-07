@@ -21,11 +21,11 @@ methods:
         param3: &accepts-session-options
           name: type
           description: Options for the session.
-          type: GraknOptions
+          type: "[`GraknOptions`](#options)"
           required: false
           default: N/A
       returns:
-        - "[Session](#session) object"
+        - "[Session](#session)"
     java:
       <<: *method-session
       method: client.session(String database, Session.Type sessionType, GraknOptions options);

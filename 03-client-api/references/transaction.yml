@@ -3,7 +3,7 @@ title: "Transaction"
 methods:
   - method:
     common: &method-type
-      title: Check the transaction's type.
+      title: Check the transaction's type
       description: |
         Checks the transaction's type (READ or WRITE)
     java:
@@ -24,7 +24,7 @@ methods:
 
   - method:
     common: &method-isOpen
-      title: Checks if the transaction is open
+      title: Check if the transaction is open
       returns:
         - "`boolean`"
     java:
@@ -43,14 +43,18 @@ methods:
       description: |
         Gets the [`ConceptManager`](../concept-api/concept#conceptmanager) for this Transaction, providing access to all Concept API methods.
       method: transaction.concepts();
-      returns:
-        - ConceptManager
     java:
       <<: *method-concepts
+      returns:
+        - "[`ConceptManager`](../concept-api/concept?tab=java#conceptmanager)"
     javascript:
       <<: *method-concepts
+      returns:
+        - "[`ConceptManager`](../concept-api/concept?tab=javascript#conceptmanager)"
     python:
       <<: *method-concepts
+      returns:
+        - "[`ConceptManager`](../concept-api/concept?tab=python#conceptmanager)"
 
   - method:
     common: &method-logic
@@ -58,14 +62,18 @@ methods:
       description: |
         Gets the [`LogicManager`](../concept-api/rule#logicmanager) for this Transaction, providing access to all Concept API - Logic methods.
       method: transaction.logic();
-      returns:
-        - LogicManager
     java:
       <<: *method-logic
+      returns:
+        - "[`LogicManager`](../concept-api/rule?tab=java#logicmanager)"
     javascript:
       <<: *method-logic
+      returns:
+        - "[`LogicManager`](../concept-api/rule?tab=javascript#logicmanager)"
     python:
       <<: *method-logic
+      returns:
+        - "[`LogicManager`](../concept-api/rule?tab=python#logicmanager)"
 
   - method:
     common: &method-query
@@ -74,7 +82,7 @@ methods:
         Gets the [`QueryManager`](#querymanager) for this Transaction, from which any Graql query can be executed.
       method: transaction.query();
       returns:
-        - QueryManager
+        - "[`QueryManager`](#querymanager)"
     java:
       <<: *method-query
     javascript:

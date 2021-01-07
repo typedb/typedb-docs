@@ -59,7 +59,7 @@ methods:
       method: await stringAttributeType.getRegex();
       returns:
         - "`String`"
-        - "`None`"
+        - None
     python:
       <<: *method-regex-retrieve
       method: string_attribute_type.get_regex()

@@ -13,11 +13,11 @@ methods:
         param2:
           name: type
           description: Options for the session.
-          type: GraknOptions
+          type: "[`GraknOptions`](#options)"
           required: false
           default: N/A
       returns:
-        - "[Transaction](#transaction) object"
+        - "[Transaction](#transaction)"
     java:
       <<: *method-transaction
       method: session.transaction(Transaction.Type transactionType, GraknOptions options);
@@ -37,11 +37,11 @@ methods:
         param2:
           name: type
           description: Options for the session.
-          type: GraknOptions
+          type: "[`GraknOptions`](#options)"
           required: false
           default: N/A
       returns:
-        - "[Transaction](#transaction) object"
+        - "[Transaction](#transaction)"
       method: await session.transaction(transactionType, options);
   - method:
     common: &method-isopen
@@ -65,7 +65,7 @@ methods:
         - boolean
   - method:
     common: &method-type
-      title: Check the session's type.
+      title: Check the session's type
       description: |
         Checks the current session's type (SCHEMA or DATA)
     java:
@@ -85,7 +85,7 @@ methods:
         - SessionType
   - method:
     common: &method-database
-      title: Check the session's database.
+      title: Check the session's database
       description: |
         Returns a string indicating what database the session is operating over.
     java:
