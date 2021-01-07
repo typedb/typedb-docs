@@ -64,7 +64,7 @@ methods:
       title: Check if a database exists
       description: Checks if a database with the given name exists
       accepts: &accepts-databases-contains
-        param: &accepts-databases-create-database
+        param: &accepts-databases-contains-database
           name: database
           description: The database name to be checked.
           type: String

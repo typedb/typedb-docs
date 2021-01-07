@@ -82,7 +82,7 @@ Lastly, the Grakn schema is completed with [**Graql Rules**](../09-schema/03-rul
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset of any complexity.
 
 ## (un)Define the schema programmatically
-In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](../03-client-api/01-java.md#graql), [Python](../03-client-api/02-python.md#lazily-execute-a-graql-query) and [Node.js](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query).
+In the following sections, we learn how to define a schema using Graql code in a `schema.gql` file. However, defining a schema can also be done programmatically (at runtime) using one of the Grakn Clients - [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
 
 ## Load the schema
 Once we have defined the schema, the next immediate step is to load it into Grakn. We can do this using the Grakn Console that comes in the Grakn distribution. The command looks something like `grakn console -f <path to schema file>`, where `<path to schema file>` is the location of the `schema.gql`. The  [Grakn Console](../02-running-grakn/02-console.md) documentation provides further options.

@@ -10,7 +10,7 @@ As the name suggests, we use the `define` keyword to develop the [schema](../09-
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-running-grakn/02-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java.md#graql), [Python](../03-client-api/02-python.md#lazily-execute-a-graql-query) and [Node.js](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query).
+We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-running-grakn/02-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
 
 To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
@@ -820,17 +820,17 @@ When the concept type to be undefined is a supertype to something else, we must 
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `define` and `undefine` queries, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `define` and `undefine` queries, is as simple as calling the [`execute()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the `query()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the `query()`method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary
