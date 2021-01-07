@@ -47,7 +47,7 @@ build:
         bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
-        bazel test //test/query:graql-lang --test_output=errors
+        time bazel run //test/query:graql-lang
     test-query-graql-java:
       image: graknlabs-ubuntu-20.04
       type: foreground
