@@ -13,7 +13,9 @@ graql_lang_test_method_template = """
         String queries = "// QUERIES PLACEHOLDER";
         Stream<GraqlQuery> parsedQuery = Graql.parseQueries(queries);
         parsedQuery.forEach(query -> {
+            System.err.println("before executing " + query);
            runQuery(transaction, query);
+           System.err.println("after executing " + query);
         });
     }
 """
