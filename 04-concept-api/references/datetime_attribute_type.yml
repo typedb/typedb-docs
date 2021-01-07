@@ -39,7 +39,7 @@ methods:
   - method:
     common: &method-get
       title: Get instance
-      description: Returns the instance, if extant, of this DateTimeAttributeType with the specified value.
+      description: Returns the instance, if it exists, of this DateTimeAttributeType with the specified value.
       returns:
         - DateTimeAttribute object
       accepts: &method-get-accepts
@@ -77,16 +77,16 @@ methods:
     common: &method-setsupertype
       title: Set Supertype
       description: Sets the supplied DateTimeAttributeType as the supertype of the current DateTimeAttributeType
-      accepts:
-        - param:
-            - name: dateTimeAttributeType
-            - description: The AttributeType to set as the supertype of this DateTimeAttributeType
-            - type: DateTimeAttributeType
-            - required: true
-            - default: N/A
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: dateTimeAttributeType
+          description: The AttributeType to set as the supertype of this DateTimeAttributeType
+          type: DateTimeAttributeType
+          required: true
+          default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(DatetimeAttributeType datetimeAttributeType);
+      method: attributeType.setSupertype(AttributeType.DateTime datetimeAttributeType);
       returns:
         - void
     javascript:
@@ -96,9 +96,15 @@ methods:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(datetimeAttributeType)
+      method: attributeType.set_supertype(datetime_attribute_type)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
       returns:
         - None
+
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
@@ -107,7 +113,7 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`DateTimeAttributeType`](../concept-api/type?tab=java#datetimeattributetype-methods)>
+        - Stream<[`AttributeType.DateTime`](../concept-api/type?tab=java#datetimeattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()

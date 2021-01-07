@@ -33,13 +33,13 @@ methods:
       method: thingType.getSupertype();
       returns:
         - "[`ThingType`](../concept-api/type?tab=java#thingtype-methods)"
-        - null
+        - "`null`"
     javascript:
       <<: *method-getSupertype
       method: await thingType.getSupertype();
       returns:
         - "[`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)"
-        - null
+        - "`null`"
     python:
       <<: *method-getSupertype
       method: thing_type.get_supertype()

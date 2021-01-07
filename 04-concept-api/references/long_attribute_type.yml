@@ -39,7 +39,7 @@ methods:
   - method:
     common: &method-get
       title: Get instance
-      description: Returns the instance, if extant, of this LongAttributeType with the specified value.
+      description: Returns the instance, if it exists, of this LongAttributeType with the specified value.
       returns:
         - LongAttribute
       accepts: &method-get-accepts
@@ -77,16 +77,16 @@ methods:
     common: &method-setsupertype
       title: Set Supertype
       description: Sets the supplied LongAttributeType as the supertype of the current LongAttributeType
-      accepts:
-        - param:
-            - name: longAttributeType
-            - description: The AttributeType to set as the supertype of this LongAttributeType
-            - type: LongAttributeType
-            - required: true
-            - default: N/A
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: longAttributeType
+          description: The AttributeType to set as the supertype of this LongAttributeType
+          type: LongAttributeType
+          required: true
+          default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(LongAttributeType longAttributeType);
+      method: attributeType.setSupertype(AttributeType.Long longAttributeType);
       returns:
         - void
     javascript:
@@ -97,6 +97,11 @@ methods:
     python:
       <<: *method-setsupertype
       method: attributeType.set_supertype(longAttributeType)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
       returns:
         - None
 
@@ -108,7 +113,7 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`LongAttributeType`](../concept-api/type?tab=java#longattributetype-methods)>
+        - Stream<[`AttributeType.Long`](../concept-api/type?tab=java#longattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()

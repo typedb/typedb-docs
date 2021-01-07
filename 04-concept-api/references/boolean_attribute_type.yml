@@ -25,7 +25,7 @@ methods:
   - method:
     common: &method-get
       title: Get instance
-      description: Returns the instance, if extant, of this BooleanAttributeType with the specified value.
+      description: Returns the instance, if it exists, of this BooleanAttributeType with the specified value.
       returns:
         - BooleanAttribute object
       accepts:
@@ -47,18 +47,18 @@ methods:
 
   - method:
     common: &method-setsupertype
-      title: Set Supertype
+      title: Set supertype
       description: Sets the supplied BooleanAttributeType as the supertype of the current BooleanAttributeType
-      accepts:
-        - param:
-            - name: booleanAttributeType
-            - description: The AttributeType to set as the supertype of this BooleanAttributeType
-            - type: BooleanAttributeType
-            - required: true
-            - default: N/A
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: booleanAttributeType
+          description: The AttributeType to set as the supertype of this BooleanAttributeType
+          type: BooleanAttributeType
+          required: true
+          default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(BooleanAttributeType booleanAttributeType);
+      method: attributeType.setSupertype(AttributeType.Boolean booleanAttributeType);
       returns:
         - void
     javascript:
@@ -68,9 +68,15 @@ methods:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(booleanAttributeType)
+      method: attributeType.set_supertype(boolean_attribute_type)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
       returns:
         - None
+
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
@@ -79,7 +85,7 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`BooleanAttributeType`](../concept-api/type?tab=java#booleanattributetype-methods)>
+        - Stream<[`AttributeType.Boolean`](../concept-api/type?tab=java#booleanattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()

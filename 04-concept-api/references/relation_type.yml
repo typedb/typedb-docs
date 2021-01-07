@@ -42,7 +42,7 @@ methods:
   - method:
     common: &method-getrelates-label
       title: Retrieve specific role
-      description: Retrieve the role that this RelationType relates to, if extant, with the specified label.
+      description: Retrieve the role that this RelationType relates to, if it exists, with the specified label.
       accepts:
         param:
           name: label
@@ -127,30 +127,36 @@ methods:
 
   - method:
     common: &method-setsupertype
-      title: Set Supertype
+      title: Set supertype
       description: Sets the supplied RelationType as the supertype of the current RelationType
-      accepts:
-        - param:
-            - name: relationType
-            - description: The AttributeType to set as the supertype of this RelationType
-            - type: RelationType
-            - required: true
-            - default: N/A
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: relationType
+          description: The RelationType to set as the supertype of this RelationType
+          type: RelationType
+          required: true
+          default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(RelationType relationType);
+      method: relationType.setSupertype(RelationType relationType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(relationType);
+      method: relationType.setSupertype(relationType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(relationType)
+      method: relation_type.set_supertype(relation_type)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
       returns:
         - None
+
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes

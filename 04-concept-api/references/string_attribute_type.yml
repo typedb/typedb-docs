@@ -25,7 +25,7 @@ methods:
   - method:
     common: &method-get
       title: Get instance
-      description: Returns the instance, if extant, of this StringAttributeType with the specified value.
+      description: Returns the instance, if it exists, of this StringAttributeType with the specified value.
       returns:
         - StringAttribute
       accepts:
@@ -53,7 +53,7 @@ methods:
       method: stringAttributeType.getRegex();
       returns:
         - string
-        - null
+        - "`null`"
     javascript:
       <<: *method-regex-retrieve
       method: await stringAttributeType.getRegex();
@@ -65,7 +65,7 @@ methods:
       method: string_attribute_type.get_regex()
       returns:
         - string
-        - null
+        - "`null`"
 
   - method:
     common: &method-regex-set
@@ -98,16 +98,16 @@ methods:
     common: &method-setsupertype
       title: Set Supertype
       description: Sets the supplied StringAttributeType as the supertype of the current StringAttributeType
-      accepts:
-        - param:
-            - name: stringAttributeType
-            - description: The AttributeType to set as the supertype of this StringAttributeType
-            - type: StringAttributeType
-            - required: true
-            - default: N/A
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: stringAttributeType
+          description: The AttributeType to set as the supertype of this StringAttributeType
+          type: StringAttributeType
+          required: true
+          default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(StringAttributeType stringAttributeType);
+      method: attributeType.setSupertype(AttributeType.String stringAttributeType);
       returns:
         - void
     javascript:
@@ -117,7 +117,12 @@ methods:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(stringAttributeType)
+      method: attributeType.set_supertype(string_attribute_type)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
       returns:
         - None
 
@@ -129,7 +134,7 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`StringAttributeType`](../concept-api/type?tab=java#stringattributetype-methods)>
+        - Stream<[`AttributeType.String`](../concept-api/type?tab=java#stringattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()

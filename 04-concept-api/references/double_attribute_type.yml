@@ -4,7 +4,7 @@ methods:
       title: Put instance
       description: Puts and returns a new instance of this DoubleAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
       returns:
-        - DoubleAttribute object
+        - DoubleAttribute
       accepts: &method-put-accepts
         param: &method-put-accepts-value
           name: value
@@ -39,9 +39,9 @@ methods:
   - method:
     common: &method-get
       title: Get instance
-      description: Returns the instance, if extant, of this DoubleAttributeType with the specified value.
+      description: Returns the instance, if it exists, of this DoubleAttributeType with the specified value.
       returns:
-        - DoubleAttribute object
+        - DoubleAttribute
       accepts: &method-get-accepts
         param: &method-get-accepts-value
           name: value
@@ -77,16 +77,16 @@ methods:
     common: &method-setsupertype
       title: Set Supertype
       description: Sets the supplied DoubleAttributeType as the supertype of the current DoubleAttributeType
-      accepts:
-        - param:
-            - name: doubleAttributeType
-            - description: The AttributeType to set as the supertype of this DoubleAttributeType
-            - type: DoubleAttributeType
-            - required: true
-            - default: N/A
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: doubleAttributeType
+          description: The AttributeType to set as the supertype of this DoubleAttributeType
+          type: DoubleAttributeType
+          required: true
+          default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(DoubleAttributeType doubleAttributeType);
+      method: attributeType.setSupertype(AttributeType.Double doubleAttributeType);
       returns:
         - void
     javascript:
@@ -97,8 +97,14 @@ methods:
     python:
       <<: *method-setsupertype
       method: attributeType.set_supertype(doubleAttributeType)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
       returns:
         - None
+
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
@@ -107,7 +113,7 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`DoubleAttributeType`](../concept-api/type?tab=java#doubleattributetype-methods)>
+        - Stream<[`AttributeType.Double`](../concept-api/type?tab=java#doubleattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()

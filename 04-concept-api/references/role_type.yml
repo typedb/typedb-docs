@@ -65,13 +65,13 @@ methods:
       method: type.getSupertype();
       returns:
         - "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
-        - null
+        - "`null`"
     javascript:
       <<: *method-getSupertype
       method: await type.getSupertype();
       returns:
         - "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
-        - null
+        - "`null`"
     python:
       <<: *method-getSupertype
       method: type.get_supertype()
