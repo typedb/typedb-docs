@@ -5,7 +5,7 @@ methods:
     common: &method-type
       title: Check the transaction's type.
       description: |
-        Checks the transaction's type.
+        Checks the transaction's type (READ or WRITE)
     java:
       <<: *method-type
       method: transaction.type();
@@ -18,7 +18,7 @@ methods:
         - TransactionType
     python:
       <<: *method-type
-      method: session.type()
+      method: transaction.transaction_type()
       returns:
         - TransactionType
 
@@ -41,7 +41,7 @@ methods:
     common: &method-concepts
       title: Access Concept API methods
       description: |
-        Gets the [`ConceptManager`](../concept-api/concept_manager) for this Transaction, providing access to all Concept API methods.
+        Gets the [`ConceptManager`](../concept-api/concept#conceptmanager) for this Transaction, providing access to all Concept API methods.
       method: transaction.concepts();
       returns:
         - ConceptManager
@@ -56,7 +56,7 @@ methods:
     common: &method-logic
       title: Access Concept API - Logic methods
       description: |
-        Gets the [`LogicManager`](../concept-api/logic_manager) for this Transaction, providing access to all Concept API - Logic methods.
+        Gets the [`LogicManager`](../concept-api/rule#logicmanager) for this Transaction, providing access to all Concept API - Logic methods.
       method: transaction.logic();
       returns:
         - LogicManager
@@ -71,7 +71,7 @@ methods:
     common: &method-query
       title: Access Query API methods
       description: |
-        Gets the [`QueryManager`](./query_manager) for this Transaction, from which any Graql query can be executed.
+        Gets the [`QueryManager`](#querymanager) for this Transaction, from which any Graql query can be executed.
       method: transaction.query();
       returns:
         - QueryManager
@@ -86,7 +86,7 @@ methods:
     common: &method-commit
       title: Commit a write transaction
       description: |
-        Commits the changes made on the local database (via the caller transaction), to the original database.
+        Commits the changes made via this transaction to the Grakn database.
         **Whether or not the transaction is commited successfully, it gets closed after the commit call.**
     java:
       <<: *method-commit
@@ -108,7 +108,7 @@ methods:
     common: &method-rollback
       title: Rollback a write transaction
       description: |
-        Rolls back the changes made on the local database (via the caller transaction).
+        Rolls back the uncommitted changes made via this transaction.
     java:
       <<: *method-rollback
       method: transaction.rollback();

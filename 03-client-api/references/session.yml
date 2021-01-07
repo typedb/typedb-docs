@@ -67,7 +67,7 @@ methods:
     common: &method-type
       title: Check the session's type.
       description: |
-        Checks the current session's type.
+        Checks the current session's type (SCHEMA or DATA)
     java:
       <<: *method-type
       method: session.type();
@@ -80,7 +80,7 @@ methods:
         - SessionType
     python:
       <<: *method-type
-      method: session.type()
+      method: session.session_type()
       returns:
         - SessionType
   - method:

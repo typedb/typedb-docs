@@ -15,7 +15,7 @@ methods:
         param2: &accepts-session-type
           name: type
           description: The type of session to be created (DATA or SCHEMA)
-          type: Grakn.SessionType
+          type: SessionType
           required: true
           default: N/A
         param3: &accepts-session-options
@@ -28,7 +28,10 @@ methods:
         - "[Session](#session) object"
     java:
       <<: *method-session
-      method: client.session(String database, Grakn.SessionType sessionType, GraknOptions options);
+      method: client.session(String database, Session.Type sessionType, GraknOptions options);
+      param2:
+        <<: *accepts-session-type
+        type: Session.Type
     javascript:
       <<: *method-session
       method: await client.session(database, sessionType, options)
@@ -44,17 +47,17 @@ methods:
       <<: *method-databases-all
       method: client.databases().all();
       returns:
-        - List of Strings
+        - List<String>
     javascript:
       <<: *method-databases-all
       method: await client.databases().all();
       returns:
-        - Array of Strings
+        - Array of String
     python:
       <<: *method-databases-all
       method: client.databases().all()
       returns:
-        - List of Strings
+        - list of String
 
   - method:
     common: &method-databases-contains
@@ -67,21 +70,17 @@ methods:
           type: String
           required: true
           default: N/A
+    returns:
+      - boolean
     java:
       <<: *method-databases-contains
       method: client.databases().contains(String database);
-      returns:
-        - boolean
     javascript:
       <<: *method-databases-contains
-      method: await client.databases().contains("database name");
-      returns:
-        - boolean
+      method: await client.databases().contains(database);
     python:
       <<: *method-databases-contains
-      method: client.databases().contains("database name")
-      returns:
-        - boolean
+      method: client.databases().contains(database)
 
   - method:
     common: &method-databases-create
@@ -140,7 +139,7 @@ methods:
   - method:
     common: &method-close
       title: Close a client
-      description: Before instantiating a new client, the client that's currently open should first be closed.
+      description: Closes the client. Before instantiating a new client, the client that's currently open should first be closed.
     java:
       <<: *method-close
       method: client.close();

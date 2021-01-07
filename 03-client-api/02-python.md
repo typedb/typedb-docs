@@ -141,6 +141,8 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 {% include api/generic.html data=site.data.03_client_api.references.options language="python" %}
 
+{% include api/generic.html data=site.data.03_client_api.references.query_manager language="python" %}
+
 {% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
 
 

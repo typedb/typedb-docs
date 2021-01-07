@@ -11,7 +11,7 @@ methods:
           required: true
           default: localhost:1729
       returns:
-        - "[Client](#client) object"
+        - "[Client](#client)"
     java:
       <<: *method-client
       method: new GraknClient(String uri);

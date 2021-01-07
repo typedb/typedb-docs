@@ -1,6 +1,6 @@
 title: Graql
 description:
-  common: &common-description |
+  java: |
     Graql, the query language for Grakn, is written in Java and its API can be used to programmatically construct Graql queries.
 
     To use Graql, we first add it as a dependency to our `pom.xml`.
@@ -16,10 +16,12 @@ description:
         <dependency>
             <groupId>io.graql</groupId>
             <artifactId>graql-lang</artifactId>
-            <version>1.0.1</version>
+            <version>{version}</version>
         </dependency>
     </dependencies>
     ```
+
+    The latest version of `graql-lang` can be found in the Grakn [public Maven repository](https://repo.grakn.ai/#browse/browse:maven:io%2Fgraql%2Fgraql-lang).
 
     The we import `Graql`.
 
@@ -34,6 +36,3 @@ description:
     - [Insertion queries](../query/insert-query)
     - [Deletion queries](../query/delete-query)
     - [Aggregation queries](../query/aggregate-query)
-    - [Analytical queries](../query/aggregate-query)
-
-  java: *common-description
