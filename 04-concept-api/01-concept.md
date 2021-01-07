@@ -3,7 +3,7 @@ pageTitle: Concept
 keywords: grakn, concept, api, methods
 longTailKeywords: grakn concept, concept methods, grakn concept methods
 Summary: Methods available on a Concept object.
-toc: true
+toc: false
 ---
 
 ## Concept Methods
