@@ -20,14 +20,18 @@ A client is responsible for connecting to the [Grakn Server](/docs/running-grakn
 A session is responsible for connecting our application to a particular database. This connection would then allow opening transactions to carry out queries. We can think of a session as a two-way long-lasting tunnel that connects our application to a particular database on the Grakn server.
 
 ### Transaction
-A transaction is responsible for performing write and read operations over the concepts types and instances within the connected database. When executing a query to retrieve data, an iterator is returned, which can then be lazily consumed to execute a request on the server to return the next concrete result.
+A transaction is responsible for performing write and read operations over the concept types and instances within the connected database. When executing a query to retrieve data, an iterator is returned, which can then be lazily consumed to execute a request on the server to return the next concrete result.
 
-### Futures and Async Queries
-Queries can be computed asynchronously on the grakn server whilst local processing takes place. In order to execute async queries, clients may wrap the result in an async task wrapping object, such as a Promise, Future or Iterator, depending on the convention in the given language. 
+### Async Queries
+Invoking a Graql query sends the query to the Grakn server, where it will be completed in the background. Local processing can take place while waiting for responses to be received.
+
+Queries that return answers, such as [match](/docs/query/match-clause), return them as Futures, Streams or iterators depending on the language. These can then be awaited, or iterated, to retrieve the answers as they are computed.
+
+Queries are always executed on the server in the order they were invoked in the client.
 
 <div class="note">
 [Important]
-When a transaction is committed or closed, all currently processing asynchronous queries are completed first.
+When a transaction is committed or closed, all of its asynchronous queries are completed first.
 </div>
 
 ### Investigating Answers
@@ -41,7 +45,7 @@ To avoid running into issues and make the most out of using a Grakn client, keep
 
 **Keep the number of operations per transaction minimal**. Although it is possible to commit a write transaction once after many operations, long transactions can lead to memory issues and computational overheads due to conflicting operations between transactions. It is best to keep the number of queries per transaction minimal, even one query per transaction where feasible. This also makes re-trying transactions that fail due to write-write conflicts much simpler in application code.
 
-**Take advantage of asynchronous queries where possible.** This cuts down and masks network round-trip costs and increases your throughput. All queries can safely be made asynchronous, as async queries within a transaction are executed sequentially on the server-side.
+**Take advantage of asynchronous queries where possible.** This cuts down and masks network round-trip costs and increases your throughput. For example, if you are performing 10 match queries in a transaction, it's best to send them all to the server _before_ iterating over any of their answers.
 
 ## Available Clients
 Grakn currently supports clients for:
