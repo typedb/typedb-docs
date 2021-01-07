@@ -25,8 +25,27 @@ toc: true
 
 </div>
 
+## ThingType Methods
+`ThingType` has all the [`Type` methods](#type-methods) plus what follows.
+
+<div class="tabs light" data-no-parse>
+
+[tab:Java]
+{% include api/generic.html data=site.data.04_concept_api.references.thing_type language="java" %}
+[tab:end]
+
+[tab:Javascript]
+{% include api/generic.html data=site.data.04_concept_api.references.thing_type language="javascript" %}
+[tab:end]
+
+[tab:Python]
+{% include api/generic.html data=site.data.04_concept_api.references.thing_type language="python" %}
+[tab:end]
+
+</div>
+
 ## EntityType Methods
-`EntityType` has all the [`Type` methods](#type-methods) plus what follows.
+`EntityType` has all the [`ThingType` methods](#thingtype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
@@ -45,7 +64,7 @@ toc: true
 </div>
 
 ## AttributeType Methods
-`AttributeType` has all the [`Type` methods](#type-methods) plus what follows.
+`AttributeType` has all the [`ThingType` methods](#thingtype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
@@ -63,7 +82,7 @@ toc: true
 
 </div>
 
-## BooleanAttributeType
+## BooleanAttributeType Methods
 `BooleanAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
@@ -82,7 +101,7 @@ toc: true
 
 </div>
 
-## LongAttributeType
+## LongAttributeType Methods
 `LongAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
@@ -101,7 +120,7 @@ toc: true
 
 </div>
 
-## DoubleAttributeType
+## DoubleAttributeType Methods
 `DoubleAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
@@ -120,7 +139,7 @@ toc: true
 
 </div>
 
-## StringAttributeType
+## StringAttributeType Methods
 `StringAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
@@ -139,7 +158,7 @@ toc: true
 
 </div>
 
-## DateTimeAttributeType
+## DateTimeAttributeType Methods
 `DateTimeAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
@@ -159,7 +178,7 @@ toc: true
 </div>
 
 ## RelationType Methods
-`RelationType` has all the [`Type` methods](#type-methods) plus what follows.
+`RelationType` has all the [`ThingType` methods](#thingtype-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
@@ -177,21 +196,21 @@ toc: true
 
 </div>
 
-## Role Type Methods
+## RoleType Methods
 `RoleType` has all the [`Type` methods](#type-methods) plus what follows.
 
 <div class="tabs light" data-no-parse>
 
 [tab:Java]
-{% include api/generic.html data=site.data.04_concept_api.references.role language="java" %}
+{% include api/generic.html data=site.data.04_concept_api.references.role_type language="java" %}
 [tab:end]
 
 [tab:Javascript]
-{% include api/generic.html data=site.data.04_concept_api.references.role language="javascript" %}
+{% include api/generic.html data=site.data.04_concept_api.references.role_type language="javascript" %}
 [tab:end]
 
 [tab:Python]
-{% include api/generic.html data=site.data.04_concept_api.references.role language="python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.role_type language="python" %}
 [tab:end]
 
 </div>

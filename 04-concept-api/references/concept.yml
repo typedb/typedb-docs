@@ -160,94 +160,76 @@ methods:
       method: concept.is_relation()
 
   - method:
-    common: &method-asType
+    java:
       title: Cast the concept as Type (Local)
       description: Casts the concept as Type so that we can call the Type methods on it.
       method: concept.asType();
       returns:
         - "[`Type`](../concept-api/type?tab=java) object"
-    java:
-      <<: *method-asType
 
   - method:
-    common: &method-asThing
+    java:
       title: Cast the concept as Thing (Local)
       description: Casts the concept as Thing so that we can call the Thing methods on it.
       method: concept.asThing();
       returns:
         - "[`Thing`](../concept-api/thing?tab=java) object"
-    java:
-      <<: *method-asThing
 
   - method:
-    common: &method-asEntityType
+    java:
       title: Cast the concept as EntityType (Local)
       description: Casts the concept as EntityType so that we can call the EntityType methods on it.
       method: concept.asEntityType();
       returns:
         - "[`EntityType`](../concept-api/type?tab=java#entitytype-methods) object"
-    java:
-      <<: *method-asEntityType
 
   - method:
-    common: &method-asAttributeType
+    java:
       title: Cast the concept as AttributeType (Local)
       description: Casts the concept as AttributeType so that we can call the AttributeType methods on it.
       method: concept.asAttributeType();
       returns:
         - "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods) object"
-    java:
-      <<: *method-asAttributeType
 
   - method:
-    common: &method-asRelationType
+    java:
       title: Cast the concept as RelationType (Local)
       description: Casts the concept as RelationType so that we can call the RelationType methods on it.
       method: concept.asRelationType();
       returns:
         - "[`RelationType`](../concept-api/type?tab=java#relationtype-methods) object"
-    java:
-      <<: *method-asRelationType
 
   - method:
-    common: &method-asEntity
+    java:
+      title: Cast the concept as RoleType (Local)
+      description: Casts the concept as RoleType so that we can call the RoleType methods on it.
+      method: concept.asRoleType();
+      returns:
+        - "[`RoleType`](../concept-api/thing?tab=java#roletype-methods) object"
+
+  - method:
+    java:
       title: Cast the concept as Entity (Local)
       description: Casts the concept as Entity so that we can call the Entity methods on it.
       method: concept.asEntity();
       returns:
         - "`Entity` object"
-    java:
-      <<: *method-asEntity
 
   - method:
-    common: &method-asAttribute
+    java:
       title: Cast the concept as Attribute (Local)
       description: Casts the concept as Attribute so that we can call the Attribute methods on it.
       method: concept.asAttribute();
       returns:
         - "[`Attribute`](../concept-api/thing?tab=java#attribute-methods) object"
-    java:
-      <<: *method-asAttribute
 
   - method:
-    common: &method-asRelation
+    java:
       title: Cast the concept as Relation (Local)
       description: Casts the concept as Relation so that we can call the Relation methods on it.
       method: concept.asRelation();
       returns:
         - "[`Relation`](../concept-api/thing?tab=java#relation-methods) object"
-    java:
-      <<: *method-asRelation
-
-  - method:
-      common: &method-asRule
-        title: Cast the concept as Rule (Local)
-        description: Casts the concept as Relation so that we can call the Relation methods on it.
-        method: concept.asRelation();
-        returns:
-          - "[`Rule`](../concept-api/rule?tab=java) object"
-      java:
-        <<: *method-asRelation
 
   - method:
     common: &method-delete

@@ -7,7 +7,7 @@ toc: true
 ---
 
 ## Concept Methods & Props
-`Concept` is inherited and extended by [`Type`](/docs/concept-api/type), [`Rule`](../04-concept-api/03-rule.md) and [`Thing`](../04-concept-api/04-thing.md).
+`Concept` is inherited and extended by [`Type`](/docs/concept-api/type) and [`Thing`](../04-concept-api/04-thing.md).
 
 <div class="tabs light" data-no-parse>
 
