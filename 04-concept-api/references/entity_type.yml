@@ -28,17 +28,17 @@ methods:
             - default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(EntityType datetimeAttributeType);
+      method: entityType.setSupertype(EntityType entityType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(datetimeAttributeType);
+      method: entityType.setSupertype(entityType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(datetimeAttributeType)
+      method: entity_type.set_supertype(entityType)
       returns:
         - None
   - method:
@@ -49,17 +49,17 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`EntityType`](../concept-api/type?tab=java#entity-type-methods)>
+        - Stream<[`EntityType`](../concept-api/type?tab=java#entitytype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`EntityType`](../concept-api/type?tab=javascript#entity-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`EntityType`](../concept-api/type?tab=javascript#entitytype-methods)"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`EntityType`](../concept-api/type?tab=python#entity-type-methods)
+        - Iterator of [`EntityType`](../concept-api/type?tab=python#entitytype-methods)
 
   - method:
     common: &method-getInstances
@@ -74,7 +74,7 @@ methods:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`Entity`](../concept-api/thing?tab=javascript#entity-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Entity`](../concept-api/thing?tab=javascript#entity-methods)"
     python:
       <<: *method-getInstances
       method: type.get_instances()
@@ -104,4 +104,4 @@ methods:
       method: entityType.asRemote(tx);
     python:
       <<: *method-asRemote
-      method: entityType.as_remote(tx)
+      method: entity_type.as_remote(tx)

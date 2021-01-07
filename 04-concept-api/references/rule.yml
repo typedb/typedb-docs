@@ -45,7 +45,7 @@ methods:
       title: Retrieve the when body (Local)
       description: Retrieves the statements that constructs the when body of the rule.
       returns:
-        - "`String`"
+        - string
     java:
       <<: *method-when
       method: rule.getWhen();
@@ -61,7 +61,7 @@ methods:
       title: Retrieve the then body (Local)
       description: Retrieves the single statement that constructs the then body of the rule.
       returns:
-        - "`String`"
+        - string
     java:
       <<: *method-then
       method: rule.getThen();
@@ -104,7 +104,7 @@ methods:
       title: Delete rule
       method: rule.delete();
       returns:
-        - "`null`"
+        - null
     java:
       <<: *method-delete
     javascript:
@@ -122,7 +122,7 @@ methods:
       title: Check if the rule has been deleted
       method: rule.isDeleted();
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isDeleted
     javascript:
@@ -130,4 +130,4 @@ methods:
       method: await rule.isDeleted();
     python:
       <<: *method-isDeleted
-      method: concept.is_deleted()
+      method: rule.is_deleted()

@@ -7,17 +7,17 @@ methods:
       <<: *method-type
       method: attribute.getType();
       returns:
-        - "[`AttributeType`](../concept-api/type?tab=java#attribute-type-methods)"
+        - "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)"
     javascript:
       <<: *method-type
       method: await entity.getType();
       returns:
-        - "[`AttributeType`](../concept-api/type?tab=javascript#attribute-type-methods)"
+        - "[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
     python:
       <<: *method-type
       method: attribute.get_type()
       returns:
-        - "[`AttributeType`](../concept-api/type?tab=python#attribute-type-methods)"
+        - "[`AttributeType`](../concept-api/type?tab=python#attributetype-methods)"
   - method:
     common: &method-getvalue
       title: Retrieve value (Local)
@@ -26,27 +26,27 @@ methods:
       <<: *method-getvalue
       method: attribute.getValue();
       return:
-        - "`String`"
+        - string
         - "`Long`"
         - "`float`"
-        - "`boolean`"
+        - boolean
         - "`Date`"
     javascript:
       <<: *method-getvalue
       method: await attribute.getValue();
       return:
-        - "`String`"
+        - string
         - "`Number`"
-        - "`boolean`"
+        - boolean
         - "`Date`"
     python:
       <<: *method-getvalue
       method: attribute.get_value()
       return:
-        - "`String`"
+        - string
         - "`int`"
         - "`float`"
-        - "`boolean`"
+        - boolean
         - "`Date`"
 
   - method:
@@ -64,17 +64,17 @@ methods:
       <<: *method-owners
       method: attribute.owners(Type ownerType);
       return:
-        - "Stream of [`Thing`](../concept-api/thing?tab=java) objects"
+        - "Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>"
     javascript:
       <<: *method-owners
       method: attribute.owners(ownerType);
       return:
-        - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript) objects"
+        - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-owners
       method: attribute.owners(ownerType)
       return:
-        - "Iterator of [`Thing`](../concept-api/thing?tab=python) objects"
+        - "Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
   - method:
     common: &method-asRemote
       title: Get a Remote version of the Attribute.

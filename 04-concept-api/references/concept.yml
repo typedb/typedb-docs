@@ -28,7 +28,7 @@ methods:
     common: &method-isType
       title: Check if concept is a Type (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isType
       method: concept.isType();
@@ -43,7 +43,7 @@ methods:
     common: &method-isThing
       title: Check if concept is a Thing (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isThing
       method: concept.isThing();
@@ -58,7 +58,7 @@ methods:
     common: &method-isEntityType
       title: Check if concept is an EntityType (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isEntityType
       method: concept.isEntityType();
@@ -73,7 +73,7 @@ methods:
     common: &method-isAttributeType
       title: Check if concept is an AttributeType (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isAttributeType
       method: concept.isAttributeType();
@@ -88,7 +88,7 @@ methods:
     common: &method-isRelationType
       title: Check if concept is a RelationType (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isRelationType
       method: concept.isRelationType();
@@ -103,7 +103,7 @@ methods:
     common: &method-isRoleType
       title: Check if concept is a RoleType (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isRoleType
       method: concept.isRoleType();
@@ -118,7 +118,7 @@ methods:
     common: &method-isEntity
       title: Check if concept is an Entity (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isEntity
       method: concept.isEntity();
@@ -133,7 +133,7 @@ methods:
     common: &method-isAttribute
       title: Check if concept is an Attribute (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isAttribute
       method: concept.isAttribute();
@@ -148,7 +148,7 @@ methods:
     common: &method-isRelation
       title: Check if concept is a Relation (Local)
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isRelation
       method: concept.isRelation();
@@ -165,7 +165,7 @@ methods:
       description: Casts the concept as Type so that we can call the Type methods on it.
       method: concept.asType();
       returns:
-        - "[`Type`](../concept-api/type?tab=java) object"
+        - "[`Type`](../concept-api/type?tab=java#type-methods)"
 
   - method:
     java:
@@ -173,7 +173,7 @@ methods:
       description: Casts the concept as Thing so that we can call the Thing methods on it.
       method: concept.asThing();
       returns:
-        - "[`Thing`](../concept-api/thing?tab=java) object"
+        - "[`Thing`](../concept-api/thing?tab=java#thing-methods)"
 
   - method:
     java:
@@ -181,7 +181,7 @@ methods:
       description: Casts the concept as EntityType so that we can call the EntityType methods on it.
       method: concept.asEntityType();
       returns:
-        - "[`EntityType`](../concept-api/type?tab=java#entitytype-methods) object"
+        - "[`EntityType`](../concept-api/type?tab=java#entitytype-methods)"
 
   - method:
     java:
@@ -189,7 +189,7 @@ methods:
       description: Casts the concept as AttributeType so that we can call the AttributeType methods on it.
       method: concept.asAttributeType();
       returns:
-        - "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods) object"
+        - "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)"
 
   - method:
     java:
@@ -197,7 +197,7 @@ methods:
       description: Casts the concept as RelationType so that we can call the RelationType methods on it.
       method: concept.asRelationType();
       returns:
-        - "[`RelationType`](../concept-api/type?tab=java#relationtype-methods) object"
+        - "[`RelationType`](../concept-api/type?tab=java#relationtype-methods)"
 
   - method:
     java:
@@ -205,7 +205,7 @@ methods:
       description: Casts the concept as RoleType so that we can call the RoleType methods on it.
       method: concept.asRoleType();
       returns:
-        - "[`RoleType`](../concept-api/thing?tab=java#roletype-methods) object"
+        - "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
 
   - method:
     java:
@@ -213,7 +213,7 @@ methods:
       description: Casts the concept as Entity so that we can call the Entity methods on it.
       method: concept.asEntity();
       returns:
-        - "`Entity` object"
+        - "[`Entity`](../concept-api/thing?tab=java#entity-methods)"
 
   - method:
     java:
@@ -221,7 +221,7 @@ methods:
       description: Casts the concept as Attribute so that we can call the Attribute methods on it.
       method: concept.asAttribute();
       returns:
-        - "[`Attribute`](../concept-api/thing?tab=java#attribute-methods) object"
+        - "[`Attribute`](../concept-api/thing?tab=java#attribute-methods)"
 
   - method:
     java:
@@ -229,21 +229,19 @@ methods:
       description: Casts the concept as Relation so that we can call the Relation methods on it.
       method: concept.asRelation();
       returns:
-        - "[`Relation`](../concept-api/thing?tab=java#relation-methods) object"
+        - "[`Relation`](../concept-api/thing?tab=java#relation-methods)"
 
   - method:
     common: &method-delete
       title: Delete concept
       method: concept.delete();
       returns:
-        - "`null`"
+        - void
     java:
       <<: *method-delete
     javascript:
       <<: *method-delete
       method: await concept.delete();
-      returns:
-        - void
     python:
       <<: *method-delete
       method: concept.delete()
@@ -255,7 +253,7 @@ methods:
       title: Check if the concept has been deleted
       method: concept.isDeleted();
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isDeleted
       method: concept.isDeleted()

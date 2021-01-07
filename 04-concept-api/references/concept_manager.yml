@@ -89,7 +89,7 @@ methods:
         param:
           name: label
           description: The label of the EntityType to retrieve.
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -116,7 +116,7 @@ methods:
         param:
           name: label
           description: The label of the EntityType to create or retrive.
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -143,7 +143,7 @@ methods:
         param:
           name: label
           description: The label of the RelationType to retrieve.
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -170,7 +170,7 @@ methods:
         param:
           name: label
           description: The label of the RelationType to create or retrive.
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -197,7 +197,7 @@ methods:
         param:
           name: label
           description: The label of the AttributeType to retrieve.
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -224,7 +224,7 @@ methods:
         param1:
           name: label
           description: The label of the AttributeType to create or retrieve.
-          type: String
+          type: string
           required: true
           default: N/A
         param2: &accepts-putAttributeType-valueType
@@ -272,7 +272,7 @@ methods:
         param:
           name: iid
           description: The IID of the concept to retrieve.
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -299,7 +299,7 @@ methods:
         param:
           name: label
           description: The label of the ThingType to retrieve.
-          type: String
+          type: string
           required: true
           default: N/A
     java:

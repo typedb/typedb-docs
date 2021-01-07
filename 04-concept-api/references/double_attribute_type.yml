@@ -107,17 +107,17 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`DoubleAttributeType`](../concept-api/type?tab=java#double-attribute-type-methods)>
+        - Stream<[`DoubleAttributeType`](../concept-api/type?tab=java#doubleattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`DoubleAttributeType`](../concept-api/type?tab=javascript#double-attribute-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`DoubleAttributeType`](../concept-api/type?tab=javascript#doubleattributetype-methods)>"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`DoubleAttributeType`](../concept-api/type?tab=python#double-attribute-type-methods)
+        - Iterator of [`DoubleAttributeType`](../concept-api/type?tab=python#doubleattributetype-methods)
 
   - method:
     common: &method-getInstances
@@ -127,17 +127,17 @@ methods:
       <<: *method-getInstances
       method: type.getInstances();
       returns:
-        - Stream<[`DoubleAttribute`](../concept-api/thing?tab=java#double-attribute-methods)>
+        - Stream<[`DoubleAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`DoubleAttribute`](../concept-api/thing?tab=javascript#double-attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`DoubleAttribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
     python:
       <<: *method-getInstances
       method: type.get_instances()
       returns:
-        - Iterator of [`DoubleAttribute`](../concept-api/thing?tab=python#double-attribute-methods)
+        - Iterator of [`DoubleAttribute`](../concept-api/thing?tab=python#attribute-methods)
 
   - method:
     common: &method-asRemote

@@ -7,17 +7,17 @@ methods:
       <<: *method-create
       method: relationType.create();
       returns:
-        - "[`Relation`](../concept-api/thing?tab=java#relation-methods) object"
+        - "[`Relation`](../concept-api/thing?tab=java#relation-methods)"
     javascript:
       <<: *method-create
       method: await relationType.create();
       returns:
-        - "[`Relation`](../concept-api/thing?tab=nodejs#relation-methods) object"
+        - "[`Relation`](../concept-api/thing?tab=nodejs#relation-methods)"
     python:
       <<: *method-create
       method: relation_type.create()
       returns:
-        - "[`Relation`](../concept-api/thing?tab=python#relation-methods) object"
+        - "[`Relation`](../concept-api/thing?tab=python#relation-methods)"
 
   - method:
     common: &method-getrelates
@@ -27,18 +27,17 @@ methods:
       <<: *method-getrelates
       method: relationType.getRelates();
       returns:
-        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=java#role-type-methods) objects"
+        - "[Stream](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
     javascript:
       <<: *method-getrelates
       method: relationType.getRelates();
       returns:
-        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#role-type-methods) objects"
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getrelates
       method: relation_type.get_relates()
       returns:
-        - "Iterator of [`RoleType`](../concept-api/type?tab=python#role-type-methods) objects"
-
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
   - method:
     common: &method-getrelates-label
@@ -48,23 +47,23 @@ methods:
         param:
           name: label
           description: Label of the role we wish to retrieve.
-          type: String
+          type: string
           required: true
     java:
       <<: *method-getrelates-label
       method: relationType.getRelates(String label);
       returns:
-        - "[`RoleType`](../concept-api/type?javatab=#role-type-methods)"
+        - "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
     javascript:
       <<: *method-getrelates-label
       method: await relationType.getRelates(label);
       returns:
-        - "[`RoleType`](../concept-api/type?javascripttab=#role-type-methods)"
+        - "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getrelates-label
       method: relation_type.get_relates(label)
       returns:
-        - "[`RoleType`](../concept-api/type?tab=python#role-type-methods)"
+        - "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
   - method:
     common: &method-relates
@@ -74,13 +73,13 @@ methods:
         param:
           name: label
           description: The new role for the RelationType to relate to.
-          type: String
+          type: string
           required: true
           default: N/A
         param2:
           name: overriddenRoleLabel
           description: The label being overridden, if applicable
-          type: String
+          type: string
           required: false
           default: N/A
     java:
@@ -160,37 +159,37 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`RelationType`](../concept-api/type?tab=java#relation-type-methods)>
+        - Stream<[`RelationType`](../concept-api/type?tab=java#relationtype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`RelationType`](../concept-api/type?tab=javascript#relation-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream)<[`RelationType`](../concept-api/type?tab=javascript#relationtype-methods)>"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`RelationType`](../concept-api/type?tab=python#relation-type-methods)
+        - Iterator of [`RelationType`](../concept-api/type?tab=python#relationtype-methods)
 
   - method:
     common: &method-getInstances
       title: Retrieve all instances of this RelationType
-      description: Retrieves all DoubleAttributes that are instances of this Type.
+      description: Retrieves all Relations that are instances of this Type.
     java:
       <<: *method-getInstances
       method: type.getInstances();
       returns:
-        - Stream<[`DoubleAttribute`](../concept-api/thing?tab=java#double-attribute-methods)>
+        - Stream<[`Relation`](../concept-api/thing?tab=java#relation-methods)>
     javascript:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`DoubleAttribute`](../concept-api/thing?tab=javascript#double-attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Relation`](../concept-api/thing?tab=javascript#relation-methods)>"
     python:
       <<: *method-getInstances
       method: type.get_instances()
       returns:
-        - Iterator of [`DoubleAttribute`](../concept-api/thing?tab=python#double-attribute-methods)
+        - Iterator of [`Relation`](../concept-api/thing?tab=python#relation-methods)
 
   - method:
     common: &method-asRemote

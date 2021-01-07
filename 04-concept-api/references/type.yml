@@ -108,13 +108,13 @@ methods:
       method: type.getSupertype();
       returns:
         - "[`Type`](../concept-api/type?tab=java#type-methods)"
-        - "`null`"
+        - null
     javascript:
       <<: *method-getSupertype
       method: await type.getSupertype();
       returns:
         - "[`Type`](../concept-api/type?tab=javascript#type-methods)"
-        - "`null`"
+        - null
     python:
       <<: *method-getSupertype
       method: type.get_supertype()

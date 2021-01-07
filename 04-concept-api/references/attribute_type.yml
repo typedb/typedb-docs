@@ -4,7 +4,7 @@ methods:
       title: Retrieve valuetype
       description: Retrieves the valuetype given to this AttributeType.
       returns:
-        - "`String`"
+        - string
     java:
       <<: *method-getvalueType
       method: attributeType.getValueType();
@@ -49,17 +49,17 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`AttributeType`](../concept-api/type?tab=java#attribute-type-methods)>
+        - Stream<[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`AttributeType`](../concept-api/type?tab=javascript#attribute-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`AttributeType`](../concept-api/type?tab=python#attribute-type-methods)
+        - Iterator of [`AttributeType`](../concept-api/type?tab=python#attributetype-methods)
 
   - method:
     common: &method-getInstances
@@ -74,7 +74,7 @@ methods:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
     python:
       <<: *method-getInstances
       method: type.get_instances()
@@ -100,7 +100,7 @@ methods:
       <<: *method-getOwners
       method: type.getOwners(onlyKey)
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`Thing`](../concept-api/thing?tab=javascript#thing-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-getOwners
       method: type.getOwners(onlyKey)
@@ -135,98 +135,78 @@ methods:
     common: &method-isboolean
       title: Check if value is of type boolean
       description: Returns true if the value for attributes of this type is of type boolean. Otherwise, returns false.
+      return:
+        - boolean
     java:
       <<: *method-isboolean
       method: attribute.isBoolean();
-      return:
-        - boolean
     javascript:
       <<: *method-isboolean
       method: attribute.isBoolean();
-      return:
-        - boolean
     python:
       <<: *method-isboolean
       method: attribute.is_boolean()
-      return:
-        - boolean
 
   - method:
     common: &method-islong
       title: Check if value is of type long
       description: Returns true if the value for attributes of this type is of type long. Otherwise, returns false.
+      return:
+        - boolean
     java:
       <<: *method-islong
       method: attribute.isLong();
-      return:
-        - boolean
     javascript:
       <<: *method-islong
       method: attribute.isLong();
-      return:
-        - boolean
     python:
       <<: *method-islong
       method: attribute.is_long()
-      return:
-        - boolean
 
   - method:
     common: &method-isdouble
       title: Check if value is of type double
       description: Returns true if the value for attributes of this type is of type double. Otherwise, returns false.
+      return:
+        - boolean
     java:
       <<: *method-isdouble
       method: attribute.isDouble();
-      return:
-        - boolean
     javascript:
       <<: *method-isdouble
       method: attribute.isDouble();
-      return:
-        - boolean
     python:
       <<: *method-isdouble
       method: attribute.is_double()
-      return:
-        - boolean
 
   - method:
     common: &method-isstring
       title: Check if value is of type string
       description: Returns true if the value for attributes of this type is of type string. Otherwise, returns false.
+      return:
+        - boolean
     java:
       <<: *method-isstring
       method: attribute.isString();
-      return:
-        - boolean
     javascript:
       <<: *method-isstring
       method: attribute.isString();
-      return:
-        - boolean
     python:
       <<: *method-isstring
       method: attribute.is_string()
-      return:
-        - boolean
 
   - method:
     common: &method-isdatetime
       title: Check if value is of type datetime
       description: Returns true if the value for attributes of this type datetime. Otherwise, returns false.
+      return:
+        - boolean
     java:
       <<: *method-isdatetime
       method: attribute.isDateTime();
-      return:
-        - boolean
     javascript:
       <<: *method-isdatetime
       method: attribute.isDateTime();
-      return:
-        - boolean
     python:
       <<: *method-isdatetime
       method: attribute.is_datetime()
-      return:
-        - boolean

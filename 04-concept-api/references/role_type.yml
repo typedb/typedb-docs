@@ -65,13 +65,13 @@ methods:
       method: type.getSupertype();
       returns:
         - "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
-        - "`null`"
+        - null
     javascript:
       <<: *method-getSupertype
       method: await type.getSupertype();
       returns:
         - "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
-        - "`null`"
+        - null
     python:
       <<: *method-getSupertype
       method: type.get_supertype()
@@ -92,7 +92,7 @@ methods:
       <<: *method-getSupertypes
       method: type.getSupertypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getSupertypes
       method: type.get_supertypes()
@@ -112,7 +112,7 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
@@ -127,7 +127,7 @@ methods:
       <<: *method-getRelationType
       method: role.getRelationType();
       returns:
-        - "Stream of [`RelationType`](../concept-api/thing?tab=java#relationtype-methods)"
+        - "Stream<[`RelationType`](../concept-api/thing?tab=java#relationtype-methods)>"
     javascript:
       <<: *method-getRelationType
       method: await role.getRelationType();
@@ -147,7 +147,7 @@ methods:
       <<: *method-getRelationTypes
       method: role.getRelationTypes();
       returns:
-        - "Stream of [`RelationType`](../concept-api/thing?tab=java#relationtype-methods)"
+        - "Stream<[`RelationType`](../concept-api/thing?tab=java#relationtype-methods)>"
     javascript:
       <<: *method-getRelationTypes
       method: await role.getRelationTypes();
@@ -167,7 +167,7 @@ methods:
       <<: *method-getPlayers
       method: role.getPlayers();
       returns:
-        - "Stream of [`ThingType`](/docs/concept-api/type?tab=java)"
+        - "Stream<[`ThingType`](/docs/concept-api/type?tab=java)>"
     javascript:
       <<: *method-getPlayers
       method: await role.getPlayers();

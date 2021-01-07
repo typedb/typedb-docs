@@ -4,7 +4,7 @@ methods:
       title: Retrieves internal ID (Local)
       description: Retrieves the unique id of the type.
       returns:
-        - "string"
+        - string
     java:
       <<: *method-iid
       method: thing.getIID();
@@ -44,17 +44,21 @@ methods:
     common: &method-type
       title: Retrieve type
       description: Retrieves the type which this Thing belongs to.
-      returns:
-        - "[`ThingType`](../concept-api/type)"
     java:
       <<: *method-type
       method: thing.getType();
+      returns:
+        - "[`ThingType`](../concept-api/type?tab=java#thingtype-methods)"
     javascript:
       <<: *method-type
       method: await thing.getType();
+      returns:
+        - "[`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)"
     python:
       <<: *method-type
       method: thing.get_type()
+      returns:
+        - "[`ThingType`](../concept-api/type?tab=python#thingtype-methods)"
 
   - method:
     common: &method-setHas
@@ -74,7 +78,7 @@ methods:
           <<: *accepts-setHas-attribute
           type: "[`Attribute<?>`](../concept-api/thing?tab=java#attribute-methods)"
       returns:
-        - "[`Thing`](../concept-api/thing?tab=java)"
+        - "[`Thing`](../concept-api/thing?tab=java#thing-methods)"
     javascript:
       <<: *method-setHas
       method: await thing.setHas(attribute);
@@ -83,7 +87,7 @@ methods:
           <<: *accepts-setHas-attribute
           type: "[`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
       returns:
-        - "[`Thing`](../concept-api/thing?tab=javascript)"
+        - "[`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-setHas
       method: thing.set_has(attribute)
@@ -92,7 +96,7 @@ methods:
           <<: *accepts-setHas-attribute
           type: "[`Attribute`](../concept-api/thing?tab=python#attribute-methods)"
       returns:
-        - "[`Thing`](../concept-api/thing?tab=python)"
+        - "[`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
   - method:
     common: &method-unsetHas
@@ -109,17 +113,17 @@ methods:
       <<: *method-unsetHas
       method: thing.unsetHas(Attribute<?> attribute);
       returns:
-        - "[`Thing`](../concept-api/thing?tab=java)"
+        - "[`Thing`](../concept-api/thing?tab=java#thing-methods)"
     javascript:
       <<: *method-unsetHas
       method: await thing.unsetHas(attribute);
       returns:
-        - "[`Thing`](../concept-api/thing?tab=javascript)"
+        - "[`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-unsetHas
       method: thing.unset_has(attribute)
       returns:
-        - "[`Thing`](../concept-api/thing?tab=python)"
+        - "[`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
   - method:
     common: &method-isInferred
@@ -147,7 +151,7 @@ methods:
           type: boolean
           description: If set to `true`, only attributes owned as a key will be retrieved.
           required: false
-          default: "`false`"
+          default: false
     java:
       <<: *method-getHasWithOnlyKey
       method: thing.getHas(boolean onlyKey));
@@ -168,7 +172,7 @@ methods:
           name: attributeType
           description: The AttributeType to filter the attributes by.
           required: false
-          default: "`null`"
+          default: null
     java:
       <<: *method-getHasWithOneAttributeType
       method: thing.getHas(AttributeType attributeType);
@@ -178,7 +182,7 @@ methods:
           <<: *accepts-getHasWithOneAttributeType-attributeType
           type: "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)"
       returns:
-        - "Stream of [`Attribute`](../concept-api/thing?tab=java#attribute-methods)"
+        - "Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>"
     javascript:
       <<: *method-getHasWithOneAttributeType
       method: await thing.getHas(attributeType);
@@ -188,7 +192,7 @@ methods:
           <<: *accepts-getHasWithOneAttributeType-attributeType
           type: "[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
       returns:
-        - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods) objects"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
 
   - method:
     common: &method-getHasWithAttributeTypes
@@ -238,13 +242,13 @@ methods:
           type: "list of `AttributeType`"
           description: The AttributeTypes to filter the attributes by.
           required: false
-          default: "`[]`"
+          default: "[]"
         param3:
           name: only_key
-          type: "`bool`"
+          type: boolean
           description: If set to `True`, only attributes owned as a key will be retrieved.
           required: false
-          default: "`False`"
+          default: False
       returns:
         - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)
 
@@ -285,7 +289,7 @@ methods:
         <<: *accepts-getRelations
         param:
           <<: *accepts-getRelations-param-roleTypes
-          type: "[`RoleType...`](../concept-api/type?tab=java#roletype-methods) objects"
+          type: "[`RoleType...`](../concept-api/type?tab=java#roletype-methods)"
       returns:
         - Stream<[`Relation`](../concept-api/thing?tab=java#relation-methods)>
     javascript:
@@ -297,7 +301,7 @@ methods:
           <<: *accepts-getRelations-param-roleTypes
           type: "Array of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
       returns:
-        - "[`Stream`](../client-api/nodejs#stream) of [`Relation`](../concept-api/thing?tab=javascript#relation-methods) objects"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Relation`](../concept-api/thing?tab=javascript#relation-methods)"
     python:
       <<: *method-getRelations
       method: thing.get_relations(role_types)

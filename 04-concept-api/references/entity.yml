@@ -7,17 +7,17 @@ methods:
       <<: *method-type
       method: entity.getType();
       returns:
-        - "[`EntityType`](../concept-api/type?tab=java#entity-type-methods)"
+        - "[`EntityType`](../concept-api/type?tab=java#entitytype-methods)"
     javascript:
       <<: *method-type
       method: await entity.getType();
       returns:
-        - "[`EntityType`](../concept-api/type?tab=javascript#entity-type-methods)"
+        - "[`EntityType`](../concept-api/type?tab=javascript#entitytype-methods)"
     python:
       <<: *method-type
       method: entity.get_type()
       returns:
-        - "[`EntityType`](../concept-api/type?tab=python#entity-type-methods)"
+        - "[`EntityType`](../concept-api/type?tab=python#entitytype-methods)"
   - method:
     common: &method-asRemote
       title: Get a Remote version of the Entity.

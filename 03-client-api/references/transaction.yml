@@ -26,7 +26,7 @@ methods:
     common: &method-isOpen
       title: Check if the transaction is open
       returns:
-        - "`boolean`"
+        - boolean
     java:
       <<: *method-isOpen
       method: transaction.isOpen();

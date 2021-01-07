@@ -4,7 +4,7 @@ methods:
       title: Put instance
       description: Puts and returns a new instance of this LongAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
       returns:
-        - LongAttribute object
+        - LongAttribute
       accepts: &method-put-accepts
         param: &method-put-accepts-value
           name: value
@@ -41,7 +41,7 @@ methods:
       title: Get instance
       description: Returns the instance, if extant, of this LongAttributeType with the specified value.
       returns:
-        - LongAttribute object
+        - LongAttribute
       accepts: &method-get-accepts
         param: &method-get-accepts-value
           name: value
@@ -99,6 +99,7 @@ methods:
       method: attributeType.set_supertype(longAttributeType)
       returns:
         - None
+
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
@@ -107,17 +108,17 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`LongAttributeType`](../concept-api/type?tab=java#long-attribute-type-methods)>
+        - Stream<[`LongAttributeType`](../concept-api/type?tab=java#longattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`LongAttributeType`](../concept-api/type?tab=javascript#long-attribute-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`LongAttributeType`](../concept-api/type?tab=javascript#longattributetype-methods)"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`LongAttributeType`](../concept-api/type?tab=python#long-attribute-type-methods)
+        - Iterator of [`LongAttributeType`](../concept-api/type?tab=python#longattributetype-methods)
 
   - method:
     common: &method-getInstances
@@ -127,17 +128,17 @@ methods:
       <<: *method-getInstances
       method: type.getInstances();
       returns:
-        - Stream<[`LongAttribute`](../concept-api/thing?tab=java#long-attribute-methods)>
+        - Stream<[`LongAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`LongAttribute`](../concept-api/thing?tab=javascript#long-attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`LongAttribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
     python:
       <<: *method-getInstances
       method: type.get_instances()
       returns:
-        - Iterator of [`LongAttribute`](../concept-api/thing?tab=python#long-attribute-methods)
+        - Iterator of [`LongAttribute`](../concept-api/thing?tab=python#attribute-methods)
 
   - method:
     common: &method-asRemote

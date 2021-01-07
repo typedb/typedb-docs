@@ -4,12 +4,12 @@ methods:
       title: Put instance
       description: Puts and returns a new instance of this StringAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
       returns:
-        - StringAttribute object
+        - StringAttribute
       accepts:
         param:
           name: value
           description: The value of the instance to be put
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -20,19 +20,19 @@ methods:
       method: await stringAttributeType.put(value);
     python:
       <<: *method-put
-      method: stringAttributeType.put(value)
+      method: string_attribute_type.put(value)
 
   - method:
     common: &method-get
       title: Get instance
       description: Returns the instance, if extant, of this StringAttributeType with the specified value.
       returns:
-        - StringAttribute object
+        - StringAttribute
       accepts:
         param:
           name: value
           description: The value of the instance to be retrieved
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -52,20 +52,20 @@ methods:
       <<: *method-regex-retrieve
       method: stringAttributeType.getRegex();
       returns:
-        - "`String`"
-        - "`NULL`"
+        - string
+        - null
     javascript:
       <<: *method-regex-retrieve
       method: await stringAttributeType.getRegex();
       returns:
-        - "`String`"
+        - string
         - None
     python:
       <<: *method-regex-retrieve
       method: string_attribute_type.get_regex()
       returns:
-        - "`String`"
-        - "`null`"
+        - string
+        - null
 
   - method:
     common: &method-regex-set
@@ -75,7 +75,7 @@ methods:
         param:
           name: regex
           description: The regex that all instances of this StringAttributeType must conform to.
-          type: String
+          type: string
           required: true
           default: N/A
     java:
@@ -120,6 +120,7 @@ methods:
       method: attributeType.set_supertype(stringAttributeType)
       returns:
         - None
+
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
@@ -128,17 +129,17 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`StringAttributeType`](../concept-api/type?tab=java#string-attribute-type-methods)>
+        - Stream<[`StringAttributeType`](../concept-api/type?tab=java#stringattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`StringAttributeType`](../concept-api/type?tab=javascript#string-attribute-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`StringAttributeType`](../concept-api/type?tab=javascript#stringattributetype-methods)"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`StringAttributeType`](../concept-api/type?tab=python#string-attribute-type-methods)
+        - Iterator of [`StringAttributeType`](../concept-api/type?tab=python#stringattributetype-methods)
 
   - method:
     common: &method-getInstances
@@ -148,17 +149,17 @@ methods:
       <<: *method-getInstances
       method: type.getInstances();
       returns:
-        - Stream<[`StringAttribute`](../concept-api/thing?tab=java#string-attribute-methods)>
+        - Stream<[`StringAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`StringAttribute`](../concept-api/thing?tab=javascript#string-attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`StringAttribute`](../concept-api/thing?tab=javascript#attribute-methods)"
     python:
       <<: *method-getInstances
       method: type.get_instances()
       returns:
-        - Iterator of [`StringAttribute`](../concept-api/thing?tab=python#string-attribute-methods)
+        - Iterator of [`StringAttribute`](../concept-api/thing?tab=python#attribute-methods)
 
   - method:
     common: &method-asRemote

@@ -9,7 +9,7 @@ methods:
         param:
           name: value
           description: The value of the instance to be put
-          type: Boolean
+          type: boolean
           required: true
           default: N/A
     java:
@@ -44,6 +44,7 @@ methods:
     python:
       <<: *method-get
       method: booleanAttributeType.get(value)
+
   - method:
     common: &method-setsupertype
       title: Set Supertype
@@ -78,17 +79,17 @@ methods:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`BooleanAttributeType`](../concept-api/type?tab=java#boolean-attribute-type-methods)>
+        - Stream<[`BooleanAttributeType`](../concept-api/type?tab=java#booleanattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`BooleanAttributeType`](../concept-api/type?tab=javascript#boolean-attribute-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`BooleanAttributeType`](../concept-api/type?tab=javascript#booleanattributetype-methods)>"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`BooleanAttributeType`](../concept-api/type?tab=python#boolean-attribute-type-methods)
+        - Iterator of [`BooleanAttributeType`](../concept-api/type?tab=python#booleanattributetype-methods)
 
   - method:
     common: &method-getInstances
@@ -98,17 +99,17 @@ methods:
       <<: *method-getInstances
       method: type.getInstances();
       returns:
-        - Stream<[`BooleanAttribute`](../concept-api/thing?tab=java#boolean-attribute-methods)>
+        - Stream<[`BooleanAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`BooleanAttribute`](../concept-api/thing?tab=javascript#boolean-attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`BooleanAttribute`](../concept-api/thing?tab=javascript#attribute-methods)"
     python:
       <<: *method-getInstances
       method: type.get_instances()
       returns:
-        - Iterator of [`BooleanAttribute`](../concept-api/thing?tab=python#boolean-attribute-methods)
+        - Iterator of [`BooleanAttribute`](../concept-api/thing?tab=python#attribute-methods)
 
   - method:
     common: &method-asRemote

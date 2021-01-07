@@ -76,7 +76,7 @@ methods:
   - method:
     common: &method-setsupertype
       title: Set Supertype
-      description: Sets the supplied DatetimeAttributeType as the supertype of the current DateTimeAttributeType
+      description: Sets the supplied DateTimeAttributeType as the supertype of the current DateTimeAttributeType
       accepts:
         - param:
             - name: dateTimeAttributeType
@@ -102,42 +102,42 @@ methods:
   - method:
     common: &method-getSubtypes
       title: Retrieve all subtypes
-      description: Retrieves all direct and indirect subtypes of the DatetimeAttributeType.
+      description: Retrieves all direct and indirect subtypes of the DateTimeAttributeType.
     java:
       <<: *method-getSubtypes
       method: type.getSubtypes();
       returns:
-        - Stream<[`DatetimeAttributeType`](../concept-api/type?tab=java#datetime-attribute-type-methods)>
+        - Stream<[`DateTimeAttributeType`](../concept-api/type?tab=java#datetimeattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
       method: type.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`DateTimeAttributeType`](../concept-api/type?tab=javascript#datetime-attribute-type-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`DateTimeAttributeType`](../concept-api/type?tab=javascript#datetimeattributetype-methods)"
     python:
       <<: *method-getSubtypes
       method: type.get_subtypes()
       returns:
-        - Iterator of [`DatetimeAttributeType`](../concept-api/type?tab=python#datetime-attribute-type-methods)
+        - Iterator of [`DateTimeAttributeType`](../concept-api/type?tab=python#datetimeattributetype-methods)
 
   - method:
     common: &method-getInstances
-      title: Retrieve all instances of this DatetimeAttributeType
-      description: Retrieves all DatetimeAttributes that are instances of this Type.
+      title: Retrieve all instances of this DateTimeAttributeType
+      description: Retrieves all DateTimeAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: type.getInstances();
       returns:
-        - Stream<[`DatetimeAttribute`](../concept-api/thing?tab=java#datetime-attribute-methods)>
+        - Stream<[`DateTimeAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
       method: type.getInstances()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`DatetimeAttribute`](../concept-api/thing?tab=javascript#datetime-attribute-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`DateTimeAttribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
     python:
       <<: *method-getInstances
       method: type.get_instances()
       returns:
-        - Iterator of [`DateTimeAttribute`](../concept-api/thing?tab=python#datetime-attribute-methods)
+        - Iterator of [`DateTimeAttribute`](../concept-api/thing?tab=python#attribute-methods)
 
   - method:
     common: &method-asRemote
@@ -151,7 +151,7 @@ methods:
           required: true
           default: N/A
       returns:
-        - "`RemoteDatetimeAttributeType`"
+        - "`RemoteDateTimeAttributeType`"
     java:
       <<: *method-asRemote
       method: dateTimeAttributeType.asRemote(Transaction tx);

@@ -12,17 +12,21 @@ methods:
           type: String
           required: true
           default: N/A
-      returns:
-        - "[`Rule`](../concept-api/rule)"
     java:
       <<: *method-getRule
       method: transaction.logic().getRule(String label);
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=java#rule-methods)"
     javascript:
       <<: *method-getRule
       method: await transaction.logic().getRule(label);
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=javascript#rule-methods)"
     python:
       <<: *method-getRule
       method: transaction.logic().get_rule(label)
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=python#rule-methods)"
 
   - method:
     common: &method-putRule
@@ -47,8 +51,6 @@ methods:
           type: String
           required: true
           default: N/A
-      returns:
-        - "[`Rule`](../concept-api/rule)"
     java:
       <<: *method-putRule
       method: transaction.logic().putRule(String label, Pattern when, Pattern then);
@@ -66,9 +68,15 @@ methods:
           type: "[`graql.lang.pattern.Pattern`](#graql)"
           required: true
           default: N/A
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=java#rule-methods)"
     javascript:
       <<: *method-putRule
       method: await transaction.logic().putRule(label, when, then);
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=javascript#rule-methods)"
     python:
       <<: *method-putRule
       method: transaction.logic().put_rule(label, when, then)
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=python#rule-methods)"

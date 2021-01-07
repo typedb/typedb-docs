@@ -33,13 +33,13 @@ methods:
       method: thingType.getSupertype();
       returns:
         - "[`ThingType`](../concept-api/type?tab=java#thingtype-methods)"
-        - "`null`"
+        - null
     javascript:
       <<: *method-getSupertype
       method: await thingType.getSupertype();
       returns:
         - "[`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)"
-        - "`null`"
+        - null
     python:
       <<: *method-getSupertype
       method: thing_type.get_supertype()
@@ -80,7 +80,7 @@ methods:
       <<: *method-getSubtypes
       method: thingType.getSubtypes()
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)"
     python:
       <<: *method-getSubtypes
       method: thing_type.get_subtypes()
@@ -95,17 +95,17 @@ methods:
       <<: *method-getInstances
       method: thingType.getInstances();
       returns:
-        - Stream<[`Thing`](../concept-api/thing?tab=java)>
+        - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
     javascript:
       <<: *method-getInstances
       method: thingType.getInstances();
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`Thing`](../concept-api/thing?tab=javascript)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-getInstances
       method: thing_type.get_instances()
       returns:
-        - Iterator of [`Thing`](../concept-api/thing?tab=python)
+        - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 
   - method:
     common: &method-setAbstract
@@ -171,7 +171,7 @@ methods:
         param2:
           <<: *accepts-setPlays-overriddenType
           type: "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
-          default: "`null`"
+          default: null
       returns:
         - void
     javascript:
@@ -184,7 +184,7 @@ methods:
         param2:
           <<: *accepts-setPlays-overriddenType
           type: "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
-          default: "`undefined`"
+          default: undefined
       returns:
         - void
     python:
@@ -218,7 +218,7 @@ methods:
           type: boolean
           description: Whether this AttributeType is to be owned as a unique key.
           required: false
-          default: "`false`"
+          default: false
       returns:
         - void
     java:
@@ -254,13 +254,13 @@ methods:
           name: overriddenType
           description: The AttributeType that this attribute ownership overrides, if applicable.
           required: false
-          default: "`null`"
+          default: null
         param3: &accepts-setOwnsOverridden-isKey
           name: isKey
           type: boolean
           description: Whether this AttributeType is to be owned as a unique key.
           required: false
-          default: "`false`"
+          default: false
       returns:
         - void
     java:
@@ -311,7 +311,7 @@ methods:
           type: bool
           description: Whether this AttributeType is to be owned as a unique key.
           required: false
-          default: "`False`"
+          default: False
       returns:
         - None
 
@@ -328,7 +328,7 @@ methods:
       <<: *method-getPlays
       method: await thingType.getPlays();
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getPlays
       method: thing_type.get_plays()
@@ -345,7 +345,7 @@ methods:
           type: boolean
           description: If set to `true`, then only attribute types owned as keys will be retrieved.
           required: false
-          default: "`false`"
+          default: false
     java:
       <<: *method-getOwns
       method: thingType.getOwns(boolean keysOnly);
@@ -355,7 +355,7 @@ methods:
       <<: *method-getOwns
       method: await thingType.getOwns(keysOnly);
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
 
   - method:
     common: &method-getOwnsForValueType
@@ -367,13 +367,13 @@ methods:
           type: "`AttributeType.ValueType`"
           description: If specified, only attribute types of this ValueType will be retrieved.
           required: false
-          default: "`null`"
+          default: null
         param2: &accepts-getOwnsForValueType-keysOnly
           name: keysOnly
           type: boolean
           description: If set to `true`, then only attribute types owned as keys will be retrieved.
           required: false
-          default: "`false`"
+          default: false
     java:
       <<: *method-getOwnsForValueType
       method: thingType.getOwns(AttributeType.ValueType valueType, boolean keysOnly);
@@ -393,7 +393,7 @@ methods:
         param2:
           <<: *accepts-getOwnsForValueType-keysOnly
       returns:
-        - "[`Stream`](../client-api/nodejs#stream)<[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)>"
+        - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
 
   - method:
     python:
@@ -412,7 +412,7 @@ methods:
           type: bool
           description: If set to `True`, then only attribute types owned as keys will be retrieved.
           required: false
-          default: "`False`"
+          default: False
       returns:
         - Iterator of [`AttributeType`](../concept-api/type?tab=python#attributetype-methods)
 
