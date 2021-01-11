@@ -171,7 +171,6 @@ photo sub media;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  // FIXME(vmax): fill in needed relation
   type("post").sub("entity").plays("reply", "to").plays("tagging", "in").plays("reaction", "to"),
   type("comment").sub("post").owns("content").plays("attachment", "to"),
   type("media").sub("post").owns("caption").owns("file").plays("attachment", "attached"),
@@ -291,8 +290,8 @@ person sub entity,
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-  type("friendship").sub("relation").relates("friend").plays("friend-request", "requested-friendship"),
-  type("friend-request").sub("relation").relates("requested-friendship").relates("requester").relates("friendship", "respondent"),
+  type("friendship").sub("relation").relates("friend").plays("friend-request", "friendship"),
+  type("friend-request").sub("relation").relates("friendship").relates("requester").relates("respondent"),
   type("person").sub("entity").plays("friendship", "friend").plays("friend-request", "requester").plays("friend-request", "respondent")
 );
 ```
@@ -300,7 +299,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-In the example above, the `friendship` relation plays the role of the `requested-friendship` in the `friend-request` relation. The other two role players in a `friend-request` are 1) the `person` who plays the `requester` role and 2) another `person` whole plays the `respondent` role.
+In the example above, the `friendship` relation plays the role of the `friendship` in the `friend-request` relation. The other two role players in a `friend-request` are 1) the `person` who plays the `requester` role and 2) another `person` whole plays the `respondent` role.
 
 Once the `friend-request` is accepted, then those two `person`s play the role of `friend` in the `friendship` relation.
 
@@ -802,11 +801,6 @@ undefine fluency sub relation;
 [tab:Java]
 ```java
 GraqlUndefine query = Graql.undefine(
-  type("fluency").relates("speaker").relates("language"),
-  type("person").plays("fluency", "speaker"),
-  type("language").plays("fluency", "language"),
-  type("speaker").sub("role"),
-  type("language").sub("role"),
   type("fluency").sub("relation")
 );
 ```

@@ -155,7 +155,7 @@ GraqlDefine query = Graql.define(
             )
         )
         .then(
-            var("x").isa("person")
+            var("x").has("unemployed", true)
         )
 );
 ```
@@ -690,8 +690,7 @@ edge sub relation, relates from, relates to;
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-    // FIXME(vmax): fill in needed relation
-    type("traversable").sub("entity").plays("FIXME", "from").plays("FIXME", "to"),
+    type("traversable").sub("entity").plays("edge", "from").plays("edge", "to"),
     type("node").sub("traversable"), 
     type("edge").sub("relation").relates("from").relates("to")
 );
@@ -731,8 +730,7 @@ GraqlDefine query = Graql.define(
     type("reachable").sub("relation").relates("from").relates("to"),
     rule("reachabilityA")
         .when(
-            // FIXME(vmax): I'm not totally sure about .asConjunction()
-            var().rel("from", "x").rel("to", "y").isa("edge").asConjunction()
+           and(var().rel("from", "x").rel("to", "y").isa("edge"))
         )
         .then(
             var().rel("from", "x").rel("to", "y").isa("reachable")

@@ -427,6 +427,7 @@ match $x type post; get $x;
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
 GraqlMatch.Filtered query_a = Graql.match(
   var("x").type("post")

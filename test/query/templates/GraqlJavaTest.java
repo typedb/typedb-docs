@@ -14,6 +14,9 @@ import graql.lang.query.GraqlCompute.Argument;
 import graql.lang.pattern.Pattern;
 import graql.lang.common.GraqlArg;
 import grakn.client.concept.answer.ConceptMap;
+import grakn.client.concept.answer.ConceptMapGroup;
+import grakn.client.concept.answer.Numeric;
+import grakn.client.concept.answer.NumericGroup;
 import org.junit.*;
 
 import java.io.*;
@@ -32,63 +35,98 @@ import static graql.lang.Graql.*;
 
 public class GraqlJavaTest {
     static Grakn.Client client;
-    static Grakn.Session session ;
+    static Grakn.Session session;
     Grakn.Transaction transaction;
 
     private void runQuery(Grakn.Transaction transaction, GraqlQuery query) {
         List<ConceptMap> conceptMaps;
-        if (query instanceof GraqlMatch) {
-            conceptMaps = transaction.query().match(query.asMatch()).collect(Collectors.toList());
-        } else if (query instanceof GraqlDefine) {
-            transaction.query().define(query.asDefine()).get();
-        } else if (query instanceof GraqlInsert) {
-            conceptMaps = transaction.query().insert(query.asInsert()).collect(Collectors.toList());
-        } else if (query instanceof GraqlDelete) {
-            transaction.query().delete(query.asDelete()).get();
-        } else {
-            throw new RuntimeException("Unknown query type: " + query.toString());
+        Numeric num;
+        try {
+            if (query instanceof GraqlMatch) {
+                session = client.session("social_network", Grakn.Session.Type.DATA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                conceptMaps = transaction.query().match(query.asMatch()).collect(Collectors.toList());
+            } else if (query instanceof GraqlMatch.Aggregate) {
+                session = client.session("social_network", Grakn.Session.Type.DATA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                transaction.query().match(query.asMatchAggregate()).get();
+            } else if (query instanceof GraqlMatch.Group) {
+                session = client.session("social_network", Grakn.Session.Type.DATA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                List<ConceptMapGroup> x = transaction.query().match(query.asMatchGroup()).collect(Collectors.toList());
+            } else if (query instanceof GraqlMatch.Aggregate) {
+                session = client.session("social_network", Grakn.Session.Type.DATA);
+                transaction = session.transaction(Grakn.Transaction.Type.READ);
+                num = transaction.query().match(query.asMatchAggregate()).get();
+            } else if (query instanceof GraqlMatch.Group.Aggregate) {
+                session = client.session("social_network", Grakn.Session.Type.DATA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                List<NumericGroup> x = transaction.query().match(query.asMatchGroupAggregate()).collect(Collectors.toList());
+
+            } else if (query instanceof GraqlDefine) {
+                session = client.session("social_network", Grakn.Session.Type.SCHEMA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                transaction.query().define(query.asDefine()).get();
+
+            } else if (query instanceof GraqlUndefine) {
+                session = client.session("social_network", Grakn.Session.Type.SCHEMA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                transaction.query().undefine(query.asUndefine()).get();
+
+            } else if (query instanceof GraqlInsert) {
+                session = client.session("social_network", Grakn.Session.Type.DATA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                conceptMaps = transaction.query().insert(query.asInsert()).collect(Collectors.toList());
+
+            } else if (query instanceof GraqlDelete) {
+                session = client.session("social_network", Grakn.Session.Type.DATA);
+                transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+                transaction.query().delete(query.asDelete()).get();
+
+            } else if (query instanceof GraqlCompute) {
+                // FIXME(vmax): we dunno how to run them yet
+            } else {
+                throw new RuntimeException("Unknown query type: " + query.toString() + "[type = " + query.getClass() + "]");
+            }
+        } finally {
+            transaction.close();
+            session.close();
         }
     }
 
 
     @BeforeClass
     public static void loadSocialNetwork() throws Exception {
-//        GraknSetup.bootup();
         String address = "localhost:1729";
 
         client = new GraknClient(address);
+        client.databases().create("social_network");
         session = client.session("social_network", Grakn.Session.Type.SCHEMA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.query().define(Graql.parseQuery(query));
+            transaction.query().define(Graql.parseQuery(query)).get();
 
             encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
             query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.query().define(Graql.parseQuery(query));
+            transaction.query().define(Graql.parseQuery(query)).get();
+
+            encoded = Files.readAllBytes(Paths.get("files/negation/schema.gql"));
+            query = new String(encoded, StandardCharsets.UTF_8);
+            transaction.query().define(Graql.parseQuery(query)).get();
 
             transaction.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Before
-    public void openTransaction(){
-        transaction = session.transaction(Grakn.Transaction.Type.WRITE);
-    }
-
-    @After
-    public void closeTransaction(){
-        transaction.close();
+        session.close();
     }
 
     @AfterClass
     public static void closeSession() throws Exception {
-        session.close();
-//        GraknSetup.shutdown();
+        client.databases().delete("social_network");
     }
 
     // TEST METHODS PLACEHOLDER
