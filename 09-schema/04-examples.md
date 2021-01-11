@@ -27,6 +27,7 @@ To define a unary relation, where a `thing` is in a relation referring itself.
 
 [tab:Social Network]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -51,6 +52,7 @@ group-membership-request sub request,
 [tab:end]
 
 [tab:Phone Calls]
+<!-- test-delay -->
 ```graql
 person sub entity,
     plays customer,
@@ -72,6 +74,7 @@ call sub relation,
 [tab:end]
 
 [tab:BioGrakn COVID]
+<!-- test-delay -->
 ```graql
 gene sub fully-formed-anatomical-structure,
     has gene-symbol,
@@ -106,6 +109,7 @@ To build a rule that infers a new relation type based on an existing set of data
 
 [tab:Financial Services]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -124,6 +128,7 @@ when {
 [tab:end]
 
 [tab:Customer 360]
+<!-- test-delay -->
 ```graql
 define
 
@@ -152,6 +157,7 @@ To build a rule that infers a new relation type based on an existing set of data
 
 [tab:BioGrakn COVID]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -170,6 +176,7 @@ when {
 [tab:end]
 
 [tab:Role Player Game]
+<!-- test-delay -->
 ```graql
 define 
 
@@ -191,6 +198,7 @@ when {
 [tab:end]
 
 [tab:Financial Services]
+<!-- test-delay -->
 ```graql
 define
 
@@ -213,6 +221,7 @@ To infer multiple new facts based on inferred concepts it is necessary to chain 
 <div class="tabs dark">
 
 [tab:Financial Services]
+<!-- test-delay -->
 ```graql
 define 
 
@@ -253,6 +262,7 @@ when {
 
 [tab:Customer 360]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -297,6 +307,7 @@ Modelling `periodic-event`s where `start-date` of one event is before the `end-d
 
 [tab:Social Network]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -327,6 +338,7 @@ Modelling various life events within the context of a Social Network.
 
 [tab:Birth]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -357,6 +369,7 @@ location sub entity,
 
 [tab:Residency]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -386,6 +399,7 @@ location sub entity,
 
 [tab:Travel]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -416,6 +430,7 @@ location sub entity,
 
 [tab:Education]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -464,6 +479,7 @@ Modelling various business scenarios.
 
 [tab:Employement]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -502,6 +518,7 @@ employment sub periodic-event,
 
 [tab:Employement in Common]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -561,6 +578,7 @@ when {
 
 [tab:Facilities Ownership]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -604,6 +622,7 @@ Modelling languages in various contexts.
 
 [tab:Spoken Language]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -639,6 +658,7 @@ when {
 
 [tab:Content Language]
 
+<!-- test-delay -->
 ```graql
 define
 
@@ -680,6 +700,7 @@ Modelling content permissions using Grakn Rules.
 
 [tab:Access Permissions]
 
+<!-- test-delay -->
 ```graql
 define
 
