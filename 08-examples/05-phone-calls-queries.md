@@ -95,7 +95,7 @@ public class PhoneCallsFirstQuery {
                 "  (customer: $customer, provider: $company) isa contract;",
                 "  $target isa person, has phone-number \"+86 921 547 9004\";",
                 "  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
-                "  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
+                "  $min-date 2018-09-14T17:18:49; $started-at > $min-date;",
                 "get $phone-number;"
         );
 
@@ -822,7 +822,7 @@ public class PhoneCallsFifthQuery {
         String firstQuery = String.join("", firstQueryAsList);
 
         Numeric firstAnswer = transaction.query().match(parseQuery(firstQuery).asMatchAggregate()).get();
-        Number firstResult = firstAnswer.asNumber();
+        String firstResult = !firstAnswer.isNaN() ? firstAnswer.asNumber().toString() : "NaN";
 
         String result = "Customers aged under 20 have made calls with average duration of " + firstResult + " seconds.\n";
 
@@ -841,7 +841,7 @@ public class PhoneCallsFifthQuery {
         String secondQuery = String.join("", secondQueryAsList);
 
         Numeric secondAnswer = transaction.query().match(parseQuery(secondQuery).asMatchAggregate()).get();
-        Number secondResult = secondAnswer.asNumber();
+        String secondResult = !secondAnswer.isNaN() ? secondAnswer.asNumber().toString() : "NaN";
 
         result += "Customers aged over 40 have made calls with average duration of " + secondResult + " seconds.\n";
 
