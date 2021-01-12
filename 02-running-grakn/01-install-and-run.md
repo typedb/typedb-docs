@@ -146,6 +146,11 @@ If you have installed Grakn using a package manager, to start the Grakn Server, 
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server`.
 
+<div class="note">
+[Important]
+Grakn Server listens on port 1729 on version 2.0 onwards.
+</div>
+
 ## Stop the Grakn Server
 To stop the Grakn Server, press Ctrl-C in same terminal as the one where you started it in.
 
