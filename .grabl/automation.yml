@@ -136,7 +136,6 @@ build:
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
-        pyenv global system
         bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
