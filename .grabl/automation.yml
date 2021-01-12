@@ -133,6 +133,10 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
+        pyenv global 3.6.10
+        sudo unlink /usr/bin/python3
+        sudo ln -s $(which python3) /usr/bin/python3
+        sudo ln -s /usr/share/pyshared/lsb_release.py /opt/pyenv/versions/3.6.10/lib/python3.6/site-packages/lsb_release.py
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
