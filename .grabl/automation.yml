@@ -133,6 +133,11 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
+        # FIXME(vmax): remove this bit v
+        sudo apt install -qy openjdk-8-jdk
+        sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+        # FIXME(vmax): remove this bit ^
+
         pyenv global 3.6.10
         sudo unlink /usr/bin/python3
         sudo ln -s $(which python3) /usr/bin/python3
