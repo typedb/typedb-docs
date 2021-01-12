@@ -148,7 +148,7 @@ Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder 
 
 <div class="note">
 [Important]
-Grakn Server listens on port 1729 on version 2.0 onwards.
+From version 2.0 onwards, Grakn Server listens on port 1729.
 </div>
 
 ## Stop the Grakn Server
