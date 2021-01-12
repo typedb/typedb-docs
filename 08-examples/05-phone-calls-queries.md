@@ -138,7 +138,7 @@ async function ExecuteMatchQuery() {
     	"  (customer: $customer, provider: $company) isa contract;",
     	'  $target isa person, has phone-number "+86 921 547 9004";',
     	"  (caller: $customer, callee: $target) isa call, has started-at $started-at;",
-    	"  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;",
+    	"  $min-date 2018-09-14T17:18:49; $started-at > $min-date;",
     	"get $phone-number;"
   	];
 
@@ -169,11 +169,11 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_first_query.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType, SessionType, TransactionType
 
-with GraknClient(uri="localhost:1729") as client:
-    with client.session(database = "phone_calls") as session:
-        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
+with GraknClient() as client:
+    with client.session("phone_calls", SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
             query = [
                 'match',
                 '  $customer isa person, has phone-number $phone-number;',
@@ -181,14 +181,14 @@ with GraknClient(uri="localhost:1729") as client:
                 '  (customer: $customer, provider: $company) isa contract;',
                 '  $target isa person, has phone-number "+86 921 547 9004";',
                 '  (caller: $customer, callee: $target) isa call, has started-at $started-at;',
-                '  $min-date == 2018-09-14T17:18:49; $started-at > $min-date;',
+                '  $min-date 2018-09-14T17:18:49; $started-at > $min-date;',
                 'get $phone-number;'
             ]
 
             print("\nQuery:\n", "\n".join(query))
             query = "".join(query)
 
-            iterator = transaction.query(query)
+            iterator = transaction.query().match(query)
             answers = [ans.get("phone-number") for ans in iterator]
             result = [ answer.value() for answer in answers ]
 
@@ -347,11 +347,11 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_second_query.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType, SessionType, TransactionType
 
-with GraknClient(uri="localhost:1729") as client:
-    with client.session(database = "phone_calls") as session:
-      with session.transaction(Grakn.Transaction.Type.READ) as transaction:
+with GraknClient() as client:
+    with client.session("phone_calls", SessionType.DATA) as session:
+      with session.transaction(TransactionType.READ) as transaction:
         query = [
           'match ',
           '  $suspect isa person, has city "London", has age > 50;',
@@ -368,7 +368,7 @@ with GraknClient(uri="localhost:1729") as client:
         print("\nQuery:\n", "\n".join(query))
         query = "".join(query)
 
-        iterator = transaction.query(query).get()
+        iterator = transaction.query().match(query)
         answers = [ans.get("phone-number") for ans in iterator]
         result = [ answer.value() for answer in answers ]
 
@@ -515,11 +515,11 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_third_query.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient(uri="localhost:1729") as client:
-    with client.session(database = "phone_calls") as session:
-        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
+with GraknClient() as client:
+    with client.session("phone_calls", SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
             query = [
                 'match ',
                 '  $common-contact isa person, has phone-number $phone-number;',
@@ -533,7 +533,7 @@ with GraknClient(uri="localhost:1729") as client:
             print("\nQuery:\n", "\n".join(query))
             query = "".join(query)
 
-            iterator = transaction.query(query).get()
+            iterator = transaction.query().match(query)
             answers = [ans.get("phone-number") for ans in iterator]
             result = [ answer.value() for answer in answers ]
 
@@ -694,11 +694,11 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_forth_query.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient(uri="localhost:1729") as client:
-    with client.session(database = "phone_calls") as session:
-        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
+with GraknClient() as client:
+    with client.session("phone_calls", SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
             query = [
                 'match ',
                 '  $target isa person, has phone-number "+48 894 777 5173";',
@@ -716,7 +716,7 @@ with GraknClient(uri="localhost:1729") as client:
             print("\nQuery:\n", "\n".join(query))
             query = "".join(query)
 
-            iterator = transaction.query(query).get()
+            iterator = transaction.query().match(query)
             answers = []
             for answer in iterator:
                 answers.extend(answer.map().values())
@@ -925,11 +925,11 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_fifth_query.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient(uri="localhost:1729") as client:
-    with client.session(database = "phone_calls") as session:
-        with session.transaction(Grakn.Transaction.Type.READ) as transaction:
+with GraknClient() as client:
+    with client.session("phone_calls", SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
             first_query = [
                 'match',
                 '  $customer isa person, has age < 20;',
@@ -942,13 +942,15 @@ with GraknClient(uri="localhost:1729") as client:
             print("\nQuery:\n", "\n".join(first_query))
             first_query = "".join(first_query)
 
-            first_answer = list(transaction.query(first_query).get())
-            first_result = 0
-            if len(first_answer) > 0:
-                first_result = first_answer[0].number()
+            first_answer = next(transaction.query().match_aggregate(first_query))
+            first_result = 'NaN'
+            if first_answer.is_int():
+                first_result = first_answer.as_int()
+            elif first_answer.is_float():
+                first_result = first_answer.as_float()
 
             result = ("Customers aged under 20 have made calls with average duration of "
-                      + str(round(first_result)) + " seconds.\n")
+                      + first_result + " seconds.\n")
 
             second_query = [
                 'match ',
@@ -961,13 +963,15 @@ with GraknClient(uri="localhost:1729") as client:
             print("\nQuery:\n", "\n".join(second_query))
             second_query = "".join(second_query)
 
-            second_answer = list(transaction.query(second_query))
-            second_result = 0
-            if len(second_answer) > 0:
-                second_result = second_answer[0].number()
+            second_answer = next(transaction.query().match_aggregate(second_query))
+            second_result = 'NaN'
+            if second_answer.is_int():
+                second_result = second_answer.as_int()
+            elif second_answer.is_float():
+                second_result = second_answer.as_float()
 
             result += ("Customers aged above 40 have made calls with average duration of "
-                       + str(round(second_result)) + " seconds.\n")
+                       + second_result + " seconds.\n")
 
             print("\nResult:\n", result)
 ```

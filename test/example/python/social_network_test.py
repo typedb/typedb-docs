@@ -1,4 +1,4 @@
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 import unittest
 
 
@@ -9,10 +9,13 @@ class SocialNetworkTest(unittest.TestCase):
         with open('files/social-network/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            with GraknClient(uri="localhost:1729") as client:
-                with client.session("social_network") as session:
-                    with session.transaction().write() as transaction:
-                        transaction.query(define_query)
+            with GraknClient() as client:
+                if "social_network" in client.databases().all():
+                    client.databases().delete("social_network")
+                client.databases().create("social_network")
+                with client.session("social_network", SessionType.SCHEMA) as session:
+                    with session.transaction(TransactionType.WRITE) as transaction:
+                        transaction.query().define(define_query)
                         transaction.commit()
                         print("Loaded the social_network schema")
 
@@ -30,12 +33,6 @@ class SocialNetworkTest(unittest.TestCase):
 
     def test_social_network_python_client_d(self):
         import social_network_python_client_d
-
-    @classmethod
-    def tearDownClass(cls):
-        with GraknClient(uri="localhost:1729") as client:
-            client.databases().delete("social_network")
-            print("Deleted the social_network database")
 
 
 if __name__ == '__main__':

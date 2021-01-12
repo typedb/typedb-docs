@@ -84,11 +84,11 @@ Let’s move on.
 ## build_phone_call_graph(inputs)
 
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:1729") as client:
-        with client.session(database = "phone_calls") as session:
+    with GraknClient() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -111,10 +111,10 @@ def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
     for item in items:
-        with session.transaction().write() as transaction:
+        with session.transaction(TransactionType.WRITE) as transaction:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
+            transaction.query().insert(graql_insert_query)
             transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
@@ -404,12 +404,12 @@ Here is how our `migrate.py` looks like for each data format.
 [tab:CSV]
 <!-- test-example phone_calls_csv_migration.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 import csv
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:1729") as client:
-        with client.session(database = "phone_calls") as session:
+    with GraknClient() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -418,10 +418,10 @@ def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
     for item in items:
-        with session.transaction().write() as transaction:
+        with session.transaction(TransactionType.WRITE) as transaction:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
+            transaction.query().insert(graql_insert_query)
             transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
@@ -499,12 +499,12 @@ build_phone_call_graph(inputs=inputs)
 [tab:JSON]
 <!-- test-example phone_calls_json_migration.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 import ijson
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:1729") as client:
-        with client.session(database = "phone_calls") as session:
+    with GraknClient() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -513,10 +513,10 @@ def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
     for item in items:
-        with session.transaction().write() as transaction:
+        with session.transaction(TransactionType.WRITE) as transaction:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
+            transaction.query().insert(graql_insert_query)
             transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
@@ -593,12 +593,12 @@ build_phone_call_graph(inputs)
 [tab:XML]
 <!-- test-example phone_calls_xml_migration.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 import xml.etree.cElementTree as et
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:1729") as client:
-        with client.session(database = "phone_calls") as session:
+    with GraknClient() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -607,10 +607,10 @@ def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
     for item in items:
-        with session.transaction().write() as transaction:
+        with session.transaction(TransactionType.WRITE) as transaction:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
+            transaction.query().insert(graql_insert_query)
             transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
