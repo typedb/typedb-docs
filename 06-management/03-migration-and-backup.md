@@ -21,11 +21,6 @@ Grakn version 1.7.3 and later include tools to backup and migrate data between v
 If you are migrating from 1.6.x or below to 2.0.x, you must first copy your `server/db` directory from your existing Grakn installation into an Grakn 1.7.3 installation. This will be fast and can be done to move from a version of Grakn without migration tools to one which has them. From 1.7.3 you are able to migrate to Grakn 2.0. 
 </div>
 
-<div class="note">
-[Important]
-When upgrading with Homebrew, copy your data folder **outside** of the installation directory before upgrade, otherwise you **may lose your data**. Cautious users should back up their entire Grakn directory.
-</div>
-
 The migration features describe beyond this point are designed for use with databases that can reasonably fit on a local disk multiple times (in the order of Gigabytes), as they make use of files to contain your data. If you have use cases for migrating data that will not fit onto disk, please reach out to us on our [Discord](https://discord.com/invite/graknlabs) community or [Forums](https://discuss.grakn.ai/) where we can advise you further.
 
 ## Backup
@@ -82,19 +77,6 @@ This requires your database in the new grakn to have a valid schema that is comp
 
 Once the data has been successfully imported, you can safely delete the temporary data file with `rm data.grakn`.
 
-## Upgrading Grakn with Homebrew
-
-When upgrading a Grakn installation via homebrew, we recommend that you always back up your grakn directory first to preserve your data in case the upgrade cannot be completed successfully. This is because homebrew automatically removes your installation directly after the upgrade.
-
-`cp -R /usr/local/Cellar/grakn-core/[version]/libexec ./grakn-backup`.
-
-Before upgrading, your should first export your schema and data. You should perform this step for every database you want to upgrade.
-
-```
-grakn server schema [database] > [database].gql
-grakn server export [database] [database].grakn
-```
-
 ## Dealing With Migration Issues
 
 ### Migration Errors
@@ -120,7 +102,3 @@ grakn server import <database> <file>.grakn <old_label>=<new_label>...
 ### Implicit Relations
 
 Schemas that use implicit relations in 1.7 and earlier (e.g. `@has-attribute`) are not supported by migration tools since they were removed in 1.8. It is therefore recommended that you convert any usage of implicit relations to real relations before migrating to 1.8.
-
-## About `.grakn` Files
-
-The format is a delimited protobuf stream of `Item`s which are defined (along with a more detailed description of the protocol rules) in the Grakn core source code at `server/migrate/proto/data.proto`. The output file is uncompressed so it is recommended that you compress it for use in backups and transferring across a network. Deflate/ZIP compression works well in our experience, as it compresses labels efficiently.
