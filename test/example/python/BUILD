@@ -25,6 +25,7 @@ py_test(
     data = ["//files:phone-calls-kg"],
     imports = ["."],
     python_version = "PY3",
+    size = "large",
 )
 
 genrule(
@@ -63,6 +64,7 @@ py_test(
     data = ["//files:social-network-kg"],
     imports = ["."],
     python_version = "PY3",
+    size = "large",
 )
 
 genrule(
