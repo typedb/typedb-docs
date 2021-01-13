@@ -60,3 +60,36 @@ Give any of these commands inside a console at the `>` prompt.
 | `help`          | Print this help menu                                                                                                                            |
 | `clear`         | Clear console screen                                                                                                                            |
 | `exit`          | Exit console                                                                                                                                    |
+
+## Examples
+
+The following example illustrates how to create a database, define a schema, and insert some data into Grakn.
+
+```
+$ ./grakn console
+
+Welcome to Grakn Console. You are now in Grakn Wonderland!
+Copyright (C) 2020 Grakn Labs
+
+> database create grakn
+Database 'grakn' created
+
+> database list
+grakn
+
+> transaction grakn schema write
+grakn::schema::write> define person sub entity;
+                      
+Concepts have been defined
+grakn::schema::write> commit
+Transaction changes committed
+
+> transaction grakn data write
+grakn::data::write> insert $p isa person;
+                    
+{ p iid 0x966e80017fffffffffffffff isa person; }
+grakn::data::write> commit
+Transaction changes committed
+
+> exit
+```
