@@ -36,33 +36,27 @@ Grakn Console provides two levels of interaction: database-level commands and tr
 
 Give any of these commands inside a console at the `>` prompt.
 
-| Command                                   | Description                                                                                           |
-|-------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| `database create <db>`                    | Create a database with name `<db>` on the server. For example:                                        |
-                                            |  ```                                                                                                  |
-                                            |  > database create my-grakn-database                                                                  |
-                                            |  Database 'my-grakn-database' created                                                                 |
-                                            |  ```                                                                                                  |
-| `database list`                           | List the databases on the server                                                                      |
-| `database delete <db>`                    | Delete a database with name `<db>` on the server                                                      |
-| `transaction <db> schema|data read|write` | Start a transaction to database `<db>` with schema or data session, with read or write transaction    |
-| `help`                                    | Print help menu                                                                                       |
-| `clear`                                   | Clear console screen                                                                                  |
-| `exit`                                    | Exit console                                                                                          |
+| Command                                   | Description                                                                                                            |
+|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `database create <db>`                    | Create a database with name `<db>` on the server.                                                                      |
+| `database list`                           | List the databases on the server                                                                                       |
+| `database delete <db>`                    | Delete a database with name `<db>` on the server                                                                       |
+| `transaction <db> schema|data read|write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.   |
+| `help`                                    | Print help menu                                                                                                        |
+| `clear`                                   | Clear console screen                                                                                                   |
+| `exit`                                    | Exit console                                                                                                           |
 
 ### Transaction querying commands
 
 Give any of these commands inside a console at the `>` prompt.
 
-| Command         | Description                                             |
-|-----------------|---------------------------------------------------------|
-| `<query>`       | Run Graql query                                         |
-| `source <file>` | Run Graql queries in file                               |
-| `commit`        | Commit the transaction changes and close transaction    |
-| `rollback`      | Rollback the transaction to the beginning state         |
-| `close`         | Close the transaction without committing changes        |
-| `help`          | Print this help menu                                    |
-| `clear`         | Clear console screen                                    |
-| `exit`          | Exit console                                            |
-
-.
+| Command         | Description                                                                                                                                     |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| `<query>`       | Once you're in the transaction REPL, the terminal immediately accepts a multi-line Graql query, and will execute it when you hit enter twice.   |
+| `source <file>` | Run Graql queries in a file, which you can refer to using relative or absolute path.                                                            |
+| `commit`        | Commit the transaction changes and close transaction.                                                                                           |
+| `rollback`      | Will remove any uncommitted changes you've made in the transaction, while leaving transaction open.                                             |
+| `close`         | Close the transaction without committing changes, and takes you back to the database-level interface, i.e. first-level REPL.                    |
+| `help`          | Print this help menu                                                                                                                            |
+| `clear`         | Clear console screen                                                                                                                            |
+| `exit`          | Exit console                                                                                                                                    |
