@@ -148,8 +148,8 @@ build:
         bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
-        bazel test //test/example/python:phone-calls --test_output=errors
-        bazel test //test/example/python:social-network --test_output=errors
+        bazel run //test/example/python:phone-calls
+        bazel run //test/example/python:social-network
     test-links:
       image: graknlabs-ubuntu-20.04
       type: foreground
