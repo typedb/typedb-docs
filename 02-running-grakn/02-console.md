@@ -65,6 +65,7 @@ Give any of these commands inside a console at the `>` prompt.
 
 The following example illustrates how to create a database, define a schema, and insert some data into Grakn.
 
+<!-- test-ignore -->
 ```graql
 $ ./grakn console
 
