@@ -49,7 +49,9 @@ Pick one of the data formats below and download the files. After you download th
 All code that follows is to be written in `phone_calls/migrate.js`.
 
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 const inputs = [
     {
@@ -86,7 +88,7 @@ Let’s move on.
 ```javascript
 async function buildPhoneCallGraph(inputs) {
     const client = new GraknClient("localhost:1729");
-    const session = client.session("phone_calls");
+    const session = client.session("phone_calls", SessionType.DATA);
 
     for (input of inputs) {
         await loadDataIntoGrakn(input, session);
@@ -112,7 +114,7 @@ async function loadDataIntoGrakn(input, session) {
     const items = await parseDataToObjects(input);
 
     for (item of items) {
-        const transaction = await session.transaction().write();
+        const transaction = await session.transaction(TransactionType.WRITE);
         const graqlInsertQuery = input.template(item);
         await transaction.query(graqlInsertQuery);
         await transaction.commit();
@@ -290,7 +292,9 @@ We use [Papaparse](https://www.papaparse.com/), a CSV (or delimited text) parser
 Via the terminal, while in the `phone_calls` directory, run `npm install papaparse` and require the module for it.
 
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const fs = require("fs");
 const papa = require("papaparse");
 ...
@@ -339,7 +343,9 @@ We use [stream-json](https://github.com/uhop/stream-json) for custom JSON proces
 Via the terminal, while in the `phone_calls` directory, run `npm install stream-json` and require the modules for it.
 
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -377,7 +383,9 @@ We use xml-stream, an xml stream parser.
 Via the terminal, while in the `phone_calls` directory, run `npm install xml-stream` and require the module for it.
 
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 ...
@@ -445,7 +453,9 @@ Here is how our `migrate.js` looks like for each data format.
 [tab:CSV]
 <!-- test-example phoneCallsCSVMigration.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const fs = require("fs");
 const papa = require("papaparse");
 
@@ -466,7 +476,7 @@ const inputs = [
  */
 async function buildPhoneCallGraph() {
     const client = new GraknClient("localhost:1729"); // 1
-    const session = await client.session("phone_calls"); // 2
+    const session = await client.session("phone_calls", SessionType.DATA); // 2
 
     for (input of inputs) {
         console.log("Loading from [" + input.dataPath + "] into Grakn ...");
@@ -487,7 +497,7 @@ async function loadDataIntoGrakn(input, session) {
 
     for (item of items) {
         let transaction;
-        transaction = await session.transaction().write();
+        transaction = await session.transaction(TransactionType.WRITE);
 
         const graqlInsertQuery = input.template(item);
         console.log("Executing Graql Query: " + graqlInsertQuery);
@@ -581,7 +591,9 @@ buildPhoneCallGraph();
 [tab:JSON]
 <!-- test-example phoneCallsJSONMigration.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -605,7 +617,7 @@ const inputs = [
 
 async function buildPhoneCallGraph() {
     const client = new GraknClient("localhost:1729"); // 1
-    const session = await client.session("phone_calls"); // 2
+    const session = await client.session("phone_calls", SessionType.DATA); // 2
 
     for (input of inputs) {
         console.log("Loading from [" + input.dataPath + "] into Grakn ...");
@@ -625,7 +637,7 @@ async function loadDataIntoGrakn(input, session) {
     const items = await parseDataToObjects(input);
 
     for (item of items) {
-        const transaction = await session.transaction().write();
+        const transaction = await session.transaction(TransactionType.WRITE);
 
         const graqlInsertQuery = input.template(item);
         console.log("Executing Graql Query: " + graqlInsertQuery);
@@ -719,7 +731,9 @@ buildPhoneCallGraph();
 [tab:XML]
 <!-- test-example phoneCallsXMLMigration.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 
@@ -756,7 +770,7 @@ const inputs = [
  */
 async function buildPhoneCallGraph() {
     const client = new GraknClient("localhost:1729"); // 1
-    const session = await client.session("phone_calls"); // 2
+    const session = await client.session("phone_calls", SessionType.DATA); // 2
 
     for (input of inputs) {
         console.log("Loading from [" + input.dataPath + "] into Grakn ...");
@@ -776,11 +790,11 @@ async function loadDataIntoGrakn(input, session) {
     const items = await parseDataToObjects(input);
 
     for (item of items) {
-        const transaction = await session.transaction().write();
+        const transaction = await session.transaction(TransactionType.WRITE);
 
         const graqlInsertQuery = input.template(item);
         console.log("Executing Graql Query: " + graqlInsertQuery);
-        await transaction.query(graqlInsertQuery);
+        await transaction.query().insert(graqlInsertQuery);
         await transaction.commit();
     }
 

@@ -1,5 +1,7 @@
 const fs = require('fs')
-const Grakn = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const reporters = require('jasmine-reporters');
 
 const tapReporter = new reporters.TapReporter();
@@ -8,11 +10,15 @@ jasmine.getEnv().addReporter(tapReporter)
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 
 const loadSchema = async () => {
-    const client = new Grakn("localhost:1729");
-    const session = await client.session("phone_calls");
-    const transaction = await session.transaction().write();
+    const client = new GraknClient("localhost:1729");
+    if (await(client.databases().contains('phone_calls'))) {
+        await client.databases().delete('phone_calls');
+    }
+    await client.databases().create('phone_calls');
+    const session = await client.session("phone_calls", SessionType.SCHEMA);
+    const transaction = await session.transaction(TransactionType.WRITE);
     const defineQuery = fs.readFileSync("files/phone-calls/schema.gql", "utf8");
-    await transaction.query(defineQuery);
+    await transaction.query().define(defineQuery);
     await transaction.commit();
     await session.close();
     await client.close();
@@ -20,7 +26,7 @@ const loadSchema = async () => {
 };
 
 const deleteDatabase = async () => {
-    const client = new Grakn("localhost:1729");
+    const client = new GraknClient("localhost:1729");
     await client.databases().delete("phone_calls");
     console.log("Deleted the phone_calls database");
     await client.close();

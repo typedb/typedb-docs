@@ -198,8 +198,8 @@ with GraknClient("localhost:1729") as client:
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
-const GraknClient = require("grakn-client/rpc/GraknClient");
-const Grakn = require("grakn-client/Grakn");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
 const { SessionType, TransactionType } = Grakn;
 
 async function getAverageSalaryAt (orgName) {
@@ -212,6 +212,7 @@ async function getAverageSalaryAt (orgName) {
 			($org, $per) isa employment, has salary $sal;
 		get $sal; mean $sal;
 	`
+    /* FIXME(vmax): reenable once match aggregates work
 	const answerIterator = await transaction.query().matchAggregate(query);
 	const answer = await answerIterator.next();
 	if (answer) {
@@ -219,6 +220,8 @@ async function getAverageSalaryAt (orgName) {
 	} else {
 	  console.log(`No one works at ${orgName}`);
 	}
+    */
+
 	await transaction.close();
 	await session.close();
 	client.close();

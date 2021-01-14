@@ -1,5 +1,7 @@
 const fs = require('fs')
-const Grakn = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 const reporters = require('jasmine-reporters');
 
 const tapReporter = new reporters.TapReporter();
@@ -8,11 +10,15 @@ jasmine.getEnv().addReporter(tapReporter)
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 
 beforeAll(async function() {
-    const client = new Grakn("localhost:1729");
-    const session = await client.session("social_network");
-    const transaction = await session.transaction().write();
+    const client = new GraknClient("localhost:1729");
+    if (await(client.databases().contains('social_network'))) {
+        await client.databases().delete('social_network');
+    }
+    await client.databases().create('social_network');
+    const session = await client.session("social_network", SessionType.SCHEMA);
+    const transaction = await session.transaction(TransactionType.WRITE);
     const defineQuery = fs.readFileSync("files/social-network/schema.gql", "utf8");
-    await transaction.query(defineQuery);
+    await transaction.query().define(defineQuery);
     await transaction.commit();
     await session.close();
     console.log("Loaded the social_network schema");
@@ -40,10 +46,4 @@ describe("Client Quickstart Tests", function() {
     it("tests socialNetworkNodejsClientD.js", async function() {
         // socialNetworkNodejsClientD.js
     });
-});
-
-afterAll(async function() {
-    const client = new Grakn("localhost:1729");
-    await client.databases().delete("social_network");
-    console.log("Deleted the social_network database");
 });

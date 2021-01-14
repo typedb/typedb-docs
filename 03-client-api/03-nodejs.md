@@ -21,20 +21,20 @@ In your source, require `grakn-client/rpc/GraknClient`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
-const GraknClient = require("grakn-client/rpc/GraknClient");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const GraknClient = require("grakn-client/rpc/GraknClient");
-const Grakn = require("grakn-client/Grakn");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
 const { SessionType, TransactionType } = Grakn;
 
 async function openSession (database) {
 	const client = new GraknClient("localhost:1729");
-	const session = await client.session(database, SessionType.READ);
+	const session = await client.session(database, SessionType.DATA);
 	// session is open
 	await session.close();
 	//session is closed
@@ -48,8 +48,8 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const GraknClient = require("grakn-client/rpc/GraknClient");
-const Grakn = require("grakn-client/Grakn");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
 const { SessionType, TransactionType } = Grakn;
 
 async function createTransactions (database) {
@@ -78,8 +78,8 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const GraknClient = require("grakn-client/rpc/GraknClient");
-const Grakn = require("grakn-client/Grakn");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
 const { SessionType, TransactionType } = Grakn;
 
 async function runBasicQueries(database) {
@@ -98,7 +98,7 @@ async function runBasicQueries(database) {
 	const readTransaction = await session.transaction(TransactionType.READ);
 
 	// We can either query and consume the iterator lazily
-	const answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
+	let answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
 	for await (const aConceptMapAnswer of answerStream) {
 		const person = aConceptMapAnswer.get("x");
 		console.log("Retrieved person with id " + person.getIID());
@@ -106,8 +106,11 @@ async function runBasicQueries(database) {
 
 	// Or query and consume the iterator immediately collecting all the results
 	answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
-	const persons = await answerStream.collect().map(conceptMap -> conceptMap.get("x"));
-	persons.forEach( person => { console.log("Retrieved person with id "+ person.getIID()) });
+	const persons = await answerStream.collect()
+	persons.forEach( conceptMap => {
+        person = conceptMap.get("x");
+        console.log("Retrieved person with id "+ person.getIID());
+    });
 
 	// a read transaction must always be closed
 	await readTransaction.close();

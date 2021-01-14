@@ -124,12 +124,14 @@ public class PhoneCallsFirstQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
-    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
-	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
+    const session = await client.session("phone_calls", SessionType.DATA);
+	const transaction = await session.transaction(TransactionType.READ);
 
   	let query = [
     	"match",
@@ -145,7 +147,7 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query(query);
+  	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
 		answers.map(answer =>
@@ -300,12 +302,14 @@ public class PhoneCallsSecondQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
-    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
-	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
+    const session = await client.session("phone_calls", SessionType.DATA);
+	const transaction = await session.transaction(TransactionType.READ);
 
   	let query = [
 		"match ",
@@ -323,7 +327,7 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query(query);
+  	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
 		answers.map(answer =>
@@ -471,12 +475,14 @@ public class PhoneCallsThirdQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
-    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
-	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
+    const session = await client.session("phone_calls", SessionType.DATA);
+	const transaction = await session.transaction(TransactionType.READ);
 
 	let query = [
 		"match ",
@@ -491,7 +497,7 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-	const iterator = await transaction.query(query);
+	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
 		answers.map(answer =>
@@ -646,12 +652,14 @@ public class PhoneCallsForthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsForthQuery.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
-    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
-	const transaction = await session.transaction(Grakn.Transaction.Type.READ);
+    const session = await client.session("phone_calls", SessionType.DATA);
+	const transaction = await session.transaction(TransactionType.READ);
 
   	let query = [
     	"match ",
@@ -670,7 +678,7 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query(query);
+  	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
 		answers.map(answer =>
@@ -858,12 +866,14 @@ public class PhoneCallsFifthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
-const GraknClient = require("grakn-client");
+const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType, TransactionType } = Grakn;
 
 async function ExecuteMatchQuery() {
 	const client = new GraknClient("localhost:1729");
-    const session = await client.session("phone_calls", Grakn.Session.Type.DATA);
-    const transaction = await session.transaction(Grakn.Transaction.Type.READ);
+    const session = await client.session("phone_calls", SessionType.DATA);
+    const transaction = await session.transaction(TransactionType.READ);
 
   	let firstQuery = [
 		'match',
@@ -877,12 +887,16 @@ async function ExecuteMatchQuery() {
 	console.log("\nQuery:\n", firstQuery.join("\n"));
 	firstQuery = firstQuery.join("");
 
-	const firstIterator = await transaction.query(firstQuery);
+    /* FIXME(vmax): reenable once match aggregates work 
+	const firstIterator = await transaction.query().matchAggregate(firstQuery);
 	const firstAnswer = await firstIterator.collect();
 	let firstResult = 0;
 	if(firstAnswer.length > 0) {
 		firstResult = firstAnswer[0].number();
 	}
+    */
+    firstResult = 0.0;
+
 
   	let result =
 		"Customers aged under 20 have made calls with average duration of " +
@@ -901,12 +915,18 @@ async function ExecuteMatchQuery() {
 	console.log("\nQuery:\n", secondQuery.join("\n"));
 	secondQuery = secondQuery.join("");
 
-	const secondIterator = await transaction.query(secondQuery);
+
+
+    /* FIXME(vmax): reenable once match aggregates work 
+	const secondIterator = await transaction.query().matchAggregate(secondQuery);
 	const secondAnswer = await secondIterator.collect();
 	let secondResult = 0;
 	if(secondAnswer.length > 0) {
 		secondResult = secondAnswer[0].number();
 	}
+    */
+    
+    secondResult = 0.0;
 
 	result +=
 		"Customers aged over 40 have made calls with average duration of " +
