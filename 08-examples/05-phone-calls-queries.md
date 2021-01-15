@@ -885,17 +885,13 @@ async function ExecuteMatchQuery() {
 	];
 
 	console.log("\nQuery:\n", firstQuery.join("\n"));
-	firstQuery = firstQuery.join("");
 
-    /* FIXME(vmax): reenable once match aggregates work 
-	const firstIterator = await transaction.query().matchAggregate(firstQuery);
-	const firstAnswer = await firstIterator.collect();
+	firstQuery = firstQuery.join("");
+	const firstAnswer = await transaction.query().matchAggregate(firstQuery);
 	let firstResult = 0;
-	if(firstAnswer.length > 0) {
-		firstResult = firstAnswer[0].number();
+	if(firstAnswer.isNumber()) {
+		firstResult = firstAnswer.asNumber();
 	}
-    */
-    firstResult = 0.0;
 
 
   	let result =
@@ -915,18 +911,11 @@ async function ExecuteMatchQuery() {
 	console.log("\nQuery:\n", secondQuery.join("\n"));
 	secondQuery = secondQuery.join("");
 
-
-
-    /* FIXME(vmax): reenable once match aggregates work 
-	const secondIterator = await transaction.query().matchAggregate(secondQuery);
-	const secondAnswer = await secondIterator.collect();
+	const secondAnswer = await transaction.query().matchAggregate(secondQuery);
 	let secondResult = 0;
-	if(secondAnswer.length > 0) {
-		secondResult = secondAnswer[0].number();
+	if(secondAnswer.isNumber()) {
+		secondResult = secondAnswer.asNumber();
 	}
-    */
-    
-    secondResult = 0.0;
 
 	result +=
 		"Customers aged over 40 have made calls with average duration of " +

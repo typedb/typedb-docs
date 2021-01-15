@@ -212,15 +212,12 @@ async function getAverageSalaryAt (orgName) {
 			($org, $per) isa employment, has salary $sal;
 		get $sal; mean $sal;
 	`
-    /* FIXME(vmax): reenable once match aggregates work
-	const answerIterator = await transaction.query().matchAggregate(query);
-	const answer = await answerIterator.next();
-	if (answer) {
-		console.log(await answer.asNumber());
+	const answer = await transaction.query().matchAggregate(query);
+	if (answer.isNumber()) {
+		console.log(answer.asNumber());
 	} else {
 	  console.log(`No one works at ${orgName}`);
 	}
-    */
 
 	await transaction.close();
 	await session.close();
