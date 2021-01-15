@@ -417,12 +417,12 @@ def build_phone_call_graph(inputs):
 def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
-    for item in items:
-        with session.transaction(TransactionType.WRITE) as transaction:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        for item in items:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
             transaction.query().insert(graql_insert_query)
-            transaction.commit()
+        transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
@@ -512,12 +512,12 @@ def build_phone_call_graph(inputs):
 def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
-    for item in items:
-        with session.transaction(TransactionType.WRITE) as transaction:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        for item in items:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
             transaction.query().insert(graql_insert_query)
-            transaction.commit()
+        transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
@@ -606,12 +606,12 @@ def build_phone_call_graph(inputs):
 def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
-    for item in items:
-        with session.transaction(TransactionType.WRITE) as transaction:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        for item in items:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
             transaction.query().insert(graql_insert_query)
-            transaction.commit()
+        transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
