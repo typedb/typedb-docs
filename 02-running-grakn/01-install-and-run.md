@@ -63,6 +63,18 @@ Install Grakn Server and Grakn Console:
 sudo apt install grakn-core-all
 ```
 
+<div class="note">
+[Warning]
+Ubuntu 16.04 requires some extra steps to be able to install Grakn Core, namely upgrading `libstdc++`:
+
+```
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install gcc-4.9
+sudo apt-get install --only-upgrade libstdc++6
+```
+</div>
+
 #### Manual Download
 
 Download the [latest release](https://github.com/graknlabs/grakn/releases), unzip it in a location on your machine that is easily accessible via terminal.
