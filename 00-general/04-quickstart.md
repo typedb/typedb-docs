@@ -192,6 +192,7 @@ with GraknClient("localhost:1729") as client:
         answer_iterator = transaction.query().match(query)
         for answer in answer_iterator:
           print(answer.get("pos").get_iid())
+	  print(answer.get("fun").get_value()) # get attribute value
 ```
 
 #### Retrieve the average salary of all employees at Pharos using [Client Node.js](../03-client-api/03-nodejs.md)
