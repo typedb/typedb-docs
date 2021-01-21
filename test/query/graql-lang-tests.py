@@ -13,9 +13,9 @@ graql_lang_test_method_template = """
         String queries = "// QUERIES PLACEHOLDER";
         Stream<GraqlQuery> parsedQuery = Graql.parseQueries(queries);
         parsedQuery.forEach(query -> {
-            System.err.println("before executing " + query);
+            System.err.println("before executing in test()" + query);
            runQuery(transaction, query);
-           System.err.println("after executing " + query);
+           System.err.println("after executing in test()" + query);
         });
     }
 """
@@ -66,7 +66,7 @@ for snippets_in_page in snippets:
         else:
             test_method = graql_lang_pattern_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
 
-        test_method = test_method.replace("test() {", test_name + "() {")  # change page name comment
+        test_method = test_method.replace("test()", test_name + "()")  # change page name comment
         test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add  objects
         test_methods += test_method
 
