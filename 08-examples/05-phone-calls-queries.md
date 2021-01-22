@@ -84,7 +84,7 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsFirstQuery {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
@@ -260,7 +260,7 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsSecondQuery {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
@@ -436,7 +436,7 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsThirdQuery {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
@@ -610,7 +610,7 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsForthQuery {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 
@@ -812,7 +812,7 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsFifthQuery {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
 

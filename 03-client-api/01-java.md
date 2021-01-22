@@ -43,7 +43,7 @@ import grakn.client.GraknClient;
 
 public class GraknQuickstartA {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         // client is open
         Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
         // session is open
@@ -68,7 +68,7 @@ import grakn.client.GraknClient;
 
 public class GraknQuickstartB {
     public static void main(String[] args) {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Session session = client.session("social_network", Session.Type.DATA);
 
         // creating a write transaction
@@ -111,7 +111,7 @@ import java.util.stream.Collectors;
 
 public class GraknQuickstartC {
   public static void main(String[] args) {
-    Grakn.Client client = new GraknClient("localhost:1729");
+    Grakn.Client client = GraknClient.core("localhost:1729");
     Session session = client.session("social_network", Session.Type.DATA);
 
     // Insert a person using a WRITE transaction

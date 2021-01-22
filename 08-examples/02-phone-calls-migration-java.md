@@ -391,7 +391,7 @@ public class PhoneCallsMigration {
   	}
 
   	static void connectAndMigrate(Collection<Input> inputs) {
-    	Grakn.Client client = new GraknClient("localhost:1729");
+    	Grakn.Client client = GraknClient.core("localhost:1729");
 		Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
 		for (Input input : inputs) {
@@ -808,7 +808,7 @@ public class PhoneCallsCSVMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {
@@ -1006,7 +1006,7 @@ public class PhoneCallsJSONMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws IOException {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {
@@ -1215,7 +1215,7 @@ public class PhoneCallsXMLMigration {
     }
 
     static void connectAndMigrate(Collection<Input> inputs) throws FileNotFoundException, XMLStreamException {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
 
         for (Input input : inputs) {

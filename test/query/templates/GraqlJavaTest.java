@@ -99,7 +99,7 @@ public class GraqlJavaTest {
     public static void loadSocialNetwork() throws Exception {
         String address = "localhost:1729";
 
-        client = new GraknClient(address);
+        client = GraknClient.core(address);
         client.databases().create("social_network");
         session = client.session("social_network", Grakn.Session.Type.SCHEMA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);

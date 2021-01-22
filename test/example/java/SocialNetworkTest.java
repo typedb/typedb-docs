@@ -20,7 +20,7 @@ public class SocialNetworkTest {
 
     @BeforeClass
     public static void loadSocialNetwork() {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         client.databases().create("social_network");
         Grakn.Session session = client.session("social_network", Grakn.Session.Type.SCHEMA);
         Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
@@ -50,7 +50,7 @@ public class SocialNetworkTest {
 
     @AfterClass
     public static void cleanSocialNetwork() {
-        Grakn.Client client = new GraknClient("localhost:1729");
+        Grakn.Client client = GraknClient.core("localhost:1729");
         client.databases().delete("social_network");
         System.out.println("Deleted the social_network database");
     }
