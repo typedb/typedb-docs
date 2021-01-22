@@ -14,7 +14,7 @@ methods:
         - "[Client](#client)"
     java:
       <<: *method-client
-      method: new GraknClient(String uri);
+      method: GraknClient.core(String uri);
       accepts:
         param1:
           <<: *accepts-client-uri
