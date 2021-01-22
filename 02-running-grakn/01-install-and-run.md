@@ -13,36 +13,6 @@ Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can b
 
 <div class="tabs light">
 [tab:Linux]
-  
-#### Using RPM/DNF
-
-As a superuser, add the repo:
-```
-sudo dnf config-manager --add-repo https://repo.grakn.ai/repository/meta/rpm.repo
-```
-
-Install Grakn Server and Grakn Console:
-```
-sudo dnf install grakn-core-all
-```
-
-
-#### Using RPM/Yum
-
-As a superuser, add the repo:
-```
-sudo yum-config-manager --add-repo https://repo.grakn.ai/repository/meta/rpm.repo
-```
-
-Update the package cache:
-```
-sudo yum update
-```
-
-Install Grakn Server and Grakn Console:
-```
-sudo yum install grakn-core-all
-```
 
 #### Using APT
 
@@ -78,6 +48,11 @@ sudo apt-get install --only-upgrade libstdc++6
 #### Manual Download
 
 Download the [latest release](https://github.com/graknlabs/grakn/releases), unzip it in a location on your machine that is easily accessible via terminal.
+
+#### Other package managers
+
+If Grakn Core doesn't have a distribution you need, please open an issue [on GitHub](https://github.com/graknlabs/grakn/issues).
+
 
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
 
