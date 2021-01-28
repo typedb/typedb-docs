@@ -61,14 +61,13 @@ Create transactions to use for reading and writing data.
 ```java
 package grakn.examples;
 
-import grakn.client.Grakn;
-import grakn.client.Grakn.Session;
-import grakn.client.Grakn.Transaction;
 import grakn.client.GraknClient;
+import grakn.client.GraknClient.Session;
+import grakn.client.GraknClient.Transaction;
 
 public class GraknQuickstartB {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
+        GraknClient client = GraknClient.core("localhost:1729");
         Session session = client.session("social_network", Session.Type.DATA);
 
         // creating a write transaction
