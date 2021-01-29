@@ -70,7 +70,7 @@ Note that attributes with the same value and type are shared among their owners.
 
 [tab:Graql]
 ```graql
-match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date $st;
+match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
 ```
 [tab:end]
 
@@ -79,18 +79,20 @@ match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date
 GraqlDelete query = Graql.match(
   var("t").isa("travel").has("start-date", var("st")),
   var("st").eq(LocalDate.of(2013, 12, 22).atStartOfDay())
-).delete(var("t").has("start-date", var("st")));
+).delete(var("t").has(var("st")));
 ```
 [tab:end]
 </div>
 
 This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22` in the `match` clause. 
-We then disassociate the `travel` instance `$t` from the `start-date` attribute `$st` with the `delete $t has start-date $st` clause.
+We then disassociate the `travel` instance `$t` from the attribute `$st` with the `delete $t has $st` clause.
 
 This will _not_ delete the entire instance of type `start-date` and value `2013-12-22` - it remains associated with any other instance that may own it.
 
 If we had instead written the query as `match $t isa travel, has start-date $st;  $st == 2013-12-22"; delete $st isa start-date;`, 
 we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
+
+Note also that you must not specify a type for the attribute when deleting, as this creates a derived `isa` constraint on the attribute. You must use `delete $t has $st`, _not_ `delete $t has start-date $st`.
 
 ## Delete Role Players from Relations
 
