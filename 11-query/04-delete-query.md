@@ -84,8 +84,6 @@ GraqlDelete query = Graql.match(
 [tab:end]
 </div>
 
-Note also that you must not specify a type for the attribute when deleting, as this creates a derived isa. You must use `delete $t has $st`, _not_  `delete $t has startdate $st`.
-
 This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22` in the `match` clause. 
 We then disassociate the `travel` instance `$t` from the attribute `$st` with the `delete $t has start-date $st` clause.
 
@@ -93,6 +91,8 @@ This will _not_ delete the entire instance of type `start-date` and value `2013-
 
 If we had instead written the query as `match $t isa travel, has start-date $st;  $st == 2013-12-22"; delete $st isa start-date;`, 
 we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
+
+Note also that you must not specify a type for the attribute when deleting, as this creates a derived isa. You must use `delete $t has $st`, _not_  `delete $t has startdate $st`.
 
 ## Delete Role Players from Relations
 
