@@ -70,7 +70,7 @@ Note that attributes with the same value and type are shared among their owners.
 
 [tab:Graql]
 ```graql
-match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date $st;
+match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
 ```
 [tab:end]
 
@@ -79,13 +79,15 @@ match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date
 GraqlDelete query = Graql.match(
   var("t").isa("travel").has("start-date", var("st")),
   var("st").eq(LocalDate.of(2013, 12, 22).atStartOfDay())
-).delete(var("t").has("start-date", var("st")));
+).delete(var("t").has(var("st")));
 ```
 [tab:end]
 </div>
 
+Note also that you must not specify a type for the attribute when deleting, as this creates a derived isa. You must use `delete $t has $st`, _not_  `delete $t has startdate $st`.
+
 This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22` in the `match` clause. 
-We then disassociate the `travel` instance `$t` from the `start-date` attribute `$st` with the `delete $t has start-date $st` clause.
+We then disassociate the `travel` instance `$t` from the attribute `$st` with the `delete $t has start-date $st` clause.
 
 This will _not_ delete the entire instance of type `start-date` and value `2013-12-22` - it remains associated with any other instance that may own it.
 
