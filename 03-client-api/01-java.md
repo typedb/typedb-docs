@@ -26,6 +26,18 @@ templatePath: 03-client-api/references/
 </dependencies>
 ```
 
+If you want to depend on snapshot versions of Client Java, by referring to the GitHub commit `sha`, you can add our snapshot repository to your list of Maven repositories.
+
+```xml
+<repositories>
+    <repository>
+        <id>repo.grakn.ai.snapshot</id>
+        <name>repo.grakn.ai</name>
+        <url>https://repo.grakn.ai/repository/maven-snapshot/</url>
+    </repository>
+</repositories>
+```
+
 ### Grakn Core 2.0
 Grakn Core 2.0 is currently in alpha, and will be updated frequently - the latest release of Client Java 2.0 can be found in the Grakn [public Maven repository](https://repo.grakn.ai/#browse/browse:maven:io%2Fgrakn%2Fclient%2Fgrakn-client).
 
