@@ -28,7 +28,7 @@ def graknlabs_common():
     git_repository(
         name = "graknlabs_common",
         remote = "https://github.com/graknlabs/common",
-        commit = "a84a9fcc7131a12b170871e38409428cc6d63157"
+        commit = "c4fae287ee86498050eda6ce06f093c0466b19d6"
     )
 
 def graknlabs_client_java():
