@@ -137,7 +137,7 @@ The result contains the following answers:
 package grakn.examples;
 
 import grakn.client.GraknClient;
-import grakn.client.Grakn;
+
 import static graql.lang.Graql.*;
 import graql.lang.query.*;
 import grakn.client.concept.answer.ConceptMap;
@@ -147,9 +147,9 @@ import java.util.List;
 
 public class SocialNetworkQuickstartQuery {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
-        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient.Session session = client.session("social_network", GraknClient.Session.Type.DATA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
 
         GraqlMatch query = match(
                 var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),

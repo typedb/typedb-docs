@@ -50,14 +50,14 @@ Import `grakn.client.GraknClient`, instantiate a client and open a session to a 
 ```java
 package grakn.examples;
 
-import grakn.client.Grakn;
+
 import grakn.client.GraknClient;
 
 public class GraknQuickstartA {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
+        GraknClient client = GraknClient.core("localhost:1729");
         // client is open
-        Grakn.Session session = client.session("social_network", Grakn.Session.Type.DATA);
+        GraknClient.Session session = client.session("social_network", GraknClient.Session.Type.DATA);
         // session is open
         session.close();
         // session is closed
@@ -106,9 +106,9 @@ Running basic retrieval and insertion queries.
 ```java
 package grakn.examples;
 
-import grakn.client.Grakn;
-import grakn.client.Grakn.Session;
-import grakn.client.Grakn.Transaction;
+
+import grakn.client.GraknClient.Session;
+import grakn.client.GraknClient.Transaction;
 import grakn.client.GraknClient;
 import graql.lang.Graql;
 import static graql.lang.Graql.*;
@@ -122,7 +122,7 @@ import java.util.stream.Collectors;
 
 public class GraknQuickstartC {
   public static void main(String[] args) {
-    Grakn.Client client = GraknClient.core("localhost:1729");
+    GraknClient client = GraknClient.core("localhost:1729");
     Session session = client.session("social_network", Session.Type.DATA);
 
     // Insert a person using a WRITE transaction

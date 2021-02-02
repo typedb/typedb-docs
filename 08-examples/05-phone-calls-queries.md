@@ -73,7 +73,7 @@ get $phone-number;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.Grakn;
+
 import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
@@ -84,9 +84,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsFirstQuery {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
-        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match",
@@ -249,7 +249,7 @@ get $phone-number;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.Grakn;
+
 import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
@@ -260,9 +260,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsSecondQuery {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
-        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -425,7 +425,7 @@ get $phone-number;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.Grakn;
+
 import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
@@ -436,9 +436,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsThirdQuery {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
-        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -599,7 +599,7 @@ get $phone-number-a, $phone-number-b;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.Grakn;
+
 import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
@@ -610,9 +610,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsForthQuery {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
-        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -799,7 +799,7 @@ get $duration; mean $duration;
 ```java
 package io.grakn.example.phoneCalls;
 
-import grakn.client.Grakn;
+
 import grakn.client.GraknClient;
 import grakn.client.concept.answer.ConceptMap;
 import grakn.client.concept.answer.ConceptMapGroup;
@@ -812,9 +812,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsFifthQuery {
     public static void main(String[] args) {
-        Grakn.Client client = GraknClient.core("localhost:1729");
-        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.DATA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
 
         List&lt;String&gt; firstQueryAsList = Arrays.asList(
                 "match",

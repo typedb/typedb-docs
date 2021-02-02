@@ -1,6 +1,5 @@
 package grakn.doc.test.example;
 
-import grakn.client.Grakn;
 import grakn.client.GraknClient;
 import graql.lang.Graql;
 import graql.lang.common.GraqlArg;
@@ -20,10 +19,10 @@ public class SocialNetworkTest {
 
     @BeforeClass
     public static void loadSocialNetwork() {
-        Grakn.Client client = GraknClient.core("localhost:1729");
+        GraknClient client = GraknClient.core("localhost:1729");
         client.databases().create("social_network");
-        Grakn.Session session = client.session("social_network", Grakn.Session.Type.SCHEMA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient.Session session = client.session("social_network", GraknClient.Session.Type.SCHEMA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
@@ -50,7 +49,7 @@ public class SocialNetworkTest {
 
     @AfterClass
     public static void cleanSocialNetwork() {
-        Grakn.Client client = GraknClient.core("localhost:1729");
+        GraknClient client = GraknClient.core("localhost:1729");
         client.databases().delete("social_network");
         System.out.println("Deleted the social_network database");
     }

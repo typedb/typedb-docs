@@ -1,6 +1,6 @@
 package grakn.doc.test.example;
 
-import grakn.client.Grakn;
+
 import grakn.client.GraknClient;
 import graql.lang.Graql;
 import graql.lang.common.GraqlArg;
@@ -23,10 +23,10 @@ public class PhoneCallsTest {
 
     @BeforeClass
     public static void loadPhoneCalls() {
-        Grakn.Client client = GraknClient.core("localhost:1729");
+        GraknClient client = GraknClient.core("localhost:1729");
         client.databases().create("phone_calls");
-        Grakn.Session session = client.session("phone_calls", Grakn.Session.Type.SCHEMA);
-        Grakn.Transaction transaction = session.transaction(Grakn.Transaction.Type.WRITE);
+        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.SCHEMA);
+        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
 
 
         try {
@@ -83,7 +83,7 @@ public class PhoneCallsTest {
 
     @AfterClass
     public static void cleanPhoneCalls() {
-        Grakn.Client client = GraknClient.core("localhost:1729");
+        GraknClient client = GraknClient.core("localhost:1729");
         client.databases().delete("phone_calls");
         client.close();
     }
