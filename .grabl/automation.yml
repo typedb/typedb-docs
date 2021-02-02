@@ -49,7 +49,7 @@ build:
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
-        bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
         time bazel run //test/query:graql-lang
@@ -69,7 +69,7 @@ build:
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
-        bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
         bazel test //test/query:graql-java --test_output=errors
@@ -94,7 +94,7 @@ build:
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
-        bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
         bazel run //test/example/java:phone-calls
@@ -120,7 +120,7 @@ build:
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
-        bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
         bazel test //test/example/nodejs:phone-calls --test_output=errors
@@ -150,7 +150,7 @@ build:
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
-        bazel run --config=rbe //:grakn-extractor -- dist/grakn-core-all-linux
+        bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
         sudo systemctl start grakn
         bazel run //test/example/python:phone-calls
