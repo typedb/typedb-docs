@@ -173,7 +173,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType, SessionType, TransactionType
 
-with GraknClient() as client:
+with GraknClient.core() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -353,7 +353,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType, SessionType, TransactionType
 
-with GraknClient() as client:
+with GraknClient.core() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
       with session.transaction(TransactionType.READ) as transaction:
         query = [
@@ -523,7 +523,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient() as client:
+with GraknClient.core() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -704,7 +704,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient() as client:
+with GraknClient.core() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -936,7 +936,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient() as client:
+with GraknClient.core() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             first_query = [

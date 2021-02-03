@@ -9,7 +9,7 @@ class SocialNetworkTest(unittest.TestCase):
         with open('files/social-network/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            with GraknClient() as client:
+            with GraknClient.core() as client:
                 if "social_network" in client.databases().all():
                     client.databases().delete("social_network")
                 client.databases().create("social_network")

@@ -177,7 +177,7 @@ public class SocialNetworkQuickstartQuery {
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient("localhost:1729") as client:
+with GraknClient.core("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
       with session.transaction(TransactionType.READ) as transaction:
         query = '''
