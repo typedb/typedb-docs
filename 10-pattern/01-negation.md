@@ -679,7 +679,12 @@ define
 
 traversable sub entity,
     plays edge:from,
-    plays edge:to;
+    plays edge:to,
+    plays reachable:from,
+    plays reachable:to,
+    plays indirect-edge:from,
+    plays indirect-edge:to;
+
 
 node sub traversable;
 
