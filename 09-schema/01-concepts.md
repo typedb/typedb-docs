@@ -784,7 +784,7 @@ The query above, removes the attribute `nickname` from the entity `person`.
 
 <div class="note">
 [Important]
-It's important to note that `underfine [label] sub [type] has [attribute's label];` undefines the `label` itself, rather than its association with the attribute.
+It's important to note that `undefine [label] sub [type] has [attribute's label];` undefines the `label` itself, rather than its association with the attribute.
 </div>
 
 ### Undefine a relation
@@ -794,12 +794,15 @@ Given the dependent nature of relations, before undefining the relation itself, 
 
 [tab:Graql]
 ```graql
+undefine rule people-speak-the-same-language;
 undefine fluency sub relation;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
+// FIXME(vmax): undefine the rule in which 'fluency' is referenced
 GraqlUndefine query = Graql.undefine(
   type("fluency").sub("relation")
 );

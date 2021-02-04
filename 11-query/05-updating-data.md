@@ -23,7 +23,7 @@ Usually, we want to change the value of an attribute that is associated to anoth
 
 ```graql
 ## disconnecting from the old attribute value
-match $org isa organisation, has name "Medicely", has registration-number $rn; delete $org has registration-number $rn;
+match $org isa organisation, has name "Medicely", has registration-number $rn; delete $org has $rn;
 
 ## connect the new attribute value
 match $org isa organisation, has name "Medicely"; insert $org has registration-number "81726354";
@@ -34,7 +34,7 @@ match $org isa organisation, has name "Medicely"; insert $org has registration-n
 ```java
 GraqlDelete delete_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"))
-).delete(var("org").has("registration-number", var("rn")));
+).delete(var("org").has(var("rn")));
 
 GraqlInsert insert_query = Graql.match(
   var("org").isa("organisation").has("name", "Medicely")
