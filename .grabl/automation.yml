@@ -41,11 +41,6 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
-        # FIXME(vmax): remove this bit v
-        sudo apt install -qy openjdk-8-jdk
-        sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
-        # FIXME(vmax): remove this bit ^
-
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -86,11 +81,6 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
-        # FIXME(vmax): remove this bit v
-        sudo apt install -qy openjdk-8-jdk
-        sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
-        # FIXME(vmax): remove this bit ^
-
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -112,11 +102,6 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
-        # FIXME(vmax): remove this bit v
-        sudo apt install -qy openjdk-8-jdk
-        sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
-        # FIXME(vmax): remove this bit ^
-
         export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
         export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
@@ -137,11 +122,6 @@ build:
         ExecStart=/home/grabl/docs/dist/grakn-core-all-linux/grakn server
         EOM
         sudo mv grakn.service /etc/systemd/system/
-
-        # FIXME(vmax): remove this bit v
-        sudo apt install -qy openjdk-8-jdk
-        sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
-        # FIXME(vmax): remove this bit ^
 
         pyenv global 3.6.10
         sudo unlink /usr/bin/python3
