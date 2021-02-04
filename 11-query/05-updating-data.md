@@ -96,7 +96,7 @@ We can add role players to a relation by `match`ing the relation and the concept
 match
   $emp (employer: $org, $employee: $p) isa employment;
   $p2 isa person;
-  $p2 != $p;
+  not { $p = $p2; };
 insert $emp ($employee: $p2) isa employment;
 ```
 [tab:end]
@@ -107,7 +107,7 @@ GraqlInsert insert_query = Graql.match(
  var("emp").rel("employer", var("org")).rel("employee", var("p")).isa("employment"),
   var("p").isa("person"),
   var("p2").isa("person"),
-  var("p").neq(var("p2"))
+  not(var("p").eq(var("p2")))
 ).insert(
   var("emp").rel("employee", var("p2")).isa("employment")
 );
