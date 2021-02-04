@@ -126,9 +126,6 @@ Defining the unemployment in terms of a rule and the freshly introduced negation
 
 [tab:Graql]
 ```graql
-# FIXME(vmax): figure out what 'unemployment' is supposed to be
-define
-unemployed sub attribute, value boolean;
 rule unemployment:
     when {
         $x isa person;
@@ -144,7 +141,6 @@ rule unemployment:
 [tab:Java]
 ```java
 GraqlDefine query = Graql.define(
-    type("unemployed").sub("entity"),
     rule("unemployment")
         .when(
             and(
