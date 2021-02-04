@@ -47,7 +47,7 @@ Instantiate a client and open a session.
 ```python
 from grakn.client import *
 
-with GraknClient("localhost:1729") as client:
+with GraknClient.core("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
         ## session is open
         pass
@@ -61,7 +61,7 @@ Create transactions to use for reading and writing data.
 ```python
 from grakn.client import *
 
-with GraknClient("localhost:1729") as client:
+with GraknClient.core("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
         ## creating a write transaction
         with session.transaction(TransactionType.WRITE) as write_transaction:
@@ -83,7 +83,7 @@ Running basic retrieval and insertion queries.
 ```python
 from grakn.client import *
 
-with GraknClient("localhost:1729") as client:
+with GraknClient.core("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
         ## Insert a Person using a WRITE transaction
         with session.transaction(TransactionType.WRITE) as write_transaction:

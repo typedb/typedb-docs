@@ -9,7 +9,7 @@ class PhoneCallsTest(unittest.TestCase):
         with open('files/phone-calls/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            with GraknClient() as client:
+            with GraknClient.core() as client:
                 if "phone_calls" in client.databases().all():
                     client.databases().delete("phone_calls")
                 client.databases().create("phone_calls")
