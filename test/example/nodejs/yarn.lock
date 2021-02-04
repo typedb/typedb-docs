@@ -571,19 +571,17 @@ google-protobuf@3.14.0:
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.14.0.tgz#20373d22046e63831a5110e11a84f713cc43651e"
   integrity sha512-bwa8dBuMpOxg7COyqkW6muQuvNnWgVN8TX/epDRGW5m0jcrmq2QJyCyiV8ZE2/6LaIIqJtiv9bYokFhfpy/o6w==
 
-grakn-client@2.0.0-alpha-7:
-  version "2.0.0-alpha-7"
-  resolved "https://registry.yarnpkg.com/grakn-client/-/grakn-client-2.0.0-alpha-7.tgz#3c3a6a7c655b5d33c3487180a6e2a151bceca653"
-  integrity sha512-9VTfIyZXFpeUxb5dFZeXl65fmbILJIciN5dMoLjm1aSSXrXq/GJgOXXIqnMRhw4k00y8RjEz+9tTnG5Uqf/6Jw==
+"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-267aeb57f9ac59bc2589969c6b5cf78d6bdab664.tgz":
+  version "0.0.0-267aeb57f9ac59bc2589969c6b5cf78d6bdab664"
+  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-267aeb57f9ac59bc2589969c6b5cf78d6bdab664.tgz#d92593a54185c0cf7c4784154e891b98dccb42ab"
   dependencies:
     "@grpc/grpc-js" "1.2.1"
     google-protobuf "3.14.0"
-    grakn-protocol "2.0.0-alpha-6"
+    grakn-protocol "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-633e85f199bd951349206c45594e4090359e9e65.tgz"
 
-grakn-protocol@2.0.0-alpha-6:
-  version "2.0.0-alpha-6"
-  resolved "https://registry.yarnpkg.com/grakn-protocol/-/grakn-protocol-2.0.0-alpha-6.tgz#77baf35fe824a613a67e5902a7f526e9f9acb186"
-  integrity sha512-P3hOl9SkqzLgyFuRhrt5SKz4Vze+Zv8rbQsoAYA6sRX83GVjquDrGUzXf2Dt1TAu2+R0P0oAyf/b3ddm9REaeA==
+"grakn-protocol@https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-633e85f199bd951349206c45594e4090359e9e65.tgz":
+  version "0.0.0-633e85f199bd951349206c45594e4090359e9e65"
+  resolved "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-633e85f199bd951349206c45594e4090359e9e65.tgz#ffd4f5f79d71f24e5903f26ddfaddcae5d2aa7b8"
   dependencies:
     "@grpc/grpc-js" "1.2.1"
 

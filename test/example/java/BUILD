@@ -30,6 +30,7 @@ native_grakn_artifact(
     mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
     linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
     windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    output = "grakn-core-server-native.tar.gz",
     visibility = ["//test:__subpackages__"],
 )
 
@@ -51,7 +52,9 @@ grakn_java_test(
         "@maven//:com_univocity_univocity_parsers",
         "@maven//:javax_xml_stream_stax_api",
     ],
-    native_grakn_artifact = ":native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:phone-calls-kg",
     ]
@@ -94,7 +97,9 @@ grakn_java_test(
         "@graknlabs_graql//java/query",
         "@graknlabs_graql//java/common",
     ],
-    native_grakn_artifact = ":native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:social-network-kg",
     ]

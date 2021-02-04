@@ -27,6 +27,7 @@ native_grakn_artifact(
     mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
     linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
     windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    output = "grakn-core-server-native.tar.gz",
     visibility = ["//test:__subpackages__"],
 )
 
@@ -44,7 +45,9 @@ grakn_java_test(
         "@graknlabs_graql//java/pattern",
         "@graknlabs_graql//java/query",
     ],
-    native_grakn_artifact = ":native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
@@ -77,7 +80,9 @@ grakn_java_test(
         "@graknlabs_graql//java/query",
         "@graknlabs_graql//java/pattern"
     ],
-    native_grakn_artifact = ":native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
