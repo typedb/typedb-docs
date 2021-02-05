@@ -1,8 +1,8 @@
 ---
-pageTitle: Updating Data
+pageTitle: Update Query
 keywords: graql, update query, modification
 longTailKeywords: grakn update data, graql update query, graql update instances
-Summary: Updating data in Grakn.
+Summary: Updating data in Grakn with the Update Query.
 ---
 
 ## Update Instances of Concepts
