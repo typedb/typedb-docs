@@ -126,7 +126,7 @@ Defining the unemployment in terms of a rule and the freshly introduced negation
 
 [tab:Graql]
 ```graql
-rule unemployment:
+define rule unemployment:
     when {
         $x isa person;
         not{
@@ -800,6 +800,9 @@ We can mark the unreachable nodes by defining the following rule:
 define
 
 unreachable sub relation, relates from, relates to;
+traversable sub entity,
+    plays unreachable:from,
+    plays unreachable:to;
 rule unreachability-rule:
     when {
         $x isa node;
@@ -815,6 +818,7 @@ rule unreachability-rule:
 ```java
 GraqlDefine query = Graql.define(
     type("unreachable").sub("relation").relates("from").relates("to"),
+    type("traversable").sub("entity").plays("unreachable", "from").plays("unreachable", "from"),
     rule("unreachability-rule")
         .when(
             and(

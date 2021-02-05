@@ -83,6 +83,11 @@ public class GraqlJavaTest {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 transaction.query().delete(query.asDelete()).get();
+            } else if (query instanceof GraqlUpdate) {
+                session = client.session("social_network", GraknClient.Session.Type.DATA);
+                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                conceptMaps = transaction.query().update(query.asUpdate()).collect(Collectors.toList());
+
 
             } else if (query instanceof GraqlCompute) {
                 // FIXME(vmax): we dunno how to run them yet
