@@ -153,4 +153,4 @@ Additionally, we can remove just attribute ownerships using the `has` statement 
 a role player from a relation can similarly be achieved by using role player syntax: `delete $r (some_role: $player);` without
 an `isa` statement.
 
-Next, we learn how to [update data](../11-query/05-updating-data.md) in a Grakn knowledge graph.
+Next, we learn how to [update data](../11-query/05-update-query.md) in a Grakn knowledge graph.
