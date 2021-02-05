@@ -10,6 +10,7 @@ import graql.lang.query.GraqlUndefine;
 import graql.lang.query.GraqlMatch;
 import graql.lang.query.GraqlDelete;
 import graql.lang.query.GraqlInsert;
+import graql.lang.query.GraqlUpdate;
 import graql.lang.query.GraqlCompute.Argument;
 import graql.lang.pattern.Pattern;
 import graql.lang.common.GraqlArg;
