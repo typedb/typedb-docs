@@ -47,7 +47,7 @@ for snippets_in_page in snippets:
         matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
         execute_statements = ""
         for variable in matches:
-            execute_statements += "runQuery(transaction, " + variable + ");\n"
+            execute_statements += "runQuery(" + variable + ");\n"
 
         test_method = test_method.replace("// EXECUTE PLACEHOLDER", execute_statements)
         test_methods += test_method

@@ -24,7 +24,7 @@ public class GraqlLangTest {
     static GraknClient.Session session;
     GraknClient.Transaction transaction;
 
-    private void runQuery(GraknClient.Transaction transaction, GraqlQuery query) {
+    private void runQuery(GraqlQuery query) {
         List<ConceptMap> conceptMaps;
         Numeric num;
         try {
@@ -32,69 +32,54 @@ public class GraqlLangTest {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 conceptMaps = transaction.query().match(query.asMatch()).collect(Collectors.toList());
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlMatch.Aggregate) {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 transaction.query().match(query.asMatchAggregate()).get();
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlMatch.Group) {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 List<ConceptMapGroup> x = transaction.query().match(query.asMatchGroup()).collect(Collectors.toList());
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlMatch.Aggregate) {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 num = transaction.query().match(query.asMatchAggregate()).get();
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlMatch.Group.Aggregate) {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 List<NumericGroup> x = transaction.query().match(query.asMatchGroupAggregate()).collect(Collectors.toList());
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlDefine) {
                 session = client.session("social_network", GraknClient.Session.Type.SCHEMA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 transaction.query().define(query.asDefine()).get();
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlUndefine) {
                 session = client.session("social_network", GraknClient.Session.Type.SCHEMA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 transaction.query().undefine(query.asUndefine()).get();
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlInsert) {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 conceptMaps = transaction.query().insert(query.asInsert()).collect(Collectors.toList());
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlDelete) {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 transaction.query().delete(query.asDelete()).get();
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlUpdate) {
                 session = client.session("social_network", GraknClient.Session.Type.DATA);
                 transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
                 conceptMaps = transaction.query().update(query.asUpdate()).collect(Collectors.toList());
-                transaction.close();
-                session.close();
             } else if (query instanceof GraqlCompute) {
                 // FIXME(vmax): we dunno how to run them yet
             } else {
                 throw new RuntimeException("Unknown query type: " + query.toString() + "[type = " + query.getClass() + "]");
             }
         } finally {
-            session.close();
+            if (transaction != null) {
+                transaction.close();
+            }
+            if (session != null) {
+                session.close();
+            }
         }
     }
 

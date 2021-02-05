@@ -39,7 +39,7 @@ public class GraqlJavaTest {
     static GraknClient.Session session;
     GraknClient.Transaction transaction;
 
-    private void runQuery(GraknClient.Transaction transaction, GraqlQuery query) {
+    private void runQuery(GraqlQuery query) {
         List<ConceptMap> conceptMaps;
         Numeric num;
         try {
@@ -95,8 +95,12 @@ public class GraqlJavaTest {
                 throw new RuntimeException("Unknown query type: " + query.toString() + "[type = " + query.getClass() + "]");
             }
         } finally {
-            transaction.close();
-            session.close();
+            if (transaction != null) {
+                transaction.close();
+            }
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
