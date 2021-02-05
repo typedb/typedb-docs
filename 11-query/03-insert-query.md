@@ -139,10 +139,10 @@ We can add role players to a relation by `match`ing the relation and the concept
 ```graql
 ## inserting the new role player into some theoretical multi-employment relation
 match
-  $emp (employer: $org, $employee: $p) isa employment;
+  $emp (employer: $org, employee: $p) isa employment;
   $p2 isa person;
   not { $p = $p2; };
-insert $emp ($employee: $p2) isa employment;
+insert $emp (employee: $p2) isa employment;
 ```
 [tab:end]
 

@@ -14,7 +14,7 @@ graql_lang_test_method_template = """
         Stream<GraqlQuery> parsedQuery = Graql.parseQueries(queries);
         parsedQuery.forEach(query -> {
             System.err.println("before executing in test()" + query);
-           runQuery(transaction, query);
+           runQuery(query);
            System.err.println("after executing in test()" + query);
         });
     }

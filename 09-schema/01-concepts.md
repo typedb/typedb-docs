@@ -802,8 +802,10 @@ undefine fluency sub relation;
 [tab:Java]
 <!-- test-delay -->
 ```java
-// FIXME(vmax): undefine the rule in which 'fluency' is referenced
-GraqlUndefine query = Graql.undefine(
+GraqlUndefine first_query = Graql.undefine(
+  rule("people-speak-the-same-language")
+);
+GraqlUndefine second_query = Graql.undefine(
   type("fluency").sub("relation")
 );
 ```
