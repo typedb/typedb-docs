@@ -118,7 +118,7 @@ After these queries, all employments by the organisation named `Pharos` were rep
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `update` queries is as simple as calling the [`execute()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `update` queries is as simple as passing the Graql query to the `update()` function available on the Query Manager, which can be found by running `query()` on the [`transaction`](../03-client-api/01-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
