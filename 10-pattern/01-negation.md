@@ -818,7 +818,7 @@ rule unreachability-rule:
 ```java
 GraqlDefine query = Graql.define(
     type("unreachable").sub("relation").relates("from").relates("to"),
-    type("traversable").sub("entity").plays("unreachable", "from").plays("unreachable", "from"),
+    type("traversable").sub("entity").plays("unreachable", "from").plays("unreachable", "to"),
     rule("unreachability-rule")
         .when(
             and(
