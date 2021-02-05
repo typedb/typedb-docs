@@ -130,6 +130,37 @@ GraqlMatch.Filtered query = Graql.match(
 [tab:end]
 </div>
 
+### Extending a relation with a new role player
+We can add role players to a relation by `match`ing the relation and the concept that will be the new role player, and then insert the new role player into the same relation.
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+## inserting the new role player into some theoretical multi-employment relation
+match
+  $emp (employer: $org, $employee: $p) isa employment;
+  $p2 isa person;
+  not { $p = $p2; };
+insert $emp ($employee: $p2) isa employment;
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlInsert insert_query = Graql.match(
+ var("emp").rel("employer", var("org")).rel("employee", var("p")).isa("employment"),
+  var("p").isa("person"),
+  var("p2").isa("person"),
+  not(var("p").eq(var("p2")))
+).insert(
+  var("emp").rel("employee", var("p2")).isa("employment")
+);
+```
+[tab:end]
+</div>
+
+
 ## Clients Guide
 
 <div class = "note">
