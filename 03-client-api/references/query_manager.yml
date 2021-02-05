@@ -284,6 +284,53 @@ methods:
         - None
 
   - method:
+    common: &method-update
+      title: Execute a Graql Update query
+      description: Performs a Graql Update query in the transaction.
+      accepts: &accepts-update
+        param1: &accepts-update-query
+          name: query
+          description: The Graql Update query to be executed.
+          required: true
+          default: N/A
+        param2:
+          name: options
+          type: "[`GraknOptions`](#options)"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-update
+      method: transaction.query().update(GraqlUpdate query, GraknOptions options);
+      accepts:
+        <<: *accepts-update
+        param1:
+          <<: *accepts-update-query
+          type: "`GraqlUpdate`"
+      returns:
+        - Stream<[ConceptMap](#conceptmap)>
+    javascript:
+      <<: *method-update
+      method: transaction.query().update(query, options);
+      accepts:
+        <<: *accepts-update
+        param1:
+          <<: *accepts-update-query
+          type: string
+      returns:
+        - "[Stream](#stream)<[ConceptMap](#conceptmap)>"
+    python:
+      <<: *method-update
+      method: transaction.query().update(query, options)
+      accepts:
+        <<: *accepts-update
+        param1:
+          <<: *accepts-update-query
+          type: string
+      returns:
+        - Iterator of [ConceptMap](#conceptmap)
+
+  - method:
     common: &method-define
       title: Execute a Graql Define query
       description: Performs a Graql Define query in the transaction.
