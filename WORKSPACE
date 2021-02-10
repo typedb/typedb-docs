@@ -67,15 +67,12 @@ load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install
 # Load //builder/python
 load("@graknlabs_dependencies//builder/python:deps.bzl", python_deps = "deps")
 python_deps()
-load("@rules_python//python:pip.bzl", "pip_repositories", "pip3_import")
-pip_repositories()
+load("@rules_python//python:pip.bzl", "pip_install")
 
 # Load //tool/common
 load("@graknlabs_dependencies//tool/common:deps.bzl", "graknlabs_dependencies_ci_pip",
 graknlabs_dependencies_tool_maven_artifacts = "maven_artifacts")
 graknlabs_dependencies_ci_pip()
-load("@graknlabs_dependencies_ci_pip//:requirements.bzl", "pip_install")
-pip_install()
 
 # Load //tool/checkstyle
 load("@graknlabs_dependencies//tool/checkstyle:deps.bzl", checkstyle_deps = "deps")
@@ -105,8 +102,6 @@ rules_pkg_dependencies()
 # Load //pip
 load("@graknlabs_bazel_distribution//pip:deps.bzl", pip_deps = "deps")
 pip_deps()
-load("@graknlabs_bazel_distribution_pip//:requirements.bzl", graknlabs_bazel_distribution_pip_install = "pip_install")
-graknlabs_bazel_distribution_pip_install()
 
 ################################
 # Load @graknlabs dependencies #
@@ -132,13 +127,10 @@ load("@graknlabs_grabl_tracing//dependencies/maven:artifacts.bzl", graknlabs_gra
 load("//dependencies/maven:artifacts.bzl", graknlabs_docs_artifacs = "artifacts")
 
 # load client-python dependencies
-pip3_import(
+pip_install(
     name = "graknlabs_client_python_pip",
     requirements = "@graknlabs_client_python//:requirements.txt",
 )
-load("@graknlabs_client_python_pip//:requirements.bzl",
-graknlabs_client_python_pip_install = "pip_install")
-graknlabs_client_python_pip_install()
 
 # for Node documentation
 yarn_install(
@@ -148,21 +140,14 @@ yarn_install(
 )
 
 # for Python documentation
-pip3_import(
+pip_install(
     name = "test_example_pip",
     requirements = "//test/example/python:requirements.txt",
 )
-load("@test_example_pip//:requirements.bzl",
-test_example_pip_install = "pip_install")
-test_example_pip_install()
-pip3_import(
+pip_install(
     name = "test_links_pip",
     requirements = "//test/links:requirements.txt",
 )
-
-load("@test_links_pip//:requirements.bzl",
-test_links_pip_install = "pip_install")
-test_links_pip_install()
 
 ############################
 # Load @maven dependencies #

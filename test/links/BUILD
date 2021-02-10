@@ -1,6 +1,5 @@
 exports_files(["requirements.txt"])
 
-load("@rules_python//python:pip.bzl", "pip3_import")
 load("@rules_python//python:defs.bzl", "py_library", "py_test")
 load("@test_links_pip//:requirements.bzl",
        test_links_requirement = "requirement")
