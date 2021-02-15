@@ -5,8 +5,8 @@ methods:
       description: |
         In order to communicate with Grakn Core databases via sessions and transactions, we first need to instantiate a Grakn Core client.
         The created object connects our application with the running Grakn Server.
-      accepts: &accepts-client
-        param1: &accepts-client-uri
+      accepts: &accepts-client-core
+        param1: &accepts-client-core-uri
           name: uri
           description: The host:port on which the Grakn Server is running
           type: String
@@ -19,7 +19,7 @@ methods:
       method: GraknClient.core(String uri);
       accepts:
         param1:
-          <<: *accepts-client-uri
+          <<: *accepts-client-core-uri
     javascript:
       <<: *method-client-core
       method: new GraknClient(uri);
@@ -32,8 +32,8 @@ methods:
       description: |
         In order to communicate with Grakn Cluster databases via sessions and transactions, we first need to instantiate a Grakn Cluster client.
         The created object connects our application with the running Grakn Cluster.
-      accepts: &accepts-client
-        param1: &accepts-client-addresses
+      accepts: &accepts-client-cluster
+        param1: &accepts-client-cluster-addresses
           name: addresses
           description: All host:port on which Grakn Cluster nodes are running
           type: String...
@@ -45,7 +45,7 @@ methods:
       method: GraknClient.cluster(String... addresses);
       accepts:
         param1:
-          <<: *accepts-client-addresses
+          <<: *accepts-client-cluster-addresses
     javascript:
       <<: *method-client-cluster
       method: new GraknClient.cluster(addresses);
