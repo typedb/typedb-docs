@@ -12,7 +12,7 @@ In this tutorial, we go through creating and interacting with a Grakn knowledge 
 Let's get started!
 
 ### Run Grakn
-[Install Grakn](../02-running-grakn/01-install-and-run.md#system-requirements) and start the [Grakn Server](../02-running-grakn/01-install-and-run.md#start-the-grakn-server).
+[Install Grakn](../01-running-grakn/01-install-and-run.md#system-requirements) and start the [Grakn Server](../01-running-grakn/01-install-and-run.md#start-the-grakn-server).
 
 
 ### The Schema
@@ -60,10 +60,10 @@ person sub entity,
     plays friendship-list:owner;
 ```
 
-The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-running-grakn/02-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
+The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-console/01-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-running-grakn/02-console.md).
+First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-console/01-console.md).
 
 <div class="note">
 [Note]
@@ -101,11 +101,11 @@ social_network::data::write> commit
 As you may have guessed, `social-network-data.gql` contains a series of [Graql insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [Grakn Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
 
 ### Query the Knowledge Graph
-Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Grakn Console](../02-running-grakn/02-console.md), [Grakn Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md).
+Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [Grakn Console](../02-console/01-console.md), [Grakn Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md).
 
 Let's see an example of running [Graql get queries](../11-query/02-get-query.md) via each of these interfaces.
 
-#### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-running-grakn/02-console.md)
+#### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-console/01-console.md)
 
 Using the open console, ask for a read transaction for the `social_network` database:
 ```

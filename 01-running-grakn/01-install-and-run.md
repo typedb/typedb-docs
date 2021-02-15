@@ -54,7 +54,7 @@ Download the [latest release](https://github.com/graknlabs/grakn/releases), unzi
 If Grakn Core doesn't have a distribution you need, please open an issue [on GitHub](https://github.com/graknlabs/grakn/issues).
 
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -74,7 +74,7 @@ brew upgrade graknlabs/tap/grakn-core
 #### Manual Download
 Download the [latest release](https://github.com/graknlabs/grakn/releases), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -83,7 +83,7 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 #### Manual Download
 Download the [latest release](https://github.com/graknlabs/grakn/releases), unzip it in a location on your machine that is easily accessible via command prompt.
 
-Having downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-running-grakn/02-console.md).
+Having downloaded Grakn, we can now start the [Server](#start-the-grakn-server) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -120,7 +120,7 @@ docker run --name grakn -d -v $(pwd)/db/:/grakn-core-all-linux/server/db/ -p 172
 
 Having started the instance, the Grakn Server is expected to be running on port `1729` on your machine.
 
-To interact with the [Grakn Console](../02-running-grakn/02-console.md), run:
+To interact with the [Grakn Console](../02-console/01-console.md), run:
 
 ```
 docker exec -ti grakn bash -c '/opt/grakn-core-all-linux/grakn console'
@@ -145,4 +145,4 @@ To stop the Grakn Server, press Ctrl-C in same terminal as the one where you sta
 ## Summary
 So far we have learned how to download/install Grakn and run the Grakn Server.
 
-Next, we learn how to [configure the Grakn Server](../02-running-grakn/03-configuration.md) and [interact with a Grakn knowledge graph via the Grakn Console](../02-running-grakn/02-console.md).
+Next, we learn how to [configure the Grakn Server](../01-running-grakn/03-configuration.md) and [interact with a Grakn knowledge graph via the Grakn Console](../02-console/01-console.md).

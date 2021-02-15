@@ -15,13 +15,13 @@ Databases are isolated from one another. Even when running on the same Grakn Ser
 </div>
 
 ### Creating a Database
-We can create a new a database via the Grakn Clients [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) and [Python](../03-client-api/02-python.md) and [Grakn Console](../02-running-grakn/02-console.md).
+We can create a new a database via the Grakn Clients [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) and [Python](../03-client-api/02-python.md) and [Grakn Console](../02-console/01-console.md).
 
 ### Listing All Databases
 We can list all databases of the running Grakn server via the Grakn Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [Workbase](../07-workbase/01-connection.md#select-a-database).
 
 ### Cleaning a Database
-Cleaning the database, not to be confused with deletion, wipes out both the data and the schema contained within the database. We can clean a database via [Grakn Console](../02-running-grakn/02-console.md#console-commands).
+Cleaning the database, not to be confused with deletion, wipes out both the data and the schema contained within the database. We can clean a database via [Grakn Console](../02-console/01-console.md#console-commands).
 
 ### Deleting a Database
 We can delete a database via the Grakn Clients [Java](../03-client-api/01-java.md#delete-a-database), [Node.js](../03-client-api/03-nodejs.md#delete-a-database) and [Python](../03-client-api/02-python.md#delete-a-database).

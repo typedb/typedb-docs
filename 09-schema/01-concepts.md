@@ -10,7 +10,7 @@ As the name suggests, we use the `define` keyword to develop the [schema](../09-
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-running-grakn/02-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
+We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-console/01-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
 
 To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
 
@@ -754,7 +754,7 @@ As the name suggests, we use the `undefine` keyword to remove the definition of 
 <div class="note">
 [Important]
 Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original database that is running on the Grakn server.
-When using one of the [Grakn Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Grakn Console](../02-running-grakn/02-console.md), we use the `commit` command.
+When using one of the [Grakn Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Grakn Console](../02-console/01-console.md), we use the `commit` command.
 </div>
 
 ### Undefine an attribute's association

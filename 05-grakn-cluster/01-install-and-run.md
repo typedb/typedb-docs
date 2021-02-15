@@ -23,7 +23,7 @@ Download the [latest release](https://repo.grakn.ai/#browse/browse:private-artif
 If Grakn Cluster doesn't have a distribution you need, please open an issue [on GitHub](https://github.com/graknlabs/grakn/issues).
 
 
-Having installed or downloaded Grakn Cluster, we can now start the [Cluster](#start-the-grakn-cluster) and interact with the [Console](../02-running-grakn/02-console.md).
+Having installed or downloaded Grakn Cluster, we can now start the [Cluster](#start-the-grakn-cluster) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -32,7 +32,7 @@ Having installed or downloaded Grakn Cluster, we can now start the [Cluster](#st
 #### Manual Download
 Download the [latest release](https://repo.grakn.ai/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-cluster) and interact with the [Console](../02-running-grakn/02-console.md).
+Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-cluster) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -41,7 +41,7 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 #### Manual Download
 Download the [latest release](https://repo.grakn.ai/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via command prompt.
 
-Having downloaded Grakn, we can now start the [Server](#start-the-grakn-cluster) and interact with the [Console](../02-running-grakn/02-console.md).
+Having downloaded Grakn, we can now start the [Server](#start-the-grakn-cluster) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -78,7 +78,7 @@ docker run --name grakn -d -v $(pwd)/db/:/opt/grakn-cluster-all-linux/server/db/
 
 Having started the instance, the Grakn Cluster is expected to be running on port `1729` on your machine.
 
-To interact with the [Grakn Console](../02-running-grakn/02-console.md), run:
+To interact with the [Grakn Console](../02-console/01-console.md), run:
 
 ```
 docker exec -ti grakn bash -c '/opt/grakn-cluster-all-linux/grakn console'

@@ -6,7 +6,7 @@ Summary: All you need to know about the architecture of a Grakn Client.
 ---
 
 ## What is a Grakn Client?
-A Grakn client, along with the [Grakn Console](../02-running-grakn/02-console.md) and the [Grakn Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a Grakn knowledge graph. If we are building an application that uses a Grakn knowledge graph as its database, we would need a Grakn client at our application layer to handle the database operations.
+A Grakn client, along with the [Grakn Console](../02-console/01-console.md) and the [Grakn Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a Grakn knowledge graph. If we are building an application that uses a Grakn knowledge graph as its database, we would need a Grakn client at our application layer to handle the database operations.
 
 In this section and the following pages, we learn the mechanism that a Grakn client uses to set up communication with [databases](../06-management/01-database.md) running on the Grakn server as well as the methods available for executing queries and retrieving their answers.
 

@@ -24,7 +24,7 @@ For the rest of this post, we go through each of these questions to:
 - write them in [Graql](https://dev.grakn.ai/docs/query/overview), and
 - assess their result.
 
-Make sure you have [Grakn Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [Grakn Server](../02-running-grakn/01-install-and-run.md#start-the-grakn-server) and `phone_calls` is the [selected database](../07-workbase/01-connection.md#select-a-database).
+Make sure you have [Grakn Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [Grakn Server](../01-running-grakn/01-install-and-run.md#start-the-grakn-server) and `phone_calls` is the [selected database](../07-workbase/01-connection.md#select-a-database).
 
 Let’s begin.
 
@@ -64,7 +64,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #1 Console](../images/examples/phone_calls_query_1_console.png)
-[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
+[caption:Using [Grakn Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 
@@ -240,7 +240,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #2 Console](../images/examples/phone_calls_query_2_console.png)
-[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
+[caption:Using [Grakn Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -416,7 +416,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #3 Console](../images/examples/phone_calls_query_3_console.png)
-[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
+[caption:Using [Grakn Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -590,7 +590,7 @@ get $phone-number-a, $phone-number-b;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #4 Console](../images/examples/phone_calls_query_4_console.png)
-[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
+[caption:Using [Grakn Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -790,7 +790,7 @@ get $duration; mean $duration;
 #### Try it yourself
 
 ![phone_calls query #5 Console](../images/examples/phone_calls_query_5_console.png)
-[caption:Using [Grakn Console](../02-running-grakn/02-console.md)]
+[caption:Using [Grakn Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
