@@ -17,6 +17,18 @@ cd <your_grakn_console_dir>/
 ./grakn console
 ```
 
+<div class="note">
+[Warning]
+Connection to Grakn Cluster **must** to be done with a special option, specifying the ip and client port of the server:
+
+```
+./grakn console --cluster=127.0.0.1:1729
+```
+
+Failing to do so would result in an incorrect behaviour.
+This is a known issue which is going to be fixed soon.
+</div>
+
 ## Command line arguments
 
 You can provide several command arguments when running console in the terminal.
