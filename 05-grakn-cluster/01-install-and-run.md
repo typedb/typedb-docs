@@ -16,7 +16,7 @@ Grakn Cluster runs on Mac, Linux and Windows. The only requirement is Java 8 or 
 
 #### Manual Download
 
-Download the [latest release](https://github.com/graknlabs/grakn-cluster/releases), unzip it in a location on your machine that is easily accessible via terminal.
+Download the [latest release](https://repo.grakn.ai/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via terminal.
 
 #### Other package managers
 
@@ -30,7 +30,7 @@ Having installed or downloaded Grakn Cluster, we can now start the [Cluster](#st
 [tab:Mac OS X]
 
 #### Manual Download
-Download the [latest release](https://github.com/graknlabs/grakn-cluster/releases), unzip it in a location on your machine that is easily accessible via terminal.
+Download the [latest release](https://repo.grakn.ai/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via terminal.
 
 Having installed or downloaded Grakn, we can now start the [Server](#start-the-grakn-cluster) and interact with the [Console](../02-running-grakn/02-console.md).
 
@@ -39,7 +39,7 @@ Having installed or downloaded Grakn, we can now start the [Server](#start-the-g
 [tab:Windows]
 
 #### Manual Download
-Download the [latest release](https://github.com/graknlabs/grakn-cluster/releases), unzip it in a location on your machine that is easily accessible via command prompt.
+Download the [latest release](https://repo.grakn.ai/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via command prompt.
 
 Having downloaded Grakn, we can now start the [Server](#start-the-grakn-cluster) and interact with the [Console](../02-running-grakn/02-console.md).
 
