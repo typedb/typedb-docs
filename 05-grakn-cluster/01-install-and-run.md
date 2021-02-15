@@ -86,17 +86,23 @@ docker exec -ti grakn bash -c '/opt/grakn-cluster-all-linux/grakn console'
 [tab:end]
 </div>
 
-## Start the Grakn Cluster (single-node)
+## Starting and Stopping Single-node Cluster
+
+### Starting
+
 If you have installed Grakn using a package manager, to start the Grakn Cluster, run `grakn server`.
 
 Otherwise, if you have manually downloaded Grakn, `cd` into the unzipped folder and run `./grakn server`.
 
 
-## Stop the Grakn Cluster (single-node)
+### Stopping
+
 To stop the Grakn Cluster, press Ctrl-C in same terminal as the one where you started it in.
 
 
-## Start the Grakn Cluster (multi-node)
+## Starting and Stopping Multi-node Cluster
+
+### Starting
 
 While it's possible to run Grakn Cluster in a single-node mode, a truly highly-available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster. This section describes
@@ -124,7 +130,11 @@ user@node2:~/grakn-cluster/$ ./grakn server --address=10.0.0.2:1729:1730 --peers
 
 user@node3:~/grakn-cluster/$ ./grakn server --address=10.0.0.3:1729:1730 --peers=10.0.0.1:1729:1730,10.0.0.2:1729:1730,10.0.0.3:1729:1730
 ```  
- 
+
+### Stopping
+
+Stopping the Grakn Cluster is done the same way as with single node: pressing Ctrl+C in the terminal that was used to start it.
+All nodes would be to be shut down independently.
 
 ## Summary
 So far we have learned how to download, install and run the Grakn Cluster.
