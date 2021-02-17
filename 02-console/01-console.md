@@ -11,11 +11,17 @@ The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.m
 
 ## Running Grakn Console in the terminal
 
+
+### Connecting to Grakn Core
+
 Go to the directory whe you have your `grakn-core-all` or `grakn-core-console` distribution unarchived, and run `./grakn console`
 ```
 cd <your_grakn_console_dir>/
 ./grakn console
 ```
+
+
+### Connecting to Grakn Cluster
 
 <div class="note">
 [Warning]
