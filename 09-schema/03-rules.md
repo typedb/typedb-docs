@@ -12,6 +12,14 @@ The rule-based reasoning allows automated capture and evolution of patterns with
 
 In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
 
+
+<div class="note">
+[Important]
+Currently, for a match query to trigger reasoning and obtain inferences from rules, you must use a _read_ transaction. We are working towards enabling reasoning in write transactions in subsequent releases.
+</div>
+
+
+
 ## Define a Rule
 Defining a Graql rule begins with a `rule` followed by a given label, the `when` body as the condition, and the `then` body as the conclusion.
 <!-- test-ignore -->
