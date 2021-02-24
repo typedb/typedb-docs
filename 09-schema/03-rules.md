@@ -181,7 +181,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-Here, we apply a constant attribute that may or may not previously exist in the database, as a few fact that is owned by `$p`, which is any person with name "Annabelle".
+Here, we apply a constant attribute that may or may not previously exist in the database, as a new fact that is owned by `$p`, which is any person with name "Annabelle".
 
 3. Inferring an ownership of a variable attribute
 
