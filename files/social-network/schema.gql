@@ -335,6 +335,7 @@ define
 		plays coursemates:course;
 
 	person sub entity,
+	        owns graduated,
 		plays studentship:student,
 		plays schoolmates:schoolmate,
 		plays coursemates:coursemate;
