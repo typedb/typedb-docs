@@ -8,14 +8,14 @@ Summary: Automated reasoning with Rules in Grakn.
 ## What is a Rule?
 Grakn is capable of reasoning over data via rules defined in the schema. They can be used to automatically infer new facts, based on the existence of patterns in your data. Rules can enable you to dramatically shorten complex queries, perform explainable knowledge discovery, and implement business logic at the database level. 
 
-Reasoning, or inference, is performed at query time and is guaranteed to be complete. When executing a `match` query, the execution engine return data that directly answers the query, and also inspects and triggers rules that may lead to new answers to the query. This approach is known as backwards-chaining (starting from the query, then finding applicable rules and generating relevant new facts). Reasoning can proceed via one rule to other rules, including recursively, leading to complex behaviours emerging from a few simple rules.
+Reasoning, or inference, is performed at query time and is guaranteed to be complete. When executing a `match` query, the execution engine returns data that directly answers the query, and also inspects and triggers rules that may lead to new answers to the query. This approach is known as backwards-chaining (starting from the query, then finding applicable rules and generating relevant new facts). Reasoning can proceed via one rule to other rules, including recursively, leading to complex behaviours emerging from a few simple rules.
 
 In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
 
 
 <div class="note">
 [Important]
-Inferred facts are transaction-bounded. This means, during a single transaction newly inferred facts will be retained and reused (with corresponding peformance gains). New transactions will re-compute inferred facts again.
+Inferred facts are transaction-bound: during a single transaction newly inferred facts will be retained and reused (with corresponding peformance gains). New transactions will re-compute inferred facts again.
 </div>
 
 
@@ -39,7 +39,7 @@ rule rule-label:
   };
 ```
 
-Each hashed line corresponds to a single Graql statement. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should be atomic - each rule can derive a complete new fact. If your use case requires a rule with a disjunction ("or") in the `when` part, notice that several rules with the same conclusion can be easily created to achieve the same behaviour.
+Each hashed line corresponds to a single Graql statement. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should describe a single `has` or `relation`. If your use case requires a rule with a disjunction ("or") in the `when` part, notice that several rules with the same conclusion can be easily created to achieve the same behaviour.
 
 Let us have a look at an example. We want to express the fact that two given people are siblings. As we all know, for two people to be siblings, we need the following facts to be true:
 - they share the same mother
@@ -102,15 +102,15 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-Note that facts defined via rules are not stored in the knowledge graph. In this example, siblings relations are not persisted: however by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
+Note that facts defined via rules are not stored in the knowledge graph. In this example, siblings relations are not persisted. However, by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
 
 
 ### Forms of Rule
 
-Grakn support inferring new, full facts in rules. There are exactly three distinct conclusions (`then`) that are permitted by this principle:
+Grakn supports inferring new, full facts in rules. There are exactly three distinct conclusions (`then`) that are permitted by this principle:
 
-1. Inferring a complete new relation, as in our above example. Note that any of the types in the `then` of the rule could be replaced variables from the `when`, if it is correct to do so.
- 
+1. Inferring a complete new relation, as in our above example. 
+
 <div class="tabs dark">
 
 [tab:Graql]
@@ -222,6 +222,61 @@ GraqlDefine query = Graql.define(
 
 In this example, we take a pre-existing attribute that is attached to a relation, and re-attach it to another data instance.
 
+
+### Rule Validation
+
+Besides conforming to one of the three patterns previously outlined, we also require that:
+
+1. The `then` of the rule must be insertable according to the schema (eg. you cannot give an attribute to an instance that is not allowed to own that attribute type). Grakn will reject rules that could insert incompatible data.
+2. There are no disjunctions in the `when` of the rule
+3. There are no negations in the `when` of the rule (this restriction will be lifted imminently)
+
+
+### Advanced Usage
+
+When inferring relations, it is possible variabilise any part of the `then` of the rule. For example, if we know we wanted a rule to infer many differt types of relations, we could propose a rule such as:
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+define
+
+rule all-relation-types-are-transitive:
+when {
+    ($role1: $x, $role2: $y) isa! $relation;
+    ($role1: $y, $role2: $z) isa! $relation;
+} then {
+    ($role1: $x, $role2: $z) isa $relation;
+};
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlDefine query = Graql.define(
+  rule("all-relation-types-are-transitive")
+    .when(
+        and(
+            var().rel(var("role1"), var("x")).rel(var("role2"), var("y")).isaX(var("relation")),
+            var().rel(var("role1"), var("y")).rel(var("role2"), var("z")).isaX(var("relation"))
+        )
+    ).then(
+        var().rel(var("role1"), var("x")).rel(var("role2"), var("z")).isa(var("relation"))
+    )
+);
+```
+[tab:end]
+</div>
+
+This rule will make every relation transitive.
+
+## Optimisation Notes
+
+There are two general tips for making queries with reasoning execute faster:
+1. Adding a limit to the query. Without a limit, the reasoning engine is forced to explore all possible ways to answer the query exhaustively. If you only need 1 answer, adding `limit 1` to the `match` query can improve query times.
+2. Using a transaction for multiple reasoning queries. Because inferred facts are cleared between transactions, running the same or similar queries within one transaction can reuse previously found facts. Combined with a `limit` on the query, it might be possible to avoid having to do any new reasoning at all.
+ 
 
 ## Delete a Rule
 
