@@ -174,7 +174,7 @@ GraqlDefine query = Graql.define(
             var("p").isa("person").has("name", "Annabelle")
         )
     ).then(
-        var(p).has("nickname", "Anne")
+        var("p").has("nickname", "Anne")
     )
 );
 ```
@@ -213,7 +213,7 @@ GraqlDefine query = Graql.define(
             var("r").has("graduated", var("is-graduated"))
         )
     ).then(
-        var(p).has("graduated", var("is-graduated"))
+        var("p").has("graduated", var("is-graduated"))
     )
 );
 ```
