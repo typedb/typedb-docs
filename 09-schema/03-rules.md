@@ -109,7 +109,7 @@ Note that facts defined via rules are not stored in the knowledge graph. In this
 
 Grakn supports inferring new, full facts in rules. There are exactly three distinct conclusions (`then`) that are permitted by this principle:
 
-###### Inferring a complete new relation, as in our above example. 
+* Inferring a complete new relation, as in our above example. 
 
 <div class="tabs dark">
 
@@ -148,7 +148,7 @@ GraqlDefine query = Graql.define(
 [tab:end]
 </div>
 
-###### Inferring an attribute ownership of a constant attribute 
+* Inferring an attribute ownership of a constant attribute 
 
 <div class="tabs dark">
 
@@ -183,7 +183,7 @@ GraqlDefine query = Graql.define(
 
 Here, we apply a constant attribute that may or may not previously exist in the database, as a new fact that is owned by `$p`, which is any person with name "Annabelle".
 
-###### Inferring an ownership of a variable attribute
+* Inferring an ownership of a variable attribute
 
 <div class="tabs dark">
 
