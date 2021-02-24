@@ -276,7 +276,8 @@ This rule will make every relation transitive.
 There are two general tips for making queries with reasoning execute faster:
 1. Adding a limit to the query. Without a limit, the reasoning engine is forced to explore all possible ways to answer the query exhaustively. If you only need 1 answer, adding `limit 1` to the `match` query can improve query times.
 2. Using a transaction for multiple reasoning queries. Because inferred facts are cleared between transactions, running the same or similar queries within one transaction can reuse previously found facts. Combined with a `limit` on the query, it might be possible to avoid having to do any new reasoning at all.
- 
+
+For complex queries, it can also be benficial to add more CPU cores, as the reasoning engine is able to explore more paths in the database concurrently.
 
 ## Delete a Rule
 
