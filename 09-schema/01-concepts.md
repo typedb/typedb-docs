@@ -49,7 +49,7 @@ GraqlDefine query = Graql.define(
 </div>
 
 ### Assign an attribute to an entity
-We can assign any number of attributes to an entity. To do so, we use the `has` keyword followed by the attribute's label.
+We can assign any number of attributes to an entity. To do so, we use the `owns` keyword followed by the attribute's label.
 
 <div class="tabs dark">
 
@@ -348,7 +348,7 @@ In the example above, the `reaction` relation relates to three roles:
 3. `by` role played by a `person` entity.
 
 ### Assign an attribute to a relation
-We can assign any number of attributes to a relation. To do so, we use the `has` keyword followed by the attribute's label.
+We can assign any number of attributes to a relation. To do so, we use the `owns` keyword followed by the attribute's label.
 
 <div class="tabs dark">
 
@@ -624,7 +624,7 @@ GraqlDefine query = Graql.define(
 </div>
 
 ### Owners of an attribute
-Entities, relations, and even attributes can own one or more attributes of their own. To do this we make use of the `has` keyword followed by the attributes's label.
+Entities, relations, and even attributes can own one or more attributes of their own. To do this we make use of the `owns` keyword followed by the attributes's label.
 
 We have already seen how to [assign an attribute to an entity](#assign-an-attribute-to-an-entity) and similarly to [assign an attribute to a relation](#assign-an-attribute-to-a-relation). But what about an attribute owning an attribute of its own?
 
@@ -784,7 +784,7 @@ The query above, removes the attribute `nickname` from the entity `person`.
 
 <div class="note">
 [Important]
-It's important to note that `undefine [label] sub [type] has [attribute's label];` undefines the `label` itself, rather than its association with the attribute.
+It's important to note that `undefine [label] sub [type] owns [attribute's label];` undefines the `label` itself, rather than its association with the attribute.
 </div>
 
 ### Undefine a relation

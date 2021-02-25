@@ -62,7 +62,7 @@ Each relation is required to have at least one role.
 
 Apart from serving as a mean of classification, types also define behaviours of their instances. Consequently, types can define the following behaviours:
 
-**has [attribute type]** - the ability to have an attribute of a specified type attached to an instance.
+**owns [attribute type]** - the ability to have an attribute of a specified type attached to an instance.
 
 **plays [role]** - the ability to participate in relations that allow for that role to be played.
 
@@ -73,7 +73,7 @@ Besides the modularity that the concept types provide, we are free to form subty
 Subtyping not only allows us to mirror the true nature of a dataset as perceived in the real world but also enables automated reasoning.
 
 ### Roles
-_Roles_ specify the nature of the connection between instances. They are not types themselves. That means, we cannot have a thing which is an instance of a role, but we can have things playing a role in a specific relation.
+_Roles_ are capabilities belonging to relations, that specify the nature of the connection between instances. They are not types themselves. That means, we cannot have a thing which is an instance of a role, but we can have things playing a role in a specific relation. However, roles can also be subtyped (with `as`) and queried similarly to regular schema types. 
 In the schema, we need to specify what role relates to each relation type and who can play this role. Thanks to roles, we are able to guarantee the logical integrity of our data, disallowing a `marriage` between a `person` and a `building`, for example. Unless we specifically allow such a relationship in the schema.
 
 ### Rules
@@ -98,7 +98,7 @@ The following keywords are reserved and meant to only be used by Graql.
 <!-- test-ignore -->
 ```graql
 ## Native types
-thing, entity, attribute, relation, role, rule
+thing, entity, attribute, relation, role
 
 ## Data types
 long, double, string, boolean, datetime
@@ -110,10 +110,10 @@ define, undefine, match, get, insert, delete;
 offset, limit, group, sort, asc, desc
 
 ## Statement properties
-abstract, as, id, type, isa, isa!, sub, sub!, key, has, plays, relates, value, regex, when, then
+abstract, as, iid, type, isa, isa!, sub, sub!, owns, has, plays, relates, value, regex, rule, when, then
 
 ## Operators
-or, not, like
+or, not, like, is
 
 ## Literal values
 true, false

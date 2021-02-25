@@ -6,7 +6,7 @@ description:
     query processing.
 
     The server defaults are:
-    - `infer = true`
+    - `infer = true` (note: only settable at transaction level)
     - `explain = false`
     - `batchSize = 50`
 
@@ -14,7 +14,7 @@ description:
     The transaction query optional parameters can be used to override the default server behaviour for query processing.
 
     The server defaults are:
-    - `infer = True`
+    - `infer = True (note: only settable at transaction level)`
     - `explain = False`
     - `batch_size = 50`
 
@@ -27,7 +27,7 @@ description:
     We can provide any of the allowed keys: `infer`, `explain`, and `batchSize`.
 
     The server defaults are:
-    - `infer = true`
+    - `infer = true (note: only settable at transaction level)`
     - `explain = false`
     - `batchSize = 50`
 
