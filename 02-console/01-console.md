@@ -37,14 +37,16 @@ This is a known issue which is going to be fixed soon.
 
 ## Command line arguments
 
-You can provide several command arguments when running console in the terminal.
+You can provide several command arguments when running Console in the terminal.
 
 
-| Option               | Alias | Description                                             |
-|----------------------|-------|-------------------------------------------------------- |
-| `--server=<address>` |       | Server address to which the console will connect to.    |
-| `--version`          | `-V`  | Print version information and exit.                     |
-| `--help`             | `-h`  | Show help message.                                      |
+| Option                | Alias | Description                                                           |
+|-----------------------|-------|-----------------------------------------------------------------------|
+| `--cluster=<cluster>` |       | Grakn Cluster address to which Console will connect to.               |
+| `--help`              | `-h`  | Show help message.                                                    |
+| `--script=<script>`   |       | Script with commands to run in the Console, without interactive mode. |
+| `--server=<server>`   |       | Grakn Core address to which Console will connect to.                  |
+| `--version`           | `-V`  | Print version information and exit.                                   |
 
 ## Console commands
 
