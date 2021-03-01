@@ -75,9 +75,7 @@ spec:
           command:
             - /bin/bash
             - -c
-            # TODO(vmax): find a better way than sleeping until DNS availability
-            # TODO(vmax): how do we account for node count?
-            - 'sleep 180 && /opt/grakn-cluster-all-linux/grakn server --data=/mnt/data/ --address $(hostname).grakn-cluster:1729:1730 --peer grakn-cluster-0.grakn-cluster:1729:1730 --peer grakn-cluster-1.grakn-cluster:1729:1730 --peer grakn-cluster-2.grakn-cluster:1729:1730'
+            - 'sleep 180 && /opt/grakn-cluster-all-linux/grakn server --data=/mnt/data/ --replication=/mnt/replication/ --address $(hostname).grakn-cluster:1729:1730 --peer grakn-cluster-0.grakn-cluster:1729:1730 --peer grakn-cluster-1.grakn-cluster:1729:1730 --peer grakn-cluster-2.grakn-cluster:1729:1730'
           ports:
             - containerPort: 1729
               name: client-port
