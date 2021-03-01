@@ -42,12 +42,12 @@ methods:
   - method:
     common: &method-databases-all
       title: Retrieve all databases
-      description: Retrieves the name of all databases running on the Grakn server.
+      description: Retrieves all databases running on the Grakn server.
     java:
       <<: *method-databases-all
       method: client.databases().all();
       returns:
-        - List<String>
+        - List<Database>
     javascript:
       <<: *method-databases-all
       method: await client.databases().all();
@@ -57,7 +57,7 @@ methods:
       <<: *method-databases-all
       method: client.databases().all()
       returns:
-        - list of String
+        - list of Database
 
   - method:
     common: &method-databases-contains
@@ -110,6 +110,34 @@ methods:
         - None
 
   - method:
+    java:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.databases().get(String database);
+      returns:
+        - Database
+    python:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.databases().get("database name");
+      returns:
+        - Database
+
+  - method:
     common: &method-databases-delete
       title: Delete a database
       description: Deletes a database with the given name.
@@ -122,7 +150,7 @@ methods:
           default: N/A
     java:
       <<: *method-databases-delete
-      method: client.databases().delete(String database);
+      method: client.databases().get(String database).delete();
       returns:
         - void
     javascript:
@@ -132,7 +160,7 @@ methods:
         - void
     python:
       <<: *method-databases-delete
-      method: client.databases().delete("database name")
+      method: client.databases().get("database name").delete()
       returns:
         - None
 
