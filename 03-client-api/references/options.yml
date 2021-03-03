@@ -8,7 +8,9 @@ description:
     The server defaults are:
     - `infer = true`
     - `explain = false`
+    - `parallel = true`
     - `batchSize = 50`
+    - `traceInference = false`
 
   python: |
     The transaction query optional parameters can be used to override the default server behaviour for query processing.
@@ -16,7 +18,9 @@ description:
     The server defaults are:
     - `infer = True`
     - `explain = False`
+    - `parallel = True`
     - `batch_size = 50`
+    - `traceInference = False`
 
     `batch_size` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
     client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
@@ -30,7 +34,9 @@ description:
     The server defaults are:
     - `infer = true`
     - `explain = false`
+    - `parallel = true`
     - `batchSize = 50`
+    - `traceInference = false`
 
     `batchSize` tells the server to pre-compute and stream this number of answers at a time. These are buffered in the
     client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction
@@ -48,7 +54,7 @@ methods:
           name: enabled
           type: boolean
           description: explicitly set inference on or off for this query
-          required: true
+          required: false
       returns:
         - "[Transaction.Options](#options)"
   - method:
@@ -61,7 +67,20 @@ methods:
           name: enabled
           type: boolean
           description: explicitly set explanations on or off for this query
-          required: true
+          required: false
+      returns:
+        - "[Transaction.Options](#options)"
+  - method:
+    java:
+      method: Transaction.Options.parallel(boolean parallel)
+      title: Force the server parallelism
+      description: Override the server defaults to use parallel or single-threaded query execution
+      accepts:
+        param1:
+          name: parallel
+          type: boolean
+          description: use parallel or single-threaded query execution
+          required: false
       returns:
         - "[Transaction.Options](#options)"
   - method:
@@ -93,3 +112,16 @@ methods:
           required: true
       returns:
         - "Transaction.Options (#options)"
+  - method:
+    java:
+      method: Transaction.Options.traceInferece(boolean traceInferece)
+      title: Trace and log reasoning inference
+      description: Create reasoning traces as graphs logged in the logging directory. Should be used with `parallel = false`
+      accepts:
+        param1:
+          name: traceInference
+          type: boolean
+          description: trace reasoning execution as graphs in log directory
+          required: false
+      returns:
+        - "[Transaction.Options](#options)"
