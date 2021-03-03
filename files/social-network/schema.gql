@@ -893,7 +893,9 @@ define
 		when {
 			(content: $sc, by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
 			(friend: $sb, $f) isa friendship;
-			$f != $hf;
+			$f has email $fe;
+			$hf has email $hfe;
+			$fe != $hfe;
 		} then {
 			(content: $sc, grantee: $f) isa content-permission;
 		};
