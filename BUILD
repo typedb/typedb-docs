@@ -7,7 +7,7 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
-load("@graknlabs_common//test/server:rules.bzl", "native_grakn_artifact")
+load("@graknlabs_common//test:rules.bzl", "native_grakn_artifact")
 load("@graknlabs_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
 
 filegroup(

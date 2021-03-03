@@ -19,7 +19,7 @@
 #
 #
 
-load("@graknlabs_common//test/server:rules.bzl", "grakn_java_test", "native_grakn_artifact")
+load("@graknlabs_common//test:rules.bzl", "grakn_java_test", "native_grakn_artifact")
 
 ############################
 # Phone Calls Example Test #
