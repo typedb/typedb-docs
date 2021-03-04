@@ -68,15 +68,15 @@ spec:
         - name: private-docker-hub
       containers:
         - name: grakn-cluster
-          image: graknlabs/grakn-cluster:k8s-4
+          image: graknlabs/grakn-cluster:k8s-1
           resources:
             requests:
               cpu: "7"
           command:
             - /bin/bash
             - -c
-            - 'sleep 180 && /opt/grakn-cluster-all-linux/grakn server --data=/mnt/data/ --replication=/mnt/replication/ --address $(hostname).grakn-cluster:1729:1730 --peer grakn-cluster-0.grakn-cluster:1729:1730 --peer grakn-cluster-1.grakn-cluster:1729:1730 --peer grakn-cluster-2.grakn-cluster:1729:1730'
-          ports:
+            - '/opt/util/wait-for-host.sh grakn-cluster-0.grakn-cluster && /opt/util/wait-for-host.sh grakn-cluster-1.grakn-cluster && /opt/util/wait-for-host.sh grakn-cluster-2.grakn-cluster && /opt/grakn-cluster-all-linux/grakn server --data=/mnt/data/ --replication=/mnt/replication/ --address $(hostname).grakn-cluster:1729:1730 --peer grakn-cluster-0.grakn-cluster:1729:1730 --peer grakn-cluster-1.grakn-cluster:1729:1730 --peer grakn-cluster-2.grakn-cluster:1729:1730'
+	  ports:
             - containerPort: 1729
               name: client-port
             - containerPort: 1730
@@ -109,4 +109,3 @@ Deployment has several limitations which shall be resolved in future:
 supports connection from within the cluster (client should be able to connect to all `grakn-cluster-{0..2}.grakn-cluster`)
 * Grakn Cluster doesn't support dynamic reconfiguration of node count without restarting all of the nodes
 * Node count is hardcoded in the startup command of the container
-* Waiting for other nodes' availablility is done by waiting a fixed amount of time which should be enough for all of them to start
