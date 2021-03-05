@@ -1,16 +1,16 @@
 methods:
   - method:
     common: &method-getvalueType
-      title: Retrieve valuetype
-      description: Retrieves the valuetype given to this AttributeType.
+      title: Retrieve valuetype (Local)
+      description: Retrieves the valuetype of this AttributeType.
       returns:
-        - string
+        - AttributeType.ValueType (STRING &#124; DATETIME &#124; LONG &#124; DOUBLE &#124; BOOLEAN)
     java:
       <<: *method-getvalueType
       method: attributeType.getValueType();
     javascript:
       <<: *method-getvalueType
-      method: await attributeType.getValueType();
+      method: attributeType.getValueType();
     python:
       <<: *method-getvalueType
       method: attributeType.get_value_type()

@@ -1,7 +1,7 @@
 methods:
   - method:
     common: &method-type
-      title: Retrieve type
+      title: Retrieve type (Local)
       description: Retrieves the type which this Attribute belongs to.
     java:
       <<: *method-type
@@ -10,7 +10,7 @@ methods:
         - "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)"
     javascript:
       <<: *method-type
-      method: await entity.getType();
+      method: attribute.getType();
       returns:
         - "[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
     python:
@@ -18,6 +18,7 @@ methods:
       method: attribute.get_type()
       returns:
         - "[`AttributeType`](../concept-api/type?tab=python#attributetype-methods)"
+
   - method:
     common: &method-getvalue
       title: Retrieve value (Local)
@@ -50,6 +51,22 @@ methods:
         - "`Date`"
 
   - method:
+    common: &method-getvalueType
+      title: Retrieve valuetype (Local)
+      description: Retrieves the valuetype of this Attribute.
+      returns:
+        - AttributeType.ValueType (STRING &#124; DATETIME &#124; LONG &#124; DOUBLE &#124; BOOLEAN)
+    java:
+      <<: *method-getvalueType
+      method: attribute.getValueType();
+    javascript:
+      <<: *method-getvalueType
+      method: attribute.getValueType();
+    python:
+      <<: *method-getvalueType
+      method: attribute.get_value_type()
+
+  - method:
     common: &method-owners
       title: Retrieve owners
       description: Retrieves the instances that own this Attribute.
@@ -75,6 +92,7 @@ methods:
       method: attribute.owners(ownerType)
       return:
         - "Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
+
   - method:
     common: &method-asRemote
       title: Get a Remote version of the Attribute.
@@ -99,6 +117,7 @@ methods:
     python:
       <<: *method-asRemote
       method: concept.as_remote(tx)
+
   - method:
     common: &method-isboolean
       title: Check if value is of type boolean
