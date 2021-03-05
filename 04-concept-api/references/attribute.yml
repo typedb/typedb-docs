@@ -51,22 +51,6 @@ methods:
         - "`Date`"
 
   - method:
-    common: &method-getvalueType
-      title: Retrieve valuetype (Local)
-      description: Retrieves the valuetype of this Attribute.
-      returns:
-        - AttributeType.ValueType (STRING &#124; DATETIME &#124; LONG &#124; DOUBLE &#124; BOOLEAN)
-    java:
-      <<: *method-getvalueType
-      method: attribute.getValueType();
-    javascript:
-      <<: *method-getvalueType
-      method: attribute.getValueType();
-    python:
-      <<: *method-getvalueType
-      method: attribute.get_value_type()
-
-  - method:
     common: &method-owners
       title: Retrieve owners
       description: Retrieves the instances that own this Attribute.
