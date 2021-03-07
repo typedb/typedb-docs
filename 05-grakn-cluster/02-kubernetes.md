@@ -68,7 +68,7 @@ spec:
         - name: private-docker-hub
       containers:
         - name: grakn-cluster
-          image: graknlabs/grakn-cluster:k8s-1
+          image: graknlabs/grakn-cluster:2.0.0-alpha-2
           resources:
             requests:
               cpu: "7"
