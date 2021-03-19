@@ -70,6 +70,8 @@ First, download the [`social-network/schema.gql`](../files/social-network/schema
 Feel free to study the content of `social-network-schema.gql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [Grakn Workbase](../07-workbase/00-overview.md).
 </div>
 
+testing DELETE ME
+
 While in the unzipped directory of the Grakn distribution, via terminal, open the console:
 
 ```
