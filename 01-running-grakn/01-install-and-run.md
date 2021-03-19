@@ -7,7 +7,12 @@ toc: false
 ---
 
 ## System Requirements
-Grakn runs on Mac, Linux and Windows. The only requirement is Java 8 which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+Grakn runs on Mac, Linux and Windows. The only requirement is Java (version 11 or higher) which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
+
+<div class="note">
+[Warning]
+If upgrading from Grakn 1.8, please note that Java 8 is **no longer supported in 2.0.** You should upgrade to the latest version of Java in order to use Grakn 2.0.
+</div>
 
 ## Download and Install Grakn
 
