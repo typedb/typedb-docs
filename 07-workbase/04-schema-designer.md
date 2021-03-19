@@ -8,7 +8,7 @@ toc: false
 
 <div class = "note">
 [Warning]
-The schema designer is currently not yet stable in 2.0, and it has been disabled since the release 2.0.0-alpha-3. To view your schema in the visualiser, please run the following query:
+The schema designer is not yet stable in version 2.0 and has been disabled as of 2.0.0-alpha-3. To view your schema in the visualiser, please run the following query:
 
 ```
 match $x sub thing;
@@ -182,4 +182,3 @@ Workbase allows the visualisation and design of a grakn schema.
 
 ![schema designer](/docs/images/workbase/schema_delete.png)
 [caption: We may delete an existing schema concept type by right-clicking on the node and clicking **Delete**.]
-
