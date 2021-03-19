@@ -3,125 +3,125 @@ define
 ################
 ## ATTRIBUTES ##
 ################
-name sub attribute, value string;
-full-name sub attribute, value string;
-nickname sub attribute, value string;
-unemployed sub attribute, value boolean;
+	name sub attribute, value string;
+	full-name sub attribute, value string;
+	nickname sub attribute, value string;
+	unemployed sub attribute, value boolean;
 
-title sub attribute,
-value string;
+	title sub attribute,
+		value string;
 
-event-date sub attribute,
-abstract,
-value datetime;
-approved-date sub event-date;
-birth-date sub event-date;
-start-date sub event-date;
-end-date sub event-date;
-engagement-date sub event-date;
+	event-date sub attribute,
+		abstract,
+		value datetime;
+	approved-date sub event-date;
+	birth-date sub event-date;
+	start-date sub event-date;
+	end-date sub event-date;
+	engagement-date sub event-date;
 
-published-date sub attribute,
-value datetime;
+	published-date sub attribute,
+		value datetime;
 
-reference-id sub attribute,
-value string;
+	reference-id sub attribute,
+		value string;
 
-salary sub attribute,
-value long;
+	salary sub attribute,
+		value long;
 
-registration-number sub attribute,
-value string;
+	registration-number sub attribute,
+		value string;
 
-identifier sub attribute,
-value string;
+	identifier sub attribute,
+    		value string;
 
-graduated sub attribute,
-value boolean;
+	graduated sub attribute,
+		value boolean;
 
-score sub attribute,
-value double;
+	score sub attribute,
+		value double;
 
-ranking sub attribute,
-value long;
+	ranking sub attribute,
+		value long;
 
-phone-number sub attribute,
-value string;
+	phone-number sub attribute,
+		value string;
 
-email sub attribute,
-value string;
+	email sub attribute,
+		value string;
 
-gender sub attribute,
-value string;
+	gender sub attribute,
+		value string;
 
-engaged sub attribute,
-value boolean;
-separated sub attribute,
-value boolean;
-divorced sub attribute,
-value boolean;
+	engaged sub attribute,
+		value boolean;
+	separated sub attribute,
+		value boolean;
+	divorced sub attribute,
+		value boolean;
 
-file sub attribute,
-value string;
+	file sub attribute,
+		value string;
 
-caption sub attribute,
-value string;
+	caption sub attribute,
+		value string;
 
-language sub attribute,
-value string,
-plays fluency:language;
+	language sub attribute,
+		value string,
+		plays fluency:language;
 
-content sub attribute,
-value string,
-owns language;
+	content sub attribute,
+		value string,
+		owns language;
 
-emotion sub attribute,
-value string,
-regex "^(like|love|funny|shocking|sad|angry)$",
-plays reaction:emotion;
+	emotion sub attribute,
+		value string,
+		regex "^(like|love|funny|shocking|sad|angry)$",
+		plays reaction:emotion;
 
-link sub attribute,
-value string,
-plays attachment:attached;
+	link sub attribute,
+		value string,
+		plays attachment:attached;
 
-person sub entity,
-owns full-name,
-owns nickname,
-owns gender,
-owns phone-number,
-owns unemployed,
-owns email @key;
+	person sub entity,
+		owns full-name,
+		owns nickname,
+		owns gender,
+		owns phone-number,
+		owns unemployed,
+		owns email @key;
 
 ###################
 ## GENERIC TYPES ##
 ###################
 
-localisation sub relation,
-relates located,
-relates location;
+	localisation sub relation,
+		relates located,
+		relates location;
 
-location-hierarchy sub relation,
-relates subordinate,
-relates superior;
+	location-hierarchy sub relation,
+		relates subordinate,
+		relates superior;
 
-ownership sub relation,
-relates owner,
-relates owned;
+	ownership sub relation,
+		relates owner,
+		relates owned;
 
-location sub entity,
-owns name @key,
-plays location-hierarchy:subordinate,
-plays location-hierarchy:superior;
+	location sub entity,
+		owns name @key,
+		plays location-hierarchy:subordinate,
+		plays location-hierarchy:superior;
 
-request sub relation,
-abstract,
-relates subject,
-relates requester,
-relates respondent;
+	request sub relation,
+	  abstract,
+		relates subject,
+		relates requester,
+		relates respondent;
 
-periodic-event sub relation,
-abstract,
-owns start-date,
-owns end-date;
+	periodic-event sub relation,
+		abstract,
+		owns start-date,
+		owns end-date;
 
 
 ###########
@@ -137,80 +137,80 @@ owns end-date;
 # 	$blm sub location-mutuality;
 # get;
 
-birth sub relation,
-owns birth-date,
-relates child,
-plays localisation:located;
+	birth sub relation,
+		owns birth-date,
+		relates child,
+		plays localisation:located;
 
-person sub entity,
-plays birth:child;
+	person sub entity,
+		plays birth:child;
 
-location sub entity,
-plays localisation:location;
+	location sub entity,
+		plays localisation:location;
 
 
 ################
 ## PARENTSHIP ##
 ################
 
-person sub entity,
-plays parentship:parent,
-plays parentship:father,
-plays parentship:mother,
-plays parentship:child,
-plays parentship:son,
-plays parentship:daughter,
-plays siblings:sibling;
+	person sub entity,
+		plays parentship:parent,
+		plays parentship:father,
+		plays parentship:mother,
+		plays parentship:child,
+		plays parentship:son,
+		plays parentship:daughter,
+		plays siblings:sibling;
 
-parentship sub relation,
-relates parent,
-relates child,
-relates father,
-relates mother,
-relates son,
-relates daughter;
+  parentship sub relation,
+    relates parent,
+		relates child,
+		relates father,
+		relates mother,
+		relates son,
+		relates daughter;
 
-siblings sub relation,
-relates sibling;
+	siblings sub relation,
+	    relates sibling;
 
-person-with-a-mother sub entity;
-person-with-a-father sub entity;
+	person-with-a-mother sub entity;
+	person-with-a-father sub entity;
 
-rule genderizeParentships1:
-when {
-(parent: $p, child: $c) isa parentship;
-$p has gender 'male';
-$c has gender 'male';
-} then {
-(father: $p, son: $c) isa parentship;
-};
+	rule genderizeParentships1:
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'male';
+			$c has gender 'male';
+		} then {
+			(father: $p, son: $c) isa parentship;
+		};
 
-rule genderizeParentships2:
-when {
-(parent: $p, child: $c) isa parentship;
-$p has gender 'male';
-$c has gender 'female';
-} then {
-(father: $p, daughter: $c) isa parentship;
-};
+	rule genderizeParentships2:
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'male';
+			$c has gender 'female';
+		} then {
+			(father: $p, daughter: $c) isa parentship;
+		};
 
-rule genderizeParentships3:
-when {
-(parent: $p, child: $c) isa parentship;
-$p has gender 'female';
-$c has gender 'male';
-} then {
-(mother: $p, son: $c) isa parentship;
-};
+	rule genderizeParentships3:
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'female';
+			$c has gender 'male';
+		} then {
+			(mother: $p, son: $c) isa parentship;
+		};
 
-rule genderizeParentships4:
-when {
-(parent: $p, child: $c) isa parentship;
-$p has gender 'female';
-$c has gender 'female';
-} then {
-(mother: $p, daughter: $c) isa parentship;
-};
+	rule genderizeParentships4:
+		when {
+			(parent: $p, child: $c) isa parentship;
+			$p has gender 'female';
+			$c has gender 'female';
+		} then {
+			(mother: $p, daughter: $c) isa parentship;
+		};
 
 ###############
 ## RESIDENCY ##
@@ -224,17 +224,17 @@ $c has gender 'female';
 # 	$loc sub location;
 # get;
 
-residency sub periodic-event,
-relates resident,
-plays localisation:located;
+	residency sub periodic-event,
+		relates resident,
+		plays localisation:located;
 
-person sub entity,
-plays residency:resident;
+	person sub entity,
+		plays residency:resident;
 
-location sub entity,
-plays localisation:location;
+	location sub entity,
+		plays localisation:location;
 
-
+	
 ###############
 ## EDUCATION ##
 ###############
@@ -250,43 +250,43 @@ plays localisation:location;
 # 	$loc sub location;
 # get;
 
-studentship sub periodic-event,
-owns graduated,
-owns score,
-relates student,
-relates course,
-relates school;
+	studentship sub periodic-event,
+		owns graduated,
+		owns score,
+		relates student,
+		relates course,
+		relates school;
 
-school sub entity,
-owns name @key,
-owns ranking,
-plays school-course-offering:school,
-plays localisation:located,
-plays studentship:school;
+	school sub entity,
+		owns name @key,
+		owns ranking,
+		plays school-course-offering:school,
+		plays localisation:located,
+		plays studentship:school;
 
-school-course sub entity,
-owns title @key,
-plays school-course-offering:course,
-plays studentship:course;
+	school-course sub entity,
+		owns title @key,
+		plays school-course-offering:course,
+		plays studentship:course;
 
-person sub entity,
-owns graduated,
-plays studentship:student;
+	person sub entity,
+	        owns graduated,
+		plays studentship:student;
 
-##########################
-## school offerings ##
-##########################
+	##########################
+	## school offerings ##
+	##########################
 
-school-course-offering sub relation,
-relates school,
-relates course;
+	school-course-offering sub relation,
+		relates school,
+		relates course;
 
-rule school-offers-the-enrolled-courses:
-when {
-(student: $p, course: $c, school: $s) isa studentship;
-} then {
-(school: $s, course: $c) isa school-course-offering;
-};
+	rule school-offers-the-enrolled-courses:
+		when {
+			(student: $p, course: $c, school: $s) isa studentship;
+		} then {
+			(school: $s, course: $c) isa school-course-offering;
+		};
 
 
 ############
@@ -301,12 +301,12 @@ when {
 # 	$loc sub location;
 # get;
 
-travel sub periodic-event,
-relates traveler,
-plays localisation:located;
+	travel sub periodic-event,
+		relates traveler,
+		plays localisation:located;
 
-person sub entity,
-plays travel:traveler;
+	person sub entity,
+		plays travel:traveler;
 
 
 ##########
@@ -327,35 +327,35 @@ plays travel:traveler;
 # 	$jbm sub mutual-profession;
 # get;
 
-employment sub periodic-event,
-owns reference-id @key,
-owns salary,
-relates employer,
-relates employee,
-relates job;
+	employment sub periodic-event,
+		owns reference-id @key,
+		owns salary,
+		relates employer,
+		relates employee,
+		relates job;
 
-office-ownership sub relation,
-relates owner,
-relates office;
+	office-ownership sub relation,
+		relates owner,
+		relates office;
 
-profession sub entity,
-owns title @key,
-plays employment:job;
+	profession sub entity,
+		owns title @key,
+		plays employment:job;
 
-organisation sub entity,
-owns name @key,
-owns registration-number @key,
-plays office-ownership:owner,
-plays employment:employer;
+	organisation sub entity,
+		owns name @key,
+		owns registration-number @key,
+		plays office-ownership:owner,
+		plays employment:employer;
 
 
-office sub entity,
-owns registration-number @key,
-plays office-ownership:office,
-plays localisation:located;
+	office sub entity,
+    owns registration-number @key,
+		plays office-ownership:office,
+		plays localisation:located;
 
-person sub entity,
-plays employment:employee;
+	person sub entity,
+		plays employment:employee;
 
 
 
@@ -371,14 +371,14 @@ plays employment:employee;
 # 	$slm sub mutual-fluency;
 # get;
 
-fluency sub relation,
-relates speaker,
-relates language;
+	fluency sub relation,
+		relates speaker,
+		relates language;
 
-person sub entity,
-plays fluency:speaker;
+	person sub entity,
+		plays fluency:speaker;
 
-
+	
 
 #########################
 ## RELATIONSHIP STATUS ##
@@ -391,33 +391,33 @@ plays fluency:speaker;
 # 	$per sub person;
 # get;
 
-romantic-relationship sub relation,
-owns start-date,
-owns end-date,
-owns engaged,
-owns engagement-date,
-relates partner;
+	romantic-relationship sub relation,
+		owns start-date,
+		owns end-date,
+		owns engaged,
+		owns engagement-date,
+		relates partner;
 
-open-relationship sub romantic-relationship;
+	open-relationship sub romantic-relationship;
 
-domestic-relationship sub romantic-relationship;
+	domestic-relationship sub romantic-relationship;
 
-complicated-relationship sub romantic-relationship;
+	complicated-relationship sub romantic-relationship;
 
-marriage sub relation,
-owns start-date,
-owns end-date,
-owns separated,
-owns divorced,
-relates husband,
-relates wife,
-relates spouse;
+	marriage sub relation,
+		owns start-date,
+		owns end-date,
+		owns separated,
+		owns divorced,
+		relates husband,
+		relates wife,
+		relates spouse;
 
-person sub entity,
-plays romantic-relationship:partner,
-plays marriage:spouse,
-plays marriage:wife,
-plays marriage:husband;
+	person sub entity,
+		plays romantic-relationship:partner,
+		plays marriage:spouse,
+		plays marriage:wife,
+		plays marriage:husband;
 
 ################
 ## FRIENDSHIP ##
@@ -432,45 +432,45 @@ plays marriage:husband;
 # 	$muf sub mutual-friendship;
 # get;
 
-friendship sub relation,
-relates friend,
-plays friend-request:friendship,
-plays friendship-list:listed;
+	friendship sub relation,
+		relates friend,
+		plays friend-request:friendship,
+		plays friendship-list:listed;
 
-friend-request sub request,
-owns approved-date,
-relates friendship as subject,
-relates friend-requester as requester,
-relates friend-respondent as respondent;
+	friend-request sub request,
+		owns approved-date,
+		relates friendship as subject,
+		relates friend-requester as requester,
+		relates friend-respondent as respondent;
 
-friendship-list sub relation,
-owns title,
-relates owner,
-relates listed;
+	friendship-list sub relation,
+		owns title,
+		relates owner,
+		relates listed;
 
-person sub entity,
-plays friendship:friend,
-plays friend-request:friend-requester,
-plays friend-request:friend-respondent,
-plays friendship-list:owner,
-plays mutual-friendship:mutual-friend,
-plays mutual-friendship:one-degree-friend;
+	person sub entity,
+		plays friendship:friend,
+		plays friend-request:friend-requester,
+		plays friend-request:friend-respondent,
+		plays friendship-list:owner,
+		plays mutual-friendship:mutual-friend,
+		plays mutual-friendship:one-degree-friend;
 
-#######################
-## mutual friendship ##
-#######################
+	#######################
+	## mutual friendship ##
+	#######################
 
-mutual-friendship sub relation,
-relates mutual-friend,
-relates one-degree-friend;
+	mutual-friendship sub relation,
+		relates mutual-friend,
+		relates one-degree-friend;
 
-rule people-have-mutual-friends:
-when {
-($p1, $p2) isa friendship;
-($p2, $p3) isa friendship;
-} then {
-(one-degree-friend: $p1, one-degree-friend: $p3, mutual-friend: $p2) isa mutual-friendship;
-};
+	rule people-have-mutual-friends:
+		when {
+			($p1, $p2) isa friendship;
+			($p2, $p3) isa friendship;
+		} then {
+			(one-degree-friend: $p1, one-degree-friend: $p3, mutual-friend: $p2) isa mutual-friendship;
+		};
 
 ###########
 ## GROUP ##
@@ -487,64 +487,64 @@ when {
 # 	$per sub person;
 # get;
 
-group-ownership sub ownership,
-relates owned-group as owned;
+	group-ownership sub ownership,
+		relates owned-group as owned;
 
-membership sub relation,
-owns approved-date,
-plays membership-request:approved,
-relates member,
-relates membership-group;
+	membership sub relation,
+		owns approved-date,
+		plays membership-request:approved,
+		relates member,
+		relates membership-group;
 
-membership-request sub request,
-owns approved-date,
-relates approved as subject,
-relates membership-requester as requester,
-relates membership-respondent as respondent;
+	membership-request sub request,
+		owns approved-date,
+		relates approved as subject,
+		relates membership-requester as requester,
+		relates membership-respondent as respondent;
 
-social-group sub entity,
-abstract,
-owns name @key,
-plays group-ownership:owned-group,
-plays membership:membership-group,
-plays sharing:in;
+	social-group sub entity,
+		abstract,
+		owns name @key,
+		plays group-ownership:owned-group,
+		plays membership:membership-group,
+		plays sharing:in;
 
-public-group sub social-group;
+	public-group sub social-group;
 
-closed-group sub social-group;
+	closed-group sub social-group;
 
-secret-group sub social-group;
+	secret-group sub social-group;
 
-person sub entity,
-plays ownership:owner,
-plays membership:member,
-plays membership-request:membership-requester,
-plays membership-request:membership-respondent;
+	person sub entity,
+		plays ownership:owner,
+		plays membership:member,
+		plays membership-request:membership-requester,
+		plays membership-request:membership-respondent;
 
-#####################################
-## public group membership request ##
-#####################################
+	#####################################
+	## public group membership request ##
+	#####################################
 
-rule public-membership-is-automatically-approved:
-when {
-$group isa public-group;
-(owner: $owner, owned-group: $group) isa group-ownership;
-$membership (member: $member, membership-group: $group) isa membership;
-} then {
-(approved: $membership, membership-requester: $member, membership-respondent: $owner) isa membership-request;
-};
+	rule public-membership-is-automatically-approved:
+		when {
+			$group isa public-group;
+			(owner: $owner, owned-group: $group) isa group-ownership;
+			$membership (member: $member, membership-group: $group) isa membership;
+		} then {
+			(approved: $membership, membership-requester: $member, membership-respondent: $owner) isa membership-request;
+		};
 
-###################################
-## group owner is always member ##
-###################################
+	###################################
+	## group owner is always member ##
+	###################################
 
-rule owner-is-always-member:
-when {
-$group isa social-group;
-(owner: $owner, owned-group: $group) isa group-ownership;
-} then {
-(member: $owner, membership-group: $group) isa membership;
-};
+	rule owner-is-always-member:
+		when {
+			$group isa social-group;
+			(owner: $owner, owned-group: $group) isa group-ownership;
+		} then {
+			(member: $owner, membership-group: $group) isa membership;
+		};
 
 ##############
 ## TIMELINE ##
@@ -557,13 +557,13 @@ $group isa social-group;
 # 	$per sub person;
 # get;
 
-timeline-ownership sub ownership,
-relates timeline as owned;
+	timeline-ownership sub ownership,
+		relates timeline as owned;
 
-timeline sub entity,
-owns identifier @key,
-plays timeline-ownership:timeline,
-plays sharing:in;
+	timeline sub entity,
+	    owns identifier @key,
+		plays timeline-ownership:timeline,
+		plays sharing:in;
 
 ##########
 ## POST ##
@@ -586,66 +586,66 @@ plays sharing:in;
 # 	$per sub person;
 # get;
 
-reply sub relation,
-relates to,
-relates content,
-relates by;
+	reply sub relation,
+		relates to,
+		relates content,
+		relates by;
 
-tagging sub relation,
-relates tagged,
-relates in;
+	tagging sub relation,
+		relates tagged,
+		relates in;
 
-attachment sub relation,
-relates attached,
-relates to;
+	attachment sub relation,
+		relates attached,
+		relates to;
 
-reaction sub relation,
-relates emotion,
-relates to,
-relates by;
+	reaction sub relation,
+		relates emotion,
+		relates to,
+		relates by;
 
-post sub entity,
-abstract,
-owns identifier @key,
-plays content-permission:content,
-plays sharing:content,
-plays reply:to,
-plays tagging:in,
-plays reaction:to;
+	post sub entity,
+		abstract,
+		owns identifier @key,
+		plays content-permission:content,
+		plays sharing:content,
+		plays reply:to,
+		plays tagging:in,
+		plays reaction:to;
 
-status-update sub post,
-owns content,
-plays attachment:to;
+	status-update sub post,
+		owns content,
+		plays attachment:to;
 
-comment sub post,
-owns content,
-plays reply:content,
-plays attachment:to;
+	comment sub post,
+		owns content,
+		plays reply:content,
+		plays attachment:to;
 
-media-containment sub relation,
-relates container,
-relates media;
+	media-containment sub relation,
+		relates container,
+		relates media;
 
-album sub post,
-owns title,
-owns published-date,
-plays media-containment:container;
+	album sub post,
+		owns title,
+		owns published-date,
+		plays media-containment:container;
 
-media sub post,
-abstract,
-owns caption,
-owns file,
-plays media-containment:media,
-plays attachment:attached;
+	media sub post,
+		abstract,
+		owns caption,
+		owns file,
+		plays media-containment:media,
+		plays attachment:attached;
 
-video sub media;
+	video sub media;
 
-photo sub media;
+	photo sub media;
 
-person sub entity,
-plays tagging:tagged,
-plays reaction:by,
-plays reply:by;
+	person sub entity,
+		plays tagging:tagged,
+		plays reaction:by,
+		plays reply:by;
 
 #############
 ## SHARING ##
@@ -664,86 +664,86 @@ plays reply:by;
 # 	$puu sub public-user;
 # get;
 
-sharing sub relation,
-relates content,
-relates by,
-relates in;
+	sharing sub relation,
+		relates content,
+		relates by,
+		relates in;
 
-public-sharing sub sharing;
+	public-sharing sub sharing;
 
-friends-sharing sub sharing;
+	friends-sharing sub sharing;
 
-inclusive-sharing sub sharing,
-relates with;
+	inclusive-sharing sub sharing,
+		relates with;
 
-friends-with-exclusion-sharing sub sharing,
-relates hidden-from;
+	friends-with-exclusion-sharing sub sharing,
+		relates hidden-from;
 
-private-sharing sub sharing;
+	private-sharing sub sharing;
 
-content-permission sub relation,
-relates content,
-relates grantee;
+	content-permission sub relation,
+		relates content,
+		relates grantee;
 
-person sub entity,
-plays sharing:by,
-plays inclusive-sharing:with,
-plays friends-with-exclusion-sharing:hidden-from,
-plays content-permission:grantee;
+	person sub entity,
+		plays sharing:by,
+		plays inclusive-sharing:with,
+		plays friends-with-exclusion-sharing:hidden-from,
+		plays content-permission:grantee;
 
-public-user sub entity,
-plays content-permission:grantee;
+	public-user sub entity,
+		plays content-permission:grantee;
 
-###########################
-## posts view permission ##
-###########################
+	###########################
+	## posts view permission ##
+	###########################
 
-rule public-permission:
-when {
-(content: $sc) isa public-sharing;
-$pu isa public-user;
-} then {
-(content: $sc, grantee: $pu) isa content-permission;
-};
+	rule public-permission:
+		when {
+			(content: $sc) isa public-sharing;
+			$pu isa public-user;
+		} then {
+			(content: $sc, grantee: $pu) isa content-permission;
+		};
 
-rule friends-permission:
-when {
-(content: $sc, by: $sb) isa friends-sharing;
-(friend: $sb, $f) isa friendship;
-} then {
-(content: $sc, grantee: $f) isa content-permission;
-};
+	rule friends-permission:
+		when {
+			(content: $sc, by: $sb) isa friends-sharing;
+			(friend: $sb, $f) isa friendship;
+		} then {
+			(content: $sc, grantee: $f) isa content-permission;
+		};
 
-rule inclusive-permissions:
-when {
-(content: $sc, with: $sw) isa inclusive-sharing;
-} then {
-(content: $sc, grantee: $sw) isa content-permission;
-};
+	rule inclusive-permissions:
+		when {
+			(content: $sc, with: $sw) isa inclusive-sharing;
+		} then {
+			(content: $sc, grantee: $sw) isa content-permission;
+		};
 
-rule friends-excluded-permission:
-when {
-(content: $sc, by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
-(friend: $sb, $f) isa friendship;
-$f has email $fe;
-$hf has email $hfe;
-$fe != $hfe;
-} then {
-(content: $sc, grantee: $f) isa content-permission;
-};
+	rule friends-excluded-permission:
+		when {
+			(content: $sc, by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
+			(friend: $sb, $f) isa friendship;
+			$f has email $fe;
+			$hf has email $hfe;
+			$fe != $hfe;
+		} then {
+			(content: $sc, grantee: $f) isa content-permission;
+		};
 
-rule private-permission:
-when {
-(content: $sc, by: $sb) isa private-sharing;
-$pu isa public-user;
-} then {
-(content: $sc, grantee: $sb) isa content-permission;
-};
+	rule private-permission:
+		when {
+			(content: $sc, by: $sb) isa private-sharing;
+			$pu isa public-user;
+		} then {
+			(content: $sc, grantee: $sb) isa content-permission;
+		};
 
-rule author-permission:
-when {
-(content: $sc, by: $sb) isa sharing;
-$pu isa public-user;
-} then {
-(content: $sc, grantee: $sb) isa content-permission;
-};
+	rule author-permission:
+		when {
+			(content: $sc, by: $sb) isa sharing;
+			$pu isa public-user;
+		} then {
+			(content: $sc, grantee: $sb) isa content-permission;
+		};
