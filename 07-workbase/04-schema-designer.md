@@ -6,6 +6,15 @@ Summary: Using Workbase to design a schema.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+The schema designer is currently not yet stable in 2.0, and it has been disabled since the release 2.0.0-alpha-3. To view your schema in the visualiser, please run the following query:
+
+```
+match $x sub thing;
+```
+</div>
+
 ## Design a Schema
 Workbase allows the visualisation and design of a grakn schema.
 
