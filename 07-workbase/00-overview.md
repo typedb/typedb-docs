@@ -6,11 +6,6 @@ Summary: An overview of Grakn Workbase.
 toc: false
 ---
 
-<div class = "note">
-[Warning]
-There is not yet any Workbase release that is compatible with Grakn 2.0. It will be ready soon!
-</div>
-
 ## What is Workbase?
 The Grakn Workbase, along with the [Grakn Console](../02-console/01-console.md) and the [Grakn Clients](../03-client-api/00-overview.md), is an interface through which we can read from a Grakn knowledge graph.
 Workbase allows us to execute Graql [`match`](../11-query/01-match-clause.md) queries, and visualise and investigate their results.
