@@ -68,8 +68,7 @@ define
 
 	language sub attribute,
 		value string,
-		plays fluency:language,
-		plays mutual-fluency:language;
+		plays fluency:language;
 
 	content sub attribute,
 		value string,
@@ -122,28 +121,8 @@ define
 	periodic-event sub relation,
 		abstract,
 		owns start-date,
-		owns end-date,
-		plays event-overlap:overlapping;
+		owns end-date;
 
-	########################
-	## events overlapping ##
-	########################
-
-	event-overlap sub relation,
-		relates overlapping;
-
-	rule events-overlap:
-		when {
-			$e1 isa periodic-event;
-			$e1 has start-date $sd1, has end-date $ed1;
-			$e2 isa periodic-event;
-			$e2 has start-date $sd2, has end-date $ed2;
-			$sd2 > $sd1;
-			$sd2 < $ed1;
-			$e1 != $e2;
-		} then {
-			(overlapping: $e1, overlapping: $e2) isa event-overlap;
-		};
 
 ###########
 ## BIRTH ##
@@ -161,36 +140,14 @@ define
 	birth sub relation,
 		owns birth-date,
 		relates child,
-		plays localisation:located,
-		plays mutual-birthplace:birth;
+		plays localisation:located;
 
 	person sub entity,
-		plays birth:child,
-		plays mutual-birthplace:child;
+		plays birth:child;
 
 	location sub entity,
-		plays localisation:location,
-		plays mutual-birthplace:location;
+		plays localisation:location;
 
-	##############################
-	## birth location in common ##
-	##############################
-
-	mutual-birthplace sub relation,
-		relates child,
-		relates location,
-		relates birth;
-
-	rule people-born-at-the-same-location:
-		when {
-			$b1 (child: $p1) isa birth;
-			$b2 (child: $p2) isa birth;
-			($b1, location: $l) isa localisation;
-			($b2, location: $l) isa localisation;
-			$p1 != $p2;
-		} then {
-			(child: $p1, child: $p2, location: $l) isa mutual-birthplace;
-		};
 
 ################
 ## PARENTSHIP ##
@@ -272,32 +229,12 @@ define
 		plays localisation:located;
 
 	person sub entity,
-		plays residency:resident,
-		plays mutual-residency:resident;
+		plays residency:resident;
 
 	location sub entity,
-		plays localisation:location,
-		plays mutual-residency:residence;
+		plays localisation:location;
 
-	#########################
-	## residence in common ##
-	#########################
-
-	mutual-residency sub relation,
-		relates resident,
-		relates residence;
-
-	rule people-resided-at-the-same-location:
-		when {
-			$r1 (resident: $p1) isa residency;
-			$r2 (resident: $p2) isa residency;
-			($r1, location: $l) isa localisation;
-			($r2, location: $l) isa localisation;
-			$p1 != $p2;
-		} then {
-			(resident: $p1, resident: $p2, residence: $l) isa mutual-residency;
-		};
-
+	
 ###############
 ## EDUCATION ##
 ###############
@@ -325,20 +262,16 @@ define
 		owns ranking,
 		plays school-course-offering:school,
 		plays localisation:located,
-		plays studentship:school,
-		plays schoolmates:school;
+		plays studentship:school;
 
 	school-course sub entity,
 		owns title @key,
 		plays school-course-offering:course,
-		plays studentship:course,
-		plays coursemates:course;
+		plays studentship:course;
 
 	person sub entity,
 	        owns graduated,
-		plays studentship:student,
-		plays schoolmates:schoolmate,
-		plays coursemates:coursemate;
+		plays studentship:student;
 
 	##########################
 	## school offerings ##
@@ -355,37 +288,6 @@ define
 			(school: $s, course: $c) isa school-course-offering;
 		};
 
-	##########################
-	## educations in common ##
-	##########################
-
-	schoolmates sub relation,
-		relates schoolmate,
-		relates school;
-
-	rule people-who-attended-the-same-school-are-schoolmates:
-		when {
-			(student: $p1, course: $c1) isa studentship;
-			(student: $p2, course: $c2) isa studentship;
-			(course: $c1, school: $s) isa school-course-offering;
-			(course: $c2, school: $s) isa school-course-offering;
-			$p1 != $p2;
-		} then {
-			(schoolmate: $p1, schoolmate: $p2, school: $s) isa schoolmates;
-		};
-
-	coursemates sub relation,
-		relates coursemate,
-		relates course;
-
-	rule people-taken-the-same-course:
-		when {
-			$sce1 (student: $p1, course: $sc) isa studentship;
-			$sce2 (student: $p2, course: $sc) isa studentship;
-			$p1 != $p2;
-		} then {
-			(coursemate: $p1, coursemate: $p2, course: $sc) isa coursemates;
-		};
 
 ############
 ## TRAVEL ##
@@ -404,30 +306,8 @@ define
 		plays localisation:located;
 
 	person sub entity,
-		plays travel:traveler,
-		plays mutual-travel:traveler;
+		plays travel:traveler;
 
-	location sub entity,
-		plays mutual-travel:location;
-
-	#######################
-	## travels in common ##
-	#######################
-
-	mutual-travel sub relation,
-		relates traveler,
-		relates location;
-
-	rule people-traveled-to-the-same-location:
-		when {
-			$t1 (traveler: $p1) isa travel;
-			$t2 (traveler: $p2) isa travel;
-			($t1, location: $l) isa localisation;
-			($t2, location: $l) isa localisation;
-			$p1 != $p2;
-		} then {
-			(traveler: $p1, traveler: $p2, location: $l) isa mutual-travel;
-		};
 
 ##########
 ## WORK ##
@@ -460,15 +340,14 @@ define
 
 	profession sub entity,
 		owns title @key,
-		plays employment:job,
-		plays mutual-profession:job;
+		plays employment:job;
 
 	organisation sub entity,
 		owns name @key,
 		owns registration-number @key,
 		plays office-ownership:owner,
-		plays employment:employer,
-		plays mutual-employment:organisation;
+		plays employment:employer;
+
 
 	office sub entity,
     owns registration-number @key,
@@ -476,38 +355,9 @@ define
 		plays localisation:located;
 
 	person sub entity,
-		plays employment:employee,
-		plays mutual-employment:employee;
+		plays employment:employee;
 
-	##########################
-	## employment in common ##
-	##########################
 
-	mutual-employment sub relation,
-		relates employee,
-		relates organisation;
-
-	rule people-work-at-the-same-organisation:
-		when {
-			$e1 (employee: $p1, employer: $o) isa employment;
-			$e2 (employee: $p2, employer: $o) isa employment;
-			$p1 != $p2;
-		} then {
-			(employee: $p1, employee: $p2, organisation: $o) isa mutual-employment;
-		};
-
-	mutual-profession sub relation,
-		relates employee,
-		relates job;
-
-	rule people-work-do-the-same-job:
-		when {
-			$e1 (employee: $p1, job: $p) isa employment;
-			$e2 (employee: $p2, job: $p) isa employment;
-			$p1 != $p2;
-		} then {
-			(employee: $p1, employee: $p2, job: $p) isa mutual-profession;
-		};
 
 ##############
 ## Language ##
@@ -526,25 +376,9 @@ define
 		relates language;
 
 	person sub entity,
-		plays fluency:speaker,
-		plays mutual-fluency:speaker;
+		plays fluency:speaker;
 
-	##################################
-	## speaking languages in common ##
-	##################################
-
-	mutual-fluency sub relation,
-		relates speaker,
-		relates language;
-
-	rule people-speak-the-same-language:
-		when {
-			$flu1 (speaker: $p1, language: $l) isa fluency;
-			$flu2 (speaker: $p2, language: $l) isa fluency;
-			$p1 != $p2;
-		} then {
-			(speaker: $p1, speaker: $p2, language: $l) isa mutual-fluency;
-		};
+	
 
 #########################
 ## RELATIONSHIP STATUS ##
@@ -831,8 +665,6 @@ define
 # get;
 
 	sharing sub relation,
-#       FIXME(vmax): figure this out
-#		abstract,
 		relates content,
 		relates by,
 		relates in;
