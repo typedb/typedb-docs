@@ -63,7 +63,7 @@ person sub entity,
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-console/01-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the non-interactive mode of the [Grakn Console](../02-console/01-console.md).
+First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [Grakn Console](../02-console/01-console.md).
 
 <div class="note">
 [Note]
@@ -86,15 +86,15 @@ Open a schema write transaction:
 Inside that transaction, load the schema from file using the `source` command:
 ```
 social_network::schema::write> source path-to-the-social-network/schema.gql
-> commit
+social_network::schema::write> commit
 ```
 
 ### Load the Dataset
-Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_netowrk` database and use the `source` command to load the data from file:
+Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_network` database and use the `source` command to load the data from file:
 
 ```
 > transaction social_network data write
-social_network::data::write> source path-to-the-social-network/schema.gql
+social_network::data::write> source path-to-the-social-network/data.gql
 social_network::data::write> commit
 ```
 
@@ -107,7 +107,7 @@ Let's see an example of running [Graql get queries](../11-query/02-get-query.md)
 
 #### Retrieve the full name of everyone who has travelled to a location using [Grakn Console](../02-console/01-console.md)
 
-Using the open console, ask for a read transaction for the `social_network` database:
+Using the open console, open a read transaction for the `social_network` database:
 ```
 > transaction social_network data read
 social_network::data::read>
@@ -271,65 +271,52 @@ commit
 ### Store Knowledge
 Grakn is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a Grakn knowledge graph is made via pre-defined [Rules](../09-schema/03-rules.md).
 
-Let's look at some simple examples of how Grakn uses rules for reasoning over explicit data.
+Let's look at some simple examples of how Grakn uses rules for reasoning over explicit data. Let's say we want to find out what content a particular person has permission to view. 
+
+```graql
+define
+  
+content-permission sub relation,
+  relates grantee,
+  relates content;
+```
+
+As you can see in the `social_network_data.gql` file, no instance of `content-permission` was ever inserted. It's only through rules that allows Grakn to infer this knowledge and know the answer to the following question at query time.
+
+```graql
+match 
+$p isa person, has email "julie.hutchinson@gmail.com"; 
+(grantee: $p, content: $c)isa content-permission; 
+get $c;
+```
+Have a look at the `social_network_data.gql` file, there are a number of rules written to give permission to view content, based on how or where the content was shared. 
+
+Let's look at another rule:
 
 ```graql
 define
 
-coursemates sub relation,
-  relates coursemate,
-  relates course;
+mutual-friendship sub relation,
+  relates mutual-friend,
+  relates one-degree-friend;
 
-rule people-taken-the-same-course:
+rule people-have-mutual-friends:
   when {
-    $sce1 (student: $p1, course: $sc) isa studentship;
-    $sce2 (student: $p2, course: $sc) isa studentship;
-    $p1 != $p2;
+	($p1, $p2) isa friendship;
+	($p2, $p3) isa friendship;
   } then {
-    (coursemate: $p1, coursemate: $p2, course: $sc) isa coursemates;
+	(one-degree-friend: $p1, one-degree-friend: $p3, mutual-friend: $p2) isa mutual-friendship;
   };
 ```
 
-As you can see in the `social_network_data.gql` file, no instance of `coursemates` was ever inserted. It's only the rule above that allows Grakn to infer this knowledge and know the answer to the following question at query time.
+We can query for people who have friends in common, like so:
 
 ```graql
-match
-  $per isa person, has full-name "Miriam Morton";
-  (coursemate: $per, coursemate: $mate) isa coursemates;
-  $mate has full-name $mate-fn;
-get $mate-fn;
-```
-
-Given the second rule:
-
-```graql
-define
-
-schoolmates sub relation,
-  relates schoolmate,
-  relates school;
-
-rule people-who-attended-the-same-school-are-schoolmates:
-  when {
-    (student: $p1, course: $c1) isa studentship;
-    (student: $p2, course: $c2) isa studentship;
-    (course: $c1, school: $s) isa school-course-offering;
-    (course: $c2, school: $s) isa school-course-offering;
-    $p1 != $p2;
-  } then {
-    (schoolmate: $p1, schoolmate: $p2, school: $s) isa schoolmates;
-  };
-```
-
-We can query for people who have attended the same school and taken the same course, like so:
-
-```graql
-match
-  (coursemate: $mate-1, coursemate: $mate-2) isa coursemates;
-  (schoolmate: $mate-1, schoolmate: $mate-2) isa schoolmates;
-  $mate-1 has full-name $mate-1-fn;
-  $mate-2 has full-name $mate-2-fn;
-get $mate-1-fn, $mate-2-fn;
+match 
+$p isa person, has email "julie.hutchinson@gmail.com"; 
+$p2 isa person, has full-name $name; 
+(one-degree-friend: $p2, mutual-friend: $p)isa mutual-friendship; 
+get $p2, $name;
 ```
 
 Similar to the first rule, the answer we're asking for here, was never injected into the knowledge graph and is being inferred at query time by Grakn.
