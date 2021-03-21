@@ -7,13 +7,8 @@ define
 	full-name sub attribute, value string;
 	nickname sub attribute, value string;
 	unemployed sub attribute, value boolean;
-
-	title sub attribute,
-		value string;
-
-	event-date sub attribute,
-		abstract,
-		value datetime;
+	title sub attribute, value string;
+	event-date sub attribute, abstract, value datetime;
 	approved-date sub event-date;
 	birth-date sub event-date;
 	start-date sub event-date;

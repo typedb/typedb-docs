@@ -685,7 +685,8 @@ GraqlDefine query = Graql.define(
   type("language").sub("attribute").value(GraqlArg.ValueType.STRING).plays("fluency", "language"),
   type("person").sub("entity").plays("fluency", "speaker"),
   type("fluency").sub("relation").relates("speaker").relates("language")
-);```
+);
+```
 
 [tab:end]
 </div>
@@ -699,8 +700,7 @@ We can define an attribute to inherit the valuetype, attributes owned and roles 
 ```graql
 define
 
-event-date sub attribute,
-	value datetime;
+event-date sub attribute, abstract, value datetime;
 birth-date sub event-date;
 start-date sub event-date;
 end-date sub event-date;
@@ -733,8 +733,7 @@ There may be scenarios where a parent attribute is only defined for other attrib
 ```graql
 define
 
-event-date sub attribute, abstract,
-	value datetime;
+event-date sub attribute, abstract, value datetime;
 ```
 [tab:end]
 
