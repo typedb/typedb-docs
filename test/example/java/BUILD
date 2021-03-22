@@ -52,9 +52,9 @@ grakn_java_test(
         "@maven//:com_univocity_univocity_parsers",
         "@maven//:javax_xml_stream_stax_api",
     ],
-    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
-    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
-    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    server_mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    server_linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    server_windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:phone-calls-kg",
     ]
@@ -97,9 +97,9 @@ grakn_java_test(
         "@graknlabs_graql//java/query",
         "@graknlabs_graql//java/common",
     ],
-    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
-    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
-    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    server_mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    server_linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    server_windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:social-network-kg",
     ]
