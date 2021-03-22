@@ -124,7 +124,6 @@ public class PhoneCallsFirstQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
@@ -301,7 +300,6 @@ public class PhoneCallsSecondQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
@@ -473,7 +471,6 @@ public class PhoneCallsThirdQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
@@ -649,7 +646,6 @@ public class PhoneCallsForthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsForthQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
@@ -862,7 +858,6 @@ public class PhoneCallsFifthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {

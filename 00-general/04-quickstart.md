@@ -196,7 +196,6 @@ with GraknClient.core("localhost:1729") as client:
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function getAverageSalaryAt (orgName) {

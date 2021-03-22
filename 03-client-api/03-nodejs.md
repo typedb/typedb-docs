@@ -28,7 +28,6 @@ Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function openSession (database) {
@@ -47,7 +46,6 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function createTransactions (database) {
@@ -76,7 +74,6 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function runBasicQueries(database) {
