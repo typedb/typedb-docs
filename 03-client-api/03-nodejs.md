@@ -31,7 +31,7 @@ Instantiate a client and open a session.
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function openSession (database) {
-	const client = new GraknClient("localhost:1729");
+	const client = GraknClient.core("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 	// session is open
 	await session.close();
@@ -49,7 +49,7 @@ Create transactions to use for reading and writing data.
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function createTransactions (database) {
-	const client = new GraknClient("localhost:1729");
+	const client = GraknClient.core("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 
 	// creating a write transaction
@@ -77,7 +77,7 @@ Running basic retrieval and insertion queries.
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function runBasicQueries(database) {
-	const client = new GraknClient("localhost:1729");
+	const client = GraknClient.core("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 
 	// Insert a person using a WRITE transaction

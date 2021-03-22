@@ -199,7 +199,7 @@ with GraknClient.core("localhost:1729") as client:
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function getAverageSalaryAt (orgName) {
-    const client = new GraknClient("localhost:1729");
+    const client = GraknClient.core("localhost:1729");
 	const session = await client.session("social_network", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ)
 	const query = `

@@ -127,7 +127,7 @@ public class PhoneCallsFirstQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = new GraknClient("localhost:1729");
+    const client = GraknClient.core("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -303,7 +303,7 @@ public class PhoneCallsSecondQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = new GraknClient("localhost:1729");
+    const client = GraknClient.core("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -474,7 +474,7 @@ public class PhoneCallsThirdQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = new GraknClient("localhost:1729");
+    const client = GraknClient.core("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -649,7 +649,7 @@ public class PhoneCallsForthQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = new GraknClient("localhost:1729");
+    const client = GraknClient.core("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -861,7 +861,7 @@ public class PhoneCallsFifthQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-	const client = new GraknClient("localhost:1729");
+	const client = GraknClient.core("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
     const transaction = await session.transaction(TransactionType.READ);
 
