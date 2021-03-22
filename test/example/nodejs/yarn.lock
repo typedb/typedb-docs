@@ -565,18 +565,17 @@ google-protobuf@3.14.0:
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.14.0.tgz#20373d22046e63831a5110e11a84f713cc43651e"
   integrity sha512-bwa8dBuMpOxg7COyqkW6muQuvNnWgVN8TX/epDRGW5m0jcrmq2QJyCyiV8ZE2/6LaIIqJtiv9bYokFhfpy/o6w==
 
-"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-819827416397259d41b0da257fb6bf090419588b.tgz":
-  version "0.0.0-819827416397259d41b0da257fb6bf090419588b"
-  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-819827416397259d41b0da257fb6bf090419588b.tgz#75c4329cefe585ab3efa6f9541f22d7f686c366d"
+"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-38e43bde534295708c2435e984637a21249951d6.tgz":
+  version "0.0.0-38e43bde534295708c2435e984637a21249951d6"
+  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-38e43bde534295708c2435e984637a21249951d6.tgz#6d3fce9009db39a3b9f23b6a972ca03ad75ce8a7"
   dependencies:
     "@grpc/grpc-js" "1.2.1"
     google-protobuf "3.14.0"
-    grakn-protocol "2.0.0-alpha-8"
+    grakn-protocol "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4.tgz"
 
-grakn-protocol@2.0.0-alpha-8:
-  version "2.0.0-alpha-8"
-  resolved "https://registry.yarnpkg.com/grakn-protocol/-/grakn-protocol-2.0.0-alpha-8.tgz#e0885ae786d04e795eddf28abc341ff913ffe206"
-  integrity sha512-29wWnVkCAkoCgSRM4PuJPJSJrbEerFDy53Be/ryXhhZwNEFzUX6GkKJ5aah1SBDGGx68vICANrOMa9drKdAnxQ==
+"grakn-protocol@https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4.tgz":
+  version "0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4"
+  resolved "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4.tgz#73a446ff67e8a4ed046f80a0a23c4cee466355b3"
   dependencies:
     "@grpc/grpc-js" "1.2.1"
 
