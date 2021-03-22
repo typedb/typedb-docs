@@ -11,7 +11,7 @@ class PhoneCallsTest(unittest.TestCase):
 
             with GraknClient.core() as client:
                 if "phone_calls" in client.databases().all():
-                    client.databases().delete("phone_calls")
+                    client.databases().get("phone_calls").delete()
                 client.databases().create("phone_calls")
                 with client.session("phone_calls", SessionType.SCHEMA) as session:
                     with session.transaction(TransactionType.WRITE) as transaction:

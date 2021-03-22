@@ -155,7 +155,7 @@ methods:
         - void
     javascript:
       <<: *method-databases-delete
-      method: await client.databases().delete("database name");
+      method: await client.databases().get("database name").delete();
       returns:
         - void
     python:

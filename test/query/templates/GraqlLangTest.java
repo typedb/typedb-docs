@@ -115,7 +115,7 @@ public class GraqlLangTest {
 
     @AfterClass
     public static void closeSession() throws Exception {
-        client.databases().delete("social_network");
+        client.databases().get("social_network").delete();
     }
 
     // TEST METHODS PLACEHOLDER

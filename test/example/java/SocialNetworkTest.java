@@ -50,7 +50,7 @@ public class SocialNetworkTest {
     @AfterClass
     public static void cleanSocialNetwork() {
         GraknClient client = GraknClient.core("localhost:1729");
-        client.databases().delete("social_network");
+        client.databases().get("social_network").delete();
         System.out.println("Deleted the social_network database");
     }
 }

@@ -84,7 +84,7 @@ public class PhoneCallsTest {
     @AfterClass
     public static void cleanPhoneCalls() {
         GraknClient client = GraknClient.core("localhost:1729");
-        client.databases().delete("phone_calls");
+        client.databases().get("phone_calls").delete();
         client.close();
     }
 }

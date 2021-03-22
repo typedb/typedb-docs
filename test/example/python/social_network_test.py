@@ -11,7 +11,7 @@ class SocialNetworkTest(unittest.TestCase):
 
             with GraknClient.core() as client:
                 if "social_network" in client.databases().all():
-                    client.databases().delete("social_network")
+                    client.databases().get("social_network").delete()
                 client.databases().create("social_network")
                 with client.session("social_network", SessionType.SCHEMA) as session:
                     with session.transaction(TransactionType.WRITE) as transaction:
