@@ -124,9 +124,8 @@ public class PhoneCallsFirstQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
@@ -302,9 +301,8 @@ public class PhoneCallsSecondQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
@@ -475,9 +473,8 @@ public class PhoneCallsThirdQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
@@ -652,9 +649,8 @@ public class PhoneCallsForthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsForthQuery.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
     const client = new GraknClient("localhost:1729");
@@ -866,9 +862,8 @@ public class PhoneCallsFifthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
 	const client = new GraknClient("localhost:1729");

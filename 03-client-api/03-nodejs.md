@@ -21,16 +21,15 @@ In your source, require `grakn-client/rpc/GraknClient`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
+const { GraknClient } = require("grakn-client/GraknClient");
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function openSession (database) {
 	const client = new GraknClient("localhost:1729");
@@ -48,9 +47,8 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function createTransactions (database) {
 	const client = new GraknClient("localhost:1729");
@@ -78,9 +76,8 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/rpc/GraknClient");
 const { Grakn } = require("grakn-client/Grakn");
-const { SessionType, TransactionType } = Grakn;
+const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function runBasicQueries(database) {
 	const client = new GraknClient("localhost:1729");
