@@ -10,7 +10,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 beforeAll(async function() {
     const client = GraknClient.core("localhost:1729");
     if (await(client.databases().contains('social_network'))) {
-        await client.databases().get('social_network').delete();
+        await (await client.databases().get('social_network')).delete();
     }
     await client.databases().create('social_network');
     const session = await client.session("social_network", SessionType.SCHEMA);

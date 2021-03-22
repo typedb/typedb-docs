@@ -10,7 +10,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 const loadSchema = async () => {
     const client = GraknClient.core("localhost:1729");
     if (await(client.databases().contains('phone_calls'))) {
-        await client.databases().get('phone_calls').delete();
+        await (await client.databases().get('phone_calls')).delete();
     }
     await client.databases().create('phone_calls');
     const session = await client.session("phone_calls", SessionType.SCHEMA);
@@ -25,7 +25,7 @@ const loadSchema = async () => {
 
 const deleteDatabase = async () => {
     const client = GraknClient.core("localhost:1729");
-    await client.databases().get("phone_calls").delete();
+    await (await client.databases().get("phone_calls")).delete();
     console.log("Deleted the phone_calls database");
     await client.close();
 }
