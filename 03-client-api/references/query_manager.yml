@@ -395,7 +395,7 @@ methods:
           default: default GraknOptions - uses server defaults
     java:
       <<: *method-undefine
-      method: transaction.query().define(GraqlUndefine query, GraknOptions options);
+      method: transaction.query().undefine(GraqlUndefine query, GraknOptions options);
       accepts:
         <<: *accepts-undefine
         param1:

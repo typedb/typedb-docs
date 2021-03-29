@@ -11,7 +11,7 @@ methods:
           description: The type of transaction to be created (READ or WRITE).
           required: true
         param2:
-          name: type
+          name: options
           description: Options for the session.
           type: "[`GraknOptions`](#options)"
           required: false
@@ -35,7 +35,7 @@ methods:
           description: The type of transaction to be created (READ or WRITE).
           required: true
         param2:
-          name: type
+          name: options
           description: Options for the session.
           type: "[`GraknOptions`](#options)"
           required: false
