@@ -1,4 +1,4 @@
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import *
 import unittest
 
 
@@ -9,7 +9,7 @@ class SocialNetworkTest(unittest.TestCase):
         with open('files/social-network/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            with GraknClient.core() as client:
+            with Grakn.core_client() as client:
                 if "social_network" in client.databases().all():
                     client.databases().get("social_network").delete()
                 client.databases().create("social_network")

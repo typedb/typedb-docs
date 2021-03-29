@@ -85,7 +85,7 @@ Let’s move on.
 
 ```javascript
 async function buildPhoneCallGraph(inputs) {
-    const client = GraknClient.core("localhost:1729");
+    const client = Grakn.coreClient("localhost:1729");
     const session = client.session("phone_calls", SessionType.DATA);
 
     for (input of inputs) {
@@ -465,7 +465,7 @@ const inputs = [
  * 5. closes the client
  */
 async function buildPhoneCallGraph() {
-    const client = GraknClient.core("localhost:1729"); // 1
+    const client = Grakn.coreClient("localhost:1729"); // 1
     const session = await client.session("phone_calls", SessionType.DATA); // 2
 
     for (input of inputs) {
@@ -604,7 +604,7 @@ const inputs = [
  */
 
 async function buildPhoneCallGraph() {
-    const client = GraknClient.core("localhost:1729"); // 1
+    const client = Grakn.coreClient("localhost:1729"); // 1
     const session = await client.session("phone_calls", SessionType.DATA); // 2
 
     for (input of inputs) {
@@ -755,7 +755,7 @@ const inputs = [
  * 5. closes the client
  */
 async function buildPhoneCallGraph() {
-    const client = GraknClient.core("localhost:1729"); // 1
+    const client = Grakn.coreClient("localhost:1729"); // 1
     const session = await client.session("phone_calls", SessionType.DATA); // 2
 
     for (input of inputs) {

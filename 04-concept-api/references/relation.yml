@@ -18,6 +18,7 @@ methods:
       method: relation.get_type()
       returns:
         - "[`RelationType`](../concept-api/type?tab=python#relationtype-methods)"
+
   - method:
     common: &method-rolePlayersMap
       title: Retrieve role players per role
@@ -37,6 +38,26 @@ methods:
       method: relation.get_players_by_role_type()
       returns:
         - "Dictionary of [`Role`](../concept-api/type?tab=python#roletype-methods) to List of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
+
+  - method:
+    common: &method-relating
+      title: Retrieve role types currently played
+      description: Retrieves all role types currently played in this Relation.
+    java:
+      <<: *method-relating
+      method: relation.getRelating();
+      returns:
+        - "Stream<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
+    javascript:
+      <<: *method-relating
+      method: relation.getRelating();
+      returns:
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-relating
+      method: relation.get_relating()
+      returns:
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
   - method:
     common: &method-rolePlayers
@@ -74,7 +95,7 @@ methods:
           <<: *accepts-rolePlayers-role
           type: "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
       returns:
-        - "Iterator of [`Thing`](../concept-api/thing?tab=java#thing-methods)"
+        - "Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
   - method:
     common: &method-assign

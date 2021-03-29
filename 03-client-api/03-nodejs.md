@@ -17,7 +17,7 @@ npm install grakn-client
 ## Quickstart
 First make sure that the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In your source, require `grakn-client/rpc/GraknClient`.
+In your source, require `grakn-client/GraknClient`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
@@ -31,7 +31,7 @@ Instantiate a client and open a session.
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function openSession (database) {
-	const client = GraknClient.core("localhost:1729");
+	const client = Grakn.coreClient("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 	// session is open
 	await session.close();
@@ -49,7 +49,7 @@ Create transactions to use for reading and writing data.
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function createTransactions (database) {
-	const client = GraknClient.core("localhost:1729");
+	const client = Grakn.coreClient("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 
 	// creating a write transaction
@@ -77,7 +77,7 @@ Running basic retrieval and insertion queries.
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function runBasicQueries(database) {
-	const client = GraknClient.core("localhost:1729");
+	const client = Grakn.coreClient("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 
 	// Insert a person using a WRITE transaction
@@ -146,6 +146,8 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 {% include api/generic.html data=site.data.03_client_api.references.query_manager language="javascript" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.query_future language="javascript" %}
 
 {% include api/generic.html data=site.data.03_client_api.references.stream language="javascript" %}
 

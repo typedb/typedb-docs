@@ -14,10 +14,10 @@ In this section and the following pages, we learn the mechanism that a Grakn cli
 All Grakn Clients share a common architecture. Simply put, the main components of a Grakn client are the `client` itself, `session` and `transaction`.
 
 ### Client
-A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server). We would then use this connection to manage databases and open sessions.
+A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server). We then use this connection to manage databases and open sessions.
 
 ### Session
-A session is responsible for connecting our application to a particular database. This connection would then allow opening transactions to carry out queries. We can think of a session as a two-way long-lasting tunnel that connects our application to a particular database on the Grakn server.
+A session is responsible for connecting our application to a particular database. This connection then allows opening transactions to carry out queries. We can think of a session as a two-way long-lasting tunnel that connects our application to a particular database on the Grakn server.
 
 ### Transaction
 A transaction is responsible for performing write and read operations over the concept types and instances within the connected database. When executing a query to retrieve data, an iterator is returned, which can then be lazily consumed to execute a request on the server to return the next concrete result.

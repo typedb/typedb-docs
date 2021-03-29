@@ -536,17 +536,17 @@ To see some `get` queries powered by complex and expressive `match` clauses, che
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`execute()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`query().match()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the `query()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the `query().match()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the `query()`method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the `query().match()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

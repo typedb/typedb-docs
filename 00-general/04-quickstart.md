@@ -144,9 +144,9 @@ import java.util.List;
 
 public class SocialNetworkQuickstartQuery {
     public static void main(String[] args) {
-        GraknClient client = GraknClient.core("localhost:1729");
-        GraknClient.Session session = client.session("social_network", GraknClient.Session.Type.DATA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        GraknClient client = Grakn.coreClient("localhost:1729");
+        GraknSession session = client.session("social_network", GraknSession.Type.DATA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
         GraqlMatch query = match(
                 var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
@@ -172,9 +172,9 @@ public class SocialNetworkQuickstartQuery {
 
 <!-- test-example social_network_quickstart_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import *
 
-with GraknClient.core("localhost:1729") as client:
+with Grakn.core_client("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
       with session.transaction(TransactionType.READ) as transaction:
         query = '''
@@ -199,7 +199,7 @@ with GraknClient.core("localhost:1729") as client:
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function getAverageSalaryAt (orgName) {
-    const client = GraknClient.core("localhost:1729");
+    const client = Grakn.coreClient("localhost:1729");
 	const session = await client.session("social_network", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ)
 	const query = `

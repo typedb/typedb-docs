@@ -255,20 +255,20 @@ methods:
   - method:
     common: &method-getPlays
       title: Retrieve roles
-      description: Retrieves the roles that this Thing plays.
+      description: Retrieves the roles that this Thing is currently playing.
     java:
       <<: *method-getPlays
-      method: thing.getPlays();
+      method: thing.getPlaying();
       returns:
         - "Stream of [`RoleType`](../concept-api/type?tab=java#roletype-methods)"
     javascript:
       <<: *method-getPlays
-      method: await thing.getPlays();
+      method: await thing.getPlaying();
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getPlays
-      method: thing.get_plays()
+      method: thing.get_playing()
       returns:
         - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 

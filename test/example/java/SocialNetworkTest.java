@@ -19,10 +19,10 @@ public class SocialNetworkTest {
 
     @BeforeClass
     public static void loadSocialNetwork() {
-        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient client = Grakn.coreClient("localhost:1729");
         client.databases().create("social_network");
-        GraknClient.Session session = client.session("social_network", GraknClient.Session.Type.SCHEMA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        GraknSession session = client.session("social_network", GraknSession.Type.SCHEMA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
@@ -49,7 +49,7 @@ public class SocialNetworkTest {
 
     @AfterClass
     public static void cleanSocialNetwork() {
-        GraknClient client = GraknClient.core("localhost:1729");
+        GraknClient client = Grakn.coreClient("localhost:1729");
         client.databases().get("social_network").delete();
         System.out.println("Deleted the social_network database");
     }

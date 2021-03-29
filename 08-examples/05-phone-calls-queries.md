@@ -84,9 +84,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsFirstQuery {
     public static void main(String[] args) {
-        GraknClient client = GraknClient.core("localhost:1729");
-        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        GraknClient client = Grakn.coreClient("localhost:1729");
+        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match",
@@ -127,7 +127,7 @@ public class PhoneCallsFirstQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = GraknClient.core("localhost:1729");
+    const client = Grakn.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -169,9 +169,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_first_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType, SessionType, TransactionType
+from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient.core() as client:
+with Grakn.core_client() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -258,9 +258,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsSecondQuery {
     public static void main(String[] args) {
-        GraknClient client = GraknClient.core("localhost:1729");
-        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        GraknClient client = Grakn.coreClient("localhost:1729");
+        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -303,7 +303,7 @@ public class PhoneCallsSecondQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = GraknClient.core("localhost:1729");
+    const client = Grakn.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -347,9 +347,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_second_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType, SessionType, TransactionType
+from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient.core() as client:
+with Grakn.core_client() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
       with session.transaction(TransactionType.READ) as transaction:
         query = [
@@ -432,9 +432,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsThirdQuery {
     public static void main(String[] args) {
-        GraknClient client = GraknClient.core("localhost:1729");
-        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        GraknClient client = Grakn.coreClient("localhost:1729");
+        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -474,7 +474,7 @@ public class PhoneCallsThirdQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = GraknClient.core("localhost:1729");
+    const client = Grakn.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -517,7 +517,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient.core() as client:
+with Grakn.core_client() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -604,9 +604,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsForthQuery {
     public static void main(String[] args) {
-        GraknClient client = GraknClient.core("localhost:1729");
-        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        GraknClient client = Grakn.coreClient("localhost:1729");
+        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -649,7 +649,7 @@ public class PhoneCallsForthQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-    const client = GraknClient.core("localhost:1729");
+    const client = Grakn.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -696,7 +696,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient.core() as client:
+with Grakn.core_client() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -804,9 +804,9 @@ import java.util.stream.Collectors;
 
 public class PhoneCallsFifthQuery {
     public static void main(String[] args) {
-        GraknClient client = GraknClient.core("localhost:1729");
-        GraknClient.Session session = client.session("phone_calls", GraknClient.Session.Type.DATA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        GraknClient client = Grakn.coreClient("localhost:1729");
+        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
         List&lt;String&gt; firstQueryAsList = Arrays.asList(
                 "match",
@@ -861,7 +861,7 @@ public class PhoneCallsFifthQuery {
 const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
 
 async function ExecuteMatchQuery() {
-	const client = GraknClient.core("localhost:1729");
+	const client = Grakn.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
     const transaction = await session.transaction(TransactionType.READ);
 
@@ -926,7 +926,7 @@ ExecuteMatchQuery();
 ```python
 from grakn.client import GraknClient, SessionType, TransactionType
 
-with GraknClient.core() as client:
+with Grakn.core_client() as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             first_query = [

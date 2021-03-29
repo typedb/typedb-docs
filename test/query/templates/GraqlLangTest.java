@@ -21,52 +21,52 @@ import java.util.List;
 
 public class GraqlLangTest {
     static GraknClient client;
-    static GraknClient.Session session;
-    GraknClient.Transaction transaction;
+    static GraknSession session;
+    GraknTransaction transaction;
 
     private void runQuery(GraqlQuery query) {
         List<ConceptMap> conceptMaps;
         Numeric num;
         try {
             if (query instanceof GraqlMatch) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 conceptMaps = transaction.query().match(query.asMatch()).collect(Collectors.toList());
             } else if (query instanceof GraqlMatch.Aggregate) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 transaction.query().match(query.asMatchAggregate()).get();
             } else if (query instanceof GraqlMatch.Group) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 List<ConceptMapGroup> x = transaction.query().match(query.asMatchGroup()).collect(Collectors.toList());
             } else if (query instanceof GraqlMatch.Aggregate) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 num = transaction.query().match(query.asMatchAggregate()).get();
             } else if (query instanceof GraqlMatch.Group.Aggregate) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 List<NumericGroup> x = transaction.query().match(query.asMatchGroupAggregate()).collect(Collectors.toList());
             } else if (query instanceof GraqlDefine) {
-                session = client.session("social_network", GraknClient.Session.Type.SCHEMA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.SCHEMA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 transaction.query().define(query.asDefine()).get();
             } else if (query instanceof GraqlUndefine) {
-                session = client.session("social_network", GraknClient.Session.Type.SCHEMA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.SCHEMA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 transaction.query().undefine(query.asUndefine()).get();
             } else if (query instanceof GraqlInsert) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 conceptMaps = transaction.query().insert(query.asInsert()).collect(Collectors.toList());
             } else if (query instanceof GraqlDelete) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 transaction.query().delete(query.asDelete()).get();
             } else if (query instanceof GraqlUpdate) {
-                session = client.session("social_network", GraknClient.Session.Type.DATA);
-                transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+                session = client.session("social_network", GraknSession.Type.DATA);
+                transaction = session.transaction(GraknTransaction.Type.WRITE);
                 conceptMaps = transaction.query().update(query.asUpdate()).collect(Collectors.toList());
             } else if (query instanceof GraqlCompute) {
                 // FIXME(vmax): we dunno how to run them yet
@@ -88,10 +88,10 @@ public class GraqlLangTest {
     public static void loadSocialNetwork() throws Exception {
         String address = "localhost:1729";
 
-        client = GraknClient.core(address);
+        client = Grakn.coreClient(address);
         client.databases().create("social_network");
-        session = client.session("social_network", GraknClient.Session.Type.SCHEMA);
-        GraknClient.Transaction transaction = session.transaction(GraknClient.Transaction.Type.WRITE);
+        session = client.session("social_network", GraknSession.Type.SCHEMA);
+        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/social-network/schema.gql"));

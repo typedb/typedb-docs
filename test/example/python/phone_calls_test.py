@@ -1,4 +1,4 @@
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import *
 import unittest
 
 
@@ -9,7 +9,7 @@ class PhoneCallsTest(unittest.TestCase):
         with open('files/phone-calls/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            with GraknClient.core() as client:
+            with Grakn.core_client() as client:
                 if "phone_calls" in client.databases().all():
                     client.databases().get("phone_calls").delete()
                 client.databases().create("phone_calls")

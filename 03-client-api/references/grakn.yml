@@ -7,25 +7,36 @@ methods:
         The created object connects our application with the running Grakn Server.
       accepts: &accepts-client-core
         param1: &accepts-client-core-uri
-          name: uri
-          description: The host:port on which the Grakn Server is running
+          name: address
+          description: The address (host:port) on which the Grakn Server is running
           type: String
           required: true
-          default: localhost:1729
+        param2: &accepts-client-core-parallelisation
+          name: parallelisation
+          description: The number of threads to use for server communication
+          type: int
+          required: false
+          default: Scales based on host machine's number of available CPU cores
       returns:
         - "[Client](#client)"
     java:
       <<: *method-client-core
-      method: GraknClient.core(String uri);
+      method: Grakn.coreClient(String address, int parallelisation);
+    javascript:
+      <<: *method-client-core
+      method: Grakn.coreClient(address);
       accepts:
         param1:
           <<: *accepts-client-core-uri
-    javascript:
-      <<: *method-client-core
-      method: new GraknClient(uri);
     python:
       <<: *method-client-core
-      method: GraknClient(uri)
+      method: Grakn.core_client(address, parallelisation)
+      accepts:
+        param1:
+          <<: *accepts-client-core-uri
+        param2:
+          <<: *accepts-client-core-parallelisation
+          default: 2
   - method:
     common: &method-client-cluster
       title: Instantiating a Grakn Cluster client
@@ -35,20 +46,34 @@ methods:
       accepts: &accepts-client-cluster
         param1: &accepts-client-cluster-addresses
           name: addresses
-          description: All host:port on which Grakn Cluster nodes are running
-          type: String...
+          description: All addresses (host:port) on which Grakn Cluster nodes are running
+          type: Set<String>
           required: true
+        param2: &accepts-client-cluster-parallelisation
+          name: parallelisation
+          description: The number of threads to use for server communication
+          type: int
+          required: false
+          default: Scales based on host machine's number of available CPU cores
       returns:
         - "[Client](#client)"
     java:
       <<: *method-client-cluster
-      method: GraknClient.cluster(String... addresses);
+      method: Grakn.clusterClient(Set<String> addresses, int parallelisation);
+    javascript:
+      <<: *method-client-cluster
+      method: Grakn.clusterClient(addresses);
       accepts:
         param1:
           <<: *accepts-client-cluster-addresses
-    javascript:
-      <<: *method-client-cluster
-      method: new GraknClient.cluster(addresses);
+          type: Array of String
     python:
       <<: *method-client-cluster
-      method: GraknClient.cluster(addresses)
+      method: Grakn.cluster_client(addresses, parallelisation)
+      accepts:
+        param1:
+          <<: *accepts-client-cluster-addresses
+          type: list of String
+        param2:
+          <<: *accepts-client-cluster-parallelisation
+          default: 2
