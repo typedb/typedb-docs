@@ -270,7 +270,7 @@ types:
               description: The string representation of a variable
               type: String
           returns:
-            - [`ConceptMap.Explainable`](#explainable)
+            - "[`ConceptMap.Explainable`](#explainable)"
         java:
           <<: *method-explainables-relation
           method: conceptMap.explainables().relation(String variable);
@@ -291,7 +291,7 @@ types:
               description: The string representation of a variable
               type: String
           returns:
-            - [`ConceptMap.Explainable`](#explainable)
+            - "[`ConceptMap.Explainable`](#explainable)"
         java:
           <<: *method-explainables-attribute
           method: conceptMap.explainables().attribute(String variable);
@@ -312,7 +312,7 @@ types:
               description: The string representation of a variable
               type: String
           returns:
-            - [`ConceptMap.Explainable`](#explainable)
+            - "[`ConceptMap.Explainable`](#explainable)"
         java:
           <<: *method-explainables-ownership
           method: conceptMap.explainables().ownership(String variable);
