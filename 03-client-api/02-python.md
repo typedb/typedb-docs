@@ -17,20 +17,6 @@ If multiple Python versions are available, you may wish to use
 pip3 install grakn-client
 ```
 
-### Grakn Core 2.0
-Grakn Core 2.0 is currently in alpha, and will be updated frequently.
-
-To install Client Python 2.0, use:
-```
-pip install grakn-client=={version}
-```
-If multiple Python versions are available, you may wish to use
-```
-pip3 install grakn-client=={version}
-```
-
-where `version` is the latest release of Client Python 2.0, which can be found on [PyPi](https://pypi.org/project/grakn-client/#history).
-
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
@@ -152,7 +138,7 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 | Client Python  | Grakn Core                  | Grakn Cluster  | Python         |
 | :------------: | :-------------------------: | :----------:   | :------------: |
-| 2.0.0-a3       | 2.0.0-alpha                 | N/A            | \>= 3.6        |
+| 2.0.0          | 2.0.0                       | N/A            | \>= 3.6        |
 | 1.8.0          | 1.8.0 to 1.8.4              | N/A            | \>= 3.5, < 3.8 |
 | 1.7.2          | 1.7.1, 1.7.2                | N/A            | \>= 2.7        |
 | 1.7.1          | 1.7.1                       | N/A            | \>= 2.7        |      

@@ -8,7 +8,7 @@ toc: false
 
 <div class = "note">
 [Warning]
-The schema designer is not yet stable in version 2.0 and has been disabled as of 2.0.0-alpha-3. To view your schema in the visualiser, please run the following query:
+The schema designer is not yet stable in version 2.0 and has been disabled. To view your schema in the visualiser, please run the following query:
 
 ```
 match $x sub thing;
