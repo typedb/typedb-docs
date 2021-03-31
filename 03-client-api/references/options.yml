@@ -7,7 +7,7 @@ description:
     for Grakn Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `true`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `false`)
     - `explain`: whether to enable explanations for the provided query (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
     - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
@@ -26,7 +26,7 @@ description:
     for Grakn Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `True`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `False`)
     - `explain`: whether to enable explanations for the provided query (default: `False`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `True`)
     - `batch_size`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
@@ -45,7 +45,7 @@ description:
     for Grakn Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `true`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `false`)
     - `explain`: whether to enable explanations for the provided query (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
     - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)

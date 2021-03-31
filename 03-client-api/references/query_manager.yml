@@ -331,6 +331,38 @@ methods:
         - Iterator of [ConceptMap](#conceptmap)
 
   - method:
+    common: &method-explain
+      title: Execute a Graql Explain query
+      description: Performs a Graql Explain query in the transaction.
+      accepts:
+        param1:
+          name: explainable
+          type: "[`ConceptMap.Explainable`](#explainable)"
+          description: The Explainable to be explained.
+          required: true
+        param2:
+          name: options
+          type: "[`GraknOptions`](#options)"
+          description: Specify query options
+          required: false
+          default: default GraknOptions - uses server defaults
+    java:
+      <<: *method-explain
+      method: transaction.query().explain(ConceptMap.Explainable explainable, GraknOptions options);
+      returns:
+        - Stream<[Explanation](#explanation)>
+    javascript:
+      <<: *method-explain
+      method: transaction.query().explain(explainable, options);
+      returns:
+        - "[Stream](#stream) of [Explanation](#explanation)"
+    python:
+      <<: *method-explain
+      method: transaction.query().explain(explainable, options)
+      returns:
+        - Iterator of [Explanation](#explanation)
+
+  - method:
     common: &method-define
       title: Execute a Graql Define query
       description: Performs a Graql Define query in the transaction.
