@@ -26,7 +26,7 @@ methods:
           <<: *accepts-match-query
           type: "`GraqlMatch`"
       returns:
-        - Stream<[ConceptMap](#conceptmap)>
+        - "Stream<[ConceptMap](#conceptmap)>"
     javascript:
       <<: *method-match
       method: transaction.query().match(query, options);
@@ -73,7 +73,7 @@ methods:
           <<: *accepts-matchAggregate-query
           type: "`GraqlMatch.Aggregate`"
       returns:
-        - Future<[Numeric](#numeric)>
+        - "QueryFuture<[Numeric](#numeric)>"
     javascript:
       <<: *method-matchAggregate
       method: await transaction.query().matchAggregate(query, options);
@@ -120,7 +120,7 @@ methods:
           <<: *accepts-matchGroup-query
           type: "`GraqlMatch.Group`"
       returns:
-        - Stream<[ConceptMapGroup](#conceptmapgroup)>
+        - "Stream<[ConceptMapGroup](#conceptmapgroup)>"
     javascript:
       <<: *method-matchGroup
       method: transaction.query().matchGroup(query, options);
@@ -167,7 +167,7 @@ methods:
           <<: *accepts-matchGroupAggregate-query
           type: "`GraqlMatch.Group.Aggregate`"
       returns:
-        - Stream<[NumericGroup](#numericgroup)>
+        - "Stream<[NumericGroup](#numericgroup)>"
     javascript:
       <<: *method-matchGroupAggregate
       method: transaction.query().matchGroupAggregate(query, options);
@@ -214,7 +214,7 @@ methods:
           <<: *accepts-insert-query
           type: "`GraqlInsert`"
       returns:
-        - Stream<[ConceptMap](#conceptmap)>
+        - "Stream<[ConceptMap](#conceptmap)>"
     javascript:
       <<: *method-insert
       method: transaction.query().insert(query, options);
@@ -308,7 +308,7 @@ methods:
           <<: *accepts-update-query
           type: "`GraqlUpdate`"
       returns:
-        - Stream<[ConceptMap](#conceptmap)>
+        - "Stream<[ConceptMap](#conceptmap)>"
     javascript:
       <<: *method-update
       method: transaction.query().update(query, options);
@@ -350,7 +350,7 @@ methods:
       <<: *method-explain
       method: transaction.query().explain(ConceptMap.Explainable explainable, GraknOptions options);
       returns:
-        - Stream<[Explanation](#explanation)>
+        - "Stream<[Explanation](#explanation)>"
     javascript:
       <<: *method-explain
       method: transaction.query().explain(explainable, options);
