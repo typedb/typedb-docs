@@ -1,4 +1,4 @@
-from grakn.client import GraknClient
+from grakn.client import *
 import unittest
 
 
@@ -9,10 +9,13 @@ class PhoneCallsTest(unittest.TestCase):
         with open('files/phone-calls/schema.gql', 'r') as schema:
             define_query = schema.read()
 
-            with GraknClient(uri="localhost:48555") as client:
-                with client.session(keyspace="phone_calls") as session:
-                    with session.transaction().write() as transaction:
-                        transaction.query(define_query)
+            with Grakn.core_client() as client:
+                if "phone_calls" in client.databases().all():
+                    client.databases().get("phone_calls").delete()
+                client.databases().create("phone_calls")
+                with client.session("phone_calls", SessionType.SCHEMA) as session:
+                    with session.transaction(TransactionType.WRITE) as transaction:
+                        transaction.query().define(define_query)
                         transaction.commit()
                         print("Loaded the phone_calls schema")
 
@@ -40,12 +43,6 @@ class PhoneCallsTest(unittest.TestCase):
     def test_h_phone_calls_xml_migration(self):
         import phone_calls_xml_migration
 
-    @classmethod
-    def tearDownClass(cls):
-        with GraknClient(uri="localhost:48555") as client:
-            client.keyspaces().delete("phone_calls")
-            print("Deleted the phone_calls keyspace")
-
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=4)

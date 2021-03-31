@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2020 Grakn Labs
+# Copyright (C) 2021 Grakn Labs
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -21,33 +21,20 @@ def graknlabs_dependencies():
     git_repository(
         name = "graknlabs_dependencies",
         remote = "https://github.com/graknlabs/dependencies",
-        commit = "a33f4709708b748d9f8b7b7b056b69dad4b74656", # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_build_tools
-    )
-
-def graknlabs_common():
-    git_repository(
-        name = "graknlabs_common",
-        remote = "https://github.com/graknlabs/common",
-        tag = "0.2.4", # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_build_tools
+        commit = "4925161bec1321e69338905fcad5cae326940da8", # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_build_tools
     )
 
 def graknlabs_client_java():
     git_repository(
         name = "graknlabs_client_java",
         remote = "https://github.com/graknlabs/client-java",
-        tag = "1.8.3" # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_java
+        commit = "5d51459c78ab35965da028d6de2d0e3d140ccad8" # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_java
     )
 
 def graknlabs_client_python():
     git_repository(
         name = "graknlabs_client_python",
         remote = "https://github.com/graknlabs/client-python",
-        commit = "4b8dd3f865ef528cbae60a27eb7d67d9fe4663be" # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_python
+        commit = "fd1bd7b6ac48d934ee1e9fde93e6eb32c504803e" # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_python
     )
 
-def graknlabs_client_nodejs():
-    git_repository(
-        name = "graknlabs_client_nodejs",
-        remote = "https://github.com/graknlabs/client-nodejs",
-        commit = "3b37b6ce323a893d7d48e10a9cf3f4aa6b0d9c58" # sync-marker: do not remove this comment, this is used for sync-dependencies by @graknlabs_client_nodejs
-    )

@@ -1,23 +1,63 @@
 methods:
   - method:
+    common: &method-type
+      title: Retrieve type (Local)
+      description: Retrieves the type which this Relation belongs to.
+    java:
+      <<: *method-type
+      method: relation.getType();
+      returns:
+        - "[`RelationType`](../concept-api/type?tab=java#relationtype-methods)"
+    javascript:
+      <<: *method-type
+      method: await relation.getType();
+      returns:
+        - "[`RelationType`](../concept-api/type?tab=javascript#relationtype-methods)"
+    python:
+      <<: *method-type
+      method: relation.get_type()
+      returns:
+        - "[`RelationType`](../concept-api/type?tab=python#relationtype-methods)"
+
+  - method:
     common: &method-rolePlayersMap
       title: Retrieve role players per role
       description: Retrieves a map of all instances involved in the Relation and the role each play.
     java:
       <<: *method-rolePlayersMap
-      method: relation.rolePlayersMap();
+      method: relation.getPlayersByRoleType();
       returns:
-        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), List<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`RoleType`](../concept-api/type?tab=java#roletype-methods), List<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     javascript:
       <<: *method-rolePlayersMap
-      method: await relation.rolePlayersMap();
+      method: await relation.getPlayersByRoleType();
       returns:
-        - 'Map<[`Role`](../concept-api/type?tab=java#role-methods), Array<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
+        - 'Map<[`RoleType`](../concept-api/type?tab=javascript#roletype-methods), Array of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)>'
     python:
       <<: *method-rolePlayersMap
-      method: relation.role_players_map()
+      method: relation.get_players_by_role_type()
       returns:
-        - Dict[[`Role`](../concept-api/type?tab=java#role-methods), List[[`Thing`](../concept-api/thing?tab=java#thing-methods)]]
+        - "Dictionary of [`Role`](../concept-api/type?tab=python#roletype-methods) to List of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
+
+  - method:
+    common: &method-relating
+      title: Retrieve role types currently played
+      description: Retrieves all role types currently played in this Relation.
+    java:
+      <<: *method-relating
+      method: relation.getRelating();
+      returns:
+        - "Stream<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
+    javascript:
+      <<: *method-relating
+      method: relation.getRelating();
+      returns:
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-relating
+      method: relation.get_relating()
+      returns:
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
   - method:
     common: &method-rolePlayers
@@ -31,83 +71,86 @@ methods:
           default: N/A
     java:
       <<: *method-rolePlayers
-      method: relation.rolePlayers(Role role);
+      method: relation.getPlayers(RoleType role);
       accepts:
         param:
           <<: *accepts-rolePlayers-role
-          type: "[`Role`](../concept-api/type?tab=java#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
       returns:
-        - "Stream of [`Thing`](../concept-api/thing?tab=java) objects"
+        - "Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>"
     javascript:
       <<: *method-rolePlayers
-      method: await relation.rolePlayers(role);
+      method: relation.getPlayers(role);
       accepts:
         param:
           <<: *accepts-rolePlayers-role
-          type: "[`Role`](../concept-api/type?tab=javascript#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
       returns:
-        - "Iterator of [`Thing`](../concept-api/thing?tab=java) objects"
+        - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript)"
     python:
       <<: *method-rolePlayers
-      method: relation.role_players(role)
+      method: relation.get_players(role)
       accepts:
         param:
           <<: *accepts-rolePlayers-role
-          type: "[`Role`](../concept-api/type?tab=python#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
       returns:
-        - "Iterator of [`Thing`](../concept-api/thing?tab=java) objects"
+        - "Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
   - method:
     common: &method-assign
       title: Add roleplayer
       description: Adds a new roleplayer to play the given role in this Relation.
       accepts: &accepts-assign
-        param: &accepts-assign-role
+        param1: &accepts-assign-role
           name: role
           description: The role to be played by the `thing`
           required: true
           default: N/A
-        param: &accepts-assign-thing
+        param2: &accepts-assign-thing
           name: thing
           description: The thing to play the `role`
           required: true
           default: N/A
     java:
       <<: *method-assign
-      method: relation.assign(Role role, Thing thing);
+      method: relation.addPlayer(RoleType role, Thing thing);
       accepts:
+        <<: *accepts-assign
         param1:
           <<: *accepts-assign-role
-          type: "[`Role`](../concept-api/type?tab=java#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
         param2:
           <<: *accepts-assign-thing
-          type: "[`Thing`](../concept-api/thing?tab=java)"
+          type: "[`Thing`](../concept-api/thing?tab=java#thing-methods)"
       returns:
-        - '[`Relation`](../concept-api/thing#relation-methods) object'
+        - void
     javascript:
       <<: *method-assign
-      method: await relation.assign(role, thing);
+      method: await relation.addPlayer(role, thing);
       accepts:
+        <<: *accepts-assign
         param1:
           <<: *accepts-assign-role
-          type: "[`Role`](../concept-api/type?tab=javascript#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
         param2:
           <<: *accepts-assign-thing
-          type: "[`Thing`](../concept-api/thing?tab=javascript)"
+          type: "[`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-assign
-      method: relation.assign(role, thing)
+      method: relation.add_player(role, thing)
       accepts:
+        <<: *accepts-assign
         param1:
           <<: *accepts-assign-role
-          type: "[`Role`](../concept-api/type?tab=python#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
         param2:
           <<: *accepts-assign-thing
-          type: "[`Thing`](../concept-api/thing?tab=python)"
+          type: "[`Thing`](../concept-api/thing?tab=python#thing-methods)"
       returns:
-        - '[`Relation`](../concept-api/thing#relation-methods) object'
+        - None
 
   - method:
     common: &method-unassign
@@ -122,42 +165,65 @@ methods:
         param2: &accepts-unassign-thing
           name: thing
           description: The instance to no longer play the `role` in this Relation.
-          type: "[`Thing`](../concept-api/thing)"
           required: true
           default: N/A
     java:
       <<: *method-unassign
-      method: relation.unassign(Role role, Thing thing);
+      method: relation.removePlayer(RoleType role, Thing thing);
       accepts:
         param1:
           <<: *accepts-unassign-role
-          type: "[`Role`](../concept-api/type?tab=java#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
         param2:
           <<: *accepts-unassign-thing
-          type: "[`Thing`](../concept-api/thing?tab=java)"
+          type: "[`Thing`](../concept-api/thing?tab=java#thing-methods)"
       returns:
-        - '[`Relation`](../concept-api/thing#relation-methods) object'
+        - void
     javascript:
       <<: *method-unassign
-      method: await relation.unassign(role, thing);
+      method: await relation.removePlayer(role, thing);
       accepts:
         param1:
           <<: *accepts-unassign-role
-          type: "[`Role`](../concept-api/type?tab=javascript#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
         param2:
           <<: *accepts-unassign-thing
-          type: "[`Thing`](../concept-api/thing?tab=javascript)"
+          type: "[`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
       returns:
-        - "`void`"
+        - void
     python:
       <<: *method-unassign
-      method: relation.unassign(role, thing)
+      method: relation.remove_player(role, thing)
       accepts:
         param1:
           <<: *accepts-unassign-role
-          type: "[`Role`](../concept-api/type?tab=python#role-methods)"
+          type: "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
         param2:
           <<: *accepts-unassign-thing
-          type: "[`Thing`](../concept-api/thing?tab=python)"
+          type: "[`Thing`](../concept-api/thing?tab=python#thing-methods)"
       returns:
-        - "[`Relation`](../concept-api/thing#relation-methods) object"
+        - None
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the Relation.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteRelation`"
+    java:
+      <<: *method-asRemote
+      method: relation.asRemote(Transaction tx);
+      returns:
+        - "`Relation.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: relation.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: relation.as_remote(tx)

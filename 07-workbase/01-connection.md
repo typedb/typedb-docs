@@ -1,13 +1,13 @@
 ---
 pageTitle: Configuring Connection
 keywords: grakn, workbase, workbase preferences
-longTailKeywords: grakn workbase preferences, grakn workbase connection, grakn workbase manage keyspaces
+longTailKeywords: grakn workbase preferences, grakn workbase connection, grakn workbase manage databases
 Summary: Working with the preferences panel in Grakn Workbase.
 toc: false
 ---
 
 ## Connect to Grakn
-Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) and interacts with [keyspaces](../06-management/01-keyspace.md). In this short section, we learn how to configure this connection and select a keyspace to interact with.
+Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) and interacts with [databases](../06-management/01-database.md). In this short section, we learn how to configure this connection and select a database to interact with.
 
 ### Start Workbase for Grakn Core
 
@@ -15,9 +15,9 @@ Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-ru
 [caption: We can specify the host and port when we start workbase.]
 
 
-### Start Workbase for Grakn KGMS [KGMS ONLY]
+### Start Workbase for Grakn Cluster [Cluster ONLY]
 
-![Connection](/docs/images/workbase/preferences_kgms-login.png)
+![Connection](/docs/images/workbase/preferences_cluster-login.png)
 [caption: We can specify the host, port, username and password when we start workbase.]
 
 
@@ -44,42 +44,42 @@ Workbase connects to a running [Grakn Server](/docs/running-grakn/install-and-ru
 </div>
 
 
-### Select A Keyspace
+### Select A Database
 <div class="slideshow">
 
 [slide:start]
-[body:start]![Select a Keyspace](/docs/images/workbase/preferences_select-keyspace.png)[body:end]
-[footer:start]To select a **keyspace** for Workbase to connect to, we need to click on the keyspace button.[footer:end]
+[body:start]![Select a Database](/docs/images/workbase/preferences_select-database.png)[body:end]
+[footer:start]To select a **database** for Workbase to connect to, we need to click on the database button.[footer:end]
 [slide:end]
 
 [slide:start]
-[body:start]![Select a Keyspace](/docs/images/workbase/preferences_list-keyspaces.png)[body:end]
-[footer:start]This shows us the list of all keyspaces running on the Grakn Server. We then select the keyspace of interest.[footer:end]
+[body:start]![Select a Database](/docs/images/workbase/preferences_list-databases.png)[body:end]
+[footer:start]This shows us the list of all databases running on the Grakn Server. We then select the database of interest.[footer:end]
 [slide:end]
 
 [slide:start]
-[body:start]![Select a Keyspace](/docs/images/workbase/preferences_keyspace-selected.png)[body:end]
-[footer:start]Keyspace is now connected to the selected keyspace, in our case that is named `social_network`.[footer:end]
+[body:start]![Select a Database](/docs/images/workbase/preferences_database-selected.png)[body:end]
+[footer:start]Database is now connected to the selected database, in our case that is named `social_network`.[footer:end]
 [slide:end]
 
 </div>
 
-### Manage Keyspaces
+### Manage Databases
 <div class="slideshow">
 
 [slide:start]
-[body:start]![Select a Keyspace](/docs/images/workbase/preferences_open-preferences.png)[body:end]
-[footer:start]To manage our keyspaces click on the top right **gear** icon to open worbase preferences.[footer:end]
+[body:start]![Select a Database](/docs/images/workbase/preferences_open-preferences.png)[body:end]
+[footer:start]To manage our databases click on the top right **gear** icon to open worbase preferences.[footer:end]
 [slide:end]
 
 [slide:start]
-[body:start]![Select a Keyspace](/docs/images/workbase/preferences_create-keyspace.png)[body:end]
-[footer:start]The preferences will list all keyspaces. We can type a name and click on **Create New Keyspace**.[footer:end]
+[body:start]![Select a Database](/docs/images/workbase/preferences_create-database.png)[body:end]
+[footer:start]The preferences will list all databases. We can type a name and click on **Create New Database**.[footer:end]
 [slide:end]
 
 [slide:start]
-[body:start]![Select a Keyspace](/docs/images/workbase/preferences_delete-keyspace.png)[body:end]
-[footer:start]We may delete an existing keyspace by clicking the **trash** icon and confirming.[footer:end]
+[body:start]![Select a Database](/docs/images/workbase/preferences_delete-database.png)[body:end]
+[footer:start]We may delete an existing database by clicking the **trash** icon and confirming.[footer:end]
 [slide:end]
 
 </div>

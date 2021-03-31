@@ -24,15 +24,15 @@ Matching instances of an entity type is easy. We do so by using a variable follo
 
 [tab:Graql]
 ```graql
-match $p isa person; get;
+match $p isa person; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person")
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -46,15 +46,15 @@ To only match the instances of entities that own a specific attribute, we use th
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $n; get;
+match $p isa person, has full-name $n; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person").has("full-name", var("n"))
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -69,15 +69,15 @@ Because of the [dependent nature of relations](../09-schema/01-concepts.md#defin
 
 [tab:Graql]
 ```graql
-match $emp (employer: $x, employee: $y) isa employment; get;
+match $emp (employer: $x, employee: $y) isa employment; get $emp;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("emp").isa("employment").rel("employer", "x").rel("employee", "y")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("emp").rel("employer", "x").rel("employee", "y").isa("employment")
+).get("emp");
 ```
 [tab:end]
 </div>
@@ -91,15 +91,15 @@ To only match the instances of relations that own a specific attribute, we use t
 
 [tab:Graql]
 ```graql
-match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; get;
+match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; get $emp;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("emp").isa("employment").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref"))
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("emp").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref")).isa("employment")
+).get("emp");
 ```
 [tab:end]
 </div>
@@ -113,15 +113,16 @@ Assigning a relation to a variable is optional. We may only be interested in the
 
 [tab:Graql]
 ```graql
-match (employer: $x, employee: $y) isa employment; get;
+match (employer: $x, employee: $y) isa employment;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var().isa("employment").rel("employer", "x").rel("employee", "y")
-).get();
+// FIXME(vmax): anonymous variables are not allowed 
+//GraqlMatch.Filtered query = Graql.match(
+//  var().isa("employment").rel("employer", "x").rel("employee", "y")
+//).get();
 ```
 [tab:end]
 </div>
@@ -133,15 +134,15 @@ We can always choose to not include the label of roles when matching a relation.
 
 [tab:Graql]
 ```graql
-match $fr ($x, $y) isa friendship; get;
+match $fr ($x, $y) isa friendship; get $fr;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("fr").isa("friendship").rel("x").rel("y")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("fr").rel("x").rel("y").isa("friendship")
+).get("fr");
 ```
 [tab:end]
 </div>
@@ -156,15 +157,15 @@ We can match instances of attributes type based on their value regardless of the
 
 [tab:Graql]
 ```graql
-match $x "like"; get;
+match $x "like"; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").val("like")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").eq("like")
+).get("x");
 ```
 [tab:end]
 </div>
@@ -178,15 +179,15 @@ We can match instances of attributes based on their value regardless of what con
 
 [tab:Graql]
 ```graql
-match $n isa nickname; $n "Mitzi"; get;
+match $n isa nickname; $n "Mitzi"; get $n;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").isa("nickname").val("Mitzi")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").eq("Mitzi").isa("nickname")
+).get("x");
 ```
 [tab:end]
 </div>
@@ -200,15 +201,15 @@ To match all instances of attribute types that contain a substring, we use the `
 
 [tab:Graql]
 ```graql
-match $phone-number contains "+44"; get;
+match $phone-number contains "+44"; get $phone-number;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("phone-number").contains("+44")
-).get();
+).get("phone-number");
 ```
 [tab:end]
 </div>
@@ -222,15 +223,15 @@ The value of an attribute can also be matched using a regex. We allow the range 
 
 [tab:Graql]
 ```graql
-match $x like "(Miriam Morton|Solomon Tran)"; get;
+match $x like "(Miriam Morton|Solomon Tran)"; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("phone-number").regex("(Miriam Morton|Solomon Tran)")
-).get();
+).get("phone-number");
 ```
 [tab:end]
 </div>
@@ -244,15 +245,15 @@ To match instances of a concept type that owns multiple attributes, we can simpl
 
 [tab:Graql]
 ```graql
-match $p isa person, has nickname $nn, has full-name $fn; get;
+match $p isa person, has nickname $nn, has full-name $fn; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person").has("nickname", var("nn")).has("full-name", var("fn"))
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -264,15 +265,15 @@ We can also match instances that own an attribute with a specific value or range
 
 [tab:Graql]
 ```graql
-match $s isa school, has ranking < 100; get;
+match $s isa school, has ranking < 100; get $s;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("s").isa("school").has("ranking", Graql.lt(100))
-).get();
+).get("s");
 ```
 [tab:end]
 </div>
@@ -283,16 +284,16 @@ But if in this example, we still want to know the ranking of each matched school
 
 [tab:Graql]
 ```graql
-match $s isa school, has ranking $r; $r < 100; get;
+match $s isa school, has ranking $r; $r < 100; get $s;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("s").isa("school").has("ranking", var("r")),
   var("r").lt(100)
-).get();
+).get("s");
 ```
 [tab:end]
 </div>
@@ -304,19 +305,19 @@ By default, a collection of patterns in a `match` clause constructs conjunction 
 
 [tab:Graql]
 ```graql
-match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get;
+match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   var("p").isa("person").has("full-name", var("fn")),
   or(
     var("fn").contains("Miriam"),
     var("fn").contains("Solomon")
   )
-).get();
+).get("p");
 ```
 [tab:end]
 </div>
@@ -328,15 +329,15 @@ The type that an instance belongs to may be a subtype of another. This means whe
 
 [tab:Graql]
 ```graql
-match $rr isa! romantic-relationship; get;
+match $rr isa! romantic-relationship; get $rr;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("rr").isaX("romantic-relationship")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("rr").isa("romantic-relationship")
+).get("rr");
 ```
 [tab:end]
 </div>
@@ -345,23 +346,22 @@ This query matches only the direct instances of `romantic-relationship`. That me
 
 ### One particular instance
 Grakn assigns an auto-generated id to each instance. Although this id is generated by Grakn solely for internal use, it is indeed possible to find an instance with its Grakn id.
-To do so, we use the `id` keyword followed by the `id` assigned to the instance by Grakn.
+To do so, we use the `iid` keyword followed by the `iid` assigned to the instance by Grakn.
 
 <div class="tabs dark">
-
 [tab:Graql]
 <!-- test-ignore -->
 ```graql
-match $x id V41016; get;
+match $x iid 0x966e80018000000000000000; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 <!-- test-ignore -->
 ```java
-GraqlGet query = Graql.match(
-  var("x").id("V41016")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").iid("0x966e80018000000000000000")
+).get("x");
 ```
 [tab:end]
 </div>
@@ -380,15 +380,15 @@ To match all schema concepts of a given type, **all the way down the type hierar
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x sub post; get;
+match $x sub post; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query_a = Graql.match(
+GraqlMatch.Filtered query_a = Graql.match(
   var("x").sub("post")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -401,15 +401,15 @@ To match the schema concepts of a given type, **all the way down its type hierar
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x sub! post; get;
+match $x sub! post; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query_a = Graql.match(
+GraqlMatch.Filtered query_a = Graql.match(
   var("x").subX("post")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -422,15 +422,16 @@ To match only the given type and not any of its subtypes, we use the `type` keyw
 <div class="tabs dark">
 [tab:Graql]
 ```graql
-match $x type post; get;
+match $x type post; get $x;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
-GraqlGet query_a = Graql.match(
+GraqlMatch.Filtered query_a = Graql.match(
   var("x").type("post")
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -445,15 +446,15 @@ Given a particular relation, we can use the `relates` keyword to match all roles
 
 [tab:Graql]
 ```graql
-match employment relates $x; get;
+match employment relates $x; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+GraqlMatch.Filtered query = Graql.match(
   type("employment").relates(var("x"))
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -466,22 +467,23 @@ When we learned about [subtyping relations](../09-schema/01-concepts.md#subtype-
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-delay -->
 ```graql
-match location-of-office relates $x as located-subject; get;
+match friend-request relates $x as located; get $x;
 ```
 [tab:end]
 
 [tab:Java]
+<!-- test-delay -->
 ```java
-GraqlGet query = Graql.match(
-  type("location-of-office").relates(var("x")),
-  var("x").sub("located-subject")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  type("friend-request").relates(var("x"), "subject")
+).get("x");
 ```
 [tab:end]
 </div>
 
-This matches all the roles that correspond to the `located-subject` role of the relation which `location-of-office` subtypes. In this case, the super-relation being `location-of-everything` and the matched role being `located-subject`.
+This matches all the roles that correspond to the `subject` role of the relation which `friend-request` subtypes. In this case, the super-relation being `request` and the matched role being `friendship`.
 
 ### Role players of a given role
 Given a role, we can match the concept types that play the given role by using the `plays` keyword.
@@ -490,15 +492,15 @@ Given a role, we can match the concept types that play the given role by using t
 
 [tab:Graql]
 ```graql
-match $x plays employee; get;
+match $x plays employment:employee; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").plays("employee")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").plays("employment", "employee")
+).get("x");
 ```
 [tab:end]
 </div>
@@ -512,15 +514,15 @@ Given an attribute type, we can match the concept types that own the given attri
 
 [tab:Graql]
 ```graql
-match $x has title; get;
+match $x has title $t; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("x").has("title")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("x").has("title", var("t"))
+).get("x");
 ```
 [tab:end]
 </div>
@@ -534,17 +536,17 @@ To see some `get` queries powered by complex and expressive `match` clauses, che
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a query that contains a `match` clause, is as simple as calling the [`query().match()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the `query().match()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a query that contains a `match` clause, is as simple as passing the Graql(string) query to the `query().match()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

@@ -41,7 +41,7 @@ insert $x isa emotion; $x "like";
 [tab:Java]
 ```java
 GraqlInsert query = Graql.insert(
-  var("x").isa("emotion").val("like")
+  var("x").eq("like").isa("emotion")
 );
 ```
 [tab:end]
@@ -68,7 +68,7 @@ GraqlInsert query = Graql.match(
   var("org").isa("organisation").has("name", "Facelook"),
   var("person").isa("person").has("email", "tanya.arnold@gmail.com")
 ).insert(
-  var("new-employment").isa("employment").rel("employer", "org").rel("employee", "person").has("reference-id", "WGFTSH")
+  var("new-employment").rel("employer", "org").rel("employee", "person").has("reference-id", "WGFTSH").isa("employment")
 );
 ```
 [tab:end]
@@ -105,7 +105,7 @@ insert
 GraqlInsert query = Graql.match(
   var("person").isa("person")
 ).insert(
-  var("reflexive-friendship").isa("friendship").rel("friend", "person").rel("friend", "person")
+  var("reflexive-friendship").rel("friend", "person").rel("friend", "person").isa("friendship")
 );
 ```
 [tab:end]
@@ -117,34 +117,65 @@ As a consequence, you can query for the duplicate role player as a duplicate rol
 
 [tab:Graql]
 ```graql
-match $friendship (friend: $p, friend: $p) isa friendship; get;
+match $friendship (friend: $p, friend: $p) isa friendship; get $friendship;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("friendship").isa("friendship").rel("friend", "p").rel("friend", "p")
-).get();
+GraqlMatch.Filtered query = Graql.match(
+  var("friendship").rel("friend", "p").rel("friend", "p").isa("friendship")
+).get("friendship");
 ```
 [tab:end]
 </div>
+
+### Extending a relation with a new role player
+We can add role players to a relation by `match`ing the relation and the concept that will be the new role player, and then insert the new role player into the same relation.
+
+<div class="tabs dark">
+
+[tab:Graql]
+```graql
+## inserting the new role player into some theoretical multi-employment relation
+match
+  $emp (employer: $org, employee: $p) isa employment;
+  $p2 isa person;
+  not { $p = $p2; };
+insert $emp (employee: $p2) isa employment;
+```
+[tab:end]
+
+[tab:Java]
+```java
+GraqlInsert insert_query = Graql.match(
+ var("emp").rel("employer", var("org")).rel("employee", var("p")).isa("employment"),
+  var("p").isa("person"),
+  var("p2").isa("person"),
+  not(var("p").eq(var("p2")))
+).insert(
+  var("emp").rel("employee", var("p2")).isa("employment")
+);
+```
+[tab:end]
+</div>
+
 
 ## Clients Guide
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `insert` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing an `insert` query, is as simple as calling the [`query().insert()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `insert` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing an `insert` query, is as simple as passing the Graql(string) query to the `query().insert()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `insert` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing an `insert` query, is as simple as passing the Graql(string) query to the `query().insert()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

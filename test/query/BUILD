@@ -19,23 +19,39 @@
 #
 #
 
-load("@graknlabs_common//test/server:rules.bzl", "grakn_test")
+load("@graknlabs_common//test:rules.bzl", "grakn_java_test", "native_grakn_artifact")
+
+
+native_grakn_artifact(
+    name = "native-grakn-artifact",
+    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
+    output = "grakn-core-server-native.tar.gz",
+    visibility = ["//test:__subpackages__"],
+)
 
 #########################
 # Graql Java Query Test #
 #########################
-grakn_test(
+grakn_java_test(
     name = "graql-java",
     test_class = "grakn.doc.test.query.GraqlJavaTest",
     srcs = [":graql-java-tests"],
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
+        "@graknlabs_graql//java/common",
+        "@graknlabs_graql//java/pattern",
+        "@graknlabs_graql//java/query",
     ],
-    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
+    server_mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    server_linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    server_windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
+        "//files:negation/schema.gql",
     ]
 )
 
@@ -54,19 +70,25 @@ genrule(
 #########################
 # Graql Lang Query Test #
 #########################
-grakn_test(
+grakn_java_test(
     name = "graql-lang",
     test_class = "grakn.doc.test.query.GraqlLangTest",
     srcs = [":graql-lang-tests"],
     deps = [
         "@graknlabs_client_java//:client-java",
         "@graknlabs_graql//java:graql",
+        "@graknlabs_graql//java/query",
+        "@graknlabs_graql//java/pattern"
     ],
-    grakn_artifact = "@graknlabs_grakn_core_artifact//file",
+    server_mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
+    server_linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
+    server_windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
-    ]
+        "//files:negation/schema.gql",
+    ],
+    size = "large",
 )
 
 

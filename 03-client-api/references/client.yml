@@ -2,80 +2,172 @@ title: "Client"
 methods:
   - method:
     common: &method-session
-      title: Create a session/keyspace
+      title: Create a session for a database
       description: >
-        Opens a communication tunnel (session) to the given keyspace on the running Grakn server.
-        **If no keyspace with the given name exists, a new one is created.**
+        Opens a communication tunnel (session) to the given database on the running Grakn server.
       accepts: &accepts-session
-        param: &accepts-session-keyspace
-          name: keyspace
-          description: The name of the keyspace with which the session connects.
+        param1: &accepts-session-database
+          name: database
+          description: The name of the database with which the session connects.
           type: String
           required: true
           default: N/A
+        param2: &accepts-session-type
+          name: type
+          description: The type of session to be created (DATA or SCHEMA)
+          type: SessionType
+          required: true
+          default: N/A
+        param3: &accepts-session-options
+          name: options
+          description: Options for the session.
+          type: "[`GraknOptions`](#options)"
+          required: false
+          default: N/A
       returns:
-        - "[Session](#session) object"
+        - "[Session](#session)"
     java:
       <<: *method-session
-      method: client.session(String keyspace);
+      method: client.session(String database, Session.Type sessionType, GraknOptions options);
+      param2:
+        <<: *accepts-session-type
+        type: Session.Type
     javascript:
       <<: *method-session
-      method: await client.session(keyspace)
+      method: await client.session(database, sessionType, options)
     python:
       <<: *method-session
-      method: client.session(keyspace)
+      method: client.session(database, session_type, options)
 
   - method:
-    common: &method-keyspaces-retrieve
-      title: Retrieve all keyspaces
-      description: Retrieves the name of all keyspaces running on the Grakn server.
+    common: &method-databases-all
+      title: Retrieve all databases
+      description: Retrieves all databases running on the Grakn server.
     java:
-      <<: *method-keyspaces-retrieve
-      method: client.keyspaces().retrieve();
+      <<: *method-databases-all
+      method: client.databases().all();
       returns:
-        - List of Strings
+        - List<Database>
     javascript:
-      <<: *method-keyspaces-retrieve
-      method: await client.keyspaces().retrieve();
+      <<: *method-databases-all
+      method: await client.databases().all();
       returns:
-        - Array of Strings
+        - Array of String
     python:
-      <<: *method-keyspaces-retrieve
-      method: client.keyspaces().retrieve()
+      <<: *method-databases-all
+      method: client.databases().all()
       returns:
-        - List of Strings
+        - list of Database
 
   - method:
-    common: &method-keyspaces-delete
-      title: Delete a keyspace
-      description: Deletes a keyspace with the given name.
-      accepts: &accepts-keyspaces-delete
-        param: &accepts-keyspaces-delete-keyspace
-          name: keypsace
-          description: The name of the keyspace to be deleted.
+    common: &method-databases-contains
+      title: Check if a database exists
+      description: Checks if a database with the given name exists
+      accepts: &accepts-databases-contains
+        param: &accepts-databases-contains-database
+          name: database
+          description: The database name to be checked.
+          type: String
+          required: true
+          default: N/A
+    returns:
+      - boolean
+    java:
+      <<: *method-databases-contains
+      method: client.databases().contains(String database);
+    javascript:
+      <<: *method-databases-contains
+      method: await client.databases().contains(database);
+    python:
+      <<: *method-databases-contains
+      method: client.databases().contains(database)
+
+  - method:
+    common: &method-databases-create
+      title: Create a database
+      description: Create a database with the given name.
+      accepts: &accepts-databases-create
+        param: &accepts-databases-create-database
+          name: database
+          description: The name of the database to be created.
           type: String
           required: true
           default: N/A
     java:
-      <<: *method-keyspaces-delete
-      method: client.keyspaces().delete(String keyspace);
+      <<: *method-databases-create
+      method: client.databases().create(String database);
       returns:
         - void
     javascript:
-      <<: *method-keyspaces-delete
-      method: await client.keyspaces().delete("keyspace name");
+      <<: *method-databases-create
+      method: await client.databases().create("database name");
       returns:
         - void
     python:
-      <<: *method-keyspaces-delete
-      method: client.keyspaces().delete("keyspace name")
+      <<: *method-databases-create
+      method: client.databases().create("database name")
+      returns:
+        - None
+
+  - method:
+    java:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.databases().get(String database);
+      returns:
+        - Database
+    python:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.databases().get("database name");
+      returns:
+        - Database
+
+  - method:
+    common: &method-databases-delete
+      title: Delete a database
+      description: Deletes a database with the given name.
+      accepts: &accepts-databases-delete
+        param: &accepts-databases-delete-database
+          name: database
+          description: The name of the database to be deleted.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-databases-delete
+      method: client.databases().get(String database).delete();
+      returns:
+        - void
+    javascript:
+      <<: *method-databases-delete
+      method: await (await client.databases().get("database name")).delete();
+      returns:
+        - void
+    python:
+      <<: *method-databases-delete
+      method: client.databases().get("database name").delete()
       returns:
         - None
 
   - method:
     common: &method-close
       title: Close a client
-      description: Before instantiating a new client, the client that's currently open should first be closed.
+      description: Closes the client. Before instantiating a new client, the client that's currently open should first be closed.
     java:
       <<: *method-close
       method: client.close();

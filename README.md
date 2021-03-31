@@ -63,7 +63,7 @@ PRs that have the `development` branch as their _base_, contains changes that ar
 **Headlines**
 
 - Headlines should be phrased in a way that when read the user can determine the question that the text is meant to answer. They should describe a use-case.
-- Use primitive verbs (eg: _Manage Keyspaces_ as opposed to _Managing Keyspaces_) or _Keyspace Management_.
+- Use primitive verbs (eg: _Manage Databases_ as opposed to _Managing Databases_) or _Database Management_.
 
 ### Using Images
 
@@ -235,10 +235,10 @@ To add sections/pages to the sidebar, modify the [`sidebar.yml`](views/sidebar.y
 
 ### Compatibility Tables
 
-The documentation of each interface to Grakn (i.e. clients, workbase, console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, Grakn Core or Grakn KGMS. The convention in constructing these tables is as follows:
+The documentation of each interface to Grakn (i.e. clients, workbase, console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, Grakn Core or Grakn Cluster. The convention in constructing these tables is as follows:
 
 - The first column is dedicated to the versions of the interface, where each cell contains one single version number, except for the last row(s) (to avoid lengthy tables).
-- Second and third columns are dedicated to Grakn Core and Grakn KGMS, respectively, where each cell may contain one or more version numbers.
+- Second and third columns are dedicated to Grakn Core and Grakn Cluster, respectively, where each cell may contain one or more version numbers.
   -  If there need to be 2 version numbers, they are to be separated by a `, ` (e.g. `1.5.2, 1.5.3`).
   -  If there need to be more than 2 version numbers, a range is provided (e.g. `1.5.4 to 1.5.7`).
 
@@ -251,10 +251,10 @@ Client API reference files are accessible via [`03-client-api/references`](03-cl
 ### Tests
 
 - A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a Graql query.
-- A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`, `compute`). Otherwise, it will be tested as a pattern.
+- A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`). Otherwise, it will be tested as a pattern.
 - A code block that follows the `<!-- test-example file-name.extension -->` flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
   - a running Grakn Server
-  - the schema loaded into the target keyspace
+  - the schema loaded into the target database
 - Code blocks that have no language name, will not be tested.
 - Code blocks whose language is not `java`, `javascript` or `python` will not be tested.
 - Code blocks that follow the `<!-- test-ignore -->` flag, will not be tested.

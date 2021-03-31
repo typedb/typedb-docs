@@ -50,7 +50,7 @@ delete $emp isa employment;
 ```java
 GraqlDelete query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
+  var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").isa("employment"));
 ```
 [tab:end]
@@ -70,7 +70,7 @@ Note that attributes with the same value and type are shared among their owners.
 
 [tab:Graql]
 ```graql
-match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date $st;
+match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
 ```
 [tab:end]
 
@@ -78,19 +78,21 @@ match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has start-date
 ```java
 GraqlDelete query = Graql.match(
   var("t").isa("travel").has("start-date", var("st")),
-  var("st").val(LocalDate.of(2013, 12, 22).atStartOfDay())
-).delete(var("t").has("start-date", var("st")));
+  var("st").eq(LocalDate.of(2013, 12, 22).atStartOfDay())
+).delete(var("t").has(var("st")));
 ```
 [tab:end]
 </div>
 
 This looks for a `travel` that owns the attribute `start-date` with the value of `2013-12-22` in the `match` clause. 
-We then disassociate the `travel` instance `$t` from the `start-date` attribute `$st` with the `delete $t has start-date $st` clause.
+We then disassociate the `travel` instance `$t` from the attribute `$st` with the `delete $t has $st` clause.
 
 This will _not_ delete the entire instance of type `start-date` and value `2013-12-22` - it remains associated with any other instance that may own it.
 
 If we had instead written the query as `match $t isa travel, has start-date $st;  $st == 2013-12-22"; delete $st isa start-date;`, 
 we would have deleted the instance of `start-date` with value `2013-12-22` and its association with all other concept types that previously owned it.
+
+Note also that you must not specify a type for the attribute when deleting, as this creates a derived `isa` constraint on the attribute. You must use `delete $t has $st`, _not_ `delete $t has start-date $st`.
 
 ## Delete Role Players from Relations
 
@@ -115,7 +117,7 @@ delete $emp (employer: $org);
 ```java
 GraqlDelete query = Graql.match(
   var("org").isa("organisation").has("name", "Pharos"),
-  var("emp").isa("employment").rel("employer", "org").rel("employee", "p")
+  var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").rel("employer", "org"));
 ```
 [tab:end]
@@ -130,17 +132,17 @@ in the `delete` block, though being as specific as possible is recommended.
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `delete` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `delete` query, is as simple as calling the [`query().delete()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the `query().delete()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the `query().delete()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary
@@ -151,4 +153,4 @@ Additionally, we can remove just attribute ownerships using the `has` statement 
 a role player from a relation can similarly be achieved by using role player syntax: `delete $r (some_role: $player);` without
 an `isa` statement.
 
-Next, we learn how to [update data](../11-query/05-updating-data.md) in a Grakn knowledge graph.
+Next, we learn how to [update data](../11-query/05-update-query.md) in a Grakn knowledge graph.

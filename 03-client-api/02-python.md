@@ -20,50 +20,43 @@ pip3 install grakn-client
 ## Quickstart
 First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In the interpreter or in your source, import `GraknClient` from `grakn.client`.
+In the interpreter or in your source, import everything from `grakn.client`.
 
 <!-- test-example social_network_python_client_a.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import *
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example social_network_python_client_b.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import *
 
-with GraknClient(uri="localhost:48555") as client:
-    with client.session(keyspace="social_network") as session:
+with Grakn.core_client("localhost:1729") as client:
+    with client.session("social_network", GraknSession.Type.DATA) as session:
         ## session is open
         pass
     ## session is closed
 ## client is closed
 ```
 
-We can also pass the credentials, as specified when [configuring authentication via Grakn Console](../06-management/02-users.md), into the client constructor as a dictionary.
-
-<!-- test-ignore -->
-```python
-client = GraknClient(uri="localhost:48555", credentials={"username": "<username>", "password": "<password>"})
-```
-
 Create transactions to use for reading and writing data.
 
 <!-- test-example social_network_python_client_c.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import *
 
-with GraknClient(uri="localhost:48555") as client:
-    with client.session(keyspace="social_network") as session:
+with Grakn.core_client("localhost:1729") as client:
+    with client.session("social_network", GraknSession.Type.DATA) as session:
         ## creating a write transaction
-        with session.transaction().write() as write_transaction:
+        with session.transaction(GraknTransaction.Type.WRITE) as write_transaction:
             ## write transaction is open
             ## write transaction must always be committed (closed)
             write_transaction.commit()
 
         ## creating a read transaction
-        with session.transaction().read() as read_transaction:
+        with session.transaction(GraknTransaction.Type.READ) as read_transaction:
             ## read transaction is open
             ## if not using a `with` statement, we must always close the read transaction like so
             # read_transaction.close()
@@ -74,32 +67,32 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example social_network_python_client_d.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import *
 
-with GraknClient(uri="localhost:48555") as client:
-    with client.session(keyspace="social_network") as session:
+with Grakn.core_client("localhost:1729") as client:
+    with client.session("social_network", GraknSession.Type.DATA) as session:
         ## Insert a Person using a WRITE transaction
-        with session.transaction().write() as write_transaction:
-            insert_iterator = write_transaction.query('insert $x isa person, has email "x@email.com";').get()
+        with session.transaction(GraknTransaction.Type.WRITE) as write_transaction:
+            insert_iterator = write_transaction.query().insert('insert $x isa person, has email "x@email.com";')
             concepts = [ans.get("x") for ans in insert_iterator]
-            print("Inserted a person with ID: {0}".format(concepts[0].id))
+            print("Inserted a person with ID: {0}".format(concepts[0].get_iid()))
             ## to persist changes, write transaction must always be committed (closed)
             write_transaction.commit()
 
         ## Read the person using a READ only transaction
-        with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
+        with session.transaction(GraknTransaction.Type.READ) as read_transaction:
+            answer_iterator = read_transaction.query().match("match $x isa person; get $x; limit 10;")
 
             for answer in answer_iterator:
-                person = answer.map().get("x")
-                print("Retrieved person with id " + person.id)
+                person = answer.get("x")
+                print("Retrieved person with id " + person.get_iid())
 
         ## Or query and consume the iterator immediately collecting all the results
-        with session.transaction().read() as read_transaction:
-            answer_iterator = read_transaction.query("match $x isa person; get; limit 10;").get()
+        with session.transaction(GraknTransaction.Type.READ) as read_transaction:
+            answer_iterator = read_transaction.query().match("match $x isa person; get $x; limit 10;")
             persons = [ans.get("x") for ans in answer_iterator]
             for person in persons:
-                print("Retrieved person with id "+ person.id)
+                print("Retrieved person with id " + person.get_iid())
 
         ## if not using a `with` statement, then we must always close the session and the read transaction
         # read_transaction.close()
@@ -118,8 +111,8 @@ To view examples of running various Graql queries using the Grakn Client Python,
 - [Insert](../11-query/03-insert-query.md)
 - [Get](../11-query/02-get-query.md)
 - [Delete](../11-query/04-delete-query.md)
+- [Update](../11-query/05-update-query.md)
 - [Aggregate](../11-query/06-aggregate-query.md)
-- [Compute](../11-query/07-compute-query.md)
 
 <hr style="margin-top: 40px;" />
 
@@ -131,27 +124,29 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 {% include api/generic.html data=site.data.03_client_api.references.session language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="python" %}
-
 {% include api/generic.html data=site.data.03_client_api.references.options language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.iterator language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.transaction language="python" %}
+
+{% include api/generic.html data=site.data.03_client_api.references.query_manager language="python" %}
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
 
+{% include api/generic.html data=site.data.03_client_api.references.query_future language="python" %}
 
 ## Dependencies
 
-| Client Python  | Grakn Core                  | Grakn KGMS     | Python        |
-| :------------: | :-------------------------: | :----------:   | :-----------: |
-| 1.8.0          | 1.8.0 to 1.8.4              | N/A            | >= 3.5, < 3.8 |
-| 1.7.2          | 1.7.1, 1.7.2                | N/A            | >= 2.7        |
-| 1.7.1          | 1.7.1                       | N/A            | >= 2.7        |      
-| 1.7.0          | 1.7.1                       | N/A            | >= 2.7        |
-| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2          | >= 2.7        |
-| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8          | >= 2.7        |
-| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | >= 2.7        |
-| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2          | >= 2.7        |
-| 1.5.1          | 1.5.0                       | N/A            | >= 2.7        |
-| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3   | >= 3.6        |
-| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3          | >= 3.6        |
+| Client Python  | Grakn Core                  | Grakn Cluster  | Python         |
+| :------------: | :-------------------------: | :----------:   | :------------: |
+| 2.0.0          | 2.0.0                       | N/A            | \>= 3.6        |
+| 1.8.0          | 1.8.0 to 1.8.4              | N/A            | \>= 3.5, < 3.8 |
+| 1.7.2          | 1.7.1, 1.7.2                | N/A            | \>= 2.7        |
+| 1.7.1          | 1.7.1                       | N/A            | \>= 2.7        |      
+| 1.7.0          | 1.7.1                       | N/A            | \>= 2.7        |
+| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2          | \>= 2.7        |
+| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8          | \>= 2.7        |
+| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | \>= 2.7        |
+| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2          | \>= 2.7        |
+| 1.5.1          | 1.5.0                       | N/A            | \>= 2.7        |
+| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3   | \>= 3.6        |
+| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3          | \>= 3.6        |

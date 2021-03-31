@@ -1,6 +1,5 @@
 exports_files(["requirements.txt"])
 
-load("@rules_python//python:pip.bzl", "pip3_import")
 load("@rules_python//python:defs.bzl", "py_library", "py_test")
 
 load("@test_example_pip//:requirements.bzl",
@@ -25,6 +24,7 @@ py_test(
     data = ["//files:phone-calls-kg"],
     imports = ["."],
     python_version = "PY3",
+    size = "large",
 )
 
 genrule(
@@ -63,6 +63,7 @@ py_test(
     data = ["//files:social-network-kg"],
     imports = ["."],
     python_version = "PY3",
+    size = "large",
 )
 
 genrule(
@@ -80,8 +81,5 @@ genrule(
         "social_network_python_client_b.py",
         "social_network_python_client_c.py",
         "social_network_python_client_d.py",
-        # client-api/new-client
-        "social_network_create_new_client_a.py",
-        "social_network_create_new_client_b.py"
     ]
 )

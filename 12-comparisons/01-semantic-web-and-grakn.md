@@ -124,7 +124,7 @@ Due to the public nature of the Web, RDF uses namespaces to interpret and identi
 rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#
 ```
 
-As Grakn doesn't operate on the web, there isn't a need for URIs. A related concept is that of `keyspaces`, which are logically separate databases within a Grakn instance. Unlike an RDF `namespace` these cannot talk to each other. 
+As Grakn doesn't operate on the web, there isn't a need for URIs. A related concept is that of `databases`, which are logically separate databases within a Grakn instance. Unlike an RDF `namespace` these cannot talk to each other. 
 
 ### Serialisation
 
@@ -585,22 +585,22 @@ To do this in Grakn, the restriction is represented in the schema definition. `p
 <!-- test-ignore -->
 ```graql
 person sub entity, 
-plays person-child,
-plays person-parent; 
+plays child,
+plays parent; 
 
 animal sub entity,
-plays animal-child,
-plays animal-parent; 
+plays child,
+plays parent; 
 
 parentship sub relation, abstract;
 
 person-parentship sub parentship,
-relates person-child,
-relates person-parent; 
+relates child,
+relates parent; 
 
 animal-parentship sub parentship;
-relates animal-child,
-relates animal-parent; 
+relates child,
+relates parent; 
 ```
 
 ### Transitive Properties

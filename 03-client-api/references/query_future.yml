@@ -1,0 +1,33 @@
+
+title: "QueryFuture"
+description:
+  java: "Transaction queries that return single answers or empty responses are executed asynchronously on the server. To wait for a query to finish execution, and return its result if there is one, use the 'get()' function."
+  python: "Transaction queries that return single answers or empty responses are executed asynchronously on the server. To wait for a query to finish execution, and return its result if there is one, use the 'get()' function."
+  javascript: "Transaction queries that return single answers or empty responses are executed asynchronously on the server. To wait for a query to finish execution, and return its result if there is one, use the 'get()' function."
+methods:
+  - method:
+    common: &method-get
+      title: Get the query result
+      method: future.get()
+      description: Waits for the query to finish execution, and returns its result, if present.
+      returns:
+        - Returns according to type of query executed
+    java:
+      <<: *method-get
+    python:
+      <<: *method-get
+    javascript:
+      <<: *method-get
+  - method:
+    common: &method-map
+      title: Map the query result
+      method: future.map(function)
+      description: Transforms the QueryFuture into a new QueryFuture by running the supplied function on the query result when it is returned.
+      returns:
+        - Return type of supplied function
+    java:
+      <<: *method-map
+    python:
+      <<: *method-map
+    javascript:
+      <<: *method-map

@@ -78,15 +78,15 @@ define
     relates callee;
 
   company sub entity,
-    plays provider;
+    plays contract:provider;
 
   person sub entity,
-    plays customer,
-    plays caller,
-    plays callee;
+    plays contract:customer,
+    plays call:caller,
+    plays call:callee;
 ```
 
-To define the attributes, we use the has keyword.
+To define the attributes, we use the owns keyword.
 
 ```graql
 define
@@ -98,23 +98,23 @@ define
   call sub relation,
     relates provider,
     relates customer,
-    has started-at,
-    has duration;
+    owns started-at,
+    owns duration;
 
   company sub entity,
-    plays provider,
-    has name;
+    plays contract:provider,
+    owns name;
 
   person sub entity,
-    plays customer,
-    plays caller,
-    plays callee,
-    has first-name,
-    has last-name,
-    has phone-number,
-    has city,
-    has age,
-    has is-customer;
+    plays contract:customer,
+    plays call:caller,
+    plays call:callee,
+    owns first-name,
+    owns last-name,
+    owns phone-number,
+    owns city,
+    owns age,
+    owns is-customer;
 ```
 
 Lastly, we need to define the type of each attribute.
@@ -129,23 +129,23 @@ define
   call sub relation,
     relates caller,
     relates callee,
-    has started-at,
-    has duration;
+    owns started-at,
+    owns duration;
 
   company sub entity,
-    plays provider,
-    has name;
+    plays contract:provider,
+    owns name;
 
 person sub entity,
-    plays customer,
-    plays caller,
-    plays callee,
-    has first-name,
-    has last-name,
-    has phone-number,
-    has city,
-    has age,
-    has is-customer;
+    plays contract:customer,
+    plays call:caller,
+    plays call:callee,
+    owns first-name,
+    owns last-name,
+    owns phone-number,
+    owns city,
+    owns age,
+    owns is-customer;
 
   name sub attribute,
 	  value string;
@@ -168,10 +168,10 @@ person sub entity,
 ```
 
 Note that we don't need to define an id attribute. Grakn takes care of that for us.
-Save the schema.gql file. In a few minutes, we'll have it loaded into a brand new Grakn keyspace.
+Save the schema.gql file. In a few minutes, we'll have it loaded into a brand new Grakn database.
 
 ## Load and test the schema
-In order to load this schema in a keyspace, we first need to run the Grakn server.
+In order to load this schema in a database, we first need to run the Grakn server.
 
 **1 -** [Download Grakn](/docs/running-grakn/install-and-run#download-and-install-grakn)
 For the rest of these instructions, I assume that you have downloaded the Grakn zip file and navigated into the unzipped folder via terminal.
@@ -179,25 +179,30 @@ For the rest of these instructions, I assume that you have downloaded the Grakn 
 **2 -** Run the Grakn server:
 
 ```
-./grakn server start
+./grakn server
 ```
 
-**3 -** Load the schema into a Grakn keyspace. Run:
+**3 -** Load the schema into a Grakn database. In a separate terminal window, run:
 
 ```
-./grakn console --keyspace phone_calls --file path/to/the/schema.gql
+./grakn console
+> database create phone_calls
+> transaction phone_calls schema write
+phone_calls:schema:write> source path/to/the/schema.gql
+> commit
 ```
 
-**4 -** Open the Grakn console in interactive mode. Run:
+**4 -** Open a schema read transaction. Run:
 
 ```
-./grakn console --keyspace phone_calls
+> transaction phone_calls schema read
+phone_calls:schema:read>
 ```
 
-**5 -** Make sure the schema is properly defined in our newly created knowledge graph. While in the Grakn console, run:
+**5 -** Make sure the schema is properly defined in our newly created knowledge graph. At the prompt, run:
 
 ```graql
-match $x sub thing; get;
+match $x sub thing; get $x;
 ```
 
 The result should be as follows:
@@ -223,6 +228,12 @@ The result should be as follows:
 {$x label is-customer sub attribute;}
 ```
 
+**5 -** Close the transaction and exit the console:
+```
+phone_calls:schema:read> close
+> exit
+```
+
 ## To Recap
 We started off by describing our dataset in the most natural way possible.
 
@@ -230,7 +241,7 @@ Next, we went on to visualise that dataset by how we perceive it in the real wor
 
 Then, by identifying the Grakn concepts in the visualised schema, we went ahead and wrote our schema in Graql.
 
-Lastly, we loaded the schema into a Grakn keyspace and ran a generic match query to ensure it was indeed loaded correctly.
+Lastly, we loaded the schema into a Grakn database and ran a generic match query to ensure it was indeed loaded correctly.
 
 ## Next
 Now that we have a model for our knowledge graph, aka. the schema, we can go ahead and migrate some actual data into it so that we can proceed to query for those insights. Pick the client of your choice to continue with migration.

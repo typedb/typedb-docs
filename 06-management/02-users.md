@@ -2,12 +2,12 @@
 pageTitle: Managing Users
 keywords: grakn, management, authentication, users
 longTailKeywords: grakn managing users, grakn authentication, grakn users
-Summary: User authentication in Grakn KGMS.
+Summary: User authentication in Grakn Cluster.
 toc: false
 ---
 
-## Managing Users [KGMS ONLY]
-The ability to manage users and authenticate their access to [keyspaces](../06-management/01-keyspace.md) is limited to [Grakn KGMS](../05-cloud-deployment/01-kgms.md) and is not available in Grakn Core.
+## Managing Users [Grakn Cluster ONLY]
+The ability to manage users and authenticate their access to [databases](../06-management/01-database.md) is limited to Grakn Cluster and is not available in Grakn Core.
 
 In order to manage users, we first need to enter the Grakn User Management Console by running `grakn user-management`. We can then use the following commands to manage user authentication.
 

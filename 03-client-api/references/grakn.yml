@@ -1,41 +1,79 @@
 methods:
   - method:
-    common: &method-client
-      title: Instantiating a Grakn client
-      description: In order to communicate with Grakn keyspaces via sessions and transactions, we first need to instantiate a Grakn client. The created object connects our application with the running Grakn Server.
-      accepts: &accepts-client
-        param1: &accepts-client-uri
-          name: uri
-          description: The host:port on which the Grakn Server is running
+    common: &method-client-core
+      title: Instantiating a Grakn Core client
+      description: |
+        In order to communicate with Grakn Core databases via sessions and transactions, we first need to instantiate a Grakn Core client.
+        The created object connects our application with the running Grakn Server.
+      accepts: &accepts-client-core
+        param1: &accepts-client-core-uri
+          name: address
+          description: The address (host:port) on which the Grakn Server is running
           type: String
           required: true
-          default: localhost:48555
-        param2: &accepts-client-credentials
-          name: credentials
-          description: The username and password required for connecting to the Grakn Server
+        param2: &accepts-client-core-parallelisation
+          name: parallelisation
+          description: The number of threads to use for server communication
+          type: int
           required: false
-          default: N/A
+          default: Scales based on host machine's number of available CPU cores
       returns:
-        - "[Client](#client) object"
+        - "[Client](#client)"
     java:
-      <<: *method-client
-      method: new GraknClient(String uri);
+      <<: *method-client-core
+      method: Grakn.coreClient(String address, int parallelisation);
+    javascript:
+      <<: *method-client-core
+      method: Grakn.coreClient(address);
       accepts:
         param1:
-          <<: *accepts-client-uri
-    javascript:
-      <<: *method-client
-      method: new GraknClient(uri, credentials);
-      accepts:
-        <<: *accepts-client
-        param2:
-          <<: *accepts-client-credentials
-          type: '{ username: "", password: "" }'
+          <<: *accepts-client-core-uri
     python:
-      <<: *method-client
-      method: GraknClient(uri="", credientials = {})
+      <<: *method-client-core
+      method: Grakn.core_client(address, parallelisation)
       accepts:
-        <<: *accepts-client
+        param1:
+          <<: *accepts-client-core-uri
         param2:
-          <<: *accepts-client-credentials
-          type: '{ "username": "", "password": "" }'
+          <<: *accepts-client-core-parallelisation
+          default: 2
+  - method:
+    common: &method-client-cluster
+      title: Instantiating a Grakn Cluster client
+      description: |
+        In order to communicate with Grakn Cluster databases via sessions and transactions, we first need to instantiate a Grakn Cluster client.
+        The created object connects our application with the running Grakn Cluster.
+      accepts: &accepts-client-cluster
+        param1: &accepts-client-cluster-addresses
+          name: addresses
+          description: All addresses (host:port) on which Grakn Cluster nodes are running
+          type: Set<String>
+          required: true
+        param2: &accepts-client-cluster-parallelisation
+          name: parallelisation
+          description: The number of threads to use for server communication
+          type: int
+          required: false
+          default: Scales based on host machine's number of available CPU cores
+      returns:
+        - "[Client](#client)"
+    java:
+      <<: *method-client-cluster
+      method: Grakn.clusterClient(Set<String> addresses, int parallelisation);
+    javascript:
+      <<: *method-client-cluster
+      method: Grakn.clusterClient(addresses);
+      accepts:
+        param1:
+          <<: *accepts-client-cluster-addresses
+          type: Array of String
+    python:
+      <<: *method-client-cluster
+      method: Grakn.cluster_client(addresses, parallelisation)
+      accepts:
+        param1:
+          <<: *accepts-client-cluster-addresses
+          type: list of String
+        param2:
+          <<: *accepts-client-cluster-parallelisation
+          default: 2

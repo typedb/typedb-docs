@@ -17,11 +17,13 @@ chapters:
             title: Install & Run
             url: install-and-run
           -
-            title: Console
-            url: console
-          -
             title: Configuration
             url: configuration
+      - title: Console
+        baseUrl: /docs/console/
+        pages:
+          - title: Console
+            url: console
       -
         title: Client API
         baseUrl: /docs/client-api/
@@ -60,26 +62,20 @@ chapters:
           -
             title: Thing
             url: thing
-      -
-        title: Cloud Deployment
-        baseUrl: /docs/cloud-deployment/
+      - title: Grakn Cluster
+        baseUrl: /docs/grakn-cluster/
         pages:
-          -
-            title: KGMS
-            url: kgms
-          -
-            title: Google Cloud
-            url: google-cloud
-          -
-            title: AWS
-            url: aws
+          - title: Install & Run
+            url: install-and-run
+          - title: Kubernetes
+            url: kubernetes
       -
         title: Management
         baseUrl: /docs/management/
         pages:
           -
-            title: Keyspaces
-            url: keyspace
+            title: Databases
+            url: database
           -
             title: Users
             url: users
@@ -174,20 +170,20 @@ chapters:
             url: delete-query
           -
             title: Update
-            url: updating-data
+            url: update-query
           -
             title: Aggregate
             url: aggregate-query
-          -
-            title: Compute
-            url: compute-query
       -
         title: Comparisons
         baseUrl: /docs/comparisons/
         pages:
           -
-            title: SQL
-            url: sql-and-graql
+            title: Property Graph Databases
+            url: graph-databases-and-grakn
           -
             title: Semantic Web
             url: semantic-web-and-grakn
+          -
+            title: SQL
+            url: sql-and-graql

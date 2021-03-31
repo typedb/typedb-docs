@@ -86,15 +86,15 @@ product sub entity,
   key product-id, 
   has product-name, 
   has quantity-per-unit, 
-  plays product-assignment; 
+  plays assignment:assigned; 
 
 product-id sub attribute, value double; 
 product-name sub attribute, value string; 
 quantity-per-unit sub attribute, value double;
 
 assignment sub relation, 
-  relates assigned-category, 
-  relates product-assignment;
+  relates category, 
+  relates assigned;
 ```
 
 [tab:end]
@@ -116,7 +116,7 @@ CREATE TABLE products (
 A few important points: 
 
 - Here we can see that the SQL table has three attributes, each with their own value type, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. 
-- In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `product-assignment`. 
+- In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `assigned`. 
 - In Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply omitted from the graph. 
 - Finally, an important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
 
@@ -241,9 +241,9 @@ If we take the `suppliers`, `products`, `employees`, `orders` and `customers` ta
 4. `Company`: As both the `suppliers` and `customers` table refer to companies, we decide to model them as one entity type. We can define a company as a supplier or a customer with roles (see below). 
 
 We then create the following relations and corresponding roles: 
-1. `Sale`: We can model this relation as ternary (learn more about [hypergraphs](https://blog.grakn.ai/modelling-data-with-hypergraphs-edff1e12edf0)), as a sale occurs between an `Order` (playing the `placed-order` role), `Company` (playing the `customer` role) and an `Employee` (playing the role of `seller`). 
+1. `Sale`: We can model this relation as ternary (learn more about [hypergraphs](https://blog.grakn.ai/modelling-data-with-hypergraphs-edff1e12edf0)), as a sale occurs between an `Order` (playing the `order` role), `Company` (playing the `customer` role) and an `Employee` (playing the role of `seller`). 
 2. `Stocking`: This relation relates to a `Product` (playing the role of `stock`) which is being stocked by another `Company`, which plays the role of `supplier`.
-3. `Containing`: We define this relation between the entity `Order` (playing the role of `containing-order`) and `Product` (role of `containing-product`), because an order can contain multiple products. We also add two attributes to this relation: `quantity` and `unit-price`. 
+3. `Containing`: We define this relation between the entity `Order` (playing the role of `order`) and `Product` (role of `contained`), because an order can contain multiple products. We also add two attributes to this relation: `quantity` and `unit-price`. 
 
 This is what we've just modelled: 
 
@@ -257,30 +257,30 @@ Let’s see how this looks in Graql:
 define 
 
 employee sub entity, 
-  plays seller; 
+  plays sale:seller; 
 
 company sub entity, 
-  plays supplier,
-  plays customer; 
+  plays stocking:supplier,
+  plays sale:customer; 
 
 order sub entity, 
-  plays placed-order,
-  plays containing-order; 
+  plays sale:order,
+  plays containing:order; 
 
 product sub entity, 
-  plays containing-product,
-  plays stock;
+  plays containing:contained,
+  plays stocking:stock;
 
 sale sub relation, 
-  relates placed-order,
+  relates order,
   relates seller, 
   relates customer;
 
 containing sub relation, 
   has quantity,
   has unit-price,
-  relates containing-product, 
-  relates containing-order;
+  relates contained, 
+  relates order;
 
 stocking sub relation, 
   relates stock, 
@@ -356,11 +356,11 @@ With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/doc
 
 <!-- test-ignore -->
 ```graql
-transitive-location sub rule, 
+rule transitive-location: 
 when { 
   (located: $x, locating: $y) isa locates; 
   (located: $y, locating: $z) isa locates; 
-}, then { 
+} then { 
   (located: $x, locating: $z) isa locates; 
 };
 ```

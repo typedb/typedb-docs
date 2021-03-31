@@ -19,10 +19,10 @@ Before we get started with migration, let’s have a quick reminder of how the s
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our Grakn [keyspace](../06-management/01-keyspace.md). To do this, we use [Client Python](../03-client-api/02-python.md).
+1.  we need a way to talk to our Grakn [database](../06-management/01-database.md). To do this, we use [Client Python](../03-client-api/02-python.md).
 2.  we go through each data file, extracting each data item and parsing it to a Python dictionary.
 3.  we pass each data item (in the form of a Python dictionary) to its corresponding template function, which in turn gives us the constructed Graql query for inserting that item into Grakn.
-4.  we execute each of those queries to load the data into our target keyspace — `phone_calls`.
+4.  we execute each of those queries to load the data into our target database — `phone_calls`.
 
 Before moving on, make sure you have **Python3** and **Pip3** installed and the [**Grakn Server**](/docs/running-grakn/install-and-run#start-the-grakn-server) running on your machine.
 
@@ -73,7 +73,7 @@ inputs = [
 build_phone_call_graph(inputs)
 ```
 
-First thing first, we import the grakn module. We use it for connecting to our `phone_calls` keyspace.
+First thing first, we import the grakn module. We use it for connecting to our `phone_calls` database.
 
 Next, we declare the `inputs`. More on this later. For now, what we need to understand about inputs — it’s a list of dictionaries, each one containing:
 - The path to the data file
@@ -84,11 +84,11 @@ Let’s move on.
 ## build_phone_call_graph(inputs)
 
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
-        with client.session(keyspace = "phone_calls") as session:
+    with Grakn.core_client() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -101,8 +101,8 @@ This is the main and only function we need to call to start loading data into Gr
 What happens in this function, is as follows:
 
 1.  A Grakn `client` is created, connected to the server we have running locally.
-2.  A `session` is created, connected to the keyspace `phone_calls`. Note that by using `with`, we indicate that the session closes after it’s been used.
-3.  For each `input` dictionary in `inputs`, we call the `load_data_into_grakn(input, session)`. This takes care of loading the data as specified in the input dictionary into our keyspace.
+2.  A `session` is created, connected to the database `phone_calls`. Note that by using `with`, we indicate that the session closes after it’s been used.
+3.  For each `input` dictionary in `inputs`, we call the `load_data_into_grakn(input, session)`. This takes care of loading the data as specified in the input dictionary into our database.
 
 ## load_data_into_grakn(input, session)
 
@@ -111,10 +111,10 @@ def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
     for item in items:
-        with session.transaction().write() as transaction:
+        with session.transaction(TransactionType.WRITE) as transaction:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
+            transaction.query().insert(graql_insert_query)
             transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
@@ -404,12 +404,12 @@ Here is how our `migrate.py` looks like for each data format.
 [tab:CSV]
 <!-- test-example phone_calls_csv_migration.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 import csv
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
-        with client.session(keyspace = "phone_calls") as session:
+    with Grakn.core_client() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -417,12 +417,12 @@ def build_phone_call_graph(inputs):
 def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
-    for item in items:
-        with session.transaction().write() as transaction:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        for item in items:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
-            transaction.commit()
+            transaction.query().insert(graql_insert_query)
+        transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
@@ -499,12 +499,12 @@ build_phone_call_graph(inputs=inputs)
 [tab:JSON]
 <!-- test-example phone_calls_json_migration.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 import ijson
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
-        with client.session(keyspace = "phone_calls") as session:
+    with Grakn.core_client() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -512,12 +512,12 @@ def build_phone_call_graph(inputs):
 def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
-    for item in items:
-        with session.transaction().write() as transaction:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        for item in items:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
-            transaction.commit()
+            transaction.query().insert(graql_insert_query)
+        transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
@@ -593,12 +593,12 @@ build_phone_call_graph(inputs)
 [tab:XML]
 <!-- test-example phone_calls_xml_migration.py -->
 ```python
-from grakn.client import GraknClient
+from grakn.client import GraknClient, SessionType, TransactionType
 import xml.etree.cElementTree as et
 
 def build_phone_call_graph(inputs):
-    with GraknClient(uri="localhost:48555") as client:
-        with client.session(keyspace = "phone_calls") as session:
+    with Grakn.core_client() as client:
+        with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
                 load_data_into_grakn(input, session)
@@ -606,12 +606,12 @@ def build_phone_call_graph(inputs):
 def load_data_into_grakn(input, session):
     items = parse_data_to_dictionaries(input)
 
-    for item in items:
-        with session.transaction().write() as transaction:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        for item in items:
             graql_insert_query = input["template"](item)
             print("Executing Graql Query: " + graql_insert_query)
-            transaction.query(graql_insert_query)
-            transaction.commit()
+            transaction.query().insert(graql_insert_query)
+        transaction.commit()
 
     print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
