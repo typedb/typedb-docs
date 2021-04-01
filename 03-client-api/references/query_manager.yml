@@ -73,7 +73,7 @@ methods:
           <<: *accepts-matchAggregate-query
           type: "`GraqlMatch.Aggregate`"
       returns:
-        - "QueryFuture<[Numeric](#numeric)>"
+        - "[QueryFuture](#queryfuture)<[Numeric](#numeric)>"
     javascript:
       <<: *method-matchAggregate
       method: await transaction.query().matchAggregate(query, options);
@@ -83,7 +83,7 @@ methods:
           <<: *accepts-matchAggregate-query
           type: string
       returns:
-        - "[Numeric](#numeric)"
+        - "[QueryFuture](#queryfuture) of [Numeric](#numeric)"
     python:
       <<: *method-matchAggregate
       method: transaction.query().match_aggregate(query, options)
@@ -93,7 +93,7 @@ methods:
           <<: *accepts-matchAggregate-query
           type: string
       returns:
-        - "[Numeric](#numeric)"
+        - "[QueryFuture](#queryfuture) of [Numeric](#numeric)"
 
   - method:
     common: &method-matchGroup
@@ -261,7 +261,7 @@ methods:
           <<: *accepts-delete-query
           type: "`GraqlDelete`"
       returns:
-        - void
+        - "[`QueryFuture`](#queryfuture)"
     javascript:
       <<: *method-delete
       method: await transaction.query().delete(query, options);
@@ -271,7 +271,7 @@ methods:
           <<: *accepts-delete-query
           type: string
       returns:
-        - void
+        - "[`QueryFuture`](#queryfuture)"
     python:
       <<: *method-delete
       method: transaction.query().delete(query, options)
@@ -281,7 +281,7 @@ methods:
           <<: *accepts-delete-query
           type: string
       returns:
-        - None
+        - "[`QueryFuture`](#queryfuture)"
 
   - method:
     common: &method-update
@@ -387,7 +387,7 @@ methods:
           <<: *accepts-define-query
           type: "`GraqlDefine`"
       returns:
-        - void
+        - "[`QueryFuture`](#queryfuture)"
     javascript:
       <<: *method-define
       method: await transaction.query().define(query, options);
@@ -397,7 +397,7 @@ methods:
           <<: *accepts-define-query
           type: string
       returns:
-        - void
+        - "[`QueryFuture`](#queryfuture)"
     python:
       <<: *method-define
       method: transaction.query().define(query, options)
@@ -407,7 +407,7 @@ methods:
           <<: *accepts-define-query
           type: string
       returns:
-        - None
+        - "[`QueryFuture`](#queryfuture)"
 
   - method:
     common: &method-undefine
@@ -434,7 +434,7 @@ methods:
           <<: *accepts-undefine-query
           type: "`GraqlUndefine`"
       returns:
-        - void
+        - "[`QueryFuture`](#queryfuture)"
     javascript:
       <<: *method-undefine
       method: await transaction.query().undefine(query, options);
@@ -444,7 +444,7 @@ methods:
           <<: *accepts-undefine-query
           type: string
       returns:
-        - void
+        - "[`QueryFuture`](#queryfuture)"
     python:
       <<: *method-undefine
       method: transaction.query().undefine(query, options)
@@ -454,4 +454,4 @@ methods:
           <<: *accepts-undefine-query
           type: string
       returns:
-        - None
+        - "[`QueryFuture`](#queryfuture)"
