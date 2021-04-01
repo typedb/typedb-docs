@@ -34,7 +34,7 @@ Instantiate a client and open a session.
 from grakn.client import *
 
 with Grakn.core_client("localhost:1729") as client:
-    with client.session("social_network", GraknSession.Type.DATA) as session:
+    with client.session("social_network", SessionType.DATA) as session:
         ## session is open
         pass
     ## session is closed
@@ -48,15 +48,15 @@ Create transactions to use for reading and writing data.
 from grakn.client import *
 
 with Grakn.core_client("localhost:1729") as client:
-    with client.session("social_network", GraknSession.Type.DATA) as session:
+    with client.session("social_network", SessionType.DATA) as session:
         ## creating a write transaction
-        with session.transaction(GraknTransaction.Type.WRITE) as write_transaction:
+        with session.transaction(TransactionType.WRITE) as write_transaction:
             ## write transaction is open
             ## write transaction must always be committed (closed)
             write_transaction.commit()
 
         ## creating a read transaction
-        with session.transaction(GraknTransaction.Type.READ) as read_transaction:
+        with session.transaction(TransactionType.READ) as read_transaction:
             ## read transaction is open
             ## if not using a `with` statement, we must always close the read transaction like so
             # read_transaction.close()
@@ -70,9 +70,9 @@ Running basic retrieval and insertion queries.
 from grakn.client import *
 
 with Grakn.core_client("localhost:1729") as client:
-    with client.session("social_network", GraknSession.Type.DATA) as session:
+    with client.session("social_network", SessionType.DATA) as session:
         ## Insert a Person using a WRITE transaction
-        with session.transaction(GraknTransaction.Type.WRITE) as write_transaction:
+        with session.transaction(TransactionType.WRITE) as write_transaction:
             insert_iterator = write_transaction.query().insert('insert $x isa person, has email "x@email.com";')
             concepts = [ans.get("x") for ans in insert_iterator]
             print("Inserted a person with ID: {0}".format(concepts[0].get_iid()))
@@ -80,7 +80,7 @@ with Grakn.core_client("localhost:1729") as client:
             write_transaction.commit()
 
         ## Read the person using a READ only transaction
-        with session.transaction(GraknTransaction.Type.READ) as read_transaction:
+        with session.transaction(TransactionType.READ) as read_transaction:
             answer_iterator = read_transaction.query().match("match $x isa person; get $x; limit 10;")
 
             for answer in answer_iterator:
@@ -88,7 +88,7 @@ with Grakn.core_client("localhost:1729") as client:
                 print("Retrieved person with id " + person.get_iid())
 
         ## Or query and consume the iterator immediately collecting all the results
-        with session.transaction(GraknTransaction.Type.READ) as read_transaction:
+        with session.transaction(TransactionType.READ) as read_transaction:
             answer_iterator = read_transaction.query().match("match $x isa person; get $x; limit 10;")
             persons = [ans.get("x") for ans in answer_iterator]
             for person in persons:
