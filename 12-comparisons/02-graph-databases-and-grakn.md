@@ -8,19 +8,19 @@ Summary: Comparing Property Graph Databases to Grakn
 
 Graph databases have matured into mainstream technologies and are becoming increasingly valuable to organisations across any industry. They are more flexible than traditional relational databases as they allow us to leverage the relationships in our data in a way that relational databases cannot do. In a time when organisations are trying to get the most out of their data, this creates opportunities for any organisation. 
 
-However, developing with graph databases leads to plenty of challenges, in particular when it comes to data modelling and maintaining consistency of our data, among others. In what follows, we discuss how Grakn compares to graph databases, in particular labelled property graphs, and how Grakn addresses these challenges. While both technologies share some similarities, they are fundamentally different as they work at different layers of abstraction. We'll look at how to read & write data, how to model complex domains and we'll also look at Grakn's ability to perform automated reasoning.
+However, developing with graph databases leads to plenty of challenges, in particular when it comes to data modelling and maintaining consistency of our data, among others. In what follows, we discuss how Grakn compares to graph databases, in particular labelled property graphs, and how Grakn addresses these challenges. While both technologies share some similarities, they are fundamentally different. We'll look at how to read & write data, how to model complex domains and we'll also look at Grakn's ability to perform automated reasoning.
 
 The main differences between Grakn and graph databases can be summarised as: 
 
-1. **Grakn provides a concept-level schema** with a type system that fully implements the Entity-Relationship (ER) model, while graph databases use vertices and edges without integrity constraints imposed in the form of a schema
+1. **Grakn provides a concept-level schema** with a type system that fully implements the Entity-Relationship (ER) model. Instead, graph databases use vertices and edges without integrity constraints imposed in the form of a schema
 2. **Grakn contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
-3. **Grakn is an abstraction layer over a graph database.** Grakn leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
+3. **Grakn is an abstraction layer over a graph.** Grakn leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
 
 There are several different graph technologies available. Some of these are based on RDF and SPARQL, others are imperative, path-based query languages based on Gremlin. Most popular, however, is Cypher, which has grown to become the most adopted graph database query language for property graphs. For this reason, in this comparison we'll just focus on Cypher and labelled property graphs. For a comparison of Grakn to Semantic Web Technologies, you can read [this](https://dev.grakn.ai/docs/comparisons/semantic-web-and-grakn). 
 
 ## The Challenges of Working with a Graph Database
 
-As the name suggests, graph databases are based on graph theory as a mathematical concept to form its data model. They consider connectedness as a first-class citizen, which makes them, compared to relational databases, particularly good at representing connected data. That's because in relational databases, the relations between entities aren't made semantically explicit in the model, whereas graph databases store those connections directly between the elements. 
+As the name suggests, graph databases are based on graph theory as a mathematical concept to form their data model. They consider connectedness as a first-class citizen, which makes them, compared to relational databases, particularly good at representing connected data. That's because in relational databases, the relations between entities aren't made semantically explicit in the model, whereas graph databases store those connections directly between the elements. 
 
 A graph database consists of the following properties: 
 
@@ -36,13 +36,13 @@ However, developing on a graph database requires us to understand many low-level
 
 **Modelling Highly Interconnected Data**
 
-Due to the high level of expressivity that graph databases provide, data modelling on a graph is not easy, and is equivalent to modelling knowledge, i.e., ontology engineering.
+Due to the high level of expressivity that graph databases provide, modelling complex domains on a graph is not easy, and is equivalent to modelling knowledge, i.e., ontology engineering.
 
-Specialist graph data engineers are needed to model a graph structure. This approach, however, is not scalable for widespread adoption. Instead, what is needed is a system which would allow any engineer to easily model their domain on a graph, without having to be proficient in ontology engineering or be an expert in the underlying graph data structure.
+Specialist graph data engineers are needed to model a graph structure. This approach, however, is not scalable for widespread adoption. Instead, what is needed is a system which allows any engineer to easily model their domain on a graph, without having to be proficient in ontology engineering or be an expert in the underlying graph data structure.
 
 **Maintaining Consistency of Data**
 
-Even when we have an ontology, this task is not done. It's essential that the data going into the database complies with the model i.e., schema. Graph databases, like other NoSQL databases, delegate adherence to a schema to the application layer. 
+It's essential that the data going into the database complies with the model i.e., schema. Graph databases, like other NoSQL databases, delegate adherence to a schema to the application layer. 
 
 As a result, it's very hard to deliver a system that is generic enough to guarantee consistency of data with regards to the model but maintains the highest level of expressivity possible. 
 
@@ -50,13 +50,13 @@ There is no such thing as data without a schema, at least if you want to derive 
 
 **Writing the Graph Queries Itself**
 
-Writing the right graph queries that will interrogate the graph database has its challenges. You need to be explicit in defining the path to traverse between data instances. Given that your data model governs the paths between your data instances, you now have to design your queries specific to the way you defined your model. 
+Writing the right graph queries that will interrogate the graph database has its challenges. You need to be explicit in defining the path to traverse between data instances. Given that your data model governs the paths between your data instances, you have to design your queries specific to the way you defined your model. 
 
-What makes this particularly challenging is that you may not have modelled your data in the most generic, consistent and conceptually correct model (e.g., sometimes you defined a relationship as a node, other times as an edge). As a consequence, your queries may not be touching the right data. Each question you want to ask the graph needs a custom graph query, written based on your custom domain model, which may not provide the most optimal path for querying. Therefore, you may not be able to abstract the graph query into functions that would take your user's input as an argument, and reuse those functions across multiple use cases. 
+What makes this particularly challenging is that you may not have modelled your data in the most generic, consistent and conceptually correct model (e.g., sometimes you defined a relationship as a node, other times as an edge). As a consequence, your queries may not be touching the right data. Each question you want to ask the graph needs a custom graph query, written based on your custom domain model, which may not provide the most optimal path for querying. Therefore, you may for example not be able to abstract the graph query into functions that would take your user's input as an argument, and reuse those functions across multiple use cases. 
 
 Writing graph queries is already a challenging task as you need to understand graph algorithms and data structures. With the additional challenge of not being able to abstract and reuse your graph queries to the point where you can just focus on your problem domain, adopting graph databases becomes very hard. 
 
-To address these challenges, Grakn abstracts away the low levels of a graph database by developing a knowledge graph. This abstracts away the low-level implementation details of the graph and lets you adopt the technology without a steep learning curve. 
+To address these challenges, Grakn abstracts away the low levels of a graph database by implementing a type system. This abstracts away the low-level implementation details of the graph and lets you adopt the technology without a steep learning curve. 
 
 ## Modelling and Defining Schema
 
@@ -64,9 +64,9 @@ To address these challenges, Grakn abstracts away the low levels of a graph data
 
 The graph model consists primarily of nodes and relationships that have names called labels. Relationships are directed and visualised as arrowheads. Both have properties (in the form of key/value pairs) and are called property names. 
 
-Nodes are meant to refer to entity types, while edges are meant to represent relationships. Both can hold any number of attributes. As relationships are directed, they always have a start and an end node. To give a label to a relationship, the concept of "verbing" is used. For example, we can say that a man is "married to" a woman, and create the relationship `MARRIED_TO` to represent that marriage. 
+As relationships are directed, they always have a start and an end node. To give a label to a relationship, the concept of "verbing" is used. For example, we can say that a man is "married to" a woman, and create the relationship `MARRIED_TO` to represent that marriage. 
 
-However, the graph model doesn't perfectly map to a conceptual model or ER diagram, as nodes and edges don't always directly map to entities and relationships. Graph databases also offer no native support for concepts such as, for example, ternary relations, n-ary relations or roles. Therefore, to implement a graph model, we must first go through a normalisation process where we need to map the conceptual model (ER diagram) to the graph model. 
+However, the graph model doesn't directly map to a conceptual model or ER diagram, as nodes and edges don't always directly map to entities and relationships. Graph databases also offer no native support for concepts such as, for example, ternary relations, n-ary relations or roles. Therefore, to implement a graph model, we must first go through a normalisation process and map our conceptual model (ER diagram) to the graph model. 
 
 ![Graph Database Normalisation](../images/comparisons/graph-normalisation.png)
 *In a graph database we need to map our conceptual model the graph model.*
@@ -75,15 +75,15 @@ However, the graph model doesn't perfectly map to a conceptual model or ER diagr
 
 Grakn provides a concept-level schema that fully implements the Entity-Relationship (ER) model. Grakn's schema is a type system that implements the principles of knowledge representation and reasoning. 
 
-Unlike in a graph database, this means that we can map any ER Diagram directly to how we implement it in Graql, avoiding the need to go through a normalisation process. In Grakn, we create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we implement it later in code. By modelling at the conceptual level, we avoid the need to go through a normalisation process that would otherwise be required in a graph database. 
+Unlike in a graph database, this means that we can map any ER Diagram directly to how we implement it in Graql, avoiding the need to go through a normalisation process. In Grakn, we create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we implement it later in code. By modelling at the conceptual level using a type system, we avoid the need to go through a normalisation process that would otherwise be required in a graph database. 
 
 ![Grakn abstraction](../images/comparisons/grakn-abstraction-over-graph.png)
-*Grakn's model is a direct implementation of a conceptual model.*
+*Grakn's type system is a direct implementation of a conceptual model.*
 
 
 ### Hyper-relational Modelling
 
-A central component of Grakn's knowledge model is its ability to represent hyper-relations and hyper-entities (in Grakn, entities, relations and attributes are first class modelling constructs). While in a binary graph a relation or edge is just a *pair* of vertices, a *hyper-relation (*or *hyper-edge)* is a *set* of vertices. 
+A central component of Grakn's type system is its ability to represent hyper-relations and hyper-entities (in Grakn, entities, relations and attributes are first class modelling constructs). While in a binary graph a relation or edge is just a *pair* of vertices, a *hyper-relation (*or *hyper-edge)* is a *set* of vertices. 
 
 This enables us to natively model concepts such as n-ary relationships, nested relationships or cardinality-restricted relationships. Using these constructs, we can easily create complex knowledge models that can evolve flexibly. Hyper-entities are defined as entities with multiple instances for one attribute type, which is not possible in a graph database.
 
@@ -114,7 +114,7 @@ In a real-life scenario, when the complete conceptual model is not fully foresee
 
 ### N-ary and Ternary Relations
 
-Because of the underlying hyper-graph, Grakn allows modelling of n-ary and ternary relations. The example below models a ternary relation between a supplier, a buyer, and a part. All this information should be captured in a single ternary relation we want to call `supplying`.
+Grakn's type system allows modelling n-ary and ternary relations. The example below models a ternary relation between a supplier, a buyer, and a part. They can be connected through a single relation we call `supplying`.
 
 First, let's look at how we would model this in a graph database. As we can't natively represent the three entities in one relation, we can either store foreign keys as a property on each node, or, more preferably, create an additional (intermediate) node to support it, similar to how we reified the graph in the example above. 
 
@@ -129,7 +129,7 @@ This is how we would create a `supplying` (intermediary) node that would connect
 (:Part)<-[:SUPPLIED]-(:Supplying)
 ```
 
-In Grakn, instead of creating an intermediate node, we would create one `supplying` relation that relates to the supplier, buyer and the part that's being supplied: 
+In Grakn, instead of creating an intermediate node, we create one `supplying` relation that relates to the supplier, buyer and the part that's being supplied:
 
 ![Grakn ternary example](../images/comparisons/grakn-ternary-example.png)
 
@@ -145,11 +145,11 @@ The schema in Grakn would then be as follows (note how the `supplying` relation 
 ```graql
 define 
 company sub entity, 
-plays supplier:supplying, 
-plays buyer:supplying; 
+plays supplying:supplier, 
+plays supplying:buyer; 
 
 part sub entity, 
-plays supplied:supplying; 
+plays supplying:supplied; 
 
 supplying sub relation, 
 relates supplier, 
@@ -161,7 +161,7 @@ relates supplied;
 
 In a nested relation, we want a relation to play a role in another relation. For example, we may have modelled a marriage as a relation, and we want to localise this event in London through a `located-in` relation. To do so would require us to connect the `marriage` relation through a relation of type `located` to the entity `London`. 
 
-In a graph database, we can't create nested relations. Instead, we can model a marriage between two persons with a `MARRIED_TO` relation. However, connecting that edge to a `city` node becomes impossible, as we cannot have a relation connect to another relation. Instead, we end up reifying the model and turning the `MARRIED_TO` edge into a node `marriage`, so we can connect that node to the `city` node through the `LOCATED_IN` edge.
+In a graph database, we cannot create nested relations. Instead, we can model a marriage between two persons with a `MARRIED_TO` relation. However, connecting that edge to a `city` node becomes impossible, as we cannot have a relation connect to another relation. Instead, we end up reifying the model and turning the `MARRIED_TO` edge into a node `marriage`, so we can connect that node to the `city` node through the `LOCATED_IN` edge.
 
 ![Graph nested relation reified](../images/comparisons/graph-nested-relation-reified.png)
 
@@ -170,7 +170,7 @@ In a graph database, we can't create nested relations. Instead, we can model a m
 (marriage)-[:LOCATED_IN]->(:City {name:"London"})
 ```
 
-Grakn natively supports nested relations as modelling constructs. For the model above, we would create a relation `located` that connects the relation `marriage` with the `city` "London". This would look like this:
+Grakn's type system natively supports nested relations as modelling constructs. For the model above, we would create a relation `located` that connects the relation `marriage` with the `city` "London". This would look like this:
 
 ![Grakn nested relation](../images/comparisons/grakn-nested-relation.png)
 
@@ -187,14 +187,14 @@ The schema for this would look as follows:
 ```graql
 define 
 city sub entity, 
-plays location:locating;
+plays locating:location;
 
 person sub entity, 
-plays spouse:marriage; 
+plays marriage:spouse; 
 
 marriage sub relation, 
 relates spouse, 
-plays located:locating; 
+plays locating:located; 
 
 locating sub relation, 
 relates located, 
@@ -268,7 +268,7 @@ In Grakn, instead of using `WHERE`, the pattern matching and filtering can be do
 
 ### Type-based Reasoning
 
-Grakn's schema allows for type-based reasoning through the modelling of type hierarchies in entities, attributes and relations. A type hierarchy for vehicles in Grakn could look like this: 
+Grakn's type system allows for type-based reasoning through the modelling of type hierarchies in entities, attributes and relations. A type hierarchy for vehicles in Grakn could look like this: 
 
 <!-- test-ignore -->
 ```graql
@@ -291,7 +291,7 @@ Given this model, if we wanted to fetch every single type of vehicle, rather tha
 
 <!-- test-ignore -->
 ```graql
-match $vehicle isa vehicle; get; 
+match $vehicle isa vehicle;
 ```
 
 Although graph databases don't support type hierarchies and type-based reasoning, there are some ways around it. For example, if we're inserting a minivan, a coupe, a jet aircraft and a garbage truck, we could add their parent types as additional labels to these nodes. In Grakn, of course, we wouldn't need to specify their parent types as these would be inferred by the type hierarchy. 
@@ -337,7 +337,7 @@ MATCH (vehicle:Vehicle) RETURN
 [tab:Graql]
 <!-- test-ignore -->
 ```graql
-match $vehicle isa vehicle; get;
+match $vehicle isa vehicle;
 ```
 [tab:end]
 </div>
@@ -365,7 +365,7 @@ MATCH (vehicle:Heavy_truck) RETURN vehicle
 [tab:Graql]
 <!-- test-ignore -->
 ```graql
-match $vehicle isa vehicle; get;
+match $vehicle isa vehicle;
 ```
 [tab:end]
 </div>
@@ -380,7 +380,7 @@ part-time-employment sub employment;
 full-time-employment sub employment;
 ```
 
-As relations in a graph database cannot have multiple labels, the same approach using multiple labels used above for nodes wouldn't work for relations. Instead, for this employment hierarchy example, to retrieve all types of employments, we would need to specify all the labels in the hierarchy. In Grakn, we would just ask for the parent relation:
+As relations in a graph database cannot have multiple labels, the same approach of using multiple labels used above for nodes wouldn't work for relations. Instead, for this employment hierarchy example, to retrieve all types of employments, we would need to specify all the labels in the hierarchy. In Grakn, we would just ask for the parent relation:
 
 <div class="tabs dark">
 
@@ -416,7 +416,7 @@ For example, we could create a rule that infers the relation between siblings, i
 
 <!-- test-ignore -->
 ```graql
-rule siblingship-rule: 
+rule sibling-if-share-same-parent: 
 when {
   (parent: $parent, child: $child1) isa parenthood;
   (parent: $parent, child: $child2) isa parenthood;
@@ -438,11 +438,11 @@ To get the same answer in a graph database, we'd have to manually write the quer
 MATCH 
 (sibling1:Person)-[:SIBLING_OF]->(sibling2:Person) 
 OR 
-(sibling3:Person)<-[:PARENT_OF]-(:person)-[:PARENT_OF]->(sibling4:Person)
-RETURN sibling1, sibling2, sibling3, sibling4
+(sibling1:Person)<-[:PARENT_OF]-(:person)-[:PARENT_OF]->(sibling3:Person)
+RETURN sibling1, sibling2, sibling3
 ```
 
-A more complex example of automated reasoning is when the inferred concepts depend on multiple rules, this is called chaining rules. In the example below, we want to retrieve all the persons who are cousins of each other, where only `parenthood` relations across three generations have been ingested. With the right rules defined, we would be able to just query for `cousinship` relations like this:
+A more complex example of automated reasoning is when the inferred concepts depend on multiple rules (chaining rules). In the example below, we want to retrieve all the persons who are cousins of each other, where only `parenthood` relations across three generations have been ingested. With the right rules defined, we would be able to just query for `cousinship` relations like this:
 
 <!-- test-ignore -->
 ```graql
@@ -457,7 +457,7 @@ The logic underlying the inference of the `cousinship` relation would be as foll
 - And if that child D has a child E
 - Then person A and child E are cousins
 
-As we can't just represent this logic in a rule in a graph database, we need to explicitly write it in the query itself. In this example, this would look like this:
+As we can't just represent this logic in a rule in a graph database, we need to explicitly write it in the query itself. For this example, this would look like this:
 
 ```cypher
 MATCH 
@@ -468,7 +468,7 @@ MATCH
 RETURN child4, child3
 ```
 
-To represent this logic in Grakn, we should create two separate rules. The first rule infers the cousin relation. This rule then depends on the second rule, which infers an uncle or aunt relation. 
+To represent this logic in Grakn, we can create two separate rules. The first rule infers the cousin relation. This rule then depends on the second rule, which infers an uncle or aunt relation. 
 
 In the first rule, we infer the `cousinship` relation. The logic is as follows:
 
@@ -479,7 +479,7 @@ In the first rule, we infer the `cousinship` relation. The logic is as follows:
 
 <!-- test-ignore -->
 ```graql
-rule cousin-inferred: 
+rule an-aunts-child-is-a-cousin: 
 when {
     $a isa person;
     $b isa person;
@@ -498,7 +498,7 @@ One of the conditions of this rule is the `uncle-auntship` relation, which would
 
 <!-- test-ignore -->
 ```graql
-rule aunt-niece-rule: 
+rule uncle-aunt-between-child-and-parent-sibling: 
 when {
     $a isa person; 
     $b isa person;
@@ -521,7 +521,7 @@ sched1.end <= sched2.end
 RETURN
 ```
 
-Rather than representing the logic that determines if a schedules overlaps another one in a query, in Grakn we can represent this in a rule. That way, we can just query directly for all schedules that participate in an `overlaps` relation to get all overlapping schedules:
+Rather than representing the logic that determines if schedules overlap in a query, with Grakn we can represent this in a rule. That way, we can just query directly for all schedules that participate in an `overlaps` relation to get all overlapping schedules:
 
 <!-- test-ignore -->
 ```graql
@@ -532,7 +532,7 @@ The rule that infers the `overlaps` relation looks like this:
 
 <!-- test-ignore -->
 ```graql
-rule overlapping-schedule: 
+rule overlapping-schedules: 
 when {
   $schedule1 isa schedule, has end $1End; 
   $schedule2 isa schedule, has start $2Start, has end $2End; 
@@ -543,7 +543,7 @@ when {
 ); 
 ```
 
-Rules in Grakn work particularly well when we need to infer connections between otherwise unconnected entities. For example, let's say we want to find all the diseases to which a particular person has a risk factor to. In the next example, we want to infer those answers by using the following logic:
+Rules in Grakn work particularly well when we need to infer connections between otherwise unconnected data. For example, let's say we want to find all the diseases to which a particular person has a risk factor to. In the next example, we want to infer those answers by using the following logic:
 
 - If someone consumes more than 10 units of alcohol per week, then they risk having Diabetes Type II and Hypoglycemia
 - If someone's parent has been diagnosed with Diabetes II and/or Arthritis, then they risk having those diseases too
@@ -633,7 +633,7 @@ when {
   (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa alcohol-risk-factor;
 };
 
-rule: heriditary-risk-of-diabetes:
+rule heriditary-risk-of-diabetes:
 when {
     $person isa person;
     $parent isa person;
@@ -667,7 +667,7 @@ when {
 
 In conclusion, we've see how:
 
-1. **Grakn provides a concept-level schema** with a type system that fully implements the Entity-Relationship (ER) model, while graph databases use vertices and edges without integrity constraints imposed in the form of a schema
+1. **Grakn's type system provides a concept-level schema** that fully implements the Entity-Relationship (ER) model, while graph databases use vertices and edges without integrity constraints imposed in the form of a schema
 2. **Grakn contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
 3. **Grakn is an abstraction layer over a graph database.** Grakn leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
 
