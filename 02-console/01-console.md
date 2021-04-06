@@ -108,6 +108,56 @@ When connecting to Grakn Cluster, the following flags are additionally available
 | `--read-any-replica` | true|false     | Allow or disallow reads from any replica |
 
 
+### Non-interactive mode
+
+To invoke console in a non-interactive manner, we can define a script file that contains the list of commands to run, then invoke console with `./grakn console --script=<script>`. We can also specify the commands to run directly from the command line using `./grakn console --command=<command1> --command=<command2> ...`.
+
+For example given the following command script file:
+
+```
+database create test
+transaction test schema write
+    define person sub entity;
+    commit
+transaction test data write
+    insert $x isa person;
+    commit
+transaction test data read
+    match $x isa person;
+    close
+database delete test
+```
+
+You will see the following output:
+
+```
+> ./grakn console --script=script                                                                                                                                                                                                                    73.830s
++ database create test
+Database 'test' created
++ transaction test schema write
+++ define person sub entity;
+Concepts have been defined
+++ commit
+Transaction changes committed
++ transaction test data write
+++ insert $x isa person;
+{ $x iid 0x966e80017fffffffffffffff isa person; }
+answers: 1, duration: 87 ms
+++ commit
+Transaction changes committed
++ transaction test data read
+++ match $x isa person;
+{ $x iid 0x966e80018000000000000000 isa person; }
+answers: 1, duration: 25 ms
+++ close
+Transaction closed without committing changes
++ database delete test
+Database 'test' deleted
+```
+
+The indentation in the script file are only for visual guide and will be ignored by the console. Each line in the script is interpreted as one command, so multiline query is not available in this mode.
+
+
 ## Examples
 
 The following example illustrates how to create a database, define a schema, and insert some data into Grakn.
