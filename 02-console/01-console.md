@@ -82,6 +82,32 @@ Give any of these commands inside a console at the `>` prompt.
 | `clear`         | Clear console screen                                                                                                                            |
 | `exit`          | Exit console                                                                                                                                    |
 
+### Transaction options
+
+The following flags can be passed to the `transaction <db> schema|data read|write` command, for example:
+
+```
+transaction grakn data read --infer=true
+```
+
+| Option                          | Allowed values | Description                                   |
+|---------------------------------|----------------|-----------------------------------------------|
+| `--infer`                       | `true|false`   | Enable or disable inference                   |
+| `--trace-inference`             | `true|false`   | Enable or disable inference tracing           |
+| `--explain`                     | `true|false`   | Enable or disable inference explanations      |
+| `--parallel`                    | `true|false`   | Enable or disable parallel query execution    |
+| `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                     |
+| `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch         |
+| `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                |
+| `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms) |
+
+When connecting to Grakn Cluster, the following flags are additionally available:
+
+| Option               | Allowed values | Description                              |
+|----------------------|----------------|------------------------------------------|
+| `--read-any-replica` | true|false     | Allow or disallow reads from any replica |
+
+
 ## Examples
 
 The following example illustrates how to create a database, define a schema, and insert some data into Grakn.
