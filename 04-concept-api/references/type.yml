@@ -32,13 +32,13 @@ methods:
         - String
     java:
       <<: *method-getLabel
-      method: type.getLabel();
+      method: type.getLabel().name();
     javascript:
       <<: *method-getLabel
-      method: type.getLabel();
+      method: type.getLabel().name();
     python:
       <<: *method-getLabel
-      method: type.get_label()
+      method: type.get_label().name()
 
   - method:
     common: &method-isRoot
