@@ -61,6 +61,7 @@ Give any of these commands inside a console at the `>` prompt.
 | `database create <db>`                    | Create a database with name `<db>` on the server.                                                                      |
 | `database list`                           | List the databases on the server                                                                                       |
 | `database delete <db>`                    | Delete a database with name `<db>` on the server                                                                       |
+| `database schema <db>`                    | Print schema of a database with name `<db>` on the server                                                              |
 | `transaction <db> schema|data read|write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.   |
 | `help`                                    | Print help menu                                                                                                        |
 | `clear`                                   | Clear console screen                                                                                                   |
