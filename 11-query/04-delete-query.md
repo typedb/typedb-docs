@@ -12,6 +12,12 @@ To try the following examples with one of the Grakn clients, follows these [Clie
 Match-Delete queries are NOT lazy: the `match` will be fully evaluated and answers recorded, and each answer will in turn have
 the operations specified in the `delete` clause applied. This avoids modifying the graph while traversing it.
 
+<div class="note">
+[Important]
+When updating (eg. adding role players, attributes, owners) a concept, and concurrently deleting the concept, the data can end up in an undefined state. To avoid this, serialise transactions that would be performing concurrent deletes and inserts. Concurrent insert operations are always fully safe.
+</div>
+
+
 <div class="tabs dark">
 
 [tab:Graql]
