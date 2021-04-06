@@ -61,6 +61,7 @@ Give any of these commands inside a console at the `>` prompt.
 | `database create <db>`                    | Create a database with name `<db>` on the server.                                                                      |
 | `database list`                           | List the databases on the server                                                                                       |
 | `database delete <db>`                    | Delete a database with name `<db>` on the server                                                                       |
+| `database schema <db>`                    | Print schema of a database with name `<db>` on the server                                                              |
 | `transaction <db> schema|data read|write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.   |
 | `help`                                    | Print help menu                                                                                                        |
 | `clear`                                   | Clear console screen                                                                                                   |
@@ -80,6 +81,82 @@ Give any of these commands inside a console at the `>` prompt.
 | `help`          | Print this help menu                                                                                                                            |
 | `clear`         | Clear console screen                                                                                                                            |
 | `exit`          | Exit console                                                                                                                                    |
+
+### Transaction options
+
+The following flags can be passed to the `transaction <db> schema|data read|write` command, for example:
+
+```
+transaction grakn data read --infer=true
+```
+
+| Option                          | Allowed values | Description                                   |
+|---------------------------------|----------------|-----------------------------------------------|
+| `--infer`                       | `true|false`   | Enable or disable inference                   |
+| `--trace-inference`             | `true|false`   | Enable or disable inference tracing           |
+| `--explain`                     | `true|false`   | Enable or disable inference explanations      |
+| `--parallel`                    | `true|false`   | Enable or disable parallel query execution    |
+| `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                     |
+| `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch         |
+| `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                |
+| `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms) |
+
+When connecting to Grakn Cluster, the following flags are additionally available:
+
+| Option               | Allowed values | Description                              |
+|----------------------|----------------|------------------------------------------|
+| `--read-any-replica` | true|false     | Allow or disallow reads from any replica |
+
+
+### Non-interactive mode
+
+To invoke console in a non-interactive manner, we can define a script file that contains the list of commands to run, then invoke console with `./grakn console --script=<script>`. We can also specify the commands to run directly from the command line using `./grakn console --command=<command1> --command=<command2> ...`.
+
+For example given the following command script file:
+
+```
+database create test
+transaction test schema write
+    define person sub entity;
+    commit
+transaction test data write
+    insert $x isa person;
+    commit
+transaction test data read
+    match $x isa person;
+    close
+database delete test
+```
+
+You will see the following output:
+
+```
+> ./grakn console --script=script                                                                                                                                                                                                                    73.830s
++ database create test
+Database 'test' created
++ transaction test schema write
+++ define person sub entity;
+Concepts have been defined
+++ commit
+Transaction changes committed
++ transaction test data write
+++ insert $x isa person;
+{ $x iid 0x966e80017fffffffffffffff isa person; }
+answers: 1, duration: 87 ms
+++ commit
+Transaction changes committed
++ transaction test data read
+++ match $x isa person;
+{ $x iid 0x966e80018000000000000000 isa person; }
+answers: 1, duration: 25 ms
+++ close
+Transaction closed without committing changes
++ database delete test
+Database 'test' deleted
+```
+
+The indentation in the script file are only for visual guide and will be ignored by the console. Each line in the script is interpreted as one command, so multiline query is not available in this mode.
+
 
 ## Examples
 

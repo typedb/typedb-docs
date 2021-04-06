@@ -138,7 +138,7 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 | Client Python  | Grakn Core                  | Grakn Cluster  | Python         |
 | :------------: | :-------------------------: | :----------:   | :------------: |
-| 2.0.0          | 2.0.0                       | N/A            | \>= 3.6        |
+| 2.0.0          | 2.0.0                       | 2.0.0          | \>= 3.6        |
 | 1.8.0          | 1.8.0 to 1.8.4              | N/A            | \>= 3.5, < 3.8 |
 | 1.7.2          | 1.7.1, 1.7.2                | N/A            | \>= 2.7        |
 | 1.7.1          | 1.7.1                       | N/A            | \>= 2.7        |      
