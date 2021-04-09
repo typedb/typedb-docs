@@ -74,7 +74,9 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 
 async function runBasicQueries(database) {
 	const client = Grakn.coreClient("localhost:1729");
