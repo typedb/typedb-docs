@@ -49,7 +49,7 @@ Pick one of the data formats below and download the files. After you download th
 All code that follows is to be written in `phone_calls/migrate.py`.
 
 ```python
-from grakn.client import GraknClient
+from grakn.client import Grakn
 
 inputs = [
     {
@@ -84,10 +84,10 @@ Let’s move on.
 ## build_phone_call_graph(inputs)
 
 ```python
-from grakn.client import GraknClient, SessionType
+from grakn.client import Grakn, SessionType
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client() as client:
+    with Grakn.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
@@ -272,7 +272,7 @@ The implementation for `parse_data_to_dictionaries(input)` differs based on the 
 We use Python’s built-in [`csv` library](https://docs.python.org/3/library/csv.html#dialects-and-formatting-parameters). Let’s import the module for it.
 
 ```python
-from grakn.client import GraknClient
+from grakn.client import Grakn
 import csv
 
 #...
@@ -305,7 +305,7 @@ We use [ijson](https://pypi.org/project/ijson/), an iterative JSON parser with a
 Via the terminal, while in the `phone_calls` directory, run `pip3 install ijson` and import the module for it.
 
 ```python
-from grakn.client import GraknClient
+from grakn.client import Grakn
 import ijson
 
 # ...
@@ -404,11 +404,11 @@ Here is how our `migrate.py` looks like for each data format.
 [tab:CSV]
 <!-- test-example phone_calls_csv_migration.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, SessionType, TransactionType
 import csv
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client() as client:
+    with Grakn.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
@@ -499,11 +499,11 @@ build_phone_call_graph(inputs=inputs)
 [tab:JSON]
 <!-- test-example phone_calls_json_migration.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, SessionType, TransactionType
 import ijson
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client() as client:
+    with Grakn.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
@@ -593,11 +593,11 @@ build_phone_call_graph(inputs)
 [tab:XML]
 <!-- test-example phone_calls_xml_migration.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, SessionType, TransactionType
 import xml.etree.cElementTree as et
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client() as client:
+    with Grakn.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
                 print("Loading from [" + input["data_path"] + "] into Grakn ...")
