@@ -92,9 +92,10 @@ Having downloaded Grakn, we can now start the [Server](#start-the-grakn-server) 
 
 If you see errors such as the following:
 ```
-Exception in thread "main" java.lang.UnsatisfiedLinkError: C:\Users\graknlabs\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
+Exception in thread "main" java.lang.UnsatisfiedLinkError: 
+C:\Users\graknlabs\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
 ```
-try following the C++ redistributable installation instructions at [here](https://developers.google.com/optimization/install/python/windows#microsoft-visual-c-redistributable).
+try following the C++ redistributable installation instructions [here](https://developers.google.com/optimization/install/python/windows#microsoft-visual-c-redistributable).
 
 [tab:end]
 
