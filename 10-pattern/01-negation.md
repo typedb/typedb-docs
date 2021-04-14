@@ -647,11 +647,9 @@ Please note, nesting of negation blocks is only allowed in queries, but not in r
 ## Negation blocks: DOs and DONTs
 
 Please note, the following restrictions apply to negation blocks:
-- **for queries with negation blocks, reasoning needs to be turned ON**
 - for each negation block in a query, at least one variable in the negation block must be bound to a statement outside of the negation block.
 This ensures that set difference operations are performed on sets that are not disjoint
 - variables in negation blocks are local to the block they are defined in
-- only conjunctive statements are allowed within negation blocks
 
 
 ## Negation in rules
@@ -659,10 +657,9 @@ As we have already mentioned, we can use negation blocks within rules.
  
 However, when inserting negation blocks in rules, currently the following restrictions apply:
 - all restrictions applying to queries with negation blocks
-- each rule can only have a single negation block
-- nested negation blocks are not supported
-- recursion with negation blocks is not supported 
-
+- only conjunctive statements are allowed within rule negations (i.e. no nested `not` or `or` statements)
+- rules with negations may not contradict themselves (i.e. recurse back to themselves, even indirectly. An error will be thrown if this is possible.)
+ 
 We will illustrate the use of negation with rules with a graphical example.
 
 Let us define a network of nodes with possible edges between nodes:

@@ -24,12 +24,12 @@ Let’s go through a summary of how the migration takes place.
 3.  we pass each data item (in the form of a JSON object) to its corresponding template. What the template returns is the Graql query for inserting that item into Grakn.
 4.  we execute each of those queries to load the data into our target database — `phone_calls`.
 
-Before moving on, make sure you have **Java 1.8** installed and the [**Grakn Server**](/docs/running-grakn/install-and-run#start-the-grakn-server) running on your machine.
+Before moving on, make sure you have **Java 11** installed and the [**Grakn Server**](/docs/running-grakn/install-and-run#start-the-grakn-server) running on your machine.
 
 ## Get Started
 
 ### Create a new Maven project
-This project uses SDK 1.8 and is named `phone_calls`. I am using IntelliJ as the IDE.
+This project uses Java 11 and is named `phone_calls`. I am using IntelliJ as the IDE.
 
 ### Set Grakn as a dependency
 Modify `pom.xml` to include the latest version of Grakn Core, Graql and Grakn Client Java as dependencies.
@@ -55,12 +55,12 @@ Modify `pom.xml` to include the latest version of Grakn Core, Graql and Grakn Cl
         <dependency>
             <groupId>io.graql</groupId>
             <artifactId>graql-lang</artifactId>
-            <version>1.0.5</version>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>io.grakn.client</groupId>
             <artifactId>grakn-client</artifactId>
-            <version>1.8.3</version>
+            <version>2.0.0</version>
         </dependency>
   	</dependencies>
 </project>
@@ -381,6 +381,8 @@ Now that we have the datapath and template defined for each of our data files, w
 
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
+import grakn.client.Grakn;
+import grakn.client.api.GraknSession;
 
 public class PhoneCallsMigration {
 	abstract static class Input {...}
@@ -755,7 +757,10 @@ Here is how our `Migrate.java` looks like for each data format.
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -954,7 +959,10 @@ public class PhoneCallsCSVMigration {
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
 import static graql.lang.Graql.*;
 import graql.lang.query.GraqlInsert;
 
@@ -1159,7 +1167,10 @@ public class PhoneCallsJSONMigration {
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
 import graql.lang.query.GraqlInsert;
 import static graql.lang.Graql.*;
 

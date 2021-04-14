@@ -49,7 +49,9 @@ Pick one of the data formats below and download the files. After you download th
 All code that follows is to be written in `phone_calls/migrate.js`.
 
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 
 const inputs = [
     {
@@ -339,7 +341,9 @@ We use [stream-json](https://github.com/uhop/stream-json) for custom JSON proces
 Via the terminal, while in the `phone_calls` directory, run `npm install stream-json` and require the modules for it.
 
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -377,7 +381,9 @@ We use xml-stream, an xml stream parser.
 Via the terminal, while in the `phone_calls` directory, run `npm install xml-stream` and require the module for it.
 
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 ...
@@ -445,7 +451,9 @@ Here is how our `migrate.js` looks like for each data format.
 [tab:CSV]
 <!-- test-example phoneCallsCSVMigration.js -->
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 const fs = require("fs");
 const papa = require("papaparse");
 
@@ -581,7 +589,9 @@ buildPhoneCallGraph();
 [tab:JSON]
 <!-- test-example phoneCallsJSONMigration.js -->
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -719,7 +729,9 @@ buildPhoneCallGraph();
 [tab:XML]
 <!-- test-example phoneCallsXMLMigration.js -->
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 
