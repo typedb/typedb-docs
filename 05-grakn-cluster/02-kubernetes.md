@@ -14,24 +14,29 @@ It assumes we'd want to run them on separate Kubernetes nodes (for increased fau
 and that the cluster has these nodes available with sufficient resources (8 CPUs).
 Additionally, it assumes Kubernetes provides persistent volumes.
 
+### Steps
+
 1. Create a secret to access Grakn Cluster image on Docker Hub:
 
-```
-kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
---docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
-```
+    ```
+    kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
+    --docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
+    ```
 
 2. Configure Helm repo:
 
-```
-helm repo add graknlabs https://repo.grakn.ai/repository/helm/
-```
+    ```
+    helm repo add graknlabs https://repo.grakn.ai/repository/helm/
+    ```
 
 
 3. Install Grakn Cluster with Helm:
-```
-helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,usePersistentDisk=true"
-```
+
+    ```
+    helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,usePersistentDisk=true"
+    ```
+
+### Configuration
 
 Configurable settings for Helm package include:
 
