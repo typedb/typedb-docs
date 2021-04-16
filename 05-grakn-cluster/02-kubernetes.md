@@ -68,14 +68,14 @@ spec:
         - name: private-docker-hub
       containers:
         - name: grakn-cluster
-          image: graknlabs/grakn-cluster:2.0.0-alpha-2
+          image: graknlabs/grakn-cluster:2.0.1
           resources:
             requests:
               cpu: "7"
           command:
             - /bin/bash
             - -c
-            - '/opt/util/wait-for-host.sh grakn-cluster-0.grakn-cluster && /opt/util/wait-for-host.sh grakn-cluster-1.grakn-cluster && /opt/util/wait-for-host.sh grakn-cluster-2.grakn-cluster && /opt/grakn-cluster-all-linux/grakn server --data=/mnt/data/ --replication=/mnt/replication/ --address $(hostname).grakn-cluster:1729:1730 --peer grakn-cluster-0.grakn-cluster:1729:1730 --peer grakn-cluster-1.grakn-cluster:1729:1730 --peer grakn-cluster-2.grakn-cluster:1729:1730'
+            - '/opt/util/wait-for-host.sh grakn-cluster-0.grakn-cluster grakn-cluster-1.grakn-cluster grakn-cluster-2.grakn-cluster && mkdir -p /mnt/{data,replication}/ && /opt/grakn-cluster-all-linux/grakn server --data=/mnt/data/ --replication=/mnt/replication/ --address $(hostname).grakn-cluster:1729:1730 --peer grakn-cluster-0.grakn-cluster:1729:1730 --peer grakn-cluster-1.grakn-cluster:1729:1730 --peer grakn-cluster-2.grakn-cluster:1729:1730'
 	  ports:
             - containerPort: 1729
               name: client-port
