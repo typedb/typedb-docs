@@ -8,7 +8,8 @@ toc: false
 
 ## Deploying Grakn Cluster onto Kubernetes
 
-This guide describes how to deploy a 3-node Grakn Cluster onto Kubernetes.
+This guide describes how to deploy a 3-node Grakn Cluster onto Kubernetes using [Helm](https://helm.sh/) package manager.
+
 It assumes we'd want to run them on separate Kubernetes nodes (for increased fault-tolerancy)
 and that the cluster has these nodes available with sufficient resources (8 CPUs).
 Additionally, it assumes Kubernetes provides persistent volumes.
@@ -20,86 +21,28 @@ kubectl create secret docker-registry private-docker-hub --docker-server=https:/
 --docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
 ```
 
-2. Create a sample config (`grakn-cluster.yml`):
+2. Configure Helm repo:
 
 ```
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: grakn-cluster
-  labels:
-    app: grakn-cluster
-spec:
-  ports:
-    - port: 1729
-      targetPort: 1729
-      name: grakn-cluster
-  type: ClusterIP
-  selector:
-    app: grakn-cluster
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: grakn-cluster
-spec:
-  serviceName: "grakn-cluster"
-  replicas: 3
-  selector:
-    matchLabels:
-      app: grakn-cluster
-  template:
-    metadata:
-      labels:
-        app: grakn-cluster
-    spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                      - grakn-cluster
-              topologyKey: "kubernetes.io/hostname"
-      imagePullSecrets:
-        - name: private-docker-hub
-      containers:
-        - name: grakn-cluster
-          image: graknlabs/grakn-cluster:2.0.1
-          resources:
-            requests:
-              cpu: "7"
-          command:
-            - /bin/bash
-            - -c
-            - '/opt/util/wait-for-host.sh grakn-cluster-0.grakn-cluster grakn-cluster-1.grakn-cluster grakn-cluster-2.grakn-cluster && mkdir -p /mnt/{data,replication}/ && /opt/grakn-cluster-all-linux/grakn server --data=/mnt/data/ --replication=/mnt/replication/ --address $(hostname).grakn-cluster:1729:1730 --peer grakn-cluster-0.grakn-cluster:1729:1730 --peer grakn-cluster-1.grakn-cluster:1729:1730 --peer grakn-cluster-2.grakn-cluster:1729:1730'
-	  ports:
-            - containerPort: 1729
-              name: client-port
-            - containerPort: 1730
-              name: server-port
-          volumeMounts:
-            - name: grakn-data
-              mountPath: /mnt/
-  volumeClaimTemplates:
-    - metadata:
-        name: grakn-data
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 100Gi
----
+helm repo add graknlabs https://repo.grakn.ai/repository/helm/
 ```
 
-3. Deploy the config:
 
+3. Install Grakn Cluster with Helm:
 ```
-kubectl apply -f grakn-cluster.yml
+helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,usePersistentDisk=true"
 ```
+
+Configurable settings for Helm package include:
+
+| Key | Default value | Description
+| :----------------: | :------:| :--------------------------------------------------------------------------: |
+| `replicas`         | `3`     | Number of Grakn Cluster nodes to run                                         |
+| `cpu`              | `7`     | How many CPUs should be allocated for each Grakn Cluster node                |
+| `storageSize`      | `100Gi` | How much disk space should be allocated for each Grakn Cluster node          |
+| `singlePodPerNode` | `true`  | Whether Grakn Cluster pods should be scheduled to different Kubernetes nodes |
+| `usePersistentDisk`| `true`  | Whether Grakn Cluster should use a persistent volume to store data           |
+
 
 ## Current limitations
 
