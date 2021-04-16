@@ -292,7 +292,9 @@ We use [Papaparse](https://www.papaparse.com/), a CSV (or delimited text) parser
 Via the terminal, while in the `phone_calls` directory, run `npm install papaparse` and require the module for it.
 
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 const fs = require("fs");
 const papa = require("papaparse");
 ...

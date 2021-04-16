@@ -61,6 +61,22 @@ methods:
         - "[`ThingType`](../concept-api/type?tab=python#thingtype-methods)"
 
   - method:
+    common: &method-isInferred
+      title: Check if inferred (Local)
+      description: Checks if this Thing is inferred by a [Reasoning Rule](../schema/rules).
+      returns:
+        - boolean
+    java:
+      <<: *method-isInferred
+      method: thing.isInferred();
+    javascript:
+      <<: *method-isInferred
+      method: thing.isInferred();
+    python:
+      <<: *method-isInferred
+      method: thing.is_inferred()
+
+  - method:
     common: &method-setHas
       title: Assign attribute
       description: Assigns an Attribute to be owned by this Thing.
@@ -124,22 +140,6 @@ methods:
       method: thing.unset_has(attribute)
       returns:
         - "[`Thing`](../concept-api/thing?tab=python#thing-methods)"
-
-  - method:
-    common: &method-isInferred
-      title: Check if inferred
-      description: Checks if this Thing is inferred by a [Reasoning Rule](../schema/rules).
-      returns:
-        - boolean
-    java:
-      <<: *method-isInferred
-      method: thing.isInferred();
-    javascript:
-      <<: *method-isInferred
-      method: await thing.isInferred();
-    python:
-      <<: *method-isInferred
-      method: thing.is_inferred()
 
   - method:
     common: &method-getHasWithOnlyKey

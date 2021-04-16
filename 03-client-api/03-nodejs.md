@@ -17,18 +17,19 @@ npm install grakn-client
 ## Quickstart
 First make sure that the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In your source, require `grakn-client/GraknClient`.
+In your source, require `grakn-client/Grakn`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
-const { GraknClient } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
 
 async function openSession (database) {
 	const client = Grakn.coreClient("localhost:1729");
@@ -46,7 +47,9 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 
 async function createTransactions (database) {
 	const client = Grakn.coreClient("localhost:1729");

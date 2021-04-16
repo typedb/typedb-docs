@@ -1,5 +1,7 @@
 const fs = require('fs')
-const { GraknClient, SessionType, TransactionType } = require("grakn-client/GraknClient");
+const { Grakn } = require("grakn-client/Grakn");
+const { SessionType } = require("grakn-client/api/GraknSession");
+const { TransactionType } = require("grakn-client/api/GraknTransaction");
 const reporters = require('jasmine-reporters');
 
 const tapReporter = new reporters.TapReporter();
