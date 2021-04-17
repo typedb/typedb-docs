@@ -87,7 +87,7 @@ Give any of these commands inside a console at the `>` prompt.
 The following flags can be passed to the `transaction <db> schema|data read|write` command, for example:
 
 ```
-transaction grakn data read --infer=true
+transaction grakn data read --infer true
 ```
 
 | Option                          | Allowed values | Description                                   |
