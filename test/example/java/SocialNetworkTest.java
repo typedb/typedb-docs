@@ -1,6 +1,9 @@
 package grakn.doc.test.example;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
 import graql.lang.Graql;
 import graql.lang.common.GraqlArg;
 import graql.lang.query.GraqlQuery;

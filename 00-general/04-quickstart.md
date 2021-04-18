@@ -133,11 +133,14 @@ The result contains the following answers:
 ```java
 package grakn.examples;
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
 
 import static graql.lang.Graql.*;
 import graql.lang.query.*;
-import grakn.client.concept.answer.ConceptMap;
+import grakn.client.api.answer.ConceptMap;
 import java.util.stream.Stream;
 
 import java.util.List;

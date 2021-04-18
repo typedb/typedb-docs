@@ -89,7 +89,7 @@ public class GraknQuickstartB {
             writeTransaction.commit();
     
             // creating a read transaction
-            Transaction readTransaction = session.transaction(Transaction.Type.READ);
+            GraknTransaction readTransaction = session.transaction(GraknTransaction.Type.READ);
             // read transaction is open
             // read transaction must always be closed
             readTransaction.close();

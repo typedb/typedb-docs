@@ -1,11 +1,14 @@
 package grakn.doc.test.query;
 
 
-import grakn.client.GraknClient;
-import grakn.client.concept.answer.ConceptMap;
-import grakn.client.concept.answer.ConceptMapGroup;
-import grakn.client.concept.answer.Numeric;
-import grakn.client.concept.answer.NumericGroup;
+import grakn.client.Grakn;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
+import grakn.client.api.answer.ConceptMap;
+import grakn.client.api.answer.ConceptMapGroup;
+import grakn.client.api.answer.Numeric;
+import grakn.client.api.answer.NumericGroup;
 import graql.lang.Graql;
 import graql.lang.pattern.Pattern;
 import graql.lang.query.*;

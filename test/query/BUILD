@@ -40,6 +40,7 @@ grakn_java_test(
     srcs = [":graql-java-tests"],
     deps = [
         "@graknlabs_client_java//:client-java",
+        "@graknlabs_client_java//api",
         "@graknlabs_graql//java:graql",
         "@graknlabs_graql//java/common",
         "@graknlabs_graql//java/pattern",
@@ -76,6 +77,7 @@ grakn_java_test(
     srcs = [":graql-lang-tests"],
     deps = [
         "@graknlabs_client_java//:client-java",
+        "@graknlabs_client_java//api",
         "@graknlabs_graql//java:graql",
         "@graknlabs_graql//java/query",
         "@graknlabs_graql//java/pattern"

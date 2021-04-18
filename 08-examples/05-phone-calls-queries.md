@@ -74,8 +74,11 @@ get $phone-number;
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
-import grakn.client.concept.answer.ConceptMap;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
+import grakn.client.Grakn;
+import grakn.client.api.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
@@ -250,8 +253,11 @@ get $phone-number;
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
-import grakn.client.concept.answer.ConceptMap;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
+import grakn.client.Grakn;
+import grakn.client.api.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
@@ -426,8 +432,11 @@ get $phone-number;
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
-import grakn.client.concept.answer.ConceptMap;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
+import grakn.client.Grakn;
+import grakn.client.api.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
@@ -600,8 +609,11 @@ get $phone-number-a, $phone-number-b;
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
-import grakn.client.concept.answer.ConceptMap;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
+import grakn.client.Grakn;
+import grakn.client.api.answer.ConceptMap;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 
@@ -800,10 +812,13 @@ get $duration; mean $duration;
 package io.grakn.example.phoneCalls;
 
 
-import grakn.client.GraknClient;
-import grakn.client.concept.answer.ConceptMap;
-import grakn.client.concept.answer.ConceptMapGroup;
-import grakn.client.concept.answer.Numeric;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
+import grakn.client.Grakn;
+import grakn.client.api.answer.ConceptMap;
+import grakn.client.api.answer.ConceptMapGroup;
+import grakn.client.api.answer.Numeric;
 import graql.lang.query.GraqlMatch;
 import static graql.lang.Graql.*;
 

@@ -1,7 +1,10 @@
 package grakn.doc.test.query;
 
 
-import grakn.client.GraknClient;
+import grakn.client.Grakn;
+import grakn.client.api.GraknClient;
+import grakn.client.api.GraknSession;
+import grakn.client.api.GraknTransaction;
 import graql.lang.Graql;
 import graql.lang.query.GraqlQuery;
 import graql.lang.query.GraqlCompute;
@@ -14,10 +17,10 @@ import graql.lang.query.GraqlUpdate;
 import graql.lang.query.GraqlCompute.Argument;
 import graql.lang.pattern.Pattern;
 import graql.lang.common.GraqlArg;
-import grakn.client.concept.answer.ConceptMap;
-import grakn.client.concept.answer.ConceptMapGroup;
-import grakn.client.concept.answer.Numeric;
-import grakn.client.concept.answer.NumericGroup;
+import grakn.client.api.answer.ConceptMap;
+import grakn.client.api.answer.ConceptMapGroup;
+import grakn.client.api.answer.Numeric;
+import grakn.client.api.answer.NumericGroup;
 import org.junit.*;
 
 import java.io.*;
