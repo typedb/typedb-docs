@@ -136,6 +136,7 @@ We can add role players to a relation by `match`ing the relation and the concept
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-ignore -->
 ```graql
 ## inserting the new role player into some theoretical multi-employment relation
 match
@@ -147,6 +148,7 @@ insert $emp (employee: $p2) isa employment;
 [tab:end]
 
 [tab:Java]
+<!-- test-ignore -->
 ```java
 GraqlInsert insert_query = Graql.match(
  var("emp").rel("employer", var("org")).rel("employee", var("p")).isa("employment"),

@@ -95,7 +95,7 @@ GraqlDefine query = Graql.define(
             var().rel("father", "f").rel("y").isa("parentship")
         )
     ).then(
-        var().rel("x").rel("y").isa("siblings")
+        var().rel("sibling", "x").rel("sibling", "y").isa("siblings")
     )
 );
 ```
@@ -141,7 +141,7 @@ GraqlDefine query = Graql.define(
             var().rel("father", "f").rel("y").isa("parentship")
         )
     ).then(
-        var().rel("x").rel("y").isa("siblings")
+        var().rel("sibling", "x").rel("sibling", "y").isa("siblings")
     )
 );
 ```
@@ -158,7 +158,7 @@ define
 
 rule anne-is-nickname-for-annabelle:
 when {
-    $p isa person, has name "Annabelle";
+    $p isa person, has full-name "Annabelle";
 } then {
     $p has nickname "Anne";
 };
@@ -171,7 +171,7 @@ GraqlDefine query = Graql.define(
   rule("anne-is-nickname-for-annabelle")
     .when(
         and(
-            var("p").isa("person").has("name", "Annabelle")
+            var("p").isa("person").has("full-name", "Annabelle")
         )
     ).then(
         var("p").has("nickname", "Anne")
@@ -213,7 +213,7 @@ GraqlDefine query = Graql.define(
             var("r").has("graduated", var("is-graduated"))
         )
     ).then(
-        var("p").has("graduated", var("is-graduated"))
+        var("p").has(var("is-graduated"))
     )
 );
 ```
@@ -239,6 +239,7 @@ When inferring relations, it is possible to variabilise any part of the `then` o
 <div class="tabs dark">
 
 [tab:Graql]
+<!-- test-ignore -->
 ```graql
 define
 
@@ -253,6 +254,7 @@ when {
 [tab:end]
 
 [tab:Java]
+<!-- test-ignore -->
 ```java
 GraqlDefine query = Graql.define(
   rule("all-relation-types-are-transitive")
