@@ -565,17 +565,18 @@ google-protobuf@3.14.0:
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.14.0.tgz#20373d22046e63831a5110e11a84f713cc43651e"
   integrity sha512-bwa8dBuMpOxg7COyqkW6muQuvNnWgVN8TX/epDRGW5m0jcrmq2QJyCyiV8ZE2/6LaIIqJtiv9bYokFhfpy/o6w==
 
-"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-38e43bde534295708c2435e984637a21249951d6.tgz":
-  version "0.0.0-38e43bde534295708c2435e984637a21249951d6"
-  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-38e43bde534295708c2435e984637a21249951d6.tgz#6d3fce9009db39a3b9f23b6a972ca03ad75ce8a7"
+"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-5312d1a92675b8437c857af087c8159fb5a2d719.tgz":
+  version "0.0.0-5312d1a92675b8437c857af087c8159fb5a2d719"
+  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-5312d1a92675b8437c857af087c8159fb5a2d719.tgz#9e6d69dc5a60200ce8f2e4545338d49e2a6caa19"
   dependencies:
     "@grpc/grpc-js" "1.2.1"
     google-protobuf "3.14.0"
-    grakn-protocol "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4.tgz"
+    grakn-protocol "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c.tgz"
+    uuid "8.3.2"
 
-"grakn-protocol@https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4.tgz":
-  version "0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4"
-  resolved "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-aa53efa4131bc7397efcf29375d2db6eab760df4.tgz#73a446ff67e8a4ed046f80a0a23c4cee466355b3"
+"grakn-protocol@https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c.tgz":
+  version "0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c"
+  resolved "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c.tgz#538312208349b9873a1e2a15ea2501beeb405201"
   dependencies:
     "@grpc/grpc-js" "1.2.1"
 
@@ -1391,6 +1392,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+uuid@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-to-istanbul@^4.1.2:
   version "4.1.4"
