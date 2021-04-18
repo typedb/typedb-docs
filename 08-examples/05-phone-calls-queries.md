@@ -174,9 +174,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_first_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, GraknClient, SessionType, TransactionType
 
-with Grakn.core_client() as client:
+with Grakn.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -357,9 +357,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_second_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, GraknClient, SessionType, TransactionType
 
-with Grakn.core_client() as client:
+with Grakn.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
       with session.transaction(TransactionType.READ) as transaction:
         query = [
@@ -530,9 +530,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_third_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, GraknClient, SessionType, TransactionType
 
-with Grakn.core_client() as client:
+with Grakn.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -714,9 +714,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_forth_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, GraknClient, SessionType, TransactionType
 
-with Grakn.core_client() as client:
+with Grakn.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -949,9 +949,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_fifth_query.py -->
 ```python
-from grakn.client import GraknClient, SessionType, TransactionType
+from grakn.client import Grakn, GraknClient, SessionType, TransactionType
 
-with Grakn.core_client() as client:
+with Grakn.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             first_query = [
@@ -966,7 +966,7 @@ with Grakn.core_client() as client:
             print("\nQuery:\n", "\n".join(first_query))
             first_query = "".join(first_query)
 
-            first_answer = next(transaction.query().match_aggregate(first_query))
+            first_answer = transaction.query().match_aggregate(first_query).get()
             first_result = 'NaN'
             if first_answer.is_int():
                 first_result = first_answer.as_int()
@@ -987,7 +987,7 @@ with Grakn.core_client() as client:
             print("\nQuery:\n", "\n".join(second_query))
             second_query = "".join(second_query)
 
-            second_answer = next(transaction.query().match_aggregate(second_query))
+            second_answer = transaction.query().match_aggregate(second_query).get()
             second_result = 'NaN'
             if second_answer.is_int():
                 second_result = second_answer.as_int()
