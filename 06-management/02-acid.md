@@ -58,5 +58,5 @@ conflict and fail at commit time if they were to lead to consistency violations.
 
 ### Durability
 
-Durability is guaranteed with the use of a write-head-log at the storage layer. This means under crashes or power failures,
+Durability is guaranteed with the use of a write-ahead-log at the storage layer. This means under crashes or power failures,
 all data that finished committing will be available on reboot.
