@@ -626,10 +626,10 @@ In Grakn, a rule would be created to represent the transitivity:
 ```graql
 rule transitive-location:
 when {
-	$r1 (located: $a, locating: $b); 
-	$r2 (located: $b, locating: $c); 	
+	$r1 (located: $a, locating: $b) isa location; 
+	$r2 (located: $b, locating: $c) isa location; 	
 } then {
-	(located: $a, locating: $c);
+	(located: $a, locating: $c) isa location;
 }; 
 ```
 
