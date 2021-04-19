@@ -413,6 +413,7 @@ Which in Grakn would look like this:
 
 <!-- test-ignore -->
 ```graql
+define
 mammal sub entity; 
 human sub mammal;
 employment sub relation;
@@ -447,10 +448,10 @@ However, this is an abuse of inheritance. In this case, we should create a role 
 <!-- test-ignore -->
 ```graql
 company sub entity,
-    plays employer;
+    plays employment:employer;
 
 government sub entity,
-    plays employer;
+    plays employment:employer;
 
 employment sub relation,
     relates employer;
@@ -482,9 +483,10 @@ In the example above, `rdfs:domain` can be translated to Grakn by saying that wh
 
 <!-- test-ignore -->
 ```graql
+rule publishing-rule:
 when {
 	$b has published-date $pd; 
-}, then {
+} then {
 	(published-book: $b) is publishing; 
 }; 
 ```
@@ -493,9 +495,10 @@ The example of `rdfs:range` can be created with the following Grakn rule, which 
 
 <!-- test-ignore -->
 ```graql
+rule gender-male:
 when {
 	$r (brother: $p) isa siblingship; 
-}, then {
+} then {
 	$p has gender "male";  
 }; 
 ```
@@ -520,9 +523,10 @@ To do the same in Grakn, we can write a rule that finds all entities with an att
 
 <!-- test-ignore -->
 ```graql
+rule departure-next:
 when {
 	$s has next-departure $nd; 
-}, then {
+} then {
 	(departing-vessel: $s) isa departure; 
 }; 
 ```
@@ -584,13 +588,14 @@ To do this in Grakn, the restriction is represented in the schema definition. `p
 
 <!-- test-ignore -->
 ```graql
+define
 person sub entity, 
-plays child,
-plays parent; 
+plays person-parentship:child,
+plays person-parentship:parent; 
 
 animal sub entity,
-plays child,
-plays parent; 
+plays animal-parentship:child,
+plays animal-parentship:parent; 
 
 parentship sub relation, abstract;
 
@@ -598,7 +603,7 @@ person-parentship sub parentship,
 relates child,
 relates parent; 
 
-animal-parentship sub parentship;
+animal-parentship sub parentship,
 relates child,
 relates parent; 
 ```
@@ -619,11 +624,12 @@ In Grakn, a rule would be created to represent the transitivity:
 
 <!-- test-ignore -->
 ```graql
+rule transitive-location:
 when {
-	$r1 (located: $a, locating: $b); 
-	$r2 (located: $b, locating: $c); 	
-}, then {
-	(located: $a, locating: $c);
+	$r1 (located: $a, locating: $b) isa location; 
+	$r2 (located: $b, locating: $c) isa location; 	
+} then {
+	(located: $a, locating: $c) isa location;
 }; 
 ```
 
@@ -661,10 +667,10 @@ This can be represented with a rule in Grakn, where can infer a new relation `ch
 
 <!-- test-ignore -->
 ```graql
+rule borrowing-checked-out-equivalent:
 when {
     (borrower: $x, borrowing: $y) isa borrowing;
-}, 
-then {
+} then {
     (checking-out: $x, checked-out: $y) isa checked-out;
 };
 ```
@@ -697,12 +703,12 @@ hasFather rdf:type owl:FunctionalProperty .
 In Grakn a rule can be used: 
 
 <!-- test-ignore -->
+rule same-fatherhood:
 ```graql
 when {
 	(father: $x, child: $ y) isa fatherhood;
 	(father: $d, child: $ y) isa fatherhood;
-}, 
-then {
+} then {
 	(father: $x, father: $y) isa same-father;
 };
 ```
@@ -719,11 +725,11 @@ This assigns the class `:Mother` if the resource is both `:Female` and `Parent`.
 
 <!-- test-ignore -->
 ```graql
+rule parenthood-motherhood:
 when {
 	$p isa person, has gender "female"; 
 	(mother: $p) isa motherhood; 
-}, 
-then {
+} then {
 	(parent: $p) isa parenthood; 
 };
 ```
@@ -740,6 +746,7 @@ This infers the class `:Person` if the resource is either class `:Woman` or `:Ma
 
 <!-- test-ignore -->
 ```graql
+define
 person sub entity; 
 man sub person;
 woman sub person; 
@@ -765,10 +772,10 @@ In Grakn, a rule can be used to represent this:
 
 <!-- test-ignore -->
 ```graql
+rule red-wine-color:
 when {
 	$w isa red-wine; 
-}, 
-then {
+} then {
 	$w has color "red"; 
 };
 ```
@@ -786,10 +793,10 @@ This could be represented in Grakn:
 
 <!-- test-ignore -->
 ```graql
+rule love-narcissist:
 when {
 	$n isa narcissist; 
-}, 
-then {
+} then {
 	(loving: $n) isa loves; 
 };
 ```
@@ -828,10 +835,10 @@ In Grakn, this validation takes place in Graql's schema language. A `Person` ent
 ```graql
 define 
 person sub entity, 
-	plays employee; 
+	plays employment:employee; 
 company sub entity, 
 	has name,
-	plays employer; 
+	plays employment:employer; 
 employment sub relation, 
 	relates employer,
 	relates employee;
