@@ -8,7 +8,7 @@ toc: false
 
 ## What is ACID?
 
-ACID defines the properties of a transactional database under error or failure states. The four parts are:
+ACID defines the properties of a transactional database. The four parts are:
 
 `A`: Atomicity. Either all operations in a transaction succeed, or none are applied.
 `C`: Consistency. The database only moves from a correct state to a correct state when a transaction is committed.
