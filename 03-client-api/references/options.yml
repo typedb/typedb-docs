@@ -7,11 +7,11 @@ description:
     for Grakn Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `false`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
     - `explain`: whether to enable explanations for the provided query (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
     - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
-    - `traceInference`: if enabled, creates reasoning traces as graphs logged in the logging directory. Should be used with `parallel = false`. (default: `false`)
+    - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `true` if query type is `match`, otherwise `false`)
     - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
     - `schemaLockTimeoutAcquireMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
@@ -26,11 +26,11 @@ description:
     for Grakn Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `False`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `False`)
     - `explain`: whether to enable explanations for the provided query (default: `False`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `True`)
     - `batch_size`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
-    - `trace_inference`: if enabled, creates reasoning traces as graphs logged in the logging directory. Should be used with `parallel = False`. (default: `False`)
+    - `trace_inference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = False`. (default: `False`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `True` if query type is `match`, otherwise `False`)
     - `session_idle_timeout_millis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
     - `schema_lock_timeout_acquire_millis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
@@ -45,11 +45,11 @@ description:
     for Grakn Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level) (default: `false`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
     - `explain`: whether to enable explanations for the provided query (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
     - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
-    - `traceInference`: if enabled, creates reasoning traces as graphs logged in the logging directory. Should be used with `parallel = false`. (default: `false`)
+    - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `true` if query type is `match`, otherwise `false`)
     - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
     - `schemaLockTimeoutAcquireMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
