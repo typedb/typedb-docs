@@ -74,7 +74,7 @@ Give any of these commands inside a console at the `>` prompt.
 | Command         | Description                                                                                                                                     |
 |-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | `<query>`       | Once you're in the transaction REPL, the terminal immediately accepts a multi-line Graql query, and will execute it when you hit enter twice.   |
-| `source <file>` | Run Graql queries in a file, which you can refer to using relative or absolute path. On windows escape `\` by writing `\\`.                                                            |
+| `source <file>` | Run Graql queries in a file, which you can refer to using relative or absolute path. On Windows escape `\` by writing `\\`.                                                            |
 | `commit`        | Commit the transaction changes and close transaction.                                                                                           |
 | `rollback`      | Will remove any uncommitted changes you've made in the transaction, while leaving transaction open.                                             |
 | `close`         | Close the transaction without committing changes, and takes you back to the database-level interface, i.e. first-level REPL.                    |
