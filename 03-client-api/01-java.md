@@ -187,7 +187,7 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 {% include api/generic.html data=site.data.03_client_api.references.query_future language="java" %}
 
 
-## Dependencies
+## Version Compatibility
 
 | Client Java | Grakn Core     | Grakn Cluster  |
 | :---------: | :-------------:| :------------: |

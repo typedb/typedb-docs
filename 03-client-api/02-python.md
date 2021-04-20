@@ -134,7 +134,7 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 {% include api/generic.html data=site.data.03_client_api.references.query_future language="python" %}
 
-## Dependencies
+## Version Compatibility
 
 | Client Python  | Grakn Core                  | Grakn Cluster  | Python         |
 | :------------: | :-------------------------: | :----------:   | :------------: |

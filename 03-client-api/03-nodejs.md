@@ -157,7 +157,7 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 {% include api/generic.html data=site.data.03_client_api.references.stream language="javascript" %}
 
 
-## Dependencies
+## Version Compatibility
 
 | Client Node.js | Grakn Core                  | Grakn Cluster  |  Node     |
 | :------------: | :-------------------------: | :------------: | :-------: |
