@@ -187,11 +187,12 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 {% include api/generic.html data=site.data.03_client_api.references.query_future language="java" %}
 
 
-## Dependencies
+## Version Compatibility
 
 | Client Java | Grakn Core     | Grakn Cluster  |
 | :---------: | :-------------:| :------------: |
-| 2.0.0       | 2.0.0          | 2.0.0          |
+| 2.0.1       | 2.0.2          | 2.0.2          |
+| 2.0.0       | 2.0.0, 2.0.1   | 2.0.0, 2.0.1   |
 | 1.8.3       | 1.8.0 to 1.8.4 | N/A            |
 | 1.8.2       | 1.8.0, 1.8.1   | N/A            |
 | 1.8.1       | 1.8.0          | N/A            |

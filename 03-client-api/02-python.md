@@ -134,11 +134,12 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 {% include api/generic.html data=site.data.03_client_api.references.query_future language="python" %}
 
-## Dependencies
+## Version Compatibility
 
 | Client Python  | Grakn Core                  | Grakn Cluster  | Python         |
 | :------------: | :-------------------------: | :----------:   | :------------: |
-| 2.0.0          | 2.0.0                       | 2.0.0          | \>= 3.6        |
+| 2.0.1          | 2.0.2                       | 2.0.2          | \>= 3.6        |
+| 2.0.0          | 2.0.0, 2.0.1                | 2.0.0, 2.0.1   | \>= 3.6        |
 | 1.8.0          | 1.8.0 to 1.8.4              | N/A            | \>= 3.5, < 3.8 |
 | 1.7.2          | 1.7.1, 1.7.2                | N/A            | \>= 2.7        |
 | 1.7.1          | 1.7.1                       | N/A            | \>= 2.7        |      

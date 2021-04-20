@@ -35,10 +35,12 @@ then { (less: $x, more: $z) isa greater-than; };
   Note that this can have a performance impact, so in production we recommend only leaving the relation variables as required.
 </div>
 
-## Dependencies
+## Version Compatibility
 
-| Workbase       | Grakn Core          | Grakn Cluster          |
+| Workbase       | Grakn Core          | Grakn Cluster       |
 | :------------: | :-----------------: | :-----------------: |
+| 2.0.2          | 2.0.2               | 2.0.2               |
+| 2.0.0, 2.0.1   | 2.0.0, 2.0.1        | 2.0.0, 2.0.1        |
 | 1.3.5          | 1.8.0               | N/A                 |
 | 1.3.4          | 1.8.0               | N/A                 |
 | 1.3.3          | 1.8.0               | N/A                 |
