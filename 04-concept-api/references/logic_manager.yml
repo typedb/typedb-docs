@@ -2,6 +2,26 @@
 title: "LogicManager"
 methods:
   - method:
+      common: &method-getRules
+        title: Retrieve rules
+        description: Retrieves all defined rules
+      java:
+        <<: *method-getRules
+        method: transaction.logic().getRules();
+        returns:
+          - "Stream<[`Rule`](../concept-api/rule?tab=java#rule-methods)>"
+      javascript:
+        <<: *method-getRules
+        method: await transaction.logic().getRules();
+        returns:
+          - "Stream of [`Rule`](../concept-api/rule?tab=javascript#rule-methods)"
+      python:
+        <<: *method-getRules
+        method: transaction.logic().get_rules()
+        returns:
+          - "Iterator of [`Rule`](../concept-api/rule?tab=python#rule-methods)"
+
+  - method:
     common: &method-getRule
       title: Retrieve a Rule
       description: Retrieves the Rule that has the given label.
