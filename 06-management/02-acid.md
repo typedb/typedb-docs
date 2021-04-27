@@ -40,7 +40,7 @@ to the persisted data. If a commit succeeds, all the changes are guaranteed to b
 As noted, there are two specific conditions which can lead to known consistency violations.
 
 1. Concurrently inserting attribute ownership as keys. The expected behaviour is: when two concurrent transactions
-inserting an instance of type `T` with the same key, only one transaction should succeed. This preserves the guarantee that only
+insert an instance of type `T` with the same key, only one transaction should succeed. This preserves the guarantee that only
 1 instance of `T` with the given key exists. Under specific conditions, it is currently possible to end up with two concepts with the key.
 2. Concurrent insert and delete. When adding or extending a relation, or inserting an attribute ownership, connected to an existing concept
 while in a concurrent transaction deleting the concept, it is possible to commit both. This results in relations or attribute ownerships
