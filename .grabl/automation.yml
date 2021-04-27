@@ -10,7 +10,7 @@ config:
 build:
   quality:
     filter:
-      owner: graknlabs
+      owner: vaticle
       branch: master
     dependency-analysis:
       image: graknlabs-ubuntu-20.04-java11
@@ -145,7 +145,7 @@ build:
         bazel test //test/links:test --test_output=errors
     release-staging:
       filter:
-        owner: graknlabs
+        owner: vaticle
         branch: development
       image: graknlabs-ubuntu-20.04
       type: foreground
@@ -161,7 +161,7 @@ build:
         bazel run @graknlabs_dependencies//tool/release:docs -- development $GRABL_COMMIT
     release-production:
       filter:
-        owner: graknlabs
+        owner: vaticle
         branch: master
       image: graknlabs-ubuntu-20.04
       type: foreground
