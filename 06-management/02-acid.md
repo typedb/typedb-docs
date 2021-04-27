@@ -11,9 +11,13 @@ toc: false
 ACID defines the properties of a transactional database. The four parts are:
 
 `A`: Atomicity. Either all operations in a transaction succeed, or none are applied.
+
 `C`: Consistency. The database only moves from a correct state to a correct state when a transaction is committed.
+
 `I`: Isolation. Concurrent transactions operate as if they were run sequentially.
+
 `D`: Durability. Data is not lost or corrupted in the event of hardware or power failure.
+
 
 For more detail please read [ACID](https://en.wikipedia.org/wiki/ACID).
 
@@ -35,12 +39,12 @@ to the persisted data. If a commit succeeds, all the changes are guaranteed to b
 
 As noted, there are two specific conditions which can lead to known consistency violations.
 
-1. Concurrently inserting attribute ownership as keys. The expected behaviour is: two concurrent transactions
+1. Concurrently inserting attribute ownership as keys. The expected behaviour is: when two concurrent transactions
 inserting an instance of type `T` with the same key, only one transaction should succeed. This preserves the guarantee that only
 1 instance of `T` with the given key exists. Under specific conditions, it is currently possible to end up with two concepts with the key.
 2. Concurrent insert and delete. When adding or extending a relation, or inserting an attribute ownership, connected to an existing concept
-while in a concurrent transaction deleting the concept, it is possible commit both. This results in relations or attribute ownerships
-containing or pointing at concepts which longer exist. 
+while in a concurrent transaction deleting the concept, it is possible to commit both. This results in relations or attribute ownerships
+containing or pointing at concepts which no longer exist.
 
 Both of these cases are being addressed in the short term.
 
