@@ -21,8 +21,8 @@ build:
       image: graknlabs-ubuntu-20.04
       type: foreground
       command: |
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel build //...
         dependencies/maven/update.sh
@@ -41,8 +41,8 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
@@ -61,8 +61,8 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
@@ -81,8 +81,8 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
@@ -102,8 +102,8 @@ build:
         EOM
         sudo mv grakn.service /etc/systemd/system/
 
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
@@ -127,8 +127,8 @@ build:
         sudo unlink /usr/bin/python3
         sudo ln -s $(which python3) /usr/bin/python3
         sudo ln -s /usr/share/pyshared/lsb_release.py /opt/pyenv/versions/3.6.10/lib/python3.6/site-packages/lsb_release.py
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel run //:grakn-extractor -- dist/grakn-core-all-linux
         sudo systemctl daemon-reload
@@ -139,8 +139,8 @@ build:
       image: graknlabs-ubuntu-20.04
       type: foreground
       command: |
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         bazel test //test/links:test --test_output=errors
     release-staging:
@@ -152,8 +152,8 @@ build:
       # FIXME: even with tests broken, we still want to release to staging
       # dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
       command: |
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
@@ -168,8 +168,8 @@ build:
       # FIXME: even with tests broken, we still want to release to production
       # dependencies: [build, test-query-graql-lang, test-query-graql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
       command: |
-        export ARTIFACT_USERNAME=$REPO_GRAKN_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_GRAKN_PASSWORD
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
         bazel run @graknlabs_dependencies//distribution/artifact:create-netrc
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
