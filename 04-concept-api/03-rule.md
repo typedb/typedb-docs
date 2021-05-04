@@ -24,7 +24,7 @@ toc: false
 [tab:Python]
 {% include api/generic.html data=site.data.04_concept_api.references.rule language="python" %}
 
-{% include api/generic.html data=site.data.04_concept_api.references.rule language="python" %}
+{% include api/generic.html data=site.data.04_concept_api.references.logic_manager language="python" %}
 [tab:end]
 
 </div>
