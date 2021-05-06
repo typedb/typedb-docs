@@ -35,6 +35,9 @@ Depending on the deployment method you choose, next steps to perform the deploym
 <div class="tabs light">
 
 [tab:Non-exposed Cluster]
+
+**Use this mode if your an application resides within the same Kubernetes network.**
+
 If an application resides within the same Kubernetes network, Grakn Cluster could be deployed in non-exposed mode
 which means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
 
@@ -48,6 +51,9 @@ hostname within the Kubernetes network.
 [tab:end]
 
 [tab:Exposed Cluster - Cloud]
+
+**Use this mode if you need to access the Cluster from outside of Kubernetes. For example, if you need to connect using Workbase or Console from your local machine.**
+
 If an application does not use Kubernetes, Grakn Cluster needs to be exposed on public IPs. This is handled by cloud provider of Kubernetes
 which would allocate and assign a public IP address to the services we're deploying. Each Grakn Cluster pod will get an associated `LoadBalancer`,
 so for a 3-node Grakn Cluster, 3 public IPs would be allocated. To do it, execute the command:
@@ -67,6 +73,9 @@ kubectl get svc -l external-ip-for=grakn-cluster \
 [tab:end]
 
 [tab:Exposed Cluster - Minikube]
+
+**Use this mode for local development with Grakn Cluster.**
+
 Having installed and started [Minikube](https://minikube.sigs.k8s.io/), this is the command to deploy Grakn Cluster:
 
 ```
