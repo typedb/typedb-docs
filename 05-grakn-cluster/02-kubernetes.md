@@ -11,7 +11,7 @@ toc: false
 This guide describes how to deploy a 3-node Grakn Cluster onto Kubernetes using [Helm](https://helm.sh/) package manager.
 
 
-### Common steps
+### Initial setup
 
 Regardless of the Grakn Cluster configuration, these steps need to be performed once before the setup.
 
@@ -28,7 +28,7 @@ Next, configure Helm repo:
 helm repo add graknlabs https://repo.grakn.ai/repository/helm/
 ```
 
-### Specific steps
+### Deployment
 
 Depending on the deployment method you choose, next steps to perform the deployment are as follows:
 
@@ -92,13 +92,27 @@ Certain adjustments are made to the usual cloud deployment:
 [tab:end]
 </div>
 
+### Configuration Reference
+
+Configurable settings for Helm package include:
+
+| Key | Default value | Description
+| :----------------: | :------:| :---------------------------------------------------------------------------------------: |
+| `replicas`          | `3`     | Number of Grakn Cluster nodes to run                                                     |
+| `cpu`               | `7`     | How many CPUs should be allocated for each Grakn Cluster node                            |
+| `storage.size`      | `100Gi` | How much disk space should be allocated for each Grakn Cluster node                      |
+| `storage.persistent`| `true`  | Whether Grakn Cluster should use a persistent volume to store data                       |
+| `singlePodPerNode`  | `true`  | Whether Grakn Cluster pods should be scheduled to different Kubernetes nodes             |
+| `exposed`           | `false` | Whether Grakn Cluster supports connections via public IP (outside of Kubernetes network) |
+
+
 ### Troubleshooting
 
 These are the common error scenarios and how to troubleshoot them:
 
 #### All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state:
 This means the secret to pull the image from Docker Hub has not been created. 
-Make sure you've followed [Common Steps](#common-steps) instructions and verify that the pull secret is present by
+Make sure you've followed [Initial setup](#initial-setup) instructions and verify that the pull secret is present by
 executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
 
 ```
@@ -117,19 +131,6 @@ indicates that `cpu` or `storage.size` values need to be decreased.
 #### One or more pods of Grakn Cluster are stuck in `CrashLoopBackOff` state
 This might indicate any misconfiguration of Grakn Cluster. Please obtain the logs by executing
 `kubectl logs pod/grakn-cluster-0` and share them with Grakn Cluster developers.
-
-### Configurations
-
-Configurable settings for Helm package include:
-
-| Key | Default value | Description
-| :----------------: | :------:| :---------------------------------------------------------------------------------------: |
-| `replicas`          | `3`     | Number of Grakn Cluster nodes to run                                                     |
-| `cpu`               | `7`     | How many CPUs should be allocated for each Grakn Cluster node                            |
-| `storage.size`      | `100Gi` | How much disk space should be allocated for each Grakn Cluster node                      |
-| `storage.persistent`| `true`  | Whether Grakn Cluster should use a persistent volume to store data                       |
-| `singlePodPerNode`  | `true`  | Whether Grakn Cluster pods should be scheduled to different Kubernetes nodes             |
-| `exposed`           | `false` | Whether Grakn Cluster supports connections via public IP (outside of Kubernetes network) |
 
 
 ### Current limitations
