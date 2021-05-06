@@ -17,16 +17,16 @@ Regardless of the Grakn Cluster configuration, these steps need to be performed 
 
 1. Create a secret to access Grakn Cluster image on Docker Hub:
 
-    ```
-    kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
-    --docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
-    ```
+```
+kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
+--docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
+```
 
 2. Configure Helm repo:
 
-    ```
-    helm repo add graknlabs https://repo.grakn.ai/repository/helm/
-    ```
+```
+helm repo add graknlabs https://repo.grakn.ai/repository/helm/
+```
 
 
 ### Deploy a non-exposed cluster
@@ -70,7 +70,7 @@ helm install graknlabs/grakn-cluster --generate-name --set "cpu=2,replicas=3,sin
 and in another terminal (this is a foreground process that needs to continue running):
 
 ```
-$ minikube tunnel
+minikube tunnel
 ```
 
 Certain adjustments are made to the usual cloud deployment:
