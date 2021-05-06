@@ -11,7 +11,7 @@ toc: false
 This guide describes how to deploy a 3-node Grakn Cluster onto Kubernetes using [Helm](https://helm.sh/) package manager.
 
 
-### Initial setup
+### Initial Setup
 
 Regardless of the Grakn Cluster configuration, these steps need to be performed once before the setup.
 
@@ -34,7 +34,7 @@ Depending on the deployment method you choose, next steps to perform the deploym
 
 <div class="tabs light">
 
-[tab:Non-exposed cluster]
+[tab:Non-exposed Cluster]
 If an application resides within the same Kubernetes network, Grakn Cluster could be deployed in non-exposed mode
 which means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
 
@@ -47,7 +47,7 @@ This command deploys a 3-node Cluster using 100Gi volumes for persistence. It wo
 hostname within the Kubernetes network.
 [tab:end]
 
-[tab:Exposed cluster in the cloud]
+[tab:Exposed Cluster - Cloud]
 If an application does not use Kubernetes, Grakn Cluster needs to be exposed on public IPs. This is handled by cloud provider of Kubernetes
 which would allocate and assign a public IP address to the services we're deploying. Each Grakn Cluster pod will get an associated `LoadBalancer`,
 so for a 3-node Grakn Cluster, 3 public IPs would be allocated. To do it, execute the command:
@@ -66,9 +66,8 @@ kubectl get svc -l external-ip-for=grakn-cluster \
 ```
 [tab:end]
 
-[tab:Exposed cluster locally]
-Recommended distribution of Kubernetes to develop with Grakn Cluster locally is [Minikube](https://minikube.sigs.k8s.io/).
-Having installed and started it, this is the command to deploy Grakn Cluster:
+[tab:Exposed Cluster - Minikube]
+Having installed and started [Minikube](https://minikube.sigs.k8s.io/), this is the command to deploy Grakn Cluster:
 
 ```
 helm install graknlabs/grakn-cluster --generate-name \
@@ -112,7 +111,7 @@ These are the common error scenarios and how to troubleshoot them:
 
 #### All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state:
 This means the secret to pull the image from Docker Hub has not been created. 
-Make sure you've followed [Initial setup](#initial-setup) instructions and verify that the pull secret is present by
+Make sure you've followed [Initial Setup](#initial-setup) instructions and verify that the pull secret is present by
 executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
 
 ```
@@ -133,7 +132,7 @@ This might indicate any misconfiguration of Grakn Cluster. Please obtain the log
 `kubectl logs pod/grakn-cluster-0` and share them with Grakn Cluster developers.
 
 
-### Current limitations
+### Current Limitations
 
 Deployment has several limitations which shall be resolved in the future:
 
