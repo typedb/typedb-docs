@@ -28,43 +28,51 @@ Next, configure Helm repo:
 helm repo add graknlabs https://repo.grakn.ai/repository/helm/
 ```
 
+### Specific steps
 
-### Deploy a non-exposed cluster
+Depending on the deployment method you choose, next steps to perform the deployment are as follows:
 
+<div class="tabs light">
+
+[tab:Non-exposed cluster]
 If an application resides within the same Kubernetes network, Grakn Cluster could be deployed in non-exposed mode
 which means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
 
 ```
-helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false"
+helm install graknlabs/grakn-cluster --generate-name \
+--set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false"
 ```
 
 This command deploys a 3-node Cluster using 100Gi volumes for persistence. It would be accessible via `grakn-cluster-{0..2}.grakn-cluster`
 hostname within the Kubernetes network.
+[tab:end]
 
-### Deploy an exposed cluster on the cloud
-
+[tab:Exposed cluster in the cloud]
 If an application does not use Kubernetes, Grakn Cluster needs to be exposed on public IPs. This is handled by cloud provider of Kubernetes
 which would allocate and assign a public IP address to the services we're deploying. Each Grakn Cluster pod will get an associated `LoadBalancer`,
 so for a 3-node Grakn Cluster, 3 public IPs would be allocated. To do it, execute the command:
 
 ```
-helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=true"
+helm install graknlabs/grakn-cluster --generate-name \
+--set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=true"
 ```
 
 This command deploys a 3-node Cluster using 100Gi volumes for persistence.
 It would be accessible via public IPs assigned to the services which can obtained via executing this command:
 
 ```
-kubectl get svc -l external-ip-for=grakn-cluster -o='custom-columns=NAME:.metadata.name,IP:.status.loadBalancer.ingress[0].ip'
+kubectl get svc -l external-ip-for=grakn-cluster \
+-o='custom-columns=NAME:.metadata.name,IP:.status.loadBalancer.ingress[0].ip'
 ```
+[tab:end]
 
-### Deploy an exposed cluster locally
-
+[tab:Exposed cluster locally]
 Recommended distribution of Kubernetes to develop with Grakn Cluster locally is [Minikube](https://minikube.sigs.k8s.io/).
 Having installed and started it, this is the command to deploy Grakn Cluster:
 
 ```
-helm install graknlabs/grakn-cluster --generate-name --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
+helm install graknlabs/grakn-cluster --generate-name \
+--set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ```
 
 and in another terminal (this is a foreground process that needs to continue running):
@@ -76,11 +84,13 @@ minikube tunnel
 Certain adjustments are made to the usual cloud deployment:
 
 * Minikube only has a single node, so `singlePodPerNode` needs to be set to `false`
-* Minikube's node only has as much CPUs as the local machine: `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`. 
+* Minikube's node only has as much CPUs as the local machine: `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
   Therefore, for deploying a 3-node Grakn Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
   as total storage required is `storage.size` multiplied by `replicas`. In our example, total storage requirement is 30Gi.
 
+[tab:end]
+</div>
 
 ### Troubleshooting
 
