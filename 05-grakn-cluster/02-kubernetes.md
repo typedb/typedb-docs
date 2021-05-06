@@ -10,11 +10,10 @@ toc: false
 
 This guide describes how to deploy a 3-node Grakn Cluster onto Kubernetes using [Helm](https://helm.sh/) package manager.
 
-It assumes we'd want to run them on separate Kubernetes nodes (for increased fault-tolerancy)
-and that the cluster has these nodes available with sufficient resources (8 CPUs).
-Additionally, it assumes Kubernetes provides persistent volumes.
 
-### Steps
+### Common steps
+
+Regardless of the Grakn Cluster configuration, these steps need to be performed once before the setup.
 
 1. Create a secret to access Grakn Cluster image on Docker Hub:
 
@@ -30,30 +29,86 @@ Additionally, it assumes Kubernetes provides persistent volumes.
     ```
 
 
-3. Install Grakn Cluster with Helm:
+### Deploy a non-exposed cluster
 
-    ```
-    helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true"
-    ```
+If an application resides within the same Kubernetes network, Grakn Cluster could be deployed in non-exposed mode
+which means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
 
-<div class="note">
-[Note]
-When running on <a href="https://minikube.sigs.k8s.io/">Minikube</a>, certain adjustments need to be made:
+```
+helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false"
+```
+
+This command deploys a 3-node Cluster using 100Gi volumes for persistence. It would be accessible via `grakn-cluster-{0..2}.grakn-cluster`
+hostname within the Kubernetes network.
+
+### Deploy an exposed cluster on the cloud
+
+If an application does not use Kubernetes, Grakn Cluster needs to be exposed on public IPs. This is handled by cloud provider of Kubernetes
+which would allocate and assign a public IP address to the services we're deploying. Each Grakn Cluster pod will get an associated `LoadBalancer`,
+so for a 3-node Grakn Cluster, 3 public IPs would be allocated. To do it, execute the command:
+
+```
+helm install graknlabs/grakn-cluster --generate-name --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=true"
+```
+
+This command deploys a 3-node Cluster using 100Gi volumes for persistence.
+It would be accessible via public IPs assigned to the services which can obtained via executing this command:
+
+```
+kubectl get svc -l external-ip-for=grakn-cluster -o='custom-columns=NAME:.metadata.name,IP:.status.loadBalancer.ingress[0].ip'
+```
+
+### Deploy an exposed cluster locally
+
+Recommended distribution of Kubernetes to develop with Grakn Cluster locally is [Minikube](https://minikube.sigs.k8s.io/).
+Having installed and started it, this is the command to deploy Grakn Cluster:
+
+```
+helm install graknlabs/grakn-cluster --generate-name --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
+```
+
+and in another terminal (this is a foreground process that needs to continue running):
+
+```
+$ minikube tunnel
+```
+
+Certain adjustments are made to the usual cloud deployment:
 
 * Minikube only has a single node, so `singlePodPerNode` needs to be set to `false`
-* Minikube's node only has as much CPUs as the local machine: `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-Therefore, for deploying a 3-node Grakn Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
-* Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent) as total storage required is `storage.size` multiplied by `replicas`
-* It's possible to expose Grakn Cluster to connect to it from outside the Grakn Cluster, but for the IP to be assigned,
-you need to run `minikube tunnel` in a separate terminal.
+* Minikube's node only has as much CPUs as the local machine: `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`. 
+  Therefore, for deploying a 3-node Grakn Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
+* Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
+  as total storage required is `storage.size` multiplied by `replicas`. In our example, total storage requirement is 30Gi.
 
-The final command for Minikube would look something like:
-```
-helm install graknlabs/grakn-cluster --generate-name --set "cpu=2,replicas=3,exposed=true,storage.size=10Gi,singlePodPerNode=false"
-```
-</div>
 
-### Configuration
+### Troubleshooting
+
+These are the common error scenarios and how to troubleshoot them:
+
+#### All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state:
+This means the secret to pull the image from Docker Hub has not been created. 
+Make sure you've followed [Common Steps](#common-steps) instructions and verify that the pull secret is present by
+executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
+
+```
+$ kubectl get secret/private-docker-hub
+NAME                 TYPE                             DATA   AGE
+private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
+```
+
+#### One or more pods of Grakn Cluster are stuck in `Pending` state
+This might mean pods requested more resources than available. To check if that's the case, run
+`kubectl describe pod/grakn-cluster-0` on a stuck pod (e.g. `grakn-cluster-0`). Error message similar to 
+`0/1 nodes are available: 1 Insufficient cpu.` or `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
+indicates that `cpu` or `storage.size` values need to be decreased.
+
+
+#### One or more pods of Grakn Cluster are stuck in `CrashLoopBackOff` state
+This might indicate any misconfiguration of Grakn Cluster. Please obtain the logs by executing
+`kubectl logs pod/grakn-cluster-0` and share them with Grakn Cluster developers.
+
+### Configurations
 
 Configurable settings for Helm package include:
 
@@ -67,7 +122,7 @@ Configurable settings for Helm package include:
 | `exposed`           | `false` | Whether Grakn Cluster supports connections via public IP (outside of Kubernetes network) |
 
 
-## Current limitations
+### Current limitations
 
 Deployment has several limitations which shall be resolved in the future:
 
