@@ -15,14 +15,14 @@ This guide describes how to deploy a 3-node Grakn Cluster onto Kubernetes using 
 
 Regardless of the Grakn Cluster configuration, these steps need to be performed once before the setup.
 
-1. Create a secret to access Grakn Cluster image on Docker Hub:
+As a first step, create a secret to access Grakn Cluster image on Docker Hub:
 
 ```
 kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
 --docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
 ```
 
-2. Configure Helm repo:
+Next, configure Helm repo:
 
 ```
 helm repo add graknlabs https://repo.grakn.ai/repository/helm/
