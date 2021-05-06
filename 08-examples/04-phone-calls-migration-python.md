@@ -296,7 +296,7 @@ Given the nature of CSV files, the dictionary produced has all the columns of th
 
 For this reason, we need to change one line in our `person_template` function.
 
-`if "first_name" in person` becomes `if person["first_name"] != ""`.
+`if "first_name" in person` becomes `if person["first_name"] == ""`.
 [tab:end]
 
 [tab:JSON]
