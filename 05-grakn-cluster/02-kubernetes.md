@@ -38,8 +38,7 @@ Depending on the deployment method you choose, next steps to perform the deploym
 
 **Use this mode if your an application resides within the same Kubernetes network.**
 
-If an application resides within the same Kubernetes network, Grakn Cluster could be deployed in non-exposed mode
-which means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
+Deploying Grakn Cluster in non-exposed mode means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
 
 ```
 helm install graknlabs/grakn-cluster --generate-name \
