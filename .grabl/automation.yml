@@ -158,7 +158,7 @@ build:
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-        bazel run @graknlabs_dependencies//tool/release:docs -- development $GRABL_COMMIT
+        bazel run @graknlabs_dependencies//tool/release:docs -- $GRABL_OWNER web-docs development $GRABL_REPO docs $GRABL_COMMIT
     release-production:
       filter:
         owner: vaticle
@@ -174,7 +174,7 @@ build:
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-        bazel run @graknlabs_dependencies//tool/release:docs -- master $GRABL_COMMIT
+        bazel run @graknlabs_dependencies//tool/release:docs -- $GRABL_OWNER web-docs master $GRABL_REPO docs $GRABL_COMMIT
   execution:
     - build
     - test-query-graql-lang
