@@ -32,10 +32,12 @@ load("@graknlabs_dependencies//builder/bazel:deps.bzl", "bazel_toolchain")
 bazel_toolchain()
 
 # Load //builder/antlr
-load("@graknlabs_dependencies//builder/antlr:deps.bzl", antlr_deps = "deps")
+load("@graknlabs_dependencies//builder/antlr:deps.bzl", antlr_deps = "deps", "antlr_version")
 antlr_deps()
-load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
-antlr_dependencies()
+
+load("@rules_antlr//antlr:lang.bzl", "JAVA")
+load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
+rules_antlr_dependencies(antlr_version, JAVA)
 
 # Load //builder/grpc
 load("@graknlabs_dependencies//builder/grpc:deps.bzl", grpc_deps = "deps")
