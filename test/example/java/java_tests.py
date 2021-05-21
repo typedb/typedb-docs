@@ -32,5 +32,5 @@ for markdown_file in markdown_files:
             if corresponding_path:
                 with open(corresponding_path, "w") as generated_file:
                     standalone = standalone[1].replace("&lt;", "<").replace("&gt;", ">")  # replace html unicodes
-                    standalone = re.sub(r"package .*?;", "package grakn.doc.test.example;", standalone)  # replace package name with that of bazel's
+                    standalone = re.sub(r"package .*?;", "package com.vaticle.doc.test.example;", standalone)  # replace package name with that of bazel's
                     generated_file.write(standalone)

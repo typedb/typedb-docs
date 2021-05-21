@@ -38,8 +38,8 @@ Let’s begin.
 
 > Get me the customers of company “Telecom” who called the target person with phone number +86 921 547 9004 from September 14th onwards.
 
-#### In Graql:
-```graql
+#### In TypeQL:
+```typeql
 match
   $customer isa person, has phone-number $phone-number;
   $company isa company, has name "Telecom";
@@ -71,25 +71,25 @@ get $phone-number;
 [tab:Java]
 <!-- test-example PhoneCallsFirstQuery.java -->
 ```java
-package io.grakn.example.phoneCalls;
+package com.vaticle.typedb.example.phoneCalls;
 
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import grakn.client.Grakn;
-import grakn.client.api.answer.ConceptMap;
-import graql.lang.query.GraqlMatch;
-import static graql.lang.Graql.*;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typedb.client.api.answer.ConceptMap;
+import com.vaticle.typeql.lang.query.TypeQLMatch;
+import static com.vaticle.typeql.lang.TypeQL.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class PhoneCallsFirstQuery {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
-        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
-        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
+        TypeDBSession session = client.session("phone_calls", TypeDBSession.Type.DATA);
+        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match",
@@ -127,12 +127,12 @@ public class PhoneCallsFirstQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
-    const client = Grakn.coreClient("localhost:1729");
+    const client = TypeDB.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -174,9 +174,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_first_query.py -->
 ```python
-from grakn.client import Grakn, GraknClient, SessionType, TransactionType
+from com.vaticle.typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
-with Grakn.core_client('localhost:1729') as client:
+with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -214,8 +214,8 @@ with Grakn.core_client('localhost:1729') as client:
 
 > Get me the phone number of people who have received a call from a customer aged over 50 after this customer (suspect) made a call to another customer aged under 20.
 
-#### In Graql:
-```graql
+#### In TypeQL:
+```typeql
 match
   $suspect isa person, has city "London", has age > 50;
   $company isa company, has name "Telecom";
@@ -250,25 +250,25 @@ get $phone-number;
 
 <!-- test-example PhoneCallsSecondQuery.java -->
 ```java
-package io.grakn.example.phoneCalls;
+package com.vaticle.typedb.example.phoneCalls;
 
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import grakn.client.Grakn;
-import grakn.client.api.answer.ConceptMap;
-import graql.lang.query.GraqlMatch;
-import static graql.lang.Graql.*;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typedb.client.api.answer.ConceptMap;
+import com.vaticle.typeql.lang.query.TypeQLMatch;
+import static com.vaticle.typeql.lang.TypeQL.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class PhoneCallsSecondQuery {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
-        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
-        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
+        TypeDBSession session = client.session("phone_calls", TypeDBSession.Type.DATA);
+        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -308,12 +308,12 @@ public class PhoneCallsSecondQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
-    const client = Grakn.coreClient("localhost:1729");
+    const client = TypeDB.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -357,9 +357,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_second_query.py -->
 ```python
-from grakn.client import Grakn, GraknClient, SessionType, TransactionType
+from com.vaticle.typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
-with Grakn.core_client('localhost:1729') as client:
+with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
       with session.transaction(TransactionType.READ) as transaction:
         query = [
@@ -399,8 +399,8 @@ with Grakn.core_client('localhost:1729') as client:
 
 > Get me the phone number of people who have received calls from both customer with phone number +7 171 898 0853 and customer with phone number +370 351 224 5176.
 
-#### In Graql:
-```graql
+#### In TypeQL:
+```typeql
 match
   $common-contact isa person, has phone-number $phone-number;
   $customer-a isa person, has phone-number "+7 171 898 0853";
@@ -429,25 +429,25 @@ get $phone-number;
 
 <!-- test-example PhoneCallsThirdQuery.java -->
 ```java
-package io.grakn.example.phoneCalls;
+package com.vaticle.typedb.example.phoneCalls;
 
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import grakn.client.Grakn;
-import grakn.client.api.answer.ConceptMap;
-import graql.lang.query.GraqlMatch;
-import static graql.lang.Graql.*;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typedb.client.api.answer.ConceptMap;
+import com.vaticle.typeql.lang.query.TypeQLMatch;
+import static com.vaticle.typeql.lang.TypeQL.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class PhoneCallsThirdQuery {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
-        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
-        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
+        TypeDBSession session = client.session("phone_calls", TypeDBSession.Type.DATA);
+        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -484,12 +484,12 @@ public class PhoneCallsThirdQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
-    const client = Grakn.coreClient("localhost:1729");
+    const client = TypeDB.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -530,9 +530,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_third_query.py -->
 ```python
-from grakn.client import Grakn, GraknClient, SessionType, TransactionType
+from com.vaticle.typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
-with Grakn.core_client('localhost:1729') as client:
+with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -572,8 +572,8 @@ The person with phone number +48 894 777 5173 has been identified as a lead. We 
 Get me the phone phone number of all customers who have called each other as well the person with phone number +48 894 777 5173.
 ```
 
-#### In Graql:
-```graql
+#### In TypeQL:
+```typeql
 match
   $target isa person, has phone-number "+48 894 777 5173";
   $company isa company, has name "Telecom";
@@ -606,25 +606,25 @@ get $phone-number-a, $phone-number-b;
 
 <!-- test-example PhoneCallsForthQuery.java -->
 ```java
-package io.grakn.example.phoneCalls;
+package com.vaticle.typedb.example.phoneCalls;
 
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import grakn.client.Grakn;
-import grakn.client.api.answer.ConceptMap;
-import graql.lang.query.GraqlMatch;
-import static graql.lang.Graql.*;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typedb.client.api.answer.ConceptMap;
+import com.vaticle.typeql.lang.query.TypeQLMatch;
+import static com.vaticle.typeql.lang.TypeQL.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class PhoneCallsForthQuery {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
-        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
-        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
+        TypeDBSession session = client.session("phone_calls", TypeDBSession.Type.DATA);
+        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
         List&lt;String&gt; queryAsList = Arrays.asList(
                 "match ",
@@ -664,12 +664,12 @@ public class PhoneCallsForthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsForthQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
-    const client = Grakn.coreClient("localhost:1729");
+    const client = TypeDB.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ);
 
@@ -714,9 +714,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_forth_query.py -->
 ```python
-from grakn.client import Grakn, GraknClient, SessionType, TransactionType
+from com.vaticle.typedb.client import TypeDB, SessionType, TransactionType
 
-with Grakn.core_client('localhost:1729') as client:
+with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             query = [
@@ -761,8 +761,8 @@ Two queries need to be executed to provide this insight.
 
 > Get me the average call duration among customers who have a contract with company "Telecom" and are aged under 20.
 
-#### In Graql:
-```graql
+#### In TypeQL:
+```typeql
 match
   $customer isa person, has age < 20;
   $company isa company, has name "Telecom";
@@ -783,8 +783,8 @@ get $duration; mean $duration;
 
 > Get me the average call duration among customers who have a contract with company "Telecom" and are aged over 40.
 
-#### In Graql:
-```graql
+#### In TypeQL:
+```typeql
 match
   $customer isa person, has age > 40;
   $company isa company, has name "Telecom";
@@ -809,27 +809,27 @@ get $duration; mean $duration;
 
 <!-- test-example PhoneCallsFifthQuery.java -->
 ```java
-package io.grakn.example.phoneCalls;
+package com.vaticle.typedb.example.phoneCalls;
 
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import grakn.client.Grakn;
-import grakn.client.api.answer.ConceptMap;
-import grakn.client.api.answer.ConceptMapGroup;
-import grakn.client.api.answer.Numeric;
-import graql.lang.query.GraqlMatch;
-import static graql.lang.Graql.*;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typedb.client.api.answer.ConceptMap;
+import com.vaticle.typedb.client.api.answer.ConceptMapGroup;
+import com.vaticle.typedb.client.api.answer.Numeric;
+import com.vaticle.typeql.lang.query.TypeQLMatch;
+import static com.vaticle.typeql.lang.TypeQL.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class PhoneCallsFifthQuery {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
-        GraknSession session = client.session("phone_calls", GraknSession.Type.DATA);
-        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
+        TypeDBSession session = client.session("phone_calls", TypeDBSession.Type.DATA);
+        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
         List&lt;String&gt; firstQueryAsList = Arrays.asList(
                 "match",
@@ -881,12 +881,12 @@ public class PhoneCallsFifthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
-	const client = Grakn.coreClient("localhost:1729");
+	const client = TypeDB.coreClient("localhost:1729");
     const session = await client.session("phone_calls", SessionType.DATA);
     const transaction = await session.transaction(TransactionType.READ);
 
@@ -949,9 +949,9 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_fifth_query.py -->
 ```python
-from grakn.client import Grakn, GraknClient, SessionType, TransactionType
+from com.vaticle.typedb.client import TypeDB, SessionType, TransactionType
 
-with Grakn.core_client('localhost:1729') as client:
+with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             first_query = [

@@ -19,9 +19,9 @@ Usually, we want to change the value of an attribute that is associated to anoth
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 
-```graql
+```typeql
 ## disconnecting from the old attribute value
 match $org isa organisation, has name "Medicely", has registration-number $rn; 
 delete $org has $rn;
@@ -31,7 +31,7 @@ insert $org has registration-number "81726354";
 
 [tab:Java]
 ```java
-GraqlUpdate update_query = Graql.match(
+TypeQLUpdate update_query = TypeQL.match(
   var("org").isa("organisation").has("name", "Medicely").has("registration-number", var("rn"))
 ).delete(
   var("org").has(var("rn"))
@@ -51,8 +51,8 @@ To do so, we can again make use of an update query.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $m isa media, has caption $c;
   $c contains "inappropriate word";
@@ -63,7 +63,7 @@ insert $m has caption "deleted";
 
 [tab:Java]
 ```java
-GraqlUpdate update_query = Graql.match(
+TypeQLUpdate update_query = TypeQL.match(
   var("m").isa("media").has("caption", var("c")),
   var("c").contains("inappropriate word")
 ).delete(
@@ -84,8 +84,8 @@ To replace a role player, we combine the steps for extending the relation, with 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQl]
+```typeql
 match
   $org isa organisation, has name "Pharos";
   $new-org isa organisation, has name "Medicely";
@@ -99,7 +99,7 @@ insert
 
 [tab:Java]
 ```java
-GraqlUpdate update_query = Graql.match(
+TypeQLUpdate update_query = TypeQL.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("new-org").isa("organisation").has("name", "Medicely"),
   var("emp").rel("employer", "org").rel("employee", "p").isa("employment")

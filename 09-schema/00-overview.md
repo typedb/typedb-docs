@@ -96,7 +96,7 @@ In the next section we learn how to [insert](../11-query/03-insert-query.md), [g
 ## Reserved Keywords
 The following keywords are reserved and meant to only be used by Graql.
 <!-- test-ignore -->
-```graql
+```typeql
 ## Native types
 thing, entity, attribute, relation, role
 

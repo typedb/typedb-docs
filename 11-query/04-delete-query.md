@@ -12,26 +12,18 @@ To try the following examples with one of the Grakn clients, follows these [Clie
 Match-Delete queries are NOT lazy: the `match` will be fully evaluated and answers recorded, and each answer will in turn have
 the operations specified in the `delete` clause applied. This avoids modifying the graph while traversing it.
 
-<div class="note">
-[Important]
-When updating (eg. adding role players, attributes, owners) a concept, and concurrently deleting the concept, the data can end up in an undefined state. 
-To avoid this, serialise transactions that would be performing concurrent deletes and inserts.
-
-Please see [ACID](../06-management/02-acid.md) for more details.
-</div>
-
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person, has email "raphael.santos@gmail.com"; delete $p isa person;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
     var("p").isa("person").has("email", "raphael.santos@gmail.com")
 ).delete(var("p").isa("person"));
 ```
@@ -46,8 +38,8 @@ Deleting an instance of a relation type follows exactly the same style:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $org isa organisation, has name "Pharos";
   $emp (employer: $org, employee: $p) isa employment;
@@ -57,7 +49,7 @@ delete $emp isa employment;
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").isa("employment"));
@@ -77,15 +69,15 @@ Note that attributes with the same value and type are shared among their owners.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
   var("t").isa("travel").has("start-date", var("st")),
   var("st").eq(LocalDate.of(2013, 12, 22).atStartOfDay())
 ).delete(var("t").has(var("st")));
@@ -113,8 +105,8 @@ for role players looks like.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $org isa organisation, has name "Pharos";
   $emp (employer: $org, employee: $p) isa employment;
@@ -124,7 +116,7 @@ delete $emp (employer: $org);
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").rel("employer", "org"));

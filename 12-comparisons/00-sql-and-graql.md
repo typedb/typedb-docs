@@ -77,10 +77,10 @@ How do we go about defining the `products` table shown above in Graql and SQL? B
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 product sub entity, 
   key product-id, 
@@ -145,7 +145,7 @@ VALUES (12, "Chocolate", 42, 421)
 In Graql we do something different. We first match for the `Confections` category, assign the result to the variable `$c`, and then insert the new data. 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $c isa category, 
   has name "Confections"; 
@@ -253,7 +253,7 @@ This is what we've just modelled:
 Let’s see how this looks in Graql: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 
 employee sub entity, 
@@ -315,9 +315,9 @@ FROM Employees
 ```
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $s isa employee, has employee-id $eid; 
 $c isa company, has city "London"; 
@@ -339,7 +339,7 @@ Unlike in SQL, in Graql we have the capability to increase the expressivity of o
 And in Graql we define it as follows: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 organisation sub entity; 
   
@@ -355,7 +355,7 @@ pharmaceutical sub for-profit;
 With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/docs/schema/rules)) to abstract and modularise our business logic. SQL does not support rules. For example, if we know that location `x` is contained in `y`, which in turn is contained in `z`, we can create a rule that recursively infers that `x` is also contained in `z`. Writing this in Graql looks like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule transitive-location: 
 when { 
   (located: $x, locating: $y) isa locates; 
@@ -385,7 +385,7 @@ FROM Employee
 Having defined the `transitive-location` rule in Graql, we can now directly relate the employee to the region (abstracting away the territory to region connection avoiding us having to make multiple joins): 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $e isa employee, has employee-id $eid; 
 $r isa region, has region-description "x"; 
@@ -430,7 +430,7 @@ FROM Charities
 
 In Graql, we simply write: 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $c isa organisation, has org-id $ci; # Organisation infers sub entities companies and charities
 $e isa employee; 

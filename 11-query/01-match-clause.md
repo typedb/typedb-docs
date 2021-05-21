@@ -22,15 +22,15 @@ Matching instances of an entity type is easy. We do so by using a variable follo
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("p").isa("person")
 ).get("p");
 ```
@@ -44,15 +44,15 @@ To only match the instances of entities that own a specific attribute, we use th
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person, has full-name $n; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("p").isa("person").has("full-name", var("n"))
 ).get("p");
 ```
@@ -67,15 +67,15 @@ Because of the [dependent nature of relations](../09-schema/01-concepts.md#defin
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $emp (employer: $x, employee: $y) isa employment; get $emp;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("emp").rel("employer", "x").rel("employee", "y").isa("employment")
 ).get("emp");
 ```
@@ -89,15 +89,15 @@ To only match the instances of relations that own a specific attribute, we use t
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $emp (employer: $x, employee: $y) isa employment, has reference-id $ref; get $emp;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("emp").rel("employer", "x").rel("employee", "y").has("reference-id", var("ref")).isa("employment")
 ).get("emp");
 ```
@@ -111,8 +111,8 @@ Assigning a relation to a variable is optional. We may only be interested in the
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match (employer: $x, employee: $y) isa employment;
 ```
 [tab:end]
@@ -120,7 +120,7 @@ match (employer: $x, employee: $y) isa employment;
 [tab:Java]
 ```java
 // FIXME(vmax): anonymous variables are not allowed 
-//GraqlMatch.Filtered query = Graql.match(
+//TypeQL.Filtered query = TypeQL.match(
 //  var().isa("employment").rel("employer", "x").rel("employee", "y")
 //).get();
 ```
@@ -132,15 +132,15 @@ We can always choose to not include the label of roles when matching a relation.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $fr ($x, $y) isa friendship; get $fr;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("fr").rel("x").rel("y").isa("friendship")
 ).get("fr");
 ```
@@ -155,15 +155,15 @@ We can match instances of attributes type based on their value regardless of the
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $x "like"; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("x").eq("like")
 ).get("x");
 ```
@@ -177,15 +177,15 @@ We can match instances of attributes based on their value regardless of what con
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $n isa nickname; $n "Mitzi"; get $n;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("x").eq("Mitzi").isa("nickname")
 ).get("x");
 ```
@@ -199,15 +199,15 @@ To match all instances of attribute types that contain a substring, we use the `
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $phone-number contains "+44"; get $phone-number;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("phone-number").contains("+44")
 ).get("phone-number");
 ```
@@ -221,15 +221,15 @@ The value of an attribute can also be matched using a regex. We allow the range 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $x like "(Miriam Morton|Solomon Tran)"; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("phone-number").regex("(Miriam Morton|Solomon Tran)")
 ).get("phone-number");
 ```
@@ -243,15 +243,15 @@ To match instances of a concept type that owns multiple attributes, we can simpl
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person, has nickname $nn, has full-name $fn; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("p").isa("person").has("nickname", var("nn")).has("full-name", var("fn"))
 ).get("p");
 ```
@@ -263,16 +263,16 @@ We can also match instances that own an attribute with a specific value or range
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $s isa school, has ranking < 100; get $s;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
-  var("s").isa("school").has("ranking", Graql.lt(100))
+TypeQLMatch.Filtered query = TypeQL.match(
+  var("s").isa("school").has("ranking", TypeQL.lt(100))
 ).get("s");
 ```
 [tab:end]
@@ -282,15 +282,15 @@ But if in this example, we still want to know the ranking of each matched school
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $s isa school, has ranking $r; $r < 100; get $s;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("s").isa("school").has("ranking", var("r")),
   var("r").lt(100)
 ).get("s");
@@ -303,15 +303,15 @@ By default, a collection of patterns in a `match` clause constructs conjunction 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person, has full-name $fn; { $fn contains "Miriam"; } or { $fn contains "Solomon"; }; get $p;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("p").isa("person").has("full-name", var("fn")),
   or(
     var("fn").contains("Miriam"),
@@ -327,15 +327,15 @@ The type that an instance belongs to may be a subtype of another. This means whe
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $rr isa! romantic-relationship; get $rr;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("rr").isa("romantic-relationship")
 ).get("rr");
 ```
@@ -349,9 +349,9 @@ Grakn assigns an auto-generated id to each instance. Although this id is generat
 To do so, we use the `iid` keyword followed by the `iid` assigned to the instance by Grakn.
 
 <div class="tabs dark">
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 match $x iid 0x966e80018000000000000000; get $x;
 ```
 [tab:end]
@@ -359,7 +359,7 @@ match $x iid 0x966e80018000000000000000; get $x;
 [tab:Java]
 <!-- test-ignore -->
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("x").iid("0x966e80018000000000000000")
 ).get("x");
 ```
@@ -378,15 +378,15 @@ Having fully understood the [schema concepts](../09-schema/01-concepts.md) and h
 To match all schema concepts of a given type, **all the way down the type hierarchy**, we use the `sub` keyword.
 
 <div class="tabs dark">
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $x sub post; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query_a = Graql.match(
+TypeQLMatch.Filtered query_a = TypeQL.match(
   var("x").sub("post")
 ).get("x");
 ```
@@ -399,15 +399,15 @@ Running the above query on the `social_network` knowledge graph, returns the `po
 To match the schema concepts of a given type, **all the way down its type hierarchy**, we use the `sub!` keyword.
 
 <div class="tabs dark">
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $x sub! post; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query_a = Graql.match(
+TypeQLMatch.Filtered query_a = TypeQL.match(
   var("x").subX("post")
 ).get("x");
 ```
@@ -420,8 +420,8 @@ Running the above query on the `social_network` knowledge graph, returns the `po
 To match only the given type and not any of its subtypes, we use the `type` keyword.
 
 <div class="tabs dark">
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $x type post; get $x;
 ```
 [tab:end]
@@ -429,7 +429,7 @@ match $x type post; get $x;
 [tab:Java]
 <!-- test-delay -->
 ```java
-GraqlMatch.Filtered query_a = Graql.match(
+TypeQLMatch.Filtered query_a = TypeQL.match(
   var("x").type("post")
 ).get("x");
 ```
@@ -444,15 +444,15 @@ Given a particular relation, we can use the `relates` keyword to match all roles
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match employment relates $x; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   type("employment").relates(var("x"))
 ).get("x");
 ```
@@ -466,9 +466,9 @@ When we learned about [subtyping relations](../09-schema/01-concepts.md#subtype-
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-delay -->
-```graql
+```typeql
 match friend-request relates $x as located; get $x;
 ```
 [tab:end]
@@ -476,7 +476,7 @@ match friend-request relates $x as located; get $x;
 [tab:Java]
 <!-- test-delay -->
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   type("friend-request").relates(var("x"), "subject")
 ).get("x");
 ```
@@ -490,15 +490,15 @@ Given a role, we can match the concept types that play the given role by using t
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $x plays employment:employee; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("x").plays("employment", "employee")
 ).get("x");
 ```
@@ -512,15 +512,15 @@ Given an attribute type, we can match the concept types that own the given attri
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $x has title $t; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("x").has("title", var("t"))
 ).get("x");
 ```

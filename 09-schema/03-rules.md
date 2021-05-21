@@ -28,7 +28,7 @@ Currently, for a match query to trigger reasoning and obtain inferences from rul
 ## Define a Rule
 Defining a Graql rule begins with a `rule` followed by a given label, the `when` body as the condition, and the `then` body as the conclusion.
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 
 rule rule-label:
@@ -48,7 +48,7 @@ Let us have a look at an example. We want to express the fact that two given peo
 
 To express those facts in Graql, we can write:
 <!-- test-delay -->
-```graql
+```typeql
 {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;
@@ -67,8 +67,8 @@ Combining all this information we can finally define our rule as following.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule people-with-same-parents-are-siblings:
@@ -85,7 +85,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("people-with-same-parents-are-siblings")
     .when(
         and(
@@ -113,8 +113,8 @@ Grakn supports inferring new, full facts in rules. There are exactly three disti
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule people-with-same-parents-are-siblings:
@@ -131,7 +131,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("people-with-same-parents-are-siblings")
     .when(
         and(
@@ -152,8 +152,8 @@ GraqlDefine query = Graql.define(
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule anne-is-nickname-for-annabelle:
@@ -167,7 +167,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("anne-is-nickname-for-annabelle")
     .when(
         and(
@@ -187,8 +187,8 @@ Here, we apply a constant attribute that may or may not previously exist in the 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule student-graduated-implies-person-graduated:
@@ -204,7 +204,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("student-graduated-implies-person-graduated")
     .when(
         and(
@@ -238,9 +238,9 @@ When inferring relations, it is possible to variabilise any part of the `then` o
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 define
 
 rule all-relation-types-are-transitive:
@@ -256,7 +256,7 @@ when {
 [tab:Java]
 <!-- test-ignore -->
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("all-relation-types-are-transitive")
     .when(
         and(
@@ -287,7 +287,7 @@ Rules like any other schema members can be undefined. Consequently, to delete ru
 For the case of the rule defined above, to delete it we write:
 
 <!-- test-delay -->
-```graql
+```typeql
 undefine rule people-with-same-parents-are-siblings;
 ```
 
@@ -300,7 +300,7 @@ When using one of the Grakn Clients, to commit changes, we call the `commit()` m
 ## Functional Interpretation
 Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
 <!-- test-delay -->
-```graql
+```typeql
 {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;

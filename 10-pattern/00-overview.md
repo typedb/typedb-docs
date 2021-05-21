@@ -22,7 +22,7 @@ Consequently, after performing a match on this statement, we should obtain pairs
 There is some freedom in forming and composing our statements. For example, as shown below, we could write our single statement with three properties as three combined statements.
 
 <!-- test-ignore -->
-```graql
+```typeql
 $p isa person;
 $p has name 'Bob';
 $p has phone-number $phone;

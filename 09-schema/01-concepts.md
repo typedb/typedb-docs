@@ -28,9 +28,9 @@ To define a new entity, we use the `sub` keyword followed by `entity`.
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 
-```graql
+```typeql
 define
 
 person sub entity;
@@ -40,7 +40,7 @@ person sub entity;
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("person").sub("entity")
 );
 ```
@@ -53,8 +53,8 @@ We can assign any number of attributes to an entity. To do so, we use the `owns`
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 person sub entity,
@@ -66,7 +66,7 @@ person sub entity,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("person").sub("entity").owns("full-name").owns("nickname").owns("gender")
 );
 ```
@@ -79,8 +79,8 @@ To assign a unique attribute to an entity, we use the `owns` keyword followed by
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 person sub entity,
@@ -90,7 +90,7 @@ person sub entity,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("person").sub("entity").owns("email", true)
 );
 ```
@@ -111,8 +111,8 @@ An entity can play a role in a relation. To define the role played by an entity,
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 person sub entity,
@@ -125,7 +125,7 @@ organisation sub entity,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("person").sub("entity").plays("employment", "employee"),
   type("organisation").sub("entity").plays("employment", "employer")
 );
@@ -144,8 +144,8 @@ We can define an entity to inherit all attributes owned and roles played by anot
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 post sub entity,
@@ -170,7 +170,7 @@ photo sub media;
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("post").sub("entity").plays("reply", "to").plays("tagging", "in").plays("reaction", "to"),
   type("comment").sub("post").owns("content").plays("attachment", "to"),
   type("media").sub("post").owns("caption").owns("file").plays("attachment", "attached"),
@@ -198,8 +198,8 @@ There may be scenarios where a parent entity is only defined for other entities 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 post sub entity, abstract;
@@ -210,7 +210,7 @@ media sub post, abstract;
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("post").sub("entity").isAbstract(),
   type("media").sub("post").isAbstract()
 );
@@ -225,7 +225,7 @@ A relation describes how two or more things are in some way connected to each ot
 ### Define a relation
 To define a new relation, we use the `sub` keyword followed by `relation`.
 
-```graql
+```typeql
 define
 
 employment sub relation;
@@ -235,8 +235,8 @@ To complete the definition of a relation, we must determine the roles that it re
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 employment sub relation,
@@ -247,7 +247,7 @@ employment sub relation,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("employment").sub("relation").relates("employee").relates("employer")
 );
 ```
@@ -267,8 +267,8 @@ Let's go through a simple example of how a relation can play a role in another r
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 friendship sub relation,
@@ -289,7 +289,7 @@ person sub entity,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("friendship").sub("relation").relates("friend").plays("friend-request", "friendship"),
   type("friend-request").sub("relation").relates("friendship").relates("requester").relates("respondent"),
   type("person").sub("entity").plays("friendship", "friend").plays("friend-request", "requester").plays("friend-request", "respondent")
@@ -308,8 +308,8 @@ A relation can relate to any number of roles. The example below illustrates a th
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 reaction sub relation,
@@ -331,9 +331,9 @@ person sub entity,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("reaction").sub("relation").relates("emotion").relates("to").relates("by"),
-  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).plays("reaction", "emotion"),
+  type("emotion").sub("attribute").value(TypeQLArg.ValueType.STRING).plays("reaction", "emotion"),
   type("post").sub("entity").plays("reaction", "to"),
   type("person").sub("entity").plays("reaction", "by")
 );
@@ -352,8 +352,8 @@ We can assign any number of attributes to a relation. To do so, we use the `owns
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 friend-request sub relation,
@@ -366,7 +366,7 @@ friend-request sub relation,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("friend-request").sub("relation").owns("approved-date").relates("requested-friendship").relates("requester").relates("respondent")
 );
 ```
@@ -379,8 +379,8 @@ To assign a unique attribute to a relation, we use the `key` keyword followed by
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 employment sub relation,
@@ -392,7 +392,7 @@ employment sub relation,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("employment").sub("relation").owns("reference-id", true).relates("employer").relates("employee")
 );
 ```
@@ -412,8 +412,8 @@ We can define a relation to inherit all attributes owned, and roles related to a
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 request sub relation,
@@ -438,7 +438,7 @@ membership-request sub request,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("request").isAbstract().sub("relation").relates("subject").relates("requester").relates("respondent"),
   type("friend-request").sub("request").relates("friendship", "subject").relates("friend-requester", "requester").relates("friend-respondent","respondent"),
   type("membership-request").sub("request").relates("approved", "subject").relates("membership-requester", "requester").relates("membership-respondent", "respondent")
@@ -466,8 +466,8 @@ There may be scenarios where a parent relation is only defined for other relatio
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 request sub relation,
@@ -480,7 +480,7 @@ request sub relation,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   type("request").sub("relation").isAbstract().relates("subject").relates("requester").relates("respondent")
 );
 ```
@@ -497,8 +497,8 @@ To define a new attribute, we use the `sub` keyword followed by `attribute`, `va
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 name sub attribute,
@@ -508,8 +508,8 @@ name sub attribute,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("name").sub("attribute").value(GraqlArg.ValueType.STRING)
+TypeQLDefine query = TypeQL.define(
+  type("name").sub("attribute").value(TypeQLArg.ValueType.STRING)
 );
 ```
 
@@ -535,8 +535,8 @@ The data types available in a Grakn knowledge graph are:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 start-date sub attribute,
@@ -554,8 +554,8 @@ travel sub relation,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("start-date").sub("attribute").value(GraqlArg.ValueType.DATETIME),
+TypeQLDefine query = TypeQL.define(
+  type("start-date").sub("attribute").value(TypeQLArg.ValueType.DATETIME),
   type("residency").sub("relation").owns("start-date"),
   type("travel").sub("relation").owns("start-date")
 );
@@ -573,8 +573,8 @@ Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 phone-number sub attribute,
@@ -587,8 +587,8 @@ person sub entity,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("phone-number").sub("attribute").value(GraqlArg.ValueType.STRING),
+TypeQLDefine query = TypeQL.define(
+  type("phone-number").sub("attribute").value(TypeQLArg.ValueType.STRING),
   type("person").sub("entity").owns("phone-number")
 );
 ```
@@ -603,8 +603,8 @@ Optionally, we can specify a Regex that the values of an attribute type must con
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 emotion sub attribute,
@@ -615,8 +615,8 @@ emotion sub attribute,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("emotion").sub("attribute").value(GraqlArg.ValueType.STRING).regex("[like, love, funny, shocking, sad, angry]")
+TypeQLDefine query = TypeQL.define(
+  type("emotion").sub("attribute").value(TypeQLArg.ValueType.STRING).regex("[like, love, funny, shocking, sad, angry]")
 );
 ```
 
@@ -633,8 +633,8 @@ Let's go through a simple example of how an attribute can own an attribute of it
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 content sub attribute, value string,
@@ -647,9 +647,9 @@ language sub attribute,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("content").sub("attribute").value(GraqlArg.ValueType.STRING).owns("language"),
-  type("language").sub("attribute").value(GraqlArg.ValueType.STRING)
+TypeQLDefine query = TypeQL.define(
+  type("content").sub("attribute").value(TypeQLArg.ValueType.STRING).owns("language"),
+  type("language").sub("attribute").value(TypeQLArg.ValueType.STRING)
 );
 ```
 
@@ -663,8 +663,8 @@ An attribute can play a role in a relation. To define the role played by an attr
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 language sub attribute, value string,
@@ -681,8 +681,8 @@ fluency sub relation,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("language").sub("attribute").value(GraqlArg.ValueType.STRING).plays("fluency", "language"),
+TypeQLDefine query = TypeQL.define(
+  type("language").sub("attribute").value(TypeQLArg.ValueType.STRING).plays("fluency", "language"),
   type("person").sub("entity").plays("fluency", "speaker"),
   type("fluency").sub("relation").relates("speaker").relates("language")
 );
@@ -696,8 +696,8 @@ We can define an attribute to inherit the valuetype, attributes owned and roles 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 event-date sub attribute, abstract, value datetime;
@@ -709,8 +709,8 @@ end-date sub event-date;
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").value(GraqlArg.ValueType.DATETIME),
+TypeQLDefine query = TypeQL.define(
+  type("event-date").sub("attribute").value(TypeQLArg.ValueType.DATETIME),
   type("birth-date").sub("event-date"),
   type("start-date").sub("event-date"),
   type("end-date").sub("event-date")
@@ -729,8 +729,8 @@ There may be scenarios where a parent attribute is only defined for other attrib
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 event-date sub attribute, abstract, value datetime;
@@ -739,8 +739,8 @@ event-date sub attribute, abstract, value datetime;
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-  type("event-date").sub("attribute").value(GraqlArg.ValueType.DATETIME)
+TypeQLDefine query = TypeQL.define(
+  type("event-date").sub("attribute").value(TypeQLArg.ValueType.DATETIME)
 );
 ```
 
@@ -761,8 +761,8 @@ We can undefine the association that a type has with an attribute.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 undefine
 
 person owns nickname;
@@ -771,7 +771,7 @@ person owns nickname;
 
 [tab:Java]
 ```java
-GraqlUndefine query = Graql.undefine(
+TypeQLUndefine query = TypeQL.undefine(
   type("person").owns("nickname")
 );
 ```
@@ -791,8 +791,8 @@ Given the dependent nature of relations, before undefining the relation itself, 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 undefine rule people-speak-the-same-language;
 undefine fluency sub relation;
 ```
@@ -801,10 +801,10 @@ undefine fluency sub relation;
 [tab:Java]
 <!-- test-delay -->
 ```java
-GraqlUndefine first_query = Graql.undefine(
+TypeQLUndefine first_query = TypeQL.undefine(
   rule("people-speak-the-same-language")
 );
-GraqlUndefine second_query = Graql.undefine(
+TypeQLUndefine second_query = TypeQL.undefine(
   type("fluency").sub("relation")
 );
 ```

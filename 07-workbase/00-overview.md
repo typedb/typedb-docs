@@ -19,7 +19,7 @@ Grakn Workbase is available for Linux, Mac and Windows. Head over to the [Downlo
 As of Grakn 1.6.0, _explanations_ of inferred concepts can behave unexpectedly. Explanations of inferred relations will not show source relations in the visualiser, if the rule `when` clause that produced the relation is not tagged with a variable. For example:
 
 <!-- test-ignore -->
-```graql
+```typeql
 when { (less: $x, more: $y) isa greater-than; (less: $y, more: $z) isa greater-than; },
 then { (less: $x, more: $z) isa greater-than; };
 ```
@@ -27,7 +27,7 @@ then { (less: $x, more: $z) isa greater-than; };
 Asking workbase to explain inferred transitive `($x, $z)` relations does not produce the source relations, unless labeling them with some other variables:
 
 <!-- test-ignore -->
-```graql
+```typeql
 when { $r1 (less: $x, more: $y) isa greater-than; $r2 (less: $y, more: $z) isa greater-than; },
 then { (less: $x, more: $z) isa greater-than; };
 ```

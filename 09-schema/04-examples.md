@@ -28,7 +28,7 @@ To define a unary relation, where a `thing` is in a relation referring itself.
 [tab:Social Network]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 person sub entity,
@@ -53,7 +53,7 @@ group-membership-request sub request,
 
 [tab:Phone Calls]
 <!-- test-delay -->
-```graql
+```typeql
 person sub entity,
     plays customer,
     plays caller,
@@ -75,7 +75,7 @@ call sub relation,
 
 [tab:BioGrakn COVID]
 <!-- test-delay -->
-```graql
+```typeql
 gene sub fully-formed-anatomical-structure,
     has gene-symbol,
     has entrez-id,
@@ -110,7 +110,7 @@ To build a rule that infers a new relation type based on an existing set of data
 [tab:Financial Services]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 organisation-owns-subsidiary-bond sub rule,
@@ -129,7 +129,7 @@ when {
 
 [tab:Customer 360]
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 negative-product-recommendation sub rule, 
@@ -158,7 +158,7 @@ To build a rule that infers a new relation type based on an existing set of data
 [tab:BioGrakn COVID]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 gene-disease-association-and-gene-protein-encoding-protein-disease-association sub rule,
@@ -177,7 +177,7 @@ when {
 
 [tab:Role Player Game]
 <!-- test-delay -->
-```graql
+```typeql
 define 
 
 task-can-not-begin-if-it-is-already-started sub rule,
@@ -199,7 +199,7 @@ when {
 
 [tab:Financial Services]
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 when-risks-then-high-combined-risk sub rule, 
@@ -222,7 +222,7 @@ To infer multiple new facts based on inferred concepts it is necessary to chain 
 
 [tab:Financial Services]
 <!-- test-delay -->
-```graql
+```typeql
 define 
 
 owns-subsidiary sub rule,
@@ -263,7 +263,7 @@ when {
 [tab:Customer 360]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 product-recommendation sub rule,
@@ -308,7 +308,7 @@ Modelling `periodic-event`s where `start-date` of one event is before the `end-d
 [tab:Social Network]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 event-overlapping sub relation,
@@ -339,7 +339,7 @@ Modelling various life events within the context of a Social Network.
 [tab:Birth]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 location-of-everything sub relation,
@@ -370,7 +370,7 @@ location sub entity,
 [tab:Residency]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 location-of-everything sub relation,
@@ -400,7 +400,7 @@ location sub entity,
 [tab:Travel]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 location-of-everything sub relation,
@@ -431,7 +431,7 @@ location sub entity,
 [tab:Education]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 location-of-school sub location-of-everything,
@@ -480,7 +480,7 @@ Modelling various business scenarios.
 [tab:Employement]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 person sub entity,
@@ -519,7 +519,7 @@ employment sub periodic-event,
 [tab:Employement in Common]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 person sub entity,
@@ -579,7 +579,7 @@ when {
 [tab:Facilities Ownership]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 organisation sub entity,
@@ -623,7 +623,7 @@ Modelling languages in various contexts.
 [tab:Spoken Language]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 person sub entity,
@@ -659,7 +659,7 @@ when {
 [tab:Content Language]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 content sub attribute,
@@ -701,7 +701,7 @@ Modelling content permissions using Grakn Rules.
 [tab:Access Permissions]
 
 <!-- test-delay -->
-```graql
+```typeql
 define
 
 public-permission sub rule,

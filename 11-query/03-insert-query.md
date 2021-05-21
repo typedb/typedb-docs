@@ -10,15 +10,15 @@ To insert an instance of an entity type into the knowledge graph, we use the `in
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 insert $p isa person, has full-name "John Parkson", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234=567890";
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlInsert query = Graql.insert(
+TypeQLInsert query = TypeQL.insert(
   var("p").isa("person").has("full-name", "John Parkson").has("email", "john.parkson@gmail.com").has("phone-number", "+44-1234-567890")
 );
 ```
@@ -32,15 +32,15 @@ Similar to inserting an instance of an entity, to insert an instance of an attri
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 insert $x isa emotion; $x "like";
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlInsert query = Graql.insert(
+TypeQLInsert query = TypeQL.insert(
   var("x").eq("like").isa("emotion")
 );
 ```
@@ -52,8 +52,8 @@ Given the dependent nature of relations, inserting an instance of a relation is 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $org isa organisation, has name "Facelook";
   $person isa person, has email "tanya.arnold@gmail.com";
@@ -64,7 +64,7 @@ insert $new-employment (employer: $org, employee: $person) isa employment;
 
 [tab:Java]
 ```java
-GraqlInsert query = Graql.match(
+TypeQLInsert query = TypeQL.match(
   var("org").isa("organisation").has("name", "Facelook"),
   var("person").isa("person").has("email", "tanya.arnold@gmail.com")
 ).insert(
@@ -84,15 +84,15 @@ This `match insert` query:
 
 <div class="note">
 [Note]
-As of Grakn 1.7.0, relations are allowed to have duplicate role players. 
+As of version 1.7.0, relations are allowed to have duplicate role players. 
 </div>
 
 This means we can model true reflexive relations. Taking `friendship` as an example
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $person isa person;
 insert
@@ -102,7 +102,7 @@ insert
 
 [tab:Java]
 ```java
-GraqlInsert query = Graql.match(
+TypeQLInsert query = TypeQL.match(
   var("person").isa("person")
 ).insert(
   var("reflexive-friendship").rel("friend", "person").rel("friend", "person").isa("friendship")
@@ -115,15 +115,15 @@ As a consequence, you can query for the duplicate role player as a duplicate rol
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $friendship (friend: $p, friend: $p) isa friendship; get $friendship;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("friendship").rel("friend", "p").rel("friend", "p").isa("friendship")
 ).get("friendship");
 ```
@@ -135,9 +135,9 @@ We can add role players to a relation by `match`ing the relation and the concept
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```TypeQL
 ## inserting the new role player into some theoretical multi-employment relation
 match
   $emp (employer: $org, employee: $p) isa employment;
@@ -150,7 +150,7 @@ insert $emp (employee: $p2) isa employment;
 [tab:Java]
 <!-- test-ignore -->
 ```java
-GraqlInsert insert_query = Graql.match(
+TypeQLInsert insert_query = TypeQL.match(
  var("emp").rel("employer", var("org")).rel("employee", var("p")).isa("employment"),
   var("p").isa("person"),
   var("p2").isa("person"),

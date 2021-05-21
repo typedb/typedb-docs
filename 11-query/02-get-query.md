@@ -13,8 +13,8 @@ Any variable that has been specified in the `match` clause can be returned as th
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $fr ($x, $y) isa friendship;
   $x isa person, has full-name $x-fn;
@@ -26,7 +26,7 @@ get $x-fn, $y-fn, $y-pn;
 
 [tab:Java]
 ```java
-GraqlMatch.Filtered query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
   var("fr").rel("x").rel("y").isa("friendship"),
   var("x").isa("person").has("full-name", var("x-fn")),
   var("x-fn").contains("Miriam"),
@@ -42,15 +42,15 @@ We can chose to limit the number of answers in the results. To do this, we use t
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person; get $p; limit 1;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Limited query = Graql.match(
+TypeQLMatch.Limited query = TypeQL.match(
   var("p").isa("person")
 ).get("p").limit(1);
 ```
@@ -63,15 +63,15 @@ To order the answers by a particular variable, we use the `order` keyword follow
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person, has full-name $fn; get $fn; sort $fn asc;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Sorted query = Graql.match(
+TypeQLMatch.Sorted query = TypeQL.match(
   var("p").isa("person").has("full-name", var("fn"))
 ).get("fn").sort("fn", ASC);
 ```
@@ -90,15 +90,15 @@ Often used in conjunction with `limit`, we use the `offset` keyword followed by 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person, has full-name $fn; get $fn; sort $fn; offset 6; limit 10;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlMatch.Limited query = Graql.match(
+TypeQLMatch.Limited query = TypeQL.match(
   var("p").isa("person").has("full-name", var("fn"))
 ).get("fn").sort("fn").offset(6).limit(10);
 ```

@@ -66,7 +66,7 @@ In our case, a **call** relates to **caller** played by a **person** and to **ca
 
 Likewise for a **contract**. It relates to **provider** played by a **company** and to **customer** played by a **person**.
 
-```graql
+```typeql
 define
 
   contract sub relation,
@@ -88,7 +88,7 @@ define
 
 To define the attributes, we use the owns keyword.
 
-```graql
+```typeql
 define
 
   contract sub relation,
@@ -119,7 +119,7 @@ define
 
 Lastly, we need to define the type of each attribute.
 
-```graql
+```typeql
 define
 
   contract sub relation,
@@ -201,13 +201,13 @@ phone_calls:schema:read>
 
 **5 -** Make sure the schema is properly defined in our newly created knowledge graph. At the prompt, run:
 
-```graql
+```typeql
 match $x sub thing; get $x;
 ```
 
 The result should be as follows:
 <!-- test-ignore -->
-```graql
+```typeql
 {$x label thing;}
 {$x label entity;}
 {$x label relation;}

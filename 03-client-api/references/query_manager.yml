@@ -19,12 +19,12 @@ methods:
           default: default GraknOptions - uses server defaults
     java:
       <<: *method-match
-      method: transaction.query().match(GraqlMatch query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch query, GraknOptions options);
       accepts:
         <<: *accepts-match
         param1:
           <<: *accepts-match-query
-          type: "`GraqlMatch`"
+          type: "`TypeQLMatch`"
       returns:
         - "Stream<[ConceptMap](#conceptmap)>"
     javascript:
@@ -66,12 +66,12 @@ methods:
           default: default GraknOptions - uses server defaults
     java:
       <<: *method-matchAggregate
-      method: transaction.query().match(GraqlMatch.Aggregate query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch.Aggregate query, GraknOptions options);
       accepts:
         <<: *accepts-matchAggregate
         param1:
           <<: *accepts-matchAggregate-query
-          type: "`GraqlMatch.Aggregate`"
+          type: "`TypeQLMatch.Aggregate`"
       returns:
         - "[QueryFuture](#queryfuture)<[Numeric](#numeric)>"
     javascript:
@@ -113,12 +113,12 @@ methods:
           default: default GraknOptions - uses server defaults
     java:
       <<: *method-matchGroup
-      method: transaction.query().match(GraqlMatch.Group query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch.Group query, GraknOptions options);
       accepts:
         <<: *accepts-matchGroup
         param1:
           <<: *accepts-matchGroup-query
-          type: "`GraqlMatch.Group`"
+          type: "`TypeQLMatch.Group`"
       returns:
         - "Stream<[ConceptMapGroup](#conceptmapgroup)>"
     javascript:
@@ -160,12 +160,12 @@ methods:
           default: default GraknOptions - uses server defaults
     java:
       <<: *method-matchGroupAggregate
-      method: transaction.query().match(GraqlMatch.Group.Aggregate query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch.Group.Aggregate query, GraknOptions options);
       accepts:
         <<: *accepts-matchGroupAggregate
         param1:
           <<: *accepts-matchGroupAggregate-query
-          type: "`GraqlMatch.Group.Aggregate`"
+          type: "`TypeQLMatch.Group.Aggregate`"
       returns:
         - "Stream<[NumericGroup](#numericgroup)>"
     javascript:
@@ -380,12 +380,12 @@ methods:
           default: default GraknOptions - uses server defaults
     java:
       <<: *method-define
-      method: transaction.query().define(GraqlDefine query, GraknOptions options);
+      method: transaction.query().define(TypeQLDefine query, GraknOptions options);
       accepts:
         <<: *accepts-define
         param1:
           <<: *accepts-define-query
-          type: "`GraqlDefine`"
+          type: "`TypeQLDefine`"
       returns:
         - "[`QueryFuture`](#queryfuture)"
     javascript:
@@ -427,7 +427,7 @@ methods:
           default: default GraknOptions - uses server defaults
     java:
       <<: *method-undefine
-      method: transaction.query().undefine(GraqlUndefine query, GraknOptions options);
+      method: transaction.query().undefine(TypeQLUndefine query, GraknOptions options);
       accepts:
         <<: *accepts-undefine
         param1:

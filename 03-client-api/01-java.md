@@ -113,7 +113,7 @@ import grakn.client.api.GraknTransaction;
 import grakn.client.Grakn;
 import graql.lang.Graql;
 import static graql.lang.Graql.*;
-import graql.lang.query.GraqlMatch;
+import graql.lang.query.TypeQLMatch;
 import graql.lang.query.GraqlInsert;
 import grakn.client.api.answer.ConceptMap;
 
@@ -129,7 +129,7 @@ public class GraknQuickstartC {
             
             try (GraknTransaction writeTransaction = session.transaction(GraknTransaction.Type.WRITE)) {
                 // Insert a person using a WRITE transaction
-                GraqlInsert insertQuery = Graql.insert(var("x").isa("person").has("email", "x@email.com"));
+                GraqlInsert insertQuery = TypeQL.insert(var("x").isa("person").has("email", "x@email.com"));
                 List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
                 System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").asThing().getIID());
                 // to persist changes, a write transaction must always be committed (closed)
@@ -138,7 +138,7 @@ public class GraknQuickstartC {
             
             try (GraknTransaction readTransaction = session.transaction(GraknTransaction.Type.READ)) {
                 // Read the person using a READ only transaction
-                GraqlMatch.Limited getQuery = Graql.match(var("p").isa("person")).get("p").limit(10);
+                TypeQLMatch.Limited getQuery = TypeQL.match(var("p").isa("person")).get("p").limit(10);
                 Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
                 answers.forEach(answer -> System.out.println(answer.get("p").asThing().getIID()));
             }

@@ -82,7 +82,7 @@ As we can see, RDF gives up in compactness what it gains in flexibility. This me
 Grakn doesn't work with triples. Instead, it exposes a **concept level entity-relationship model**. So, instead of modelling in subject-predicate-object form, Grakn represents our data at a higher level, with entities, relations, roles and attributes. For the example above, we would say there are two `person` entities, which have `name` attributes and are related through a `knows` relation. 
 
 <!-- test-ignore -->
-```graql
+```typeql
 $p isa person, has name "Peter Parker";
 $p2 isa person, has name "Aunt May"; 
 ($p, $p2) isa knows; 
@@ -162,7 +162,7 @@ However, as XML can become difficult to read, *[Turtle](https://www.w3.org/TR/tu
 In Grakn, we avoid the need to choose between multiple serialisations and use Graql. The example can be represented like this:
 
 <!-- test-ignore -->
-```graql
+```typeql
 $g isa person, has name "Green Goblin"; 
 $s isa person, has name "Spiderman"; 
 (enemy: $g, enemy: $s) isa enemyship; 
@@ -189,7 +189,7 @@ bio:n1 bio:publicationDate 2000 .
 In Grakn, given its concept level schema, the need for reification doesn't exist and we can represent higher order relationships natively. *JK Rowling wrote Harry Potter* would be expressed like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 $a isa person, has name "JK Rowling"; 
 $b isa book, has name "Harry Potter"; 
 (author: $a, publication: $b) isa authorship; 
@@ -198,7 +198,7 @@ $b isa book, has name "Harry Potter";
 Then, if we want to qualify this and say *JK Rowling wrote Harry Potter in 2000*, we would simply add an attribute to the relation: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 $a isa person, has name "JK Rowling"; 
 $b isa book, has name "Harry Potter"; 
 (author: $a, publication: $b) isa authorship, has date 2000; 
@@ -217,7 +217,7 @@ lit:HarryPotter lit:hasInspiration [a :Man;
 As Grakn doesn't live on the web, the idea of a blank node doesn't directly translate to Grakn. While in RDF we use a blank node to indicate the existing of a *thing* for which we don't have a URI, there are multiple ways how this could be done in Grakn. If, as in the example above, we're using a blank node to indicate that we don't know anything else about that man, other than that he lives in England, we represent this as follows:
 
 <!-- test-ignore -->
-```graql
+```typeql
 $b isa book, has name "Harry Potter"; 
 $m isa man; ($b, $m) isa inspiration; 
 $l isa location, has name "England";
@@ -250,7 +250,7 @@ INSERT DATA
 In Graql, we begin with the `insert` statement to declare that data is to be inserted. The variable `$b` is assigned to the entity type `book`, which has a `title` with value "A new book" and a `creator` "A.N.Other". 
 
 <!-- test-ignore -->
-```graql
+```typeql
 insert
 $b isa book, has title "A new book", has creator "A.N.Other"; 
 ```
@@ -275,7 +275,7 @@ WHERE {
 In Graql, we begin with the `match` statement to declare that we want to retrieve data. We match for an entity of type `person` who has a `family-name` "Smith" and a `given-name` "Adam". Then, we connect it through a `knows` relation type to `$p2`. As we want to know who "Adam Smith" knows, we want to be returned `$p2` which is declared in the `get` statement:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $p isa person, has family-name "Smith", has given-name "Adam"; 
 ($p, $p2) isa knows; 
 get $p2; 
@@ -308,7 +308,7 @@ WHERE{
 In Grakn, we can ask the same like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $p isa man, has name "James Dean"; 
 $w isa woman; 
@@ -344,7 +344,7 @@ WHERE {
 Using closed world assumptions, Grakn supports negation. This is done using the keyword `not` followed by the pattern to be negated. The example above is represented like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $m isa movie, has name "Giant"; ($a, $m) isa played-in; 
 not {$a has death-date $dd;}; get $a; 
@@ -378,7 +378,7 @@ xml:base="http://www.animals.fake/animals#">
 To do the same in Grakn, we would write this:
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 animal sub entity; 
 horse sub animal;
@@ -412,7 +412,7 @@ xml:base="http://www.animals.fake/animals#">
 Which in Grakn would look like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define
 mammal sub entity; 
 human sub mammal;
@@ -446,7 +446,7 @@ For example, a `government` can employ a `person`, and a `company` can employ a 
 However, this is an abuse of inheritance. In this case, we should create a role `employer`, which relates to an `employment` relation and contextualises how a `company` or `government` is involved in that relation (by playing the role of `employer`). 
 
 <!-- test-ignore -->
-```graql
+```typeql
 company sub entity,
     plays employment:employer;
 
@@ -482,7 +482,7 @@ However, bear in mind that using rules in Grakn gives more expressivity in allow
 In the example above, `rdfs:domain` can be translated to Grakn by saying that when an entity has an attribute type `published-date`, it plays the role of `published-book` in a `publishing` relation type. This is represented in a Grakn rule: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule publishing-rule:
 when {
 	$b has published-date $pd; 
@@ -494,7 +494,7 @@ when {
 The example of `rdfs:range` can be created with the following Grakn rule, which adds the attribute type `gender` with value of "male", only if a `person` plays the role `brother` in any `siblingship` relation, where the number of other siblings is N.
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule gender-male:
 when {
 	$r (brother: $p) isa siblingship; 
@@ -522,7 +522,7 @@ ship:nextDeparture rdfs:domain ship:DepartingVessel .
 To do the same in Grakn, we can write a rule that finds all entities with an attribute `next-departure` and assign them to a relation `departure` playing the role of `departing-vessel`. 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule departure-next:
 when {
 	$s has next-departure $nd; 
@@ -534,7 +534,7 @@ when {
 Then, if this data is ingested: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 $s isa vessel, has name "QEII", has next-departure "Mar 4, 2010"; 
 ```
 
@@ -587,7 +587,7 @@ One example is the restriction `AllValuesFrom`, which states that in the context
 To do this in Grakn, the restriction is represented in the schema definition. `person` and `animal` entity types are created and two relations with restrictions: `person-parentship` and `animal-parenthship`. The former only relates to `person` while the latter relates to `animal`.  
 
 <!-- test-ignore -->
-```graql
+```typeql
 define
 person sub entity, 
 plays person-parentship:child,
@@ -623,7 +623,7 @@ A common inference in OWL is transitivity. This states that relation R is said t
 In Grakn, a rule would be created to represent the transitivity:
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule transitive-location:
 when {
 	$r1 (located: $a, locating: $b) isa location; 
@@ -636,7 +636,7 @@ when {
 Once the rule is defined, if this data is loaded: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 insert 
 $a isa city, has name "London"; 
 $b isa country, has name "Uk"; 
@@ -647,7 +647,7 @@ $c isa continent, has name "Europe";
 If we then query for:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match  
 $b isa continent, has name "Europe"; 
 (located: $a, locating: $b); get $a; 
@@ -666,7 +666,7 @@ OWL also provides a construct to model equivalent properties. This states that t
 This can be represented with a rule in Grakn, where can infer a new relation `checked-out` like this:
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule borrowing-checked-out-equivalent:
 when {
     (borrower: $x, borrowing: $y) isa borrowing;
@@ -686,7 +686,7 @@ A symmetric relation represents a relation that has its own inverse property. Fo
 In Grakn, symmetricity can be modelled by simply repeating roles in one or multiple relations: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 (sibling: $p, sibling: $p2) isa siblingship; 
 ```
 
@@ -704,7 +704,7 @@ In Grakn a rule can be used:
 
 <!-- test-ignore -->
 rule same-fatherhood:
-```graql
+```typeql
 when {
 	(father: $x, child: $ y) isa fatherhood;
 	(father: $d, child: $ y) isa fatherhood;
@@ -724,7 +724,7 @@ If we use `owl:intersectionOf` with this example:
 This assigns the class `:Mother` if the resource is both `:Female` and `Parent`. In Grakn we can choose to use a rule, containing a conjunctive condition to represent this:
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule parenthood-motherhood:
 when {
 	$p isa person, has gender "female"; 
@@ -745,7 +745,7 @@ If we have this example of `owl:unionOf`:
 This infers the class `:Person` if the resource is either class `:Woman` or `:Man`. Grakn doesn't have a direct equivalent with `owl:equivalentClass`, but there is some coverage offered by rules. As `sub` is an equivalent of `subClassOf`, the above can be achieved in Grakn with: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define
 person sub entity; 
 man sub person;
@@ -771,7 +771,7 @@ The `owl:hasValue` restriction can state that red wines should have the color "r
 In Grakn, a rule can be used to represent this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule red-wine-color:
 when {
 	$w isa red-wine; 
@@ -792,7 +792,7 @@ The `owl:hasSelf` restriction can state that someone who is a narcissist loves t
 This could be represented in Grakn: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule love-narcissist:
 when {
 	$n isa narcissist; 
@@ -832,7 +832,7 @@ This code snippet in SHACL shows how the data needs to adhere to certain restric
 In Grakn, this validation takes place in Graql's schema language. A `Person` entity is defined as only playing the role `employee` in an `employment` relation, which is related to a `company` entity through the role of `employer`, and includes an attribute of type `name` and value `string`. 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 person sub entity, 
 	plays employment:employee; 

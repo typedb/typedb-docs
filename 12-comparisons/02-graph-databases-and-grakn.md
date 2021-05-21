@@ -134,7 +134,7 @@ In Grakn, instead of creating an intermediate node, we create one `supplying` re
 ![Grakn ternary example](../images/comparisons/grakn-ternary-example.png)
 
 <!-- test-ignore -->
-```graql
+```typeql
 $supplier isa company; $part isa part; $buyer isa company; 
 (supplier: $supplier, supplied: $part, buyer: $buyer) isa supplying; 
 ```
@@ -142,7 +142,7 @@ $supplier isa company; $part isa part; $buyer isa company;
 The schema in Grakn would then be as follows (note how the `supplying` relation relates to three roles): 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 company sub entity, 
 plays supplying:supplier, 
@@ -175,7 +175,7 @@ Grakn's type system natively supports nested relations as modelling constructs. 
 ![Grakn nested relation](../images/comparisons/grakn-nested-relation.png)
 
 <!-- test-ignore -->
-```graql
+```typeql
 $london isa city, has name "London"; 
 $marriage (spouse: $person1, spouse: $person2) isa marriage; 
 ($marriage, $london) isa located; 
@@ -184,7 +184,7 @@ $marriage (spouse: $person1, spouse: $person2) isa marriage;
 The schema for this would look as follows: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 city sub entity, 
 plays locating:location;
@@ -225,7 +225,7 @@ The pattern describes the path that connects Bob to Susan, through the `KNOWS` r
 In Grakn, the same query looks like this (we could actually optimise this query through Grakn's automated reasoner by writing a rule and inferring the common friends):
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $bob isa person, has name "Bob"; 
 $susan isa person, has name "Susan"; $common-friend isa person;
 ($bob, $susan) isa friendship; ($susan, $common-friend) isa friendship;
@@ -251,7 +251,7 @@ RETURN movie.title
 In Grakn, the same would look like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $cinema isa cinema, has name "Odeon London"; 
 $london isa city, has name "London"; 
 $studio isa studio, has name "Pixar"; 
@@ -271,7 +271,7 @@ In Grakn, instead of using `WHERE`, the pattern matching and filtering can be do
 Grakn's type system allows for type-based reasoning through the modelling of type hierarchies in entities, attributes and relations. A type hierarchy for vehicles in Grakn could look like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 
 vehicle sub entity; 
@@ -290,7 +290,7 @@ heavy-truck sub truck;
 Given this model, if we wanted to fetch every single type of vehicle, rather than specifying every single type one by one, we can just query for the parent type, `vehicle`, and Grakn, through type-based reasoning, will also return the instances of all the subtypes:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $vehicle isa vehicle;
 ```
 
@@ -309,9 +309,9 @@ CREATE (n:vehicle:garbage_truck {name:'Siku 1890 Super Bin Lorry'})
 ```
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 insert 
 $suzuki isa minivan, has name "Maruti Suzuki Ciaz";
 $audi isa coupe, has name "Audi A5";
@@ -334,9 +334,9 @@ MATCH (vehicle:Vehicle) RETURN
 
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 match $vehicle isa vehicle;
 ```
 [tab:end]
@@ -362,9 +362,9 @@ MATCH (vehicle:Heavy_truck) RETURN vehicle
 ```
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 match $vehicle isa vehicle;
 ```
 [tab:end]
@@ -373,7 +373,7 @@ match $vehicle isa vehicle;
 In addition to entities, Grakn also allows for type-based reasoning in attributes and relations. For example, we can model an `employment` hierarchy with two sub-types: a `part-time-employment` and a `full-time-employment`. This schema would look as follows:
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 employment sub entity;
 part-time-employment sub employment;
@@ -397,10 +397,10 @@ employs:EMPLOYED
 RETURN employees
 ```
 [tab:end]
-[tab:Graql]
+[tab:TypeQL]
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 (employee: $person) isa employment; 
 get $person;
@@ -415,7 +415,7 @@ In Grakn, we can create rules (learn more [here](https://dev.grakn.ai/docs/schem
 For example, we could create a rule that infers the relation between siblings, if two persons share the same parent. If the inferred relation is called `siblingship`, then the rule would look as follows:
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule sibling-if-share-same-parent: 
 when {
   (parent: $parent, child: $child1) isa parenthood;
@@ -428,7 +428,7 @@ when {
 Having defined this rule, Grakn would infer that the two children are siblings if the conditions in the rule are met by the data previously ingested. To call the inference, we just query for the `siblingship` relation in a `match` query:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match (sibling: $sibling) isa siblingship; get $sibling; 
 ```
 
@@ -445,7 +445,7 @@ RETURN sibling1, sibling2, sibling3
 A more complex example of automated reasoning is when the inferred concepts depend on multiple rules (chaining rules). In the example below, we want to retrieve all the persons who are cousins of each other, where only `parenthood` relations across three generations have been ingested. With the right rules defined, we would be able to just query for `cousinship` relations like this:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match (cousin: $cousin) isa cousinship; 
 get $cousin; 
 ```
@@ -478,7 +478,7 @@ In the first rule, we infer the `cousinship` relation. The logic is as follows:
 - Then A and D will be cousins
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule an-aunts-child-is-a-cousin: 
 when {
     $a isa person;
@@ -497,7 +497,7 @@ One of the conditions of this rule is the `uncle-auntship` relation, which would
 - Then B and C will be in a `uncle-auntship` relation
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule uncle-aunt-between-child-and-parent-sibling: 
 when {
     $a isa person; 
@@ -524,14 +524,14 @@ RETURN
 Rather than representing the logic that determines if schedules overlap in a query, with Grakn we can represent this in a rule. That way, we can just query directly for all schedules that participate in an `overlaps` relation to get all overlapping schedules:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $schedule isa schedule; ($schedule) isa overlaps; get $schedule; 
 ```
 
 The rule that infers the `overlaps` relation looks like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule overlapping-schedules: 
 when {
   $schedule1 isa schedule, has end $1End; 
@@ -612,7 +612,7 @@ RETURN collect(DISTINCT(disease)) as diseases
 In Grakn, instead, we just write one query that fetches the `risk-factor` relation for John Doe:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $john isa person, has name "John Doe"; $disease isa disease; 
 ($john, $disease) isa risk-factor; get $disease;
 ```
@@ -620,7 +620,7 @@ match $john isa person, has name "John Doe"; $disease isa disease;
 This `risk-factor` relation is an inferred relation that contains the logic necessary to retrieve which diseases someone is at risk of. We split these out into three separate rules in order to modularise the logic:
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule alcohol-risk-of-diabetes:
 when {
     $person isa person;

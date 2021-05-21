@@ -18,7 +18,7 @@ Let's get started!
 ### The Schema
 A [Grakn schema](../09-schema/00-overview.md) is the blueprint of a Grakn knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
 
-```graql
+```typeql
 define
 
 title sub attribute, value string;
@@ -111,13 +111,13 @@ social_network::data::read>
 ```
 
 At the prompt, write this query to retrieve the desired results.
-```graql
+```typeql
 match $tra (traveler: $per) isa travel; (located: $tra, location: $loc) isa localisation; $loc has name "French Lick"; $per has full-name $fn; get $fn;
 ```
 
 The result contains the following answers:
 <!-- test-ignore -->
-```graql
+```typeql
 {$fn "Solomon Tran" isa full-name;}
 {$fn "Julie Hutchinson" isa full-name;}
 {$fn "Miriam Morton" isa full-name;}
@@ -151,7 +151,7 @@ public class SocialNetworkQuickstartQuery {
         GraknSession session = client.session("social_network", GraknSession.Type.DATA);
         GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
 
-        GraqlMatch query = match(
+        TypeQLMatch query = match(
                 var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
                 var("per").has("full-name", var("per-fn")),
                 var("org").has("name", var("org-n"))
@@ -233,12 +233,12 @@ We can create and delete instances of data in a Grakn knowledge graph by running
 
 #### Insert an instance of type person
 <!-- ignore-test -->
-```graql
+```typeql
 insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male", has email "johnyjj@gmail.com";
 ```
 
 <!-- test-ignore -->
-```graql
+```typeql
 commit
 ```
 
@@ -249,22 +249,22 @@ Any manipulation made in the schema or the data instances, is not persisted to t
 
 #### Associate the newly added person with a nickname
 
-```graql
+```typeql
 match $per isa person, has email "johnyjj@gmail.com"; insert $per has nickname "JJJ";
 ```
 <!-- test-ignore -->
-```graql
+```typeql
 commit
 ```
 
 #### Delete the newly added person
 <!-- ignore-test -->
-```graql
+```typeql
 match $per isa person, has full-name "Johny Jimbly Joe"; delete $per isa person;
 ```
 
 <!-- test-ignore -->
-```graql
+```typeql
 commit
 ```
 
@@ -273,7 +273,7 @@ Grakn is capable of reasoning over data to infer new knowledge, commonly known a
 
 Let's look at some simple examples of how Grakn uses rules for reasoning over explicit data. Let's say we want to find out what content a particular person has permission to view. 
 
-```graql
+```typeql
 define
   
 content-permission sub relation,
@@ -283,7 +283,7 @@ content-permission sub relation,
 
 As you can see in the `social_network_data.gql` file, no instance of `content-permission` was ever inserted. It's only through rules that allows Grakn to infer this knowledge and know the answer to the following question at query time.
 
-```graql
+```typeql
 match 
 $p isa person, has email "julie.hutchinson@gmail.com"; 
 (grantee: $p, content: $c)isa content-permission; 
@@ -293,7 +293,7 @@ Have a look at the `social_network_data.gql` file, there are a number of rules w
 
 Let's look at another rule:
 
-```graql
+```typeql
 define
 
 mutual-friendship sub relation,
@@ -311,7 +311,7 @@ rule people-have-mutual-friends:
 
 We can query for people who have friends in common, like so:
 
-```graql
+```typeql
 match 
 $p isa person, has email "julie.hutchinson@gmail.com"; 
 $p2 isa person, has full-name $name; 

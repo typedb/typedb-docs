@@ -163,7 +163,7 @@ The indentation in the script file are only for visual guide and will be ignored
 The following example illustrates how to create a database, define a schema, and insert some data into Grakn.
 
 <!-- test-ignore -->
-```graql
+```typeql
 $ ./grakn console
 
 Welcome to Grakn Console. You are now in Grakn Wonderland!
