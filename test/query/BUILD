@@ -31,12 +31,12 @@ native_typedb_artifact(
     visibility = ["//test:__subpackages__"],
 )
 
-#########################
-# Graql Java Query Test #
-#########################
+##########################
+# TypeQL Java Query Test #
+##########################
 typedb_java_test(
     name = "typeql-java",
-    test_class = "com.vaticle.doc.test.query.GraqlJavaTest",
+    test_class = "com.vaticle.doc.test.query.TypeQLJavaTest",
     srcs = [":typeql-java-tests"],
     deps = [
         "@vaticle_typedb_client_java//:client-java",
@@ -68,12 +68,12 @@ genrule(
     outs = ["TypeQLJavaTest.java"]
 )
 
-#########################
-# Graql Lang Query Test #
-#########################
+##########################
+# TypeQL Lang Query Test #
+##########################
 typedb_java_test(
     name = "typeql-lang",
-    test_class = "com.vaticle.doc.test.query.GraqlLangTest",
+    test_class = "com.vaticle.doc.test.query.TypeQLLangTest",
     srcs = [":typeql-lang-tests"],
     deps = [
         "@vaticle_typedb_client_java//:client-java",

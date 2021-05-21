@@ -1,36 +1,36 @@
-title: Graql
+title: TypeQL
 description:
   java: |
-    Graql, the query language for Grakn, is written in Java and its API can be used to programmatically construct Graql queries.
+    TypeQL, the query language for TypeDB, is written in Java and its API can be used to programmatically construct TypeQL queries.
 
-    To use Graql, we first add it as a dependency to our `pom.xml`.
+    To use TypeQL, we first add it as a dependency to our `pom.xml`.
 
     ```xml
     <repositories>
         <repository>
-            <id>repo.grakn.ai</id>
-            <url>https://repo.grakn.ai/repository/maven/</url>
+            <id>repo.vaticle.com</id>
+            <url>https://repo.vaticle.com/repository/maven/</url>
         </repository>
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>io.graql</groupId>
-            <artifactId>graql-lang</artifactId>
+            <groupId>com.vaticle.typeql</groupId>
+            <artifactId>typeql-lang</artifactId>
             <version>{version}</version>
         </dependency>
     </dependencies>
     ```
 
-    The latest version of `graql-lang` can be found in the Grakn [public Maven repository](https://repo.grakn.ai/#browse/browse:maven:io%2Fgraql%2Fgraql-lang).
+    The latest version of `typeql-lang` can be found in the [public Maven repository](https://repo.vaticle.com/#browse/browse:maven:io%typeql).
 
-    The we import `Graql`.
+    The we import `TypeQL`.
 
     ```java
-    import graql.lang.Graql;
+    import com.vaticle.typeql.lang.TypeQL;
     ```
 
-    We are now ready to construct Graql queries, using the methods available on the `Graql` class.
-    Check out the following pages to learn, by example, how the Graql API allows construction of various Graql queries:
+    We are now ready to construct TypeQL queries, using the methods available on the `TypeQL` class.
+    Check out the following pages to learn, by example, how the TypeQL API allows construction of various TypeQL queries:
     - [Expressive patterns](../query/match-clause)
     - [Retrieval queries](../query/get-query)
     - [Insertion queries](../query/insert-query)

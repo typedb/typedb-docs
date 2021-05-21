@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug here, or visit discuss.grakn.ai for troubleshooting discussions
+about: Report a bug here, or visit discuss.vaticle.com for troubleshooting discussions
 title: ''
 labels: bug
 assignees: ''

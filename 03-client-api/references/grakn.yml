@@ -1,14 +1,14 @@
 methods:
   - method:
     common: &method-client-core
-      title: Instantiating a Grakn Core client
+      title: Instantiating a TypeDB Core client
       description: |
-        In order to communicate with Grakn Core databases via sessions and transactions, we first need to instantiate a Grakn Core client.
-        The created object connects our application with the running Grakn Server.
+        In order to communicate with TypeDB Core databases via sessions and transactions, we first need to instantiate a TypeDB Core client.
+        The created object connects our application with the running TypeDB Server.
       accepts: &accepts-client-core
         param1: &accepts-client-core-uri
           name: address
-          description: The address (host:port) on which the Grakn Server is running
+          description: The address (host:port) on which the TypeDB Server is running
           type: String
           required: true
         param2: &accepts-client-core-parallelisation
@@ -21,16 +21,16 @@ methods:
         - "[Client](#client)"
     java:
       <<: *method-client-core
-      method: Grakn.coreClient(String address, int parallelisation);
+      method: TypeDB.coreClient(String address, int parallelisation);
     javascript:
       <<: *method-client-core
-      method: Grakn.coreClient(address);
+      method: TypeDB.coreClient(address);
       accepts:
         param1:
           <<: *accepts-client-core-uri
     python:
       <<: *method-client-core
-      method: Grakn.core_client(address, parallelisation)
+      method: TypeDB.core_client(address, parallelisation)
       accepts:
         param1:
           <<: *accepts-client-core-uri
@@ -39,14 +39,14 @@ methods:
           default: 2
   - method:
     common: &method-client-cluster
-      title: Instantiating a Grakn Cluster client
+      title: Instantiating a TypeDB Cluster client
       description: |
-        In order to communicate with Grakn Cluster databases via sessions and transactions, we first need to instantiate a Grakn Cluster client.
-        The created object connects our application with the running Grakn Cluster.
+        In order to communicate with TypeDB Cluster databases via sessions and transactions, we first need to instantiate a TypeDB Cluster client.
+        The created object connects our application with the running TypeDB Cluster.
       accepts: &accepts-client-cluster
         param1: &accepts-client-cluster-addresses
           name: addresses
-          description: All addresses (host:port) on which Grakn Cluster nodes are running
+          description: All addresses (host:port) on which TypeDB Cluster nodes are running
           type: Set<String>
           required: true
         param2: &accepts-client-cluster-parallelisation
@@ -59,17 +59,17 @@ methods:
         - "[Client](#client)"
     java:
       <<: *method-client-cluster
-      method: Grakn.clusterClient(Set<String> addresses, int parallelisation);
+      method: TypeDB.clusterClient(Set<String> addresses, int parallelisation);
     javascript:
       <<: *method-client-cluster
-      method: Grakn.clusterClient(addresses);
+      method: TypeDB.clusterClient(addresses);
       accepts:
         param1:
           <<: *accepts-client-cluster-addresses
           type: Array of String
     python:
       <<: *method-client-cluster
-      method: Grakn.cluster_client(addresses, parallelisation)
+      method: TypeDB.cluster_client(addresses, parallelisation)
       accepts:
         param1:
           <<: *accepts-client-cluster-addresses

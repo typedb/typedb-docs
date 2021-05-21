@@ -1,8 +1,8 @@
 ---
 pageTitle: Migrating CSV, JSON and XML Data with Client Python
-keywords: grakn, examples, migration, python
-longTailKeywords: grakn python migration
-Summary: Learn how to use Client Python to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
+keywords: typedb, examples, migration, python
+longTailKeywords: typedb python migration
+Summary: Learn how to use Client Python to migrate CSV, JSON and XML data into a TypeDB Knowledge Graph.
 ---
 
 ## Goal
@@ -19,18 +19,18 @@ Before we get started with migration, let’s have a quick reminder of how the s
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our Grakn [database](../06-management/01-database.md). To do this, we use [Client Python](../03-client-api/02-python.md).
+1.  we need a way to talk to our TypeDB [database](../06-management/01-database.md). To do this, we use [Client Python](../03-client-api/02-python.md).
 2.  we go through each data file, extracting each data item and parsing it to a Python dictionary.
-3.  we pass each data item (in the form of a Python dictionary) to its corresponding template function, which in turn gives us the constructed Graql query for inserting that item into TypeDB.
+3.  we pass each data item (in the form of a Python dictionary) to its corresponding template function, which in turn gives us the constructed TypeQL query for inserting that item into TypeDB.
 4.  we execute each of those queries to load the data into our target database — `phone_calls`.
 
-Before moving on, make sure you have **Python3** and **Pip3** installed and the [**Grakn Server**](/docs/running-grakn/install-and-run#start-the-grakn-server) running on your machine.
+Before moving on, make sure you have **Python3** and **Pip3** installed and the [**TypeDB Server**](/docs/running-typedb/install-and-run#start-the-typedb-server) running on your machine.
 
 ## Get Started
 
 1.  Create a directory named `phone_calls` on your desktop.
 2.  cd to the phone_calls directory via terminal.
-3.  Run `pip3 install grakn-client` to install the Grakn [Client Python](../03-client-api/02-python.md).
+3.  Run `pip3 install typedb-client` to install the TypeDB [Client Python](../03-client-api/02-python.md).
 4.  Open the `phone_calls` directory in your favourite text editor.
 5.  Create a `migrate.py` file in the root directory. This is where we’re going to write all our code.
 
@@ -38,11 +38,11 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 Pick one of the data formats below and download the files. After you download them, place the four files under the `files/phone-calls/data` directory. We need these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.csv)
 
-**JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
+**JSON** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.json)
 
-**XML** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.xml)
+**XML** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.xml)
 
 ## Set up the migration mechanism
 
@@ -73,11 +73,11 @@ inputs = [
 build_phone_call_graph(inputs)
 ```
 
-First thing first, we import the grakn module. We use it for connecting to our `phone_calls` database.
+First thing first, we import the typedb module. We use it for connecting to our `phone_calls` database.
 
 Next, we declare the `inputs`. More on this later. For now, what we need to understand about inputs — it’s a list of dictionaries, each one containing:
 - The path to the data file
-- The template function that receives a dictionary and produces the Graql insert query. we define these template functions in a bit.
+- The template function that receives a dictionary and produces the TypeQL insert query. we define these template functions in a bit.
 
 Let’s move on.
 
@@ -100,7 +100,7 @@ This is the main and only function we need to call to start loading data into Ty
 
 What happens in this function, is as follows:
 
-1.  A Grakn `client` is created, connected to the server we have running locally.
+1.  A TypeDB `client` is created, connected to the server we have running locally.
 2.  A `session` is created, connected to the database `phone_calls`. Note that by using `with`, we indicate that the session closes after it’s been used.
 3.  For each `input` dictionary in `inputs`, we call the `load_data_into_typedb(input, session)`. This takes care of loading the data as specified in the input dictionary into our database.
 
@@ -139,7 +139,7 @@ Before we move on to parsing the data into dictionaries, let’s start with the 
 
 ## The Template Functions
 
-Templates are simple functions that accept a dictionary, representing a single data item. The values within this dictionary fill in the blanks of the query template. The result is a Graql insert query.
+Templates are simple functions that accept a dictionary, representing a single data item. The values within this dictionary fill in the blanks of the query template. The result is a TypeQL insert query.
 We need 4 of them. Let’s go through them one by one.
 
 ### companyTemplate
@@ -723,11 +723,11 @@ We started off by setting up our project and positioning the data files.
 
 Next, we went on to set up the migration mechanism, one that was independent of the data format.
 
-Then, we went ahead and wrote the template functions whose only job was to construct a Graql insert query based on the data passed to them.
+Then, we went ahead and wrote the template functions whose only job was to construct a TypeQL insert query based on the data passed to them.
 
 After that, we learned how files with different data formats can be parsed into Python dictionaries.
 
-Lastly, we ran `python3 migrate.py` which fired the `build_phone_call_graph` function with the given `inputs`. This loaded the data into our Grakn knowledge graph.
+Lastly, we ran `python3 migrate.py` which fired the `build_phone_call_graph` function with the given `inputs`. This loaded the data into our TypeDB knowledge graph.
 
 ## Next
 

@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Request a feature here, or visit discuss.grakn.ai for ideas and questions
+about: Request a feature here, or visit discuss.vaticle.com for ideas and questions
 title: ''
 labels: feature
 assignees: ''

@@ -1,7 +1,7 @@
 ---
 pageTitle: Negation
-keywords: graql, query, pattern, statement, variable, negation, not
-longTailKeywords: graql patterns, graql statements, graql variables, negation, not
+keywords: typeql, query, pattern, statement, variable, negation, not
+longTailKeywords: typeql patterns, typeql statements, typeql variables, negation, not
 Summary: Working with negation blocks in patterns.
 ---
 
@@ -18,7 +18,7 @@ c) All single people who have posted a photo in a forum
 
 The intuitive meaning of a negated pattern is that of a complement. However, a relation complement is not a clearly defined term as it requires the definition of a domain of values with respect to which the complement is computed. Even in this case, we end up with an infinite relation which leaves the projection or join operations unapplicable. As a result, we understand pattern negation in terms of computation of set differences. The set-difference semantics
 are different to the perhaps familiar semantics of _Negation-as-Failure_ of Prolog and in this chapter, we will attempt to provide a clear explanation of the meaning
-of pattern negation in Grakn. 
+of pattern negation in TypeDB. 
 
 Let us consider the relation of unemployment which can be trivially understood as the absence of employment. We define negation blocks by enclosing patterns with
 curly braces and preceding them with a `not` keyword:
@@ -35,7 +35,7 @@ Therefore, to retrieve people that are unemployed we want to express:
 Person($x), ¬Employment($x, employer: $y)
 ```
 
-i.e. we look for the following Graql pattern:
+i.e. we look for the following TypeQL pattern:
 
 <div class="tabs dark">
 
@@ -216,7 +216,7 @@ We shall now see how we can form more complex patterns with negation. Let's say 
 Person($x), ¬Parentship($x, father: $y), ¬Parentship($x, mother: $y)
 ```
 
-To express that in Graql, we require two negation blocks:
+To express that in TypeQL, we require two negation blocks:
 
 <div class="tabs dark">
 

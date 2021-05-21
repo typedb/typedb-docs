@@ -1,22 +1,22 @@
 ---
 pagetitles: Schema Examples
-keywords: graql, schema
-longTailKeywords: graql schema, graql define query, graql type hierarchy, graql concepts, graql define entity, graql define relation, graql define attribute, graql schema definition
-Summary: Additonal schema examples to accelerate your learning and development on Grakn. 
+keywords: typeql, schema
+longTailKeywords: typeql schema, typeql define query, typeql type hierarchy, typeql concepts, typeql define entity, typeql define relation, typeql define attribute, typeql schema definition
+Summary: Additonal schema examples to accelerate your learning and development on TypeDB. 
 ---
 
 ## How to Use These Example Schemas
 
-These example schema files, which allow you to explore how data in a particular domain could be modelled in Grakn, can be picked up and used by anyone looking to explore the database for complex data.
+These example schema files, which allow you to explore how data in a particular domain could be modelled in TypeDB, can be picked up and used by anyone looking to explore the database for complex data.
 
-Building a Grakn knowledge graph is fairly simple as Grakn's hypergraph structure represents the real world much more intuitively than columns and rows of data. The examples below are meant to enable any developer to get started building with Grakn, faster.
+Building a TypeDB knowledge graph is fairly simple as TypeDB's hypergraph structure represents the real world much more intuitively than columns and rows of data. The examples below are meant to enable any developer to get started building with TypeDB, faster.
 
 1. Review the modelling example highlights or jump right to the schema files and click to download
-2. Download [Grakn Core](http://dev.grakn.ai/docs/running-grakn/install-and-run#download-and-install-grakn) and [Grakn Workbase](https://grakn.ai/download#workbase)
+2. Download [TypeDB](http://docs.vaticle.com/docs/running-typedb/install-and-run#download-and-install-typedb) and [TypeDB Workbase](https://grakn.ai/download#workbase)
 3. Select an example below and download the .gql file via github link
-4. Load .gql file via [Grakn Console](http://dev.grakn.ai/docs/running-grakn/console)
-5. Open Grakn Workbase and [visualise your schema](http://dev.grakn.ai/docs/workbase/schema-designer)
-6. Iterate on the model, clean your keyspace, and re-load into Grakn - rinse and repeat as needed
+4. Load .gql file via [TypeDB Console](http://docs.vaticle.com/docs/running-typedb/console)
+5. Open TypeDB Workbase and [visualise your schema](http://docs.vaticle.com/docs/workbase/schema-designer)
+6. Iterate on the model, clean your keyspace, and re-load into TypeDB - rinse and repeat as needed
 
 ## Modelling Examples
 
@@ -73,7 +73,7 @@ call sub relation,
 
 [tab:end]
 
-[tab:BioGrakn COVID]
+[tab:BioTypeDB COVID]
 <!-- test-delay -->
 ```typeql
 gene sub fully-formed-anatomical-structure,
@@ -155,7 +155,7 @@ To build a rule that infers a new relation type based on an existing set of data
 
 <div class="tabs dark">
 
-[tab:BioGrakn COVID]
+[tab:BioTypeDB COVID]
 
 <!-- test-delay -->
 ```typeql
@@ -694,7 +694,7 @@ post sub entity,
 </div>
 
 ### Content Access
-Modelling content permissions using Grakn Rules.   
+Modelling content permissions using TypeDB Rules.   
 
 <div class="tabs dark">
 
@@ -768,10 +768,10 @@ Here we have modelled a schema for a social network. We get examples of:
 - nested relation
 - n-ary relation
 - type hierarchy
-- Grakn Rule
+- TypeDB Rule
 - attributes asigned to a relation
 
-[Download](https://raw.githubusercontent.com/graknlabs/examples/master/schemas/social-network-schema.gql)
+[Download](https://raw.githubusercontent.com/vaticle/examples/master/schemas/social-network-schema.gql)
 
 ### Public Transit System
 
@@ -783,9 +783,9 @@ Here we have modelled a schema for a transit network. We get examples of:
 - geographic location of a `station`
 - route modelling
 
-[Download](https://raw.githubusercontent.com/graknlabs/examples/master/schemas/tube-network-schema.gql)
+[Download](https://raw.githubusercontent.com/vaticle/examples/master/schemas/tube-network-schema.gql)
 
-### BioGrakn - Disease Network
+### BioTypeDB - Disease Network
 
 Here we have modelled a disease network for COVID-19 research. We get examples of:
 
@@ -795,10 +795,10 @@ Here we have modelled a disease network for COVID-19 research. We get examples o
 - nested relation
 - n-ary relation
 - type hierarchy 
-- Grakn Rule
+- TypeDB Rule
 - attributes asigned to a relation
 
-[Download](https://raw.githubusercontent.com/graknlabs/biograkn-covid/master/Schema/biograkn-covid.gql)
+[Download](https://raw.githubusercontent.com/vaticle/biotypedb-covid/master/Schema/biotypedb-covid.gql)
 
 ### Modelling A Phone Call Network
 
@@ -807,7 +807,7 @@ Here we have modelled a schema for a network of phone calls between persons. We 
 - uniary relations
 - attributes asigned to a relation
 
-[Download](https://raw.githubusercontent.com/graknlabs/examples/master/schemas/phone-calls-schema.gql)
+[Download](https://raw.githubusercontent.com/vaticle/examples/master/schemas/phone-calls-schema.gql)
 
 ### Customer 360
 
@@ -819,10 +819,10 @@ Here we have modelled a schema for a Customer 360 use case within the context of
 - nested relation
 - n-ary relation
 - type hierarchy 
-- Grakn Rule
+- TypeDB Rule
 - attributes asigned to a relation
 
-[Download](https://raw.githubusercontent.com/graknlabs/examples/master/schemas/customer-360-schema.gql)
+[Download](https://raw.githubusercontent.com/vaticle/examples/master/schemas/customer-360-schema.gql)
 
 ### Financial Services
 
@@ -834,10 +834,10 @@ Here we have modelled a schema for a financial services use case within the cont
 - nested relation
 - n-ary relation
 - type hierarchy 
-- Grakn Rule
+- TypeDB Rule
 - attributes asigned to a relation
 
-[Download](https://raw.githubusercontent.com/graknlabs/examples/master/schemas/financial-services-schema.gql)
+[Download](https://raw.githubusercontent.com/vaticle/examples/master/schemas/financial-services-schema.gql)
 
 
 ### Role Player Game 
@@ -850,7 +850,7 @@ Here we have modelled a schema for a role player game with campaigns, . We get e
 - nested relation
 - n-ary relation
 - type hierarchy 
-- Grakn Rule
+- TypeDB Rule
 - attributes asigned to a relation
 
-[Download](https://raw.githubusercontent.com/graknlabs/examples/master/schemas/xcom-schema.gql)
+[Download](https://raw.githubusercontent.com/vaticle/examples/master/schemas/xcom-schema.gql)

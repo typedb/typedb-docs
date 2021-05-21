@@ -1,7 +1,7 @@
 ---
 pageTitle: Thing
-keywords: grakn, thing, api, methods, attribute
-longTailKeywords: grakn thing, grakn attribute, grakn relation, grakn thing methods, grakn attribute methods, grakn relation methods
+keywords: typedb, thing, api, methods, attribute
+longTailKeywords: typedb thing, typedb attribute, typedb relation, typedb thing methods, typedb attribute methods, typedb relation methods
 Summary: Methods available on Thing objects.
 toc: true
 ---

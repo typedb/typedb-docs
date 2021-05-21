@@ -1,8 +1,8 @@
 ---
 pageTitle: Client Java
-keywords: grakn, client, java
-longTailKeywords: grakn java client, grakn client java, client java, java client
-Summary: API Reference of Grakn Client Java.
+keywords: typedb, client, java
+longTailKeywords: typedb java client, typedb client java, client java, java client
+Summary: API Reference of TypeDB Client Java.
 templatePath: 03-client-api/references/
 ---
 
@@ -39,7 +39,7 @@ If you want to depend on snapshot versions of Client Java, by referring to the G
 ```
 
 ## Quickstart
-First make sure, the [TypeDB Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
+First make sure, the [TypeDB Server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 
 Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and open a session to a [database](../06-management/01-database.md).
 
@@ -168,7 +168,7 @@ To view examples of running various TypeQL queries using the Java client, head o
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.grakn language="java" %}
+{% include api/generic.html data=site.data.03_client_api.references.typedb language="java" %}
 
 {% include api/generic.html data=site.data.03_client_api.references.client language="java" %}
 
@@ -178,7 +178,7 @@ To view examples of running various TypeQL queries using the Java client, head o
 
 {% include api/generic.html data=site.data.03_client_api.references.transaction language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.graql language="java" %}
+{% include api/generic.html data=site.data.03_client_api.references.typeql language="java" %}
 
 {% include api/generic.html data=site.data.03_client_api.references.query_manager language="java" %}
 

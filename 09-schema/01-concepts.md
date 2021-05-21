@@ -1,23 +1,23 @@
 ---
 pageTitle: Schema Concepts
-keywords: graql, schema, type hierarchy, concept, define, sub, key, abstract,relates, plays, valuetype, regex, define, undefine
-longTailKeywords: graql schema, graql define query, graql type hierarchy, graql concepts, graql define entity, graql define relation, graql define attribute, graql schema definition
-Summary: A comprehensive guide on defining Schema Concepts in Grakn.
+keywords: typeql, schema, type hierarchy, concept, define, sub, key, abstract,relates, plays, valuetype, regex, define, undefine
+longTailKeywords: typeql schema, typeql define query, typeql type hierarchy, typeql concepts, typeql define entity, typeql define relation, typeql define attribute, typeql schema definition
+Summary: A comprehensive guide on defining Schema Concepts in TypeDB.
 ---
 
 ## Define
-As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md) which represents the dataset stored in a Grakn knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
+As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md) which represents the dataset stored in a TypeDB knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
 
 When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [Grakn Console](../02-console/01-console.md) as well as the Grakn Clients [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
+We can also use the `define` keyword in the interactive mode of the [TypeDB Console](../02-console/01-console.md) as well as the TypeDB Clients [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
 
-To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `define` query. Otherwise, anything you have defined is NOT committed to the original database that is running on the Grakn server.
-When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Grakn Console, we use the `commit` command.
+Don't forget to `commit` after executing a `define` query. Otherwise, anything you have defined is NOT committed to the original database that is running on the TypeDB server.
+When using one of the TypeDB Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the TypeDB Console, we use the `commit` command.
 </div>
 
 ## Entity
@@ -518,7 +518,7 @@ TypeQLDefine query = TypeQL.define(
 
 The `name` attribute is now ready to be owned by any other type in the schema.
 
-The data types available in a Grakn knowledge graph are:
+The data types available in a TypeDB knowledge graph are:
 - `long`: a 64-bit signed integer.
 - `double`: a double-precision floating point number, including a decimal point.
 - `string`: enclosed in double `"` or single `'` quotes
@@ -566,7 +566,7 @@ TypeQLDefine query = TypeQL.define(
 
 <div class="note">
 [Important]
-Attributes in a Grakn knowledge graph are modeled differently to _columns_ in a relational database. In this example, the attribute `start-date` with the value of, for instance `2021-01-01`, exists only once in the knowledge graph and shared among any number of instances that may own it. This is useful when we need to query the knowledge graph for anything that has the `start-date` attribute with value `2021-01-01`. In this case, we would get all the residencies and travels that started on the first day of 2021. It's important to remember this when performing write operations on instances of an attribute type.
+Attributes in a TypeDB knowledge graph are modeled differently to _columns_ in a relational database. In this example, the attribute `start-date` with the value of, for instance `2021-01-01`, exists only once in the knowledge graph and shared among any number of instances that may own it. This is useful when we need to query the knowledge graph for anything that has the `start-date` attribute with value `2021-01-01`. In this case, we would get all the residencies and travels that started on the first day of 2021. It's important to remember this when performing write operations on instances of an attribute type.
 </div>
 
 **A concept type can have any number of the same attribute that holds different values.** In other words, a concept type has a many-to-many relation with its attributes.
@@ -752,8 +752,8 @@ As the name suggests, we use the `undefine` keyword to remove the definition of 
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original database that is running on the Grakn server.
-When using one of the [Grakn Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [Grakn Console](../02-console/01-console.md), we use the `commit` command.
+Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original database that is running on the TypeDB server.
+When using one of the [TypeDB Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [TypeDB Console](../02-console/01-console.md), we use the `commit` command.
 </div>
 
 ### Undefine an attribute's association
@@ -823,15 +823,15 @@ When the concept type to be undefined is a supertype to something else, we must 
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the `query()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the TypeQL(string) query to the `query()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the Graql(string) query to the `query()`method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the TypeQL(string) query to the `query()`method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary
-We learned that a Grakn schema is essentially a collection of Entities, Relations, and Attributes - what we call the Grakn Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
+We learned that a TypeDB schema is essentially a collection of Entities, Relations, and Attributes - what we call the TypeDB Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
 
-In the next section, we learn about one last addition to the schema - [Graql Rules](../09-schema/03-rules.md).
+In the next section, we learn about one last addition to the schema - [TypeQL Rules](../09-schema/03-rules.md).

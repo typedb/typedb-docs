@@ -13,14 +13,14 @@ methods:
         param2:
           name: options
           description: Options for the session.
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           required: false
           default: N/A
       returns:
         - "[Transaction](#transaction)"
     java:
       <<: *method-transaction
-      method: session.transaction(Transaction.Type transactionType, GraknOptions options);
+      method: session.transaction(Transaction.Type transactionType, TypeDBOptions options);
     python:
       <<: *method-transaction
       method: session.transaction(transaction_type, options)
@@ -37,7 +37,7 @@ methods:
         param2:
           name: options
           description: Options for the session.
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           required: false
           default: N/A
       returns:

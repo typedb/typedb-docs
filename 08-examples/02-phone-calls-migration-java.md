@@ -1,8 +1,8 @@
 ---
 pageTitle: Migrating CSV, JSON and XML Data with Client Java
-keywords: grakn, examples, migration, java
-longTailKeywords: grakn java migration
-Summary: Learn how to use Client Java to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
+keywords: typedb, examples, migration, java
+longTailKeywords: typedb java migration
+Summary: Learn how to use Client Java to migrate CSV, JSON and XML data into a TypeDB Knowledge Graph.
 ---
 
 ## Goal
@@ -19,12 +19,12 @@ Before we get started with migration, let’s have a quick reminder of how the s
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our Grakn [database](../06-management/01-database.md). To do this, we use [Client Java](../03-client-api/01-java.md).
+1.  we need a way to talk to our TypeDB [database](../06-management/01-database.md). To do this, we use [Client Java](../03-client-api/01-java.md).
 2.  we go through each data file, extracting each data item and parsing it to a JSON object.
-3.  we pass each data item (in the form of a JSON object) to its corresponding template. What the template returns is the Graql query for inserting that item into Grakn.
+3.  we pass each data item (in the form of a JSON object) to its corresponding template. What the template returns is the TypeQL query for inserting that item into TypeDB.
 4.  we execute each of those queries to load the data into our target database — `phone_calls`.
 
-Before moving on, make sure you have **Java 11** installed and the [**Grakn Server**](/docs/running-grakn/install-and-run#start-the-grakn-server) running on your machine.
+Before moving on, make sure you have **Java 11** installed and the [**TypeDB Server**](/docs/running-typedb/install-and-run#start-the-typedb-server) running on your machine.
 
 ## Get Started
 
@@ -68,7 +68,7 @@ Modify `pom.xml` to include the latest version of TypeQL and TypeDB Client Java 
 
 ### Configure logging
 
-We would like to be able to configure what Grakn logs out. To do this, modify `pom.xml` to add `logback` as a dependency.
+We would like to be able to configure what TypeDB logs out. To do this, modify `pom.xml` to add `logback` as a dependency.
 
 ```xml
 <dependency>
@@ -90,15 +90,15 @@ Next, add a new file called `logback.xml` with the content below and place it un
 
 Pick one of the data formats below and download the files. After you download them, place the four files under the `phone_calls/data` directory. We use these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.csv)
 
-**JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
+**JSON** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.json)
 
-**XML** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.xml)
+**XML** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.xml)
 
 ## Specify Details For Each Data File
 
-Before anything, we need a structure to contain the details required for reading data files and constructing Graql queries. These details include:
+Before anything, we need a structure to contain the details required for reading data files and constructing TypeQL queries. These details include:
 - The path to the data file, and
 - The template function that receives a JSON object and produces a TypeQL insert query.
 
@@ -137,7 +137,7 @@ Later in this tutorial, we see how an instance of the `Input` class can be creat
 
 Time to initialise the `inputs`.
 
-The code below calls the `initialiseInputs()` method which returns a collection of `inputs`. We then use each input element in this collection to load each data file into Grakn.
+The code below calls the `initialiseInputs()` method which returns a collection of `inputs`. We then use each input element in this collection to load each data file into TypeDB.
 
 <!-- test-ignore -->
 ```java
@@ -416,7 +416,7 @@ public class PhoneCallsMigration {
 
 The following happens in this method:
 
-1. A Grakn Client instance `client` is created, connected to the server we have running locally at `localhost:1729`.
+1. A TypeDB Client instance `client` is created, connected to the server we have running locally at `localhost:1729`.
 2. A `session` is created, connected to the database `phone_calls`.
 3. For each `input` object in the `inputs` collection, we call the `loadDataIntoTypeDB(input, session)`. This takes care of loading the data as specified in the `input` object into our database.
 4. Finally, the `session` and `client` are both closed.
@@ -456,7 +456,7 @@ public class PhoneCallsMigration {
 }
 ```
 
-In order to load data from each file into Grakn, we need to:
+In order to load data from each file into TypeDB, we need to:
 
 1. retrieve an `ArrayList` of JSON objects, each of which represents a data item. We do this by calling `parseDataToJson(input)`, and
 2. for each JSON object in `items`: a) create a `transaction`, b) construct the `typeqlInsertQuery` using the corresponding `template`, c) run the `query` and d)`commit` the transaction.
@@ -1389,7 +1389,7 @@ public class PhoneCallsXMLMigration {
 
 ## Time to Load
 
-Run the main method, sit back, relax and watch the logs while the data starts pouring into Grakn.
+Run the main method, sit back, relax and watch the logs while the data starts pouring into TypeDB.
 
 ### ... So Far With the Migration
 
@@ -1399,7 +1399,7 @@ Next, we went on to set up the migration mechanism, one that was independent of 
 
 Then, we learned how files with different data formats can be parsed into JSON objects.
 
-Lastly, we ran the `main` method which fired the `connectAndMigrate` method with the given `inputs`. This loaded the data into our Grakn knowledge graph.
+Lastly, we ran the `main` method which fired the `connectAndMigrate` method with the given `inputs`. This loaded the data into our TypeDB knowledge graph.
 
 ## Next
 

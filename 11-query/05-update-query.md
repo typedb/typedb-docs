@@ -1,18 +1,18 @@
 ---
 pageTitle: Update Query
-keywords: graql, update query, modification
-longTailKeywords: grakn update data, graql update query, graql update instances
-Summary: Updating data in Grakn with the Update Query.
+keywords: typeql, update query, modification
+longTailKeywords: typedb update data, typeql update query, typeql update instances
+Summary: Updating data in TypeDB with the Update Query.
 ---
 
 ## Update Instances of Concepts
 
-In a Grakn knowledge graph, each instance is a "fact". Relations and entities are extensible and reducible, by adding or removing role players to them over time.
+In a TypeDB knowledge graph, each instance is a "fact". Relations and entities are extensible and reducible, by adding or removing role players to them over time.
 Each attribute value can be owned and the ownership can be removed or added: updating an attribute value directly therefore means changing the attribute value for ALL owners of this attribute value! 
 Achieving this requires [deleting](../11-query/04-delete-query.md) the attribute value and connecting previous owners to a different value instance. 
 Updating the attribute value that is owned by a concept means changing the connection to the value, rather than the value itself. We can achieve this in a single query using an Update query, which consists of a match, a delete, and an insert.
 
-To try the following examples with one of the Grakn clients, follow these [Clients Guide](#clients-guide).
+To try the following examples with one of the TypeDB clients, follow these [Clients Guide](#clients-guide).
 
 ## Update attribute owned by a concept
 Usually, we want to change the value of an attribute that is associated to another instance. To do so, we first need to [delete the association that the instance has with the attribute of interest](../11-query/04-delete-query.md#delete-attribute-ownerships) and then [insert the new instance of the attribute](../11-query/03-insert-query.md#insert-instances-of-an-attribute-type). We can do this in a single update query as follows:
@@ -123,20 +123,20 @@ After these queries, all employments by the organisation named `Pharos` were rep
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing an `update` query, is as simple as passing the Graql(string) query to the `query().update()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing an `update` query, is as simple as passing the TypeQL(string) query to the `query().update()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing an `update` query, is as simple as passing the Graql(string) query to the `query().update()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing an `update` query, is as simple as passing the TypeQL(string) query to the `query().update()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 
 ## Summary
-Updating data in Graql is usually involves an update query, which takes the form of `match-delete-insert`. You can use these queries to
+Updating data in TypeQL is usually involves an update query, which takes the form of `match-delete-insert`. You can use these queries to
 add and remove role players from relations, or add and remove ownerships of attributes. Attribute values themselves can be treated
 as immutable, and changing their values amounts to deleting the value and moving all the ownerships of the old value to some 
 new value.
 
 
-Next, we learn how to [aggregate values over a set of data](../11-query/06-aggregate-query.md) in a Grakn knowledge graph.
+Next, we learn how to [aggregate values over a set of data](../11-query/06-aggregate-query.md) in a TypeDB knowledge graph.

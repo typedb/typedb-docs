@@ -79,13 +79,13 @@ methods:
         param2:
           name: when
           description: The pattern describing the when body of the rule.
-          type: "[`com.vaticle.typeql.lang.pattern.Pattern`](#graql)"
+          type: "[`com.vaticle.typeql.lang.pattern.Pattern`](#typeql)"
           required: true
           default: N/A
         param3:
           name: then
           description: The pattern describing the then body of the rule.
-          type: "[`com.vaticle.typeql.lang.pattern.Pattern`](#graql)"
+          type: "[`com.vaticle.typeql.lang.pattern.Pattern`](#typeql)"
           required: true
           default: N/A
       returns:

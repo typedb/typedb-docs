@@ -1,14 +1,14 @@
 ---
 pageTitle: Migration and Backup
-keywords: grakn, migration, backup
-longTailKeywords: grakn migration
-Summary: Backing up and migrating data between versions of Grakn.
+keywords: typedb, migration, backup
+longTailKeywords: typedb migration
+Summary: Backing up and migrating data between versions of TypeDB.
 toc: false
 ---
 
 # Migration and Backup
 
-Grakn version 1.7.3 and later include tools to backup and migrate data between versions of grakn that are not data-level compatible. Please note the chart below for which versions are data-level compatible:
+TypeDB (i.e. Grakn) version 1.7.3 and later include tools to backup and migrate data between versions of typedb that are not data-level compatible. Please note the chart below for which versions are data-level compatible:
 
 | Data-level Versions | Versions at Data-level | Earliest Version With Migration Available |
 | ------------------- | ---------------------- | ----------------------------------------- |
@@ -18,10 +18,10 @@ Grakn version 1.7.3 and later include tools to backup and migrate data between v
 
 <div class="note">
 [Important]
-If you are migrating from 1.6.x or below to 2.0.x, you must first copy your `server/db` directory from your existing Grakn installation into an Grakn 1.7.3 installation. This will be fast and can be done to move from a version of Grakn without migration tools to one which has them. From 1.7.3 you are able to migrate to Grakn 2.0. 
+If you are migrating from 1.6.x or below to 2.0.x, you must first copy your `server/db` directory from your existing Grakn installation into an Grakn 1.7.3 installation. This will be fast and can be done to move from a version of TypeDB without migration tools to one which has them. From 1.7.3 you are able to migrate to TypeDB 2.0. 
 </div>
 
-The migration features describe beyond this point are designed for use with databases that can reasonably fit on a local disk multiple times (in the order of Gigabytes), as they make use of files to contain your data. If you have use cases for migrating data that will not fit onto disk, please reach out to us on our [Discord](https://discord.com/invite/graknlabs) community or [Forums](https://discuss.grakn.ai/) where we can advise you further.
+The migration features describe beyond this point are designed for use with databases that can reasonably fit on a local disk multiple times (in the order of Gigabytes), as they make use of files to contain your data. If you have use cases for migrating data that will not fit onto disk, please reach out to us on our [Discord](https://discord.com/invite/vaticle) community or [Forums](https://discuss.vaticle.com) where we can advise you further.
 
 ## Backup
 
@@ -57,7 +57,7 @@ Copy the schema into a file named `schema.tql`.
 
 You can skip the step of exporting schema if you already have a copy of your schema to import.
 
-If migrating from Grakn version <2.0 to version >=2.0 you need to update your schema to conform to 2.0 syntax. 
+If migrating from TypeDB version <2.0 to version >=2.0 you need to update your schema to conform to 2.0 syntax. 
 
 Once conforming to the new syntax, import the new schema:
 ```
@@ -76,7 +76,7 @@ old/typedb server export [database] data.typedb
 new/typedb server import [database] data.typedb
 ```
 
-This requires your database in the new grakn to have a valid schema that is compatible with your data. If a failure occurs during import, please check your database has the schema you expect.
+This requires your database in the new typedb to have a valid schema that is compatible with your data. If a failure occurs during import, please check your database has the schema you expect.
 
 Once the data has been successfully imported, you can safely delete the temporary data file with `rm data.typedb`.
 
@@ -99,7 +99,7 @@ If you have any further errors, please join one of our communities and ask for a
 Between versions, some schemas will become incompatible due to syntax change. Whilst most issues can be corrected in the schema before importing it, it is possible for a label to become invalid (if the label becomes a keyword in a new version). In order to handle this scenario, we have added an option to import from 1.8 onwards that allows you to remap labels during the import.
 
 ```
-typedb server import <database> <file>.grakn <old_label>=<new_label>...
+typedb server import <database> <file>.typedb <old_label>=<new_label>...
 ```
 
 ### Implicit Relations

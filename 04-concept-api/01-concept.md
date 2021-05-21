@@ -1,7 +1,7 @@
 ---
 pageTitle: Concept
-keywords: grakn, concept, api, methods
-longTailKeywords: grakn concept, concept methods, grakn concept methods
+keywords: typedb, concept, api, methods
+longTailKeywords: typedb concept, concept methods, typedb concept methods
 Summary: Methods available on a Concept object.
 toc: false
 ---

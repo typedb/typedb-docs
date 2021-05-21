@@ -1,17 +1,17 @@
 ---
 pageTitle: Concept API
-keywords: grakn, concept, api
-longTailKeywords: grakn concept api, concept api
-Summary: Concept Hierarchy in Grakn.
+keywords: typedb, concept, api
+longTailKeywords: typedb concept api, concept api
+Summary: Concept Hierarchy in TypeDB.
 toc: false
 ---
 
 ## Concept Architecture
-Anything in Grakn (other than [Rule](../09-schema/03-rules.md)), whether a concept type or a data instance, is a [Concept](../04-concept-api/01-concept.md). The diagram below, illustrates how the Concept superclass is inherited by its direct and indirect descendants.
+Anything in TypeDB (other than [Rule](../09-schema/03-rules.md)), whether a concept type or a data instance, is a [Concept](../04-concept-api/01-concept.md). The diagram below, illustrates how the Concept superclass is inherited by its direct and indirect descendants.
 
 ![Concept Hierarchy](../images/concept-api/overview_hierarchy.png)
 
-**Type** refers to a Concept Type as defined in the [schema](../09-schema/00-overview.md#grakn-data-model).
+**Type** refers to a Concept Type as defined in the [schema](../09-schema/00-overview.md#typedb-data-model).
 
 **Thing** refers to an instance of data that is an instantiation of a Concept Type.
 
@@ -19,7 +19,7 @@ Anything in Grakn (other than [Rule](../09-schema/03-rules.md)), whether a conce
 
 The Concept API architecture is implemented in 2 ways in each client: **local** and **remote**. The concepts share the same overall structure, but only a small set of methods are available on the *local* concepts.
 
-The difference is that local concept methods do not require a call to the server, while calls to methods on the *remote* concept API must make at least one full round-trip to the server to fetch a result. The execution time will include at least the network latency between your client and the Grakn server.
+The difference is that local concept methods do not require a call to the server, while calls to methods on the *remote* concept API must make at least one full round-trip to the server to fetch a result. The execution time will include at least the network latency between your client and the TypeDB server.
 
 <div class="note">
 [Note]
@@ -38,7 +38,7 @@ In the Concept API documentation, the **(Local)** tag indicates that a method is
 
 ### Remote Concept API
 
-The remote concept API allows a user to make simple requests to the Grakn server to discover information connected to a specific concept, or modify a concept. **All** remote concept operations require a network call to the Grakn server.
+The remote concept API allows a user to make simple requests to the TypeDB server to discover information connected to a specific concept, or modify a concept. **All** remote concept operations require a network call to the TypeDB server.
 
 Remote concepts must be linked to a **Transaction** in order to make calls. When remote concepts are returned by a Transaction method or a Remote Concept API method, they will inherit the same Transaction as the transaction/concept the method was called on. *When the Transaction is closed, the remote concept methods can no longer be used.
 

@@ -1,12 +1,12 @@
 ---
 pageTitle: Insert Query
-keywords: graql, insert query, insertion
-longTailKeywords: grakn insert data, graql insert query, graql create instances
-Summary: Insert queries in Grakn.
+keywords: typeql, insert query, insertion
+longTailKeywords: typedb insert data, typeql insert query, typeql create instances
+Summary: Insert queries in TypeDB.
 ---
 
 ## Insert Instances of an Entity Type
-To insert an instance of an entity type into the knowledge graph, we use the `insert` keyword followed by a series of statements that are similar to [match patterns](../11-query/01-match-clause.md#match-instances-of-an-entity). To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To insert an instance of an entity type into the knowledge graph, we use the `insert` keyword followed by a series of statements that are similar to [match patterns](../11-query/01-match-clause.md#match-instances-of-an-entity). To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
 <div class="tabs dark">
 
@@ -172,12 +172,12 @@ TypeQLInsert insert_query = TypeQL.match(
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing an `insert` query, is as simple as passing the Graql(string) query to the `query().insert()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing an `insert` query, is as simple as passing the TypeQL(string) query to the `query().insert()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing an `insert` query, is as simple as passing the Graql(string) query to the `query().insert()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing an `insert` query, is as simple as passing the TypeQL(string) query to the `query().insert()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

@@ -1,13 +1,13 @@
 ---
 pageTitle: Queries the Phone Calls Knowledge Graph
-keywords: grakn, examples, queries
-longTailKeywords: grakn query example
-Summary: Learn how to obtain insights by writing expressive Graql queries.
+keywords: typedb, examples, queries
+longTailKeywords: typedb query example
+Summary: Learn how to obtain insights by writing expressive TypeQL queries.
 ---
 
 ## Goal
 
-When we [modelled and loaded the schema into Grakn](../defining-the-schema), we had some insights in mind that we wanted to obtain from `phone_calls`; the knowledge graph.
+When we [modelled and loaded the schema into TypeDB](../defining-the-schema), we had some insights in mind that we wanted to obtain from `phone_calls`; the knowledge graph.
 
 Let’s revise:
 
@@ -21,10 +21,10 @@ For the rest of this post, we go through each of these questions to:
 
 - understand their business value,
 - write them as a statement,
-- write them in [Graql](https://dev.grakn.ai/docs/query/overview), and
+- write them in [TypeQL](https://docs.vaticle.com/docs/query/overview), and
 - assess their result.
 
-Make sure you have [Grakn Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [Grakn Server](../01-running-grakn/01-install-and-run.md#start-the-grakn-server) and `phone_calls` is the [selected database](../07-workbase/01-connection.md#select-a-database).
+Make sure you have [TypeDB Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [TypeDB Server](../01-running-typedb/01-install-and-run.md#start-the-typedb-server) and `phone_calls` is the [selected database](../07-workbase/01-connection.md#select-a-database).
 
 Let’s begin.
 
@@ -64,7 +64,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #1 Console](../images/examples/phone_calls_query_1_console.png)
-[caption:Using [Grakn Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 
@@ -243,7 +243,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #2 Console](../images/examples/phone_calls_query_2_console.png)
-[caption:Using [Grakn Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -422,7 +422,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #3 Console](../images/examples/phone_calls_query_3_console.png)
-[caption:Using [Grakn Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -599,7 +599,7 @@ get $phone-number-a, $phone-number-b;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #4 Console](../images/examples/phone_calls_query_4_console.png)
-[caption:Using [Grakn Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -802,7 +802,7 @@ get $duration; mean $duration;
 #### Try it yourself
 
 ![phone_calls query #5 Console](../images/examples/phone_calls_query_5_console.png)
-[caption:Using [Grakn Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../02-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -1005,6 +1005,6 @@ with TypeDB.core_client('localhost:1729') as client:
 
 ## 👏 You’ve done it!
 
-Five Graql queries, each written in a few lines, answered all of our questions.
+Five TypeQL queries, each written in a few lines, answered all of our questions.
 Our imaginary client, Telecom, can now take these insights back to their team and, hopefully, use them responsibly to serve their customers.
 And you ... are the one who made it happen!

@@ -1,7 +1,7 @@
 ---
 pageTitle: Schema
-keywords: grakn, workbase, schema designer
-longTailKeywords: grakn design schema, workbase schema designer
+keywords: typedb, workbase, schema designer
+longTailKeywords: typedb design schema, workbase schema designer
 Summary: Using Workbase to design a schema.
 toc: false
 ---
@@ -16,7 +16,7 @@ match $x sub thing;
 </div>
 
 ## Design a Schema
-Workbase allows the visualisation and design of a grakn schema.
+Workbase allows the visualisation and design of a typedb schema.
 
 ### Navigate to the Schema Designer
 

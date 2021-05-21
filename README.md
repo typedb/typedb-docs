@@ -1,8 +1,8 @@
-# Grakn Documentation
+# Vaticle Documentation
 
-[![CircleCI](https://circleci.com/gh/graknlabs/docs/tree/master.svg?style=shield)](https://circleci.com/gh/graknlabs/docs)
+[![CircleCI](https://circleci.com/gh/vaticle/docs/tree/master.svg?style=shield)](https://circleci.com/gh/vaticle/docs)
 
-This repository contains all content that powers the Grakn Documentation Portal, accessible at [dev.grakn.ai](http://dev.grakn.ai).
+This repository contains all content that powers the Vaticle Documentation Portal, accessible at [docs.vaticle.com](http://docs.vaticle.com).
 
 ---
 
@@ -26,7 +26,7 @@ The master branch contains the content for the live documentation of the current
 If at the time of submitting changes to _master_, the _development_ is also present, then changes made on the master branch need to be made on the development branch as well. To avoid bring unwanted changes to the development branch, commits need to be cherry-picked for the PR with _development_ as its base. The steps to accomplish this are as follows.
 
 1. `git checkout development`
-2. `git pull <name of the graknlabs/docs remote> development`
+2. `git pull <name of the vaticle/docs remote> development`
 3. `git checkout -b <name of the branch to be the head of the upcoming PR>`
 4. `git cherry-pick <SHA of the commit that represents the beginning of changes in the previous (master) PR>..<SHA of the commit that represents the end of changes in previous (master) PR>`
 5. commit any other changes that are exclusive for the next release
@@ -73,7 +73,7 @@ PRs that have the `development` branch as their _base_, contains changes that ar
 - The source file used to generate an image is to be located under `images/source/<section-name>`.
 - The source file must always contain the latest changes present in its corresponding image.
 - Screenshots of Workbase should be:
-  - named after the UI/UX components of the software itself. (eg: `graql-editor_clear-query.png`).
+  - named after the UI/UX components of the software itself. (eg: `typeql-editor_clear-query.png`).
   - taken at the screen resolution of 1280 x 720 pixels.
   - of size, 1147 x 671 pixels.
   - consistent in their paddings (position of Workbase's layout within the screenshot).
@@ -96,7 +96,7 @@ Use American.
 
 - With rare exceptions, the consistent tense used should be the present tense. (eg: _It returns_ as opposed to _It will return_).
 - In most cases, the consistent pronoun is `we`. In special cases, `you` may better convey the message. Never use `I`.
-- When speaking of the characteristics or capabilities of Grakn and Graql or any of their components, the subject pronoun, if used, should be within the terminology, as opposed to `we`. (eg: _Graql_ has three types of statements, as opposed to _We_ have three types of statements)
+- When speaking of the characteristics or capabilities of TypeDB and TypeQL or any of their components, the subject pronoun, if used, should be within the terminology, as opposed to `we`. (eg: _Graql_ has three types of statements, as opposed to _We_ have three types of statements)
 
 **Lists (Bullet points)**
 - When the list item completes the unfinished sentence before the list, end the list item with a period and start each item in lowercase.
@@ -146,7 +146,7 @@ The `longTailKeywords` attribute contains a comma-separated list of keywords tha
 
 **Code Blocks**
 
-- Include the language name right after the opening ` ``` ` (eg: ` ```graql `)
+- Include the language name right after the opening ` ``` ` (eg: ` ```typeql`)
 - To automatically link a code keyword to its corresponding documentation, review and maintain the [`views/autolink-keywords.js`](views/autolink-keywords.js)
 - Use ` `` ` within the text, to add inline code. Language is not specified for inline code.
 
@@ -250,8 +250,8 @@ Client API reference files are accessible via [`03-client-api/references`](03-cl
 
 ### Tests
 
-- A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a Graql query.
-- A code block of `graql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`). Otherwise, it will be tested as a pattern.
+- A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a TypeQL query.
+- A code block of `typeql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`). Otherwise, it will be tested as a pattern.
 - A code block that follows the `<!-- test-example file-name.extension -->` flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
   - a running Grakn Server
   - the schema loaded into the target database

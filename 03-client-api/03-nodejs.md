@@ -1,8 +1,8 @@
 ---
 pageTitle: Client Node.js
-keywords: grakn, client, node.js
-longTailKeywords: grakn node.js client, grakn client node.js, client node.js, python node.js
-Summary: API Reference of Grakn Client Node.js.
+keywords: typedb, client, node.js
+longTailKeywords: typedb node.js client, typedb client node.js, client node.js, python node.js
+Summary: API Reference of TypeDB Client Node.js.
 ---
 
 ## Installation
@@ -15,7 +15,7 @@ npm install typedb-client
 ```
 
 ## Quickstart
-First make sure that the [TypeDB server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
+First make sure that the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 
 In your source, require `typedb-client/TypeDB`.
 
@@ -138,7 +138,7 @@ To view examples of running various queries using the Node.js client, head over 
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.grakn language="javascript" %}
+{% include api/generic.html data=site.data.03_client_api.references.typedb language="javascript" %}
 
 {% include api/generic.html data=site.data.03_client_api.references.client language="javascript" %}
 

@@ -1,15 +1,15 @@
 ---
 pageTitle: Aggregate Query
-keywords: graql, aggregate query, calculation, statistics
-longTailKeywords: grakn aggregate data, graql aggregate query, graql statistics
-Summary: Statistical queries in Grakn.
+keywords: typeql, aggregate query, calculation, statistics
+longTailKeywords: typedb aggregate data, typeql aggregate query, typeql statistics
+Summary: Statistical queries in TypeDB.
 ---
 
 ## Aggregate Values Over a Dataset
-In this section, we learn how to get Grakn to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
-To perform aggregation in Grakn, we first write a [`match` clause](../11-query/01-match-clause.md) to describe the set of data, then follow that by [`get`](../11-query/02-get-query.md) to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate function to perform on the variable of interest.
+In this section, we learn how to get TypeDB to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
+To perform aggregation in TypeDB, we first write a [`match` clause](../11-query/01-match-clause.md) to describe the set of data, then follow that by [`get`](../11-query/02-get-query.md) to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate function to perform on the variable of interest.
 
-To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
 ### Count
 We use the `count` function to get the number of the specified matched variable.
@@ -224,12 +224,12 @@ This query returns the total count of `person`s grouped by the `title` of their 
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `match aggregate` query, is as simple as passing the Graql(string) query to the `query().matchAggregate()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().matchAggregate()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `match aggregate` query, is as simple as passing the Graql(string) query to the `query().match_aggregate()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().match_aggregate()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

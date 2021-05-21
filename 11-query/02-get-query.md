@@ -1,12 +1,12 @@
 ---
 pageTitle: Get Query
-keywords: graql, get query, retrieval, modifier
-longTailKeywords: grakn retrieve data, grakn read data, graql get query, graql modifiers, graql offset, graql sort, graql limit
-Summary: Get (retrieval) queries and modifiers in Grakn.
+keywords: typeql, get query, retrieval, modifier
+longTailKeywords: typedb retrieve data, typedb read data, typeql get query, typeql modifiers, typeql offset, typeql sort, typeql limit
+Summary: Get (retrieval) queries and modifiers in TypeDB.
 ---
 
 ## Retrieve Concept Types and Their Instances
-The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause. To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
 ## Get the Variables
 Any variable that has been specified in the `match` clause can be returned as the answers of the `get` query. Let's look at an example of how variables can be asked for in the answer.
@@ -117,16 +117,16 @@ This returns 10 instances of the `person` (entity) type starting from the 6th pe
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `get` query, is as simple as passing the Graql(string) query to the `query().match()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `get` query, is as simple as passing the TypeQL(string) query to the `query().match()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `get` query, is as simple as passing the Graql(string) query to the `query().match()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `get` query, is as simple as passing the TypeQL(string) query to the `query().match()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary
 A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order` and `offset` to retrieve an optionally ordered subset of the matched instances.
 
-Next, we learn how to [insert data](../11-query/03-insert-query.md) into a Grakn knowledge graph.
+Next, we learn how to [insert data](../11-query/03-insert-query.md) into a TypeDB knowledge graph.
 

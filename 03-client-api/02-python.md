@@ -1,8 +1,8 @@
 ---
 pageTitle: Client Python
-keywords: grakn, client, python
-longTailKeywords: grakn python client, grakn client python, client python, python client
-Summary: API Reference of Grakn Client Python.
+keywords: typedb, client, python
+longTailKeywords: typedb python client, typedb client python, client python, python client
+Summary: API Reference of TypeDB Client Python.
 ---
 ## Installation
 
@@ -18,7 +18,7 @@ pip3 install typedb-client
 ```
 
 ## Quickstart
-First make sure, the [TypeDB server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
+First make sure, the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 
 In the interpreter or in your source, import everything from `typedb.client`.
 
@@ -118,7 +118,7 @@ To view examples of running various queries using the Python client, head over t
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.grakn language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.typedb language="python" %}
 
 {% include api/generic.html data=site.data.03_client_api.references.client language="python" %}
 

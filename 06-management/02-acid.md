@@ -1,8 +1,8 @@
 ---
 pageTitle: ACID
-keywords: grakn, acid, transactionality, atomicity, consistency, isolation, durability 
+keywords: typedb, acid, transactionality, atomicity, consistency, isolation, durability 
 longTailKeywords: transactional guarantees
-Summary: Grakn's transactional guarantees (ACIDity)
+Summary: TypeDB's transactional guarantees (ACIDity)
 toc: false
 ---
 
@@ -21,18 +21,17 @@ ACID defines the properties of a transactional database. The four parts are:
 
 For more detail please read [ACID](https://en.wikipedia.org/wiki/ACID).
 
-This page addresses Grakn's transactionality.
+This page addresses TypeDB's transactionality.
 
 ## Overview
 
-Grakn 2.0 aims to deliver ACID guarantees up to a slightly relaxed form of isolation known as [Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation).
+TypeDB delivers ACID guarantees up to a slightly relaxed form of isolation known as [Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation).
 
-Starting at version 2.0, Atomicity, Snapshot Isolation, and Durability are already guaranteed. 
-As of version 2.1.0, Consistency is also guaranteed.
+Note that consistency guarantees where implemented in version 2.1.0 (the first TypeDB version).
 
 ### Atomicity
 
-Grakn 2.0 transactions operate under a snapshot model. If an error occurs in the transaction, none of the operations will be applied
+TypeDB transactions operate under a snapshot model. If an error occurs in the transaction, none of the operations will be applied
 to the persisted data. If a commit succeeds, all the changes are guaranteed to be immediately visible to following transactions.
 
 ### Consistency

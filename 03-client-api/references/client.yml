@@ -4,7 +4,7 @@ methods:
     common: &method-session
       title: Create a session for a database
       description: >
-        Opens a communication tunnel (session) to the given database on the running Grakn server.
+        Opens a communication tunnel (session) to the given database on the running TypeDB server.
       accepts: &accepts-session
         param1: &accepts-session-database
           name: database
@@ -21,14 +21,14 @@ methods:
         param3: &accepts-session-options
           name: options
           description: Options for the session.
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           required: false
           default: N/A
       returns:
         - "[Session](#session)"
     java:
       <<: *method-session
-      method: client.session(String database, Session.Type sessionType, GraknOptions options);
+      method: client.session(String database, Session.Type sessionType, TypeDBOptions options);
       param2:
         <<: *accepts-session-type
         type: Session.Type
@@ -42,7 +42,7 @@ methods:
   - method:
     common: &method-databases-all
       title: Retrieve all databases
-      description: Retrieves all databases running on the Grakn server.
+      description: Retrieves all databases running on the TypeDB server.
     java:
       <<: *method-databases-all
       method: client.databases().all();
