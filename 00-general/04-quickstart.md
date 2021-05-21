@@ -60,7 +60,7 @@ person sub entity,
 The code you see above is Graql. Graql is the language for the Grakn knowledge graph. Whether it's through the [Grakn Console](../02-console/01-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [Grakn Clients](../03-client-api/00-overview.md), Grakn accepts instructions and provides answers only in its own language - Graql.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network/schema.gql`](../files/social-network/schema.gql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [Grakn Console](../02-console/01-console.md).
+First, download the [`social-network/schema.gql`](../files/social-network/schema.tql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [Grakn Console](../02-console/01-console.md).
 
 <div class="note">
 [Note]
@@ -87,7 +87,7 @@ social_network::schema::write> commit
 ```
 
 ### Load the Dataset
-Download the [`social-network/data.gql`](../files/social-network/data.gql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_network` database and use the `source` command to load the data from file:
+Download the [`social-network/data.gql`](../files/social-network/data.tql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_network` database and use the `source` command to load the data from file:
 
 ```
 > transaction social_network data write

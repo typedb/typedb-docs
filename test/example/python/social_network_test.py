@@ -1,4 +1,4 @@
-from grakn.client import *
+from typedb.client import *
 import unittest
 
 
@@ -6,10 +6,10 @@ class SocialNetworkTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with open('files/social-network/schema.gql', 'r') as schema:
+        with open('files/social-network/schema.tql', 'r') as schema:
             define_query = schema.read()
 
-            with Grakn.core_client('localhost:1729') as client:
+            with TypeDB.core_client('localhost:1729') as client:
                 if "social_network" in client.databases().all():
                     client.databases().get("social_network").delete()
                 client.databases().create("social_network")

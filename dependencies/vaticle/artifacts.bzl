@@ -17,15 +17,15 @@
 # under the License.
 #
 
-load("@graknlabs_dependencies//distribution/artifact:rules.bzl", "native_artifact_files")
-load("@graknlabs_dependencies//distribution:deployment.bzl", "deployment")
+load("@vaticle_dependencies//distribution/artifact:rules.bzl", "native_artifact_files")
+load("@vaticle_dependencies//distribution:deployment.bzl", "deployment")
 
-def graknlabs_grakn_core_artifacts():
+def vaticle_typedb_artifact():
     native_artifact_files(
-        name = "graknlabs_grakn_core_artifact",
-        group_name = "graknlabs_grakn_core",
-        artifact_name = "grakn-core-server-{platform}-{version}.{ext}",
+        name = "vaticle_typedb_artifact",
+        group_name = "vaticle_typedb",
+        artifact_name = "typedb-server-{platform}-{version}.{ext}",
         tag_source = deployment["artifact.release"],
         commit_source = deployment["artifact.snapshot"],
-        commit = "ebcde71e38d205bb07d1a30febae743ccac82b3c",
+        tag = "2.1.0",
     )

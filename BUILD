@@ -7,8 +7,8 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
-load("@graknlabs_common//test:rules.bzl", "native_grakn_artifact")
-load("@graknlabs_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
+load("@vaticle_typedb_common//test:rules.bzl", "native_typedb_artifact")
+load("@vaticle_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
 
 filegroup(
     name = "content",
@@ -42,27 +42,26 @@ filegroup(
     visibility = ["//visibility:public"]
 )
 
-native_grakn_artifact(
-    name = "native-grakn-artifact",
-    mac_artifact = "@graknlabs_grakn_core_artifact_mac//file",
-    linux_artifact = "@graknlabs_grakn_core_artifact_linux//file",
-    windows_artifact = "@graknlabs_grakn_core_artifact_windows//file",
-    output = "grakn-core-server-native.tar.gz",
+native_typedb_artifact(
+    name = "native-typedb-artifact",
+    mac_artifact = "@vaticle_typedb_artifact_mac//file",
+    linux_artifact = "@vaticle_typedb_artifact_linux//file",
+    windows_artifact = "@vaticle_typedb_artifact_windows//file",
+    output = "typedb-server-native.tar.gz",
     visibility = ["//test:__subpackages__"],
 )
 
 artifact_extractor(
-    name = "grakn-extractor",
-    artifact = ":native-grakn-artifact",
+    name = "typedb-extractor",
+    artifact = ":native-typedb-artifact",
 )
-
 
 # CI targets that are not declared in any BUILD file, but are called externally
 filegroup(
     name = "ci",
     data = [
-        "@graknlabs_dependencies//tool/bazelrun:rbe",
-        "@graknlabs_dependencies//tool/unuseddeps:unused-deps",
-        "@graknlabs_dependencies//tool/release:docs",
+        "@vaticle_dependencies//tool/bazelrun:rbe",
+        "@vaticle_dependencies//tool/unuseddeps:unused-deps",
+        "@vaticle_dependencies//tool/release:docs",
     ],
 )
