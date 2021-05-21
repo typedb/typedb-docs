@@ -113,14 +113,14 @@ To build a rule that infers a new relation type based on an existing set of data
 ```typeql
 define
 
-organisation-owns-subsidiary-bond sub rule,
+rule organisation-owns-subsidiary-bond:
 when {
-	$c isa organisation; $c2 isa organisation; $c != $c2; 
-	$c3 isa organisation; $c3 != $c; 
+	$c isa organisation; $c2 isa organisation; not { $c is $c2; }; 
+	$c3 isa organisation; not { $c3 is $c; }; 
 	$e isa bond; 
 	$jv (jv-owned: $c3, jv-owner: $c2, jv-owner: $c) isa joint-venture; 
 	$r2 (owner: $c3, owned: $e) isa owns; 
-}, then {
+} then {
 	(owner: $c, owned: $e) isa indirect-owns;
 	};
 ```
@@ -132,16 +132,16 @@ when {
 ```typeql
 define
 
-negative-product-recommendation sub rule, 
+rule negative-product-recommendation:
 when {
 	$p isa person;
 	$pr isa product;
 	$1 (receiving: $p, promoted: $pr) isa promotion, has opens $o;
 	$2 (receiving: $p, promoted: $pr) isa promotion, has opens $o2;
-	$1 != $2; 
+	not { $1 is $2; }; 
 	$o == 0; 
 	$o2 == 0;
-}, then {
+}, theu {
 	(negative-recommended-product: $pr, negative-recommended-to: $p) isa negative-recommendation;
 };
 ```
@@ -161,14 +161,14 @@ To build a rule that infers a new relation type based on an existing set of data
 ```typeql
 define
 
-gene-disease-association-and-gene-protein-encoding-protein-disease-association sub rule,
+rule gene-disease-association-and-gene-protein-encoding-protein-disease-association:
 when {
     $g isa gene;
     $pr isa protein;
     $di isa disease;
     $r1 (associated-disease: $di, associated-gene: $g) isa gene-disease-association;
     $r2 (encoding-gene: $g, encoded-protein: $pr) isa gene-protein-encoding;
-}, then {
+} then {
     (associated-protein: $pr, associated-disease: $di) isa protein-disease-association;
 };
 ```
@@ -180,17 +180,17 @@ when {
 ```typeql
 define 
 
-task-can-not-begin-if-it-is-already-started sub rule,
+rule task-can-not-begin-if-it-is-already-started:
 when {
 	$task isa campaign-task, has started true;
-}, then {
+} then {
 	$task has can-begin false;
 };
 
-task-can-not-begin-if-it-lacks-required-tech sub rule,
+rule task-can-not-begin-if-it-lacks-required-tech:
 when {
 	$task isa campaign-task, has has-required-techs false;
-}, then {
+} then {
 	$task has can-begin false;
 };
 ```
@@ -202,13 +202,13 @@ when {
 ```typeql
 define
 
-when-risks-then-high-combined-risk sub rule, 
+ruel when-risks-then-high-combined-risk:
 when {
 	$war isa war, has risk-level 'high'; 
 	$civ-un isa civil-unrest, has risk-level 'high';
 	$ter isa terrorism, has risk-level 'high'; 
 	$risk (individual-risk: $war, individual-risk: $civ-un, individual-risk: $ter) isa risk;
-}, then {
+} then {
 	$risk has risk-level 'high';
 };
 ```
@@ -225,35 +225,35 @@ To infer multiple new facts based on inferred concepts it is necessary to chain 
 ```typeql
 define 
 
-owns-subsidiary sub rule,
+rule owns-subsidiary:
 when {
-	$b isa bank; $b2 isa bank; $b != $b2;
+	$b isa bank; $b2 isa bank; not { $b is $b2; };
 	$real-estate-corporate isa real-estate-corporate; 
 	$r1 (owner: $b, owned: $b2) isa owns; 
 	$r2 (owner: $b2, owned: $real-estate-corporate) isa owns; 
-}, then {
+} then {
 	(owner: $b, owned: $real-estate-corporate) isa indirect-owns; 
 	};
 
-bank-cyber-attack sub rule,
+rule bank-cyber-attack:
 when {
 	$b isa bank; 
 	$real-estate-corporate isa real-estate-corporate;
 	$attack-campaign isa attack-campaign;
 	$r1 (owner: $b, owned: $real-estate-corporate) isa indirect-owns;
 	$r2 (attacked: $real-estate-corporate, attacker-campaign: $attack-campaign) isa cyber-attack; 
-}, then {
+} then {
 	(attacked: $b, attacker-campaign: $attack-campaign) isa cyber-attack;
 };
 
-cyber-crime-risk sub rule,
+rule cyber-crime-risk;
 when {
 	$b isa bank; 
 	$attack-campaign isa attack-campaign;
 	$cyber-crime isa cyber-crime;
 	$r2 (risk-subject: $attack-campaign, risk-value: $cyber-crime) isa risk-exposure;
 	$r1 (attacked: $b, attacker-campaign: $attack-campaign) isa cyber-attack;
-}, then {
+} then {
 	(risk-value: $cyber-crime, risk-subject: $b) isa risk-exposure;
 };
 ```
@@ -266,7 +266,7 @@ when {
 ```typeql
 define
 
-product-recommendation sub rule,
+rule product-recommendation:
 when {
 	$p isa person;
 	$pr isa product;
@@ -280,18 +280,18 @@ when {
 	$com isa comment;
 	$reply (replied-to: $post, replied-by: $p, reply-content: $com) isa reply;
 	$liking (reacted-to: $post, reacted-by: $p) isa liking; 
-}, then {
+} then {
 	(recommended-product: $pr, recommended-to: $p) isa recommendation;
 };
 
-mortgage-marriage-recommendation sub rule,
+rule mortgage-marriage-recommendation:
 when {
 	$p isa person;
 	$p2 isa person;
 	$2 ($p2, $p) isa marriage; 
 	$pr isa mortgage;
 	$1 (recommended-product: $pr, recommended-to: $p2) isa recommendation;
-}, then {
+} then {
 	(recommended-product: $pr, recommended-to: $p) isa recommendation;
 };
 ```
@@ -314,7 +314,7 @@ define
 event-overlapping sub relation,
     relates overlapped-event;
 
-events-overlap sub rule,
+rule events-overlap:
 when {
     $e1 isa periodic-event;
     $e1 has start-date $sd1, has end-date $ed1;
@@ -322,8 +322,8 @@ when {
     $e2 has start-date $sd2, has end-date $ed2;
     $sd2 > $sd1;
     $sd2 < $ed1;
-    $e1 != $e2;
-}, then {
+    not { $e1 is $e2; };
+} then {
     (overlapped-event: $e1, overlapped-event: $e2) isa event-overlapping;
 };
 ```
@@ -551,11 +551,11 @@ employment-mutuality sub relation,
 		relates mutual-employment,
 		relates mutual-organisation;
 
-people-work-at-the-same-organisation sub rule,
+rule people-work-at-the-same-organisation:
 when {
     $e1 (employee: $p1, employer: $o) isa employment;
     $e2 (employee: $p2, employer: $o) isa employment;
-    $p1 != $p2;
+    not {$p1 is $p2; }
 }, then {
     (mutual-employee: $p1, mutual-employee: $p2, mutual-organisation: $o, mutual-employment: $e1, mutual-employment: $e2) isa employment-mutuality;
 };
@@ -565,11 +565,11 @@ work-position-mutuality sub relation,
     relates mutual-employment,
     relates mutual-position;
 
-people-work-at-the-same-position sub rule,
+rule people-work-at-the-same-position:
 when {
     $e1 (employee: $p1, offered-position: $p) isa employment;
     $e2 (employee: $p2, offered-position: $p) isa employment;
-    $p1 != $p2;
+    not { $p1 is $p2; };
 }, then {
     (mutual-employee: $p1, mutual-employee: $p2, mutual-position: $p, mutual-employment: $e1, mutual-employment: $e2) isa work-position-mutuality;
 };
@@ -645,7 +645,7 @@ speaking-language-mutuality sub relation,
     relates mutual-language-speaking,
     relates mutual-language;
 
-people-speak-the-same-language sub rule,
+rule: people-speak-the-same-language:
 when {
     $sol1 (speaker: $p1, spoken: $l) isa speaking-of-language;
     $sol2 (speaker: $p2, spoken: $l) isa speaking-of-language;
@@ -704,51 +704,51 @@ Modelling content permissions using TypeDB Rules.
 ```typeql
 define
 
-public-permission sub rule,
+rule public-permission:
 when {
     (shared-content: $sc) isa public-sharing;
     $pu isa public-user;
-}, then {
+} then {
     (permitted-content: $sc, permission-grantee: $pu) isa permitted-to-see;
 };
 
-friends-permission sub rule,
+rule friends-permission:
 when {
     (shared-content: $sc, shared-by: $sb) isa friends-sharing;
     (friend: $sb, $f) isa friendship;
-}, then {
+} then {
     (permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
 };
 
-inclusive-permissions sub rule,
+rule inclusive-permissions:
 when {
     (shared-content: $sc, shared-with: $sw) isa inclusive-sharing;
-}, then {
+} then {
     (permitted-content: $sc, permission-grantee: $sw) isa permitted-to-see;
 };
 
-friends-excluded-permission sub rule,
+rule friends-excluded-permission:
 when {
     (shared-content: $sc, shared-by: $sb, hidden-from: $hf) isa friends-with-exclusion-sharing;
     (friend: $sb, $f) isa friendship;
-    $f != $hf;
-}, then {
+    not { $f is $hf; };
+} then {
     (permitted-content: $sc, permission-grantee: $f) isa permitted-to-see;
 };
 
-private-permission sub rule,
+rule private-permission:
 when {
     (shared-content: $sc, shared-by: $sb) isa private-sharing;
     $pu isa public-user;
-}, then {
+} then {
     (permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
 };
 
-author-permission sub rule,
+rule author-permission:
 when {
     (shared-content: $sc, shared-by: $sb) isa sharing;
     $pu isa public-user;
-}, then {
+} then {
     (permitted-content: $sc, permission-grantee: $sb) isa permitted-to-see;
 };
 ```

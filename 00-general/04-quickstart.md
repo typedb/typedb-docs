@@ -60,11 +60,11 @@ person sub entity,
 The code you see above is TypeQL. TypeQL is the language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../02-console/01-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network/schema.gql`](../files/social-network/schema.tql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [TypeDB Console](../02-console/01-console.md).
+First, download the [`social-network/schema.tql`](../files/social-network/schema.tql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [TypeDB Console](../02-console/01-console.md).
 
 <div class="note">
 [Note]
-Feel free to study the content of `social-network-schema.gql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [TypeDB Workbase](../07-workbase/00-overview.md).
+Feel free to study the content of `social-network-schema.tql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [TypeDB Workbase](../07-workbase/00-overview.md).
 </div>
 
 While in the unzipped directory of the TypeDB distribution, via terminal, open the console:
@@ -82,7 +82,7 @@ Open a schema write transaction:
 ```
 Inside that transaction, load the schema from file using the `source` command:
 ```
-social_network::schema::write> source path-to-the-social-network/schema.gql
+social_network::schema::write> source path-to-the-social-network/schema.tql
 social_network::schema::write> commit
 ```
 

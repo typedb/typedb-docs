@@ -174,7 +174,7 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_first_query.py -->
 ```python
-from com.vaticle.typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
+from typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
 with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
@@ -357,7 +357,7 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_second_query.py -->
 ```python
-from com.vaticle.typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
+from typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
 with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
@@ -530,7 +530,7 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_third_query.py -->
 ```python
-from com.vaticle.typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
+from typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
 with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
@@ -714,7 +714,7 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_forth_query.py -->
 ```python
-from com.vaticle.typedb.client import TypeDB, SessionType, TransactionType
+from typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
 with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:
@@ -949,7 +949,7 @@ ExecuteMatchQuery();
 [tab:Python]
 <!-- test-example phone_calls_fifth_query.py -->
 ```python
-from com.vaticle.typedb.client import TypeDB, SessionType, TransactionType
+from typedb.client import TypeDB, TypeDBClient, SessionType, TransactionType
 
 with TypeDB.core_client('localhost:1729') as client:
     with client.session("phone_calls", SessionType.DATA) as session:

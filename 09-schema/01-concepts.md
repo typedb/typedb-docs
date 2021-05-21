@@ -8,7 +8,7 @@ Summary: A comprehensive guide on defining Schema Concepts in TypeDB.
 ## Define
 As the name suggests, we use the `define` keyword to develop the [schema](../09-schema/00-overview.md) which represents the dataset stored in a TypeDB knowledge graph. We use `define` to add new entities, relations, attributes and rules to the schema.
 
-When defining the schema in a single `schema.gql` file, the keyword `define` needs to be included only once at the very top.
+When defining the schema in a single `schema.tql` file, the keyword `define` needs to be included only once at the very top.
 
 We can also use the `define` keyword in the interactive mode of the [TypeDB Console](../02-console/01-console.md) as well as the TypeDB Clients [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
 

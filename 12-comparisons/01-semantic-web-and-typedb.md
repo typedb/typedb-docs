@@ -703,8 +703,8 @@ hasFather rdf:type owl:FunctionalProperty .
 In TypeDB a rule can be used: 
 
 <!-- test-ignore -->
-rule same-fatherhood:
 ```typeql
+rule same-fatherhood:
 when {
 	(father: $x, child: $ y) isa fatherhood;
 	(father: $d, child: $ y) isa fatherhood;

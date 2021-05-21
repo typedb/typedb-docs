@@ -57,7 +57,7 @@ PRs that have the `development` branch as their _base_, contains changes that ar
 
 - Separate words with hyphens (`-`).
 - Keep file and directory names compact: in most cases, one or two words that best describe the contained content. Never use more than three words unless the file is a tutorial page or a Workbase screenshot.
-- Choosing the same name for different files located in different directories is acceptable. (eg: `files/social-network/schema.gql` and `files/phone-calls/schema.gql`).
+- Choosing the same name for different files located in different directories is acceptable. (eg: `files/social-network/schema.tql` and `files/phone-calls/schema.tql`).
 - For naming images, refer to the [Images Guidelines](#images).
 
 **Headlines**

@@ -168,7 +168,7 @@ person sub entity,
 ```
 
 Note that we don't need to define an id attribute. TypeDB takes care of that for us.
-Save the schema.gql file. In a few minutes, we'll have it loaded into a brand new TypeDB database.
+Save the schema.tql file. In a few minutes, we'll have it loaded into a brand new TypeDB database.
 
 ## Load and test the schema
 In order to load this schema in a database, we first need to run the TypeDB server.
@@ -188,7 +188,7 @@ For the rest of these instructions, I assume that you have downloaded the TypeDB
 ./typedb console
 > database create phone_calls
 > transaction phone_calls schema write
-phone_calls:schema:write> source path/to/the/schema.gql
+phone_calls:schema:write> source path/to/the/schema.tql
 > commit
 ```
 
