@@ -62,7 +62,7 @@ Give any of these commands inside a console at the `>` prompt.
 | `database list`                           | List the databases on the server                                                                                       |
 | `database delete <db>`                    | Delete a database with name `<db>` on the server                                                                       |
 | `database schema <db>`                    | Print schema of a database with name `<db>` on the server                                                              |
-| `transaction <db> schema|data read|write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.   |
+| `transaction <db> schema⎮data read⎮write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.   |
 | `help`                                    | Print help menu                                                                                                        |
 | `clear`                                   | Clear console screen                                                                                                   |
 | `exit`                                    | Exit console                                                                                                           |
@@ -84,7 +84,7 @@ Give any of these commands inside a console at the `>` prompt.
 
 ### Transaction options
 
-The following flags can be passed to the `transaction <db> schema|data read|write` command, for example:
+The following flags can be passed to the `transaction <db> schema⎮data read⎮write` command, for example:
 
 ```
 transaction grakn data read --infer true
@@ -92,10 +92,10 @@ transaction grakn data read --infer true
 
 | Option                          | Allowed values | Description                                   |
 |---------------------------------|----------------|-----------------------------------------------|
-| `--infer`                       | `true|false`   | Enable or disable inference                   |
-| `--trace-inference`             | `true|false`   | Enable or disable inference tracing           |
-| `--explain`                     | `true|false`   | Enable or disable inference explanations      |
-| `--parallel`                    | `true|false`   | Enable or disable parallel query execution    |
+| `--infer`                       | `true⎮false`   | Enable or disable inference                   |
+| `--trace-inference`             | `true⎮false`   | Enable or disable inference tracing           |
+| `--explain`                     | `true⎮false`   | Enable or disable inference explanations      |
+| `--parallel`                    | `true⎮false`   | Enable or disable parallel query execution    |
 | `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                     |
 | `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch         |
 | `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                |
