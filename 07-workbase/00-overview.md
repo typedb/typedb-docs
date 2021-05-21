@@ -42,4 +42,4 @@ TypeDB Workbase is available for Linux, Mac and Windows. Head over to the [Downl
 | 1.0.0 to 1.1.1 | 1.4.0 to 1.4.3      | 1.4.0 to 1.4.3               |
 
 
-In the sections that follow, we learn how to [connect](../07-workbase/01-connection.md) Workbase with the Grakn Server, execute and [visualise](../07-workbase/02-visualisation.md) queries, interact with the visualiser to [investigate](../07-workbase/03-investigation.md) the results and use the [schema designer](../07-workbase/04-schema-designer.md).
+In the sections that follow, we learn how to [connect](../07-workbase/01-connection.md) Workbase with the TypeDB Server, execute and [visualise](../07-workbase/02-visualisation.md) queries, interact with the visualiser to [investigate](../07-workbase/03-investigation.md) the results and use the [schema designer](../07-workbase/04-schema-designer.md).

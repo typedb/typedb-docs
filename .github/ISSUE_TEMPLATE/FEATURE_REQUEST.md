@@ -15,11 +15,11 @@ Please replace every line in curly brackets { like this } with appropriate answe
 
 ## Current Workaround
 
-{ Please describe how you currently solve or work around this problem, given Grakn's limitation. }
+{ Please describe how you currently solve or work around this problem, given TypeDB's limitation. }
 
 ## Proposed Solution
 
-{ Please describe the solution you would like Grakn to provide, to solve the problem above. }
+{ Please describe the solution you would like TypeDB to provide, to solve the problem above. }
 
 ## Additional Information
 

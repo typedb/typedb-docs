@@ -16,7 +16,7 @@ filegroup(
         ["*/**/*.md"],
         exclude=[
 	    "bazel-*/**/*.md",
-            ".runfiles/**/*.md"
+        ".runfiles/**/*.md"
         ]
     ),
     visibility = ["//visibility:public"]

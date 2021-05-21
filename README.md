@@ -133,7 +133,7 @@ All terminologies used within a page almost always need to be included as the ke
 The `keywords` attribute contains a comma-separated list of single-word keywords and/or multiple words that are expected to be searched in combination.
 The `longTailKeywords` attribute contains a comma-separated list of keywords that form sensible combinations of the keyword items. They may also be any phrase that the user may search which relates to the page.
 
-<!-- **Grakn Terminology**
+<!-- **TypeDB Terminology**
 
 **Common Terms** -->
 
@@ -235,10 +235,10 @@ To add sections/pages to the sidebar, modify the [`sidebar.yml`](views/sidebar.y
 
 ### Compatibility Tables
 
-The documentation of each interface to Grakn (i.e. clients, workbase, console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, Grakn Core or Grakn Cluster. The convention in constructing these tables is as follows:
+The documentation of each interface to TypeDB (i.e. clients, workbase, console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, Grakn Core or Grakn Cluster. The convention in constructing these tables is as follows:
 
 - The first column is dedicated to the versions of the interface, where each cell contains one single version number, except for the last row(s) (to avoid lengthy tables).
-- Second and third columns are dedicated to Grakn Core and Grakn Cluster, respectively, where each cell may contain one or more version numbers.
+- Second and third columns are dedicated to TypeDB and TypeDB Cluster, respectively, where each cell may contain one or more version numbers.
   -  If there need to be 2 version numbers, they are to be separated by a `, ` (e.g. `1.5.2, 1.5.3`).
   -  If there need to be more than 2 version numbers, a range is provided (e.g. `1.5.4 to 1.5.7`).
 
@@ -253,7 +253,7 @@ Client API reference files are accessible via [`03-client-api/references`](03-cl
 - A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a TypeQL query.
 - A code block of `typeql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`). Otherwise, it will be tested as a pattern.
 - A code block that follows the `<!-- test-example file-name.extension -->` flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
-  - a running Grakn Server
+  - a running TypeDB Server
   - the schema loaded into the target database
 - Code blocks that have no language name, will not be tested.
 - Code blocks whose language is not `java`, `javascript` or `python` will not be tested.
