@@ -36,7 +36,7 @@ The `server.data` config sets the path to the directory where the data for all d
 
 <div class="note">
 [Important]
-For production use, it is recommended that the `server.data` is set to a path outside of `$GRAKN_HOME`. This helps to make the process of upgrading TypeDB easier.
+For production use, it is recommended that the `server.data` is set to a path outside of `$TYPEDB_HOME`. This helps to make the process of upgrading TypeDB easier.
 </div>
 
 ## Port number
