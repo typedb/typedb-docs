@@ -7,32 +7,32 @@ Summary: API Reference of Grakn Client Node.js.
 
 ## Installation
 
-#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
+#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#dependencies)
 
 
 ```
-npm install grakn-client
+npm install typedb-client
 ```
 
 ## Quickstart
-First make sure that the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
+First make sure that the [TypeDB server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-In your source, require `grakn-client/Grakn`.
+In your source, require `typedb-client/TypeDB`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
+const { TypeDB } = require("typedb-client/TypeDB");
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
 
 async function openSession (database) {
-	const client = Grakn.coreClient("localhost:1729");
+	const client = TypeDB.coreClient("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 	// session is open
 	await session.close();
@@ -47,12 +47,12 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function createTransactions (database) {
-	const client = Grakn.coreClient("localhost:1729");
+	const client = TypeDB.coreClient("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 
 	// creating a write transaction
@@ -77,12 +77,12 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function runBasicQueries(database) {
-	const client = Grakn.coreClient("localhost:1729");
+	const client = TypeDB.coreClient("localhost:1729");
 	const session = await client.session(database, SessionType.DATA);
 
 	// Insert a person using a WRITE transaction
@@ -127,9 +127,9 @@ runBasicQueries("social_network");
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
-To view examples of running various Graql queries using the Grakn Client Node.js, head over to their dedicated documentation pages as listed below:
+To view examples of running various queries using the Node.js client, head over to their dedicated documentation pages as listed below:
 - [Insert](../11-query/03-insert-query.md)
 - [Get](../11-query/02-get-query.md)
 - [Delete](../11-query/04-delete-query.md)
@@ -159,17 +159,18 @@ To view examples of running various Graql queries using the Grakn Client Node.js
 
 ## Version Compatibility
 
-| Client Node.js | Grakn Core                  | Grakn Cluster  |  Node     |
-| :------------: | :-------------------------: | :------------: | :-------: |
-| 2.0.1          | 2.0.2                       | 2.0.2          | \>= 14.15 |
-| 2.0.0          | 2.0.0, 2.0.1                | 2.0.0, 2.0.1   | \>= 14.15 |
-| 1.8.0          | 1.8.0 to 1.8.4              | N/A            | \>= 6.5   |
-| 1.7.0          | 1.7.1, 1.7.2                | N/A            | \>= 6.5   |
-| 1.6.0          | 1.6.0 to 1.6.2              | 1.6.2          | \>= 6.5   |
-| 1.5.6          | 1.5.8, 1.5.9                | 1.5.8          | \>= 6.5   |
-| 1.5.5          | 1.5.8, 1.5.9                | 1.5.8          | \>= 6.5   |
-| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | \>= 6.5   |
-| 1.5.1          | 1.5.0, 1.5.1                | N/A            | \>= 6.5   |
-| 1.2.4 to 1.3.1 | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0          | \>= 6.5   |
-| 1.2.0 to 1.2.2 | 1.2.0                       | 1.2.0          | \>= 6.5   |
+| Client Node.js | Grakn Core/TypeDB           | Grakn Cluster/TypeDB Cluster |  Node     |
+| :------------: | :-------------------------: | :--------------------------: | :-------: |
+| 2.1.0          | 2.1.0                       | 2.1.0                        | \>= 14.15 |
+| 2.0.1          | 2.0.2                       | 2.0.2                        | \>= 14.15 |
+| 2.0.0          | 2.0.0, 2.0.1                | 2.0.0, 2.0.1                 | \>= 14.15 |
+| 1.8.0          | 1.8.0 to 1.8.4              | N/A                          | \>= 6.5   |
+| 1.7.0          | 1.7.1, 1.7.2                | N/A                          | \>= 6.5   |
+| 1.6.0          | 1.6.0 to 1.6.2              | 1.6.2                        | \>= 6.5   |
+| 1.5.6          | 1.5.8, 1.5.9                | 1.5.8                        | \>= 6.5   |
+| 1.5.5          | 1.5.8, 1.5.9                | 1.5.8                        | \>= 6.5   |
+| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7               | \>= 6.5   |
+| 1.5.1          | 1.5.0, 1.5.1                | N/A                          | \>= 6.5   |
+| 1.2.4 to 1.3.1 | 1.3.0, 1.4.0, 1.4.2, 1.4.3  | 1.2.0                        | \>= 6.5   |
+| 1.2.0 to 1.2.2 | 1.2.0                       | 1.2.0                        | \>= 6.5   |
 

@@ -131,25 +131,25 @@ The result contains the following answers:
 
 <!-- test-example SocialNetworkQuickstartQuery.java -->
 ```java
-package grakn.examples;
+package com.vaticle.doc.examples;
 
-import grakn.client.Grakn;
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
 
-import static graql.lang.Graql.*;
-import graql.lang.query.*;
-import grakn.client.api.answer.ConceptMap;
+import static com.vaticle.typeql.lang.TypeQL.*;
+import com.vaticle.typeql.lang.query.*;
+import com.vaticle.typedb.client.api.answer.ConceptMap;
 import java.util.stream.Stream;
 
 import java.util.List;
 
 public class SocialNetworkQuickstartQuery {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
-        GraknSession session = client.session("social_network", GraknSession.Type.DATA);
-        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
+        TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA);
+        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
         TypeQLMatch query = match(
                 var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
@@ -175,9 +175,9 @@ public class SocialNetworkQuickstartQuery {
 
 <!-- test-example social_network_quickstart_query.py -->
 ```python
-from grakn.client import *
+from typedb.client import *
 
-with Grakn.core_client("localhost:1729") as client:
+with TypeDB.core_client("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
       with session.transaction(TransactionType.READ) as transaction:
         query = '''
@@ -199,12 +199,12 @@ with Grakn.core_client("localhost:1729") as client:
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 
 async function getAverageSalaryAt (orgName) {
-    const client = Grakn.coreClient("localhost:1729");
+    const client = TypeDB.coreClient("localhost:1729");
 	const session = await client.session("social_network", SessionType.DATA);
 	const transaction = await session.transaction(TransactionType.READ)
 	const query = `

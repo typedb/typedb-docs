@@ -8,19 +8,19 @@ templatePath: 03-client-api/references/
 
 ## Installation
 
-#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
+#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#dependencies)
 
 ```xml
 <repositories>
     <repository>
-        <id>repo.grakn.ai</id>
-        <url>https://repo.grakn.ai/repository/maven/</url>
+        <id>repo.vaticle.com</id>
+        <url>https://repo.vaticle.com/repository/maven/</url>
     </repository>
 </repositories>
 <dependencies>
     <dependency>
-        &lt;groupId&gt;io.grakn.client&lt;/groupId&gt;
-        &lt;artifactId&gt;grakn-client&lt;/artifactId&gt;
+        &lt;groupId&gt;com.vaticle.typedb.client&lt;/groupId&gt;
+        &lt;artifactId&gt;typedb-client&lt;/artifactId&gt;
         <version>{version}</version>
     </dependency>
 </dependencies>
@@ -31,32 +31,32 @@ If you want to depend on snapshot versions of Client Java, by referring to the G
 ```xml
 <repositories>
     <repository>
-        <id>repo.grakn.ai.snapshot</id>
-        <name>repo.grakn.ai</name>
-        <url>https://repo.grakn.ai/repository/maven-snapshot/</url>
+        <id>repo.vaticle.com.snapshot</id>
+        <name>repo.vaticle.comai</name>
+        <url>https://repo.vaticle.com/repository/maven-snapshot/</url>
     </repository>
 </repositories>
 ```
 
 ## Quickstart
-First make sure, the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
+First make sure, the [TypeDB Server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
 
-Import `grakn.client.Grakn`, instantiate a Grakn Core client and open a session to a [database](../06-management/01-database.md).
+Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and open a session to a [database](../06-management/01-database.md).
 
-<!-- test-example GraknQuickstartA.java -->
+<!-- test-example TypeDBQuickstartA.java -->
 ```java
-package grakn.examples;
+package com.vaticle.doc.examples;
 
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.Grakn;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.TypeDB;
 
-public class GraknQuickstartA {
+public class TypeDBQuickstartA {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
         // client is open
-        GraknSession session = client.session("social_network", GraknSession.Type.DATA);
+        TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA);
         // session is open
         session.close();
         // session is closed
@@ -68,28 +68,28 @@ public class GraknQuickstartA {
 
 Create transactions to use for reading and writing data.
 
-<!-- test-example GraknQuickstartB.java -->
+<!-- test-example TypeDBQuickstartB.java -->
 ```java
-package grakn.examples;
+package com.vaticle.doc.examples;
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import grakn.client.Grakn;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.TypeDB;
 
-public class GraknQuickstartB {
+public class TypeDBQuickstartB {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
 
-        try (GraknSession session = client.session("social_network", GraknSession.Type.DATA)) {
+        try (TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA)) {
             // creating a write transaction
-            GraknTransaction writeTransaction = session.transaction(GraknTransaction.Type.WRITE);
+            TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE);
             // write transaction is open
             // write transaction must always be committed (closed)
             writeTransaction.commit();
     
             // creating a read transaction
-            GraknTransaction readTransaction = session.transaction(GraknTransaction.Type.READ);
+            TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ);
             // read transaction is open
             // read transaction must always be closed
             readTransaction.close();
@@ -102,41 +102,41 @@ public class GraknQuickstartB {
 
 Running basic retrieval and insertion queries.
 
-<!-- test-example GraknQuickstartC.java -->
+<!-- test-example TypeDBQuickstartC.java -->
 ```java
-package grakn.examples;
+package com.vaticle.doc.examples;
 
 
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import grakn.client.Grakn;
-import graql.lang.Graql;
-import static graql.lang.Graql.*;
-import graql.lang.query.TypeQLMatch;
-import graql.lang.query.GraqlInsert;
-import grakn.client.api.answer.ConceptMap;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typeql.lang.TypeQL;
+import static com.vaticle.typeql.lang.TypeQL.*;
+import com.vaticle.typeql.lang.query.TypeQLMatch;
+import com.vaticle.typeql.lang.query.TypeQLInsert;
+import com.vaticle.typedb.client.api.answer.ConceptMap;
 
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
-public class GraknQuickstartC {
+public class TypeDBQuickstartC {
     public static void main(String[] args) {
-        GraknClient client = Grakn.coreClient("localhost:1729");
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
 
-        try (GraknSession session = client.session("social_network", GraknSession.Type.DATA)) {
+        try (TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA)) {
             
-            try (GraknTransaction writeTransaction = session.transaction(GraknTransaction.Type.WRITE)) {
+            try (TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 // Insert a person using a WRITE transaction
-                GraqlInsert insertQuery = TypeQL.insert(var("x").isa("person").has("email", "x@email.com"));
+                TypeQLInsert insertQuery = TypeQL.insert(var("x").isa("person").has("email", "x@email.com"));
                 List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
                 System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").asThing().getIID());
                 // to persist changes, a write transaction must always be committed (closed)
                 writeTransaction.commit();
             }
             
-            try (GraknTransaction readTransaction = session.transaction(GraknTransaction.Type.READ)) {
+            try (TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ)) {
                 // Read the person using a READ only transaction
                 TypeQLMatch.Limited getQuery = TypeQL.match(var("p").isa("person")).get("p").limit(10);
                 Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
@@ -154,9 +154,9 @@ public class GraknQuickstartC {
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to queries.
 
-To view examples of running various Graql queries using the Grakn Client Java, head over to their dedicated documentation pages as listed below.
+To view examples of running various TypeQL queries using the Java client, head over to their dedicated documentation pages as listed below.
 
 - [Insert](../11-query/03-insert-query.md)
 - [Get](../11-query/02-get-query.md)
@@ -189,25 +189,26 @@ To view examples of running various Graql queries using the Grakn Client Java, h
 
 ## Version Compatibility
 
-| Client Java | Grakn Core     | Grakn Cluster  |
-| :---------: | :-------------:| :------------: |
-| 2.0.1       | 2.0.2          | 2.0.2          |
-| 2.0.0       | 2.0.0, 2.0.1   | 2.0.0, 2.0.1   |
-| 1.8.3       | 1.8.0 to 1.8.4 | N/A            |
-| 1.8.2       | 1.8.0, 1.8.1   | N/A            |
-| 1.8.1       | 1.8.0          | N/A            |
-| 1.8.0       | 1.8.0          | N/A            |
-| 1.7.3       | 1.7.1, 1.7.2   | N/A            |
-| 1.7.2       | 1.7.1, 1.7.2   | N/A            |
-| 1.6.2       | 1.6.2          | 1.6.2          |
-| 1.6.1       | 1.6.0, 1.6.1   | N/A            |
-| 1.5.5       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.4       | 1.5.8, 1.5.9   | 1.5.8          |
-| 1.5.3       | 1.5.2 to 1.5.7 | 1.5.2 to 1.5.7 |
-| 1.5.2       | 1.5.2, 1.5.3   | 1.5.2 to 1.5.4 |
-| 1.5.0       | 1.5.0          | N/A            |
-| 1.4.3       | 1.4.3          | 1.4.3          |
-| 1.4.2       | 1.4.2          | 1.2.0          |
-| 1.4.1       | 1.4.0          | 1.2.0          |
-| 1.4.0       | 1.4.0          | 1.2.0          |
-| 1.3.0       | 1.3.0          | 1.2.0          |
+| Client Java | Grakn Core/TypeDB  | Grakn Cluster/TypeDB Cluster |
+| :---------: | :-----------------:| :--------------------------: |
+| 2.1.0       | 2.1.0              | 2.1.0                        |
+| 2.0.1       | 2.0.2              | 2.0.2                        |
+| 2.0.0       | 2.0.0, 2.0.1       | 2.0.0, 2.0.1                 |
+| 1.8.3       | 1.8.0 to 1.8.4     | N/A                          |
+| 1.8.2       | 1.8.0, 1.8.1       | N/A                          |
+| 1.8.1       | 1.8.0              | N/A                          |
+| 1.8.0       | 1.8.0              | N/A                          |
+| 1.7.3       | 1.7.1, 1.7.2       | N/A                          |
+| 1.7.2       | 1.7.1, 1.7.2       | N/A                          |
+| 1.6.2       | 1.6.2              | 1.6.2                        |
+| 1.6.1       | 1.6.0, 1.6.1       | N/A                          |
+| 1.5.5       | 1.5.8, 1.5.9       | 1.5.8                        |
+| 1.5.4       | 1.5.8, 1.5.9       | 1.5.8                        |
+| 1.5.3       | 1.5.2 to 1.5.7     | 1.5.2 to 1.5.7               |
+| 1.5.2       | 1.5.2, 1.5.3       | 1.5.2 to 1.5.4               |
+| 1.5.0       | 1.5.0              | N/A                          |
+| 1.4.3       | 1.4.3              | 1.4.3                        |
+| 1.4.2       | 1.4.2              | 1.2.0                        |
+| 1.4.1       | 1.4.0              | 1.2.0                        |
+| 1.4.0       | 1.4.0              | 1.2.0                        |
+| 1.3.0       | 1.3.0              | 1.2.0                        |

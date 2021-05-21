@@ -71,7 +71,7 @@ get $phone-number;
 [tab:Java]
 <!-- test-example PhoneCallsFirstQuery.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.api.TypeDBClient;
@@ -250,7 +250,7 @@ get $phone-number;
 
 <!-- test-example PhoneCallsSecondQuery.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.api.TypeDBClient;
@@ -429,7 +429,7 @@ get $phone-number;
 
 <!-- test-example PhoneCallsThirdQuery.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.api.TypeDBClient;
@@ -606,7 +606,7 @@ get $phone-number-a, $phone-number-b;
 
 <!-- test-example PhoneCallsForthQuery.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.api.TypeDBClient;
@@ -809,7 +809,7 @@ get $duration; mean $duration;
 
 <!-- test-example PhoneCallsFifthQuery.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.api.TypeDBClient;

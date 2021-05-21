@@ -38,7 +38,7 @@ Modify `pom.xml` to include the latest version of TypeQL and TypeDB Client Java 
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-  	<groupId>com.vaticle.typedb.examples</groupId>
+  	<groupId>com.vaticle.doc.examples</groupId>
   	<artifactId>migrate-csv-to-typedb</artifactId>
   	<version>1.0.0</version>
   	<repositories>
@@ -755,7 +755,7 @@ Here is how our `Migrate.java` looks like for each data format.
 [tab:CSV]
 <!-- test-example PhoneCallsCSVMigration.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.TypeDB;
@@ -957,7 +957,7 @@ public class PhoneCallsCSVMigration {
 [tab:JSON]
 <!-- test-example PhoneCallsJSONMigration.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.TypeDB;
@@ -1165,7 +1165,7 @@ public class PhoneCallsJSONMigration {
 [tab:XML]
 <!-- test-example PhoneCallsXMLMigration.java -->
 ```java
-package com.vaticle.typedb.example.phoneCalls;
+package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.TypeDB;
