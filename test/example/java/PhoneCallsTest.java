@@ -1,13 +1,13 @@
-package grakn.doc.test.example;
+package com.vaticle.doc.test.example;
 
 
-import grakn.client.Grakn;
-import grakn.client.api.GraknClient;
-import grakn.client.api.GraknSession;
-import grakn.client.api.GraknTransaction;
-import graql.lang.Graql;
-import graql.lang.common.GraqlArg;
-import graql.lang.query.builder.Sortable;
+import com.vaticle.typedb.client.TypeDB;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typeql.lang.TypeQL;
+import com.vaticle.typeql.lang.common.TypeQLArg;
+import com.vaticle.typeql.lang.query.builder.Sortable;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -26,16 +26,16 @@ public class PhoneCallsTest {
 
     @BeforeClass
     public static void loadPhoneCalls() {
-        GraknClient client = Grakn.coreClient("localhost:1729");
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
         client.databases().create("phone_calls");
-        GraknSession session = client.session("phone_calls", GraknSession.Type.SCHEMA);
-        GraknTransaction transaction = session.transaction(GraknTransaction.Type.WRITE);
+        TypeDBSession session = client.session("phone_calls", TypeDBSession.Type.SCHEMA);
+        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
 
         try {
-            byte[] encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.gql"));
+            byte[] encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.tql"));
             String query = new String(encoded, StandardCharsets.UTF_8);
-            transaction.query().define(Graql.parseQuery(query));
+            transaction.query().define(TypeQL.parseQuery(query));
             transaction.commit();
             session.close();
             client.close();
@@ -86,7 +86,7 @@ public class PhoneCallsTest {
 
     @AfterClass
     public static void cleanPhoneCalls() {
-        GraknClient client = Grakn.coreClient("localhost:1729");
+        TypeDBClient client = TypeDB.coreClient("localhost:1729");
         client.databases().get("phone_calls").delete();
         client.close();
     }

@@ -21,17 +21,17 @@ codeKeywordsToLink = {
         {
             "titles": ["undefine"],
             "baseUrl": "../schema/concepts",
-            "syntaxedAs": ["graql-keyword", "string"],
+            "syntaxedAs": ["typeql-keyword", "string"],
             "anchor": "#undefine",
-            "languages": ["graql",  "java", "javascript", "python"]
+            "languages": ["typeql",  "java", "javascript", "python"]
         },
         // alphabetic order only required for readability
         {
             "titles": ["count", "sum", "min", "max", "mean", "median", "std"],
             "baseUrl": "../query/aggregate-query",
-            "syntaxedAs": ["function", "graql-keyword", "string"],
+            "syntaxedAs": ["function", "typeql-keyword", "string"],
             "anchor": "",
-            "languages": ["graql", "java", "javascript", "python"]
+            "languages": ["typeql", "java", "javascript", "python"]
         },
         {
             "titles": ["commit"],
@@ -48,16 +48,16 @@ codeKeywordsToLink = {
         {
             "titles": ["define"],
             "baseUrl": "../schema/concepts",
-            "syntaxedAs": ["function", "graql-keyword", "string"],
+            "syntaxedAs": ["function", "typeql-keyword", "string"],
             "anchor": "#define",
-            "languages": ["graql", "java", "javascript", "python"]
+            "languages": ["typeql", "java", "javascript", "python"]
         },
         {
             "titles": ["delete"],
             "baseUrl": "../query/delete-query",
-            "syntaxedAs": ["function", "graql-keyword", "string"],
+            "syntaxedAs": ["function", "typeql-keyword", "string"],
             "anchor": "",
-            "languages": ["graql", "java", "javascript", "python"]
+            "languages": ["typeql", "java", "javascript", "python"]
         },
         {
             "titles": ["execute"],
@@ -75,29 +75,29 @@ codeKeywordsToLink = {
         {
             "titles": ["get"],
             "baseUrl": "../query/get-query",
-            "syntaxedAs": ["function", "graql-keyword", "string"],
+            "syntaxedAs": ["function", "typeql-keyword", "string"],
             "anchor": "",
-            "languages": ["graql", "java", "javascript", "python"]
+            "languages": ["typeql", "java", "javascript", "python"]
         },
         {
-            "titles": ["Graql"],
+            "titles": ["TypeQL"],
             "syntaxedAs": ["uncategorised"],
-            "anchor": "#graql",
+            "anchor": "#typeql",
             "languages": ["java"]
         },
         {
             "titles": ["insert"],
             "baseUrl": "../query/insert-query",
-            "syntaxedAs": ["function", "graql-keyword", "string"],
+            "syntaxedAs": ["function", "typeql-keyword", "string"],
             "anchor": "",
-            "languages": ["graql", "java", "javascript", "python"]
+            "languages": ["typeql", "java", "javascript", "python"]
         },
         {
             "titles": ["match"],
             "baseUrl": "../query/match-clause",
-            "syntaxedAs": ["function", "graql-keyword", "string"],
+            "syntaxedAs": ["function", "typeql-keyword", "string"],
             "anchor": "",
-            "languages": ["graql", "java", "javascript", "python"]
+            "languages": ["typeql", "java", "javascript", "python"]
         },
         {
             "titles": ["owner"],
@@ -108,9 +108,9 @@ codeKeywordsToLink = {
         {
             "titles": ["rule"],
             "baseUrl": "../schema/rules",
-            "syntaxedAs": ["graql-keyword", "string"],
+            "syntaxedAs": ["typeql-keyword", "string"],
             "anchor": "",
-            "languages": ["graql", "javascript", "python"],
+            "languages": ["typeql", "javascript", "python"],
         },
     ]
 }

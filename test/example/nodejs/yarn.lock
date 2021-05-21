@@ -565,21 +565,6 @@ google-protobuf@3.14.0:
   resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.14.0.tgz#20373d22046e63831a5110e11a84f713cc43651e"
   integrity sha512-bwa8dBuMpOxg7COyqkW6muQuvNnWgVN8TX/epDRGW5m0jcrmq2QJyCyiV8ZE2/6LaIIqJtiv9bYokFhfpy/o6w==
 
-"grakn-client@https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-5312d1a92675b8437c857af087c8159fb5a2d719.tgz":
-  version "0.0.0-5312d1a92675b8437c857af087c8159fb5a2d719"
-  resolved "https://repo.grakn.ai/repository/npm-snapshot-group/grakn-client/-/grakn-client-0.0.0-5312d1a92675b8437c857af087c8159fb5a2d719.tgz#9e6d69dc5a60200ce8f2e4545338d49e2a6caa19"
-  dependencies:
-    "@grpc/grpc-js" "1.2.1"
-    google-protobuf "3.14.0"
-    grakn-protocol "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c.tgz"
-    uuid "8.3.2"
-
-"grakn-protocol@https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c.tgz":
-  version "0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c"
-  resolved "https://repo.grakn.ai/repository/npm-snapshot/grakn-protocol/-/grakn-protocol-0.0.0-efac95a542c5f23b0ee881f7bd618224b0aa7d6c.tgz#538312208349b9873a1e2a15ea2501beeb405201"
-  dependencies:
-    "@grpc/grpc-js" "1.2.1"
-
 gtoken@^5.0.4:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/gtoken/-/gtoken-5.2.1.tgz#4dae1fea17270f457954b4a45234bba5fc796d16"
@@ -1364,6 +1349,23 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+typedb-client@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/typedb-client/-/typedb-client-2.1.0.tgz#9637c44a096f84a9b58c8f5171f2f4fe86a707ef"
+  integrity sha512-lWBaGNKiK0yAQww0YtlYyopEpvjq8IDr+W/fGL89kcAC/4VxkvgpdK045mPl50bgPQKCCIJzzTu3ICtt3hJuMw==
+  dependencies:
+    "@grpc/grpc-js" "1.2.1"
+    google-protobuf "3.14.0"
+    typedb-protocol "2.1.0"
+    uuid "8.3.2"
+
+typedb-protocol@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/typedb-protocol/-/typedb-protocol-2.1.0.tgz#c0217e0e51de391f735d3111922cd08b481795a3"
+  integrity sha512-mwcg7cWscFYUeyBvpldAKKzz31SNnfHgUZ9ZfjZnczMG2/LghLM81tjteHfCdvgD71aED4iuWwogAsWF+bulaA==
+  dependencies:
+    "@grpc/grpc-js" "1.2.1"
 
 union-value@^1.0.0:
   version "1.0.1"

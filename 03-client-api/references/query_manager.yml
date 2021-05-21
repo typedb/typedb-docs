@@ -3,28 +3,28 @@ title: "QueryManager"
 methods:
   - method:
     common: &method-match
-      title: Execute a Graql Match query
-      description: Performs a Graql Match query in the transaction.
+      title: Execute a TypeQL Match query
+      description: Performs a TypeQL Match query in the transaction.
       accepts: &accepts-match
         param1: &accepts-match-query
           name: query
-          description: The Graql Match query to be executed.
+          description: The TypeQL Match query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-match
-      method: transaction.query().match(GraqlMatch query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch query, TypeDBOptions options);
       accepts:
         <<: *accepts-match
         param1:
           <<: *accepts-match-query
-          type: "`GraqlMatch`"
+          type: "`TypeQLMatch`"
       returns:
         - "Stream<[ConceptMap](#conceptmap)>"
     javascript:
@@ -50,28 +50,28 @@ methods:
 
   - method:
     common: &method-matchAggregate
-      title: Execute a Graql Match Aggregate query
-      description: Performs a Graql Match Aggregate query in the transaction.
+      title: Execute a TypeQL Match Aggregate query
+      description: Performs a TypeQL Match Aggregate query in the transaction.
       accepts: &accepts-matchAggregate
         param1: &accepts-matchAggregate-query
           name: query
-          description: The Graql Match Aggregate query to be executed.
+          description: The TypeQL Match Aggregate query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-matchAggregate
-      method: transaction.query().match(GraqlMatch.Aggregate query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch.Aggregate query, TypeDBOptions options);
       accepts:
         <<: *accepts-matchAggregate
         param1:
           <<: *accepts-matchAggregate-query
-          type: "`GraqlMatch.Aggregate`"
+          type: "`TypeQLMatch.Aggregate`"
       returns:
         - "[QueryFuture](#queryfuture)<[Numeric](#numeric)>"
     javascript:
@@ -97,28 +97,28 @@ methods:
 
   - method:
     common: &method-matchGroup
-      title: Execute a Graql Match Group query
-      description: Performs a Graql Match Group query in the transaction.
+      title: Execute a TypeQL Match Group query
+      description: Performs a TypeQL Match Group query in the transaction.
       accepts: &accepts-matchGroup
         param1: &accepts-matchGroup-query
           name: query
-          description: The Graql Match Group query to be executed.
+          description: The TypeQL Match Group query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-matchGroup
-      method: transaction.query().match(GraqlMatch.Group query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch.Group query, TypeDBOptions options);
       accepts:
         <<: *accepts-matchGroup
         param1:
           <<: *accepts-matchGroup-query
-          type: "`GraqlMatch.Group`"
+          type: "`TypeQLMatch.Group`"
       returns:
         - "Stream<[ConceptMapGroup](#conceptmapgroup)>"
     javascript:
@@ -144,28 +144,28 @@ methods:
 
   - method:
     common: &method-matchGroupAggregate
-      title: Execute a Graql Match Group Aggregate query
-      description: Performs a Graql Match Group Aggregate query in the transaction.
+      title: Execute a TypeQL Match Group Aggregate query
+      description: Performs a TypeQL Match Group Aggregate query in the transaction.
       accepts: &accepts-matchGroupAggregate
         param1: &accepts-matchGroupAggregate-query
           name: query
-          description: The Graql Match Group Aggregate query to be executed.
+          description: The TypeQL Match Group Aggregate query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-matchGroupAggregate
-      method: transaction.query().match(GraqlMatch.Group.Aggregate query, GraknOptions options);
+      method: transaction.query().match(TypeQLMatch.Group.Aggregate query, TypeDBOptions options);
       accepts:
         <<: *accepts-matchGroupAggregate
         param1:
           <<: *accepts-matchGroupAggregate-query
-          type: "`GraqlMatch.Group.Aggregate`"
+          type: "`TypeQLMatch.Group.Aggregate`"
       returns:
         - "Stream<[NumericGroup](#numericgroup)>"
     javascript:
@@ -191,28 +191,28 @@ methods:
 
   - method:
     common: &method-insert
-      title: Execute a Graql Insert query
-      description: Performs a Graql Insert query in the transaction.
+      title: Execute a TypeQL Insert query
+      description: Performs a TypeQL Insert query in the transaction.
       accepts: &accepts-insert
         param1: &accepts-insert-query
           name: query
-          description: The Graql Insert query to be executed.
+          description: The TypeQL Insert query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-insert
-      method: transaction.query().insert(GraqlInsert query, GraknOptions options);
+      method: transaction.query().insert(TypeQLInsert query, TypeDBOptions options);
       accepts:
         <<: *accepts-insert
         param1:
           <<: *accepts-insert-query
-          type: "`GraqlInsert`"
+          type: "`TypeQLInsert`"
       returns:
         - "Stream<[ConceptMap](#conceptmap)>"
     javascript:
@@ -238,28 +238,28 @@ methods:
 
   - method:
     common: &method-delete
-      title: Execute a Graql Delete query
-      description: Performs a Graql Delete query in the transaction.
+      title: Execute a TypeQL Delete query
+      description: Performs a TypeQL Delete query in the transaction.
       accepts: &accepts-delete
         param1: &accepts-delete-query
           name: query
-          description: The Graql Delete query to be executed.
+          description: The TypeQL Delete query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-delete
-      method: transaction.query().delete(GraqlDelete query, GraknOptions options);
+      method: transaction.query().delete(TypeQLDelete query, TypeDBOptions options);
       accepts:
         <<: *accepts-delete
         param1:
           <<: *accepts-delete-query
-          type: "`GraqlDelete`"
+          type: "`TypeQLDelete`"
       returns:
         - "[`QueryFuture`](#queryfuture)"
     javascript:
@@ -285,28 +285,28 @@ methods:
 
   - method:
     common: &method-update
-      title: Execute a Graql Update query
-      description: Performs a Graql Update query in the transaction.
+      title: Execute a TypeQL Update query
+      description: Performs a TypeQL Update query in the transaction.
       accepts: &accepts-update
         param1: &accepts-update-query
           name: query
-          description: The Graql Update query to be executed.
+          description: The TypeQL Update query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-update
-      method: transaction.query().update(GraqlUpdate query, GraknOptions options);
+      method: transaction.query().update(TypeQLUpdate query, TypeDBOptions options);
       accepts:
         <<: *accepts-update
         param1:
           <<: *accepts-update-query
-          type: "`GraqlUpdate`"
+          type: "`TypeQLUpdate`"
       returns:
         - "Stream<[ConceptMap](#conceptmap)>"
     javascript:
@@ -332,8 +332,8 @@ methods:
 
   - method:
     common: &method-explain
-      title: Execute a Graql Explain query
-      description: Performs a Graql Explain query in the transaction.
+      title: Execute a TypeQL Explain query
+      description: Performs a TypeQL Explain query in the transaction.
       accepts:
         param1:
           name: explainable
@@ -342,13 +342,13 @@ methods:
           required: true
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-explain
-      method: transaction.query().explain(ConceptMap.Explainable explainable, GraknOptions options);
+      method: transaction.query().explain(ConceptMap.Explainable explainable, TypeDBOptions options);
       returns:
         - "Stream<[Explanation](#explanation)>"
     javascript:
@@ -364,28 +364,28 @@ methods:
 
   - method:
     common: &method-define
-      title: Execute a Graql Define query
-      description: Performs a Graql Define query in the transaction.
+      title: Execute a TypeQL Define query
+      description: Performs a TypeQL Define query in the transaction.
       accepts: &accepts-define
         param1: &accepts-define-query
           name: query
-          description: The Graql Define query to be executed.
+          description: The TypeQL Define query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-define
-      method: transaction.query().define(GraqlDefine query, GraknOptions options);
+      method: transaction.query().define(TypeQLDefine query, TypeDBOptions options);
       accepts:
         <<: *accepts-define
         param1:
           <<: *accepts-define-query
-          type: "`GraqlDefine`"
+          type: "`TypeQLDefine`"
       returns:
         - "[`QueryFuture`](#queryfuture)"
     javascript:
@@ -411,28 +411,28 @@ methods:
 
   - method:
     common: &method-undefine
-      title: Execute a Graql Undefine query
-      description: Performs a Graql Undefine query in the transaction.
+      title: Execute a TypeQL Undefine query
+      description: Performs a TypeQL Undefine query in the transaction.
       accepts: &accepts-undefine
         param1: &accepts-undefine-query
           name: query
-          description: The Graql Undefine query to be executed.
+          description: The TypeQL Undefine query to be executed.
           required: true
           default: N/A
         param2:
           name: options
-          type: "[`GraknOptions`](#options)"
+          type: "[`TypeDBOptions`](#options)"
           description: Specify query options
           required: false
-          default: default GraknOptions - uses server defaults
+          default: default TypeDBOptions - uses server defaults
     java:
       <<: *method-undefine
-      method: transaction.query().undefine(GraqlUndefine query, GraknOptions options);
+      method: transaction.query().undefine(TypeQLUndefine query, TypeDBOptions options);
       accepts:
         <<: *accepts-undefine
         param1:
           <<: *accepts-undefine-query
-          type: "`GraqlUndefine`"
+          type: "`TypeQLUndefine`"
       returns:
         - "[`QueryFuture`](#queryfuture)"
     javascript:

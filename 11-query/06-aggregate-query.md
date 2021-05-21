@@ -1,23 +1,23 @@
 ---
 pageTitle: Aggregate Query
-keywords: graql, aggregate query, calculation, statistics
-longTailKeywords: grakn aggregate data, graql aggregate query, graql statistics
-Summary: Statistical queries in Grakn.
+keywords: typeql, aggregate query, calculation, statistics
+longTailKeywords: typedb aggregate data, typeql aggregate query, typeql statistics
+Summary: Statistical queries in TypeDB.
 ---
 
 ## Aggregate Values Over a Dataset
-In this section, we learn how to get Grakn to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
-To perform aggregation in Grakn, we first write a [`match` clause](../11-query/01-match-clause.md) to describe the set of data, then follow that by [`get`](../11-query/02-get-query.md) to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate function to perform on the variable of interest.
+In this section, we learn how to get TypeDB to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
+To perform aggregation in TypeDB, we first write a [`match` clause](../11-query/01-match-clause.md) to describe the set of data, then follow that by [`get`](../11-query/02-get-query.md) to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate function to perform on the variable of interest.
 
-To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
 ### Count
 We use the `count` function to get the number of the specified matched variable.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $sce isa studentship, has score $sco;
   $sco > 7.0;
@@ -27,7 +27,7 @@ get $sco; count;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Aggregate query = Graql.match(
+TypeQLMatch.Unfiltered.Aggregate query = TypeQL.match(
   var("sce").isa("studentship").has("score", var("sco")),
   var("sco").gt(7.0)
 ).get("sce").count();
@@ -45,8 +45,8 @@ We use the `sum` function to get the sum of the specified `long` or `double` mat
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $org isa organisation, has name $orn;
   $orn "Medicely";
@@ -57,7 +57,7 @@ get $sal; sum $sal;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Aggregate query = Graql.match(
+TypeQLMatch.Unfiltered.Aggregate query = TypeQL.match(
   var("org").isa("organisation").has("name", var("orn")),
   var("orn").eq("Medicely"),
   var().rel("org").isa("employment").has("salary", var("sal"))
@@ -71,8 +71,8 @@ We use the `max` function to get the maximum value among the specified `long` or
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $sch isa school, has ranking $ran;
 get $ran; max $ran;
@@ -81,7 +81,7 @@ get $ran; max $ran;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Aggregate query = Graql.match(
+TypeQLMatch.Unfiltered.Aggregate query = TypeQL.match(
   var("sch").isa("school").has("ranking", var("ran"))
 ).get("ran").max("ran");
 ```
@@ -93,8 +93,8 @@ We use the `min` function to get the minimum value among the specified `long` or
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   ($per) isa marriage;
   ($per) isa employment, has salary $sal;
@@ -104,7 +104,7 @@ get $sal; min $sal;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Aggregate query = Graql.match(
+TypeQLMatch.Unfiltered.Aggregate query = TypeQL.match(
   var().rel(var("per")).isa("marriage"),
   var().rel(var("per")).isa("employment").has("salary", var("sal"))
 ).get("sal").min("sal");
@@ -117,8 +117,8 @@ We use the `mean` function to get the average value of the specified `long` or `
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $emp isa employment, has salary $sal;
 get $sal; mean $sal;
@@ -127,7 +127,7 @@ get $sal; mean $sal;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Aggregate query = Graql.match(
+TypeQLMatch.Unfiltered.Aggregate query = TypeQL.match(
   var("emp").isa("employment").has("salary", var("sal"))
 ).get("sal").mean("sal");
 ```
@@ -139,8 +139,8 @@ We use the `median` function to get the median value among the specified `long` 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $org isa organisation, has name $orn;
   $orn = "Facelook";
@@ -152,7 +152,7 @@ get $sco; median $sco;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Aggregate query = Graql.match(
+TypeQLMatch.Unfiltered.Aggregate query = TypeQL.match(
   var("org").isa("organisation").has("name", var("orn")),
   var("orn").eq("Facelook"),
   var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
@@ -167,8 +167,8 @@ We use the `group` function, optionally followed by another aggregate function, 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $per isa person;
   $scc isa school-course, has title $title;
@@ -179,7 +179,7 @@ get $scc, $title; group $title;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Group query = Graql.match(
+TypeQLMatch.Unfiltered.Group query = TypeQL.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("course", var("scc")).isa("studentship")
@@ -192,8 +192,8 @@ This query returns all instances of `person` grouped by the `title` of their `sc
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $per isa person;
   $scc isa school-course, has title $title;
@@ -204,7 +204,7 @@ get $scc, $title; group $title; count;
 
 [tab:Java]
 ```java
-GraqlMatch.Unfiltered.Group.Aggregate query = Graql.match(
+TypeQLMatch.Unfiltered.Group.Aggregate query = TypeQL.match(
   var("per").isa("person"),
   var("scc").isa("school-course").has("title", var("title")),
   var().rel("student", var("per")).rel("course", var("scc")).isa("studentship")
@@ -224,12 +224,12 @@ This query returns the total count of `person`s grouped by the `title` of their 
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `match aggregate` query, is as simple as passing the Graql(string) query to the `query().matchAggregate()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().matchAggregate()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `match aggregate` query, is as simple as passing the Graql(string) query to the `query().match_aggregate()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().match_aggregate()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

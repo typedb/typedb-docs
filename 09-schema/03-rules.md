@@ -1,16 +1,16 @@
 ---
 pageTitle: Rules
-keywords: graql, rule, reasoning, automated reasoning
-longTailKeywords: grakn reasoning, grakn automated reasoning, grakn rules
-Summary: Automated reasoning with Rules in Grakn.
+keywords: typeql, rule, reasoning, automated reasoning
+longTailKeywords: typedb reasoning, typedb automated reasoning, typedb rules
+Summary: Automated reasoning with Rules in TypeDB.
 ---
 
 ## What is a Rule?
-Grakn is capable of reasoning over data via rules defined in the schema. They can be used to automatically infer new facts, based on the existence of patterns in your data. Rules can enable you to dramatically shorten complex queries, perform explainable knowledge discovery, and implement business logic at the database level. 
+TypeDB is capable of reasoning over data via rules defined in the schema. They can be used to automatically infer new facts, based on the existence of patterns in your data. Rules can enable you to dramatically shorten complex queries, perform explainable knowledge discovery, and implement business logic at the database level. 
 
 Reasoning, or inference, is performed at query time and is guaranteed to be complete. When executing a `match` query, the execution engine returns data that directly answers the query, and also inspects and triggers rules that may lead to new answers to the query. This approach is known as backwards-chaining (starting from the query, then finding applicable rules and generating relevant new facts). Reasoning can proceed via one rule to other rules, including recursively, leading to complex behaviours emerging from a few simple rules.
 
-In this section we will explain the concept of Graql rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
+In this section we will explain the concept of TypeQL rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
 
 
 <div class="note">
@@ -26,9 +26,9 @@ Currently, for a match query to trigger reasoning and obtain inferences from rul
 
 
 ## Define a Rule
-Defining a Graql rule begins with a `rule` followed by a given label, the `when` body as the condition, and the `then` body as the conclusion.
+Defining a TypeQL rule begins with a `rule` followed by a given label, the `when` body as the condition, and the `then` body as the conclusion.
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 
 rule rule-label:
@@ -39,16 +39,16 @@ rule rule-label:
   };
 ```
 
-Each hashed line corresponds to a single Graql statement. In Graql, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should describe a single `has` or `relation`. If your use case requires a rule with a disjunction ("or") in the `when` part, notice that several rules with the same conclusion can be easily created to achieve the same behaviour.
+Each hashed line corresponds to a single TypeQL statement. In TypeQL, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should describe a single `has` or `relation`. If your use case requires a rule with a disjunction ("or") in the `when` part, notice that several rules with the same conclusion can be easily created to achieve the same behaviour.
 
 Let us have a look at an example. We want to express the fact that two given people are siblings. As we all know, for two people to be siblings, we need the following facts to be true:
 - they share the same mother
 - they share the same father
 - they are not the same person
 
-To express those facts in Graql, we can write:
+To express those facts in TypeQL, we can write:
 <!-- test-delay -->
-```graql
+```typeql
 {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;
@@ -57,7 +57,7 @@ To express those facts in Graql, we can write:
 };
 ```
 
-If you find the Graql code above unfamiliar, don't be concerned. We soon learn about [using Graql to describe patterns](/docs/query/match-clause). Those requirements will serve as the `when` part of the rule. Next, we define the conclusion of our rule - the fact that two people are siblings:
+If you find the TypeQL code above unfamiliar, don't be concerned. We soon learn about [using TypeQL to describe patterns](/docs/query/match-clause). Those requirements will serve as the `when` part of the rule. Next, we define the conclusion of our rule - the fact that two people are siblings:
 
 ```
 (sibling: $x, sibling: $y) isa siblings;
@@ -67,8 +67,8 @@ Combining all this information we can finally define our rule as following.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule people-with-same-parents-are-siblings:
@@ -85,7 +85,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("people-with-same-parents-are-siblings")
     .when(
         and(
@@ -107,14 +107,14 @@ Note that facts defined via rules are not stored in the knowledge graph. In this
 
 ### Forms of Rule
 
-Grakn supports inferring new, full facts in rules. There are exactly three distinct conclusions (`then`) that are permitted by this principle:
+TypeDB supports inferring new, full facts in rules. There are exactly three distinct conclusions (`then`) that are permitted by this principle:
 
 * Inferring a complete new relation, as in our above example. 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule people-with-same-parents-are-siblings:
@@ -131,7 +131,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("people-with-same-parents-are-siblings")
     .when(
         and(
@@ -152,8 +152,8 @@ GraqlDefine query = Graql.define(
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule anne-is-nickname-for-annabelle:
@@ -167,7 +167,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("anne-is-nickname-for-annabelle")
     .when(
         and(
@@ -187,8 +187,8 @@ Here, we apply a constant attribute that may or may not previously exist in the 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 rule student-graduated-implies-person-graduated:
@@ -204,7 +204,7 @@ when {
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("student-graduated-implies-person-graduated")
     .when(
         and(
@@ -227,7 +227,7 @@ In this example, we take a pre-existing attribute that is attached to a relation
 
 Besides conforming to one of the three patterns previously outlined, we also require that:
 
-1. The `then` of the rule must be insertable according to the schema (eg. you cannot give an attribute to an instance that is not allowed to own that attribute type). Grakn will reject rules that could insert incompatible data.
+1. The `then` of the rule must be insertable according to the schema (eg. you cannot give an attribute to an instance that is not allowed to own that attribute type). TypeDB will reject rules that could insert incompatible data.
 2. There are no disjunctions in the `when` of the rule
 3. There are no negations in the `when` of the rule (this restriction will be lifted imminently)
 
@@ -238,9 +238,9 @@ When inferring relations, it is possible to variabilise any part of the `then` o
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 define
 
 rule all-relation-types-are-transitive:
@@ -256,7 +256,7 @@ when {
 [tab:Java]
 <!-- test-ignore -->
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
   rule("all-relation-types-are-transitive")
     .when(
         and(
@@ -287,20 +287,20 @@ Rules like any other schema members can be undefined. Consequently, to delete ru
 For the case of the rule defined above, to delete it we write:
 
 <!-- test-delay -->
-```graql
+```typeql
 undefine rule people-with-same-parents-are-siblings;
 ```
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `undefine` query. Otherwise, anything you have undefined is NOT committed to the original database that is running on the Grakn server.
-When using one of the Grakn Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the Graql Console, we use the `commit` command.
+Don't forget to `commit` after executing a `undefine` query. Otherwise, anything you have undefined is NOT committed to the original database that is running on the TypeDB server.
+When using one of the TypeDB Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the TypeQL Console, we use the `commit` command.
 </div>
 
 ## Functional Interpretation
 Another way to look at rules is to treat them as functions. In that way, we treat each statement as a function returning either true or false. Looking again at the body of our siblings rule:
 <!-- test-delay -->
-```graql
+```typeql
 {
     (mother: $m, $x) isa parentship;
     (mother: $m, $y) isa parentship;
@@ -325,15 +325,15 @@ if (parentship(m, x)
 <div class="note">
 [Advanced]
 Rules as Horn Clauses can be defined either in terms of a disjunction with at most one unnegated atom or an implication with the consequent consisting of a single atom. Atoms are considered atomic first-order predicates - ones that cannot be decomposed to simpler constructs.
-In our system, we define both the head and the body of rules as Graql patterns. Consequently, the rules are statements of the form:
+In our system, we define both the head and the body of rules as TypeQL patterns. Consequently, the rules are statements of the form:
 
 ```
 q1 ∧ q2 ∧ ... ∧ qn → p
 ```
 
-where `q`s and the `p` are atoms that each correspond to a single Graql statement. The “when” of the statement (antecedent) then corresponds to the rule body with the “then” (consequent) corresponding to the rule head.
+where `q`s and the `p` are atoms that each correspond to a single TypeQL statement. The “when” of the statement (antecedent) then corresponds to the rule body with the “then” (consequent) corresponding to the rule head.
 
-The implication form of Horn clauses aligns more naturally with Graql semantics as we define the rules in terms of the “when” and “then” blocks which directly correspond to the antecedent and consequent of the implication respectively.
+The implication form of Horn clauses aligns more naturally with TypeQL semantics as we define the rules in terms of the “when” and “then” blocks which directly correspond to the antecedent and consequent of the implication respectively.
 </div>
 
 

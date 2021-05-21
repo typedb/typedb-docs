@@ -1,15 +1,15 @@
 ---
 pageTitle: Managing Users
-keywords: grakn, management, authentication, users
-longTailKeywords: grakn managing users, grakn authentication, grakn users
-Summary: User authentication in Grakn Cluster.
+keywords: typedb, management, authentication, users
+longTailKeywords: typedb managing users, typedb authentication, typedb users
+Summary: User authentication in TypeDB Cluster.
 toc: false
 ---
 
-## Managing Users [Grakn Cluster ONLY]
-The ability to manage users and authenticate their access to [databases](../06-management/01-database.md) is limited to Grakn Cluster and is not available in Grakn Core.
+## Managing Users [TypeDB Cluster ONLY]
+The ability to manage users and authenticate their access to [databases](../06-management/01-database.md) is limited to TypeDB Cluster and is not available in TypeDB.
 
-In order to manage users, we first need to enter the Grakn User Management Console by running `grakn user-management`. We can then use the following commands to manage user authentication.
+In order to manage users, we first need to enter the TypeDB User Management Console by running `typedb user-management`. We can then use the following commands to manage user authentication.
 
 ### Create a new user
 ```

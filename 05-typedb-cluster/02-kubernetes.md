@@ -1,21 +1,21 @@
 ---
-pageTitle: Deploy Grakn Cluster on Kubernetes
-keywords: grakn, cluster, kubernetes, cloud, deployment
-longTailKeywords: grakn on kubernetes
-summary: Deploy Grakn Cluster on Kubernetes
+pageTitle: Deploy TypeDB Cluster on Kubernetes
+keywords: typedb, cluster, kubernetes, cloud, deployment
+longTailKeywords: typedb on kubernetes
+summary: Deploy TypeDB Cluster on Kubernetes
 toc: false
 ---
 
-## Deploying Grakn Cluster onto Kubernetes
+## Deploying TypeDB Cluster onto Kubernetes
 
-This guide describes how to deploy a 3-node Grakn Cluster onto Kubernetes using [Helm](https://helm.sh/) package manager.
+This guide describes how to deploy a 3-node TypeDB Cluster onto Kubernetes using [Helm](https://helm.sh/) package manager.
 
 
 ### Initial Setup
 
-Regardless of the Grakn Cluster configuration, these steps need to be performed once before the setup.
+Regardless of the TypeDB Cluster configuration, these steps need to be performed once before the setup.
 
-As a first step, create a secret to access Grakn Cluster image on Docker Hub:
+As a first step, create a secret to access TypeDB Cluster image on Docker Hub:
 
 ```
 kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
@@ -25,7 +25,7 @@ kubectl create secret docker-registry private-docker-hub --docker-server=https:/
 Next, configure Helm repo:
 
 ```
-helm repo add graknlabs https://repo.grakn.ai/repository/helm/
+helm repo add vaticle https://repo.vaticle.com/repository/helm/
 ```
 
 ### Deployment
@@ -39,14 +39,14 @@ Depending on the deployment method you choose, next steps to perform the deploym
 **Use this mode if your an application resides within the same Kubernetes network.**
 
 
-Deploying Grakn Cluster in non-exposed mode means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
+Deploying TypeDB Cluster in non-exposed mode means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
 
 ```
-helm install graknlabs/grakn-cluster --generate-name \
+helm install vaticle/typedb-cluster --generate-name \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false"
 ```
 
-This command deploys a 3-node Cluster using 100Gi volumes for persistence. It would be accessible via `grakn-cluster-{0..2}.grakn-cluster`
+This command deploys a 3-node Cluster using 100Gi volumes for persistence. It would be accessible via `typedb-cluster-{0..2}.typedb-cluster`
 hostname within the Kubernetes network.
 [tab:end]
 
@@ -55,12 +55,12 @@ hostname within the Kubernetes network.
 **Use this mode if you need to access the Cluster from outside of Kubernetes. For example, if you need to connect using Workbase or Console from your local machine.**
 
 
-If an application does not use Kubernetes, Grakn Cluster needs to be exposed on public IPs. This is handled by cloud provider of Kubernetes
-which would allocate and assign a public IP address to the services we're deploying. Each Grakn Cluster pod will get an associated `LoadBalancer`,
-so for a 3-node Grakn Cluster, 3 public IPs would be allocated. To do it, execute the command:
+If an application does not use Kubernetes, TypeDB Cluster needs to be exposed on public IPs. This is handled by cloud provider of Kubernetes
+which would allocate and assign a public IP address to the services we're deploying. Each TypeDB Cluster pod will get an associated `LoadBalancer`,
+so for a 3-node TypeDB Cluster, 3 public IPs would be allocated. To do it, execute the command:
 
 ```
-helm install graknlabs/grakn-cluster --generate-name \
+helm install vaticle/typedb-cluster --generate-name \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=true"
 ```
 
@@ -68,20 +68,20 @@ This command deploys a 3-node Cluster using 100Gi volumes for persistence.
 It would be accessible via public IPs assigned to the services which can obtained via executing this command:
 
 ```
-kubectl get svc -l external-ip-for=grakn-cluster \
+kubectl get svc -l external-ip-for=typedb-cluster \
 -o='custom-columns=NAME:.metadata.name,IP:.status.loadBalancer.ingress[0].ip'
 ```
 [tab:end]
 
 [tab:Exposed Cluster - Minikube]
 
-**Use this mode for local development with Grakn Cluster.**
+**Use this mode for local development with TypeDB Cluster.**
 
 
-Having installed and started [Minikube](https://minikube.sigs.k8s.io/), this is the command to deploy Grakn Cluster:
+Having installed and started [Minikube](https://minikube.sigs.k8s.io/), this is the command to deploy TypeDB Cluster:
 
 ```
-helm install graknlabs/grakn-cluster --generate-name \
+helm install vaticle/typedb-cluster --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ```
 
@@ -95,7 +95,7 @@ Certain adjustments are made to the usual cloud deployment:
 
 * Minikube only has a single node, so `singlePodPerNode` needs to be set to `false`
 * Minikube's node only has as much CPUs as the local machine: `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-  Therefore, for deploying a 3-node Grakn Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
+  Therefore, for deploying a 3-node TypeDB Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
   as total storage required is `storage.size` multiplied by `replicas`. In our example, total storage requirement is 30Gi.
 
@@ -108,12 +108,12 @@ Configurable settings for Helm package include:
 
 | Key | Default value | Description
 | :----------------: | :------:| :---------------------------------------------------------------------------------------: |
-| `replicas`          | `3`     | Number of Grakn Cluster nodes to run                                                     |
-| `cpu`               | `7`     | How many CPUs should be allocated for each Grakn Cluster node                            |
-| `storage.size`      | `100Gi` | How much disk space should be allocated for each Grakn Cluster node                      |
-| `storage.persistent`| `true`  | Whether Grakn Cluster should use a persistent volume to store data                       |
-| `singlePodPerNode`  | `true`  | Whether Grakn Cluster pods should be scheduled to different Kubernetes nodes             |
-| `exposed`           | `false` | Whether Grakn Cluster supports connections via public IP (outside of Kubernetes network) |
+| `replicas`          | `3`     | Number of TypeDB Cluster nodes to run                                                     |
+| `cpu`               | `7`     | How many CPUs should be allocated for each TypeDB Cluster node                            |
+| `storage.size`      | `100Gi` | How much disk space should be allocated for each TypeDB Cluster node                      |
+| `storage.persistent`| `true`  | Whether TypeDB Cluster should use a persistent volume to store data                       |
+| `singlePodPerNode`  | `true`  | Whether TypeDB Cluster pods should be scheduled to different Kubernetes nodes             |
+| `exposed`           | `false` | Whether TypeDB Cluster supports connections via public IP (outside of Kubernetes network) |
 
 
 ### Troubleshooting
@@ -131,20 +131,20 @@ NAME                 TYPE                             DATA   AGE
 private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
 ```
 
-#### One or more pods of Grakn Cluster are stuck in `Pending` state
+#### One or more pods of TypeDB Cluster are stuck in `Pending` state
 This might mean pods requested more resources than available. To check if that's the case, run
-`kubectl describe pod/grakn-cluster-0` on a stuck pod (e.g. `grakn-cluster-0`). Error message similar to 
+`kubectl describe pod/typedb-cluster-0` on a stuck pod (e.g. `typedb-cluster-0`). Error message similar to 
 `0/1 nodes are available: 1 Insufficient cpu.` or `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
 indicates that `cpu` or `storage.size` values need to be decreased.
 
 
-#### One or more pods of Grakn Cluster are stuck in `CrashLoopBackOff` state
-This might indicate any misconfiguration of Grakn Cluster. Please obtain the logs by executing
-`kubectl logs pod/grakn-cluster-0` and share them with Grakn Cluster developers.
+#### One or more pods of TypeDB Cluster are stuck in `CrashLoopBackOff` state
+This might indicate any misconfiguration of TypeDB Cluster. Please obtain the logs by executing
+`kubectl logs pod/typedb-cluster-0` and share them with TypeDB Cluster developers.
 
 
 ### Current Limitations
 
 Deployment has several limitations which shall be resolved in the future:
 
-* Grakn Cluster doesn't support dynamic reconfiguration of node count without restarting all of the nodes.
+* TypeDB Cluster doesn't support dynamic reconfiguration of node count without restarting all of the nodes.

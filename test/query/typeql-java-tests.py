@@ -2,11 +2,11 @@ import re
 import sys
 from io import open
 
-graql_java_test_template_path, output_path, markdown_files = sys.argv[1], sys.argv[2], sys.argv[3:]
+typeql_java_test_template_path, output_path, markdown_files = sys.argv[1], sys.argv[2], sys.argv[3:]
 
-graql_java_test_template = open(graql_java_test_template_path, 'r').read()
+typeql_java_test_template = open(typeql_java_test_template_path, 'r').read()
 
-graql_java_test_method_template = """
+typeql_java_test_method_template = """
     @Test
     public void test() {
         // PAGE COMMENT PLACEHOLDER
@@ -37,13 +37,13 @@ for snippets_in_page in snippets:
     for i, snippet in enumerate(snippets_in_page):
         page = snippet["page"]
         page = page.replace("/", "__").replace("-","_").split(".")[0]
-        test_name = "test__{0}__graql_java__{1}".format(page, i)
-        test_method = graql_java_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+        test_name = "test__{0}__typeql_java__{1}".format(page, i)
+        test_method = typeql_java_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
         test_method = test_method.replace("test() {", test_name + "() {")  # change page name comment
         test_method = test_method.replace("// QUERY OBJECTS PLACEHOLDER", snippet.get("code"))  # add query objects
 
         # add execute statements
-        pattern_to_find_query_object_vars = '^Graql[A-Z].*?\s(.*)\s='
+        pattern_to_find_query_object_vars = '^TypeQL[A-Z].*?\s(.*)\s='
         matches = re.findall(pattern_to_find_query_object_vars, snippet.get("code"))
         execute_statements = ""
         for variable in matches:
@@ -54,8 +54,8 @@ for snippets_in_page in snippets:
 
 test_methods = test_methods.replace("&lt;", "<").replace("&gt;", ">")
 
-graql_java_test_class = graql_java_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
+typeql_java_test_class = typeql_java_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
 
 
 with open(output_path, "w") as output_file:
-    output_file.write(graql_java_test_class)
+    output_file.write(typeql_java_test_class)

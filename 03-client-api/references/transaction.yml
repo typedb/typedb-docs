@@ -79,7 +79,7 @@ methods:
     common: &method-query
       title: Access Query API methods
       description: |
-        Gets the [`QueryManager`](#querymanager) for this Transaction, from which any Graql query can be executed.
+        Gets the [`QueryManager`](#querymanager) for this Transaction, from which any TypeQL query can be executed.
       method: transaction.query();
       returns:
         - "[`QueryManager`](#querymanager)"
@@ -94,7 +94,7 @@ methods:
     common: &method-commit
       title: Commit a write transaction
       description: |
-        Commits the changes made via this transaction to the Grakn database.
+        Commits the changes made via this transaction to the TypeDB database.
         **Whether or not the transaction is commited successfully, it gets closed after the commit call.**
     java:
       <<: *method-commit

@@ -1,8 +1,8 @@
 ---
 pageTitle: Defining a Sample Schema
-keywords: grakn, examples, schema
-longTailKeywords: grakn examples, grakn schema example
-Summary: Learn how to define a simple schema in Grakn.
+keywords: typedb, examples, schema
+longTailKeywords: typedb examples, typedb schema example
+Summary: Learn how to define a simple schema in TypeDB.
 ---
 
 ## The Goal
@@ -55,10 +55,10 @@ By looking at this visualised schema, we can identify the [Concepts](../09-schem
 
 That’s all well and good, but how do we get our knowledge graph to reflect this model?
 
-## Time to Talk Graql
-Open a new file in your favourite text editor, preferably one with syntax highlighting for Graql (`.gql`) files. Here are the ones for [atom](https://atom.io/packages/language-graql), [visual studio code](https://marketplace.visualstudio.com/items?itemName=idealley.gql) and [sublime 3](https://github.com/graknlabs/graql_syntax_sublime).
+## Time to Talk TypeQL
+Open a new file in your favourite text editor, preferably one with syntax highlighting for TypeQL (`.gql`) files. Here are the ones for [atom](https://atom.io/packages/language-graql), [visual studio code](https://marketplace.visualstudio.com/items?itemName=idealley.gql) and [sublime 3](https://github.com/vaticle/graql_syntax_sublime).
 
-You can define the elements of a Grakn schema in any order you wish. I personally prefer to start from the relations, as I see them to be the source of interactions — where knowledge is derived from.
+You can define the elements of a TypeDB schema in any order you wish. I personally prefer to start from the relations, as I see them to be the source of interactions — where knowledge is derived from.
 
 Any **relation** relates to at least one **role** that is played by at least 2 **concepts**.
 
@@ -66,7 +66,7 @@ In our case, a **call** relates to **caller** played by a **person** and to **ca
 
 Likewise for a **contract**. It relates to **provider** played by a **company** and to **customer** played by a **person**.
 
-```graql
+```typeql
 define
 
   contract sub relation,
@@ -88,7 +88,7 @@ define
 
 To define the attributes, we use the owns keyword.
 
-```graql
+```typeql
 define
 
   contract sub relation,
@@ -119,7 +119,7 @@ define
 
 Lastly, we need to define the type of each attribute.
 
-```graql
+```typeql
 define
 
   contract sub relation,
@@ -167,25 +167,25 @@ person sub entity,
 	  value boolean;
 ```
 
-Note that we don't need to define an id attribute. Grakn takes care of that for us.
-Save the schema.gql file. In a few minutes, we'll have it loaded into a brand new Grakn database.
+Note that we don't need to define an id attribute. TypeDB takes care of that for us.
+Save the schema.gql file. In a few minutes, we'll have it loaded into a brand new TypeDB database.
 
 ## Load and test the schema
-In order to load this schema in a database, we first need to run the Grakn server.
+In order to load this schema in a database, we first need to run the TypeDB server.
 
-**1 -** [Download Grakn](/docs/running-grakn/install-and-run#download-and-install-grakn)
-For the rest of these instructions, I assume that you have downloaded the Grakn zip file and navigated into the unzipped folder via terminal.
+**1 -** [Download TypeDB](/docs/running-typedb/install-and-run#download-and-install-typedb)
+For the rest of these instructions, I assume that you have downloaded the TypeDB zip file and navigated into the unzipped folder via terminal.
 
-**2 -** Run the Grakn server:
-
-```
-./grakn server
-```
-
-**3 -** Load the schema into a Grakn database. In a separate terminal window, run:
+**2 -** Run the TypeDB server:
 
 ```
-./grakn console
+./typedb server
+```
+
+**3 -** Load the schema into a TypeDB database. In a separate terminal window, run:
+
+```
+./typedb console
 > database create phone_calls
 > transaction phone_calls schema write
 phone_calls:schema:write> source path/to/the/schema.gql
@@ -201,13 +201,13 @@ phone_calls:schema:read>
 
 **5 -** Make sure the schema is properly defined in our newly created knowledge graph. At the prompt, run:
 
-```graql
+```typeql
 match $x sub thing; get $x;
 ```
 
 The result should be as follows:
 <!-- test-ignore -->
-```graql
+```typeql
 {$x label thing;}
 {$x label entity;}
 {$x label relation;}
@@ -239,9 +239,9 @@ We started off by describing our dataset in the most natural way possible.
 
 Next, we went on to visualise that dataset by how we perceive it in the real world.
 
-Then, by identifying the Grakn concepts in the visualised schema, we went ahead and wrote our schema in Graql.
+Then, by identifying the TypeDB concepts in the visualised schema, we went ahead and wrote our schema in TypeQL.
 
-Lastly, we loaded the schema into a Grakn database and ran a generic match query to ensure it was indeed loaded correctly.
+Lastly, we loaded the schema into a TypeDB database and ran a generic match query to ensure it was indeed loaded correctly.
 
 ## Next
 Now that we have a model for our knowledge graph, aka. the schema, we can go ahead and migrate some actual data into it so that we can proceed to query for those insights. Pick the client of your choice to continue with migration.

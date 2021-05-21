@@ -2,9 +2,9 @@
 title: Options
 description:
   java: |
-    The transaction query options object `GraknOptions` can be used to override the default server behaviour
-    query processing. Use `GraknOptions.core()` to create a new Grakn Core options object, or `GraknOptions.cluster()`
-    for Grakn Cluster.
+    The transaction query options object `TypeDBOptions` can be used to override the default server behaviour
+    query processing. Use `TypeDBOptions.core()` to create a new TypeDB Core options object, or `TypeDBOptions.cluster()`
+    for TypeDB Cluster.
 
     The options are:
     - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
@@ -16,14 +16,14 @@ description:
     - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
     - `schemaLockTimeoutAcquireMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
 
-    `GraknClusterOptions` has an additional option:
+    `TypeDBClusterOptions` has an additional option:
 
     - `readAnyReplica`: enables reading data from any replica, potentially boosting read throughput (default: `false`)
 
   python: |
-    The transaction query options object `GraknOptions` can be used to override the default server behaviour
-    query processing. Use `GraknOptions.core()` to create a new Grakn Core options object, or `GraknOptions.cluster()`
-    for Grakn Cluster.
+    The transaction query options object `TypeDBOptions` can be used to override the default server behaviour
+    query processing. Use `TypeDBOptions.core()` to create a new TypeDB Core options object, or `TypeDBOptions.cluster()`
+    for TypeDB Cluster.
 
     The options are:
     - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `False`)
@@ -35,14 +35,14 @@ description:
     - `session_idle_timeout_millis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
     - `schema_lock_timeout_acquire_millis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
 
-    `GraknClusterOptions` has an additional option:
+    `TypeDBClusterOptions` has an additional option:
 
     - `read_any_replica`: enables reading data from any replica, potentially boosting read throughput (default: `False`)
 
   javascript: |
-    The transaction query options object `GraknOptions` can be used to override the default server behaviour
-    query processing. Use `GraknOptions.core()` to create a new Grakn Core options object, or `GraknOptions.cluster()`
-    for Grakn Cluster.
+    The transaction query options object `TypeDBOptions` can be used to override the default server behaviour
+    query processing. Use `TypeDBOptions.core()` to create a new TypeDB Core options object, or `TypeDBOptions.cluster()`
+    for TypeDB Cluster.
 
     The options are:
     - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
@@ -54,7 +54,7 @@ description:
     - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
     - `schemaLockTimeoutAcquireMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
 
-    `GraknClusterOptions` has an additional option:
+    `TypeDBClusterOptions` has an additional option:
 
     - `readAnyReplica`: enables reading data from any replica, potentially boosting read throughput (default: `false`)
 
@@ -71,7 +71,7 @@ methods:
           description: explicitly set inference on or off for this query
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: options.setExplain(boolean enabled)
@@ -84,7 +84,7 @@ methods:
           description: explicitly set explanations on or off for this query
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: options.setParallel(boolean parallel)
@@ -97,7 +97,7 @@ methods:
           description: use parallel or single-threaded query execution
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: options.setBatchSize(int size)
@@ -112,7 +112,7 @@ methods:
           type: int
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: options.setTraceInference(boolean traceInference)
@@ -125,7 +125,7 @@ methods:
           description: trace reasoning execution as graphs in log directory
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: options.setPrefetch(boolean prefetch)
@@ -138,7 +138,7 @@ methods:
           description: if set to true, the first batch of answers is streamed to the client even without an explicit request for it
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: options.setSessionIdleTimeoutMillis(int timeout)
@@ -150,7 +150,7 @@ methods:
           type: int
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: options.setSchemaLockAcquireTimeoutMillis(int timeout)
@@ -162,7 +162,7 @@ methods:
           type: int
           required: true
       returns:
-        - "[GraknOptions](#options)"
+        - "[TypeDBOptions](#options)"
   - method:
     java:
       method: clusterOptions.setReadAnyReplica(bool readAnyReplica)
@@ -174,4 +174,4 @@ methods:
           type: boolean
           required: true
       returns:
-        - "[GraknClusterOptions](#options)"
+        - "[TypeDBClusterOptions](#options)"

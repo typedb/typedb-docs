@@ -1,34 +1,34 @@
 ---
-pageTitle: Grakn Console
-keywords: grakn, console
-longTailKeywords: load schema into grakn, create grakn database, grakn console
-summary: List of options and commands for the Grakn Console.
+pageTitle: TypeDB Console
+keywords: typedb, console
+longTailKeywords: load schema into typedb, create typedb database, typedb console
+summary: List of options and commands for the TypeDB Console.
 toc: false
 ---
 
-## What is the Grakn Console?
-The Grakn Console, along with the [Grakn Clients](../03-client-api/00-overview.md) and [Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a Grakn knowledge graph. Console interacts directly with a given database that contains the Grakn knowledge graph.
+## What is the TypeDB Console?
+The TypeDB Console, along with the [TypeDB Clients](../03-client-api/00-overview.md) and [Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. Console interacts directly with a given database that contains the TypeDB knowledge graph.
 
-## Running Grakn Console in the terminal
+## Running TypeDB Console in the terminal
 
 
-### Connecting to Grakn Core
+### Connecting to TypeDB 
 
-Go to the directory whe you have your `grakn-core-all` or `grakn-core-console` distribution unarchived, and run `./grakn console`
+Go to the directory whe you have your `typedb-all` or `typedb-console` distribution unarchived, and run `./typedb console`
 ```
-cd <your_grakn_console_dir>/
-./grakn console
+cd <your_typedb_console_dir>/
+./typedb console
 ```
 
 
-### Connecting to Grakn Cluster
+### Connecting to TypeDB Cluster
 
 <div class="note">
 [Warning]
-Connecting to Grakn Cluster **requires** a special option, specifying the server address and port number:
+Connecting to TypeDB Cluster **requires** a special option, specifying the server address and port number:
 
 ```
-./grakn console --cluster=127.0.0.1:1729
+./typedb console --cluster=127.0.0.1:1729
 ```
 
 Failing to do so results in incorrect behaviour.
@@ -42,15 +42,15 @@ You can provide several command-line arguments when running Console in the termi
 
 | Option                | Alias | Description                                                           |
 |-----------------------|-------|-----------------------------------------------------------------------|
-| `--cluster=<cluster>` |       | Grakn Cluster address to which Console will connect to.               |
+| `--cluster=<cluster>` |       | TypeDB Cluster address to which Console will connect to.              |
 | `--help`              | `-h`  | Show help message.                                                    |
 | `--script=<script>`   |       | Script with commands to run in the Console, without interactive mode. |
-| `--server=<server>`   |       | Grakn Core address to which Console will connect to.                  |
+| `--server=<server>`   |       | TypeDB address to which Console will connect to.                      |
 | `--version`           | `-V`  | Print version information and exit.                                   |
 
 ## Console commands
 
-Grakn Console provides two levels of interaction: database-level commands and transaction-level commands. The database-level command is the first level of interaction, i.e. first-level REPL. From one of the database-level commands, you can open a transaction to the database. This will open a transaction-level interface, i.e. second-level REPL.
+TypeDB Console provides two levels of interaction: database-level commands and transaction-level commands. The database-level command is the first level of interaction, i.e. first-level REPL. From one of the database-level commands, you can open a transaction to the database. This will open a transaction-level interface, i.e. second-level REPL.
 
 ### Database management commands
 
@@ -73,8 +73,8 @@ Give any of these commands inside a console at the `>` prompt.
 
 | Command         | Description                                                                                                                                     |
 |-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| `<query>`       | Once you're in the transaction REPL, the terminal immediately accepts a multi-line Graql query, and will execute it when you hit enter twice.   |
-| `source <file>` | Run Graql queries in a file, which you can refer to using relative or absolute path. On Windows escape `\` by writing `\\`.                                                            |
+| `<query>`       | Once you're in the transaction REPL, the terminal immediately accepts a multi-line TypeQL query, and will execute it when you hit enter twice.  |
+| `source <file>` | Run TypeQL queries in a file, which you can refer to using relative or absolute path. On Windows escape `\` by writing `\\`.                    |
 | `commit`        | Commit the transaction changes and close transaction.                                                                                           |
 | `rollback`      | Will remove any uncommitted changes you've made in the transaction, while leaving transaction open.                                             |
 | `close`         | Close the transaction without committing changes, and takes you back to the database-level interface, i.e. first-level REPL.                    |
@@ -87,7 +87,7 @@ Give any of these commands inside a console at the `>` prompt.
 The following flags can be passed to the `transaction <db> schema⎮data read⎮write` command, for example:
 
 ```
-transaction grakn data read --infer true
+transaction typedb data read --infer true
 ```
 
 | Option                          | Allowed values | Description                                   |
@@ -101,7 +101,7 @@ transaction grakn data read --infer true
 | `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                |
 | `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms) |
 
-When connecting to Grakn Cluster, the following flags are additionally available:
+When connecting to TypeDB Cluster, the following flags are additionally available:
 
 | Option               | Allowed values | Description                              |
 |----------------------|----------------|------------------------------------------|
@@ -110,7 +110,7 @@ When connecting to Grakn Cluster, the following flags are additionally available
 
 ### Non-interactive mode
 
-To invoke console in a non-interactive manner, we can define a script file that contains the list of commands to run, then invoke console with `./grakn console --script=<script>`. We can also specify the commands to run directly from the command line using `./grakn console --command=<command1> --command=<command2> ...`.
+To invoke console in a non-interactive manner, we can define a script file that contains the list of commands to run, then invoke console with `./typedb console --script=<script>`. We can also specify the commands to run directly from the command line using `./typedb console --command=<command1> --command=<command2> ...`.
 
 For example given the following command script file:
 
@@ -131,7 +131,7 @@ database delete test
 You will see the following output:
 
 ```
-> ./grakn console --script=script                                                                                                                                                                                                                    73.830s
+> ./typedb console --script=script                                                                                                                                                                                                                    73.830s
 + database create test
 Database 'test' created
 + transaction test schema write
@@ -160,33 +160,33 @@ The indentation in the script file are only for visual guide and will be ignored
 
 ## Examples
 
-The following example illustrates how to create a database, define a schema, and insert some data into Grakn.
+The following example illustrates how to create a database, define a schema, and insert some data into TypeDB.
 
 <!-- test-ignore -->
-```graql
-$ ./grakn console
+```typeql
+$ ./typedb console
 
-Welcome to Grakn Console. You are now in Grakn Wonderland!
-Copyright (C) 2020 Grakn Labs
+Welcome to TypeDB Console. You are now in TypeDB Wonderland!
+Copyright (C) 2020 TypeDB Labs
 
-> database create grakn
-Database 'grakn' created
+> database create typedb
+Database 'typedb' created
 
 > database list
-grakn
+typedb
 
-> transaction grakn schema write
-grakn::schema::write> define person sub entity;
+> transaction typedb schema write
+typedb::schema::write> define person sub entity;
                       
 Concepts have been defined
-grakn::schema::write> commit
+typedb::schema::write> commit
 Transaction changes committed
 
-> transaction grakn data write
-grakn::data::write> insert $p isa person;
+> transaction typedb data write
+typedb::data::write> insert $p isa person;
                     
 { p iid 0x966e80017fffffffffffffff isa person; }
-grakn::data::write> commit
+typedb::data::write> commit
 Transaction changes committed
 
 > exit

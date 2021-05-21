@@ -12,7 +12,7 @@ jasmine_node_test(
     deps = [
         "@npm//jasmine",
         "@npm//jasmine-reporters",
-        "@npm//grakn-client",
+        "@npm//typedb-client",
         "@npm//papaparse",
         "@npm//stream-json",
         "@npm//xml-stream"
@@ -41,7 +41,7 @@ jasmine_node_test(
     srcs = [":social-network-tests"],
     deps = [
         "@npm//jasmine",
-        "@npm//grakn-client",
+        "@npm//typedb-client",
         "@npm//jasmine-reporters"
     ],
     data = ["//files:social-network-kg"]

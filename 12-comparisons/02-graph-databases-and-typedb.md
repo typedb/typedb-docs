@@ -1,22 +1,22 @@
 ---
-pageTitle: Property Graph Databases and Grakn
-keywords: graql, query, cypher, neo4j, graph database, property graph database
-longTailKeywords: graql queries, graql query structure, cypher
-Summary: Comparing Property Graph Databases to Grakn
+pageTitle: Property Graph Databases and TypeDB
+keywords: typeql, query, cypher, neo4j, graph database, property graph database
+longTailKeywords: typeql queries, typeql query structure, cypher
+Summary: Comparing Property Graph Databases to TypeDB
 ---
-## Comparing Grakn to Property Graph Databases
+## Comparing TypeDB to Property Graph Databases
 
 Graph databases have matured into mainstream technologies and are becoming increasingly valuable to organisations across any industry. They are more flexible than traditional relational databases as they allow us to leverage the relationships in our data in a way that relational databases cannot do. In a time when organisations are trying to get the most out of their data, this creates opportunities for any organisation. 
 
-However, developing with graph databases leads to plenty of challenges, in particular when it comes to data modelling and maintaining consistency of our data, among others. In what follows, we discuss how Grakn compares to graph databases, in particular labelled property graphs, and how Grakn addresses these challenges. While both technologies share some similarities, they are fundamentally different. We'll look at how to read & write data, how to model complex domains and we'll also look at Grakn's ability to perform automated reasoning.
+However, developing with graph databases leads to plenty of challenges, in particular when it comes to data modelling and maintaining consistency of our data, among others. In what follows, we discuss how TypeDB compares to graph databases, in particular labelled property graphs, and how TypeDB addresses these challenges. While both technologies share some similarities, they are fundamentally different. We'll look at how to read & write data, how to model complex domains and we'll also look at TypeDB's ability to perform automated reasoning.
 
-The main differences between Grakn and graph databases can be summarised as: 
+The main differences between TypeDB and graph databases can be summarised as: 
 
-1. **Grakn provides a concept-level schema** with a type system that fully implements the Entity-Relationship (ER) model. Instead, graph databases use vertices and edges without integrity constraints imposed in the form of a schema
-2. **Grakn contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
-3. **Grakn is an abstraction layer over a graph.** Grakn leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
+1. **TypeDB provides a concept-level schema** with a type system that fully implements the Entity-Relationship (ER) model. Instead, graph databases use vertices and edges without integrity constraints imposed in the form of a schema
+2. **TypeDB contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
+3. **TypeDB is an abstraction layer over a graph.** TypeDB leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
 
-There are several different graph technologies available. Some of these are based on RDF and SPARQL, others are imperative, path-based query languages based on Gremlin. Most popular, however, is Cypher, which has grown to become the most adopted graph database query language for property graphs. For this reason, in this comparison we'll just focus on Cypher and labelled property graphs. For a comparison of Grakn to Semantic Web Technologies, you can read [this](https://dev.grakn.ai/docs/comparisons/semantic-web-and-grakn). 
+There are several different graph technologies available. Some of these are based on RDF and SPARQL, others are imperative, path-based query languages based on Gremlin. Most popular, however, is Cypher, which has grown to become the most adopted graph database query language for property graphs. For this reason, in this comparison we'll just focus on Cypher and labelled property graphs. For a comparison of TypeDB to Semantic Web Technologies, you can read [this](https://docs.vaticle.com/docs/comparisons/semantic-web-and-typeql). 
 
 ## The Challenges of Working with a Graph Database
 
@@ -56,7 +56,7 @@ What makes this particularly challenging is that you may not have modelled your 
 
 Writing graph queries is already a challenging task as you need to understand graph algorithms and data structures. With the additional challenge of not being able to abstract and reuse your graph queries to the point where you can just focus on your problem domain, adopting graph databases becomes very hard. 
 
-To address these challenges, Grakn abstracts away the low levels of a graph database by implementing a type system. This abstracts away the low-level implementation details of the graph and lets you adopt the technology without a steep learning curve. 
+To address these challenges, TypeDB abstracts away the low levels of a graph database by implementing a type system. This abstracts away the low-level implementation details of the graph and lets you adopt the technology without a steep learning curve. 
 
 ## Modelling and Defining Schema
 
@@ -73,21 +73,21 @@ However, the graph model doesn't directly map to a conceptual model or ER diagra
 
 ### Concept Level Modelling
 
-Grakn provides a concept-level schema that fully implements the Entity-Relationship (ER) model. Grakn's schema is a type system that implements the principles of knowledge representation and reasoning. 
+TypeDB provides a concept-level schema that fully implements the Entity-Relationship (ER) model. TypeDB's schema is a type system that implements the principles of knowledge representation and reasoning. 
 
-Unlike in a graph database, this means that we can map any ER Diagram directly to how we implement it in Graql, avoiding the need to go through a normalisation process. In Grakn, we create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we implement it later in code. By modelling at the conceptual level using a type system, we avoid the need to go through a normalisation process that would otherwise be required in a graph database. 
+Unlike in a graph database, this means that we can map any ER Diagram directly to how we implement it in TypeQL, avoiding the need to go through a normalisation process. In TypeDB, we create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we implement it later in code. By modelling at the conceptual level using a type system, we avoid the need to go through a normalisation process that would otherwise be required in a graph database. 
 
-![Grakn abstraction](../images/comparisons/grakn-abstraction-over-graph.png)
-*Grakn's type system is a direct implementation of a conceptual model.*
+![TypeDB abstraction](../images/comparisons/typeql-abstraction-over-graph.png)
+*TypeDB's type system is a direct implementation of a conceptual model.*
 
 
 ### Hyper-relational Modelling
 
-A central component of Grakn's type system is its ability to represent hyper-relations and hyper-entities (in Grakn, entities, relations and attributes are first class modelling constructs). While in a binary graph a relation or edge is just a *pair* of vertices, a *hyper-relation (*or *hyper-edge)* is a *set* of vertices. 
+A central component of TypeDB's type system is its ability to represent hyper-relations and hyper-entities (in TypeDB, entities, relations and attributes are first class modelling constructs). While in a binary graph a relation or edge is just a *pair* of vertices, a *hyper-relation (*or *hyper-edge)* is a *set* of vertices. 
 
 This enables us to natively model concepts such as n-ary relationships, nested relationships or cardinality-restricted relationships. Using these constructs, we can easily create complex knowledge models that can evolve flexibly. Hyper-entities are defined as entities with multiple instances for one attribute type, which is not possible in a graph database.
 
-Grakn's hypergraph formalism is based on three premises: 
+TypeDB's hypergraph formalism is based on three premises: 
 
 1. A hypergraph consists of a non-empty set of vertices and a set of hyperedges
 2. A hyperedge is a finite set of vertices (distinguishable by specific roles they play in that hyperedge)
@@ -97,7 +97,7 @@ As property graph databases don't allow relationships to connect more than two n
 
 Nonetheless, reifying the graph should be avoided as it can lead having to refactor our entire graph and breaking the data model. It would also require changes to any queries and application code that could produce or consume such data.
 
-In the image below, we see an example of two *hyper-relations* modelled in Grakn:
+In the image below, we see an example of two *hyper-relations* modelled in TypeDB:
 
 - `marriage`: describing a binary `marriage` relation between *Bob* and *Alice* playing the roles of `husband` and `wife` respectively, and the `marriage` relation playing the role of `certified-marriage` in the `divorce-filing` relation
 - `divorce-filing`: describing a ternary `divorce-filing` relation involving three role-players in the roles of `certified-marriage`*,* `petitioner` and `respondent`
@@ -114,7 +114,7 @@ In a real-life scenario, when the complete conceptual model is not fully foresee
 
 ### N-ary and Ternary Relations
 
-Grakn's type system allows modelling n-ary and ternary relations. The example below models a ternary relation between a supplier, a buyer, and a part. They can be connected through a single relation we call `supplying`.
+TypeDB's type system allows modelling n-ary and ternary relations. The example below models a ternary relation between a supplier, a buyer, and a part. They can be connected through a single relation we call `supplying`.
 
 First, let's look at how we would model this in a graph database. As we can't natively represent the three entities in one relation, we can either store foreign keys as a property on each node, or, more preferably, create an additional (intermediate) node to support it, similar to how we reified the graph in the example above. 
 
@@ -129,20 +129,20 @@ This is how we would create a `supplying` (intermediary) node that would connect
 (:Part)<-[:SUPPLIED]-(:Supplying)
 ```
 
-In Grakn, instead of creating an intermediate node, we create one `supplying` relation that relates to the supplier, buyer and the part that's being supplied:
+In TypeDB, instead of creating an intermediate node, we create one `supplying` relation that relates to the supplier, buyer and the part that's being supplied:
 
-![Grakn ternary example](../images/comparisons/grakn-ternary-example.png)
+![TypeDB ternary example](../images/comparisons/typeql-ternary-example.png)
 
 <!-- test-ignore -->
-```graql
+```typeql
 $supplier isa company; $part isa part; $buyer isa company; 
 (supplier: $supplier, supplied: $part, buyer: $buyer) isa supplying; 
 ```
 
-The schema in Grakn would then be as follows (note how the `supplying` relation relates to three roles): 
+The schema in TypeDB would then be as follows (note how the `supplying` relation relates to three roles): 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 company sub entity, 
 plays supplying:supplier, 
@@ -170,12 +170,12 @@ In a graph database, we cannot create nested relations. Instead, we can model a 
 (marriage)-[:LOCATED_IN]->(:City {name:"London"})
 ```
 
-Grakn's type system natively supports nested relations as modelling constructs. For the model above, we would create a relation `located` that connects the relation `marriage` with the `city` "London". This would look like this:
+TypeDB's type system natively supports nested relations as modelling constructs. For the model above, we would create a relation `located` that connects the relation `marriage` with the `city` "London". This would look like this:
 
-![Grakn nested relation](../images/comparisons/grakn-nested-relation.png)
+![TypeDB nested relation](../images/comparisons/typeql-nested-relation.png)
 
 <!-- test-ignore -->
-```graql
+```typeql
 $london isa city, has name "London"; 
 $marriage (spouse: $person1, spouse: $person2) isa marriage; 
 ($marriage, $london) isa located; 
@@ -184,7 +184,7 @@ $marriage (spouse: $person1, spouse: $person2) isa marriage;
 The schema for this would look as follows: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 city sub entity, 
 plays locating:location;
@@ -203,9 +203,9 @@ relates location;
 
 ## Reading Data
 
-To fetch data in Cypher, we describe a graph pattern that starts with a bound node which indicates where the traversal should start. We can add filters and use a `WHERE` statement to do pattern matching. In Grakn, the basic structure to fetch data is a `match get` query, where we specify a pattern of entities, relations, roles and attributes that Grakn will fetch data against. The `get` keyword indicates which specific variables we want to be returned, similar to the `RETURN` statement in Cypher. 
+To fetch data in Cypher, we describe a graph pattern that starts with a bound node which indicates where the traversal should start. We can add filters and use a `WHERE` statement to do pattern matching. In TypeDB, the basic structure to fetch data is a `match get` query, where we specify a pattern of entities, relations, roles and attributes that TypeDB will fetch data against. The `get` keyword indicates which specific variables we want to be returned, similar to the `RETURN` statement in Cypher. 
 
-Let's look at two example queries and how they compare in Cypher and Graql. 
+Let's look at two example queries and how they compare in Cypher and TypeQL. 
 
 ### Example Queries
 
@@ -222,17 +222,17 @@ RETURN commonfriend
 
 The pattern describes the path that connects Bob to Susan, through the `KNOWS` relation. We also specify a `KNOWS` relation between Susan and Bob to another person. We then return that common friend.
 
-In Grakn, the same query looks like this (we could actually optimise this query through Grakn's automated reasoner by writing a rule and inferring the common friends):
+In TypeDB, the same query looks like this (we could actually optimise this query through TypeDB's automated reasoner by writing a rule and inferring the common friends):
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $bob isa person, has name "Bob"; 
 $susan isa person, has name "Susan"; $common-friend isa person;
 ($bob, $susan) isa friendship; ($susan, $common-friend) isa friendship;
 ($common-friend, $bob) isa friendship; get $common-friend; 
 ```
 
-In Grakn, we ask for the relations of type `friendship` between Bob and Susan, Susan and an undefined person, and Bob and an undefined person. Note that the `ISA_FRIEND_OF` relation doesn't directly translate into a `friendship` relation in Grakn. The former is a directional edge that only represents how one person is a friend of another person, but not the other way around. Conversely, the Grakn relation `friendship` represents that both persons play the role of `friend`. Let's look at another example:
+In TypeDB, we ask for the relations of type `friendship` between Bob and Susan, Susan and an undefined person, and Bob and an undefined person. Note that the `ISA_FRIEND_OF` relation doesn't directly translate into a `friendship` relation in TypeDB. The former is a directional edge that only represents how one person is a friend of another person, but not the other way around. Conversely, the TypeDB relation `friendship` represents that both persons play the role of `friend`. Let's look at another example:
 
 `Which movies have been released after 2002 in London's Odeon Cinema by Pixar?`
 
@@ -248,10 +248,10 @@ WHERE movie.year > 2002
 RETURN movie.title
 ```
 
-In Grakn, the same would look like this: 
+In TypeDB, the same would look like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $cinema isa cinema, has name "Odeon London"; 
 $london isa city, has name "London"; 
 $studio isa studio, has name "Pixar"; 
@@ -262,16 +262,16 @@ $movie isa movie, has title $movie-title;
 get $movie-title; 
 ```
 
-In Grakn, instead of using `WHERE`, the pattern matching and filtering can be done anywhere in the query. Filtering of specific values can be done by assigning a variable to the value of an attribute. These variables can then be returned to the user by adding them in the `get` clause. In the example above, we ask for the variable `$movie-title`, which is assigned to the values of the `title` attribute, which is owned by the `movie` entity. 
+In TypeDB, instead of using `WHERE`, the pattern matching and filtering can be done anywhere in the query. Filtering of specific values can be done by assigning a variable to the value of an attribute. These variables can then be returned to the user by adding them in the `get` clause. In the example above, we ask for the variable `$movie-title`, which is assigned to the values of the `title` attribute, which is owned by the `movie` entity. 
 
 ## Automated Reasoning
 
 ### Type-based Reasoning
 
-Grakn's type system allows for type-based reasoning through the modelling of type hierarchies in entities, attributes and relations. A type hierarchy for vehicles in Grakn could look like this: 
+TypeDB's type system allows for type-based reasoning through the modelling of type hierarchies in entities, attributes and relations. A type hierarchy for vehicles in TypeDB could look like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 
 vehicle sub entity; 
@@ -287,14 +287,14 @@ garbage-truck sub truck;
 heavy-truck sub truck; 
 ```
 
-Given this model, if we wanted to fetch every single type of vehicle, rather than specifying every single type one by one, we can just query for the parent type, `vehicle`, and Grakn, through type-based reasoning, will also return the instances of all the subtypes:
+Given this model, if we wanted to fetch every single type of vehicle, rather than specifying every single type one by one, we can just query for the parent type, `vehicle`, and TypeDB, through type-based reasoning, will also return the instances of all the subtypes:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $vehicle isa vehicle;
 ```
 
-Although graph databases don't support type hierarchies and type-based reasoning, there are some ways around it. For example, if we're inserting a minivan, a coupe, a jet aircraft and a garbage truck, we could add their parent types as additional labels to these nodes. In Grakn, of course, we wouldn't need to specify their parent types as these would be inferred by the type hierarchy. 
+Although graph databases don't support type hierarchies and type-based reasoning, there are some ways around it. For example, if we're inserting a minivan, a coupe, a jet aircraft and a garbage truck, we could add their parent types as additional labels to these nodes. In TypeDB, of course, we wouldn't need to specify their parent types as these would be inferred by the type hierarchy. 
 
 <div class="tabs dark">
 
@@ -309,9 +309,9 @@ CREATE (n:vehicle:garbage_truck {name:'Siku 1890 Super Bin Lorry'})
 ```
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 insert 
 $suzuki isa minivan, has name "Maruti Suzuki Ciaz";
 $audi isa coupe, has name "Audi A5";
@@ -323,7 +323,7 @@ $siku isa garbage-truck, has name "Siku Super Bin";
 </div>
 
 
-If we then wanted to get all the types of vehicles, we can simply write the following in Cypher and Graql:
+If we then wanted to get all the types of vehicles, we can simply write the following in Cypher and TypeQL:
 
 <div class="tabs dark">
 [tab:Cypher]
@@ -334,9 +334,9 @@ MATCH (vehicle:Vehicle) RETURN
 
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 match $vehicle isa vehicle;
 ```
 [tab:end]
@@ -362,25 +362,25 @@ MATCH (vehicle:Heavy_truck) RETURN vehicle
 ```
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 match $vehicle isa vehicle;
 ```
 [tab:end]
 </div>
 
-In addition to entities, Grakn also allows for type-based reasoning in attributes and relations. For example, we can model an `employment` hierarchy with two sub-types: a `part-time-employment` and a `full-time-employment`. This schema would look as follows:
+In addition to entities, TypeDB also allows for type-based reasoning in attributes and relations. For example, we can model an `employment` hierarchy with two sub-types: a `part-time-employment` and a `full-time-employment`. This schema would look as follows:
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 employment sub entity;
 part-time-employment sub employment;
 full-time-employment sub employment;
 ```
 
-As relations in a graph database cannot have multiple labels, the same approach of using multiple labels used above for nodes wouldn't work for relations. Instead, for this employment hierarchy example, to retrieve all types of employments, we would need to specify all the labels in the hierarchy. In Grakn, we would just ask for the parent relation:
+As relations in a graph database cannot have multiple labels, the same approach of using multiple labels used above for nodes wouldn't work for relations. Instead, for this employment hierarchy example, to retrieve all types of employments, we would need to specify all the labels in the hierarchy. In TypeDB, we would just ask for the parent relation:
 
 <div class="tabs dark">
 
@@ -397,10 +397,10 @@ employs:EMPLOYED
 RETURN employees
 ```
 [tab:end]
-[tab:Graql]
+[tab:TypeQL]
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 (employee: $person) isa employment; 
 get $person;
@@ -410,12 +410,12 @@ get $person;
 
 ### Rule-based Reasoning
 
-In Grakn, we can create rules (learn more [here](https://dev.grakn.ai/docs/schema/rules)) to abstract and modularise our business logic and perform automated reasoning. Property graphs do not support rules. Rules can infer any type of concept, i.e. entities, relations or attributes.
+In TypeDB, we can create rules (learn more [here](https://docs.vaticle.com/docs/schema/rules)) to abstract and modularise our business logic and perform automated reasoning. Property graphs do not support rules. Rules can infer any type of concept, i.e. entities, relations or attributes.
 
 For example, we could create a rule that infers the relation between siblings, if two persons share the same parent. If the inferred relation is called `siblingship`, then the rule would look as follows:
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule sibling-if-share-same-parent: 
 when {
   (parent: $parent, child: $child1) isa parenthood;
@@ -425,14 +425,14 @@ when {
 };
 ```
 
-Having defined this rule, Grakn would infer that the two children are siblings if the conditions in the rule are met by the data previously ingested. To call the inference, we just query for the `siblingship` relation in a `match` query:
+Having defined this rule, TypeDB would infer that the two children are siblings if the conditions in the rule are met by the data previously ingested. To call the inference, we just query for the `siblingship` relation in a `match` query:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match (sibling: $sibling) isa siblingship; get $sibling; 
 ```
 
-To get the same answer in a graph database, we'd have to manually write the query different paths that represent the conditions of the rule (instead of querying directly for the siblingship relation). In this example, that Cypher query could look like this, where, besides querying directly for siblings, we also ask for all persons who share the same parent (which in Grakn above we modelled as a rule):
+To get the same answer in a graph database, we'd have to manually write the query different paths that represent the conditions of the rule (instead of querying directly for the siblingship relation). In this example, that Cypher query could look like this, where, besides querying directly for siblings, we also ask for all persons who share the same parent (which in TypeDB above we modelled as a rule):
 
 ```cypher
 MATCH 
@@ -445,7 +445,7 @@ RETURN sibling1, sibling2, sibling3
 A more complex example of automated reasoning is when the inferred concepts depend on multiple rules (chaining rules). In the example below, we want to retrieve all the persons who are cousins of each other, where only `parenthood` relations across three generations have been ingested. With the right rules defined, we would be able to just query for `cousinship` relations like this:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match (cousin: $cousin) isa cousinship; 
 get $cousin; 
 ```
@@ -468,7 +468,7 @@ MATCH
 RETURN child4, child3
 ```
 
-To represent this logic in Grakn, we can create two separate rules. The first rule infers the cousin relation. This rule then depends on the second rule, which infers an uncle or aunt relation. 
+To represent this logic in TypeDB, we can create two separate rules. The first rule infers the cousin relation. This rule then depends on the second rule, which infers an uncle or aunt relation. 
 
 In the first rule, we infer the `cousinship` relation. The logic is as follows:
 
@@ -478,7 +478,7 @@ In the first rule, we infer the `cousinship` relation. The logic is as follows:
 - Then A and D will be cousins
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule an-aunts-child-is-a-cousin: 
 when {
     $a isa person;
@@ -497,7 +497,7 @@ One of the conditions of this rule is the `uncle-auntship` relation, which would
 - Then B and C will be in a `uncle-auntship` relation
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule uncle-aunt-between-child-and-parent-sibling: 
 when {
     $a isa person; 
@@ -510,7 +510,7 @@ when {
 };
 ```
 
-Grakn rules can also be used to store more complex business logic. For example, let's say we want to query for all schedules that overlap in a logistics network. In Neo4j we can write this query: 
+TypeDB rules can also be used to store more complex business logic. For example, let's say we want to query for all schedules that overlap in a logistics network. In Neo4j we can write this query: 
 
 ```cypher
 MATCH 
@@ -521,17 +521,17 @@ sched1.end <= sched2.end
 RETURN
 ```
 
-Rather than representing the logic that determines if schedules overlap in a query, with Grakn we can represent this in a rule. That way, we can just query directly for all schedules that participate in an `overlaps` relation to get all overlapping schedules:
+Rather than representing the logic that determines if schedules overlap in a query, with TypeDB we can represent this in a rule. That way, we can just query directly for all schedules that participate in an `overlaps` relation to get all overlapping schedules:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $schedule isa schedule; ($schedule) isa overlaps; get $schedule; 
 ```
 
 The rule that infers the `overlaps` relation looks like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule overlapping-schedules: 
 when {
   $schedule1 isa schedule, has end $1End; 
@@ -543,7 +543,7 @@ when {
 ); 
 ```
 
-Rules in Grakn work particularly well when we need to infer connections between otherwise unconnected data. For example, let's say we want to find all the diseases to which a particular person has a risk factor to. In the next example, we want to infer those answers by using the following logic:
+Rules in TypeDB work particularly well when we need to infer connections between otherwise unconnected data. For example, let's say we want to find all the diseases to which a particular person has a risk factor to. In the next example, we want to infer those answers by using the following logic:
 
 - If someone consumes more than 10 units of alcohol per week, then they risk having Diabetes Type II and Hypoglycemia
 - If someone's parent has been diagnosed with Diabetes II and/or Arthritis, then they risk having those diseases too
@@ -609,10 +609,10 @@ UNWIND diseases AS disease
 RETURN collect(DISTINCT(disease)) as diseases
 ```
 
-In Grakn, instead, we just write one query that fetches the `risk-factor` relation for John Doe:
+In TypeDB, instead, we just write one query that fetches the `risk-factor` relation for John Doe:
 
 <!-- test-ignore -->
-```graql
+```typeql
 match $john isa person, has name "John Doe"; $disease isa disease; 
 ($john, $disease) isa risk-factor; get $disease;
 ```
@@ -620,7 +620,7 @@ match $john isa person, has name "John Doe"; $disease isa disease;
 This `risk-factor` relation is an inferred relation that contains the logic necessary to retrieve which diseases someone is at risk of. We split these out into three separate rules in order to modularise the logic:
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule alcohol-risk-of-diabetes:
 when {
     $person isa person;
@@ -667,10 +667,10 @@ when {
 
 In conclusion, we've see how:
 
-1. **Grakn's type system provides a concept-level schema** that fully implements the Entity-Relationship (ER) model, while graph databases use vertices and edges without integrity constraints imposed in the form of a schema
-2. **Grakn contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
-3. **Grakn is an abstraction layer over a graph database.** Grakn leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
+1. **TypeDB's type system provides a concept-level schema** that fully implements the Entity-Relationship (ER) model, while graph databases use vertices and edges without integrity constraints imposed in the form of a schema
+2. **TypeDB contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
+3. **TypeDB is an abstraction layer over a graph database.** TypeDB leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
 
-In sum, Grakn provides one language that gives us a concept-level model, a type system, a query language, a reasoning engine and schema verification. The result is a higher level language that abstracts away the low level complexities inherent in a graph database. 
+In sum, TypeDB provides one language that gives us a concept-level model, a type system, a query language, a reasoning engine and schema verification. The result is a higher level language that abstracts away the low level complexities inherent in a graph database. 
 
-This comparison has aimed to provide high level similarities and differences between both technologies, but, of course, there is more to Grakn and graph databases than what we’ve tried to show here.
+This comparison has aimed to provide high level similarities and differences between both technologies, but, of course, there is more to TypeDB and graph databases than what we’ve tried to show here.

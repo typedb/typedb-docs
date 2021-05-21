@@ -1,7 +1,7 @@
 ---
 pageTitle: Rule
-keywords: grakn, rule, api, methods
-longTailKeywords: grakn rule, rule methods, grakn rule methods
+keywords: typedb, rule, api, methods
+longTailKeywords: typedb rule, rule methods, typedb rule methods
 Summary: Methods available on a Rule object.
 toc: false
 ---

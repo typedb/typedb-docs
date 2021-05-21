@@ -1,15 +1,15 @@
 ---
-pageTitle: SQL and Graql
-keywords: graql, query, SQL, relational database
-longTailKeywords: graql queries, graql query structure, SQL
-Summary: Comparing SQL to Graql.
+pageTitle: SQL and TypeQL
+keywords: typeql, query, SQL, relational database
+longTailKeywords: typeql queries, typeql query structure, SQL
+Summary: Comparing SQL to TypeQL.
 ---
 
-## Comparing SQL to Graql
+## Comparing SQL to TypeQL
 
 Since the 1970s, SQL has been the de facto language to work with databases. As a declarative language, it’s straightforward to write queries and build powerful applications. However, relational databases struggle when working with interconnected and complex data. When working with such data in SQL, challenges arise especially in the modelling and querying of the data.
 
-Graql is the query language used in [Grakn](https://github.com/graknlabs/grakn). Just as SQL is the standard query language in relational databases, Graql is Grakn’s query language. Both SQL and Graql are declarative query languages that abstract away lower-level operations. Both are:
+TypeQL is the query language used in [TypeDB](https://github.com/vaticle/typedb). Just as SQL is the standard query language in relational databases, TypeQL is TypeDB’s query language. Both SQL and TypeQL are declarative query languages that abstract away lower-level operations. Both are:
 
 - Languages that attempt be readable and understandable
 - Languages that attempt to enable asking questions at a higher-level
@@ -27,17 +27,17 @@ However, as Ted's ideas were based on mathematical notation and mathematical sym
 
 By the late 1970s, relational databases had grown in popularity, and the world came to accept just how superior SQL and the relational model were to its predecessors. The story since then is well known -- relational databases have become the standard for building software as the world was ushered into the digital revolution.
 
-### The Essence of SQL and Graql
-In understanding Graql, it's useful to look at the underlying ideas that created SQL, as they are conceptually closely related. The essence of both Graql and SQL can be summarised as such: 
+### The Essence of SQL and TypeQL
+In understanding TypeQL, it's useful to look at the underlying ideas that created SQL, as they are conceptually closely related. The essence of both TypeQL and SQL can be summarised as such: 
 1. **A language that can be read and understood intuitively.** We say a language fulfils these criteria when it appears simple, maintainable and has a degree of similarity to natural text. 
 2. **A language that enables asking questions at a higher-level.** Here we refer to a language that allows the user to describe operations at a new and higher semantic level. 
 3. **A language where the system figures out how to do lower-level operations.** As the user describes higher-level operations, the system takes care of operations without the user having to think of them. 
 
-In this sense, both SQL and Graql are languages that abstract away lower-level operations. In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. This means they become enabled to create value, while those who could already use them can now do things much faster. A similar thing can be said about Python, for example, a high level programming language that has enabled millions of programmers to build software without having to worry about lower-level operations that are abstracted away.  
+In this sense, both SQL and TypeQL are languages that abstract away lower-level operations. In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. This means they become enabled to create value, while those who could already use them can now do things much faster. A similar thing can be said about Python, for example, a high level programming language that has enabled millions of programmers to build software without having to worry about lower-level operations that are abstracted away.  
 
 ## Modelling and Defining Schema 
 
-First, let's look at how data modelling compares between SQL and Graql. We use the [Entity Relationship Diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model) (ER Diagram) as it's the most common modelling tool in use. A basic model is composed of entity types and the relationships that can exist between them. Below is an example ER Diagram. We call this the conceptual model.
+First, let's look at how data modelling compares between SQL and TypeQL. We use the [Entity Relationship Diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model) (ER Diagram) as it's the most common modelling tool in use. A basic model is composed of entity types and the relationships that can exist between them. Below is an example ER Diagram. We call this the conceptual model.
 
 ![ER Diagram Example](../images/comparisons/er-diagram.png)
 *ER Diagram Example. Squares are entities, diamonds are relations and circles are attributes.*
@@ -54,33 +54,33 @@ After this normalisation process, we get to our logical model in 3NF and impleme
 ![Physical Independence of data](../images/comparisons/architecture.png)
 *SQL gives us the Physical Independence of Data.*
 
-### Modelling in Graql
+### Modelling in TypeQL
 
-Now let's look at how this compares to Graql. *We can map any ER Diagram directly to how we implement it in Graql*, which means we don't need to go through a normalisation process. Below we can see how a specific part of the earlier ER Diagram is modelled. We avoid the need to do any normalisation, as **Graql enables us to create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we are implementing it later in code**. This is different to SQL, where we need to impose a tabular structure over our model as a logical layer (as described above).
+Now let's look at how this compares to TypeQL. *We can map any ER Diagram directly to how we implement it in TypeQL*, which means we don't need to go through a normalisation process. Below we can see how a specific part of the earlier ER Diagram is modelled. We avoid the need to do any normalisation, as **TypeQL enables us to create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we are implementing it later in code**. This is different to SQL, where we need to impose a tabular structure over our model as a logical layer (as described above).
 
-![ER Diagram Example](../images/comparisons/er-graql.png)
-*ER diagram (left) to Graql model (right).*
+![ER Diagram Example](../images/comparisons/er-typeql.png)
+*ER diagram (left) to TypeQL model (right).*
 
-This means we entirely skip out the normalisation process required in SQL, and we keep working at the conceptual model. In other words, Graql abstracts away both the logical and physical model. **In this sense, where SQL gave us the physical independence of data, Graql gives us the logical independence of data.**
+This means we entirely skip out the normalisation process required in SQL, and we keep working at the conceptual model. In other words, TypeQL abstracts away both the logical and physical model. **In this sense, where SQL gave us the physical independence of data, TypeQL gives us the logical independence of data.**
 
 ![Logical Independence of Data](../images/comparisons/architecture-2.png)
-*By modelling at the conceptual level, Graql gives us an abstraction over the logical model.*
+*By modelling at the conceptual level, TypeQL gives us an abstraction over the logical model.*
 
-### Defining Schemas in SQL and Graql
+### Defining Schemas in SQL and TypeQL
 
 Now let's look at some real data. Anyone who has studied SQL is probably familiar with the Northwind dataset. It contains sales data for Northwind Traders, a fictitious specialty foods export-import company. 
 
 ![Northwind](../images/comparisons/northwind.png)
 *The Northwind schema.*
 
-How do we go about defining the `products` table shown above in Graql and SQL? Below we see the Graql syntax that defines the `product` entity, and the corresponding `relation`. This also shows the `SQL` statements that create the new table and the corresponding attributes.
+How do we go about defining the `products` table shown above in TypeQL and SQL? Below we see the TypeQL syntax that defines the `product` entity, and the corresponding `relation`. This also shows the `SQL` statements that create the new table and the corresponding attributes.
 
 <div class="tabs dark">
 
-[tab:Graql]
+[tab:TypeQL]
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 product sub entity, 
   key product-id, 
@@ -115,15 +115,15 @@ CREATE TABLE products (
 
 A few important points: 
 
-- Here we can see that the SQL table has three attributes, each with their own value type, which we can define in Graql as well. One of these attributes is a `primary key`, which we define in Graql using the `key` keyword. 
-- In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in Graql. We do this by connecting the `product` entity to the `assignment` relation using the role `assigned`. 
-- In Graql, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply omitted from the graph. 
-- Finally, an important point is that in the Graql model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
+- Here we can see that the SQL table has three attributes, each with their own value type, which we can define in TypeQL as well. One of these attributes is a `primary key`, which we define in TypeQL using the `key` keyword. 
+- In the SQL statement, there is also a `foreign key`, which depending on our model, we model as a related `relation` in TypeQL. We do this by connecting the `product` entity to the `assignment` relation using the role `assigned`. 
+- In TypeQL, there is no concept of `null` values. If a concept does not have an attribute, it really does not have it. This is because in a graph context a null attribute is simply omitted from the graph. 
+- Finally, an important point is that in the TypeQL model, attributes are [first-class citizens](https://en.wikipedia.org/wiki/First-class_citizen), unlike in SQL. 
 
 To summarise:
 
 - Modeling an ER diagram into SQL involves a normalisation process from 1NF to 3NF
-- The ER diagram maps naturally to Graql, and there is no need to perform any kind of normalisation
+- The ER diagram maps naturally to TypeQL, and there is no need to perform any kind of normalisation
 
 ## Reading and Writing Data
 
@@ -142,10 +142,10 @@ INSERT INTO products
 VALUES (12, "Chocolate", 42, 421)
 ```
 
-In Graql we do something different. We first match for the `Confections` category, assign the result to the variable `$c`, and then insert the new data. 
+In TypeQL we do something different. We first match for the `Confections` category, assign the result to the variable `$c`, and then insert the new data. 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $c isa category, 
   has name "Confections"; 
@@ -167,74 +167,74 @@ FROM table_name
 WHERE condition;
 ```
 
-The equivalent expression in Graql is the `match-get` expression. 
+The equivalent expression in TypeQL is the `match-get` expression. 
 
 <!-- test-ignore -->
-```Graql
+```TypeQL
 match 
 $a isa thing,
   has attribute $v;
 get $a, $v;
 ```
 
-Let's look at some of the most commonly used operators in SQL and how these look in Graql. In doing so, we're going to look at how to think about a query conceptually, instead of looking at the actual code. In this way, the difference between a Graql and a SQL query is that in Graql we think of queries at a conceptual level; the same way we semantically think about a question, rather than imposing a tabular structure over it. 
+Let's look at some of the most commonly used operators in SQL and how these look in TypeQL. In doing so, we're going to look at how to think about a query conceptually, instead of looking at the actual code. In this way, the difference between a TypeQL and a SQL query is that in TypeQL we think of queries at a conceptual level; the same way we semantically think about a question, rather than imposing a tabular structure over it. 
 
-In the figures below, on the left side, the tabular representation of the query in SQL is shown, and on the right the conceptual representation of the query in Graql (squares are entities, diamonds are relations and circles are attributes).
+In the figures below, on the left side, the tabular representation of the query in SQL is shown, and on the right the conceptual representation of the query in TypeQL (squares are entities, diamonds are relations and circles are attributes).
 
 #### Projection
 
-This SQL operator returns a table that contains all the rows that remain after specific columns have been removed. In Graql, we ask for an entity with specific attribute values.
+This SQL operator returns a table that contains all the rows that remain after specific columns have been removed. In TypeQL, we ask for an entity with specific attribute values.
 
 An example is: 
 
 ```Return all product IDs and their unit prices.```
 
 ![Projection](../images/comparisons/projection.png)
-*Table projection (left) and the equivalent operation in Graql (right).*
+*Table projection (left) and the equivalent operation in TypeQL (right).*
 
 #### Restrict
 
-This SQL operator gives us a table with rows from a specified table to a specific condition. In Graql, we ask for an entity and its attributes filtered by an attribute with specific values. 
+This SQL operator gives us a table with rows from a specified table to a specific condition. In TypeQL, we ask for an entity and its attributes filtered by an attribute with specific values. 
 
 ```Return product IDs and product names, for products with a unit price higher than 12.5.```
 
 ![ER Diagram Example](../images/comparisons/restrict.png)
-*Table restriction (left) and the equivalent operation in Graql (right).*
+*Table restriction (left) and the equivalent operation in TypeQL (right).*
 
 #### Union
 
-This SQL operator returns the rows of the tables that appear in either or both of the two specified tables. In Graql, we ask for entities and their attributes that are connected to one or two other entities through a relation. 
+This SQL operator returns the rows of the tables that appear in either or both of the two specified tables. In TypeQL, we ask for entities and their attributes that are connected to one or two other entities through a relation. 
 
 ```Get all the different cities in which suppliers and customers are located.```
 
 ![Union](../images/comparisons/union.png)
-*Table union (left) and the equivalent operation in Graql (right).*
+*Table union (left) and the equivalent operation in TypeQL (right).*
 
 #### Intersect
 
-This SQL operator returns a table with all rows that appear in both of two specified tables. In Graql, we ask for an entity that is connected to two specific entities through a relation.
+This SQL operator returns a table with all rows that appear in both of two specified tables. In TypeQL, we ask for an entity that is connected to two specific entities through a relation.
 
 ```Get all the cities in which suppliers and customers are simultaneously located.```
 
 ![Intersect](../images/comparisons/intersect.png)
-*Table intersection (left) and the equivalent operation in Graql (right).*
+*Table intersection (left) and the equivalent operation in TypeQL (right).*
 
 #### Join
 
-The most famous SQL operator, a join returns a table containing all possible rows that are a combination of two rows, one from each of two specified tables, such that two rows contributing to any given result row have common values for the common attributes of the two tables. In Graql, we ask for the entities and their attributes that are connected through a specific relation. This means that we don't need any join tables at all, not for 1-1 relations, 1-many relations, or many-many relations. The concept is no longer needed in Grakn. 
+The most famous SQL operator, a join returns a table containing all possible rows that are a combination of two rows, one from each of two specified tables, such that two rows contributing to any given result row have common values for the common attributes of the two tables. In TypeQL, we ask for the entities and their attributes that are connected through a specific relation. This means that we don't need any join tables at all, not for 1-1 relations, 1-many relations, or many-many relations. The concept is no longer needed in TypeDB. 
 
 ```Get all the different cities in which suppliers and customers are located.```
 
 ![Join](../images/comparisons/join.png)
-*Table join (left) and the equivalent operation in Graql (right).*
+*Table join (left) and the equivalent operation in TypeQL (right).*
 
-## Modelling at a Higher-Level in Graql: Hypergraph and Automated Reasoning
+## Modelling at a Higher-Level in TypeQL: Hypergraph and Automated Reasoning
 
-Compared to SQL, Graql allows us to model at a higher level of abstraction. This means that when we think about queries, we shouldn't actually think in terms of relational operators, as we've just done in the previous section. Instead, we should rethink our model and leverage Graql's expressivity. So, let's revisit the Northwind dataset and think about how we can model it differently. In particular, let's look at how we make use of Grakn's hypergraph and reasoning capabilities. 
+Compared to SQL, TypeQL allows us to model at a higher level of abstraction. This means that when we think about queries, we shouldn't actually think in terms of relational operators, as we've just done in the previous section. Instead, we should rethink our model and leverage TypeQL's expressivity. So, let's revisit the Northwind dataset and think about how we can model it differently. In particular, let's look at how we make use of TypeDB's hypergraph and reasoning capabilities. 
 
-### Modelling in Graql 
+### Modelling in TypeQL 
 
-If we take the `suppliers`, `products`, `employees`, `orders` and `customers` tables from the Northwind dataset, we can model this in Graql by creating the following entities: 
+If we take the `suppliers`, `products`, `employees`, `orders` and `customers` tables from the Northwind dataset, we can model this in TypeQL by creating the following entities: 
 1. `Product`: We map this entity directly to the `products` table (using the singular term instead). 
 2. `Order`: This maps directly to the `orders` table. 
 3. `Employee`: This also maps directly to the `employees` table.
@@ -248,12 +248,12 @@ We then create the following relations and corresponding roles:
 This is what we've just modelled: 
 
 ![Example model](../images/comparisons/hyper-relations.png)
-*The model of the Northwind dataset in Graql.*
+*The model of the Northwind dataset in TypeQL.*
 
-Let’s see how this looks in Graql: 
+Let’s see how this looks in TypeQL: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 
 employee sub entity, 
@@ -292,7 +292,7 @@ stocking sub relation,
 
 ### Traversal Queries
 
-Writing a traversal query in SQL means we leverage the `JOIN` operator. Below is a comparison between SQL and Graql for the following question: 
+Writing a traversal query in SQL means we leverage the `JOIN` operator. Below is a comparison between SQL and TypeQL for the following question: 
 
 ```Return all employee IDs who sold to a customer based in London, and has customer demographic "x"```
 
@@ -315,9 +315,9 @@ FROM Employees
 ```
 [tab:end]
 
-[tab:Graql]
+[tab:TypeQL]
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $s isa employee, has employee-id $eid; 
 $c isa company, has city "London"; 
@@ -331,15 +331,15 @@ get $eid;
 
 ### Type-based Reasoning
 
-Unlike in SQL, in Graql we have the capability to increase the expressivity of our model by creating a type hierarchy. For example, we can extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
+Unlike in SQL, in TypeQL we have the capability to increase the expressivity of our model by creating a type hierarchy. For example, we can extend the Northwind dataset by adding non-profits, banks and pharmaceutical companies. Conceptually, this looks as follows: 
 
 ![Type-based reasoning](../images/comparisons/type-hierarchy.png)
 *Type-hierarchy example.*
 
-And in Graql we define it as follows: 
+And in TypeQL we define it as follows: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 define 
 organisation sub entity; 
   
@@ -352,10 +352,10 @@ pharmaceutical sub for-profit;
 
 ### Rule-based Reasoning
 
-With Graql, we can also create rules (learn more [here](https://dev.grakn.ai/docs/schema/rules)) to abstract and modularise our business logic. SQL does not support rules. For example, if we know that location `x` is contained in `y`, which in turn is contained in `z`, we can create a rule that recursively infers that `x` is also contained in `z`. Writing this in Graql looks like this: 
+With TypeQL, we can also create rules (learn more [here](https://docs.vaticle.com/docs/schema/rules)) to abstract and modularise our business logic. SQL does not support rules. For example, if we know that location `x` is contained in `y`, which in turn is contained in `z`, we can create a rule that recursively infers that `x` is also contained in `z`. Writing this in TypeQL looks like this: 
 
 <!-- test-ignore -->
-```graql
+```typeql
 rule transitive-location: 
 when { 
   (located: $x, locating: $y) isa locates; 
@@ -365,7 +365,7 @@ when {
 };
 ```
 
-If we look at our Northwind dataset, we can see a transitivity exists between the `Employees`, `Territories` and `Region` tables which means we can leverage the rule above in Graql. To illustrate this point, let's look at this question:
+If we look at our Northwind dataset, we can see a transitivity exists between the `Employees`, `Territories` and `Region` tables which means we can leverage the rule above in TypeQL. To illustrate this point, let's look at this question:
 
 `Return all the employee IDs who are in a region with region-description "x".`
 
@@ -382,10 +382,10 @@ FROM Employee
     AND Re.RegionDescription = 'x'
 ```
 
-Having defined the `transitive-location` rule in Graql, we can now directly relate the employee to the region (abstracting away the territory to region connection avoiding us having to make multiple joins): 
+Having defined the `transitive-location` rule in TypeQL, we can now directly relate the employee to the region (abstracting away the territory to region connection avoiding us having to make multiple joins): 
 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $e isa employee, has employee-id $eid; 
 $r isa region, has region-description "x"; 
@@ -393,7 +393,7 @@ $r1 (located: $e, locating: $r) isa locates;
 get $eid;
 ```
 
-If we also incorporate the organisation type-hierarchy shown earlier, we can abstract away even more logic to Grakn. Let's use this question as an example: 
+If we also incorporate the organisation type-hierarchy shown earlier, we can abstract away even more logic to TypeDB. Let's use this question as an example: 
 
 ```Return the IDs for customers that are companies and charities, that employees have sold to, and who are in a region with region-description "x".```
 
@@ -428,9 +428,9 @@ FROM Charities
     AND Re.RegionDescription = 'x'
 ```
 
-In Graql, we simply write: 
+In TypeQL, we simply write: 
 <!-- test-ignore -->
-```graql
+```typeql
 match 
 $c isa organisation, has org-id $ci; # Organisation infers sub entities companies and charities
 $e isa employee; 
@@ -443,16 +443,16 @@ get $ci;
 ### Conclusion
 
 In conclusion, we've seen how: 
-- **Graql provides a higher-level abstraction for working with data.** Graql makes it easier to model and query for complex data. 
-- **Graql lets us create conceptual models giving us the physical independence of data.** By implementing a concept level schema, Graql abstracts away the logical model. This means we no longer need to normalise our data.
-- **Grakn's reasoning engine simplifies our queries.** By using an automated reasoner, Grakn pushes down lower level operations and enables us to work at a higher level of abstraction.
+- **TypeQL provides a higher-level abstraction for working with data.** TypeQL makes it easier to model and query for complex data. 
+- **TypeQL lets us create conceptual models giving us the physical independence of data.** By implementing a concept level schema, TypeQL abstracts away the logical model. This means we no longer need to normalise our data.
+- **TypeDB's reasoning engine simplifies our queries.** By using an automated reasoner, TypeDB pushes down lower level operations and enables us to work at a higher level of abstraction.
 
-Grakn's reasoning engine allows us to abstract away logic that otherwise happens in either our query or application layer. Pushing this logic down into Grakn allows us to write simpler queries at a higher-level of expressivity.
+TypeDB's reasoning engine allows us to abstract away logic that otherwise happens in either our query or application layer. Pushing this logic down into TypeDB allows us to write simpler queries at a higher-level of expressivity.
 
-There is much more to Graql than what we've tried to show here. Hopefully this comparison has, at least, given the high level similarities and differences between both languages.  
+There is much more to TypeQL than what we've tried to show here. Hopefully this comparison has, at least, given the high level similarities and differences between both languages.  
 
 ## Resources
 
-- [Grakn Quickstart](https://dev.grakn.ai/docs/general/quickstart)
-- [Modelling in Grakn](https://dev.grakn.ai/docs/schema/overview)
-- [The Grakn Ontology: Simplicity and Maintainability](https://blog.grakn.ai/the-grakn-ai-ontology-simplicity-and-maintainability-ab78340f5ff6)
+- [TypeDB Quickstart](https://docs.vaticle.com/docs/general/quickstart)
+- [Modelling in TypeDB](https://docs.vaticle.com/docs/schema/overview)
+- [The TypeDB Ontology: Simplicity and Maintainability](https://blog.grakn.ai/the-grakn-ai-ontology-simplicity-and-maintainability-ab78340f5ff6)

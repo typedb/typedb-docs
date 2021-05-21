@@ -1,4 +1,4 @@
-from grakn.client import *
+from typedb.client import *
 import unittest
 
 
@@ -6,10 +6,10 @@ class PhoneCallsTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with open('files/phone-calls/schema.gql', 'r') as schema:
+        with open('files/phone-calls/schema.tql', 'r') as schema:
             define_query = schema.read()
 
-            with Grakn.core_client('localhost:1729') as client:
+            with TypeDB.core_client('localhost:1729') as client:
                 if "phone_calls" in client.databases().all():
                     client.databases().get("phone_calls").delete()
                 client.databases().create("phone_calls")

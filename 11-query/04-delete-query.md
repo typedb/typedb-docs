@@ -1,37 +1,29 @@
 ---
 pageTitle: Delete Query
-keywords: graql, delete query, deletion
-longTailKeywords: grakn delete data, graql delete query, graql delete instances
-Summary: Delete queries in Grakn.
+keywords: typeql, delete query, deletion
+longTailKeywords: typedb delete data, typeql delete query, typeql delete instances
+Summary: Delete queries in TypeDB.
 ---
 
 ## Delete Instances of a Type
 To delete an instance of a type from the knowledge graph, we use a [match clause](../11-query/01-match-clause.md) followed by the `delete` keyword and statements indicating data to delete.
-To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
 Match-Delete queries are NOT lazy: the `match` will be fully evaluated and answers recorded, and each answer will in turn have
 the operations specified in the `delete` clause applied. This avoids modifying the graph while traversing it.
 
-<div class="note">
-[Important]
-When updating (eg. adding role players, attributes, owners) a concept, and concurrently deleting the concept, the data can end up in an undefined state. 
-To avoid this, serialise transactions that would be performing concurrent deletes and inserts.
-
-Please see [ACID](../06-management/02-acid.md) for more details.
-</div>
-
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $p isa person, has email "raphael.santos@gmail.com"; delete $p isa person;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
     var("p").isa("person").has("email", "raphael.santos@gmail.com")
 ).delete(var("p").isa("person"));
 ```
@@ -46,8 +38,8 @@ Deleting an instance of a relation type follows exactly the same style:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $org isa organisation, has name "Pharos";
   $emp (employer: $org, employee: $p) isa employment;
@@ -57,7 +49,7 @@ delete $emp isa employment;
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").isa("employment"));
@@ -77,15 +69,15 @@ Note that attributes with the same value and type are shared among their owners.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
   var("t").isa("travel").has("start-date", var("st")),
   var("st").eq(LocalDate.of(2013, 12, 22).atStartOfDay())
 ).delete(var("t").has(var("st")));
@@ -105,7 +97,7 @@ Note also that you must not specify a type for the attribute when deleting, as t
 
 ## Delete Role Players from Relations
 
-In Grakn, existing relations can be extended with new role players, or shrunk by removing role players.
+In TypeDB, existing relations can be extended with new role players, or shrunk by removing role players.
 If an employer merged with another, we may have to reassign all existing `employment` relations to the new company.
 
 To remove the old employer from the employment relation, we mirror the `delete` syntax with what the `insert` syntax 
@@ -113,8 +105,8 @@ for role players looks like.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $org isa organisation, has name "Pharos";
   $emp (employer: $org, employee: $p) isa employment;
@@ -124,7 +116,7 @@ delete $emp (employer: $org);
 
 [tab:Java]
 ```java
-GraqlDelete query = Graql.match(
+TypeQLDelete query = TypeQL.match(
   var("org").isa("organisation").has("name", "Pharos"),
   var("emp").rel("employer", "org").rel("employee", "p").isa("employment")
 ).delete(var("emp").rel("employer", "org"));
@@ -132,7 +124,7 @@ GraqlDelete query = Graql.match(
 [tab:end]
 </div>
 
-This Graql query will find all employments where the employer is an organisation with the name `Pharos`. It will then
+This TypeQL query will find all employments where the employer is an organisation with the name `Pharos`. It will then
 remove the organisation from the employment relation. It is required to provide the role that the role player is playing
 in the `delete` statement. If the role is unknown, it is possible to use the generic `role` supertype
 in the `delete` block, though being as specific as possible is recommended.
@@ -146,12 +138,12 @@ in the `delete` block, though being as specific as possible is recommended.
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the `query().delete()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `delete` query, is as simple as passing the TypeQL(string) query to the `query().delete()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `delete` query, is as simple as passing the Graql(string) query to the `query().delete()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `delete` query, is as simple as passing the TypeQL(string) query to the `query().delete()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary
@@ -162,4 +154,4 @@ Additionally, we can remove just attribute ownerships using the `has` statement 
 a role player from a relation can similarly be achieved by using role player syntax: `delete $r (some_role: $player);` without
 an `isa` statement.
 
-Next, we learn how to [update data](../11-query/05-update-query.md) in a Grakn knowledge graph.
+Next, we learn how to [update data](../11-query/05-update-query.md) in a TypeDB knowledge graph.

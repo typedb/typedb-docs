@@ -1,7 +1,7 @@
 const fs = require('fs')
-const { Grakn } = require("grakn-client/Grakn");
-const { SessionType } = require("grakn-client/api/GraknSession");
-const { TransactionType } = require("grakn-client/api/GraknTransaction");
+const { TypeDB } = require("typedb-client/TypeDB");
+const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
 const reporters = require('jasmine-reporters');
 
 const tapReporter = new reporters.TapReporter();
@@ -10,7 +10,7 @@ jasmine.getEnv().addReporter(tapReporter)
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 
 const loadSchema = async () => {
-    const client = Grakn.coreClient("localhost:1729");
+    const client = TypeDB.coreClient("localhost:1729");
     if (await(client.databases().contains('phone_calls'))) {
         await (await client.databases().get('phone_calls')).delete();
     }
@@ -26,7 +26,7 @@ const loadSchema = async () => {
 };
 
 const deleteDatabase = async () => {
-    const client = Grakn.coreClient("localhost:1729");
+    const client = TypeDB.coreClient("localhost:1729");
     await (await client.databases().get("phone_calls")).delete();
     console.log("Deleted the phone_calls database");
     await client.close();

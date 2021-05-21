@@ -1,8 +1,8 @@
 ---
 pageTitle: ACID
-keywords: grakn, acid, transactionality, atomicity, consistency, isolation, durability 
+keywords: typedb, acid, transactionality, atomicity, consistency, isolation, durability 
 longTailKeywords: transactional guarantees
-Summary: Grakn's transactional guarantees (ACIDity)
+Summary: TypeDB's transactional guarantees (ACIDity)
 toc: false
 ---
 
@@ -21,32 +21,29 @@ ACID defines the properties of a transactional database. The four parts are:
 
 For more detail please read [ACID](https://en.wikipedia.org/wiki/ACID).
 
-This page addresses Grakn's transactionality.
+This page addresses TypeDB's transactionality.
 
 ## Overview
 
-Grakn 2.0 aims to deliver ACID guarantees up to a slightly relaxed form of isolation known as [Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation).
+TypeDB delivers ACID guarantees up to a slightly relaxed form of isolation known as [Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation).
 
-At the current time, Atomicity, Snapshot Isolation, and Durability are already guaranteed. However, under specific race conditions, Consistency 
-guarantees may be violated. We are actively working towards fixing this.
+Note that consistency guarantees where implemented in version 2.1.0 (the first TypeDB version).
 
 ### Atomicity
 
-Grakn 2.0 transactions operate under a snapshot model. If an error occurs in the transaction, none of the operations will be applied
+TypeDB transactions operate under a snapshot model. If an error occurs in the transaction, none of the operations will be applied
 to the persisted data. If a commit succeeds, all the changes are guaranteed to be immediately visible to following transactions.
 
 ### Consistency
 
-As noted, there are two specific conditions which can lead to known consistency violations.
+As of version 2.1, the server will throw errors during commit if the transaction would violate consistency guarantees.
+There are two primary types of data-level conflicts which could violate consistency:
 
-1. Concurrently inserting attribute ownership as keys. The expected behaviour is: when two concurrent transactions
-insert an instance of type `T` with the same key, only one transaction should succeed. This preserves the guarantee that only
-1 instance of `T` with the given key exists. Under specific conditions, it is currently possible to end up with two concepts with the key.
-2. Concurrent insert and delete. When adding or extending a relation, or inserting an attribute ownership, connected to an existing concept
-while in a concurrent transaction deleting the concept, it is possible to commit both. This results in relations or attribute ownerships
-containing or pointing at concepts which no longer exist.
+1. `modify-delete`: a transaction extends or adds to a concept that a concurrent transaction deletes
+2. `key`: a transaction adds a key-ownership (which must be unique) at the same time as another transaction.
 
-Both of these cases are being addressed in the short term.
+In both cases, one transaction will be picked to successfully commit, and the other will be rejected. It is common
+to build a re-try mechanism when loading data that relies on key conflicts to load data in parallel.
 
 ### Isolation
 

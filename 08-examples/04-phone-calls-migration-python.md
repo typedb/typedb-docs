@@ -1,8 +1,8 @@
 ---
 pageTitle: Migrating CSV, JSON and XML Data with Client Python
-keywords: grakn, examples, migration, python
-longTailKeywords: grakn python migration
-Summary: Learn how to use Client Python to migrate CSV, JSON and XML data into a Grakn Knowledge Graph.
+keywords: typedb, examples, migration, python
+longTailKeywords: typedb python migration
+Summary: Learn how to use Client Python to migrate CSV, JSON and XML data into a TypeDB Knowledge Graph.
 ---
 
 ## Goal
@@ -19,18 +19,18 @@ Before we get started with migration, let’s have a quick reminder of how the s
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our Grakn [database](../06-management/01-database.md). To do this, we use [Client Python](../03-client-api/02-python.md).
+1.  we need a way to talk to our TypeDB [database](../06-management/01-database.md). To do this, we use [Client Python](../03-client-api/02-python.md).
 2.  we go through each data file, extracting each data item and parsing it to a Python dictionary.
-3.  we pass each data item (in the form of a Python dictionary) to its corresponding template function, which in turn gives us the constructed Graql query for inserting that item into Grakn.
+3.  we pass each data item (in the form of a Python dictionary) to its corresponding template function, which in turn gives us the constructed TypeQL query for inserting that item into TypeDB.
 4.  we execute each of those queries to load the data into our target database — `phone_calls`.
 
-Before moving on, make sure you have **Python3** and **Pip3** installed and the [**Grakn Server**](/docs/running-grakn/install-and-run#start-the-grakn-server) running on your machine.
+Before moving on, make sure you have **Python3** and **Pip3** installed and the [**TypeDB Server**](/docs/running-typedb/install-and-run#start-the-typedb-server) running on your machine.
 
 ## Get Started
 
 1.  Create a directory named `phone_calls` on your desktop.
 2.  cd to the phone_calls directory via terminal.
-3.  Run `pip3 install grakn-client` to install the Grakn [Client Python](../03-client-api/02-python.md).
+3.  Run `pip3 install typedb-client` to install the TypeDB [Client Python](../03-client-api/02-python.md).
 4.  Open the `phone_calls` directory in your favourite text editor.
 5.  Create a `migrate.py` file in the root directory. This is where we’re going to write all our code.
 
@@ -38,18 +38,18 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 Pick one of the data formats below and download the files. After you download them, place the four files under the `files/phone-calls/data` directory. We need these to load their data into our `phone_calls` knowledge graph.
 
-**CSV** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.csv)
+**CSV** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.csv) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.csv) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.csv) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.csv)
 
-**JSON** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.json)
+**JSON** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.json) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.json) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.json) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.json)
 
-**XML** | [companies](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/graknlabs/examples/master/datasets/phone-calls/calls.xml)
+**XML** | [companies](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/companies.xml) | [people](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/people.xml) | [contracts](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/contracts.xml) | [calls](https://raw.githubusercontent.com/vaticle/examples/master/datasets/phone-calls/calls.xml)
 
 ## Set up the migration mechanism
 
 All code that follows is to be written in `phone_calls/migrate.py`.
 
 ```python
-from grakn.client import Grakn
+from typedb.client import TypeDB 
 
 inputs = [
     {
@@ -73,59 +73,61 @@ inputs = [
 build_phone_call_graph(inputs)
 ```
 
-First thing first, we import the grakn module. We use it for connecting to our `phone_calls` database.
+First thing first, we import the typedb module. We use it for connecting to our `phone_calls` database.
 
 Next, we declare the `inputs`. More on this later. For now, what we need to understand about inputs — it’s a list of dictionaries, each one containing:
 - The path to the data file
-- The template function that receives a dictionary and produces the Graql insert query. we define these template functions in a bit.
+- The template function that receives a dictionary and produces the TypeQL insert query. we define these template functions in a bit.
 
 Let’s move on.
 
 ## build_phone_call_graph(inputs)
 
 ```python
-from grakn.client import Grakn, SessionType
+from typedb.client import TypeDB, SessionType
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client("localhost:1729") as client:
+    with TypeDB.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
-                print("Loading from [" + input["data_path"] + "] into Grakn ...")
-                load_data_into_grakn(input, session)
+                print("Loading from [" + input["data_path"] + "] into TypeDB ...")
+                load_data_into_typedb(input, session)
 
 # ...
 ```
 
-This is the main and only function we need to call to start loading data into Grakn.
+This is the main and only function we need to call to start loading data into TypeDB.
 
 What happens in this function, is as follows:
 
-1.  A Grakn `client` is created, connected to the server we have running locally.
+1.  A TypeDB `client` is created, connected to the server we have running locally.
 2.  A `session` is created, connected to the database `phone_calls`. Note that by using `with`, we indicate that the session closes after it’s been used.
-3.  For each `input` dictionary in `inputs`, we call the `load_data_into_grakn(input, session)`. This takes care of loading the data as specified in the input dictionary into our database.
+3.  For each `input` dictionary in `inputs`, we call the `load_data_into_typedb(input, session)`. This takes care of loading the data as specified in the input dictionary into our database.
 
-## load_data_into_grakn(input, session)
+## load_data_into_typedb(input, session)
 
 ```python
-def load_data_into_grakn(input, session):
+from typedb.client import TransactionType
+
+def load_data_into_typedb(input, session):
     items = parse_data_to_dictionaries(input)
 
     for item in items:
         with session.transaction(TransactionType.WRITE) as transaction:
-            graql_insert_query = input["template"](item)
-            print("Executing Graql Query: " + graql_insert_query)
-            transaction.query().insert(graql_insert_query)
+            typeql_insert_query = input["template"](item)
+            print("Executing TypeQL Query: " + typeql_insert_query)
+            transaction.query().insert(typeql_insert_query)
             transaction.commit()
 
-    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into TypeDB.\n")
 
 # ...
 ```
 
-In order to load data from each file into Grakn, we need to:
+In order to load data from each file into TypeDB, we need to:
 
 1.  retrieve a list containing dictionaries, each of which represents a data item. We do this by calling `parse_data_to_dictionaries(input)`
-2.  for each dictionary in `items`: a) create a `transaction`, which closes once used, b) construct the `graql_insert_query` using the corresponding template function, c) execute the query and d)commit the transaction.
+2.  for each dictionary in `items`: a) create a `transaction`, which closes once used, b) construct the `typeql_insert_query` using the corresponding template function, c) execute the query and d)commit the transaction.
 
 <div class="note">
 [Important]
@@ -137,7 +139,7 @@ Before we move on to parsing the data into dictionaries, let’s start with the 
 
 ## The Template Functions
 
-Templates are simple functions that accept a dictionary, representing a single data item. The values within this dictionary fill in the blanks of the query template. The result is a Graql insert query.
+Templates are simple functions that accept a dictionary, representing a single data item. The values within this dictionary fill in the blanks of the query template. The result is a TypeQL insert query.
 We need 4 of them. Let’s go through them one by one.
 
 ### companyTemplate
@@ -156,7 +158,7 @@ Example:
 
 - Comes out:
 
-```graql
+```typeql
 insert $company isa company, has name "Telecom";
 ```
 
@@ -165,19 +167,19 @@ insert $company isa company, has name "Telecom";
 ```python
 def person_template(person):
     # insert person
-    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    typeql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
     if "first_name" in person:
         # person is a customer
-        graql_insert_query += ", has is-customer true"
-        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-        graql_insert_query += ', has city "' + person["city"] + '"'
-        graql_insert_query += ", has age " + str(person["age"])
+        typeql_insert_query += ", has is-customer true"
+        typeql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        typeql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        typeql_insert_query += ', has city "' + person["city"] + '"'
+        typeql_insert_query += ", has age " + str(person["age"])
     else:
         # person is not a customer
-        graql_insert_query += ", has is-customer false"
-    graql_insert_query += ";"
-    return graql_insert_query
+        typeql_insert_query += ", has is-customer false"
+    typeql_insert_query += ";"
+    return typeql_insert_query
 ```
 
 Example:
@@ -189,7 +191,7 @@ Example:
 
 - Comes out:
 
-```graql
+```typeql
 insert $person isa person, has phone-number "+44 091 xxx";
 ```
 
@@ -202,7 +204,7 @@ or:
 
 - Comes out:
 
-```graql
+```typeql
 insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
@@ -211,12 +213,12 @@ insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jacki
 ```python
 def contract_template(contract):
     # match company
-    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    typeql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
     # match person
-    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    typeql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
     # insert contract
-    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-    return graql_insert_query
+    typeql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
+    return typeql_insert_query
 ```
 
 Example:
@@ -228,7 +230,7 @@ Example:
 
 - Comes out:
 
-```graql
+```typeql
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
@@ -237,12 +239,12 @@ match $company isa company, has name "Telecom"; $customer isa person, has phone-
 ```python
 def call_template(call):
     # match caller
-    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    typeql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
     # match callee
-    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    typeql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
     # insert call
-    graql_insert_query += " insert $call(caller: $caller, callee: $callee) isa call; $call has started-at " + call["started_at"] + "; $call has duration " + str(call["duration"]) + ";"
-    return graql_insert_query
+    typeql_insert_query += " insert $call(caller: $caller, callee: $callee) isa call; $call has started-at " + call["started_at"] + "; $call has duration " + str(call["duration"]) + ";"
+    return typeql_insert_query
 ```
 
 Example:
@@ -254,7 +256,7 @@ Example:
 
 - Comes out:
 
-```graql
+```typeql
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
 
@@ -272,7 +274,7 @@ The implementation for `parse_data_to_dictionaries(input)` differs based on the 
 We use Python’s built-in [`csv` library](https://docs.python.org/3/library/csv.html#dialects-and-formatting-parameters). Let’s import the module for it.
 
 ```python
-from grakn.client import Grakn
+from typedb.client import TypeDB
 import csv
 
 #...
@@ -305,7 +307,7 @@ We use [ijson](https://pypi.org/project/ijson/), an iterative JSON parser with a
 Via the terminal, while in the `phone_calls` directory, run `pip3 install ijson` and import the module for it.
 
 ```python
-from grakn.client import Grakn
+from typedb.client import TypeDB
 import ijson
 
 # ...
@@ -404,66 +406,66 @@ Here is how our `migrate.py` looks like for each data format.
 [tab:CSV]
 <!-- test-example phone_calls_csv_migration.py -->
 ```python
-from grakn.client import Grakn, SessionType, TransactionType
+from typedb.client import TypeDB, SessionType, TransactionType
 import csv
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client("localhost:1729") as client:
+    with TypeDB.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
-                print("Loading from [" + input["data_path"] + "] into Grakn ...")
-                load_data_into_grakn(input, session)
+                print("Loading from [" + input["data_path"] + "] into TypeDB ...")
+                load_data_into_typedb(input, session)
 
-def load_data_into_grakn(input, session):
+def load_data_into_typedb(input, session):
     items = parse_data_to_dictionaries(input)
 
     with session.transaction(TransactionType.WRITE) as transaction:
         for item in items:
-            graql_insert_query = input["template"](item)
-            print("Executing Graql Query: " + graql_insert_query)
-            transaction.query().insert(graql_insert_query)
+            typeql_insert_query = input["template"](item)
+            print("Executing TypeQL Query: " + typeql_insert_query)
+            transaction.query().insert(typeql_insert_query)
         transaction.commit()
 
-    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into TypeDB.\n")
 
 def company_template(company):
     return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
     # insert person
-    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    typeql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
     if person["first_name"] == "":
         # person is not a customer
-        graql_insert_query += ", has is-customer false"
+        typeql_insert_query += ", has is-customer false"
     else:
         # person is a customer
-        graql_insert_query += ", has is-customer true"
-        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-        graql_insert_query += ', has city "' + person["city"] + '"'
-        graql_insert_query += ", has age " + str(person["age"])
-    graql_insert_query += ";"
-    return graql_insert_query
+        typeql_insert_query += ", has is-customer true"
+        typeql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        typeql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        typeql_insert_query += ', has city "' + person["city"] + '"'
+        typeql_insert_query += ", has age " + str(person["age"])
+    typeql_insert_query += ";"
+    return typeql_insert_query
 
 def contract_template(contract):
     # match company
-    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    typeql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
     # match person
-    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    typeql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
     # insert contract
-    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-    return graql_insert_query
+    typeql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
+    return typeql_insert_query
 
 def call_template(call):
     # match caller
-    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    typeql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
     # match callee
-    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    typeql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
     # insert call
-    graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
+    typeql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
                            "$call has started-at " + call["started_at"] + "; " +
                            "$call has duration " + str(call["duration"]) + ";")
-    return graql_insert_query
+    return typeql_insert_query
 
 def parse_data_to_dictionaries(input):
     items = []
@@ -499,66 +501,66 @@ build_phone_call_graph(inputs=inputs)
 [tab:JSON]
 <!-- test-example phone_calls_json_migration.py -->
 ```python
-from grakn.client import Grakn, SessionType, TransactionType
+from typedb.client import TypeDB, SessionType, TransactionType
 import ijson
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client("localhost:1729") as client:
+    with TypeDB.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
-                print("Loading from [" + input["data_path"] + "] into Grakn ...")
-                load_data_into_grakn(input, session)
+                print("Loading from [" + input["data_path"] + "] into TypeDB ...")
+                load_data_into_typedb(input, session)
 
-def load_data_into_grakn(input, session):
+def load_data_into_typedb(input, session):
     items = parse_data_to_dictionaries(input)
 
     with session.transaction(TransactionType.WRITE) as transaction:
         for item in items:
-            graql_insert_query = input["template"](item)
-            print("Executing Graql Query: " + graql_insert_query)
-            transaction.query().insert(graql_insert_query)
+            typeql_insert_query = input["template"](item)
+            print("Executing TypeQL Query: " + typeql_insert_query)
+            transaction.query().insert(typeql_insert_query)
         transaction.commit()
 
-    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into TypeDB.\n")
 
 def company_template(company):
     return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
     # insert person
-    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    typeql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
     if "first_name" in person:
         # person is a customer
-        graql_insert_query += ", has is-customer true"
-        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-        graql_insert_query += ', has city "' + person["city"] + '"'
-        graql_insert_query += ", has age " + str(person["age"])
+        typeql_insert_query += ", has is-customer true"
+        typeql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        typeql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        typeql_insert_query += ', has city "' + person["city"] + '"'
+        typeql_insert_query += ", has age " + str(person["age"])
     else:
         # person is not a customer
-        graql_insert_query += ", has is-customer false"
-    graql_insert_query += ";"
-    return graql_insert_query
+        typeql_insert_query += ", has is-customer false"
+    typeql_insert_query += ";"
+    return typeql_insert_query
 
 def contract_template(contract):
     # match company
-    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    typeql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
     # match person
-    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    typeql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
     # insert contract
-    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-    return graql_insert_query
+    typeql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
+    return typeql_insert_query
 
 def call_template(call):
     # match caller
-    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    typeql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
     # match callee
-    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    typeql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
     # insert call
-    graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
+    typeql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
                            "$call has started-at " + call["started_at"] + "; " +
                            "$call has duration " + str(call["duration"]) + ";")
-    return graql_insert_query
+    return typeql_insert_query
 
 def parse_data_to_dictionaries(input):
     items = []
@@ -593,66 +595,66 @@ build_phone_call_graph(inputs)
 [tab:XML]
 <!-- test-example phone_calls_xml_migration.py -->
 ```python
-from grakn.client import Grakn, SessionType, TransactionType
+from typedb.client import TypeDB, SessionType, TransactionType
 import xml.etree.cElementTree as et
 
 def build_phone_call_graph(inputs):
-    with Grakn.core_client("localhost:1729") as client:
+    with TypeDB.core_client("localhost:1729") as client:
         with client.session("phone_calls", SessionType.DATA) as session:
             for input in inputs:
-                print("Loading from [" + input["data_path"] + "] into Grakn ...")
-                load_data_into_grakn(input, session)
+                print("Loading from [" + input["data_path"] + "] into TypeDB ...")
+                load_data_into_typedb(input, session)
 
-def load_data_into_grakn(input, session):
+def load_data_into_typedb(input, session):
     items = parse_data_to_dictionaries(input)
 
     with session.transaction(TransactionType.WRITE) as transaction:
         for item in items:
-            graql_insert_query = input["template"](item)
-            print("Executing Graql Query: " + graql_insert_query)
-            transaction.query().insert(graql_insert_query)
+            typeql_insert_query = input["template"](item)
+            print("Executing TypeQL Query: " + typeql_insert_query)
+            transaction.query().insert(typeql_insert_query)
         transaction.commit()
 
-    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into TypeDB.\n")
 
 def company_template(company):
     return 'insert $company isa company, has name "' + company["name"] + '";'
 
 def person_template(person):
     # insert person
-    graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
+    typeql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
     if "first_name" in person:
         # person is a customer
-        graql_insert_query += ", has is-customer true"
-        graql_insert_query += ', has first-name "' + person["first_name"] + '"'
-        graql_insert_query += ', has last-name "' + person["last_name"] + '"'
-        graql_insert_query += ', has city "' + person["city"] + '"'
-        graql_insert_query += ", has age " + str(person["age"])
+        typeql_insert_query += ", has is-customer true"
+        typeql_insert_query += ', has first-name "' + person["first_name"] + '"'
+        typeql_insert_query += ', has last-name "' + person["last_name"] + '"'
+        typeql_insert_query += ', has city "' + person["city"] + '"'
+        typeql_insert_query += ", has age " + str(person["age"])
     else:
         # person is not a customer
-        graql_insert_query += ", has is-customer false"
-    graql_insert_query += ";"
-    return graql_insert_query
+        typeql_insert_query += ", has is-customer false"
+    typeql_insert_query += ";"
+    return typeql_insert_query
 
 def contract_template(contract):
     # match company
-    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
+    typeql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
     # match person
-    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
+    typeql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
     # insert contract
-    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-    return graql_insert_query
+    typeql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
+    return typeql_insert_query
 
 def call_template(call):
     # match caller
-    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
+    typeql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
     # match callee
-    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
+    typeql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
     # insert call
-    graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
+    typeql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
                            "$call has started-at " + call["started_at"] + "; " +
                            "$call has duration " + str(call["duration"]) + ";")
-    return graql_insert_query
+    return typeql_insert_query
 
 def parse_data_to_dictionaries(input):
     items = []
@@ -713,7 +715,7 @@ build_phone_call_graph(inputs)
 
 Run `python3 migrate.py`
 
-Sit back, relax and watch the logs while the data starts pouring into Grakn.
+Sit back, relax and watch the logs while the data starts pouring into TypeDB.
 
 ### ... So Far With the Migration
 
@@ -721,11 +723,11 @@ We started off by setting up our project and positioning the data files.
 
 Next, we went on to set up the migration mechanism, one that was independent of the data format.
 
-Then, we went ahead and wrote the template functions whose only job was to construct a Graql insert query based on the data passed to them.
+Then, we went ahead and wrote the template functions whose only job was to construct a TypeQL insert query based on the data passed to them.
 
 After that, we learned how files with different data formats can be parsed into Python dictionaries.
 
-Lastly, we ran `python3 migrate.py` which fired the `build_phone_call_graph` function with the given `inputs`. This loaded the data into our Grakn knowledge graph.
+Lastly, we ran `python3 migrate.py` which fired the `build_phone_call_graph` function with the given `inputs`. This loaded the data into our TypeDB knowledge graph.
 
 ## Next
 

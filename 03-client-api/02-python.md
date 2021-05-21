@@ -1,39 +1,39 @@
 ---
 pageTitle: Client Python
-keywords: grakn, client, python
-longTailKeywords: grakn python client, grakn client python, client python, python client
-Summary: API Reference of Grakn Client Python.
+keywords: typedb, client, python
+longTailKeywords: typedb python client, typedb client python, client python, python client
+Summary: API Reference of TypeDB Client Python.
 ---
 ## Installation
 
-#### To use this client, you need a compatible Grakn Server running. Visit our [Compatibility Table](#dependencies)
+#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#dependencies)
 
 
 ```
-pip install grakn-client
+pip install typedb-client
 ```
 If multiple Python versions are available, you may wish to use
 ```
-pip3 install grakn-client
+pip3 install typedb-client
 ```
 
 ## Quickstart
-First make sure, the [Grakn server](/docs/running-grakn/install-and-run#start-the-grakn-server) is running.
+First make sure, the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 
-In the interpreter or in your source, import everything from `grakn.client`.
+In the interpreter or in your source, import everything from `typedb.client`.
 
 <!-- test-example social_network_python_client_a.py -->
 ```python
-from grakn.client import *
+from typedb.client import *
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example social_network_python_client_b.py -->
 ```python
-from grakn.client import *
+from typedb.client import *
 
-with Grakn.core_client("localhost:1729") as client:
+with TypeDB.core_client("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
         ## session is open
         pass
@@ -45,9 +45,9 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example social_network_python_client_c.py -->
 ```python
-from grakn.client import *
+from typedb.client import *
 
-with Grakn.core_client("localhost:1729") as client:
+with TypeDB.core_client("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
         ## creating a write transaction
         with session.transaction(TransactionType.WRITE) as write_transaction:
@@ -67,9 +67,9 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example social_network_python_client_d.py -->
 ```python
-from grakn.client import *
+from typedb.client import *
 
-with Grakn.core_client("localhost:1729") as client:
+with TypeDB.core_client("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
         ## Insert a Person using a WRITE transaction
         with session.transaction(TransactionType.WRITE) as write_transaction:
@@ -104,9 +104,9 @@ with Grakn.core_client("localhost:1729") as client:
 Remember that transactions always need to be closed. The safest way is to use the `with ...` syntax which auto-closes at the end of the `with` block. Otherwise, remember to call `transaction.close()` explicitly.
 </div>
 
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to Graql queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
-To view examples of running various Graql queries using the Grakn Client Python, head over to their dedicated documentation pages as listed below.
+To view examples of running various queries using the Python client, head over to their dedicated documentation pages as listed below.
 
 - [Insert](../11-query/03-insert-query.md)
 - [Get](../11-query/02-get-query.md)
@@ -118,7 +118,7 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.grakn language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.typedb language="python" %}
 
 {% include api/generic.html data=site.data.03_client_api.references.client language="python" %}
 
@@ -136,18 +136,19 @@ To view examples of running various Graql queries using the Grakn Client Python,
 
 ## Version Compatibility
 
-| Client Python  | Grakn Core                  | Grakn Cluster  | Python         |
-| :------------: | :-------------------------: | :----------:   | :------------: |
-| 2.0.1          | 2.0.2                       | 2.0.2          | \>= 3.6        |
-| 2.0.0          | 2.0.0, 2.0.1                | 2.0.0, 2.0.1   | \>= 3.6        |
-| 1.8.0          | 1.8.0 to 1.8.4              | N/A            | \>= 3.5, < 3.8 |
-| 1.7.2          | 1.7.1, 1.7.2                | N/A            | \>= 2.7        |
-| 1.7.1          | 1.7.1                       | N/A            | \>= 2.7        |      
-| 1.7.0          | 1.7.1                       | N/A            | \>= 2.7        |
-| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2          | \>= 2.7        |
-| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8          | \>= 2.7        |
-| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7 | \>= 2.7        |
-| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2          | \>= 2.7        |
-| 1.5.1          | 1.5.0                       | N/A            | \>= 2.7        |
-| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3   | \>= 3.6        |
-| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3          | \>= 3.6        |
+| Client Python  | Grakn Core/TypeDB           | Grakn Cluster/TypeDB Cluster  | Python         |
+| :------------: | :-------------------------: | :-------------------------:   | :------------: |
+| 2.1.0          | 2.1.0                       | 2.1.0                         | \>= 3.6        |
+| 2.0.1          | 2.0.2                       | 2.0.2                         | \>= 3.6        |
+| 2.0.0          | 2.0.0, 2.0.1                | 2.0.0, 2.0.1                  | \>= 3.6        |
+| 1.8.0          | 1.8.0 to 1.8.4              | N/A                           | \>= 3.5, < 3.8 |
+| 1.7.2          | 1.7.1, 1.7.2                | N/A                           | \>= 2.7        |
+| 1.7.1          | 1.7.1                       | N/A                           | \>= 2.7        |      
+| 1.7.0          | 1.7.1                       | N/A                           | \>= 2.7        |
+| 1.6.0 to 1.6.1 | 1.6.0 to 1.6.2              | 1.6.2                         | \>= 2.7        |
+| 1.5.4          | 1.5.8, 1.5.9                | 1.5.8                         | \>= 2.7        |
+| 1.5.3          | 1.5.2 to 1.5.7              | 1.5.2 to 1.5.7                | \>= 2.7        |
+| 1.5.2          | 1.5.2, 1.5.3                | 1.5.2                         | \>= 2.7        |
+| 1.5.1          | 1.5.0                       | N/A                           | \>= 2.7        |
+| 1.4.2          | 1.3.0 to 1.4.3              | 1.2.0, 1.4.3                  | \>= 3.6        |
+| 1.3.0 to 1.3.2 | 1.3.0                       | 1.4.3                         | \>= 3.6        |

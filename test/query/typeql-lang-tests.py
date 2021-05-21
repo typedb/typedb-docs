@@ -2,16 +2,16 @@ import re
 import sys
 from io import open
 
-graql_lang_test_template_path, output_path, markdown_files = sys.argv[1], sys.argv[2], sys.argv[3:]
+typeql_lang_test_template_path, output_path, markdown_files = sys.argv[1], sys.argv[2], sys.argv[3:]
 
-graql_lang_test_template = open(graql_lang_test_template_path, 'r').read()
+typeql_lang_test_template = open(typeql_lang_test_template_path, 'r').read()
 
-graql_lang_test_method_template = """
+typeql_lang_test_method_template = """
     @Test
     public void test() {
         // PAGE COMMENT PLACEHOLDER
         String queries = "// QUERIES PLACEHOLDER";
-        Stream<GraqlQuery> parsedQuery = Graql.parseQueries(queries);
+        Stream<TypeQLQuery> parsedQuery = TypeQL.parseQueries(queries);
         parsedQuery.forEach(query -> {
             System.err.println("before executing in test()" + query);
            runQuery(query);
@@ -20,18 +20,18 @@ graql_lang_test_method_template = """
     }
 """
 
-graql_lang_pattern_test_method_template = """
+typeql_lang_pattern_test_method_template = """
     @Test
     public void test() {
         // PAGE COMMENT PLACEHOLDER
         String queries = "// QUERIES PLACEHOLDER";
-        Pattern pattern = Graql.parsePattern(queries);
+        Pattern pattern = TypeQL.parsePattern(queries);
     }
 """
 
-pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```graql\n((\n|.)+?)```'
+pattern_to_find_snippets = ('<!-- test-(delay|ignore|example.*) -->\n```typeql\n((\n|.)+?)```'
                             +
-                            '|(```graql\n' +
+                            '|(```typeql\n' +
                             '((\n|.)+?)' +  # group containing snippet
                             '```)')
 
@@ -51,26 +51,26 @@ for snippets_in_page in snippets:
     for i, snippet in enumerate(snippets_in_page):
         page = snippet["page"]
         page = page.replace("/", "__").replace("-","_").split(".")[0]
-        test_name = "test__{0}__graql_native__{1}".format(page, i)
+        test_name = "test__{0}__typeql_native__{1}".format(page, i)
         # turn into a singe line + remove comments + escape double quotes
-        graql_lines = []
+        typeql_lines = []
         for line in snippet.get("code").split("\n"):
             line = line.replace("\t", "")
             if "#" not in line:
-                graql_lines.append(line.replace('"', "\\\""))
-        final_snippet = " ".join(graql_lines)
+                typeql_lines.append(line.replace('"', "\\\""))
+        final_snippet = " ".join(typeql_lines)
 
         keywords =["match", "define", "insert", "compute"]
         if any(keyword in final_snippet for keyword in keywords):
-            test_method = graql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+            test_method = typeql_lang_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
         else:
-            test_method = graql_lang_pattern_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
+            test_method = typeql_lang_pattern_test_method_template.replace("// PAGE COMMENT PLACEHOLDER", "// " + snippet.get("page"))  # change method name
 
         test_method = test_method.replace("test()", test_name + "()")  # change page name comment
         test_method = test_method.replace("// QUERIES PLACEHOLDER", final_snippet)  # add  objects
         test_methods += test_method
 
-graql_lang_test_class = graql_lang_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
+typeql_lang_test_class = typeql_lang_test_template.replace("// TEST METHODS PLACEHOLDER", test_methods)
 
 with open(output_path, "w") as output_file:
-    output_file.write(graql_lang_test_class)
+    output_file.write(typeql_lang_test_class)
