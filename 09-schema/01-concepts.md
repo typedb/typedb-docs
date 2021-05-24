@@ -793,7 +793,6 @@ Given the dependent nature of relations, before undefining the relation itself, 
 
 [tab:TypeQL]
 ```typeql
-undefine rule people-speak-the-same-language;
 undefine fluency sub relation;
 ```
 [tab:end]
@@ -801,9 +800,6 @@ undefine fluency sub relation;
 [tab:Java]
 <!-- test-delay -->
 ```java
-TypeQLUndefine first_query = TypeQL.undefine(
-  rule("people-speak-the-same-language")
-);
 TypeQLUndefine second_query = TypeQL.undefine(
   type("fluency").sub("relation")
 );
