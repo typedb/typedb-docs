@@ -37,7 +37,7 @@ build:
         Description=TypeDB
         [Service]
         Type=simple
-        ExecStart=/home/grabl/docs/dist/typedb-all-linux/typedb server
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
         EOM
         sudo mv typedb.service /etc/systemd/system/
 
@@ -57,7 +57,7 @@ build:
         Description=TypeDB
         [Service]
         Type=simple
-        ExecStart=/home/grabl/docs/dist/typedb-all-linux/typedb server
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
         EOM
         sudo mv typedb.service /etc/systemd/system/
 
@@ -77,7 +77,7 @@ build:
         Description=TypeDB
         [Service]
         Type=simple
-        ExecStart=/home/grabl/docs/dist/typedb-all-linux/typedb server
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
         EOM
         sudo mv typedb.service /etc/systemd/system/
 
@@ -98,7 +98,7 @@ build:
         Description=TypeDB
         [Service]
         Type=simple
-        ExecStart=/home/grabl/docs/dist/typedb-all-linux/typedb server
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
         EOM
         sudo mv typedb.service /etc/systemd/system/
 
@@ -124,7 +124,7 @@ build:
         Description=TypeDB
         [Service]
         Type=simple
-        ExecStart=/home/grabl/docs/dist/typedb-all-linux/typedb server
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
         EOM
         sudo mv typedb.service /etc/systemd/system/
 
