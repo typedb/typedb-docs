@@ -28,6 +28,10 @@ Next, configure Helm repo:
 helm repo add vaticle https://repo.vaticle.com/repository/helm/
 ```
 
+Additionally, if you choose to enable encrypted connections, you would need to install [`mkcert`](https://github.com/FiloSottile/mkcert/releases) and
+also obtain a TypeDB Cluster distribution from [GitHub Releases](https://github.com/vaticle/typedb-cluster/releases).
+
+
 ### Deployment
 
 Depending on the deployment method you choose, next steps to perform the deployment are as follows:
@@ -38,12 +42,38 @@ Depending on the deployment method you choose, next steps to perform the deploym
 
 **Use this mode if your an application resides within the same Kubernetes network.**
 
-
-Deploying TypeDB Cluster in non-exposed mode means it would only be accessible from within the same Kubernetes cluster. To do it, execute the command:
+Encryption can be enabled for this mode. Generated certificates need to be valid for `*.<helm-release-name>`,
+so for deployment named `typedb-cluster`, certificate needs to be valid for `*.typedb-cluster` hostnames.
+To generate them, execute these commands:
 
 ```
-helm install vaticle/typedb-cluster --generate-name \
+$ mkcert -cert-file rpc-certificate.pem -key-file rpc-private-key.pem "*.typedb-cluster"
+$ # unpack distribution of TypeDB Cluster into `dist` folder
+$ ./dist/typedb-cluster-all-<platform>-<version>/tool/create-encryption-mq-key.sh
+$ kubectl create secret generic typedb-cluster \
+  --from-file rpc-private-key.pem \
+  --from-file rpc-certificate.pem \
+  --from-file rpc-root-ca.pem="$(mkcert -CAROOT)/rootCA.pem" \
+  --from-file mq-secret-key \
+  --from-file mq-public-key
+```
+
+Note: Kubernetes secret need to be named the same as a deployment would be (`typedb-cluster`) and contain exactly
+these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`, `mq-public-key`)
+
+Deploying TypeDB Cluster in non-exposed mode means it would only be accessible from within the same Kubernetes cluster.
+To do it, execute the command:
+
+```
+helm install vaticle/typedb-cluster typedb-cluster \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false"
+```
+
+To enable encryption, append `encrypted` option to the argument:
+
+```
+helm install vaticle/typedb-cluster typedb-cluster \
+--set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false,encrypted=true"
 ```
 
 This command deploys a 3-node Cluster using 100Gi volumes for persistence. It would be accessible via `typedb-cluster-{0..2}.typedb-cluster`
@@ -54,29 +84,69 @@ hostname within the Kubernetes network.
 
 **Use this mode if you need to access the Cluster from outside of Kubernetes. For example, if you need to connect using Workbase or Console from your local machine.**
 
+Encryption can be enabled for this mode **only if you have a public domain**.
+Generated certificates need to be valid for `*.<helm-release-name>.<domain-name>` and `*.<helm-release-name>`,
+so for deployment named `typedb-cluster` and domain `example.com`,
+certificate needs to be valid for `*.typedb-cluster.example.com` and `*.typedb-cluster` hostnames.
 
-If an application does not use Kubernetes, TypeDB Cluster needs to be exposed on public IPs. This is handled by cloud provider of Kubernetes
-which would allocate and assign a public IP address to the services we're deploying. Each TypeDB Cluster pod will get an associated `LoadBalancer`,
+To generate them, execute these commands:
+
+```
+$ mkcert -cert-file rpc-certificate.pem -key-file rpc-private-key.pem "*.typedb-cluster.example.com" "*.typedb-cluster"
+$ # unpack distribution of TypeDB Cluster into `dist` folder
+$ ./dist/typedb-cluster-all-<platform>-<version>/tool/create-encryption-mq-key.sh
+$ kubectl create secret generic typedb-cluster \
+  --from-file rpc-private-key.pem \
+  --from-file rpc-certificate.pem \
+  --from-file rpc-root-ca.pem="$(mkcert -CAROOT)/rootCA.pem" \
+  --from-file mq-secret-key \
+  --from-file mq-public-key
+```
+
+Note: Kubernetes secret need to be named the same as a deployment would be (`typedb-cluster`) and contain exactly
+these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`, `mq-public-key`)
+
+
+If an application does not use Kubernetes, TypeDB Cluster needs to be exposed on public IPs or public domains (**required** for encryption).
+This is handled by cloud provider of Kubernetes  which would allocate and assign a public IP address to the services we're deploying. Each TypeDB Cluster pod will get an associated `LoadBalancer`,
 so for a 3-node TypeDB Cluster, 3 public IPs would be allocated. To do it, execute the command:
 
 ```
-helm install vaticle/typedb-cluster --generate-name \
+helm install vaticle/typedb-cluster typedb-cluster \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=true"
 ```
 
+To enable encryption, append `encrypted` and `domain` options to the argument:
+
+```
+helm install vaticle/typedb-cluster typedb-cluster \
+--set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false,encrypted=true,domain=example.com"
+```
+
+After deployment, you need to configure your DNS such that for every cluster node there is an A record pointing to its public IP:
+
+`typedb-cluster-0.typedb-cluster.example.com` => `external ip of typedb-cluster-0 service`
+`typedb-cluster-1.typedb-cluster.example.com` => `external ip of typedb-cluster-1 service`
+`typedb-cluster-2.typedb-cluster.example.com` => `external ip of typedb-cluster-2 service`
+
 This command deploys a 3-node Cluster using 100Gi volumes for persistence.
-It would be accessible via public IPs assigned to the services which can obtained via executing this command:
+
+Unencrypted cluster nodes would be accessible via public IPs assigned to the services which can obtained via executing this command:
 
 ```
 kubectl get svc -l external-ip-for=typedb-cluster \
 -o='custom-columns=NAME:.metadata.name,IP:.status.loadBalancer.ingress[0].ip'
 ```
+
+Encrypted cluster nodes would be accessible via `typedb-cluster-{0..2}.typedb-cluster.example.com` hostnames.
+
 [tab:end]
 
 [tab:Exposed Cluster - Minikube]
 
 **Use this mode for local development with TypeDB Cluster.**
 
+Encryption **cannot** be enabled in this configuration.
 
 Having installed and started [Minikube](https://minikube.sigs.k8s.io/), this is the command to deploy TypeDB Cluster:
 
