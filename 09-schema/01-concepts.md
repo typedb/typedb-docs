@@ -787,7 +787,7 @@ It's important to note that `undefine [label] sub [type] owns [attribute's label
 </div>
 
 ### Undefine a relation
-Given the dependent nature of relations, before undefining the relation itself, we must first undefine the association of its roles with the relation as well as the association of the role players with the roles. Given an `employment` relation, we would undefine it as shown below.
+Undefining a relation inherently undefines all of its roles. Therefore when a relation is undefined any types that were playing roles in that relation will no longer play those roles. Given an `fluency` relation we can undefine it as shown below.
 
 <div class="tabs dark">
 
