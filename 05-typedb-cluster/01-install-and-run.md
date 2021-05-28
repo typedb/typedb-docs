@@ -8,7 +8,7 @@ toc: false
 
 ## Obtaining Commercial License
 
-TypeDB Cluster is a commercial offering that provides production-grade experience - high-availability, scalability, and security. If you are interested, please contact sales to obtain the license.
+TypeDB Cluster is a commercial offering that provides production-grade experience - high-availability, scalability, and security. The license can be obtained from our [Sales team](commercial@vaticle.com).
 
 ## System Requirements
 TypeDB Cluster runs on Mac, Linux and Windows. The only requirement is Java (version 11 or higher) which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
