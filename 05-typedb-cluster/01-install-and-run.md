@@ -6,6 +6,10 @@ summary: Install and run the TypeDB Cluster on Linux, Mac or Windows.
 toc: false
 ---
 
+## Obtaining Commercial License
+
+TypeDB Cluster is a commercial offering that provides production-grade experience - high-availability, scalability, and security. If you are interested, please contact sales to obtain the license.
+
 ## System Requirements
 TypeDB Cluster runs on Mac, Linux and Windows. The only requirement is Java (version 11 or higher) which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
 
