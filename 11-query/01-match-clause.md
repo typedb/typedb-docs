@@ -414,7 +414,7 @@ TypeQLMatch.Filtered query_a = TypeQL.match(
 [tab:end]
 </div>
 
-Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as the concept types that subtype `post` directly (i.e. `media`, `comment`, `album` and `status-update`) or through any of its subtypes (i.e. `photo` and `video`).
+Running the above query on the `social_network` knowledge graph, returns direct subtypes of the `post` type itself (i.e. `media`, `comment`, `album` and `status-update`).
 
 ### A given type
 To match only the given type and not any of its subtypes, we use the `type` keyword.
