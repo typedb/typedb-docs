@@ -787,13 +787,13 @@ It's important to note that `undefine [label] sub [type] owns [attribute's label
 </div>
 
 ### Undefine a relation
-Undefining a relation inherently undefines all of its roles. Therefore when a relation is undefined any types that were playing roles in that relation will no longer play those roles. Given an `fluency` relation we can undefine it as shown below.
+Undefining a relation inherently undefines all of its roles. Therefore when a relation is undefined any types that were playing roles in that relation will no longer play those roles. Given a `marriage` relation type we can undefine it as shown below.
 
 <div class="tabs dark">
 
 [tab:TypeQL]
 ```typeql
-undefine fluency sub relation;
+undefine marriage sub relation;
 ```
 [tab:end]
 
@@ -801,7 +801,7 @@ undefine fluency sub relation;
 <!-- test-delay -->
 ```java
 TypeQLUndefine second_query = TypeQL.undefine(
-  type("fluency").sub("relation")
+  type("marriage").sub("relation")
 );
 ```
 [tab:end]
