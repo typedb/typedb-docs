@@ -6,6 +6,7 @@ define
 name sub attribute, value string;
 full-name sub attribute, value string;
 nickname sub attribute, value string;
+unemployed sub attribute, value boolean;
 
 title sub attribute,
   value string;
@@ -476,7 +477,8 @@ office sub entity,
 
 person sub entity,
   plays employment:employee,
-  plays mutual-employment:employee;
+  plays mutual-employment:employee,
+  plays mutual-profession:employee;
 
 ##########################
 ## EMPLOYMENT IN COMMON ##
@@ -499,7 +501,7 @@ mutual-profession sub relation,
   relates employee,
   relates job;
 
-rule people-work-do-the-same-job:
+rule people-can-do-the-same-job:
   when {
     $e1 (employee: $p1, job: $p) isa employment;
     $e2 (employee: $p2, job: $p) isa employment;
