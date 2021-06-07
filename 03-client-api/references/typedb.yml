@@ -69,11 +69,14 @@ methods:
           type: Array of String
     python:
       <<: *method-client-cluster
-      method: TypeDB.cluster_client(addresses, parallelisation)
+      method: TypeDB.cluster_client(addresses, credential, parallelisation)
       accepts:
         param1:
           <<: *accepts-client-cluster-addresses
           type: list of String
         param2:
+          <<: *accepts-client-cluster-credential
+          type: TypeDBCredential
+        param3:
           <<: *accepts-client-cluster-parallelisation
           default: 2
