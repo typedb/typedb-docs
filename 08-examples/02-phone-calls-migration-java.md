@@ -382,8 +382,8 @@ Now that we have the datapath and template defined for each of our data files, w
 import static com.vaticle.typeql.lang.TypeQL.*;
 import com.vaticle.typeql.lang.query.TypeQLInsert;
 import com.vaticle.typedb.client.TypeDB;
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
 
 public class PhoneCallsMigration {
 	abstract static class Input {...}
@@ -759,9 +759,9 @@ package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.TypeDB;
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
 import static com.vaticle.typeql.lang.TypeQL.*;
 import com.vaticle.typeql.lang.query.TypeQLInsert;
 
@@ -961,9 +961,9 @@ package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.TypeDB;
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
 import static com.vaticle.typeql.lang.TypeQL.*;
 import com.vaticle.typeql.lang.query.TypeQLInsert;
 
@@ -1169,9 +1169,9 @@ package com.vaticle.doc.example.phoneCalls;
 
 
 import com.vaticle.typedb.client.TypeDB;
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
 import com.vaticle.typeql.lang.query.TypeQLInsert;
 import static com.vaticle.typeql.lang.TypeQL.*;
 

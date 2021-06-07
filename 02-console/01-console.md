@@ -18,35 +18,37 @@ Go to the directory whe you have your `typedb-all` or `typedb-console` distribut
 ```
 cd <your_typedb_console_dir>/
 ./typedb console
+>
 ```
 
 
 ### Connecting to TypeDB Cluster
 
-<div class="note">
-[Warning]
-Connecting to TypeDB Cluster **requires** a special option, specifying the server address and port number:
-
+Go to the directory whe you have your `typedb-cluster-all` or `typedb-console` distribution unarchived, and run `./typedb console`
 ```
-./typedb console --cluster=127.0.0.1:1729
+cd <your_typedb_console_dir>/
+./typedb console --cluster=127.0.0.1:1729 --username=<username> --password --tls-enabled=<true|false>
+Enter password:
+>
 ```
-
-Failing to do so results in incorrect behaviour.
-This is a known issue which is going to be fixed soon.
-</div>
 
 ## Command line arguments
 
 You can provide several command-line arguments when running Console in the terminal.
 
 
-| Option                | Alias | Description                                                           |
-|-----------------------|-------|-----------------------------------------------------------------------|
-| `--cluster=<cluster>` |       | TypeDB Cluster address to which Console will connect to.              |
-| `--help`              | `-h`  | Show help message.                                                    |
-| `--script=<script>`   |       | Script with commands to run in the Console, without interactive mode. |
-| `--server=<server>`   |       | TypeDB address to which Console will connect to.                      |
-| `--version`           | `-V`  | Print version information and exit.                                   |
+| Option                  | Alias | Description                                                           |
+|-------------------------|-------|-----------------------------------------------------------------------|
+| `--server=<address>`    |       | Address to which Console will connect to. (TypeDB only)               |
+| `--cluster=<address>`   |       | Address to which Console will connect to. (TypeDB Cluster only)       |
+| `--username=<username>` |       | Username (TypeDB Cluster only)                                        |
+| `--password`            |       | Password (TypeDB Cluster only)                                        |
+| `--tls-enabled`         |       | Whether to connnect with TLS encryption (TypeDB Cluster only)         |
+| `--tls-root-ca=<path>`  |       | Path to the TLS root CA file (TypeDB Cluster only)                    |
+| `--help`                | `-h`  | Show help message.                                                    |
+| `--command=<commands>`  |       | Commands to run in the Console, without interactive mode              |
+| `--script=<script>`     |       | Script with commands to run in the Console, without interactive mode. |
+| `--version`             | `-V`  | Print version information and exit.                                   |
 
 ## Console commands
 
@@ -62,6 +64,9 @@ Give any of these commands inside a console at the `>` prompt.
 | `database list`                           | List the databases on the server                                                                                       |
 | `database delete <db>`                    | Delete a database with name `<db>` on the server                                                                       |
 | `database schema <db>`                    | Print schema of a database with name `<db>` on the server                                                              |
+| `user create <username>`                  | Create a user with name `<username>` on the server (TypeDB Cluster only)                                               |
+| `user list`                               | List the users on the server (TypeDB Cluster only)                                                                     |
+| `user delete <username>`                  | Delete a user with name `<username>` on the server (TypeDB Cluster only)                                               |
 | `transaction <db> schema⎮data read⎮write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.   |
 | `help`                                    | Print help menu                                                                                                        |
 | `clear`                                   | Clear console screen                                                                                                   |
@@ -90,22 +95,17 @@ The following flags can be passed to the `transaction <db> schema⎮data read⎮
 transaction typedb data read --infer true
 ```
 
-| Option                          | Allowed values | Description                                   |
-|---------------------------------|----------------|-----------------------------------------------|
-| `--infer`                       | `true⎮false`   | Enable or disable inference                   |
-| `--trace-inference`             | `true⎮false`   | Enable or disable inference tracing           |
-| `--explain`                     | `true⎮false`   | Enable or disable inference explanations      |
-| `--parallel`                    | `true⎮false`   | Enable or disable parallel query execution    |
-| `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                     |
-| `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch         |
-| `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                |
-| `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms) |
-
-When connecting to TypeDB Cluster, the following flags are additionally available:
-
-| Option               | Allowed values | Description                              |
-|----------------------|----------------|------------------------------------------|
-| `--read-any-replica` | true|false     | Allow or disallow reads from any replica |
+| Option                          | Allowed values | Description                                                    |
+|---------------------------------|----------------|----------------------------------------------------------------|
+| `--infer`                       | `true⎮false`   | Enable or disable inference                                    |
+| `--trace-inference`             | `true⎮false`   | Enable or disable inference tracing                            |
+| `--explain`                     | `true⎮false`   | Enable or disable inference explanations                       |
+| `--parallel`                    | `true⎮false`   | Enable or disable parallel query execution                     |
+| `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                                      |
+| `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch                          |
+| `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                                 |
+| `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms)                  |
+| `--read-any-replica`            | `true|false`   | Allow or disallow reads from any replica (TypeDB Cluster only) |
 
 
 ### Non-interactive mode

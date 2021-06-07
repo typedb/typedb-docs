@@ -134,9 +134,9 @@ The result contains the following answers:
 package com.vaticle.doc.examples;
 
 import com.vaticle.typedb.client.TypeDB;
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
 
 import static com.vaticle.typeql.lang.TypeQL.*;
 import com.vaticle.typeql.lang.query.*;

@@ -48,8 +48,8 @@ Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and 
 package com.vaticle.doc.examples;
 
 
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
 import com.vaticle.typedb.client.TypeDB;
 
 public class TypeDBQuickstartA {
@@ -72,9 +72,9 @@ Create transactions to use for reading and writing data.
 ```java
 package com.vaticle.doc.examples;
 
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
 import com.vaticle.typedb.client.TypeDB;
 
 public class TypeDBQuickstartB {
@@ -107,9 +107,9 @@ Running basic retrieval and insertion queries.
 package com.vaticle.doc.examples;
 
 
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
+import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBSession;
+import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
 import com.vaticle.typedb.client.TypeDB;
 import com.vaticle.typeql.lang.TypeQL;
 import static com.vaticle.typeql.lang.TypeQL.*;
@@ -191,6 +191,7 @@ To view examples of running various TypeQL queries using the Java client, head o
 
 | Client Java | Grakn Core/TypeDB  | Grakn Cluster/TypeDB Cluster |
 | :---------: | :-----------------:| :--------------------------: |
+| 2.1.1       | 2.1.2              | 2.1.2                        |
 | 2.1.0       | 2.1.0              | 2.1.0                        |
 | 2.0.1       | 2.0.2              | 2.0.2                        |
 | 2.0.0       | 2.0.0, 2.0.1       | 2.0.0, 2.0.1                 |
