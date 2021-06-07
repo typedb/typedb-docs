@@ -62,11 +62,14 @@ methods:
       method: TypeDB.clusterClient(Set<String> addresses, TypeDBCredential credential, int parallelisation);
     javascript:
       <<: *method-client-cluster
-      method: TypeDB.clusterClient(addresses);
+      method: clusterClient(addresses, credential)
       accepts:
         param1:
           <<: *accepts-client-cluster-addresses
           type: Array of String
+        param1:
+          <<: *accepts-client-cluster-credential
+          type: TypeDBCredential
     python:
       <<: *method-client-cluster
       method: TypeDB.cluster_client(addresses, credential, parallelisation)
