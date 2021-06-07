@@ -15,7 +15,7 @@ pattern_to_find_template_calls = '\{%\sinclude\s.*?\s%\}'
 
 ## TODO: require at least one `.md` to exist within the link path, that is accepts: [aaa](../bb.md)
 ## the \s at the start ensures that the format something["key"](argument) can still be used within code blocks
-pattern_to_find_invalid_links = '\s(\[[^\]]*?\]\((?!.*(../|#|http://|https://)).*?\))' ## accepts: [aaa](../bb), [aaa](#bb), [aaa](http://bb) and [aaa](https://bb)
+pattern_to_find_invalid_links = '\s(\[[^\]]*?\]\((?!.*(../|#|http://|https://|mailto:)).*?\))' ## accepts: [aaa](../bb), [aaa](#bb), [aaa](http://bb), [aaa](https://bb), and [aaa](mailto:bb)
 
 pages = {}
 
