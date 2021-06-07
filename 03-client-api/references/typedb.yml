@@ -59,7 +59,7 @@ methods:
         - "[Client](#client)"
     java:
       <<: *method-client-cluster
-      method: TypeDB.clusterClient(Set<String> addresses, int parallelisation);
+      method: TypeDB.clusterClient(Set<String> addresses, TypeDBCredential credential, int parallelisation);
     javascript:
       <<: *method-client-cluster
       method: TypeDB.clusterClient(addresses);
