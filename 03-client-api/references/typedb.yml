@@ -49,7 +49,12 @@ methods:
           description: All addresses (host:port) on which TypeDB Cluster nodes are running
           type: Set<String>
           required: true
-        param2: &accepts-client-cluster-parallelisation
+        param2: &accepts-client-cluster-credential
+          name: credential
+          description: User credential and TLS encryption setting
+          type: TypeDBCredential
+          required: true
+        param3: &accepts-client-cluster-parallelisation
           name: parallelisation
           description: The number of threads to use for server communication
           type: int
@@ -60,14 +65,23 @@ methods:
     java:
       <<: *method-client-cluster
       method: TypeDB.clusterClient(Set<String> addresses, TypeDBCredential credential, int parallelisation);
+      accepts:
+        param1:
+          <<: *accepts-client-cluster-addresses
+          type: Set of String
+        param2:
+          <<: *accepts-client-cluster-credential
+          type: TypeDBCredential
+        param3:
+          <<: *accepts-client-cluster-parallelisation
     javascript:
       <<: *method-client-cluster
-      method: clusterClient(addresses, credential)
+      method: TypeDB.clusterClient(addresses, credential)
       accepts:
         param1:
           <<: *accepts-client-cluster-addresses
           type: Array of String
-        param1:
+        param2:
           <<: *accepts-client-cluster-credential
           type: TypeDBCredential
     python:
