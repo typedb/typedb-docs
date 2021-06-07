@@ -95,22 +95,17 @@ The following flags can be passed to the `transaction <db> schema⎮data read⎮
 transaction typedb data read --infer true
 ```
 
-| Option                          | Allowed values | Description                                   |
-|---------------------------------|----------------|-----------------------------------------------|
-| `--infer`                       | `true⎮false`   | Enable or disable inference                   |
-| `--trace-inference`             | `true⎮false`   | Enable or disable inference tracing           |
-| `--explain`                     | `true⎮false`   | Enable or disable inference explanations      |
-| `--parallel`                    | `true⎮false`   | Enable or disable parallel query execution    |
-| `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                     |
-| `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch         |
-| `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                |
-| `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms) |
-
-When connecting to TypeDB Cluster, the following flags are additionally available:
-
-| Option               | Allowed values | Description                              |
-|----------------------|----------------|------------------------------------------|
-| `--read-any-replica` | true|false     | Allow or disallow reads from any replica |
+| Option                          | Allowed values | Description                                                    |
+|---------------------------------|----------------|----------------------------------------------------------------|
+| `--infer`                       | `true⎮false`   | Enable or disable inference                                    |
+| `--trace-inference`             | `true⎮false`   | Enable or disable inference tracing                            |
+| `--explain`                     | `true⎮false`   | Enable or disable inference explanations                       |
+| `--parallel`                    | `true⎮false`   | Enable or disable parallel query execution                     |
+| `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                                      |
+| `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch                          |
+| `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                                 |
+| `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms)                  |
+| `--read-any-replica`            | `true|false`   | Allow or disallow reads from any replica (TypeDB Cluster only) |
 
 
 ### Non-interactive mode
