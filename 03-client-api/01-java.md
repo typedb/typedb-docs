@@ -191,6 +191,7 @@ To view examples of running various TypeQL queries using the Java client, head o
 
 | Client Java | Grakn Core/TypeDB  | Grakn Cluster/TypeDB Cluster |
 | :---------: | :-----------------:| :--------------------------: |
+| 2.1.1       | 2.1.2              | 2.1.2                        |
 | 2.1.0       | 2.1.0              | 2.1.0                        |
 | 2.0.1       | 2.0.2              | 2.0.2                        |
 | 2.0.0       | 2.0.0, 2.0.1       | 2.0.0, 2.0.1                 |
