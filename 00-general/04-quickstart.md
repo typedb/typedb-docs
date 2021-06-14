@@ -135,12 +135,15 @@ package com.vaticle.doc.examples;
 
 import com.vaticle.typedb.client.TypeDB;
 import com.vaticle.typedb.client.api.connection.TypeDBClient;
+import com.vaticle.typedb.client.api.connection.TypeDBOptions;
 import com.vaticle.typedb.client.api.connection.TypeDBSession;
 import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
 
 import static com.vaticle.typeql.lang.TypeQL.*;
+
 import com.vaticle.typeql.lang.query.*;
 import com.vaticle.typedb.client.api.answer.ConceptMap;
+
 import java.util.stream.Stream;
 
 import java.util.List;
@@ -148,25 +151,26 @@ import java.util.List;
 public class SocialNetworkQuickstartQuery {
     public static void main(String[] args) {
         TypeDBClient client = TypeDB.coreClient("localhost:1729");
-        TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA);
-        TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
+        try (TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA)) {
+            
+            TypeDBOptions options = TypeDBOptions.core().infer(true); // enable reasoning
+            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE, options)) {
+                
+                TypeQLMatch query = match(
+                        var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
+                        var("per").has("full-name", var("per-fn")),
+                        var("org").has("name", var("org-n"))
+                );
 
-        TypeQLMatch query = match(
-                var().rel("employer", var("org")).rel("employee", var("per")).isa("employment"),
-                var("per").has("full-name", var("per-fn")),
-                var("org").has("name", var("org-n"))
-        );
+                Stream<ConceptMap> answers = transaction.query().match(query);
 
-        Stream<ConceptMap> answers = transaction.query().match(query);
-
-        answers.forEach(answer -> {
-            System.out.println(answer.get("per-fn").asAttribute().getValue());
-            System.out.println(answer.get("org-n").asAttribute().getValue());
-            System.out.println(" - - - - - - - - ");
-        });
-
-        transaction.close();
-        session.close();
+                answers.forEach(answer -> {
+                    System.out.println(answer.get("per-fn").asAttribute().getValue());
+                    System.out.println(answer.get("org-n").asAttribute().getValue());
+                    System.out.println(" - - - - - - - - ");
+                });
+            }
+        }
     }
 }
 ```
@@ -179,7 +183,9 @@ from typedb.client import *
 
 with TypeDB.core_client("localhost:1729") as client:
     with client.session("social_network", SessionType.DATA) as session:
-      with session.transaction(TransactionType.READ) as transaction:
+      options = TypeDBOptions.core()
+      options.infer = True # enable reasoning
+      with session.transaction(TransactionType.READ, options) as transaction:
         query = '''
           match
             $pos isa media;
@@ -200,13 +206,15 @@ with TypeDB.core_client("localhost:1729") as client:
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDBOptions } = require("typedb-client/api/connection/TypeDBOptions");
 
 async function getAverageSalaryAt (orgName) {
     const client = TypeDB.coreClient("localhost:1729");
 	const session = await client.session("social_network", SessionType.DATA);
-	const transaction = await session.transaction(TransactionType.READ)
+	const options = TypeDBOptions.core({infer: true}); // enable reasoning
+	const transaction = await session.transaction(TransactionType.READ, options)
 	const query = `
 		match
 			$org isa organisation, has name "${orgName}";

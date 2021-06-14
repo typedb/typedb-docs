@@ -50,8 +50,8 @@ All code that follows is to be written in `phone_calls/migrate.js`.
 
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 const inputs = [
     {
@@ -293,8 +293,8 @@ Via the terminal, while in the `phone_calls` directory, run `npm install papapar
 
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 const fs = require("fs");
 const papa = require("papaparse");
 ...
@@ -344,8 +344,8 @@ Via the terminal, while in the `phone_calls` directory, run `npm install stream-
 
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -384,8 +384,8 @@ Via the terminal, while in the `phone_calls` directory, run `npm install xml-str
 
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 ...
@@ -454,8 +454,8 @@ Here is how our `migrate.js` looks like for each data format.
 <!-- test-example phoneCallsCSVMigration.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 const fs = require("fs");
 const papa = require("papaparse");
 
@@ -592,8 +592,8 @@ buildPhoneCallGraph();
 <!-- test-example phoneCallsJSONMigration.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -732,8 +732,8 @@ buildPhoneCallGraph();
 <!-- test-example phoneCallsXMLMigration.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 

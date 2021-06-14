@@ -128,8 +128,8 @@ public class PhoneCallsFirstQuery {
 <!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -309,8 +309,8 @@ public class PhoneCallsSecondQuery {
 <!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -485,8 +485,8 @@ public class PhoneCallsThirdQuery {
 <!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -665,8 +665,8 @@ public class PhoneCallsForthQuery {
 <!-- test-example phoneCallsForthQuery.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -882,8 +882,8 @@ public class PhoneCallsFifthQuery {
 <!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function ExecuteMatchQuery() {
 	const client = TypeDB.coreClient("localhost:1729");
