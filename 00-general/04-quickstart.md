@@ -200,8 +200,8 @@ with TypeDB.core_client("localhost:1729") as client:
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function getAverageSalaryAt (orgName) {
     const client = TypeDB.coreClient("localhost:1729");

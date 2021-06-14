@@ -29,7 +29,7 @@ Instantiate a client and open a session.
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
 
 async function openSession (database) {
 	const client = TypeDB.coreClient("localhost:1729");
@@ -48,8 +48,8 @@ Create transactions to use for reading and writing data.
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function createTransactions (database) {
 	const client = TypeDB.coreClient("localhost:1729");
@@ -78,8 +78,8 @@ Running basic retrieval and insertion queries.
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
 const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/TypeDBTransaction");
+const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 
 async function runBasicQueries(database) {
 	const client = TypeDB.coreClient("localhost:1729");
