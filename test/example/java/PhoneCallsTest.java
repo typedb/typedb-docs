@@ -31,7 +31,6 @@ public class PhoneCallsTest {
         TypeDBSession session = client.session("phone_calls", TypeDBSession.Type.SCHEMA);
         TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 
-
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("files/phone-calls/schema.tql"));
             String query = new String(encoded, StandardCharsets.UTF_8);

@@ -130,7 +130,6 @@ The result contains the following answers:
 #### Retrieve all employments using [Client Java](../03-client-api/01-java.md)
 
 <!-- test-example SocialNetworkQuickstartQuery.java -->
-
 ```java
 package com.vaticle.doc.examples;
 
