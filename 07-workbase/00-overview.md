@@ -12,7 +12,7 @@ Workbase allows us to execute TypeQL [`match`](../11-query/01-match-clause.md) q
 Whether you need a tool to test and experiment with your newly created TypeDB knowledge graph, or that you prefer a graphical interface for reading data from TypeDB, you will find Workbase extremely useful.
 
 ## Download Workbase
-TypeDB Workbase is available for Linux, Mac and Windows. Head over to the [Download Center](https://vaticle.com/download#workbase) to download and install the latest release of Workbase.
+TypeDB Workbase is available for Linux, Mac and Windows. Head over to the [Download Center](https://vaticle.com/download#typedb-workbase) to download and install the latest release of Workbase.
 
 
 ## Version Compatibility
