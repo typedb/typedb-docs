@@ -14,7 +14,7 @@ The TypeDB Console, along with the [TypeDB Clients](../03-client-api/00-overview
 
 ### Connecting to TypeDB 
 
-Go to the directory whe you have your `typedb-all` or `typedb-console` distribution unarchived, and run `./typedb console`
+Go to the directory where you have your `typedb-all` or `typedb-console` distribution unarchived, and run `./typedb console`
 ```
 cd <your_typedb_console_dir>/
 ./typedb console
