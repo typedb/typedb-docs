@@ -19,7 +19,7 @@ templatePath: 03-client-api/references/
 </repositories>
 <dependencies>
     <dependency>
-        &lt;groupId&gt;com.vaticle.typedb.client&lt;/groupId&gt;
+        &lt;groupId&gt;com.vaticle.typedb&lt;/groupId&gt;
         &lt;artifactId&gt;typedb-client&lt;/artifactId&gt;
         <version>{version}</version>
     </dependency>
