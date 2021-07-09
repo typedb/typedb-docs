@@ -16,7 +16,7 @@ The main differences between TypeDB and graph databases can be summarised as:
 2. **TypeDB contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
 3. **TypeDB is an abstraction layer over a graph.** TypeDB leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
 
-There are several different graph technologies available. Some of these are based on RDF and SPARQL, others are imperative, path-based query languages based on Gremlin. Most popular, however, is Cypher, which has grown to become the most adopted graph database query language for property graphs. For this reason, in this comparison we'll just focus on Cypher and labelled property graphs. For a comparison of TypeDB to Semantic Web Technologies, you can read [this](https://docs.vaticle.com/docs/comparisons/semantic-web-and-typeql). 
+There are several different graph technologies available. Some of these are based on RDF and SPARQL, others are imperative, path-based query languages based on Gremlin. Most popular, however, is Cypher, which has grown to become the most adopted graph database query language for property graphs. For this reason, in this comparison we'll just focus on Cypher and labelled property graphs. For a comparison of TypeDB to Semantic Web Technologies, you can read [this](https://docs.vaticle.com/docs/comparisons/semantic-web-and-typedb). 
 
 ## The Challenges of Working with a Graph Database
 
