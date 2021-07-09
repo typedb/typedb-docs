@@ -69,7 +69,7 @@ As relationships are directed, they always have a start and an end node. To give
 However, the graph model doesn't directly map to a conceptual model or ER diagram, as nodes and edges don't always directly map to entities and relationships. Graph databases also offer no native support for concepts such as, for example, ternary relations, n-ary relations or roles. Therefore, to implement a graph model, we must first go through a normalisation process and map our conceptual model (ER diagram) to the graph model. 
 
 ![Graph Database Normalisation](../images/comparisons/graph-normalisation.png)
-*In a graph database we need to map our conceptual model the graph model.*
+*In a graph database we need to map our conceptual model to the graph model.*
 
 ### Concept Level Modelling
 
@@ -77,7 +77,7 @@ TypeDB provides a concept-level schema that fully implements the Entity-Relation
 
 Unlike in a graph database, this means that we can map any ER Diagram directly to how we implement it in TypeQL, avoiding the need to go through a normalisation process. In TypeDB, we create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we implement it later in code. By modelling at the conceptual level using a type system, we avoid the need to go through a normalisation process that would otherwise be required in a graph database. 
 
-![TypeDB abstraction](../images/comparisons/typeql-abstraction-over-graph.png)
+![TypeDB abstraction](../images/comparisons/typedb-abstraction-over-graph.png)
 *TypeDB's type system is a direct implementation of a conceptual model.*
 
 
@@ -131,7 +131,7 @@ This is how we would create a `supplying` (intermediary) node that would connect
 
 In TypeDB, instead of creating an intermediate node, we create one `supplying` relation that relates to the supplier, buyer and the part that's being supplied:
 
-![TypeDB ternary example](../images/comparisons/typeql-ternary-example.png)
+![TypeDB ternary example](../images/comparisons/typedb-ternary-example.png)
 
 <!-- test-ignore -->
 ```typeql
@@ -172,7 +172,7 @@ In a graph database, we cannot create nested relations. Instead, we can model a 
 
 TypeDB's type system natively supports nested relations as modelling constructs. For the model above, we would create a relation `located` that connects the relation `marriage` with the `city` "London". This would look like this:
 
-![TypeDB nested relation](../images/comparisons/typeql-nested-relation.png)
+![TypeDB nested relation](../images/comparisons/typedb-nested-relation.png)
 
 <!-- test-ignore -->
 ```typeql
@@ -633,7 +633,7 @@ when {
   (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa alcohol-risk-factor;
 };
 
-rule heriditary-risk-of-diabetes:
+rule hereditary-risk-of-diabetes:
 when {
     $person isa person;
     $parent isa person;
