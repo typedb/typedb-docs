@@ -135,8 +135,8 @@ build:
         sudo systemctl daemon-reload
         sudo systemctl start typedb
 
-        bazel run //test/example/python:phone-calls
-        bazel run //test/example/python:social-network
+        bazel run //test/example/python:phone-calls --action_env=PATH
+        bazel run //test/example/python:social-network --action_env=PATH
     test-links:
       image: vaticle-ubuntu-20.04
       type: foreground
