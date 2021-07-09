@@ -69,7 +69,7 @@ As relationships are directed, they always have a start and an end node. To give
 However, the graph model doesn't directly map to a conceptual model or ER diagram, as nodes and edges don't always directly map to entities and relationships. Graph databases also offer no native support for concepts such as, for example, ternary relations, n-ary relations or roles. Therefore, to implement a graph model, we must first go through a normalisation process and map our conceptual model (ER diagram) to the graph model. 
 
 ![Graph Database Normalisation](../images/comparisons/graph-normalisation.png)
-*In a graph database we need to map our conceptual model the graph model.*
+*In a graph database we need to map our conceptual model to the graph model.*
 
 ### Concept Level Modelling
 
@@ -633,7 +633,7 @@ when {
   (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa alcohol-risk-factor;
 };
 
-rule heriditary-risk-of-diabetes:
+rule hereditary-risk-of-diabetes:
 when {
     $person isa person;
     $parent isa person;
