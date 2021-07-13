@@ -617,11 +617,11 @@ match $john isa person, has name "John Doe"; $disease isa disease;
 ($john, $disease) isa risk-factor; get $disease;
 ```
 
-This `risk-factor` relation is an inferred relation that contains the logic necessary to retrieve which diseases someone is at risk of. We split these out into three separate rules in order to modularise the logic:
+The `risk-factor` relation is an inferred relation that contains the logic necessary to retrieve which diseases someone is at risk of. This logic is represented into four separate rules in order to modularise our logic. Finally, in order to represent each individual risk factor, the `risk-factor` relation is sub-typed into three separate relations: `alcohol-risk-factor`, `hereditary-risk-factor` and `smoking-risk-factor`. The four rules are shown below:
 
 <!-- test-ignore -->
 ```typeql
-rule alcohol-risk-of-diabetes:
+rule alcohol-risk-diseases:
 when {
     $person isa person;
     $c(consumer: $person, consumed-substance: $substance) isa consumption, has units-per-week $units;
@@ -630,7 +630,7 @@ when {
     $disease isa disease, has name "Diabetes Type II";
     $disease2 isa disease, has name "Hypoglycemia";
 } then {
-  (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa alcohol-risk-factor;
+    (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa alcohol-risk-factor;
 };
 
 rule hereditary-risk-of-diabetes:
@@ -640,12 +640,22 @@ when {
     (parent: $parent, child: $person) isa parentship;
     (patient: $parent, diagnosed-disease: $disease) isa diagnosis;
     $disease isa disease, has name "Diabetes Type II";
-    $disease2 isa disease, has name "Arthritis";
 } then {
-  (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2) isa hereditary-risk-factor;
+    (person-at-risk: $person, risked-disease: $disease) isa hereditary-risk-factor;
 };
 
-rule smoking-risk-of-multiple-sclerosis:
+rule hereditary-risk-of-arthritis:
+when {
+    $person isa person;
+    $parent isa person;
+    (parent: $parent, child: $person) isa parentship;
+    (patient: $parent, diagnosed-disease: $disease) isa diagnosis;
+    $disease isa disease, has name "Arthritis";
+} then {
+    (person-at-risk: $person, risked-disease: $disease) isa hereditary-risk-factor;
+};
+
+rule smoking-risk-diseases:
 when {
     $person isa person;
     (consumer: $person, consumed-substance: $substance) isa consumption, has units-per-week $units;
@@ -658,8 +668,8 @@ when {
     $disease5 isa disease, has name "Chronic Obstructive Pulmonary Disease";
     $disease6 isa disease, has name "Heart Disease";
 } then {
-  (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2, risked-disease: $disease3,
-  risked-disease: $disease4, risked-disease: $disease5, risked-disease: $disease6) isa smoking-risk-factor;
+    (person-at-risk: $person, risked-disease: $disease, risked-disease: $disease2, risked-disease: $disease3, 
+    risked-disease: $disease4, risked-disease: $disease5, risked-disease: $disease6) isa smoking-risk-factor;
 };
 ```
 
