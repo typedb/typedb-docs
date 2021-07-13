@@ -85,7 +85,7 @@ In the sections that follow, by looking at various real-world examples, we learn
 In the following sections, we learn how to define a schema using TypeQL code in a `schema.tql` file. However, defining a schema can also be done programmatically (at runtime) using one of the TypeDB Clients - [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
 
 ## Load the schema
-Once we have defined the schema, the next immediate step is to load it into TypeDB. We can do this using the TypeDB Console that comes in the TypeDB distribution. The command looks something like `typedb console -f <path to schema file>`, where `<path to schema file>` is the location of the `schema.tql`. The  [TypeDB Console](../02-console/01-console.md) documentation provides further options.
+Once we have defined the schema, the next immediate step is to load it into TypeDB. We can do this using the TypeDB Console that comes in the TypeDB distribution. The command looks something like `typedb console --command="transaction <database name> schema write" --command="source <path to schema file>" --command="commit"`, where `<path to schema file>` is the location of the `schema.tql` and <database name> is the naname of the database you want to load schema to (should already exist). The [TypeDB Console](../02-console/01-console.md) documentation provides further options.
 
 ## Migrate Data
 To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a TypeDB knowledge graph, check out the [migration tutorials](../08-examples/00-phone-calls-overview.md) in the language of your choice.
