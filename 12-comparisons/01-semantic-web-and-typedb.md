@@ -230,9 +230,9 @@ What we can see is that the variable `$m` is assigned to the entity type `man`, 
 
 ### What is SPARQL
 
-SPARQL is a W3C-standardised language to query for information from databases that can be mapped to RDF. Similar to SQL, SPARQL allows to insert and query for data. Unlike SQL, queries aren't constrained to just one database and can be federated across multiple HTTP endpoints. 
+SPARQL is a W3C-standardised language to query for information from databases that can be mapped to RDF. Similar to SQL, SPARQL inserting and querying for data. Unlike SQL, queries aren't constrained to just one database and can be federated across multiple HTTP endpoints. 
 
-As TypeDB's query language, TypeQL is the equivalent query language. As in SPARQL, TypeQL allows to insert and query for data. However, given that TypeQL is not built as an open Web language, it doesn't allow querying across multiple endpoints natively (this can be done with one of TypeDB's client drivers). As such, TypeQL is more similar to SQL and other traditional database management systems. 
+As TypeDB's query language, TypeQL is the equivalent query language. As in SPARQL, TypeQL inserting and querying for data. However, given that TypeQL is not built as an open Web language, it doesn't allow querying across multiple endpoints natively (this can be done with one of TypeDB's client drivers). As such, TypeQL is more similar to SQL and other traditional database management systems. 
 
 ### Inserting data with SPARQL
 
@@ -358,7 +358,7 @@ As RDF is just a data exchange model, on its own it's "schemaless". That's why R
 
 ### RDFS Classes
 
-RDFS extends the RDF vocabulary and allows to describe taxonomies of classes and properties. An RDFS class declares an RDFS resource as a class for other resources. We can abbreviate this using `rdfs:Class`. Using XML, creating a class `animal` with a sub-class `horse` would look like this: 
+RDFS extends the RDF vocabulary and to allow describing taxonomies of classes and properties. An RDFS class declares an RDFS resource as a class for other resources. We can abbreviate this using `rdfs:Class`. Using XML, creating a class `animal` with a sub-class `horse` would look like this: 
 
 ```xml
 <?xml version="1.0"?>
@@ -422,7 +422,7 @@ part-time-employment sub employment;
 
 As the examples show, RDFS mainly describes constructs for types of objects (`Classes`), inheriting from one another (`subClasses`), properties that describe objects (`Properties`), and inheriting from one another (`subProperty`) as well. This sub-typing behaviour can be obtained with TypeQL's `sub` keyword, which can be used to create type hierarchies of any `thing` (`entities`, `relations`, and `attributes`) in TypeDB.
 
-However, to create a one-to-one mapping between a `class` to an `entity` in TypeDB or a `property` to a `relation` in TypeDB, despite their seeming similarities, should not always be made. This is because the model in RDF is built using a lower level data model, working in triples, while TypeDB enables to model at a higher level.
+However, to create a one-to-one mapping between a `class` to an `entity` in TypeDB or a `property` to a `relation` in TypeDB, despite their seeming similarities, should not always be made. This is because the model in RDF is built using a lower level data model, working in triples, while TypeDB enables us to model at a higher level.
 
 ### Multiple Inheritance
 
@@ -558,11 +558,11 @@ Open world assumptions lend themselves well for the open-ended web, which includ
 
 Everything put together, OWL has a very high entry threshold for non-logicians. As it's based on description logic, developers avoid using OWL as it's non-trivial to understand the language and its intended behaviour. Because of this, TypeDB's knowledge representation formalisms remain lightweight, providing semantic capabilities to a much larger audience than that of OWL. **In other words, TypeDB is simpler to use than OWL.** 
 
-Here we look at some common axioms in OWL and comapre them to TypeDB. This is not an exhaustive list, and is provided to help the user understand how to think of migrating to TypeDB.
+Here we look at some common axioms in OWL and compare them to TypeDB. This is not an exhaustive list, and is provided to help the user understand how to think of migrating to TypeDB.
 
 ### Restrictions
 
-A key functionality of OWL is to define restriction classes (`owl:Restriction`). These unnamed classes are defined based on restrictions of the values for certain properties of the class. OWL allows to model situations where certain members of a class need to have certain properties. Restrictions allow to differentiate between something that applies to all members of a class. A restriction is defined by giving a description that limits the kinds of things that can be said about a member of that class. 
+A key functionality of OWL is to define restriction classes (`owl:Restriction`). These unnamed classes are defined based on restrictions of the values for certain properties of the class. OWL allows modeling situations where certain members of a class need to have certain properties. Restrictions allow to differentiate between something that applies to all members of a class. A restriction is defined by giving a description that limits the kinds of things that can be said about a member of that class. 
 
 One example is the restriction `AllValuesFrom`, which states that in the context of a specific class, the range of a property should always be a specific class. For instance, if `AllValuesFrom` has been applied for Class `Person`, and this is applied to the range of `hasParent` with `Person`, then they can only have `Person`-parents, while an `Animal` cannot have a `Person`-parent. The example below also shows that only `Animal`s can have `Animal`-parents. 
 
@@ -752,11 +752,11 @@ man sub person;
 woman sub person; 
 ```
 
-In this case, we can also create an instance of a `person` that is neither a `woman` or a `man`. If we don't want this, then we can add the word keyword `abstract` and make the `person` class abstract, which would make the definitions equivalent. 
+In this case, we can also create an instance of a `person` that is neither a `woman` or a `man`. If we don't want this, then we can add the keyword `abstract` and make the `person` class abstract, which would make the definitions equivalent. 
 
 ### HasValue
 
-The `owl:hasValue` restriction can state that red wines should have the color "red" as the value of their `color` proprety: 
+The `owl:hasValue` restriction can state that red wines should have the color "red" as the value of their `color` property: 
 
 ```xml
 :RedWine
@@ -801,7 +801,7 @@ when {
 };
 ```
 
-As mentioned, TypeDB is not built for the same uses cases that OWL was built for. As such, a one-to-one direct mapping cannot be made. When working with multiple classes, for example, modelling decisions need to be taken into consideration: which become entities and which roles, in TypeDB. 
+As mentioned, TypeDB is not built for the same use cases that OWL was built for. As such, a one-to-one direct mapping cannot be made. When working with multiple classes, for example, modelling decisions need to be taken into consideration: which become entities and which roles, in TypeDB. 
 
 ## Verification with SHACL
 

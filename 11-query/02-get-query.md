@@ -80,11 +80,6 @@ TypeQLMatch.Sorted query = TypeQL.match(
 
 This query returns all instances of the `person` (entity) type ordered by their `full-name`.
 
-<div class="note">
-[Important]
-Placing `order` before and after the `limit` makes a big difference. `order` followed by `limit` results in a global ordering of the instances, whereas `limit` coming before `order` returns the ordered arbitrary number of instances.
-</div>
-
 ## Offset the Answers
 Often used in conjunction with `limit`, we use the `offset` keyword followed by the number we would like the answers to be offset by. This is commonly used to return a desired range of the answers.
 
