@@ -541,6 +541,7 @@ the `$y` variable is unbounded, i.e. if we execute:
 ```typeql
 match
     $x isa person;
+    $y isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
 get $x;
@@ -550,7 +551,8 @@ get $x;
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-    var("x").isa("person"), 
+    var("x").isa("person"),
+    var("y").isa("person"),
     not(
         var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
