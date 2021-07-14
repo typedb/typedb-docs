@@ -11,7 +11,7 @@ Since the 1970s, SQL has been the de facto language to work with databases. As a
 
 TypeQL is the query language used in [TypeDB](https://github.com/vaticle/typedb). Just as SQL is the standard query language in relational databases, TypeQL is TypeDB’s query language. Both SQL and TypeQL are declarative query languages that abstract away lower-level operations. Both are:
 
-- Languages that attempt be readable and understandable
+- Languages that attempt to be readable and understandable
 - Languages that attempt to enable asking questions at a higher-level
 - Languages where the system figures out how to do lower-level operations
 
@@ -129,7 +129,7 @@ To summarise:
 
 ### Inserting Data
 
-Let's look at how we write and read data using relational operators. First, using the Northwind schema, let's insert the following data: a new `product` with name `Chocolate`, product id `12`, quantity per unit `421` and category name `Confections`.
+Let's look at how we read and write data using relational operators. First, using the Northwind schema, let's insert the following data: a new `product` with name `Chocolate`, product id `12`, quantity per unit `421` and category name `Confections`.
 
 In SQL, we do two queries. First, we fetch the ID of `Confections` and then we insert the new row. 
 
@@ -159,7 +159,7 @@ $p isa product,
 
 ### Reading Data
 
-The basic operational construct in SQL is the `SELECT - WHERE - FROM` expression, which is used to derive new tables from existing ones. 
+The basic operational construct in SQL is the `SELECT - FROM - WHERE` expression, which is used to derive new tables from existing ones. 
 
 ```SQL
 SELECT column1, column2, …
@@ -237,7 +237,7 @@ Compared to SQL, TypeQL allows us to model at a higher level of abstraction. Thi
 If we take the `suppliers`, `products`, `employees`, `orders` and `customers` tables from the Northwind dataset, we can model this in TypeQL by creating the following entities: 
 1. `Product`: We map this entity directly to the `products` table (using the singular term instead). 
 2. `Order`: This maps directly to the `orders` table. 
-3. `Employee`: This also maps directly to the `employees` table.
+3. `Employee`: This maps directly to the `employees` table.
 4. `Company`: As both the `suppliers` and `customers` table refer to companies, we decide to model them as one entity type. We can define a company as a supplier or a customer with roles (see below). 
 
 We then create the following relations and corresponding roles: 

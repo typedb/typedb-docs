@@ -12,7 +12,7 @@ To insert an instance of an entity type into the knowledge graph, we use the `in
 
 [tab:TypeQL]
 ```typeql
-insert $p isa person, has full-name "John Parkson", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234=567890";
+insert $p isa person, has full-name "John Parkson", has gender "male", has email "john.parkson@gmail.com", has phone-number "+44-1234-567890";
 ```
 [tab:end]
 

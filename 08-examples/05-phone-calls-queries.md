@@ -397,7 +397,7 @@ with TypeDB.core_client('localhost:1729') as client:
 
 #### As a statement:
 
-> Get me the phone number of people who have received calls from both customer with phone number +7 171 898 0853 and customer with phone number +370 351 224 5176.
+> Get me the phone number of people who have received calls from both customers with phone number +7 171 898 0853 and customer with phone number +370 351 224 5176.
 
 #### In TypeQL:
 ```typeql
@@ -569,7 +569,7 @@ The person with phone number +48 894 777 5173 has been identified as a lead. We 
 #### As a statement:
 
 ```
-Get me the phone phone number of all customers who have called each other as well the person with phone number +48 894 777 5173.
+Get me the phone number of all customers who have called each other as well as the person with phone number +48 894 777 5173.
 ```
 
 #### In TypeQL:
@@ -936,6 +936,8 @@ async function ExecuteMatchQuery() {
 		"Customers aged over 40 have made calls with average duration of " +
 		Math.round(secondResult) +
 		" seconds.\n";
+	
+	console.log(result);
 
 	await transaction.close();
   	await session.close();

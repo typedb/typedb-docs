@@ -194,7 +194,7 @@ We are yet to define the relations that relate to the roles as well as the attri
 The ability to subtype entities not only helps mirror the reality of the dataset as perceived in the real world but also enables automated reasoning using type hierarchies.
 
 ### Define an abstract entity
-There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define both the `post` and `media` entity types to be abstract. By doing so, we are indicating that no data instances of the of these entity types are allowed to be created, leaving us only with instances of `comment`, `photo` and `video`.
+There may be scenarios where a parent entity is only defined for other entities to inherit, and under no circumstance, do we expect to have any instances of this parent. To model this logic in the schema, we use the `abstract` keyword. Let's say in the example above, we would like to define both the `post` and `media` entity types to be abstract. By doing so, we are indicating that no data instances of these entity types are allowed to be created, leaving us only with instances of `comment`, `photo` and `video`.
 
 <div class="tabs dark">
 
@@ -531,7 +531,7 @@ The data types available in a TypeDB knowledge graph are:
     - `yyyy-mm-ddThh:mm:ss.ff`
     - `yyyy-mm-ddThh:mm:ss.fff`
 
-**The same attribute can be owned by different concept types.**.
+**The same attribute can be owned by different concept types.**
 
 <div class="tabs dark">
 
@@ -541,6 +541,9 @@ define
 
 start-date sub attribute,
 	value datetime;
+  
+mortgage sub entity,
+  owns start-date;
 
 residency sub relation,
   ## roles and other attributes
@@ -556,6 +559,7 @@ travel sub relation,
 ```java
 TypeQLDefine query = TypeQL.define(
   type("start-date").sub("attribute").value(TypeQLArg.ValueType.DATETIME),
+  type("mortgage").sub("entity").owns("start-date"),
   type("residency").sub("relation").owns("start-date"),
   type("travel").sub("relation").owns("start-date")
 );
@@ -783,7 +787,7 @@ The query above, removes the attribute `nickname` from the entity `person`.
 
 <div class="note">
 [Important]
-It's important to note that `undefine [label] sub [type] owns [attribute's label];` undefines the `label` itself, rather than its association with the attribute.
+It's important to note that `undefine [label] sub [type] owns [attributes' label];` undefines the `label` itself, rather than its association with the attribute.
 </div>
 
 ### Undefine a relation
@@ -828,6 +832,11 @@ When the concept type to be undefined is a supertype to something else, we must 
 </div>
 
 ## Summary
-We learned that a TypeDB schema is essentially a collection of Entities, Relations, and Attributes - what we call the TypeDB Concept Types. It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
+We learned that a TypeDB schema is essentially a collection of Entities, Relations, and Attributes - what we call the TypeDB Concept Types.
+
+Relations have roles that interface with any concept (entities, relations, or attributes!) that can play those roles. This creates
+the structures and shape of the data. Meanwhile, any concept can own attributes, which represent the raw data values.
+
+It is the modularity of these concept types and how they interact with one another that allows us to model complex datasets in an intuitive way that represents their true nature.
 
 In the next section, we learn about one last addition to the schema - [TypeQL Rules](../09-schema/03-rules.md).

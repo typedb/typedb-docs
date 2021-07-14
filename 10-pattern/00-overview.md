@@ -5,7 +5,7 @@ longTailKeywords: typeql patterns, typeql statements, typeql variables
 Summary: Patterns - building blocks of queries.
 ---
 
-In this section we give an overview of patterns - building blocks of majority of TypeQL queries.
+In this section we give an overview of patterns - building blocks of the majority of TypeQL queries.
 
 ## Query pattern anatomy
 As we have seen before, at the core of each query sits a query pattern that describes a subgraph of our particular interest. Here we examine the structure of query patterns closer. In general, patterns can be thought of as different arrangements of statement collections. TypeQL statements constitute the smallest building blocks of queries. Let's have a close look at the constructs of a basic match clause.

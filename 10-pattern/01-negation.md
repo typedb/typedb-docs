@@ -64,7 +64,7 @@ Pattern pattern = and(
 
 Please note that the `$y` variable inside the negation block is not bound. This is of great importance when discussing the meaning of negation. 
 If we were to interpret the query using the simple complement semantics we would arrive at a conclusion that unemployed people are people for which there exists 
-a company that doesn't hire them - it would get evaluated to all `($x, $y)` pairs where `$x` is a person and `$y` isa a company that is not 
+a company that doesn't hire them - it would get evaluated to all `($x, $y)` pairs where `$x` is a person and `$y` is a company that is not 
 in an employment relation with `$x`. What we do instead is we interpret the negation block as some relation of arity equal to the number of variables that are bound
 to non-negated statements. This imposes a requirement of at least one variable in the negation block being bound to a variable outside the block.
 Here our only bound variable is `$x`. Consequently we can think of the query as:
