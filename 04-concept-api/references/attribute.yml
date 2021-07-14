@@ -26,7 +26,7 @@ methods:
     java:
       <<: *method-getvalue
       method: attribute.getValue();
-      return:
+      returns:
         - string
         - "`Long`"
         - "`float`"
@@ -35,7 +35,7 @@ methods:
     javascript:
       <<: *method-getvalue
       method: await attribute.getValue();
-      return:
+      returns:
         - string
         - "`Number`"
         - boolean
@@ -43,7 +43,7 @@ methods:
     python:
       <<: *method-getvalue
       method: attribute.get_value()
-      return:
+      returns:
         - string
         - "`int`"
         - "`float`"
@@ -64,17 +64,17 @@ methods:
     java:
       <<: *method-owners
       method: attribute.owners(Type ownerType);
-      return:
+      returns:
         - "Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>"
     javascript:
       <<: *method-owners
       method: attribute.owners(ownerType);
-      return:
+      returns:
         - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-owners
       method: attribute.owners(ownerType)
-      return:
+      returns:
         - "Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
   - method:
@@ -109,17 +109,17 @@ methods:
     java:
       <<: *method-isboolean
       method: attribute.isBoolean();
-      return:
+      returns:
         - boolean
     javascript:
       <<: *method-isboolean
       method: attribute.isBoolean();
-      return:
+      returns:
         - boolean
     python:
       <<: *method-isboolean
       method: attribute.is_boolean()
-      return:
+      returns:
         - boolean
 
   - method:
@@ -129,17 +129,17 @@ methods:
     java:
       <<: *method-islong
       method: attribute.isLong();
-      return:
+      returns:
         - boolean
     javascript:
       <<: *method-islong
       method: attribute.isLong();
-      return:
+      returns:
         - boolean
     python:
       <<: *method-islong
       method: attribute.is_long()
-      return:
+      returns:
         - boolean
 
   - method:
@@ -149,17 +149,17 @@ methods:
     java:
       <<: *method-isdouble
       method: attribute.isDouble();
-      return:
+      returns:
         - boolean
     javascript:
       <<: *method-isdouble
       method: attribute.isDouble();
-      return:
+      returns:
         - boolean
     python:
       <<: *method-isdouble
       method: attribute.is_double()
-      return:
+      returns:
         - boolean
 
   - method:
@@ -169,17 +169,17 @@ methods:
     java:
       <<: *method-isstring
       method: attribute.isString();
-      return:
+      returns:
         - boolean
     javascript:
       <<: *method-isstring
       method: attribute.isString();
-      return:
+      returns:
         - boolean
     python:
       <<: *method-isstring
       method: attribute.is_string()
-      return:
+      returns:
         - boolean
 
   - method:
@@ -189,15 +189,15 @@ methods:
     java:
       <<: *method-isdouble
       method: attribute.isDateTime();
-      return:
+      returns:
         - boolean
     javascript:
       <<: *method-isdouble
       method: attribute.isDateTime();
-      return:
+      returns:
         - boolean
     python:
       <<: *method-isdouble
       method: attribute.is_datetime()
-      return:
+      returns:
         - boolean
