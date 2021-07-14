@@ -337,6 +337,9 @@ $fri-13 (friend: $per-15, friend: $per-16) isa friendship;
 $fri-req-14 (friend-requester: $per-14, friend-respondent: $per-16, friendship: $fri-14) isa friend-request, has approved-date 2008-03-12;
 $fri-14 (friend: $per-14, friend: $per-16) isa friendship;
 
+## FRIENDSHIP LIST
+(owner: $per-1, listed: $per-2) isa friendship-list, has title "best friends";
+
 ## TIMELINES
 
 $tim-1 isa timeline, has identifier "$tim-1";

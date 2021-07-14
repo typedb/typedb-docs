@@ -138,12 +138,13 @@ We can add role players to a relation by `match`ing the relation and the concept
 [tab:TypeQL]
 <!-- test-ignore -->
 ```TypeQL
-## inserting the new role player into some theoretical multi-employment relation
+## inserting the new friend to a friendship list
 match
-  $emp (employer: $org, employee: $p) isa employment;
-  $p2 isa person;
-  not { $p = $p2; };
-insert $emp (employee: $p2) isa employment;
+  $julie isa person, has full-name "Julie Hutchinson";
+  $miriam isa person, has full-name "Miriam Morton";
+  ($julie, $miriam) isa friendship;
+  $list (owner: $miriam) isa friendship-list, has title "best friends";
+insert $list (listed: $julie);
 ```
 [tab:end]
 
@@ -151,12 +152,12 @@ insert $emp (employee: $p2) isa employment;
 <!-- test-ignore -->
 ```java
 TypeQLInsert insert_query = TypeQL.match(
- var("emp").rel("employer", var("org")).rel("employee", var("p")).isa("employment"),
-  var("p").isa("person"),
-  var("p2").isa("person"),
-  not(var("p").eq(var("p2")))
+  var("julie").isa("person").has("name", "Julie Hutchinson"),
+  var("miriam").isa("person").has("name", "Miriam Hutchinson"),
+  var().rel(var("julie")).rel(var("miriam")).isa("friendship"),
+  var(list).rel("owner", var("miriam")).isa("friendship-list").has("title", "best friends")
 ).insert(
-  var("emp").rel("employee", var("p2")).isa("employment")
+  var("list").rel("listed", var("julie"))
 );
 ```
 [tab:end]
