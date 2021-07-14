@@ -71,7 +71,7 @@ Note that attributes with the same value and type are shared among their owners.
 
 [tab:TypeQL]
 ```typeql
-match $t isa travel, has start-date $st; $d 2013-12-22; delete $t has $st;
+match $t isa travel, has start-date $st; $st 2013-12-22; delete $t has $st;
 ```
 [tab:end]
 
@@ -149,7 +149,7 @@ in the `delete` block, though being as specific as possible is recommended.
 ## Summary
 The `delete` query preceded by a `match` clause is used to delete one or more facts from the knowledge graph.
 
-We can delete instances by using `$var isa [your type]`: an `isa` will always indicate removal of an instance and all its edges.
+We can delete instances by using `$var isa [your type]`: an `isa` will always indicate removal of an instance and all its relations and attribute ownerships.
 Additionally, we can remove just attribute ownerships using the `has` statement in the `delete` clause. Removing
 a role player from a relation can similarly be achieved by using role player syntax: `delete $r (some_role: $player);` without
 an `isa` statement.

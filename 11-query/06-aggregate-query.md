@@ -6,7 +6,7 @@ Summary: Statistical queries in TypeDB.
 ---
 
 ## Aggregate Values Over a Dataset
-In this section, we learn how to get TypeDB to calculate the `count`, `sum`, `max`, `mean`, `mean` and `median` values of a specific set of data in the knowledge graph.
+In this section, we learn how to get TypeDB to calculate the `count`, `sum`, `max`, `mean`, and `median` values of a specific set of data in the knowledge graph.
 To perform aggregation in TypeDB, we first write a [`match` clause](../11-query/01-match-clause.md) to describe the set of data, then follow that by [`get`](../11-query/02-get-query.md) to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate function to perform on the variable of interest.
 
 To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
@@ -233,4 +233,4 @@ This query returns the total count of `person`s grouped by the `title` of their 
 </div>
 
 ## Summary
-We use an aggregate query to calculate a certain variable as defined in the preceded `match` clause that describes a set of data in the knowledge graph.
+We use an aggregate query to calculate a certain variable as defined in the preceding`match` clause that describes a set of data in the knowledge graph.

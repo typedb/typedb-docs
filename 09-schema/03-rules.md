@@ -309,7 +309,7 @@ Another way to look at rules is to treat them as functions. In that way, we trea
 };
 ```
 
-To simplify this logic even further, you can think of the [siblings example](#define-a-rule) in form of an `if` statement like so:
+To simplify this logic even further, you can think of the [siblings example](#define-a-rule) in the form of an `if` statement like so:
 <!-- test-ignore -->
 ```java
 for a given (m, f, x, y) tuple
@@ -338,6 +338,6 @@ The implication form of Horn clauses aligns more naturally with TypeQL semantics
 
 
 ## Summary
-Rules are a powerful tool that allows to reason over the explicitly stored data and produce implicit knowledge at run-time.
+Rules are a powerful tool that allow users to reason over the explicitly stored data and produce implicit knowledge at run-time.
 
 In the next section, we learn how to [perform read and write instructions over a knowledge graph](../11-query/00-overview.md) that is represented by a schema.

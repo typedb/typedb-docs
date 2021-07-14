@@ -88,7 +88,7 @@ Let’s move on.
 ```javascript
 async function buildPhoneCallGraph(inputs) {
     const client = TypeDB.coreClient("localhost:1729");
-    const session = client.session("phone_calls", SessionType.DATA);
+    const session = await client.session("phone_calls", SessionType.DATA);
 
     for (input of inputs) {
         await loadDataIntoTypeDB(input, session);

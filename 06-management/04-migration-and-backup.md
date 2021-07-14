@@ -23,9 +23,9 @@ If you are migrating from 1.6.x or below to 2.0.x, you must first copy your `ser
 
 The migration features describe beyond this point are designed for use with databases that can reasonably fit on a local disk multiple times (in the order of Gigabytes), as they make use of files to contain your data. If you have use cases for migrating data that will not fit onto disk, please reach out to us on our [Discord](https://discord.com/invite/vaticle) community or [Forums](https://discuss.vaticle.com) where we can advise you further.
 
-## Backup
+## Data Backup
 
-You can backup your data in a version-independent file using:
+You can back up your data in a version-independent file using:
 
 ```
 typedb server export [database] [filename].typedb
@@ -47,10 +47,10 @@ Importing a backup will not delete existing data in the database, so you should 
 
 The first step of migration is to migrate your schema. The `database schema my-database-name` command in Console allows you to get the current schema of a database as a single `define` query. This schema query can then be loaded via the Console to the new server.
 
-Export the old schema:
+Export the old schema using console:
 ```
 old/typedb console
-database schema [database]
+> database schema [database]
 ```
 
 Copy the schema into a file named `schema.tql`.
@@ -62,9 +62,10 @@ If migrating from TypeDB version <2.0 to version >=2.0 you need to update your s
 Once conforming to the new syntax, import the new schema:
 ```
 new/typedb console
-> create database [database] 
-> transaction [database] schema write
+> database create <database> 
+> transaction <database> schema write
 [database]::schema::write> source schema.tql
+[database]::schema::write> commit
 ```
 
 ### Data Migration
@@ -72,8 +73,8 @@ new/typedb console
 Data migration is performed using an export followed by an import.
 
 ```
-old/typedb server export [database] data.typedb
-new/typedb server import [database] data.typedb
+old/typedb server export <database> data.typedb
+new/typedb server import <database> data.typedb
 ```
 
 This requires your database in the new typedb to have a valid schema that is compatible with your data. If a failure occurs during import, please check your database has the schema you expect.

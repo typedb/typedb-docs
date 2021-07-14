@@ -151,26 +151,27 @@ TypeQLMatch.Filtered query = TypeQL.match(
 We can match instances of attribute types in various ways depending on our use case.
 
 #### Independent of label
-We can match instances of attributes type based on their value regardless of their label.
+We can match instances of attribute types based on their value regardless of their label.
 
 <div class="tabs dark">
 
 [tab:TypeQL]
 ```typeql
-match $x "like"; get $x;
+match $x "law"; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").eq("like")
+  var("x").eq("law")
 ).get("x");
 ```
 [tab:end]
 </div>
 
-This matches instances of any attribute type whose value is `"like"` and assigns each to variable `$x`.
+This matches instances of any attribute type whose value is `"law"` (for instance, a profession and a university course) 
+and assigns each to variable `$x`.
 
 #### Independent of owner
 We can match instances of attributes based on their value regardless of what concept type they belong to.
@@ -239,7 +240,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 This matches the instances of any attribute type whose value matches the given regex - `"Miriam Morton"` or `"Solomon Tran"`.
 
 #### Owners with multiple attributes
-To match instances of a concept type that owns multiple attributes, we can simply chain triples of `has`, label and variable. Separating each triple with a comma is optional.
+To match instances of a concept type that owns multiple attributes, we can simply chain triples of `has`, label and variable.
 
 <div class="tabs dark">
 
@@ -278,7 +279,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 [tab:end]
 </div>
 
-But if in this example, we still want to know the ranking of each matched school? we split the variable assignment and the condition like so.
+But if in this example, we still want to know the ranking of each matched school, we split the variable assignment and the condition like so.
 
 <div class="tabs dark">
 
@@ -323,7 +324,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 </div>
 
 ### Instances of a direct type
-The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. Given the [previous organisation example](../09-schema/01-concepts.md#subtype-an-entity), if we were to only match the direct instances of `organisation`, we would write the match clause like so.
+The type that an instance belongs to may be a subtype of another. This means when we use `isa`, we are matching all direct and indirect instances of the given type. To only match the direct instances, we use `isa!` instead. 
 
 <div class="tabs dark">
 
@@ -370,7 +371,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 When matching an instance of an attribute type based on its value or simply comparing two variables, the following comparators may be used: `==`, `!=`, `>`, `>=`, `<` and `<=`.
 
 ## Match Schema Concepts
-In this section, we learn how we can use the `match` keyword to find patterns in the schema of a TypeDB knowledge graph. Matching concepts of a schema is always preceded by `get;`. In the next section, we learn about [how to use the get keyword](../11-query/02-get-query.md).
+In this section, we learn how we can use the `match` keyword to find patterns in the schema of a TypeDB knowledge graph. In the next section, we learn about [how to use the get keyword](../11-query/02-get-query.md).
 
 Having fully understood the [schema concepts](../09-schema/01-concepts.md) and how they are defined, you can think of the following `match` examples as fill-in-the-blank questions, where the-blank is a TypeQL variable and the sentences are different parts of the schema statements.
 

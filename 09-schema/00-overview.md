@@ -46,16 +46,16 @@ Let's have a look at the main components of a TypeDB knowledge graph and schema.
 
 ## TypeDB Data Model
 
-### Concepts
-Everything that describes a domain in a TypeDB Knowledge Graph is a concept. This includes the elements of the schema (namely types and roles, which we call schema concepts) and the actual data instances.
-We refer to a data instance as a _thing_ - they can be thought of as instances of types defined in the schema.
+Everything that describes a domain in a TypeDB Knowledge Graph is a concept or a logical structure.
+Concepts consist of the schema concepts (namely types and roles) and data concepts, the actual data instances, which we refer to as _thing_ concepts.
+Logical structures consist of rules.
 
 ### Types
 Types constitute the core of the schema. They provide the necessary vocabulary to talk about our domain. They come in three flavours: [Entities](../09-schema/01-concepts.md#entity), [Relations](../09-schema/01-concepts.md#relation), and [Attributes](../09-schema/01-concepts.md#attribute):
 
 **Entities** are the main actors in our domain. These are usually the type of things we want to know about. Entity types provide means of classifying the objects in our domain.
 
-**Relations** connect other things together. Each relation can connect a number of things. A thing's participation in a relation is characterised by a **role** that can be played in that relation.
+**Relations** connect concepts together. Each relation can connect a number of things. A thing's participation in a relation is characterised by a **role** that can be played in that relation.
 Each relation is required to have at least one role.
 
 **Attributes** are used to characterise concepts with small pieces of data (think of numbers, strings, dates etc.). Consequently, by defining attributes we can attach values of a specified value type to our instances.
@@ -70,14 +70,14 @@ Apart from serving as a mean of classification, types also define behaviours of 
 
 ### Type Hierarchies
 Besides the modularity that the concept types provide, we are free to form subtype relationships between concept types. For a given child concept type that subtypes a parent concept type, the child concept type inherits the attributes owned and roles played by the parent type. The mechanism is analogous to subclassing in Object Oriented Programming. Each concept type can have only a single parent type - multiple inheritance is not supported.
-Subtyping not only allows us to mirror the true nature of a dataset as perceived in the real world but also enables automated reasoning.
+Subtyping not only allows us to mirror nature of a dataset as perceived in the real world but also enables automated reasoning.
 
 ### Roles
 _Roles_ are capabilities belonging to relations, that specify the nature of the connection between instances. They are not types themselves. That means, we cannot have a thing which is an instance of a role, but we can have things playing a role in a specific relation. However, roles can also be subtyped (with `as`) and queried similarly to regular schema types. 
 In the schema, we need to specify what role relates to each relation type and who can play this role. Thanks to roles, we are able to guarantee the logical integrity of our data, disallowing a `marriage` between a `person` and a `building`, for example. Unless we specifically allow such a relationship in the schema.
 
 ### Rules
-Lastly, the TypeDB schema is completed with [**TypeQL Rules**](../09-schema/03-rules.md). Rules are used for query-time capture of dynamic patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in TypeDB.
+Lastly, the TypeDB schema is completed with [**TypeQL Rules**](../09-schema/03-rules.md). Rules are used for query-time capture of patterns in the data and performing deduction. Rules are the building blocks of automated reasoning in TypeDB.
 
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset of any complexity.
 

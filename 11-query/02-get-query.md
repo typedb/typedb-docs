@@ -58,8 +58,8 @@ TypeQLMatch.Limited query = TypeQL.match(
 
 This query returns only one single (and random) instance of type `person`.
 
-## Order the Answers
-To order the answers by a particular variable, we use the `order` keyword followed by the variable by which we would like the results to be ordered. A second argument, `asc` (ascending) or `desc` (descending), determines the sorting method.
+## Sort the Answers
+To sort the answers by a particular variable, we use the `sort` keyword followed by the variable by which we would like the results to be sorted. A second argument, `asc` (ascending) or `desc` (descending), determines the sorting method.
 
 <div class="tabs dark">
 
@@ -78,12 +78,7 @@ TypeQLMatch.Sorted query = TypeQL.match(
 [tab:end]
 </div>
 
-This query returns all instances of the `person` (entity) type ordered by their `full-name`.
-
-<div class="note">
-[Important]
-Placing `order` before and after the `limit` makes a big difference. `order` followed by `limit` results in a global ordering of the instances, whereas `limit` coming before `order` returns the ordered arbitrary number of instances.
-</div>
+This query returns all instances of the `person` (entity) type sorted by their `full-name`.
 
 ## Offset the Answers
 Often used in conjunction with `limit`, we use the `offset` keyword followed by the number we would like the answers to be offset by. This is commonly used to return a desired range of the answers.
@@ -105,7 +100,7 @@ TypeQLMatch.Limited query = TypeQL.match(
 [tab:end]
 </div>
 
-This returns 10 instances of the `person` (entity) type starting from the 6th person ordered by their `full-name`.
+This returns 10 instances of the `person` (entity) type starting from the 6th person sorted by their `full-name`.
 
 
 ## Clients Guide
@@ -126,7 +121,7 @@ This returns 10 instances of the `person` (entity) type starting from the 6th pe
 </div>
 
 ## Summary
-A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order` and `offset` to retrieve an optionally ordered subset of the matched instances.
+A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `sort` and `offset` to retrieve an optionally sorted subset of the matched instances.
 
 Next, we learn how to [insert data](../11-query/03-insert-query.md) into a TypeDB knowledge graph.
 
