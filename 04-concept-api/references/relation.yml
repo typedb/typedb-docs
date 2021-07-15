@@ -10,7 +10,7 @@ methods:
         - "[`RelationType`](../concept-api/type?tab=java#relationtype-methods)"
     javascript:
       <<: *method-type
-      method: await relation.getType();
+      method: relation.type;
       returns:
         - "[`RelationType`](../concept-api/type?tab=javascript#relationtype-methods)"
     python:

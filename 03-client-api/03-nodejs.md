@@ -89,7 +89,7 @@ async function runBasicQueries(database) {
 	const writeTransaction = await session.transaction(TransactionType.WRITE);
 	const insertStream = await writeTransaction.query().insert('insert $x isa person, has email "x@email.com";');
 	const conceptMaps = await insertStream.collect();
-	console.log("Inserted a person with ID: " + conceptMaps[0].get("x").getIID());
+	console.log("Inserted a person with ID: " + conceptMaps[0].get("x").iid);
 	// to persist changes, a write transaction must always be committed (closed)
 	await writeTransaction.commit();
 
@@ -100,7 +100,7 @@ async function runBasicQueries(database) {
 	let answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
 	for await (const aConceptMapAnswer of answerStream) {
 		const person = aConceptMapAnswer.get("x");
-		console.log("Retrieved person with id " + person.getIID());
+		console.log("Retrieved person with id " + person.iid);
 	}
 
 	// Or query and consume the iterator immediately collecting all the results
@@ -108,7 +108,7 @@ async function runBasicQueries(database) {
 	const persons = await answerStream.collect()
 	persons.forEach( conceptMap => {
         person = conceptMap.get("x");
-        console.log("Retrieved person with id "+ person.getIID());
+        console.log("Retrieved person with id "+ person.iid);
     });
 
 	// a read transaction must always be closed

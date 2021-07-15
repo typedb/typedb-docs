@@ -11,10 +11,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 
 const loadSchema = async () => {
     const client = TypeDB.coreClient("localhost:1729");
-    if (await(client.databases().contains('phone_calls'))) {
-        await (await client.databases().get('phone_calls')).delete();
+    if (await(client.databases.contains('phone_calls'))) {
+        await (await client.databases.get('phone_calls')).delete();
     }
-    await client.databases().create('phone_calls');
+    await client.databases.create('phone_calls');
     const session = await client.session("phone_calls", SessionType.SCHEMA);
     const transaction = await session.transaction(TransactionType.WRITE);
     const defineQuery = fs.readFileSync("files/phone-calls/schema.tql", "utf8");
@@ -27,7 +27,7 @@ const loadSchema = async () => {
 
 const deleteDatabase = async () => {
     const client = TypeDB.coreClient("localhost:1729");
-    await (await client.databases().get("phone_calls")).delete();
+    await (await client.databases.get("phone_calls")).delete();
     console.log("Deleted the phone_calls database");
     await client.close();
 }

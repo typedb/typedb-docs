@@ -153,11 +153,7 @@ async function ExecuteMatchQuery() {
   	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer =>
-			answer.map()
-				  .get("phone-number")
-				  .value()
-		)
+		answers.map(answer => answer.get("phone-number").value())
 	);
 
   	console.log("\nResult:\n", result);
@@ -336,11 +332,7 @@ async function ExecuteMatchQuery() {
   	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer =>
-			answer.map()
-				  .get("phone-number")
-				  .value()
-		)
+		answers.map(answer => answer.get("phone-number").value())
 	);
 
   	console.log("\nResult:\n", result);
@@ -509,11 +501,7 @@ async function ExecuteMatchQuery() {
 	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer =>
-			answer.map()
-				  .get("phone-number")
-				  .value()
-		)
+		answers.map(answer => answer.get("phone-number").value())
 	);
 
   	console.log("\nResult:\n", result);
@@ -693,11 +681,7 @@ async function ExecuteMatchQuery() {
   	const iterator = await transaction.query().match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer =>
-			answer.map()
-				  .get("phone-number-a")
-			      .value()
-		)
+		answers.map(answer => answer.get("phone-number-a").value())
 	);
 
 	console.log("\nResult:\n", result);

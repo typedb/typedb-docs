@@ -11,10 +11,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 500000;
 
 beforeAll(async function() {
     const client = TypeDB.coreClient("localhost:1729");
-    if (await(client.databases().contains('social_network'))) {
-        await (await client.databases().get('social_network')).delete();
+    if (await(client.databases.contains('social_network'))) {
+        await (await client.databases.get('social_network')).delete();
     }
-    await client.databases().create('social_network');
+    await client.databases.create('social_network');
     const session = await client.session("social_network", SessionType.SCHEMA);
     const transaction = await session.transaction(TransactionType.WRITE);
     const defineQuery = fs.readFileSync("files/social-network/schema.tql", "utf8");

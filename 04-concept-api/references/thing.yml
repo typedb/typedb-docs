@@ -10,7 +10,7 @@ methods:
       method: thing.getIID();
     javascript:
       <<: *method-iid
-      method: thing.getIID();
+      method: thing.iid;
     python:
       <<: *method-iid
       method: thing.get_iid()
@@ -51,7 +51,7 @@ methods:
         - "[`ThingType`](../concept-api/type?tab=java#thingtype-methods)"
     javascript:
       <<: *method-type
-      method: await thing.getType();
+      method: thing.type;
       returns:
         - "[`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)"
     python:
@@ -71,7 +71,7 @@ methods:
       method: thing.isInferred();
     javascript:
       <<: *method-isInferred
-      method: thing.isInferred();
+      method: thing.inferred;
     python:
       <<: *method-isInferred
       method: thing.is_inferred()

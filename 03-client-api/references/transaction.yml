@@ -13,7 +13,7 @@ methods:
         - Transaction.Type
     javascript:
       <<: *method-type
-      method: transaction.type();
+      method: transaction.type;
       returns:
         - TransactionType
     python:
@@ -42,17 +42,20 @@ methods:
       title: Access Concept API methods
       description: |
         Gets the [`ConceptManager`](../concept-api/concept#conceptmanager) for this Transaction, providing access to all Concept API methods.
-      method: transaction.concepts();
+
     java:
       <<: *method-concepts
+      method: transaction.concepts();
       returns:
         - "[`ConceptManager`](../concept-api/concept?tab=java#conceptmanager)"
     javascript:
       <<: *method-concepts
+      method: transaction.concepts;
       returns:
         - "[`ConceptManager`](../concept-api/concept?tab=javascript#conceptmanager)"
     python:
       <<: *method-concepts
+      method: transaction.concepts();
       returns:
         - "[`ConceptManager`](../concept-api/concept?tab=python#conceptmanager)"
 
@@ -61,17 +64,19 @@ methods:
       title: Access Concept API - Logic methods
       description: |
         Gets the [`LogicManager`](../concept-api/rule#logicmanager) for this Transaction, providing access to all Concept API - Logic methods.
-      method: transaction.logic();
     java:
       <<: *method-logic
+      method: transaction.logic();
       returns:
         - "[`LogicManager`](../concept-api/rule?tab=java#logicmanager)"
     javascript:
       <<: *method-logic
+      method: transaction.logic;
       returns:
         - "[`LogicManager`](../concept-api/rule?tab=javascript#logicmanager)"
     python:
       <<: *method-logic
+      method: transaction.logic();
       returns:
         - "[`LogicManager`](../concept-api/rule?tab=python#logicmanager)"
 
@@ -80,15 +85,17 @@ methods:
       title: Access Query API methods
       description: |
         Gets the [`QueryManager`](#querymanager) for this Transaction, from which any TypeQL query can be executed.
-      method: transaction.query();
       returns:
         - "[`QueryManager`](#querymanager)"
     java:
       <<: *method-query
+      method: transaction.query();
     javascript:
       <<: *method-query
+      method: transaction.query;
     python:
       <<: *method-query
+      method: transaction.query();
 
   - method:
     common: &method-commit

@@ -50,7 +50,7 @@ methods:
         - List<Database>
     javascript:
       <<: *method-databases-all
-      method: await client.databases().all();
+      method: await client.databases.all();
       returns:
         - Array of String
     python:
@@ -77,7 +77,7 @@ methods:
       method: client.databases().contains(String database);
     javascript:
       <<: *method-databases-contains
-      method: await client.databases().contains(database);
+      method: await client.databases.contains(database);
     python:
       <<: *method-databases-contains
       method: client.databases().contains(database)
@@ -100,7 +100,7 @@ methods:
         - void
     javascript:
       <<: *method-databases-create
-      method: await client.databases().create("database name");
+      method: await client.databases.create("database name");
       returns:
         - void
     python:
@@ -121,6 +121,19 @@ methods:
           required: true
           default: N/A
       method: client.databases().get(String database);
+      returns:
+        - Database
+    javascript:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: string
+          required: true
+          default: N/A
+      method: client.databases.get(database);
       returns:
         - Database
     python:
@@ -155,7 +168,7 @@ methods:
         - void
     javascript:
       <<: *method-databases-delete
-      method: await (await client.databases().get("database name")).delete();
+      method: await (await client.databases.get("database name")).delete();
       returns:
         - void
     python:
@@ -175,14 +188,14 @@ methods:
         - List<user>
     javascript:
       <<: *method-users-all
-      method: await client.users().all();
+      method: await client.users.all();
       returns:
         - Array of String
     python:
       <<: *method-users-all
       method: client.users().all()
       returns:
-        - list of user
+        - list of User
 
   - method:
     common: &method-users-contains
@@ -202,7 +215,7 @@ methods:
       method: client.users().contains(String user);
     javascript:
       <<: *method-users-contains
-      method: await client.users().contains(user);
+      method: await client.users.contains(user);
     python:
       <<: *method-users-contains
       method: client.users().contains(user)
@@ -225,7 +238,7 @@ methods:
         - void
     javascript:
       <<: *method-users-create
-      method: await client.users().create("user name");
+      method: await client.users.create("user name");
       returns:
         - void
     python:
@@ -246,6 +259,19 @@ methods:
           required: true
           default: N/A
       method: client.users().get(String user);
+      returns:
+        - user
+    javascript:
+      title: Retrieve a user
+      description: Retrieve a user with the given name.
+      accepts:
+        param:
+          name: user
+          description: The name of the user to retrieve.
+          type: string
+          required: true
+          default: N/A
+      method: client.users.get(String user);
       returns:
         - user
     python:
@@ -280,7 +306,7 @@ methods:
         - void
     javascript:
       <<: *method-users-delete
-      method: await (await client.users().get("user name")).delete();
+      method: await (await client.users.get("user name")).delete();
       returns:
         - void
     python:

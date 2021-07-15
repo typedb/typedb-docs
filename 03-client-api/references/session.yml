@@ -75,7 +75,7 @@ methods:
         - Session.Type
     javascript:
       <<: *method-type
-      method: session.type();
+      method: session.type;
       returns:
         - SessionType
     python:

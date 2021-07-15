@@ -10,7 +10,7 @@ methods:
         - "[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)"
     javascript:
       <<: *method-type
-      method: attribute.getType();
+      method: attribute.type;
       returns:
         - "[`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
     python:
@@ -34,12 +34,12 @@ methods:
         - "`Date`"
     javascript:
       <<: *method-getvalue
-      method: await attribute.getValue();
+      method: attribute.value;
       returns:
         - string
-        - "`Number`"
+        - number
         - boolean
-        - "`Date`"
+        - Date
     python:
       <<: *method-getvalue
       method: attribute.get_value()
