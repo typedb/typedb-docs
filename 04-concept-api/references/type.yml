@@ -35,7 +35,7 @@ methods:
       method: type.getLabel().name();
     javascript:
       <<: *method-getLabel
-      method: type.getLabel().name();
+      method: type.label.name;
     python:
       <<: *method-getLabel
       method: type.get_label().name()
@@ -51,7 +51,7 @@ methods:
       method: type.isRoot();
     javascript:
       <<: *method-isRoot
-      method: type.isRoot();
+      method: type.root;
     python:
       <<: *method-isRoot
       method: type.is_root()

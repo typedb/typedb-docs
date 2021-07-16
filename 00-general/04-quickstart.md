@@ -205,10 +205,7 @@ with TypeDB.core_client("localhost:1729") as client:
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
-const { TypeDBOptions } = require("typedb-client/api/connection/TypeDBOptions");
+const { TypeDB, SessionType, TransactionType, TypeDBOptions } = require("typedb-client");
 
 async function getAverageSalaryAt (orgName) {
     const client = TypeDB.coreClient("localhost:1729");
@@ -221,7 +218,7 @@ async function getAverageSalaryAt (orgName) {
 			($org, $per) isa employment, has salary $sal;
 		get $sal; mean $sal;
 	`
-	const answer = await transaction.query().matchAggregate(query);
+	const answer = await transaction.query.matchAggregate(query);
 	if (answer.isNumber()) {
 		console.log(answer.asNumber());
 	} else {

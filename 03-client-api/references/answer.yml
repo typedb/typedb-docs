@@ -54,7 +54,7 @@ types:
             - "Map<String, Concept>"
         javascript:
           <<: *method-conceptmap-map
-          method: conceptMap.map();
+          method: conceptMap.map;
           description: Produces a Map where keys are variable names and values are [`concept`](../concept-api/concept)s.
           returns:
             - "`Map<String, Concept>`"
@@ -123,12 +123,12 @@ types:
             - "[`ConceptMap.Explainables`](#explainables)"
         python:
           <<: *method-conceptmap-explainables
-          method: conceptMap.explainables()
+          method: concept_map.explainables()
           returns:
             - "[`ConceptMap.Explainables`](#explainables)"
         javascript:
           <<: *method-conceptmap-explainables
-          method: concept_map.explainables()
+          method: conceptMap.explainables
           returns:
             - "[`ConceptMap.Explainables`](#explainables)"
 
@@ -229,7 +229,7 @@ types:
             - "[`Concept`](../concept-api/concept?tab=java#concept-methods)"
         javascript:
           <<: *method-conceptmapgroup-owner
-          method: conceptMapGroup.owner();
+          method: conceptMapGroup.owner;
           returns:
             - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
         python:
@@ -248,7 +248,7 @@ types:
             - List<[`ConceptMap`](#conceptmap)>
         javascript:
           <<: *method-conceptmapgroup-conceptmaps
-          method: conceptMapGroup.conceptMaps();
+          method: conceptMapGroup.conceptMaps;
           returns:
             - Array of [`ConceptMap`](#conceptmap)s
         python:
@@ -258,6 +258,47 @@ types:
             - List of [`ConceptMap`](#conceptmap)s
 
   - type4:
+    title: NumericGroup
+    methods:
+      - method:
+        common: &method-numericgroup-owner
+          title: Retrieve the concept that is the group owner
+        java:
+          <<: *method-numericgroup-owner
+          method: numericGroup.owner();
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=java#concept-methods)"
+        javascript:
+          <<: *method-numericgroup-owner
+          method: numericGroup.owner;
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
+        python:
+          <<: *method-numericgroup-owner
+          method: numeric_group.owner()
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=python#concept-methods)"
+
+      - method:
+        common: &method-numericgroup-numeric
+          title: Retrieve the Numeric answer of the group
+        java:
+          <<: *method-numericgroup-numeric
+          method: numericGroup.numeric();
+          returns:
+            - "[Numeric](#numeric)"
+        javascript:
+          <<: *method-numericgroup-numeric
+          method: numericGroup.numeric;
+          returns:
+            - "[Numeric](#numeric)"
+        python:
+          <<: *method-numericgroup-numeric
+          method: numeric_group.numeric()
+          returns:
+            - "[Numeric](#numeric)"
+
+  - type5:
     title: Explainables
     methods:
       - method:
@@ -276,7 +317,7 @@ types:
           method: conceptMap.explainables().relation(String variable);
         javascript:
           <<: *method-explainables-relation
-          method: conceptMap.explainables().relation(variable);
+          method: conceptMap.explainables.relation(variable);
         python:
           <<: *method-explainables-relation
           method: concept_map.explainables().relation(variable);
@@ -297,7 +338,7 @@ types:
           method: conceptMap.explainables().attribute(String variable);
         javascript:
           <<: *method-explainables-attribute
-          method: conceptMap.explainables().attribute(variable);
+          method: conceptMap.explainables.attribute(variable);
         python:
           <<: *method-explainables-attribute
           method: concept_map.explainables().attribute(variable);
@@ -318,7 +359,7 @@ types:
           method: conceptMap.explainables().ownership(String variable);
         javascript:
           <<: *method-explainables-ownership
-          method: conceptMap.explainables().ownership(variable);
+          method: conceptMap.explainables.ownership(variable);
         python:
           <<: *method-explainables-ownership
           method: concept_map.explainables().ownership(variable);
@@ -334,7 +375,7 @@ types:
             - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
         javascript:
           <<: *method-explainables-relations
-          method: conceptMap.explainables().relations();
+          method: conceptMap.explainables.relations;
           returns:
             - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
         python:
@@ -354,7 +395,7 @@ types:
             - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
         javascript:
           <<: *method-explainables-attributes
-          method: conceptMap.explainables().attributes();
+          method: conceptMap.explainables.attributes;
           returns:
             - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
         python:
@@ -374,7 +415,7 @@ types:
             - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
         javascript:
           <<: *method-explainables-ownerships
-          method: conceptMap.explainables().ownerships();
+          method: conceptMap.explainables.ownerships;
           returns:
             - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
         python:
@@ -383,7 +424,7 @@ types:
           returns:
             - Dictionary of String to [`ConceptMap.Explainable`](#explainable)
 
-  - type5:
+  - type6:
     title: Explainable
     methods:
       - method:
@@ -397,7 +438,7 @@ types:
           method: explainable.conjunction()
         javascript:
           <<: *method-explainable-conjunction
-          method: explainable.conjunction()
+          method: explainable.conjunction
         python:
           <<: *method-explainable-conjunction
           method: explainable.conjunction()
@@ -413,7 +454,7 @@ types:
             - long
         javascript:
           <<: *method-explainable-id
-          method: explainable.id()
+          method: explainable.id
           returns:
             - number
         python:
@@ -422,7 +463,7 @@ types:
           returns:
             - int
 
-  - type6:
+  - type7:
     title: Explanation
     methods:
       - method:
@@ -436,7 +477,7 @@ types:
           method: explanation.rule();
         javascript:
           <<: *method-explanation-rule
-          method: explanation.rule();
+          method: explanation.rule;
         python:
           <<: *method-explanation-rule
           method: explanation.rule()
@@ -452,7 +493,7 @@ types:
           method: explanation.conclusion()
         javascript:
           <<: *method-explanation-conclusion
-          method: explanation.conclusion()
+          method: explanation.conclusion
         python:
           <<: *method-explanation-conclusion
           method: explanation.conclusion()
@@ -468,7 +509,7 @@ types:
           method: explanation.condition()
         javascript:
           <<: *method-explanation-condition
-          method: explanation.condition()
+          method: explanation.condition
         python:
           <<: *method-explanation-condition
           method: explanation.condition()
@@ -489,6 +530,6 @@ types:
             - "Map<String, Set<String>>"
         javascript:
           <<: *method-explanation-varmap
-          method: explanation.variableMapping()
+          method: explanation.variableMapping
           returns:
             - "Map<String, Set<String>>"

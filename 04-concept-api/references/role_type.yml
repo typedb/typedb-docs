@@ -35,7 +35,7 @@ methods:
       method: roleType.getLabel().scope();
     javascript:
       <<: *method-getScope
-      method: roleType.getLabel().scope();
+      method: roleType.label.scope;
     python:
       <<: *method-getScope
       method: role_type.get_label().scope()
@@ -51,7 +51,7 @@ methods:
       method: roleType.getLabel().scopedName();
     javascript:
       <<: *method-getScopedLabel
-      method: roleType.getLabel().scopedName();
+      method: roleType.label.scopedName;
     python:
       <<: *method-getScopedLabel
       method: role_type.get_label().scoped_name()

@@ -10,7 +10,7 @@ methods:
       method: attributeType.getValueType();
     javascript:
       <<: *method-getvalueType
-      method: attributeType.getValueType();
+      method: attributeType.valueType;
     python:
       <<: *method-getvalueType
       method: attributeType.get_value_type()

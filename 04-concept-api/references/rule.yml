@@ -10,7 +10,7 @@ methods:
       method: rule.getLabel();
     javascript:
       <<: *method-getLabel
-      method: rule.getLabel();
+      method: rule.label;
     python:
       <<: *method-getLabel
       method: rule.get_label()
@@ -51,7 +51,7 @@ methods:
       method: rule.getWhen();
     javascript:
       <<: *method-when
-      method: await rule.getWhen();
+      method: rule.when;
     python:
       <<: *method-when
       method: rule.get_when()
@@ -67,7 +67,7 @@ methods:
       method: rule.getThen();
     javascript:
       <<: *method-then
-      method: await rule.getThen();
+      method: rule.then;
     python:
       <<: *method-then
       method: rule.get_then()

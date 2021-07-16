@@ -10,7 +10,7 @@ methods:
         - "[`EntityType`](../concept-api/type?tab=java#entitytype-methods)"
     javascript:
       <<: *method-type
-      method: await entity.getType();
+      method: entity.type;
       returns:
         - "[`EntityType`](../concept-api/type?tab=javascript#entitytype-methods)"
     python:

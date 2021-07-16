@@ -18,7 +18,6 @@ py_test(
         ":phone-calls-tests",
     ],
     deps = [
-        "@vaticle_typedb_client_python//:client_python",
         test_example_requirement("ijson")
     ],
     data = ["//files:phone-calls-kg"],
@@ -59,7 +58,7 @@ py_test(
         "social_network_test.py",
         ":social-network-tests",
     ],
-    deps = ["@vaticle_typedb_client_python//:client_python"],
+    deps = [],
     data = ["//files:social-network-kg"],
     imports = ["."],
     python_version = "PY3",

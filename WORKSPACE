@@ -109,8 +109,7 @@ pip_deps()
 # Load @vaticle dependencies #
 ################################
 
-load("//dependencies/vaticle:repositories.bzl", "vaticle_typedb_client_python", "vaticle_typedb_client_java")
-vaticle_typedb_client_python()
+load("//dependencies/vaticle:repositories.bzl", "vaticle_typedb_client_java")
 vaticle_typedb_client_java()
 load("@vaticle_typedb_client_java//dependencies/vaticle:repositories.bzl", "vaticle_typeql_lang_java", "vaticle_typedb_protocol",
      "vaticle_factory_tracing", "vaticle_typedb_common")
@@ -131,12 +130,6 @@ load("@vaticle_typedb_client_java//dependencies/maven:artifacts.bzl", vaticle_ty
 load("@vaticle_typeql_lang_java//dependencies/maven:artifacts.bzl", vaticle_typql_lang_java_artifacts = "artifacts")
 load("@vaticle_factory_tracing//dependencies/maven:artifacts.bzl", vaticle_factory_tracing_artifacts = "artifacts")
 load("//dependencies/maven:artifacts.bzl", vaticle_docs_artifacs = "artifacts")
-
-# load client-python dependencies
-pip_install(
-    name = "vaticle_typedb_client_python_pip",
-    requirements = "@vaticle_typedb_client_python//:requirements.txt",
-)
 
 # for Node documentation
 yarn_install(
