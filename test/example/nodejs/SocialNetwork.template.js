@@ -1,7 +1,5 @@
 const fs = require('fs')
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 const reporters = require('jasmine-reporters');
 
 const tapReporter = new reporters.TapReporter();
@@ -18,7 +16,7 @@ beforeAll(async function() {
     const session = await client.session("social_network", SessionType.SCHEMA);
     const transaction = await session.transaction(TransactionType.WRITE);
     const defineQuery = fs.readFileSync("files/social-network/schema.tql", "utf8");
-    await transaction.query().define(defineQuery);
+    await transaction.query.define(defineQuery);
     await transaction.commit();
     await session.close();
     console.log("Loaded the social_network schema");

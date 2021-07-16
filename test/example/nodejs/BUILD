@@ -18,7 +18,7 @@ jasmine_node_test(
         "@npm//xml-stream"
     ],
     data = ["//files:phone-calls-kg"],
-    size = "enormous"
+    size = "medium"
 )
 
 genrule(

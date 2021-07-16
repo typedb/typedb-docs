@@ -127,9 +127,7 @@ public class PhoneCallsFirstQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFirstQuery.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -150,10 +148,10 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query().match(query);
+  	const iterator = await transaction.query.match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer => answer.get("phone-number").value())
+		answers.map(answer => answer.get("phone-number").value)
 	);
 
   	console.log("\nResult:\n", result);
@@ -304,9 +302,7 @@ public class PhoneCallsSecondQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsSecondQuery.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -329,10 +325,10 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query().match(query);
+  	const iterator = await transaction.query.match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer => answer.get("phone-number").value())
+		answers.map(answer => answer.get("phone-number").value)
 	);
 
   	console.log("\nResult:\n", result);
@@ -476,9 +472,7 @@ public class PhoneCallsThirdQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsThirdQuery.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -498,10 +492,10 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-	const iterator = await transaction.query().match(query);
+	const iterator = await transaction.query.match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer => answer.get("phone-number").value())
+		answers.map(answer => answer.get("phone-number").value)
 	);
 
   	console.log("\nResult:\n", result);
@@ -652,9 +646,7 @@ public class PhoneCallsForthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsForthQuery.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 async function ExecuteMatchQuery() {
     const client = TypeDB.coreClient("localhost:1729");
@@ -678,10 +670,10 @@ async function ExecuteMatchQuery() {
   	console.log("\nQuery:\n", query.join("\n"));
   	query = query.join("");
 
-  	const iterator = await transaction.query().match(query);
+  	const iterator = await transaction.query.match(query);
 	const answers = await iterator.collect();
 	const result = await Promise.all(
-		answers.map(answer => answer.get("phone-number-a").value())
+		answers.map(answer => answer.get("phone-number-a").value)
 	);
 
 	console.log("\nResult:\n", result);
@@ -865,9 +857,7 @@ public class PhoneCallsFifthQuery {
 [tab:Node.js]
 <!-- test-example phoneCallsFifthQuery.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 async function ExecuteMatchQuery() {
 	const client = TypeDB.coreClient("localhost:1729");
@@ -886,12 +876,11 @@ async function ExecuteMatchQuery() {
 	console.log("\nQuery:\n", firstQuery.join("\n"));
 
 	firstQuery = firstQuery.join("");
-	const firstAnswer = await transaction.query().matchAggregate(firstQuery);
+	const firstAnswer = await transaction.query.matchAggregate(firstQuery);
 	let firstResult = 0;
-	if(firstAnswer.isNumber()) {
+	if (firstAnswer.isNumber()) {
 		firstResult = firstAnswer.asNumber();
 	}
-
 
   	let result =
 		"Customers aged under 20 have made calls with average duration of " +
@@ -910,7 +899,7 @@ async function ExecuteMatchQuery() {
 	console.log("\nQuery:\n", secondQuery.join("\n"));
 	secondQuery = secondQuery.join("");
 
-	const secondAnswer = await transaction.query().matchAggregate(secondQuery);
+	const secondAnswer = await transaction.query.matchAggregate(secondQuery);
 	let secondResult = 0;
 	if(secondAnswer.isNumber()) {
 		secondResult = secondAnswer.asNumber();

@@ -49,9 +49,7 @@ Pick one of the data formats below and download the files. After you download th
 All code that follows is to be written in `phone_calls/migrate.js`.
 
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 const inputs = [
     {
@@ -292,9 +290,7 @@ We use [Papaparse](https://www.papaparse.com/), a CSV (or delimited text) parser
 Via the terminal, while in the `phone_calls` directory, run `npm install papaparse` and require the module for it.
 
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 const fs = require("fs");
 const papa = require("papaparse");
 ...
@@ -343,9 +339,7 @@ We use [stream-json](https://github.com/uhop/stream-json) for custom JSON proces
 Via the terminal, while in the `phone_calls` directory, run `npm install stream-json` and require the modules for it.
 
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -383,9 +377,7 @@ We use xml-stream, an xml stream parser.
 Via the terminal, while in the `phone_calls` directory, run `npm install xml-stream` and require the module for it.
 
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 ...
@@ -453,9 +445,7 @@ Here is how our `migrate.js` looks like for each data format.
 [tab:CSV]
 <!-- test-example phoneCallsCSVMigration.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 const fs = require("fs");
 const papa = require("papaparse");
 
@@ -501,7 +491,7 @@ async function loadDataIntoTypeDB(input, session) {
 
         const typeqlInsertQuery = input.template(item);
         console.log("Executing TypeQL Query: " + typeqlInsertQuery);
-        await transaction.query(typeqlInsertQuery);
+        await transaction.query.insert(typeqlInsertQuery);
         await transaction.commit();
     }
 
@@ -591,9 +581,7 @@ buildPhoneCallGraph();
 [tab:JSON]
 <!-- test-example phoneCallsJSONMigration.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 const fs = require("fs");
 const { parser } = require("stream-json");
 const { streamArray } = require("stream-json/streamers/StreamArray");
@@ -641,7 +629,7 @@ async function loadDataIntoTypeDB(input, session) {
 
         const typeqlInsertQuery = input.template(item);
         console.log("Executing TypeQL Query: " + typeqlInsertQuery);
-        await transaction.query(typeqlInsertQuery);
+        await transaction.query.insert(typeqlInsertQuery);
         await transaction.commit();
     }
 
@@ -731,9 +719,7 @@ buildPhoneCallGraph();
 [tab:XML]
 <!-- test-example phoneCallsXMLMigration.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 const fs = require("fs");
 const xmlStream = require("xml-stream");
 
@@ -794,7 +780,7 @@ async function loadDataIntoTypeDB(input, session) {
 
         const typeqlInsertQuery = input.template(item);
         console.log("Executing TypeQL Query: " + typeqlInsertQuery);
-        await transaction.query().insert(typeqlInsertQuery);
+        await transaction.query.insert(typeqlInsertQuery);
         await transaction.commit();
     }
 
@@ -884,7 +870,7 @@ buildPhoneCallGraph();
 
 ## Time to Load
 
-Run `npm run migrate.js`
+Run `node migrate.js`
 
 Sit back, relax and watch the logs while the data starts pouring into TypeDB.
 
@@ -898,7 +884,7 @@ Then, we went ahead and wrote a template function for each concept. A templateâ€
 
 After that, we learned how files with different data formats can be parsed into Javascript objects.
 
-Lastly, we ran `npm run migrate.js` which fired the `buildPhoneCallGraph` function with the given `inputs`. This loaded the data into our TypeDB knowledge graph.
+Lastly, we ran `node migrate.js` which fired the `buildPhoneCallGraph` function with the given `inputs`. This loaded the data into our TypeDB knowledge graph.
 
 ## Next
 

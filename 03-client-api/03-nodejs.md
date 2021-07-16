@@ -17,19 +17,18 @@ npm install typedb-client
 ## Quickstart
 First make sure that the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 
-In your source, require `typedb-client/TypeDB`.
+In your source, require `typedb-client`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
+const { TypeDB } = require("typedb-client");
 ```
 
 Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
+const { TypeDB, SessionType } = require("typedb-client");
 
 async function openSession (database) {
 	const client = TypeDB.coreClient("localhost:1729");
@@ -47,9 +46,7 @@ Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 async function createTransactions (database) {
 	const client = TypeDB.coreClient("localhost:1729");
@@ -77,9 +74,7 @@ Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
 ```javascript
-const { TypeDB } = require("typedb-client/TypeDB");
-const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
-const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
+const { TypeDB, SessionType, TransactionType } = require("typedb-client");
 
 async function runBasicQueries(database) {
 	const client = TypeDB.coreClient("localhost:1729");
@@ -87,7 +82,7 @@ async function runBasicQueries(database) {
 
 	// Insert a person using a WRITE transaction
 	const writeTransaction = await session.transaction(TransactionType.WRITE);
-	const insertStream = await writeTransaction.query().insert('insert $x isa person, has email "x@email.com";');
+	const insertStream = await writeTransaction.query.insert('insert $x isa person, has email "x@email.com";');
 	const conceptMaps = await insertStream.collect();
 	console.log("Inserted a person with ID: " + conceptMaps[0].get("x").iid);
 	// to persist changes, a write transaction must always be committed (closed)
@@ -97,18 +92,18 @@ async function runBasicQueries(database) {
 	const readTransaction = await session.transaction(TransactionType.READ);
 
 	// We can either query and consume the iterator lazily
-	let answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
+	let answerStream = await readTransaction.query.match("match $x isa person; get $x; limit 10;");
 	for await (const aConceptMapAnswer of answerStream) {
 		const person = aConceptMapAnswer.get("x");
 		console.log("Retrieved person with id " + person.iid);
 	}
 
 	// Or query and consume the iterator immediately collecting all the results
-	answerStream = await readTransaction.query().match("match $x isa person; get $x; limit 10;");
-	const persons = await answerStream.collect()
+	answerStream = await readTransaction.query.match("match $x isa person; get $x; limit 10;");
+	const persons = await answerStream.collect();
 	persons.forEach( conceptMap => {
         person = conceptMap.get("x");
-        console.log("Retrieved person with id "+ person.iid);
+        console.log("Retrieved person with id " + person.iid);
     });
 
 	// a read transaction must always be closed
