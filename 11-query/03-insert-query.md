@@ -138,13 +138,13 @@ We can add role players to a relation by `match`ing the relation and the concept
 [tab:TypeQL]
 <!-- test-ignore -->
 ```TypeQL
-## inserting the new friend to a friendship list
+## inserting the new friendship to a friendship list
 match
   $julie isa person, has full-name "Julie Hutchinson";
   $miriam isa person, has full-name "Miriam Morton";
-  ($julie, $miriam) isa friendship;
+  $f ($julie, $miriam) isa friendship;
   $list (owner: $miriam) isa friendship-list, has title "best friends";
-insert $list (listed: $julie);
+insert $list (listed: $f);
 ```
 [tab:end]
 
@@ -154,10 +154,10 @@ insert $list (listed: $julie);
 TypeQLInsert insert_query = TypeQL.match(
   var("julie").isa("person").has("name", "Julie Hutchinson"),
   var("miriam").isa("person").has("name", "Miriam Hutchinson"),
-  var().rel(var("julie")).rel(var("miriam")).isa("friendship"),
+  var("f").rel(var("julie")).rel(var("miriam")).isa("friendship"),
   var(list).rel("owner", var("miriam")).isa("friendship-list").has("title", "best friends")
 ).insert(
-  var("list").rel("listed", var("julie"))
+  var("list").rel("listed", var("f"))
 );
 ```
 [tab:end]
