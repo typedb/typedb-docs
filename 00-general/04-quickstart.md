@@ -87,15 +87,15 @@ social_network::schema::write> commit
 ```
 
 ### Load the Dataset
-Download the [`social-network/data.gql`](../files/social-network/data.tql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_network` database and use the `source` command to load the data from file:
+Download the [`social-network/data.tql`](../files/social-network/data.tql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_network` database and use the `source` command to load the data from file:
 
 ```
 > transaction social_network data write
-social_network::data::write> source path-to-the-social-network/data.gql
+social_network::data::write> source path-to-the-social-network/data.tql
 social_network::data::write> commit
 ```
 
-As you may have guessed, `social-network-data.gql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
+As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
 
 ### Query the Knowledge Graph
 Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../02-console/01-console.md), [TypeDB Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md).
@@ -286,7 +286,7 @@ content-permission sub relation,
   relates content;
 ```
 
-As you can see in the `social_network_data.gql` file, no instance of `content-permission` was ever inserted. It's only through rules that allows TypeDB to infer this knowledge and know the answer to the following question at query time.
+As you can see in the `social_network_data.tql` file, no instance of `content-permission` was ever inserted. It's only through rules that allows TypeDB to infer this knowledge and know the answer to the following question at query time.
 
 ```typeql
 match 
@@ -294,7 +294,7 @@ $p isa person, has email "julie.hutchinson@gmail.com";
 (grantee: $p, content: $c)isa content-permission; 
 get $c;
 ```
-Have a look at the `social_network_data.gql` file, there are a number of rules written to give permission to view content, based on how or where the content was shared. 
+Have a look at the `social_network_data.tql` file, there are a number of rules written to give permission to view content, based on how or where the content was shared. 
 
 Let's look at another rule:
 
