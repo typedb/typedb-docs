@@ -35,7 +35,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 ```
 [tab:end]</div>
 
-If no variable is specified after `get`, all variables specified in the `match` clause are returned.
+If the `get` clause is omitted, all variables specified in the `match` clause are returned.
 
 ## Limit the Answers
 We can chose to limit the number of answers in the results. To do this, we use the `limit` keyword followed by the desired number of answers.
