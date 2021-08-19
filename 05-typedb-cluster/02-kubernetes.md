@@ -65,14 +65,14 @@ Deploying TypeDB Cluster in non-exposed mode means it would only be accessible f
 To do it, execute the command:
 
 ```
-helm install vaticle/typedb-cluster typedb-cluster \
+helm install typedb-cluster vaticle/typedb-cluster \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false"
 ```
 
 To enable encryption, append `encrypted` option to the argument:
 
 ```
-helm install vaticle/typedb-cluster typedb-cluster \
+helm install typedb-cluster vaticle/typedb-cluster \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false,encrypted=true"
 ```
 
@@ -112,14 +112,14 @@ This is handled by cloud provider of Kubernetes  which would allocate and assign
 so for a 3-node TypeDB Cluster, 3 public IPs would be allocated. To do it, execute the command:
 
 ```
-helm install vaticle/typedb-cluster typedb-cluster \
+helm install typedb-cluster vaticle/typedb-cluster \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=true"
 ```
 
 To enable encryption, append `encrypted` and `domain` options to the argument:
 
 ```
-helm install vaticle/typedb-cluster typedb-cluster \
+helm install typedb-cluster vaticle/typedb-cluster \
 --set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false,encrypted=true,domain=example.com"
 ```
 
