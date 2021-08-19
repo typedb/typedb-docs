@@ -94,9 +94,9 @@ docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux/typedb console'
 
 ### Starting
 
-If you have installed TypeDB using a package manager, to start the TypeDB Cluster, run `typedb server`.
+If you have installed TypeDB using a package manager, to start the TypeDB Cluster, run `typedb cluster`.
 
-Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb server`.
+Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb cluster`.
 
 
 ### Stopping
@@ -114,8 +114,7 @@ of those servers acts as a leader and others are followers. Increasing number of
 failure: to tolerate N nodes failing, cluster needs to consist of 2*N+1 nodes.
 This section describes how it's done on an example 3-node setup (in this case, one node can fail and no data is lost).
 
-Each node binds to two ports: a client port which TypeDB client drivers connect to (`1729`), and a server port (`1730`)
-which is used for inter-node server-to-server communication.
+Each node binds to two ports: a client port which TypeDB client drivers connect to (`1729`), and two server ports (`1730` and `1731`) for server-to-server communication.
 
 For the tutorial, it's assumed that all three nodes are on the same virtual network and have relevant ports
 unblocked by the firewall. Node have IP addresses of `10.0.0.1`, `10.0.0.2` and `10.0.0.3` and hostnames of
@@ -124,17 +123,17 @@ unblocked by the firewall. Node have IP addresses of `10.0.0.1`, `10.0.0.2` and 
 <div class="note">
 [Note]
 If you're using a single machine to host all nodes, you can prefix the port with the node number; this way
-`1729` and `1730` would turn into `11729`, `11730`; `21729`, `21730` and so on.
+the ports `1729`, `1730`, `1731` would turn into `11729`, `11730`, `11731`; `21729`, `21730`, `21731` and so on.
 </div>
 
 This is how TypeDB Cluster would be started:
 
 ```bash
-user@node1:~/typedb-cluster/$ ./typedb server --address=10.0.0.1:1729:1730 --peer 10.0.0.1:1729:1730 --peer 10.0.0.2:1729:1730 --peer 10.0.0.3:1729:1730
+user@node1:~/typedb-cluster/$ ./typedb cluster --address=10.0.0.1:1729:1730:1731 --peer 10.0.0.1:1729:1730:1731 --peer 10.0.0.2:1729:1730:1731 --peer 10.0.0.3:1729:1730:1731
 
-user@node2:~/typedb-cluster/$ ./typedb server --address=10.0.0.2:1729:1730 --peer 10.0.0.1:1729:1730 --peer 10.0.0.2:1729:1730 --peer 10.0.0.3:1729:1730
+user@node2:~/typedb-cluster/$ ./typedb cluster --address=10.0.0.2:1729:1730:1731 --peer 10.0.0.1:1729:1730:1731 --peer 10.0.0.2:1729:1730:1731 --peer 10.0.0.3:1729:1730:1731
 
-user@node3:~/typedb-cluster/$ ./typedb server --address=10.0.0.3:1729:1730 --peer 10.0.0.1:1729:1730 --peer 10.0.0.2:1729:1730 --peer 10.0.0.3:1729:1730
+user@node3:~/typedb-cluster/$ ./typedb cluster --address=10.0.0.3:1729:1730:1731 --peer 10.0.0.1:1729:1730:1731 --peer 10.0.0.2:1729:1730:1731 --peer 10.0.0.3:1729:1730:1731
 ```  
 
 <div class="note">
@@ -144,11 +143,11 @@ TypeDB Cluster also supports using different IP addresses for client and server 
 and server addresses need to be passed separated by a comma to `--address` and `--peer` options:
 
 ```
-./typedb server \
-    --address external-host-1:1729,10.0.0.1:1730 \
-    --peer external-host-1:1729,10.0.0.1:1730 \
-    --peer external-host-2:1729,10.0.0.2:1730 \
-    --peer external-host-3:1729,10.0.0.3:1730`
+./typedb cluster \
+    --address external-host-1:1729,10.0.0.1:1730,10.0.0.1:1731 \
+    --peer external-host-1:1729,10.0.0.1:1730,10.0.0.1:1731 \
+    --peer external-host-2:1729,10.0.0.2:1730,10.0.0.2:1731 \
+    --peer external-host-3:1729,10.0.0.3:1730,10.0.0.3:1731
 ```
 
 In this case, port `1729` would need to be open to public and clients would use
