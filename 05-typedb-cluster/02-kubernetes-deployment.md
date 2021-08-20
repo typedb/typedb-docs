@@ -36,9 +36,7 @@ also obtain a TypeDB Cluster distribution from [GitHub Releases](https://github.
 
 Depending on the deployment method you choose, next steps to perform the deployment are as follows:
 
-<div class="tabs light">
-
-[tab:Non-exposed Cluster]
+ #### Non-exposed Cluster
 
 **Use this mode if your application is located within the same Kubernetes network as the cluster.**
 
@@ -78,9 +76,8 @@ helm install typedb-cluster vaticle/typedb-cluster \
 
 This command deploys a 3-node Cluster using 100Gi volumes for persistence. It would be accessible via `typedb-cluster-{0..2}.typedb-cluster`
 hostname within the Kubernetes network.
-[tab:end]
 
-[tab:Exposed Cluster - Cloud]
+#### Exposed Cluster - Cloud
 
 *Use this mode if you need to access the Cluster from outside of Kubernetes such as with Workbase or Console from your local machine.*
 
@@ -156,9 +153,7 @@ kubectl get svc -l external-ip-for=typedb-cluster \
 
 Encrypted cluster nodes would be accessible via `typedb-cluster-{0..2}.typedb-cluster.example.com` hostnames.
 
-[tab:end]
-
-[tab:Exposed Cluster - Minikube]
+#### Exposed Cluster - Minikube
 
 *Use this mode for setting up a development cluster in your local machine.*
 
@@ -191,8 +186,6 @@ This deployment mode is primarily inteded for development purpose. Certain adjus
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
   as total storage required is `storage.size` multiplied by `replicas`. In our example, total storage requirement is 30Gi.
 
-[tab:end]
-</div>
 
 ### Configuration Reference
 
