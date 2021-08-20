@@ -160,24 +160,30 @@ Encrypted cluster nodes would be accessible via `typedb-cluster-{0..2}.typedb-cl
 
 [tab:Exposed Cluster - Minikube]
 
-**Use this mode for setting up a cluster in your local machine**
+*Use this mode for setting up a development cluster in your local machine.*
 
-Encryption **cannot** be enabled in this configuration.
+**Enabling encryption (optional)**
 
-Having installed and started [Minikube](https://minikube.sigs.k8s.io/), this is the command to deploy TypeDB Cluster:
+Encryption *cannot* be enabled in this configuration.
+
+**Deployment**
+
+Please make sure to have [Minikube](https://minikube.sigs.k8s.io/) installed and running.
+
+Once done, we can perform the deployment:
 
 ```
 helm install vaticle/typedb-cluster --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ```
 
-and in another terminal (this is a foreground process that needs to continue running):
+Then, enable tunneling from another terminal:
 
 ```
 minikube tunnel
 ```
 
-Certain adjustments are made to the usual cloud deployment:
+This deployment mode is primarily inteded for development purpose. Certain adjustments will be made compared to other deployment modes:
 
 * Minikube only has a single node, so `singlePodPerNode` needs to be set to `false`
 * Minikube's node only has as much CPUs as the local machine: `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
