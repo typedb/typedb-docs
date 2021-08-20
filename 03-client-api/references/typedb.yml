@@ -43,6 +43,7 @@ methods:
       description: |
         In order to communicate with TypeDB Cluster databases via sessions and transactions, we first need to instantiate a TypeDB Cluster client.
         The created object connects our application with the running TypeDB Cluster.
+        Please note that Node.js and Python clients always have TLS enabled, and therefore can only connect to a server that is setup with TLS.
       accepts: &accepts-client-cluster
         param1: &accepts-client-cluster-addresses
           name: addresses
