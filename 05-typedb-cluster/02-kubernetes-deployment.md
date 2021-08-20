@@ -40,7 +40,7 @@ Depending on the deployment method you choose, next steps to perform the deploym
 
 [tab:Non-exposed Cluster]
 
-**Use this mode if your an application resides within the same Kubernetes network.**
+**Use this mode if your application is located within the same Kubernetes network as the cluster.**
 
 Encryption can be enabled for this mode. Generated certificates need to be valid for `*.<helm-release-name>`,
 so for deployment named `typedb-cluster`, certificate needs to be valid for `*.typedb-cluster` hostnames.
@@ -82,19 +82,36 @@ hostname within the Kubernetes network.
 
 [tab:Exposed Cluster - Cloud]
 
-**Use this mode if you need to access the Cluster from outside of Kubernetes. For example, if you need to connect using Workbase or Console from your local machine.**
+*Use this mode if you need to access the Cluster from outside of Kubernetes such as with Workbase or Console from your local machine.*
 
-Encryption can be enabled for this mode **only if you have a public domain**.
-Generated certificates need to be valid for `*.<helm-release-name>.<domain-name>` and `*.<helm-release-name>`,
-so for deployment named `typedb-cluster` and domain `example.com`,
-certificate needs to be valid for `*.typedb-cluster.example.com` and `*.typedb-cluster` hostnames.
+**Enabling encryption (optional)**
 
-To generate them, execute these commands:
+In order to enable encryption, there are two certificate that needs to be configured: external certificate (TLS) and internal certificate (Curve).
+
+Let's start by configuring the external certificate.
+
+The TLS certificate is typically obtained from trusted third-party providers. Alternatively it is also possible to generate the certificate manually for development purpose using `mkcert`:
 
 ```
 $ mkcert -cert-file rpc-certificate.pem -key-file rpc-private-key.pem "*.typedb-cluster.example.com" "*.typedb-cluster"
+```
+
+Please note that TLS certificate must be bound to a domain name, and not IP addresses. This means that your server instances must each be accessible via domain names and not IP addresses.
+
+Also, the certificate need to be valid for `*.<helm-release-name>.<domain-name>` and `*.<helm-release-name>`, so for deployment named `typedb-cluster` and domain `example.com`, certificate needs to be valid for `*.typedb-cluster.example.com` and `*.typedb-cluster` hostnames.
+
+Once done, proceed to configure the internal certificate:
+
+```
 $ # unpack distribution of TypeDB Cluster into `dist` folder
 $ ./dist/typedb-cluster-all-<platform>-<version>/tool/create-encryption-mq-key.sh
+```
+
+**Deployment**
+
+Once done, you can proceed to initiate the deployment:
+
+```
 $ kubectl create secret generic typedb-cluster \
   --from-file rpc-private-key.pem \
   --from-file rpc-certificate.pem \
@@ -103,8 +120,7 @@ $ kubectl create secret generic typedb-cluster \
   --from-file mq-public-key
 ```
 
-Note: Kubernetes secret need to be named the same as a deployment would be (`typedb-cluster`) and contain exactly
-these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`, `mq-public-key`)
+Note: Kubernetes secret need to be named the same as a deployment would be (`typedb-cluster`) and contain exactly these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`, `mq-public-key`)
 
 
 If an application does not use Kubernetes, TypeDB Cluster needs to be exposed on public IPs or public domains (**required** for encryption).
@@ -144,7 +160,7 @@ Encrypted cluster nodes would be accessible via `typedb-cluster-{0..2}.typedb-cl
 
 [tab:Exposed Cluster - Minikube]
 
-**Use this mode for local development with TypeDB Cluster.**
+**Use this mode for setting up a cluster in your local machine**
 
 Encryption **cannot** be enabled in this configuration.
 
