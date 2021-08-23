@@ -164,6 +164,25 @@ To view examples of running various TypeQL queries using the Java client, head o
 - [Update](../11-query/05-update-query.md)
 - [Aggregate](../11-query/06-aggregate-query.md)
 
+## Logging
+By default, Client Java uses Logback to print errors and debugging info to standard output. As it is quite verbose, we recommend that in most scenarios you create a Logback configuration file and set the minimum log level to ERROR. You can do so with the following steps:
+
+1. Create a file in your `resources` path (`src/main/resources` by default in a Maven project) named `logback.xml`.
+2. Copy the following document into `logback.xml`:
+```xml
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
+```
 <hr style="margin-top: 40px;" />
 
 ## API Reference
