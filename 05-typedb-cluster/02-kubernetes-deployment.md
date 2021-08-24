@@ -67,11 +67,8 @@ This deployment mode is preferred if your application is located within the same
 
 **Deploying without in-flight encryption**
 
-The example below shows how to deploy 3-node private cluster using 100Gi of persistent storage, without in-flight encryption:
-
 ```
-helm install typedb-cluster vaticle/typedb-cluster \
---set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false,encrypted=false"
+helm install typedb-cluster vaticle/typedb-cluster --set "exposed=false,encrypted=false"
 ```
 
 Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes network, ie., `typedb-cluster-0.typedb-cluster`, `typedb-cluster-1.typedb-cluster`, and `typedb-cluster-2.typedb-cluster`.
@@ -82,11 +79,10 @@ Should you need to enable in-flight encryption for your private cluster, make su
 
 Also make sure that the external certificate is bound to `*.<deployment-name>`. For example, for a deployment named `typedb-cluster`, the certificate needs to be bound to `*.typedb-cluster`. 
 
-For example, this is how to deploy 3-node private cluster using 100Gi of persistent storage, with in-flight encryption:
+Once done, let's perform the deployment:
 
 ```
-helm install typedb-cluster vaticle/typedb-cluster \
---set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false,encrypted=true"
+helm install typedb-cluster vaticle/typedb-cluster --set "exposed=false,encrypted=true"
 ```
 
 Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes network, ie., `typedb-cluster-0.typedb-cluster`, `typedb-cluster-1.typedb-cluster`, and `typedb-cluster-2.typedb-cluster`.
@@ -97,13 +93,12 @@ If you need to access the cluster from outside of Kubernetes, then use this depl
 
 Deploying a public cluster can be done by setting the `exposed` flag to `true`. 
 
-Technically, the servers are made publicly accessible by binding each one to a `LoadBalancer` instance. These instances will be assigned public IPs, done automatically by the cloud provider that the Kubernetes platform is running on.
+Technically, the servers are made public by binding each one to a `LoadBalancer` instance which is assigned a public IP. The IP assignments are one automatically by the cloud provider that the Kubernetes platform is running on.
 
 **Deploying without in-flight encryption**
 
 ```
-helm install typedb-cluster vaticle/typedb-cluster \
---set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=true"
+helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true"
 ```
 
 Once the deployment has completed, the servers would be accessible via public IPs assigned to the Kubernetes `LoadBalancer` services. The addresses can obtained with this command:
@@ -125,11 +120,12 @@ typedb-cluster-{0..n}.<deployment-name>.<domain-name>
 
 The format must be taken into account when generating the external certificate of all servers such that they're properly bound to the address. For example, you can generate an external certificate using wildcard, ie., `*.<deployment-name>.<domain-name>`, that can be shared by all servers.
 
-Once the domain name and external certificate has been configured accordingly, we can proceed to perform the deployment. Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly:
+Once the domain name and external certificate has been configured accordingly, we can proceed to perform the deployment. Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly.
+
+Once done, let's perform the deployment:
 
 ```
-helm install typedb-cluster vaticle/typedb-cluster \
---set "cpu=7,replicas=3,singlePodPerNode=true,storage.persistent=true,storage.size=100Gi,exposed=false,encrypted=true,domain=<domain-name>"
+helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true,encrypted=true,domain=<domain-name>"
 ```
 
 After the deployment has been completed, we need to configure these URL addresses to correctly point to the servers. This can be done by configuring the `A record` of all the servers in your trusted DNS provider:
@@ -146,7 +142,7 @@ Use this deployment mode for setting up a development cluster in your local mach
 
 First, please make sure to have [Minikube](https://minikube.sigs.k8s.io/) installed and running.
 
-Once done, let's perform the deployment:
+Once done, let's perform the deployment. In this example, we're adjusting various CPU and storage parameters to something smaller than the default, taking into account that resources may be more limited given that the cluster will run on a Minikube instance on your local machine.
 
 ```
 helm install vaticle/typedb-cluster --generate-name \
