@@ -35,7 +35,7 @@ An external certificate can either be obtained from trusted third party provider
 $ mkcert -cert-file rpc-certificate.pem -key-file rpc-private-key.pem <server-url-address>"
 ```
 
-An external certificate is always bound to URL address, not IP address. You must take this into account when generating the certificate.
+Please note that an external certificate is always bound to URL address, not IP address.
 
 The internal certificate can be generated using the `create-encryption-mq-key.sh` tool bundled with TypeDB Cluster distribution, which can be downloaded from [repo.vaticle.com](https://repo.vaticle.com/#browse/browse:private-artifact:vaticle_typedb_cluster):
 
