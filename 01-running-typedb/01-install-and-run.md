@@ -28,11 +28,6 @@ Update the package cache:
 sudo apt update
 ```
 
-Install TypeDB Server and TypeDB Console:
-```
-sudo apt install typedb-all
-```
-
 <div class="note">
 [Warning]
 Ubuntu 16.04 requires some extra steps to be able to install TypeDB, namely upgrading `libstdc++`:
@@ -44,6 +39,11 @@ sudo apt-get install gcc-4.9
 sudo apt-get install --only-upgrade libstdc++6
 ```
 </div>
+
+Install TypeDB Server and TypeDB Console:
+```
+sudo apt install typedb-all
+```
 
 #### Manual Download
 
