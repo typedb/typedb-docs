@@ -122,7 +122,7 @@ runBasicQueries("social_network");
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
+Check out the [Concept API](../05-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
 To view examples of running various queries using the Node.js client, head over to their dedicated documentation pages as listed below:
 - [Insert](../11-query/03-insert-query.md)
@@ -133,23 +133,23 @@ To view examples of running various queries using the Node.js client, head over 
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.typedb language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.typedb language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.client language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.client language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.session language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.session language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.options language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.options language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.transaction language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_manager language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_manager language="javascript" %}
 
-{% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}
+{% include api/answers.html data=site.data.04_client_api.references.answer language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_future language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.stream language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.stream language="javascript" %}
 
 
 ## Version Compatibility

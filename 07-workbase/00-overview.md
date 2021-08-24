@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## What is Workbase?
-The TypeDB Workbase, along with the [TypeDB Console](../02-console/01-console.md) and the [TypeDB Clients](../03-client-api/00-overview.md), is an interface through which we can read from a TypeDB knowledge graph.
+The TypeDB Workbase, along with the [TypeDB Console](../03-console/01-console.md) and the [TypeDB Clients](../04-client-api/00-overview.md), is an interface through which we can read from a TypeDB knowledge graph.
 Workbase allows us to execute TypeQL [`match`](../11-query/01-match-clause.md) queries, and visualise and investigate their results.
 Whether you need a tool to test and experiment with your newly created TypeDB knowledge graph, or that you prefer a graphical interface for reading data from TypeDB, you will find Workbase extremely useful.
 

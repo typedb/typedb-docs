@@ -10,7 +10,7 @@ As the name suggests, we use the `define` keyword to develop the [schema](../09-
 
 When defining the schema in a single `schema.tql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [TypeDB Console](../02-console/01-console.md) as well as the TypeDB Clients [Java](../03-client-api/01-java.md), [Python](../03-client-api/02-python.md) and [Node.js](../03-client-api/03-nodejs.md).
+We can also use the `define` keyword in the interactive mode of the [TypeDB Console](../03-console/01-console.md) as well as the TypeDB Clients [Java](../04-client-api/01-java.md), [Python](../04-client-api/02-python.md) and [Node.js](../04-client-api/03-nodejs.md).
 
 To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
@@ -757,7 +757,7 @@ As the name suggests, we use the `undefine` keyword to remove the definition of 
 <div class="note">
 [Important]
 Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original database that is running on the TypeDB server.
-When using one of the [TypeDB Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [TypeDB Console](../02-console/01-console.md), we use the `commit` command.
+When using one of the [TypeDB Clients](../04-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [TypeDB Console](../03-console/01-console.md), we use the `commit` command.
 </div>
 
 ### Undefine an attribute's association
@@ -818,17 +818,17 @@ When the concept type to be undefined is a supertype to something else, we must 
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing `define` and `undefine` queries, is as simple as calling the [`execute()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../04-client-api/01-java.md)**: Executing `define` and `undefine` queries, is as simple as calling the [`execute()`](../04-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the TypeQL(string) query to the `query()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../04-client-api/03-nodejs.md)**: Executing `define` and `undefine` queries, is as simple as passing the TypeQL(string) query to the `query()` function available on the [`transaction`](../04-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the TypeQL(string) query to the `query()`method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../04-client-api/02-python.md)**: Executing `define` and `undefine` queries, is as simple as passing the TypeQL(string) query to the `query()`method available on the [`transaction`](../04-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

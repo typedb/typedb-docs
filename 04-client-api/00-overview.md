@@ -6,7 +6,7 @@ Summary: All you need to know about the architecture of a TypeDB Client.
 ---
 
 ## What is a TypeDB Client?
-A TypeDB client, along with the [TypeDB Console](../02-console/01-console.md) and the [TypeDB Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. If we are building an application that uses a TypeDB knowledge graph as its database, we would need a TypeDB client at our application layer to handle the database operations.
+A TypeDB client, along with the [TypeDB Console](../03-console/01-console.md) and the [TypeDB Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. If we are building an application that uses a TypeDB knowledge graph as its database, we would need a TypeDB client at our application layer to handle the database operations.
 
 In this section and the following pages, we learn the mechanism that a TypeDB client uses to set up communication with [databases](../06-management/01-database.md) running on the TypeDB server as well as the methods available for executing queries and retrieving their answers.
 
@@ -35,7 +35,7 @@ When a transaction is committed or closed, all of its asynchronous queries are c
 </div>
 
 ### Investigating Answers
-Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. These answers, regardless of their type, all contain concepts. We can then use the methods introduced by the [Concept API](../04-concept-api/00-overview.md) to obtain more information about the retrieved concept and its surroundings. Furthermore, the Concept API allows us to traverse the neighbours of a specific concept instance to obtain more insights.
+Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. These answers, regardless of their type, all contain concepts. We can then use the methods introduced by the [Concept API](../05-concept-api/00-overview.md) to obtain more information about the retrieved concept and its surroundings. Furthermore, the Concept API allows us to traverse the neighbours of a specific concept instance to obtain more insights.
 
 ## Best Practices
 To avoid running into issues and make the most out of using a TypeDB client, keep in mind the following points.
@@ -49,14 +49,14 @@ To avoid running into issues and make the most out of using a TypeDB client, kee
 
 ## Available Clients
 TypeDB currently supports clients for:
-- [Java](../03-client-api/01-java.md)
-- [Node.js](../03-client-api/03-nodejs.md)
-- [Python](../03-client-api/02-python.md)
+- [Java](../04-client-api/01-java.md)
+- [Node.js](../04-client-api/03-nodejs.md)
+- [Python](../04-client-api/02-python.md)
 
 ## Building Your Own TypeDB Client
-Creating a new TypeDB client is discussed [here](../03-client-api/04-new-client.md).
+Creating a new TypeDB client is discussed [here](../04-client-api/04-new-client.md).
 
 ## Summary
 A TypeDB Client is meant to be used at the application layer for the purpose of managing and performing operations over databases that live on the TypeDB server.
 
-Next, we learn how to set up and use the TypeDB Clients. Pick a language of your choice to continue - [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) or [Python](../03-client-api/02-python.md).
+Next, we learn how to set up and use the TypeDB Clients. Pick a language of your choice to continue - [Java](../04-client-api/01-java.md), [Node.js](../04-client-api/03-nodejs.md) or [Python](../04-client-api/02-python.md).

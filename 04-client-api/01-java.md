@@ -3,7 +3,7 @@ pageTitle: Client Java
 keywords: typedb, client, java
 longTailKeywords: typedb java client, typedb client java, client java, java client
 Summary: API Reference of TypeDB Client Java.
-templatePath: 03-client-api/references/
+templatePath: 04-client-api/references/
 ---
 
 ## Installation
@@ -154,7 +154,7 @@ public class TypeDBQuickstartC {
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to queries.
+Check out the [Concept API](../05-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to queries.
 
 To view examples of running various TypeQL queries using the Java client, head over to their dedicated documentation pages as listed below.
 
@@ -187,23 +187,23 @@ By default, Client Java uses Logback to print errors and debugging info to stand
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.typedb language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.typedb language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.client language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.client language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.session language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.session language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.options language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.options language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.transaction language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.typeql language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.typeql language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_manager language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_manager language="java" %}
 
-{% include api/answers.html data=site.data.03_client_api.references.answer language="java" %}
+{% include api/answers.html data=site.data.04_client_api.references.answer language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_future language="java" %}
 
 
 ## Version Compatibility

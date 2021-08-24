@@ -54,7 +54,7 @@ Download the [latest release](https://github.com/vaticle/typedb/releases), unzip
 If TypeDB doesn't have a distribution you need, please open an issue [on GitHub](https://github.com/vaticle/typedb/issues).
 
 
-Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../02-console/01-console.md).
+Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../03-console/01-console.md).
 
 [tab:end]
 
@@ -74,7 +74,7 @@ brew upgrade vaticle/tap/typedb
 #### Manual Download
 Download the [latest release](https://github.com/vaticle/typedb/releases), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../02-console/01-console.md).
+Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../03-console/01-console.md).
 
 [tab:end]
 
@@ -83,7 +83,7 @@ Having installed or downloaded TypeDB, we can now start the [Server](#start-the-
 #### Manual Download
 Download the [latest release](https://github.com/vaticle/typedb/releases), unzip it in a location on your machine that is easily accessible via command prompt.
 
-Having downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../02-console/01-console.md).
+Having downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../03-console/01-console.md).
 
 If you see errors such as the following:
 ```
@@ -127,7 +127,7 @@ docker run --name typedb -d -v $(pwd)/db/:/typedb-all-linux/server/db/ -p 1729:1
 
 Having started the instance, the TypeDB Server is expected to be running on port `1729` on your machine.
 
-To interact with the [TypeDB Console](../02-console/01-console.md), run:
+To interact with the [TypeDB Console](../03-console/01-console.md), run:
 
 ```
 docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
@@ -147,4 +147,4 @@ To stop the TypeDB Server, press Ctrl-C in same terminal as the one where you st
 ## Summary
 So far we have learned how to download/install TypeDB and run the TypeDB Server.
 
-Next, we learn how to [configure the TypeDB Server](../01-running-typedb/03-configuration.md) and [interact with a TypeDB knowledge graph via the TypeDB Console](../02-console/01-console.md).
+Next, we learn how to [configure the TypeDB Server](../01-running-typedb/03-configuration.md) and [interact with a TypeDB knowledge graph via the TypeDB Console](../03-console/01-console.md).

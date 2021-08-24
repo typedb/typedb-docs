@@ -57,10 +57,10 @@ person sub entity,
     plays friendship-list:owner;
 ```
 
-The code you see above is TypeQL. TypeQL is the language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../02-console/01-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
+The code you see above is TypeQL. TypeQL is the language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../03-console/01-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../04-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
 
 ### Download and Load the Complete Schema
-First, download the [`social-network/schema.tql`](../files/social-network/schema.tql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [TypeDB Console](../02-console/01-console.md).
+First, download the [`social-network/schema.tql`](../files/social-network/schema.tql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [TypeDB Console](../03-console/01-console.md).
 
 <div class="note">
 [Note]
@@ -95,14 +95,14 @@ social_network::data::write> source path-to-the-social-network/data.tql
 social_network::data::write> commit
 ```
 
-As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
+As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../04-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
 
 ### Query the Knowledge Graph
-Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../02-console/01-console.md), [TypeDB Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md).
+Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../03-console/01-console.md), [TypeDB Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../04-client-api/00-overview.md).
 
 Let's see an example of running [TypeQL get queries](../11-query/02-get-query.md) via each of these interfaces.
 
-#### Retrieve the full name of everyone who has travelled to a location using [TypeDB Console](../02-console/01-console.md)
+#### Retrieve the full name of everyone who has travelled to a location using [TypeDB Console](../03-console/01-console.md)
 
 Using the open console, open a read transaction for the `social_network` database:
 ```
@@ -127,7 +127,7 @@ The result contains the following answers:
 
 ![Visualise all married people](../images/quickstart/workbase_sample_query.png)
 
-#### Retrieve all employments using [Client Java](../03-client-api/01-java.md)
+#### Retrieve all employments using [Client Java](../04-client-api/01-java.md)
 
 <!-- test-example SocialNetworkQuickstartQuery.java -->
 ```java
@@ -175,7 +175,7 @@ public class SocialNetworkQuickstartQuery {
 }
 ```
 
-#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](../03-client-api/02-python.md)
+#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](../04-client-api/02-python.md)
 
 <!-- test-example social_network_quickstart_query.py -->
 ```python
@@ -201,7 +201,7 @@ with TypeDB.core_client("localhost:1729") as client:
           print(answer.get("fun").get_value()) # get attribute value
 ```
 
-#### Retrieve the average salary of all employees at Pharos using [Client Node.js](../03-client-api/03-nodejs.md)
+#### Retrieve the average salary of all employees at Pharos using [Client Node.js](../04-client-api/03-nodejs.md)
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript

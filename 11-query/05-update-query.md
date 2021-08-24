@@ -118,17 +118,17 @@ After these queries, all employments by the organisation named `Pharos` were rep
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing an `update` query, is as simple as calling the [`query().update()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../04-client-api/01-java.md)**: Executing an `update` query, is as simple as calling the [`query().update()`](../04-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing an `update` query, is as simple as passing the TypeQL(string) query to the `query().update()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../04-client-api/03-nodejs.md)**: Executing an `update` query, is as simple as passing the TypeQL(string) query to the `query().update()` function available on the [`transaction`](../04-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing an `update` query, is as simple as passing the TypeQL(string) query to the `query().update()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../04-client-api/02-python.md)**: Executing an `update` query, is as simple as passing the TypeQL(string) query to the `query().update()` method available on the [`transaction`](../04-client-api/02-python.md#transaction) object.
 </div>
 
 
