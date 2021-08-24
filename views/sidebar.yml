@@ -19,6 +19,16 @@ chapters:
           -
             title: Configuration
             url: configuration
+      -
+        title: Running TypeDB Cluster
+        baseUrl: /docs/running-typedb-cluster/
+        pages:
+          -
+            title: Install & Run
+            url: install-and-run
+          -
+            title: Kubernetes Deployment
+            url: kubernetes-deployment
       - title: Console
         baseUrl: /docs/console/
         pages:
@@ -62,13 +72,6 @@ chapters:
           -
             title: Thing
             url: thing
-      - title: TypeDB Cluster
-        baseUrl: /docs/typedb-cluster/
-        pages:
-          - title: Install & Run
-            url: install-and-run
-          - title: Kubernetes Deployment
-            url: kubernetes-deployment
       -
         title: Management
         baseUrl: /docs/management/
