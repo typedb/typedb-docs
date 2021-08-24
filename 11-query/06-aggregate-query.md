@@ -219,17 +219,17 @@ This query returns the total count of `person`s grouped by the `title` of their 
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `match aggregate` query, is as simple as calling the [`query().match()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../04-client-api/01-java.md)**: Executing a `match aggregate` query, is as simple as calling the [`query().match()`](../04-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().matchAggregate()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../04-client-api/03-nodejs.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().matchAggregate()` function available on the [`transaction`](../04-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().match_aggregate()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../04-client-api/02-python.md)**: Executing a `match aggregate` query, is as simple as passing the TypeQL(string) query to the `query().match_aggregate()` method available on the [`transaction`](../04-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary

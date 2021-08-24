@@ -7,7 +7,7 @@ toc: true
 ---
 
 ## Type Methods
-`Type` has all the [`Concept` methods](../04-concept-api/01-concept.md) plus what follows.
+`Type` has all the [`Concept` methods](../05-concept-api/01-concept.md) plus what follows.
 
 <div class="tabs light" data-no-parse>
 

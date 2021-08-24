@@ -64,7 +64,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #1 Console](../images/examples/phone_calls_query_1_console.png)
-[caption:Using [TypeDB Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../03-console/01-console.md)]
 
 <div class="tabs dark">
 
@@ -237,7 +237,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #2 Console](../images/examples/phone_calls_query_2_console.png)
-[caption:Using [TypeDB Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../03-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -410,7 +410,7 @@ get $phone-number;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #3 Console](../images/examples/phone_calls_query_3_console.png)
-[caption:Using [TypeDB Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../03-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -581,7 +581,7 @@ get $phone-number-a, $phone-number-b;
 [caption:Using [Workbase](../07-workbase/00-overview.md)]
 
 ![phone_calls query #4 Console](../images/examples/phone_calls_query_4_console.png)
-[caption:Using [TypeDB Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../03-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]
@@ -778,7 +778,7 @@ get $duration; mean $duration;
 #### Try it yourself
 
 ![phone_calls query #5 Console](../images/examples/phone_calls_query_5_console.png)
-[caption:Using [TypeDB Console](../02-console/01-console.md)]
+[caption:Using [TypeDB Console](../03-console/01-console.md)]
 
 <div class="tabs dark">
 [tab:Java]

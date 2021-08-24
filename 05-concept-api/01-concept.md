@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## Concept Methods
-`Concept` is inherited and extended by [`Type`](/docs/concept-api/type) and [`Thing`](../04-concept-api/04-thing.md).
+`Concept` is inherited and extended by [`Type`](/docs/concept-api/type) and [`Thing`](../05-concept-api/04-thing.md).
 
 <div class="tabs light" data-no-parse>
 

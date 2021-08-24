@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## Concept Architecture
-Anything in TypeDB (other than [Rule](../09-schema/03-rules.md)), whether a concept type or a data instance, is a [Concept](../04-concept-api/01-concept.md). The diagram below, illustrates how the Concept superclass is inherited by its direct and indirect descendants.
+Anything in TypeDB (other than [Rule](../09-schema/03-rules.md)), whether a concept type or a data instance, is a [Concept](../05-concept-api/01-concept.md). The diagram below, illustrates how the Concept superclass is inherited by its direct and indirect descendants.
 
 ![Concept Hierarchy](../images/concept-api/overview_hierarchy.png)
 
@@ -53,4 +53,4 @@ The interaction behaviour between remote concepts and results streaming is not w
 
 All local concepts have the method `asRemote(tx)`, where the `tx` parameter is a Transaction to use for the remote concept version of this local concept, and the returned value is the remote concept. See the `asRemote` method documentation for more details.
 
-In the sections that follow, we learn about the methods available on [Concept](../04-concept-api/01-concept.md), [Type](../04-concept-api/02-type.md#type-methods), [ThingType](../04-concept-api/02-type.md#thingtype-methods), [EntityType](../04-concept-api/02-type.md#entitytype-methods), [AttributeType](../04-concept-api/02-type.md#attributetype-methods), [RelationType](../04-concept-api/02-type.md#relationtype-methods), [RoleType](../04-concept-api/02-type.md#roletype-methods), [Thing](../04-concept-api/04-thing.md#thing-methods), [Attribute](../04-concept-api/04-thing.md#attribute-methods), [Relation](../04-concept-api/04-thing.md#relation-methods) and [Rule](../04-concept-api/03-rule.md).
+In the sections that follow, we learn about the methods available on [Concept](../05-concept-api/01-concept.md), [Type](../05-concept-api/02-type.md#type-methods), [ThingType](../05-concept-api/02-type.md#thingtype-methods), [EntityType](../05-concept-api/02-type.md#entitytype-methods), [AttributeType](../05-concept-api/02-type.md#attributetype-methods), [RelationType](../05-concept-api/02-type.md#relationtype-methods), [RoleType](../05-concept-api/02-type.md#roletype-methods), [Thing](../05-concept-api/04-thing.md#thing-methods), [Attribute](../05-concept-api/04-thing.md#attribute-methods), [Relation](../05-concept-api/04-thing.md#relation-methods) and [Rule](../05-concept-api/03-rule.md).

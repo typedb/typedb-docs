@@ -119,7 +119,7 @@ class LinksTest(unittest.TestCase):
                 content = autolink_keywords_file.read().split("codeKeywordsToLink = ")[1]
                 content = re.sub(r'\/\/\s.*', '', content)  # removes comments
                 autolink_keywords = ast.literal_eval(content)  # converts string to dict
-                common_base_url = "03-client-api/{client}"
+                common_base_url = "04-client-api/{client}"
 
                 for keyword in autolink_keywords["keywords"]:
                     anchor = keyword["anchor"].replace("#", "")
