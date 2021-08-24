@@ -55,7 +55,7 @@ $ kubectl create secret generic typedb-cluster \
   --from-file mq-public-key
 ```
 
-Additionally, the secret name in Kubernetes Secret needs to be identical to the deployment name (`typedb-cluster`) and contain exactly these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`, `mq-public-key`).
+Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-cluster`) and contain exactly these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`, `mq-public-key`).
 
 ### Deployment Steps
 
@@ -77,7 +77,7 @@ Once the deployment has been completed, the servers would be accessible via the 
 
 Should you need to enable in-flight encryption for your private cluster, make sure the `encrypted` flag is set to `true`.
 
-Also make sure that the external certificate is bound to `*.<deployment-name>`. For example, for a deployment named `typedb-cluster`, the certificate needs to be bound to `*.typedb-cluster`. 
+Also make sure that the external certificate is bound to `*.<helm-release-name>`. For example, for a Helm release named `typedb-cluster`, the certificate needs to be bound to `*.typedb-cluster`. 
 
 Once done, let's perform the deployment:
 
@@ -112,13 +112,13 @@ kubectl get svc -l external-ip-for=typedb-cluster \
 
 If you also want to enable in-flight encryption, there is an important requirement that must be adhered: the servers must be assigned URL addresses. This restriction comes from the fact that external certificate must be bound to a domain name, and not IP address.
 
-Given a "domain name" and "deployment name", The address structure of the servers will follow the specified format:
+Given a "domain name" and "Helm release name", The address structure of the servers will follow the specified format:
 
 ```
-typedb-cluster-{0..n}.<deployment-name>.<domain-name>
+typedb-cluster-{0..n}.<helm-release-name>.<domain-name>
 ```
 
-The format must be taken into account when generating the external certificate of all servers such that they're properly bound to the address. For example, you can generate an external certificate using wildcard, ie., `*.<deployment-name>.<domain-name>`, that can be shared by all servers.
+The format must be taken into account when generating the external certificate of all servers such that they're properly bound to the address. For example, you can generate an external certificate using wildcard, ie., `*.<helm-release-name>.<domain-name>`, that can be shared by all servers.
 
 Once the domain name and external certificate has been configured accordingly, we can proceed to perform the deployment. Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly.
 
