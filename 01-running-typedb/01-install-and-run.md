@@ -28,9 +28,7 @@ Update the package cache:
 sudo apt update
 ```
 
-<div class="note">
-[Warning]
-Ubuntu 16.04 requires some extra steps to be able to install TypeDB, namely upgrading `libstdc++`:
+NOTE: Ubuntu 16.04 requires some extra steps to be able to install TypeDB, namely upgrading `libstdc++`:
 
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -38,7 +36,6 @@ sudo apt-get update
 sudo apt-get install gcc-4.9
 sudo apt-get install --only-upgrade libstdc++6
 ```
-</div>
 
 Install TypeDB Server and TypeDB Console:
 ```
