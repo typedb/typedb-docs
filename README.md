@@ -246,7 +246,7 @@ The documentation of each interface to TypeDB (i.e. clients, workbase, console, 
 
 API references are written and maintained in `.yml` files. To work, with these files, you need to have a solid understanding of YAML anchors and references.
 
-Client API reference files are accessible via [`04-client-api/references`](04-client-api/references) and Concept API references via [`05-concept-api/references`](04-client-api/references).
+Client API reference files are accessible via [`03-client-api/references`](03-client-api/references) and Concept API references via [`04-concept-api/references`](04-client-api/references).
 
 ### Tests
 

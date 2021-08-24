@@ -27,7 +27,7 @@ Download the [latest release](https://repo.vaticle.com/#browse/browse:private-ar
 If TypeDB Cluster doesn't have a distribution you need, please open an issue [on GitHub](https://github.com/vaticle/typedb/issues).
 
 
-Having installed or downloaded TypeDB Cluster, we can now start the [Cluster](#start-the-typedb-cluster) and interact with the [Console](../03-console/01-console.md).
+Having installed or downloaded TypeDB Cluster, we can now start the [Cluster](#start-the-typedb-cluster) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -36,7 +36,7 @@ Having installed or downloaded TypeDB Cluster, we can now start the [Cluster](#s
 #### Manual Download
 Download the [latest release](https://repo.vaticle.com/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via terminal.
 
-Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-cluster) and interact with the [Console](../03-console/01-console.md).
+Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-cluster) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -45,7 +45,7 @@ Having installed or downloaded TypeDB, we can now start the [Server](#start-the-
 #### Manual Download
 Download the [latest release](https://repo.vaticle.com/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via command prompt.
 
-Having downloaded TypeDB, we can now start the [Server](#start-the-typedb-cluster) and interact with the [Console](../03-console/01-console.md).
+Having downloaded TypeDB, we can now start the [Server](#start-the-typedb-cluster) and interact with the [Console](../02-console/01-console.md).
 
 [tab:end]
 
@@ -82,7 +82,7 @@ docker run --name typedb -d -v $(pwd)/db/:/opt/typedb-cluster-all-linux/server/d
 
 Having started the instance, the TypeDB Cluster is expected to be running on port `1729` on your machine.
 
-To interact with the [TypeDB Console](../03-console/01-console.md), run:
+To interact with the [TypeDB Console](../02-console/01-console.md), run:
 
 ```
 docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux/typedb console'

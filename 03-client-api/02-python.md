@@ -104,7 +104,7 @@ with TypeDB.core_client("localhost:1729") as client:
 Remember that transactions always need to be closed. The safest way is to use the `with ...` syntax which auto-closes at the end of the `with` block. Otherwise, remember to call `transaction.close()` explicitly.
 </div>
 
-Check out the [Concept API](../05-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
 To view examples of running various queries using the Python client, head over to their dedicated documentation pages as listed below.
 
@@ -118,21 +118,21 @@ To view examples of running various queries using the Python client, head over t
 
 ## API Reference
 
-{% include api/generic.html data=site.data.04_client_api.references.typedb language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.typedb language="python" %}
 
-{% include api/generic.html data=site.data.04_client_api.references.client language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.client language="python" %}
 
-{% include api/generic.html data=site.data.04_client_api.references.session language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.session language="python" %}
 
-{% include api/generic.html data=site.data.04_client_api.references.options language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.options language="python" %}
 
-{% include api/generic.html data=site.data.04_client_api.references.transaction language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.transaction language="python" %}
 
-{% include api/generic.html data=site.data.04_client_api.references.query_manager language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.query_manager language="python" %}
 
-{% include api/answers.html data=site.data.04_client_api.references.answer language="python" %}
+{% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
 
-{% include api/generic.html data=site.data.04_client_api.references.query_future language="python" %}
+{% include api/generic.html data=site.data.03_client_api.references.query_future language="python" %}
 
 
 ## Version Compatibility

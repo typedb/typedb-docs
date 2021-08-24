@@ -7,7 +7,7 @@ Summary: Introduction to TypeQL queries.
 
 ## TypeQL Query Language
 
-TypeQL is the query language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../03-console/01-console.md) or one of the [TypeDB Clients](../04-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
+TypeQL is the query language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../02-console/01-console.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
 
 **TypeQL is declarative**.
 When writing TypeQL queries, we simply describe **what** information we would like to retrieve, rather than **how** should it be obtained.
@@ -39,4 +39,4 @@ As shown in the image above, TypeQL queries are categorized into two main types:
 
 ## TypeQL Answers
 
-Some TypeQL queries such as `match` and `aggregate` are expected to return an answer. Depending on the type of query, the structure of the answer may be different (more on Answer types in the [Client API](../04-client-api/00-overview.md#investigating-answers) section). As a part of the [Concept API](../05-concept-api/00-overview.md), we can call various methods on the concepts contained in an answer to retrieve more explicit and implicit knowledge about them and their surroundings.
+Some TypeQL queries such as `match` and `aggregate` are expected to return an answer. Depending on the type of query, the structure of the answer may be different (more on Answer types in the [Client API](../03-client-api/00-overview.md#investigating-answers) section). As a part of the [Concept API](../04-concept-api/00-overview.md), we can call various methods on the concepts contained in an answer to retrieve more explicit and implicit knowledge about them and their surroundings.

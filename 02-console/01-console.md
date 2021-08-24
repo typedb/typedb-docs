@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## What is the TypeDB Console?
-The TypeDB Console, along with the [TypeDB Clients](../04-client-api/00-overview.md) and [Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. Console interacts directly with a given database that contains the TypeDB knowledge graph.
+The TypeDB Console, along with the [TypeDB Clients](../03-client-api/00-overview.md) and [Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. Console interacts directly with a given database that contains the TypeDB knowledge graph.
 
 ## Running TypeDB Console in the terminal
 
