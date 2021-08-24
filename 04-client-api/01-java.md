@@ -187,23 +187,23 @@ By default, Client Java uses Logback to print errors and debugging info to stand
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.typedb language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.typedb language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.client language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.client language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.session language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.session language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.options language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.options language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.transaction language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.typeql language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.typeql language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_manager language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_manager language="java" %}
 
-{% include api/answers.html data=site.data.03_client_api.references.answer language="java" %}
+{% include api/answers.html data=site.data.04_client_api.references.answer language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="java" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_future language="java" %}
 
 
 ## Version Compatibility

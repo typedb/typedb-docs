@@ -133,23 +133,23 @@ To view examples of running various queries using the Node.js client, head over 
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.typedb language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.typedb language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.client language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.client language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.session language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.session language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.options language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.options language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.transaction language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_manager language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_manager language="javascript" %}
 
-{% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}
+{% include api/answers.html data=site.data.04_client_api.references.answer language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_future language="javascript" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.stream language="javascript" %}
+{% include api/generic.html data=site.data.04_client_api.references.stream language="javascript" %}
 
 
 ## Version Compatibility

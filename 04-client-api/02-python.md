@@ -118,21 +118,21 @@ To view examples of running various queries using the Python client, head over t
 
 ## API Reference
 
-{% include api/generic.html data=site.data.03_client_api.references.typedb language="python" %}
+{% include api/generic.html data=site.data.04_client_api.references.typedb language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.client language="python" %}
+{% include api/generic.html data=site.data.04_client_api.references.client language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.session language="python" %}
+{% include api/generic.html data=site.data.04_client_api.references.session language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.options language="python" %}
+{% include api/generic.html data=site.data.04_client_api.references.options language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="python" %}
+{% include api/generic.html data=site.data.04_client_api.references.transaction language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_manager language="python" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_manager language="python" %}
 
-{% include api/answers.html data=site.data.03_client_api.references.answer language="python" %}
+{% include api/answers.html data=site.data.04_client_api.references.answer language="python" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="python" %}
+{% include api/generic.html data=site.data.04_client_api.references.query_future language="python" %}
 
 
 ## Version Compatibility
