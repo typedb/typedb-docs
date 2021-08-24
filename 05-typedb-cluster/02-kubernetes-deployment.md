@@ -176,6 +176,8 @@ Configurable settings for Helm package include:
 | `storage.persistent`| `true`  | Whether TypeDB Cluster should use a persistent volume to store data                       |
 | `singlePodPerNode`  | `true`  | Whether TypeDB Cluster pods should be scheduled to different Kubernetes nodes             |
 | `exposed`           | `false` | Whether TypeDB Cluster supports connections via public IP (outside of Kubernetes network) |
+| `logging.enabled`   | `false` | Whether TypeDB Cluster pushes logs into Logstash                                          |
+| `logging.uri`       | `localhost:5044` | Hostname and port of a Logstash daemon accepting log records                     |
 
 
 ### Troubleshooting
