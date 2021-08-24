@@ -28,7 +28,7 @@ Update the package cache:
 sudo apt update
 ```
 
-NOTE: Ubuntu 16.04 requires some extra steps to be able to install TypeDB, namely upgrading `libstdc++`:
+**NOTE**: Ubuntu 16.04 requires some extra steps to be able to install TypeDB, namely upgrading `libstdc++`:
 
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -82,12 +82,14 @@ Download the [latest release](https://github.com/vaticle/typedb/releases), unzip
 
 Having downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../02-console/01-console.md).
 
-If you see errors such as the following:
+**NOTE**: If you are experiencing the following error,
+
 ```
 Exception in thread "main" java.lang.UnsatisfiedLinkError: 
 C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
 ```
-try following the C++ redistributable installation instructions [here](https://developers.google.com/optimization/install/python/windows#microsoft-visual-c-redistributable).
+
+please try to install the "C++ redistributable" by following the instructions [here](https://developers.google.com/optimization/install/python/windows#microsoft-visual-c-redistributable).
 
 [tab:end]
 
@@ -109,10 +111,7 @@ For testing purposes, run:
 docker run --name typedb -d -p 1729:1729 vaticle/typedb:latest
 ```
 
-<div class="note">
-[Warning]
-Running the instance without specifying a volume does NOT save the data if the instance is killed.
-</div>
+**NOTE**: Running the instance without specifying a volume does NOT save the data if the instance is killed.
 
 #### With an External Volume
 
