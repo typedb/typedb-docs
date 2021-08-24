@@ -47,4 +47,4 @@ TypeDB listens on all IP addresses and will be publicly accessible if the port i
 The `server.logs` config holds the path to the directory where the logs get stored. The default value is `server/logs/`.
 
 On TypeDB Cluster it's possible to push logs into [Logstash](https://www.elastic.co/logstash/) by using configuration properties
-`logging` and `logging.uri`.
+`logstash` and `logstash.uri`.
