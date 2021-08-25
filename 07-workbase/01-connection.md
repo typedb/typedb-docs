@@ -6,6 +6,11 @@ Summary: Working with the preferences panel in TypeDB Workbase.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+</div>
+
 ## Connect to TypeDB
 Workbase connects to a running [TypeDB Server](/docs/running-typedb/install-and-run#start-the-typedb-server) and interacts with [databases](../06-management/01-database.md). In this short section, we learn how to configure this connection and select a database to interact with.
 

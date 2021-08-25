@@ -125,6 +125,11 @@ The result contains the following answers:
 
 #### Visualise all friendships using [Workbase](../07-workbase/00-overview.md)
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+</div>
+
 ![Visualise all married people](../images/quickstart/workbase_sample_query.png)
 
 #### Retrieve all employments using [Client Java](../03-client-api/01-java.md)

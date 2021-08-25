@@ -8,6 +8,11 @@ toc: false
 
 <div class = "note">
 [Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+</div>
+
+<div class = "note">
+[Warning]
 The schema designer is not yet stable in version 2.0 and has been disabled. To view your schema in the visualiser, please run the following query:
 
 ```

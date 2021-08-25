@@ -26,6 +26,11 @@ For the rest of this post, we go through each of these questions to:
 
 Make sure you have [TypeDB Workbase](../07-workbase/00-overview.md) installed, [connected](../07-workbase/01-connection.md#configure-connection) to the running [TypeDB Server](../01-running-typedb/01-install-and-run.md#start-the-typedb-server) and `phone_calls` is the [selected database](../07-workbase/01-connection.md#select-a-database).
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+</div>
+
 Let’s begin.
 
 ### Since September 14th, which customers called person X?

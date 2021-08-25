@@ -6,6 +6,11 @@ Summary: An overview of TypeDB Workbase.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+</div>
+
 ## What is Workbase?
 The TypeDB Workbase, along with the [TypeDB Console](../02-console/01-console.md) and the [TypeDB Clients](../03-client-api/00-overview.md), is an interface through which we can read from a TypeDB knowledge graph.
 Workbase allows us to execute TypeQL [`match`](../11-query/01-match-clause.md) queries, and visualise and investigate their results.
