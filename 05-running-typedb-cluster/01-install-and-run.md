@@ -67,10 +67,7 @@ For testing purposes, run:
 docker run --name typedb -d -p 1729:1729 vaticle/typedb-cluster:latest
 ```
 
-<div class="note">
-[Warning]
-Running the instance without specifying a volume does NOT save the data if the instance is killed.
-</div>
+**NOTE:** Running the instance without specifying a volume does NOT save the data if the instance is killed.
 
 #### With an External Volume
 

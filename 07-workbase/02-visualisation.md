@@ -6,6 +6,11 @@ Summary: Using Workbase to visualise a TypeDB Knowledge Graph.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+</div>
+
 ## Visualise
 Workbase allows visualisation of answers returned by [TypeQL queries](../11-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
 

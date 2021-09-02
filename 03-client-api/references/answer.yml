@@ -346,7 +346,7 @@ types:
       - method:
         common: &method-explainables-ownership
           title: Retrieve explainable ownership
-          description: Retrieves the explainable attribute ownership with the given variable name.
+          description: Retrieves the explainable attribute ownership with the pair of (owner, attribute) variable names.
           accepts:
             param1:
               name: variable
@@ -356,13 +356,13 @@ types:
             - "[`ConceptMap.Explainable`](#explainable)"
         java:
           <<: *method-explainables-ownership
-          method: conceptMap.explainables().ownership(String variable);
+          method: conceptMap.explainables().ownership(String ownerVar, String attributeVar);
         javascript:
           <<: *method-explainables-ownership
-          method: conceptMap.explainables.ownership(variable);
+          method: conceptMap.explainables.ownership(ownerVar, attributeVar);
         python:
           <<: *method-explainables-ownership
-          method: concept_map.explainables().ownership(variable);
+          method: concept_map.explainables().ownership(owner_var, attribute_var);
 
       - method:
         common: &method-explainables-relations
@@ -412,17 +412,17 @@ types:
           <<: *method-explainables-ownerships
           method: conceptMap.explainables().ownerships();
           returns:
-            - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
+            - "Map<Pair<String, String>, [`ConceptMap.Explainable`](#explainable)>"
         javascript:
           <<: *method-explainables-ownerships
           method: conceptMap.explainables.ownerships;
           returns:
-            - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
+            - "Map<[String, String], [`ConceptMap.Explainable`](#explainable)>"
         python:
           <<: *method-explainables-ownerships
           method: concept_map.explainables().ownerships();
           returns:
-            - Dictionary of String to [`ConceptMap.Explainable`](#explainable)
+            - Dictionary of (String, String) to [`ConceptMap.Explainable`](#explainable)
 
   - type6:
     title: Explainable

@@ -6,6 +6,11 @@ Summary: Using Workbase to investigate nodes in a TypeDB Knowledge Graph.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+</div>
+
 ## Investigate
 Once we have executed a [TypeQL query](../11-query/00-overview.md) and visualised its result, we can then investigate each node further to obtain more insights.
 
