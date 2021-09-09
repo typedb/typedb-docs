@@ -168,16 +168,17 @@ This deployment mode is primarily inteded for development purpose. Certain adjus
 
 Configurable settings for Helm package include:
 
-| Key | Default value | Description
-| :----------------: | :------:| :---------------------------------------------------------------------------------------: |
-| `replicas`          | `3`     | Number of TypeDB Cluster nodes to run                                                     |
-| `cpu`               | `7`     | How many CPUs should be allocated for each TypeDB Cluster node                            |
-| `storage.size`      | `100Gi` | How much disk space should be allocated for each TypeDB Cluster node                      |
-| `storage.persistent`| `true`  | Whether TypeDB Cluster should use a persistent volume to store data                       |
-| `singlePodPerNode`  | `true`  | Whether TypeDB Cluster pods should be scheduled to different Kubernetes nodes             |
-| `exposed`           | `false` | Whether TypeDB Cluster supports connections via public IP (outside of Kubernetes network) |
-| `logstash.enabled`  | `false` | Whether TypeDB Cluster pushes logs into Logstash                                          |
-| `logstash.uri`      | `localhost:5044` | Hostname and port of a Logstash daemon accepting log records                     |
+| Key                 | Default value    | Description
+| :-----------------: | :---------------:| :---------------------------------------------------------------------------------------: |
+| `replicas`          | `3`              | Number of TypeDB Cluster nodes to run                                                     |
+| `cpu`               | `7`              | How many CPUs should be allocated for each TypeDB Cluster node                            |
+| `storage.size`      | `100Gi`          | How much disk space should be allocated for each TypeDB Cluster node                      |
+| `storage.persistent`| `true`           | Whether TypeDB Cluster should use a persistent volume to store data                       |
+| `singlePodPerNode`  | `true`           | Whether TypeDB Cluster pods should be scheduled to different Kubernetes nodes             |
+| `exposed`           | `false`          | Whether TypeDB Cluster supports connections via public IP (outside of Kubernetes network) |
+| `javaopts`          | `null`           | JVM options that controls various runtime aspects of TypeDB Cluster (eg., `-Xmx`, `-Xms`) |
+| `logstash.enabled`  | `false`          | Whether TypeDB Cluster pushes logs into Logstash                                          |
+| `logstash.uri`      | `localhost:5044` | Hostname and port of a Logstash daemon accepting log records                              |
 
 
 ### Troubleshooting
