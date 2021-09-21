@@ -7,7 +7,8 @@ toc: false
 ---
 
 ### An Overview
-In this tutorial, we go through creating and interacting with a TypeDB knowledge graph representing a social network. In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with TypeDB.
+In this tutorial, we go through creating and interacting with a TypeDB knowledge graph representing a social network. 
+In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with TypeDB.
 
 Let's get started!
 
