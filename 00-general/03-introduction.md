@@ -11,14 +11,18 @@ but work with domains that were impossibly complex for databases before.
 
 The backbone any TypeDB database is the representation of your domain: the schema - a set of types and rules you define via TypeQL.
 
-Each of your types must be a subtype of `entity`, `relation`, or `attribute`.
-These three basic, inherent types correspond to the components of an Entity-Relation-Attribute model, 
-an extension of the well-known [ER model](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model), 
-with attributes also treated as first-class citizens.
+The types in your schema are further structured: there are some objects, these objects have some connections between them, 
+and they may have some properties. We refer to these as _entities_ (objects), _relations_ (connections), and _attributes_ (properties).  [1]
 
-Models built with subtypes of Entities, Relations, and Attributes makes the closest approximation of real world domains. 
-You will no longer find yourself thinking in terms of columns, tables, documents, or vertices/edges, but in a language 
-familiar to you and your domain. This is fundamentally what TypeQL and TypeDB offer.
+In practice, each of your user-defined schema types must be a direct or indirect subtype of the built-in types 
+`entity`, `relation`, or `attribute`. Role types, part of your specification of relations, enable even finer control over
+exactly how schema types may be related to one another. Using these simple constructs, you can build a schema filled 
+with domain-specific terminology and knowledge, in a way that is also understood by TypeDB.  
+
+Structuring domain models this way relieves you of the need to think in terms of columns, tables, documents, or vertices/edges, 
+and allows you to think at a higher level of abstraction, in a language familiar to you. 
+This is fundamentally what TypeQL and TypeDB offer.
+
 
 ## Building with Entity-Relation-Attribute types
 
@@ -151,3 +155,6 @@ TypeDB is designed to help you work as closely to your domain as possible. To do
 flexibility of an entity-relation-attribute model seamlessly blended with subtyping and inheritance, as well as rules. 
 With these tools, you will be empowered to build more intuitive and advanced databases than ever before.
 
+[1] If this seems like familiar terminology, it is likely because these terms correspond to the components of
+an Entity-Relation-Attribute model, an extension of the well-known [ER model](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model),
+in which attributes (properties) also treated as first-class citizens.
