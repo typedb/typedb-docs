@@ -173,7 +173,7 @@ Rules allow you to embed rich domain knowledge in the database, and expose the o
 
 Hopefully, we have introduced you to the idea of building a database schema out of entity, relation, and attribute types. 
 As you start to develop your database, keep this framework in mind and maximise it to build intuitive and understandable
-models. Over time, you will see its potential for handling and the next level of complexity in your data domain.
+models. Over time, you will see its potential for handling the next level of complexity in your data domain as well.
 
 [1] If this seems like familiar terminology, it is likely because these terms correspond to the components of
 an Entity-Relation-Attribute model, an extension of the well-known [ER model](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model),
