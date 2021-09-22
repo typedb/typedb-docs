@@ -1,67 +1,80 @@
 # Welcome to TypeQL and TypeDB
 
-TypeQL and TypeDB redefine the capabilities of a database. We believe that with TypeQL, a powerful, 
-yet simple and high-level modeling language, we can massively close the gap between how you think, 
-and what the database can interpret and respond to. 
+TypeDB is a new kind of database, utilising type systems to help you break down complex problems
+into meaningful and logical systems. Using TypeQL, TypeDB gives you powerful abstractions over low-level
+and complex data patterns.
 
-Powered by TypeDB, this new paradigm will help you discover that you can not only more intuitively represent your data, 
-but work with domains that were impossibly complex for databases before.
+By combining TypeQL and TypeDB, we can close the gap between how you think, and what the database can interpret 
+and respond to. TypeDB guarantees data integrity and safety, while enabling data-level inferences within the database
+itself. Taken together, this paradigm gives you a new level of expressivity to simplify your work and
+tackle domains that seemed impossibly complex before.
 
 ## Thinking in TypeQL and TypeDB
 
-The backbone any TypeDB database is the representation of your domain: the schema - a set of types and rules you define via TypeQL.
+The backbone of any TypeDB database is the representation of your domain: the schema.
+The schema is made a set of types and rules, which harness object-oriented principles and logical deduction.
 
-The types in your schema are further structured: there are some objects, these objects have some connections between them, 
-and they may have some properties. We refer to these as _entity types_ (objects), _relation types_ (connections), and _attribute types_ (properties).  [1]
+Types defined in your schema are structured: some are objects, some represent connections between objects, 
+and some are properties. We refer to these as _entity types_ (objects), _relation types_ (connections), and _attribute types_ (properties).  [1]
 When a relation type is used to connect types, each type must play a particular role. This is captured using a _role type_.
+
+Rules defined in your schema encode deductive logic: when-then consequences that when applied to your data
+generate insights and new facts. Using rules, you can store knowledge directly in the database.
 
 By structuring domain models with these simple constructs, you can build a schema filled with domain-specific terminology and knowledge, 
 in a way that is also understood by TypeDB. This also relieves you of the need to think in terms of tables, documents, or vertices/edges, 
 and allows you to think at a higher level of abstraction, in a language familiar to you. 
-This is fundamentally what TypeQL and TypeDB offer.
+Designing models and managing data at this higher level of abstraction is one of the primary offerings of TypeQL and TypeDB.
 
 
 ## Building with Entity-Relation-Attribute types
 
 Let's look a bit deeper into the building blocks of TypeQL and TypeDB. 
 
-A database is made of schema, and data. The schema is built using subtyping to create new types. Each database comes
-with some types built in: `entity`, `relation`, and `attribute`, which you will extend to create your data model.
+A database is made of schema, and data. Types in the schema are built using subtyping, like in object-oriented
+programming languages. Each database comes with some types built in: `entity`, `relation`, and `attribute`, 
+which you will extend to create your data model.
 
 What about the data? Well, all data elements loaded into your database are _instances_ of your types. 
 Since your types are subtypes of `entity`, `relation`, or `attribute`, each data element will also be an 
 (indirect) instance of `entity`, `relation`, or `attribute`. 
 
 This means, each data instance will either be usable as an object (`entity`), a connector (`relation`), or a property (`attribute`) - 
-deciding which of these to model your data as forms an important part of building your TypeDB schema.
+deciding which of these to use when modeling your data is an important task when building your TypeDB schema.
 
 ### Entities
 
-Entities are the main, distinguishable objects in _your domain_. All entity types subtype the built-in abstract type `entity`. 
+Entities are the main, distinguishable objects in _your domain_. Each entity type you create is a subtype the built-in abstract type `entity`. 
+Some examples in a social network domain might be `person`, `group`, `school`, etc.
 
 ### Relations
 
-Relations are intended to connect data throughout your domain. Relation types subtype the built-in abstract type `relation`. 
+Relations are intended to connect data throughout your domain. Each new relation type you create is a subtype of 
+the built-in abstract type `relation`. 
 
 In other databases, relations may be implemented with a join table (SQL), or an edge between two vertices (graph databases).
 TypeDB relations generalise both: they flexibly relate one, two, or a huge number of data instances at the same time. 
 
-This idea of a relation would already be strictly more powerful than either SQL or graph relations. However, we can further
-improve. If we allow relations to not just specify not just which instances relate to each other, but also _how_, we can
+This expanded idea of a relation is more powerful than either SQL or graph relations. However, we can further
+improve. If we allow relations to not just specify which instances relate to each other, but also _how_, we can
 produce ever better safety guarantees in the database.
 
-We can do this by introducing _role types_. Role types are specified as part of the definition of relation types,
-and essentially define the interface between relations and other types. 
+We can do this by introducing _role types_. Role types are part of the definition of relation types, 
+and essentially define the interface between relations and other types. As role types are always specified as
+part of a relation type, they have fully qualified names of `<relation type>:<role type>`.
 
 So if we have the following TypeDB schema:
 ```typeql
 define
-  friendship sub relation, relates friend; 
-  person sub entity, plays friendship:friend;
+  employment sub relation, relates employee, relates employer; 
+  person sub entity, plays employment:employee;
+  company sub entity, plays employment:employer;
 ```
 
-we can now create `friendship` relations that connect `person` entities to each other via the `friendship:friend` role. 
-We say that the `person` type is a _role player_ for the role type `friendship:friend`. 
+we can now create `employment` relations that connect `person` entities to `company` entities. When doing so,
+a `person` must play the `employment:employee` role, while the `company` must play the `employment:employer` role. 
+We say that the `person` type is a _role player_ for the role type `employment:employee`, and `company` is a role player
+for the role type `employment:employer`. 
 
 Which types can be a role player? In TypeDB, entities, relations, and attributes are all equal citizens. 
 So, we allow any of these types to be role players!
@@ -117,7 +130,7 @@ Thus, many people can have the age 10, by creating new connections to the attrib
 Given that attributes are immutable, and shared, it may not look easy to update a person's age! 
 However, instead of changing the attribute, we replace the attribute ownership.
 ```typeql
-match $x isa person, has name "Alice", as age $a; $a = 10;
+match $x isa person, has name "Alice", has age $a; $a = 10;
 delete $x has $a;
 insert $x has age 11;
 ```
