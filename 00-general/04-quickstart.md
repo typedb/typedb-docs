@@ -7,7 +7,8 @@ toc: false
 ---
 
 ### An Overview
-In this tutorial, we go through creating and interacting with a TypeDB knowledge graph representing a social network. In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with TypeDB.
+In this tutorial, we go through creating and interacting with a TypeDB knowledge graph representing a social network. 
+In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with TypeDB.
 
 Let's get started!
 
@@ -127,7 +128,7 @@ The result contains the following answers:
 
 <div class = "note">
 [Warning]
-TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which is available as an alpha release on [github](https://github.com/vaticle/typedb-studio/releases)
 </div>
 
 ![Visualise all married people](../images/quickstart/workbase_sample_query.png)

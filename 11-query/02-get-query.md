@@ -73,7 +73,7 @@ match $p isa person, has full-name $fn; get $fn; sort $fn asc;
 ```java
 TypeQLMatch.Sorted query = TypeQL.match(
   var("p").isa("person").has("full-name", var("fn"))
-).get("fn").sort("fn", ASC);
+).get("fn").sort(Arrays.asList("fn"), "asc");
 ```
 [tab:end]
 </div>
