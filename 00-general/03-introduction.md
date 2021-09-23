@@ -1,3 +1,11 @@
+---
+pageTitle: Introduction
+keywords: typedb, typeql, overview, introduction, modeling
+longTailKeywords: thinking in typedb, thinking in typeql, learn typedb, learn typeql, typedb schema, typedb data model
+summary: A birds-eye view of TypeQL and TypeDB
+toc: false
+---
+
 # Welcome to TypeQL and TypeDB
 
 TypeDB is a new kind of database, utilising type systems to help you break down complex problems
