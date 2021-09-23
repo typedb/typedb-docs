@@ -119,25 +119,25 @@ So how do multiple people instances have the same age with value 10? We create a
 We do this with the `has` keyword:
 ```typeql
 match 
-  $x isa person, has name "Alice"; 
-  $y isa person, has name "Jill"; 
+  $x isa person, has nickname "Beth"; 
+  $y isa person, has nickname "Jill"; 
 insert 
   $x has age 10; 
   $y has age 10;
 ```
 
-This creates an association from the person with `name "Alice"` and person with `name "Jill"`, to the attribute instance `age 10`.
+This creates an association from the person with `nickname "Beth"` and person with `nickname "Jill"`, to the attribute instance `age 10`.
 Thus, many people can have the age 10, by creating new associations to the attribute.
 
 Given that attributes are immutable, and shared, it may not look easy to update a person's age. 
 However, instead of changing the attribute, we replace the attribute ownership.
 ```typeql
-match $x isa person, has name "Alice", has age $a; $a = 10;
+match $x isa person, has nickname "Beth", has age $a; $a = 10;
 delete $x has $a;
 insert $x has age 11;
 ```
 
-This leave Alice with a new age `11`, while all other people are unchanged.
+This leave Beth with a new age `11`, while all other people are unchanged.
 
 ## Inference 
 
