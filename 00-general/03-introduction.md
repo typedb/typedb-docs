@@ -176,7 +176,7 @@ inferred at query time.
 To build the most expressive models, you may desire to write deductive logic at the database level. To do this, you write rules,
 which can at query time transparently infer new facts.
 
-The following rule, for example, can automatically infer indirect employment based on company ownerships.
+The following rule, for example, can automatically infer co-workers by detecting employees at the same company.
 
 ```typeql
 define
@@ -198,7 +198,7 @@ persisted on disk.
 
 TypeQL and TypeDB allow you build a data model out of entity, relation, and attribute types. 
 Inheritance allows subtypes to be defined simply and reduce complexity, while roles and rules further enhance your schema.
-These abstractions provide a higher-level framework for you to build intuitive and understandable models.
+These abstractions provide a higher-level framework for you to build intuitive and understandable models.  
 
 [1] If this seems like familiar terminology, it is likely because these terms correspond to the components of
 an Entity-Relation-Attribute model, an extension of the well-known [ER model](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model),
