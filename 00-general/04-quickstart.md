@@ -124,7 +124,7 @@ The result contains the following answers:
 {$fn "Miriam Morton" isa full-name;}
 ```
 
-#### Visualise all friendships using [Workbase](../07-workbase/00-overview.md)
+#### Visualise all risky banks 
 
 <div class = "note">
 [Warning]
