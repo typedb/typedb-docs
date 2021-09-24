@@ -124,14 +124,14 @@ The result contains the following answers:
 {$fn "Miriam Morton" isa full-name;}
 ```
 
-#### Visualise all friendships using [Workbase](../07-workbase/00-overview.md)
+#### Visualise all risky banks 
 
 <div class = "note">
 [Warning]
 TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which is available as an alpha release on [github](https://github.com/vaticle/typedb-studio/releases)
 </div>
 
-![Visualise all married people](../images/quickstart/workbase_sample_query.png)
+![Visualise all risky banks](../images/quickstart/studio-risky-bank.png)
 
 #### Retrieve all employments using [Client Java](../03-client-api/01-java.md)
 
