@@ -27,8 +27,6 @@ some are relation types (representing n-ary connections within your domain), and
 When a relation type is used to connect types, each type must play a particular role. This is captured using a _role type_,
 which provides context to your connections.
 
-![entities-relations-attributes-roles](../images/introduction/relabeled_era_diagram.png)
-
 Rules defined in your schema are deductive logic -- encoded knowledge about your domain. They are when-then 
 inferences that when applied to your data generate insights and new facts. 
 
