@@ -229,7 +229,6 @@ Besides conforming to one of the three patterns previously outlined, we also req
 
 1. The `then` of the rule must be insertable according to the schema (eg. you cannot give an attribute to an instance that is not allowed to own that attribute type). TypeDB will reject rules that could insert incompatible data.
 2. There are no disjunctions in the `when` of the rule
-3. There are no negations in the `when` of the rule (this restriction will be lifted imminently)
 
 
 ### Advanced Usage
