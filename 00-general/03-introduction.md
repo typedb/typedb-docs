@@ -35,6 +35,8 @@ also understood by TypeDB. This also relieves you of the need to think in terms 
 and allows you to think at a higher level of abstraction, in a language familiar to you. 
 Designing data models and managing data at this level of abstraction is one of the primary offerings of TypeQL and TypeDB.
 
+If you are coming from an SQL background, you may be interested in a comparison with (modeling in SQL)[../12-comparisons/00-sql-and-typeql#modelling-and-defining-schema].
+If you are coming from property graphs, you may be interested in a comparison with (modeling with property graphs)[../12-comparisons/graph-databases-and-typedb#modelling-and-defining-schema]
 
 ## Building with Entity-Relation-Attribute types
 
