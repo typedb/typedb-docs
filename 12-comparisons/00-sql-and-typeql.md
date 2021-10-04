@@ -35,7 +35,7 @@ In understanding TypeQL, it's useful to look at the underlying ideas that create
 
 In this sense, both SQL and TypeQL are languages that abstract away lower-level operations. In practical terms, this means the languages become accessible to groups of people who would have otherwise not been able to access them. This means they become enabled to create value, while those who could already use them can now do things much faster. A similar thing can be said about Python, for example, a high level programming language that has enabled millions of programmers to build software without having to worry about lower-level operations that are abstracted away.  
 
-## Modelling and Defining Schema 
+## Modelling and Defining Schema
 
 First, let's look at how data modelling compares between SQL and TypeQL. We use the [Entity Relationship Diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model) (ER Diagram) as it's the most common modelling tool in use. A basic model is composed of entity types and the relationships that can exist between them. Below is an example ER Diagram. We call this the conceptual model.
 
