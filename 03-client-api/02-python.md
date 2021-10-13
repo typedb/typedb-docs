@@ -6,7 +6,7 @@ Summary: API Reference of TypeDB Client Python.
 ---
 ## Installation
 
-#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#dependencies)
+#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#version-compatibility)
 
 
 ```

@@ -8,7 +8,7 @@ templatePath: 03-client-api/references/
 
 ## Installation
 
-#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#dependencies)
+#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#version-compatibility)
 
 ```xml
 <repositories>
