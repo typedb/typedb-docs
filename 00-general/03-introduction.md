@@ -10,7 +10,7 @@ toc: false
 
 TypeDB is a new kind of database, utilising type systems to help you break down complex problems
 into meaningful and logical systems. Using TypeQL, TypeDB gives you powerful abstractions over low-level
-and complex data patterns. By combining TypeQL and TypeDB, we can close the gap the language of your domain, 
+and complex data patterns. By combining TypeQL and TypeDB, we can close the gap between the language of your domain, 
 and what the database can interpret and respond to. 
 
 TypeDB guarantees data integrity and safety, while enabling data-level inferences within the database
