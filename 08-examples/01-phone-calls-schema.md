@@ -56,7 +56,7 @@ By looking at this visualised schema, we can identify the [Concepts](../09-schem
 That’s all well and good, but how do we get our knowledge graph to reflect this model?
 
 ## Time to Talk TypeQL
-Open a new file in your favourite text editor, preferably one with syntax highlighting for TypeQL (`.gql`) files. Here are the ones for [atom](https://atom.io/packages/language-graql), [visual studio code](https://marketplace.visualstudio.com/items?itemName=idealley.gql) and [sublime 3](https://github.com/vaticle/graql_syntax_sublime).
+Open a new file in your favourite text editor, preferably one with syntax highlighting for TypeQL (`.tql`) files. Here are the ones for [visual studio code](https://marketplace.visualstudio.com/items?itemName=vaticle.typeql).
 
 You can define the elements of a TypeDB schema in any order you wish. I personally prefer to start from the relations, as I see them to be the source of interactions — where knowledge is derived from.
 
