@@ -194,7 +194,7 @@ with TypeDB.core_client('localhost:1729') as client:
 
             iterator = transaction.query().match(query)
             answers = [ans.get("phone-number") for ans in iterator]
-            result = [ answer.value() for answer in answers ]
+            result = [ answer.get_value() for answer in answers ]
 
             print("\nResult:\n", result)
 ```
@@ -373,7 +373,7 @@ with TypeDB.core_client('localhost:1729') as client:
 
         iterator = transaction.query().match(query)
         answers = [ans.get("phone-number") for ans in iterator]
-        result = [ answer.value() for answer in answers ]
+        result = [ answer.get_value() for answer in answers ]
 
         print("\nResult:\n", result)
 ```
@@ -537,7 +537,7 @@ with TypeDB.core_client('localhost:1729') as client:
 
             iterator = transaction.query().match(query)
             answers = [ans.get("phone-number") for ans in iterator]
-            result = [ answer.value() for answer in answers ]
+            result = [ answer.get_value() for answer in answers ]
 
             print("\nResult:\n", result)
 ```
@@ -721,7 +721,7 @@ with TypeDB.core_client('localhost:1729') as client:
             answers = []
             for answer in iterator:
                 answers.extend(answer.map().values())
-            result = [ answer.value() for answer in answers ]
+            result = [ answer.get_value() for answer in answers ]
             print("\nResult:\n", result)
 ```
 [tab:end]
