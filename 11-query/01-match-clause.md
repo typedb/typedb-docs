@@ -368,7 +368,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 </div>
 
 ### Comparators
-When matching an instance of an attribute type based on its value or simply comparing two variables, the following comparators may be used: `==`, `!=`, `>`, `>=`, `<` and `<=`.
+When matching an instance of an attribute type based on its value or simply comparing two variables, the following comparators may be used: `=`, `!=`, `>`, `>=`, `<` and `<=`.
 
 ## Match Schema Concepts
 In this section, we learn how we can use the `match` keyword to find patterns in the schema of a TypeDB knowledge graph. In the next section, we learn about [how to use the get keyword](../11-query/02-get-query.md).
