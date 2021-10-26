@@ -199,7 +199,7 @@ with TypeDB.core_client("localhost:1729") as client:
             $fun "funny";
             $per has gender "female";
             (emotion: $fun, to: $pos, by: $per) isa reaction;
-          get $pos;
+          get $pos, $fun;
         '''
         answer_iterator = transaction.query().match(query)
         for answer in answer_iterator:
