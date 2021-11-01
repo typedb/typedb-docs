@@ -69,17 +69,17 @@ methods:
           default: N/A
     java:
       <<: *method-setLabel
-      method: type.setLabel(String label);
+      method: type.asRemote(Transaction tx).setLabel(String label);
       returns:
         - void
     javascript:
       <<: *method-setLabel
-      method: await type.setLabel(label);
+      method: await type.asRemote(tx).setLabel(label);
       returns:
         - void
     python:
       <<: *method-setLabel
-      method: type.set_label(label)
+      method: type.as_remote(tx).set_label(label)
       returns:
         - None
 
@@ -91,13 +91,13 @@ methods:
         - boolean
     java:
       <<: *method-isAbstract
-      method: type.isAbstract();
+      method: type.asRemote(Transaction tx).isAbstract();
     javascript:
       <<: *method-isAbstract
-      method: await type.isAbstract();
+      method: await type.asRemote(tx).isAbstract();
     python:
       <<: *method-isAbstract
-      method: type.is_abstract()
+      method: type.as_remote(tx).is_abstract()
 
   - method:
     common: &method-getSupertype
@@ -105,19 +105,19 @@ methods:
       description: Retrieves the most immediate supertype of the type.
     java:
       <<: *method-getSupertype
-      method: type.getSupertype();
+      method: type.asRemote(Transaction tx).getSupertype();
       returns:
         - "[`Type`](../concept-api/type?tab=java#type-methods)"
         - "`null`"
     javascript:
       <<: *method-getSupertype
-      method: await type.getSupertype();
+      method: await type.asRemote(tx).getSupertype();
       returns:
         - "[`Type`](../concept-api/type?tab=javascript#type-methods)"
         - "`null`"
     python:
       <<: *method-getSupertype
-      method: type.get_supertype()
+      method: type.as_remote(tx).get_supertype()
       returns:
         - "[`Type`](../concept-api/type?tab=python#type-methods)"
         - None
@@ -128,17 +128,17 @@ methods:
       description: Retrieves all supertypes of the type.
     java:
       <<: *method-getSupertypes
-      method: type.getSupertypes();
+      method: type.asRemote(Transaction tx).getSupertypes();
       returns:
         - Stream<[`Type`](../concept-api/type?tab=java#type-methods)>
     javascript:
       <<: *method-getSupertypes
-      method: type.getSupertypes()
+      method: type.asRemote(tx).getSupertypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream)<[`Type`](../concept-api/type?tab=javascript#type-methods)>"
     python:
       <<: *method-getSupertypes
-      method: type.get_supertypes()
+      method: type.as_remote(tx).get_supertypes()
       returns:
         - Iterator of [`Type`](../concept-api/type?tab=python#type-methods)
 
@@ -148,16 +148,16 @@ methods:
       description: Retrieves all direct and indirect subtypes of the type.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: type.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`Type`](../concept-api/type?tab=java#type-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: type.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream)<[`Type`](../concept-api/type?tab=javascript#type-methods)>"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`Type`](../concept-api/type?tab=python#type-methods)

@@ -5,17 +5,17 @@ methods:
       description: Creates and returns a new instance of this EntityType.
     java:
       <<: *method-create
-      method: entityType.create();
+      method: entityType.asRemote(Transaction tx).create();
       returns:
         - "[`Entity`](../concept-api/thing?tab=java#entity-methods)"
     javascript:
       <<: *method-create
-      method: await entityType.create();
+      method: await entityType.asRemote(tx).create();
       returns:
         - "[`Entity`](../concept-api/thing?tab=javascript#entity-methods)"
     python:
       <<: *method-create
-      method: entity_type.create()
+      method: entity_type.as_remote(tx).create()
       returns:
         - "[`Entity`](../concept-api/thing?tab=python#entity-methods)"
       
@@ -32,17 +32,17 @@ methods:
           default: N/A
     java:
       <<: *method-setsupertype
-      method: entityType.setSupertype(EntityType entityType);
+      method: entityType.asRemote(Transaction tx).setSupertype(EntityType entityType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: entityType.setSupertype(entityType);
+      method: entityType.asRemote(tx).setSupertype(entityType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: entity_type.set_supertype(entity_type)
+      method: entity_type.as_remote(tx).set_supertype(entity_type)
       returns:
         - None
 
@@ -52,17 +52,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the EntityType.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: type.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`EntityType`](#entitytype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: type.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`EntityType`](#entitytype-methods)"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`EntityType`](#entitytype-methods)
 
@@ -72,17 +72,17 @@ methods:
       description: Retrieves all Entity objects that are instances of this Type.
     java:
       <<: *method-getInstances
-      method: type.getInstances();
+      method: type.asRemote(Transaction tx).getInstances();
       returns:
         - Stream<[`Entity`](../concept-api/thing?tab=java#entity-methods)>
     javascript:
       <<: *method-getInstances
-      method: type.getInstances()
+      method: type.asRemote(tx).getInstances()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`Entity`](../concept-api/thing?tab=javascript#entity-methods)"
     python:
       <<: *method-getInstances
-      method: type.get_instances()
+      method: type.as_remote(tx).get_instances()
       returns:
         - Iterator of [`Entity`](../concept-api/thing?tab=python#entity-methods)
 

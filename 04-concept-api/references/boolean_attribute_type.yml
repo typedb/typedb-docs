@@ -14,13 +14,13 @@ methods:
           default: N/A
     java:
       <<: *method-put
-      method: booleanAttributeType.put(boolean value);
+      method: booleanAttributeType.asRemote(Transaction tx).put(boolean value);
     javascript:
       <<: *method-put
-      method: await booleanAttributeType.put(value);
+      method: await booleanAttributeType.asRemote(tx).put(value);
     python:
       <<: *method-put
-      method: booleanAttributeType.put(value)
+      method: booleanAttributeType.as_remote(tx).put(value)
 
   - method:
     common: &method-get
@@ -37,13 +37,13 @@ methods:
           default: N/A
     java:
       <<: *method-get
-      method: booleanAttributeType.get(Boolean value);
+      method: booleanAttributeType.asRemote(Transaction tx).get(Boolean value);
     javascript:
       <<: *method-get
-      method: await booleanAttributeType.get(value);
+      method: await booleanAttributeType.asRemote(tx).get(value);
     python:
       <<: *method-get
-      method: booleanAttributeType.get(value)
+      method: booleanAttributeType.as_remote(tx).get(value)
 
   - method:
     common: &method-setsupertype
@@ -58,17 +58,17 @@ methods:
           default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(AttributeType.Boolean booleanAttributeType);
+      method: booleanAttributeType.asRemote(Transaction tx).setSupertype(AttributeType.Boolean booleanAttributeType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(booleanAttributeType);
+      method: booleanAttributeType.asRemote(tx).setSupertype(booleanAttributeType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(boolean_attribute_type)
+      method: booleanAttributeType.as_remote(tx).set_supertype(boolean_attribute_type)
       accepts:
         <<: *accepts-setsupertype
         param:
@@ -83,17 +83,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the BooleanAttributeType.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: booleanAttributeType.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`AttributeType.Boolean`](../concept-api/type?tab=java#booleanattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: booleanAttributeType.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`BooleanAttributeType`](../concept-api/type?tab=javascript#booleanattributetype-methods)>"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: booleanAttributeType.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`BooleanAttributeType`](../concept-api/type?tab=python#booleanattributetype-methods)
 
@@ -103,17 +103,17 @@ methods:
       description: Retrieves all BooleanAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
-      method: type.getInstances();
+      method: booleanAttributeType.asRemote(Transaction tx).getInstances();
       returns:
         - Stream<[`BooleanAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
-      method: type.getInstances()
+      method: booleanAttributeType.asRemote(tx).getInstances()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`BooleanAttribute`](../concept-api/thing?tab=javascript#attribute-methods)"
     python:
       <<: *method-getInstances
-      method: type.get_instances()
+      method: booleanAttributeType.as_remote(tx).get_instances()
       returns:
         - Iterator of [`BooleanAttribute`](../concept-api/thing?tab=python#attribute-methods)
 

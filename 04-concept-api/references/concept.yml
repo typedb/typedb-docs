@@ -342,32 +342,31 @@ methods:
   - method:
     common: &method-delete
       title: Delete concept
-      method: concept.delete();
+      method: concept.asRemote(Transaction tx).delete();
       returns:
         - void
     java:
       <<: *method-delete
     javascript:
       <<: *method-delete
-      method: await concept.delete();
+      method: await concept.asRemote(tx).delete();
     python:
       <<: *method-delete
-      method: concept.delete()
+      method: concept.as_remote(tx).delete()
       returns:
         - None
         
   - method:
     common: &method-isDeleted
       title: Check if the concept has been deleted
-      method: concept.isDeleted();
       returns:
         - boolean
     java:
       <<: *method-isDeleted
-      method: concept.isDeleted()
+      method: concept.asRemote(Transaction tx).isDeleted()
     javascript:
       <<: *method-isDeleted
-      method: await concept.isDeleted();
+      method: await concept.asRemote(tx).isDeleted();
     python:
       <<: *method-isDeleted
-      method: concept.is_deleted()
+      method: concept.as_remote(tx).is_deleted()

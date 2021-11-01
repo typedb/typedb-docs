@@ -5,17 +5,17 @@ methods:
       description: Creates and returns an instance of this RelationType.
     java:
       <<: *method-create
-      method: relationType.create();
+      method: relationType.asRemote(Transaction tx).create();
       returns:
         - "[`Relation`](../concept-api/thing?tab=java#relation-methods)"
     javascript:
       <<: *method-create
-      method: await relationType.create();
+      method: await relationType.asRemote(tx).create();
       returns:
         - "[`Relation`](../concept-api/thing?tab=nodejs#relation-methods)"
     python:
       <<: *method-create
-      method: relation_type.create()
+      method: relation_type.as_remote(tx).create()
       returns:
         - "[`Relation`](../concept-api/thing?tab=python#relation-methods)"
 
@@ -25,17 +25,17 @@ methods:
       description: Retrieve roles that this RelationType relates to.
     java:
       <<: *method-getrelates
-      method: relationType.getRelates();
+      method: relationType.asRemote(Transaction tx).getRelates();
       returns:
         - "[Stream](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
     javascript:
       <<: *method-getrelates
-      method: relationType.getRelates();
+      method: relationType.asRemote(tx).getRelates();
       returns:
         - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getrelates
-      method: relation_type.get_relates()
+      method: relation_type.as_remote(tx).get_relates()
       returns:
         - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
@@ -51,17 +51,17 @@ methods:
           required: true
     java:
       <<: *method-getrelates-label
-      method: relationType.getRelates(String label);
+      method: relationType.asRemote(Transaction tx).getRelates(String label);
       returns:
         - "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
     javascript:
       <<: *method-getrelates-label
-      method: await relationType.getRelates(label);
+      method: await relationType.asRemote(tx).getRelates(label);
       returns:
         - "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getrelates-label
-      method: relation_type.get_relates(label)
+      method: relation_type.as_remote(tx).get_relates(label)
       returns:
         - "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
@@ -84,17 +84,17 @@ methods:
           default: N/A
     java:
       <<: *method-relates
-      method: relationType.setRelates(String label, String overriddenRoleLabel);
+      method: relationType.asRemote(Transaction tx).setRelates(String label, String overriddenRoleLabel);
       returns:
         - void
     javascript:
       <<: *method-relates
-      method: await relationType.setRelates(label, overriddenRoleLabel);
+      method: await relationType.asRemote(tx).setRelates(label, overriddenRoleLabel);
       returns:
         - void
     python:
       <<: *method-relates
-      method: relation_type.set_relates(label, overriddenRoleLabel)
+      method: relation_type.as_remote(tx).set_relates(label, overriddenRoleLabel)
       returns:
         - None
 
@@ -111,17 +111,17 @@ methods:
           default: N/A
     java:
       <<: *method-unrelate
-      method: relationType.unsetRelates(RoleType role);
+      method: relationType.asRemote(Transaction tx).unsetRelates(RoleType role);
       returns:
         - void
     javascript:
       <<: *method-unrelate
-      method: await relationType.unsetRelates(role);
+      method: await relationType.asRemote(tx).unsetRelates(role);
       returns:
         - void
     python:
       <<: *method-unrelate
-      method: relation_type.unset_relates(role)
+      method: relation_type.as_remote(tx).unset_relates(role)
       returns:
         - None
 
@@ -138,17 +138,17 @@ methods:
           default: N/A
     java:
       <<: *method-setsupertype
-      method: relationType.setSupertype(RelationType relationType);
+      method: relationType.asRemote(Transaction tx).setSupertype(RelationType relationType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: relationType.setSupertype(relationType);
+      method: relationType.asRemote(tx).setSupertype(relationType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: relation_type.set_supertype(relation_type)
+      method: relation_type.as_remote(tx).set_supertype(relation_type)
       accepts:
         <<: *accepts-setsupertype
         param:
@@ -163,17 +163,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the RelationType.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: type.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`RelationType`](../concept-api/type?tab=java#relationtype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: type.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream)<[`RelationType`](../concept-api/type?tab=javascript#relationtype-methods)>"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`RelationType`](../concept-api/type?tab=python#relationtype-methods)
 
@@ -183,17 +183,17 @@ methods:
       description: Retrieves all Relations that are instances of this Type.
     java:
       <<: *method-getInstances
-      method: type.getInstances();
+      method: type.asRemote(Transaction tx).getInstances();
       returns:
         - Stream<[`Relation`](../concept-api/thing?tab=java#relation-methods)>
     javascript:
       <<: *method-getInstances
-      method: type.getInstances()
+      method: type.asRemote(tx).getInstances()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`Relation`](../concept-api/thing?tab=javascript#relation-methods)>"
     python:
       <<: *method-getInstances
-      method: type.get_instances()
+      method: type.as_remote(tx).get_instances()
       returns:
         - Iterator of [`Relation`](../concept-api/thing?tab=python#relation-methods)
 

@@ -63,17 +63,17 @@ methods:
           default: N/A
     java:
       <<: *method-owners
-      method: attribute.owners(Type ownerType);
+      method: attribute.asRemote(Transaction tx).getOwners(Type ownerType);
       returns:
         - "Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>"
     javascript:
       <<: *method-owners
-      method: attribute.owners(ownerType);
+      method: attribute.asRemote(tx).getOwners(ownerType);
       returns:
         - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-owners
-      method: attribute.owners(ownerType)
+      method: attribute.as_remote(tx).get_owners(ownerType)
       returns:
         - "Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
@@ -104,7 +104,7 @@ methods:
 
   - method:
     common: &method-isboolean
-      title: Check if value is of type boolean
+      title: Check if value is of type boolean (Local)
       description: Returns true if the attribute value is of type boolean. Otherwise, returns false.
     java:
       <<: *method-isboolean
@@ -124,7 +124,7 @@ methods:
 
   - method:
     common: &method-islong
-      title: Check if value is of type long
+      title: Check if value is of type long (Local)
       description: Returns true if the attribute value is of type long. Otherwise, returns false.
     java:
       <<: *method-islong
@@ -144,7 +144,7 @@ methods:
 
   - method:
     common: &method-isdouble
-      title: Check if value is of type double
+      title: Check if value is of type double (Local)
       description: Returns true if the attribute value is of type double. Otherwise, returns false.
     java:
       <<: *method-isdouble
@@ -164,7 +164,7 @@ methods:
 
   - method:
     common: &method-isstring
-      title: Check if value is of type string
+      title: Check if value is of type string (Local)
       description: Returns true if the attribute value is of type string. Otherwise, returns false.
     java:
       <<: *method-isstring
@@ -184,7 +184,7 @@ methods:
 
   - method:
     common: &method-isdatetime
-      title: Check if value is of type datetime
+      title: Check if value is of type datetime (Local)
       description: Returns true if the attribute value is of type datetime. Otherwise, returns false.
     java:
       <<: *method-isdouble

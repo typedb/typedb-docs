@@ -62,19 +62,19 @@ methods:
       description: Retrieves the most immediate supertype of the role type.
     java:
       <<: *method-getSupertype
-      method: type.getSupertype();
+      method: type.asRemote(Transaction tx).getSupertype();
       returns:
         - "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
         - "`null`"
     javascript:
       <<: *method-getSupertype
-      method: await type.getSupertype();
+      method: await type.asRemote(tx).getSupertype();
       returns:
         - "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
         - "`null`"
     python:
       <<: *method-getSupertype
-      method: type.get_supertype()
+      method: type.as_remote(tx).get_supertype()
       returns:
         - "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
         - None
@@ -85,17 +85,17 @@ methods:
       description: Retrieves all supertypes of the role type.
     java:
       <<: *method-getSupertypes
-      method: type.getSupertypes();
+      method: type.asRemote(Transaction tx).getSupertypes();
       returns:
         - Stream<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>
     javascript:
       <<: *method-getSupertypes
-      method: type.getSupertypes()
+      method: type.asRemote(tx).getSupertypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getSupertypes
-      method: type.get_supertypes()
+      method: type.as_remote(tx).get_supertypes()
       returns:
         - Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)
 
@@ -105,17 +105,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the type.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: type.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: type.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)
 
@@ -125,19 +125,19 @@ methods:
       description: Retrieves the Relation instance that this role is directly related to.
     java:
       <<: *method-getRelationType
-      method: role.getRelationType();
+      method: role.asRemote(Transaction tx).getRelationType();
       returns:
-        - "Stream<[`RelationType`](../concept-api/thing?tab=java#relationtype-methods)>"
+        - "[`RelationType`](../concept-api/thing?tab=java#relationtype-methods)>"
     javascript:
       <<: *method-getRelationType
-      method: await role.getRelationType();
+      method: await role.asRemote(tx).getRelationType();
       returns:
-        - "[`Stream`](../client-api/nodejs#stream) of [`RelationType`](../concept-api/thing?tab=javascript#relationtype-methods)"
+        - "[`RelationType`](../concept-api/thing?tab=javascript#relationtype-methods)"
     python:
       <<: *method-getRelationType
-      method: role.get_relation_type()
+      method: role.as_remote(tx).get_relation_type()
       returns:
-        - "Iterator of [`RelationType`](../concept-api/thing?tab=python#relationtype-methods)"
+        - "[`RelationType`](../concept-api/thing?tab=python#relationtype-methods)"
 
   - method:
     common: &method-getRelationTypes
@@ -145,17 +145,17 @@ methods:
       description: Retrieves the RelationTypes that this role is related to.
     java:
       <<: *method-getRelationTypes
-      method: role.getRelationTypes();
+      method: role.asRemote(Transaction tx).getRelationTypes();
       returns:
         - "Stream<[`RelationType`](../concept-api/thing?tab=java#relationtype-methods)>"
     javascript:
       <<: *method-getRelationTypes
-      method: await role.getRelationTypes();
+      method: await role.asRemote(tx).getRelationTypes();
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`RelationType`](../concept-api/thing?tab=javascript#relationtype-methods)"
     python:
       <<: *method-getRelationTypes
-      method: role.get_relation_types()
+      method: role.as_remote(tx).get_relation_types()
       returns:
         - "Iterator of [`RelationType`](../concept-api/thing?tab=python#relationtype-methods)"
 
@@ -165,16 +165,16 @@ methods:
       description: Retrieves the ThingTypes whose instances play this role.
     java:
       <<: *method-getPlayers
-      method: role.getPlayers();
+      method: role.asRemote(Transaction tx).getPlayers();
       returns:
         - "Stream<[`ThingType`](/docs/concept-api/type?tab=java)>"
     javascript:
       <<: *method-getPlayers
-      method: await role.getPlayers();
+      method: await role.asRemote(tx).getPlayers();
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`ThingType`](/docs/concept-api/type?tab=nodejs)"
     python:
       <<: *method-getPlayers
-      method: role.get_players()
+      method: role.as_remote(tx).get_players()
       returns:
         - "Iterator of [`ThingType`](/docs/concept-api/type?tab=python)"
