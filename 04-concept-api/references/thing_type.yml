@@ -30,19 +30,19 @@ methods:
       description: Retrieves the most immediate supertype of the ThingType.
     java:
       <<: *method-getSupertype
-      method: thingType.getSupertype();
+      method: thingType.asRemote(Transaction tx).getSupertype();
       returns:
         - "[`ThingType`](../concept-api/type?tab=java#thingtype-methods)"
         - "`null`"
     javascript:
       <<: *method-getSupertype
-      method: await thingType.getSupertype();
+      method: await thingType.asRemote(tx).getSupertype();
       returns:
         - "[`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)"
         - "`null`"
     python:
       <<: *method-getSupertype
-      method: thing_type.get_supertype()
+      method: thing_type.as_remote(tx).get_supertype()
       returns:
         - "[`ThingType`](../concept-api/type?tab=python#thingtype-methods)"
         - None
@@ -53,17 +53,17 @@ methods:
       description: Retrieves all supertypes of the ThingType.
     java:
       <<: *method-getSupertypes
-      method: thingType.getSupertypes();
+      method: thingType.asRemote(Transaction tx).getSupertypes();
       returns:
         - Stream<[`ThingType`](../concept-api/type?tab=java#thingtype-methods)>
     javascript:
       <<: *method-getSupertypes
-      method: thingType.getSupertypes()
+      method: thingType.asRemote(tx).getSupertypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream)<[`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)>"
     python:
       <<: *method-getSupertypes
-      method: thing_type.get_supertypes()
+      method: thing_type.as_remote(tx).get_supertypes()
       returns:
         - Iterator of [`ThingType`](../concept-api/type?tab=python#thingtype-methods)
 
@@ -73,17 +73,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the ThingType.
     java:
       <<: *method-getSubtypes
-      method: thingType.getSubtypes();
+      method: thingType.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`ThingType`](../concept-api/type?tab=java#thingtype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: thingType.getSubtypes()
+      method: thingType.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`ThingType`](../concept-api/type?tab=javascript#thingtype-methods)"
     python:
       <<: *method-getSubtypes
-      method: thing_type.get_subtypes()
+      method: thing_type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`ThingType`](../concept-api/type?tab=python#thingtype-methods)
 
@@ -93,17 +93,17 @@ methods:
       descriptions: Retrieve all instances of this ThingType.
     java:
       <<: *method-getInstances
-      method: thingType.getInstances();
+      method: thingType.asRemote(Transaction tx).getInstances();
       returns:
         - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
     javascript:
       <<: *method-getInstances
-      method: thingType.getInstances();
+      method: thingType.asRemote(tx).getInstances();
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-getInstances
-      method: thing_type.get_instances()
+      method: thing_type.as_remote(tx).get_instances()
       returns:
         - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 
@@ -113,17 +113,17 @@ methods:
       description: Set a ThingType to be abstract, meaning it cannot have instances.
     java:
       <<: *method-setAbstract
-      method: thingType.setAbstract();
+      method: thingType.asRemote(Transaction tx).setAbstract();
       returns:
         - void
     javascript:
       <<: *method-setAbstract
-      method: await thingType.setAbstract();
+      method: await thingType.asRemote(tx).setAbstract();
       returns:
         - void
     python:
       <<: *method-setAbstract
-      method: thing_type.set_abstract()
+      method: thing_type.as_remote(tx).set_abstract()
       returns:
         - None
 
@@ -133,17 +133,17 @@ methods:
       description: Set a ThingType to be non-abstract, meaning it can have instances.
     java:
       <<: *method-unsetAbstract
-      method: thingType.unsetAbstract();
+      method: thingType.asRemote(Transaction tx).unsetAbstract();
       returns:
         - void
     javascript:
       <<: *method-unsetAbstract
-      method: await thingType.unsetAbstract();
+      method: await thingType.asRemote(tx).unsetAbstract();
       returns:
         - void
     python:
       <<: *method-unsetAbstract
-      method: thing_type.unset_abstract()
+      method: thing_type.as_remote(tx).unset_abstract()
       returns:
         - None
 
@@ -163,7 +163,7 @@ methods:
           required: false
     java:
       <<: *method-setPlays
-      method: thingType.setPlays(RoleType roleType, RoleType overriddenType);
+      method: thingType.asRemote(Transaction tx).setPlays(RoleType roleType, RoleType overriddenType);
       accepts:
         param1:
           <<: *accepts-setPlays-roleType
@@ -176,7 +176,7 @@ methods:
         - void
     javascript:
       <<: *method-setPlays
-      method: await thingType.setPlays(roleType, overriddenType);
+      method: await thingType.asRemote(tx).setPlays(roleType, overriddenType);
       accepts:
         param1:
           <<: *accepts-setPlays-roleType
@@ -189,7 +189,7 @@ methods:
         - void
     python:
       <<: *method-setPlays
-      method: thing_type.set_plays(role_type, overridden_type=None)
+      method: thing_type.as_remote(tx).set_plays(role_type, overridden_type=None)
       accepts:
         param1:
           <<: *accepts-setPlays-roleType
@@ -223,7 +223,7 @@ methods:
         - void
     java:
       <<: *method-setOwns
-      method: thingType.setOwns(AttributeType attributeType, boolean isKey);
+      method: thingType.asRemote(Transaction tx).setOwns(AttributeType attributeType, boolean isKey);
       accepts:
         param1:
           <<: *accepts-setOwns-attributeType
@@ -232,7 +232,7 @@ methods:
           <<: *accepts-setOwns-isKey
     javascript:
       <<: *method-setOwns
-      method: await thingType.setOwns(attributeType, isKey);
+      method: await thingType.asRemote(tx).setOwns(attributeType, isKey);
       accepts:
         param1:
           <<: *accepts-setOwns-attributeType
@@ -265,7 +265,7 @@ methods:
         - void
     java:
       <<: *method-setOwnsOverridden
-      method: thingType.setOwns(AttributeType attributeType, AttributeType overriddenType, boolean isKey);
+      method: thingType.asRemote(Transaction tx).setOwns(AttributeType attributeType, AttributeType overriddenType, boolean isKey);
       accepts:
         param1:
           <<: *accepts-setOwnsOverridden-attributeType
@@ -277,7 +277,7 @@ methods:
           <<: *accepts-setOwnsOverridden-isKey
     javascript:
       <<: *method-setOwnsOverridden
-      method: await thingType.setOwns(attributeType, overriddenType, isKey);
+      method: await thingType.asRemote(tx).setOwns(attributeType, overriddenType, isKey);
       accepts:
         param1:
           <<: *accepts-setOwnsOverridden-attributeType
@@ -292,7 +292,7 @@ methods:
     python:
       title: Add attribute ownership
       description: Allows the instances of this type to own the given `AttributeType`.
-      method: thing_type.set_owns(attribute_type, overridden_type=None, is_key=False);
+      method: thing_type.as_remote(tx).set_owns(attribute_type, overridden_type=None, is_key=False);
       accepts:
         param1:
           name: attributeType
@@ -321,17 +321,17 @@ methods:
       description: Retrieves all direct and inherited roles that are allowed to be played by the instances of this type.
     java:
       <<: *method-getPlays
-      method: thingType.getPlays();
+      method: thingType.asRemote(Transaction tx).getPlays();
       returns:
         - Stream<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>
     javascript:
       <<: *method-getPlays
-      method: await thingType.getPlays();
+      method: await thingType.asRemote(tx).getPlays();
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getPlays
-      method: thing_type.get_plays()
+      method: thing_type.as_remote(tx).get_plays()
       returns:
         - Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)
 
@@ -348,12 +348,12 @@ methods:
           default: false
     java:
       <<: *method-getOwns
-      method: thingType.getOwns(boolean keysOnly);
+      method: thingType.asRemote(Transaction tx).getOwns(boolean keysOnly);
       returns:
         - Stream<[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)>
     javascript:
       <<: *method-getOwns
-      method: await thingType.getOwns(keysOnly);
+      method: await thingType.asRemote(tx).getOwns(keysOnly);
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
 
@@ -376,7 +376,7 @@ methods:
           default: false
     java:
       <<: *method-getOwnsForValueType
-      method: thingType.getOwns(AttributeType.ValueType valueType, boolean keysOnly);
+      method: thingType.asRemote(Transaction tx).getOwns(AttributeType.ValueType valueType, boolean keysOnly);
       accepts:
         param1:
           <<: *accepts-getOwnsForValueType-valueType
@@ -386,7 +386,7 @@ methods:
         - Stream<[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)>
     javascript:
       <<: *method-getOwnsForValueType
-      method: await thingType.getOwns(valueType, keysOnly);
+      method: await thingType.asRemote(tx).getOwns(valueType, keysOnly);
       accepts:
         param1:
           <<: *accepts-getOwnsForValueType-valueType
@@ -399,7 +399,7 @@ methods:
     python:
       title: Retrieve attributes
       description: Retrieves attribute types that the instances of this type are allowed to own.
-      method: thing_type.get_owns(value_type=None, keys_only=False)
+      method: thing_type.as_remote(tx).get_owns(value_type=None, keys_only=False)
       accepts:
         param1:
           name: value_type
@@ -428,7 +428,7 @@ methods:
           default: N/A
     java:
       <<: *method-unsetPlays
-      method: thingType.unsetPlays(RoleType role);
+      method: thingType.asRemote(Transaction tx).unsetPlays(RoleType role);
       accepts:
         param:
           <<: *accepts-unsetPlays
@@ -437,7 +437,7 @@ methods:
         - void
     javascript:
       <<: *method-unsetPlays
-      method: await thingType.unsetPlays(role);
+      method: await thingType.asRemote(tx).unsetPlays(role);
       accepts:
         param:
           <<: *accepts-unsetPlays
@@ -446,7 +446,7 @@ methods:
         - void
     python:
       <<: *method-unsetPlays
-      method: thing_type.unset_plays(role)
+      method: thing_type.as_remote(tx).unset_plays(role)
       accepts:
         param:
           <<: *accepts-unsetPlays
@@ -466,7 +466,7 @@ methods:
           default: N/A
     java:
       <<: *method-unsetOwns
-      method: thingType.unsetOwns(AttributeType attributeType);
+      method: thingType.asRemote(Transaction tx).unsetOwns(AttributeType attributeType);
       accepts:
         param:
           <<: *accepts-unsetOwns-attributeType
@@ -475,7 +475,7 @@ methods:
         - void
     javascript:
       <<: *method-unsetOwns
-      method: await thingType.unsetOwns(attributeType);
+      method: await thingType.asRemote(tx).unsetOwns(attributeType);
       accepts:
         param:
           <<: *accepts-unsetOwns-attributeType
@@ -484,7 +484,7 @@ methods:
         - void
     python:
       <<: *method-unsetOwns
-      method: thing_type.unset_owns(attribute_type)
+      method: thing_type.as_remote(tx).unset_owns(attribute_type)
       accepts:
         param:
           <<: *accepts-unsetOwns-attributeType

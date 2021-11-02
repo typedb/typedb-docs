@@ -85,49 +85,50 @@ methods:
           default: N/A
     java:
       <<: *method-setLabel
-      method: rule.setLabel(String label);
+      method: rule.asRemote(Transaction tx).setLabel(String label);
       returns:
         - void
     javascript:
       <<: *method-setLabel
-      method: await rule.setLabel(label);
+      method: await rule.asRemote(tx).setLabel(label);
       returns:
         - void
     python:
       <<: *method-setLabel
-      method: rule.set_label(label)
+      method: rule.as_remote(tx).set_label(label)
       returns:
         - None
 
   - method:
     common: &method-delete
       title: Delete rule
-      method: rule.delete();
-      returns:
-        - "`null`"
     java:
       <<: *method-delete
+      method: rule.asRemote(Transaction tx).delete();
+      returns:
+        - "`null`"
     javascript:
       <<: *method-delete
-      method: await rule.delete();
+      method: await rule.asRemote(tx).delete();
       returns:
         - void
     python:
       <<: *method-delete
+      method: rule.as_remote(tx).delete();
       returns:
         - None
 
   - method:
     common: &method-isDeleted
       title: Check if the rule has been deleted
-      method: rule.isDeleted();
       returns:
         - boolean
     java:
       <<: *method-isDeleted
+      method: rule.asRemote(Transaction tx).isDeleted();
     javascript:
       <<: *method-isDeleted
-      method: await rule.isDeleted();
+      method: await rule.asRemote(tx).isDeleted();
     python:
       <<: *method-isDeleted
-      method: rule.is_deleted()
+      method: rule.as_remote(tx).is_deleted()

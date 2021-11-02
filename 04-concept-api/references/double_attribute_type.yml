@@ -13,7 +13,7 @@ methods:
           default: N/A
     java:
       <<: *method-put
-      method: doubleAttributeType.put(double value);
+      method: doubleAttributeType.asRemote(Transaction tx).put(double value);
       accepts:
         <<: *method-put-accepts
         param:
@@ -21,7 +21,7 @@ methods:
           type: double
     javascript:
       <<: *method-put
-      method: await doubleAttributeType.put(value);
+      method: await doubleAttributeType.asRemote(tx).put(value);
       accepts:
         <<: *method-put-accepts
         param:
@@ -29,7 +29,7 @@ methods:
           type: number
     python:
       <<: *method-put
-      method: doubleAttributeType.put(value)
+      method: doubleAttributeType.as_remote(tx).put(value)
       accepts:
         <<: *method-put-accepts
         param:
@@ -50,7 +50,7 @@ methods:
           default: N/A
     java:
       <<: *method-get
-      method: doubleAttributeType.get(double value);
+      method: doubleAttributeType.asRemote(Transaction tx).get(double value);
       accepts:
         <<: *method-get-accepts
         param:
@@ -58,7 +58,7 @@ methods:
           type: long
     javascript:
       <<: *method-get
-      method: await doubleAttributeType.get(value);
+      method: await doubleAttributeType.asRemote(tx).get(value);
       accepts:
         <<: *method-get-accepts
         param:
@@ -66,7 +66,7 @@ methods:
           type: number
     python:
       <<: *method-get
-      method: doubleAttributeType.get(value)
+      method: doubleAttributeType.as_remote(tx).get(value)
       accepts:
         <<: *method-get-accepts
         param:
@@ -86,17 +86,17 @@ methods:
           default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(AttributeType.Double doubleAttributeType);
+      method: attributeType.asRemote(Transaction tx).setSupertype(AttributeType.Double doubleAttributeType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(doubleAttributeType);
+      method: attributeType.asRemote(tx).setSupertype(doubleAttributeType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(doubleAttributeType)
+      method: attributeType.as_remote(tx).set_supertype(doubleAttributeType)
       accepts:
         <<: *accepts-setsupertype
         param:
@@ -111,17 +111,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the DoubleAttributeType.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: type.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`AttributeType.Double`](../concept-api/type?tab=java#doubleattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: type.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`DoubleAttributeType`](../concept-api/type?tab=javascript#doubleattributetype-methods)>"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`DoubleAttributeType`](../concept-api/type?tab=python#doubleattributetype-methods)
 
@@ -131,17 +131,17 @@ methods:
       description: Retrieves all DoubleAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
-      method: type.getInstances();
+      method: type.asRemote(Transaction tx).getInstances();
       returns:
         - Stream<[`DoubleAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
-      method: type.getInstances()
+      method: type.asRemote(tx).getInstances()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`DoubleAttribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
     python:
       <<: *method-getInstances
-      method: type.get_instances()
+      method: type.as_remote(tx).get_instances()
       returns:
         - Iterator of [`DoubleAttribute`](../concept-api/thing?tab=python#attribute-methods)
 

@@ -28,17 +28,17 @@ methods:
           default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(AttributeType attributeType);
+      method: attributeType.asRemote(Transaction tx).setSupertype(AttributeType attributeType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(attributeType);
+      method: attributeType.asRemote(tx).setSupertype(attributeType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(attribute_type)
+      method: attributeType.as_remote(tx).set_supertype(attribute_type)
       accepts:
         <<: *accepts-setsupertype
         param:
@@ -53,17 +53,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the AttributeType.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: attributeType.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: attributeType.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: attributeType.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`AttributeType`](../concept-api/type?tab=python#attributetype-methods)
 
@@ -73,17 +73,17 @@ methods:
       description: Retrieves all Attributes that are instances of this Type.
     java:
       <<: *method-getInstances
-      method: type.getInstances();
+      method: attributeType.asRemote(Transaction tx).getInstances();
       returns:
         - Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
-      method: type.getInstances()
+      method: attributeType.asRemote(tx).getInstances()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
     python:
       <<: *method-getInstances
-      method: type.get_instances()
+      method: attributeType.as_remote(tx).get_instances()
       returns:
         - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)
 
@@ -100,17 +100,17 @@ methods:
           default: false
     java:
       <<: *method-getOwners
-      method: type.getOwners(boolean onlyKey);
+      method: attributeType.asRemote(Transaction tx).getOwners(boolean onlyKey);
       returns:
         - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
     javascript:
       <<: *method-getOwners
-      method: type.getOwners(onlyKey)
+      method: attributeType.asRemote(tx).getOwners(onlyKey)
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-getOwners
-      method: type.getOwners(onlyKey)
+      method: attributeType.as_remote(tx).get_owners(onlyKey)
       returns:
         - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 
@@ -147,13 +147,13 @@ methods:
         - boolean
     java:
       <<: *method-isboolean
-      method: attribute.isBoolean();
+      method: attributeType.isBoolean();
     javascript:
       <<: *method-isboolean
-      method: attribute.isBoolean();
+      method: attributeType.isBoolean();
     python:
       <<: *method-isboolean
-      method: attribute.is_boolean()
+      method: attributeType.is_boolean()
 
   - method:
     common: &method-islong
@@ -163,13 +163,13 @@ methods:
         - boolean
     java:
       <<: *method-islong
-      method: attribute.isLong();
+      method: attributeType.isLong();
     javascript:
       <<: *method-islong
-      method: attribute.isLong();
+      method: attributeType.isLong();
     python:
       <<: *method-islong
-      method: attribute.is_long()
+      method: attributeType.is_long()
 
   - method:
     common: &method-isdouble
@@ -179,13 +179,13 @@ methods:
         - boolean
     java:
       <<: *method-isdouble
-      method: attribute.isDouble();
+      method: attributeType.isDouble();
     javascript:
       <<: *method-isdouble
-      method: attribute.isDouble();
+      method: attributeType.isDouble();
     python:
       <<: *method-isdouble
-      method: attribute.is_double()
+      method: attributeType.is_double()
 
   - method:
     common: &method-isstring
@@ -195,13 +195,13 @@ methods:
         - boolean
     java:
       <<: *method-isstring
-      method: attribute.isString();
+      method: attributeType.isString();
     javascript:
       <<: *method-isstring
-      method: attribute.isString();
+      method: attributeType.isString();
     python:
       <<: *method-isstring
-      method: attribute.is_string()
+      method: attributeType.is_string()
 
   - method:
     common: &method-isdatetime
@@ -211,10 +211,10 @@ methods:
         - boolean
     java:
       <<: *method-isdatetime
-      method: attribute.isDateTime();
+      method: attributeType.isDateTime();
     javascript:
       <<: *method-isdatetime
-      method: attribute.isDateTime();
+      method: attributeType.isDateTime();
     python:
       <<: *method-isdatetime
-      method: attribute.is_datetime()
+      method: attributeType.is_datetime()

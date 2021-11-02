@@ -13,7 +13,7 @@ methods:
           default: N/A
     java:
       <<: *method-put
-      method: datetimeAttributeType.put(LocalDateTime value);
+      method: datetimeAttributeType.asRemote(Transaction tx).put(LocalDateTime value);
       accepts:
         <<: *method-put-accepts
         param:
@@ -21,7 +21,7 @@ methods:
           type: LocalDateTime
     javascript:
       <<: *method-put
-      method: await dateTimeAttributeType.put(value);
+      method: await dateTimeAttributeType.asRemote(tx).put(value);
       accepts:
         <<: *method-put-accepts
         param:
@@ -29,7 +29,7 @@ methods:
           type: Date
     python:
       <<: *method-put
-      method: dateTimeAttributeType.put(value)
+      method: dateTimeAttributeType.as_remote(tx).put(value)
       accepts:
         <<: *method-put-accepts
         param:
@@ -50,7 +50,7 @@ methods:
           default: N/A
     java:
       <<: *method-get
-      method: datetimeAttributeType.get(LocalDateTime value);
+      method: datetimeAttributeType.asRemote(Transaction tx).get(LocalDateTime value);
       accepts:
         <<: *method-get-accepts
         param:
@@ -58,7 +58,7 @@ methods:
           type: LocalDateTime
     javascript:
       <<: *method-get
-      method: await dateTimeAttributeType.get(value);
+      method: await dateTimeAttributeType.asRemote(tx).get(value);
       accepts:
         <<: *method-get-accepts
         param:
@@ -66,7 +66,7 @@ methods:
           type: number
     python:
       <<: *method-get
-      method: dateTimeAttributeType.get(value)
+      method: dateTimeAttributeType.as_remote(tx).get(value)
       accepts:
         <<: *method-get-accepts
         param:
@@ -86,17 +86,17 @@ methods:
           default: N/A
     java:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(AttributeType.DateTime datetimeAttributeType);
+      method: attributeType.asRemote(Transaction tx).setSupertype(AttributeType.DateTime datetimeAttributeType);
       returns:
         - void
     javascript:
       <<: *method-setsupertype
-      method: attributeType.setSupertype(datetimeAttributeType);
+      method: attributeType.asRemote(tx).setSupertype(datetimeAttributeType);
       returns:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.set_supertype(datetime_attribute_type)
+      method: attributeType.as_remote(tx).set_supertype(datetime_attribute_type)
       accepts:
         <<: *accepts-setsupertype
         param:
@@ -111,17 +111,17 @@ methods:
       description: Retrieves all direct and indirect subtypes of the DateTimeAttributeType.
     java:
       <<: *method-getSubtypes
-      method: type.getSubtypes();
+      method: type.asRemote(Transaction tx).getSubtypes();
       returns:
         - Stream<[`AttributeType.DateTime`](../concept-api/type?tab=java#datetimeattributetype-methods)>
     javascript:
       <<: *method-getSubtypes
-      method: type.getSubtypes()
+      method: type.asRemote(tx).getSubtypes()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`DateTimeAttributeType`](../concept-api/type?tab=javascript#datetimeattributetype-methods)"
     python:
       <<: *method-getSubtypes
-      method: type.get_subtypes()
+      method: type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`DateTimeAttributeType`](../concept-api/type?tab=python#datetimeattributetype-methods)
 
@@ -131,17 +131,17 @@ methods:
       description: Retrieves all DateTimeAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
-      method: type.getInstances();
+      method: type.asRemote(Transaction tx).getInstances();
       returns:
         - Stream<[`DateTimeAttribute`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getInstances
-      method: type.getInstances()
+      method: type.asRemote(tx).getInstances()
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`DateTimeAttribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
     python:
       <<: *method-getInstances
-      method: type.get_instances()
+      method: type.as_remote(tx).get_instances()
       returns:
         - Iterator of [`DateTimeAttribute`](../concept-api/thing?tab=python#attribute-methods)
 

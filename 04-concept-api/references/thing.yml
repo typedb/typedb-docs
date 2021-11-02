@@ -88,7 +88,7 @@ methods:
           default: N/A
     java:
       <<: *method-setHas
-      method: thing.setHas(Attribute<?> attribute);
+      method: thing.asRemote(Transaction tx).setHas(Attribute<?> attribute);
       accepts:
         param:
           <<: *accepts-setHas-attribute
@@ -97,7 +97,7 @@ methods:
         - "[`Thing`](../concept-api/thing?tab=java#thing-methods)"
     javascript:
       <<: *method-setHas
-      method: await thing.setHas(attribute);
+      method: await thing.asRemote(tx).setHas(attribute);
       accepts:
         param:
           <<: *accepts-setHas-attribute
@@ -106,7 +106,7 @@ methods:
         - "[`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-setHas
-      method: thing.set_has(attribute)
+      method: thing.as_remote(tx).set_has(attribute)
       accepts:
         param:
           <<: *accepts-setHas-attribute
@@ -127,17 +127,17 @@ methods:
           default: N/A
     java:
       <<: *method-unsetHas
-      method: thing.unsetHas(Attribute<?> attribute);
+      method: thing.asRemote(Transaction tx).unsetHas(Attribute<?> attribute);
       returns:
         - "[`Thing`](../concept-api/thing?tab=java#thing-methods)"
     javascript:
       <<: *method-unsetHas
-      method: await thing.unsetHas(attribute);
+      method: await thing.asRemote(tx).unsetHas(attribute);
       returns:
         - "[`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-unsetHas
-      method: thing.unset_has(attribute)
+      method: thing.as_remote(tx).unset_has(attribute)
       returns:
         - "[`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
@@ -154,12 +154,12 @@ methods:
           default: false
     java:
       <<: *method-getHasWithOnlyKey
-      method: thing.getHas(boolean onlyKey));
+      method: thing.asRemote(Transaction tx).getHas(boolean onlyKey));
       returns:
         - Stream<[`Attribute<?>`](../concept-api/thing?tab=java#attribute-methods)>
     javascript:
       <<: *method-getHasWithOnlyKey
-      method: await thing.getHas(onlyKey);
+      method: await thing.asRemote(tx).getHas(onlyKey);
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
 
@@ -175,7 +175,7 @@ methods:
           default: null
     java:
       <<: *method-getHasWithOneAttributeType
-      method: thing.getHas(AttributeType attributeType);
+      method: thing.asRemote(Transaction tx).getHas(AttributeType attributeType);
       accepts:
         <<: *accepts-getHasWithOneAttributeType
         param:
@@ -185,7 +185,7 @@ methods:
         - "Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>"
     javascript:
       <<: *method-getHasWithOneAttributeType
-      method: await thing.getHas(attributeType);
+      method: await thing.asRemote(tx).getHas(attributeType);
       accepts:
         <<: *accepts-getHasWithOneAttributeType
         param:
@@ -206,7 +206,7 @@ methods:
           default: "(empty array)"
     java:
       <<: *method-getHasWithAttributeTypes
-      method: thing.getHas(AttributeType... attributeTypes);
+      method: thing.asRemote(Transaction tx).getHas(AttributeType... attributeTypes);
       accepts:
         <<: *accepts-getHasWithAttributeTypes
         param:
@@ -216,7 +216,7 @@ methods:
         - "Stream<[`Attribute`](../concept-api/thing?tab=java#attribute-methods)>"
     javascript:
       <<: *method-getHasWithAttributeTypes
-      method: await thing.getHas(attributeTypes);
+      method: await thing.asRemote(tx).getHas(attributeTypes);
       accepts:
         <<: *accepts-getHasWithAttributeTypes
         param:
@@ -229,7 +229,7 @@ methods:
     python:
       title: Retrieve attributes
       description: Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
-      method: thing.get_has(attribute_type=None, attribute_types=[], only_key=False)
+      method: thing.as_remote(tx).get_has(attribute_type=None, attribute_types=[], only_key=False)
       accepts:
         param1:
           name: attribute_type
@@ -258,17 +258,17 @@ methods:
       description: Retrieves the roles that this Thing is currently playing.
     java:
       <<: *method-getPlays
-      method: thing.getPlaying();
+      method: thing.asRemote(Transaction tx).getPlaying();
       returns:
         - "Stream of [`RoleType`](../concept-api/type?tab=java#roletype-methods)"
     javascript:
       <<: *method-getPlays
-      method: await thing.getPlaying();
+      method: await thing.asRemote(tx).getPlaying();
       returns:
         - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-getPlays
-      method: thing.get_playing()
+      method: thing.as_remote(tx).get_playing()
       returns:
         - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
@@ -284,7 +284,7 @@ methods:
           default: N/A
     java:
       <<: *method-getRelations
-      method: thing.getRelations(RoleType... roleTypes);
+      method: thing.asRemote(Transaction tx).getRelations(RoleType... roleTypes);
       accepts:
         <<: *accepts-getRelations
         param:
@@ -294,7 +294,7 @@ methods:
         - Stream<[`Relation`](../concept-api/thing?tab=java#relation-methods)>
     javascript:
       <<: *method-getRelations
-      method: await thing.getRelations(roleTypes);
+      method: await thing.asRemote(tx).getRelations(roleTypes);
       accepts:
         <<: *accepts-getRelations
         param:
@@ -304,7 +304,7 @@ methods:
         - "[`Stream`](../client-api/nodejs#stream) of [`Relation`](../concept-api/thing?tab=javascript#relation-methods)"
     python:
       <<: *method-getRelations
-      method: thing.get_relations(role_types)
+      method: thing.as_remote(tx).get_relations(role_types)
       accepts:
         param:
           <<: *accepts-getRelations-param-roleTypes

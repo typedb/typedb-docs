@@ -25,17 +25,17 @@ methods:
       description: Retrieves a map of all instances involved in the Relation and the role each play.
     java:
       <<: *method-rolePlayersMap
-      method: relation.getPlayersByRoleType();
+      method: relation.asRemote(Transaction tx).getPlayersByRoleType();
       returns:
         - 'Map<[`RoleType`](../concept-api/type?tab=java#roletype-methods), List<[`Thing`](../concept-api/thing?tab=java#thing-methods)>>'
     javascript:
       <<: *method-rolePlayersMap
-      method: await relation.getPlayersByRoleType();
+      method: await relation.asRemote(tx).getPlayersByRoleType();
       returns:
         - 'Map<[`RoleType`](../concept-api/type?tab=javascript#roletype-methods), Array of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)>'
     python:
       <<: *method-rolePlayersMap
-      method: relation.get_players_by_role_type()
+      method: relation.as_remote(tx).get_players_by_role_type()
       returns:
         - "Dictionary of [`Role`](../concept-api/type?tab=python#roletype-methods) to List of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
@@ -45,17 +45,17 @@ methods:
       description: Retrieves all role types currently played in this Relation.
     java:
       <<: *method-relating
-      method: relation.getRelating();
+      method: relation.asRemote(Transaction tx).getRelating();
       returns:
         - "Stream<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
     javascript:
       <<: *method-relating
-      method: relation.getRelating();
+      method: relation.asRemote(tx).getRelating();
       returns:
         - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
     python:
       <<: *method-relating
-      method: relation.get_relating()
+      method: relation.as_remote(tx).get_relating()
       returns:
         - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
@@ -71,7 +71,7 @@ methods:
           default: N/A
     java:
       <<: *method-rolePlayers
-      method: relation.getPlayers(RoleType role);
+      method: relation.asRemote(Transaction tx).getPlayers(RoleType role);
       accepts:
         param:
           <<: *accepts-rolePlayers-role
@@ -80,7 +80,7 @@ methods:
         - "Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>"
     javascript:
       <<: *method-rolePlayers
-      method: relation.getPlayers(role);
+      method: relation.asRemote(tx).getPlayers(role);
       accepts:
         param:
           <<: *accepts-rolePlayers-role
@@ -89,7 +89,7 @@ methods:
         - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript)"
     python:
       <<: *method-rolePlayers
-      method: relation.get_players(role)
+      method: relation.as_remote(tx).get_players(role)
       accepts:
         param:
           <<: *accepts-rolePlayers-role
@@ -114,7 +114,7 @@ methods:
           default: N/A
     java:
       <<: *method-assign
-      method: relation.addPlayer(RoleType role, Thing thing);
+      method: relation.asRemote(Transaction tx).addPlayer(RoleType role, Thing thing);
       accepts:
         <<: *accepts-assign
         param1:
@@ -127,7 +127,7 @@ methods:
         - void
     javascript:
       <<: *method-assign
-      method: await relation.addPlayer(role, thing);
+      method: await relation.asRemote(tx).addPlayer(role, thing);
       accepts:
         <<: *accepts-assign
         param1:
@@ -140,7 +140,7 @@ methods:
         - void
     python:
       <<: *method-assign
-      method: relation.add_player(role, thing)
+      method: relation.as_remote(tx).add_player(role, thing)
       accepts:
         <<: *accepts-assign
         param1:
@@ -169,7 +169,7 @@ methods:
           default: N/A
     java:
       <<: *method-unassign
-      method: relation.removePlayer(RoleType role, Thing thing);
+      method: relation.asRemote(Transaction tx).removePlayer(RoleType role, Thing thing);
       accepts:
         param1:
           <<: *accepts-unassign-role
@@ -181,7 +181,7 @@ methods:
         - void
     javascript:
       <<: *method-unassign
-      method: await relation.removePlayer(role, thing);
+      method: await relation.asRemote(tx).removePlayer(role, thing);
       accepts:
         param1:
           <<: *accepts-unassign-role
@@ -193,7 +193,7 @@ methods:
         - void
     python:
       <<: *method-unassign
-      method: relation.remove_player(role, thing)
+      method: relation.as_remote(tx).remove_player(role, thing)
       accepts:
         param1:
           <<: *accepts-unassign-role
