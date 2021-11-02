@@ -38,7 +38,7 @@ methods:
         - void
     python:
       <<: *method-setsupertype
-      method: attributeType.as_remote().set_supertype(attribute_type)
+      method: attributeType.as_remote(tx).set_supertype(attribute_type)
       accepts:
         <<: *accepts-setsupertype
         param:
@@ -63,7 +63,7 @@ methods:
         - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
     python:
       <<: *method-getSubtypes
-      method: attributeType.as_remote().get_subtypes()
+      method: attributeType.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`AttributeType`](../concept-api/type?tab=python#attributetype-methods)
 
@@ -83,7 +83,7 @@ methods:
         - "[`Stream`](../client-api/nodejs#stream) of [`Attribute`](../concept-api/thing?tab=javascript#attribute-methods)"
     python:
       <<: *method-getInstances
-      method: attributeType.as_remote().get_instances()
+      method: attributeType.as_remote(tx).get_instances()
       returns:
         - Iterator of [`Attribute`](../concept-api/thing?tab=python#attribute-methods)
 
@@ -110,7 +110,7 @@ methods:
         - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-getOwners
-      method: attributeType.as_remote().getOwners(onlyKey)
+      method: attributeType.as_remote(tx).get_owners(onlyKey)
       returns:
         - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 

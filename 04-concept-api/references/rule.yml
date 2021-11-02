@@ -102,29 +102,30 @@ methods:
   - method:
     common: &method-delete
       title: Delete rule
-      method: rule.delete();
-      returns:
-        - "`null`"
     java:
       <<: *method-delete
+      method: rule.asRemote(Transaction tx).delete();
+      returns:
+        - "`null`"
     javascript:
       <<: *method-delete
-      method: await rule.asRemote(Transaction tx).delete();
+      method: await rule.asRemote(tx).delete();
       returns:
         - void
     python:
       <<: *method-delete
+      method: rule.as_remote(tx).delete();
       returns:
         - None
 
   - method:
     common: &method-isDeleted
       title: Check if the rule has been deleted
-      method: rule.asRemote(Transaction tx).isDeleted();
       returns:
         - boolean
     java:
       <<: *method-isDeleted
+      method: rule.asRemote(Transaction tx).isDeleted();
     javascript:
       <<: *method-isDeleted
       method: await rule.asRemote(tx).isDeleted();
