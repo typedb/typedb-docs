@@ -68,6 +68,11 @@ First, download the [`social-network/schema.tql`](../files/social-network/schema
 Feel free to study the content of `social-network-schema.tql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [TypeDB Workbase](../07-workbase/00-overview.md).
 </div>
 
+<div class="note">
+[Note]
+On write windows-style paths, you'll have to use `\\` to escape the backslash characters. With Unix-style paths you can use single forwardslash `/`.
+</div>
+
 While in the unzipped directory of the TypeDB distribution, via terminal, open the console:
 
 ```
