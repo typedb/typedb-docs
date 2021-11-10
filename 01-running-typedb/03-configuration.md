@@ -15,7 +15,7 @@ If downloaded manually, we can find the configuration file in the `server/conf` 
 If installed using Homebrew:
 
 ```
-/usr/local/Cellar/typedb/{version-number}/libexec/conf/
+/usr/local/Cellar/typedb/{version-number}/libexec/server/conf/
 ```
 
 If installed using APT:
