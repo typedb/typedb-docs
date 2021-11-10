@@ -136,6 +136,8 @@ If you have installed TypeDB using a package manager, to start the TypeDB Server
 
 Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb server`.
 
+This command will run in the foreground of your current terminal, so to do other operations such as using console, it's best to use another terminal.
+
 ## Stop the TypeDB Server
 To stop the TypeDB Server, press Ctrl-C in same terminal as the one where you started it in.
 
