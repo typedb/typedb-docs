@@ -93,7 +93,7 @@ If you need to access the cluster from outside of Kubernetes, then use this depl
 
 Deploying a public cluster can be done by setting the `exposed` flag to `true`. 
 
-Technically, the servers are made public by binding each one to a `LoadBalancer` instance which is assigned a public IP. The IP assignments are one automatically by the cloud provider that the Kubernetes platform is running on.
+Technically, the servers are made public by binding each one to a `LoadBalancer` instance which is assigned a public IP/hostname. The IP/hostname assignments are done automatically by the cloud provider that the Kubernetes platform is running on.
 
 **Deploying without in-flight encryption**
 
@@ -101,11 +101,11 @@ Technically, the servers are made public by binding each one to a `LoadBalancer`
 helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true"
 ```
 
-Once the deployment has completed, the servers would be accessible via public IPs assigned to the Kubernetes `LoadBalancer` services. The addresses can obtained with this command:
+Once the deployment has completed, the servers would be accessible via public IPs/hostnames assigned to the Kubernetes `LoadBalancer` services. The addresses can obtained with this command:
 
 ```
 kubectl get svc -l external-ip-for=typedb-cluster \
--o='custom-columns=NAME:.metadata.name,IP:.status.loadBalancer.ingress[0].ip'
+-o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
 ```
 
 **Deploying with in-flight encryption**
@@ -128,12 +128,12 @@ Once done, let's perform the deployment:
 helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true,encrypted=true,domain=<domain-name>"
 ```
 
-After the deployment has been completed, we need to configure these URL addresses to correctly point to the servers. This can be done by configuring the `A record` of all the servers in your trusted DNS provider:
+After the deployment has been completed, we need to configure these URL addresses to correctly point to the servers. This can be done by configuring the `A record` (for IPs) or `CNAME record` (for hostnames) of all the servers in your trusted DNS provider:
 
 ```
-typedb-cluster-0.typedb-cluster.example.com => public IP of typedb-cluster-0 service
-typedb-cluster-1.typedb-cluster.example.com => public IP of typedb-cluster-1 service
-typedb-cluster-2.typedb-cluster.example.com => public IP of typedb-cluster-2 service
+typedb-cluster-0.typedb-cluster.example.com => public IP/hostname of typedb-cluster-0 service
+typedb-cluster-1.typedb-cluster.example.com => public IP/hostname of typedb-cluster-1 service
+typedb-cluster-2.typedb-cluster.example.com => public IP/hostname of typedb-cluster-2 service
 ```
 
 #### Deploying a Public Cluster (Minikube)
@@ -169,16 +169,16 @@ This deployment mode is primarily inteded for development purpose. Certain adjus
 Configurable settings for Helm package include:
 
 | Key                 | Default value    | Description
-| :-----------------: | :---------------:| :---------------------------------------------------------------------------------------: |
-| `replicas`          | `3`              | Number of TypeDB Cluster nodes to run                                                     |
-| `cpu`               | `7`              | How many CPUs should be allocated for each TypeDB Cluster node                            |
-| `storage.size`      | `100Gi`          | How much disk space should be allocated for each TypeDB Cluster node                      |
-| `storage.persistent`| `true`           | Whether TypeDB Cluster should use a persistent volume to store data                       |
-| `singlePodPerNode`  | `true`           | Whether TypeDB Cluster pods should be scheduled to different Kubernetes nodes             |
-| `exposed`           | `false`          | Whether TypeDB Cluster supports connections via public IP (outside of Kubernetes network) |
-| `javaopts`          | `null`           | JVM options that controls various runtime aspects of TypeDB Cluster (eg., `-Xmx`, `-Xms`) |
-| `logstash.enabled`  | `false`          | Whether TypeDB Cluster pushes logs into Logstash                                          |
-| `logstash.uri`      | `localhost:5044` | Hostname and port of a Logstash daemon accepting log records                              |
+| :-----------------: | :---------------:| :------------------------------------------------------------------------------------------------: |
+| `replicas`          | `3`              | Number of TypeDB Cluster nodes to run                                                              |
+| `cpu`               | `7`              | How many CPUs should be allocated for each TypeDB Cluster node                                     |
+| `storage.size`      | `100Gi`          | How much disk space should be allocated for each TypeDB Cluster node                               |
+| `storage.persistent`| `true`           | Whether TypeDB Cluster should use a persistent volume to store data                                |
+| `singlePodPerNode`  | `true`           | Whether TypeDB Cluster pods should be scheduled to different Kubernetes nodes                      |
+| `exposed`           | `false`          | Whether TypeDB Cluster supports connections via public IP/hostname (outside of Kubernetes network) |
+| `javaopts`          | `null`           | JVM options that controls various runtime aspects of TypeDB Cluster (eg., `-Xmx`, `-Xms`)          |
+| `logstash.enabled`  | `false`          | Whether TypeDB Cluster pushes logs into Logstash                                                   |
+| `logstash.uri`      | `localhost:5044` | Hostname and port of a Logstash daemon accepting log records                                       |
 
 
 ### Troubleshooting
