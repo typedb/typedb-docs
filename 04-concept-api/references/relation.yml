@@ -62,38 +62,38 @@ methods:
   - method:
     common: &method-rolePlayers
       title: Retrieve role players
-      description: Retrieves all roleplayers of this this Relation, optionally filtered by given a role.
+      description: Retrieves all roleplayers of this this Relation, optionally filtered by given role types.
       accepts:
         param: &accepts-rolePlayers-role
           name: role
-          description: The role to filter the role players by.
+          description: The roles to filter the role players by.
           required: false
           default: N/A
     java:
       <<: *method-rolePlayers
-      method: relation.asRemote(Transaction tx).getPlayers(RoleType role);
+      method: relation.asRemote(Transaction tx).getPlayers(RoleType... roleTypes);
       accepts:
         param:
           <<: *accepts-rolePlayers-role
-          type: "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
+          type: "[`RoleType...`](../concept-api/type?tab=java#roletype-methods)"
       returns:
         - "Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>"
     javascript:
       <<: *method-rolePlayers
-      method: relation.asRemote(tx).getPlayers(role);
+      method: relation.asRemote(tx).getPlayers(roleTypes);
       accepts:
         param:
           <<: *accepts-rolePlayers-role
-          type: "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+          type: "Array of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
       returns:
         - "[Stream](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript)"
     python:
       <<: *method-rolePlayers
-      method: relation.as_remote(tx).get_players(role)
+      method: relation.as_remote(tx).get_players(role_types)
       accepts:
         param:
           <<: *accepts-rolePlayers-role
-          type: "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
+          type: "List of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
       returns:
         - "Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)"
 
