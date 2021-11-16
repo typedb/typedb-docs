@@ -44,10 +44,13 @@ methods:
         In order to communicate with TypeDB Cluster databases via sessions and transactions, we first need to instantiate a TypeDB Cluster client.
         The created object connects our application with the running TypeDB Cluster.
         Please note that Node.js and Python clients always have TLS enabled, and therefore can only connect to a server that is setup with TLS.
+        When instantiating a TypeDB Cluster client, it is sufficient to supply the address of just one server, as the addresses of the other 
+        servers will be relayed back to the client. However, to avoid failure in the unlikely event that the single server whose address is provided 
+        fails before communicating the addresses of the others, it is best practice to supply addresses of all the servers.
       accepts: &accepts-client-cluster
         param1: &accepts-client-cluster-addresses
           name: addresses
-          description: All addresses (host:port) on which TypeDB Cluster nodes are running
+          description: Addresses (host:port) on which TypeDB Cluster nodes are running
           type: Set<String>
           required: true
         param2: &accepts-client-cluster-credential
