@@ -297,7 +297,7 @@ content-permission sub relation,
   relates content;
 ```
 
-As you can see in the `social_network_data.tql` file, no instance of `content-permission` was ever inserted. It's only through rules that allows TypeDB to infer this knowledge and know the answer to the following question at query time.
+As you can see in the `social_network_data.tql` file, no instance of `content-permission` was ever inserted. It's only through rules that allows TypeDB to infer this knowledge and know the answer to the following question at query time (if running in Console, make sure you start with transaction with `--infer true` to enable reasoning!)
 
 ```typeql
 match 
@@ -305,6 +305,7 @@ $p isa person, has email "julie.hutchinson@gmail.com";
 (grantee: $p, content: $c)isa content-permission; 
 get $c;
 ```
+
 Have a look at the `social_network_data.tql` file, there are a number of rules written to give permission to view content, based on how or where the content was shared. 
 
 Let's look at another rule:
@@ -325,7 +326,7 @@ rule people-have-mutual-friends:
   };
 ```
 
-We can query for people who have friends in common, like so:
+We can query for people who have friends in common, like so (again with reasoning enabled):
 
 ```typeql
 match 
