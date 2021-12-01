@@ -74,7 +74,7 @@ server:
 
 storage:
   data: server/data
-  db-cache:
+  database-cache:
     # configure storage-layer data and index cache per database 
     # for large datasets, it is more important to have a large index cache than a large data cache
     data: 500mb
@@ -129,7 +129,7 @@ The `storage` section of the configuration file configures the storage layer of 
 For production use, it is recommended that the `server.data` is set to a path outside of `$TYPEDB_HOME`. This helps to make the process of upgrading TypeDB easier.
 </div>
 
-- `db-cache`: **per-database** configuration for storage-level caching
+- `database-cache`: **per-database** configuration for storage-level caching
     - `data`: cache for often used data regions. Increasing this can improve performance, particularly within a transaction.
     - `index`: cache for data indexes. Increasing this can improve performance for large datasets.
   
