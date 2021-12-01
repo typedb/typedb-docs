@@ -1,5 +1,7 @@
 ---
-pageTitle: Configuring TypeDB keywords: typedb, configure longTailKeywords: configure typedb, typedb configuration
+pageTitle: Configuring TypeDB
+keywords: typedb, configure
+longTailKeywords: configure typedb, typedb configuration
 summary: Configure the TypeDB Server based on your production and development needs.
 ---
 
@@ -9,10 +11,10 @@ In this section, we learn how to configure TypeDB to have it tailored to our pro
 
 There are two primary ways configuring TypeDB: via command line arguments, and via the configuration file.
 
-## Command line configuration
+## Command line
 
-When we use the command `typedb server`, we configure the server using arguments. All arguments must either be separated
-by an `=`, or a space. All arguments start with the prefix `--`.
+When we use the command `typedb server`, we can configure the server using arguments. All arguments must either be separated
+by an `=` or a space. All arguments start with the prefix `--`.
 
 Some arguments are exclusive to the command line interface:
 
@@ -20,9 +22,9 @@ Some arguments are exclusive to the command line interface:
 - `--version`: print out the version of the server and exit
 - `--config /path/to/external/typedb-config.yml`: use a configuration file on a specific path
 
-All other arguments are derived from the configuration Yaml file. **Any value** from the configuration file can be
-overridden from the command line, as shown in
-a [following section](/docs/running-typedb/configuration/#command-line-configuration).
+Additional arguments available are derived from the configuration Yaml file. 
+**Any value** from the configuration file can be overridden from the command line, as shown in
+a [following section](/docs/running-typedb/configuration/#configuration-file-options-via-command-line).
 
 ### Getting help
 
@@ -32,7 +34,7 @@ The best place to get help for all available commands via the command line is us
 typedb server --help
 ```
 
-This will also list out all ways to setting options derived from the configuration file.
+This will also list out how to use options derived from the configuration file.
 
 ## Configuration file
 
@@ -73,7 +75,7 @@ server:
 storage:
   data: server/data
   db-cache:
-    # configure data and index per database in the storage layer
+    # configure storage-layer data and index cache per database 
     # for large datasets, it is more important to have a large index cache than a large data cache
     data: 500mb
     index: 500mb
@@ -118,7 +120,7 @@ The `server` section of the configuration file configures network and RPC option
 
 ### Storage configuration
 
-The `storage` section of the configuration file configures the storage layer of TypeDB
+The `storage` section of the configuration file configures the storage layer of TypeDB.
 
 - `data`: the location to write user data to. Defaults to within the server distribution under `server/data`.
 
@@ -139,17 +141,17 @@ The `log` section of the configuration file configures the logging behaviour of 
 
 There are three subsections:
 
-- `output`: Define destinations to write logs to. Allowed types are `type: file`, and `type: stdout` in TypeDB. Cluster
+- `output`: Define destinations to write logs to. Allowed types are `type: file`, and `type: stdout` in TypeDB. TypeDB Cluster
   also supports `type: logstash`.
-- `logger`: Set up logging for code packages in TypeDB, along with a log level and output targets (referencing by name
-  the defined `output`s).
+- `logger`: Set up logging for code packages in TypeDB, along with a log level and output targets (referencing outputs by name
+  the defined under `output`s).
 - `debugger`: Set up TypeDB-specific debuggers. Right now, the only defined type is `type: reasoner`.
 
-## Command line configuration
+## Configuration file options via command line
 
-Any option in the configuration file, we can override of extend from the command line.
+Any option in the configuration file, we can override from the command line.
 
-So, for example, if the configuration file sets the server address as:
+So, for example, the configuration file sets the server address as:
 
 ```
 server:
@@ -164,7 +166,7 @@ command line using:
 ```
 
 To set a completely new section of the configuration that isn't present yet, we follow the same pattern. For example, to
-define a new logger to print out all query plans, we could do the following to set the package
+define a new logger subsection to print out all query plans, we could do the following to set the package
 `com.vaticle.typedb.core.traversal` to output on a more verbose level:
 
 ```
@@ -182,15 +184,15 @@ The minimum recommended machine size for running a single database is 4 cores, 1
 The memory breakdown of TypeDB is the following:
 - the JVM memory: configurable when booting the server with `JAVAOPTS="-Xmx4g" typedb server`. This gives the JVM 4gb of memory. Defaults to 25% of system memory on most machines.
 - storage-layer baseline consumption: approximately 2gb.
-- storage-layer caches: this is about 2*cache size per database. If your `data` and `index` caches sum up to 1gb, the memory requirement is 2gb in working memory.
-- a scaling amount of memory in the number of cores available: approximately 0.5gb additional per core when fully utilised.
+- storage-layer caches: this is about 2*cache size per database. If the `data` and `index` caches sum up to 1gb, the memory requirement is 2gb in working memory.
+- memory per core: approximately 0.5gb additional per core under full load.
 
-We can estimate the amount of memory your server will need to run a single database with these factors:
+We can estimate the amount of memory the server will need to run a single database with these factors:
 ```
 required memory = JVM memory + 2gb + 2*(configured db-caches in gb) + 0.5gb*CPUs
 ```
 
-So on a 4 core machine, with the default 1gb of caches, and the JVM using 4gb of ram, we compute a requirement of `4gb + 2gb + 2*1gb + 0.5*4 = 10gb`.
+So on a 4 core machine, with the default 1gb of database cache, and the JVM using 4gb of ram, we compute a requirement of `4gb + 2gb + 2*1gb + 0.5gb*4 = 10gb`.
 
 Each additional database will consume at least an additional amount equal to the cache requirements (in this example, an additional 2gb of memory each).
 
