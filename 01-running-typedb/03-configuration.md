@@ -179,7 +179,8 @@ define a new logger subsection to print out all query plans, we could do the fol
 
 ## Machine configuration
 
-The minimum recommended machine size for running a single database is 4 cores, 10gb memory, with SSD.
+The minimum machine size for running a single TypeDB database is 4 cores, 10gb memory, with SSD.
+The recommended starting configuration is 8 core, 16gb memory, and SSD.
 
 The memory breakdown of TypeDB is the following:
 - the JVM memory: configurable when booting the server with `JAVAOPTS="-Xmx4g" typedb server`. This gives the JVM 4gb of memory. Defaults to 25% of system memory on most machines.
@@ -195,6 +196,8 @@ required memory = JVM memory + 2gb + 2*(configured db-caches in gb) + 0.5gb*CPUs
 So on a 4 core machine, with the default 1gb of database cache, and the JVM using 4gb of ram, we compute a requirement of `4gb + 2gb + 2*1gb + 0.5gb*4 = 10gb`.
 
 Each additional database will consume at least an additional amount equal to the cache requirements (in this example, an additional 2gb of memory each).
+
+Doubling the machine to an 8 core/20gb memory setup will at least double performance.
 
 ### Open file limit 
 
