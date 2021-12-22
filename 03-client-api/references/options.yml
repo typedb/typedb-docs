@@ -13,8 +13,9 @@ description:
     - `prefetchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `true` if query type is `match`, otherwise `false`)
-    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
-    - `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
+    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30000`)
+    - `transactionTimeoutMillis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed transactions (default: `300_000`)
+    - `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10_000`)
 
     `TypeDBClusterOptions` has an additional option:
 
@@ -32,8 +33,9 @@ description:
     - `prefetch_size`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `trace_inference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = False`. (default: `False`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `True` if query type is `match`, otherwise `False`)
-    - `session_idle_timeout_millis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
-    - `schema_lock_acquire_timeout_millis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
+    - `session_idle_timeout_millis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30_000`)
+    - `transaction_timeout_millis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed transactions (default: `300_000`)
+    - `schema_lock_acquire_timeout_millis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10_000`)
 
     `TypeDBClusterOptions` has an additional option:
 
@@ -51,8 +53,9 @@ description:
     - `prefetchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `true` if query type is `match`, otherwise `false`)
-    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
-    - `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
+    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30_000`)
+    - `transactionTimeoutMillis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed transactions (default: `300_000`)
+    - `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10_000`)
 
     `TypeDBClusterOptions` has an additional option:
 
@@ -144,6 +147,18 @@ methods:
       method: options.setSessionIdleTimeoutMillis(int timeout)
       title: Override default session idle timeout
       description: This timeout allows the server to close sessions if a client terminates or becomes unresponsive
+      accepts:
+        param1:
+          name: timeout
+          type: int
+          required: true
+      returns:
+        - "[TypeDBOptions](#options)"
+  - method:
+    java:
+      method: options.setTransactionTimeoutMillis(int timeout)
+      title: Override default transaction timeout
+      description: This timeout automatically transactions that exceed the configured time. This prevents memory leaks caused by transactions accidentally left unclosed, and kills unresponsive transactions.
       accepts:
         param1:
           name: timeout
