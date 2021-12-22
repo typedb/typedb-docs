@@ -76,7 +76,7 @@ storage:
   data: server/data
   database-cache:
     # configure storage-layer data and index cache per database 
-    # for large datasets, it is more important to have a large index cache than a large data cache
+    # it is recommended to keep these at equal sizes
     data: 500mb
     index: 500mb
 
@@ -116,7 +116,7 @@ vaticle-factory:
 The `server` section of the configuration file configures network and RPC options.
 
 - `address`: the address to listen for GRPC clients on. Use `0.0.0.0` to listen to all connections, and `localhost` for
-  connections from the local machine
+  connections from the local machine.
 
 ### Storage configuration
 
@@ -126,14 +126,21 @@ The `storage` section of the configuration file configures the storage layer of 
 
 <div class="note">
 [Important]
-For production use, it is recommended that the `server.data` is set to a path outside of `$TYPEDB_HOME`. This helps to make the process of upgrading TypeDB easier.
+For production use, it is recommended that the `server.data` is set to a path outside of `$TYPEDB_HOME`. 
+This helps to make the process of upgrading TypeDB easier.
 </div>
 
 - `database-cache`: **per-database** configuration for storage-level caching
-    - `data`: cache for often used data regions. Increasing this can improve performance, particularly within a transaction.
-    - `index`: cache for data indexes. Increasing this can improve performance for large datasets.
+    - `data`: cache for often used data regions.
+    - `index`: cache for data indexes.
   
-We recommend that the sum of `data` and `index` caches equal about 20% of the total memory of the server.
+
+If the index cache is too small relative to your dataset, you may find severely degraded performance. We recommend
+allocating at least 2% of your database size equivalent to the index cache. For example, with
+100gb of on-disk data in a database, allocate 2gb of index cache at minimum. Allocating more can improve performance.
+
+As additional rule of thumb, we recommend the sum of `data` and `index` caches equal about 20% of the total
+memory of the server.
 
 ### Logging configuration
 
@@ -180,7 +187,8 @@ define a new logger subsection to print out all query plans, we could do the fol
 ## Machine configuration
 
 The minimum machine size for running a single TypeDB database is 4 (v)CPUs, 10gb memory, with SSD.
-The recommended starting configuration is 8 (v)CPUs, 16gb memory, and SSD.
+The recommended starting configuration is 8 (v)CPUs, 16gb memory, and SSD. Bulk loading is scaled effectively
+by adding more CPU cores.
 
 The memory breakdown of TypeDB is the following:
 - the JVM memory: configurable when booting the server with `JAVAOPTS="-Xmx4g" typedb server`. This gives the JVM 4gb of memory. Defaults to 25% of system memory on most machines.
@@ -193,7 +201,8 @@ We can estimate the amount of memory the server will need to run a single databa
 required memory = JVM memory + 2gb + 2*(configured db-caches in gb) + 0.5gb*CPUs
 ```
 
-So on a 4 cpu machine, with the default 1gb of database cache, and the JVM using 4gb of ram, we compute a requirement of `4gb + 2gb + 2*1gb + 0.5gb*4 = 10gb`.
+So on a 4 cpu machine, with the default 1gb of per-database storage caches, and the JVM using 4gb of ram, 
+we compute a requirement of `4gb + 2gb + 2*1gb + 0.5gb*4 = 10gb`.
 
 Each additional database will consume at least an additional amount equal to the cache requirements (in this example, an additional 2gb of memory each).
 
