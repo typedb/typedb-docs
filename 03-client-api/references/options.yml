@@ -7,8 +7,8 @@ description:
     for TypeDB Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
-    - `explain`: whether to enable explanations for the provided query (default: `false`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions) (default: `false`)
+    - `explain`: whether to enable explanations for the provided query (only affects **read** transactions) (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
     - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
@@ -26,8 +26,8 @@ description:
     for TypeDB Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `False`)
-    - `explain`: whether to enable explanations for the provided query (default: `False`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions) (default: `False`)
+    - `explain`: whether to enable explanations for the provided query (only affects **read** transactions) (default: `False`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `True`)
     - `batch_size`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `trace_inference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = False`. (default: `False`)
@@ -45,8 +45,8 @@ description:
     for TypeDB Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
-    - `explain`: whether to enable explanations for the provided query (default: `false`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions) (default: `false`)
+    - `explain`: whether to enable explanations for the provided query (only affects **read** transactions) (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
     - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
@@ -63,7 +63,7 @@ methods:
     java:
       method: options.setInfer(boolean enabled)
       title: Explicitly enable or disable inference
-      description: Override the server defaults to enable or disable inference for the provided query
+      description: Override the server defaults to enable or disable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions)
       accepts:
         param1:
           name: enabled
@@ -76,7 +76,7 @@ methods:
     java:
       method: options.setExplain(boolean enabled)
       title: Explicitly enable or disable explanations
-      description: Override the server defaults to enable or disable explanation availability for the provided query.
+      description: Override the server defaults to enable or disable explanation availability for the provided query (only affects **read** transactions)
       accepts:
         param1:
           name: enabled
