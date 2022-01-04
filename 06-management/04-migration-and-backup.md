@@ -8,36 +8,38 @@ toc: false
 
 # Migration and Backup
 
-TypeDB (i.e. Grakn) version 1.7.3 and later include tools to backup and migrate data between versions of typedb that are not data-level compatible. Please note the chart below for which versions are data-level compatible:
+TypeDB will warn you when moving data across incompatible binary-data layer versions.
 
-| Data-level Versions | Versions at Data-level | Earliest Version With Migration Available |
-| ------------------- | ---------------------- | ----------------------------------------- |
-| 1.7                 | 1.5.x, 1.6.x, 1.7.x    | 1.7.3                                     |
-| 1.8                 | 1.8.x                  | 1.8.1                                     |
-| 2.0                 | 2.0.x                  | 2.0                                       |
+Here is the compatibility chart of loaded data of TypeDB:
+
+| Data Encoding Version | Compatible TypeDB Versions |
+| --------------------- | -------------------------- |
+| 1                     | 2.0.0 - 2.5.0              |
+| 2                     | 2.6.0 -                    |
+  
 
 <div class="note">
 [Important]
 If you are migrating from 1.6.x or below to 2.0.x, you must first copy your `server/db` directory from your existing Grakn installation into an Grakn 1.7.3 installation. This will be fast and can be done to move from a version of TypeDB without migration tools to one which has them. From 1.7.3 you are able to migrate to TypeDB 2.0. 
 </div>
 
-The migration features describe beyond this point are designed for use with databases that can reasonably fit on a local disk multiple times (in the order of Gigabytes), as they make use of files to contain your data. If you have use cases for migrating data that will not fit onto disk, please reach out to us on our [Discord](https://discord.com/invite/vaticle) community or [Forums](https://discuss.vaticle.com) where we can advise you further.
+The migration features describe beyond this point are designed for use with databases that can reasonably fit on a local disk at least twice, as they make use of files to contain your data. If you have use cases for migrating data that will not fit onto disk, please reach out to us on our [Discord](https://discord.com/invite/vaticle) community or [Forums](https://discuss.vaticle.com) where we can advise you further.
 
 ## Data Backup
 
-You can back up your data in a version-independent file using:
+You can back up your data (NOT schema!) in a version-independent file using:
 
 ```
-typedb server export [database] [filename].typedb
+typedb server export --database=[database] --file=[filename].typedb
 ```
 
-You can import a backup using:
+You can import a backup into a new database with a compatible schema using:
 
 ```
-typedb server import [database] [filename].typedb
+typedb server import --database=[database] --file=[filename].typedb
 ```
 
-These paths are relative to the current working directory of the CLI. The CLI expands the relative path to an absolute path for the server, which does the file writing directly, so you must ensure that the path is writable by the server process and should avoid symblic links where possible.
+These paths are relative or absolute. 
 
 Importing a backup will not delete existing data in the database, so you should clean the database using console and reload the schema prior to the operation.
 
@@ -73,13 +75,18 @@ new/typedb console
 Data migration is performed using an export followed by an import.
 
 ```
-old/typedb server export <database> data.typedb
-new/typedb server import <database> data.typedb
+old/typedb server export --database=<database> --file=data.typedb
+new/typedb server import --database=<database> --file=data.typedb
 ```
 
 This requires your database in the new typedb to have a valid schema that is compatible with your data. If a failure occurs during import, please check your database has the schema you expect.
 
-Once the data has been successfully imported, you can safely delete the temporary data file with `rm data.typedb`.
+Once the data has been successfully imported, you can safely delete the data file with `rm data.typedb`.
+
+<div class="note">
+In versions previous to 2.6.0, the `--database=` and `--file=` named arguments are not used, and you should simply use positional arugments like this:
+`old/typedb server export <database> data.typedb` or `old/typedb server import --database=<database> --file=data.typedb`
+</div>
 
 ## Dealing With Migration Issues
 
@@ -94,15 +101,3 @@ If you encounter migration errors, follow this checklist:
 * Ensure that any changed labels are remapped in the import options.
 
 If you have any further errors, please join one of our communities and ask for assistance.
-
-### Incompatible Schema
-
-Between versions, some schemas will become incompatible due to syntax change. Whilst most issues can be corrected in the schema before importing it, it is possible for a label to become invalid (if the label becomes a keyword in a new version). In order to handle this scenario, we have added an option to import from 1.8 onwards that allows you to remap labels during the import.
-
-```
-typedb server import <database> <file>.typedb <old_label>=<new_label>...
-```
-
-### Implicit Relations
-
-Schemas that use implicit relations in 1.7 and earlier (e.g. `@has-attribute`) are not supported by migration tools since they were removed in 1.8. It is therefore recommended that you convert any usage of implicit relations to real relations before migrating to 1.8.
