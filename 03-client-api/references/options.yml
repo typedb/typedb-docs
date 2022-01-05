@@ -13,7 +13,7 @@ description:
     - `prefetchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `true` if query type is `match`, otherwise `false`)
-    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30000`)
+    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30_000`)
     - `transactionTimeoutMillis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed transactions (default: `300_000`)
     - `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10_000`)
 
