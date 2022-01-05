@@ -158,7 +158,7 @@ methods:
     java:
       method: options.setTransactionTimeoutMillis(int timeout)
       title: Override default transaction timeout
-      description: This timeout automatically transactions that exceed the configured time. This prevents memory leaks caused by transactions accidentally left unclosed, and kills unresponsive transactions.
+      description: This timeout automatically closes transactions that exceed the configured time. This prevents memory leaks caused by transactions accidentally left unclosed, and kills unresponsive transactions.
       accepts:
         param1:
           name: timeout
