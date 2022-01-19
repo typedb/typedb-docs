@@ -5,10 +5,23 @@ longTailKeywords: typedb client api, typedb api, client api, typedb client archi
 Summary: All you need to know about the architecture of a TypeDB Client.
 ---
 
+## Start Developing with TypeDB
+
+The following TypeDB client libraries are officially supported and actively maintained by Vaticle. They support new
+TypeDB features and receive continuous bug fixes and improvements.
+
+- [**Java**](./01-java.md)
+- [**Node.js**](./03-nodejs.md)
+- [**Python**](./02-python.md)
+
 ## What is a TypeDB Client?
 A TypeDB client, along with the [TypeDB Console](../02-console/01-console.md) and the [TypeDB Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. If we are building an application that uses a TypeDB knowledge graph as its database, we would need a TypeDB client at our application layer to handle the database operations.
 
+![Structure of a TypeDB Client Application](../images/client-api/client-server-comms.png)
+
 In this section and the following pages, we learn the mechanism that a TypeDB client uses to set up communication with [databases](../06-management/01-database.md) running on the TypeDB server as well as the methods available for executing queries and retrieving their answers.
+
+## Network Communication with gRPC
 
 ## Architecture
 All TypeDB Clients share a common architecture. Simply put, the main components of a TypeDB client are the `client` itself, `session` and `transaction`.
@@ -47,14 +60,8 @@ To avoid running into issues and make the most out of using a TypeDB client, kee
 
 **Take advantage of asynchronous queries where possible.** This cuts down and masks network round-trip costs and increases your throughput. For example, if you are performing 10 match queries in a transaction, it's best to send them all to the server _before_ iterating over any of their answers.
 
-## Available Clients
-TypeDB currently supports clients for:
-- [Java](../03-client-api/01-java.md)
-- [Node.js](../03-client-api/03-nodejs.md)
-- [Python](../03-client-api/02-python.md)
-
 ## Building Your Own TypeDB Client
-Creating a new TypeDB client is discussed [here](../03-client-api/04-new-client.md).
+Creating a new TypeDB client is discussed [here](../03-client-api/05-new-client.md).
 
 ## Summary
 A TypeDB Client is meant to be used at the application layer for the purpose of managing and performing operations over databases that live on the TypeDB server.

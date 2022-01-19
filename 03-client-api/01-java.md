@@ -38,6 +38,12 @@ If you want to depend on snapshot versions of Client Java, by referring to the G
 </repositories>
 ```
 
+### Resources
+
+- [Client Java on GitHub](https://github.com/vaticle/typedb-client-java)
+- [Releases](https://github.com/vaticle/typedb-client-java/releases)
+- [Examples](https://github.com/vaticle/typedb-examples)
+
 ## Quickstart
 First make sure, the [TypeDB Server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 
