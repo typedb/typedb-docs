@@ -22,6 +22,9 @@ A session is responsible for connecting our application to a particular database
 ### Transaction
 A transaction is responsible for performing write and read operations over the concept types and instances within the connected database. When executing a query to retrieve data, an iterator is returned, which can then be lazily consumed to execute a request on the server to return the next concrete result.
 
+Transactions automatically close after a configured timeout (default 5 minutes). This is to encourage shorter-lived transactions,
+prevent memory leaks caused by forgotten unclosed client-side transactions, and kill potentially unresponsive transactions.
+
 ### Async Queries
 Invoking a TypeQL query sends the query to the TypeDB server, where it will be completed in the background. Local processing can take place while waiting for responses to be received.
 
@@ -39,7 +42,6 @@ Depending on the type of the query carried out by a transaction, we retrieve dif
 
 ## Best Practices
 To avoid running into issues and make the most out of using a TypeDB client, keep in mind the following points.
-
 
 **Keep one session open per database per client**. If more than one session is opened on the same database, the changes in one are not reflected in the others. Therefore, it's best to always keep only one session open on a particular database.
 

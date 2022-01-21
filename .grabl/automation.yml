@@ -136,7 +136,7 @@ build:
         sudo systemctl start typedb
 
         pip3 install -U pip
-        pip install typedb-client==2.5.0
+        pip install typedb-client==2.6.1
 
         bazel run //test/example/python:phone-calls
         bazel run //test/example/python:social-network

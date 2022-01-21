@@ -127,7 +127,8 @@ vaticle_typedb_artifact()
 
 # load maven dependencies
 load("@vaticle_typedb_client_java//dependencies/maven:artifacts.bzl", vaticle_typedb_client_java_artifacts = "artifacts")
-load("@vaticle_typeql_lang_java//dependencies/maven:artifacts.bzl", vaticle_typql_lang_java_artifacts = "artifacts")
+load("@vaticle_typedb_common//dependencies/maven:artifacts.bzl", vaticle_typedb_common_artifacts = "artifacts")
+load("@vaticle_typeql_lang_java//dependencies/maven:artifacts.bzl", vaticle_typeql_lang_java_artifacts = "artifacts")
 load("@vaticle_factory_tracing//dependencies/maven:artifacts.bzl", vaticle_factory_tracing_artifacts = "artifacts")
 load("//dependencies/maven:artifacts.bzl", vaticle_docs_artifacs = "artifacts")
 
@@ -156,8 +157,9 @@ load("@vaticle_dependencies//library/maven:rules.bzl", "maven")
 maven(
     vaticle_dependencies_tool_maven_artifacts +
     vaticle_factory_tracing_artifacts +
-    vaticle_typql_lang_java_artifacts +
+    vaticle_typeql_lang_java_artifacts +
     vaticle_typedb_client_java_artifacts +
+    vaticle_typedb_common_artifacts +
     vaticle_docs_artifacs
 )
 
