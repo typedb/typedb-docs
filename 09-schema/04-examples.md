@@ -139,8 +139,8 @@ when {
 	$1 (receiving: $p, promoted: $pr) isa promotion, has opens $o;
 	$2 (receiving: $p, promoted: $pr) isa promotion, has opens $o2;
 	not { $1 is $2; }; 
-	$o == 0; 
-	$o2 == 0;
+	$o = 0; 
+	$o2 = 0;
 }, theu {
 	(negative-recommended-product: $pr, negative-recommended-to: $p) isa negative-recommendation;
 };
