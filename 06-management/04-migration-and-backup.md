@@ -77,16 +77,16 @@ typedb server import --database=[database] --file=[filename].typedb
 ```
 
 <div class="note">
-In versions previous to 2.6.0, the `--database=` and `--file=` named arguments are not used, and you should simply use positional arugments like this:
-`old/typedb server export <database> data.typedb` or `old/typedb server import --database=<database> --file=data.typedb`
+In versions previous to 2.6.0, the "--database=" and "--file=" named arguments are not used, and you should simply use positional arugments like this:
+"old/typedb server export <database> data.typedb" or "old/typedb server import --database=<database> --file=data.typedb"
 </div>
 
+ 
 ### Dealing With Export/Import Errors 
 
 If you encounter migration errors, follow this checklist:
 
-* Ensure that you are running the correct `typedb` command (the binary in the TypeDB directory of the server you are
-  exporting from or importing to.)
+* Ensure that you are running the correct `typedb` command (the binary in the TypeDB directory of the server you are exporting from or importing to.)
 * Ensure that the schema has been imported correctly to the new database.
 * Ensure that the correct data import path was specified.
 
