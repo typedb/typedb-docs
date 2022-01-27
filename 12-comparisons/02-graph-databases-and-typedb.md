@@ -228,8 +228,8 @@ In TypeDB, the same query looks like this (we could actually optimise this query
 ```typeql
 match $bob isa person, has name "Bob"; 
 $susan isa person, has name "Susan"; $common-friend isa person;
-($bob, $susan) isa friendship; ($susan, $common-friend) isa friendship;
-($common-friend, $bob) isa friendship; get $common-friend; 
+($susan, $common-friend) isa friendship; ($common-friend, $bob) isa friendship;
+get $common-friend;
 ```
 
 In TypeDB, we ask for the relations of type `friendship` between Bob and Susan, Susan and an undefined person, and Bob and an undefined person. Note that the `ISA_FRIEND_OF` relation doesn't directly translate into a `friendship` relation in TypeDB. The former is a directional edge that only represents how one person is a friend of another person, but not the other way around. Conversely, the TypeDB relation `friendship` represents that both persons play the role of `friend`. Let's look at another example:
