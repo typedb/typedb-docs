@@ -21,12 +21,12 @@ def vaticle_dependencies():
     git_repository(
         name = "vaticle_dependencies",
         remote = "https://github.com/vaticle/dependencies",
-        commit = "69d1fb1f0398b285b51b46391c5b2de45b13789b", # sync-marker: do not remove this comment, this is used for sync-dependencies by @vaticle_dependencies
+        commit = "aa6eb2eab10b032c0ead898b0a5eead1bea057c0", # sync-marker: do not remove this comment, this is used for sync-dependencies by @vaticle_dependencies
     )
 
 def vaticle_typedb_client_java():
     git_repository(
         name = "vaticle_typedb_client_java",
         remote = "https://github.com/vaticle/typedb-client-java",
-        tag = "2.5.0" # sync-marker: do not remove this comment, this is used for sync-dependencies by @vaticle_typedb_client_java
+        tag = "2.6.1" # sync-marker: do not remove this comment, this is used for sync-dependencies by @vaticle_typedb_client_java
     )

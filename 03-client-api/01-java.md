@@ -54,8 +54,8 @@ Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and 
 package com.vaticle.doc.examples;
 
 
-import com.vaticle.typedb.client.api.connection.TypeDBClient;
-import com.vaticle.typedb.client.api.connection.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
 import com.vaticle.typedb.client.TypeDB;
 
 public class TypeDBQuickstartA {
@@ -78,9 +78,9 @@ Create transactions to use for reading and writing data.
 ```java
 package com.vaticle.doc.examples;
 
-import com.vaticle.typedb.client.api.connection.TypeDBClient;
-import com.vaticle.typedb.client.api.connection.TypeDBSession;
-import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
 import com.vaticle.typedb.client.TypeDB;
 
 public class TypeDBQuickstartB {
@@ -113,9 +113,9 @@ Running basic retrieval and insertion queries.
 package com.vaticle.doc.examples;
 
 
-import com.vaticle.typedb.client.api.connection.TypeDBClient;
-import com.vaticle.typedb.client.api.connection.TypeDBSession;
-import com.vaticle.typedb.client.api.connection.TypeDBTransaction;
+import com.vaticle.typedb.client.api.TypeDBClient;
+import com.vaticle.typedb.client.api.TypeDBSession;
+import com.vaticle.typedb.client.api.TypeDBTransaction;
 import com.vaticle.typedb.client.TypeDB;
 import com.vaticle.typeql.lang.TypeQL;
 import static com.vaticle.typeql.lang.TypeQL.*;

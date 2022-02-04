@@ -13,12 +13,12 @@ build:
       owner: vaticle
       branch: master
     dependency-analysis:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       command: |
         bazel run @vaticle_dependencies//factory/analysis:dependency-analysis
   correctness:
     build:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
@@ -29,7 +29,7 @@ build:
         git diff --exit-code dependencies/maven/artifacts.snapshot
         bazel run @vaticle_dependencies//tool/unuseddeps:unused-deps -- list
     test-query-typeql-lang:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         cat > typedb.service <<- EOM
@@ -49,7 +49,7 @@ build:
         sudo systemctl start typedb
         time bazel run //test/query:typeql-lang
     test-query-typeql-java:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         cat > typedb.service <<- EOM
@@ -69,7 +69,7 @@ build:
         sudo systemctl start typedb
         bazel test //test/query:typeql-java --test_output=errors
     test-example-java:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         cat > typedb.service <<- EOM
@@ -90,7 +90,7 @@ build:
         bazel run //test/example/java:phone-calls
         bazel run //test/example/java:social-network
     test-example-nodejs:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         cat > typedb.service <<- EOM
@@ -111,7 +111,7 @@ build:
         bazel test //test/example/nodejs:phone-calls --test_output=errors
         bazel test //test/example/nodejs:social-network --test_output=errors
     test-example-python:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         pyenv global 3.6.10
@@ -136,12 +136,12 @@ build:
         sudo systemctl start typedb
 
         pip3 install -U pip
-        pip install typedb-client==2.5.0
+        pip install typedb-client==2.6.1
 
         bazel run //test/example/python:phone-calls
         bazel run //test/example/python:social-network
     test-links:
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
@@ -152,7 +152,7 @@ build:
       filter:
         owner: vaticle
         branch: development
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       # FIXME: even with tests broken, we still want to release to staging
       # dependencies: [build, test-query-typeql-lang, test-query-typeql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
@@ -168,7 +168,7 @@ build:
       filter:
         owner: vaticle
         branch: master
-      image: vaticle-ubuntu-20.04
+      image: vaticle-ubuntu-21.04
       type: foreground
       # FIXME: even with tests broken, we still want to release to production
       # dependencies: [build, test-query-typeql-lang, test-query-typeql-java, test-example-java, test-example-nodejs, test-example-python, test-links]

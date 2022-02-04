@@ -1,53 +1,42 @@
 ---
-pageTitle: Migration and Backup
-keywords: typedb, migration, backup
-longTailKeywords: typedb migration
-Summary: Backing up and migrating data between versions of TypeDB.
-toc: false
+pageTitle: Migration and Backup keywords: typedb, migration, backup longTailKeywords: typedb migration Summary: Backing
+up and migrating data between versions of TypeDB. toc: false
 ---
 
 # Migration and Backup
 
-TypeDB (i.e. Grakn) version 1.7.3 and later include tools to backup and migrate data between versions of typedb that are not data-level compatible. Please note the chart below for which versions are data-level compatible:
+## Migration or Backup by Copying
 
-| Data-level Versions | Versions at Data-level | Earliest Version With Migration Available |
-| ------------------- | ---------------------- | ----------------------------------------- |
-| 1.7                 | 1.5.x, 1.6.x, 1.7.x    | 1.7.3                                     |
-| 1.8                 | 1.8.x                  | 1.8.1                                     |
-| 2.0                 | 2.0.x                  | 2.0                                       |
+One method to migrate data across TypeDB distributions is by copying the data directory between servers. To do this,
+simply shut down the servers, and copy the database you wish to migrate from the `server/data/` directory into the
+`server/data/` directory in the destination distribution.
 
-<div class="note">
-[Important]
-If you are migrating from 1.6.x or below to 2.0.x, you must first copy your `server/db` directory from your existing Grakn installation into an Grakn 1.7.3 installation. This will be fast and can be done to move from a version of TypeDB without migration tools to one which has them. From 1.7.3 you are able to migrate to TypeDB 2.0. 
-</div>
+TypeDB will warn you when moving data across incompatible database encoding versions.
 
-The migration features describe beyond this point are designed for use with databases that can reasonably fit on a local disk multiple times (in the order of Gigabytes), as they make use of files to contain your data. If you have use cases for migrating data that will not fit onto disk, please reach out to us on our [Discord](https://discord.com/invite/vaticle) community or [Forums](https://discuss.vaticle.com) where we can advise you further.
+| Database encoding Version  | Compatible TypeDB Versions |
+| -------------------------- | -------------------------- |
+| 0                          | 2.0.0 - 2.5.0              |
+| 1                          | 2.6.0 -                    |
 
-## Data Backup
+## Migration or Backup using Export/Import
 
-You can back up your data in a version-independent file using:
+TypeDB offers a way to export all data into a binary format, and then re-import it elsewhere. Using the export feature
+is the best way to migrate to a version of TypeDB that is not backward compatible.
 
-```
-typedb server export [database] [filename].typedb
-```
+Note that this process will require local disk at least twice that of the database.
+If your have to migrate data that will not fit onto disk, please reach out to us on our 
+[Discord](https://discord.com/invite/vaticle) community or [Forums](https://discuss.vaticle.com) where we can advise you further.
 
-You can import a backup using:
-
-```
-typedb server import [database] [filename].typedb
-```
-
-These paths are relative to the current working directory of the CLI. The CLI expands the relative path to an absolute path for the server, which does the file writing directly, so you must ensure that the path is writable by the server process and should avoid symblic links where possible.
-
-Importing a backup will not delete existing data in the database, so you should clean the database using console and reload the schema prior to the operation.
-
-## Migration
+Migration or backup using the export/import features is a two-step process: schema migration followed by data migration.
 
 ### Schema Migration
 
-The first step of migration is to migrate your schema. The `database schema my-database-name` command in Console allows you to get the current schema of a database as a single `define` query. This schema query can then be loaded via the Console to the new server.
+The first step of migration is to migrate your schema. The command `database schema my-database-name` in Console allows
+you to get the current schema of a database as a single `define` query. This schema query can then be loaded via the
+Console to the new server.
 
-Export the old schema using console:
+Export the old schema using console (the old server must be running for this):
+
 ```
 old/typedb console
 > database schema [database]
@@ -57,52 +46,48 @@ Copy the schema into a file named `schema.tql`.
 
 You can skip the step of exporting schema if you already have a copy of your schema to import.
 
-If migrating from TypeDB version <2.0 to version >=2.0 you need to update your schema to conform to 2.0 syntax. 
+You may need to update your schema syntax when moving between TypeDB versions.
 
-Once conforming to the new syntax, import the new schema:
+We then load the schema into the new TypeDB distribution:
+
 ```
 new/typedb console
 > database create <database> 
 > transaction <database> schema write
-[database]::schema::write> source schema.tql
+[database]::schema::write> source <path to schema.tql>
 [database]::schema::write> commit
 ```
 
 ### Data Migration
 
-Data migration is performed using an export followed by an import.
+To create a binary export of a data from a TypeDB database, make sure that the TypeDB server you wish to export from is
+running. After the server is running, use the following command that ships with `typedb`:
 
 ```
-old/typedb server export <database> data.typedb
-new/typedb server import <database> data.typedb
+typedb server export --database=[database] --file=[filename].typedb
 ```
 
-This requires your database in the new typedb to have a valid schema that is compatible with your data. If a failure occurs during import, please check your database has the schema you expect.
+Note that this will NOT export the schema, only data. This file contains a complete copy of the data of the source
+database.
 
-Once the data has been successfully imported, you can safely delete the temporary data file with `rm data.typedb`.
+If you have already migrated the schema into a new server distribution, you can import the exported binary data:
 
-## Dealing With Migration Issues
+```
+typedb server import --database=[database] --file=[filename].typedb
+```
 
-### Migration Errors
+<div class="note">
+In versions previous to 2.6.0, the "--database=" and "--file=" named arguments are not used, and you should simply use positional arugments like this:
+"old/typedb server export <database> data.typedb" or "old/typedb server import --database=<database> --file=data.typedb"
+</div>
+
+ 
+### Dealing With Export/Import Errors 
 
 If you encounter migration errors, follow this checklist:
 
 * Ensure that you are running the correct `typedb` command (the binary in the TypeDB directory of the server you are exporting from or importing to.)
 * Ensure that the schema has been imported correctly to the new database.
 * Ensure that the correct data import path was specified.
-* Ensure that the data was correctly exported by checking the filesize.
-* Ensure that any changed labels are remapped in the import options.
 
 If you have any further errors, please join one of our communities and ask for assistance.
-
-### Incompatible Schema
-
-Between versions, some schemas will become incompatible due to syntax change. Whilst most issues can be corrected in the schema before importing it, it is possible for a label to become invalid (if the label becomes a keyword in a new version). In order to handle this scenario, we have added an option to import from 1.8 onwards that allows you to remap labels during the import.
-
-```
-typedb server import <database> <file>.typedb <old_label>=<new_label>...
-```
-
-### Implicit Relations
-
-Schemas that use implicit relations in 1.7 and earlier (e.g. `@has-attribute`) are not supported by migration tools since they were removed in 1.8. It is therefore recommended that you convert any usage of implicit relations to real relations before migrating to 1.8.

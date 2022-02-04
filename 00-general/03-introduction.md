@@ -66,7 +66,7 @@ In other databases, relations may be implemented with a join table (SQL), or an 
 TypeDB relations generalise both: they flexibly relate one, two, or any number of data instances at the same time. 
 
 This expanded idea of a relation is more powerful than either SQL or graph relations. However, we can further
-improve; if we allow relations to not just specify which instances relate to each other, but also _how_ by adding
+improve: if we allow relations to not just specify which instances relate to each other, but also _how_ by adding
 context.
 
 We add this context by introducing _role types_. Role types are part of the definition of relation types, 
@@ -101,12 +101,12 @@ This makes for a flexible modeling language for building structure in your datab
 Attribute types represent the only part of the database that can carry an actual value. 
 They subtype the built-in abstract type `attribute`.
 
-However, attribute types are first-class citizens of TypeDB, not just properties of entities or relations. So how
+However, attribute in TypeDB exist independently, not just as properties of entities or relations. So how
 do we associate data with entities or relations? 
 
 To do this, we allow types to "own" or "have" an attribute type, representing an association from the attribute owner, to the attribute (the value). 
 
-As all types are first-class citizens in TypeQL and TypeDB, any type can be an attribute owner.
+As entity types, relation types, and attribute types are all first-class citizens in TypeQL and TypeDB, any of these can be an attribute owner.
 
 This means that:
   - In the simplest case, entities own attributes.
@@ -147,7 +147,7 @@ delete $x has $a;
 insert $x has age 11;
 ```
 
-This leave Beth with a new age `11`, while all other people are unchanged.
+This leaves Beth with a new age `11`, while all other people are unchanged.
 
 ## Inference 
 

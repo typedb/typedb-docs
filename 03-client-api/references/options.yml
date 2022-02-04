@@ -7,14 +7,15 @@ description:
     for TypeDB Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
-    - `explain`: whether to enable explanations for the provided query (default: `false`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions) (default: `false`)
+    - `explain`: whether to enable explanations for the provided query (only affects **read** transactions) (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
-    - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
+    - `prefetchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `true` if query type is `match`, otherwise `false`)
-    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
-    - `schemaLockTimeoutAcquireMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
+    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30_000`)
+    - `transactionTimeoutMillis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed transactions (default: `300_000`)
+    - `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10_000`)
 
     `TypeDBClusterOptions` has an additional option:
 
@@ -26,14 +27,15 @@ description:
     for TypeDB Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `False`)
-    - `explain`: whether to enable explanations for the provided query (default: `False`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions) (default: `False`)
+    - `explain`: whether to enable explanations for the provided query (only affects **read** transactions) (default: `False`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `True`)
-    - `batch_size`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
+    - `prefetch_size`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `trace_inference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = False`. (default: `False`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `True` if query type is `match`, otherwise `False`)
-    - `session_idle_timeout_millis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
-    - `schema_lock_timeout_acquire_millis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
+    - `session_idle_timeout_millis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30_000`)
+    - `transaction_timeout_millis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed transactions (default: `300_000`)
+    - `schema_lock_acquire_timeout_millis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10_000`)
 
     `TypeDBClusterOptions` has an additional option:
 
@@ -45,14 +47,15 @@ description:
     for TypeDB Cluster.
 
     The options are:
-    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above) (default: `false`)
-    - `explain`: whether to enable explanations for the provided query (default: `false`)
+    - `infer`: whether to enable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions) (default: `false`)
+    - `explain`: whether to enable explanations for the provided query (only affects **read** transactions) (default: `false`)
     - `parallel`: whether the server should use parallel or single-threaded execution (default: `true`)
-    - `batchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
+    - `prefetchSize`: a guideline number of answers that the server should send before the client issues a fresh request (default: `50`)
     - `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with `parallel = false`. (default: `false`)
     - `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it (default: `true` if query type is `match`, otherwise `false`)
-    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `10000`)
-    - `schemaLockTimeoutAcquireMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10000`)
+    - `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes unresponsive (default: `30_000`)
+    - `transactionTimeoutMillis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed transactions (default: `300_000`)
+    - `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by a schema write lock (default: `10_000`)
 
     `TypeDBClusterOptions` has an additional option:
 
@@ -63,7 +66,7 @@ methods:
     java:
       method: options.setInfer(boolean enabled)
       title: Explicitly enable or disable inference
-      description: Override the server defaults to enable or disable inference for the provided query
+      description: Override the server defaults to enable or disable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions)
       accepts:
         param1:
           name: enabled
@@ -76,7 +79,7 @@ methods:
     java:
       method: options.setExplain(boolean enabled)
       title: Explicitly enable or disable explanations
-      description: Override the server defaults to enable or disable explanation availability for the provided query.
+      description: Override the server defaults to enable or disable explanation availability for the provided query (only affects **read** transactions)
       accepts:
         param1:
           name: enabled
@@ -100,8 +103,8 @@ methods:
         - "[TypeDBOptions](#options)"
   - method:
     java:
-      method: options.setBatchSize(int size)
-      title: Explicitly set query batch iteration to a certain size
+      method: options.setPrefetchSize(int size)
+      title: Explicitly set query prefetch to a certain size
       description: >
         Override the server defaults for answer batch streaming. This tells the server to pre-compute and stream this
         number of answers at a time. These are buffered in the client until read. A larger batch size causes the server
@@ -144,6 +147,18 @@ methods:
       method: options.setSessionIdleTimeoutMillis(int timeout)
       title: Override default session idle timeout
       description: This timeout allows the server to close sessions if a client terminates or becomes unresponsive
+      accepts:
+        param1:
+          name: timeout
+          type: int
+          required: true
+      returns:
+        - "[TypeDBOptions](#options)"
+  - method:
+    java:
+      method: options.setTransactionTimeoutMillis(int timeout)
+      title: Override default transaction timeout
+      description: This timeout automatically closes transactions that exceed the configured time. This prevents memory leaks caused by transactions accidentally left unclosed, and kills unresponsive transactions.
       accepts:
         param1:
           name: timeout

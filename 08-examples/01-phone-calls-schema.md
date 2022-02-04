@@ -96,8 +96,8 @@ define
     relates customer;
 
   call sub relation,
-    relates provider,
-    relates customer,
+    relates caller,
+    relates callee,
     owns started-at,
     owns duration;
 
