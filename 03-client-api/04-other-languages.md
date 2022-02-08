@@ -29,7 +29,7 @@ they are built and maintained fully by the community.
 
 ---
 
-Don't see your language listed? Check out the [official client drivers](./00-overview.md), or read the docs on [creating a new client](./05-new-client.md).
+Don't see your language listed? Check out the [official client drivers](../03-client-api/00-overview.md), or read the docs on [creating a new client](../03-client-api/05-new-client.md).
 
 ## Contributing
 
