@@ -27,6 +27,8 @@ In the interpreter or in your source, import everything from `typedb.client`.
 from typedb.client import *
 ```
 
+> NOTE: Make sure that you have created the social network database from [quickstart](00-general/04-quickstart.md#download-and-load-the-complete-schema) example before running the following.
+
 Instantiate a client and open a session.
 
 <!-- test-example social_network_python_client_b.py -->
