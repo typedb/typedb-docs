@@ -75,6 +75,7 @@ _Import statements are not included in this tutorial, except when importing from
 <div class="tabs dark">
 
 [tab:Java]
+<!-- test-ignore -->
 ```java
 // TypeDB.java
 public class TypeDB {
@@ -115,6 +116,7 @@ class TypeDB:
 <div class="tabs dark">
 
 [tab:Java]
+<!-- test-ignore -->
 ```java
 // api/connection/TypeDBClient.java
 public interface TypeDBClient extends AutoCloseable {
@@ -171,6 +173,7 @@ _Ensure that you've imported gRPC into your project, and refer to the [gRPC docs
 <div class="tabs dark">
 
 [tab:Java]
+<!-- test-ignore -->
 ```java
 // connection/TypeDBClientImpl.java
 public abstract class TypeDBClientImpl implements TypeDBClient {
@@ -331,6 +334,7 @@ Most languages have protobuf compilers that you can use to generate a TypeDB pro
 <div class="tabs dark">
 
 [tab:Java]
+<!-- test-ignore -->
 ```java
 // api/database/DatabaseManager.java
 public interface DatabaseManager {
@@ -519,6 +523,7 @@ At this point, we have all the necessary components to create a database! [Run t
 <div class="tabs dark">
 
 [tab:Java]
+<!-- test-ignore -->
 ```java
 public static void typeDBClientTest() {
     try (TypeDBClient client = TypeDB.coreClient("127.0.0.1:1729")) {
