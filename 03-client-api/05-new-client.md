@@ -102,7 +102,7 @@ export namespace TypeDB {
 # typedb/client.py (named to allow importing from typedb.client)
 class TypeDB:
     @staticmethod
-    def core_client(address: str, parallelisation: int = 2) -> TypeDBClient:
+    def core_client(address: str, parallelisation: int = 2) -&gt; TypeDBClient:
         return _CoreClient(address, parallelisation)
 ```
 [tab:end]
@@ -131,7 +131,7 @@ public interface TypeDBClient extends AutoCloseable {
 // api/connection/TypeDBClient.ts
 export interface TypeDBClient {
     readonly databases: DatabaseManager;
-    close(): Promise<void>;
+    close(): Promise&lt;void&gt;;
 }
 ```
 [tab:end]
@@ -143,11 +143,11 @@ from abc import ABC, abstractmethod
 
 class TypeDBClient(ABC):
     @abstractmethod
-    def databases(self) -> DatabaseManager:
+    def databases(self) -&gt; DatabaseManager:
         pass
 
     @abstractmethod
-    def close(self) -> None:
+    def close(self) -&gt; None:
         pass
 
     @abstractmethod
@@ -244,7 +244,7 @@ export abstract class TypeDBClientImpl implements TypeDBClient {
 
     abstract stub(): TypeDBStub;
 
-    async close(): Promise<void> {
+    async close(): Promise&lt;void&gt; {
         if (this._isOpen) {
             this._isOpen = false;
         }
@@ -270,7 +270,7 @@ export class CoreClient extends TypeDBClientImpl {
         return this._stub;
     }
 
-    async close(): Promise<void> {
+    async close(): Promise&lt;void&gt; {
         await super.close();
         this._stub.close();
     }
@@ -285,10 +285,10 @@ class _TypeDBClientImpl(TypeDBClient):
     def __init__(self):
         pass
 
-    def databases(self) -> _TypeDBDatabaseManagerImpl:
+    def databases(self) -&gt; _TypeDBDatabaseManagerImpl:
         pass
 
-    def stub(self) -> TypeDBStub:
+    def stub(self) -&gt; TypeDBStub:
         pass
 
     def __enter__(self):
@@ -299,7 +299,7 @@ class _TypeDBClientImpl(TypeDBClient):
         if exc_tb is not None:
             return False
 
-    def close(self) -> None:
+    def close(self) -&gt; None:
         pass
 
 # typedb/connection/core/client.py
@@ -312,13 +312,13 @@ class _CoreClient(_TypeDBClientImpl):
         self._stub = _CoreStub(self._channel)
         self._databases = _TypeDBDatabaseManagerImpl(self._stub)
 
-    def databases(self) -> _TypeDBDatabaseManagerImpl:
+    def databases(self) -&gt; _TypeDBDatabaseManagerImpl:
         return self._databases
 
-    def stub(self) -> _CoreStub:
+    def stub(self) -&gt; _CoreStub:
         return self._stub
 
-    def close(self) -> None:
+    def close(self) -&gt; None:
         super().close()
         self._channel.close()
 ```
@@ -403,7 +403,7 @@ public class CoreStub extends TypeDBStub {
 ```typescript
 // api/connection/database/TypeDBClient.ts
 export interface DatabaseManager {
-    create(name: string): Promise<void>;
+    create(name: string): Promise&lt;void&gt;;
 }
 
 // connection/TypeDBDatabaseManagerImpl.ts
@@ -416,7 +416,7 @@ export class TypeDBDatabaseManagerImpl implements DatabaseManager {
         this._stub = client;
     }
 
-    public create(name: string): Promise<void> {
+    public create(name: string): Promise&lt;void&gt; {
         return this._stub.databasesCreate(new CoreDatabaseManager.Create.Req().setName(name));
     }
 
@@ -430,9 +430,9 @@ import { CoreDatabaseManager } from "typedb-protocol/core/core_database_pb";
 import { TypeDBClient } from "typedb-protocol/core/core_service_grpc_pb";
 
 export abstract class TypeDBStub {
-    databasesCreate(req: CoreDatabaseManager.Create.Req): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.stub().databases_create(req, (err) => {
+    databasesCreate(req: CoreDatabaseManager.Create.Req): Promise&lt;void&gt; {
+        return new Promise((resolve, reject) =&gt; {
+            this.stub().databases_create(req, (err) =&gt; {
                 if (err) reject(new Error(err));
                 else resolve();
             })
@@ -472,7 +472,7 @@ from abc import ABC, abstractmethod
 
 class DatabaseManager(ABC):
     @abstractmethod
-    def create(self, name: str) -> None:
+    def create(self, name: str) -&gt; None:
         pass
 
 # typedb/connection/database_manager.py
@@ -482,12 +482,12 @@ class _TypeDBDatabaseManagerImpl(DatabaseManager):
     def __init__(self, stub: TypeDBStub):
         self._stub = stub
 
-    def create(self, name: str) -> None:
+    def create(self, name: str) -&gt; None:
         req = core_database_proto.CoreDatabaseManager.Create.Req()
         req.name = name
         self._stub.databases_create(req)
 
-    def stub(self) -> TypeDBStub:
+    def stub(self) -&gt; TypeDBStub:
         return self._stub
 
 # typedb/common/rpc/stub.py
@@ -495,10 +495,10 @@ import typedb_protocol.core.core_database_pb2 as core_database_proto
 import typedb_protocol.core.core_service_pb2_grpc as core_service_proto
 
 class TypeDBStub(ABC):
-    def databases_create(self, req: core_database_proto.CoreDatabaseManager.Create.Req) -> core_database_proto.CoreDatabaseManager.Create.Res:
+    def databases_create(self, req: core_database_proto.CoreDatabaseManager.Create.Req) -&gt; core_database_proto.CoreDatabaseManager.Create.Res:
         return self.stub().databases_create(req)
 
-    def stub(self) -> core_service_proto.TypeDBStub:
+    def stub(self) -&gt; core_service_proto.TypeDBStub:
         pass
 
 # typedb/connection/core/stub.py
@@ -511,7 +511,7 @@ class _CoreStub(TypeDBStub):
         self._channel = channel
         self._stub = core_service_proto.TypeDBStub(channel)
 
-    def stub(self) -> TypeDBStub:
+    def stub(self) -&gt; TypeDBStub:
         return self._stub
 ```
 [tab:end]
@@ -595,7 +595,7 @@ message Transaction {
 
   message Req {
     bytes req_id = 1;
-    map<string, string> metadata = 2;
+    map&lt;string, string&gt; metadata = 2;
     oneof req {
       Open.Req open_req = 3;
       Stream.Req stream_req = 4;

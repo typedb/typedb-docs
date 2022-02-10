@@ -31,15 +31,14 @@ A client is responsible for connecting to the [TypeDB Server](/docs/running-type
 
 **Best Practices**
 
-Use one client per application process
+Use one client per application process.
 
 ### Session
 A session holds a connection to a particular database. This connection then allows opening transactions to carry out queries. 
 
 **Best Practices**
 
-Because of intermittent network failures, it is recommended to keep sessions relatively short lived. 
-
+Because of intermittent network failures, it is recommended to keep sessions relatively short-lived. 
 A good principle is that sessions group logically coherent transactions. For example, when loading a web page, one session should be used to open one or more transactions to load the page data.
 
 ### Transaction
