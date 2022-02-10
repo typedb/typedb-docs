@@ -17,6 +17,12 @@ If multiple Python versions are available, you may wish to use
 pip3 install typedb-client
 ```
 
+### Resources
+
+- [Client Python on GitHub](https://github.com/vaticle/typedb-client-python)
+- [Releases](https://github.com/vaticle/typedb-client-python/releases)
+- [Examples](https://github.com/vaticle/typedb-examples)
+
 ## Quickstart
 First make sure, the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 
