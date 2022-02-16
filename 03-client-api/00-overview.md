@@ -42,7 +42,7 @@ Because of intermittent network failures, it is recommended to keep sessions rel
 A good principle is that sessions group logically coherent transactions. For example, when loading a web page, one session should be used to open one or more transactions to load the page data.
 
 ### Transaction
-A transaction performs queries or concept API calls on the database. TypeDB transaction comply with [ACID](/docs/06-management/02-acid.md) properties, up to snapshot isolation. 
+A transaction performs queries or Concept API calls on the database. TypeDB transactions comply with [ACID](../06-management/02-acid.md) properties, up to snapshot isolation. 
 
 Transactions automatically close after a configured timeout (default 5 minutes). This is to encourage shorter-lived transactions,
 prevent memory leaks caused by forgotten unclosed client-side transactions, and kill potentially unresponsive transactions.
