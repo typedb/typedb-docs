@@ -1,20 +1,20 @@
 ---
 pageTitle: Get Query
-keywords: graql, get query, retrieval, modifier
-longTailKeywords: grakn retrieve data, grakn read data, graql get query, graql modifiers, graql offset, graql sort, graql limit
-Summary: Get (retrieval) queries and modifiers in Grakn.
+keywords: typeql, get query, retrieval, modifier
+longTailKeywords: typedb retrieve data, typedb read data, typeql get query, typeql modifiers, typeql offset, typeql sort, typeql limit
+Summary: Get (retrieval) queries and modifiers in TypeDB.
 ---
 
 ## Retrieve Concept Types and Their Instances
-The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause. To try the following examples with one of the Grakn clients, follows these [Clients Guide](#clients-guide).
+The `get` query triggers a search in the knowledge graph based on what has been described in the preceding `match` clause. To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
 ## Get the Variables
 Any variable that has been specified in the `match` clause can be returned as the answers of the `get` query. Let's look at an example of how variables can be asked for in the answer.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
   $fr ($x, $y) isa friendship;
   $x isa person, has full-name $x-fn;
@@ -26,8 +26,8 @@ get $x-fn, $y-fn, $y-pn;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-  var("fr").isa("friendship").rel("x").rel("y"),
+TypeQLMatch.Filtered query = TypeQL.match(
+  var("fr").rel("x").rel("y").isa("friendship"),
   var("x").isa("person").has("full-name", var("x-fn")),
   var("x-fn").contains("Miriam"),
   var("y").isa("person").has("full-name", var("y-fn")).has("phone-number", var("y-pn"))
@@ -35,98 +35,93 @@ GraqlGet query = Graql.match(
 ```
 [tab:end]</div>
 
-If no variable is specified after `get`, all variables specified in the `match` clause are returned.
+If the `get` clause is omitted, all variables specified in the `match` clause are returned.
 
 ## Limit the Answers
 We can chose to limit the number of answers in the results. To do this, we use the `limit` keyword followed by the desired number of answers.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
-match $p isa person; get; limit 1;
+[tab:TypeQL]
+```typeql
+match $p isa person; get $p; limit 1;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+TypeQLMatch.Limited query = TypeQL.match(
   var("p").isa("person")
-).get().limit(1);
+).get("p").limit(1);
 ```
 [tab:end]</div>
 
 This query returns only one single (and random) instance of type `person`.
 
-## Order the Answers
-To order the answers by a particular variable, we use the `order` keyword followed by the variable by which we would like the results to be ordered. A second argument, `asc` (ascending) or `desc` (descending), determines the sorting method.
+## Sort the Answers
+To sort the answers by a particular variable, we use the `sort` keyword followed by the variable by which we would like the results to be sorted. A second argument, `asc` (ascending) or `desc` (descending), determines the sorting method.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
-match $p isa person, has full-name $fn; get; sort $fn asc;
+[tab:TypeQL]
+```typeql
+match $p isa person, has full-name $fn; get $fn; sort $fn asc;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+TypeQLMatch.Sorted query = TypeQL.match(
   var("p").isa("person").has("full-name", var("fn"))
-).get().sort("fn", ASC);
+).get("fn").sort(Arrays.asList("fn"), "asc");
 ```
 [tab:end]
 </div>
 
-This query returns all instances of the `person` (entity) type ordered by their `full-name`.
-
-<div class="note">
-[Important]
-Placing `order` before and after the `limit` makes a big difference. `order` followed by `limit` results in a global ordering of the instances, whereas `limit` coming before `order` returns the ordered arbitrary number of instances.
-</div>
+This query returns all instances of the `person` (entity) type sorted by their `full-name`.
 
 ## Offset the Answers
 Often used in conjunction with `limit`, we use the `offset` keyword followed by the number we would like the answers to be offset by. This is commonly used to return a desired range of the answers.
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
-match $p isa person, has full-name $fn; get; sort $fn; offset 100; limit 10;
+[tab:TypeQL]
+```typeql
+match $p isa person, has full-name $fn; get $fn; sort $fn; offset 6; limit 10;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+TypeQLMatch.Limited query = TypeQL.match(
   var("p").isa("person").has("full-name", var("fn"))
-).get().sort("fn").offset(6).limit(10);
+).get("fn").sort("fn").offset(6).limit(10);
 ```
 [tab:end]
 </div>
 
-This returns 10 instances of the `person` (entity) type starting from the 6th person ordered by their `full-name`.
+This returns 10 instances of the `person` (entity) type starting from the 6th person sorted by their `full-name`.
 
 
 ## Clients Guide
 
 <div class = "note">
 [Note]
-**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `get` query, is as simple as calling the [`execute()`](../03-client-api/01-java.md#eagerly-execute-a-graql-query) method on a transaction and passing the query object to it.
+**For those developing with Client [Java](../03-client-api/01-java.md)**: Executing a `get` query, is as simple as calling the [`query().match()`](../03-client-api/01-java.md) method on a transaction and passing the query object to it.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `get` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/03-nodejs.md#lazily-execute-a-graql-query) function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
+**For those developing with Client [Node.js](../03-client-api/03-nodejs.md)**: Executing a `get` query, is as simple as passing the TypeQL(string) query to the `query().match()` function available on the [`transaction`](../03-client-api/03-nodejs.md#transaction) object.
 </div>
 
 <div class = "note">
 [Note]
-**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `get` query, is as simple as passing the Graql(string) query to the [`query()`](../03-client-api/02-python.md#lazily-execute-a-graql-query) method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
+**For those developing with Client [Python](../03-client-api/02-python.md)**: Executing a `get` query, is as simple as passing the TypeQL(string) query to the `query().match()` method available on the [`transaction`](../03-client-api/02-python.md#transaction) object.
 </div>
 
 ## Summary
-A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `order` and `offset` to retrieve an optionally ordered subset of the matched instances.
+A `get` query is used to extract information out of the knowledge graph by describing the desired result in the preceding `match` clause. We use the modifiers `limit`, `sort` and `offset` to retrieve an optionally sorted subset of the matched instances.
 
-Next, we learn how to [insert data](../11-query/03-insert-query.md) into a Grakn knowledge graph.
+Next, we learn how to [insert data](../11-query/03-insert-query.md) into a TypeDB knowledge graph.
 

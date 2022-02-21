@@ -1,31 +1,63 @@
+#
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#
+
+load("@vaticle_typedb_common//test:rules.bzl", "typedb_java_test", "native_typedb_artifact")
+
 ############################
 # Phone Calls Example Test #
 ############################
 
-java_test(
+native_typedb_artifact(
+    name = "native-typedb-artifact",
+    mac_artifact = "@vaticle_typedb_artifact_mac//file",
+    linux_artifact = "@vaticle_typedb_artifact_linux//file",
+    windows_artifact = "@vaticle_typedb_artifact_windows//file",
+    output = "typedb-core-native.tar.gz",
+    visibility = ["//test:__subpackages__"],
+)
+
+
+typedb_java_test(
     name = "phone-calls",
-    test_class = "grakn.doc.test.example.PhoneCallsTest",
+    test_class = "com.vaticle.doc.test.example.PhoneCallsTest",
     srcs = [
         "PhoneCallsTest.java",
         ":phone-calls-tests",
     ],
     deps = [
-        "@graknlabs_client_java//:client-java",
-        "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server",
-        "//dependencies/maven/artifacts/org/sharegov:mjson",
-        "//dependencies/maven/artifacts/com/google/code/gson:gson",
-        "//dependencies/maven/artifacts/com/univocity:univocity-parsers",
-        "//dependencies/maven/artifacts/javax/xml/stream:stax-api"
+        "@vaticle_typedb_client_java//:client-java",
+        "@vaticle_typedb_client_java//api",
+        "@vaticle_typeql_lang_java//:typeql-lang",
+        "@vaticle_typeql_lang_java//common",
+        "@vaticle_typeql_lang_java//query",
+        "@maven//:org_sharegov_mjson",
+        "@maven//:com_google_code_gson_gson",
+        "@maven//:com_univocity_univocity_parsers",
+        "@maven//:javax_xml_stream_stax_api",
     ],
-    classpath_resources = [
-        "@graknlabs_grakn_core//test-integration/resources:logback-test",
-    ],
+    server_mac_artifact = "@vaticle_typedb_artifact_mac//file",
+    server_linux_artifact = "@vaticle_typedb_artifact_linux//file",
+    server_windows_artifact = "@vaticle_typedb_artifact_windows//file",
     data = [
         "//files:phone-calls-kg",
-        "//test/conf:cassandra-embedded.yaml",
-        "@graknlabs_grakn_core//server:conf/grakn.properties",
     ]
 )
 
@@ -53,29 +85,28 @@ genrule(
 ###################################
 # social_network Standalones Test #
 ###################################
-
-java_test(
+typedb_java_test(
     name = "social-network",
-    test_class = "grakn.doc.test.example.SocialNetworkTest",
+    test_class = "com.vaticle.doc.test.example.SocialNetworkTest",
     srcs = [
         "SocialNetworkTest.java",
         ":social-network-tests",
     ],
     deps = [
-        "@graknlabs_client_java//:client-java",
-        "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server",
+        "@vaticle_typedb_client_java//:client-java",
+        "@vaticle_typedb_client_java//api",
+        "@vaticle_typeql_lang_java//:typeql-lang",
+        "@vaticle_typeql_lang_java//common",
+        "@vaticle_typeql_lang_java//query",
     ],
-    classpath_resources = [
-        "@graknlabs_grakn_core//test-integration/resources:logback-test",
-    ],
+    server_mac_artifact = "@vaticle_typedb_artifact_mac//file",
+    server_linux_artifact = "@vaticle_typedb_artifact_linux//file",
+    server_windows_artifact = "@vaticle_typedb_artifact_windows//file",
     data = [
-        "//test/conf:cassandra-embedded.yaml",
-        "@graknlabs_grakn_core//server:conf/grakn.properties",
         "//files:social-network-kg",
     ]
 )
+
 
 genrule(
     name = "social-network-tests",
@@ -88,8 +119,8 @@ genrule(
         # general/quickstart
         "SocialNetworkQuickstartQuery.java",
         # client-api/java
-        "GraknQuickstartA.java",
-        "GraknQuickstartB.java",
-        "GraknQuickstartC.java",
+        "TypeDBQuickstartA.java",
+        "TypeDBQuickstartB.java",
+        "TypeDBQuickstartC.java",
     ]
 )

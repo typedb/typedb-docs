@@ -1,7 +1,7 @@
 ---
 pageTitle: Thing
-keywords: grakn, thing, api, methods, attribute
-longTailKeywords: grakn thing, grakn attribute, grakn relation, grakn thing methods, grakn attribute methods, grakn relation methods
+keywords: typedb, thing, api, methods, attribute
+longTailKeywords: typedb thing, typedb attribute, typedb relation, typedb thing methods, typedb attribute methods, typedb relation methods
 Summary: Methods available on Thing objects.
 toc: true
 ---
@@ -21,6 +21,25 @@ toc: true
 
 [tab:Python]
 {% include api/generic.html data=site.data.04_concept_api.references.thing language="python" %}
+[tab:end]
+
+</div>
+
+## Entity Methods
+`Entity` has all the [`Thing` methods](../04-concept-api/01-concept.md) plus what follows.
+
+<div class="tabs light" data-no-parse>
+
+[tab:Java]
+{% include api/generic.html data=site.data.04_concept_api.references.entity language="java" %}
+[tab:end]
+
+[tab:Javascript]
+{% include api/generic.html data=site.data.04_concept_api.references.entity language="javascript" %}
+[tab:end]
+
+[tab:Python]
+{% include api/generic.html data=site.data.04_concept_api.references.entity language="python" %}
 [tab:end]
 
 </div>

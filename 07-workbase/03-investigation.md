@@ -1,13 +1,18 @@
 ---
 pageTitle: Investigating Results
-keywords: grakn, workbase, investigation
-longTailKeywords: grakn investigate nodes, workbase investigation
-Summary: Using Workbase to investigate nodes in a Grakn Knowledge Graph.
+keywords: typedb, workbase, investigation
+longTailKeywords: typedb investigate nodes, workbase investigation
+Summary: Using Workbase to investigate nodes in a TypeDB Knowledge Graph.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (March 2022)!
+</div>
+
 ## Investigate
-Once we have executed a [Graql query](../11-query/00-overview.md) and visualised its result, we can then investigate each node further to obtain more insights.
+Once we have executed a [TypeQL query](../11-query/00-overview.md) and visualised its result, we can then investigate each node further to obtain more insights.
 
 ### Configure Display Settings
 Having selected a node, we can choose what colour it should be presented in and what attributes should be displayed on the node.

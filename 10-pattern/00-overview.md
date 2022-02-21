@@ -1,18 +1,18 @@
 ---
 pageTitle: Pattern
-keywords: graql, query, pattern, statement, variable
-longTailKeywords: graql patterns, graql statements, graql variables
+keywords: typeql, query, pattern, statement, variable
+longTailKeywords: typeql patterns, typeql statements, typeql variables
 Summary: Patterns - building blocks of queries.
 ---
 
-In this section we give an overview of patterns - building blocks of majority of Graql queries.
+In this section we give an overview of patterns - building blocks of the majority of TypeQL queries.
 
 ## Query pattern anatomy
-As we have seen before, at the core of each query sits a query pattern that describes a subgraph of our particular interest. Here we examine the structure of query patterns closer. In general, patterns can be thought of as different arrangements of statement collections. Graql statements constitute the smallest building blocks of queries. Let's have a close look at the constructs of a basic match clause.
+As we have seen before, at the core of each query sits a query pattern that describes a subgraph of our particular interest. Here we examine the structure of query patterns closer. In general, patterns can be thought of as different arrangements of statement collections. TypeQL statements constitute the smallest building blocks of queries. Let's have a close look at the constructs of a basic match clause.
 
 ![Statement structure](../images/query/statement-structure.png)
 
-- Each statement starts with a **variable** (`V`) providing a concept reference. We can reference both data and schema concepts via variables. A Graql variable is prefixed with a dollar sign `$`.
+- Each statement starts with a **variable** (`V`) providing a concept reference. We can reference both data and schema concepts via variables. A TypeQL variable is prefixed with a dollar sign `$`.
 
 - The variable is followed by a comma-separated list of **properties** (`P1`, `P2`, `P3`) describing the concepts the variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type `person`. The matched instances are expected to own an attribute of type `name` with the value of `"Bob"`. Additionally, we require the concepts to own an attribute of type `phone-number` with any value. We signal that we want to fetch the owned `phone-number`s as well by defining an extra `$phone` variable.
 Consequently, after performing a match on this statement, we should obtain pairs of concepts that satisfy our statement.
@@ -22,7 +22,7 @@ Consequently, after performing a match on this statement, we should obtain pairs
 There is some freedom in forming and composing our statements. For example, as shown below, we could write our single statement with three properties as three combined statements.
 
 <!-- test-ignore -->
-```graql
+```typeql
 $p isa person;
 $p has name 'Bob';
 $p has phone-number $phone;
@@ -49,5 +49,5 @@ The pattern is a conjunction of four different pattern types:
 - **Conjunction 1** specifies the variables for people, school and organisation, specifies their types and asks for `full-name`s of people.
 - **Disjunction** specifies that the companies of interest are either `Pharos` or `Cybersafe`.
 - **Negation** specifies that we are not interested in the people who attended the school named `HCC`.
-- **Conjunction 2** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `school-course-enrollment` relationship, and
+- **Conjunction 2** defines the pattern requiring the people to be in a `marriage` relationship, attend the same school via the `studentship` relationship, and
 work at the same organisation via the `employment` relationship.

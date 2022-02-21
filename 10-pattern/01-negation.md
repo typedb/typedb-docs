@@ -1,7 +1,7 @@
 ---
 pageTitle: Negation
-keywords: graql, query, pattern, statement, variable, negation, not
-longTailKeywords: graql patterns, graql statements, graql variables, negation, not
+keywords: typeql, query, pattern, statement, variable, negation, not
+longTailKeywords: typeql patterns, typeql statements, typeql variables, negation, not
 Summary: Working with negation blocks in patterns.
 ---
 
@@ -16,9 +16,9 @@ b) Show me text-only timelines (no videos or images)
 
 c) All single people who have posted a photo in a forum
 
-The intuitive meaning of a negated pattern is that of a compliment. However, relation complement is not a clearly defined term as it requires the definition of a domain of values with respect to which the complement is computed. Even in this case, we end up with an infinite relation which leaves the projection or join operations unapplicable. As a result, we understand pattern negation in terms of computation of set differences. The set-difference semantics
+The intuitive meaning of a negated pattern is that of a complement. However, a relation complement is not a clearly defined term as it requires the definition of a domain of values with respect to which the complement is computed. Even in this case, we end up with an infinite relation which leaves the projection or join operations unapplicable. As a result, we understand pattern negation in terms of computation of set differences. The set-difference semantics
 are different to the perhaps familiar semantics of _Negation-as-Failure_ of Prolog and in this chapter, we will attempt to provide a clear explanation of the meaning
-of pattern negation in 
+of pattern negation in TypeDB. 
 
 Let us consider the relation of unemployment which can be trivially understood as the absence of employment. We define negation blocks by enclosing patterns with
 curly braces and preceding them with a `not` keyword:
@@ -35,18 +35,18 @@ Therefore, to retrieve people that are unemployed we want to express:
 Person($x), ¬Employment($x, employer: $y)
 ```
 
-i.e. we look for the following Graql pattern:
+i.e. we look for the following TypeQL pattern:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     not {
         (employee: $x, employer: $y) isa employment;
     };
-};
+}
 ```
 [tab:end]
 
@@ -55,7 +55,7 @@ i.e. we look for the following Graql pattern:
 Pattern pattern = and(
     var("x").isa("person"), 
     not(
-        var().isa("employment").rel("employee", var("x")).rel("employer", var("y"))
+        var().rel("employee", var("x")).rel("employer", var("y")).isa("employment")
     )
 );
 ```
@@ -64,7 +64,7 @@ Pattern pattern = and(
 
 Please note that the `$y` variable inside the negation block is not bound. This is of great importance when discussing the meaning of negation. 
 If we were to interpret the query using the simple complement semantics we would arrive at a conclusion that unemployed people are people for which there exists 
-a company that doesn't hire them - it would get evaluated to all `($x, $y)` pairs where `$x` is a person and `$y` isa a company that is not 
+a company that doesn't hire them - it would get evaluated to all `($x, $y)` pairs where `$x` is a person and `$y` is a company that is not 
 in an employment relation with `$x`. What we do instead is we interpret the negation block as some relation of arity equal to the number of variables that are bound
 to non-negated statements. This imposes a requirement of at least one variable in the negation block being bound to a variable outside the block.
 Here our only bound variable is `$x`. Consequently we can think of the query as:
@@ -78,40 +78,41 @@ In this way, we have no problems defining the projection or join operations as t
 semantics unambiguously. As a result, the unemployment is evaluated according to our expectation of unemployment as an absence of being part of any employment - from the
 set of people we subtract the set of people being in employment relations. Consequently, as a user the only thing we need to type is our query pattern:
 
-```graql
+```typeql
 {
     $x isa person;
     not {
         (employee: $x, employer: $y) isa employment;
     };
-};
+}
 ```
 
 The variables in the negation block are local to the negation block. Consequently, executing the query:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
     $x isa person;
     not {
         (employee: $x, employer: $y) isa employment;
     };
-get;
+get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
     var("x").isa("person"), 
     not(
-        var().isa("employment")
+        var()
             .rel("employee", var("x"))
             .rel("employer", var("y"))
+            .isa("employment")
     )
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -123,38 +124,34 @@ Defining the unemployment in terms of a rule and the freshly introduced negation
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
-define
-unemployed sub entity;
-unemployment sub rule,
+[tab:TypeQL]
+```typeql
+define rule unemployment:
     when {
         $x isa person;
         not{
             (employee: $x, employer: $y) isa employment;
         };
-    },
-    then {
-        $x isa unemployed;
+    } then {
+        $x has unemployed true;
     };
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-    type("unemployed").sub("entity"),
-    type("unemployment").sub("rule")
+TypeQLDefine query = TypeQL.define(
+    rule("unemployment")
         .when(
             and(
                 var("x").isa("person"),
                 not(
-                    var().isa("employment").rel("employee", "x").rel("employer", "y")
+                    var().rel("employee", "x").rel("employer", "y").isa("employment")
                 )
             )
         )
         .then(
-            var("x").isa("person")
+            var("x").has("unemployed", true)
         )
 );
 ```
@@ -165,12 +162,12 @@ Consequently, our unemployment query pattern simply becomes:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     $x isa unemployed;
-};
+}
 ```
 [tab:end]
 
@@ -189,24 +186,25 @@ blocks to perform exclusions, e.g. the query pattern to list all non-English spe
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     (employee: $x) isa employment;
-    (speaker: $x, spoken: $y) isa speaking-of-language;
-    not { $y == "English";};
-};
+    (speaker: $x, language: $y) isa fluency;
+    not { $y "English";};
+}
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 Pattern pattern = and(
-    var().isa("employment").rel("employee", var("x")),
-    var().isa("speaking-of-language")
+    var().rel("employee", var("x")).isa("employment"),
+    var()
         .rel("speaker", var("x"))
-        .rel("spoken", var("y")),
-    not(var("y").val("English"))
+        .rel("language", var("y"))
+        .isa("fluency"),
+    not(var("y").eq("English"))
 );
 ```
 [tab:end]
@@ -218,17 +216,17 @@ We shall now see how we can form more complex patterns with negation. Let's say 
 Person($x), ¬Parentship($x, father: $y), ¬Parentship($x, mother: $y)
 ```
 
-To express that in Graql, we require two negation blocks:
+To express that in TypeQL, we require two negation blocks:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -237,14 +235,16 @@ To express that in Graql, we require two negation blocks:
 Pattern pattern = and(
     var("x").isa("person"),
     not(
-        var().isa("parentship")
+        var()
             .rel(var("x"))
             .rel("father", var("y"))
+            .isa("parentship")
     ),
     not(
-        var().isa("parentship")
+        var()
             .rel(var("x"))
             .rel("mother", var("y"))
+            .isa("parentship")
     )
 );
 ```
@@ -255,8 +255,8 @@ which is equivalent to having two extra specific types in the schema:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 person-with-a-father sub entity;
@@ -266,7 +266,7 @@ person-with-a-mother sub entity;
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
     type("person-with-a-father").sub("entity"),
     type("person-with-a-mother").sub("entity")
 );
@@ -278,13 +278,13 @@ and then defining a pattern:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     not { $x isa person-with-a-father;};
     not { $x isa person-with-a-mother;};
-};
+}
 ```
 [tab:end]
 
@@ -305,15 +305,15 @@ the set difference computation procedure. Let's define a set `P` to be the set o
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
-match $x isa person; get;
+[tab:TypeQL]
+```typeql
+match $x isa person; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = match(var("x").isa("person")).get();
+TypeQLMatch.Filtered query = match(var("x").isa("person")).get("x");
 ```
 [tab:end]
 </div>
@@ -322,15 +322,15 @@ a set `F` as the set of people having a father, i. e. a set that is the answer s
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
-match $x isa person-with-a-father; get;
+[tab:TypeQL]
+```typeql
+match $x isa person-with-a-father; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = match(var("x").isa("person-with-a-father")).get();
+TypeQLMatch.Filtered query = match(var("x").isa("person-with-a-father")).get("x");
 ```
 [tab:end]
 </div>
@@ -339,15 +339,15 @@ and finally a set `M` as the set of people having a mother which can be defined 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
-match $x isa person-with-a-mother; get;
+[tab:TypeQL]
+```typeql
+match $x isa person-with-a-mother; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = match(var("x").isa("person-with-a-mother")).get();
+TypeQLMatch.Filtered query = match(var("x").isa("person-with-a-mother")).get("x");
 ```
 [tab:end]
 </div>
@@ -385,13 +385,13 @@ Consequently, the final result of the match query:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -400,10 +400,10 @@ Consequently, the final result of the match query:
 Pattern pattern = and(
     var("x").isa("person"),
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
 );
 ```
@@ -420,14 +420,14 @@ Now let's complicate things a little and see what happens if we bind the `$y` va
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     $y isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -437,10 +437,10 @@ Pattern pattern =and(
     var("x").isa("person"),
     var("y").isa("person"), 
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
 );
 ```
@@ -452,21 +452,21 @@ The first difference is that an element of each set is a pair (2-tuple). Our set
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
 $x isa person;
 $y isa person;
-get;
+get $x, $y;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
+TypeQLMatch.Filtered query = TypeQL.match(
     var("x").isa("person"),
     var("y").isa("person")
-).get();
+).get("x", "y");
 ```
 [tab:end]
 </div>
@@ -494,14 +494,14 @@ Now, executing our query pattern as an ordinary match-get query:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     $y isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
-}; 
+}
 ```
 [tab:end]
 
@@ -511,10 +511,10 @@ Pattern pattern = and(
     var("x").isa("person"),
     var("y").isa("person"), 
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
 );
 ```
@@ -537,10 +537,11 @@ the `$y` variable is unbounded, i.e. if we execute:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 match
     $x isa person;
+    $y isa person;
     not { ($x, father: $y) isa parentship;};
     not { ($x, mother: $y) isa parentship;};
 get $x;
@@ -549,15 +550,16 @@ get $x;
 
 [tab:Java]
 ```java
-GraqlGet query = Graql.match(
-    var("x").isa("person"), 
+TypeQLMatch.Filtered query = TypeQL.match(
+    var("x").isa("person"),
+    var("y").isa("person"),
     not(
-        var().isa("parentship").rel(var("x")).rel("father", var("y"))
+        var().rel(var("x")).rel("father", var("y")).isa("parentship")
     ),
     not(
-        var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+        var().rel(var("x")).rel("mother", var("y")).isa("parentship")
     )
-).get();
+).get("x");
 ```
 [tab:end]
 </div>
@@ -575,15 +577,15 @@ One might be tempted to put the two negation blocks into one. Let's look at the 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     not { 
         ($x, father: $y) isa parentship;
         ($x, mother: $z) isa parentship;
     };
-};
+}
 ```
 [tab:end]
 
@@ -594,8 +596,8 @@ Pattern pattern = and(
     and(
         not(
             and(
-                var().isa("parentship").rel(var("x")).rel("father", var("y")),
-                var().isa("parentship").rel(var("x")).rel("mother", var("y"))
+                var().rel(var("x")).rel("father", var("y")).isa("parentship"),
+                var().rel(var("x")).rel("mother", var("y")).isa("parentship")
             )
         )
    )
@@ -612,15 +614,15 @@ like this:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 {
     $x isa person;
     not { 
         ($x, father: $y) isa parentship;
         not { ($y) isa employment; };
     };
-};
+}
 ```
 [tab:end]
 
@@ -630,10 +632,11 @@ Pattern pattern = and(
     var("x").isa("person"),
     not(
         and(
-            var().isa("parentship")
+            var()
                 .rel(var("x"))
-                .rel("father", var("y")),
-            not(var().isa("employment").rel(var("y")))
+                .rel("father", var("y"))
+                .isa("parentship"),
+            not(var().rel(var("y")).isa("employment"))
         )
     )
 );
@@ -646,11 +649,9 @@ Please note, nesting of negation blocks is only allowed in queries, but not in r
 ## Negation blocks: DOs and DONTs
 
 Please note, the following restrictions apply to negation blocks:
-- **for queries with negation blocks, reasoning needs to be turned ON**
-- for each negation block in a query, at least one variable in the negation block must be bound to a statement outside of the negation block
-This ensures that set difference operations are performed on sets that are not disjoint.
+- for each negation block in a query, at least one variable in the negation block must be bound to a statement outside of the negation block.
+This ensures that set difference operations are performed on sets that are not disjoint
 - variables in negation blocks are local to the block they are defined in
-- only conjunctive statements are allowed within negation blocks
 
 
 ## Negation in rules
@@ -658,23 +659,27 @@ As we have already mentioned, we can use negation blocks within rules.
  
 However, when inserting negation blocks in rules, currently the following restrictions apply:
 - all restrictions applying to queries with negation blocks
-- each rule can only have a single negation block
-- nested negation blocks are not supported
-- recursion with negation blocks is not supported 
-
+- only conjunctive statements are allowed within rule negations (i.e. no nested `not` or `or` statements)
+- rules with negations may not contradict themselves (i.e. recurse back to themselves, even indirectly. An error will be thrown if this is possible.)
+ 
 We will illustrate the use of negation with rules with a graphical example.
 
 Let us define a network of nodes with possible edges between nodes:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 traversable sub entity,
-    plays from,
-    plays to;
+    plays edge:from,
+    plays edge:to,
+    plays reachable:from,
+    plays reachable:to,
+    plays indirect-edge:from,
+    plays indirect-edge:to;
+
 
 node sub traversable;
 
@@ -684,8 +689,8 @@ edge sub relation, relates from, relates to;
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
-    type("traversable").sub("entity").plays("from").plays("to"),
+TypeQLDefine query = TypeQL.define(
+    type("traversable").sub("entity").plays("edge", "from").plays("edge", "to"),
     type("node").sub("traversable"), 
     type("edge").sub("relation").relates("from").relates("to")
 );
@@ -697,25 +702,23 @@ Then we can define two nodes as being reachable if there exists an edge between 
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 reachable sub relation, relates from, relates to;
-reachabilityA sub rule,
+rule reachabilityA:
     when {
         (from: $x, to: $y) isa edge;
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa reachable;
     };
 
-reachabilityB sub rule,
+rule reachabilityB:
     when {
         (from: $x, to: $z) isa edge;
         (from: $z, to: $y) isa reachable;
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa reachable;
     };
 ```
@@ -723,24 +726,24 @@ reachabilityB sub rule,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
     type("reachable").sub("relation").relates("from").relates("to"),
-    type("reachabilityA").sub("rule")
+    rule("reachabilityA")
         .when(
-            var().isa("edge").rel("from", "x").rel("to", "y")   
+           and(var().rel("from", "x").rel("to", "y").isa("edge"))
         )
         .then(
-            var().isa("reachable").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("reachable")
         ),
-    type("reachabilityB").sub("rule")
+    rule("reachabilityB")
         .when(
             and(
-                var().isa("edge").rel("from", "x").rel("to", "z"),
-                var().isa("reachable").rel("from", "z").rel("to", "y")
+                var().rel("from", "x").rel("to", "z").isa("edge"),
+                var().rel("from", "z").rel("to", "y").isa("reachable")
             )
         )
         .then(
-            var().isa("reachable").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("reachable")
         )        
 );
 ```
@@ -751,17 +754,16 @@ Consequently, with the use of negation we can define edges that are indirect:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 indirect-edge sub relation, relates from, relates to;
-indirect-edge-rule sub rule,
+rule indirect-edge-rule:
     when {
         (from: $x, to: $y) isa reachable;
         not {(from: $x, to: $y) isa edge;};
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa indirect-edge;
     };
 ```
@@ -769,19 +771,19 @@ indirect-edge-rule sub rule,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
     type("indirect-edge").sub("relation").relates("from").relates("to"),
-    type("indirect-edge-rule").sub("rule")
+    rule("indirect-edge-rule")
         .when(
             and(
-                var().isa("reachable").rel("from", "x").rel("to", "y"),
+                var().rel("from", "x").rel("to", "y").isa("reachable"),
                 not(
-                    var().isa("edge").rel("from", "x").rel("to", "y")
+                    var().rel("from", "x").rel("to", "y").isa("edge")
                 )
             )
         )
         .then(
-            var().isa("indirect-edge").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("indirect-edge")
         )
 );
 ```
@@ -792,18 +794,20 @@ We can mark the unreachable nodes by defining the following rule:
 
 <div class="tabs dark">
 
-[tab:Graql]
-```graql
+[tab:TypeQL]
+```typeql
 define
 
 unreachable sub relation, relates from, relates to;
-unreachability-rule sub rule,
+traversable sub entity,
+    plays unreachable:from,
+    plays unreachable:to;
+rule unreachability-rule:
     when {
         $x isa node;
         $y isa node;
         not {(from: $x, to: $y) isa reachable;};
-    },
-    then {
+    } then {
         (from: $x, to: $y) isa unreachable;
     };
 ```
@@ -811,20 +815,21 @@ unreachability-rule sub rule,
 
 [tab:Java]
 ```java
-GraqlDefine query = Graql.define(
+TypeQLDefine query = TypeQL.define(
     type("unreachable").sub("relation").relates("from").relates("to"),
-    type("unreachability-rule").sub("rule")
+    type("traversable").sub("entity").plays("unreachable", "from").plays("unreachable", "to"),
+    rule("unreachability-rule")
         .when(
             and(
                 var("x").isa("node"),
                 var("y").isa("node"),
                 not(
-                    var().isa("unreachable").rel("from", "x").rel("to", "y")
+                    var().rel("from", "x").rel("to", "y").isa("unreachable")
                 )
             )
         )
         .then(
-            var().isa("reachable").rel("from", "x").rel("to", "y")
+            var().rel("from", "x").rel("to", "y").isa("reachable")
         )
 );
 ```

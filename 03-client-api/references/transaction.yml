@@ -2,88 +2,106 @@
 title: "Transaction"
 methods:
   - method:
-    common: &method-lazyquery
-      title: Lazily execute a Graql query
-      description: Performs a Graql query in the transaction and retrieves answers lazily.
-      accepts: &accepts-lazyquery
-        param1: &accepts-lazyquery-query
-          name: query
-          description: The Graql query to be executed.
-          type: String
-          required: true
-          default: N/A
-        param2: &accepts-lazyquery-inference
-          description: Determines if the query should apply inference.
-          required: true
-      returns:
-        - "[Iterator](#iterator) of Answer"
+    common: &method-type
+      title: Check the transaction's type
+      description: |
+        Checks the transaction's type (READ or WRITE)
     java:
-      <<: *method-lazyquery
-      method: transaction.stream(GraqlQuery query, boolean infer);
-      accepts:
-        <<: *accepts-lazyquery
-        param1:
-          <<: *accepts-lazyquery-query
-          type: "`GraqlQuery` or one of its subtypes"
-          required: True
-          default: N/A
-        param2:
-          <<: *accepts-lazyquery-inference
-          name: infer
-          type: boolean
-          default: True
+      <<: *method-type
+      method: transaction.type();
       returns:
-        - Stream<?> (type of elements in the stream is dependent on the type of the executed query)
+        - Transaction.Type
     javascript:
-      <<: *method-lazyquery
-      method: 'await transaction.query(query, options);'
-      accepts:
-        <<: *accepts-lazyquery
-        param2:
-          <<: *accepts-lazyquery-inference
-          name: options
-          type: '{ infer: true }'
-          required: true
-          default: '{ infer: true }'
+      <<: *method-type
+      method: transaction.type;
+      returns:
+        - TransactionType
     python:
-      <<: *method-lazyquery
-      method: 'transaction.query(query, infer=True)'
-      accepts:
-        <<: *accepts-lazyquery
-        param2:
-          <<: *accepts-lazyquery-inference
-          name: infer
-          type: boolean
-          default: True
+      <<: *method-type
+      method: transaction.transaction_type()
+      returns:
+        - TransactionType
 
   - method:
-    common: &method-execute
-      title: Eagerly execute a Graql query
-      description: Executes a Graql query and retrieves all answers at once.
-      accepts:
-        param1:
-          name: query
-          description: The Graql query to be executed.
-          type: "`GraqlQuery` or one of its subtypes"
-          required: true
-          default: N/A
-        param2:
-          name: infer
-          description: Determines if the query should apply inference.
-          type: boolean
-          required: false
-          default: true
+    common: &method-isOpen
+      title: Check if the transaction is open
       returns:
-        - List<?> (type of elements in the list is dependent on the type of the executed query)
+        - boolean
     java:
-      <<: *method-execute
-      method: 'transaction.execute(GraqlQuery query, boolean infer);'
+      <<: *method-isOpen
+      method: transaction.isOpen();
+    javascript:
+      <<: *method-isOpen
+      method: transaction.isOpen();
+    python:
+      <<: *method-isOpen
+      method: transaction.is_open()
+
+  - method:
+    common: &method-concepts
+      title: Access Concept API methods
+      description: |
+        Gets the [`ConceptManager`](../concept-api/concept#conceptmanager) for this Transaction, providing access to all Concept API methods.
+
+    java:
+      <<: *method-concepts
+      method: transaction.concepts();
+      returns:
+        - "[`ConceptManager`](../concept-api/concept?tab=java#conceptmanager)"
+    javascript:
+      <<: *method-concepts
+      method: transaction.concepts;
+      returns:
+        - "[`ConceptManager`](../concept-api/concept?tab=javascript#conceptmanager)"
+    python:
+      <<: *method-concepts
+      method: transaction.concepts();
+      returns:
+        - "[`ConceptManager`](../concept-api/concept?tab=python#conceptmanager)"
+
+  - method:
+    common: &method-logic
+      title: Access Concept API - Logic methods
+      description: |
+        Gets the [`LogicManager`](../concept-api/rule#logicmanager) for this Transaction, providing access to all Concept API - Logic methods.
+    java:
+      <<: *method-logic
+      method: transaction.logic();
+      returns:
+        - "[`LogicManager`](../concept-api/rule?tab=java#logicmanager)"
+    javascript:
+      <<: *method-logic
+      method: transaction.logic;
+      returns:
+        - "[`LogicManager`](../concept-api/rule?tab=javascript#logicmanager)"
+    python:
+      <<: *method-logic
+      method: transaction.logic();
+      returns:
+        - "[`LogicManager`](../concept-api/rule?tab=python#logicmanager)"
+
+  - method:
+    common: &method-query
+      title: Access Query API methods
+      description: |
+        Gets the [`QueryManager`](#querymanager) for this Transaction, from which any TypeQL query can be executed.
+      returns:
+        - "[`QueryManager`](#querymanager)"
+    java:
+      <<: *method-query
+      method: transaction.query();
+    javascript:
+      <<: *method-query
+      method: transaction.query;
+    python:
+      <<: *method-query
+      method: transaction.query();
 
   - method:
     common: &method-commit
       title: Commit a write transaction
       description: |
-        Commits the changes made on the local keyspace (via the caller transaction), to the original keyspace.
+        Commits the changes made via this transaction to the TypeDB database.
         **Whether or not the transaction is commited successfully, it gets closed after the commit call.**
     java:
       <<: *method-commit
@@ -98,6 +116,27 @@ methods:
     python:
       <<: *method-commit
       method: transaction.commit()
+      returns:
+        - None
+
+  - method:
+    common: &method-rollback
+      title: Rollback a write transaction
+      description: |
+        Rolls back the uncommitted changes made via this transaction.
+    java:
+      <<: *method-rollback
+      method: transaction.rollback();
+      returns:
+        - void
+    javascript:
+      <<: *method-rollback
+      method: await transaction.rollback();
+      returns:
+        - void
+    python:
+      <<: *method-rollback
+      method: transaction.rollback()
       returns:
         - None
 
@@ -120,257 +159,3 @@ methods:
       method: transaction.close()
       returns:
         - None
-
-  - method:
-    common: &method-isOpen
-      title: Checks if the transaction is open
-      returns:
-        - "`boolean`"
-    java:
-      <<: *method-isOpen
-      method: transaction.isOpen();
-    javascript:
-      <<: *method-isOpen
-      method: await transaction.isOpen();
-    python:
-      <<: *method-isOpen
-      method: transaction.is_open()
-
-  - method:
-    common: &method-getConcept
-      title: Retrieve a concept by id
-      description: >
-        Retrieves the concept that has the given Grakn id.
-        The concept in question may be a concept type or an instance of one.
-      accepts:
-        param:
-          name: id
-          description: The id of the concept to retrieve.
-          type: String
-          required: true
-          default: N/A
-    java:
-      <<: *method-getConcept
-      method: transaction.getConcept(ConceptId.of(String id));
-      returns:
-        - "[`<T extends Concept>`](../concept-api/concept) object or `NULL`"
-    javascript:
-      <<: *method-getConcept
-      method: await transaction.getConcept(id);
-      returns:
-        - "[`Concept`](../concept-api/concept) object or `null`"
-    python:
-      <<: *method-getConcept
-      method: 'transaction.get_concept(id)'
-      returns:
-        - "[`Concept`](../concept-api/concept) object or `None`"
-
-  - method:
-    common: &method-getSchemaConcept
-      title: Retrieve a schema concept by label
-      accepts:
-        param:
-          name: label
-          description: The label of the schema concept to retrieve.
-          type: String
-          required: true
-          default: N/A
-      returns:
-        - "[Type](../concept-api/type) object"
-    java:
-      <<: *method-getSchemaConcept
-      method: transaction.getSchemaConcept(Label.of(String label));
-    javascript:
-      <<: *method-getSchemaConcept
-      method: await transaction.getSchemaConcept(label);
-    python:
-      <<: *method-getSchemaConcept
-      method: transaction.get_schema_concept(label)
-
-  - method:
-    common: &method-getAttributesByValue
-      title: Retrieve an attribute by value
-      accepts:
-        param1: &accepts-getAttributesByValue-value
-          name: value
-          description: The value of the attribute to retrieve.
-          type: String, long, double, boolean or date
-          required: true
-          default: N/A
-        param2:
-          name: datatype
-          description: The datatype of the attribute to retrieve
-          type: grakn.DataType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATE
-          required: true
-          default: N/A
-    java:
-      <<: *method-getAttributesByValue
-      method: transaction.getAttributesByValue(Object value);
-      accepts:
-        param:
-          <<: *accepts-getAttributesByValue-value
-          type: "String &#124; Date &#124; long &#124; double &#124; boolean"
-      returns:
-        -  "[`Collection<Attribute>`](../concept-api/thing#attribute-methods)"
-    javascript:
-      <<: *method-getAttributesByValue
-      method: await transaction.getAttributesByValue(value, datatype);
-      returns:
-        - Iterator of [`Attribute`](../concept-api/thing#attribute-methods)s
-    python:
-      <<: *method-getAttributesByValue
-      method: transaction.get_attributes_by_value(value, datatype)
-      returns:
-        - Iterator of [`Attribute`](../concept-api/thing#attribute-methods)s
-
-  - method:
-    common: &method-putEntity
-      title: Create or retrieve an EntityType
-      description: Creates a new EntityType if none exists with the given label, otherwise retrieves the existing one.
-      accepts:
-        param:
-          name: label
-          description: The label of the EntityType to create or retrive.
-          type: String
-          required: true
-          default: N/A
-      returns:
-        - "[`EntityType`](../concept-api/type#entitytype-methods) object"
-    java:
-      <<: *method-putEntity
-      method: transaction.putEntityType(Label.of(String label));
-    javascript:
-      <<: *method-putEntity
-      method: await transaction.putEntityType(label);
-    python:
-      <<: *method-putEntity
-      method: transaction.put_entity_type(label)
-
-  - method:
-    common: &method-putRelationType
-      title: Create or retrieve a RelationType
-      description: Creates a new RelationType if none exists with the given label, otherwise retrieves the existing one.
-      accepts:
-        param:
-          name: label
-          description: The label of the RelationType to create or retrive.
-          type: String
-          required: true
-          default: N/A
-      returns:
-        - "[`RelationType`](../concept-api/type#relationtype-methods) object"
-    java:
-      <<: *method-putRelationType
-      method: transaction.putRelationType(Label.of(String label));
-    javascript:
-      <<: *method-putRelationType
-      method: await transaction.putRelationType(label);
-    python:
-      <<: *method-putRelationType
-      method: transaction.put_relation_type(label)
-
-  - method:
-    common: &method-putAttributeType
-      title: Create or retrieve an AttributeType
-      description: Creates a new AttributeType if none exists with the given label, or retrieves the existing one.
-      accepts: &accepts-putAttributeType
-        param1:
-          name: label
-          description: The label of the AttributeType to create or retrive.
-          type: String
-          required: true
-          default: N/A
-        param2: &accepts-putAttributeType-datatype
-          name: datatype
-          description: The datatype of the attribute to create or retrieve.
-          type: grakn.DataType.STRING &#124; LONG &#124; DOUBLE &#124; BOOLEAN &#124; DATE
-          required: true
-          default: N/A
-      returns:
-        - "[`AttributeType`](../concept-api/type#attributetype-methods) object"
-    java:
-      <<: *method-putAttributeType
-      method: transaction.putAttributeType(Label.of(String label), AttributeType.DataType<V> dataType)
-      accepts:
-        <<: *accepts-putAttributeType
-        param2:
-          <<: *accepts-putAttributeType-datatype
-          type: "AttributeType.DataType<String &#124; Date &#124; long &#124; double &#124; boolean>"
-    javascript:
-      <<: *method-putAttributeType
-      method: await transaction.putAttributeType(label);
-    python:
-      <<: *method-putAttributeType
-      method: transaction.put_attribute_type(label)
-
-  - method:
-    common: &method-putRole
-      title: Create or retrieve a Role
-      description: Creates a new Role if none exists with the given label, otherwise retrieves the existing one.
-      accepts:
-        param:
-          name: label
-          description: The label of the Role to create or retrive.
-          type: String
-          required: true
-          default: N/A
-      returns:
-        - "[`Role`](../concept-api/type#role-methods) object"
-    java:
-      <<: *method-putRole
-      method: transaction.putRole(Label.of(String label));
-    javascript:
-      <<: *method-putRole
-      method: await transaction.putRole(label);
-    python:
-      <<: *method-putRole
-      method: transaction.put_role(label)
-
-  - method:
-    common: &method-putRule
-      title: Create or retrieve a Rule
-      description: Creates a new Rule if none exists with the given label, or retrieves the existing one.
-      accepts: &accepts-putRule
-        param1:
-          name: label
-          description: The label of the Rule to create or retrive.
-          type: String
-          required: true
-          default: N/A
-        param2:
-          name: when
-          description: The when body of the rule to create.
-          type: String
-          required: true
-          default: N/A
-        param3:
-          name: then
-          description: The then body of the rule to create.
-          type: String
-          required: true
-          default: N/A
-      returns:
-        - "[`Rule`](../concept-api/rule) object"
-    java:
-      <<: *method-putRule
-      method: transaction.putRule(Label.of(String label), Pattern when, Pattern then);
-      accepts:
-        <<: *accepts-putRule
-        param2:
-          name: when
-          description: The pattern describing the when body of the rule.
-          type: "[`graql.lang.pattern.Pattern`](#graql)"
-          required: true
-          default: N/A
-        param3:
-          name: then
-          description: The pattern describing the then body of the rule.
-          type: "[`graql.lang.pattern.Pattern`](#graql)"
-          required: true
-          default: N/A
-    javascript:
-      <<: *method-putRule
-      method: await transaction.putRule(label, when, then);
-    python:
-      <<: *method-putRule
-      method: transaction.put_rule(label, when, then)

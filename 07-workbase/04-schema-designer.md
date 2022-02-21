@@ -1,13 +1,27 @@
 ---
 pageTitle: Schema
-keywords: grakn, workbase, schema designer
-longTailKeywords: grakn design schema, workbase schema designer
+keywords: typedb, workbase, schema designer
+longTailKeywords: typedb design schema, workbase schema designer
 Summary: Using Workbase to design a schema.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (March 2022)!
+</div>
+
+<div class = "note">
+[Warning]
+The schema designer is not yet stable in version 2.0 and has been disabled. To view your schema in the visualiser, please run the following query:
+
+```
+match $x sub thing;
+```
+</div>
+
 ## Design a Schema
-Workbase allows the visualisation and design of a grakn schema.
+Workbase allows the visualisation and design of a typedb schema.
 
 ### Navigate to the Schema Designer
 
@@ -59,7 +73,7 @@ Workbase allows the visualisation and design of a grakn schema.
 [slide:end]
 
 [slide:start]
-[body:start]![schema designer](/docs/images/workbase/schema_define-attribute-name-datatype.png)[body:end]
+[body:start]![schema designer](/docs/images/workbase/schema_define-attribute-name-valuetype.png)[body:end]
 [footer:start]We can specify the name of the attribute and the data type.[footer:end]
 [slide:end]
 
@@ -173,4 +187,3 @@ Workbase allows the visualisation and design of a grakn schema.
 
 ![schema designer](/docs/images/workbase/schema_delete.png)
 [caption: We may delete an existing schema concept type by right-clicking on the node and clicking **Delete**.]
-

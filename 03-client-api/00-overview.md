@@ -1,49 +1,74 @@
 ---
-pageTitle: Grakn Clients
-keywords: grakn, client, api, grpc
-longTailKeywords: grakn client api, grakn api, client api, grakn client architecture, grakn session, grakn transaction
-Summary: All you need to know about the architecture of a Grakn Client.
+pageTitle: TypeDB Clients
+keywords: typedb, client, api, grpc
+longTailKeywords: typedb client api, typedb api, client api, typedb client architecture, typedb session, typedb transaction
+Summary: All you need to know about the architecture of a TypeDB Client.
 ---
 
-## What is a Grakn Client?
-A Grakn client, along with the [Grakn Console](../02-running-grakn/02-console.md) and the [Grakn Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a Grakn knowledge graph. If we are building an application that uses a Grakn knowledge graph as its database, we would need a Grakn client at our application layer to handle the database operations.
+## Start Developing with TypeDB
 
-In this section and the following pages, we learn the mechanism that a Grakn client uses to set up communication with [keyspaces](../06-management/01-keyspace.md) running on the Grakn server as well as the methods available for executing queries and retrieving their answers.
+The following TypeDB client libraries are officially supported and actively maintained by Vaticle. They support new
+TypeDB features and receive continuous bug fixes and improvements.
+
+- [**Java**](../03-client-api/01-java.md)
+- [**Node.js**](../03-client-api/03-nodejs.md)
+- [**Python**](../03-client-api/02-python.md)
+
+For other languages, check out our [community client drivers](../03-client-api/04-other-languages.md), or learn how to [build your own](../03-client-api/05-new-client.md).
+
+## What is a TypeDB Client?
+A TypeDB client, along with the [TypeDB Console](../02-console/01-console.md) and the [TypeDB Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. If we are building an application that uses a TypeDB knowledge graph as its database, we would need a TypeDB client at our application layer to handle the database operations.
+
+![Structure of a TypeDB Client Application](../images/client-api/client-server-comms.png)
+
+In this section and the following pages, we learn the mechanism that a TypeDB client uses to set up communication with [databases](../06-management/01-database.md) running on the TypeDB server as well as the methods available for executing queries and retrieving their answers.
 
 ## Architecture
-All Grakn Clients share a common architecture. Simply put, the main components of a Grakn client are the `client` itself, `session` and `transaction`.
+All TypeDB Clients share a common architecture. Simply put, the main components of a TypeDB client are the `client` itself, `session` and `transaction`.
 
 ### Client
-A client is responsible for connecting to the [Grakn Server](/docs/running-grakn/install-and-run#start-the-grakn-server). We would then use this connection to manage keyspaces and open sessions.
+A client is responsible for connecting to the [TypeDB Server](/docs/running-typedb/install-and-run#start-the-typedb-server). We then use this connection to manage databases and open sessions. 
+
+**Best Practices**
+
+Use one client per application process.
 
 ### Session
-A session is responsible for connecting our application to a particular keyspace. This connection would then allow opening transactions to carry out queries. We can think of a session as a two-way long-lasting tunnel that connects our application to a particular keyspace on the Grakn server.
+A session holds a connection to a particular database. This connection then allows opening transactions to carry out queries. 
+
+**Best Practices**
+
+Because of intermittent network failures, it is recommended to keep sessions relatively short-lived. 
+A good principle is that sessions group logically coherent transactions. For example, when loading a web page, one session should be used to open one or more transactions to load the page data.
 
 ### Transaction
-A transaction is responsible for performing write and read operations over the concepts types and instances within the connected keyspace. When executing a query to retrieve data, an iterator is returned, which can then be lazily consumed to execute a request on the server to return the next concrete result.
+A transaction performs queries or Concept API calls on the database. TypeDB transactions comply with [ACID](../06-management/02-acid.md) properties, up to snapshot isolation. 
+
+Transactions automatically close after a configured timeout (default 5 minutes). This is to encourage shorter-lived transactions,
+prevent memory leaks caused by forgotten unclosed client-side transactions, and kill potentially unresponsive transactions.
+
+**Best Practices**
+
+Keep transactions generally short-lived. Long-lived transactions are more likely to clash with others when committing, and pin resources in the server.
+
+A good principle is that transactions group logically coherent queries. For example, when building an e-commerce platform, loading a user's purchase history page could be done using two transactions: one for retrieving the purchases, and another for retrieving the user's profile.
+
+However, when leveraging the TypeDB reasoning engine, it is sometimes beneficial to reuse the same read transactions to warm up the reasoning caches.
+
+### Async Queries
+Invoking a TypeQL query sends the query to the TypeDB server, where it will be completed in the background. Local processing can take place while waiting for responses to be received. Take advantage of these asynchronous queries to mask network round-trip costs and increases your throughput. For example, if you are performing 10 match queries in a transaction, it's best to send them all to the server _before_ iterating over any of their answers.
+
+Queries that return answers, such as [match](/docs/query/match-clause), return them as Futures, Streams or Iterators depending on the language. These can then be awaited, or iterated, to retrieve the answers as they are computed.
+
+<div class="note">
+[Important]
+When a transaction is committed or closed, all of its asynchronous queries are completed first.
+</div>
 
 ### Investigating Answers
 Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. These answers, regardless of their type, all contain concepts. We can then use the methods introduced by the [Concept API](../04-concept-api/00-overview.md) to obtain more information about the retrieved concept and its surroundings. Furthermore, the Concept API allows us to traverse the neighbours of a specific concept instance to obtain more insights.
 
-## Best Practices
-To avoid running into issues and make the most out of using a Grakn client, keep in mind the following points.
-
-**Keep one session open per keypsace per client**. A session creates a local copy of the keyspace. That means, if more than one session is opened on the same keyspace, the changes in one is not reflected in the others. Therefore, it's best to always keep only one session open on a particular keyspace.
-
-**Close the session on keyspace A before creating another one on keyspace B**. Although it is possible and arguably sensible to have multiple sessions opened on different keyspaces, to utilise resources, it is recommended to keep only one session opened at a time on a Grakn server.
-
-**Keep the number of operations per transaction minimal**. Although it is technically possible to commit a write transaction once after many operations, it is not recommended. To avoid lengthy rollbacks, running out of memory and conflicting operations, it is best to keep the number of queries per transaction minimal, ideally to one query per transaction.
-
-## Available Clients
-Grakn currently supports clients for:
-- [Java](../03-client-api/01-java.md)
-- [Node.js](../03-client-api/03-nodejs.md)
-- [Python](../03-client-api/02-python.md)
-
-## Building Your Own Grakn Client
-Creating a new Grakn client is discussed [here](../03-client-api/04-new-client.md).
-
 ## Summary
-A Grakn Client is meant to be used at the application layer for the purpose of managing and performing operations over keyspaces that live on the Grakn server.
+A TypeDB Client is meant to be used at the application layer for the purpose of managing and performing operations over databases that live on the TypeDB server.
 
-Next, we learn how to set up and use the Grakn Clients. Pick a language of your choice to continue - [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) or [Python](../03-client-api/02-python.md).
+Next, we learn how to set up and use the TypeDB Clients. Pick a language of your choice to continue - [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) or [Python](../03-client-api/02-python.md).

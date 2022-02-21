@@ -1,8 +1,8 @@
 ---
 pageTitle: Phone Calls Knowledge Graph
-keywords: grakn, examples, migration, queries, schema
-longTailKeywords: grakn examples, grakn migration, grakn query examples, grakn schema example
-Summary: Grakn examples showcasing schema definition, data migration and retrieval queries
+keywords: typedb, examples, migration, queries, schema
+longTailKeywords: typedb examples, typedb migration, typedb query examples, typedb schema example
+Summary: TypeDB examples showcasing schema definition, data migration and retrieval queries
 ---
 
 ## What's covered?

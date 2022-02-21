@@ -1,6 +1,6 @@
 exports_files(["package.json", "yarn.lock"])
 
-load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+load("@npm//@bazel/jasmine:index.bzl", "jasmine_node_test")
 
 ################################
 # phone_calls Standalones Test #
@@ -12,13 +12,13 @@ jasmine_node_test(
     deps = [
         "@npm//jasmine",
         "@npm//jasmine-reporters",
-        "@npm//grakn-client",
+        "@npm//typedb-client",
         "@npm//papaparse",
         "@npm//stream-json",
         "@npm//xml-stream"
     ],
     data = ["//files:phone-calls-kg"],
-    size = "enormous"
+    size = "medium"
 )
 
 genrule(
@@ -41,7 +41,7 @@ jasmine_node_test(
     srcs = [":social-network-tests"],
     deps = [
         "@npm//jasmine",
-        "@npm//grakn-client",
+        "@npm//typedb-client",
         "@npm//jasmine-reporters"
     ],
     data = ["//files:social-network-kg"]

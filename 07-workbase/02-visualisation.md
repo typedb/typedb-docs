@@ -1,56 +1,61 @@
 ---
 pageTitle: Visualising Results
-keywords: grakn, workbase, visualisation
-longTailKeywords: grakn visualise graph, visualise grakn, visualise grakn graph, workbase visualisation, grakn visualize graph, visualize grakn, visualize grakn graph, workbase visualization
-Summary: Using Workbase to visualise a Grakn Knowledge Graph.
+keywords: typedb, workbase, visualisation
+longTailKeywords: typedb visualise graph, visualise typedb, visualise typedb graph, workbase visualisation, typedb visualize graph, visualize typedb, visualize typedb graph, workbase visualization
+Summary: Using Workbase to visualise a TypeDB Knowledge Graph.
 toc: false
 ---
 
+<div class = "note">
+[Warning]
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (March 2022)!
+</div>
+
 ## Visualise
-Workbase allows visualisation of answers returned by [Graql queries](../11-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
+Workbase allows visualisation of answers returned by [TypeQL queries](../11-query/00-overview.md). These include _custom_ and _pre-defined type-based_ queries.
 
 ### Execute Custom Queries
 <div class="slideshow">
 
 [slide:start]
-[body:start]![Graql editor](/docs/images/workbase/visualise_graql-editor.png)[body:end]
-[footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can write queries of our own in the Graql Editor.[footer:end]
+[body:start]![TypeQL editor](/docs/images/workbase/visualise_typeql-editor.png)[body:end]
+[footer:start][Having selected the database](/docs/workbase/preferences#selecting-a-database), we can write queries of our own in the TypeQL Editor.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![query in one line](/docs/images/workbase/visualise_graql-editor-custom.png)[body:end]
+[body:start]![query in one line](/docs/images/workbase/visualise_typeql-editor-custom.png)[body:end]
 [footer:start]We can write queries in one single line.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-multiline.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/visualise_typeql-editor-multiline.png)[body:end]
 [footer:start]Or in multiple lines by _holding shift and pressing enter_.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-play.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/visualise_typeql-editor-play.png)[body:end]
 [footer:start]To run the query, we need to press the **execute** button.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-response.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/visualise_typeql-editor-response.png)[body:end]
 [footer:start]Executing a query visualises the result.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-clear-graph.png)[body:end]
+[body:start]![Launch](/docs/images/workbase/visualise_typeql-editor-clear-graph.png)[body:end]
 [footer:start]To clear the results, we need to click on the **refresh** button.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
 
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-minimise-btn.png)[body:end]
-[footer:start]We can also minimise the Graql Editor to focus on the visualised results.[footer:end]
+[body:start]![Launch](/docs/images/workbase/visualise_typeql-editor-minimise-btn.png)[body:end]
+[footer:start]We can also minimise the TypeQL Editor to focus on the visualised results.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Launch](/docs/images/workbase/visualise_graql-editor-clear-editor.png)[body:end]
-[footer:start]To clear the the Graql Editor, we need to click on the **delete** button.[footer:end]
+[body:start]![Launch](/docs/images/workbase/visualise_typeql-editor-clear-editor.png)[body:end]
+[footer:start]To clear the the TypeQL Editor, we need to click on the **delete** button.[footer:end]
 [slide:end]
 </div>
 
@@ -58,8 +63,8 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 <div class="slideshow">
 
 [slide:start]
-[body:start]![Graql editor](/docs/images/workbase/visualise_types.png)[body:end]
-[footer:start][Having selected the keyspace](/docs/workbase/preferences#selecting-a-keyspace), we can explore the [Concept Types](/docs/schema/concepts) as defined in the [schema](/docs/schema/overview).[footer:end]
+[body:start]![TypeQL editor](/docs/images/workbase/visualise_types.png)[body:end]
+[footer:start][Having selected the database](/docs/workbase/preferences#selecting-a-database), we can explore the [Concept Types](/docs/schema/concepts) as defined in the [schema](/docs/schema/overview).[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
@@ -74,7 +79,7 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 <!-- -->
 [slide:start]
 [body:start]![Launch](/docs/images/workbase/visualise_types-clicked.png)[body:end]
-[footer:start]This constructs and inputs into the Graql Editor, a query that retrieves the concepts of the selected Type.[footer:end]
+[footer:start]This constructs and inputs into the TypeQL Editor, a query that retrieves the concepts of the selected Type.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
@@ -94,7 +99,7 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 
 [slide:start]
 [body:start]![query in one line](/docs/images/workbase/visualise_star.png)[body:end]
-[footer:start]To star the query written in the Graql Editor, we need to click on the **star** icon.[footer:end]
+[footer:start]To star the query written in the TypeQL Editor, we need to click on the **star** icon.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
@@ -119,7 +124,7 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 <!-- -->
 [slide:start]
 [body:start]![Launch](/docs/images/workbase/visualise_star-use.png)[body:end]
-[footer:start]We can choose to paste the query in the Graql Editor.[footer:end]
+[footer:start]We can choose to paste the query in the TypeQL Editor.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
@@ -144,7 +149,7 @@ Workbase allows visualisation of answers returned by [Graql queries](../11-query
 </div>
 
 ### Access Query History
-To navigate between Graql queries that we have previously executed, while in the Graql Editor, we need to _hold shift and press the up or down arrow key_.
+To navigate between TypeQL queries that we have previously executed, while in the TypeQL Editor, we need to _hold shift and press the up or down arrow key_.
 
 ### Configure Query Settings
 <div class="slideshow">
@@ -160,18 +165,18 @@ To navigate between Graql queries that we have previously executed, while in the
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Graql editor](/docs/images/workbase/visualise_query-settings-query-limit.png)[body:end]
+[body:start]![TypeQL editor](/docs/images/workbase/visualise_query-settings-query-limit.png)[body:end]
 [footer:start]To avoid convoluting the visualiser, it's a good idea to limit the number of results return by a query. That's what the **Query Limit** is for.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Graql editor](/docs/images/workbase/visualise_query-settings-neighbour-limit.png)[body:end]
+[body:start]![TypeQL editor](/docs/images/workbase/visualise_query-settings-neighbour-limit.png)[body:end]
 [footer:start]For the same reason, we may want to limit the number of neighbours to view when [investigating nodes](../07-workbase/03-investigation.md). For this, we specify the **Neighbour Limit**.[footer:end]
 [slide:end]
 <!-- -->
 [slide:start]
-[body:start]![Graql editor](/docs/images/workbase/visualise_query-settings-roleplayers.png)[body:end]
-[footer:start]Lastly, we can choose to view or hide the roleplayers.[footer:end]
+[body:start]![TypeQL editor](/docs/images/workbase/visualise_query-settings-roleplayers.png)[body:end]
+[footer:start]Lastly, we can choose to view or hide the role players.[footer:end]
 [slide:end]
 
 </div>
@@ -181,7 +186,7 @@ To navigate between Graql queries that we have previously executed, while in the
 
 [slide:start]
 [body:start]![tabs](/docs/images/workbase/visualise_tabs.png)[body:end]
-[footer:start]To visualise multiple queries or keyspaces at the same time, we can create a new tab by clicking the **plus** icon on the bottom left.[footer:end]
+[footer:start]To visualise multiple queries or databases at the same time, we can create a new tab by clicking the **plus** icon on the bottom left.[footer:end]
 [slide:end]
 
 [slide:start]

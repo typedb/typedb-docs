@@ -1,9 +1,12 @@
+#!/usr/bin/env python3
+
 import unittest
 import glob
 import re
 import os
 import yaml
 import ast
+from io import open
 from nested_lookup import nested_lookup
 
 pattern_to_find_links = '(\[[^\]]*?\]\(\.\.\/)((\d+-[^\/\)]*(\/|))+)\)'
@@ -12,7 +15,7 @@ pattern_to_find_template_calls = '\{%\sinclude\s.*?\s%\}'
 
 ## TODO: require at least one `.md` to exist within the link path, that is accepts: [aaa](../bb.md)
 ## the \s at the start ensures that the format something["key"](argument) can still be used within code blocks
-pattern_to_find_invalid_links = '\s(\[[^\]]*?\]\((?!.*(../|#|http://|https://)).*?\))' ## accepts: [aaa](../bb), [aaa](#bb), [aaa](http://bb) and [aaa](https://bb)
+pattern_to_find_invalid_links = '\s(\[[^\]]*?\]\((?!.*(../|#|http://|https://|mailto:)).*?\))' ## accepts: [aaa](../bb), [aaa](#bb), [aaa](http://bb), [aaa](https://bb), and [aaa](mailto:bb)
 
 pages = {}
 
@@ -105,7 +108,6 @@ class LinksTest(unittest.TestCase):
                 "../query/insert-query": "11-query/03-insert-query.md",
                 "../query/delete-query": "11-query/04-delete-query.md",
                 "../query/aggregate-query": "11-query/06-aggregate-query.md",
-                "../query/compute-query": "11-query/07-compute-query.md"
             }
             client_page_mapping = {
                 "java": "01-java.md",

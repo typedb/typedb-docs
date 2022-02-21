@@ -1,69 +1,106 @@
-#########################
-# Graql Java Query Test #
-#########################
+#
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#
 
-java_test(
-    name = "graql-java",
-    test_class = "grakn.doc.test.query.GraqlJavaTest",
-    srcs = [":graql-java-tests"],
+load("@vaticle_typedb_common//test:rules.bzl", "typedb_java_test", "native_typedb_artifact")
+
+
+native_typedb_artifact(
+    name = "native-typedb-artifact",
+    mac_artifact = "@vaticle_typedb_artifact_mac//file",
+    linux_artifact = "@vaticle_typedb_artifact_linux//file",
+    windows_artifact = "@vaticle_typedb_artifact_windows//file",
+    output = "typedb-server-native.tar.gz",
+    visibility = ["//test:__subpackages__"],
+)
+
+##########################
+# TypeQL Java Query Test #
+##########################
+typedb_java_test(
+    name = "typeql-java",
+    test_class = "com.vaticle.doc.test.query.TypeQLJavaTest",
+    srcs = [":typeql-java-tests"],
     deps = [
-        "@graknlabs_client_java//:client-java",
-        "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server"
+        "@vaticle_typedb_client_java//:client-java",
+        "@vaticle_typedb_client_java//api",
+        "@vaticle_typeql_lang_java//:typeql-lang",
+        "@vaticle_typeql_lang_java//query",
+        "@vaticle_typeql_lang_java//pattern",
+        "@vaticle_typeql_lang_java//common",
     ],
-    classpath_resources = [
-        "@graknlabs_grakn_core//test-integration/resources:logback-test",
-    ],
+    server_mac_artifact = "@vaticle_typedb_artifact_mac//file",
+    server_linux_artifact = "@vaticle_typedb_artifact_linux//file",
+    server_windows_artifact = "@vaticle_typedb_artifact_windows//file",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
-        "//test/conf:cassandra-embedded.yaml",
-        "@graknlabs_grakn_core//server:conf/grakn.properties"
+        "//files:negation/schema.tql",
     ]
 )
 
+
 genrule(
-    name = "graql-java-tests",
+    name = "typeql-java-tests",
     srcs = [
-        "graql-java-tests.py",
+        "typeql-java-tests.py",
+        "templates/TypeQLJavaTest.java",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python3 $(location graql-java-tests.py) $@ $(locations //:content)",
-    outs = ["GraqlJavaTest.java"]
+    cmd = "python3 $(location typeql-java-tests.py) $(location templates/TypeQLJavaTest.java) $@ $(locations //:content)",
+    outs = ["TypeQLJavaTest.java"]
 )
 
-#########################
-# Graql Lang Query Test #
-#########################
-
-java_test(
-    name = "graql-lang",
-    test_class = "grakn.doc.test.query.GraqlLangTest",
-    srcs = [":graql-lang-tests"],
+##########################
+# TypeQL Lang Query Test #
+##########################
+typedb_java_test(
+    name = "typeql-lang",
+    test_class = "com.vaticle.doc.test.query.TypeQLLangTest",
+    srcs = [":typeql-lang-tests"],
     deps = [
-        "@graknlabs_client_java//:client-java",
-        "@graknlabs_graql//java:graql",
-        "@graknlabs_grakn_core//server:server",
-        "@graknlabs_grakn_core//test-integration/rule:grakn-test-server"
+        "@vaticle_typedb_client_java//:client-java",
+        "@vaticle_typedb_client_java//api",
+        "@vaticle_typeql_lang_java//:typeql-lang",
+        "@vaticle_typeql_lang_java//query",
+        "@vaticle_typeql_lang_java//pattern"
     ],
-    classpath_resources = [
-        "@graknlabs_grakn_core//test-integration/resources:logback-test",
-    ],
+    server_mac_artifact = "@vaticle_typedb_artifact_mac//file",
+    server_linux_artifact = "@vaticle_typedb_artifact_linux//file",
+    server_windows_artifact = "@vaticle_typedb_artifact_windows//file",
     data = [
         "//files:social-network-kg", # filegroup defined in files/BUILD
         "//files:phone-calls-kg", # filegroup defined in files/BUILD
-        "//test/conf:cassandra-embedded.yaml",
-        "@graknlabs_grakn_core//server:conf/grakn.properties"
-    ]
+        "//files:negation/schema.tql",
+    ],
+    size = "large",
 )
 
+
 genrule(
-    name = "graql-lang-tests",
+    name = "typeql-lang-tests",
     srcs = [
-        "graql-lang-tests.py",
+        "typeql-lang-tests.py",
+        "templates/TypeQLLangTest.java",
         "//:content" # filegroup defined in root/BUILD
     ],
-    cmd = "python3 $(location graql-lang-tests.py) $@ $(locations //:content)",
-    outs = ["GraqlLangTest.java"]
+    cmd = "python3 $(location typeql-lang-tests.py) $(location templates/TypeQLLangTest.java) $@ $(locations //:content) ",
+    outs = ["TypeQLLangTest.java"]
 )
