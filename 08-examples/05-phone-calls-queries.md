@@ -28,7 +28,7 @@ Make sure you have [TypeDB Workbase](../07-workbase/00-overview.md) installed, [
 
 <div class = "note">
 [Warning]
-TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (March 2022)!
 </div>
 
 Let’s begin.
