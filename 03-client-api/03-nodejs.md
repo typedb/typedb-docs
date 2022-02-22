@@ -14,6 +14,12 @@ Summary: API Reference of TypeDB Client Node.js.
 npm install typedb-client
 ```
 
+### Resources
+
+- [Client Node.js on GitHub](https://github.com/vaticle/typedb-client-nodejs)
+- [Releases](https://github.com/vaticle/typedb-client-nodejs/releases)
+- [Examples](https://github.com/vaticle/typedb-examples)
+
 ## Quickstart
 First make sure that the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
 

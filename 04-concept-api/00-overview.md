@@ -9,7 +9,7 @@ toc: false
 ## Concept Architecture
 Anything in TypeDB (other than [Rule](../09-schema/03-rules.md)), whether a concept type or a data instance, is a [Concept](../04-concept-api/01-concept.md). The diagram below, illustrates how the Concept superclass is inherited by its direct and indirect descendants.
 
-![Concept Hierarchy](../images/concept-api/overview_hierarchy.png)
+![Concept Hierarchy](../images/client-api/overview_hierarchy.png)
 
 **Type** refers to a Concept Type as defined in the [schema](../09-schema/00-overview.md#typedb-data-model).
 

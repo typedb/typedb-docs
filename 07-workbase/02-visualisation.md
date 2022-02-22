@@ -8,7 +8,7 @@ toc: false
 
 <div class = "note">
 [Warning]
-TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (September 2021)!
+TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (March 2022)!
 </div>
 
 ## Visualise
