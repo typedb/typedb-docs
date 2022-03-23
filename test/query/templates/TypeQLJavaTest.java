@@ -7,14 +7,12 @@ import com.vaticle.typedb.client.api.TypeDBSession;
 import com.vaticle.typedb.client.api.TypeDBTransaction;
 import com.vaticle.typeql.lang.TypeQL;
 import com.vaticle.typeql.lang.query.TypeQLQuery;
-import com.vaticle.typeql.lang.query.TypeQLCompute;
 import com.vaticle.typeql.lang.query.TypeQLDefine;
 import com.vaticle.typeql.lang.query.TypeQLUndefine;
 import com.vaticle.typeql.lang.query.TypeQLMatch;
 import com.vaticle.typeql.lang.query.TypeQLDelete;
 import com.vaticle.typeql.lang.query.TypeQLInsert;
 import com.vaticle.typeql.lang.query.TypeQLUpdate;
-import com.vaticle.typeql.lang.query.TypeQLCompute.Argument;
 import com.vaticle.typeql.lang.pattern.Pattern;
 import com.vaticle.typeql.lang.common.TypeQLArg;
 import com.vaticle.typedb.client.api.answer.ConceptMap;
@@ -34,8 +32,6 @@ import java.util.stream.Collectors;
 
 import static com.vaticle.typeql.lang.common.TypeQLArg.Algorithm.*;
 import static com.vaticle.typeql.lang.common.TypeQLArg.Order.*;
-import static com.vaticle.typeql.lang.query.TypeQLCompute.Argument.*;
-import static com.vaticle.typeql.lang.query.TypeQLCompute.Argument.*;
 import static com.vaticle.typeql.lang.TypeQL.*;
 
 public class TypeQLJavaTest {
@@ -91,10 +87,6 @@ public class TypeQLJavaTest {
                 session = client.session("social_network", TypeDBSession.Type.DATA);
                 transaction = session.transaction(TypeDBTransaction.Type.WRITE);
                 conceptMaps = transaction.query().update(query.asUpdate()).collect(Collectors.toList());
-
-
-            } else if (query instanceof TypeQLCompute) {
-                // FIXME(vmax): we dunno how to run them yet
             } else {
                 throw new RuntimeException("Unknown query type: " + query.toString() + "[type = " + query.getClass() + "]");
             }
