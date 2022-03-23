@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.vaticle.typeql.lang.common.TypeQLArg.Algorithm.*;
 import static com.vaticle.typeql.lang.common.TypeQLArg.Order.*;
 import static com.vaticle.typeql.lang.TypeQL.*;
 
