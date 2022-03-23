@@ -2,10 +2,7 @@ config:
   version-candidate: VERSION
   dependencies:
     dependencies: [build]
-    typedb-common: [release]
     typedb-client-java: [release]
-    typedb-client-python: [release]
-    typedb-client-nodejs: [release]
 
 build:
   quality:
@@ -136,7 +133,7 @@ build:
         sudo systemctl start typedb
 
         pip3 install -U pip
-        pip install typedb-client==2.6.1
+        pip install typedb-client==2.8.0
 
         bazel run //test/example/python:phone-calls
         bazel run //test/example/python:social-network
