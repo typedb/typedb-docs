@@ -111,6 +111,7 @@ build:
       image: vaticle-ubuntu-21.04
       type: foreground
       command: |
+        pyenv install 3.7.12
         pyenv global 3.7.12
         sudo unlink /usr/bin/python3
         sudo ln -s $(which python3) /usr/bin/python3
