@@ -14,99 +14,99 @@ build:
       command: |
         bazel run @vaticle_dependencies//factory/analysis:dependency-analysis
   correctness:
-#    build:
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      command: |
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        bazel build //...
-#        dependencies/maven/update.sh
-#        git diff --exit-code dependencies/maven/artifacts.snapshot
-#        bazel run @vaticle_dependencies//tool/unuseddeps:unused-deps -- list
-#    test-query-typeql-lang:
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      command: |
-#        cat > typedb.service <<- EOM
-#        [Unit]
-#        Description=TypeDB
-#        [Service]
-#        Type=simple
-#        ExecStart=$PWD/dist/typedb-all-linux/typedb server
-#        EOM
-#        sudo mv typedb.service /etc/systemd/system/
-#
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        bazel run //:typedb-extractor -- dist/typedb-all-linux
-#        sudo systemctl daemon-reload
-#        sudo systemctl start typedb
-#        time bazel run //test/query:typeql-lang
-#    test-query-typeql-java:
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      command: |
-#        cat > typedb.service <<- EOM
-#        [Unit]
-#        Description=TypeDB
-#        [Service]
-#        Type=simple
-#        ExecStart=$PWD/dist/typedb-all-linux/typedb server
-#        EOM
-#        sudo mv typedb.service /etc/systemd/system/
-#
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        bazel run //:typedb-extractor -- dist/typedb-all-linux
-#        sudo systemctl daemon-reload
-#        sudo systemctl start typedb
-#        bazel test //test/query:typeql-java --test_output=errors
-#    test-example-java:
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      command: |
-#        cat > typedb.service <<- EOM
-#        [Unit]
-#        Description=TypeDB
-#        [Service]
-#        Type=simple
-#        ExecStart=$PWD/dist/typedb-all-linux/typedb server
-#        EOM
-#        sudo mv typedb.service /etc/systemd/system/
-#
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        bazel run //:typedb-extractor -- dist/typedb-all-linux
-#        sudo systemctl daemon-reload
-#        sudo systemctl start typedb
-#        bazel run //test/example/java:phone-calls
-#        bazel run //test/example/java:social-network
-#    test-example-nodejs:
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      command: |
-#        cat > typedb.service <<- EOM
-#        [Unit]
-#        Description=TypeDB
-#        [Service]
-#        Type=simple
-#        ExecStart=$PWD/dist/typedb-all-linux/typedb server
-#        EOM
-#        sudo mv typedb.service /etc/systemd/system/
-#
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        bazel run //:typedb-extractor -- dist/typedb-all-linux
-#        sudo systemctl daemon-reload
-#        sudo systemctl start typedb
-#        bazel test //test/example/nodejs:phone-calls --test_output=errors
-#        bazel test //test/example/nodejs:social-network --test_output=errors
+    build:
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      command: |
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        bazel build //...
+        dependencies/maven/update.sh
+        git diff --exit-code dependencies/maven/artifacts.snapshot
+        bazel run @vaticle_dependencies//tool/unuseddeps:unused-deps -- list
+    test-query-typeql-lang:
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      command: |
+        cat > typedb.service <<- EOM
+        [Unit]
+        Description=TypeDB
+        [Service]
+        Type=simple
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
+        EOM
+        sudo mv typedb.service /etc/systemd/system/
+
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        bazel run //:typedb-extractor -- dist/typedb-all-linux
+        sudo systemctl daemon-reload
+        sudo systemctl start typedb
+        time bazel run //test/query:typeql-lang
+    test-query-typeql-java:
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      command: |
+        cat > typedb.service <<- EOM
+        [Unit]
+        Description=TypeDB
+        [Service]
+        Type=simple
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
+        EOM
+        sudo mv typedb.service /etc/systemd/system/
+
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        bazel run //:typedb-extractor -- dist/typedb-all-linux
+        sudo systemctl daemon-reload
+        sudo systemctl start typedb
+        bazel test //test/query:typeql-java --test_output=errors
+    test-example-java:
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      command: |
+        cat > typedb.service <<- EOM
+        [Unit]
+        Description=TypeDB
+        [Service]
+        Type=simple
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
+        EOM
+        sudo mv typedb.service /etc/systemd/system/
+
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        bazel run //:typedb-extractor -- dist/typedb-all-linux
+        sudo systemctl daemon-reload
+        sudo systemctl start typedb
+        bazel run //test/example/java:phone-calls
+        bazel run //test/example/java:social-network
+    test-example-nodejs:
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      command: |
+        cat > typedb.service <<- EOM
+        [Unit]
+        Description=TypeDB
+        [Service]
+        Type=simple
+        ExecStart=$PWD/dist/typedb-all-linux/typedb server
+        EOM
+        sudo mv typedb.service /etc/systemd/system/
+
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        bazel run //:typedb-extractor -- dist/typedb-all-linux
+        sudo systemctl daemon-reload
+        sudo systemctl start typedb
+        bazel test //test/example/nodejs:phone-calls --test_output=errors
+        bazel test //test/example/nodejs:social-network --test_output=errors
     test-example-python:
       image: vaticle-ubuntu-21.04
       type: foreground
@@ -136,49 +136,48 @@ build:
         pip3 install -U pip
         pip install typedb-client==2.8.0
 
-        sleep 3600
-#        bazel run //test/example/python:phone-calls
-#        bazel run //test/example/python:social-network
-#    test-links:
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      command: |
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        bazel test //test/links:test --test_output=errors
-#    release-staging:
-#      filter:
-#        owner: vaticle
-#        branch: development
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      # FIXME: even with tests broken, we still want to release to staging
-#      # dependencies: [build, test-query-typeql-lang, test-query-typeql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
-#      command: |
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
-#        export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
-#        export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-#        bazel run @vaticle_dependencies//tool/release:docs -- $GRABL_OWNER web-docs development $GRABL_REPO docs $GRABL_COMMIT
-#    release-production:
-#      filter:
-#        owner: vaticle
-#        branch: master
-#      image: vaticle-ubuntu-21.04
-#      type: foreground
-#      # FIXME: even with tests broken, we still want to release to production
-#      # dependencies: [build, test-query-typeql-lang, test-query-typeql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
-#      command: |
-#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-#        export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
-#        export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
-#        export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-#        bazel run @vaticle_dependencies//tool/release:docs -- $GRABL_OWNER web-docs master $GRABL_REPO pages/docs $GRABL_COMMIT
+        bazel run //test/example/python:phone-calls
+        bazel run //test/example/python:social-network
+    test-links:
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      command: |
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        bazel test //test/links:test --test_output=errors
+    release-staging:
+      filter:
+        owner: vaticle
+        branch: development
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      # FIXME: even with tests broken, we still want to release to staging
+      # dependencies: [build, test-query-typeql-lang, test-query-typeql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
+      command: |
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
+        export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
+        export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
+        bazel run @vaticle_dependencies//tool/release:docs -- $GRABL_OWNER web-docs development $GRABL_REPO docs $GRABL_COMMIT
+    release-production:
+      filter:
+        owner: vaticle
+        branch: master
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      # FIXME: even with tests broken, we still want to release to production
+      # dependencies: [build, test-query-typeql-lang, test-query-typeql-java, test-example-java, test-example-nodejs, test-example-python, test-links]
+      command: |
+        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+        export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
+        export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
+        export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
+        bazel run @vaticle_dependencies//tool/release:docs -- $GRABL_OWNER web-docs master $GRABL_REPO pages/docs $GRABL_COMMIT
   execution:
     - build
     - test-query-typeql-lang
