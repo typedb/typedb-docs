@@ -58,14 +58,13 @@ Having installed or downloaded TypeDB, we can now start the [Server](#start-the-
 [tab:Mac OS X]
 
 #### Using Homebrew
-```
-brew tap vaticle/tap
-brew install vaticle/tap/typedb
+```sh
+brew install typedb
 ```
 
 To upgrade an existing installation via brew:
-```
-brew upgrade vaticle/tap/typedb
+```sh
+brew upgrade typedb
 ```
 
 #### Manual Download
