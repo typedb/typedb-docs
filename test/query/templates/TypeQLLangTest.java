@@ -71,8 +71,6 @@ public class TypeQLLangTest {
                 session = client.session("social_network", TypeDBSession.Type.DATA);
                 transaction = session.transaction(TypeDBTransaction.Type.WRITE);
                 conceptMaps = transaction.query().update(query.asUpdate()).collect(Collectors.toList());
-            } else if (query instanceof TypeQLCompute) {
-                // FIXME(vmax): we dunno how to run them yet
             } else {
                 throw new RuntimeException("Unknown query type: " + query.toString() + "[type = " + query.getClass() + "]");
             }

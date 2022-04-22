@@ -9,25 +9,28 @@ up and migrating data between versions of TypeDB. toc: false
 
 One method to migrate data across TypeDB distributions is by copying the data directory between servers. To do this,
 simply shut down the servers, and copy the database you wish to migrate from the `server/data/` directory into the
-`server/data/` directory in the destination distribution.
+`server/data/` directory in the destination distribution (or just update the server configuration for data directory path).
 
-TypeDB will warn you when moving data across incompatible database encoding versions.
+TypeDB will prevent you from moving data across incompatible database encoding versions.
 
 | Database encoding Version  | Compatible TypeDB Versions |
 | -------------------------- | -------------------------- |
 | 0                          | 2.0.0 - 2.5.0              |
-| 1                          | 2.6.0 -                    |
+| 1                          | 2.6.0 - 2.7.1              |
+| 2                          | 2.8.0 -                    |
 
 ## Migration or Backup using Export/Import
 
 TypeDB offers a way to export all data into a binary format, and then re-import it elsewhere. Using the export feature
 is the best way to migrate to a version of TypeDB that is not backward compatible.
 
-Note that this process will require local disk at least twice that of the database.
-If your have to migrate data that will not fit onto disk, please reach out to us on our 
-[Discord](https://discord.com/invite/vaticle) community or [Forums](https://discuss.vaticle.com) where we can advise you further.
+Migration or backup using the export/import features is a two-step process: schema migration, followed by data migration.
 
-Migration or backup using the export/import features is a two-step process: schema migration followed by data migration.
+Note that this binary file is often two times larger than the original database. Please ensure your disk 
+has sufficient free capacity to store a file of this size. If your have to migrate data that will not fit onto disk, 
+please reach out to us on our [Discord](https://discord.com/invite/vaticle) community or 
+[Forum](https://discuss.vaticle.com) where we can advise you further.
+
 
 ### Schema Migration
 
@@ -46,7 +49,7 @@ Copy the schema into a file named `schema.tql`.
 
 You can skip the step of exporting schema if you already have a copy of your schema to import.
 
-You may need to update your schema syntax when moving between TypeDB versions.
+You may need to update your schema syntax if the TypeQL language definitions have changed between TypeDB versions.
 
 We then load the schema into the new TypeDB distribution:
 
@@ -64,16 +67,16 @@ To create a binary export of a data from a TypeDB database, make sure that the T
 running. After the server is running, use the following command that ships with `typedb`:
 
 ```
-typedb server export --database=[database] --file=[filename].typedb
+typedb server export --database=[database] --port=[server rpc port] --file=[filename].typedb
 ```
 
 Note that this will NOT export the schema, only data. This file contains a complete copy of the data of the source
 database.
 
-If you have already migrated the schema into a new server distribution, you can import the exported binary data:
+After the import completes, you can import the exported binary data into the prepared database containing your schema:
 
 ```
-typedb server import --database=[database] --file=[filename].typedb
+typedb server import --database=[database] --port=[server rpc port] --file=[filename].typedb
 ```
 
 <div class="note">

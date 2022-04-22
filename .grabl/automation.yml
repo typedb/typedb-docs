@@ -2,10 +2,7 @@ config:
   version-candidate: VERSION
   dependencies:
     dependencies: [build]
-    typedb-common: [release]
     typedb-client-java: [release]
-    typedb-client-python: [release]
-    typedb-client-nodejs: [release]
 
 build:
   quality:
@@ -114,10 +111,11 @@ build:
       image: vaticle-ubuntu-21.04
       type: foreground
       command: |
-        pyenv global 3.6.10
+        pyenv install 3.7.12
+        pyenv global 3.7.12
         sudo unlink /usr/bin/python3
         sudo ln -s $(which python3) /usr/bin/python3
-        sudo ln -s /usr/share/pyshared/lsb_release.py /opt/pyenv/versions/3.6.10/lib/python3.6/site-packages/lsb_release.py
+        sudo ln -s /usr/share/pyshared/lsb_release.py /opt/pyenv/versions/3.7.12/lib/python3.7/site-packages/lsb_release.py
 
         cat > typedb.service <<- EOM
         [Unit]
@@ -136,7 +134,7 @@ build:
         sudo systemctl start typedb
 
         pip3 install -U pip
-        pip install typedb-client==2.6.1
+        pip install typedb-client==2.8.0
 
         bazel run //test/example/python:phone-calls
         bazel run //test/example/python:social-network
