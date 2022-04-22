@@ -115,13 +115,11 @@ docker run --name typedb -d -p 1729:1729 vaticle/typedb:latest
 
 #### With an External Volume
 
-To ensure that data is preserved even when the instance is killed or restarted, mount an external volume:
+To ensure that data is preserved even when the instance is killed or restarted, run:
 
 ```
-docker run --name typedb -d -v <external-volume>:/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
+docker run --name typedb -d -v $(pwd)/db/:/typedb-all-linux/server/db/ -p 1729:1729 vaticle/typedb:latest
 ```
-
-`<external-volume>` should be configured to where you want the data to be stored in the host machine.
 
 Having started the instance, the TypeDB Server is expected to be running on port `1729` on your machine.
 
