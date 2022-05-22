@@ -142,7 +142,7 @@ Before we move on to parsing the data into dictionaries, let’s start with the 
 Templates are simple functions that accept a dictionary, representing a single data item. The values within this dictionary fill in the blanks of the query template. The result is a TypeQL insert query.
 We need 4 of them. Let’s go through them one by one.
 
-### companyTemplate
+### company_template
 
 ```python
 def company_template(company):
@@ -162,7 +162,7 @@ Example:
 insert $company isa company, has name "Telecom";
 ```
 
-### personTemplate
+### person_template
 
 ```python
 def person_template(person):
@@ -208,7 +208,7 @@ or:
 insert $person isa person, has phone-number "+00 091 xxx", has is-customer true, has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
-### contractTemplate
+### contract_template
 
 ```python
 def contract_template(contract):
@@ -234,7 +234,7 @@ Example:
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
-### callTemplate
+### call_template
 
 ```python
 def call_template(call):
