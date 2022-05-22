@@ -192,7 +192,7 @@ Example:
 - Comes out:
 
 ```typeql
-insert $person isa person, has phone-number "+44 091 xxx";
+insert $person isa person, has phone-number "+44 091 xxx", has is-customer false;
 ```
 
 or:
@@ -205,7 +205,7 @@ or:
 - Comes out:
 
 ```typeql
-insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
+insert $person isa person, has phone-number "+00 091 xxx", has is-customer true, has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
 ### contractTemplate
@@ -315,8 +315,6 @@ import ijson
 
 Moving on, we write the implementation of `parse_data_to_dictionaries(input)` for processing `.json` files.
 
-We use Python’s built-in [`xml.etree.cElementTree` library](https://docs.python.org/2/library/xml.etree.elementtree.html). Let’s import the module for it.
-
 ```python
 def parse_data_to_dictionaries(input):
     items = []
@@ -360,6 +358,8 @@ inputs = [
 ```
 
 And now for the implementation of `parse_data_to_dictionaries(input)` for parsing `.xml` files.
+
+We use Python’s built-in [`xml.etree.cElementTree` library](https://docs.python.org/2/library/xml.etree.elementtree.html). Let’s import the module for it.
 
 The implementation below, although, not the most generic, performs well with very large `.xml` files. Note that many libraries that do xml to dictionary parsing, pull in the entire `.xml` file into memory first. There is nothing wrong with that approach when you’re dealing with small files, but when it comes to large files, that’s just a no go.
 
