@@ -24,7 +24,7 @@ pip3 install typedb-client
 - [Examples](https://github.com/vaticle/typedb-examples)
 
 ## Quickstart
-First make sure, the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
+First make sure, the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running and that you have **created the social network database** as detailed in the [quickstart](00-general/04-quickstart.md#download-and-load-the-complete-schema) example before running the following.
 
 In the interpreter or in your source, import everything from `typedb.client`.
 
