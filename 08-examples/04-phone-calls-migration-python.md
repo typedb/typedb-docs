@@ -326,6 +326,15 @@ def parse_data_to_dictionaries(input):
 [tab:end]
 
 [tab:XML]
+We use Python’s built-in [`xml.etree.cElementTree` library](https://docs.python.org/2/library/xml.etree.elementtree.html). Let’s import the module for it.
+
+```python
+from typedb.client import TypeDB
+import xml.etree.cElementTree as et
+
+# ...
+```
+
 For parsing XML data, we need to know the target tag name. This needs to be specified for each data file in our `inputs` deceleration.
 
 ```python
@@ -358,8 +367,6 @@ inputs = [
 ```
 
 And now for the implementation of `parse_data_to_dictionaries(input)` for parsing `.xml` files.
-
-We use Python’s built-in [`xml.etree.cElementTree` library](https://docs.python.org/2/library/xml.etree.elementtree.html). Let’s import the module for it.
 
 The implementation below, although, not the most generic, performs well with very large `.xml` files. Note that many libraries that do xml to dictionary parsing, pull in the entire `.xml` file into memory first. There is nothing wrong with that approach when you’re dealing with small files, but when it comes to large files, that’s just a no go.
 
