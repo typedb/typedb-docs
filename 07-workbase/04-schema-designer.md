@@ -6,14 +6,17 @@ Summary: Using Workbase to design a schema.
 toc: false
 ---
 
-<div class = "note">
-[Warning]
-TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (March 2022)!
-</div>
+## We're moving from Workbase to TypeDB Studio
+TypeDB Workbase is being replaced with a more powerful application: TypeDB Studio, a dedicated IDE for TypeDB which is currently in the final stages of pre-release development. Early access (alpha) releases are available [here](https://github.com/vaticle/typedb-studio), with full documentation to be published at a later date.
+
+TypeDB Studio 2.10.0-alpha is compatible with TypeDB 2.10.0 and above.
+
+![Connection](/docs/images/workbase/studio.png)
+[caption: TypeDB Studio, a dedicated IDE for TypeDB]
 
 <div class = "note">
 [Warning]
-The schema designer is not yet stable in version 2.0 and has been disabled. To view your schema in the visualiser, please run the following query:
+The schema designer is not stable in version 2.0 and has been disabled. To view your schema in the visualiser, please run the following query:
 
 ```
 match $x sub thing;
