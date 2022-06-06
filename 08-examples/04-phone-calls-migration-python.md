@@ -142,7 +142,7 @@ Before we move on to parsing the data into dictionaries, let’s start with the 
 Templates are simple functions that accept a dictionary, representing a single data item. The values within this dictionary fill in the blanks of the query template. The result is a TypeQL insert query.
 We need 4 of them. Let’s go through them one by one.
 
-### companyTemplate
+### company_template
 
 ```python
 def company_template(company):
@@ -162,7 +162,7 @@ Example:
 insert $company isa company, has name "Telecom";
 ```
 
-### personTemplate
+### person_template
 
 ```python
 def person_template(person):
@@ -192,7 +192,7 @@ Example:
 - Comes out:
 
 ```typeql
-insert $person isa person, has phone-number "+44 091 xxx";
+insert $person isa person, has phone-number "+44 091 xxx", has is-customer false;
 ```
 
 or:
@@ -205,10 +205,10 @@ or:
 - Comes out:
 
 ```typeql
-insert $person isa person, has phone-number "+44 091 xxx", has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
+insert $person isa person, has phone-number "+00 091 xxx", has is-customer true, has first-name "Jackie", has last-name "Joe", has city "Jimo", has age 77;
 ```
 
-### contractTemplate
+### contract_template
 
 ```python
 def contract_template(contract):
@@ -234,7 +234,7 @@ Example:
 match $company isa company, has name "Telecom"; $customer isa person, has phone-number "+00 091 xxx"; insert (provider: $company, customer: $customer) isa contract;
 ```
 
-### callTemplate
+### call_template
 
 ```python
 def call_template(call):
@@ -315,8 +315,6 @@ import ijson
 
 Moving on, we write the implementation of `parse_data_to_dictionaries(input)` for processing `.json` files.
 
-We use Python’s built-in [`xml.etree.cElementTree` library](https://docs.python.org/2/library/xml.etree.elementtree.html). Let’s import the module for it.
-
 ```python
 def parse_data_to_dictionaries(input):
     items = []
@@ -328,6 +326,15 @@ def parse_data_to_dictionaries(input):
 [tab:end]
 
 [tab:XML]
+We use Python’s built-in [`xml.etree.cElementTree` library](https://docs.python.org/2/library/xml.etree.elementtree.html). Let’s import the module for it.
+
+```python
+from typedb.client import TypeDB
+import xml.etree.cElementTree as et
+
+# ...
+```
+
 For parsing XML data, we need to know the target tag name. This needs to be specified for each data file in our `inputs` deceleration.
 
 ```python
