@@ -18,7 +18,7 @@ Databases are isolated from one another. Even when running on the same TypeDB Se
 We can create a new a database via the TypeDB Clients [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) and [Python](../03-client-api/02-python.md) and [TypeDB Console](../02-console/01-console.md).
 
 ### Listing All Databases
-We can list all databases of the running TypeDB server via the TypeDB Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [Workbase](../07-workbase/01-connection.md#select-a-database).
+We can list all databases of the running TypeDB server via the TypeDB Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [Studio](../07-studio/01-quickstart.md#connecting-to-typedb-server).
 
 ### Cleaning a Database
 Cleaning the database, not to be confused with deletion, wipes out both the data and the schema contained within the database. We can clean a database via [TypeDB Console](../02-console/01-console.md#console-commands).

@@ -241,7 +241,7 @@ If we take the `suppliers`, `products`, `employees`, `orders` and `customers` ta
 4. `Company`: As both the `suppliers` and `customers` table refer to companies, we decide to model them as one entity type. We can define a company as a supplier or a customer with roles (see below). 
 
 We then create the following relations and corresponding roles: 
-1. `Sale`: We can model this relation as ternary (learn more about [hypergraphs](https://blog.grakn.ai/modelling-data-with-hypergraphs-edff1e12edf0)), as a sale occurs between an `Order` (playing the `order` role), `Company` (playing the `customer` role) and an `Employee` (playing the role of `seller`). 
+1. `Sale`: We can model this relation as ternary (learn more about [hypergraphs](https://blog.vaticle.com/modelling-data-with-hypergraphs-edff1e12edf0)), as a sale occurs between an `Order` (playing the `order` role), `Company` (playing the `customer` role) and an `Employee` (playing the role of `seller`). 
 2. `Stocking`: This relation relates to a `Product` (playing the role of `stock`) which is being stocked by another `Company`, which plays the role of `supplier`.
 3. `Containing`: We define this relation between the entity `Order` (playing the role of `order`) and `Product` (role of `contained`), because an order can contain multiple products. We also add two attributes to this relation: `quantity` and `unit-price`. 
 
@@ -455,4 +455,4 @@ There is much more to TypeQL than what we've tried to show here. Hopefully this 
 
 - [TypeDB Quickstart](https://docs.vaticle.com/docs/general/quickstart)
 - [Modelling in TypeDB](https://docs.vaticle.com/docs/schema/overview)
-- [The TypeDB Ontology: Simplicity and Maintainability](https://blog.grakn.ai/the-grakn-ai-ontology-simplicity-and-maintainability-ab78340f5ff6)
+- [The TypeDB Ontology: Simplicity and Maintainability](https://blog.vaticle.com/the-grakn-ai-ontology-simplicity-and-maintainability-ab78340f5ff6)

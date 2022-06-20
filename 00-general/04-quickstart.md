@@ -58,14 +58,14 @@ person sub entity,
     plays friendship-list:owner;
 ```
 
-The code you see above is TypeQL. TypeQL is the language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../02-console/01-console.md), [Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
+The code you see above is TypeQL. TypeQL is the language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../02-console/01-console.md), [Studio](../07-studio/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
 
 ### Download and Load the Complete Schema
 First, download the [`social-network/schema.tql`](../files/social-network/schema.tql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [TypeDB Console](../02-console/01-console.md).
 
 <div class="note">
 [Note]
-Feel free to study the content of `social-network-schema.tql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [TypeDB Workbase](../07-workbase/00-overview.md).
+Feel free to study the content of `social-network-schema.tql`. The definitions have been divided into multiple sections for better understandability, with each section containing the (commented-out) query for visualisation of the corresponding section in [TypeDB Studio](../07-studio/00-overview.md).
 </div>
 
 <div class="note">
@@ -104,7 +104,7 @@ social_network::data::write> commit
 As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
 
 ### Query the Knowledge Graph
-Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../02-console/01-console.md), [TypeDB Workbase](../07-workbase/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md).
+Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../02-console/01-console.md), [TypeDB Studio](../07-studio/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md).
 
 Let's see an example of running [TypeQL get queries](../11-query/02-get-query.md) via each of these interfaces.
 
@@ -342,5 +342,5 @@ Similar to the first rule, the answer we're asking for here, was never injected 
 
 - [TypeDB Schema](../09-schema/00-overview.md)
 - [TypeQL Queries](../11-query/00-overview.md)
-- [Workbase](../07-workbase/00-overview.md)
+- [Studio](../07-studio/00-overview.md)
 - [Examples](../08-examples/00-phone-calls-overview.md)

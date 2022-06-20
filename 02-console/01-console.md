@@ -7,7 +7,7 @@ toc: false
 ---
 
 ## What is the TypeDB Console?
-The TypeDB Console, along with the [TypeDB Clients](../03-client-api/00-overview.md) and [Workbase](../07-workbase/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. Console interacts directly with a given database that contains the TypeDB knowledge graph.
+The TypeDB Console, along with the [TypeDB Clients](../03-client-api/00-overview.md) and [Studio](../07-studio/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. Console interacts directly with a given database that contains the TypeDB knowledge graph.
 
 ## Running TypeDB Console in the terminal
 
@@ -37,18 +37,18 @@ Enter password:
 You can provide several command-line arguments when running Console in the terminal.
 
 
-| Option                  | Alias | Description                                                           |
-|-------------------------|-------|-----------------------------------------------------------------------|
-| `--server=<address>`    |       | Address to which Console will connect to. (TypeDB only)               |
-| `--cluster=<address>`   |       | Address to which Console will connect to. (TypeDB Cluster only)       |
-| `--username=<username>` |       | Username (TypeDB Cluster only)                                        |
-| `--password`            |       | Password (TypeDB Cluster only)                                        |
-| `--tls-enabled`         |       | Whether to connnect with TLS encryption (TypeDB Cluster only)         |
-| `--tls-root-ca=<path>`  |       | Path to the TLS root CA file (TypeDB Cluster only)                    |
-| `--help`                | `-h`  | Show help message.                                                    |
-| `--command=<commands>`  |       | Commands to run in the Console, without interactive mode              |
+| Option                  | Alias | Description                                                          |
+|-------------------------|-------|----------------------------------------------------------------------|
+| `--server=<address>`    |       | Address to which Console will connect to. (TypeDB only)              |
+| `--cluster=<address>`   |       | Address to which Console will connect to. (TypeDB Cluster only)      |
+| `--username=<username>` |       | Username (TypeDB Cluster only)                                       |
+| `--password`            |       | Password (TypeDB Cluster only)                                       |
+| `--tls-enabled`         |       | Whether to connect with TLS encryption (TypeDB Cluster only)         |
+| `--tls-root-ca=<path>`  |       | Path to the TLS root CA file (TypeDB Cluster only)                   |
+| `--help`                | `-h`  | Show help message.                                                   |
+| `--command=<commands>`  |       | Commands to run in the Console, without interactive mode             |
 | `--script=<script>`     |       | Script with commands to run in the Console, without interactive mode. |
-| `--version`             | `-V`  | Print version information and exit.                                   |
+| `--version`             | `-V`  | Print version information and exit.                                  |
 
 ## Console commands
 
