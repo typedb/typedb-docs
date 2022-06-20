@@ -19,7 +19,7 @@ By following each step, you will have the full picture on how to go from zero to
 Downloading, installing and running a TypeDB server differs slightly platform to platform, so we've created a guide to get you started here: [Install and Run TypeDB Server](/docs/running-typedb/install-and-run).
 
 ## Connecting to TypeDB Server
-Once you launch studio, head to the top right-hand corner and click 'Connect to TypeDB'.
+Once you launch Studio, head to the top right-hand corner and click 'Connect to TypeDB'.
 
 <div class="slideshow">
 
@@ -50,7 +50,7 @@ Now Studio and TypeDB Server are connected, but you haven't set up any databases
 
 [header:start][header:end]
 [body:start]![Database Manager Empty](/docs/images/studio/databases-interface-no-databases.png)[body:end]
-[footer:start]This is the database manager. Enter your database name then hit create. For the purposes of this example, we will use the name `github`.[footer:end]
+[footer:start]This is the database manager. Enter your database name then hit 'Create'. For the purposes of this example, we will use the name `github`.[footer:end]
 [slide:end]
 
 [slide:start]
@@ -83,7 +83,7 @@ We've created a database, so now would be a good time to set up a project folder
 </div>
 
 ## Writing a Schema
-You may have noticed that now you have connected to TypeDB and open a project folder, Studio has sprung to life. Now we need to write a 'schema' to our database. 
+You may have noticed that now you have connected to TypeDB and opened a project folder, Studio has sprung to life. Now we need to write a 'schema' to our database. 
 You can learn more about what a schema is and how to write one [here](/docs/schema/overview). In short, a schema is a description of the structure of your data and how various entities relate to each other.
 
 For now, we've got a pre-made schema for you to use. We've also got data and queries for this later, so keep following along if you want to get the full experience from this guide.
@@ -273,9 +273,9 @@ match $file isa file, has file-name "typeql/language/undefine.feature"; $commit 
 
 ## Query the Data
 
-Everything is in place and we can start writing queries for our data. Open one final file and set your session and transaction settings to `data` and `read` respectively.
+Everything is in place and we can start writing queries for our data. Open one final file and set your session and transaction types to `data` and `read` respectively.
 
-Also ensure that you have turned `infer` on to ensure that rules get resolved. This typically increases the time that queries take to resolve, so it is not enabled by default. However, our schema and queries use a rule.
+To the right of the transaction type, we have **transaction settings**, such as `snapshot` and `infer`. Because our query makes use of the `file-collaborator-rule` defined in the schema, you'll need to enable the `infer` option, which allows rules to be triggered when querying.
 
 
 ![Visualise The Data](/docs/images/studio/git-visualisation.png)

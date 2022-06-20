@@ -235,7 +235,7 @@ To add sections/pages to the sidebar, modify the [`sidebar.yml`](views/sidebar.y
 
 ### Compatibility Tables
 
-The documentation of each interface to TypeDB (i.e. clients, studio, console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, TypeDB or TypeDB Cluster. The convention in constructing these tables is as follows:
+The documentation of each interface to TypeDB (i.e. clients, Studio, Console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, TypeDB or TypeDB Cluster. The convention in constructing these tables is as follows:
 
 - The first column is dedicated to the versions of the interface, where each cell contains one single version number, except for the last row(s) (to avoid lengthy tables).
 - Second and third columns are dedicated to TypeDB and TypeDB Cluster, respectively, where each cell may contain one or more version numbers.
