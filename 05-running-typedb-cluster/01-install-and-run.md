@@ -31,7 +31,7 @@ Having installed or downloaded TypeDB Cluster, we can now start the [Cluster](#s
 
 [tab:end]
 
-[tab:Mac OS X]
+[tab:macOS]
 
 #### Manual Download
 Download the [latest release](https://repo.vaticle.com/#browse/browse:private-artifact), unzip it in a location on your machine that is easily accessible via terminal.
