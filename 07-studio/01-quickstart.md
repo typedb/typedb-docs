@@ -61,8 +61,6 @@ Now Studio and TypeDB Server are connected, but you haven't set up any databases
 
 Select the database you just created by clicking the dropdown menu titled 'Select Databases' immediately right of the databases icon.
 
-[//]: # (<img height='1em' width='1em' src="/docs/images/studio/databases-icon.png"></img>.)
-
 ## Creating a Project Folder
 We've created a database, so now would be a good time to set up a project folder. Studio will store queries you save here, so you don't need to rewrite all your queries each time you open Studio.
 
