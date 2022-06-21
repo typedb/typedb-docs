@@ -55,7 +55,7 @@ Having installed or downloaded TypeDB, we can now start the [Server](#start-the-
 
 [tab:end]
 
-[tab:Mac OS X]
+[tab:macOS]
 
 #### Using Homebrew
 ```sh

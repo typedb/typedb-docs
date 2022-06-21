@@ -12,10 +12,10 @@ These example schema files, which allow you to explore how data in a particular 
 Building a TypeDB knowledge graph is fairly simple as TypeDB's hypergraph structure represents the real world much more intuitively than columns and rows of data. The examples below are meant to enable any developer to get started building with TypeDB, faster.
 
 1. Review the modelling example highlights or jump right to the schema files and click to download
-2. Download [TypeDB](http://docs.vaticle.com/docs/running-typedb/install-and-run#download-and-install-typedb) and [TypeDB Workbase](https://grakn.ai/download#workbase)
+2. Download [TypeDB](http://docs.vaticle.com/docs/running-typedb/install-and-run#download-and-install-typedb) and [TypeDB Studio](https://vaticle.com/download#typedb-studio)
 3. Select an example below and download the .gql file via github link
 4. Load .gql file via [TypeDB Console](http://docs.vaticle.com/docs/running-typedb/console)
-5. Open TypeDB Workbase and [visualise your schema](http://docs.vaticle.com/docs/workbase/schema-designer)
+5. Open TypeDB Studio and [visualise your schema](http://docs.vaticle.com/docs/studio/quickstart#query-the-data)
 6. Iterate on the model, clean your keyspace, and re-load into TypeDB - rinse and repeat as needed
 
 ## Modelling Examples

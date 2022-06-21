@@ -89,7 +89,7 @@ Once the deployment has been completed, the servers would be accessible via the 
 
 #### Deploying a Public Cluster
 
-If you need to access the cluster from outside of Kubernetes, then use this deployment mode. For example, this would be the suitable mode if you need to access the cluster from Workbase or Console running on your local machine.
+If you need to access the cluster from outside of Kubernetes, then use this deployment mode. For example, this would be the suitable mode if you need to access the cluster from Studio or Console running on your local machine.
 
 Deploying a public cluster can be done by setting the `exposed` flag to `true`. 
 

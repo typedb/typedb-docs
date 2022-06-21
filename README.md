@@ -56,7 +56,7 @@ PRs that have the `development` branch as their _base_, contains changes that ar
 **Files and directories**
 
 - Separate words with hyphens (`-`).
-- Keep file and directory names compact: in most cases, one or two words that best describe the contained content. Never use more than three words unless the file is a tutorial page or a Workbase screenshot.
+- Keep file and directory names compact: in most cases, one or two words that best describe the contained content. Never use more than three words unless the file is a tutorial page or a Studio screenshot.
 - Choosing the same name for different files located in different directories is acceptable. (eg: `files/social-network/schema.tql` and `files/phone-calls/schema.tql`).
 - For naming images, refer to the [Images Guidelines](#images).
 
@@ -72,11 +72,11 @@ PRs that have the `development` branch as their _base_, contains changes that ar
 - When an image is used across multiple pages, the **same** image file should be referenced, rather than duplicating the image.
 - The source file used to generate an image is to be located under `images/source/<section-name>`.
 - The source file must always contain the latest changes present in its corresponding image.
-- Screenshots of Workbase should be:
+- Screenshots of Studio should be:
   - named after the UI/UX components of the software itself. (eg: `typeql-editor_clear-query.png`).
   - taken at the screen resolution of 1280 x 720 pixels.
   - of size, 1147 x 671 pixels.
-  - consistent in their paddings (position of Workbase's layout within the screenshot).
+  - consistent in their paddings (position of Studio's layout within the screenshot).
 
 ### Writing Style
 
@@ -235,7 +235,7 @@ To add sections/pages to the sidebar, modify the [`sidebar.yml`](views/sidebar.y
 
 ### Compatibility Tables
 
-The documentation of each interface to TypeDB (i.e. clients, workbase, console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, Grakn Core or Grakn Cluster. The convention in constructing these tables is as follows:
+The documentation of each interface to TypeDB (i.e. clients, Studio, Console, etc), contains a compatibility table that needs to be updated upon every release of the interface itself, TypeDB or TypeDB Cluster. The convention in constructing these tables is as follows:
 
 - The first column is dedicated to the versions of the interface, where each cell contains one single version number, except for the last row(s) (to avoid lengthy tables).
 - Second and third columns are dedicated to TypeDB and TypeDB Cluster, respectively, where each cell may contain one or more version numbers.
