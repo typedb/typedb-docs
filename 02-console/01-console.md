@@ -35,8 +35,8 @@ Enter password:
 ### Locale settings
 
 TypeDB can store string attributes that have characters outside the [ASCII](https://ascii.cl/) range (for example:
-non-English letters, symbols, and emojis). To manipulate them using Console, the system locale must use a compatible
-code set, such as Unicode.
+non-English letters, symbols, and emojis). To manipulate them using Console, the console terminal must use a locale
+with a compatible code set, such as Unicode.
 
 If it doesn't, these characters will most likely be rendered as "?" symbols in Console. If this issue occurs:
 
