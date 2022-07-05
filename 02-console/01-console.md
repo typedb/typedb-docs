@@ -43,6 +43,8 @@ If it doesn't, these characters will most likely be rendered as "?" symbols in C
 - **Windows**: use [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-gb&gl=GB) or run [chcp](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/chcp) in your terminal (e.g: `chcp 936` for Chinese text)
 - **MacOS, Linux**: use `locale -a` to list all installed locales, and use (for example, to use `en_US.UTF-8`) `export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8`
 
+Most systems also allow you to set the system-wide locale, however this impacts the appearance of other applications.
+
 ## Command line arguments
 
 You can provide several command-line arguments when running Console in the terminal.
