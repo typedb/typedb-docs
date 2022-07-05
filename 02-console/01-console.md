@@ -9,10 +9,10 @@ toc: false
 ## What is the TypeDB Console?
 The TypeDB Console, along with the [TypeDB Clients](../03-client-api/00-overview.md) and [Studio](../07-studio/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. Console interacts directly with a given database that contains the TypeDB knowledge graph.
 
-## Running TypeDB Console in the terminal
+## Run TypeDB Console in the terminal
 
 
-### Connecting to TypeDB 
+### Connect to TypeDB 
 
 Go to the directory where you have your `typedb-all` or `typedb-console` distribution unarchived, and run `./typedb console`
 ```
@@ -22,7 +22,7 @@ cd <your_typedb_console_dir>/
 ```
 
 
-### Connecting to TypeDB Cluster
+### Connect to TypeDB Cluster
 
 Go to the directory whe you have your `typedb-cluster-all` or `typedb-console` distribution unarchived, and run `./typedb console`
 ```
@@ -31,6 +31,17 @@ cd <your_typedb_console_dir>/
 Enter password:
 >
 ```
+
+### Locale settings
+
+TypeDB allows string attributes to be stored that contain characters outside the [ASCII](https://ascii.cl/) range
+(for example: non-English letters, symbols, and emojis). To manipulate them using Console, the system locale must use
+the Unicode code set.
+
+If it doesn't, these characters will most likely be rendered as "?" symbols in Console. If this issue occurs:
+
+- **Windows**: use [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-gb&gl=GB) or run [chcp](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/chcp) in your terminal (e.g: `chcp 936` for Chinese text)
+- **MacOS, Linux**: use `locale -a` to list all installed locales, and use (for example, to use `en_US.UTF-8`) `export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8`
 
 ## Command line arguments
 
