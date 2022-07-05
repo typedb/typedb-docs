@@ -13,8 +13,7 @@ TypeDB features and receive continuous bug fixes and improvements.
 - [**Java**](../03-client-api/01-java.md)
 - [**Node.js**](../03-client-api/03-nodejs.md)
 - [**Python**](../03-client-api/02-python.md)
-
-For other languages, check out our [community client drivers](../03-client-api/04-other-languages.md), or learn how to [build your own](../03-client-api/05-new-client.md).
+- [**Other Languages**](../03-client-api/04-other-languages.md)
 
 ## What is a TypeDB Client?
 A TypeDB client, along with the [TypeDB Console](../02-console/01-console.md) and [TypeDB Studio](../07-studio/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. If we are building an application that uses a TypeDB knowledge graph as its database, we would need a TypeDB client at our application layer to handle the database operations.

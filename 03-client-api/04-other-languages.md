@@ -5,35 +5,30 @@ longTailKeywords: typedb client, typedb community client, typedb julia client, t
 Summary: Community-maintained TypeDB client drivers
 ---
 
-## Community Client Drivers
+## TypeDB Clients developed by the community
 
-The following is a list of community client drivers for TypeDB. Drivers listed here are not maintained by Vaticle;
-they are built and maintained fully by the community.
+- **Julia**: https://github.com/Humans-of-Julia/TypeDBClient.jl
 
-### Julia: TypeDBClient.jl
+## TypeDB Clients under development by Vaticle
 
-- [TypeDBClient.jl on GitHub](https://github.com/Humans-of-Julia/TypeDBClient.jl)
-- [Releases](https://github.com/Humans-of-Julia/TypeDBClient.jl/releases)
+- **Rust**: https://github.com/vaticle/typedb-client-rust
 
-### Haskell: typedb-client-haskell
+## TypeDB Clients under development by the community
 
-- [typedb-client-haskell on GitHub](https://github.com/typedb-osi/typedb-client-haskell)
-
-### Go: typedb-client-go
-
-- [typedb-client-go on GitHub](https://github.com/taliesins/typedb-client-go)
-
-### C#: typedb-client-csharp
-
-- [typedb-client-csharp on GitHub](https://github.com/typedb-osi/typedb-client-csharp)
+- **C#**: https://github.com/typedb-osi/typedb-client-csharp
+- **Haskell**: https://github.com/typedb-osi/typedb-client-haskell
+- **Go**: https://github.com/taliesins/typedb-client-go
 
 ---
 
-Don't see your language listed? Check out the [official client drivers](../03-client-api/00-overview.md), or read the docs on [creating a new client](../03-client-api/05-new-client.md).
+Community client drivers are not maintained by Vaticle; they are built and maintained fully by the community.
+
+Don't see your language listed? Check out the [official client drivers](../03-client-api/00-overview.md), or find
+out how to [create a new TypeDB client](../03-client-api/05-new-client.md).
 
 ## Contributing
 
 Work on TypeDB community client drivers is part of the [TypeDB Open Source Initiative](https://typedb.org).
 
-TypeDB OSI projects are community-built. To get started in contributing your work
+TypeDB OSI projects are community-built. If you have an interest in contributing your work
 towards any of the community clients, or any other OSI projects, join us on [Discord](https://vaticle.com/discord).
