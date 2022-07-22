@@ -11,7 +11,7 @@ Summary: TypeDB examples showcasing schema definition, data migration and retrie
 
 [**Gaming - XCOM 2 (Java):**](https://github.com/vaticle/typedb-examples/tree/master/xcom) a database of interdependent research tasks in the game XCOM 2, featuring automatic inference of available research based on completed tasks and available items.
 
-[**Biology - Catalogue of Life (Java):**](https://github.com/vaticle/typedb-examples/tree/master/catalogue_of_life) a database containing the information about the taxonomy of life on Earth, showcasing (semi-)automatic loading of data using [TypeDB-Loader.](https://github.com/typedb-osi/typedb-loader)
+[**Biology - Catalogue of Life (Java):**](https://github.com/vaticle/typedb-examples/tree/master/catalogue_of_life) a database containing the information about the taxonomy of life on Earth, showcasing automated loading of data using [TypeDB-Loader.](https://github.com/typedb-osi/typedb-loader)
 
 [**Software Dev - GitHub (Kotlin):**](https://github.com/vaticle/typedb-examples/tree/master/github) Load data from a live repository on GitHub or from a Vaticle GitHub snapshot, and get results via a custom GUI interface that uses the Java client to fetch the requested data.
 
