@@ -7,13 +7,13 @@ Summary: TypeDB examples showcasing schema definition, data migration and retrie
 
 ## Examples
 
-[**Phone calls (Java, JS, Python):**](https://github.com/vaticle/typedb-examples/tree/master/phone_calls) a database of customers of a fictional telecom company and calls they make.
+[**Telecoms - Phone Calls (Java, JS, Python):**](https://github.com/vaticle/typedb-examples/tree/master/phone_calls) a database of customers of a fictional telecom company and calls they make.
 
-[**XCOM 2 (Java):**](https://github.com/vaticle/typedb-examples/tree/master/xcom) a database of interdependent research tasks, featuring automatic inference of available research based on completed tasks and available items.
+[**Gaming - XCOM 2 (Java):**](https://github.com/vaticle/typedb-examples/tree/master/xcom) a database of interdependent research tasks in the game XCOM 2, featuring automatic inference of available research based on completed tasks and available items.
 
-[**Catalogue of Life (Java):**](https://github.com/vaticle/typedb-examples/tree/master/catalogue_of_life) a database containing the information about the taxonomy of life on Earth, showcasing (semi-)automatic loading of data using [TypeDB-Loader.](https://github.com/typedb-osi/typedb-loader)
+[**Biology - Catalogue of Life (Java):**](https://github.com/vaticle/typedb-examples/tree/master/catalogue_of_life) a database containing the information about the taxonomy of life on Earth, showcasing (semi-)automatic loading of data using [TypeDB-Loader.](https://github.com/typedb-osi/typedb-loader)
 
-[**Github (kotlin):**](https://github.com/vaticle/typedb-examples/tree/master/github) Vaticle github data snapshot, presented via a custom GUI interface that uses the Java client to fetch the requested data.
+[**Software Dev - GitHub (Kotlin):**](https://github.com/vaticle/typedb-examples/tree/master/github) Load data from a live repository on GitHub or from a Vaticle GitHub snapshot, and get results via a custom GUI interface that uses the Java client to fetch the requested data.
 
 ## A hands-on walkthrough
 
