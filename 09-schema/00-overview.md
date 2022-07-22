@@ -93,7 +93,7 @@ $ typedb console --command="transaction <database-name> schema write" --command=
 
 
 ## Migrate Data
-To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a TypeDB knowledge graph, check out the [migration tutorials](../08-examples/00-phone-calls-overview.md) in the language of your choice.
+To learn about migrating a pre-existing dataset in CSV, JSON or XML formats to a TypeDB knowledge graph, check out the [migration tutorials](../08-examples/00-overview.md) in the language of your choice.
 
 ## Query the schema
 In the next section we learn how to [insert](../11-query/03-insert-query.md), [get](../11-query/02-get-query.md), [delete](../11-query/04-delete-query.md), [update](../11-query/05-update-query.md), and [aggregate](../11-query/06-aggregate-query.md) data represented by a schema.

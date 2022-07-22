@@ -101,7 +101,7 @@ social_network::data::write> source path-to-the-social-network/data.tql
 social_network::data::write> commit
 ```
 
-As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-phone-calls-overview.md#whats-covered) the dataset into the target database.
+As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-overview.md#a-hands-on-walkthrough) the dataset into the target database.
 
 ### Query the Knowledge Graph
 Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../02-console/01-console.md), [TypeDB Studio](../07-studio/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md).
@@ -343,4 +343,4 @@ Similar to the first rule, the answer we're asking for here, was never injected 
 - [TypeDB Schema](../09-schema/00-overview.md)
 - [TypeQL Queries](../11-query/00-overview.md)
 - [Studio](../07-studio/00-overview.md)
-- [Examples](../08-examples/00-phone-calls-overview.md)
+- [Examples](../08-examples/00-overview.md)
