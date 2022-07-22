@@ -5,14 +5,24 @@ longTailKeywords: typedb examples, typedb migration, typedb query examples, type
 Summary: TypeDB examples showcasing schema definition, data migration and retrieval queries
 ---
 
-## What's covered?
+## Examples
+
+[**Phone calls (Java, JS, Python):**](https://github.com/vaticle/typedb-examples/tree/master/phone_calls) a database of customers of a fictional telecom company and calls they make.
+
+[**XCOM 2 (Java):**](https://github.com/vaticle/typedb-examples/tree/master/xcom) a database of interdependent research tasks, featuring automatic inference of available research based on completed tasks and available items.
+
+[**Catalogue of Life (Java):**](https://github.com/vaticle/typedb-examples/tree/master/catalogue_of_life) a database containing the information about the taxonomy of life on Earth, showcasing (semi-)automatic loading of data using [TypeDB-Loader.](https://github.com/typedb-osi/typedb-loader)
+
+[**Github (kotlin):**](https://github.com/vaticle/typedb-examples/tree/master/github) Vaticle github data snapshot, presented via a custom GUI interface that uses the Java client to fetch the requested data.
+
+## A hands-on walkthrough
+
+To get a better idea of how you can use TypeDB, we'll look closely at the [`phone_calls` example.](https://github.com/vaticle/typedb-examples/tree/master/phone_calls)
+The database we be working on in this series is called `phone_calls` and contains a dataset of **people** who **call** each other. Those who make calls have a **contract** with a **company**.
 
 In the following three sections, we together:
 
-1. Define the [schema](../08-examples/01-phone-calls-schema.md) for our `phone_calls` knowledge graph
-2. Migrate csv, json or xml data to the knowledge graph using clients [Java](../08-examples/02-phone-calls-migration-java.md), [Node.js](../08-examples/03-phone-calls-migration-nodejs.md) and [Python](../08-examples/04-phone-calls-migration-python.md)
-3. [Query](../08-examples/05-phone-calls-queries.md) the knowledge graph
+1. Define the [schema](../08-examples/01-phone-calls-schema.md) for our `phone_calls` database
+2. Migrate csv, json or xml data to the database using clients [Java](../08-examples/02-phone-calls-migration-java.md), [Node.js](../08-examples/03-phone-calls-migration-nodejs.md) and [Python](../08-examples/04-phone-calls-migration-python.md)
+3. [Query](../08-examples/05-phone-calls-queries.md) the database
 
-## What's the knowledge graph we are going to work on?
-
-The knowledge graph we be working on in these series is called `phone_calls` and contains a dataset of **people** who **call** each other. Those who make calls have a **contract** with a **company**.
