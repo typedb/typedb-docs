@@ -17,7 +17,7 @@ Summary: TypeDB examples showcasing schema definition, data migration and retrie
 
 ## A hands-on walkthrough
 
-To get a better idea of how you can use TypeDB, we'll look closely at the [`phone_calls` example.](https://github.com/vaticle/typedb-examples/tree/master/phone_calls)
+To get a better idea of how you can use TypeDB, we'll take a closer look at the [`phone_calls` example.](https://github.com/vaticle/typedb-examples/tree/master/phone_calls)
 The database we'll be working on in this series contains a dataset of **people** who **call** each other. Those who have a **contract** with the **company** also have their **name**, **age**, and the **city** they reside in recorded within the database.
 
 In the following three sections, we together:
