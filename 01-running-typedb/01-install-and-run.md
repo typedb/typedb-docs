@@ -41,7 +41,41 @@ Install TypeDB Server and TypeDB Console:
 ```
 sudo apt install typedb-all
 ```
+  
+#### APT conflicts
 
+APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release strategy allows
+depended packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate feature upgrades.
+  
+In these situations, you will encounter the following type of errors:
+
+```
+> sudo apt-get install typedb-all=2.11.0
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+
+The following packages have unmet dependencies.
+typedb-all : Depends: typedb-server (= 2.11.0) but it is not going to be installed
+```
+
+To solve this, specify each of the depended packages by exact version as well:
+```
+> sudo apt-get install typedb-all=2.11.0 typedb-server=2.11.0
+```
+ 
+This command would produce a similar error, but requiring that `typedb-bin=2.9.0`. We try again
+```
+> sudo apt-get install typedb-all=2.11.0 typedb-server=2.11.0 typedb-bin=2.9.0
+```
+
+Which successfully installs all required packages for `typedb-all=2.11.0`.
+  
 #### Manual Download
 
 Download the [latest release](https://github.com/vaticle/typedb/releases), unzip it in a location on your machine that is easily accessible via terminal.
