@@ -133,17 +133,6 @@ define
         owns phone-number,
         owns city,
         owns age;
-
-    rule mutual-friend-rule:
-        when
-    	{
-            (caller: $caller, callee: $calleex) isa call;
-            (caller: $caller, callee: $calleey) isa call;
-        }
-    	then
-    	{
-            (friend1: $calleex, friend2: $calleey) isa mutual-caller;
-    	};
 ```
 
 This schema represents a simple subset of the data a telecom provider might store.
