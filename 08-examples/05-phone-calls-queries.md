@@ -26,11 +26,6 @@ For the rest of this post, we go through each of these questions to:
 
 Make sure you have [TypeDB Studio](../07-studio/00-overview.md) installed, [connected](../07-studio/01-quickstart.md#connecting-to-typedb-server) to the running [TypeDB Server](../01-running-typedb/01-install-and-run.md#start-the-typedb-server) and `phone_calls` is the [selected database](../07-studio/01-quickstart.md#creating-a-database).
 
-<div class = "note">
-[Warning]
-TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which will be released very soon (March 2022)!
-</div>
-
 Let’s begin.
 
 ### Since September 14th, which customers called person X?
@@ -65,8 +60,8 @@ get $phone-number;
 
 #### Try it yourself
 
-![phone_calls query #1 Workbase](../images/examples/phone_calls_query_1_workbase.png)
-[caption:Using [Workbase](../07-workbase/00-overview.md)]
+![phone_calls query #1 Studio](../images/examples/phone_calls_query_1_studio.png)
+[caption:Using [Studio](../07-studio/00-overview.md)]
 
 ![phone_calls query #1 Console](../images/examples/phone_calls_query_1_console.png)
 [caption:Using [TypeDB Console](../02-console/01-console.md)]
@@ -238,8 +233,8 @@ get $phone-number;
 
 #### Try it yourself
 
-![phone_calls query #2 Workbase](../images/examples/phone_calls_query_2_workbase.png)
-[caption:Using [Workbase](../07-workbase/00-overview.md)]
+![phone_calls query #2 Studio](../images/examples/phone_calls_query_2_studio.png)
+[caption:Using [Studio](../07-studio/00-overview.md)]
 
 ![phone_calls query #2 Console](../images/examples/phone_calls_query_2_console.png)
 [caption:Using [TypeDB Console](../02-console/01-console.md)]
@@ -411,8 +406,8 @@ get $phone-number;
 
 #### Try it yourself
 
-![phone_calls query #3 Workbase](../images/examples/phone_calls_query_3_workbase.png)
-[caption:Using [Workbase](../07-workbase/00-overview.md)]
+![phone_calls query #3 Studio](../images/examples/phone_calls_query_3_studio.png)
+[caption:Using [Studio](../07-studio/00-overview.md)]
 
 ![phone_calls query #3 Console](../images/examples/phone_calls_query_3_console.png)
 [caption:Using [TypeDB Console](../02-console/01-console.md)]
@@ -582,8 +577,8 @@ get $phone-number-a, $phone-number-b;
 
 #### Try it yourself
 
-![phone_calls query #4 Workbase](../images/examples/phone_calls_query_4_workbase.png)
-[caption:Using [Workbase](../07-workbase/00-overview.md)]
+![phone_calls query #4 Studio](../images/examples/phone_calls_query_4_studio.png)
+[caption:Using [Studio](../07-studio/00-overview.md)]
 
 ![phone_calls query #4 Console](../images/examples/phone_calls_query_4_console.png)
 [caption:Using [TypeDB Console](../02-console/01-console.md)]
@@ -781,6 +776,12 @@ get $duration; mean $duration;
 ```
 
 #### Try it yourself
+
+![phone_calls query #5 Studio](../images/examples/phone_calls_query_5_studio.png)
+[caption:Using [Studio](../07-studio/00-overview.md)]
+
+![phone_calls query #5-2 Studio](../images/examples/phone_calls_query_5_2_studio.png)
+[caption:Using [Studio](../07-studio/00-overview.md)]
 
 ![phone_calls query #5 Console](../images/examples/phone_calls_query_5_console.png)
 [caption:Using [TypeDB Console](../02-console/01-console.md)]
