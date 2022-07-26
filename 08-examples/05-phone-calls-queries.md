@@ -780,9 +780,6 @@ get $duration; mean $duration;
 ![phone_calls query #5 Studio](../images/examples/phone_calls_query_5_studio.png)
 [caption:Using [Studio](../07-studio/00-overview.md)]
 
-![phone_calls query #5-2 Studio](../images/examples/phone_calls_query_5_2_studio.png)
-[caption:Using [Studio](../07-studio/00-overview.md)]
-
 ![phone_calls query #5 Console](../images/examples/phone_calls_query_5_console.png)
 [caption:Using [TypeDB Console](../02-console/01-console.md)]
 
