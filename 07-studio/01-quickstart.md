@@ -445,9 +445,6 @@ match $caller isa person, has phone-number "+63 815 962 6097"; $callee isa perso
 
 Everything is in place and we can start writing queries for our data. Open one final file and set your session and transaction types to `data` and `read` respectively.
 
-To the right of the transaction type, we have **transaction settings**, such as `snapshot` and `infer`. Because our query makes use of the `file-collaborator-rule` defined in the schema, you'll need to enable the `infer` option, which allows rules to be triggered when querying.
-
-
 ![Visualise The Data](/docs/images/studio/phone-calls-visualisation.png)
 Get a quick visualisation of the data with the following query:
 ```typeql
