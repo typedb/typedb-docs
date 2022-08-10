@@ -99,8 +99,8 @@ methods:
 
   - method:
     common: &method-getInstances
-      title: Retrieve all direct and indirect instances of this BooleanAttributeType
-      description: Retrieves all BooleanAttributes that are instances of this Type.
+      title: Retrieve all instances of this BooleanAttributeType
+      description: Retrieves all direct and indirect BooleanAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: booleanAttributeType.asRemote(Transaction tx).getInstances();

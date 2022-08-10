@@ -128,7 +128,7 @@ methods:
   - method:
     common: &method-getInstances
       title: Retrieve all instances of this LongAttributeType
-      description: Retrieves all LongAttributes that are instances of this Type.
+      description: Retrieves all direct and indirect LongAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: type.asRemote(Transaction tx).getInstances();

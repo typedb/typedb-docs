@@ -69,8 +69,8 @@ methods:
 
   - method:
     common: &method-getInstances
-      title: Retrieve all direct and indirect instances of this AttributeType
-      description: Retrieves all Attributes that are instances of this Type.
+      title: Retrieve all instances of this AttributeType
+      description: Retrieves all direct and indirect Attributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: attributeType.asRemote(Transaction tx).getInstances();
