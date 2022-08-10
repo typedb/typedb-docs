@@ -137,7 +137,7 @@ methods:
         - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
     python:
       <<: *method-getOwnersExplicit
-      method: attributeType.as_remote(tx).get_owners_explicit(onlyKey)
+      method: attribute_type.as_remote(tx).get_owners_explicit(only_key)
       returns:
         - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 
