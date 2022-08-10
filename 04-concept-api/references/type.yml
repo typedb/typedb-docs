@@ -161,3 +161,23 @@ methods:
       method: type.as_remote(tx).get_subtypes()
       returns:
         - Iterator of [`Type`](../concept-api/type?tab=python#type-methods)
+
+  - method:
+    common: &method-getSubtypesExplicit
+      title: Retrieve direct subtypes
+      description: Retrieves all direct subtypes of the type.
+    java:
+      <<: *method-getSubtypesExplicit
+      method: type.asRemote(Transaction tx).getSubtypesExplicit();
+      returns:
+        - Stream<[`Type`](../concept-api/type?tab=java#type-methods)>
+    javascript:
+      <<: *method-getSubtypesExplicit
+      method: type.asRemote(tx).getSubtypesExplicit()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`Type`](../concept-api/type?tab=javascript#type-methods)>"
+    python:
+      <<: *method-getSubtypesExplicit
+      method: type.as_remote(tx).get_subtypes_explicit()
+      returns:
+        - Iterator of [`Type`](../concept-api/type?tab=python#type-methods)

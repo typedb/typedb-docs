@@ -90,7 +90,7 @@ methods:
   - method:
     common: &method-getInstances
       title: Retrieve instances
-      descriptions: Retrieve all instances of this ThingType.
+      descriptions: Retrieve all direct or indirect instances of this ThingType.
     java:
       <<: *method-getInstances
       method: thingType.asRemote(Transaction tx).getInstances();
@@ -104,6 +104,26 @@ methods:
     python:
       <<: *method-getInstances
       method: thing_type.as_remote(tx).get_instances()
+      returns:
+        - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
+
+  - method:
+    common: &method-getInstancesExplicit
+      title: Retrieve direct instances
+      descriptions: Retrieve all direct instances of this ThingType.
+    java:
+      <<: *method-getInstancesExplicit
+      method: thingType.asRemote(Transaction tx).getInstancesExplicit();
+      returns:
+        - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
+    javascript:
+      <<: *method-getInstancesExplicit
+      method: thingType.asRemote(tx).getInstancesExplicit();
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
+    python:
+      <<: *method-getInstancesExplicit
+      method: thing_type.as_remote(tx).get_instances_explicit()
       returns:
         - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 
@@ -336,9 +356,29 @@ methods:
         - Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)
 
   - method:
+    common: &method-getPlaysExplicit
+      title: Retrieve playable roles
+      description: Retrieves all direct roles that are allowed to be played by the instances of this type.
+    java:
+      <<: *method-getPlaysExplicit
+      method: thingType.asRemote(Transaction tx).getPlaysExplicit();
+      returns:
+        - Stream<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>
+    javascript:
+      <<: *method-getPlaysExplicit
+      method: await thingType.asRemote(tx).getPlaysExplicit();
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-getPlaysExplicit
+      method: thing_type.as_remote(tx).get_plays_explicit()
+      returns:
+        - Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)
+
+  - method:
     common: &method-getOwns
       title: Retrieve attributes
-      description: Retrieves attribute types that the instances of this type are allowed to own.
+      description: Retrieves attribute types that the instances of this type are allowed to own directly or via inheritance.
       accepts:
         param:
           name: keysOnly
@@ -358,9 +398,31 @@ methods:
         - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
 
   - method:
+    common: &method-getOwnsExplicit
+      title: Retrieve attributes
+      description: Retrieves attribute types that the instances of this type are allowed to own directly.
+      accepts:
+        param:
+          name: keysOnly
+          type: boolean
+          description: If set to `true`, then only attribute types owned as keys will be retrieved.
+          required: false
+          default: false
+    java:
+      <<: *method-getOwnsExplicit
+      method: thingType.asRemote(Transaction tx).getOwnsExplicit(boolean keysOnly);
+      returns:
+        - Stream<[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)>
+    javascript:
+      <<: *method-getOwnsExplicit
+      method: await thingType.asRemote(tx).getOwnsExplicit(keysOnly);
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
+
+  - method:
     common: &method-getOwnsForValueType
       title: Retrieve attributes
-      description: Retrieves attribute types that the instances of this type are allowed to own.
+      description: Retrieves attribute types that the instances of this type are allowed to own directly or via inheritance.
       accepts:
         param1: &accepts-getOwnsForValueType-valueType
           name: valueType
@@ -396,10 +458,69 @@ methods:
         - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
 
   - method:
+    common: &method-getOwnsExplicitForValueType
+      title: Retrieve attributes
+      description: Retrieves attribute types that the instances of this type are allowed to own directly.
+      accepts:
+        param1: &accepts-getOwnsExplicitForValueType-valueType
+          name: valueType
+          type: "`AttributeType.ValueType`"
+          description: If specified, only attribute types of this ValueType will be retrieved.
+          required: false
+          default: null
+        param2: &accepts-getOwnsExplicitForValueType-keysOnly
+          name: keysOnly
+          type: boolean
+          description: If set to `true`, then only attribute types owned as keys will be retrieved.
+          required: false
+          default: false
+    java:
+      <<: *method-getOwnsExplicitForValueType
+      method: thingType.asRemote(Transaction tx).getOwnsExplicit(AttributeType.ValueType valueType, boolean keysOnly);
+      accepts:
+        param1:
+          <<: *accepts-getOwnsExplicitForValueType-valueType
+        param2:
+          <<: *accepts-getOwnsExplicitForValueType-keysOnly
+      returns:
+        - Stream<[`AttributeType`](../concept-api/type?tab=java#attributetype-methods)>
+    javascript:
+      <<: *method-getOwnsExplicitForValueType
+      method: await thingType.asRemote(tx).getOwnsExplicit(valueType, keysOnly);
+      accepts:
+        param1:
+          <<: *accepts-getOwnsExplicitForValueType-valueType
+        param2:
+          <<: *accepts-getOwnsExplicitForValueType-keysOnly
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`AttributeType`](../concept-api/type?tab=javascript#attributetype-methods)"
+
+  - method:
     python:
       title: Retrieve attributes
-      description: Retrieves attribute types that the instances of this type are allowed to own.
+      description: Retrieves attribute types that the instances of this type are allowed to own directly or via inheritance.
       method: thing_type.as_remote(tx).get_owns(value_type=None, keys_only=False)
+      accepts:
+        param1:
+          name: value_type
+          type: "`ValueType`"
+          description: If specified, only attribute types of this ValueType will be retrieved.
+          required: false
+          default: None
+        param2:
+          name: keys_only
+          type: bool
+          description: If set to `True`, then only attribute types owned as keys will be retrieved.
+          required: false
+          default: False
+      returns:
+        - Iterator of [`AttributeType`](../concept-api/type?tab=python#attributetype-methods)
+
+  - method:
+    python:
+      title: Retrieve direct attributes
+      description: Retrieves attribute types that the instances of this type are allowed to own directly.
+      method: thing_type.as_remote(tx).get_owns_explicit(value_type=None, keys_only=False)
       accepts:
         param1:
           name: value_type

@@ -22,7 +22,7 @@ methods:
   - method:
     common: &method-getrelates
       title: Retrieve roles
-      description: Retrieve roles that this RelationType relates to.
+      description: Retrieve roles that this RelationType relates to directly or via inheritance.
     java:
       <<: *method-getrelates
       method: relationType.asRemote(Transaction tx).getRelates();
@@ -36,6 +36,26 @@ methods:
     python:
       <<: *method-getrelates
       method: relation_type.as_remote(tx).get_relates()
+      returns:
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
+
+  - method:
+    common: &method-getrelatesexplicit
+      title: Retrieve direct roles
+      description: Retrieve roles that this RelationType relates to directly.
+    java:
+      <<: *method-getrelatesexplicit
+      method: relationType.asRemote(Transaction tx).getRelatesExplicit();
+      returns:
+        - "[Stream](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
+    javascript:
+      <<: *method-getrelatesexplicit
+      method: relationType.asRemote(tx).getRelatesExplicit();
+      returns:
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-getrelatesexplicit
+      method: relation_type.as_remote(tx).get_relates_explicit()
       returns:
         - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
 
