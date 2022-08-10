@@ -108,26 +108,6 @@ methods:
         - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 
   - method:
-    common: &method-getInstancesExplicit
-      title: Retrieve direct instances
-      descriptions: Retrieve all direct instances of this ThingType.
-    java:
-      <<: *method-getInstancesExplicit
-      method: thingType.asRemote(Transaction tx).getInstancesExplicit();
-      returns:
-        - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
-    javascript:
-      <<: *method-getInstancesExplicit
-      method: thingType.asRemote(tx).getInstancesExplicit();
-      returns:
-        - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
-    python:
-      <<: *method-getInstancesExplicit
-      method: thing_type.as_remote(tx).get_instances_explicit()
-      returns:
-        - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
-
-  - method:
     common: &method-setAbstract
       title: Set abstract
       description: Set a ThingType to be abstract, meaning it cannot have instances.

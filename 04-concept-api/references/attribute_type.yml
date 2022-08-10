@@ -69,7 +69,7 @@ methods:
 
   - method:
     common: &method-getInstances
-      title: Retrieve all instances of this AttributeType
+      title: Retrieve all direct and indirect instances of this AttributeType
       description: Retrieves all Attributes that are instances of this Type.
     java:
       <<: *method-getInstances
