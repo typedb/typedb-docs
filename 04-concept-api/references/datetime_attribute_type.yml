@@ -128,7 +128,7 @@ methods:
   - method:
     common: &method-getInstances
       title: Retrieve all instances of this DateTimeAttributeType
-      description: Retrieves all DateTimeAttributes that are instances of this Type.
+      description: Retrieves all direct and indirect DateTimeAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: type.asRemote(Transaction tx).getInstances();

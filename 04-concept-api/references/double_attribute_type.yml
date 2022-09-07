@@ -128,7 +128,7 @@ methods:
   - method:
     common: &method-getInstances
       title: Retrieve all instances of this DoubleAttributeType
-      description: Retrieves all DoubleAttributes that are instances of this Type.
+      description: Retrieves all direct and indirect DoubleAttributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: type.asRemote(Transaction tx).getInstances();
