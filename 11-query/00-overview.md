@@ -36,6 +36,8 @@ As shown in the image above, TypeQL queries are categorized into two main types:
   - **[Insert](../11-query/03-insert-query.md)**: inserts a data instance according to the given statement(s), optionally, preceded by a `match` clause.
   - **[Group](../11-query/06-aggregate-query.md#grouping-answers)**: always as a part of a `get` query, returns the results grouped by the given variable, optionally mapped to the count of each group.
   - **[Aggregate Values](../11-query/06-aggregate-query.md#aggregate-values-over-a-dataset)**: always as a part of a `get` query, returns the statistical value of numeric attributes based on the given aggregate function.
+  
+The TypeQL repository contains the [full grammar](https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4) for TypeQL.
 
 ## TypeQL Answers
 
