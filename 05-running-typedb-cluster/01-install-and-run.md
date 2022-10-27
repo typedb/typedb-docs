@@ -191,6 +191,7 @@ $ ./typedb cluster \
     --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
     --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
 ```
+and so on.
 
 In this case, port `1729` would need to be open to public and clients would use
 `external-host-1`, `external-host-2` and `external-host-3` hostname to communicate with TypeDB Cluster;
