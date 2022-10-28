@@ -121,7 +121,7 @@ build:
         sudo mv typedb.service /etc/systemd/system/
         
         sudo apt install -y python3-pip
-        python3 -m pip install typedb-client=2.11.1
+        python3 -m pip install typedb-client==2.11.1
 
         export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
         export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
