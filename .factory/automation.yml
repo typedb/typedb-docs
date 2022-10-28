@@ -120,7 +120,7 @@ build:
         EOM
         sudo mv typedb.service /etc/systemd/system/
         
-        apt install -y python3-pip
+        sudo apt install -y python3-pip
         python3 -m pip install typedb-client=2.11.1
 
         export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
