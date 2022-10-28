@@ -121,7 +121,7 @@ If you're using a single machine to host all nodes, you can prefix the port with
 the ports `1729`, `1730`, `1731` would turn into `11729`, `11730`, `11731`; `21729`, `21730`, `21731` and so on.
 </div>
 
-This is how 3-node TypeDB Cluster would be started on a single machine.
+This is how 3-node TypeDB Cluster would be started on three separate machines.
 
 ```bash
 # On 10.0.0.1:
