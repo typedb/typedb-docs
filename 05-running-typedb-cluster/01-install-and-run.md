@@ -110,7 +110,7 @@ of those servers acts as a leader and the others are followers. Increasing the n
 failure: to tolerate N nodes failing, Cluster needs to consist of 2*N+1 nodes.
 This section describes how you can set up a 3-node cluster (in this case, one node can fail and no data is lost).
 
-Each node binds to two ports: a client port which TypeDB client drivers connect to (`1729`), and two server ports (`1730` and `1731`) for server-to-server communication.
+Each node binds to three ports: a client port which TypeDB client drivers connect to (`1729`), and two server ports (`1730` and `1731`) for server-to-server communication.
 
 For this tutorial, it's assumed that all three nodes are on the same virtual network and have relevant ports open and
 uninhibited by any firewall. The nodes have IP addresses `10.0.0.1`, `10.0.0.2` and `10.0.0.3` respectively.
