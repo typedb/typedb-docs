@@ -112,7 +112,7 @@ This section describes how you can set up a 3-node cluster (in this case, one no
 
 Each node binds to three ports: a client port which TypeDB client drivers connect to (`1729`), and two server ports (`1730` and `1731`) for server-to-server communication.
 
-For this tutorial, it's assumed that all three nodes are on the same virtual network and have relevant ports open and
+For this tutorial, it's assumed that all three nodes are on the same virtual network and have the relevant ports open and are
 uninhibited by any firewall. The nodes have IP addresses `10.0.0.1`, `10.0.0.2` and `10.0.0.3` respectively.
 
 <div class="note">
@@ -193,14 +193,14 @@ $ ./typedb cluster \
 ```
 and so on.
 
-In this case, port `1729` would need to be open to public and clients would use
-`external-host-1`, `external-host-2` and `external-host-3` hostname to communicate with TypeDB Cluster;
+In this case, port `1729` would need to be open to public and clients would use the
+`external-host-1`, `external-host-2` and `external-host-3` hostnames to communicate with TypeDB Cluster;
 inter-server communication would be done over a private network using ports `1730` and `1731`.
 </div>
 
 ### Stopping
 
-Stopping TypeDB Cluster is done the same way as with single node: pressing Ctrl+C in the terminal that was used to start it.
+Stopping TypeDB Cluster is done the same way as on a single node: pressing Ctrl+C in the terminal that was used to start it.
 All nodes must be shut down independently in the same way.
 
 ## Summary
