@@ -15,7 +15,7 @@ build:
         bazel run @vaticle_dependencies//factory/analysis:dependency-analysis
   correctness:
     build:
-      image: vaticle-ubuntu-21.04
+      image: vaticle-ubuntu-20.04
       type: foreground
       command: |
         export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
@@ -87,7 +87,7 @@ build:
         bazel run //test/example/java:phone-calls
         bazel run //test/example/java:social-network
     test-example-nodejs:
-      image: vaticle-ubuntu-21.04
+      image: vaticle-ubuntu-20.04
       type: foreground
       command: |
         cat > typedb.service <<- EOM
