@@ -1,6 +1,8 @@
 package com.vaticle.doc.test.query;
 
-
+import static com.vaticle.typedb.common.collection.Collections.list;
+import static com.vaticle.typedb.common.collection.Collections.pair;
+import static com.vaticle.typedb.common.collection.Collections.set;
 import com.vaticle.typedb.client.TypeDB;
 import com.vaticle.typedb.client.api.TypeDBClient;
 import com.vaticle.typedb.client.api.TypeDBSession;
