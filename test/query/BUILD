@@ -39,6 +39,7 @@ typedb_java_test(
     test_class = "com.vaticle.doc.test.query.TypeQLJavaTest",
     srcs = [":typeql-java-tests"],
     deps = [
+        "@vaticle_typedb_common//:common",
         "@vaticle_typedb_client_java//:client-java",
         "@vaticle_typedb_client_java//api",
         "@vaticle_typeql//java:typeql-lang",
