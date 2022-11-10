@@ -385,11 +385,11 @@ def parse_data_to_dictionaries(input):
                 ## now: the tag is complete
                 buffer += line
                 keep_adding_lines = False
-                ## convert the buffer (string) to a strurctured tag
+                ## convert the buffer (string) to a structured tag
                 tnode = et.fromstring(buffer)
                 ## parse the tag to a dictionary
                 item = {}
-                for element in tnode.getchildren():
+                for element in list(tnode):
                     item[element.tag] = element.text
                 ## append the item to the list
                 items.append(item)
@@ -677,9 +677,9 @@ def parse_data_to_dictionaries(input):
                 buffer += line
                 append = False
                 tnode = et.fromstring(buffer)
-                ## parse the tag to a dictionary and append to tiems
+                ## parse the tag to a dictionary and append to items
                 item = {}
-                for element in tnode.getchildren():
+                for element in list(tnode):
                     item[element.tag] = element.text
                 items.append(item)
                 ## delete the buffer to free the memory

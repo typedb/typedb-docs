@@ -19,9 +19,9 @@ TypeDB Studio is available for Linux, Mac and Windows. Visit the [Download Centr
 
 ## Version Compatibility
 
-|    Studio    |   TypeDB    | TypeDB Cluster |
-|:------------:|:-----------:|:--------------:|
-|2.10.0-alpha-9| 2.10.0      |     2.10.0     |
+| Studio | TypeDB | TypeDB Cluster |
+|:------:|:------:|:--------------:|
+| 2.11.0 | 2.11.1 |     2.11.1     |
 
 
 ## Up next...

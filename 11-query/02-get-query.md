@@ -73,7 +73,7 @@ match $p isa person, has full-name $fn; get $fn; sort $fn asc;
 ```java
 TypeQLMatch.Sorted query = TypeQL.match(
   var("p").isa("person").has("full-name", var("fn"))
-).get("fn").sort(Arrays.asList("fn"), "asc");
+).get("fn").sort(pair("fn", "asc"));
 ```
 [tab:end]
 </div>
@@ -100,8 +100,7 @@ TypeQLMatch.Limited query = TypeQL.match(
 [tab:end]
 </div>
 
-This returns 10 instances of the `person` (entity) type starting from the 6th person sorted by their `full-name`.
-
+This returns 10 instances of the `person` (entity) type starting from the 6th person sorted by their `full-name`. If no sorting method argument is provided (i.e. `asc` or `desc`), we sort in ascending order.
 
 ## Clients Guide
 

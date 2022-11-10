@@ -70,7 +70,7 @@ methods:
   - method:
     common: &method-getInstances
       title: Retrieve all instances of this AttributeType
-      description: Retrieves all Attributes that are instances of this Type.
+      description: Retrieves all direct and indirect Attributes that are instances of this Type.
     java:
       <<: *method-getInstances
       method: attributeType.asRemote(Transaction tx).getInstances();
@@ -89,7 +89,7 @@ methods:
 
   - method:
     common: &method-getOwners
-      title: Retrieve owners of this Type of Attribute
+      title: Retrieve direct and inherited owners of this Type of Attribute
       description: Retrieve all Things that own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
       accepts:
         param:
@@ -111,6 +111,33 @@ methods:
     python:
       <<: *method-getOwners
       method: attributeType.as_remote(tx).get_owners(onlyKey)
+      returns:
+        - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
+
+  - method:
+    common: &method-getOwnersExplicit
+      title: Retrieve direct owners of this Type of Attribute
+      description: Retrieve all Things that directly own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
+      accepts:
+        param:
+          name: onlyKey
+          description: If true, only retrieve things that have an attribute of this type as a key.
+          type: boolean
+          required: false
+          default: false
+    java:
+      <<: *method-getOwnersExplicit
+      method: attributeType.asRemote(Transaction tx).getOwnersExplicit(boolean onlyKey);
+      returns:
+        - Stream<[`Thing`](../concept-api/thing?tab=java#thing-methods)>
+    javascript:
+      <<: *method-getOwnersExplicit
+      method: attributeType.asRemote(tx).getOwnersExplicit(onlyKey)
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`Thing`](../concept-api/thing?tab=javascript#thing-methods)"
+    python:
+      <<: *method-getOwnersExplicit
+      method: attribute_type.as_remote(tx).get_owners_explicit(only_key)
       returns:
         - Iterator of [`Thing`](../concept-api/thing?tab=python#thing-methods)
 

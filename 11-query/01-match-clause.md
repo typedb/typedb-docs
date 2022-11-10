@@ -367,6 +367,31 @@ TypeQLMatch.Filtered query = TypeQL.match(
 [tab:end]
 </div>
 
+### Concept Equality
+
+TypeQL allows exact concept equality using the `is` keyword. This is commonly combined with negation to check two 
+concepts are not equal:
+
+<div class="tabs dark">
+[tab:TypeQL]
+<!-- test-ignore -->
+```typeql
+match $x isa person; $y isa person; not { $x is $y; }; 
+```
+[tab:end]
+
+[tab:Java]
+<!-- test-ignore -->
+```java
+TypeQLMatch query = TypeQL.match(
+  var("x").isa("person"), 
+  var("y").isa("person"),
+  TypeQL.not(var("x").is(var("y")))
+);
+```
+[tab:end]
+</div>
+
 ### Comparators
 When matching an instance of an attribute type based on its value or simply comparing two variables, the following comparators may be used: `=`, `!=`, `>`, `>=`, `<` and `<=`.
 
