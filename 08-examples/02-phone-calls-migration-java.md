@@ -48,8 +48,7 @@ Modify `pom.xml` to include the latest version of TypeQL and TypeDB Client Java 
     	</repository>
   	</repositories>
   	<properties>
-    	<maven.compiler.source>1.7</maven.compiler.source>
-    	<maven.compiler.target>1.7</maven.compiler.target>
+    	<maven.compiler.release>11</maven.compiler.release>
   	</properties>
   	<dependencies>
         <dependency>
@@ -428,6 +427,7 @@ Now that we have a `session` connected to the `phone_calls` database, we can mov
 <!-- test-ignore -->
 ```java
 // imports
+import com.vaticle.typedb.client.api.TypeDBTransaction;
 
 public class PhoneCallsMigration {
 	abstract static class Input {...}
@@ -479,6 +479,7 @@ But regardless of what the data format is, we need the right setup to read the f
 <!-- test-ignore -->
 ```java
 // other imports
+import com.vaticle.typedb.client.api.TypeDBSession;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -517,6 +518,7 @@ Having done that, we write the implementation of `parseDataToJson(input)` for pa
 
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import com.vaticle.typedb.client.api.TypeDBSession;
 
 public class PhoneCallsMigration {
     abstract static class Input {...}
@@ -567,11 +569,11 @@ becomes
 We’ll use [Gson’s JsonReader](https://google.github.io/gson/apidocs/com/google/gson/stream/JsonReader.html) for reading our `.json` files. Let’s add the dependency for it. We need to add the following to the `dependencies` tag in `pom.xml`.
 
 ```xml
-&gt;dependency&gt;
+&lt;dependency&gt;
 	&lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
   	&lt;artifactId&gt;gson&lt;/artifactId&gt;
   	&lt;version&gt;2.7&lt;/version&gt;
-&gt;/dependency&gt;
+&lt;/dependency&gt;
 ```
 
 Having done that, we write the implementation of `parseDataToJson(input)` for reading `.json` files.
@@ -580,12 +582,13 @@ Having done that, we write the implementation of `parseDataToJson(input)` for re
 ```java
 // other imports
 import com.google.gson.stream.JsonReader;
+import com.vaticle.typedb.client.api.TypeDBSession;
 
 public class PhoneCallsMigration {
     abstract static class Input {...}
     public static void main(String[] args) {...}
     static void connectAndMigrate(Collection&lt;Input&gt; inputs) {...}
-    static Collection&t;Input&gt; initialiseInputs() {...}
+    static Collection&lt;Input&gt; initialiseInputs() {...}
     static void loadDataIntoTypeDB(Input input, TypeDBSession session) {...}
 
     static ArrayList&lt;Json&gt; parseDataToJson(Input input) throws IOException {
@@ -628,6 +631,7 @@ For parsing XML data, we need to know the name of the target tag. This needs to 
 <!-- test-ignore -->
 ```java
 // imports
+import com.vaticle.typedb.client.api.TypeDBSession;
 
 public class PhoneCallsMigration {
     abstract static class Input {
@@ -667,6 +671,7 @@ And now for the implementation of `parseDataToJson(input)` for parsing `.xml` fi
 <!-- test-ignore -->
 ```java
 // other imports
+import com.vaticle.typedb.client.api.TypeDBSession;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
