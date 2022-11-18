@@ -16,6 +16,13 @@ Whether you need a tool to test and experiment with your newly created TypeDB da
 ## Download Studio
 TypeDB Studio is available for Linux, Mac and Windows. Visit the [Download Centre](https://vaticle.com/download#typedb-studio) to download and install the latest release of Studio.
 
+For Mac, TypeDB Studio is also available through Homebrew:
+
+```
+brew tap vaticle/tap
+brew install --cask vaticle/tap/typedb-studio
+```
+
 
 ## Version Compatibility
 
