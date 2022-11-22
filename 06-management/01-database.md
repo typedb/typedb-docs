@@ -2,7 +2,7 @@
 pageTitle: Managing Databases
 keywords: typedb, database
 longTailKeywords: typedb database
-Summary: Creating, listing, cleaning and deleting TypeDB Databases.
+Summary: Creating, listing and deleting TypeDB Databases.
 toc: false
 ---
 
@@ -19,9 +19,6 @@ We can create a new a database via the TypeDB Clients [Java](../03-client-api/01
 
 ### Listing All Databases
 We can list all databases of the running TypeDB server via the TypeDB Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [Studio](../07-studio/01-quickstart.md#connecting-to-typedb-server).
-
-### Cleaning a Database
-Cleaning the database, not to be confused with deletion, wipes out both the data and the schema contained within the database. We can clean a database via [TypeDB Console](../02-console/01-console.md#console-commands).
 
 ### Deleting a Database
 We can delete a database via the TypeDB Clients [Java](../03-client-api/01-java.md#delete-a-database), [Node.js](../03-client-api/03-nodejs.md#delete-a-database) and [Python](../03-client-api/02-python.md#delete-a-database).
