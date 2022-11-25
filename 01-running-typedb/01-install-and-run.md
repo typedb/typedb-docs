@@ -45,7 +45,7 @@ sudo apt install typedb-all
 #### APT conflicts
 
 APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release strategy allows
-depended packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate feature upgrades.
+depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate feature upgrades.
   
 In these situations, you will encounter the following type of errors:
 
@@ -64,7 +64,7 @@ The following packages have unmet dependencies.
 typedb-all : Depends: typedb-server (= 2.11.0) but it is not going to be installed
 ```
 
-To solve this, specify each of the depended packages by exact version as well:
+To solve this, specify each of the depended upon packages by exact version as well:
 ```
 > sudo apt-get install typedb-all=2.11.0 typedb-server=2.11.0
 ```
