@@ -56,7 +56,7 @@ As the name suggests, graph databases are based on [graph theory](https://en.wik
 4. Relationships are directed and connect two nodes
 5. Relationships can have properties
 
-As relationships are directed, they always have a start and an end node. To give a label to a relationship, the concept of "verbing" is used. For example, we can say that a man is "married to" a woman and create the relationship `MARRIED_TO` to represent that marriage. 
+As relationships are directed between two nodes, they always have a start and an end node. To give a label to a relationship, the concept of "verbing" is used. For example, we can say that a man is "married to" a woman and create the relationship `MARRIED_TO` to represent that marriage. 
 
 However, because of their directed and binary nature, graph edges don't directly map to relationships in a conceptual model or ER diagram. To translate such a conceptual model to a graph database, therefore, we must first go through a normalisation process.
 
