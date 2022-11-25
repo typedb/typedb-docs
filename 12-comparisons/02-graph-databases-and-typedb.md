@@ -1,42 +1,30 @@
 ---
 pageTitle: Property Graph Databases and TypeDB
-keywords: typeql, query, cypher, neo4j, graph database, property graph database
-longTailKeywords: typeql queries, typeql query structure, cypher
-Summary: Comparing Property Graph Databases to TypeDB
+keywords: typeql, query, cypher, neo4j, graph database, property graph database, dgraph, tigergraph, cypher, gremlin
+longTailKeywords: typeql queries, typeql query structure
+Summary: Comparing TypeDB to Property Graph Databases
 ---
 ## Comparing TypeDB to Property Graph Databases
 
-Graph databases have matured into mainstream technologies and are becoming increasingly valuable to organisations across any industry. They are more flexible than traditional relational databases as they allow us to leverage the relationships in our data in a way that relational databases cannot do. In a time when organisations are trying to get the most out of their data, this creates opportunities for any organisation. 
+Graph databases (specifically, labelled property graphs) are growing rapidly and are now used by organisations across a wide number of industries. From life sciences to financial services, graphs are increasingly seen as the preferred option over relational databases due to their more flexible way of representing connected data. However, working with graph databases creates plenty of unforeseen challenges, for example when it comes to maintaining database consistency. In what follows, we discuss how TypeDB addresses those issues by providing a comparison between TypeDB and graphs. 
 
-However, developing with graph databases leads to plenty of challenges, in particular when it comes to data modelling and maintaining consistency of our data, among others. In what follows, we discuss how TypeDB compares to graph databases, in particular labelled property graphs, and how TypeDB addresses these challenges. While both technologies share some similarities, they are fundamentally different. We'll look at how to read & write data, how to model complex domains and we'll also look at TypeDB's ability to perform automated reasoning.
+The main differences between these two technologies can be summarised as follows: 
 
-The main differences between TypeDB and graph databases can be summarised as: 
+1. **TypeDB allows the modelling of data using the well-known [Entity-Relationship model](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model).** Graph databases use a model based on vertices and directed binary edges.
+2. **TypeDB provides logical data validation to ensure your code inserts correctly.** Graph databases delegate schema adherence to the application layer.
+3. **TypeDB encodes data for logical interpretation by an inference engine**. Graph databases don't provide native inference capabilities.
 
-1. **TypeDB provides a concept-level schema** with a type system that fully implements the Entity-Relationship (ER) model. Instead, graph databases use vertices and edges without integrity constraints imposed in the form of a schema
-2. **TypeDB contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
-3. **TypeDB is an abstraction layer over a graph.** TypeDB leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
+Architecturally, **TypeDB works as an abstraction layer over a native graph storage engine,** giving you a higher-level representation of data than in a traditional graph database. 
 
-There are several different graph technologies available. Some of these are based on RDF and SPARQL, others are imperative, path-based query languages based on Gremlin. Most popular, however, is Cypher, which has grown to become the most adopted graph database query language for property graphs. For this reason, in this comparison we'll just focus on Cypher and labelled property graphs. For a comparison of TypeDB to Semantic Web Technologies, you can read [this](https://docs.vaticle.com/docs/comparisons/semantic-web-and-typedb). 
+There are several different graph technologies available. Some of these are based on [RDF](https://www.w3.org/RDF/) and [SPARQL](https://www.w3.org/TR/sparql11-query/), others are imperative, path-based query languages based on [Gremlin](https://tinkerpop.apache.org/gremlin.html). Most popular, however, is [Cypher](https://en.wikipedia.org/wiki/Cypher_(query_language)), which has grown to become the most adopted graph database query language for property graphs. For this reason, in this comparison we'll just focus on Cypher. For a comparison of TypeDB to [Semantic Web Technologies](https://www.w3.org/standards/semanticweb/), have a look at [this](https://docs.vaticle.com/docs/comparisons/semantic-web-and-typedb). 
 
 ## The Challenges of Working with a Graph Database
 
-As the name suggests, graph databases are based on graph theory as a mathematical concept to form their data model. They consider connectedness as a first-class citizen, which makes them, compared to relational databases, particularly good at representing connected data. That's because in relational databases, the relations between entities aren't made semantically explicit in the model, whereas graph databases store those connections directly between the elements. 
-
-A graph database consists of the following properties: 
-
-1. The data model contains nodes, relationships, properties and labels
-2. Nodes can have properties
-3. Nodes can have tags with one or more labels
-4. Relationships are directed and connect nodes to create structure in the graph
-5. Relationships can have properties
-
-Compared to traditional databases, this data structure is more suitable to work with highly interconnected data due to its flexibility and expressivity. 
-
-However, developing on a graph database requires us to understand many low-level implementation details of graph computing. As a graph database user, we need to overcome plenty of prerequisite challenges and go through a steep learning curve before we can use the technology optimally. This creates a high barrier to entry. The challenges of working with graph databases can be summarised as follows: 
+While graph databases provide benefits compared to relational databases, the graph model is too low level to accurately represent the complexities and intricacies of the real world in the same way that we as humans think. Graph databases simply lack many important modelling constructs, especially as the real world cannot be distilled into simple binary relations. In addition, the lack of schema constraints means data consistency and safety in the database is nearly impossible to achieve, making it difficult to write complex queries. The challenges of working with graph databases can be summarised as follows:
 
 **Modelling Highly Interconnected Data**
 
-Due to the high level of expressivity that graph databases provide, modelling complex domains on a graph is not easy, and is equivalent to modelling knowledge, i.e., ontology engineering.
+Due to the lack of higher-level modelling constructs, modelling complex domains in a graph database is not easy and is equivalent to modelling knowledge, i.e., ontology engineering.
 
 Specialist graph data engineers are needed to model a graph structure. This approach, however, is not scalable for widespread adoption. Instead, what is needed is a system which allows any engineer to easily model their domain on a graph, without having to be proficient in ontology engineering or be an expert in the underlying graph data structure.
 
@@ -48,44 +36,48 @@ As a result, it's very hard to deliver a system that is generic enough to guaran
 
 There is no such thing as data without a schema, at least if you want to derive significant value from it. It's either explicitly defined (like in relational databases), or implicitly at the user level. Given the degree of complexity of highly interconnected data captured by graphs, the lack of consistency becomes a significant hurdle to adopt graph databases.  
 
-**Writing the Graph Queries Itself**
+**Writing Complex Graph Queries**
 
-Writing the right graph queries that will interrogate the graph database has its challenges. You need to be explicit in defining the path to traverse between data instances. Given that your data model governs the paths between your data instances, you have to design your queries specific to the way you defined your model. 
+Writing the right graph queries that will interrogate the graph database has its challenges. You need to be explicit in defining the path to traverse between data instances. Given that your data model governs the paths between your data instances, you must design your queries specific to the way you defined your model. 
 
-What makes this particularly challenging is that you may not have modelled your data in the most generic, consistent and conceptually correct model (e.g., sometimes you defined a relationship as a node, other times as an edge). As a consequence, your queries may not be touching the right data. Each question you want to ask the graph needs a custom graph query, written based on your custom domain model, which may not provide the most optimal path for querying. Therefore, you may for example not be able to abstract the graph query into functions that would take your user's input as an argument, and reuse those functions across multiple use cases. 
+What makes this particularly challenging is that you may not have modelled your data in the most generic, consistent and conceptually correct model (e.g., sometimes you defined a certain concept as a node, other times as an edge). As a consequence, your queries may not be touching the right data. Each question you want to ask the graph needs a custom graph query, written based on your custom domain model, which may not provide the most optimal path for querying. Therefore, you may not be able to abstract the graph query into functions that would take your user's input as an argument and reuse those functions across multiple use cases. 
 
 Writing graph queries is already a challenging task as you need to understand graph algorithms and data structures. With the additional challenge of not being able to abstract and reuse your graph queries to the point where you can just focus on your problem domain, adopting graph databases becomes very hard. 
-
-To address these challenges, TypeDB abstracts away the low levels of a graph database by implementing a type system. This abstracts away the low-level implementation details of the graph and lets you adopt the technology without a steep learning curve. 
 
 ## Modelling and Defining Schema
 
 ### Modelling Philosophy of Property Graphs
 
-The graph model consists primarily of nodes and relationships that have names called labels. Relationships are directed and visualised as arrowheads. Both have properties (in the form of key/value pairs) and are called property names. 
+As the name suggests, graph databases are based on [graph theory](https://en.wikipedia.org/wiki/Graph_theory) as the foundation for the data model. They consist of the following key attributes: 
 
-As relationships are directed, they always have a start and an end node. To give a label to a relationship, the concept of "verbing" is used. For example, we can say that a man is "married to" a woman, and create the relationship `MARRIED_TO` to represent that marriage. 
+1. Data is modelled as nodes, relationships (or edges), properties and labels
+2. Nodes can have properties
+3. Nodes can have tags with one or more labels
+4. Relationships are directed and connect two nodes
+5. Relationships can have properties
 
-However, the graph model doesn't directly map to a conceptual model or ER diagram, as nodes and edges don't always directly map to entities and relationships. Graph databases also offer no native support for concepts such as, for example, ternary relations, n-ary relations or roles. Therefore, to implement a graph model, we must first go through a normalisation process and map our conceptual model (ER diagram) to the graph model. 
+As relationships are directed, they always have a start and an end node. To give a label to a relationship, the concept of "verbing" is used. For example, we can say that a man is "married to" a woman and create the relationship `MARRIED_TO` to represent that marriage. 
+
+However, because of their directed and binary nature, graph edges don't directly map to relationships in a conceptual model or ER diagram. To translate such a conceptual model to a graph database, therefore, we must first go through a normalisation process.
 
 ![Graph Database Normalisation](../images/comparisons/graph-normalisation.png)
 *In a graph database we need to map our conceptual model to the graph model.*
 
-### Concept Level Modelling
+### Conceptual Modelling
 
-TypeDB provides a concept-level schema that fully implements the Entity-Relationship (ER) model. TypeDB's schema is a type system that implements the principles of knowledge representation and reasoning. 
+TypeDB implements a higher-level model that fully implements the Entity-Relationship (ER) model. TypeDB's schema is a type system that allows you to model your domain based on logical and object-oriented principles, composed of entity, relationship and attribute types, as well as type hierarchies, roles and rules. 
 
-Unlike in a graph database, this means that we can map any ER Diagram directly to how we implement it in TypeQL, avoiding the need to go through a normalisation process. In TypeDB, we create a direct mapping of the ER Diagram with entities, relations, attributes and roles to how we implement it later in code. By modelling at the conceptual level using a type system, we avoid the need to go through a normalisation process that would otherwise be required in a graph database. 
+This means that TypeDB allows you to represent your data directly at a conceptual level. In other words, we can map any ER Diagram directly to how we implement it in TypeQL, avoiding the need to go through a normalisation process that would otherwise be required in a graph database. 
 
 ![TypeDB abstraction](../images/comparisons/typedb-abstraction-over-graph.png)
 *TypeDB's type system is a direct implementation of a conceptual model.*
 
 
-### Hyper-relational Modelling
+### Hypergraph Theory
 
-A central component of TypeDB's type system is its ability to represent hyper-relations and hyper-entities (in TypeDB, entities, relations and attributes are first class modelling constructs). While in a binary graph a relation or edge is just a *pair* of vertices, a *hyper-relation (*or *hyper-edge)* is a *set* of vertices. 
+A central component of TypeDB's conceptual model is the use of hypergraph theory to represent [hyper-relations](https://blog.vaticle.com/modelling-data-with-hypergraphs-edff1e12edf0) and hyper-entities. While in a binary graph a relation or edge is just a *pair* of vertices, a *hyper-relation* (or *hyper-edge)* is a *set* of vertices. 
 
-This enables us to natively model concepts such as n-ary relationships, nested relationships or cardinality-restricted relationships. Using these constructs, we can easily create complex knowledge models that can evolve flexibly. Hyper-entities are defined as entities with multiple instances for one attribute type, which is not possible in a graph database.
+This enables us to natively model important concepts such as n-ary relationships, nested relationships or cardinality-restricted relationships. Using these constructs, we can easily create complex knowledge models that can evolve flexibly. Hyper-entities are defined as entities with multiple instances for one attribute type.
 
 TypeDB's hypergraph formalism is based on three premises: 
 
@@ -93,28 +85,28 @@ TypeDB's hypergraph formalism is based on three premises:
 2. A hyperedge is a finite set of vertices (distinguishable by specific roles they play in that hyperedge)
 3. A hyperedge is also a vertex itself and can be connected by other hyperedges
 
-As property graph databases don't allow relationships to connect more than two nodes, they're unable to represent hyper-relations on their own. However, there are some ways around this by either adding a foreign key to the nodes taking part in that hyper-relation, or representing the hyper-relation as a node (reification). As foreign keys are not very graph-y, reification is often the better approach. 
+As graph databases don't allow relationships to connect more than two nodes, they're unable to represent hyper-relations on their own. However, there are some ways around this by either adding a foreign key to the nodes taking part in that hyper-relation or representing the hyper-relation as a node (this process is called reification). As foreign keys are not very "graph-y", reification is often the better approach. 
 
-Nonetheless, reifying the graph should be avoided as it can lead having to refactor our entire graph and breaking the data model. It would also require changes to any queries and application code that could produce or consume such data.
-
-In the image below, we see an example of two *hyper-relations* modelled in TypeDB:
-
-- `marriage`: describing a binary `marriage` relation between *Bob* and *Alice* playing the roles of `husband` and `wife` respectively, and the `marriage` relation playing the role of `certified-marriage` in the `divorce-filing` relation
-- `divorce-filing`: describing a ternary `divorce-filing` relation involving three role-players in the roles of `certified-marriage`*,* `petitioner` and `respondent`
-
-![Marriage hyper-relation](../images/comparisons/sem-web-hyper-relation.png)
-
-In this example, we see that a hyper-relation could be considered to be a collection of a role & role-player pairs of arbitrary cardinality. As hyper-relations cannot be represented natively in binary relations, the above example could be modelled like this in a graph database:
-
-![Graph hyper-relation](../images/comparisons/graph-hyper-relation.png)
-
-In order to represent these hyper-relations in a property graph model, we need to reify the two hyper-relations (`marriage` and `divorce-filing`) and represent them as nodes. However, as mentioned before, this approach is highly undesirable as we end up modelling four nodes that represent entities and relations. We have now broken the model. That's why modelling natively in hyper-relations offers a more natural and straightforward data representation formalism, enabling modelling at a conceptual level using entity-relationship diagrams.
+Nonetheless, reifying the graph should be avoided at all costs as it can lead having to refactor our entire graph and breaking the data model. It would also require changes to any queries and application code that could produce or consume such data.
 
 In a real-life scenario, when the complete conceptual model is not fully foreseen at the outset, the actual modelling outcome may create a lot of unnecessary complexity. Furthermore, modelling hyper-relations natively, as compared to binary directed edges, leads to improvements to query planning and query optimisation, as the data grouped together in the same structure “containers” is also often retrieved in similar groupings by users and applications. And by acknowledging the structure of these in advance of querying, the retrieval process can be more optimally planned and executed.
 
-### N-ary and Ternary Relations
+### Examples of N-ary and Nested Relations
 
-TypeDB's type system allows modelling n-ary and ternary relations. The example below models a ternary relation between a supplier, a buyer, and a part. They can be connected through a single relation we call `supplying`.
+In the image below, we see an example of a nested and n-ary relation modelled in TypeDB:
+
+- `marriage`: a nested relation called between *Bob* and *Alice* playing the roles of `husband` and `wife` respectively and playing the role of `certified-marriage` in the `divorce-filing` relation
+- `divorce-filing`: describing an n-ary relation involving three role-players in the roles of `certified-marriage`*,* `petitioner` and `respondent`
+
+![Marriage hyper-relation](../images/comparisons/sem-web-hyper-relation.png)
+
+These two hyper-relations can be considered to be a collection of a role & role-player pairs of arbitrary cardinalities. These types of relations cannot be represented natively in binary relations, so in a graph one would end up creating the following model: 
+
+![Graph hyper-relation](../images/comparisons/graph-hyper-relation.png)
+
+To represent these hyper-relations in a graph model, we would need to reify the two hyper-relations (`marriage` and `divorce-filing`) and represent them as nodes. However, as mentioned before, this approach is highly undesirable as we end up modelling four nodes that represent entities and relations. We have now broken the model. That's why modelling natively in hyper-relations offers a more natural and straightforward data representation formalism, enabling modelling at a conceptual level using entity-relationship diagrams.
+
+Let's look at another example of a hyper relation. Here, a ternary relation is modelled that represents a supplier, a buyer and a part. We want to connect them through a single relation `supplying`.
 
 First, let's look at how we would model this in a graph database. As we can't natively represent the three entities in one relation, we can either store foreign keys as a property on each node, or, more preferably, create an additional (intermediate) node to support it, similar to how we reified the graph in the example above. 
 
@@ -145,23 +137,21 @@ The schema in TypeDB would then be as follows (note how the `supplying` relation
 ```typeql
 define 
 company sub entity, 
-plays supplying:supplier, 
-plays supplying:buyer; 
+  plays supplying:supplier, 
+  plays supplying:buyer; 
 
 part sub entity, 
-plays supplying:supplied; 
+  plays supplying:supplied; 
 
 supplying sub relation, 
-relates supplier, 
-relates buyer, 
-relates supplied;
+  relates supplier, 
+  relates buyer, 
+  relates supplied;
 ```
 
-### Nested Relations
+In a nested relation, we want a relation to play a role in another relation. For example, we may have modelled a marriage as a relation and we want to localise this event in London through a `located-in` relation. To do so would require us to connect the `marriage` relation through a relation of type `located` to the entity `London`. 
 
-In a nested relation, we want a relation to play a role in another relation. For example, we may have modelled a marriage as a relation, and we want to localise this event in London through a `located-in` relation. To do so would require us to connect the `marriage` relation through a relation of type `located` to the entity `London`. 
-
-In a graph database, we cannot create nested relations. Instead, we can model a marriage between two persons with a `MARRIED_TO` relation. However, connecting that edge to a `city` node becomes impossible, as we cannot have a relation connect to another relation. Instead, we end up reifying the model and turning the `MARRIED_TO` edge into a node `marriage`, so we can connect that node to the `city` node through the `LOCATED_IN` edge.
+In a graph database, we cannot create nested relations. Instead, we would model a marriage between two persons with a `MARRIED_TO` relation. However, connecting that edge to a `city` node becomes impossible, as we cannot have a relation connect to another relation. Instead, we are forced to reify the model and turning the `MARRIED_TO` edge into a node `marriage`, so we can connect that node to the `city` node through the `LOCATED_IN` edge.
 
 ![Graph nested relation reified](../images/comparisons/graph-nested-relation-reified.png)
 
@@ -170,7 +160,7 @@ In a graph database, we cannot create nested relations. Instead, we can model a 
 (marriage)-[:LOCATED_IN]->(:City {name:"London"})
 ```
 
-TypeDB's type system natively supports nested relations as modelling constructs. For the model above, we would create a relation `located` that connects the relation `marriage` with the `city` "London". This would look like this:
+Because TypeDB allows us to natively model nested relations, in TypeQL we would create a relation `located` that connects the relation `marriage` with the `city` "London". This would look like this:
 
 ![TypeDB nested relation](../images/comparisons/typedb-nested-relation.png)
 
@@ -187,23 +177,23 @@ The schema for this would look as follows:
 ```typeql
 define 
 city sub entity, 
-plays locating:location;
+  plays locating:location;
 
 person sub entity, 
-plays marriage:spouse; 
+  plays marriage:spouse; 
 
 marriage sub relation, 
-relates spouse, 
-plays locating:located; 
+  relates spouse, 
+  plays locating:located; 
 
 locating sub relation, 
-relates located, 
-relates location;
+  relates located, 
+  relates location;
 ```
 
 ## Reading Data
 
-To fetch data in Cypher, we describe a graph pattern that starts with a bound node which indicates where the traversal should start. We can add filters and use a `WHERE` statement to do pattern matching. In TypeDB, the basic structure to fetch data is a `match get` query, where we specify a pattern of entities, relations, roles and attributes that TypeDB will fetch data against. The `get` keyword indicates which specific variables we want to be returned, similar to the `RETURN` statement in Cypher. 
+To fetch data in Cypher, we describe a graph pattern that starts with a bound node which indicates where the traversal should start. We can add filters and use a `WHERE` statement to do pattern matching. In TypeDB, the basic structure to fetch data is a `match get` query, where we specify a pattern of entities, relations, roles and attributes that TypeDB will fetch data against. The `get` keyword indicates which specific variables we want to be returned, like the `RETURN` statement in Cypher. 
 
 Let's look at two example queries and how they compare in Cypher and TypeQL. 
 
@@ -222,17 +212,18 @@ RETURN commonfriend
 
 The pattern describes the path that connects Bob to Susan, through the `KNOWS` relation. We also specify a `KNOWS` relation between Susan and Bob to another person. We then return that common friend.
 
-In TypeDB, the same query looks like this (we could actually optimise this query through TypeDB's automated reasoner by writing a rule and inferring the common friends):
+In TypeDB, the same query looks like this (we could optimise this query through TypeDB's [inference](https://docs.vaticle.com/docs/schema/rules) engine by writing a rule and inferring the common friends):
 
 <!-- test-ignore -->
 ```typeql
-match $bob isa person, has name "Bob"; 
+match 
+$bob isa person, has name "Bob"; 
 $susan isa person, has name "Susan"; $common-friend isa person;
 ($bob, $susan) isa friendship; ($susan, $common-friend) isa friendship;
 ($common-friend, $bob) isa friendship; get $common-friend; 
 ```
 
-In TypeDB, we ask for the relations of type `friendship` between Bob and Susan, Susan and an undefined person, and Bob and an undefined person. Note that the `ISA_FRIEND_OF` relation doesn't directly translate into a `friendship` relation in TypeDB. The former is a directional edge that only represents how one person is a friend of another person, but not the other way around. Conversely, the TypeDB relation `friendship` represents that both persons play the role of `friend`. Let's look at another example:
+In TypeDB, we ask for the relations of type `friendship` between Bob and Susan, Susan and an undefined person and Bob and an undefined person. Note that the `ISA_FRIEND_OF` relation doesn't directly translate into a `friendship` relation in TypeDB. The former is a directional edge that only represents how one person is a friend of another person, but not the other way around. Conversely, the TypeDB relation `friendship` represents that both persons play the role of `friend`. Let's look at another example:
 
 `Which movies have been released after 2002 in London's Odeon Cinema by Pixar?`
 
@@ -252,7 +243,8 @@ In TypeDB, the same would look like this:
 
 <!-- test-ignore -->
 ```typeql
-match $cinema isa cinema, has name "Odeon London"; 
+match 
+$cinema isa cinema, has name "Odeon London"; 
 $london isa city, has name "London"; 
 $studio isa studio, has name "Pixar"; 
 $movie isa movie, has title $movie-title; 
@@ -264,37 +256,40 @@ get $movie-title;
 
 In TypeDB, instead of using `WHERE`, the pattern matching and filtering can be done anywhere in the query. Filtering of specific values can be done by assigning a variable to the value of an attribute. These variables can then be returned to the user by adding them in the `get` clause. In the example above, we ask for the variable `$movie-title`, which is assigned to the values of the `title` attribute, which is owned by the `movie` entity. 
 
-## Automated Reasoning
+## Logical Inference
 
-### Type-based Reasoning
+### Type Inference
 
-TypeDB's type system allows for type-based reasoning through the modelling of type hierarchies in entities, attributes and relations. A type hierarchy for vehicles in TypeDB could look like this: 
+TypeDB's type system allows for type inference through the modelling of type hierarchies in entities, attributes and relations. A type hierarchy for vehicles in TypeDB could look like this: 
 
 <!-- test-ignore -->
 ```typeql
 define 
 
 vehicle sub entity; 
-car sub vehicle; 
-sedan sub car; 
-coupe sub car
-minivan sub car; 
-aircraft sub vehicle;
-fixed-wing aircraft; 
-jet-aircraft sub aircraft; 
-truck sub vehicle; 
-garbage-truck sub truck; 
-heavy-truck sub truck; 
+
+  car sub vehicle; 
+    sedan sub car; 
+    coupe sub car
+    minivan sub car; 
+
+  aircraft sub vehicle;
+    fixed-wing aircraft; 
+    jet-aircraft sub aircraft; 
+
+  truck sub vehicle; 
+    garbage-truck sub truck; 
+    heavy-truck sub truck; 
 ```
 
-Given this model, if we wanted to fetch every single type of vehicle, rather than specifying every single type one by one, we can just query for the parent type, `vehicle`, and TypeDB, through type-based reasoning, will also return the instances of all the subtypes:
+Given this model, if we wanted to fetch every single type of vehicle, rather than specifying every single type one by one, we can just query for the parent type, `vehicle` and TypeDB, through type inference, will also return the instances of all the subtypes:
 
 <!-- test-ignore -->
 ```typeql
 match $vehicle isa vehicle;
 ```
 
-Although graph databases don't support type hierarchies and type-based reasoning, there are some ways around it. For example, if we're inserting a minivan, a coupe, a jet aircraft and a garbage truck, we could add their parent types as additional labels to these nodes. In TypeDB, of course, we wouldn't need to specify their parent types as these would be inferred by the type hierarchy. 
+Although graph databases don't support type hierarchies and type inference, there are some ways around it. For example, if we're inserting a minivan, a coupe, a jet aircraft and a garbage truck, we could add their parent types as additional labels to these nodes. In TypeDB, of course, we wouldn't need to specify their parent types as these would be inferred by the type hierarchy. 
 
 <div class="tabs dark">
 
@@ -370,14 +365,14 @@ match $vehicle isa vehicle;
 [tab:end]
 </div>
 
-In addition to entities, TypeDB also allows for type-based reasoning in attributes and relations. For example, we can model an `employment` hierarchy with two sub-types: a `part-time-employment` and a `full-time-employment`. This schema would look as follows:
+In addition to entities, TypeDB also allows for type inference in attributes and relations. For example, we can model an `employment` hierarchy with two sub-types: a `part-time-employment` and a `full-time-employment`. This schema would look as follows:
 
 <!-- test-ignore -->
 ```typeql
 define 
 employment sub entity;
-part-time-employment sub employment;
-full-time-employment sub employment;
+  part-time-employment sub employment;
+  full-time-employment sub employment;
 ```
 
 As relations in a graph database cannot have multiple labels, the same approach of using multiple labels used above for nodes wouldn't work for relations. Instead, for this employment hierarchy example, to retrieve all types of employments, we would need to specify all the labels in the hierarchy. In TypeDB, we would just ask for the parent relation:
@@ -408,9 +403,9 @@ get $person;
 [tab:end]
 </div>
 
-### Rule-based Reasoning
+### Rule Inference
 
-In TypeDB, we can create rules (learn more [here](https://docs.vaticle.com/docs/schema/rules)) to abstract and modularise our business logic and perform automated reasoning. Property graphs do not support rules. Rules can infer any type of concept, i.e. entities, relations or attributes.
+In TypeDB, we can create rules (learn more [here](https://docs.vaticle.com/docs/schema/rules)) to abstract and modularise our business logic and perform rule inference. Property graphs do not support rules. Rules can infer any type of concept i.e., entities, relations or attributes.
 
 For example, we could create a rule that infers the relation between siblings, if two persons share the same parent. If the inferred relation is called `siblingship`, then the rule would look as follows:
 
@@ -442,7 +437,7 @@ OR
 RETURN sibling1, sibling2, sibling3
 ```
 
-A more complex example of automated reasoning is when the inferred concepts depend on multiple rules (chaining rules). In the example below, we want to retrieve all the persons who are cousins of each other, where only `parenthood` relations across three generations have been ingested. With the right rules defined, we would be able to just query for `cousinship` relations like this:
+A more complex example of rule inference is when the inferred concepts depend on multiple rules (chaining rules). In the example below, we want to retrieve all the persons who are cousins of each other, where only `parenthood` relations across three generations have been ingested. With the right rules defined, we would be able to just query for `cousinship` relations like this:
 
 <!-- test-ignore -->
 ```typeql
@@ -510,7 +505,7 @@ when {
 };
 ```
 
-TypeDB rules can also be used to store more complex business logic. For example, let's say we want to query for all schedules that overlap in a logistics network. In Neo4j we can write this query: 
+TypeDB rules can also be used to store more complex business logic. For example, let's say we want to query for all schedules that overlap in a logistics network. In Cypher we can write this query: 
 
 ```cypher
 MATCH 
@@ -543,7 +538,7 @@ when {
 ); 
 ```
 
-Rules in TypeDB work particularly well when we need to infer connections between otherwise unconnected data. For example, let's say we want to find all the diseases to which a particular person has a risk factor to. In the next example, we want to infer those answers by using the following logic:
+Rules in TypeDB work particularly well when we need to infer connections between otherwise unconnected data. For example, let's say we want to find all the diseases to which a particular person has a risk factor to and we want to infer those answers by using the following logic:
 
 - If someone consumes more than 10 units of alcohol per week, then they risk having Diabetes Type II and Hypoglycemia
 - If someone's parent has been diagnosed with Diabetes II and/or Arthritis, then they risk having those diseases too
@@ -675,12 +670,6 @@ when {
 
 ## Conclusions
 
-In conclusion, we've see how:
+In this comparison, we've see how TypeDB provides a type system to model data using an Entity-Relationship model to describe the logical structures of data while providing query validation for writes and reads. TypeDB then interprets that model to provide type inference and rule inference. The result is a higher level language that abstracts away the low level complexities inherent in a graph database. 
 
-1. **TypeDB's type system provides a concept-level schema** that fully implements the Entity-Relationship (ER) model, while graph databases use vertices and edges without integrity constraints imposed in the form of a schema
-2. **TypeDB contains a built-in automated reasoner**, graph databases don't provide native reasoning capabilities
-3. **TypeDB is an abstraction layer over a graph database.** TypeDB leverages a graph database under the hood to create a higher-level abstraction, resulting in both technologies working at different levels of abstraction
-
-In sum, TypeDB provides one language that gives us a concept-level model, a type system, a query language, a reasoning engine and schema verification. The result is a higher level language that abstracts away the low level complexities inherent in a graph database. 
-
-This comparison has aimed to provide high level similarities and differences between both technologies, but, of course, there is more to TypeDB and graph databases than what we’ve tried to show here.
+This comparison has aimed to provide high level similarities and differences between both technologies, but, of course, there is much more to TypeDB and graph databases than what we’ve tried to show here.
