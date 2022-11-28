@@ -422,7 +422,7 @@ TypeQLMatch.Filtered query_a = TypeQL.match(
 Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as all concept types that are subtypes of `post`, directly (i.e. `media`, `comment`, `album` and `status-update`) and indirectly (i.e. `photo` and `video`).
 
 ### Direct subtypes of a given type
-To match the schema concepts of a given type, **all the way down its type hierarchy**, we use the `sub!` keyword.
+To match the schema concepts that are **direct subtypes** of a given type, we use the `sub!` keyword.
 
 <div class="tabs dark">
 [tab:TypeQL]
