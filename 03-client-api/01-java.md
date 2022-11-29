@@ -218,7 +218,7 @@ By default, Client Java uses Logback to print errors and debugging info to stand
 
 |   Client Java   |      TypeDB      | TypeDB Cluster  |
 |:---------------:|:----------------:|:---------------:|
-|     2.14.1      |      2.14.1      |     2.14.1      |
+|     2.14.1      |      2.14.1      |  Coming soon!   |
 |     2.12.0      | 2.12.0 to 2.13.0 |     2.13.0      |
 | 2.9.0 to 2.11.1 | 2.9.0 to 2.11.1  | 2.9.0 to 2.11.2 |
 |      2.8.0      |      2.8.0       |       N/A       |
