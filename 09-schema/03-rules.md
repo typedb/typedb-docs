@@ -10,7 +10,7 @@ TypeDB is capable of reasoning over data via rules defined in the schema. They c
 
 Reasoning, or inference, is performed at query time and is guaranteed to be complete. When executing a `match` query, the execution engine returns data that directly answers the query, and also inspects and triggers rules that may lead to new answers to the query. This approach is known as backwards-chaining (starting from the query, then finding applicable rules and generating relevant new facts). Reasoning can proceed via one rule to other rules, including recursively, leading to complex behaviours emerging from a few simple rules.
 
-In this section we will explain the concept of TypeQL rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our knowledge graph.
+In this section we will explain the concept of TypeQL rules. We will explain their structure and meaning as well as go through how to use them to capture dynamic facts about our database.
 
 
 <div class="note">
@@ -21,7 +21,7 @@ Inferred facts are transaction-bound: during a single transaction newly inferred
 
 <div class="note">
 [Important]
-Currently, for a match query to trigger reasoning and obtain inferences from rules, you must use a _read_ transaction. We are working towards enabling reasoning in write transactions in subsequent releases.
+Currently, for a match query to trigger reasoning and obtain inferences from rules, you must use a _read_ transaction.
 </div>
 
 
@@ -39,7 +39,10 @@ rule rule-label:
   };
 ```
 
-Each hashed line corresponds to a single TypeQL statement. In TypeQL, the "when" part of the rule is required to be a conjunctive pattern, whereas the "then" should describe a single `has` or `relation`. If your use case requires a rule with a disjunction ("or") in the `when` part, notice that several rules with the same conclusion can be easily created to achieve the same behaviour.
+Each hashed line corresponds to a single TypeQL statement. In TypeQL, the "when" part of the rule is required to be a conjunctive or disjunctive pattern, whereas the "then" should describe a single `has` or `relation`. 
+
+When using a disjunction in a rule, the disjunctive parts must be bound by some variables outside of the `or` clauses. 
+These common variables are the only ones permitted to be used in the `then` of the rule.
 
 Let us have a look at an example. We want to express the fact that two given people are siblings. As we all know, for two people to be siblings, we need the following facts to be true:
 - they share the same mother
@@ -102,7 +105,7 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-Note that facts defined via rules are not stored in the knowledge graph. In this example, siblings relations are not persisted. However, by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
+Note that facts defined via rules are not stored in the database. In this example, siblings relations are not persisted. However, by defining the rule in the schema, at query time the extra fact will be generated so that we can always know who the siblings are.
 
 
 ### Forms of Rule
