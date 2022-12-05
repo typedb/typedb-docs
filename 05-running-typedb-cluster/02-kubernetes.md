@@ -14,15 +14,25 @@ This guide describes how to deploy a 3-node TypeDB Cluster onto Kubernetes using
 
 First, create a secret to access TypeDB Cluster image on Docker Hub:
 
-```
-kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
---docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
+```sh
+kubectl \
+  create \
+    secret \
+      docker-registry \
+        private-docker-hub \
+        --docker-server=https://index.docker.io/v2/ \
+        --docker-username=USERNAME \
+        --docker-password='PASSWORD' \
+        --docker-email=EMAIL
 ```
 
 Next, add the Vaticle Helm repo:
 
-```
-helm repo add vaticle https://repo.vaticle.com/repository/helm/
+```sh
+helm \
+  repo \
+    add 
+      vaticle https://repo.vaticle.com/repository/helm/
 ```
 
 **Create in-flight encryption certificates (optional)**
@@ -31,8 +41,11 @@ This step is necessary if you wish to deploy TypeDB Cluster with in-flight encry
 
 An external certificate can either be obtained from trusted third party providers such as [CloudFlare](https://www.cloudflare.com/) or [letsencrypt.org](https://letsencrypt.org/). Alternatively, it is also possible to generate it manually with [`mkcert`](https://github.com/FiloSottile/mkcert/releases):
 
-```
-$ mkcert -cert-file rpc-certificate.pem -key-file rpc-private-key.pem <server-url-address>"
+```console
+$ mkcert \
+  -cert-file rpc-certificate.pem \
+  -key-file rpc-private-key.pem \
+  <server-url-address>
 ```
 
 Please note that an external certificate is always bound to URL address, not IP address.
@@ -46,13 +59,17 @@ $ ./dist/typedb-cluster-all-<platform>-<version>/tool/create-encryption-mq-key.s
 
 Once the external and internal certificates are all generated, we can proceed to upload it to Kubernetes Secrets:
 
-```
-$ kubectl create secret generic typedb-cluster \
-  --from-file rpc-private-key.pem \
-  --from-file rpc-certificate.pem \
-  --from-file rpc-root-ca.pem="$(mkcert -CAROOT)/rootCA.pem" \
-  --from-file mq-secret-key \
-  --from-file mq-public-key
+```console
+$ kubectl \
+  create \
+    secret \
+      generic \
+        typedb-cluster \
+          --from-file rpc-private-key.pem \
+          --from-file rpc-certificate.pem \
+          --from-file rpc-root-ca.pem="$(mkcert -CAROOT)/rootCA.pem" \
+          --from-file mq-secret-key \
+          --from-file mq-public-key
 ```
 
 Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-cluster`) and contain exactly these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`, `mq-public-key`).
@@ -67,8 +84,12 @@ This deployment mode is preferred if your application is located within the same
 
 **Deploying without in-flight encryption**
 
-```
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=false,encrypted=false"
+```sh
+helm \
+  install \
+    typedb-cluster \
+    vaticle/typedb-cluster \
+    --set "exposed=false,encrypted=false"
 ```
 
 Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes network, ie., `typedb-cluster-0.typedb-cluster`, `typedb-cluster-1.typedb-cluster`, and `typedb-cluster-2.typedb-cluster`.
@@ -81,8 +102,12 @@ Also make sure that the external certificate is bound to `*.<helm-release-name>`
 
 Once done, let's perform the deployment:
 
-```
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=false,encrypted=true"
+```sh
+helm \
+  install \
+    typedb-cluster \
+      vaticle/typedb-cluster \
+        --set "exposed=false,encrypted=true"
 ```
 
 Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes network, ie., `typedb-cluster-0.typedb-cluster`, `typedb-cluster-1.typedb-cluster`, and `typedb-cluster-2.typedb-cluster`.
@@ -97,15 +122,22 @@ Technically, the servers are made public by binding each one to a `LoadBalancer`
 
 **Deploying without in-flight encryption**
 
-```
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true"
+```sh
+helm \
+  install \
+    typedb-cluster \
+    vaticle/typedb-cluster \
+    --set "exposed=true"
 ```
 
 Once the deployment has completed, the servers would be accessible via public IPs/hostnames assigned to the Kubernetes `LoadBalancer` services. The addresses can obtained with this command:
 
-```
-kubectl get svc -l external-ip-for=typedb-cluster \
--o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
+```sh
+kubectl \
+  get \
+    svc \
+      -l external-ip-for=typedb-cluster \
+      -o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
 ```
 
 **Deploying with in-flight encryption**
@@ -123,9 +155,13 @@ The format must be taken into account when generating the external certificate o
 Once the domain name and external certificate has been configured accordingly, we can proceed to perform the deployment. Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly.
 
 Once done, let's perform the deployment:
-
+sh
 ```
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true,encrypted=true,domain=<domain-name>"
+helm \
+  install \
+    typedb-cluster \
+      vaticle/typedb-cluster \
+      --set "exposed=true,encrypted=true,domain=<domain-name>"
 ```
 
 After the deployment has been completed, we need to configure these URL addresses to correctly point to the servers. This can be done by configuring the `A record` (for IPs) or `CNAME record` (for hostnames) of all the servers in your trusted DNS provider:
@@ -144,15 +180,19 @@ First, please make sure to have [Minikube](https://minikube.sigs.k8s.io/) instal
 
 Once done, let's perform the deployment. In this example, we're adjusting various CPU and storage parameters to something smaller than the default, taking into account that resources may be more limited given that the cluster will run on a Minikube instance on your local machine.
 
-```
-helm install vaticle/typedb-cluster --generate-name \
---set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
+```sh
+helm \
+  install \
+    vaticle/typedb-cluster \
+      --generate-name \
+      --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ```
 
 Once deployment is completed, enable tunneling from another terminal:
 
-```
-minikube tunnel
+```sh
+minikube \
+  tunnel
 ```
 
 This deployment mode is primarily inteded for development purpose. Certain adjustments will be made compared to other deployment modes:
@@ -191,7 +231,9 @@ Make sure you've followed [Initial Setup](#initial-setup) instructions and verif
 executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
 
 ```
-$ kubectl get secret/private-docker-hub
+$ kubectl \
+    get \
+      secret/private-docker-hub
 NAME                 TYPE                             DATA   AGE
 private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
 ```
@@ -206,7 +248,6 @@ indicates that `cpu` or `storage.size` values need to be decreased.
 #### One or more pods of TypeDB Cluster are stuck in `CrashLoopBackOff` state
 This might indicate any misconfiguration of TypeDB Cluster. Please obtain the logs by executing
 `kubectl logs pod/typedb-cluster-0` and share them with TypeDB Cluster developers.
-
 
 ### Current Limitations
 
