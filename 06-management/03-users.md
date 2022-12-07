@@ -9,29 +9,25 @@ toc: false
 ## Managing Users [TypeDB Cluster ONLY]
 The ability to manage users and authenticate their access to [databases](../06-management/01-database.md) is limited to TypeDB Cluster and is not available in TypeDB.
 
-In order to manage users, we first need to enter the TypeDB User Management Console by running `typedb user-management`. We can then use the following commands to manage user authentication.
+In order to manage users, we first need to enter the TypeDB Console. To connect to TypeDB Cluster with TypeDB Console,
+You'll need to specify that you're connecting to TypeDB Cluster and provide a username and password:
+```
+./typedb console --cluster=<address> --username=<username> --password=<password>
+```
 
-### Create a new user
-```
-CREATE USER username WITH PASSWORD user-password
-```
-
-### Update a user
-```
-UPDATE USER username WITH PASSWORD new-password
-```
+Then, we can use the following commands to manage users:
 
 ### Retrieve all users
 ```
-LIST USERS
+user list
 ```
 
-### Retrieve one user
+### Create a new user
 ```
-GET USER username
+user create <username> <password>
 ```
 
 ### Delete a user
 ```
-DELETE USER username
+user delete <username>
 ```
