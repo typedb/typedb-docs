@@ -26,10 +26,10 @@ brew install --cask vaticle/tap/typedb-studio
 
 ## Version Compatibility
 
-| Studio | TypeDB | TypeDB Cluster  |
-|:------:|:------:|:---------------:|
-| 2.14.1 | 2.14.1 |  Coming soon!   |
-| 2.11.0 | 2.11.1 | 2.11.1 - 2.11.2 |
+|      Studio      |      TypeDB      |  TypeDB Cluster  |
+|:----------------:|:----------------:|:----------------:|
+| 2.14.1 to 2.14.2 | 2.14.1 to 2.14.2 |   Coming soon!   |
+|      2.11.0      |      2.11.1      | 2.11.1 to 2.11.2 |
 
 
 ## Up next...
