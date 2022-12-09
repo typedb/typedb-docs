@@ -179,6 +179,7 @@ Configurable settings for Helm package include:
 | `javaopts`          | `null`           | JVM options that controls various runtime aspects of TypeDB Cluster (eg., `-Xmx`, `-Xms`)          |
 | `logstash.enabled`  | `false`          | Whether TypeDB Cluster pushes logs into Logstash                                                   |
 | `logstash.uri`      | `localhost:5044` | Hostname and port of a Logstash daemon accepting log records                                       |
+| `name`              | `null`           | An override for the Helm release name when used for naming the deployed objects                    |
 
 
 ### Troubleshooting
