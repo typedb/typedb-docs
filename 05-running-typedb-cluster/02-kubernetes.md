@@ -170,6 +170,7 @@ Configurable settings for Helm package include:
 
 | Key                 | Default value    | Description
 | :-----------------: | :---------------:| :------------------------------------------------------------------------------------------------: |
+| `name`              | `null`           | Used for naming deployed objects. When not provided, the Helm release name will be used instead    |
 | `replicas`          | `3`              | Number of TypeDB Cluster nodes to run                                                              |
 | `cpu`               | `7`              | How many CPUs should be allocated for each TypeDB Cluster node                                     |
 | `storage.size`      | `100Gi`          | How much disk space should be allocated for each TypeDB Cluster node                               |
