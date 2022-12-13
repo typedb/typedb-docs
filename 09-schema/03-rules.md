@@ -283,6 +283,65 @@ There are two general tips for making queries with reasoning execute faster:
 
 For complex queries, it can also be beneficial to add more CPU cores, as the reasoning engine is able to explore more paths in the database concurrently.
 
+### Efficient transitivity
+
+A common use-case for rules is to infer the transitive closure of a relation. The most straight-forward way of doing this is as follows:
+```typeql
+rule reachability-is-transitive:
+when{
+    (from: $x, to: $y) isa reachable;
+    (from: $y, to: $z) isa reachable;
+} then {
+    (from: $x, to: $z) isa reachable;
+}
+```
+We can interpret this rule as joining two paths together. In a chain `p-q-r-s-t`, to find all nodes reachable from p, we would generate the following relations:
+```
+p--q, q--r, r--s, s--t  (already in the database)
+
+p--r, q--s, s--t,       (Inferred)
+p--s, q--t              (Inferred)
+p--t                    (Inferred)
+```
+
+Concretely, We would generate a `reachable` relation _**for every pair**_ of nodes reachable from `p`.
+
+When it is possible to define different types for the persisted and (inferred) transitive version of the relation (which is often the case), we can instead use the two rules below which is more computationally efficient. 
+For the example above, we use `edge` as the base relation type and `reachable` as the inferred relation. 
+```typeql
+rule reachability-is-transitive-base:
+when{
+    (from: $x, to: $y) isa edge;
+} then {
+    (from: $x, to: $z) isa reachable;
+}
+
+rule reachability-is-transitive-recursive:
+when{
+    (from: $x, to: $y) isa reachable;
+    (from: $y, to: $z) isa edge;
+} then {
+    (from: $x, to: $z) isa reachable;
+}
+```
+We can intepret this as finding a path and extend it by one. To find all nodes reachable from p in the chain p-q-r-s-t, We would generate the following relations:
+```
+p-q, q-r, r-s, s-t      (edges already in the database)
+
+p--q,                   (Inferred with the first rule)
+p--r,                   (Inferred with the second rule)
+p--s,                   (Inferred with the second rule)
+s--t                    (Inferred with the second rule)
+```
+Here, we only generate one relation for _**each node**_ reachable from p.
+
+<div class = "note">
+[Note]
+* This is only the case if the node playing the `from` role is specified when the rule is evaluated. Whenever possible, TypeDB will choose the query-plan such that this is the case.
+* If you are querying with the `to:` role fixed, the base and inferred types must be switched in the second rule: 
+`(from: $x, to: $y) isa edge; (from: $y, to: $z) isa reachable;`
+</div>
+
 ## Delete a Rule
 
 Rules like any other schema members can be undefined. Consequently, to delete rules we refer to them by their label and use the [undefine keyword](../09-schema/01-concepts.md#undefine).
