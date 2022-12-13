@@ -301,7 +301,7 @@ We can interpret this rule as joining two paths together. In a chain `p-q-r-s-t`
 ```
 p--q, q--r, r--s, s--t  (already in the database)
 
-p--r, q--s, s--t,       (Inferred)
+p--r, q--s, r--t,       (Inferred)
 p--s, q--t              (Inferred)
 p--t                    (Inferred)
 ```
@@ -335,7 +335,7 @@ p-q, q-r, r-s, s-t      (edges already in the database)
 p--q,                   (Inferred with the first rule)
 p--r,                   (Inferred with the second rule)
 p--s,                   (Inferred with the second rule)
-s--t                    (Inferred with the second rule)
+p--t                    (Inferred with the second rule)
 ```
 Here, we only generate one relation for _**each node**_ reachable from p.
 
