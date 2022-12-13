@@ -317,7 +317,7 @@ rule transitive-reachability-base:
 when{
     (from: $x, to: $y) isa edge;
 } then {
-    (from: $x, to: $z) isa reachable;
+    (from: $x, to: $y) isa reachable;
 };
 
 rule transitive-reachability-recursive:
