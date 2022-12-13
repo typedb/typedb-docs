@@ -287,13 +287,15 @@ For complex queries, it can also be beneficial to add more CPU cores, as the rea
 
 A common use-case for rules is to infer the transitive closure of a relation. The most straight-forward way of doing this is as follows:
 ```typeql
-rule reachability-is-transitive:
+define
+
+rule transitive-reachability:
 when{
     (from: $x, to: $y) isa reachable;
     (from: $y, to: $z) isa reachable;
 } then {
     (from: $x, to: $z) isa reachable;
-}
+};
 ```
 We can interpret this rule as joining two paths together. In a chain `p-q-r-s-t`, to find all nodes reachable from p, we would generate the following relations:
 ```
@@ -309,20 +311,22 @@ Concretely, We would generate a `reachable` relation _**for every pair**_ of nod
 When it is possible to define different types for the persisted and (inferred) transitive version of the relation (which is often the case), we can instead use the two rules below which is more computationally efficient. 
 For the example above, we use `edge` as the base relation type and `reachable` as the inferred relation. 
 ```typeql
-rule reachability-is-transitive-base:
+define
+
+rule transitive-reachability-base:
 when{
     (from: $x, to: $y) isa edge;
 } then {
     (from: $x, to: $z) isa reachable;
-}
+};
 
-rule reachability-is-transitive-recursive:
+rule transitive-reachability-recursive:
 when{
     (from: $x, to: $y) isa reachable;
     (from: $y, to: $z) isa edge;
 } then {
     (from: $x, to: $z) isa reachable;
-}
+};
 ```
 We can intepret this as finding a path and extend it by one. To find all nodes reachable from p in the chain p-q-r-s-t, We would generate the following relations:
 ```
