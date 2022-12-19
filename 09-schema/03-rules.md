@@ -231,8 +231,6 @@ In this example, we take a pre-existing attribute that is attached to a relation
 Besides conforming to one of the three patterns previously outlined, we also require that:
 
 1. The `then` of the rule must be insertable according to the schema (eg. you cannot give an attribute to an instance that is not allowed to own that attribute type). TypeDB will reject rules that could insert incompatible data.
-2. There are no disjunctions in the `when` of the rule
-
 
 ### Advanced Usage
 
