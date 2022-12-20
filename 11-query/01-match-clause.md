@@ -547,7 +547,7 @@ match $x owns title; get $x;
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").has("title", var("t"))
+  var("x").owns("title")
 ).get("x");
 ```
 [tab:end]
