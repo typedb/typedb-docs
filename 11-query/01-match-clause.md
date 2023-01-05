@@ -534,20 +534,20 @@ TypeQLMatch.Filtered query = TypeQL.match(
 This matches all concept types that play the role `employee` in any relation.
 
 ### Owners of a given attribute
-Given an attribute type, we can match the concept types that own the given attribute type by using the `has` keyword.
+Given an attribute type, we can match the concept types that own the given attribute type by using the `owns` keyword.
 
 <div class="tabs dark">
 
 [tab:TypeQL]
 ```typeql
-match $x has title $t; get $x;
+match $x owns title; get $x;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").has("title", var("t"))
+  var("x").owns("title")
 ).get("x");
 ```
 [tab:end]
