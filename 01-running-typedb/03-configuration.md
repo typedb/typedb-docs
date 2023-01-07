@@ -61,7 +61,7 @@ If installed using Homebrew:
 If installed using APT:
 
 ```
-/opt/typedb/core/server/conf/typedb.yml
+/opt/typedb/core/server/conf/config.yml
 ```
 
 ### Sample Configuration
