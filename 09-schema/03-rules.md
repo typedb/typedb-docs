@@ -274,16 +274,7 @@ TypeQLDefine query = TypeQL.define(
 </div>
 
 This rule will make every relation transitive.
-
-## Optimisation Notes
-
-There are two general tips for making queries with reasoning execute faster:
-1. Adding a limit to the query. Without a limit, the reasoning engine is forced to explore all possible ways to answer the query exhaustively. If you only need 1 answer, adding `limit 1` to the `match` query can improve query times.
-2. Using the same transaction for multiple reasoning queries. Because inferred facts are cleared between transactions, running the same or similar queries within one transaction can reuse previously found facts. Combined with a `limit` on the query, it might be possible to avoid having to do any new reasoning at all.
-
-For complex queries, it can also be beneficial to add more CPU cores, as the reasoning engine is able to explore more paths in the database concurrently.
-
-### Efficient transitivity
+## Efficient transitivity
 
 A common use-case for rules is to infer the transitive closure of a relation. The most straight-forward way of doing this is as follows:
 ```typeql
@@ -302,33 +293,36 @@ We can interpret this rule as joining two paths together. In a chain `p-q-r-s-t`
 p--q, q--r, r--s, s--t  (already in the database)
 
 p--r, q--s, r--t,       (Inferred)
-p--s, q--t              (Inferred)
-p--t                    (Inferred)
+p--s, q--t, p--t        (Inferred)                    
 ```
 
 Concretely, We would generate a `reachable` relation _**for every pair**_ of nodes reachable from `p`.
 
-When it is possible to define different types for the persisted and (inferred) transitive version of the relation (which is often the case), we can instead use the two rules below which is more computationally efficient. 
-For the example above, we use `edge` as the base relation type and `reachable` as the inferred relation. 
+ The section below describes a recipe to answer forward transitivity queries materialising only a linear number of relations. The section after that extends the recipe to both backwards queries and undirected relations.
+
+#### Efficient forward transitivity
+We first define separate types for the persisted and (inferred) transitive version of the relation.
+For the example above, we use `edge` as the base relation type and `reachable` as the inferred relation. We then update the rule as follows: 
 ```typeql
 define
 
-rule transitive-reachability-base:
+rule forward-transitivity-base:
 when{
     (from: $x, to: $y) isa edge;
 } then {
-    (from: $x, to: $y) isa reachable;
+    (from: $x, to: $y) isa forward-reachable;
 };
 
-rule transitive-reachability-recursive:
+rule forward-transitivity-recursive:
 when{
-    (from: $x, to: $y) isa reachable;
+    (from: $x, to: $y) isa forward-reachable;
     (from: $y, to: $z) isa edge;
 } then {
-    (from: $x, to: $z) isa reachable;
+    (from: $x, to: $z) isa forward-reachable;
 };
 ```
-We can intepret this as finding a path and extend it by one. To find all nodes reachable from p in the chain p-q-r-s-t, We would generate the following relations:
+
+We can intepret this as finding a path and extend it by one. Querying all nodes reachable from p in the chain p-q-r-s-t would generate the following relations:
 ```
 p-q, q-r, r-s, s-t      (edges already in the database)
 
@@ -337,14 +331,64 @@ p--r,                   (Inferred with the second rule)
 p--s,                   (Inferred with the second rule)
 p--t                    (Inferred with the second rule)
 ```
-Here, we only generate one relation for _**each node**_ reachable from p.
+Here, we only generate one relation for _**each node**_ reachable from p, bringing the complexity down from quadratic in to linear in the number of reachable nodes.
+
+#### Undirected queries
+We can use the same formulation for undirected graphs. If the undirected edges are defined by the relations `(node: $x, node: $y) isa edge;` then the rules would read:
+
+```typeql
+define
+
+rule forward-transitivity-base:
+when{
+    (node: $x, node: $y) isa edge;
+} then {
+    (from: $x, to: $y) isa forward-reachable;
+};
+
+rule forward-transitivity-recursive:
+when{
+    (from: $x, to: $y) isa forward-reachable;
+    (node: $y, node: $z) isa edge;
+} then {
+    (from: $x, to: $z) isa forward-reachable;
+};
+```
+
+#### Efficient backward queries
+To see what happens when we try to compute backwards transitivity using the above formulation, consider the query to find all nodes from which `t` is reachable in the same chain `p-q-r-s-t`. The second rule is now executed backwards - first checking all nodes `$y` from which there is an edge to `t`. Then it recursively queries all nodes reachable from `$y`. Thus, a relation is generated for every pair of nodes which are reachable from `t`.
+
+To answer backward transitive queries, we simply need a backwards version of the `reachable` type and the rules. This approach is equivalent running forward-transitivity on the reversed graph.
+```
+rule backward-transitivity-base:
+when{
+    (to: $x, from: $y) isa edge;
+} then {
+    (to: $x, from: $y) isa backward-reachable;
+};
+
+rule backward-transitivity-recursive:
+when{
+    (to $x, from: $y) isa backward-reachable;
+    (to: $y, from: $z) isa edge;
+} then {
+    (to: $x, from: $z) isa backward-reachable;
+};
+```
 
 <div class = "note">
-[Note]
-* This is only the case if the node playing the `from` role is specified when the rule is evaluated. Whenever possible, TypeDB will choose the query-plan such that this is the case.
-* If you are querying with the `to:` role fixed, the base and inferred types must be switched in the second rule: 
-`(from: $x, to: $y) isa edge; (from: $y, to: $z) isa reachable;`
+[Important]
+* These rules are efficient only when evaluated with `$x` specified. Thus, when writing a query, it is recommended to query the directed-version of the relation which enables this.
 </div>
+
+## Optimisation Notes
+
+There are two general tips for making queries with reasoning execute faster:
+1. Adding a limit to the query. Without a limit, the reasoning engine is forced to explore all possible ways to answer the query exhaustively. If you only need 1 answer, adding `limit 1` to the `match` query can improve query times.
+2. Using the same transaction for multiple reasoning queries. Because inferred facts are cleared between transactions, running the same or similar queries within one transaction can reuse previously found facts. Combined with a `limit` on the query, it might be possible to avoid having to do any new reasoning at all.
+
+For complex queries, it can also be beneficial to add more CPU cores, as the reasoning engine is able to explore more paths in the database concurrently.
+
 
 ## Delete a Rule
 
