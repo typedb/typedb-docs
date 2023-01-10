@@ -12,11 +12,11 @@ This guide is here to take you from no knowledge of Studio or TypeDB to a place 
 By following each step, you will have the full picture on how to go from zero to full data visualisation using Studio and TypeDB.
 
 ## What You Need
-- A [TypeDB Server](/docs/running-typedb/install-and-run) instance running locally on the default port (1729).
+- A [TypeDB Server](/docs/typedb/install-and-run) instance running locally on the default port (1729).
 - An OS-appropriate version of [Studio](https://vaticle.com/download#typedb-studio).
 
 ## Running TypeDB Server
-Downloading, installing and running a TypeDB server differs slightly platform to platform, so we've created a guide to get you started here: [Install and Run TypeDB Server](/docs/running-typedb/install-and-run).
+Downloading, installing and running a TypeDB server differs slightly platform to platform, so we've created a guide to get you started here: [Install and Run TypeDB Server](/docs/typedb/install-and-run).
 
 ## Connecting to TypeDB Server
 Once you launch Studio, head to the top right-hand corner and click 'Connect to TypeDB'.

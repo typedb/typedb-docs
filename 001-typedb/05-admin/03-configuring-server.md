@@ -24,7 +24,7 @@ Some arguments are exclusive to the command line interface:
 
 Additional arguments available are derived from the configuration Yaml file. 
 **Any value** from the configuration file can be overridden from the command line, as shown in
-a [following section](../01-running-typedb/03-configuration.md#configuration-file-options-via-command-line).
+a [following section](/docs/typedb/configuration/#configuration-file-options-via-command-line).
 
 ### Getting help
 
@@ -42,8 +42,8 @@ TypeDB accepts a configuration file with a specific Yaml format, outlined below.
 
 <div class="note">
 [Note]
-In order for any new configuration to take affect, we must [stop](/docs/running-typedb/install-and-run/#stop-the-typedb-server) the TypeDB Server 
-and [start](/docs/running-typedb/install-and-run/#start-the-typedb-server) it again.
+In order for any new configuration to take affect, we must [stop](/docs/typedb/install-and-run/#stop-the-typedb-server) the TypeDB Server 
+and [start](/docs/typedb/install-and-run/#start-the-typedb-server) it again.
 </div>
 
 ### Locating the default configuration file

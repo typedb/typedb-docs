@@ -173,7 +173,7 @@ Save the schema.tql file. In a few minutes, we'll have it loaded into a brand ne
 ## Load and test the schema
 In order to load this schema in a database, we first need to run the TypeDB server.
 
-**1 -** [Download TypeDB](/docs/running-typedb/install-and-run#download-and-install-typedb)
+**1 -** [Download TypeDB](/docs/typedb/install-and-run#download-and-install-typedb)
 For the rest of these instructions, I assume that you have downloaded the TypeDB zip file and navigated into the unzipped folder via terminal.
 
 **2 -** Run the TypeDB server:
