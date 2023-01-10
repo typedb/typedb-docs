@@ -163,6 +163,29 @@ please try to install the "C++ redistributable" by following the instructions [h
 
 [tab:end]
 
+<<<<<<<< HEAD:001-typedb-old/02-install-and-run.md
+========
+[tab:Docker]
+
+Use `docker run` to download an image `vaticle/typedb` and run a container with it. To ensure that data is preserved 
+even when the instance is killed or restarted, mount an external volume to your Docker container:
+
+```
+docker run --name typedb -d -v ~/typedb:/opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
+```
+
+`~/typedb` — should be a location where you want the data to be stored in the host machine.
+
+The TypeDB Server is expected to be running on port `1729` on your machine in a docker container.
+
+You can connect to this instance with TypeDB Studio or any other instrument via address `127.0.0.1:1729`. 
+To interact with the local [TypeDB Console](../02-console/01-console.md), run:
+
+```
+docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
+```
+[tab:end]
+>>>>>>>> 121f3b4 (WIP initial commit):001-typedb/02-install-and-run.md
 </div>
 
 ## Start the TypeDB Server
@@ -171,8 +194,11 @@ If you have installed TypeDB using a package manager, to start the TypeDB Server
 Otherwise, if you have manually downloaded TypeDB, navigate into the folder with unzipped TypeDB and run it by issuing
 `./typedb server` command.
 
+<<<<<<<< HEAD:001-typedb-old/02-install-and-run.md
 If you have used the docker way TypeDB should work while the docker container is active.
 
+========
+>>>>>>>> 121f3b4 (WIP initial commit):001-typedb/02-install-and-run.md
 <div class="note">
 [Note]
 Command `typedb server` will run in the foreground of your current terminal, so to do other operations such as using 
@@ -183,4 +209,12 @@ in termination of the program.
 ## Stop the TypeDB Server
 To stop the TypeDB Server, press Ctrl-C in the terminal, where you started it in.
 
+<<<<<<<< HEAD:001-typedb-old/02-install-and-run.md
 If you have used docker — stop the container.
+========
+## Summary
+So far we have learned how to download/install TypeDB and run the TypeDB Server.
+
+Next, we learn how to [configure the TypeDB Server](05-admin/03-configuring-server.md) 
+and [interact with a TypeDB knowledge graph via the TypeDB Console](../02-console/01-console.md).
+>>>>>>>> 121f3b4 (WIP initial commit):001-typedb/02-install-and-run.md

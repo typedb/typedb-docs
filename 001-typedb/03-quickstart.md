@@ -14,6 +14,7 @@ representing a Identity and Access Management solution. This exact database with
 examples of TypeDB documentation. That's why by completing this quickstart guide you will prepare an environment to 
 successfully execute most requests explored later on in this documentation.
 
+<<<<<<<< HEAD:001-typedb-old/03-quickstart.md
 In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and 
 write queries and explore the power of automated reasoning and analytics with TypeDB.
 
@@ -24,6 +25,10 @@ To create and interact with TypeDV databases we need working TypeDB server.
 
 1. [Install TypeDB](02-install-and-run.md#system-requirements) 
 2. [Start the TypeDB Server](02-install-and-run.md#start-the-typedb-server).
+========
+### Run TypeDB
+[Install TypeDB](02-install-and-run.md#system-requirements) and start the [TypeDB Server](02-install-and-run.md#start-the-typedb-server).
+>>>>>>>> 121f3b4 (WIP initial commit):001-typedb/03-quickstart.md
 
 
 ### Second step: Prepare The Schema

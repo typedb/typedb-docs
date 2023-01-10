@@ -10,7 +10,7 @@ toc: false
 
 Every product has a separate documentation block in the navigation menu on the left:
 
-- [TypeDB](../001-typedb-old/01-overview.md) — our main product. It is a strongly typed database.
+- [TypeDB](../001-typedb/01-overview.md) — our main product. It is a strongly typed database.
 - [TypeDB Cluster](../05-running-typedb-cluster/01-install-and-run.md) — enterprise version of the database with 
   replication, backups and other premium functions.
 - [TypeDB Studio](../07-studio/00-overview.md) — our IDE designed for TypeDB and TypeQL.
