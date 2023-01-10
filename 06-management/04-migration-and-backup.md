@@ -80,8 +80,8 @@ typedb server import --database=[database] --port=[server rpc port] --file=[file
 ```
 
 <div class="note">
-In versions previous to 2.6.0, the "--database=" and "--file=" named arguments are not used, and you should simply use positional arguments like this:
-"old/typedb server export {database} data.typedb" or "old/typedb server import --database={database} --file=data.typedb"
+[Note]
+In versions previous to 2.6.0, the `--database=` and `--file=` named arguments are not used, and you should simply use positional arguments like this: `old/typedb server export {database} data.typedb` or `old/typedb server import --database={database} --file=data.typedb`.
 </div>
 
  
