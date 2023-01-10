@@ -10,7 +10,7 @@ We use match clauses to retrieve data instances and schema types that follow a p
 By defining the [schema](../09-schema/00-overview.md), we effectively define a vocabulary to be used to describe concepts of our domain.
 
 Once the schema is defined, we can form graph patterns for which we want to search within our knowledge graph. We do that by using match clauses.
-Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../11-query/02-get-query.md), [Insert](../11-query/03-insert-query.md), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
+Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../11-query/02-get-query.md), [Insert](../11-query/03-insert-query.md), [Delete](../11-query/04-delete-query.md) or [Aggregate](../11-query/06-aggregate-query.md) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
 
 In the subsequent sections, we shall see how to match specific graph patterns. To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
