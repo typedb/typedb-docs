@@ -159,6 +159,7 @@ To view examples of running various queries using the Node.js client, head over 
 
 
 ## Version Compatibility
+
 | Client Node.js  |     TypeDB      | TypeDB Cluster  |   Node    |
 |:---------------:|:---------------:|:---------------:|:---------:|
 | 2.9.0 to 2.11.1 | 2.9.0 to 2.11.1 | 2.9.0 to 2.11.2 | \>= 14.15 |
