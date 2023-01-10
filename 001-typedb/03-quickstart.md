@@ -13,7 +13,7 @@ In the process, we learn about the constructs of the TypeDB Schema, visualise th
 Let's get started!
 
 ### Run TypeDB
-[Install TypeDB](../01-running-typedb/01-install-and-run.md#system-requirements) and start the [TypeDB Server](../01-running-typedb/01-install-and-run.md#start-the-typedb-server).
+[Install TypeDB](02-install-and-run.md#system-requirements) and start the [TypeDB Server](02-install-and-run.md#start-the-typedb-server).
 
 
 ### The Schema

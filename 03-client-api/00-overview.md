@@ -26,7 +26,7 @@ In this section and the following pages, we learn the mechanism that a TypeDB cl
 All TypeDB Clients share a common architecture. Simply put, the main components of a TypeDB client are the `client` itself, `session` and `transaction`.
 
 ### Client
-A client is responsible for connecting to the [TypeDB Server](/docs/running-typedb/install-and-run#start-the-typedb-server). We then use this connection to manage databases and open sessions. 
+A client is responsible for connecting to the [TypeDB Server](/docs/typedb/install-and-run#start-the-typedb-server). We then use this connection to manage databases and open sessions. 
 
 **Best Practices**
 

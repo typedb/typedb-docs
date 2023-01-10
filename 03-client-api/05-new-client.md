@@ -518,7 +518,7 @@ class _CoreStub(TypeDBStub):
 
 </div>
 
-At this point, we have all the necessary components to create a database! [Run the TypeDB server locally](https://docs.vaticle.com/docs/running-typedb/install-and-run#start-the-typedb-server) and create a test function:
+At this point, we have all the necessary components to create a database! [Run the TypeDB server locally](https://docs.vaticle.com/docs/typedb/install-and-run#start-the-typedb-server) and create a test function:
 
 <div class="tabs dark">
 

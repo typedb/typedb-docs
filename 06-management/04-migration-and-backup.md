@@ -1,6 +1,9 @@
 ---
-pageTitle: Migration and Backup keywords: typedb, migration, backup longTailKeywords: typedb migration Summary: Backing
-up and migrating data between versions of TypeDB. toc: false
+pageTitle: Migration and Backup 
+keywords: typedb, migration, backup 
+longTailKeywords: typedb migration 
+Summary: Backing up and migrating data between versions of TypeDB. 
+toc: false
 ---
 
 # Migration and Backup

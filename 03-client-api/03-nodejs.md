@@ -21,7 +21,7 @@ npm install typedb-client
 - [Examples](https://github.com/vaticle/typedb-examples)
 
 ## Quickstart
-First make sure that the [TypeDB server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
+First make sure that the [TypeDB server](/docs/typedb/install-and-run#start-the-typedb-server) is running.
 
 In your source, require `typedb-client`.
 
@@ -159,6 +159,7 @@ To view examples of running various queries using the Node.js client, head over 
 
 
 ## Version Compatibility
+
 | Client Node.js  |     TypeDB      | TypeDB Cluster  |   Node    |
 |:---------------:|:---------------:|:---------------:|:---------:|
 | 2.9.0 to 2.11.1 | 2.9.0 to 2.11.1 | 2.9.0 to 2.11.2 | \>= 14.15 |
