@@ -231,7 +231,7 @@ match $x like "(Miriam Morton|Solomon Tran)"; get $x;
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-  var("phone-number").like("(Miriam Morton|Solomon Tran)")
+  var("phone-number").regex("(Miriam Morton|Solomon Tran)")
 ).get("phone-number");
 ```
 [tab:end]
