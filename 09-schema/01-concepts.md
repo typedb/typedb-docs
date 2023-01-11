@@ -620,7 +620,7 @@ emotion sub attribute,
 [tab:Java]
 ```java
 TypeQLDefine query = TypeQL.define(
-  type("emotion").sub("attribute").value(TypeQLArg.ValueType.STRING).regex("[like, love, funny, shocking, sad, angry]")
+  type("emotion").sub("attribute").value(TypeQLArg.ValueType.STRING).like("[like, love, funny, shocking, sad, angry]")
 );
 ```
 
