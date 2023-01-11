@@ -419,7 +419,7 @@ TypeQLMatch.Filtered query_a = TypeQL.match(
 [tab:end]
 </div>
 
-Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as all concept types that are subtypes of `post`, directly (i.e. `media`, `comment`, `album` and `status-update`) and indirectly (i.e. `photo` and `video`).
+Running the above query on the `social_network` [knowledge graph](../08-examples/01-phone-calls-schema.md), returns the `post` concept type itself, as well as all concept types that are subtypes of `post`, directly (i.e. `media`, `comment`, `album` and `status-update`) and indirectly (i.e. `photo` and `video`).
 
 ### Direct subtypes of a given type
 To match the schema concepts that are **direct subtypes** of a given type, we use the `sub!` keyword.
@@ -440,7 +440,7 @@ TypeQLMatch.Filtered query_a = TypeQL.match(
 [tab:end]
 </div>
 
-Running the above query on the `social_network` knowledge graph, returns direct subtypes of the `post` type itself (i.e. `media`, `comment`, `album` and `status-update`).
+Running the above query on the `social_network` [knowledge graph](../08-examples/01-phone-calls-schema.md), returns direct subtypes of the `post` type itself (i.e. `media`, `comment`, `album` and `status-update`).
 
 ### A given type
 To match only the given type and not any of its subtypes, we use the `type` keyword.
