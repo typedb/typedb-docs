@@ -556,7 +556,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 This matches all concept types that own `title` as their attribute.
 
 ## Examples
-To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](/docs/examples/queries).
+To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](../08-examples/05-phone-calls-queries.md).
 
 ## Clients Guide
 

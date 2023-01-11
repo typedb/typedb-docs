@@ -57,7 +57,7 @@ However, when leveraging the TypeDB reasoning engine, it is sometimes beneficial
 ### Async Queries
 Invoking a TypeQL query sends the query to the TypeDB server, where it will be completed in the background. Local processing can take place while waiting for responses to be received. Take advantage of these asynchronous queries to mask network round-trip costs and increases your throughput. For example, if you are performing 10 match queries in a transaction, it's best to send them all to the server _before_ iterating over any of their answers.
 
-Queries that return answers, such as [match](/docs/query/match-clause), return them as Futures, Streams or Iterators depending on the language. These can then be awaited, or iterated, to retrieve the answers as they are computed.
+Queries that return answers, such as [match](../11-query/01-match-clause.md), return them as Futures, Streams or Iterators depending on the language. These can then be awaited, or iterated, to retrieve the answers as they are computed.
 
 <div class="note">
 [Important]

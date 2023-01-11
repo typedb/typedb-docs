@@ -772,7 +772,7 @@ get $duration; mean $duration;
 #### The result:
 
 ```
-1713 seconds
+1699 seconds
 ```
 
 #### Try it yourself
