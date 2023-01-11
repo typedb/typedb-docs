@@ -127,7 +127,7 @@ def load_data_into_typedb(input, session):
 In order to load data from each file into TypeDB, we need to:
 
 1.  retrieve a list containing dictionaries, each of which represents a data item. We do this by calling `parse_data_to_dictionaries(input)`
-2.  for each dictionary in `items`: a) create a `transaction`, which closes once used, b) construct the `typeql_insert_query` using the corresponding template function, c) execute the query and d)commit the transaction.
+2.  for each dictionary in `items`: a) create a `transaction`, which closes once used, b) construct the `typeql_insert_query` using the corresponding template function, c) execute the query and d) commit the transaction.
 
 <div class="note">
 [Important]
@@ -260,7 +260,7 @@ Example:
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
 
-We’ve now created a template for each and all four concepts that were [previously](../defining-the-schema) defined in the schema.
+We’ve now created a template for each and all four concepts that were [previously](../08-examples/01-phone-calls-schema.md) defined in the schema.
 
 It’s time for the implementation of `parse_data_to_dictionaries(input)`.
 

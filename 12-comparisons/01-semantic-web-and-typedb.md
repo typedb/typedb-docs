@@ -475,7 +475,7 @@ This is an example of `rdfs:range`:
 
 Here, `rdfs:range` assigns the class `Male` to the object of the `hasBrother` property. 
 
-In TypeDB, there is no direct implementation of `range` and `domain`. The basic inferences drawn from them would be either already natively be represented in the TypeDB data model through the use of `role`s, or we can create `rule`s to represent the logic we want to infer. 
+In TypeDB, there is no direct implementation of `range` and `domain`. The basic inferences drawn from them would either already natively be represented in the TypeDB data model through the use of `role`s, or we can create `rule`s to represent the logic we want to infer. 
 
 However, bear in mind that using rules in TypeDB gives more expressivity in allowing us to represent the type of inferences we want to make. In short, translating `range` and `domain` to TypeDB should be done on a case by case basis. 
 
@@ -550,7 +550,7 @@ OWL is a family of Descriptive Logic (DL) based ontology language which adds ont
 
 TypeDB, on the other hand, comes with its own built-in native inference capabilities. This is an important distinction, because OWL assumes a good understanding of the field of logic by the user, while using TypeDB doesn't require the user to have studied this field extensively. 
 
-The result is that OWL struggles to maintain a satisfactory balance between expressiveness and complexity. Just to reason over two simple constraints: *Every parent has a child* and *Every child is a person* requires the use a fully-fledged OWL DL reasoner. Furthermore, OWL is not suited to reasoning with complex relations. Its formal foundations, based on a tree-model property, make it a better fit for tree-shaped data, but scale poorly with more complex data.
+The result is that OWL struggles to maintain a satisfactory balance between expressiveness and complexity. Just to reason over two simple constraints: *Every parent has a child* and *Every child is a person* requires the use of a fully-fledged OWL DL reasoner. Furthermore, OWL is not suited to reasoning with complex relations. Its formal foundations, based on a tree-model property, make it a better fit for tree-shaped data, but scale poorly with more complex data.
 
 OWL adopts open world assumptions, instead of TypeDB's closed world assumptions. This means that in an example where OWL has the constraint: *Every parent must have at least one child*, if we have a person with no children, this is still consistent with the constraint, as we may not yet know about John's children. However, with TypeDB's closed world assumption, if there are no actual mentions of John's children, this means he really doesn't have any children and isn't a parent. 
 

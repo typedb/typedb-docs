@@ -10,7 +10,7 @@ We use match clauses to retrieve data instances and schema types that follow a p
 By defining the [schema](../09-schema/00-overview.md), we effectively define a vocabulary to be used to describe concepts of our domain.
 
 Once the schema is defined, we can form graph patterns for which we want to search within our knowledge graph. We do that by using match clauses.
-Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../11-query/02-get-query.md), [Insert](../11-query/03-insert-query.md), [Delete](/docs/schema/delete-query) or [Aggregate](/docs/schema/aggregate-query) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
+Each match clause represents a particular graph pattern via its corresponding query pattern. The match clause is then executed as a part of a [Get](../11-query/02-get-query.md), [Insert](../11-query/03-insert-query.md), [Delete](../11-query/04-delete-query.md) or [Aggregate](../11-query/06-aggregate-query.md) query. In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
 
 In the subsequent sections, we shall see how to match specific graph patterns. To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 
@@ -419,7 +419,7 @@ TypeQLMatch.Filtered query_a = TypeQL.match(
 [tab:end]
 </div>
 
-Running the above query on the `social_network` knowledge graph, returns the `post` concept type itself, as well as all concept types that are subtypes of `post`, directly (i.e. `media`, `comment`, `album` and `status-update`) and indirectly (i.e. `photo` and `video`).
+Running the above query on the `social_network` [knowledge graph](../08-examples/01-phone-calls-schema.md), returns the `post` concept type itself, as well as all concept types that are subtypes of `post`, directly (i.e. `media`, `comment`, `album` and `status-update`) and indirectly (i.e. `photo` and `video`).
 
 ### Direct subtypes of a given type
 To match the schema concepts that are **direct subtypes** of a given type, we use the `sub!` keyword.
@@ -440,7 +440,7 @@ TypeQLMatch.Filtered query_a = TypeQL.match(
 [tab:end]
 </div>
 
-Running the above query on the `social_network` knowledge graph, returns direct subtypes of the `post` type itself (i.e. `media`, `comment`, `album` and `status-update`).
+Running the above query on the `social_network` [knowledge graph](../08-examples/01-phone-calls-schema.md), returns direct subtypes of the `post` type itself (i.e. `media`, `comment`, `album` and `status-update`).
 
 ### A given type
 To match only the given type and not any of its subtypes, we use the `type` keyword.
@@ -556,7 +556,7 @@ TypeQLMatch.Filtered query = TypeQL.match(
 This matches all concept types that own `title` as their attribute.
 
 ## Examples
-To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](/docs/examples/queries).
+To see some `get` queries powered by complex and expressive `match` clauses, check out the [examples of querying a sample knowledge graph](../08-examples/05-phone-calls-queries.md).
 
 ## Clients Guide
 
