@@ -347,7 +347,7 @@ when{
 
 rule backward-transitivity-recursive:
 when{
-    (to $x, from: $y) isa backward-reachable;
+    (to: $x, from: $y) isa backward-reachable;
     (to: $y, from: $z) isa edge;
 } then {
     (to: $x, from: $z) isa backward-reachable;
