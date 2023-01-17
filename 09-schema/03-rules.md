@@ -305,7 +305,6 @@ We first define separate types for the persisted and (inferred) transitive versi
 For the example above, we use `edge` as the base relation type and `forward-reachable` as the inferred relation. We then update the rule as follows: 
 ```typeql
 define
-
 rule forward-transitivity-base:
 when{
     (from: $x, to: $y) isa edge;
@@ -338,6 +337,7 @@ To see what happens when we try to compute backwards transitivity using the abov
 
 To answer backward transitive queries, we simply need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
 ```typeql
+define
 rule backward-transitivity-base:
 when{
     (to: $x, from: $y) isa edge;
@@ -359,7 +359,6 @@ We can use the same formulation for undirected graphs. If the undirected edges a
 
 ```typeql
 define
-
 rule forward-transitivity-base:
 when{
     (node: $x, node: $y) isa edge;
