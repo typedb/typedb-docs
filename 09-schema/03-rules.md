@@ -337,7 +337,7 @@ Here, we only generate one relation for _**each node**_ reachable from p, bringi
 To see what happens when we try to compute backwards transitivity using the above formulation, consider the query to find all nodes from which `t` is reachable in the same chain `p-q-r-s-t`. The second rule is now executed backwards - first checking all nodes `$y` from which there is an edge to `t`. Then it recursively queries all nodes reachable from `$y`. Thus, a relation is generated for every pair of nodes which are reachable from `t`.
 
 To answer backward transitive queries, we simply need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
-```
+```typeql
 rule backward-transitivity-base:
 when{
     (to: $x, from: $y) isa edge;
@@ -379,7 +379,7 @@ when{
 
 <div class = "note">
 [Important]
-* These rules are efficient only when evaluated with `$x` specified. Thus, when writing a query, it is recommended to query the directed-version of the relation which enables this.
+* These rules are efficient only when evaluated with `$x` specified. Thus, when writing a query, it is recommended to use `forward-reachable` or `backward-reachable` depending on whether the `from` or `to` is specified.
 </div>
 
 ## Optimisation Notes
