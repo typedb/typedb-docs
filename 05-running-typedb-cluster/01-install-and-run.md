@@ -144,7 +144,7 @@ $ ./typedb cluster \
     --server.address=10.0.0.2:1729 \
     --server.internal-address.zeromq=10.0.0.2:1730 \
     --server.internal-address.grpc=10.0.0.2:1731 \
-    --server.peers.peer-1.address=10.0.0.1:11729 \
+    --server.peers.peer-1.address=10.0.0.1:1729 \
     --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
     --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
     --server.peers.peer-2.address=10.0.0.2:1729 \
