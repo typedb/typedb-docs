@@ -274,21 +274,28 @@ TypeQLDefine query = TypeQL.define(
 </div>
 
 This rule will make every relation transitive.
-## Efficient transitivity
+## Optimising Transitive Queries
 
-A common use-case for rules is to infer the transitive closure of a relation. The most straight-forward way of doing this is as follows:
+A common use-case for rules is to infer all transitively reachable concepts from a particular (set of) starting concepts (e.g. finding all teams a particular user is a member of recursively, or all nodes reachable from a given node in a graph, etc.) This section describes how to write efficient transitivity rules when it is known in advance which one of the role-players will be specified. This is often the case and we can formulate our rules to answer such queries more efficiently.
+
+The intuitive way of writing a transitive rule is as follows:
 ```typeql
 define
 
+node_id sub attribute, value string;
+node sub entity, owns node_id, plays path:from, plays path:to; 
+path sub relation, relates from, relates to;
+
 rule transitive-reachability:
-when{
-    (from: $x, to: $y) isa edge;
-    (from: $y, to: $z) isa edge;
+when {
+    (from: $x, to: $y) isa path;
+    (from: $y, to: $z) isa path;
 } then {
-    (from: $x, to: $z) isa edge;
+    (from: $x, to: $z) isa path;
 };
 ```
-We can interpret this rule as joining two paths together. In a chain `p-q-r-s-t`, to find all nodes reachable from p, we would generate the following relations:
+
+We can interpret this rule as joining two paths together. In a chain `p-q-r-s-t`, querying all nodes reachable from p (`$p isa node, has id "p"; (from: $p, to:$x) isa path;`) would generate the following relations:
 ```
 p--q, q--r, r--s, s--t  (already in the database)
 
@@ -296,32 +303,37 @@ p--r, q--s, r--t,       (Inferred)
 p--s, q--t, p--t        (Inferred)                    
 ```
 
-Concretely, We would generate an `edge` relation _for every pair_ of nodes reachable from `p` - a **quadratic** number of relations.
+Concretely, one `path` relation is generated _for every pair_ of nodes reachable from `p` - a **quadratic** number of relations.
 
- The following section describes a recipe to answer forward transitivity queries materialising only a **linear** number of relations. Later, the recipe is extended to backward queries and undirected relations.
+The following section describes an approach which generates only a **linear** number of relations when the `from` role-player is specified. Subsequent sections extend the approach to when the `to` role-player is specified and for symmetric relations where both players play the same role.
 
 ### Forward transitivity
-We first define separate types for the persisted and (inferred) transitive version of the relation.
-For the example above, we use `edge` as the base relation type and `forward-reachable` as the inferred relation. We then update the rule as follows: 
+We must first define separate types for the persisted and (inferred) transitive version of the relation.
+For the example above, we use `edge` as the base relation denoting stored facts and `forward-path` as the inferred relation. We then replace the rule with the following two rules: 
 ```typeql
 define
+
+node_id sub attribute, value string;
+node sub entity, owns node_id, plays path:from, plays path:to; 
+backward-path sub relation, relates from, relates to;
+
 rule forward-transitivity-base:
-when{
+when {
     (from: $x, to: $y) isa edge;
 } then {
-    (from: $x, to: $y) isa forward-reachable;
+    (from: $x, to: $y) isa forward-path;
 };
 
 rule forward-transitivity-recursive:
-when{
-    (from: $x, to: $y) isa forward-reachable;
+when {
+    (from: $x, to: $y) isa forward-path;
     (from: $y, to: $z) isa edge;
 } then {
-    (from: $x, to: $z) isa forward-reachable;
+    (from: $x, to: $z) isa forward-path;
 };
 ```
 
-We can intepret this as finding a path and extend it by one. Querying all nodes reachable from p in the chain p-q-r-s-t would generate the following relations:
+We can intepret this approach as finding a path and extending it by one hop. The same query for all nodes reachable from p in the chain p-q-r-s-t would generate the following relations:
 ```
 p-q, q-r, r-s, s-t      (edges already in the database)
 
@@ -330,56 +342,61 @@ p--r,                   (Inferred with the second rule)
 p--s,                   (Inferred with the second rule)
 p--t                    (Inferred with the second rule)
 ```
-Here, we only generate one relation for _**each node**_ reachable from p, bringing the complexity down from quadratic in to linear in the number of reachable nodes.
+Here, we only generate one relation for _**each node**_ reachable from p, bringing the complexity down from quadratic in to linear in the number of reachable nodes. The key difference is that the recursive-call in the rule is always called with the same `$x`.  
 
 ### Backward transitivity
-To see what happens when we try to compute backwards transitivity using the above formulation, consider the query to find all nodes from which `t` is reachable in the same chain `p-q-r-s-t`. The second rule is now executed backwards - first checking all nodes `$y` from which there is an edge to `t`. Then it recursively queries all nodes reachable from `$y`. Thus, a relation is generated for every pair of nodes which are reachable from `t`.
+To see what happens when we try to compute backwards transitivity using the above formulation, consider the query to find all nodes from which `t` is reachable in the same chain `p-q-r-s-t`. The second rule is now executed backwards - first finding all `$y` there is an edge to `t`. Then it recursively queries all nodes reachable from `$y`. Thus, a relation is generated for every pair of nodes which are reachable from `t` - no better than the naive approach.
 
-To answer backward transitive queries, we simply need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
+To answer backward transitive queries, we need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
 ```typeql
 define
+
+node_id sub attribute, value string;
+node sub entity, owns node_id, plays path:from, plays path:to; 
+backward-path sub relation, relates from, relates to;
+
 rule backward-transitivity-base:
-when{
+when {
     (to: $x, from: $y) isa edge;
 } then {
-    (to: $x, from: $y) isa backward-reachable;
+    (to: $x, from: $y) isa backward-path;
 };
 
 rule backward-transitivity-recursive:
-when{
-    (to: $x, from: $y) isa backward-reachable;
+when {
+    (to: $x, from: $y) isa backward-path;
     (to: $y, from: $z) isa edge;
 } then {
-    (to: $x, from: $z) isa backward-reachable;
+    (to: $x, from: $z) isa backward-path;
 };
 ```
 
 ### Undirected transitivity
-We can use the same formulation for undirected graphs. If the undirected edges are defined by the relations `(node: $x, node: $y) isa edge;` then the rules would read:
+We can use the same approach for undirected graphs. If the undirected edges are defined by the relations `(node: $x, node: $y) isa edge;` then the rules would read:
 
 ```typeql
 define
-rule forward-transitivity-base:
-when{
+node sub entity, plays edge:node;
+edge sub relation, relates node;
+forward-path:
+
+rule undirected-transitivity-base:
+when {
     (node: $x, node: $y) isa edge;
 } then {
-    (from: $x, to: $y) isa forward-reachable;
+    (from: $x, to: $y) isa undirected-path;
 };
 
-rule forward-transitivity-recursive:
-when{
-    (from: $x, to: $y) isa forward-reachable;
+rule undirected-transitivity-recursive:
+when {
+    (from: $x, to: $y) isa undirected-path;
     (node: $y, node: $z) isa edge;
 } then {
-    (from: $x, to: $z) isa forward-reachable;
+    (from: $x, to: $z) isa undirected-path;
 };
 ```
- Although we still need different roles for `$x` and `$z` in the inferred relation, (without which we'd query the rule once in each direction) `forward-reachable` is actually equivalent to the undirected transitive relation.
 
-<div class = "note">
-[Important]
-* These rules are efficient only when evaluated with `$x` specified. Thus, when writing a query, it is recommended to use `forward-reachable` or `backward-reachable` depending on whether the `from` or `to` is specified.
-</div>
+ Notice that we still need different roles for `$x` and `$z` in `undirected-path` and we only gain efficiency when `$x` is specified.  
 
 ## Optimisation Notes
 
