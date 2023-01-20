@@ -767,7 +767,7 @@ If there are a lot of changes to be done consider creating a brand-new database 
 ### Adding to a schema with Define
 
 To add concepts to an existing schema we need to do a query with a single `define` statement at the beginning, just like
-for a new schema.
+for a new schema. For example, lets add attribute `phone-number` to the `person` entity:
 
 <div class="tabs dark">
 
@@ -775,14 +775,14 @@ for a new schema.
 ```typeql
 define
 
-person owns address;
+person owns phone-number;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 TypeQLDefine query = TypeQL.define(
-        type("person").owns("address")
+        type("person").owns("phone-number")
         );
 ```
 </div>
@@ -800,14 +800,14 @@ person sub entity,
   owns full-name,
   owns nickname,
   owns gender,
-  owns address;
+  owns phone-number;
 ```
 [tab:end]
 
 [tab:Java]
 ```java
 TypeQLDefine query = TypeQL.define(
-        type("person").sub("entity").owns("full-name").owns("nickname").owns("gender").owns("address")
+        type("person").sub("entity").owns("full-name").owns("nickname").owns("gender").owns("phone-number")
         );
 ```
 </div>
