@@ -751,8 +751,82 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-## Undefine
-As the name suggests, we use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
+## Modify an existing schema
+We can modify an existing schema by adding or deleting concepts: entities, relations, attributes and rules.
+
+To add we use `define` and to delete an existing concept we use `undefine`. 
+
+We can't modify concepts in a schema directly. To modify an existing concept in a schema (e.g. rename something) we 
+shall delete the old concept (by using [undefine](#deleting-from-a-schema-with-undefine)) and add the new one (by using 
+[define](#adding-to-a-schema-with-define)).
+
+Don't forget to modify all references accordingly (with deletion and adding).
+
+If there are a lot of changes to be done consider creating a brand-new database to load a new schema from scratch.
+
+### Adding to a schema with Define
+
+To add concepts to an existing schema we need to do a query with a single `define` statement at the beginning, just like
+for a new schema.
+
+<div class="tabs dark">
+
+[tab:TypeQL]
+```typeql
+define
+
+person owns address;
+```
+[tab:end]
+
+[tab:Java]
+```java
+TypeQLDefine query = TypeQL.define(
+        type("person").owns("address")
+        );
+```
+</div>
+
+Any concepts that already exist in a schema you are trying to modify will not be added to prevent doubling. That is why 
+you can run the following request with the same result:
+
+<div class="tabs dark">
+
+[tab:TypeQL]
+```typeql
+define
+
+person sub entity,
+  owns full-name,
+  owns nickname,
+  owns gender,
+  owns address;
+```
+[tab:end]
+
+[tab:Java]
+```java
+TypeQLDefine query = TypeQL.define(
+        type("person").sub("entity").owns("full-name").owns("nickname").owns("gender").owns("address")
+        );
+```
+</div>
+
+In the example above the `person` was already defined as a subtype of an entity as well as first three attributes.
+
+You can even reuse your original query/file (e.g. `schema.tql`) that was used to create the original schema. 
+By adding concepts to the original query and executing it again you will achieve the same result — any concepts that 
+were created by the original request will not be created again (doubled) but the newly added concepts will be added to 
+the schema. Thus, running the same query a second time will have no effect.
+
+<div class="note">
+[Important]
+You can only add concepts this way. Do not try to modify existing concepts or delete by modifying query and launching 
+it again.
+</div>
+
+### Deleting from a schema with Undefine
+As the keyword suggests, we use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
 
 <div class="note">
 [Important]
@@ -760,7 +834,7 @@ Don't forget to `commit` after executing an `undefine` statement. Otherwise, any
 When using one of the [TypeDB Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [TypeDB Console](../02-console/01-console.md), we use the `commit` command.
 </div>
 
-### Undefine an attribute's association
+#### Undefine an attribute's association
 We can undefine the association that a type has with an attribute.
 
 <div class="tabs dark">
@@ -790,7 +864,7 @@ The query above, removes the attribute `nickname` from the entity `person`.
 It's important to note that `undefine [label] sub [type] owns [attributes' label];` undefines the `label` itself, rather than its association with the attribute.
 </div>
 
-### Undefine a relation
+#### Undefine a relation
 Undefining a relation inherently undefines all of its roles. Therefore when a relation is undefined any types that were playing roles in that relation will no longer play those roles. Given a `marriage` relation type we can undefine it as shown below.
 
 <div class="tabs dark">
@@ -811,7 +885,7 @@ TypeQLUndefine second_query = TypeQL.undefine(
 [tab:end]
 </div>
 
-### Undefine a Supertype
+#### Undefine a Supertype
 When the concept type to be undefined is a supertype to something else, we must first undefine all its subtypes before undefining the supertype itself.
 
 ## Clients Guide
