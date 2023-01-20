@@ -15,13 +15,13 @@ Databases are isolated from one another. Even when running on the same TypeDB Se
 </div>
 
 ### Creating a Database
-We can create a new a database via the TypeDB Clients [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) and [Python](../03-client-api/02-python.md) and [TypeDB Console](../02-console/01-console.md).
+We can create a new a database via the TypeDB Clients ([Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) and [Python](../03-client-api/02-python.md)) as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
 
 ### Listing All Databases
-We can list all databases of the running TypeDB server via the TypeDB Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [Studio](../07-studio/01-quickstart.md#connecting-to-typedb-server).
+We can list all databases of the running TypeDB server via the TypeDB Clients [Node.js](../03-client-api/03-nodejs.md#retrieve-all-databases) and [Python](../03-client-api/02-python.md#retrieve-all-databases), as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
 
 ### Deleting a Database
-We can delete a database via the TypeDB Clients [Java](../03-client-api/01-java.md#delete-a-database), [Node.js](../03-client-api/03-nodejs.md#delete-a-database) and [Python](../03-client-api/02-python.md#delete-a-database).
+We can delete a database via the TypeDB Clients [Java](../03-client-api/01-java.md#delete-a-database), [Node.js](../03-client-api/03-nodejs.md#delete-a-database) and [Python](../03-client-api/02-python.md#delete-a-database), as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
 
 ### Renaming a Database
-Once we have created a database, its name can no longer be changed. The only way to achieve a renamed database is to migrate the data from the database with the old name to the newly created database.
+Once we have created a database, its name can no longer be changed. The only way to achieve a renamed database is to [migrate](../06-management/04-migration-and-backup.md) the data from the database with the old name to the newly created database.

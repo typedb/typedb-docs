@@ -18,23 +18,15 @@ TypeDB runs on Mac, Linux and Windows. The only requirement is Java (version 11 
 
 As a superuser, add the repo:
 ```
-sudo apt install software-properties-common apt-transport-https
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8F3DA4B5E9AEF44C
-sudo add-apt-repository 'deb [ arch=all ] https://repo.vaticle.com/repository/apt/ trusty main'
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C 
+gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+echo "deb [ arch=all ] https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
 ```
 
 Update the package cache:
 ```
 sudo apt update
-```
-
-**NOTE**: Ubuntu 16.04 requires some extra steps to be able to install TypeDB, namely upgrading `libstdc++`:
-
-```
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt-get update
-sudo apt-get install gcc-4.9
-sudo apt-get install --only-upgrade libstdc++6
 ```
 
 Install TypeDB Server and TypeDB Console:

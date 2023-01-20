@@ -123,7 +123,7 @@ async function loadDataIntoTypeDB(input, session) {
 In order to load data from each file into TypeDB, we need to:
 
 1.  retrieve a list containing objects, each of which represents a data item. We do this by calling `parseDataToObjects(input)`
-2.  for each object in `items`: a) create a `transaction`, b) construct the `typeqlInsertQuery` using the corresponding template function, c) run the query and d)commit the transaction.
+2.  for each object in `items`: a) create a `transaction`, b) construct the `typeqlInsertQuery` using the corresponding template function, c) run the query and d) commit the transaction.
 
 <div class="note">
 [Important]
@@ -205,7 +205,7 @@ or:
 
 - Goes in:
 ```javascript
-{ firs_name: "Jackie", last_name: "Joe", city: "Jimo", age: 77, phone_number: "+00 091 xxx"}
+{ first_name: "Jackie", last_name: "Joe", city: "Jimo", age: 77, phone_number: "+00 091 xxx"}
 ```
 
 - Comes out:
@@ -274,7 +274,7 @@ Example:
 match $caller isa person, has phone-number "+44 091 xxx"; $callee isa person, has phone-number "+00 091 xxx"; insert $call(caller: $caller, callee: $callee) isa call; $call has started-at 2018-08-10T07:57:51; $call has duration 148;
 ```
 
-We’ve now created a template for each and all four concepts that were [previously](../defining-the-schema) defined in the schema.
+We’ve now created a template for each and all four concepts that were [previously](../08-examples/01-phone-calls-schema.md) defined in the schema.
 
 It’s time for the implementation of `parseDataToObjects(input)`.
 

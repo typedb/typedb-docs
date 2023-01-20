@@ -208,24 +208,24 @@ match $x sub thing; get $x;
 The result should be as follows:
 <!-- test-ignore -->
 ```typeql
-{$x label thing;}
-{$x label entity;}
-{$x label relation;}
-{$x label attribute;}
-{$x label company sub entity;}
-{$x label person sub entity;}
-{$x label call sub relation;}
-{$x label "@has-attribute" sub relation;}
-{$x label contract sub relation;}
-{$x label name sub attribute;}
-{$x label started-at sub attribute;}
-{$x label age sub attribute;}
-{$x label city sub attribute;}
-{$x label last-name sub attribute;}
-{$x label first-name sub attribute;}
-{$x label duration sub attribute;}
-{$x label phone-number sub attribute;}
-{$x label is-customer sub attribute;}
+{$x type thing;}
+{$x type entity;}
+{$x type relation;}
+{$x type attribute;}
+{$x type company sub entity;}
+{$x type person sub entity;}
+{$x type call sub relation;}
+{$x type "@has-attribute" sub relation;}
+{$x type contract sub relation;}
+{$x type name sub attribute;}
+{$x type started-at sub attribute;}
+{$x type age sub attribute;}
+{$x type city sub attribute;}
+{$x type last-name sub attribute;}
+{$x type first-name sub attribute;}
+{$x type duration sub attribute;}
+{$x type phone-number sub attribute;}
+{$x type is-customer sub attribute;}
 ```
 
 **5 -** Close the transaction and exit the console:

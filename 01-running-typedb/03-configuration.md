@@ -24,7 +24,7 @@ Some arguments are exclusive to the command line interface:
 
 Additional arguments available are derived from the configuration Yaml file. 
 **Any value** from the configuration file can be overridden from the command line, as shown in
-a [following section](/docs/running-typedb/configuration/#configuration-file-options-via-command-line).
+a [following section](../01-running-typedb/03-configuration.md#configuration-file-options-via-command-line).
 
 ### Getting help
 
@@ -61,7 +61,7 @@ If installed using Homebrew:
 If installed using APT:
 
 ```
-/opt/typedb/core/server/conf/typedb.yml
+/opt/typedb/core/server/conf/config.yml
 ```
 
 ### Sample Configuration
