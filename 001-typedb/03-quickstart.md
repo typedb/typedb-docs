@@ -7,16 +7,26 @@ toc: false
 ---
 
 ### An Overview
-In this tutorial, we go through creating and interacting with a TypeDB knowledge graph representing a social network. 
-In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with TypeDB.
 
-Let's get started!
+In this Quickstart guide, we go through step-by-step process of creating and interacting with a TypeDB database 
+representing a Identity and Access Management solution. This exact database with both 
+[schema](../../09-schema/00-overview.md) and [data](../../11-query/00-overview.md) is used in the most 
+examples of TypeDB documentation. That's why by completing this quickstart guide you will prepare an environment to 
+successfully execute most requests explored later on in this documentation.
 
-### Run TypeDB
-[Install TypeDB](02-install-and-run.md#system-requirements) and start the [TypeDB Server](02-install-and-run.md#start-the-typedb-server).
+In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and 
+write queries and explore the power of automated reasoning and analytics with TypeDB.
+
+<!--- #todo Consider rewriting -->
+
+### First step: Run TypeDB
+To create and interact with TypeDV databases we need working TypeDB server. 
+
+1. [Install TypeDB](02-install-and-run.md#system-requirements) 
+2. [Start the TypeDB Server](02-install-and-run.md#start-the-typedb-server).
 
 
-### The Schema
+### Second step: Prepare The Schema
 A [TypeDB schema](../09-schema/00-overview.md) is the blueprint of a TypeDB knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
 
 ```typeql

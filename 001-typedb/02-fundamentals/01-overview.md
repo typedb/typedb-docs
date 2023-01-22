@@ -15,15 +15,7 @@ toc: false
 
 # Fundamentals overview
 
-## Brief intro
 
-TypeDB: 
-- ~~Is a Graph database.~~ See [comparison]().
-- Is a transactional ([OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing)) database.
-- Uses its own query language: [TypeQL](../11-query/00-overview.md).
-- Has special [strong type system](). <!--- #todo add link to the types article -->
-- Uses [Entity-Relationship model](), extended with Attributes and Rules.
-- Has data separated by [databases](../02-fundamentals/02-database.md), each one having its own [schema](../09-schema/00-overview.md).
 
 ## Intuitive APIs
 

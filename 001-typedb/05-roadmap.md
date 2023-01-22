@@ -8,3 +8,11 @@ Summary: Roadmap of TypeDB development.
 # Roadmap
 
 *Under development*
+
+## 2022
+
+### Q1
+
+1. Major documentation update.
+2. ... _TBD_
+
