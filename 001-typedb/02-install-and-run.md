@@ -29,9 +29,33 @@ The only requirement is Java (**version 11** or higher) which can be downloaded 
 ## Download and Install TypeDB
 
 <div class="tabs light">
+
+[tab:Docker]
+
+Use `docker run` to download an image `vaticle/typedb` and run a container with it. To ensure that data is preserved
+even when the instance is killed or restarted, mount an external volume to your Docker container:
+
+```
+docker run --name typedb -d -v ~/typedb:/opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
+```
+
+`~/typedb` — should be a location where you want the data to be stored in the host machine.
+`vaticle/typedb:latest` — is the image name. You can change `latest` for any version you might need. We recommend using
+TypeDB and TypeDB Studio of the same versions.
+
+The TypeDB Server is expected to be running on port `1729` on your machine in a docker container.
+
+You can connect to this instance with TypeDB Studio or any other instrument via address `127.0.0.1:1729`.
+To interact with the local [TypeDB Console](../02-console/01-console.md), run:
+
+```
+docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
+```
+[tab:end]
+
 [tab:Linux]
 
-#### Using APT
+#### Using package manager, like APT
 
 As a superuser, add the repo:
 ```
@@ -53,8 +77,9 @@ sudo apt install typedb-all
   
 #### APT conflicts
 
-APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release strategy allows
-depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate feature upgrades.
+APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release 
+strategy allows depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate 
+feature upgrades.
   
 In these situations, you will encounter the following type of errors:
 
@@ -137,32 +162,15 @@ please try to install the "C++ redistributable" by following the instructions [h
 
 [tab:end]
 
-[tab:Docker]
-
-Use `docker run` to download an image `vaticle/typedb` and run a container with it. To ensure that data is preserved 
-even when the instance is killed or restarted, mount an external volume to your Docker container:
-
-```
-docker run --name typedb -d -v ~/typedb:/opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
-```
-
-`~/typedb` — should be a location where you want the data to be stored in the host machine.
-
-The TypeDB Server is expected to be running on port `1729` on your machine in a docker container.
-
-You can connect to this instance with TypeDB Studio or any other instrument via address `127.0.0.1:1729`. 
-To interact with the local [TypeDB Console](../02-console/01-console.md), run:
-
-```
-docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
-```
-[tab:end]
 </div>
 
 ## Start the TypeDB Server
 If you have installed TypeDB using a package manager, to start the TypeDB Server, run `typedb server`.
 
-Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb server`.
+Otherwise, if you have manually downloaded TypeDB, navigate into the folder with unzipped TypeDB and run it by issuing
+`./typedb server` command.
+
+If you have used the docker way TypeDB should work while the docker container is active.
 
 <div class="note">
 [Note]
@@ -174,8 +182,4 @@ in termination of the program.
 ## Stop the TypeDB Server
 To stop the TypeDB Server, press Ctrl-C in the terminal, where you started it in.
 
-## Summary
-So far we have learned how to download/install TypeDB and run the TypeDB Server.
-
-Next, we learn how to [configure the TypeDB Server](05-admin/03-configuring-server.md) 
-and [interact with a TypeDB knowledge graph via the TypeDB Console](../02-console/01-console.md).
+If you have used docker — stop the container.
