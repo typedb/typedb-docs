@@ -40,6 +40,7 @@ docker run --name typedb -d -v ~/typedb:/opt/typedb-all-linux/server/data/ -p 17
 ```
 
 `~/typedb` — should be a location where you want the data to be stored in the host machine.
+
 `vaticle/typedb:latest` — is the image name. You can change `latest` for any version you might need. We recommend using
 TypeDB and TypeDB Studio of the same versions.
 
