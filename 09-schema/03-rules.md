@@ -313,10 +313,11 @@ We must first define separate types for the persisted and (inferred) transitive 
 For the example above, we use `edge` as the base relation denoting stored facts and `forward-path` as the inferred relation. We then replace the rule with the following two rules: 
 ```typeql
 define
-
 node_id sub attribute, value string;
-node sub entity, owns node_id, plays path:from, plays path:to; 
-backward-path sub relation, relates from, relates to;
+node sub entity, owns node_id, 
+    plays edge:from, plays edge:to,
+    plays forward-path:from, plays forward-path:to; 
+forward-path sub relation, relates from, relates to;
 
 rule forward-transitivity-base:
 when {
@@ -351,9 +352,11 @@ To see what happens when we try to compute backwards transitivity using the abov
 To answer backward transitive queries such as `$t isa node, has id "t"; (from: $x, to: $t) isa path;` where the **to** role is fixed, we need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
 ```typeql
 define
-
 node_id sub attribute, value string;
-node sub entity, owns node_id, plays path:from, plays path:to; 
+node sub entity, owns node_id, 
+    plays edge:from, plays edge:to,
+    plays backward-path:from, plays backward-path:to; 
+edge sub relation, relates from, relates to;
 backward-path sub relation, relates from, relates to;
 
 rule backward-transitivity-base:
@@ -377,9 +380,12 @@ We can use the same approach for undirected graphs. If the undirected edges are 
 
 ```typeql
 define
-node sub entity, plays edge:node;
+node_id sub attribute, value string;
 edge sub relation, relates node;
-forward-path:
+undirected-path sub relation, relates from, relates to;
+node sub entity, owns node_id,
+    plays edge:node, 
+    plays undirected-path:from, plays undirected-path:to;
 
 rule undirected-transitivity-base:
 when {
