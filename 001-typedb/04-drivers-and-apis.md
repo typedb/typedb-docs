@@ -24,8 +24,8 @@ List:
 
 - [TypeDB Console](../02-console/01-console.md)
 - [TypeDB Studio](../07-studio/00-overview.md)
-- [TypeDB libraries / drivers](../03-client-api/00-overview.md)
-  - Supported libraries
+- [TypeDB drivers](../03-client-api/00-overview.md)
+  - Supported drivers
     - [**Java**](../03-client-api/01-java.md)
     - [**Node.js**](../03-client-api/03-nodejs.md)
     - [**Python**](../03-client-api/02-python.md)
