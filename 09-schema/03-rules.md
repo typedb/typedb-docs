@@ -278,7 +278,7 @@ This rule will make every relation transitive.
 
 A common use-case for rules is to infer all transitively reachable concepts from a particular (set of) starting concepts (e.g. finding all teams a particular user is a member of recursively, or all nodes reachable from a given node in a graph, etc.) This section describes how to write efficient transitivity rules when it is known in advance which one of the role-players will be specified. This is often the case and we can formulate our rules to answer such queries more efficiently.
 
-### Naive transitivity
+### Simple transitivity
 The intuitive way of writing a transitive rule is as follows:
 ```typeql
 define
@@ -308,7 +308,7 @@ Concretely, one `path` relation is generated _for every pair_ of nodes reachable
 
 The following section describes an approach which generates only a **linear** number of relations when the `from` role-player is specified. Subsequent sections extend the approach to when the `to` role-player is specified and for symmetric relations where both players play the same role.
 
-### Forward transitivity
+### Optimal forward transitivity
 We must first define separate types for the persisted and (inferred) transitive version of the relation.
 For the example above, we use `edge` as the base relation denoting stored facts and `forward-path` as the inferred relation. We then replace the rule with the following two rules: 
 ```typeql
@@ -334,7 +334,7 @@ when {
 };
 ```
 
-We can intepret this approach as finding a path and extending it by one hop. The same query `$p isa node, has id "p"; (from: $p, to:$x) isa path;` for all nodes reachable from p in the chain p-q-r-s-t would generate the following relations:
+We can intepret this approach as finding a path and extending it by one hop. The same query `$p isa node, has id "p"; (from: $p, to:$x) isa path;` for all nodes reachable **from** p in the chain p-q-r-s-t would generate the following relations:
 ```
 p-q, q-r, r-s, s-t      (edges already in the database)
 
@@ -345,10 +345,10 @@ p--t                    (Inferred with the second rule)
 ```
 Here, we only generate one relation for _**each node**_ reachable from p, bringing the complexity down from quadratic in to linear in the number of reachable nodes. The key difference is that the recursive-call in the rule is always called with the same `$x`.  
 
-### Backward transitivity
+### Optimal Backward transitivity
 To see what happens when we try to compute backwards transitivity using the above formulation, consider the query to find all nodes from which `t` is reachable in the same chain `p-q-r-s-t`. The second rule is now executed backwards - first finding all `$y` there is an edge to `t`. Then it recursively queries all nodes reachable from `$y`. Thus, a relation is generated for every pair of nodes which are reachable from `t` - no better than the naive approach.
 
-To answer backward transitive queries such as `$t isa node, has id "t"; (from: $x, to: $t) isa path;`, we need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
+To answer backward transitive queries such as `$t isa node, has id "t"; (from: $x, to: $t) isa path;` where the **to** role is fixed, we need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
 ```typeql
 define
 
@@ -372,8 +372,8 @@ when {
 };
 ```
 
-### Undirected transitivity
-We can use the same approach for undirected graphs.  If the undirected edges are defined by the relations `(node: $x, node: $y) isa edge;`, then the rules would read:
+### Optimal undirected transitivity
+We can use the same approach for undirected graphs. If the undirected edges are defined by the relations `(node: $x, node: $y) isa edge;`, then the rules would read:
 
 ```typeql
 define
@@ -397,7 +397,7 @@ when {
 };
 ```
 
- Notice that we still need different roles for `$x` and `$z` in `undirected-path`. Further, we are efficienct only in queries where the `from` role is specified, such as `$t isa node, has id "t"; (from: $t, to: $x) isa path;`. 
+ Notice that we still need different roles for `$x` and `$z` in `undirected-path`. Further, we are efficienct only in queries where the **from** role is specified, such as `$t isa node, has id "t"; (from: $t, to: $x) isa path;`. 
 
 ## Optimisation Notes
 
