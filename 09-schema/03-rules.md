@@ -272,6 +272,136 @@ TypeQLDefine query = TypeQL.define(
 </div>
 
 This rule will make every relation transitive.
+## Optimising Transitive Queries
+
+A common use-case for rules is to infer all transitively reachable concepts from a particular (set of) starting concepts (e.g. finding all teams a particular user is a member of recursively, or all nodes reachable from a given node in a graph, etc.) This section describes how to write efficient transitivity rules when it is known in advance which one of the role-players will be specified. This is often the case and we can formulate our rules to answer such queries more efficiently.
+
+### Simple Transitivity
+The intuitive way of writing a transitive rule is as follows:
+```typeql
+define
+
+node_id sub attribute, value string;
+node sub entity, owns node_id, plays path:from, plays path:to; 
+path sub relation, relates from, relates to;
+
+rule transitive-reachability:
+when {
+    (from: $x, to: $y) isa path;
+    (from: $y, to: $z) isa path;
+} then {
+    (from: $x, to: $z) isa path;
+};
+```
+
+We can interpret this rule as joining two paths together. In a chain `p-q-r-s-t`, querying all nodes reachable from p using the query `$p isa node, has id "p"; (from: $p, to:$x) isa path;` would generate the following relations:
+```
+p--q, q--r, r--s, s--t  (already in the database)
+
+p--r, q--s, r--t,       (Inferred)
+p--s, q--t, p--t        (Inferred)                    
+```
+
+Concretely, one `path` relation is generated _for every pair_ of nodes reachable from `p` - a **quadratic** number of relations.
+
+The following section describes an approach which generates only a **linear** number of relations when the `from` role-player is specified. Subsequent sections extend the approach to when the `to` role-player is specified and for symmetric relations where both players play the same role.
+
+### Optimal Forward Transitivity
+We must first define separate types for the persisted and (inferred) transitive version of the relation.
+For the example above, we use `edge` as the base relation denoting stored facts and `forward-path` as the inferred relation. We then replace the rule with the following two rules: 
+```typeql
+define
+node_id sub attribute, value string;
+node sub entity, owns node_id, 
+    plays edge:from, plays edge:to,
+    plays forward-path:from, plays forward-path:to; 
+forward-path sub relation, relates from, relates to;
+
+rule forward-transitivity-base:
+when {
+    (from: $x, to: $y) isa edge;
+} then {
+    (from: $x, to: $y) isa forward-path;
+};
+
+rule forward-transitivity-recursive:
+when {
+    (from: $x, to: $y) isa forward-path;
+    (from: $y, to: $z) isa edge;
+} then {
+    (from: $x, to: $z) isa forward-path;
+};
+```
+
+We can intepret this approach as finding a path and extending it by one hop. The same query `$p isa node, has id "p"; (from: $p, to:$x) isa path;` for all nodes reachable **from** p in the chain p-q-r-s-t would generate the following relations:
+```
+p-q, q-r, r-s, s-t      (edges already in the database)
+
+p--q,                   (Inferred with the first rule)
+p--r,                   (Inferred with the second rule)
+p--s,                   (Inferred with the second rule)
+p--t                    (Inferred with the second rule)
+```
+Here, we only generate one relation for _**each node**_ reachable from p, bringing the complexity down from quadratic in to linear in the number of reachable nodes. The key difference is that the recursive-call in the rule is always called with the same `$x`.  
+
+### Optimal Backward Transitivity
+To see what happens when we try to compute backwards transitivity using the above formulation, consider the query to find all nodes from which `t` is reachable in the same chain `p-q-r-s-t`. The second rule is now executed backwards - first finding all `$y` there is an edge to `t`. Then it recursively queries all nodes reachable from `$y`. Thus, a relation is generated for every pair of nodes which are reachable from `t` - no better than the naive approach.
+
+To answer backward transitive queries such as `$t isa node, has id "t"; (from: $x, to: $t) isa path;` where the **to** role is fixed, we need a backwards version of the transitive relation and rules. Intuitively, This approach computes forward-transitivity on the reversed graph.
+```typeql
+define
+node_id sub attribute, value string;
+node sub entity, owns node_id, 
+    plays edge:from, plays edge:to,
+    plays backward-path:from, plays backward-path:to; 
+edge sub relation, relates from, relates to;
+backward-path sub relation, relates from, relates to;
+
+rule backward-transitivity-base:
+when {
+    (to: $x, from: $y) isa edge;
+} then {
+    (to: $x, from: $y) isa backward-path;
+};
+
+rule backward-transitivity-recursive:
+when {
+    (to: $x, from: $y) isa backward-path;
+    (to: $y, from: $z) isa edge;
+} then {
+    (to: $x, from: $z) isa backward-path;
+};
+```
+
+### Optimal Undirected Transitivity
+We can use the same approach for undirected graphs. If the undirected edges are defined by the relations `(node: $x, node: $y) isa edge;`, then the rules would read:
+
+```typeql
+define
+node_id sub attribute, value string;
+edge sub relation, relates node;
+undirected-path sub relation, relates from, relates to;
+node sub entity, owns node_id,
+    plays edge:node, 
+    plays undirected-path:from, plays undirected-path:to;
+
+rule undirected-transitivity-base:
+when {
+    (node: $x, node: $y) isa edge;
+} then {
+    (from: $x, to: $y) isa undirected-path;
+};
+
+rule undirected-transitivity-recursive:
+when {
+    (from: $x, to: $y) isa undirected-path;
+    (node: $y, node: $z) isa edge;
+} then {
+    (from: $x, to: $z) isa undirected-path;
+};
+```
+
+ Notice that we still need different roles for `$x` and `$z` in `undirected-path`. Further, we are efficienct only in queries where the **from** role is specified, such as `$t isa node, has id "t"; (from: $t, to: $x) isa path;`. 
 
 ## Optimisation Notes
 
@@ -280,6 +410,7 @@ There are two general tips for making queries with reasoning execute faster:
 2. Using the same transaction for multiple reasoning queries. Because inferred facts are cleared between transactions, running the same or similar queries within one transaction can reuse previously found facts. Combined with a `limit` on the query, it might be possible to avoid having to do any new reasoning at all.
 
 For complex queries, it can also be beneficial to add more CPU cores, as the reasoning engine is able to explore more paths in the database concurrently.
+
 
 ## Delete a Rule
 

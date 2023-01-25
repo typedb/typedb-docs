@@ -672,16 +672,13 @@ Let us define a network of nodes with possible edges between nodes:
 ```typeql
 define
 
-traversable sub entity,
+node sub entity,
     plays edge:from,
     plays edge:to,
     plays reachable:from,
     plays reachable:to,
     plays indirect-edge:from,
     plays indirect-edge:to;
-
-
-node sub traversable;
 
 edge sub relation, relates from, relates to;
 ```
@@ -690,8 +687,7 @@ edge sub relation, relates from, relates to;
 [tab:Java]
 ```java
 TypeQLDefine query = TypeQL.define(
-    type("traversable").sub("entity").plays("edge", "from").plays("edge", "to"),
-    type("node").sub("traversable"), 
+    type("node").sub("entity").plays("edge", "from").plays("edge", "to"),
     type("edge").sub("relation").relates("from").relates("to")
 );
 ```
@@ -799,7 +795,7 @@ We can mark the unreachable nodes by defining the following rule:
 define
 
 unreachable sub relation, relates from, relates to;
-traversable sub entity,
+node sub entity,
     plays unreachable:from,
     plays unreachable:to;
 rule unreachability-rule:
@@ -817,7 +813,7 @@ rule unreachability-rule:
 ```java
 TypeQLDefine query = TypeQL.define(
     type("unreachable").sub("relation").relates("from").relates("to"),
-    type("traversable").sub("entity").plays("unreachable", "from").plays("unreachable", "to"),
+    type("node").sub("entity").plays("unreachable", "from").plays("unreachable", "to"),
     rule("unreachability-rule")
         .when(
             and(
