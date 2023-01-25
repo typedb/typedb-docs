@@ -767,7 +767,7 @@ If there are a lot of changes to be done consider creating a brand-new database 
 ### Adding to a schema with Define
 
 To add concepts to an existing schema we need to do a query with a single `define` statement at the beginning, just like
-for a new schema. For example, lets add attribute `phone-number` to the `person` entity:
+for a new schema. For example, let's add attribute `phone-number` to the `person` entity:
 
 <div class="tabs dark">
 
