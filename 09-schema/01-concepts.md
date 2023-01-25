@@ -754,13 +754,13 @@ TypeQLDefine query = TypeQL.define(
 ## Modify an existing schema
 We can modify an existing schema by adding or deleting concepts: entities, relations, attributes and rules.
 
-To add we use `define` and to delete an existing concept we use `undefine`. 
+To add a concept we use `define` and to delete an existing concept we use `undefine`. 
 
 We can't modify concepts in a schema directly. To modify an existing concept in a schema (e.g. rename something) we 
 shall delete the old concept (by using [undefine](#deleting-from-a-schema-with-undefine)) and add the new one (by using 
 [define](#adding-to-a-schema-with-define)).
 
-Don't forget to modify all references accordingly (with deletion and adding).
+Don't forget to update all references to the modified concept through the same process (i.e. deletion and addition).
 
 If there are a lot of changes to be done consider creating a brand-new database to load a new schema from scratch.
 
@@ -812,16 +812,16 @@ TypeQLDefine query = TypeQL.define(
 ```
 </div>
 
-In the example above the `person` was already defined as a subtype of an entity as well as first three attributes.
+In the example above, `person` was already defined as a subtype of `entity` and owning the first three attributes.
 
 You can even reuse your original query/file (e.g. `schema.tql`) that was used to create the original schema. 
 By adding concepts to the original query and executing it again you will achieve the same result — any concepts that 
 were created by the original request will not be created again (doubled) but the newly added concepts will be added to 
-the schema. Thus, running the same query a second time will have no effect.
+the schema. Thus, running the same query a second time will have no effect (i.e. it is idempotent).
 
 <div class="note">
 [Important]
-You can only add concepts this way. Do not try to modify existing concepts or delete by modifying query and launching 
+You can only add concepts this way. Do not try to modify existing concepts or delete by modifying the query and launching 
 it again.
 </div>
 
