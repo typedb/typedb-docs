@@ -28,7 +28,7 @@ You can find interesting a comparison with most common types of databases:
 - [Semantic web](../12-comparisons/01-semantic-web-and-typedb.md)
 - [Graph](../12-comparisons/02-graph-databases-and-typedb.md)
 
-We have prepared a [Quickstart guide](../001-typedb-old/03-quickstart.md) if you want to start with some practice.
+We have prepared a [Quickstart guide](../001-typedb/03-quickstart.md) if you want to start with some practice.
 
 ## Introduction
 
