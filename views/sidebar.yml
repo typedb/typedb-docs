@@ -11,72 +11,62 @@ chapters:
     baseUrl: /docs/typedb/
     sections: 
       -
-        title: Common
-        hideTitle: true # this does not work
-        baseUrl: /docs/typedb/
+        title: Get started
+        hideTitle: false
+        baseUrl: /docs/typedb/start/
         pages:
           -
-            title: Overview
-            url: overview
+            title: Introduction
+            url: introduction
           -
-            title: Install & Run
-            url: install-and-run
+            title: Installation
+            url: installation
           -
             title: Quickstart Guide
             url: quickstart
           -
-            title: Drivers & APIs
-            url: drivers-and-api
+            title: Sample Application
+            url: sample-app
           -
-            title: Roadmap
-            url: roadmap
+            title: Clients
+            url: clients
       -
-        title: TypeDB Philosophy
-        baseUrl: /docs/typedb/philosophy/
+        title: Development
+        baseUrl: /docs/typedb/dev/
         pages:
           -
-            title: What is a Type System
-            url: what
+            title: Basic
+            url: basic
           -
-            title: TypeDB #: a strongly typed database
-            url: typedb
+            title: Transactions
+            url: transactions
           -
-            title: Modeling with Types
-            url: modeling-with-types
+            title: ACID Guarantees
+            url: acid
           -
-            title: Modeling with Rules
-            url: modeling-with-rules
+            title: Tools
+            url: tools
           -
-            title: Writing & Reading Data
-            url: data
+            title: Tools — TypeDB Console
+            url: tools-console
           -
-            title: Use Cases
-            url: use
+            title: Tools — TypeDB Studio
+            url: tools-studio
+          -
+            title: Schema
+            url: schema
+          -
+            title: Patterns
+            url: patterns
+          -
+            title: Writing
+            url: writing
+          -
+            title: Reading
+            url: reading
       -
-        title: TypeDB Fundamentals # This must be a section
-        baseUrl: /docs/typedb/fundamentals/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Database
-            url: database
-          -
-            title: Session
-            url: session
-          -
-            title: Transaction (ACID) # Guarantees
-            url: transaction
-          -
-            title: Query
-            url: query
-          -
-            title: Concept
-            url: concept
-      -
-        title: TypeDB Console # This must be a section
-        baseUrl: /docs/typedb/console/
+        title: Administration
+        baseUrl: /docs/typedb/admin/
         pages:
           -
             title: Overview
@@ -87,15 +77,9 @@ chapters:
           -
             title: Run modes
             url: modes
-          -
-            title: Commands
-            url: commands
-          -
-            title: Reference
-            url: reference
       -
-        title: Developing with TypeDB
-        baseUrl: /docs/typedb/dev/
+        title: High Availability
+        baseUrl: /docs/typedb/ha/
         pages:
           -
             title: Defining Schema
@@ -109,12 +93,22 @@ chapters:
           -
             title: Concurrency & Scaling
             url: scaling
-          -
-            title: Logging & Testing
-            url: logging-and-testing
       -
-        title: Managing TypeDB
-        baseUrl: /docs/typedb/admin/
+        title: Security
+        baseUrl: /docs/typedb/security/
+        pages:
+          -
+            title: Managing Databases
+            url: managing
+          -
+            title: Migrating a Database
+            url: migrating
+          -
+            title: Configuring a Server
+            url: upgrading
+      -
+        title: Best Practices
+        baseUrl: /docs/typedb/security/
         pages:
           -
             title: Managing Databases
@@ -128,207 +122,16 @@ chapters:
           -
             title: Upgrading a Server
             url: upgrading
-          -
-            title: Reference
-            url: reference
-  -
-    title: TypeDB Cluster
-    baseUrl: /docs/cluster/
-    sections:
       -
-        title: Common
-        hideTitle: true
-        baseUrl: /docs/cluster/common/
+        title: Tutorials
+        baseUrl: /docs/typedb/tutorial/
         pages:
           -
-            title: Overview
-            url: overview
+            title: Managing Databases
+            url: managing
           -
-            title: Install & Run
-            url: install-and-run
-          -
-            title: Quickstart
-            url: quickstart
-          -
-            title: Roadmap
-            url: roadmap
-      -
-        title: TypeDB Cluster Fundamentals
-        baseUrl: /docs/cluster/fundamentals/
-        pages:
-          -
-            title: Replication
-            url: replication
-          -
-            title: Partitioning (CAP)
-            url: partitioning
-          -
-            title: Automated Failover
-            url: failover
-          -
-            title: Load Balancing
-            url: load-balancing
-          -
-            title: User Authentication
-            url: auth
-          -
-            title: Role Authentication
-            url: role
-          -
-            title: Network Encryption
-            url: network-encryption
-          -
-            title: Data Encryption
-            url: data-encryption
-          -
-            title: Live Back-Uo
-            url: live-back-up
-      -
-        title: Developing with TypeDB Cluster
-        baseUrl: /docs/cluster/dev/
-        pages:
-          -
-            title: Connecting Securely
-            url: connect
-          -
-            title: Ensuring HA
-            url: ha
-          -
-            title: Scaling Throughput
-            url: scaling
-      -
-        title: Managing TypeDB Cluster
-        baseUrl: /docs/cluster/admin/
-        pages:
-          -
-            title: Managing Users
-            url: users
-          -
-            title: Migrating from TypeDB
+            title: Migrating a Database
             url: migrating
-          -
-            title: Configuring
-            url: config
-          -
-            title: Deploying a Cluster
-            url: deploy
-          -
-            title: Managing a Cluster
-            url: manage-cluster
-          -
-            title: Managing Encryption
-            url: manage-encryption
-          -
-            title: Managing Back-Ups
-            url: back-up
-          -
-            title: References
-            url: references
-  -
-    title: TypeDB Studio
-    baseUrl: /docs/studio/
-    sections:
-      -
-        title: Common
-        hideTitle: true
-        baseUrl: /docs/studio/common/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Install & Run
-            url: install-and-run
-          -
-            title: Quickstart
-            url: quickstart
-          -
-            title: Preferences
-            url: preferences
-          -
-            title: Roadmap
-            url: roadmap
-      -
-        title: TypeDB Connections
-        baseUrl: /docs/studio/connections/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Connect to a TypeDB
-            url: connect
-          -
-            title: Manage Databases
-            url: manage-db
-          -
-            title: Configuring Session & Transaction
-            url: session-and-transaction
-      -
-        title: Project & Source Code
-        baseUrl: /docs/studio/project/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Project Browser
-            url: browser
-          -
-            title: Text Editor # Reference
-            url: editor
-      -
-        title: Query Execution & Visualisation
-        baseUrl: /docs/studio/query/
-        pages:
-          -
-            title: Running Queries
-            url: run
-          -
-            title: Reading Output
-            url: output
-          -
-            title: Graph Visualisation
-            url: visualisation
-      -
-        title: Schema Types
-        baseUrl: /docs/studio/schema-types/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Type Browser
-            url: type-browser
-          -
-            title: Type-page
-            url: type-page
-      -
-        title: Schema Rules
-        baseUrl: /docs/studio/schema-rules/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Rule Browser
-            url: rule-browser
-          -
-            title: Rule Page
-            url: rule-page
-      -
-        title: User Management
-        baseUrl: /docs/studio/user/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: User Browser
-            url: user-browser
-          -
-            title: User Page
-            url: user-page
   -
     title: TypeDB Clients & APIs
     baseUrl: /docs/clients-and-apis/
@@ -512,58 +315,6 @@ chapters:
           -
             title: Supply Chain Network
             url: supply-chain
-  -
-    title: Tutorials
-    baseUrl: /docs/tutorials/
-    sections:
-      -
-        title: Common
-        hideTitle: true
-        baseUrl: /docs/tutorials/common/
-        pages:
-          -
-            title: Overview
-            url: overview
-      -
-        title: Integration with other tools
-        baseUrl: /docs/tutorials/integration/
-        pages:
-          -
-            title: Runing TypeDB with a Web-server
-            url: web-server
-          -
-            title: Integrating TypeDB with Spark
-            url: spark
-      -
-        title: Distribution & Deployment
-        baseUrl: /docs/tutorials/deploy/
-        pages:
-          -
-            title: Kubernetes & Docker
-            url: k8s-and-docker
-      -
-        title: ETL with TypeDB
-        baseUrl: /docs/tutorials/etl/
-        pages:
-          -
-            title: Bulk Loading
-            url: bulk-loading
-      -
-        title: Testing TypeDB Applications
-        baseUrl: /docs/tutorials/testing/
-        pages:
-          -
-            title: Rust
-            url: rust
-          -
-            title: Java
-            url: java
-          -
-            title: Node.js
-            url: node-js
-          -
-            title: Python
-            url: python
   -
     title: Migrating to TypeDB
     baseUrl: /docs/migration/

@@ -47,7 +47,7 @@ abstractions provide a higher-level framework for you to build intuitive and und
 You can use the power of [hypergraphs](../12-comparisons/02-graph-databases-and-typedb.md#hypergraph-theory) 
 without the need to understand graphs! In other databases, relations may be implemented with a join table 
 ([SQL](../12-comparisons/00-sql-and-typeql.md)), or an edge between two vertices 
-([graph](../12-comparisons/02-graph-databases-and-typedb.md) databases). TypeDB relations generalise both: they 
+([graph](../12-comparisons/02-graph-databases-and-typedb.md) databases). TypeDB relations generalize both: they 
 flexibly relate one, two, or any number of data instances at the same time.
 
 This expanded idea of a relation is more powerful than either SQL or graph relations. However, we can further
