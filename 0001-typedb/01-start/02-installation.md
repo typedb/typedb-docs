@@ -3,10 +3,8 @@ pageTitle: Installation
 keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker
 longTailKeywords: typedb on linux, typedb on mac, typedb on windows, start typedb server
 summary: Install and run the TypeDB Server on Linux, Mac or Windows.
-toc: true
+toc: false
 ---
-
-# Install and Run
 
 <!---
 List: 
@@ -15,12 +13,12 @@ List:
 - starting TypeDB (esp note that will run in foreground of terminal) [√]
 -->
 
-## Prerequisites
-
-TypeDB runs on:
-- Linux 
+TypeDB runs on following OS:
+- Linux
 - MacOS
 - Windows
+
+## Prerequisites
 
 The only requirement is Java (**version 11** or higher) which can be downloaded from 
 [OpenJDK](http://openjdk.java.net/install/) or 
@@ -166,12 +164,13 @@ please try to install the "C++ redistributable" by following the instructions [h
 </div>
 
 ## Start the TypeDB Server
-If you have installed TypeDB using a package manager, to start the TypeDB Server, run `typedb server`.
+If you have installed TypeDB using a package manager, you can start the TypeDB Server by using the `typedb server` 
+command.
 
 Otherwise, if you have manually downloaded TypeDB, navigate into the folder with unzipped TypeDB and run it by issuing
 `./typedb server` command.
 
-If you have used the docker way TypeDB should work while the docker container is active.
+If you have used the Docker to run a TypeDB container: TypeDB server should work while the Docker container is active.
 
 <div class="note">
 [Note]
