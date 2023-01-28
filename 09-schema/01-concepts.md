@@ -762,8 +762,8 @@ shall delete the old concept (by using [undefine](#deleting-from-a-schema-with-u
 
 Don't forget to update all references to the modified concept through the same process (i.e. deletion and addition).
 
-If there are a lot of changes to be done consider using [TypeDB Studio]() or even creating a brand-new database to load 
-a new schema (and data) from scratch.
+If there are a lot of changes to be done consider using [TypeDB Studio](../07-studio/00-overview.md) or even creating a 
+brand-new database to load a new schema (and data) from scratch.
 
 ### Adding to a schema with Define
 
