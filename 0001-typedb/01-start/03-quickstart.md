@@ -21,15 +21,29 @@ write queries and explore the power of automated reasoning and analytics with Ty
 
 <!--- #todo Consider rewriting -->
 
-## First step: Run TypeDB
-To create and interact with TypeDV databases we need working TypeDB server. 
+## Prerequisites
 
-1. [Install TypeDB](02-install-and-run.md#system-requirements) 
-2. [Start the TypeDB Server](02-install-and-run.md#start-the-typedb-server).
+To proceed with the Quickstart guide we need TypeDB server installed and working. You can use the following guides to 
+achieve that:
 
+1. [Install TypeDB](02-installation.md) 
+2. [Start the TypeDB Server](02-installation.md#start-the-typedb-server).
+3. [Install TypeDB Studio]()
 
-## Second step: Prepare The Schema
-A [TypeDB schema](../09-schema/00-overview.md) is the blueprint of a TypeDB knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
+## First step: Prepare The Schema
+
+A [TypeDB schema](../09-schema/00-overview.md) is the blueprint of a [TypeDB knowledge graph](). 
+We use [TypeQL]() to define all concepts of a knowledge area model.
+
+For the purpose of this Quickstart guide and the rest of the TypeDB documentation we will use a miniature dataset with
+an example of IAM (Identity and access management) solution.
+
+<!--- 
+Add a link to the example Schema/Dataset example
+-->
+
+The code presented below is
+only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
 
 ```typeql
 define
