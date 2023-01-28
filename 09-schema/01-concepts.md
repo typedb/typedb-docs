@@ -787,8 +787,8 @@ TypeQLDefine query = TypeQL.define(
 ```
 </div>
 
-Any concepts that already exist in a schema you are trying to modify will not be added to prevent doubling. That is why 
-you can run the following request with the same result:
+Any concepts that already exist in a schema you are trying to modify will not be added to prevent duplication. That is 
+why you can run the following request with the same result:
 
 <div class="tabs dark">
 
@@ -816,13 +816,13 @@ In the example above, `person` was already defined as a subtype of `entity` and 
 
 You can even reuse your original query/file (e.g. `schema.tql`) that was used to create the original schema. 
 By adding concepts to the original query and executing it again you will achieve the same result — any concepts that 
-were created by the original request will not be created again (doubled) but the newly added concepts will be added to 
-the schema. Thus, running the same query a second time will have no effect (i.e. it is idempotent).
+were created by the original request will not be created again (duplicated) but the newly added concepts will be added 
+to the schema. Thus, running the same query a second time will have no effect (i.e. it is idempotent).
 
 <div class="note">
 [Important]
-You can only add concepts this way. Do not try to modify existing concepts or delete by modifying the query and launching 
-it again.
+You can only add concepts this way. Do not try to modify existing concepts or delete by modifying the query and 
+launching it again.
 </div>
 
 ### Deleting from a schema with Undefine
