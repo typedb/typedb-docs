@@ -25,18 +25,23 @@ This page addresses TypeDB's transactionality.
 
 ## Overview
 
-TypeDB delivers ACID guarantees up to a slightly relaxed form of isolation known as [Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation).
+TypeDB delivers ACID guarantees up to a slightly relaxed form of isolation known as 
+[Snapshot Isolation](https://en.wikipedia.org/wiki/Snapshot_isolation).
 
-Note that consistency guarantees where implemented in version 2.1.0 (the first TypeDB version).
+<div class="note">
+[Note]
+Consistency guarantees were implemented in TypeDB version 2.1.0.
+</div>
 
 ### Atomicity
 
-TypeDB transactions operate under a snapshot model. If an error occurs in the transaction, none of the operations will be applied
-to the persisted data. If a commit succeeds, all the changes are guaranteed to be immediately visible to following transactions.
+TypeDB transactions operate under a snapshot model. If an error occurs in the transaction, none of the operations will 
+be applied to the persisted data. If a commit succeeds, all the changes are guaranteed to be immediately visible to 
+following transactions.
 
 ### Consistency
 
-As of version 2.1, the server will throw errors during commit if the transaction would violate consistency guarantees.
+The server will throw errors during commit if the transaction would violate consistency guarantees.
 There are two primary types of data-level conflicts which could violate consistency:
 
 1. `modify-delete`: a transaction extends or adds to a concept that a concurrent transaction deletes
@@ -47,19 +52,24 @@ to build a re-try mechanism when loading data that relies on key conflicts to lo
 
 ### Isolation
 
-Like many established databases, we relax the "full" isolation guarantee (called `serialisability`) to `snapshot isolation`.
+Like many established databases, we relax the "full" isolation guarantee (called `serialisability`) to 
+`snapshot isolation`.
 
 When a transaction is opened, the database is snapshotted and no further changes from other transactions will be visible
 until a new transaction is opened.
 
 After commit, all of the changes from the transaction are immediately visible to new transactions.
 
-This mode of isolation guarantees that transactions that operate concurrently, on overlapping snapshots of the database, will
-conflict and fail at commit time if they were to lead to consistency violations.
+This mode of isolation guarantees that transactions that operate concurrently, on overlapping snapshots of the database, 
+will conflict and fail at commit time if they were to lead to consistency violations.
 
 ### Durability
 
-Durability is guaranteed with the use of a write-ahead-log at the storage layer. This means under crashes or power failures,
-all data that finished committing will be available on reboot.
+Durability is guaranteed with the use of a write-ahead-log (WAL) at the storage layer. This means under crashes or power 
+failures, all data that finished committing will be available on reboot.
 
-Note that un-recoverable failures like corrupt drives or physical damage are not considered as part of durability guarantees.
+<div class="note">
+[Note]
+Unrecoverable failures of persistent storage like corrupt drives or physical damage are not considered as part of 
+durability guarantees.
+</div>
