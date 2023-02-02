@@ -163,11 +163,14 @@ You'll notice the types view has updated to reflect our schema write once commit
 
 ## Inserting Data
 
-Here's some sample data that complies with our schema.
+The following TypeQL request will insert some sample data that complies with our schema.
 
 ```typeql
 
 ```
+
+Follow the steps illustrated below to execute request and load sample data.
+
 <div class="slideshow">
 
 [slide:start]
@@ -194,7 +197,7 @@ Here's some sample data that complies with our schema.
 
 ## Query the Data
 
-Everything is in place, and we can start writing queries for our data. Open one final file and set your session and transaction types to `data` and `read` respectively.
+We can start writing queries for our data. Open one final file and set your session and transaction types to `data` and `read` respectively.
 
 ![Visualise The Data](../../images/studio/phone-calls-visualisation.png)
 Get a quick visualisation of the data with the following query:
