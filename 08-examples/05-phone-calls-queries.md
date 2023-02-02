@@ -24,7 +24,7 @@ For the rest of this post, we go through each of these questions to:
 - write them in [TypeQL](https://docs.vaticle.com/docs/query/overview), and
 - assess their result.
 
-Make sure you have [TypeDB Studio](../07-studio/00-overview.md) installed, [connected](../07-studio/01-quickstart.md#connecting-to-typedb-server) to the running [TypeDB Server](../001-typedb/02-install-and-run.md#start-the-typedb-server) and `phone_calls` is the [selected database](../07-studio/01-quickstart.md#creating-a-database).
+Make sure you have [TypeDB Studio](../07-studio/00-overview.md) installed, [connected](../07-studio/01-quickstart.md#connecting-to-typedb-server) to the running [TypeDB Server](../001-typedb-old/02-install-and-run.md#start-the-typedb-server) and `phone_calls` is the [selected database](../07-studio/01-quickstart.md#creating-a-database).
 
 Let’s begin.
 
