@@ -129,11 +129,13 @@ define
 This schema represents a simple subset of the data an Identity and Access Management (IAM) solution might store.
 
 <!---
+
 - A `call` is a phone call that took place over a duration and started at a given time, relating the person who called and the person who picked up (caller and callee respectively.)
 - A `company` is a provider in a contract, and has a name.
 - A `contract` is a relation between a customer and a provider.
 - A `mutual-caller` is a relation between two callees who share a common caller.
 - A `person` is a person. They have a first and last name, a phone number, a city they reside in and an age. They 'play' a caller, a callee or a customer in our schema.
+
 -->
 
 Now, lets write this schema to our newly created database.
