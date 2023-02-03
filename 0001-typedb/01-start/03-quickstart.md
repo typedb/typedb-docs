@@ -28,7 +28,7 @@ achieve that:
 
 1. [Install TypeDB](02-installation.md) 
 2. [Start the TypeDB Server](02-installation.md#start-the-typedb-server).
-3. [Install TypeDB Studio]()
+3. [Install TypeDB Studio](../02-dev/05-studio.md#download--install)
 
 ## First step: Prepare The Schema
 

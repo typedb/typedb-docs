@@ -6,8 +6,6 @@ Summary: All you need to know about the architecture of a TypeDB Client.
 toc: false
 ---
 
-## TypeDB Clients
-
 A TypeDB Client is meant to be used at the application layer for the purpose of managing and performing operations over 
 databases on the TypeDB server. Client uses `gRPC` to interact with the TypeDB server and provides a more user-friendly interface: API, GUI or CLI.
 
