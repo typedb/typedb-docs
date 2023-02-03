@@ -16,7 +16,7 @@ To try the following examples with one of the TypeDB clients, follows these [Cli
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `define` query. Otherwise, anything you have defined is NOT committed to the original database that is running on the TypeDB server.
+Don't forget to `commit` after executing a `define` query. Otherwise, anything we have defined is NOT committed to the original database that is running on the TypeDB server.
 When using one of the TypeDB Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the TypeDB Console, we use the `commit` command.
 </div>
 
@@ -182,7 +182,7 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-As you can see in the example above, when defining entities, what follows the `sub` keyword can be a label previously given to another entity. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent.
+As we can see in the example above, when defining entities, what follows the `sub` keyword can be a label previously given to another entity. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent.
 
 In this example, `comment` and `media` are both considered to be subtypes of `post`. Similarly `video` and `photo` are subtypes of `media` and so are defined that way. Therefore, although not defined explicitly, we are right to assume that `comment`, `media`, `video` and `photo` all play the roles `to`, `in` and `to`. However, the role `attached` and the attributes `caption` and `file` are played and owned only by the `media` entity and its subtypes. Similarly, the role `to` and the attribute `content` are played and owned only by the `comment` entity.
 
@@ -448,7 +448,7 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-As you can see in the example above, when defining relations, what follows the `sub` keyword can be a label previously given to another relation. By subtyping a parent relation, the children inherit all attributes owned and roles played by their parent.
+As we can see in the example above, when defining relations, what follows the `sub` keyword can be a label previously given to another relation. By subtyping a parent relation, the children inherit all attributes owned and roles played by their parent.
 
 In this example, `friend-request` and `membership-request` are both considered to be subtypes of `request` and so are defined that way. Modelling these relations in this way, not only allows us to query for locations of birth and residence separately, but also allows us to query for all the associations that a given person has with a given location.
 
@@ -600,7 +600,7 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-An instance of a `person` can have one instance of `phone-number`, or two or three, ... you get the idea.
+An instance of a `person` can have one or more instances of `phone-number`.
 
 ### Restrict attribute's value by Regex
 Optionally, we can specify a Regex that the values of an attribute type must conform to. To do this, we use the `regex` keyword followed by a [Java Regex Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
@@ -752,18 +752,33 @@ TypeQLDefine query = TypeQL.define(
 </div>
 
 ## Modify an existing schema
-We can modify an existing schema by adding or deleting concepts: entities, relations, attributes and rules.
 
-To add a concept we use `define` and to delete an existing concept we use `undefine`. 
+We can modify an existing database schema. Usually it is done by adding or deleting types: entities, relations, 
+attributes and rules. 
 
-We can't modify concepts in a schema directly. To modify an existing concept in a schema (e.g. rename something) we 
-shall delete the old concept (by using [undefine](#deleting-from-a-schema-with-undefine)) and add the new one (by using 
-[define](#adding-to-a-schema-with-define)).
+<div class="note">
+[Important]
+Don't forget to update all references to the modified concept.
+</div>
 
-Don't forget to update all references to the modified concept through the same process (i.e. deletion and addition).
+To add a concept we use `define` and to delete an existing concept we use `undefine`.
 
-If there are a lot of changes to be done consider using [TypeDB Studio](../07-studio/00-overview.md) or even creating a 
-brand-new database to load a new schema (and data) from scratch.
+Usually we can't modify concepts in a schema directly. To modify an existing concept in a schema (e.g. rename something) 
+we can:
+
+- Use [TypeDB Studio](../07-studio/00-overview.md).
+- Delete the old concept with [undefine](#deleting-from-a-schema-with-undefine) and add the new one by using 
+  [define](#adding-to-a-schema-with-define).
+
+<div class="note">
+[Note]
+With TypeDB Studio we can modify types directly and apply changes to a database schema. More about this is in the 
+[TypeDB Studio documentation](../07-studio/00-overview.md).
+Here we will explore only the second approach: by using `define` and `undefine` statements.
+</div>
+
+If there are a lot of changes to be done consider creating a brand-new database to load a new schema (and data) from 
+scratch. This approach is especially effective at the early stages of development with frequent schema changes.
 
 ### Adding to a schema with Define
 
@@ -788,8 +803,8 @@ TypeQLDefine query = TypeQL.define(
 ```
 </div>
 
-Any concepts that already exist in a schema you are trying to modify will not be added to prevent duplication. That is 
-why you can run the following request with the same result:
+Any concepts that already exist in a schema we are trying to add will not be added to prevent duplication. That is 
+why we can run the following request with the same result:
 
 <div class="tabs dark">
 
@@ -815,23 +830,25 @@ TypeQLDefine query = TypeQL.define(
 
 In the example above, `person` was already defined as a subtype of `entity` and owning the first three attributes.
 
-You can even reuse your original query/file (e.g. `schema.tql`) that was used to create the original schema. 
-By adding concepts to the original query and executing it again you will achieve the same result — any concepts that 
+We can even reuse the original query/file (e.g. `schema.tql`) that was used to create the original schema. 
+By adding concepts to the original query and executing it again we will achieve the same result — any concepts that 
 were created by the original request will not be created again (duplicated) but the newly added concepts will be added 
 to the schema. Thus, running the same query a second time will have no effect (i.e. it is idempotent).
 
 <div class="note">
 [Important]
-You can only add concepts this way. Do not try to modify existing concepts or delete by modifying the query and 
-launching it again.
+Since this operation is idempotent we can add any amount of previously applied statements that are already in the schema 
+into a define request. But what we can only add types this way. We can't modify or delete existing types by modifying 
+a define query and launching it again.
 </div>
 
 ### Deleting from a schema with Undefine
+
 As the keyword suggests, we use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original database that is running on the TypeDB server.
+Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything we have undefined is NOT committed to the original database that is running on the TypeDB server.
 When using one of the [TypeDB Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [TypeDB Console](../02-console/01-console.md), we use the `commit` command.
 </div>
 
