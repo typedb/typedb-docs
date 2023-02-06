@@ -8,7 +8,7 @@ toc: false
 
 ## Definition of ACID
 
-ACID defines the properties of a transactional database. The four parts are:
+ACID guarantees define the properties of a transactional database. The four parts are:
 
 `A`: Atomicity. Either all operations in a transaction succeed, or none are applied.
 
@@ -18,10 +18,7 @@ ACID defines the properties of a transactional database. The four parts are:
 
 `D`: Durability. Data is not lost or corrupted in the event of hardware or power failure.
 
-
 For more detail please read [ACID](https://en.wikipedia.org/wiki/ACID).
-
-This page addresses TypeDB's transactionality.
 
 ## Overview
 
