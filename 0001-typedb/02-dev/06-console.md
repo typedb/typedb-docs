@@ -12,7 +12,7 @@ with TypeDB server. Console interacts directly with a given database that contai
 It is a tool of choice for those who prefer command line interfaces over GUI or needs to automate some operations with 
 TypeDB.
 
-## Run TypeDB Console in the terminal
+## Connect to TypeDB
 
 You can find TypeDB Console in the same directory as your TypeDB server. To start the Console navigate into the 
 directory and run:
@@ -29,7 +29,7 @@ Welcome to TypeDB Console. You are now in TypeDB Wonderland!
 Copyright (C) 2022 Vaticle
 ```
 
-### Connect to TypeDB Cluster
+### TypeDB Cluster
 
 There is a slight difference when you try accessing TypeDB cluster as it requires additional parameters (`cluster`, 
 `username`,`password`, etc.)`:
@@ -249,3 +249,8 @@ Transaction changes committed
 
 > exit
 ```
+
+<!---
+#todo Add ./typedb console --command=<command1> example
+-->
+
