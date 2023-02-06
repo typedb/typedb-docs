@@ -54,7 +54,7 @@ Deciding which of these to use when modeling your data is an important task when
 ### Entities
 
 Entities are the main, distinguishable objects in _your domain_. Each entity type you create is a subtype of
-the built-in abstract type `entity`. Some examples in a [social network](../00-general/04-quickstart.md) 
+the built-in abstract type `entity`. Some examples in a [social network](../001-typedb-old/03-quickstart.md) 
 domain might be `person`, `timeline`, `school`, etc.
 
 ### Relations

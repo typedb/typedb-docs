@@ -45,7 +45,7 @@ If you want to depend on snapshot versions of Client Java, by referring to the G
 - [Examples](https://github.com/vaticle/typedb-examples)
 
 ## Quickstart
-First make sure, the [TypeDB Server](/docs/running-typedb/install-and-run#start-the-typedb-server) is running.
+First make sure, the [TypeDB Server](/docs/typedb/install-and-run#start-the-typedb-server) is running.
 
 Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and open a session to a [database](../06-management/01-database.md).
 

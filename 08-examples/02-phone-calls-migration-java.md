@@ -24,7 +24,7 @@ Let’s go through a summary of how the migration takes place.
 3.  we pass each data item (in the form of a JSON object) to its corresponding template. What the template returns is the TypeQL query for inserting that item into TypeDB.
 4.  we execute each of those queries to load the data into our target database — `phone_calls`.
 
-Before moving on, make sure you have **Java 11** installed and the [**TypeDB Server**](/docs/running-typedb/install-and-run#start-the-typedb-server) running on your machine.
+Before moving on, make sure you have **Java 11** installed and the [**TypeDB Server**](/docs/typedb/install-and-run#start-the-typedb-server) running on your machine.
 
 ## Get Started
 

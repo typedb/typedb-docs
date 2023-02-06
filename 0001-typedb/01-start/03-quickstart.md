@@ -6,18 +6,44 @@ summary: Learn about the constructs of the TypeDB Schema, visualise a knowledge 
 toc: false
 ---
 
-### An Overview
-In this tutorial, we go through creating and interacting with a TypeDB knowledge graph representing a social network. 
-In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with TypeDB.
+# Quickstart Guide
 
-Let's get started!
+## An Overview
 
-### Run TypeDB
-[Install TypeDB](../01-running-typedb/01-install-and-run.md#system-requirements) and start the [TypeDB Server](../01-running-typedb/01-install-and-run.md#start-the-typedb-server).
+In this Quickstart guide, we go through step-by-step process of creating and interacting with a TypeDB database 
+representing a Identity and Access Management solution. This exact database with both 
+[schema](../../09-schema/00-overview.md) and [data](../../11-query/00-overview.md) is used in the most 
+examples of TypeDB documentation. That's why by completing this quickstart guide you will prepare an environment to 
+successfully execute most requests explored later on in this documentation.
 
+In the process, we learn about the constructs of the TypeDB Schema, visualise the knowledge graph, perform read and 
+write queries and explore the power of automated reasoning and analytics with TypeDB.
 
-### The Schema
-A [TypeDB schema](../09-schema/00-overview.md) is the blueprint of a TypeDB knowledge graph. The code presented below is only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
+<!--- #todo Consider rewriting -->
+
+## Prerequisites
+
+To proceed with the Quickstart guide we need TypeDB server installed and working. You can use the following guides to 
+achieve that:
+
+1. [Install TypeDB](02-installation.md) 
+2. [Start the TypeDB Server](02-installation.md#start-the-typedb-server).
+3. [Install TypeDB Studio](../02-dev/05-studio.md#download--install)
+
+## First step: Prepare The Schema
+
+A [TypeDB schema](../09-schema/00-overview.md) is the blueprint of a [TypeDB knowledge graph](). 
+We use [TypeQL]() to define all concepts of a knowledge area model.
+
+For the purpose of this Quickstart guide and the rest of the TypeDB documentation we will use a miniature dataset with
+an example of IAM (Identity and access management) solution.
+
+<!--- 
+Add a link to the example Schema/Dataset example
+-->
+
+The code presented below is
+only a part of the schema for the social network knowledge graph that represents the concepts of `friendship`.
 
 ```typeql
 define
@@ -60,7 +86,7 @@ person sub entity,
 
 The code you see above is TypeQL. TypeQL is the language for the TypeDB knowledge graph. Whether it's through the [TypeDB Console](../02-console/01-console.md), [Studio](../07-studio/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md), TypeDB accepts instructions and provides answers only in its own language - TypeQL.
 
-### Download and Load the Complete Schema
+## Download and Load the Complete Schema
 First, download the [`social-network/schema.tql`](../files/social-network/schema.tql){:target="_blank"} which contains the complete schema for the social network knowledge graph. Now, we need to load this schema into a [database](../06-management/01-database.md). To do this, we use the [TypeDB Console](../02-console/01-console.md).
 
 <div class="note">
@@ -92,7 +118,7 @@ social_network::schema::write> source path-to-the-social-network/schema.tql
 social_network::schema::write> commit
 ```
 
-### Load the Dataset
+## Load the Dataset
 Download the [`social-network/data.tql`](../files/social-network/data.tql){:target="_blank"} and load it into the same database. In the already opened console, create a data write transaction to the `social_network` database and use the `source` command to load the data from file:
 
 ```
@@ -103,12 +129,12 @@ social_network::data::write> commit
 
 As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-overview.md#a-hands-on-walkthrough) the dataset into the target database.
 
-### Query the Knowledge Graph
+## Query the Knowledge Graph
 Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../02-console/01-console.md), [TypeDB Studio](../07-studio/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md).
 
 Let's see an example of running [TypeQL get queries](../11-query/02-get-query.md) via each of these interfaces.
 
-#### Retrieve the full name of everyone who has travelled to a location using [TypeDB Console](../02-console/01-console.md)
+## Retrieve the full name of everyone who has travelled to a location using [TypeDB Console](../02-console/01-console.md)
 
 Using the open console, open a read transaction for the `social_network` database:
 ```
@@ -129,7 +155,7 @@ The result contains the following answers:
 {$fn "Miriam Morton" isa full-name;}
 ```
 
-#### Visualise all risky banks 
+### Visualise all risky banks 
 
 <div class = "note">
 [Warning]
@@ -138,7 +164,7 @@ TypeDB Workbase is currently in the process of being replaced with a more perfor
 
 ![Visualise all risky banks](../images/quickstart/studio-risky-bank.png)
 
-#### Retrieve all employments using [Client Java](../03-client-api/01-java.md)
+### Retrieve all employments using [Client Java](../03-client-api/01-java.md)
 
 <!-- test-example SocialNetworkQuickstartQuery.java -->
 ```java
@@ -244,10 +270,10 @@ async function getAverageSalaryAt (orgName) {
 getAverageSalaryAt("Pharos"); // asynchronous call
 ```
 
-### Insert and Delete Data
+## Insert and Delete Data
 We can create and delete instances of data in a TypeDB knowledge graph by running [insert](../11-query/03-insert-query.md) and [delete](../11-query/04-delete-query.md) queries. Let's give them a try using the Console.
 
-#### Insert an instance of type person
+### Insert an instance of type person
 <!-- ignore-test -->
 ```typeql
 insert $per isa person, has full-name "Johny Jimbly Joe", has gender "male", has email "johnyjj@gmail.com";
@@ -263,7 +289,7 @@ commit
 Any manipulation made in the schema or the data instances, is not persisted to the original database until we run the `commit` command.
 </div>
 
-#### Associate the newly added person with a nickname
+### Associate the newly added person with a nickname
 
 ```typeql
 match $per isa person, has email "johnyjj@gmail.com"; insert $per has nickname "JJJ";
@@ -273,7 +299,7 @@ match $per isa person, has email "johnyjj@gmail.com"; insert $per has nickname "
 commit
 ```
 
-#### Delete the newly added person
+### Delete the newly added person
 <!-- ignore-test -->
 ```typeql
 match $per isa person, has full-name "Johny Jimbly Joe"; delete $per isa person;
@@ -284,7 +310,7 @@ match $per isa person, has full-name "Johny Jimbly Joe"; delete $per isa person;
 commit
 ```
 
-### Store Knowledge
+## Store Knowledge
 TypeDB is capable of reasoning over data to infer new knowledge, commonly known as automated reasoning or inference. Inference in a TypeDB knowledge graph is made via pre-defined [Rules](../09-schema/03-rules.md).
 
 Let's look at some simple examples of how TypeDB uses rules for reasoning over explicit data. Let's say we want to find out what content a particular person has permission to view. 
@@ -338,9 +364,3 @@ get $p2, $name;
 
 Similar to the first rule, the answer we're asking for here, was never injected into the knowledge graph and is being inferred at query time by TypeDB.
 
-### Where Next?
-
-- [TypeDB Schema](../09-schema/00-overview.md)
-- [TypeQL Queries](../11-query/00-overview.md)
-- [Studio](../07-studio/00-overview.md)
-- [Examples](../08-examples/00-overview.md)

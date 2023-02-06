@@ -1,20 +1,60 @@
 ---
-pageTitle: Install and Run TypeDB
+pageTitle: Installation
 keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker
 longTailKeywords: typedb on linux, typedb on mac, typedb on windows, start typedb server
 summary: Install and run the TypeDB Server on Linux, Mac or Windows.
 toc: false
 ---
 
-## System Requirements
-TypeDB runs on Mac, Linux and Windows. The only requirement is Java (version 11 or higher) which can be downloaded from [OpenJDK](http://openjdk.java.net/install/) or [Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
+<!---
+List: 
+- Prerequisites, [√]
+- Installation on windows/mac/linux/docker, [√]
+- starting TypeDB (esp note that will run in foreground of terminal) [√]
+-->
+
+TypeDB runs on following OS:
+- Linux
+- MacOS
+- Windows
+
+## Prerequisites
+
+The only requirement is Java (**version 11** or higher) which can be downloaded from 
+[OpenJDK](http://openjdk.java.net/install/) or 
+[Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
 
 ## Download and Install TypeDB
 
 <div class="tabs light">
+
+[tab:Docker]
+
+Use `docker run` to download an image `vaticle/typedb` and run a container with it. To ensure that data is preserved
+even when the instance is killed or restarted, mount an external volume to your Docker container:
+
+```
+docker run --name typedb -d -v ~/typedb:/opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
+```
+
+`~/typedb` — should be a location where you want the data to be stored in the host machine.
+
+`vaticle/typedb:latest` — is the image name. You can change `latest` for any version you might need. We recommend using
+TypeDB and TypeDB Studio of the same versions.
+
+The TypeDB Server is expected to be running on port `1729` on your machine in a docker container.
+
+You can connect to this instance with TypeDB Studio or any other instrument via address `127.0.0.1:1729`.
+To interact with the local [TypeDB Console](../02-console/01-console.md), run:
+
+```
+docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
+```
+[tab:end]
+
 [tab:Linux]
 
-#### Using APT
+#### Using package manager, like APT
 
 As a superuser, add the repo:
 ```
@@ -36,8 +76,9 @@ sudo apt install typedb-all
   
 #### APT conflicts
 
-APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release strategy allows
-depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate feature upgrades.
+APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release 
+strategy allows depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate 
+feature upgrades.
   
 In these situations, you will encounter the following type of errors:
 
@@ -70,18 +111,20 @@ Which successfully installs all required packages for `typedb-all=2.11.0`.
   
 #### Manual Download
 
-Download the [latest release](https://github.com/vaticle/typedb/releases), unzip it in a location on your machine that is easily accessible via terminal.
+Download the [latest release](https://github.com/vaticle/typedb/releases), unzip it in a location on your machine that 
+is easily accessible via terminal.
 
 #### Other package managers
 
-If TypeDB doesn't have a distribution you need, please open an issue [on GitHub](https://github.com/vaticle/typedb/issues).
+If TypeDB doesn't have a distribution you need, please open an issue 
+[on GitHub](https://github.com/vaticle/typedb/issues).
 
-
-Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the [Console](../02-console/01-console.md).
+Having installed or downloaded TypeDB, we can now start the [Server](#start-the-typedb-server) and interact with the 
+[Console](../02-console/01-console.md).
 
 [tab:end]
 
-[tab:macOS]
+[tab:MacOS]
 
 #### Using Homebrew
 ```sh
@@ -118,58 +161,25 @@ please try to install the "C++ redistributable" by following the instructions [h
 
 [tab:end]
 
-
-[tab:Docker]
-
-#### Using Docker
-
-To pull the TypeDB Docker image, run:
-
-```
-docker pull vaticle/typedb:latest
-```
-
-#### Without an External Volume
-
-For testing purposes, run:
-```
-docker run --name typedb -d -p 1729:1729 vaticle/typedb:latest
-```
-
-**NOTE**: Running the instance without specifying a volume does NOT save the data if the instance is killed.
-
-#### With an External Volume
-
-To ensure that data is preserved even when the instance is killed or restarted, mount an external volume:
-
-```
-docker run --name typedb -d -v {external-volume}:/opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
-```
-
-`{external-volume}` should be configured to where you want the data to be stored in the host machine.
-
-Having started the instance, the TypeDB Server is expected to be running on port `1729` on your machine.
-
-To interact with the [TypeDB Console](../02-console/01-console.md), run:
-
-```
-docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
-```
-[tab:end]
 </div>
 
 ## Start the TypeDB Server
-If you have installed TypeDB using a package manager, to start the TypeDB Server, run `typedb server`.
+If you have installed TypeDB using a package manager, you can start the TypeDB Server by using the `typedb server` 
+command.
 
-Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb server`.
+Otherwise, if you have manually downloaded TypeDB, navigate into the folder with unzipped TypeDB and run it by issuing
+`./typedb server` command.
 
-This command will run in the foreground of your current terminal, so to do other operations such as using console, it's best to use another terminal.
+If you have used the Docker to run a TypeDB container: TypeDB server should work while the Docker container is active.
+
+<div class="note">
+[Note]
+Command `typedb server` will run in the foreground of your current terminal, so to do other operations such as using 
+TypeDB Console, it's best to use another terminal. Closing the terminal where the TypeDB server is running will result 
+in termination of the program.
+</div>
 
 ## Stop the TypeDB Server
-To stop the TypeDB Server, press Ctrl-C in same terminal as the one where you started it in.
+To stop the TypeDB Server, press Ctrl-C in the terminal, where you started it in.
 
-
-## Summary
-So far we have learned how to download/install TypeDB and run the TypeDB Server.
-
-Next, we learn how to [configure the TypeDB Server](../01-running-typedb/03-configuration.md) and [interact with a TypeDB knowledge graph via the TypeDB Console](../02-console/01-console.md).
+If you have used docker — stop the container.
