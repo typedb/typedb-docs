@@ -16,7 +16,7 @@ To try the following examples with one of the TypeDB clients, follows these [Cli
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `define` query. Otherwise, anything we have defined is NOT committed to the original database that is running on the TypeDB server.
+Don't forget to `commit` after executing a `define` query. Otherwise, any changes will NOT be committed to the database.
 When using one of the TypeDB Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the TypeDB Console, we use the `commit` command.
 </div>
 
@@ -848,7 +848,7 @@ As the keyword suggests, we use the `undefine` keyword to remove the definition 
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything we have undefined is NOT committed to the original database that is running on the TypeDB server.
+Don't forget to `commit` after executing an `undefine` query. Otherwise, any changes will NOT be committed to the database.
 When using one of the [TypeDB Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [TypeDB Console](../02-console/01-console.md), we use the `commit` command.
 </div>
 
