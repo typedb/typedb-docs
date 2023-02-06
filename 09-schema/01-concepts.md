@@ -753,7 +753,7 @@ TypeQLDefine query = TypeQL.define(
 
 ## Modify an existing schema
 
-We can modify an existing database schema. Usually it is done by adding or deleting types: entities, relations, 
+We can modify an existing database schema. Usually this is done by adding or deleting types: entities, relations, 
 attributes and rules. 
 
 <div class="note">
@@ -838,7 +838,7 @@ to the schema. Thus, running the same query a second time will have no effect (i
 <div class="note">
 [Important]
 Since this operation is idempotent we can add any amount of previously applied statements that are already in the schema 
-into a define request. But what we can only add types this way. We can't modify or delete existing types by modifying 
+into a define request. But, we can only add types this way. We can't modify or delete existing types by modifying 
 a define query and launching it again.
 </div>
 
