@@ -155,7 +155,7 @@ build:
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-        bazel run @vaticle_dependencies//tool/release:docs -- $FACTORY_OWNER web-docs development $FACTORY_REPO docs $FACTORY_COMMIT
+        bazel run @vaticle_dependencies//tool/release:docs -- $FACTORY_OWNER web-docs development $FACTORY_REPO pages/docs $FACTORY_COMMIT
     release-production:
       filter:
         owner: vaticle
