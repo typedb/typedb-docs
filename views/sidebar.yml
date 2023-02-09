@@ -27,16 +27,13 @@ chapters:
           -
             title: Sample Application
             url: sample-app
-          -
-            title: Clients
-            url: clients
       -
         title: Development
         baseUrl: /docs/typedb/dev/
         pages:
           -
-            title: Basic
-            url: basic
+            title: Basics
+            url: basics
           -
             title: Transactions
             url: transactions
@@ -44,17 +41,29 @@ chapters:
             title: ACID Guarantees
             url: acid
           -
-            title: Tools
-            url: tools
+            title: Clients
+            url: clients
           -
-            title: Tools — TypeDB Console
-            url: tools-console
+            title: TypeDB Studio
+            url: clients/studio
           -
-            title: Tools — TypeDB Studio
-            url: tools-studio
+            title: TypeDB Console
+            url: clients/console
+          -
+            title: Java client
+            url: clients/java
+          -
+            title: Python client
+            url: clients/python
+          -
+            title: NodeJS client
+            url: clients/nodejs
           -
             title: Schema
             url: schema
+          -
+            title: Schema guide # Concept API?
+            url: schema-guide
           -
             title: Patterns
             url: patterns
@@ -376,4 +385,3 @@ chapters:
           -
             title: Migrating from Virtuoso to TypeDB
             url: virtuoso
-
