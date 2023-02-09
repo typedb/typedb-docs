@@ -18,6 +18,7 @@ We then use this connection to manage [databases](#databases) and open [sessions
 Best practice is to use one client per application process.
 </div>
 
+
 ## Sessions
 
 A session holds a connection to a particular database. This connection then allows opening 
