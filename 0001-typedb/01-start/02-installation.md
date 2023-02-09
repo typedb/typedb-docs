@@ -6,17 +6,14 @@ summary: Install and run the TypeDB Server on Linux, Mac or Windows.
 toc: false
 ---
 
-<!---
-List: 
-- Prerequisites, [√]
-- Installation on windows/mac/linux/docker, [√]
-- starting TypeDB (esp note that will run in foreground of terminal) [√]
--->
+# Installation
 
 TypeDB runs on following OS:
 - Linux
 - MacOS
 - Windows
+
+Additionally, you can use it in a docker container.
 
 ## Prerequisites
 
@@ -45,7 +42,7 @@ TypeDB and TypeDB Studio of the same versions.
 The TypeDB Server is expected to be running on port `1729` on your machine in a docker container.
 
 You can connect to this instance with TypeDB Studio or any other instrument via address `127.0.0.1:1729`.
-To interact with the local [TypeDB Console](../02-console/01-console.md), run:
+To interact with the local [TypeDB Console](../02-dev/clients/01-studio.md), run:
 
 ```
 docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
@@ -54,9 +51,10 @@ docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
 
 [tab:Linux]
 
-#### Using package manager, like APT
+### Using APT
 
-As a superuser, add the repo:
+#### Add the repository
+
 ```
 sudo apt install software-properties-common apt-transport-https gpg
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C 
@@ -64,22 +62,29 @@ gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /d
 echo "deb [ arch=all ] https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
 ```
 
-Update the package cache:
+#### Update the package cache
+
 ```
 sudo apt update
 ```
 
-Install TypeDB Server and TypeDB Console:
+#### Install
+
 ```
 sudo apt install typedb-all
 ```
-  
-#### APT conflicts
 
+<div class="note">
+[Note]
+The typed-all package installs typedb-bin, typedb-consol, typedb-server and openjdk-11-jre.
+</div>
+
+<div class="note">
+[Note]
 APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release 
 strategy allows depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate 
 feature upgrades.
-  
+
 In these situations, you will encounter the following type of errors:
 
 ```
@@ -92,7 +97,6 @@ requested an impossible situation or if you are using the unstable
 distribution that some required packages have not yet been created
 or been moved out of Incoming.
 The following information may help to resolve the situation:
-
 The following packages have unmet dependencies.
 typedb-all : Depends: typedb-server (= 2.11.0) but it is not going to be installed
 ```
@@ -101,20 +105,44 @@ To solve this, specify each of the depended upon packages by exact version as we
 ```
 > sudo apt-get install typedb-all=2.11.0 typedb-server=2.11.0
 ```
- 
+
 This command would produce a similar error, but requiring that `typedb-bin=2.9.0`. We try again
 ```
 > sudo apt-get install typedb-all=2.11.0 typedb-server=2.11.0 typedb-bin=2.9.0
 ```
 
 Which successfully installs all required packages for `typedb-all=2.11.0`.
+</div>
   
-#### Manual Download
+### Manual Installation
 
-Download the [latest release](https://github.com/vaticle/typedb/releases), unzip it in a location on your machine that 
-is easily accessible via terminal.
+#### Download
 
-#### Other package managers
+Download the [latest release](https://vaticle.com/download#typedb) of TypeDB.
+
+#### Extract
+
+Copy the archive to any desired location and extract the downloaded archive:
+
+```bash
+tar -xzf typedb-all-linux-x.yy.z.tar.gz
+```
+
+`typedb-all-linux-x.yy.z.tar.gz` — this shall be substituted with the exact name of the archive you've downloaded.
+
+#### Update PATH environment variable
+
+To be able to launch TypeDB from anywhere without addressing the full path to the bin file we should set the 
+environment variable `PATH` to look for bin file in the extracted folder. To do so we can run:
+
+```bash
+export PATH=$PATH:/path/to/dir
+```
+
+`/path/to/dir` — is the desired location of the archive plus the name of the extracted folder. There should be a 
+`typedb` file at that location.
+
+### Other package managers
 
 If TypeDB doesn't have a distribution you need, please open an issue 
 [on GitHub](https://github.com/vaticle/typedb/issues).
