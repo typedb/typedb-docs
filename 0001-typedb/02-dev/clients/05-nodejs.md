@@ -128,14 +128,14 @@ runBasicQueries("social_network");
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
+Check out the [Concept API](../../../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
 To view examples of running various queries using the Node.js client, head over to their dedicated documentation pages as listed below:
-- [Insert](../11-query/03-insert-query.md)
-- [Get](../11-query/02-get-query.md)
-- [Delete](../11-query/04-delete-query.md)
-- [Update](../11-query/05-update-query.md)
-- [Aggregate](../11-query/06-aggregate-query.md)
+- [Insert](../../../11-query/03-insert-query.md)
+- [Get](../../../11-query/02-get-query.md)
+- [Delete](../../../11-query/04-delete-query.md)
+- [Update](../../../11-query/05-update-query.md)
+- [Aggregate](../../../11-query/06-aggregate-query.md)
 
 ## API Reference
 
@@ -160,14 +160,13 @@ To view examples of running various queries using the Node.js client, head over 
 
 ## Version Compatibility
 
-| Client Node.js  |      TypeDB      |  TypeDB Cluster  |   Node    |
-|:---------------:|:----------------:|:----------------:|:---------:|
-|     2.14.2      | 2.12.0 to 2.14.3 | 2.13.0 to 2.14.1 | \>= 14.15 |
-| 2.9.0 to 2.11.1 | 2.9.0 to 2.11.1  | 2.9.0 to 2.11.2  | \>= 14.15 |
-|      2.8.0      |      2.8.0       |       N/A        | \>= 14.15 |
-| 2.6.0 to 2.6.2  |  2.6.0 to 2.7.1  |       N/A        | \>= 14.15 |
-| 2.4.0 to 2.5.0  |  2.1.2 to 2.5.0  |      2.5.0       | \>= 14.15 |
-| 2.1.0 to 2.2.0  |  2.1.2 to 2.5.0  |  2.1.2 to 2.3.0  | \>= 14.15 |
-|      2.0.1      |      2.0.2       |      2.0.2       | \>= 14.15 |
-|      2.0.0      |   2.0.0, 2.0.1   |   2.0.0, 2.0.1   | \>= 14.15 |
-|      1.8.0      |  1.8.0 to 1.8.4  |       N/A        |  \>= 6.5  |
+| Client Node.js  |     TypeDB      | TypeDB Cluster  |   Node    |
+|:---------------:|:---------------:|:---------------:|:---------:|
+| 2.9.0 to 2.11.1 | 2.9.0 to 2.11.1 | 2.9.0 to 2.11.2 | \>= 14.15 |
+|      2.8.0      |      2.8.0      |       N/A       | \>= 14.15 |
+| 2.6.0 to 2.6.2  | 2.6.0 to 2.7.1  |       N/A       | \>= 14.15 |
+| 2.4.0 to 2.5.0  | 2.1.2 to 2.5.0  |      2.5.0      | \>= 14.15 |
+| 2.1.0 to 2.2.0  | 2.1.2 to 2.5.0  | 2.1.2 to 2.3.0  | \>= 14.15 |
+|      2.0.1      |      2.0.2      |      2.0.2      | \>= 14.15 |
+|      2.0.0      |  2.0.0, 2.0.1   |  2.0.0, 2.0.1   | \>= 14.15 |
+|      1.8.0      | 1.8.0 to 1.8.4  |       N/A       |  \>= 6.5  |

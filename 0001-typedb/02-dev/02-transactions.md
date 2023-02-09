@@ -6,12 +6,33 @@ summary: Description of TypeDB transactions.
 toc: false
 ---
 
-A transaction performs queries (or Concept API calls) on the database. TypeDB transactions comply with
-[ACID](../../06-management/02-acid.md) properties, up to snapshot isolation.
+# Transactions
 
-Transactions automatically close after a configured timeout (default 5 minutes). This is to encourage shorter-lived 
-transactions, prevent memory leaks caused by forgotten unclosed client-side transactions, and kill potentially 
-unresponsive transactions.
+All queries to a TypeDB database are performed through transactions.
+TypeDB provides [ACID](03-acid.md) guarantees, up to [snapshot isolation](03-acid.md#isolation), through of schema 
+validation and consistent transactions.
+
+All transactions to TypeDB must be explicit — deliberately opened and closed. TypeDB Studio can manage transactions 
+for you but other clients provide instruments for explicit transaction control.
+
+There are two types of transactions in TypeDB:
+
+- Read
+- Write
+
+TypeDB has lightweight optimistic transactions: it allows a high number of concurrent read and write transactions. 
+
+Transactions in TypeDB have atomic all-or-nothing commits, which makes transactional semantics become easy to reason 
+over. If transaction is failed for any reason the changes will not be persisted.
+
+Successful write transaction commit gets written to write-ahead-log (or WAL file) before TypeDB sends 
+confirmation of successful transaction (see [Durability guarantees](03-acid.md#durability)).
+
+Unsuccessful write transaction gets closed without persisting any changes.
+
+Transactions automatically close after a set timeout period (default value is 5 minutes, but it can be changed with 
+[client](04-clients.md) options). This is to encourage shorter-lived transactions, prevent memory leaks caused by 
+forgotten unclosed client-side transactions, and kill potentially unresponsive transactions.
 
 ## Best Practices
 

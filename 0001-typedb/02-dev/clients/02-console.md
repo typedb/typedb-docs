@@ -6,7 +6,7 @@ summary: List of options and commands for the TypeDB Console.
 toc: false
 ---
 
-The TypeDB Console, along with the [Studio](05-studio.md), is a software tool that we can use to interact
+The TypeDB Console, along with the [Studio](01-studio.md), is a software tool that we can use to interact
 with TypeDB server. Console interacts directly with a given database that contains the TypeDB knowledge graph.
 
 It is a tool of choice for those who prefer command line interfaces over GUI or needs to automate some operations with 

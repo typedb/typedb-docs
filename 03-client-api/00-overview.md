@@ -10,20 +10,24 @@ Summary: All you need to know about the architecture of a TypeDB Client.
 The following TypeDB client libraries are officially supported and actively maintained by Vaticle. They support new
 TypeDB features and receive continuous bug fixes and improvements.
 
-- [**Java**](../03-client-api/01-java.md)
-- [**Node.js**](../03-client-api/03-nodejs.md)
-- [**Python**](../03-client-api/02-python.md)
-- [**Other Languages**](../03-client-api/04-other-languages.md)
+- [**Java**](../0001-typedb/02-dev/clients/03-java.md)
+- [**Node.js**](../0001-typedb/02-dev/clients/05-nodejs.md)
+- [**Python**](../0001-typedb/02-dev/clients/04-python.md)
+- [**Other Languages**](../0001-typedb/02-dev/clients/06-other-languages.md)
 
 ## What is a TypeDB Client?
-A TypeDB client, along with the [TypeDB Console](../02-console/01-console.md) and [TypeDB Studio](../07-studio/00-overview.md), is an interface which we can use to read from and write to a TypeDB knowledge graph. If we are building an application that uses a TypeDB knowledge graph as its database, we would need a TypeDB client at our application layer to handle the database operations.
+A TypeDB client, along with the [TypeDB Console](../02-console/01-console.md) and [TypeDB Studio](../07-studio/00-overview.md), 
+is an interface which we can use to read from and write to a TypeDB knowledge graph. If we are building an application 
+that uses a TypeDB knowledge graph as its database, we would need a TypeDB client at our application layer to handle the 
+database operations.
 
 ![Structure of a TypeDB Client Application](../images/client-api/client-server-comms.png)
 
 In this section and the following pages, we learn the mechanism that a TypeDB client uses to set up communication with [databases](../06-management/01-database.md) running on the TypeDB server as well as the methods available for executing queries and retrieving their answers.
 
 ## Architecture
-All TypeDB Clients share a common architecture. Simply put, the main components of a TypeDB client are the `client` itself, `session` and `transaction`.
+All TypeDB Clients share a common architecture. Simply put, the main components of a TypeDB client are the `client` 
+itself, `session` and `transaction`.
 
 ### Client
 A client is responsible for connecting to the [TypeDB Server](/docs/typedb/install-and-run#start-the-typedb-server). We then use this connection to manage databases and open sessions. 
@@ -70,4 +74,4 @@ Depending on the type of the query carried out by a transaction, we retrieve dif
 ## Summary
 A TypeDB Client is meant to be used at the application layer for the purpose of managing and performing operations over databases that live on the TypeDB server.
 
-Next, we learn how to set up and use the TypeDB Clients. Pick a language of your choice to continue - [Java](../03-client-api/01-java.md), [Node.js](../03-client-api/03-nodejs.md) or [Python](../03-client-api/02-python.md).
+Next, we learn how to set up and use the TypeDB Clients. Pick a language of your choice to continue - [Java](../0001-typedb/02-dev/clients/03-java.md), [Node.js](../0001-typedb/02-dev/clients/05-nodejs.md) or [Python](../0001-typedb/02-dev/clients/04-python.md).
