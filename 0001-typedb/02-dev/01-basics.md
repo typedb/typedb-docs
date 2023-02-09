@@ -18,7 +18,7 @@ We then use this connection to manage [databases](#databases) and open [sessions
 Best practice is to use one client per application process.
 </div>
 
-### Sessions
+## Sessions
 
 A session holds a connection to a particular database. This connection then allows opening 
 [transactions](02-transactions.md) to carry out [queries](../../11-query/00-overview.md).
@@ -30,7 +30,7 @@ There are two types of session:
 
 A session must explicitly state whether it addresses Schema or Data of a database.
 
-#### Best Practices
+### Best Practices
 
 Because of intermittent network failures, it is recommended to keep sessions relatively short-lived.
 
