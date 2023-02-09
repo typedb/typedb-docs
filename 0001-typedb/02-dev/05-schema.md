@@ -21,9 +21,11 @@ With TypeDB, thanks to our high-level knowledge model, the schema closely resemb
 other modelling steps. This greatly simplifies the design process, providing us with, what can be considered, a highly 
 normalised distributed schema without the need of going through logical and physical modelling.
 
-All data stored in a database are instances of types, mentioned in databases schema.
-
 ![Diagram of concepts in TypeDB](../../images/client-api/overview_hierarchy.png)
+
+**Type** refers to a Concept Type as defined in the schema.
+
+**Thing** refers to an instance of data that is an instantiation of a Concept Type.
 
 ## Types
 
@@ -36,7 +38,10 @@ three flavours:
 ### Entity 
 
 **Entities** are the main actors in our knowledge domain. These are usually the type of things we want to know about. 
-Entity types provide means of classifying the objects in our domain.
+Entity types provide means of classifying the objects in our domain. 
+
+An entity is a thing with a distinct existence in the domain. For example, `organisation`, `location` and `person`.
+The existence of each of these entities is independent of any other concept in the domain.
 
 ### Relation
 
@@ -101,12 +106,12 @@ This will access database with the name of `<database-name>` in the schema write
 
 ### With the TypeDB Studio
 
-See the [TypeDB Studio documentation](05-studio.md#write-a-schema).
+See the [TypeDB Studio documentation](04a-studio.md#write-a-schema).
 
 ### With TypeDB drivers (programmatically)
 
 Defining a schema can also be done programmatically (at runtime) using one of the 
-[TypeDB Clients](../01-start/05-clients.md).
+[TypeDB Clients](04-clients.md).
 
 <!---
 Concepts and rules

@@ -6,9 +6,11 @@ summary: Brief description of basic concepts of typedb.
 toc: false
 ---
 
+# Basics
+
 ## Connection
 
-[TypeDB Client](../01-start/05-clients.md) handles remote connection to the TypeDB Server.
+[TypeDB Client](04-clients.md) handles remote connection to the TypeDB Server.
 We then use this connection to manage [databases](#databases) and open [sessions](#sessions).
 
 <div class="note">

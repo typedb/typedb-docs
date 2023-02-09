@@ -6,13 +6,12 @@ summary: Description of TypeDB transactions.
 toc: false
 ---
 
-A transaction performs queries (or Concept API calls) on the database. TypeDB transactions comply with
-[ACID](../../06-management/02-acid.md) properties, up to snapshot isolation.
+A transaction performs queries on the database. TypeDB transactions comply with
+[ACID](03-acid.md) properties, up to snapshot isolation.
 
 Transactions automatically close after a set timeout period (default value is 5 minutes, but it can be changed with 
-[client](../01-start/05-clients.md) options). This is to encourage shorter-lived 
-transactions, prevent memory leaks caused by forgotten unclosed client-side transactions, and kill potentially 
-unresponsive transactions.
+[client](04-clients.md) options). This is to encourage shorter-lived transactions, prevent memory leaks caused by 
+forgotten unclosed client-side transactions, and kill potentially unresponsive transactions.
 
 ## Best Practices
 
