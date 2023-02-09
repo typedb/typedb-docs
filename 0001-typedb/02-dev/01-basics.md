@@ -21,7 +21,14 @@ Best practice is to use one client per application process.
 ### Sessions
 
 A session holds a connection to a particular database. This connection then allows opening 
-[transactions](02-transactions.md) to carry out [queries](06-query.md).
+[transactions](02-transactions.md) to carry out [queries](../../11-query/00-overview.md).
+
+There are two types of session:
+
+- `Schema` — addresses only schema of a database (types and rules).
+- `Data` — addresses only data of a database (instances of types in a schema).
+
+A session must explicitly state whether it addresses Schema or Data of a database.
 
 #### Best Practices
 
@@ -32,7 +39,7 @@ session should be used to open one or more transactions to load the page data.
 
 ## Databases
 
-A database is the outermost container for data in a TypeDB knowledge graph. Like a relational database, it is commonly
+A database is the outermost container for data in a TypeDB. Like a relational database, it is commonly
 known to be a good practice to create a single database per application, but it is absolutely fine to create as many
 databases as your application needs. As a rule of thumb, it is recommended to start off with one database and create
 more if the requirement arises.
