@@ -753,28 +753,22 @@ TypeQLDefine query = TypeQL.define(
 
 ## Modify an existing schema
 
-We can modify an existing database schema. Usually this is done by adding or deleting types: entities, relations, 
-attributes and rules. 
+We can modify an existing database schema. Usually this is done by adding or deleting rules and/or types: entities, 
+relations and attributes. 
 
 <div class="note">
 [Important]
 Don't forget to update all references to the modified concept.
 </div>
 
-To add a concept we use `define` and to delete an existing concept we use `undefine`.
-
-Usually we can't modify concepts in a schema directly. To modify an existing concept in a schema (e.g. rename something) 
-we can:
-
-- Use [TypeDB Studio](../07-studio/00-overview.md).
-- Delete the old concept with [undefine](#deleting-from-a-schema-with-undefine) and add the new one by using 
-  [define](#adding-to-a-schema-with-define).
+To add a concept we use [define](#adding-to-a-schema-with-define) and to delete an existing concept we use 
+[undefine](#deleting-from-a-schema-with-undefine).
 
 <div class="note">
 [Note]
-With TypeDB Studio we can modify types directly and apply changes to a database schema. More about this is in the 
-[TypeDB Studio documentation](../07-studio/00-overview.md).
-Here we will explore only the second approach: by using `define` and `undefine` statements.
+With TypeDB Studio we can modify types directly (e.g. rename type) and apply changes to a database schema. More 
+about this is in the [TypeDB Studio documentation](../07-studio/00-overview.md).
+Here we will explore only the manual approach: by using `define` and `undefine` statements.
 </div>
 
 If there are a lot of changes to be done consider creating a brand-new database to load a new schema (and data) from 
