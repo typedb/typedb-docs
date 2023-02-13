@@ -110,15 +110,15 @@ with TypeDB.core_client("localhost:1729") as client:
 Remember that transactions always need to be closed. The safest way is to use the `with ...` syntax which auto-closes at the end of the `with` block. Otherwise, remember to call `transaction.close()` explicitly.
 </div>
 
-Check out the [Concept API](../../../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
 To view examples of running various queries using the Python client, head over to their dedicated documentation pages as listed below.
 
-- [Insert](../../../11-query/03-insert-query.md)
-- [Get](../../../11-query/02-get-query.md)
-- [Delete](../../../11-query/04-delete-query.md)
-- [Update](../../../11-query/05-update-query.md)
-- [Aggregate](../../../11-query/06-aggregate-query.md)
+- [Insert](../11-query/03-insert-query.md)
+- [Get](../11-query/02-get-query.md)
+- [Delete](../11-query/04-delete-query.md)
+- [Update](../11-query/05-update-query.md)
+- [Aggregate](../11-query/06-aggregate-query.md)
 
 <hr style="margin-top: 40px;" />
 

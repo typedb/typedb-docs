@@ -7,7 +7,7 @@ toc: false
 ---
 
 TypeDB Studio is an IDE specifically designed to work with 
-[TypeQL](../../../11-query/00-overview.md) query language and TypeDB databases.
+[TypeQL](../11-query/00-overview.md) query language and TypeDB databases.
 
 It has unique set of functions and abilities to help with development using TypeDB:
 
@@ -32,7 +32,7 @@ TypeDB Studio is available for the following OS:
 To use TypeDB Studio we need to download, install and launch a compatible version of TypeDB first. So, the only 
 requirement is:
 
-- Working [TypeDB Server](../../01-start/02-installation.md) instance.
+- Working [TypeDB Server](../0001-typedb/01-start/02-installation.md) instance.
 
 <div class="note">
 [Note]
@@ -69,11 +69,11 @@ We can start TypeDB Studio as any other GUI application on the OS we are using.
 
 At the top right-hand corner click `Connect to TypeDB`.
 
-![Connection Manager Disconnected](../../../images/studio/connection-interface-disconnected.png)
+![Connection Manager Disconnected](../images/studio/connection-interface-disconnected.png)
 
 Fill in the address of the TypeDB Server. By default, it's: `localhost:1729`. Click the Connect button.
 
-![Connection Manager Connected](../../../images/studio/connection-interface-connected.png)
+![Connection Manager Connected](../images/studio/connection-interface-connected.png)
 
 Once we've connected successfully, the connection manager will reflect this in with the status field in
 the bottom left-hand corner. Additionally, the address will be reflected in the top right-hand corner of Studio.
@@ -86,15 +86,15 @@ At the top right-hand corner click `Connect to TypeDB`.
 
 ## Create a Database
 
-![Database Manager Empty](../../../images/studio/studio-database.png)
+![Database Manager Empty](../images/studio/studio-database.png)
 
 Go to the databases manager by clicking on the database icon in the top left-hand corner.
 
-![Database Manager Empty](../../../images/studio/databases-interface-no-databases.png)
+![Database Manager Empty](../images/studio/databases-interface-no-databases.png)
 
 Enter the name for the new database and hit 'Create'.
 
-![Database Manager With Phone Calls Database](../../../images/studio/databases-interface-iam-database.png)
+![Database Manager With Phone Calls Database](../images/studio/databases-interface-iam-database.png)
 
 Now we've successfully created a database. We can select it by clicking the dropdown menu titled 'Select Databases' 
 immediately right of the databases icon.
@@ -105,7 +105,7 @@ Studio will store queries we save in a project folder on local machine, so we do
 time we open Studio. To open a project folder click on the open folder icon left of the database icon or 
 on the Open Project button in the Project section on the left (under the database icon).
 
-![Project Interface Prompt to Open](../../../images/studio/project-interface-open.png)
+![Project Interface Prompt to Open](../images/studio/project-interface-open.png)
 
 <div class="note">
 [Note]
@@ -116,21 +116,21 @@ If the Project section is not showing try hitting Project button on the left edg
 
 Create a new file by clicking the '+' icon in the section right of the project view.
 
-![Create a New File](../../../images/studio/project-new-file.png)
+![Create a New File](../images/studio/project-new-file.png)
 
 Write or insert the schema code (in TypeQL) into the Studios text editor.
 
-![Paste in Our Schema](../../../images/studio/project-schema-pasted.png)
+![Paste in Our Schema](../images/studio/project-schema-pasted.png)
 
 Make sure session and transaction types are set to `schema` and `write` respectively.
 These can be found to the right of the database selector.
 Then click the green play button to run the queries.
 
-![Write the Schema](../../../images/studio/project-schema-query-run.png)
+![Write the Schema](../images/studio/project-schema-query-run.png)
 
 Finally, commit the transaction by clicking the green tick.
 
-![Commit the Transaction](../../../images/studio/project-schema-committed.png)
+![Commit the Transaction](../images/studio/project-schema-committed.png)
 
 As a result we get a notification pop-up with a transaction confirmation or an error.
 
@@ -175,7 +175,7 @@ All types are divided in three top level types:
 - Entity
 - Relation
 
-![Types explorer](../../../images/studio/types-explorer.png)
+![Types explorer](../images/studio/types-explorer.png)
 
 All types displayed in the exact structure they were created (subtypes inside their parents). We can easily collapse or 
 expand all the types in the structure tree by clicking the associated buttons on the top of the Types Section with 
@@ -192,7 +192,7 @@ database.
 By double-clicking any type we can open the type browser window that shows all information about the selected type and
 allows us to easily edit the type. 
 
-![Types browser](../../../images/studio/types-browser.png)
+![Types browser](../images/studio/types-browser.png)
 
 We can rename the type, change its supertype, abstract property, see all the related types (owned attributes or owners, 
 played roles and subtypes). By clicking on one of the related types we can see all information about it.

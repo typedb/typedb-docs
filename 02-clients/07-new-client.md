@@ -57,7 +57,7 @@ TypeDB’s official client drivers adhere to a common architecture. This greatly
 maintaining them, so we also recommend community contributions to follow the same basic structure.
 
 This diagram shows all the packages (directories) in Client Java and their dependency graph:
-![Client Package Structure](../../../images/client-api/package-structure.png)
+![Client Package Structure](../images/client-api/package-structure.png)
 
 The entry point is the root package, in this case named `client-java`.
 `api` is where we declare all the available client methods – basically all the interfaces.
@@ -577,7 +577,7 @@ Rather like a websocket, it’s a long-lasting tunnel that allows the client and
 
 TypeDB clients support multiple layers of concurrency. A Client can have many Sessions, and a Session can have many Transactions, and a Transaction can perform many Queries.
 
-![Concurrency Model](../../../images/client-api/concurrency-model.png)
+![Concurrency Model](../images/client-api/concurrency-model.png)
 
 ## Inside a Transaction Stream
 
@@ -615,7 +615,7 @@ Each **request message** is suffixed with `.Req`, and has a matching `.Res` (or 
 
 Now, there are two basic patterns to the communications; _single_ responses and _streamed_ responses, both of which are illustrated below.
 
-![Inside a Transaction Stream](../../../images/client-api/tx-stream.png)
+![Inside a Transaction Stream](../images/client-api/tx-stream.png)
 
 (Here, `Define.Req` and `Match.Req` are both types of `QueryManager.Req`, and `Type.Create.Req` and `GetThing.Req` are types of `ConceptManager.Req`)
 
@@ -649,7 +649,7 @@ It collects all requests in a 1ms time window, bundles them into a single gRPC m
 
 The `ConceptMap` objects returned by a TypeQL Match query can contain any type of `Concept`. This `Concept` class hierarchy is reflected in TypeDB's client implementation and class structure.
 
-![Concept Hierarchy](../../../images/client-api/overview_hierarchy.png)
+![Concept Hierarchy](../images/client-api/overview_hierarchy.png)
 
 Implementing Concept API is not complicated, but it is quite long as there are a lot of methods. Concept methods either return single or streamed responses. `ThingType.getInstances` is an example of a Streamed Concept method.
 
@@ -659,7 +659,7 @@ TypeDB Cluster runs as a distributed network of database servers which communica
 If one server has an outage, we can recover from the issue by falling back to another server.
 To enable this, a Cluster client constructs 1 Core client per Cluster node:
 
-![Cluster Client Architecture](../../../images/client-api/cluster.png)
+![Cluster Client Architecture](../images/client-api/cluster.png)
 
 Suppose we open a Transaction to, say, Node 1, but we don’t get a response.
 

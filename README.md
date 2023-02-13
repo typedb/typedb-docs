@@ -85,7 +85,8 @@ PRs that have the `development` branch as their _base_, contains changes that ar
 Use American.
 
 **Headings**
-- There are three levels of headings used across all markdown files:
+- There are multiple levels of headings used across all markdown files:
+  - h1 (`#`) — page title. Only one per page at the very beginning.
   - h2 (`##`)
   - h3 (`###`)
   - h4 (`####`)

@@ -44,21 +44,6 @@ chapters:
             title: Clients
             url: clients
           -
-            title: TypeDB Studio
-            url: clients/studio
-          -
-            title: TypeDB Console
-            url: clients/console
-          -
-            title: Java client
-            url: clients/java
-          -
-            title: Python client
-            url: clients/python
-          -
-            title: NodeJS client
-            url: clients/nodejs
-          -
             title: Schema
             url: schema
           -
@@ -142,13 +127,13 @@ chapters:
             title: Migrating a Database
             url: migrating
   -
-    title: TypeDB Clients & APIs
-    baseUrl: /docs/clients-and-apis/
+    title: TypeDB Clients
+    baseUrl: /docs/clients/
     sections:
       -
         title: Common
         hideTitle: true
-        baseUrl: /docs/clients-and-apis/common/
+        baseUrl: /docs/clients/
         pages:
           -
             title: Overview
@@ -159,9 +144,15 @@ chapters:
           -
             title: How to build a TypeDB Client
             url: how-to-build-a-client
+          -
+            title: TypeDB Studio
+            url: studio
+          -
+            title: TypeDB Console
+            url: console
       -
         title: Rust
-        baseUrl: /docs/clients-and-apis/rust/
+        # baseUrl: /docs/clients-and-apis/rust/
         pages:
           -
             title: Install
@@ -174,8 +165,11 @@ chapters:
             url: reference
       -
         title: Java
-        baseUrl: /docs/clients-and-apis/java/
+        # baseUrl: /docs/clients-and-apis/java/
         pages:
+          -
+            title: Java client
+            url: java
           -
             title: Install
             url: install
@@ -187,8 +181,11 @@ chapters:
             url: reference
       -
         title: Node.js
-        baseUrl: /docs/clients-and-apis/node-js/
+        # baseUrl: /docs/clients-and-apis/node-js/
         pages:
+          -
+            title: NodeJS client
+            url: nodejs
           -
             title: Install
             url: install
@@ -200,8 +197,11 @@ chapters:
             url: reference
       -
         title: Python
-        baseUrl: /docs/clients-and-apis/python/
+        # baseUrl: /docs/clients-and-apis/python/
         pages:
+          -
+            title: Python client
+            url: python
           -
             title: Install
             url: install

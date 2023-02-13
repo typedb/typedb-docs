@@ -7,7 +7,7 @@ Summary: Learn how to use Client Java to migrate CSV, JSON and XML data into a T
 
 ## Goal
 
-In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](../08-examples/01-phone-calls-schema.md) using [Client Java](../0001-typedb/02-dev/clients/03-java.md).
+In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](../08-examples/01-phone-calls-schema.md) using [Client Java](../02-clients/03-java.md).
 
 ## A Quick Look at the Schema
 
@@ -19,7 +19,7 @@ Before we get started with migration, let’s have a quick reminder of how the s
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our TypeDB [database](../06-management/01-database.md). To do this, we use [Client Java](../0001-typedb/02-dev/clients/03-java.md).
+1.  we need a way to talk to our TypeDB [database](../06-management/01-database.md). To do this, we use [Client Java](../02-clients/03-java.md).
 2.  we go through each data file, extracting each data item and parsing it to a JSON object.
 3.  we pass each data item (in the form of a JSON object) to its corresponding template. What the template returns is the TypeQL query for inserting that item into TypeDB.
 4.  we execute each of those queries to load the data into our target database — `phone_calls`.

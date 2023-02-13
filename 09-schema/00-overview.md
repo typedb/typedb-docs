@@ -82,7 +82,7 @@ Lastly, the TypeDB schema is completed with [**TypeQL Rules**](../09-schema/03-r
 In the sections that follow, by looking at various real-world examples, we learn how these concepts can be defined in a schema to represent a dataset of any complexity.
 
 ## (un)Define the schema programmatically
-In the following sections, we learn how to define a schema using TypeQL code in a `schema.tql` file. However, defining a schema can also be done programmatically (at runtime) using one of the TypeDB Clients - [Java](../0001-typedb/02-dev/clients/03-java.md), [Python](../0001-typedb/02-dev/clients/04-python.md) and [Node.js](../0001-typedb/02-dev/clients/05-nodejs.md).
+In the following sections, we learn how to define a schema using TypeQL code in a `schema.tql` file. However, defining a schema can also be done programmatically (at runtime) using one of the TypeDB Clients - [Java](../02-clients/03-java.md), [Python](../02-clients/04-python.md) and [Node.js](../02-clients/05-nodejs.md).
 
 ## Load the schema
 Once we have defined the schema, the next immediate step is to load it into TypeDB. We can do this using the TypeDB Console that comes in the TypeDB distribution: 

@@ -6,6 +6,8 @@ summary: Description of TypeDB ACID guarantees.
 toc: false
 ---
 
+# ACID Guarantees
+
 ## Definition of ACID
 
 ACID guarantees define the properties of a transactional database. The four parts are:

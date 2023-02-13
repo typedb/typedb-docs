@@ -106,7 +106,7 @@ This will access database with the name of `<database-name>` in the schema write
 
 ### With the TypeDB Studio
 
-See the [TypeDB Studio documentation](clients/01-studio.md#write-a-schema).
+See the [TypeDB Studio documentation](../../02-clients/01-studio.md#write-a-schema).
 
 ### With TypeDB drivers (programmatically)
 

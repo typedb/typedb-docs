@@ -6,7 +6,7 @@ summary: A birds-eye view of TypeDB
 toc: false
 ---
 
-# TypeDB
+# TypeDB Introduction
 
 ## Brief intro
 

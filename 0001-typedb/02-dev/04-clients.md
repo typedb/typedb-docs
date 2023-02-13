@@ -17,16 +17,16 @@ interface: API, GUI or CLI.
 Here is a list of existing TypeDB Clients:
 
 - Software tools:
-  - [TypeDB Studio](clients/01-studio.md)
-  - [TypeDB Console](clients/02-console.md)
+  - [TypeDB Studio](../../02-clients/01-studio.md)
+  - [TypeDB Console](../../02-clients/02-console.md)
 - [TypeDB drivers](#typedb-drivers)
   - Native drivers:
-    - [Java](clients/03-java.md)
-    - [Node.js](clients/05-nodejs.md)
-    - [Python](clients/04-python.md)
-  - [Community drivers](clients/06-other-languages.md)
+    - [Java](../../02-clients/03-java.md)
+    - [Node.js](../../02-clients/05-nodejs.md)
+    - [Python](../../02-clients/04-python.md)
+  - [Community drivers](../../02-clients/06-other-languages.md)
 
-If you can't find a suitable client, consider [creating a new client](clients/07-new-client.md).
+If you can't find a suitable client, consider [creating a new client](../../02-clients/07-new-client.md).
 
 ## Architecture
 All TypeDB Clients share a common architecture. Simply put, the main components of any TypeDB client are the `client`
@@ -36,8 +36,8 @@ itself, `session` and `transaction`.
 
 To work with TypeDB databases we can use one of the standalone software tools:
 
-1. [TypeDB Studio](clients/01-studio.md) (GUI).
-2. [TypeDB Console](clients/02-console.md) (CLI).
+1. [TypeDB Studio](../../02-clients/01-studio.md) (GUI).
+2. [TypeDB Console](../../02-clients/02-console.md) (CLI).
 
 Both tools are complete software products that can be used to connect to TypeDB and interact with it.
 
@@ -52,11 +52,11 @@ some popular programming languages.
 The following TypeDB drivers are officially supported and actively maintained by the Vaticle. They 
 usually support latest TypeDB features and receive continuous bug fixes and improvements.
 
-- [Java](clients/03-java.md)
-- [Node.js](clients/05-nodejs.md)
-- [Python](clients/04-python.md)
+- [Java](../../02-clients/03-java.md)
+- [Node.js](../../02-clients/05-nodejs.md)
+- [Python](../../02-clients/04-python.md)
 
-We also have some community projects for [other Languages](clients/06-other-languages.md)
+We also have some community projects for [other Languages](../../02-clients/06-other-languages.md)
 
 ### What is a TypeDB driver?
 

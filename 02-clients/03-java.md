@@ -47,7 +47,7 @@ If you want to depend on snapshot versions of Client Java, by referring to the G
 ## Quickstart
 First make sure, the [TypeDB Server](/docs/typedb/install-and-run#start-the-typedb-server) is running.
 
-Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and open a session to a [database](../../../06-management/01-database.md).
+Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and open a session to a [database](../06-management/01-database.md).
 
 <!-- test-example TypeDBQuickstartA.java -->
 ```java
@@ -160,15 +160,15 @@ public class TypeDBQuickstartC {
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](../../../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to queries.
+Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to queries.
 
 To view examples of running various TypeQL queries using the Java client, head over to their dedicated documentation pages as listed below.
 
-- [Insert](../../../11-query/03-insert-query.md)
-- [Get](../../../11-query/02-get-query.md)
-- [Delete](../../../11-query/04-delete-query.md)
-- [Update](../../../11-query/05-update-query.md)
-- [Aggregate](../../../11-query/06-aggregate-query.md)
+- [Insert](../11-query/03-insert-query.md)
+- [Get](../11-query/02-get-query.md)
+- [Delete](../11-query/04-delete-query.md)
+- [Update](../11-query/05-update-query.md)
+- [Aggregate](../11-query/06-aggregate-query.md)
 
 ## Logging
 By default, Client Java uses Logback to print errors and debugging info to standard output. As it is quite verbose, we recommend that in most scenarios you create a Logback configuration file and set the minimum log level to ERROR. You can do so with the following steps:
