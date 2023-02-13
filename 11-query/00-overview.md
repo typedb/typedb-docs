@@ -28,7 +28,7 @@ The image below illustrates the structure of various TypeQL queries.
 As shown in the image above, TypeQL queries are categorized into two main types:
 - **Data Definition**:
   - **[Define](../09-schema/01-concepts.md#define)**: adds definition of a concept type to the schema.
-  - **[Undefine](../09-schema/01-concepts.md#undefine)**: removes definition of a concept type from the schema.
+  - **[Undefine](../09-schema/01-concepts.md#deleting-from-a-schema-with-undefine)**: removes definition of a concept type from the schema.
 
 - **Data Manipulation**:
   - **[Get](../11-query/02-get-query.md)**: returns the data instances or concept types that match the preceding pattern(s), optionally limited by, sorted by or offset by the given modifiers.
