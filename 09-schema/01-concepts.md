@@ -16,7 +16,7 @@ To try the following examples with one of the TypeDB clients, follows these [Cli
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing a `define` query. Otherwise, anything you have defined is NOT committed to the original database that is running on the TypeDB server.
+Don't forget to `commit` after executing a `define` query. Otherwise, any changes will NOT be committed to the database.
 When using one of the TypeDB Clients, to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the TypeDB Console, we use the `commit` command.
 </div>
 
@@ -182,7 +182,7 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-As you can see in the example above, when defining entities, what follows the `sub` keyword can be a label previously given to another entity. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent.
+As we can see in the example above, when defining entities, what follows the `sub` keyword can be a label previously given to another entity. By subtyping a parent entity, the children inherit all attributes owned and roles played by their parent.
 
 In this example, `comment` and `media` are both considered to be subtypes of `post`. Similarly `video` and `photo` are subtypes of `media` and so are defined that way. Therefore, although not defined explicitly, we are right to assume that `comment`, `media`, `video` and `photo` all play the roles `to`, `in` and `to`. However, the role `attached` and the attributes `caption` and `file` are played and owned only by the `media` entity and its subtypes. Similarly, the role `to` and the attribute `content` are played and owned only by the `comment` entity.
 
@@ -448,7 +448,7 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-As you can see in the example above, when defining relations, what follows the `sub` keyword can be a label previously given to another relation. By subtyping a parent relation, the children inherit all attributes owned and roles played by their parent.
+As we can see in the example above, when defining relations, what follows the `sub` keyword can be a label previously given to another relation. By subtyping a parent relation, the children inherit all attributes owned and roles played by their parent.
 
 In this example, `friend-request` and `membership-request` are both considered to be subtypes of `request` and so are defined that way. Modelling these relations in this way, not only allows us to query for locations of birth and residence separately, but also allows us to query for all the associations that a given person has with a given location.
 
@@ -600,7 +600,7 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-An instance of a `person` can have one instance of `phone-number`, or two or three, ... you get the idea.
+An instance of a `person` can have one or more instances of `phone-number`.
 
 ### Restrict attribute's value by Regex
 Optionally, we can specify a Regex that the values of an attribute type must conform to. To do this, we use the `regex` keyword followed by a [Java Regex Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
@@ -751,16 +751,102 @@ TypeQLDefine query = TypeQL.define(
 [tab:end]
 </div>
 
-## Undefine
-As the name suggests, we use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
+## Modify an existing schema
+
+We can modify an existing database schema. Usually this is done by adding or deleting rules and/or types: entities, 
+relations and attributes. 
 
 <div class="note">
 [Important]
-Don't forget to `commit` after executing an `undefine` statement. Otherwise, anything you have undefined is NOT committed to the original database that is running on the TypeDB server.
+Don't forget to update all references to the modified concept.
+</div>
+
+To add a concept we use [define](#adding-to-a-schema-with-define) and to delete an existing concept we use 
+[undefine](#deleting-from-a-schema-with-undefine).
+
+<div class="note">
+[Note]
+With TypeDB Studio we can modify types directly (e.g. rename type) and apply changes to a database schema. More 
+about this is in the [TypeDB Studio documentation](../07-studio/00-overview.md).
+Here we will explore only the manual approach: by using `define` and `undefine` statements.
+</div>
+
+If there are a lot of changes to be done consider creating a brand-new database to load a new schema (and data) from 
+scratch. This approach is especially effective at the early stages of development with frequent schema changes.
+
+### Adding to a schema with Define
+
+To add concepts to an existing schema we need to do a query with a single `define` statement at the beginning, just like
+for a new schema. For example, let's add attribute `phone-number` to the `person` entity:
+
+<div class="tabs dark">
+
+[tab:TypeQL]
+```typeql
+define
+
+person owns phone-number;
+```
+[tab:end]
+
+[tab:Java]
+```java
+TypeQLDefine query = TypeQL.define(
+        type("person").owns("phone-number")
+        );
+```
+</div>
+
+Any concepts that already exist in a schema we are trying to add will not be added to prevent duplication. That is 
+why we can run the following request with the same result:
+
+<div class="tabs dark">
+
+[tab:TypeQL]
+```typeql
+define
+
+person sub entity,
+  owns full-name,
+  owns nickname,
+  owns gender,
+  owns phone-number;
+```
+[tab:end]
+
+[tab:Java]
+```java
+TypeQLDefine query = TypeQL.define(
+        type("person").sub("entity").owns("full-name").owns("nickname").owns("gender").owns("phone-number")
+        );
+```
+</div>
+
+In the example above, `person` was already defined as a subtype of `entity` and owning the first three attributes.
+
+We can even reuse the original query/file (e.g. `schema.tql`) that was used to create the original schema. 
+By adding concepts to the original query and executing it again we will achieve the same result — any concepts that 
+were created by the original request will not be created again (duplicated) but the newly added concepts will be added 
+to the schema. Thus, running the same query a second time will have no effect (i.e. it is idempotent).
+
+<div class="note">
+[Important]
+Since this operation is idempotent we can add any amount of previously applied statements that are already in the schema 
+into a define request. But, we can only add types this way. We can't modify or delete existing types by modifying 
+a define query and launching it again.
+</div>
+
+### Deleting from a schema with Undefine
+
+As the keyword suggests, we use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
+
+<div class="note">
+[Important]
+Don't forget to `commit` after executing an `undefine` query. Otherwise, any changes will NOT be committed to the database.
 When using one of the [TypeDB Clients](../03-client-api/00-overview.md), to commit changes, we call the `commit()` method on the `transaction` object that carried out the query. Via the [TypeDB Console](../02-console/01-console.md), we use the `commit` command.
 </div>
 
-### Undefine an attribute's association
+#### Undefine an attribute's association
 We can undefine the association that a type has with an attribute.
 
 <div class="tabs dark">
@@ -790,7 +876,7 @@ The query above, removes the attribute `nickname` from the entity `person`.
 It's important to note that `undefine [label] sub [type] owns [attributes' label];` undefines the `label` itself, rather than its association with the attribute.
 </div>
 
-### Undefine a relation
+#### Undefine a relation
 Undefining a relation inherently undefines all of its roles. Therefore when a relation is undefined any types that were playing roles in that relation will no longer play those roles. Given a `marriage` relation type we can undefine it as shown below.
 
 <div class="tabs dark">
@@ -811,7 +897,7 @@ TypeQLUndefine second_query = TypeQL.undefine(
 [tab:end]
 </div>
 
-### Undefine a Supertype
+#### Undefine a Supertype
 When the concept type to be undefined is a supertype to something else, we must first undefine all its subtypes before undefining the supertype itself.
 
 ## Clients Guide

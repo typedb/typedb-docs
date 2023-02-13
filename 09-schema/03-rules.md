@@ -414,7 +414,7 @@ For complex queries, it can also be beneficial to add more CPU cores, as the rea
 
 ## Delete a Rule
 
-Rules like any other schema members can be undefined. Consequently, to delete rules we refer to them by their label and use the [undefine keyword](../09-schema/01-concepts.md#undefine).
+Rules like any other schema members can be undefined. Consequently, to delete rules we refer to them by their label and use the [undefine keyword](../09-schema/01-concepts.md#deleting-from-a-schema-with-undefine).
 For the case of the rule defined above, to delete it we write:
 
 <!-- test-delay -->
