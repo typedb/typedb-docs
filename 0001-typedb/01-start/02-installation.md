@@ -12,32 +12,52 @@ toc: false
 
 [tab:Docker]
 
-Use `docker run` to download an image `vaticle/typedb` and run a container with it. To ensure that data is preserved
-even when the instance is killed or restarted, mount an external volume to your Docker container:
+## Install
 
-```
-docker run --name try-typedb -d -v /opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
-```
+1. Install [Docker](https://docs.docker.com/get-docker/).
+
+2. Check the Docker daemon is running 
+   
+   ```bash
+   docker version
+   ```
+
+3. Pull the latest TypeDB Docker image
+
+   ```bash
+   docker pull vaticle/typedb:latest
+   ```
 
 `vaticle/typedb:latest` — is the image name. You can change `latest` for any version you might need. We recommend using
-TypeDB and TypeDB Studio of the same versions.
-
-The TypeDB Server is expected to be running on port `1729` on your machine in a docker container.
-
-You can connect to this instance with TypeDB Studio or any other instrument via address `127.0.0.1:1729`.
-To interact with the local [TypeDB Console](../../02-clients/01-studio.md), run:
-
-```
-docker exec -ti typedb bash -c '/opt/typedb-all-linux/typedb console'
-```
+TypeDB and TypeDB Studio of the same version.
 
 ## Start the TypeDB Server
 
-TypeDB server should work while the Docker container is active.
+Run the Docker container with default network port exposed and volume added for persisted data:
+
+```bash
+docker run --name try-typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
+```
+
+The TypeDB Server is expected to be running on port `1729` on your machine in a docker container. It should work while 
+the Docker container `try-typedb` is active.
+
+You can connect to this instance with TypeDB Studio or any other [client](../02-dev/04-clients.md) via address 
+`127.0.0.1:1729`.
+
+To interact with the local [TypeDB Console](../../02-clients/02-console.md), run:
+
+```bash
+docker exec -ti try-typedb bash -c '/opt/typedb-all-linux/typedb console'
+```
 
 ## Stop the TypeDB Server
 
 To stop the TypeDB server you can stop the container.
+
+```bash
+docker stop try-typedb
+```
 
 [tab:end]
 
@@ -287,7 +307,3 @@ To stop the TypeDB Server, press Ctrl-C in the terminal, where you started it in
 Having installed or downloaded TypeDB, we can now [start the Server](#start-the-typedb-server) and interact with the
 [TypeDB Studio](../../02-clients/01-studio.md), [TypeDB Console](../../02-clients/02-console.md) or any other 
 [client](../02-dev/04-clients.md).
-
-
-
-
