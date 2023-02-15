@@ -1,26 +1,28 @@
 ---
-pageTitle: Match Clause
+pageTitle: Match query
 keywords: typeql, query, match, pattern, statement, variable
-longTailKeywords: typeql match, typeql match get, typeql patterns, typeql statements, typeql variables
-Summary: Targeting instances of data that match expressive patterns in TypeDB.
+longTailKeywords: typeql match, match get, query patterns, match clause, typeql variables
+Summary: Targeting instances of data or schema types that match expressive patterns in TypeDB.
 ---
 
-# Match and Patterns
+# Match query
 
-We use match clauses to retrieve data instances and schema types that follow a particular pattern. Using match 
-clauses forms the basis of our data retrieval or data modification. By defining the [schema](05-schema.md), we 
-effectively define a vocabulary to be used to describe concepts of our domain.
+We use `match` keyword to retrieve data instances and schema types that follow a particular pattern. Using `match` 
+statement forms the basis of our data retrieval or even data modification query. By defining the [schema](05-schema.md),
+we effectively define a vocabulary to be used to describe concepts of our knowledge domain.
 
 Once the schema is defined, we can form patterns for which we want to search within our data. We do 
-that by using match clauses. Each match clause represents a particular pattern via its corresponding query 
+that by using `match` keyword. Each match statement represents a particular pattern via its corresponding query 
 pattern. The match clause is then executed as a part of other types of queries:
 
-- [Get](../../11-query/02-get-query.md)
-- [Insert](../../11-query/03-insert-query.md) 
-- [Delete](../../11-query/04-delete-query.md) 
-- [Aggregate](../../11-query/06-aggregate-query.md) 
+- [Get](../../11-query/02-get-query.md) — returns data instances or types fulfilling the specified pattern.
+- [Insert](../../11-query/03-insert-query.md) — inserts new data instances using specified pattern as context.
+- [Delete](../../11-query/04-delete-query.md) — deletes data instances fulfilling the specified pattern.
+- [Aggregate](../../11-query/06-aggregate-query.md) — calculates a value using data instances or types fulfilling the 
+  specified pattern as context.
 
-In the case of a Get query, what we expect to be returned is the tuples of instances fulfilling the specified pattern.
+We can query schema with `match` and `get` keywords. We can even use aggregate with the results if we want. But to 
+change the schema we must use `define` or `udefine` keywords.
 
 ## Query pattern anatomy
 
@@ -36,11 +38,10 @@ look at the constructs of a basic match clause.
 
 - The variable is followed by a comma-separated list of **properties** (`P1`, `P2`, `P3`) describing the concepts the
   variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type `person`.
-  The matched instances are expected to own an attribute of type `name` with the value of `"Bob"`. Additionally, we
-  require the concepts to own an attribute of type `phone-number` with any value. We signal that we want to fetch the
-  owned `phone-number`s as well by defining an extra `$phone` variable. Consequently, after performing a match on
-  this statement, we should obtain pairs of concepts that satisfy our
-  statement.
+  The matched instances are expected to own an attribute of type `name` with the value of `"Masako Holley"`.  
+  Additionally, we require the concepts to own an attribute of type `email` with any value. We signal that 
+  we want to fetch the owned `email`s as well by defining an extra `$email` variable. Consequently, after 
+  performing a match on this statement, we should obtain pairs of concepts that satisfy our statement.
 
 - We mark the end of the statement with a semi-colon `;`.
 
@@ -54,9 +55,14 @@ $p has name 'Masako Holley';
 $p has email $email;
 ```
 
-## Schema and Data
+Lastly, to create a viable query from that statement, we need to add `match` keyword at the beginning. After that it 
+is ready to be sent to the TypeDB server in a data read transaction.
 
-We can send queries to read or write schema or data. So the match clause can be used with both data and schema concepts.
+<div class="note">
+[Important]
+We can send queries to read or write schema or data of a database. So the `match` keyword can be used with both data 
+and schema concepts. But to write into the schema we shall use `define` or `undefine`.
+</div>
 
 ## Match Schema Concepts
 
@@ -76,6 +82,35 @@ match $s sub thing;
 By default, if we send `match` query without stating what we want to do with matched pattern (without the get 
 statement in the example above) it is processed as `match ... get` query, so it returns all mentioned variables.
 </div>
+
+### Examples of combining with other types of queries
+
+#### Get
+
+Get all attributes owned by user type and all its subtypes:
+
+```typeql
+match $u sub user, owns $a; get $a;
+```
+
+#### Insert
+<!--- Change the link !!!!!!!!!!!!!!!!! --> 
+
+Use [define](05-schema.md) instead.
+
+#### Delete
+
+<!--- Change the link !!!!!!!!!!!!!!!!! --> 
+
+Use [undefine](05-schema.md) instead.
+
+#### Aggregate
+
+Count the number of types there are subtyping a `user` type (including the `user` type itself) and owning any attribute:
+
+```typeql
+match $u sub user, owns $a; get $u; count;
+```
 
 ### Direct and Indirect Subtypes of a Given Type
 
@@ -176,7 +211,6 @@ TypeQLMatch.Filtered query = TypeQL.match(
 This matches all roles of the `permission` relation — `permission:permitted-access` and `permission:permitted-subject`.
 
 #### Subroles of a Given Role
-
 <!--- Revisit this one ====================================================================================== -->
 
 Role related to a sub-relation is linked to a corresponding parent's role using the `as` keyword. We can use the 
@@ -187,7 +221,7 @@ same keyword in a `match` clause to match the corresponding role in the given su
 [tab:TypeQL]
 <!-- test-delay -->
 ```typeql
-match friend-request relates $x as located; get $x;
+match group-membership relates $x as member; get $x;
 ```
 [tab:end]
 
@@ -195,13 +229,14 @@ match friend-request relates $x as located; get $x;
 <!-- test-delay -->
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-  type("friend-request").relates(var("x"), "subject")
+  type("group-membership").relates(var("x"), "member")
 ).get("x");
 ```
 [tab:end]
 </div>
 
-This matches all the roles that correspond to the `subject` role of the relation which `friend-request` subtypes. In this case, the super-relation being `request` and the matched role being `friendship`.
+This matches all the roles that correspond to the `member` role of the relation which `group-membership` subtypes. In 
+this case, the super-relation being `membership` and the matched role being `group-member`.
 
 ### Role Players of a Given Role
 
@@ -260,6 +295,56 @@ is a subtype of `Thing` we can do it like that:
 
 ```typeql
 match $t isa thing; get $t;
+```
+
+### Examples of combining with other types of queries
+
+#### Get
+
+Get an E-mail of a user with name "Kevin Morrison":
+
+```typeql
+match $u isa user, has name 'Kevin Morrison', has email $email; get $email;
+```
+
+<div class="note">
+[Note]
+If we drop the `get $email` part the query will still perform as `get` query but will return all variables from 
+`match` statement. 
+</div>
+
+#### Insert
+
+Insert a new E-mail for a user with name "Kevin Morrison":
+
+```typeql
+match $u isa user, has name 'Kevin Morrison'; insert $u has email "k.morrison@vaticle.com";
+```
+
+#### Delete
+
+Delete an E-mail "k.morrison@vaticle.com" for a user with name "Kevin Morrison":
+
+```typeql
+match $u isa user, has name "Kevin Morrison", has email $email; $email "k.morrison@vaticle.com"; delete $email isa email;
+```
+
+The query is a bit longer than expected, but that can be explained by the constraints of the `delete` statement.
+We need to use variable for a deleted concept, hence we add the `$email`. We need to use a proper statement with
+`delete` keyword, that is why we use the `delete $email isa email` and not just `delete $email`.
+
+<div class="note">
+[Note]
+If we use the statement `delete $u has $email` instead we will delete ownership of the email attribute $email but 
+the instance itself will be left hanging;
+</div>
+
+#### Aggregate
+
+Count the number of users:
+
+```typeql
+match $u isa user; get $u; count;
 ```
 
 ### Match Instances of an Entity
