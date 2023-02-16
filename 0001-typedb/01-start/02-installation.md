@@ -14,46 +14,43 @@ toc: false
 
 ## Install
 
-1. Install [Docker](https://docs.docker.com/get-docker/).
+1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running:
 
-2. Check the Docker daemon is running 
-   
    ```bash
    docker version
    ```
 
-3. Pull the latest TypeDB Docker image
+2. Pull the latest TypeDB Docker image:
 
    ```bash
    docker pull vaticle/typedb:latest
    ```
 
-`vaticle/typedb:latest` — is the image name. You can change `latest` for any version you might need. We recommend using
-TypeDB and TypeDB Studio of the same version.
+## Start
 
-## Start the TypeDB Server
+The TypeDB container exposes TypeDB’s default port, `1729`, and uses its default data directory, 
+`/opt/typedb-all-linux/server/data`.
 
-Run the Docker container with default network port exposed and volume added for persisted data:
-
-```bash
-docker run --name try-typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 vaticle/typedb:latest
-```
-
-The TypeDB Server is expected to be running on port `1729` on your machine in a docker container. It should work while 
-the Docker container `try-typedb` is active.
-
-You can connect to this instance with TypeDB Studio or any other [client](../02-dev/04-clients.md) via address 
-`127.0.0.1:1729`.
-
-To interact with the local [TypeDB Console](../../02-clients/02-console.md), run:
+The following command starts a named TypeDB container, maps its exposed port to the host machine and creates a named 
+volume mapped to the data directory — making it persistent across container restarts.
 
 ```bash
-docker exec -ti try-typedb bash -c '/opt/typedb-all-linux/typedb console'
+docker run --name try-typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ```
 
-## Stop the TypeDB Server
+<div class="note">
+[Note]
+The `--platform linux/amd64` parameter is required to run the TypeDB container on MacOS with an ARM64 architecture 
+(e.g. M1 processor).
+</div>
 
-To stop the TypeDB server you can stop the container.
+The following variables should be noted and can be modified:
+
+- `try-typedb` – the name of the container,
+- `try-typedb-data` – the name of the volume to persist data,
+- `latest` – the version of TypeDB.
+
+## Stop
 
 ```bash
 docker stop try-typedb
@@ -61,249 +58,255 @@ docker stop try-typedb
 
 [tab:end]
 
+[tab:Windows]
+
+## Install
+
+1. Ensure Java 11+ is installed
+
+   TypeDB supports the [OpenJDK](https://jdk.java.net) and 
+   [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).
+
+2. Download TypeDB
+   
+   Download the latest release of [TypeDB](https://vaticle.com/download).
+
+3. Extract archive
+   
+   Create a new directory, extract the contents of the zip file and move them (hereinafter replace `2.15.0` with the 
+   version downloaded):
+
+   ```shell
+   mkdir "C:\Program Files\TypeDB"
+   tar xvf ./Downloads/typedb-all-windows-2.15.0.zip
+   move ./Downloads/typedb-all-windows-2.15.0/* "C:\Program Files\TypeDB"
+   ```
+
+4. Update the PATH environment variable with the TypeDB installation directory:
+   ```shell
+   setx /M PATH "%path%;C:\Program Files\TypeDB"
+   ```
+
+## Start
+
+Run the following command in a terminal:
+
+```shell
+typedb server
+```
+
+<div class="note">
+[Note]
+TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB will be shut down. We recommend 
+opening a new terminal to run TypeDB Console.
+</div>
+
+
+
+<div class="note">
+[Note]
+If the following error occurs, please try to install the "C++ redistributable" by following the instructions here.
+
+```shell
+Exception in thread "main" java.lang.UnsatisfiedLinkError:
+C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
+```
+</div>
+
+## Stop
+
+Press Ctrl-C in the terminal running TypeDB.
+
+[tab:end]
+
 [tab:Linux]
 
-## Using APT
+## Install
 
-### Add the repository
+### APT
 
-```
-sudo apt install software-properties-common apt-transport-https gpg
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C 
-gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
-echo "deb [ arch=all ] https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
-```
+1. Add the TypeDB repository:
+   
+   ```bash
+   sudo apt install software-properties-common apt-transport-https gpg
+   gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C
+   gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+   echo "deb [ arch=all ] https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
+   ```
 
-### Update the package cache
+2. Update the package cache:
 
-```
-sudo apt update
-```
+   ```bash
+   sudo apt update
+   ```
+3. Ensure Java 11+ is installed:
 
-### Install
+   ```bash
+   sudo apt install openjdk-11-jre
+   ```
 
-```
-sudo apt install typedb-all
+   TypeDB supports the [OpenJDK](https://jdk.java.net) and
+   [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).
+
+4. Check the latest version number for typedb-server and it’s dependencies:
+
+   ```bash
+   apt show typedb-server
+   ```
+
+   This will show you console output like this:
+
+   ```bash
+   Package: typedb-server
+   Version: 2.15.0
+   Priority: optional
+   Section: contrib/devel
+   Maintainer: Vaticle <community@vaticle.com>
+   Installed-Size: unknown
+   Depends: openjdk-11-jre, typedb-bin (=2.12.0)
+   Download-Size: 71.8 MB
+   APT-Sources: https://repo.vaticle.com/repository/apt trusty/main all Packages
+   Description: TypeDB (server)
+   ```
+
+   Take a note of the latest typedb-server version shown at the `Package` field and the correspondent `typedb-bin` 
+   package version shown at the `Depends` field.
+
+   If we want some other version of TypeDB installed, we can use the `apt show typedb-server=2.14.1` where `2.14.1` — 
+   is the version we need.
+
+5. Install TypeDB using the versions from the previous command (here we will use typedb-server version 2.15 for 
+   example):
+
+   ```bash
+   sudo apt install typedb-server=2.15.0 typedb-console=2.15.0 typedb-bin=2.12.0
+   ```
+
+<div class="note">
+[Note]
+The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin` that is why their version 
+numbers might differ. By default, APT will look for the exact same version of `typedb-bin` and that will result in an 
+error. To prevent this we use apt show as shown above to display the dependencies of `typedb-server`, take note of 
+the `typedb-bin` version required and invoke an `apt install` command with the specific version of every package.
+</div>
+
+### Manual
+
+1. Ensure Java 11+ is installed:
+
+   TypeDB supports the [OpenJDK](https://jdk.java.net) and
+   [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).
+
+2. Download TypeDB:
+
+   Download the latest release of [TypeDB](https://vaticle.com/download).
+
+3. Extract archive:
+
+   Create a new directory, extract the contents of the zip file and move them
+   (hereinafter replace `2.15.0` with the version downloaded):
+   
+   ```bash
+   mkdir /opt/typedb
+   tar -xzf ~/Downloads/typedb-all-linux-2.15.0.tar.gz
+   mv ~/Downloads/typedb-all-linux-2.15.0 /opt/typedb
+   ```
+   
+4. Add a symlink to the TypeDB executable in the /usr/local/bin directory:
+
+   ```bash
+   ln -s /opt/typedb/typedb /usr/local/bin/typedb
+   ```
+
+## Start
+
+Run the following command in a terminal:
+
+```shell
+typedb server
 ```
 
 <div class="note">
 [Note]
-The typed-all package installs typedb-bin, typedb-consol, typedb-server and openjdk-11-jre.
+TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB will be shut down. We recommend 
+opening a new terminal to run TypeDB Console.
 </div>
 
-<div class="note">
-[Note]
-APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release 
-strategy allows depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate 
-feature upgrades.
+## Stop
 
-In these situations, you will encounter the following type of errors:
-
-```
-> sudo apt-get install typedb-all=2.11.0
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-Some packages could not be installed. This may mean that you have
-requested an impossible situation or if you are using the unstable
-distribution that some required packages have not yet been created
-or been moved out of Incoming.
-The following information may help to resolve the situation:
-The following packages have unmet dependencies.
-typedb-all : Depends: typedb-server (= 2.11.0) but it is not going to be installed
-```
-
-To solve this, specify each of the depended upon packages by exact version as well:
-```
-> sudo apt-get install typedb-all=2.11.0 typedb-server=2.11.0
-```
-
-This command would produce a similar error, but requiring that `typedb-bin=2.9.0`. We try again
-```
-> sudo apt-get install typedb-all=2.11.0 typedb-server=2.11.0 typedb-bin=2.9.0
-```
-
-Which successfully installs all required packages for `typedb-all=2.11.0`.
-</div>
-  
-## Manual Installation
-
-### Prerequisites
-
-The only requirement is Java (**version 11** or higher) which can be downloaded from
-[OpenJDK](http://openjdk.java.net/install/) or
-[Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
-
-### Download
-
-Download the [latest release](https://vaticle.com/download#typedb) of TypeDB.
-
-### Extract
-
-Copy the archive to any desired location and extract the downloaded archive:
-
-```bash
-tar -xzf typedb-all-linux-x.yy.z.tar.gz
-```
-
-`typedb-all-linux-x.yy.z.tar.gz` — this shall be substituted with the exact name of the archive you've downloaded.
-
-### Update PATH environment variable
-
-To be able to launch TypeDB from anywhere without addressing the full path to the bin file we should set the 
-environment variable `PATH` to look for bin file in the extracted folder. To do so we can run:
-
-```bash
-export PATH=$PATH:/path/to/dir
-```
-
-`/path/to/dir` — is the path to and the name of the extracted folder. There should be a `typedb` file at that location.
-
-### Other package managers
-
-If TypeDB doesn't have a distribution you need, please open an issue 
-[on GitHub](https://github.com/vaticle/typedb/issues).
-
-## Start the TypeDB Server
-
-Now we can start the TypeDB Server by using the `typedb server` command in local terminal.
-
-<div class="note">
-[Note]
-Command `typedb server` will run in the foreground of your current terminal, so to do other operations such as using 
-TypeDB Console, it's best to use another terminal. Closing the terminal where the TypeDB server is running will result 
-in termination of the program.
-</div>
-
-## Stop the TypeDB Server
-
-To stop the TypeDB Server, press Ctrl-C in the terminal, where you started it in.
+Press Ctrl-C in the terminal running TypeDB.
 
 [tab:end]
 
 [tab:MacOS]
 
-## Homebrew
+## Install
 
-Install [Homebrew](https://brew.sh/).
+### Homebrew
 
-Use Homebrew to install typedb:
+1. Ensure [Homebrew](https://brew.sh/) is installed.
 
-```sh
-brew install typedb
-```
+2. Install TypeDB:
 
-## Manual Install
+   ```sh
+   brew install typedb
+   ```
 
-### Prerequisites
+### Manual
 
-The only requirement is Java (**version 11** or higher) which can be downloaded from
-[OpenJDK](http://openjdk.java.net/install/) or
-[Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
+1. Ensure Java 11+ is installed
 
-### Download
+   TypeDB supports the [OpenJDK](https://jdk.java.net) and
+   [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).
 
-Download the [latest release](https://vaticle.com/download#typedb) of TypeDB.
+2. Download TypeDB
 
-### Extract
+   Download the latest release of TypeDB to the `~/Downloads` directory.
 
-Copy the archive to any desired location and extract the downloaded archive by double clicking on it.
+3. Extract archive
 
-### Update PATH environment variable
+   Extract the downloaded archive (hereinafter replace `2.15.0` with the version downloaded):
+   
+   ```bash
+   unzip ~/Downloads/typedb-all-mac-2.15.0.zip
+   ```   
 
-To be able to launch TypeDB from anywhere without addressing the full path to the bin file we should set the
-environment variable `PATH` to look for bin file in the extracted folder. To do so we can edit the `~/.zshrc` file 
-in any available editor to add this text as a separate line at the end:
+4. Create a new directory and move the contents of the extracted zip file to it:
+   
+   ```bash
+   sudo mkdir /opt/typedb
+   sudo mv ~/Downloads/typedb-all-mac-2.15.0/*(DN) /opt/typedb
+   ```
+
+5. Add a symlink to typedb executable in the /usr/local/bin directory:
+   
+   ```bash
+   ln -s /opt/typedb/typedb /usr/local/bin/typedb
+   ```
+   
+## Start
+
+Run the following command in a terminal:
 
 ```bash
-export PATH=$PATH:/path/to/dir
+typedb server
 ```
-
-`/path/to/dir` — is the path to and the name of the extracted folder. There should be a `typedb` file at that location.
-
-## Start the TypeDB Server
 
 Now we can start the TypeDB Server by using the `typedb server` command in local terminal.
 
 <div class="note">
 [Note]
-Command `typedb server` will run in the foreground of your current terminal, so to do other operations such as using 
-TypeDB Console, it's best to use another terminal. Closing the terminal where the TypeDB server is running will result 
-in termination of the program.
+TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB server will be shut down. We 
+recommend opening a new terminal to run TypeDB Console.
 </div>
 
-## Stop the TypeDB Server
+## Stop
 
-To stop the TypeDB Server, press Ctrl-C in the terminal, where you started it in.
-
-[tab:end]
-
-[tab:Windows]
-
-## Manual Install
-
-### Prerequisites
-
-The only requirement is Java (**version 11** or higher) which can be downloaded from
-[OpenJDK](http://openjdk.java.net/install/) or
-[Oracle Java](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
-
-### Download
-
-Download the [latest release](https://vaticle.com/download#typedb) of TypeDB.
-
-### Extract
-
-Copy the archive to any desired location and extract the downloaded archive.
-
-### Update PATH environment variable
-
-To be able to launch TypeDB from anywhere without addressing the full path to the bin file we should set the
-environment variable `PATH` to look for bin file in the extracted folder. To do so we can use GUI or console. 
-
-For instructions on how to do it with GUI — follow [these instructions](https://www.java.com/en/download/help/path.html) 
-minding the OS version. 
-
-For console approach run:
-
-```powershell
-setx /M path "%path%;C:\path\to\dir"
-```
-
-`C:\path\to\dir` — is the path to and the name of the extracted folder. There should be a `typedb` file at that 
-location.
-
-<div class="note">
-[Note]
-If the following error occurs, please try to install the "C++ redistributable" by following the instructions 
-[here](https://developers.google.com/optimization/install/python/windows#microsoft-visual-c-redistributable).
-
-```
-Exception in thread "main" java.lang.UnsatisfiedLinkError: 
-C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
-```
-
-## Start the TypeDB Server
-
-Now we can start the TypeDB Server by using the `typedb server` command in local terminal.
-
-<div class="note">
-[Note]
-Command `typedb server` will run in the foreground of your current terminal, so to do other operations such as using 
-TypeDB Console, it's best to use another terminal. Closing the terminal where the TypeDB server is running will result 
-in termination of the program.
-</div>
-
-## Stop the TypeDB Server
-
-To stop the TypeDB Server, press Ctrl-C in the terminal, where you started it in.
-
-</div>
+Press Ctrl-C in the terminal running TypeDB.
 
 [tab:end]
 
 </div>
 
-Having installed or downloaded TypeDB, we can now [start the Server](#start-the-typedb-server) and interact with the
-[TypeDB Studio](../../02-clients/01-studio.md), [TypeDB Console](../../02-clients/02-console.md) or any other 
-[client](../02-dev/04-clients.md).
+Having installed or downloaded TypeDB, we can now interact with the [TypeDB Studio](../../02-clients/01-studio.md), 
+[TypeDB Console](../../02-clients/02-console.md) or one of the [TypeDB drivers](../02-dev/04-clients.md#typedb-drivers).
