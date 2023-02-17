@@ -123,9 +123,9 @@ match $o sub object;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query_a = TypeQL.match(
-  var("o").sub("object")
-);
+//TypeQLMatch.Filtered query_a = TypeQL.match(
+//var("o").sub("object")
+//);
 ```
 [tab:end]
 </div>
@@ -150,9 +150,9 @@ match $o sub! object;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query_a = TypeQL.match(
-  var("o").subX("object")
-);
+//TypeQLMatch.Filtered query_a = TypeQL.match(
+//  var("o").subX("object")
+//);
 ```
 [tab:end]
 </div>
@@ -175,9 +175,9 @@ match $o type object;
 [tab:Java]
 <!-- test-delay -->
 ```java
-TypeQLMatch.Filtered query_a = TypeQL.match(
-  var("o").type("object")
-);
+//TypeQLMatch.Filtered query_a = TypeQL.match(
+//  var("o").type("object")
+//);
 ```
 [tab:end]
 </div>
@@ -198,9 +198,9 @@ match permission relates $x;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  type("permission").relates(var("x"))
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  type("permission").relates(var("x"))
+//);
 ```
 [tab:end]
 </div>
@@ -225,9 +225,9 @@ match group-membership relates $x as member; get $x;
 [tab:Java]
 <!-- test-delay -->
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  type("group-membership").relates(var("x"), "member")
-).get("x");
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  type("group-membership").relates(var("x"), "member")
+//).get("x");
 ```
 [tab:end]
 </div>
@@ -249,9 +249,9 @@ match $x plays permission:permitted-subject;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").plays("permission", "permitted-subject")
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("x").plays("permission", "permitted-subject")
+//);
 ```
 [tab:end]
 </div>
@@ -272,9 +272,9 @@ match $x owns name;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").owns("name")
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("x").owns("name")
+//);
 ```
 [tab:end]
 </div>
@@ -367,9 +367,9 @@ match $p isa person;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("p").isa("person")
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("p").isa("person")
+//);
 ```
 [tab:end]
 </div>
@@ -391,9 +391,9 @@ match $p isa person, has name $n;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("p").isa("person").has("name", var("n"))
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("p").isa("person").has("name", var("n"))
+//);
 ```
 [tab:end]
 </div>
@@ -416,9 +416,10 @@ $pe (permitted-subject: $p, permitted-access: $ac) isa permission; get $pe;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-var(p).isa("person").has("name", "Kevin Morrison"), var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission")
-).get(var("pe"));
+//TypeQLMatch.Filtered query = TypeQL.match(
+//var(p).isa("person").has("name", "Kevin Morrison"), var("pe").rel("permitted-subject", var("p")).rel
+//        ("permitted-access", var("ac")).isa("permission")
+//).get(var("pe"));
 ```
 [tab:end]
 </div>
@@ -442,9 +443,10 @@ match $pe (permitted-subject: $p, permitted-access: $ac) isa permission, has val
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission")).has("validity","True")
-).get(var("pe"));
+//TypeQLMatch.Filtered query = TypeQL.match(
+//var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission")).has("validity",
+//        "True")
+//).get(var("pe"));
 ```
 [tab:end]
 </div>
@@ -489,9 +491,9 @@ match $sp ($x, $y) isa segragation-policy; get $sp;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("sp").rel("x").rel("y").isa("segragation-policy")
-).get("sp");
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("sp").rel("x").rel("y").isa("segragation-policy")
+//).get("sp");
 ```
 [tab:end]
 </div>
@@ -514,9 +516,9 @@ match $x "Masako Holley";
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").eq("Masako Holley")
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("x").eq("Masako Holley")
+//);
 ```
 [tab:end]
 </div>
@@ -539,9 +541,9 @@ match $n isa name; $n "Masako Holley"; get $n;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").eq("Masako Holley").isa("name")
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("x").eq("Masako Holley").isa("name")
+//);
 ```
 [tab:end]
 </div>
@@ -563,9 +565,9 @@ match $name contains "Masako"; get $name;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("name").contains("Masako")
-).get("name");
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("name").contains("Masako")
+//).get("name");
 ```
 [tab:end]
 </div>
@@ -587,9 +589,9 @@ match $x like "(Masako Holley|Kevin Morrison)";
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").regex("(Masako Holley|Kevin Morrison)")
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("x").regex("(Masako Holley|Kevin Morrison)")
+//);
 ```
 [tab:end]
 </div>
@@ -612,9 +614,9 @@ match $p isa person, has name $n, has email $email, has credential $cr; get $p;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("p").isa("person").has("name", var("n")).has("email", var("email")).has("credential", var("credential"))
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("p").isa("person").has("name", var("n")).has("email", var("email")).has("credential", var("credential"))
+//);
 ```
 [tab:end]
 </div>
@@ -633,9 +635,9 @@ match $r isa record, has number < 100; get $r;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("r").isa("record").has("number", TypeQL.lt(100))
-).get("r");
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("r").isa("record").has("number", TypeQL.lt(100))
+//).get("r");
 ```
 [tab:end]
 </div>
@@ -653,10 +655,10 @@ match $r isa record, has number $n; $n < 100; get $r, $n;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("r").isa("record").has("number", var("n")),
-  var("n").lt(100)
-).get("r", "n");
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("r").isa("record").has("number", var("n")),
+//  var("n").lt(100)
+//).get("r", "n");
 ```
 [tab:end]
 </div>
@@ -676,13 +678,13 @@ match $p isa person, has name $n; { $n contains "Masako"; } or { n contains "Kev
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("p").isa("person").has("name", var("n")),
-  or(
-    var("n").contains("Masako"),
-    var("n").contains("Kevin")
-  )
-).get("p");
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("p").isa("person").has("name", var("n")),
+//  or(
+//    var("n").contains("Masako"),
+//    var("n").contains("Kevin")
+//  )
+//).get("p");
 ```
 [tab:end]
 </div>
@@ -702,9 +704,9 @@ match $u isa! user;
 
 [tab:Java]
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("u").isa("user")
-);
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("u").isa("user")
+//);
 ```
 [tab:end]
 </div>
@@ -729,9 +731,9 @@ match $x iid 0x966e80018000000000000000; get $x;
 [tab:Java]
 <!-- test-ignore -->
 ```java
-TypeQLMatch.Filtered query = TypeQL.match(
-  var("x").iid("0x966e80018000000000000000")
-).get("x");
+//TypeQLMatch.Filtered query = TypeQL.match(
+//  var("x").iid("0x966e80018000000000000000")
+//).get("x");
 ```
 [tab:end]
 </div>
@@ -753,11 +755,11 @@ match $x isa person; $y isa person; not { $x is $y; };
 [tab:Java]
 <!-- test-ignore -->
 ```java
-TypeQLMatch query = TypeQL.match(
-  var("x").isa("person"), 
-  var("y").isa("person"),
-  TypeQL.not(var("x").is(var("y")))
-);
+//TypeQLMatch query = TypeQL.match(
+//  var("x").isa("person"), 
+//  var("y").isa("person"),
+//  TypeQL.not(var("x").is(var("y")))
+//);
 ```
 [tab:end]
 </div>
