@@ -94,15 +94,12 @@ match $u sub user, owns $a; get $a;
 ```
 
 #### Insert
-<!--- Change the link !!!!!!!!!!!!!!!!! --> 
 
-Use [define](05-schema.md) instead.
+Use [define](05-schema.md#define) instead.
 
 #### Delete
 
-<!--- Change the link !!!!!!!!!!!!!!!!! --> 
-
-Use [undefine](05-schema.md) instead.
+Use [undefine](05-schema.md#undefine) instead.
 
 #### Aggregate
 
@@ -419,7 +416,7 @@ $pe (permitted-subject: $p, permitted-access: $ac) isa permission; get $pe;
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
 var(p).isa("person").has("name", "Kevin Morrison"), var("pe").rel("permitted-subject", var("p")).
-rel("permitted-access", var("ac")).isa("permission)).get(var("pe")
+rel("permitted-access", var("ac")).isa("permission)).get(var("pe"))
 );
 ```
 [tab:end]
@@ -445,8 +442,7 @@ match $pe (permitted-subject: $p, permitted-access: $ac) isa permission, has val
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission)).has("validity",
-True").get(var("pe"))
+var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission)).has("validity", "True").get(var("pe"))
 );
 ```
 [tab:end]
