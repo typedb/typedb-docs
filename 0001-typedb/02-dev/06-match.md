@@ -415,9 +415,8 @@ $pe (permitted-subject: $p, permitted-access: $ac) isa permission; get $pe;
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-var(p).isa("person").has("name", "Kevin Morrison"), var("pe").rel("permitted-subject", var("p")).
-rel("permitted-access", var("ac")).isa("permission)).get(var("pe"))
-);
+var(p).isa("person").has("name", "Kevin Morrison"), var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission)
+).get(var("pe"));
 ```
 [tab:end]
 </div>
@@ -442,8 +441,8 @@ match $pe (permitted-subject: $p, permitted-access: $ac) isa permission, has val
 [tab:Java]
 ```java
 TypeQLMatch.Filtered query = TypeQL.match(
-var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission)).has("validity", "True").get(var("pe"))
-);
+var("pe").rel("permitted-subject", var("p")).rel("permitted-access", var("ac")).isa("permission)).has("validity","True")
+).get(var("pe"));
 ```
 [tab:end]
 </div>
