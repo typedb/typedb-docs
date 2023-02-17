@@ -11,7 +11,6 @@ toc: false
 <div class="tabs light">
 
 [tab:Docker]
-
 ## Install
 
 1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running:
@@ -25,6 +24,7 @@ toc: false
    ```bash
    docker pull vaticle/typedb:latest
    ```
+
 
 ## Start
 
@@ -55,17 +55,15 @@ The following variables should be noted and can be modified:
 ```bash
 docker stop try-typedb
 ```
-
 [tab:end]
 
 [tab:Windows]
-
 ## Install
 
 1. Ensure Java 11+ is installed
 
-   TypeDB supports the [OpenJDK](https://jdk.java.net) and 
-   [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).
+      TypeDB supports the [OpenJDK](https://jdk.java.net) and 
+      [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).
 
 2. Download TypeDB
    
@@ -83,6 +81,7 @@ docker stop try-typedb
    ```
 
 4. Update the PATH environment variable with the TypeDB installation directory:
+
    ```shell
    setx /M PATH "%path%;C:\Program Files\TypeDB"
    ```
@@ -116,11 +115,9 @@ C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Ca
 ## Stop
 
 Press Ctrl-C in the terminal running TypeDB.
-
 [tab:end]
 
 [tab:Linux]
-
 ## Install
 
 ### APT
@@ -235,11 +232,9 @@ opening a new terminal to run TypeDB Console.
 ## Stop
 
 Press Ctrl-C in the terminal running TypeDB.
-
 [tab:end]
 
 [tab:MacOS]
-
 ## Install
 
 ### Homebrew
@@ -303,7 +298,6 @@ recommend opening a new terminal to run TypeDB Console.
 ## Stop
 
 Press Ctrl-C in the terminal running TypeDB.
-
 [tab:end]
 
 </div>

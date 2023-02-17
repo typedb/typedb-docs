@@ -11,50 +11,11 @@ toc: false
 Let's create a simple application that interacts with TypeDB database that we created in the 
 [Quickstart guide](03-quickstart.md).
 
-The following Python script executes 4 requests to the `iam` database located at the `0.0.0.0:1729` address:
+The following Python script executes 4 requests to the `iam` database located at the `0.0.0.0:1729` address. 
 
-1. List Names and E-mails for all users that have them.
+You can save it locally and run it with the [Python](https://www.python.org/downloads/) v.3.9+.
 
-    <div class="note">
-    [Note]
-    Note that those users that will not have name or e-mail added to them will not be showed in the results of this 
-    request.
-    </div>
-
-2. List all files that Kevin Morrison has access to.
-    
-    <div class="note">
-    [Note]
-    Note that users and files don't have a singular relation that connects them directly. According to the `iam`
-    [schema](03-quickstart.md#fifth-step--prepare-a-schema) we need two relations to connect them: `permission` and 
-    `access`. Both relations must be used to make an decision of whether a user have access to a file.
-    </div>
-
-3. List all files Kevin have a `view_file` access to.
-   
-    <div class="note">
-    [Note]
-    Note that Kevin have been assigned only `modify_file` access and the `view_file` access being inferred by a 
-    [rule](../02-dev/05-schema.md#rules). To use inference in this query we modify TypeDB options and send modified 
-    set of options to the transaction call.
-    </div>
-
-    <div class="note">
-    [Note]
-    To make things a bit more interesting we split this into two separate queries by using an offset: we get 
-    first 5 results and then 5 more results with an offset of 5. To be able to do that we apply sorting of the 
-    results by filepath variable. Otherwise, we can't guarantee the results will be in the same order every time we
-    send a request.
-    </div>
- 
-4. Insert a new file and then insert an access relation to it.
-
-    <div class="note">
-    [Note]
-    Note that we are creating file first. If we try to set access to non-existent file our request will succeed (if 
-    it's a valid request) but will not insert any new data (relation). After both requests are done we commit the 
-    write transaction. It is important not to forget to commit changes.
-    </div>
+After the script below you can find [simple explanation](#explanation) of 4 requests performed in the script.
 
 <!--- #todo Add sample app in other languages as tabs! -->
 
@@ -115,8 +76,8 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
         with session.transaction(TransactionType.WRITE) as transaction:  # Open transaction to write
             filepath = "logs/" + datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".log"
             typeql_insert_query = "insert $f isa file, has filepath '" + filepath + "';"
-            transaction.query().insert(typeql_insert_query)  # runs the query
             print("Inserting file:", filepath)
+            transaction.query().insert(typeql_insert_query)  # runs the query
             typeql_insert_query = "match $f isa file, has filepath '" + filepath + "'; " \
                                   "$vav isa action, has name 'view_file'; " \
                                   "insert ($vav, $f) isa access;"
@@ -124,3 +85,107 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             transaction.query().insert(typeql_insert_query)  # runs the query
             transaction.commit()  # commits the transaction
 ```
+
+## Explanation
+
+### List Names and E-mails for all users that have them
+
+TypeQL query used:
+
+```typeql
+match $u isa user, has name $n, has email $e;
+```
+
+Simple explanation: we seek through all entities of `user` subtype (assigning a variable `$u` for those) that have `name`
+attribute (variable `$n` assigned for those) and `email` attribute (variable `$e`). Since we don't have explicit `get`
+statement it is assumed that we get all the variables that were assigned in the query.
+
+We assign the response to the `iterator` variable and then go through all elements printing the values of the `$n` and
+`$e` variables.
+
+<div class="note">
+[Note]
+Note that those users that will not have `name` or `email` attributes added to them will not be showed in the 
+results of this request.
+</div>
+
+### List all files that Kevin Morrison has access to
+
+TypeQL query used:
+
+```typeql
+match $u isa user, has name 'Kevin Morrison'; $p($u, $pa) isa permission; 
+      $o isa object, has filepath $fp; $pa($o, $va) isa access; get $fp;
+```
+
+Simple explanation: we seek for a `user` (variable `$u`) with attribute `name` of value `Kevin Morrison` assigned.
+Then we search for a permission relation (`$p`) inbetween this user `$u` and potential access `$pa`.
+Finally, we state that an object `$o` with a filepath `$fp` should be a part of `$pa` potential access relation.
+Without even specifying what kind of action `$va` it should be. From all that variables we request to return only the
+`filepath` attribute (`$fp`) of an object that the user has a permission to access.
+
+<div class="note">
+[Note]
+Note that users and files don't have a singular relation that connects them directly. According to the `iam`
+[schema](03-quickstart.md#fifth-step--prepare-a-schema) we need two relations to connect them: `permission` and 
+`access`. Both relations must be used to make a decision of whether a user have access to a file.
+</div>
+
+### List all files Kevin have a `view_file` access to
+
+TypeQL query used:
+
+```typeql
+match $u isa user, has name 'Kevin Morrison'; $p($u, $pa) isa permission; 
+      $o isa object, has filepath $fp; $pa($o, $va) isa access;
+      $va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;
+```
+
+Simple explanation: This is the similar request to the previous one. The difference is we set the type of action (`$va`)
+that the user has access to the `view_file`. We still get only `filepath` (`$fp`) but now sort in ascending order
+and get it in two portions: this particular request gets the very first 5 entries.
+
+<div class="note">
+[Note]
+Note that Kevin have been assigned only `modify_file` access and the `view_file` access being inferred by a 
+[rule](../02-dev/05-schema.md#rules). To use inference in this query we modify TypeDB options and send modified 
+set of options to the transaction call.
+</div>
+
+<div class="note">
+[Note]
+To make things a bit more interesting we split this into two separate queries by using an `offset` keyword: we get 
+first 5 results and then 5 more results with an offset of 5. To be able to do that we apply sorting of the 
+results by filepath variable. Otherwise, we can't guarantee the results will be in the same order every time we
+send a request.
+</div>
+
+### Insert a new file and then insert an access relation to it
+
+At first, we generate a new value for `filepath` Python variable, consisting of `logs/`prefix, current date and time in
+compact format and `.log` ending.
+
+TypeQL query used #1:
+
+```typeql
+"insert $f isa file, has filepath '" + filepath + "';"
+```
+
+Simple explanation: we insert `file` entity that has an attribute `filepath` with the value we generated before.
+
+TypeQL query used #2:
+
+```typeql
+match $f isa file, has filepath '" + filepath + "'; $vav isa action, has name 'view_file'; insert ($vav, $f) isa access;
+```
+
+Simple explanation: we seek `file` entity that has an attribute `filepath` with the value we generated before.
+And we find an `action`, that has a `name` attribute with the value of `view_file`. Then we insert an `access` relation
+inbetween the `file` and the `action`.
+
+<div class="note">
+[Note]
+Note that we are creating file first. If we try to set access to non-existent file our request will succeed (if 
+it's a valid request) but will not insert any new data (relation). After both requests are done we commit the 
+write transaction. It is important not to forget to commit changes.
+</div>
