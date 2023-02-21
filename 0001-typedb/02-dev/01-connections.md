@@ -1,14 +1,14 @@
 ---
-pageTitle: Basics
-keywords: typedb, basics
-longTailKeywords: basic concepts of typedb
-summary: Brief description of basic concepts of typedb.
+pageTitle: Connections
+keywords: typedb, basics, connect, connection, session, database
+longTailKeywords: basic concepts of typedb, typedb connection, typedb database, typedb session
+summary: Brief description of connection to TypeDB.
 toc: false
 ---
 
-# Basics
+# Connections
 
-## Server connection
+## Clients
 
 [TypeDB Client](04-clients.md) handles remote connection to the TypeDB Server.
 We then use this connection to manage [databases](#databases) and open [sessions](#sessions).
@@ -54,4 +54,3 @@ Because of intermittent network failures, it is recommended to keep sessions rel
 
 A good principle is that sessions group logically coherent transactions. For example, when loading a web page, one
 session should be used to open one or more transactions to load the page data.
-

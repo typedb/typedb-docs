@@ -8,10 +8,11 @@ toc: false
 
 # Installation
 
-<div class="tabs light">
+<!--- Reimplement tabs when they are product ready -->
 
-[tab:Docker]
-## Install
+## Docker
+
+### Install
 
 1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running:
 
@@ -26,7 +27,7 @@ toc: false
    ```
 
 
-## Start
+### Start
 
 The TypeDB container exposes TypeDB’s default port, `1729`, and uses its default data directory, 
 `/opt/typedb-all-linux/server/data`.
@@ -50,15 +51,15 @@ The following variables should be noted and can be modified:
 - `try-typedb-data` – the name of the volume to persist data,
 - `latest` – the version of TypeDB.
 
-## Stop
+### Stop
 
 ```bash
 docker stop try-typedb
 ```
-[tab:end]
 
-[tab:Windows]
-## Install
+## Windows
+
+### Install
 
 1. Ensure Java 11+ is installed
 
@@ -86,7 +87,7 @@ docker stop try-typedb
    setx /M PATH "%path%;C:\Program Files\TypeDB"
    ```
 
-## Start
+### Start
 
 Run the following command in a terminal:
 
@@ -112,15 +113,15 @@ C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Ca
 ```
 </div>
 
-## Stop
+### Stop
 
 Press Ctrl-C in the terminal running TypeDB.
-[tab:end]
 
-[tab:Linux]
-## Install
+## Linux
 
-### APT
+### Install
+
+#### APT
 
 1. Add the TypeDB repository:
    
@@ -187,7 +188,7 @@ error. To prevent this we use apt show as shown above to display the dependencie
 the `typedb-bin` version required and invoke an `apt install` command with the specific version of every package.
 </div>
 
-### Manual
+#### Manual
 
 1. Ensure Java 11+ is installed:
 
@@ -215,7 +216,7 @@ the `typedb-bin` version required and invoke an `apt install` command with the s
    ln -s /opt/typedb/typedb /usr/local/bin/typedb
    ```
 
-## Start
+### Start
 
 Run the following command in a terminal:
 
@@ -229,15 +230,15 @@ TypeDB will run in the foreground. If the terminal running TypeDB is closed, Typ
 opening a new terminal to run TypeDB Console.
 </div>
 
-## Stop
+### Stop
 
 Press Ctrl-C in the terminal running TypeDB.
-[tab:end]
 
-[tab:MacOS]
-## Install
+## macOS
 
-### Homebrew
+### Install
+
+#### Homebrew
 
 1. Ensure [Homebrew](https://brew.sh/) is installed.
 
@@ -247,7 +248,7 @@ Press Ctrl-C in the terminal running TypeDB.
    brew install typedb
    ```
 
-### Manual
+#### Manual
 
 1. Ensure Java 11+ is installed
 
@@ -279,7 +280,7 @@ Press Ctrl-C in the terminal running TypeDB.
    ln -s /opt/typedb/typedb /usr/local/bin/typedb
    ```
    
-## Start
+### Start
 
 Run the following command in a terminal:
 
@@ -295,12 +296,11 @@ TypeDB will run in the foreground. If the terminal running TypeDB is closed, Typ
 recommend opening a new terminal to run TypeDB Console.
 </div>
 
-## Stop
+### Stop
 
 Press Ctrl-C in the terminal running TypeDB.
-[tab:end]
 
-</div>
+## After installation
 
 Having installed or downloaded TypeDB, we can now interact with the [TypeDB Studio](../../02-clients/01-studio.md), 
 [TypeDB Console](../../02-clients/02-console.md) or one of the [TypeDB drivers](../02-dev/04-clients.md#typedb-drivers).
