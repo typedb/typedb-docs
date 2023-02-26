@@ -13,7 +13,7 @@ Summary: A comprehensive guide on defining Schema Concepts in TypeDB.
 
 ## Define
 
-As the name suggests, we use the `define` keyword to develop the [schema](05-schema.md) by adding new concepts: 
+As the name suggests, we use the `define` keyword to develop the [schema](02-schema.md) by adding new concepts: 
 
 - Entities.
 - Relations.
@@ -50,7 +50,7 @@ Will shorten this page. Especially if we would use a single example with all thr
 
 ### Define an entity
 
-To define a new [entity](05-schema.md#entity), we use the `sub` keyword followed by `entity` thus creating a subtype of
+To define a new [entity](02-schema.md#entity), we use the `sub` keyword followed by `entity` thus creating a subtype of
 the built-in `entity` type.
 
 <div class="tabs dark">

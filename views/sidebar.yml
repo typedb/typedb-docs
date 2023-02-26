@@ -5,7 +5,7 @@ chapters:
     pages:
       -
         title: Documentation overview
-        url: ../general/docs
+        url: /docs/typedb/docs
   -
     title: TypeDB
     baseUrl: /docs/typedb/
@@ -25,6 +25,9 @@ chapters:
             title: Quickstart Guide
             url: quickstart
           -
+            title: IAM schema explanation
+            url: iam-schema
+          -
             title: Sample Application
             url: sample-app
       -
@@ -32,29 +35,26 @@ chapters:
         baseUrl: /docs/typedb/dev/
         pages:
           -
-            title: Basics
-            url: basics
-          -
-            title: Transactions
-            url: transactions
-          -
-            title: ACID Guarantees
-            url: acid
-          -
-            title: Clients
-            url: clients
+            title: Connections
+            url: connections
           -
             title: Schema
             url: schema
           -
-            title: Match queries
+            title: Matching patterns
             url: match
           -
-            title: Writing
-            url: writing
+            title: Writing data
+            url: write
           -
-            title: Reading
-            url: reading
+            title: Reading data
+            url: read
+          -
+            title: Response interpretation
+            url: response
+          -
+            title: API reference
+            url: api
       -
         title: Administration
         baseUrl: /docs/typedb/admin/

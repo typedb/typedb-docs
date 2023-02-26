@@ -1,0 +1,104 @@
+# Subjects
+insert $p isa person, has full-name "Masako Holley", has email "masako.holley@vaticle.com";  # No access
+insert $p isa person, has full-name "Pearle Goodman", has email "pearle.goodman@vaticle.com";  # Sales manager
+insert $p isa person, has full-name "Kevin Morrison", has email "kevin.morrison@vaticle.com";  # Full access
+
+# Objects
+insert $f isa file, has path "iopvu.java", has size-kb 55;
+insert $f isa file, has path "zlckt.ts", has size-kb 143;
+insert $f isa file, has path "psukg.java", has size-kb 171;
+insert $f isa file, has path "axidw.java", has size-kb 212;
+insert $f isa file, has path "lzfkn.java", has size-kb 70;
+insert $f isa file, has path "budget_2022-05-01.xlsx", has size-kb 758;
+insert $f isa file, has path "zewhb.java";
+insert $f isa file, has path "budget_2021-08-01.xlsx", has size-kb 1705;
+insert $f isa file, has path "LICENSE";
+insert $f isa file, has path "README.md";
+
+# Operations
+insert $o isa operation, has action-name "modify_file";
+insert $o isa operation, has action-name "view_file";
+
+# Potential access types
+match $ob isa file, has path "iopvu.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zlckt.ts"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "psukg.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "axidw.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "lzfkn.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zewhb.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "LICENSE"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "README.md"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+
+match $ob isa file, has path "iopvu.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zlckt.ts"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "psukg.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "axidw.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "lzfkn.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zewhb.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "LICENSE"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "README.md"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+
+# Permissions
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "iopvu.java";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "zlckt.ts";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "psukg.java";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "axidw.java";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "lzfkn.java";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "budget_2022-05-01.xlsx";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "zewhb.java";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "budget_2021-08-01.xlsx";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "LICENSE";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "README.md";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "budget_2022-05-01.xlsx";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "zewhb.java";
+      $a isa action, has action-name "view_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "budget_2021-08-01.xlsx";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "LICENSE";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "README.md";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
+insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;

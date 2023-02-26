@@ -8,7 +8,7 @@ Summary: Targeting instances of data or schema types that match expressive patte
 # Match query
 
 We use `match` keyword to retrieve data instances and schema types that follow a particular pattern. Using `match` 
-statement forms the basis of our data retrieval or even data modification query. By defining the [schema](05-schema.md),
+statement forms the basis of our data retrieval or even data modification query. By defining the [schema](02-schema.md),
 we effectively define a vocabulary to be used to describe concepts of our knowledge domain.
 
 Once the schema is defined, we can form patterns for which we want to search within our data. We do 
@@ -95,11 +95,11 @@ match $u sub user, owns $a; get $a;
 
 #### Insert
 
-Use [define](05-schema.md#define) instead.
+Use [define](02-schema.md#define) instead.
 
 #### Delete
 
-Use [undefine](05-schema.md#undefine) instead.
+Use [undefine](02-schema.md#undefine) instead.
 
 #### Aggregate
 
@@ -402,7 +402,7 @@ We soon learn [how to target attributes of a specific value](#owners-with-attrib
 
 ### Match instances of a relation
 
-Because of the [dependent nature of relations](../02-dev/05-schema.md#relation), matching them is slightly different to 
+Because of the [dependent nature of relations](../02-dev/02-schema.md#relation), matching them is slightly different to 
 matching entities and attributes as we usually need to add some details of the participants of the relation.
 
 <div class="tabs dark">

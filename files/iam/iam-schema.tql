@@ -1,0 +1,361 @@
+#
+# Copyright (C) 2022 Vaticle
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+define
+
+company sub entity,
+    owns name,
+    plays company-membership:parent-company;
+
+company-membership sub relation,
+    relates parent-company,
+    relates company-member;
+
+parent-company sub attribute,
+    value string;
+
+#rule attribute-parent-company:
+#    when {
+#        (parent-company: $c, company-member: $t) isa company-membership;
+#        $c has name $c-name;
+#        ?name-value = $c-name
+#    } then {
+#        $t has parent-company ?name-value;
+#    };
+
+rule attribute-parent-company:
+    when {
+        (parent-company: $c, company-member: $t) isa company-membership;
+        $c has name $c-name;
+        $pc isa parent-company;
+        $c-name = $pc;
+    } then {
+        $t has $pc;
+    };
+
+root-collection sub attribute,
+    value boolean;
+
+rule automatic-member-collection:
+    when {
+        $c isa resource-collection;
+        (collection-member: $c) isa collection-membership;
+    } then {
+        $c has root-collection false;
+    };
+
+rule automatic-root-collection:
+    when {
+        $c isa resource-collection;
+        not {
+            $c has root-collection false;
+        };
+    } then {
+        $c has root-collection true;
+    };
+
+subject sub entity,
+    abstract,
+    owns parent-company,
+    owns credential,
+    plays company-membership:company-member,
+    plays group-membership:group-member,
+    plays group-ownership:group-owner,
+    plays object-ownership:object-owner,
+    plays permission:permitted-subject,
+    plays change-request:requesting-subject,
+    plays change-request:requested-subject,
+    plays segregation-violation:violating-subject;
+
+user sub subject,
+    abstract;
+
+user-group sub subject,
+    abstract,
+    plays group-membership:parent-group,
+    plays group-ownership:owned-group;
+
+object sub entity,
+    abstract,
+    owns parent-company,
+    owns object-type,
+    plays company-membership:company-member,
+    plays collection-membership:collection-member,
+    plays object-ownership:owned-object,
+    plays access:accessed-object,
+    plays segregation-violation:violating-object;
+
+resource sub object,
+    abstract;
+
+resource-collection sub object,
+    abstract,
+    owns root-collection,
+    plays collection-membership:parent-collection;
+
+action sub entity,
+    abstract,
+    owns parent-company,
+    owns action-name,
+    owns object-type,
+    plays company-membership:company-member,
+    plays set-membership:set-member,
+    plays access:valid-action,
+    plays segregation-policy:segregated-action;
+
+operation sub action;
+
+operation-set sub action,
+    plays set-membership:parent-set;
+
+membership sub relation,
+    abstract,
+    relates parent,
+    relates member;
+
+group-membership sub membership,
+    relates parent-group as parent,
+    relates group-member as member;
+
+collection-membership sub membership,
+    relates parent-collection as parent,
+    relates collection-member as member;
+
+set-membership sub membership,
+    relates parent-set as parent,
+    relates set-member as member;
+
+ownership sub relation,
+    abstract,
+    relates owned,
+    relates owner;
+
+group-ownership sub ownership,
+    relates owned-group as owned,
+    relates group-owner as owner,
+    owns ownership-type;
+
+object-ownership sub ownership,
+    relates owned-object as owned,
+    relates object-owner as owner,
+    owns ownership-type;
+
+access sub relation,
+    relates accessed-object,
+    relates valid-action,
+    plays permission:permitted-access,
+    plays change-request:requested-change;
+
+permission sub relation,
+    relates permitted-subject,
+    relates permitted-access,
+    owns review-date,
+    owns validity;
+
+change-request sub relation,
+    relates requesting-subject,
+    relates requested-subject,
+    relates requested-change;
+
+segregation-policy sub relation,
+    relates segregated-action,
+    owns policy-name,
+    plays segregation-violation:violated-policy;
+
+segregation-violation sub relation,
+    relates violating-subject,
+    relates violating-object,
+    relates violated-policy;
+
+credential sub attribute,
+    value string;
+
+object-type sub attribute,
+    value string;
+
+action-name sub attribute,
+    value string;
+
+ownership-type sub attribute,
+    value string;
+
+review-date sub attribute,
+    value datetime;
+
+validity sub attribute,
+    value boolean;
+
+policy-name sub attribute,
+    value string;
+
+person sub user,
+    owns full-name,
+    owns email;
+
+business-unit sub user-group,
+    owns name;
+
+user-role sub user-group,
+    owns name;
+
+user-account sub user-group,
+    owns email;
+
+file sub resource,
+    owns path,
+    owns size-kb;
+
+interface sub resource,
+    owns name;
+
+record sub resource,
+    owns number;
+
+directory sub resource-collection,
+    owns path,
+    owns size-kb;
+
+application sub resource-collection,
+    owns name;
+
+database sub resource-collection,
+    owns name;
+
+table sub resource-collection,
+    owns name;
+
+id sub attribute,
+    abstract,
+    value string;
+
+email sub id,
+    value string;
+
+name sub id,
+    value string;
+
+path sub id,
+    value string;
+
+number sub id,
+    value string;
+
+full-name sub attribute,
+    value string;
+
+size-kb sub attribute,
+    value long;
+
+rule transitive-membership:
+    when {
+        ($parent-role: $e1, $member-role: $e2) isa! $membership-type;
+        ($parent-role: $e2, $member-role: $e3) isa! $membership-type;
+        $membership-type sub membership;
+        $membership-type relates $parent-role, relates $member-role;
+    } then {
+        ($parent-role: $e1, $member-role: $e3) isa $membership-type;
+    };
+
+rule transitive-object-access:
+    when {
+        (parent-collection: $c1, collection-member: $c2) isa collection-membership;
+        $c1 isa! $c1-type;
+        $c2 isa! $c2-type;
+        $c1-type is $c2-type;
+        (accessed-object: $c1, valid-action: $a) isa access;
+    } then {
+        (accessed-object: $c2, valid-action: $a) isa access;
+    };
+
+rule transitive-action-access:
+    when {
+        (parent-set: $s, set-member: $a) isa set-membership;
+        (accessed-object: $o, valid-action: $s) isa access;
+    } then {
+        (accessed-object: $o, valid-action: $a) isa access;
+    };
+
+rule transitive-subject-permission:
+    when {
+        (parent-group: $g, group-member: $s) isa group-membership;
+        (permitted-subject: $g, permitted-access: $a) isa permission;
+    } then {
+        (permitted-subject: $s, permitted-access: $a) isa permission;
+    };
+
+rule transitive-object-permission:
+    when {
+        (parent-collection: $c, collection-member: $o) isa collection-membership;
+        $ac-c(accessed-object: $c, valid-action: $a) isa access;
+        $ac-o(accessed-object: $o, valid-action: $a) isa access;
+        (permitted-subject: $s, permitted-access: $ac-c) isa permission;
+    } then {
+        (permitted-subject: $s, permitted-access: $ac-o) isa permission;
+    };
+
+rule transitive-action-permission:
+    when {
+        (parent-set: $s, set-member: $a) isa set-membership;
+        $ac-s(accessed-object: $o, valid-action: $s) isa access;
+        $ac-a(accessed-object: $o, valid-action: $a) isa access;
+        (permitted-subject: $su, permitted-access: $ac-s) isa permission;
+    } then {
+        (permitted-subject: $su, permitted-access: $ac-a) isa permission;
+    };
+
+rule automatic-segregation-violation:
+    when {
+        $s(segregated-action: $a1, segregated-action: $a2) isa segregation-policy;
+        $ac1(accessed-object: $o, valid-action: $a1) isa access;
+        $ac2(accessed-object: $o, valid-action: $a2) isa access;
+        $p1(permitted-subject: $su, permitted-access: $ac1) isa permission;
+        $p2(permitted-subject: $su, permitted-access: $ac2) isa permission;
+    } then {
+        (violating-subject: $su, violating-object: $o, violated-policy: $s) isa segregation-violation;
+    };
+
+rule automatic-permission-invalidity:
+    when {
+        $s(segregated-action: $a1, segregated-action: $a2) isa segregation-policy;
+        $ac1(accessed-object: $o, valid-action: $a1) isa access;
+        $ac2(accessed-object: $o, valid-action: $a2) isa access;
+        $p1(permitted-subject: $su, permitted-access: $ac1) isa permission;
+        $p2(permitted-subject: $su, permitted-access: $ac2) isa permission;
+    } then {
+        $p1 has validity false;
+    };
+
+rule automatic-permission-validity:
+    when {
+        $p isa permission;
+        not {
+            $p has validity false;
+        };
+    } then {
+        $p has validity true;
+    };
+
+rule add-view-access:
+    when {
+        $modify isa action, has action-name "modify_file";
+        $view isa action, has action-name "view_file";
+        $ac_modify (accessed-object: $obj, valid-action: $modify) isa access;
+        $ac_view (accessed-object: $obj, valid-action: $view) isa access;
+        (permitted-subject: $subj, permitted-access: $ac_modify) isa permission;
+    } then {
+        (permitted-subject: $subj, permitted-access: $ac_view) isa permission;
+    };

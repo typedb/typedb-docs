@@ -85,7 +85,7 @@ Lastly, the TypeDB schema is completed with [**TypeQL Rules**](../../09-schema/0
 query-time capture of patterns in the data and performing deduction. Rules are the building blocks of automated 
 reasoning in TypeDB.
 
-
+<!--- #todo Add information on rules -->
 
 ## Load the schema
 
@@ -147,7 +147,7 @@ true, false
 
 ### Define
 
-As the name suggests, we use the `define` keyword to develop the [schema](05-schema.md) by adding new concepts:
+As the name suggests, we use the `define` keyword to develop the [schema](02-schema.md) by adding new concepts:
 
 - Entities.
 - Relations.
@@ -184,7 +184,7 @@ Will shorten this page. Especially if we would use a single example with all thr
 
 ##### Define an entity
 
-To define a new [entity](05-schema.md#entity), we use the `sub` keyword followed by `entity` thus creating a subtype of
+To define a new [entity](02-schema.md#entity), we use the `sub` keyword followed by `entity` thus creating a subtype of
 the built-in `entity` type.
 
 <div class="tabs dark">
@@ -992,6 +992,7 @@ TypeQLDefine query = TypeQL.define(
 </div>
 
 ### Undefine
+
 As the name suggests, we use the `undefine` keyword to remove the definition of a type or its association with other
 types from the schema.
 
@@ -1005,6 +1006,7 @@ we use the `commit` command.
 </div>
 
 #### Undefine an attribute's association
+
 We can undefine the association that a type has with an attribute.
 
 <div class="tabs dark">

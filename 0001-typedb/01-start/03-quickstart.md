@@ -8,101 +8,177 @@ toc: false
 
 # Quickstart Guide
 
-## An Overview
+## Overview
 
-In this Quickstart guide, we go through step-by-step process of creating and interacting with a TypeDB database 
-representing an [Identity and Access Management](https://en.wikipedia.org/wiki/Identity_management) solution. This exact
-database with both [schema](../../09-schema/00-overview.md) and [data](../../11-query/00-overview.md) is used in the 
-most examples of the TypeDB documentation.
+This quickstart goes through the step-by-step process of creating and interacting with a TypeDB database designed for an
+[Identity and Access Management](https://en.wikipedia.org/wiki/Identity_management) solution that will be described 
+[later](04-iam-schema.md).
 
+IMPORTANT: 
 <div class="note">
 [Important]
-By completing this quickstart guide you will prepare an environment to successfully execute most requests explored 
-in this documentation.
+We highly recommend completing this guide. Its goal is to prepare an environment for TypeDB exploration and development.
+The resulting database schema and data will be needed for example queries throughout the documentation.
 </div>
 
 ## Prerequisites
 
-To proceed we need TypeDB and TypeDB Studio installed and ready. We can use the following guides to achieve that:
+This quickstart takes advantage of TypeDB Studio, a desktop GUI tool for interacting with TypeDB. To proceed, please 
+install both TypeDB and TypeDB Studio:
 
-1. [Install TypeDB](02-installation.md)
-2. [Install TypeDB Studio](../../02-clients/01-studio.md#download--install)
+- [Install TypeDB](02-installation.md)
+- [Install TypeDB Studio](../../02-clients/01-studio.md#get-typedb-studio)
 
+IMPORTANT:
 <div class="note">
 [Important]
-We need to use compatible versions of TypeDB and TypeDB Studio. Usually that means that version numbers should be 
-similar.
+It’s recommended to use TypeDB and TypeDB Studio of the same version number in order to ensure compatibility.
 </div>
 
-## Prepare a Database
+## Initialize database
 
-### First step: Launch TypeDB server
+### Start TypeDB
 
-Launch the server by issuing command in terminal:
+Run the following command in a terminal:
 
 ```bash
 typedb server
 ```
 
-After startup TypeDB server will show its logo and some technical output, including server version and server address. 
+After showing the TypeDB ASCII logo and logging the bootup completion time, TypeDB is ready for connections.
 
-![TypeDB server launched](../../images/quickstart/quickstart-launched-typedb.png)
+![TypeDB server bootup message](../../images/quickstart/quickstart-launched-typedb.png)
 
-Note or copy the server address, we will connect to this address on the next step. By default, it's `0.0.0.0:1729`.
+### Connect to TypeDB
 
-### Second step: Connect to a TypeDB server
+Launch TypeDB Studio, then:
 
-Launch TypeDB Studio and at the top right-hand corner click `Connect to TypeDB` button.
-
-![Connection Manager Disconnected](../../images/studio/connection-interface-disconnected.png)
-
-At the Address field insert or type in the address of the TypeDB server. Press connect.
+1. Click the [**Connect to TypeDB**] button (right side of the toolbar)
+2. Enter localhost:1729 in the [**Address**] field
+3. Click the [**Connect**] button (the dialog will close after a successful connection)
 
 ![Connection Manager Connected](../../images/studio/connection-interface-connected.png)
 
-Now TypeDB Studio is connected to your TypeDB instance.
+### Create a project
 
-### Third step: Open Project Folder
-
-Studio will store queries you save in a project folder on you local machine, so you don't need to rewrite all your
-queries each time you open Studio. To open a project folder click on the Open Folder icon in the top left corner or the
-Open Project button in the Project section on the left (under the database icon).
+TypeDB Studio projects allow you to organize and save related queries for future reuse.
 
 ![Project Interface empty](../../images/quickstart/studio-projects-empty.png)
 
-This is the project view. Here we see files and folders inside the selected Project folder. Unsaved queries saved in a
-hidden folder inside Project folder.
+To create a new project:
+
+1. Click the [**Open Project**] button in the [**Project**] panel (upper left)
+2. Choose a directory for the project files
+3. Click the [**Open**] button
+
+The [**Project**] panel will now display the root directory and a nested hidden directory for unsaved files.
 
 ![Project Interface With Open Folder](../../images/studio/project-interface-created-folder.png)
 
-### Fourth step: Create a database
+### Create a database
 
-Let's create a new database. To do so, go to the databases manager by clicking on the database icon in the top left-hand 
-corner. It is located directly left from the "Select Database" dropdown menu.
+1. Click the database icon to open the [**Manage Databases**] dialog (left side of the toolbar)
 
-![Database Manager Empty](../../images/studio/studio-database.png)
+   ![Database Manager Empty](../../images/studio/studio-database.png)
 
-In the database manager window locate single line input field at the bottom, type in `iam` and hit "Create".
+2. Enter `iam` in the text field, and click the [**Create**] button next to it
+3. Click the [**Close**] button in the bottom right
 
-![Database Manager With Phone Calls Database](../../images/studio/databases-interface-iam-database.png)
+   ![Database Manager With Phone Calls Database](../../images/studio/databases-interface-iam-database.png)
 
-Now we've successfully created a database named `iam`!
+4. Select `iam` from the database dropdown (next to the database icon)
 
-### Fifth step: Prepare a Schema
+### Prepare a TQL file
 
-A [TypeDB schema](../02-dev/05-schema.md) is the blueprint of a TypeDB database.
-We use [TypeQL](../../11-query) to define all concepts of a data model.
+A [TypeDB schema](../02-dev/02-schema.md) contains entity, relation, and attribute type definitions that make up the 
+data model, as well as rules which may be applied to it – all of which are expressed in [TypeQL](../../11-query), 
+TypeDB’s query language.
 
-To load a schema we can use one of the files in a project folder, or we can create one. To create a new request/file 
-just click the plus (`+`) icon immediately right from the Project folder section tite. In the newly opened text editor 
-on the right paste the following code of the IAM schema.
+To prepare the schema definition file:
+
+1. Click the `+` icon in the top left corner of the [**Text-editor**] panel (directly right from the [**Project**] 
+   panel)
+2. Copy the TypeQL statements below into the [**Text-editor**] panel
+3. Click the save icon on the left side of the toolbar
+4. Enter `iam-schema.tql` in the [**Save As**] field
+5. Click the [**Save**] button
 
 ```typeql
+#
+# Copyright (C) 2022 Vaticle
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
 define
+
+company sub entity,
+    owns name,
+    plays company-membership:parent-company;
+
+company-membership sub relation,
+    relates parent-company,
+    relates company-member;
+
+parent-company sub attribute,
+    value string;
+
+#rule attribute-parent-company:
+#    when {
+#        (parent-company: $c, company-member: $t) isa company-membership;
+#        $c has name $c-name;
+#        ?name-value = $c-name
+#    } then {
+#        $t has parent-company ?name-value;
+#    };
+
+rule attribute-parent-company:
+    when {
+        (parent-company: $c, company-member: $t) isa company-membership;
+        $c has name $c-name;
+        $pc isa parent-company;
+        $c-name = $pc;
+    } then {
+        $t has $pc;
+    };
+
+root-collection sub attribute,
+    value boolean;
+
+rule automatic-member-collection:
+    when {
+        $c isa resource-collection;
+        (collection-member: $c) isa collection-membership;
+    } then {
+        $c has root-collection false;
+    };
+
+rule automatic-root-collection:
+    when {
+        $c isa resource-collection;
+        not {
+            $c has root-collection false;
+        };
+    } then {
+        $c has root-collection true;
+    };
 
 subject sub entity,
     abstract,
+    owns parent-company,
     owns credential,
+    plays company-membership:company-member,
     plays group-membership:group-member,
     plays group-ownership:group-owner,
     plays object-ownership:object-owner,
@@ -116,12 +192,14 @@ user sub subject,
 
 user-group sub subject,
     abstract,
-    plays group-membership:user-group,
+    plays group-membership:parent-group,
     plays group-ownership:owned-group;
 
 object sub entity,
     abstract,
+    owns parent-company,
     owns object-type,
+    plays company-membership:company-member,
     plays collection-membership:collection-member,
     plays object-ownership:owned-object,
     plays access:accessed-object,
@@ -132,12 +210,15 @@ resource sub object,
 
 resource-collection sub object,
     abstract,
-    plays collection-membership:resource-collection;
+    owns root-collection,
+    plays collection-membership:parent-collection;
 
 action sub entity,
     abstract,
-    owns name,
+    owns parent-company,
+    owns action-name,
     owns object-type,
+    plays company-membership:company-member,
     plays set-membership:set-member,
     plays access:valid-action,
     plays segregation-policy:segregated-action;
@@ -145,28 +226,38 @@ action sub entity,
 operation sub action;
 
 operation-set sub action,
-    plays set-membership:operation-set;
+    plays set-membership:parent-set;
 
-group-membership sub relation,
-    relates user-group,
-    relates group-member;
+membership sub relation,
+    abstract,
+    relates parent,
+    relates member;
 
-collection-membership sub relation,
-    relates resource-collection,
-    relates collection-member;
+group-membership sub membership,
+    relates parent-group as parent,
+    relates group-member as member;
 
-set-membership sub relation,
-    relates operation-set,
-    relates set-member;
+collection-membership sub membership,
+    relates parent-collection as parent,
+    relates collection-member as member;
 
-group-ownership sub relation,
-    relates owned-group,
-    relates group-owner,
+set-membership sub membership,
+    relates parent-set as parent,
+    relates set-member as member;
+
+ownership sub relation,
+    abstract,
+    relates owned,
+    relates owner;
+
+group-ownership sub ownership,
+    relates owned-group as owned,
+    relates group-owner as owner,
     owns ownership-type;
 
-object-ownership sub relation,
-    relates owned-object,
-    relates object-owner,
+object-ownership sub ownership,
+    relates owned-object as owned,
+    relates object-owner as owner,
     owns ownership-type;
 
 access sub relation,
@@ -188,6 +279,7 @@ change-request sub relation,
 
 segregation-policy sub relation,
     relates segregated-action,
+    owns policy-name,
     plays segregation-violation:violated-policy;
 
 segregation-violation sub relation,
@@ -201,7 +293,7 @@ credential sub attribute,
 object-type sub attribute,
     value string;
 
-name sub attribute,
+action-name sub attribute,
     value string;
 
 ownership-type sub attribute,
@@ -213,8 +305,11 @@ review-date sub attribute,
 validity sub attribute,
     value boolean;
 
+policy-name sub attribute,
+    value string;
+
 person sub user,
-    owns name,
+    owns full-name,
     owns email;
 
 business-unit sub user-group,
@@ -227,7 +322,8 @@ user-account sub user-group,
     owns email;
 
 file sub resource,
-    owns filepath;
+    owns path,
+    owns size-kb;
 
 interface sub resource,
     owns name;
@@ -236,7 +332,8 @@ record sub resource,
     owns number;
 
 directory sub resource-collection,
-    owns filepath;
+    owns path,
+    owns size-kb;
 
 application sub resource-collection,
     owns name;
@@ -247,191 +344,326 @@ database sub resource-collection,
 table sub resource-collection,
     owns name;
 
-email sub attribute,
+id sub attribute,
+    abstract,
     value string;
 
-filepath sub attribute,
+email sub id,
     value string;
 
-number sub attribute,
+name sub id,
+    value string;
+
+path sub id,
+    value string;
+
+number sub id,
+    value string;
+
+full-name sub attribute,
+    value string;
+
+size-kb sub attribute,
     value long;
+
+rule transitive-membership:
+    when {
+        ($parent-role: $e1, $member-role: $e2) isa! $membership-type;
+        ($parent-role: $e2, $member-role: $e3) isa! $membership-type;
+        $membership-type sub membership;
+        $membership-type relates $parent-role, relates $member-role;
+    } then {
+        ($parent-role: $e1, $member-role: $e3) isa $membership-type;
+    };
+
+rule transitive-object-access:
+    when {
+        (parent-collection: $c1, collection-member: $c2) isa collection-membership;
+        $c1 isa! $c1-type;
+        $c2 isa! $c2-type;
+        $c1-type is $c2-type;
+        (accessed-object: $c1, valid-action: $a) isa access;
+    } then {
+        (accessed-object: $c2, valid-action: $a) isa access;
+    };
+
+rule transitive-action-access:
+    when {
+        (parent-set: $s, set-member: $a) isa set-membership;
+        (accessed-object: $o, valid-action: $s) isa access;
+    } then {
+        (accessed-object: $o, valid-action: $a) isa access;
+    };
+
+rule transitive-subject-permission:
+    when {
+        (parent-group: $g, group-member: $s) isa group-membership;
+        (permitted-subject: $g, permitted-access: $a) isa permission;
+    } then {
+        (permitted-subject: $s, permitted-access: $a) isa permission;
+    };
+
+rule transitive-object-permission:
+    when {
+        (parent-collection: $c, collection-member: $o) isa collection-membership;
+        $ac-c(accessed-object: $c, valid-action: $a) isa access;
+        $ac-o(accessed-object: $o, valid-action: $a) isa access;
+        (permitted-subject: $s, permitted-access: $ac-c) isa permission;
+    } then {
+        (permitted-subject: $s, permitted-access: $ac-o) isa permission;
+    };
+
+rule transitive-action-permission:
+    when {
+        (parent-set: $s, set-member: $a) isa set-membership;
+        $ac-s(accessed-object: $o, valid-action: $s) isa access;
+        $ac-a(accessed-object: $o, valid-action: $a) isa access;
+        (permitted-subject: $su, permitted-access: $ac-s) isa permission;
+    } then {
+        (permitted-subject: $su, permitted-access: $ac-a) isa permission;
+    };
+
+rule automatic-segregation-violation:
+    when {
+        $s(segregated-action: $a1, segregated-action: $a2) isa segregation-policy;
+        $ac1(accessed-object: $o, valid-action: $a1) isa access;
+        $ac2(accessed-object: $o, valid-action: $a2) isa access;
+        $p1(permitted-subject: $su, permitted-access: $ac1) isa permission;
+        $p2(permitted-subject: $su, permitted-access: $ac2) isa permission;
+    } then {
+        (violating-subject: $su, violating-object: $o, violated-policy: $s) isa segregation-violation;
+    };
+
+rule automatic-permission-invalidity:
+    when {
+        $s(segregated-action: $a1, segregated-action: $a2) isa segregation-policy;
+        $ac1(accessed-object: $o, valid-action: $a1) isa access;
+        $ac2(accessed-object: $o, valid-action: $a2) isa access;
+        $p1(permitted-subject: $su, permitted-access: $ac1) isa permission;
+        $p2(permitted-subject: $su, permitted-access: $ac2) isa permission;
+    } then {
+        $p1 has validity false;
+    };
+
+rule automatic-permission-validity:
+    when {
+        $p isa permission;
+        not {
+            $p has validity false;
+        };
+    } then {
+        $p has validity true;
+    };
     
 rule add-view-access:
     when {
-        $modify isa action, has name "modify_file";
-        $view isa action, has name "view_file";
+        $modify isa action, has action-name "modify_file";
+        $view isa action, has action-name "view_file";
         $ac_modify (accessed-object: $obj, valid-action: $modify) isa access;
         $ac_view (accessed-object: $obj, valid-action: $view) isa access;
         (permitted-subject: $subj, permitted-access: $ac_modify) isa permission;
     } then {
         (permitted-subject: $subj, permitted-access: $ac_view) isa permission;
     };
-    
 ```
 
-### Sixth step: Load a Schema
+### Upload the schema
 
-To load a schema we need to execute our first transaction to the `iam` database. To do that correctly we need to make 
-sure the session and transaction types are set to `schema` and `write` respectively. These can be found to the right of 
-the database selector.
+To execute the TypeQL statements in the opened file and send them as queries:
 
-![Select transaction type](../../images/quickstart/studio-select-transaction-type.png)
+1. Ensure the [**Session type**] (schema / data) switch (next to the database dropdown) is set to `schema`
+2. Ensure the [**Transaction type**] (write / read) switch is set to `write`
 
-Click the green play button to start the transaction. This will validate the request. If validation fails we will not 
-be able to commit.
+   ![Select transaction type](../../images/quickstart/studio-select-transaction-type.png)
 
-Finally, commit transaction by clicking the green tick immediately left from the play button. If we fail to commit the
-changes will not be saved (persisted) in the database.
+3. Click the green “play” button (middle of the toolbar) to start the transaction
+4. Click the “checkmark” button (left of the “play” button) to commit the changes
 
-Now that `iam` database have a schema the Type browser will be populated with all the types from the databases schema.
+The transaction has been committed, and `iam` database now has a schema.
+
+The Types panel will now display the entity, relation, and attribute types within a type hierarchy of the schema.
 
 ![Types browser with IAM schema](../../images/quickstart/studio-types-browser-iam.png)
 
-## Read a schema
+Data can now be inserted.
 
-To read a schema from TypeDB database we need to prepare query. We can use the following request to read full schema:
+## First important queries
+
+### Read the schema
+
+TypeQL can be used to query the schema.
+
+To execute a simple schema query:
+
+1. Ensure the [**Session type**] (schema / data) switch is set to `schema` (next to the database dropdown)
+2. Ensure the [**Transaction type**] (write / read) switch is set to `read`
+3. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel
+4. Copy the TypeQL statement below
+5. Click the green “play” button
 
 ```typeql
-match $s sub thing;
+match $s sub subject;
 ```
 
-To execute that query we need to make sure the session and transaction types are set to `schema` and `read` 
-respectively. Click the green play button to start the transaction. As a result by default we will see a graph 
-visualization of the response data. In this case — graph of IAM schema.
+The above query returns the subject type and its subtypes and displays the results as a graph.
 
 ![IAM schema graph](../../images/quickstart/studio-iam-schema.png)
 
-## Insert data
+### Insert data
 
-Let's insert some test data into our `iam` database to be able to read it later.
+We will insert data the same way we created the schema, by creating a TQL file in our project and executing it.
 
-Prepare the following query to load a miniature test dataset:
+To create the file:
+
+1. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel
+2. Copy the TypeQL statements below
+3. Click the save icon (left side of toolbar)
+4. Enter `iam-data.tql` in the [**Save As**] field
+5. Click the [**Save**] button
 
 ```typeql
 # Subjects
-insert $p isa person, has name "Masako Holley", has email "masako.holley@vaticle.com";  # No access
-insert $p isa person, has name "Pearle Goodman", has email "pearle.goodman@vaticle.com";  # Sales manager
-insert $p isa person, has name "Kevin Morrison", has email "kevin.morrison@vaticle.com";  # Full access
+insert $p isa person, has full-name "Masako Holley", has email "masako.holley@vaticle.com";  # No access
+insert $p isa person, has full-name "Pearle Goodman", has email "pearle.goodman@vaticle.com";  # Sales manager
+insert $p isa person, has full-name "Kevin Morrison", has email "kevin.morrison@vaticle.com";  # Full access
 
 # Objects
-insert $f isa file, has filepath "iopvu.java";
-insert $f isa file, has filepath "zlckt.ts";
-insert $f isa file, has filepath "psukg.java";
-insert $f isa file, has filepath "axidw.java";
-insert $f isa file, has filepath "lzfkn.java";
-insert $f isa file, has filepath "budget_2022-05-01.xlsx";
-insert $f isa file, has filepath "zewhb.java";
-insert $f isa file, has filepath "budget_2021-08-01.xlsx";
-insert $f isa file, has filepath "LICENSE";
-insert $f isa file, has filepath "README.md";
+insert $f isa file, has path "iopvu.java", has size-kb 55;
+insert $f isa file, has path "zlckt.ts", has size-kb 143;
+insert $f isa file, has path "psukg.java", has size-kb 171;
+insert $f isa file, has path "axidw.java", has size-kb 212;
+insert $f isa file, has path "lzfkn.java", has size-kb 70;
+insert $f isa file, has path "budget_2022-05-01.xlsx", has size-kb 758;
+insert $f isa file, has path "zewhb.java";
+insert $f isa file, has path "budget_2021-08-01.xlsx", has size-kb 1705;
+insert $f isa file, has path "LICENSE";
+insert $f isa file, has path "README.md";
 
 # Operations
-insert $o isa operation, has name "modify_file";
-insert $o isa operation, has name "view_file";
+insert $o isa operation, has action-name "modify_file";
+insert $o isa operation, has action-name "view_file";
 
 # Potential access types
-match $ob isa file, has filepath "iopvu.java"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "zlckt.ts"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "psukg.java"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "axidw.java"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "lzfkn.java"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "budget_2022-05-01.xlsx"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "zewhb.java"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "budget_2021-08-01.xlsx"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "LICENSE"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "README.md"; $op isa operation, has name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "iopvu.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zlckt.ts"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "psukg.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "axidw.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "lzfkn.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zewhb.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "LICENSE"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "README.md"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
 
-match $ob isa file, has filepath "iopvu.java"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "zlckt.ts"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "psukg.java"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "axidw.java"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "lzfkn.java"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "budget_2022-05-01.xlsx"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "zewhb.java"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "budget_2021-08-01.xlsx"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "LICENSE"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has filepath "README.md"; $op isa operation, has name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "iopvu.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zlckt.ts"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "psukg.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "axidw.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "lzfkn.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "zewhb.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "LICENSE"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "README.md"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
 
 # Permissions
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "iopvu.java"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "iopvu.java";
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "zlckt.ts"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "zlckt.ts"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "psukg.java"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "psukg.java"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "axidw.java"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "axidw.java"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "lzfkn.java"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "lzfkn.java"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "budget_2022-05-01.xlsx"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "budget_2022-05-01.xlsx"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "zewhb.java"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "zewhb.java"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "budget_2021-08-01.xlsx"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "budget_2021-08-01.xlsx"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "LICENSE"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "LICENSE"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Kevin Morrison"; $o isa object, has filepath "README.md"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "README.md"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Pearle Goodman"; $o isa object, has filepath "budget_2022-05-01.xlsx"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "budget_2022-05-01.xlsx"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Pearle Goodman"; $o isa object, has filepath "zewhb.java"; 
-      $a isa action, has name "view_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "zewhb.java"; 
+      $a isa action, has action-name "view_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Pearle Goodman"; $o isa object, has filepath "budget_2021-08-01.xlsx"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "budget_2021-08-01.xlsx"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Pearle Goodman"; $o isa object, has filepath "LICENSE"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "LICENSE"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
-match $s isa subject, has name "Pearle Goodman"; $o isa object, has filepath "README.md"; 
-      $a isa action, has name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
+match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "README.md"; 
+      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
 insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 ```
 
-Make sure the session and transaction types are set to `data` and `write` respectively. Click the green play button to 
-start the transaction. This will validate the request. If validation fails we will not be able to commit.
+To execute the TypeQL statements copied from code block above:
 
-Finally, commit transaction by clicking the green tick immediately left from the play button. If we fail to commit the
-changes will not be saved (persisted) in the database.
+1. Ensure the [Session type] (schema / data) switch (next to the database dropdown) is set to `data`
+2. Ensure the [Transaction type] (write / read) switch is set to `write`
+3. Click the green “play” button
+4. Click the “checkmark” button
 
-## Read data
+The transaction has been committed, and data can now be queried.
 
-To read data from TypeDB database we need to prepare query. We can use the following request to read all data in a 
-database:
+### Read data
+
+Below is a simple query that returns all person and operation entities (and their names) as well as all file entities 
+(and their paths).
+
+To execute a simple data query:
+
+1. Click the `+` icon right from the [**Project**] panel next to the `iam-data.tql` tab in the Text-editor panel
+2. Ensure the [Session type] (schema / data) switch (next to the database dropdown) is set to `data` 
+3. Ensure the [Transaction type] (write / read) switch is set to `read`
+4. Replace the TypeQL statement in the Text-editor panel with the one below
+5. Click the green “play” button
 
 ```typeql
-match $t isa thing;
+match $p isa person, has full-name $fn; $f isa file, has path $fp;
 ```
 
-To execute that query we need to make sure the session and transaction types are set to `data` and `read`
-respectively. Click the green play button to start the transaction. As a result by default we will see a graph
-visualization of the response data. In this case — all our inserted data from the miniature dataset.
+The above query returns all person entities (instances of person type) with their names as well as all file entities 
+with their paths and displays the results as a graph.
 
 ![IAM data graph](../../images/quickstart/studio-iam-data.png)
 
+## Schema and data
+
+The Quickstart guide above provides a fast and easy way to set up the minimum IAM database environment.
+
+The files that have been used in the guide:
+
+- [iam-schema.tql](../../files/iam/iam-schema.tql) — TypeQL script for the IAM schema definition
+- [iam-data.tql](../../files/iam/iam-data.tql) — TypeQL script to load a sample dataset into the IAM schema
