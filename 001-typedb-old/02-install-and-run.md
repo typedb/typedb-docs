@@ -78,10 +78,9 @@ sudo apt install typedb-all
   
 #### APT conflicts
 
-APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release 
-strategy allows depended upon packages (such as `typedb-bin`) to be released faster than TypeDB itself to facilitate 
-feature upgrades.
-  
+APT will always try to install the latest version of all dependencies that a package depends on. TypeDB's release strategy allows
+depended upon packages (such as `typedb-bin`) to be released slower than TypeDB itself to facilitate feature upgrades. For example, `typedb-all` 2.11 requires `typedb-bin` version 2.9.
+
 In these situations, you will encounter the following type of errors:
 
 ```
