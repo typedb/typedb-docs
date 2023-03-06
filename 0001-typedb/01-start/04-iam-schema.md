@@ -222,6 +222,8 @@ This simple rule illustrates basic inference. More information on rules can be f
 [schema documentation](../02-dev/02-schema.md).
 
 ```typeql
+define
+
 rule add-view-access:
 when {
 $modify isa action, has action-name "modify_file";
