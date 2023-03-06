@@ -10,25 +10,26 @@ toc: false
 
 ## Overview
 
-A TypeDB Client is meant to be used for the purpose of managing and performing operations over 
-databases on the TypeDB server. Client uses `gRPC` to interact with the TypeDB server and provides a more user-friendly 
-interface: API, GUI or CLI.
+A TypeDB Client is meant to be used for the purpose of managing and performing operations over databases on the TypeDB 
+server. Client uses `gRPC` to interact with the TypeDB server and provides a more user-friendly interface: API, GUI or 
+CLI.
 
 Here is a list of existing TypeDB Clients:
 
 - Software tools:
-  - [TypeDB Studio](../../02-clients/01-studio.md)
-  - [TypeDB Console](../../02-clients/02-console.md)
+  - [TypeDB Studio](01-studio.md)
+  - [TypeDB Console](02-console.md)
 - [TypeDB drivers](#typedb-drivers)
   - Native drivers:
-    - [Java](../../02-clients/03-java.md)
-    - [Node.js](../../02-clients/05-nodejs.md)
-    - [Python](../../02-clients/04-python.md)
-  - [Community drivers](../../02-clients/06-other-languages.md)
+    - [Java](03-java.md)
+    - [Node.js](05-nodejs.md)
+    - [Python](04-python.md)
+  - [Community drivers](06-other-languages.md)
 
-If you can't find a suitable client, consider [creating a new client](../../02-clients/07-new-client.md).
+If you can't find a suitable client, consider [creating a new client](07-new-client.md).
 
 ## Architecture
+
 All TypeDB Clients share a common architecture. Simply put, the main components of any TypeDB client are the `client`
 itself, `session` and `transaction`.
 
@@ -36,8 +37,8 @@ itself, `session` and `transaction`.
 
 To work with TypeDB databases we can use one of the standalone software tools:
 
-1. [TypeDB Studio](../../02-clients/01-studio.md) (GUI).
-2. [TypeDB Console](../../02-clients/02-console.md) (CLI).
+1. [TypeDB Studio](01-studio.md) (GUI).
+2. [TypeDB Console](02-console.md) (CLI).
 
 Both tools are complete software products that can be used to connect to TypeDB and interact with it.
 
@@ -52,11 +53,11 @@ some popular programming languages.
 The following TypeDB drivers are officially supported and actively maintained by the Vaticle. They 
 usually support latest TypeDB features and receive continuous bug fixes and improvements.
 
-- [Java](../../02-clients/03-java.md)
-- [Node.js](../../02-clients/05-nodejs.md)
-- [Python](../../02-clients/04-python.md)
+- [Java](03-java.md)
+- [Node.js](05-nodejs.md)
+- [Python](04-python.md)
 
-We also have some community projects for [other Languages](../../02-clients/06-other-languages.md)
+We also have some community projects for [other Languages](06-other-languages.md)
 
 ### What is a TypeDB driver?
 
@@ -64,7 +65,7 @@ A TypeDB driver, is a library which we can use to read from and write to a TypeD
 application that uses a TypeDB database, we would need a TypeDB driver at our application layer to handle the
 database operations.
 
-![Structure of a TypeDB Client Application](../../images/client-api/client-server-comms.png)
+![Structure of a TypeDB Client Application](../images/client-api/client-server-comms.png)
 
 ### Async Queries
 
@@ -73,7 +74,7 @@ processing can take place while waiting for responses to be received. Take advan
 mask network round-trip costs and increases your throughput. For example, if you are performing 10 match queries in a 
 transaction, it's best to send them all to the server _before_ iterating over any of their answers.
 
-Queries that return answers, such as [match](../11-query/01-match-clause.md), return them as Futures, Streams or 
+Queries that return answers, such as [match](../0001-typedb/02-dev/03-match.md), return them as Futures, Streams or 
 Iterators depending on the language. These can then be awaited, or iterated, to retrieve the answers as they are 
 computed.
 
@@ -86,7 +87,7 @@ When a transaction is committed or closed, all of its asynchronous queries are c
 
 Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. These answers, 
 regardless of their type, all contain concepts. We can then use the methods introduced by the 
-[Concept API](../../04-concept-api/00-overview.md) to obtain more information about the retrieved concept and its 
+[Concept API](../0001-typedb/02-dev/08-api.md) to obtain more information about the retrieved concept and its 
 surroundings. Furthermore, the Concept API allows us to traverse the neighbours of a specific concept instance to obtain 
 more insights.
 

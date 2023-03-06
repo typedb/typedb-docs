@@ -1,0 +1,336 @@
+title: "Client"
+methods:
+  - method:
+    common: &method-session
+      title: Create a session for a database
+      description: >
+        Opens a communication tunnel (session) to the given database on the running TypeDB server.
+      accepts: &accepts-session
+        param1: &accepts-session-database
+          name: database
+          description: The name of the database with which the session connects.
+          type: String
+          required: true
+          default: N/A
+        param2: &accepts-session-type
+          name: type
+          description: The type of session to be created (DATA or SCHEMA)
+          type: SessionType
+          required: true
+          default: N/A
+        param3: &accepts-session-options
+          name: options
+          description: Options for the session.
+          type: "[`TypeDBOptions`](#options)"
+          required: false
+          default: N/A
+      returns:
+        - "[Session](#session)"
+    java:
+      <<: *method-session
+      method: client.session(String database, Session.Type sessionType, TypeDBOptions options);
+      param2:
+        <<: *accepts-session-type
+        type: Session.Type
+    javascript:
+      <<: *method-session
+      method: await client.session(database, sessionType, options)
+    python:
+      <<: *method-session
+      method: client.session(database, session_type, options)
+
+  - method:
+    common: &method-databases-all
+      title: Retrieve all databases
+      description: Retrieves all databases running on the TypeDB server.
+    java:
+      <<: *method-databases-all
+      method: client.databases().all();
+      returns:
+        - List<Database>
+    javascript:
+      <<: *method-databases-all
+      method: await client.databases.all();
+      returns:
+        - Array of String
+    python:
+      <<: *method-databases-all
+      method: client.databases().all()
+      returns:
+        - list of Database
+
+  - method:
+    common: &method-databases-contains
+      title: Check if a database exists
+      description: Checks if a database with the given name exists
+      accepts: &accepts-databases-contains
+        param: &accepts-databases-contains-database
+          name: database
+          description: The database name to be checked.
+          type: String
+          required: true
+          default: N/A
+    returns:
+      - boolean
+    java:
+      <<: *method-databases-contains
+      method: client.databases().contains(String database);
+    javascript:
+      <<: *method-databases-contains
+      method: await client.databases.contains(database);
+    python:
+      <<: *method-databases-contains
+      method: client.databases().contains(database)
+
+  - method:
+    common: &method-databases-create
+      title: Create a database
+      description: Create a database with the given name.
+      accepts: &accepts-databases-create
+        param: &accepts-databases-create-database
+          name: database
+          description: The name of the database to be created.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-databases-create
+      method: client.databases().create(String database);
+      returns:
+        - void
+    javascript:
+      <<: *method-databases-create
+      method: await client.databases.create("database name");
+      returns:
+        - void
+    python:
+      <<: *method-databases-create
+      method: client.databases().create("database name")
+      returns:
+        - None
+
+  - method:
+    java:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.databases().get(String database);
+      returns:
+        - Database
+    javascript:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: string
+          required: true
+          default: N/A
+      method: client.databases.get(database);
+      returns:
+        - Database
+    python:
+      title: Retrieve a database
+      description: Retrieve a database with the given name.
+      accepts:
+        param:
+          name: database
+          description: The name of the database to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.databases().get("database name");
+      returns:
+        - Database
+
+  - method:
+    common: &method-databases-delete
+      title: Delete a database
+      description: Deletes a database with the given name.
+      accepts: &accepts-databases-delete
+        param: &accepts-databases-delete-database
+          name: database
+          description: The name of the database to be deleted.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-databases-delete
+      method: client.databases().get(String database).delete();
+      returns:
+        - void
+    javascript:
+      <<: *method-databases-delete
+      method: await (await client.databases.get("database name")).delete();
+      returns:
+        - void
+    python:
+      <<: *method-databases-delete
+      method: client.databases().get("database name").delete()
+      returns:
+        - None
+
+  - method:
+    common: &method-users-all
+      title: Retrieve all users
+      description: Retrieves all users running on the TypeDB server.
+    java:
+      <<: *method-users-all
+      method: client.users().all();
+      returns:
+        - List<user>
+    javascript:
+      <<: *method-users-all
+      method: await client.users.all();
+      returns:
+        - Array of String
+    python:
+      <<: *method-users-all
+      method: client.users().all()
+      returns:
+        - list of User
+
+  - method:
+    common: &method-users-contains
+      title: Check if a user exists
+      description: Checks if a user with the given name exists
+      accepts: &accepts-users-contains
+        param: &accepts-users-contains-user
+          name: user
+          description: The user name to be checked.
+          type: String
+          required: true
+          default: N/A
+    returns:
+      - boolean
+    java:
+      <<: *method-users-contains
+      method: client.users().contains(String user);
+    javascript:
+      <<: *method-users-contains
+      method: await client.users.contains(user);
+    python:
+      <<: *method-users-contains
+      method: client.users().contains(user)
+
+  - method:
+    common: &method-users-create
+      title: Create a user
+      description: Create a user with the given name.
+      accepts: &accepts-users-create
+        param: &accepts-users-create-user
+          name: user
+          description: The name of the user to be created.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-users-create
+      method: client.users().create(String user);
+      returns:
+        - void
+    javascript:
+      <<: *method-users-create
+      method: await client.users.create("user name");
+      returns:
+        - void
+    python:
+      <<: *method-users-create
+      method: client.users().create("user name")
+      returns:
+        - None
+
+  - method:
+    java:
+      title: Retrieve a user
+      description: Retrieve a user with the given name.
+      accepts:
+        param:
+          name: user
+          description: The name of the user to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.users().get(String user);
+      returns:
+        - user
+    javascript:
+      title: Retrieve a user
+      description: Retrieve a user with the given name.
+      accepts:
+        param:
+          name: user
+          description: The name of the user to retrieve.
+          type: string
+          required: true
+          default: N/A
+      method: client.users.get(String user);
+      returns:
+        - user
+    python:
+      title: Retrieve a user
+      description: Retrieve a user with the given name.
+      accepts:
+        param:
+          name: user
+          description: The name of the user to retrieve.
+          type: String
+          required: true
+          default: N/A
+      method: client.users().get("user name");
+      returns:
+        - user
+
+  - method:
+    common: &method-users-delete
+      title: Delete a user
+      description: Deletes a user with the given name.
+      accepts: &accepts-users-delete
+        param: &accepts-users-delete-user
+          name: user
+          description: The name of the user to be deleted.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-users-delete
+      method: client.users().get(String user).delete();
+      returns:
+        - void
+    javascript:
+      <<: *method-users-delete
+      method: await (await client.users.get("user name")).delete();
+      returns:
+        - void
+    python:
+      <<: *method-users-delete
+      method: client.users().get("user name").delete()
+      returns:
+        - None
+
+  - method:
+    common: &method-close
+      title: Close a client
+      description: Closes the client. Before instantiating a new client, the client that's currently open should first be closed.
+    java:
+      <<: *method-close
+      method: client.close();
+      returns:
+        - void
+    javascript:
+      <<: *method-close
+      method: client.close();
+      returns:
+        - void
+    python:
+      <<: *method-close
+      method: client.close()
+      returns:
+        - None

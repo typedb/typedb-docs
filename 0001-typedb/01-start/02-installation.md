@@ -303,4 +303,4 @@ Press Ctrl-C in the terminal running TypeDB.
 ## After installation
 
 Having installed or downloaded TypeDB, we can now interact with the [TypeDB Studio](../../02-clients/01-studio.md), 
-[TypeDB Console](../../02-clients/02-console.md) or one of the [TypeDB drivers](../02-dev/04-clients.md#typedb-drivers).
+[TypeDB Console](../../02-clients/02-console.md) or one of the [TypeDB drivers](../../02-clients/00-clients.md).

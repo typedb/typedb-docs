@@ -23,7 +23,7 @@ Summary: Community-maintained TypeDB client drivers
 
 Community client drivers are not maintained by Vaticle; they are built and maintained fully by the community.
 
-Don't see your language listed? Check out the [official client drivers](../03-client-api/00-overview.md), or find
+Don't see your language listed? Check out the [official client drivers](00-clients.md), or find
 out how to [create a new TypeDB client](07-new-client.md).
 
 ## Contributing

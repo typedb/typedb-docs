@@ -3,7 +3,7 @@ pageTitle: Client Java
 keywords: typedb, client, java
 longTailKeywords: typedb java client, typedb client java, client java, java client
 Summary: API Reference of TypeDB Client Java.
-templatePath: 03-client-api/references/
+templatePath: 02-clients/references/
 ---
 
 ## Installation

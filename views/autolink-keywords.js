@@ -15,7 +15,7 @@
  */
 
 codeKeywordsToLink = {
-    "commonBaseUrl": "/docs/client-api/{client}",
+    "commonBaseUrl": "/docs/clients/{client}",
     "keywords": [
         // order matters for functionality. keywords that need to turn into a link first. example: undefine before define
         {

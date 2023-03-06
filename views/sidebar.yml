@@ -50,6 +50,9 @@ chapters:
             title: Reading data
             url: read
           -
+            title: Inferring data
+            url: infer
+          -
             title: Response interpretation
             url: response
           -
@@ -63,40 +66,14 @@ chapters:
             title: Overview
             url: overview
           -
-            title: Install & Run
-            url: install-and-run
-          -
             title: Run modes
             url: modes
-      -
-        title: High Availability
-        baseUrl: /docs/typedb/ha/
-        pages:
           -
-            title: Defining Schema
-            url: schema
+            title: High Availability
+            url: ha
           -
-            title: Writing Data
-            url: writing
-          -
-            title: Reading Schema & Data
-            url: reading
-          -
-            title: Concurrency & Scaling
-            url: scaling
-      -
-        title: Security
-        baseUrl: /docs/typedb/security/
-        pages:
-          -
-            title: Managing Databases
-            url: managing
-          -
-            title: Migrating a Database
-            url: migrating
-          -
-            title: Configuring a Server
-            url: upgrading
+            title: Security
+            url: security
       -
         title: Best Practices
         baseUrl: /docs/typedb/security/
@@ -107,9 +84,9 @@ chapters:
           -
             title: Migrating a Database
             url: migrating
-          -
-            title: Configuring a Server
-            url: upgrading
+#          -
+#            title: Configuring a Server
+#            url: upgrading
           -
             title: Upgrading a Server
             url: upgrading

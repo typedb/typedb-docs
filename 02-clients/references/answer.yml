@@ -1,0 +1,535 @@
+
+title: "Answer"
+description:
+  common: &common-description >
+    The type of answers returned by execution of a query depends on the type of query executed.
+    The table below illustrates the answer types mapped to query types.
+  java: *common-description
+  javascript: *common-description
+  python: *common-description
+mappings:
+  -
+    query: match
+    answer: "Stream/Iterator of [ConceptMap](#conceptmap)"
+  -
+    query: "match aggregate (count/min/max/sum/mean/std)"
+    answer: "[QueryFuture](#queryfuture) of [Numeric](#numeric)"
+  -
+    query: match group
+    answer: "Stream/Iterator of [ConceptMapGroup](#conceptmapgroup)"
+  -
+    query: match group aggregate
+    answer: "Stream/Iterator of [NumericGroup](#numericgroup)"
+  -
+    query: insert
+    answer: "Stream/Iterator of [ConceptMap](#conceptmap)"
+  -
+    query: delete
+    answer: "[QueryFuture](#queryfuture)"
+  -
+    query: update
+    answer: "Stream/Iterator of [ConceptMap](#conceptmap)"
+  -
+    query: explain
+    answer: "Stream/Iterator of [Explanation](#explanation)"
+  -
+    query: define
+    answer: "[QueryFuture](#queryfuture)"
+  -
+    query: undefine
+    answer: "[QueryFuture](#queryfuture)"
+
+types:
+  - type1:
+    title: ConceptMap
+    methods:
+      - method:
+        common: &method-conceptmap-map
+          title: Retrieve a mapping of variables to concepts
+        java:
+          <<: *method-conceptmap-map
+          method: conceptMap.map();
+          description: Produces a Map where keys are variable names and values are [`concept`](../concept-api/concept)s.
+          returns:
+            - "Map<String, Concept>"
+        javascript:
+          <<: *method-conceptmap-map
+          method: conceptMap.map;
+          description: Produces a Map where keys are variable names and values are [`concept`](../concept-api/concept)s.
+          returns:
+            - "`Map<String, Concept>`"
+        python:
+          <<: *method-conceptmap-map
+          method: concept_map.map()
+          description: Produces a dictionary where keys are variable names and values are [`concept`](../concept-api/concept)s.
+          returns:
+            - "Dictionary of String to [`Concept`](../concept-api/concept?tab=python#concept-methods)"
+
+      - method:
+        common: &method-conceptmap-concepts
+          title: Retrieve concepts
+        java:
+          <<: *method-conceptmap-concepts
+          method: conceptMap.concepts();
+          description: Return a collection of all the [`concept`](../concept-api/concept)s in this ConceptMap.
+          returns:
+            - "Collection<Concept>"
+        javascript:
+          <<: *method-conceptmap-concepts
+          method: conceptMap.concepts();
+          description: Return an iterator of all the [`concept`](../concept-api/concept)s in this ConceptMap.
+          returns:
+            - "Iterator of Concept"
+        python:
+          <<: *method-conceptmap-concepts
+          method: concept_map.concepts()
+          description: Return an iterable collection of all the [`concept`](../concept-api/concept)s in this ConceptMap.
+          returns:
+            - "Iterable of Concept"
+
+      - method:
+        common: &method-conceptmap-get
+          title: Retrieve a concept corresponding to a specific variable
+          description: Retrieve a concept for a given variable name
+          accepts:
+            param1:
+              name: var
+              description: The string representation of a variable
+              type: String
+        java:
+          <<: *method-conceptmap-get
+          method: conceptMap.get(String var)
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=java#concept-methods)"
+        python:
+          <<: *method-conceptmap-get
+          method: conceptMap.get(var)
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=python#concept-methods)"
+        javascript:
+          <<: *method-conceptmap-get
+          method: concept_map.get(var)
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
+
+      - method:
+        common: &method-conceptmap-explainables
+          title: Retrieve explainable concepts
+          description: Gets the [Explainables](#explainables) object for this ConceptMap, exposing which of the Concepts in this ConceptMap are explainable
+        java:
+          <<: *method-conceptmap-explainables
+          method: conceptMap.explainables()
+          returns:
+            - "[`ConceptMap.Explainables`](#explainables)"
+        python:
+          <<: *method-conceptmap-explainables
+          method: concept_map.explainables()
+          returns:
+            - "[`ConceptMap.Explainables`](#explainables)"
+        javascript:
+          <<: *method-conceptmap-explainables
+          method: conceptMap.explainables
+          returns:
+            - "[`ConceptMap.Explainables`](#explainables)"
+
+  - type2:
+    title: Numeric
+    methods:
+      - method:
+        java:
+          title: Retrieve numeric value of an aggregate answer as a long
+          method: numeric.asLong();
+          returns:
+            - long
+      - method:
+        java:
+          title: Retrieve numeric value of an aggregate answer as a double
+          method: numeric.asDouble();
+          returns:
+            - double
+      - method:
+        java:
+          title: Retrieve numeric value of an aggregate answer
+          method: numeric.asNumber();
+          returns:
+            - Number
+      - method:
+        python:
+          title: Retrieve numeric value of an aggregate answer as an integer
+          method: numeric.as_int();
+          returns:
+            - int
+      - method:
+        python:
+          title: Retrieve numeric value of an aggregate answer as a float
+          method: numeric.as_float();
+          returns:
+            - float
+      - method:
+        javascript:
+          title: Retrieve numeric value of an aggregate answer
+          method: numeric.asNumber();
+          returns:
+            - number
+      - method:
+        java:
+          title: Checks if the type of an aggregate answer is a long
+          method: numeric.isLong();
+          returns:
+            - boolean
+      - method:
+        java:
+          title: Checks if the type of an aggregate answer is a double
+          method: numeric.isDouble();
+          returns:
+            - boolean
+      - method:
+        python:
+          title: Checks if the type of an aggregate answer is an integer
+          method: numeric.is_int();
+          returns:
+            - boolean
+      - method:
+        python:
+          title: Checks if the type of an aggregate answer is a float
+          method: numeric.is_float();
+          returns:
+            - boolean
+      - method:
+        javascript:
+          title: Checks if the type of an aggregate answer is a number
+          method: numeric.isNumber();
+          returns:
+            - boolean
+      - method:
+        common: &method-numeric-isnan
+          title: Checks if the type of an aggregate answer is not a number
+          returns:
+            - boolean
+        java:
+          <<: *method-numeric-isnan
+          method: conceptMapGroup.isNaN();
+        javascript:
+          <<: *method-numeric-isnan
+          method: conceptMapGroup.isNaN();
+        python:
+          <<: *method-numeric-isnan
+          method: concept_map_group.is_NaN()
+
+  - type3:
+    title: ConceptMapGroup
+    methods:
+      - method:
+        common: &method-conceptmapgroup-owner
+          title: Retrieve the concept that is the group owner
+        java:
+          <<: *method-conceptmapgroup-owner
+          method: conceptMapGroup.owner();
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=java#concept-methods)"
+        javascript:
+          <<: *method-conceptmapgroup-owner
+          method: conceptMapGroup.owner;
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
+        python:
+          <<: *method-conceptmapgroup-owner
+          method: concept_map_group.owner()
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=python#concept-methods)"
+
+      - method:
+        common: &method-conceptmapgroup-conceptmaps
+          title: Retrieve the ConceptMaps of the group
+        java:
+          <<: *method-conceptmapgroup-conceptmaps
+          method: conceptMapGroup.conceptMaps();
+          returns:
+            - List<[`ConceptMap`](#conceptmap)>
+        javascript:
+          <<: *method-conceptmapgroup-conceptmaps
+          method: conceptMapGroup.conceptMaps;
+          returns:
+            - Array of [`ConceptMap`](#conceptmap)s
+        python:
+          <<: *method-conceptmapgroup-conceptmaps
+          method: concept_map_group.concept_maps();
+          returns:
+            - List of [`ConceptMap`](#conceptmap)s
+
+  - type4:
+    title: NumericGroup
+    methods:
+      - method:
+        common: &method-numericgroup-owner
+          title: Retrieve the concept that is the group owner
+        java:
+          <<: *method-numericgroup-owner
+          method: numericGroup.owner();
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=java#concept-methods)"
+        javascript:
+          <<: *method-numericgroup-owner
+          method: numericGroup.owner;
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
+        python:
+          <<: *method-numericgroup-owner
+          method: numeric_group.owner()
+          returns:
+            - "[`Concept`](../concept-api/concept?tab=python#concept-methods)"
+
+      - method:
+        common: &method-numericgroup-numeric
+          title: Retrieve the Numeric answer of the group
+        java:
+          <<: *method-numericgroup-numeric
+          method: numericGroup.numeric();
+          returns:
+            - "[Numeric](#numeric)"
+        javascript:
+          <<: *method-numericgroup-numeric
+          method: numericGroup.numeric;
+          returns:
+            - "[Numeric](#numeric)"
+        python:
+          <<: *method-numericgroup-numeric
+          method: numeric_group.numeric()
+          returns:
+            - "[Numeric](#numeric)"
+
+  - type5:
+    title: Explainables
+    methods:
+      - method:
+        common: &method-explainables-relation
+          title: Retrieve explainable relation
+          description: Retrieves the explainable relation with the given variable name.
+          accepts:
+            param1:
+              name: variable
+              description: The string representation of a variable
+              type: String
+          returns:
+            - "[`ConceptMap.Explainable`](#explainable)"
+        java:
+          <<: *method-explainables-relation
+          method: conceptMap.explainables().relation(String variable);
+        javascript:
+          <<: *method-explainables-relation
+          method: conceptMap.explainables.relation(variable);
+        python:
+          <<: *method-explainables-relation
+          method: concept_map.explainables().relation(variable);
+
+      - method:
+        common: &method-explainables-attribute
+          title: Retrieve explainable attribute
+          description: Retrieves the explainable attribute with the given variable name.
+          accepts:
+            param1:
+              name: variable
+              description: The string representation of a variable
+              type: String
+          returns:
+            - "[`ConceptMap.Explainable`](#explainable)"
+        java:
+          <<: *method-explainables-attribute
+          method: conceptMap.explainables().attribute(String variable);
+        javascript:
+          <<: *method-explainables-attribute
+          method: conceptMap.explainables.attribute(variable);
+        python:
+          <<: *method-explainables-attribute
+          method: concept_map.explainables().attribute(variable);
+
+      - method:
+        common: &method-explainables-ownership
+          title: Retrieve explainable ownership
+          description: Retrieves the explainable attribute ownership with the pair of (owner, attribute) variable names.
+          accepts:
+            param1:
+              name: variable
+              description: The string representation of a variable
+              type: String
+          returns:
+            - "[`ConceptMap.Explainable`](#explainable)"
+        java:
+          <<: *method-explainables-ownership
+          method: conceptMap.explainables().ownership(String ownerVar, String attributeVar);
+        javascript:
+          <<: *method-explainables-ownership
+          method: conceptMap.explainables.ownership(ownerVar, attributeVar);
+        python:
+          <<: *method-explainables-ownership
+          method: concept_map.explainables().ownership(owner_var, attribute_var);
+
+      - method:
+        common: &method-explainables-relations
+          title: Retrieve explainable relations
+          description: Retrieves all of this ConceptMap's explainable relations.
+        java:
+          <<: *method-explainables-relations
+          method: conceptMap.explainables().relations();
+          returns:
+            - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
+        javascript:
+          <<: *method-explainables-relations
+          method: conceptMap.explainables.relations;
+          returns:
+            - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
+        python:
+          <<: *method-explainables-relations
+          method: concept_map.explainables().relations();
+          returns:
+            - Dictionary of String to [`ConceptMap.Explainable`](#explainable)
+
+      - method:
+        common: &method-explainables-attributes
+          title: Retrieve explainable attributes
+          description: Retrieves all of this ConceptMap's explainable attributes.
+        java:
+          <<: *method-explainables-attributes
+          method: conceptMap.explainables().attributes();
+          returns:
+            - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
+        javascript:
+          <<: *method-explainables-attributes
+          method: conceptMap.explainables.attributes;
+          returns:
+            - "Map<String, [`ConceptMap.Explainable`](#explainable)>"
+        python:
+          <<: *method-explainables-attributes
+          method: concept_map.explainables().attributes();
+          returns:
+            - Dictionary of String to [`ConceptMap.Explainable`](#explainable)
+
+      - method:
+        common: &method-explainables-ownerships
+          title: Retrieve explainable ownerships
+          description: Retrieves all of this ConceptMap's explainable attribute ownerships.
+        java:
+          <<: *method-explainables-ownerships
+          method: conceptMap.explainables().ownerships();
+          returns:
+            - "Map<Pair<String, String>, [`ConceptMap.Explainable`](#explainable)>"
+        javascript:
+          <<: *method-explainables-ownerships
+          method: conceptMap.explainables.ownerships;
+          returns:
+            - "Map<[String, String], [`ConceptMap.Explainable`](#explainable)>"
+        python:
+          <<: *method-explainables-ownerships
+          method: concept_map.explainables().ownerships();
+          returns:
+            - Dictionary of (String, String) to [`ConceptMap.Explainable`](#explainable)
+
+  - type6:
+    title: Explainable
+    methods:
+      - method:
+        common: &method-explainable-conjunction
+          title: Retrieve conjunction
+          description: Retrieves the subquery of the original query that is actually being explained.
+          returns:
+            - String
+        java:
+          <<: *method-explainable-conjunction
+          method: explainable.conjunction()
+        javascript:
+          <<: *method-explainable-conjunction
+          method: explainable.conjunction
+        python:
+          <<: *method-explainable-conjunction
+          method: explainable.conjunction()
+
+      - method:
+        common: &method-explainable-id
+          title: Retrieve ID
+          description: Retrieves the unique ID that identifies this Explainable.
+        java:
+          <<: *method-explainable-id
+          method: explainable.id()
+          returns:
+            - long
+        javascript:
+          <<: *method-explainable-id
+          method: explainable.id
+          returns:
+            - number
+        python:
+          <<: *method-explainable-id
+          method: explainable.explainable_id()
+          returns:
+            - int
+
+  - type7:
+    title: Explanation
+    methods:
+      - method:
+        common: &method-explanation-rule
+          title: Retrieve the rule
+          description: Retrieves the Rule for this Explanation.
+          returns:
+            - Rule
+        java:
+          <<: *method-explanation-rule
+          method: explanation.rule();
+        javascript:
+          <<: *method-explanation-rule
+          method: explanation.rule;
+        python:
+          <<: *method-explanation-rule
+          method: explanation.rule()
+
+      - method:
+        common: &method-explanation-conclusion
+          title: Retrieve the conclusion
+          description: Retrieves the Conclusion for this Explanation.
+          returns:
+            - ConceptMap
+        java:
+          <<: *method-explanation-conclusion
+          method: explanation.conclusion()
+        javascript:
+          <<: *method-explanation-conclusion
+          method: explanation.conclusion
+        python:
+          <<: *method-explanation-conclusion
+          method: explanation.conclusion()
+
+      - method:
+        common: &method-explanation-condition
+          title: Retrieve the condition
+          description: Retrieves the Condition for this Explanation.
+          returns:
+            - ConceptMap
+        java:
+          <<: *method-explanation-condition
+          method: explanation.condition()
+        javascript:
+          <<: *method-explanation-condition
+          method: explanation.condition
+        python:
+          <<: *method-explanation-condition
+          method: explanation.condition()
+
+      - method:
+        common: &method-explanation-varmap
+          title: Retrieve the variable mapping
+          description: Retrieves the mapping between rule variables and query variables for this Explanation.
+        java:
+          <<: *method-explanation-varmap
+          method: explanation.variableMapping()
+          returns:
+            - "Map<String, Set<String>>"
+        python:
+          <<: *method-explanation-varmap
+          method: explanation.variable_mapping()
+          returns:
+            - "Map<String, Set<String>>"
+        javascript:
+          <<: *method-explanation-varmap
+          method: explanation.variableMapping
+          returns:
+            - "Map<String, Set<String>>"

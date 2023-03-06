@@ -108,18 +108,21 @@ class LinksTest(unittest.TestCase):
                 "../query/insert-query": "11-query/03-insert-query.md",
                 "../query/delete-query": "11-query/04-delete-query.md",
                 "../query/aggregate-query": "11-query/06-aggregate-query.md",
+                "studio": "01-studio.md",
+                "console": "02-console.md",
+                "clients": "00-clients.md",
             }
             client_page_mapping = {
-                "java": "01-java.md",
-                "python": "02-python.md",
-                "javascript": "03-nodejs.md",
+                "java": "03-java.md",
+                "python": "04-python.md",
+                "javascript": "05-nodejs.md",
             }
 
             with open(autolink_keywords_path, encoding='utf-8') as autolink_keywords_file:
                 content = autolink_keywords_file.read().split("codeKeywordsToLink = ")[1]
                 content = re.sub(r'\/\/\s.*', '', content)  # removes comments
                 autolink_keywords = ast.literal_eval(content)  # converts string to dict
-                common_base_url = "03-client-api/{client}"
+                common_base_url = "02-clients/{client}"
 
                 for keyword in autolink_keywords["keywords"]:
                     anchor = keyword["anchor"].replace("#", "")

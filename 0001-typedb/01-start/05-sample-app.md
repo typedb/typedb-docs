@@ -168,7 +168,7 @@ compact format and `.log` ending.
 TypeQL query used #1:
 
 ```typeql
-"insert $f isa file, has path '" + path + "';"
+insert $f isa file, has path '" + path + "';
 ```
 
 Simple explanation: we insert `file` entity that has an attribute `path` with the value we generated before.
@@ -176,14 +176,12 @@ Simple explanation: we insert `file` entity that has an attribute `path` with th
 TypeQL query used #2:
 
 ```typeql
-match $f isa file, has path '" + path + "'; $vav isa action, has action-name 'view_file'; insert ($vav, $f) isa 
-access;
+match $f isa file, has path '" + path + "'; $vav isa action, has action-name 'view_file'; insert ($vav, $f) isa access;
 ```
 
 Simple explanation: we seek `file` entity that has an attribute `path` with the value we generated before.
 And we find an `action`, that has a `action-name` attribute with the value of `view_file`. Then we insert an `access` 
-relation
-inbetween the `file` and the `action`.
+relation inbetween the `file` and the `action`.
 
 <div class="note">
 [Note]

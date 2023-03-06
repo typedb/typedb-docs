@@ -113,7 +113,7 @@ See the [TypeDB Studio documentation](../../02-clients/01-studio.md#write-a-sche
 ### With TypeDB drivers (programmatically)
 
 Defining a schema can also be done programmatically (at runtime) using one of the 
-[TypeDB Clients](04-clients.md).
+[TypeDB Clients](../../02-clients/00-clients.md).
 
 ## Reserved Keywords
 

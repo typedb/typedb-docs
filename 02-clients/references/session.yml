@@ -1,0 +1,126 @@
+title: "Session"
+methods:
+  - method:
+    common: &method-transaction
+      title: Open a transaction
+      description: Opens a transaction to perform read or write queries on the database connected to the session.
+      accepts:
+        param1:
+          name: transactionType
+          type: Transaction.Type
+          description: The type of transaction to be created (READ or WRITE).
+          required: true
+        param2:
+          name: options
+          description: Options for the session.
+          type: "[`TypeDBOptions`](#options)"
+          required: false
+          default: N/A
+      returns:
+        - "[Transaction](#transaction)"
+    java:
+      <<: *method-transaction
+      method: session.transaction(Transaction.Type transactionType, TypeDBOptions options);
+    python:
+      <<: *method-transaction
+      method: session.transaction(transaction_type, options)
+  - method:
+    javascript:
+      title: Open a transaction
+      description: Opens a transaction to perform read or write queries on the database connected to the session.
+      accepts:
+        param1:
+          name: transactionType
+          type: Transaction.Type
+          description: The type of transaction to be created (READ or WRITE).
+          required: true
+        param2:
+          name: options
+          description: Options for the session.
+          type: "[`TypeDBOptions`](#options)"
+          required: false
+          default: N/A
+      returns:
+        - "[Transaction](#transaction)"
+      method: await session.transaction(transactionType, options);
+  - method:
+    common: &method-isopen
+      title: Check if a session is open
+      description: |
+        Checks whether a session is presently open.
+    java:
+      <<: *method-isopen
+      method: session.isOpen();
+      returns:
+        - boolean
+    javascript:
+      <<: *method-isopen
+      method: await session.isOpen();
+      returns:
+        - boolean
+    python:
+      <<: *method-isopen
+      method: session.is_open()
+      returns:
+        - boolean
+  - method:
+    common: &method-type
+      title: Check the session's type
+      description: |
+        Checks the current session's type (SCHEMA or DATA)
+    java:
+      <<: *method-type
+      method: session.type();
+      returns:
+        - Session.Type
+    javascript:
+      <<: *method-type
+      method: session.type;
+      returns:
+        - SessionType
+    python:
+      <<: *method-type
+      method: session.session_type()
+      returns:
+        - SessionType
+  - method:
+    common: &method-database
+      title: Check the session's database
+      description: |
+        Returns a string indicating what database the session is operating over.
+    java:
+      <<: *method-database
+      method: session.database();
+      returns:
+        - String
+    javascript:
+      <<: *method-database
+      method: session.database();
+      returns:
+        - String
+    python:
+      <<: *method-database
+      method: session.database()
+      returns:
+        - String
+  - method:
+    common: &method-close
+      title: Close a session
+      description: |
+        Closes the session.
+        **Before opening a new session, the session currently open should first be closed.**
+    java:
+      <<: *method-close
+      method: session.close();
+      returns:
+        - void
+    javascript:
+      <<: *method-close
+      method: await session.close();
+      returns:
+        - void
+    python:
+      <<: *method-close
+      method: session.close()
+      returns:
+        - None

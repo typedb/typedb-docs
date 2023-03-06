@@ -90,20 +90,32 @@ Use American.
   - h2 (`##`)
   - h3 (`###`)
   - h4 (`####`)
-- Use Title Case.
+- Use sentence case.
 - `####` always comes after a `###` which always comes after a `##`.
 
 **Verbs and Pronouns**
 
 - With rare exceptions, the consistent tense used should be the present tense. (eg: _It returns_ as opposed to _It will return_).
 - In most cases, the consistent pronoun is `we`. In special cases, `you` may better convey the message. Never use `I`.
-- When speaking of the characteristics or capabilities of TypeDB and TypeQL or any of their components, the subject pronoun, if used, should be within the terminology, as opposed to `we`. (eg: _Graql_ has three types of statements, as opposed to _We_ have three types of statements)
+- When speaking of the characteristics or capabilities of TypeDB and TypeQL or any of their components, the subject 
+  pronoun, if used, should be within the terminology, as opposed to `we`. (eg: _TypeQL_ has three types of statements, 
+  as opposed to _We_ have three types of statements)
 
 **Lists (Bullet points)**
-- When the list item completes the unfinished sentence before the list, end the list item with a period and start each item in lowercase.
-- When the concatenation of list items construct one long sentence, end each list items with a comma with the last one ending with a period and start each item in lowercase.
-- In cases other than the two described above, start the item with a capital letter and do not end the item with a full stop or a comma.
-- Have an introductory sentence before the list, when possible. Always end the introductory sentence with a `:`.
+
+- Have an introductory sentence before the list, when possible. End the introductory sentence with a colon (`:`).
+- List elements should be similar to each other as much as possible. That includes using same words, word order, 
+  punctuation, elements format, etc.
+- When the list item completes the unfinished sentence before the list, end the list item with a period and start each
+  item in lowercase.
+- When the concatenation of list items construct one long sentence, end each list items with a comma or a semicolon 
+  with the last one ending with a period and start each item in lowercase.
+- If the item consists of a single word, don't add end punctuation.
+- If the item is a short phrase that doesn't include a verb, don't add end punctuation.
+- If the item is entirely in code font, don't add end punctuation.
+- If the item is entirely link text or a document title, don't add end punctuation.
+- In cases other than the two described above, start the item with a capital letter and end the item with a full 
+  stop.
 
 **Footer Notes and Captions**
 - When using a phrase, do not end the line with a period (eg: `Computation of shortest path in Workbase`).

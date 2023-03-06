@@ -826,7 +826,7 @@ $pe2($p2, $a) isa permission;
 The easiest way to send a query to the TypeDB server is to use TypeDB Studio to 
 [do so](../../02-clients/01-studio.md#write--read-data).
 
-Alternatively, you can use any other [client](../02-dev/04-clients.md) to handle server connection, sessions, 
+Alternatively, you can use any other [client](../../02-clients/00-clients.md) to handle server connection, sessions, 
 transactions, etc.
 
 Among the list of clients there are TypeDB drivers for different programming languages. Sending a query in one of those

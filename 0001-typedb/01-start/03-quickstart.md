@@ -14,7 +14,6 @@ This quickstart goes through the step-by-step process of creating and interactin
 [Identity and Access Management](https://en.wikipedia.org/wiki/Identity_management) solution that will be described 
 [later](04-iam-schema.md).
 
-IMPORTANT: 
 <div class="note">
 [Important]
 We highly recommend completing this guide. Its goal is to prepare an environment for TypeDB exploration and development.
