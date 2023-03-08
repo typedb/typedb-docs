@@ -8,15 +8,22 @@ toc: false
 
 # Sample Application
 
-The following examples are all connect to the `iam` database located at the `0.0.0.0:1729` address. Please make sure 
-you have TypeDB server running with the `iam` database created and schema and data loaded. 
-Use the [Quickstart guide](03-quickstart.md) to prepare such a database.
+The following sample app implementations are all designed to connect to the [IAM](04-iam-schema.md) database located at 
+the TypeDB server with `0.0.0.0:1729` address. Please make sure you have TypeDB server running with the `iam` database 
+created and both **schema** and **data** loaded. Use the [Installation guide](02-installation.md) to prepare the server 
+and [Quickstart guide](03-quickstart.md) to prepare such a database.
+
+Sample application have the following implementations:
+
+- [Python](#python-implementation)
+- [Java](#java-implementation)
 
 ## Python implementation
 
 The following Python script executes 4 simple requests to the `iam` database. 
 
-You can save it locally and run it with the [Python](https://www.python.org/downloads/) v.3.9+.
+You can save it locally and run it with the [Python](https://www.python.org/downloads/) v.3.9+. Make sure to install 
+[typedb python driver](../../02-clients/04-python.md) with pip.
 
 Use the source code below or the [explanation](#explanation) section to explore 4 requests performed in the sample app.
 
@@ -135,7 +142,7 @@ Without even specifying what kind of action `$va` it should be. From all that va
 <div class="note">
 [Note]
 Note that users and files don't have a singular relation that connects them directly. According to the `iam`
-[schema](03-quickstart.md#fifth-step--prepare-a-schema) we need two relations to connect them: `permission` and 
+[schema](04-iam-schema.md) we need two relations to connect them: `permission` and 
 `access`. Both relations must be used to make a decision of whether a user have access to a file.
 </div>
 
@@ -158,7 +165,7 @@ starting from #6.
 <div class="note">
 [Note]
 Note that Kevin have been assigned only `modify_file` access and the `view_file` access being inferred by a 
-[rule](../02-dev/05-schema.md#rules). To use inference in this query we modify TypeDB options and send modified 
+[rule](../02-dev/02-schema.md#rules). To use inference in this query we modify TypeDB options and send modified 
 set of options to the transaction call.
 </div>
 
@@ -175,7 +182,7 @@ send a request.
 At first, we generate a new value for `filepath` Python variable, consisting of `logs/`prefix, current date and time in
 compact format and `.log` ending.
 
-TypeQL query used #1:
+TypeQL query #1:
 
 <!-- test-ignore -->
 ```typeql
@@ -184,7 +191,7 @@ insert $f isa file, has path '" + path + "';
 
 Simple explanation: we insert `file` entity that has an attribute `path` with the value we generated before.
 
-TypeQL query used #2:
+TypeQL query #2:
 
 <!-- test-ignore -->
 ```typeql
@@ -204,7 +211,7 @@ are done we commit the write transaction. It is important not to forget to commi
 
 ## Java implementation
 
-The following Java code can be built into a sample application that executes 4 simple requests to the `iam` database. 
+The following Java code can be built into a sample application that sends 4 simple requests to the `iam` database. 
 
 You can save it locally, build with maven and run it with the Java v.19+.
 
@@ -449,7 +456,7 @@ Without even specifying what kind of action `$va` it should be. From all that va
 <div class="note">
 [Note]
 Note that users and files don't have a singular relation that connects them directly. According to the `iam`
-[schema](03-quickstart.md#fifth-step--prepare-a-schema) we need two relations to connect them: `permission` and 
+[schema](04-iam-schema.md) we need two relations to connect them: `permission` and 
 `access`. Both relations must be used to make a decision of whether a user have access to a file.
 </div>
 
@@ -476,7 +483,7 @@ starting from #6.
 <div class="note">
 [Note]
 Note that Kevin have been assigned only `modify_file` access and the `view_file` access being inferred by a 
-[rule](../02-dev/05-schema.md#rules). To use inference in this query we modify TypeDB options and send modified 
+[rule](../02-dev/02-schema.md#rules). To use inference in this query we modify TypeDB options and send modified 
 set of options to the transaction call.
 </div>
 
@@ -493,7 +500,7 @@ send a request.
 At first, we generate a new value for `filepath` Java string variable, consisting of `logs/`prefix, current date and 
 time in compact format and `.log` ending.
 
-TypeQL query builder clause #1 used:
+TypeQL query builder clause for query #1:
 
 <!-- test-ignore -->
 ```java
@@ -502,7 +509,7 @@ TypeQLInsert insertQuery = TypeQL.insert(var("f").isa("file").has("path", filepa
 
 Simple explanation: we insert `file` entity that has an attribute `path` with the value we generated before.
 
-TypeQL query builder clause #2 used:
+TypeQL query builder clause for query #2:
 
 <!-- test-ignore -->
 ```java
