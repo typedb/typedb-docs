@@ -51,7 +51,7 @@ at the constructs of a basic match clause.
 
 - The variable is followed by a comma-separated list of properties (`P1`, `P2`, `P3`) describing the concepts the 
   variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type person. The 
-  matched instances are expected to own an attribute of type `full-name` with the value of `Bob`. Additionally, 
+  matched instances are expected to own an attribute of type `full-name` with the value of `Masako Holley`. Additionally, 
   we require the concepts to own an attribute of type `email` with any value. We assign an extra `$email` variable to 
   those emails owned by the `$p`. Consequently, after performing a match on this statement, we should obtain pairs of 
   concepts that satisfy our statement.
