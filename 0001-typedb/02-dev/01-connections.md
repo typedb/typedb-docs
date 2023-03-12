@@ -266,4 +266,4 @@ Successful write transactions are written to the write-ahead-log before returnin
 transaction is not successful, all changes are rolled back.
 
 For cluster installations of TypeDB Cloud transaction acknowledgement is sent to the client after majority of replicas 
-replicated the transaction results. See [Replication](../03-admin/03-ha.md) for details.
+replicated the transaction results. See [Replication](../03-admin/04-ha.md) for details.
