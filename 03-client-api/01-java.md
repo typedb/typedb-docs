@@ -55,7 +55,6 @@ Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and 
 a [database](../06-management/01-database.md).
 
 <!-- test-example TypeDBQuickstartA.java -->
-
 ```java
 package com.vaticle.doc.examples;
 
@@ -81,7 +80,6 @@ public class TypeDBQuickstartA {
 Create transactions to use for reading and writing data.
 
 <!-- test-example TypeDBQuickstartB.java -->
-
 ```java
 package com.vaticle.doc.examples;
 
@@ -116,7 +114,6 @@ public class TypeDBQuickstartB {
 Running basic retrieval and insertion queries.
 
 <!-- test-example TypeDBQuickstartC.java -->
-
 ```java
 package com.vaticle.doc.examples;
 
