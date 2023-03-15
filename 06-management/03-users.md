@@ -31,3 +31,8 @@ user create <username> <password>
 ```
 user delete <username>
 ```
+
+### Reset password of user
+```
+user password <username>
+```
