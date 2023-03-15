@@ -35,7 +35,6 @@ following.
 In the interpreter or in your source, import everything from `typedb.client`.
 
 <!-- test-example social_network_python_client_a.py -->
-
 ```python
 from typedb.client import *
 ```
@@ -43,7 +42,6 @@ from typedb.client import *
 Instantiate a client and open a session.
 
 <!-- test-example social_network_python_client_b.py -->
-
 ```python
 from typedb.client import *
 
@@ -58,7 +56,6 @@ with TypeDB.core_client("localhost:1729") as client:
 Create transactions to use for reading and writing data.
 
 <!-- test-example social_network_python_client_c.py -->
-
 ```python
 from typedb.client import *
 
@@ -81,7 +78,6 @@ with TypeDB.core_client("localhost:1729") as client:
 Running basic retrieval and insertion queries.
 
 <!-- test-example social_network_python_client_d.py -->
-
 ```python
 from typedb.client import *
 
