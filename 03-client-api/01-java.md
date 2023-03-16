@@ -14,18 +14,15 @@ To use this client, you need a compatible version of TypeDB Server running. Plea
 [Compatibility Table](#version-compatibility) to check what version do you need, depending on the TypeDB server version
 being used.
 
-Hereinafter maven expected to be used as build system for the Java project.
+Maven is expected to be used as a build system for the Java project.
 
-### Add a repository with TypeDB Java client to maven
+### Add a repository with TypeDB Java client to Maven
 
-Add the code below to the `pom.xml` file in your maven project.
+Add the code below to the `pom.xml` file in your Maven project.
 
 <div class="note">
 [Important]
-Make sure to use the version number obtained in the previous section instead of the `{version}` placeholder. 
-
-Otherwise, you might have the following error: `Could not find artifact com.vaticle.typedb:typedb-client:pom:{version} 
-in repo.vaticle.com`.
+Be sure to replace the `{version}` placeholder tag with the version of Client Java you want to install.
 </div>
 
 ```xml
