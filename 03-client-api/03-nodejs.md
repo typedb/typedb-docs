@@ -26,7 +26,6 @@ First make sure that the [TypeDB server](/docs/running-typedb/install-and-run#st
 In your source, require `typedb-client`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
-
 ```javascript
 const {TypeDB} = require("typedb-client");
 ```
@@ -34,7 +33,6 @@ const {TypeDB} = require("typedb-client");
 Instantiate a client and open a session.
 
 <!-- test-example socialNetworkNodejsClientB.js -->
-
 ```javascript
 const {TypeDB, SessionType} = require("typedb-client");
 
@@ -53,7 +51,6 @@ openSession("social_network");
 Create transactions to use for reading and writing data.
 
 <!-- test-example socialNetworkNodejsClientC.js -->
-
 ```javascript
 const {TypeDB, SessionType, TransactionType} = require("typedb-client");
 
@@ -82,7 +79,6 @@ createTransactions("social_network");
 Running basic retrieval and insertion queries.
 
 <!-- test-example socialNetworkNodejsClientD.js -->
-
 ```javascript
 const {TypeDB, SessionType, TransactionType} = require("typedb-client");
 
