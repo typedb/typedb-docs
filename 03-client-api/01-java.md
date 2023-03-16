@@ -14,8 +14,6 @@ To use this client, you need a compatible version of TypeDB Server running. Plea
 [Compatibility Table](#version-compatibility) to check what version do you need, depending on the TypeDB server version
 being used.
 
-Maven is expected to be used as a build system for the Java project.
-
 ### Add a repository with TypeDB Java client to Maven
 
 Add the code below to the `pom.xml` file in your Maven project.
