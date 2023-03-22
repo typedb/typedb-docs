@@ -10,7 +10,7 @@ toc: false
 
 ## Clients
 
-TypeDB server accepts remote connections from a number of [TypeDB clients](../../02-clients/00-clients.md) via 
+TypeDB server accepts remote connections from a number of [TypeDB Clients](../../02-clients/00-clients.md) via 
 [gRPC](https://en.wikipedia.org/wiki/GRPC) protocol.
 
 Once connected, TypeDB clients can manage [databases](#databases) and [sessions](#sessions).
@@ -21,21 +21,28 @@ It’s recommended to instantiate a single client per application.
 </div>
 
 <div class="tabs dark">
+
 [tab:TypeDB Console]
 
-TypeDB Console
+```bash
+typedb console --server=0.0.0.0:1729 
+```
 
 [tab:end]
 
 [tab:Java]
 
-Java
+```java
+TypeDBClient client = TypeDB.coreClient("0.0.0.0:1729");
+```
 
 [tab:end]
 
 [tab:Node.js]
 
-Node.js
+```javascript
+client = TypeDB.coreClient("localhost:1729");
+```
 
 [tab:end]
 
@@ -62,21 +69,64 @@ necessary (e.g., to support more applications). The **best practice** is to keep
 </div>
 
 <div class="tabs dark">
+
 [tab:TypeDB Console]
 
-TypeDB Console
+```
+// create database
+database create test-db
+
+// get database schema
+database schema test-db
+
+// get all databases
+database list
+
+// delete database
+database delete test-db
+```
 
 [tab:end]
 
 [tab:Java]
 
-Java
+```java
+// create database
+client.databases().create("test-db");
 
+// get database schema
+client.databases().get("test-db").schema();
+
+// get all databases
+client.databases().all();
+
+// check if database exists
+client.databases().contains("test-db");
+
+// delete database
+client.databases().get("test-db").delete();
+```
+        
 [tab:end]
 
 [tab:Node.js]
 
-Node.js
+```javascript
+// create database
+client.databases().create("test-db");
+
+// get database schema
+client.databases().get("test-db").schema();
+
+// get all databases
+client.databases().all()
+
+// check if database exists
+client.databases().contains("test-db")
+
+// delete database
+client.databases().get("test-db").delete();
+```
 
 [tab:end]
 
@@ -84,19 +134,19 @@ Node.js
 
 ```python
 // create database
-client.databases().create(‘test-db’)
+client.databases().create("test-db")
 
-// get database
-client.databases().get(‘test-db’)
+// get database schema
+client.databases().get("test-db").schema()
 
 // get all databases
 client.databases().all()
 
 // check if database exists
-client.databases().contains(‘test-db’)
+client.databases().contains("test-db")
 
 // delete database
-client.databases().get(‘test-db’).delete()
+client.databases().get("test-db").delete()
 ```
 
 [tab:end]
@@ -112,7 +162,7 @@ There are two types of sessions:
 | Session type | Read data | Write data | Read schema  | Write schema |
 |--------------|-----------|------------|--------------|--------------|
 | DATA         | Yes       | Yes        | Yes          | Yes          |
-| SCHEMA       |           | No         | Yes          | No           |
+| SCHEMA       | Yes       | No         | Yes          | No           |
 
 TypeDB clients should read and write data in DATA sessions.
 
@@ -128,28 +178,35 @@ to the session types.
 Once a session has been opened, clients can open and close transactions to read and write a database’s schema or data.
 
 <div class="tabs dark">
+
 [tab:TypeDB Console]
 
-TypeDB Console
+```
+transaction iam data read
+```
 
 [tab:end]
 
 [tab:Java]
 
-Java
+```java
+TypeDBSession session = client.session("iam", TypeDBSession.Type.DATA)
+```
 
 [tab:end]
 
 [tab:Node.js]
 
-Node.js
+```javascript
+session = await client.session("iam", SessionType.DATA);
+```
 
 [tab:end]
 
 [tab:Python]
 
 ```python
-client.session(‘iam’, SessionType.SCHEMA) as session:
+client.session("iam", SessionType.DATA) as session:
 ```
 
 [tab:end]
@@ -175,21 +232,51 @@ There are two types of transactions:
 In addition, transactions must be explicit — clients must open and close transactions via an API.
 
 <div class="tabs dark">
+
 [tab:TypeDB Console]
 
-TypeDB Console
+```
+// start transaction
+transaction iam data write
+
+insert $x isa person;
+$x has full-name "Kevin";
+$x has email "Kevin@vaticle.com";
+
+// commit changes
+commit
+```
 
 [tab:end]
 
 [tab:Java]
 
-Java
+```java
+// start transaction
+TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE);
+
+Transaction.query().insert(insertQuery1);
+Transaction.query().insert(insertQuery2);
+
+Transaction.query().insert(insertQueryN);
+// commit changes
+Transaction.commit();
+```
 
 [tab:end]
 
 [tab:Node.js]
 
-Node.js
+```javascript
+// start transaction
+const transaction = await session.transaction(TransactionType.WRITE);
+transaction.query().insert(InsertQuery1);
+transaction.query().insert(InsertQuery2);
+
+transaction.query().insert(InsertQueryN);
+// commit changes
+transaction.commit();
+```
 
 [tab:end]
 
@@ -199,12 +286,12 @@ Node.js
 // start transaction
 with session.transaction(TransactionType.WRITE) as transaction:
     
-    transaction.query().insert(typeql_insert_query_1)
-    transaction.query().insert(typeql_insert_query_2)
-    …
-    transaction.query().insert(typeql_insert_query_N)
+    transaction.query().insert(insert_query1)
+    transaction.query().insert(insert_query2)
 
-// commit transaction
+    transaction.query().insert(insert_queryN)
+
+// commit changes
     transaction.commit()
 ```
 [tab:end]
@@ -254,7 +341,7 @@ one transaction can read data while another is writing it.
 
 ### Durability
 
-TypeDB writes transactions to a write-ahead-log upon commit, ensuring they can be recovered if an unexpected failure 
+TypeDB writes transactions to a write-ahead log upon commit, ensuring they can be recovered if an unexpected failure 
 (e.g., power outage) occurs before the data is modified.
 
 <div class="note">
@@ -262,7 +349,7 @@ TypeDB writes transactions to a write-ahead-log upon commit, ensuring they can b
 TypeDB durability guarantees do not apply when storage devices become corrupt or damaged.
 </div>
 
-Successful write transactions are written to the write-ahead-log before returning a response to the client. If a 
+Successful write transactions are written to the write-ahead log before returning a response to the client. If a 
 transaction is not successful, all changes are rolled back.
 
 For cluster installations of TypeDB Cloud transaction acknowledgement is sent to the client after majority of replicas 
