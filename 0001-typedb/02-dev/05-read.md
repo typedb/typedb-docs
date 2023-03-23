@@ -270,8 +270,8 @@ match
 get $x-n, $act-n, $o-fp; group $o-fp; count;
 ```
 
-This query returns the total count of person instances that has full-name, any access to an object with path and with 
-a valid action for every group (grouped by the path of the object).
+This query returns the total count of `person` instances that have `full-name` as well as any `access` to an `object` 
+with `path` and with a `valid action` for every group (grouped by the `path` of the `object`).
 
 <div class="note">
 [Note]

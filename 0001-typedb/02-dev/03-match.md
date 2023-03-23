@@ -27,13 +27,13 @@ A `match` clause is optional for Insert queries, but required for Get, Delete an
 
 <div class="note">
 [Note]
-While the `match` clause can be used to read types in a schema, the define and undefine clauses must be used to write 
-them.
+While the `match` clause can be used to read types from a schema, the [define](02-schema.md#define) and 
+[undefine](02-schema.md#undefine) clauses must be used to write them.
 </div>
 
 <div class="note">
 [Important]
-If a `match` clause is not combined with a `get`, `insert` or `delete` clause, TypeDB will assume it is a get query and 
+If a `match` clause is **not** combined with a `get`, `insert` or `delete` clause, TypeDB will assume it is a get query and 
 add an implicit `get` clause to return all variables defined in the `match` clause.
 </div>
 
@@ -42,19 +42,20 @@ add an implicit `get` clause to return all variables defined in the `match` clau
 At the core of each query sits a query pattern that describes a subset of data of our particular interest. Here we 
 examine the structure of query patterns closer. In general, patterns can be thought of as different arrangements of 
 statement collections. TypeQL statements constitute the smallest building blocks of queries. Let’s have a close look 
-at the constructs of a basic match clause.
+at the constructs of a typical statement.
 
 ![Statement structure](../../images/query/statement-structure.png)
 
-- A TypeQL variable is prefixed with a dollar sign `$`. Most statements start with a variable (`V`) providing a concept
-  reference. For more information on variables please see Variables section.
+- A TypeQL variable is prefixed with a dollar sign `$`. Most statements start with a variable (`V`) providing a 
+  reference to a concept or multiple concepts. For more information on variables please see [Variables](#variables) 
+  section.
 
-- The variable is followed by a comma-separated list of properties (`P1`, `P2`, `P3`) describing the concepts the 
-  variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type person. The 
+- The variable is followed by a comma-separated list of constraints (`p1`, `p2`, `p3`) describing the concepts the 
+  variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type `person`. The 
   matched instances are expected to own an attribute of type `full-name` with the value of `Masako Holley`. Additionally, 
   we require the concepts to own an attribute of type `email` with any value. We assign an extra `$email` variable to 
-  those emails owned by the `$p`. Consequently, after performing a match on this statement, we should obtain pairs of 
-  concepts that satisfy our statement.
+  those emails owned by the `$p`. Consequently, after performing a match on this statement, we should obtain all 
+  sets of concepts that satisfy our statement.
 
 - We mark the end of the statement with a semicolon (`;`).
 
@@ -63,7 +64,7 @@ at the constructs of a basic match clause.
 Variables can:
 
 - reference both data and schema concepts.
-- reference all (zero, one or many) concepts that comply with requirements described in a query patterns.
+- reference all (zero, one or many) concepts that comply with constraints described in a query patterns.
 
 <div class="note">
 [Important]
@@ -75,13 +76,13 @@ finding an optimal way to retrieve it.
 </div>
 
 There is some freedom in forming and composing our statements. For example, as shown below, we could write our single
-statement with three properties:
+statement with three constraints:
 
 ```typeql
 $p isa person, has full-name 'Masako Holley', has email $email;
 ```
 
-However, you can also use separate patterns to achieve the same result:
+However, we can also use separate patterns to achieve the same result:
 
 ```typeql
 $p isa person;
@@ -89,13 +90,13 @@ $p has full-name 'Masako Holley';
 $p has email $email;
 ```
 
-Lastly, to create a viable query from that statement, we need to add match keyword at the beginning. After that it is 
-ready to be sent to the TypeDB server in a data read transaction to a database with a corresponding schema.
+Lastly, to create a viable query from that statement, we need to add the keyword `match` at the beginning. After that 
+it is ready to be sent to the TypeDB server in a data read transaction to a database with an appropriate schema.
 
 <div class="note">
 [Note]
-If you want to run these and other examples from our documentation, make sure you have completed the Quickstart guide 
-to set up the database with relevant schema and dataset.
+If you want to run these and other examples from our documentation, make sure you have completed the 
+[Quickstart guide](../01-start/03-quickstart.md) to set up the database with relevant schema and dataset.
 </div>
 
 ```typeql
@@ -107,7 +108,7 @@ match
 
 <div class="note">
 [Note]
-All indentation and line breaking is optional in TypeQL. You can even try using a single line or a complete random 
+All indentation and line breaking is optional in TypeQL. You can even try using a single line or a completely random 
 indentation for all your queries, but that will make it harder to read them (for humans).
 </div>
 
@@ -153,9 +154,10 @@ By arranging statements together, we can express more complex pattern scenarios 
 - Conjunction: a set of patterns where to satisfy a match, all patterns must be matched. We use conjunctions by default 
   just by separating the partaking patterns with semicolons `;`.
 - Disjunction: a set of patterns where to satisfy a match, at least one pattern must be matched. We form
-  disjunctions by enclosing the partaking patterns within curly braces {} and interleaving them with the or keyword.
-- Negation: defines a conjunctive pattern that explicitly defines conditions not to be met. We form negations by 
-  defining the pattern of interest inside a not {}; block.
+  disjunctions by enclosing the partaking patterns within curly braces `{}` and joining them together with the 
+  keyword `or`.
+- Negation: a conjunctive pattern that explicitly defines conditions that must not to be met. We form negations by 
+  defining the pattern of interest inside a `not {};` block.
 
 ## Match clause
 
@@ -172,6 +174,17 @@ Use a `subtype` pattern with type `thing` to find all types defined in a schema.
 ```typeql
 match $t sub thing;
 ```
+
+<div class="note">
+[Warning]
+The `thing` built-in type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
+built-in type instead. To produce the same result as the above example, use the following query:
+
+```typeql
+match $t sub $a;
+```
+
+</div>
 
 ##### Specific type or nested subtype
 
@@ -216,7 +229,7 @@ The above query returns the `object` type, and none of its nested subtypes (dire
 
 ##### Players of a specific role
 
-Use a `players types in a relation` pattern to find all types that place a specific role in a specific relation type.
+Use a "players types in a relation" pattern to find all types that place a specific role in a specific relation type.
 
 ```typeql
 match $p plays permission:permitted-subject;
@@ -259,7 +272,18 @@ match $t isa thing;
 
 <div class="note">
 [Note]
-All entity types, relation types, attribute types and roles subtype the `thing` type.
+All `entity` types, `relation` types, `attribute` types and `roles` subtype the `thing` type.
+</div>
+
+<div class="note">
+[Warning]
+The `thing` built-in type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
+built-in type instead. To produce the same result as the above example, use the following query:
+
+```typeql
+match $t isa $a; {$a type entity;} or {$a type relation;} or {$a type attribute;};
+```
+
 </div>
 
 #### Entity matching

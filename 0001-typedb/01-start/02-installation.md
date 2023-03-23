@@ -146,7 +146,7 @@ Press Ctrl-C in the terminal running TypeDB.
    TypeDB supports the [OpenJDK](https://jdk.java.net) and
    [Oracle JDK](https://www.oracle.com/java/technologies/downloads/).
 
-4. Check the latest version number for typedb-server and it’s dependencies:
+4. Check the latest version number for typedb-server and its dependencies:
 
    ```bash
    apt show typedb-server
