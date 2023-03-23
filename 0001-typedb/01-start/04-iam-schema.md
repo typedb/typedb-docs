@@ -221,6 +221,7 @@ There are multiple rules in the schema that can be used in different situations 
 This simple rule illustrates basic inference. More information on rules can be found in the 
 [schema documentation](../02-dev/02-schema.md).
 
+<!-- test-ignore -->
 ```typeql
 define
 

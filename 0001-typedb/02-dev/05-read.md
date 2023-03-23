@@ -50,6 +50,7 @@ Aggregation functions must be at the end of the query and do not require a GET c
 
 A `get` clause is used to specify which variables to include in the results. If omitted, every variable is included.
 
+<!-- test-ignore -->
 ```typeql
 match 
   $p isa person, has name "Kevin Morrison", has email $e;
@@ -59,6 +60,7 @@ get $e;
 The example above matches person (`$p`) with a `full-name` attribute value of `Kevin Morrison`, and `email` attribute 
 (`$e`). The `get` clause then filters the results to receive only the `email` (`$e`) attributes.
 
+<!-- test-ignore -->
 ```typeql
 match
   $pe ($x, $y) isa permission;
@@ -89,6 +91,7 @@ three variables.
 
 Use the `limit` keyword followed by the maximum number of results to limit the number of results returned.
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person; 
 get $p;
@@ -103,6 +106,7 @@ This query returns only one single (and random) instance of type `person`. Consi
 Use the `sort` keyword followed by a variable, to sort the answers by the variable. A second argument is optional 
 and determines the sorting order: `asc` (ascending) or `desc` (descending). By default it’s ascending.
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person, has full-name $n; 
 get $n; 
@@ -116,6 +120,7 @@ with a comma separator.
 
 For example:
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person, has full-name $n, has email $e; 
 get $n, $e; 
@@ -131,6 +136,7 @@ Use the `offset` keyword followed by the number to offset the answers by. This i
 keyword to return a desired range of the answers. Don’t forget to [sort](#sort-the-answers) the results to guarantee 
 they will stay in the same order while you move through them.
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person, has full-name $n; 
 get $n; 
@@ -150,6 +156,7 @@ instructions and examples for a specific language/framework: [Java](../../02-cli
 We use the `group` function, optionally followed by another aggregate function, to group the answers by the 
 specified matched variable.
 
+<!-- test-ignore -->
 ```typeql
 match
   $pe ($x, $y) isa permission;
@@ -171,6 +178,7 @@ ascending order, limited by only first 3 results and grouped by `path` variable 
 The following or similar result can be obtained by running the query above without inference on the TypeDB server with 
 the IAM schema and dataset from the [Quickstart guide](../01-start/03-quickstart.md).
 
+<!-- test-ignore -->
 ```typeql
 "LICENSE" isa path => {
     {
@@ -220,6 +228,7 @@ Aggregation uses data returned by the query to perform the calculation.
 
 For example:
 
+<!-- test-ignore -->
 ```typeql 
 match $f isa file, has size-kb $s; get $s;
 ```
@@ -234,6 +243,7 @@ attribute = 10, we will get only one of this value.
 if we want to prevent that we should return not only attributes, but also the entities that own the attributes in the 
 `get` clause. For example:
 
+<!-- test-ignore -->
 ```typeql 
 match $f isa file, has size-kb $s; get $f, $s;
 ```
@@ -247,6 +257,7 @@ will be returned this way).
 
 Use the count keyword to get the number of the specified matched variable.
 
+<!-- test-ignore -->
 ```typeql 
 match
   $o isa object, has path $fp;
@@ -260,6 +271,7 @@ will show the number of unique results. This is also the case, when no `get` cla
 all matched variables are included.
 </div>
 
+<!-- test-ignore -->
 ```typeql 
 match
   $pe ($x, $y) isa permission;
@@ -282,6 +294,7 @@ The `group` clause should go before the aggregation function.
 
 Use the `sum` keyword to get the sum of the specified `long` or `double` values of matched variable.
 
+<!-- test-ignore -->
 ```typeql 
 match
   $f isa file, has size-kb $s;
@@ -293,6 +306,7 @@ sum $s;
 
 Use the `max` keyword to get the maximum value among the specified `long` or `double` values of matched variable.
 
+<!-- test-ignore -->
 ```typeql 
 match
   $f isa file, has size-kb $s;
@@ -303,6 +317,7 @@ get $f, $s; max $s;
 
 Use the `min` keyword to get the minimum value among the specified `long` or `double` values of matched variable.
 
+<!-- test-ignore -->
 ```typeql 
 match
   $f isa file, has size-kb $s;
@@ -313,6 +328,7 @@ get $f, $s; min $s;
 
 Use the `mean` keyword to get the average value of the specified `long` or `double` values of matched variable.
 
+<!-- test-ignore -->
 ```typeql 
 match
   $f isa file, has size-kb $s;
@@ -323,6 +339,7 @@ get $f, $s; mean $s;
 
 Use the `median` keyword to get the median value among the specified `long` or `double` values of matched variable.
 
+<!-- test-ignore -->
 ```typeql 
 match
   $f isa file, has size-kb $s;
@@ -334,6 +351,7 @@ get $f, $s; median $s;
 Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of matched 
 variable. Usually used with the average value, returned by the mean keyword.
 
+<!-- test-ignore -->
 ```typeql 
 match
   $f isa file, has size-kb $s;

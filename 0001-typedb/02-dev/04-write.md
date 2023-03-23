@@ -30,6 +30,7 @@ attributes) to a database.
 
 Insert queries are written in TypeQL with the following syntax:
 
+<!-- test-ignore -->
 ```typeql
 [match <pattern> [(, <pattern>)...]] 
 insert <pattern>
@@ -60,6 +61,7 @@ Such is life in Arstotzka.
 
 #### Example insert query
 
+<!-- test-ignore -->
 ```typeql
 insert $p isa person, has full-name "Bob";
 ```
@@ -73,6 +75,7 @@ If there is no attribute with this value then it will be created by this query.
 
 #### Example match-insert query
 
+<!-- test-ignore -->
 ```typeql
 match 
   $p isa person, has full-name "Bob"; 
@@ -87,6 +90,7 @@ an `email` attribute with a value of `bob@vaticle.com`.
 
 Use the `insert` keyword followed by a pattern to insert an entity.
 
+<!-- test-ignore -->
 ```typeql
 insert $p isa person, has full-name "John Parkson", has email "john.parkson@gmail.com", has credential "qwerty1";
 ```
@@ -118,6 +122,7 @@ There are three ways to insert attributes:
 
 Use the `insert` keyword followed by a pattern to insert an attribute.
 
+<!-- test-ignore -->
 ```typeql
 insert $s 34 isa size-kb;
 ```
@@ -126,6 +131,7 @@ The above query inserts a `size-kb` attribute with a value of `34`. The variable
 
 However, it is more common to insert one or more attributes with a new entity, relation, or attribute as owner.
 
+<!-- test-ignore -->
 ```typeql
 insert $f isa file, has size-kb 34;
 ```
@@ -135,6 +141,7 @@ The above query inserts a new `file` entity owning a `size-kb` attribute with a 
 Use variables from the optional `match` clause in the `insert` clause to create a required context. 
 For example, to specify an existing owner for a new attribute:
 
+<!-- test-ignore -->
 ```typeql
 match 
   $f isa file, has path "README.md"; 
@@ -164,6 +171,7 @@ For example, if the `person` entity type can own an `email` attribute type, a `p
 
 ##### Example 1
 
+<!-- test-ignore -->
 ```typeql
 match 
   $p isa person, has name "John Parkson"; 
@@ -180,6 +188,7 @@ See the illustration from [TypeDB Studio](../../02-clients/01-studio.md) below.
 
 ##### Example 2
 
+<!-- test-ignore -->
 ```typeql
 match 
   $f isa file, has path "README.md"; 
@@ -202,6 +211,7 @@ Unlike entities and attributes, the `match` clause is required when inserting re
 because the roles in a relation are expected to be played by existing entities, other relations or attributes. 
 Thus, the `match` clause is used to identify the players of roles in a new relation.
 
+<!-- test-ignore -->
 ```typeql
 match 
   $s isa subject, has full-name "Pearle Goodman"; 
@@ -230,6 +240,7 @@ In versions `1.7.0` and higher, a role in a relation can be played by multiple p
 have multiple attributes of the same type.
 </div>
 
+<!-- test-ignore -->
 ```typeql
 match
   $p1 isa subject, has full-name "Pearle Goodman"; 
@@ -256,6 +267,7 @@ In addition to entities and attributes, roles of relations can be played by othe
 <!--- #todo Doublecheck this example. It's probably not as reflexive as previous one and we don't have data for this 
 one in our dataset-->
 
+<!-- test-ignore -->
 ```typeql
 match 
   $c1 isa company, has name "Company";
@@ -290,6 +302,7 @@ role from a relation without deleting either the player or the relation/role.
 
 Delete queries are written in TypeQL with the following syntax:
 
+<!-- test-ignore -->
 ```typeql
 match <pattern> [(, <pattern>)...] 
 delete <pattern>
@@ -318,6 +331,7 @@ If multiple patterns are needed to delete data, run multiple queries in the same
 Use a match clause followed by the `delete` keyword and a pattern containing an `isa` expression to remove an entity 
 from a database.
 
+<!-- test-ignore -->
 ```typeql
 match 
   $p isa person, has email "john.parkson@gmail.com"; 
@@ -335,6 +349,7 @@ In the above query, `match` clause finds a `person` entity (or entities) owning 
 Use a match clause followed by the `delete` keyword and a pattern containing an `isa` expression to remove a relation 
 from a database.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa subject, has full-name "Pearle Goodman";
@@ -362,6 +377,7 @@ Use a match clause followed by the `delete` keyword and a pattern to remove a pl
 
 <!--- #todo Double-check the example-->
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa subject, has full-name "Masako Holley"; 
@@ -401,6 +417,7 @@ the ownership of a new/different attribute.
 Use a match clause followed by the `delete` keyword and a pattern containing an `isa` expression to remove an 
 attribute from a database.
 
+<!-- test-ignore -->
 ```typeql
 match 
   $fn isa full-name; 
@@ -419,6 +436,7 @@ attribute rather than the attribute itself.
 
 Use a match clause followed by the `delete` keyword and a pattern to remove the ownership of an attribute.
 
+<!-- test-ignore -->
 ```typeql
 match 
   $o isa object, has path $fp; 
@@ -458,6 +476,7 @@ the ownership of it is replaced with the ownership of a new/different attribute.
 
 Updates are written in TypeQL with the following syntax:
 
+<!-- test-ignore -->
 ```typeql
 match <pattern> [(, <pattern>)...]
 delete <pattern>
@@ -499,6 +518,7 @@ attribute as attributes are immutable, but we can change the owned attribute. To
 entity, its ownership must first be removed. Then, the entity can be assigned ownership of an attribute with a 
 different value. It can be an existing attribute or a new one.
 
+<!-- test-ignore -->
 ```typeql
 match 
   $p isa person, has full-name "Masako Holley", has email $email; 
@@ -528,6 +548,7 @@ be owned by the matching `person` entities.
 There may be times when the desired effect is to change the value of multiple owned attributes, all of the same type. 
 This is done by removing them, inserting the ownership of a new/different attribute.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name $n;
@@ -561,6 +582,7 @@ exist.
 
 To replace a role player, we combine the steps for extending the relation, with steps for deleting a role player:
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name "Pearle Goodman";
