@@ -58,6 +58,8 @@ client = TypeDB.core_client("0.0.0.0:1729")
 [tab:end]
 </div>
 
+NOTE: To connect to TypeDB Cloud use `clusterClient`/`cluster_client` instead of `coreClient`/`core_client`. 
+It requires a second argument of `TypeDBCredential` type. Make sure to import this class from TypeDB Client.
 
 ## Databases
 
