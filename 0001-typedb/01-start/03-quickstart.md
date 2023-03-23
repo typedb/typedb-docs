@@ -1,29 +1,30 @@
 ---
-pageTitle: Quickstart
+pageTitle: Quickstart guide
 keywords: getting started, typedb, typeql, tutorial, quickstart, overview
 longTailKeywords: get started with typedb, typedb tutorial, typedb quickstart, learn typedb
-summary: Learn about the constructs of the TypeDB Schema, visualise a knowledge graph, perform read and write queries and explore the power of automated reasoning and analytics with TypeDB.
+summary: Learn how to create a TypeDB database, load schema and data, perform queries.
 toc: false
 ---
 
-# Quickstart Guide
+# Quickstart guide
 
 ## Overview
 
-This quickstart goes through the step-by-step process of creating and interacting with a TypeDB database designed for an
+This Quickstart guide goes through the step-by-step process of creating and interacting with a TypeDB database designed 
+for an
 [Identity and Access Management](https://en.wikipedia.org/wiki/Identity_management) solution that will be described 
 [later](04-iam-schema.md).
 
 <div class="note">
 [Important]
 We highly recommend completing this guide. Its goal is to prepare an environment for TypeDB exploration and development.
-The resulting database schema and data will be needed for example queries throughout the documentation.
+The resulting database (schema and data) will be needed for example queries throughout the documentation.
 </div>
 
 ## Prerequisites
 
-This quickstart takes advantage of TypeDB Studio, a desktop GUI tool for interacting with TypeDB. To proceed, please 
-install both TypeDB and TypeDB Studio:
+This Quickstart guide takes advantage of TypeDB Studio, a desktop GUI tool for interacting with TypeDB. To proceed, 
+please install both TypeDB and TypeDB Studio:
 
 - [Install TypeDB](02-installation.md)
 - [Install TypeDB Studio](../../02-clients/01-studio.md#get-typedb-studio)
@@ -31,7 +32,8 @@ install both TypeDB and TypeDB Studio:
 IMPORTANT:
 <div class="note">
 [Important]
-It’s recommended to use TypeDB and TypeDB Studio of the same version number in order to ensure compatibility.
+It’s recommended to use TypeDB and TypeDB Studio of the same version number in order to ensure compatibility. If 
+TypeDB Studio doesn't have a version similar to the TypeDB release — use the closest lower version instead.
 </div>
 
 ## Initialize database
@@ -45,7 +47,7 @@ Run the following command in a terminal:
 typedb server
 ```
 
-After showing the TypeDB ASCII logo and logging the bootup completion time, TypeDB is ready for connections.
+After showing the TypeDB ASCII logo and the bootup completion time, TypeDB is ready for connections.
 
 ![TypeDB server bootup message](../../images/quickstart/quickstart-launched-typedb.png)
 
@@ -53,9 +55,9 @@ After showing the TypeDB ASCII logo and logging the bootup completion time, Type
 
 Launch TypeDB Studio, then:
 
-1. Click the [**Connect to TypeDB**] button (right side of the toolbar)
-2. Enter localhost:1729 in the [**Address**] field
-3. Click the [**Connect**] button (the dialog will close after a successful connection)
+1. Click the [**Connect to TypeDB**] button (right side of the toolbar).
+2. Enter localhost:1729 in the [**Address**] field.
+3. Click the [**Connect**] button (the dialog will close after a successful connection).
 
 ![Connection Manager Connected](../../images/studio/connection-interface-connected.png)
 
@@ -67,9 +69,9 @@ TypeDB Studio projects allow you to organize and save related queries for future
 
 To create a new project:
 
-1. Click the [**Open Project**] button in the [**Project**] panel (upper left)
-2. Choose a directory for the project files
-3. Click the [**Open**] button
+1. Click the [**Open Project**] button in the [**Project**] panel (upper left).
+2. Choose a directory for the project files.
+3. Click the [**Open**] button.
 
 The [**Project**] panel will now display the root directory and a nested hidden directory for unsaved files.
 
@@ -77,16 +79,16 @@ The [**Project**] panel will now display the root directory and a nested hidden 
 
 ### Create a database
 
-1. Click the database icon to open the [**Manage Databases**] dialog (left side of the toolbar)
+1. Click the database icon to open the [**Manage Databases**] dialog (left side of the toolbar).
 
    ![Database Manager Empty](../../images/studio/studio-database.png)
 
-2. Enter `iam` in the text field, and click the [**Create**] button next to it
-3. Click the [**Close**] button in the bottom right
+2. Enter `iam` in the text field, and click the [**Create**] button next to it.
+3. Click the [**Close**] button in the bottom right.
 
    ![Database Manager With Phone Calls Database](../../images/studio/databases-interface-iam-database.png)
 
-4. Select `iam` from the database dropdown (next to the database icon)
+4. Select `iam` from the database dropdown (next to the database icon).
 
 ### Prepare a TQL file
 
@@ -97,11 +99,11 @@ TypeDB’s query language.
 To prepare the schema definition file:
 
 1. Click the `+` icon in the top left corner of the [**Text-editor**] panel (directly right from the [**Project**] 
-   panel)
-2. Copy the TypeQL statements below into the [**Text-editor**] panel
-3. Click the save icon on the left side of the toolbar
-4. Enter `iam-schema.tql` in the [**Save As**] field
-5. Click the [**Save**] button
+   panel).
+2. Copy the TypeQL statements below into the [**Text-editor**] panel.
+3. Click the save icon on the left side of the toolbar.
+4. Enter `iam-schema.tql` in the [**Save As**] field.
+5. Click the [**Save**] button.
 
 <!-- test-ignore -->
 ```typeql
@@ -472,13 +474,13 @@ rule add-view-access:
 
 To execute the TypeQL statements in the opened file and send them as queries:
 
-1. Ensure the [**Session type**] (schema / data) switch (next to the database dropdown) is set to `schema`
-2. Ensure the [**Transaction type**] (write / read) switch is set to `write`
+1. Ensure the [**Session type**] (schema / data) switch (next to the database dropdown) is set to `schema`.
+2. Ensure the [**Transaction type**] (write / read) switch is set to `write`.
 
    ![Select transaction type](../../images/quickstart/studio-select-transaction-type.png)
 
-3. Click the green “play” button (middle of the toolbar) to start the transaction
-4. Click the “checkmark” button (left of the “play” button) to commit the changes
+3. Click the green “play” button (middle of the toolbar) to start the transaction.
+4. Click the “checkmark” button (left of the “play” button) to commit the changes.
 
 The transaction has been committed, and `iam` database now has a schema.
 
@@ -496,11 +498,11 @@ TypeQL can be used to query the schema.
 
 To execute a simple schema query:
 
-1. Ensure the [**Session type**] (schema / data) switch is set to `schema` (next to the database dropdown)
-2. Ensure the [**Transaction type**] (write / read) switch is set to `read`
-3. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel
-4. Copy the TypeQL statement below
-5. Click the green “play” button
+1. Ensure the [**Session type**] (schema / data) switch is set to `schema` (next to the database dropdown).
+2. Ensure the [**Transaction type**] (write / read) switch is set to `read`.
+3. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel.
+4. Copy the TypeQL statement below.
+5. Click the green “play” button.
 
 <!-- test-ignore -->
 ```typeql
@@ -528,11 +530,11 @@ We will insert data the same way we created the schema, by creating a TQL file i
 
 To create the file:
 
-1. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel
-2. Copy the TypeQL statements below
-3. Click the save icon (left side of toolbar)
-4. Enter `iam-data.tql` in the [**Save As**] field
-5. Click the [**Save**] button
+1. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel.
+2. Copy the TypeQL statements below.
+3. Click the save icon (left side of toolbar).
+4. Enter `iam-data.tql` in the [**Save As**] field.
+5. Click the [**Save**] button.
 
 <!-- test-ignore -->
 ```typeql
@@ -644,33 +646,30 @@ insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 
 To execute the TypeQL statements copied from code block above:
 
-1. Ensure the [Session type] (schema / data) switch (next to the database dropdown) is set to `data`
-2. Ensure the [Transaction type] (write / read) switch is set to `write`
-3. Click the green “play” button
-4. Click the “checkmark” button
+1. Ensure the [Session type] (schema / data) switch (next to the database dropdown) is set to `data`.
+2. Ensure the [Transaction type] (write / read) switch is set to `write`.
+3. Click the green “play” button.
+4. Click the “checkmark” button.
 
 The transaction has been committed, and data can now be queried.
 
 ### Read data
 
-Below is a simple query that returns all person and operation entities (and their names) as well as all file entities 
-(and their paths).
+To retrieve data from a database:
 
-To execute a simple data query:
-
-1. Click the `+` icon right from the [**Project**] panel next to the `iam-data.tql` tab in the Text-editor panel
-2. Ensure the [Session type] (schema / data) switch (next to the database dropdown) is set to `data` 
-3. Ensure the [Transaction type] (write / read) switch is set to `read`
-4. Replace the TypeQL statement in the Text-editor panel with the one below
-5. Click the green “play” button
+1. Click the `+` icon right from the [**Project**] panel next to the `iam-data.tql` tab in the Text-editor panel.
+2. Ensure the [Session type] (schema / data) switch (next to the database dropdown) is set to `data`.
+3. Ensure the [Transaction type] (write / read) switch is set to `read`.
+4. Replace the TypeQL statement in the Text-editor panel with the one below.
+5. Click the green “play” button.
 
 <!-- test-ignore -->
 ```typeql
-match $p isa person, has full-name $fn; $f isa file, has path $fp;
+match $f isa file, has path $fp;
 ```
 
-The above query returns all person entities (instances of person type) with their names as well as all file entities 
-with their paths and displays the results as a graph.
+The above query returns all `file` entities with their `path` attributes. TypeDB Studio displays the results as in 
+the image below.
 
 ![IAM data graph](../../images/quickstart/studio-iam-data.png)
 
@@ -680,5 +679,5 @@ The Quickstart guide above provides a fast and easy way to set up the minimum IA
 
 The files that have been used in the guide:
 
-- [iam-schema.tql](../../files/iam/iam-schema.tql) — TypeQL script for the IAM schema definition
-- [iam-data.tql](../../files/iam/iam-data.tql) — TypeQL script to load a sample dataset into the IAM schema
+- [iam-schema.tql](../../files/iam/iam-schema.tql) — TypeQL script for the IAM schema definition.
+- [iam-data.tql](../../files/iam/iam-data.tql) — TypeQL script to load a sample dataset into the IAM schema.
