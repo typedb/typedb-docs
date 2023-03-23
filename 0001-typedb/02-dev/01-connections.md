@@ -228,7 +228,7 @@ client.session("iam", SessionType.DATA) as session:
 It is recommended to avoid long-running sessions, because of possible network failures.
 </div>
 
-A good principle is that sessions group logically coherent transactions.
+A good principle to follow for logically coherent transactions to be grouped together into a session.
 
 ## Transactions
 
@@ -330,7 +330,7 @@ caused by transactions which will not be completed and terminate unresponsive tr
 ### Best practices
 
 - Avoid long-running transactions which can result in conflicts and resource contention.
-- A good principle is that transactions group logically coherent queries.
+- A good principle to follow is that transactions group logically coherent queries.
 
 ## ACID guarantees
 
