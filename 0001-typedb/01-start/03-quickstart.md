@@ -504,10 +504,21 @@ To execute a simple schema query:
 
 <!-- test-ignore -->
 ```typeql
-match $s sub subject;
+match $t sub thing;
+```
+The above query returns all types in the schema and displays the results as a graph.
+
+<div class="note">
+[Warning]
+The `thing` built-in type will be deprecated in TypeDB version `3.0`. Consider using `entity`, `attribute`, or `relation` 
+built-in type instead. To produce the same result as the above example, use the following query:
+
+<!-- test-ignore -->
+```typeql
+match $t sub $a;
 ```
 
-The above query returns the subject type and its subtypes and displays the results as a graph.
+</div>
 
 ![IAM schema graph](../../images/quickstart/studio-iam-schema.png)
 
