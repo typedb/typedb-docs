@@ -128,7 +128,7 @@ It has all the attributes the Object supertype has and two attributes of its own
 
 ## Subject subtypes
 
-The subject is a subtype of the built-in entity type with multiple subtypes of its own:
+The `subject` is a subtype of the built-in `entity` type with multiple subtypes of its own:
 
 - Subject
   - User
@@ -221,6 +221,7 @@ There are multiple rules in the schema that can be used in different situations 
 This simple rule illustrates basic inference. More information on rules can be found in the 
 [schema documentation](../02-dev/02-schema.md).
 
+<!-- test-ignore -->
 ```typeql
 define
 

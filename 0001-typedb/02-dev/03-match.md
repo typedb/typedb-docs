@@ -78,12 +78,14 @@ finding an optimal way to retrieve it.
 There is some freedom in forming and composing our statements. For example, as shown below, we could write our single
 statement with three constraints:
 
+<!-- test-ignore -->
 ```typeql
 $p isa person, has full-name 'Masako Holley', has email $email;
 ```
 
 However, we can also use separate patterns to achieve the same result:
 
+<!-- test-ignore -->
 ```typeql
 $p isa person;
 $p has full-name 'Masako Holley';
@@ -99,6 +101,7 @@ If you want to run these and other examples from our documentation, make sure yo
 [Quickstart guide](../01-start/03-quickstart.md) to set up the database with relevant schema and dataset.
 </div>
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person;
@@ -171,6 +174,7 @@ A `match` clause can be used to find types or roles in a database schema.
 
 Use a `subtype` pattern with type `thing` to find all types defined in a schema.
 
+<!-- test-ignore -->
 ```typeql
 match $t sub thing;
 ```
@@ -180,6 +184,7 @@ match $t sub thing;
 The `thing` built-in type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
 built-in type instead. To produce the same result as the above example, use the following query:
 
+<!-- test-ignore -->
 ```typeql
 match $t sub $a;
 ```
@@ -190,6 +195,7 @@ match $t sub $a;
 
 Use a `subtype` pattern to find a specific type and all of its subtypes.
 
+<!-- test-ignore -->
 ```typeql
 match $o sub object;
 ```
@@ -201,6 +207,7 @@ and indirect (i.e. `file`, `interface`, `directory` and `application`).
 
 Use a `subtype` pattern with an exclamation mark (`!`) to find the direct subtypes of a specific type.
 
+<!-- test-ignore -->
 ```typeql
 match $o sub! object;
 ```
@@ -211,6 +218,7 @@ The above query finds all direct subtypes of the `object` type (i.e. `resource` 
 
 Use an `attribute subtype` pattern to find all attribute types with a specific value type.
 
+<!-- test-ignore -->
 ```typeql
 match $a sub attribute, value boolean;
 ```
@@ -221,6 +229,7 @@ The above query finds all attribute types that have a `boolean` value type.
 
 Use a `type` pattern to find a specific type, excluding any nested subtypes (direct or indirect).
 
+<!-- test-ignore -->
 ```typeql
 match $o type object;
 ```
@@ -231,6 +240,7 @@ The above query returns the `object` type, and none of its nested subtypes (dire
 
 Use a "players types in a relation" pattern to find all types that place a specific role in a specific relation type.
 
+<!-- test-ignore -->
 ```typeql
 match $p plays permission:permitted-subject;
 ```
@@ -241,6 +251,7 @@ The above query finds all types that can play the `permitted-subject` role in th
 
 Use an `owners of attribute type` pattern to find all types that own a specific attribute type.
 
+<!-- test-ignore -->
 ```typeql
 match $o owns full-name;
 ```
@@ -251,6 +262,7 @@ The above query finds all types that own the `full-name` attribute.
 
 Use the `role types in a relation` pattern to find all roles in a specific relation.
 
+<!-- test-ignore -->
 ```typeql
 match permission relates $r;
 ```
@@ -266,6 +278,7 @@ A `match` clause can be used to find data in a database.
 
 Use an `instance` pattern with type `thing` to find all entities, relations and attributes.
 
+<!-- test-ignore -->
 ```typeql
 match $t isa thing;
 ```
@@ -280,6 +293,7 @@ All `entity` types, `relation` types, `attribute` types and `roles` subtype the 
 The `thing` built-in type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
 built-in type instead. To produce the same result as the above example, use the following query:
 
+<!-- test-ignore -->
 ```typeql
 match $t isa $a; {$a type entity;} or {$a type relation;} or {$a type attribute;};
 ```
@@ -298,6 +312,7 @@ The `isa` keyword will return all direct and indirect instances (instances of al
 To limit results to only direct instances of the given type use `isa!` instead. See the [example](#specific-type) below.
 </div>
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person;
 ```
@@ -309,6 +324,7 @@ The above query returns all entities of the `person` entity and any of its neste
 Use an `instance` pattern with an exclamation mark (`!`) to find all entities of a specific type only 
 (and none of its nested subtypes).
 
+<!-- test-ignore -->
 ```typeql
 match $u isa! user;
 ```
@@ -321,6 +337,7 @@ so `person` entities would not be included.
 Use an `instance` pattern with `has-attribute expression` pattern to find all entities that own an attribute of a 
 specific type.
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person, has full-name $n;
 ```
@@ -332,6 +349,7 @@ The above query finds all `person` entities that own a `full-name` attribute.
 Use an `instance` pattern with multiple `has-attribute expressions` to find all entities that own a specific set of 
 attributes, each of a specific type.
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person, has full-name $n, has email $email, has credential $cr;
 ```
@@ -343,6 +361,7 @@ The above query finds all `person` entities that have `full-name`, `email` and `
 Use an `instance` pattern with `has-attribute expression` pattern to find all entities that own a specific attribute 
 with a specific value.
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person, has full-name “Kevin Morrison”;
 ```
@@ -354,6 +373,7 @@ The above query finds all `person` entities that have a `full-name` attribute wi
 Use an `instance` pattern with a `has-attribute expression` containing a comparison operator to find all entities that 
 have a specific attribute whose value is within a specific range.
 
+<!-- test-ignore -->
 ```typeql
 match $f isa file, has size-kb < 100;
 ```
@@ -361,6 +381,7 @@ match $f isa file, has size-kb < 100;
 However, if the attribute value itself is required in the query response, combine a `has-attribute expression` 
 (with no comparison operation) with a separate `comparison` pattern.
 
+<!-- test-ignore -->
 ```typeql
 match
   $f isa file, has size-kb $s;
@@ -377,6 +398,7 @@ The pattern used to find relations is different from the one used to find entiti
 Use a `relation pattern` witch matched role player to find all relations of a specific type that relate a 
 specified instance.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name "Kevin Morrison";
@@ -391,6 +413,7 @@ and then it finds all `permission` relations (`$pe`) in which those entities `$p
 Use a `relation pattern` with a `has-attribute expression` to find all relations of a specific type and which have a 
 specific attribute with a specific value.
 
+<!-- test-ignore -->
 ```typeql
 match $pe (permitted-subject: $p, permitted-access: $ac) isa permission, has validity "True";
 ```
@@ -401,6 +424,7 @@ The above query finds all `permission` relations which have a `validity` attribu
 
 The relation variable can be omitted when only the role players are needed.
 
+<!-- test-ignore -->
 ```typeql
 match (permitted-subject: $p, permitted-access: $ac) isa permission;
 ```
@@ -409,6 +433,7 @@ match (permitted-subject: $p, permitted-access: $ac) isa permission;
 
 The names of a relation’s roles can be omitted.
 
+<!-- test-ignore -->
 ```typeql
 match $pe ($p, $ac) isa permission;
 ```
@@ -421,6 +446,7 @@ There are multiple ways to find attributes depending on the use case.
 
 Use a variable and an attribute value to find all attributes with a specific value.
 
+<!-- test-ignore -->
 ```typeql
 match $x "Masako Holley";
 ```
@@ -432,6 +458,7 @@ The above query finds all attributes with a value of “Masako Holley”, regard
 Combine an `attribute` pattern with a `comparison` pattern to find all attributes of a specific type and with a 
 specific value.
 
+<!-- test-ignore -->
 ```typeql
 match
   $n isa full-name;
@@ -440,6 +467,7 @@ match
 
 Or use this compact form:
 
+<!-- test-ignore -->
 ```typeql
 match $n "Masako Holley" isa full-name;
 ```
@@ -450,6 +478,7 @@ The above queries finds all `full-name` attributes with a value of `Masako Holle
 
 Use an `attribute` pattern with `contains` keyword to find all attributes whose value contains specific string.
 
+<!-- test-ignore -->
 ```typeql
 match $name contains "Masako";
 ```
@@ -461,6 +490,7 @@ The above query finds all attributes whose value contains the text `Masako`, reg
 Use an `attribute` pattern with `like` keyword, and a regular expression to find all attributes whose value matches 
 the specified regular expression.
 
+<!-- test-ignore -->
 ```typeql
 match $x like "(Masako Holley|Kevin Morrison)";
 ```
@@ -473,6 +503,7 @@ Use an `equal` pattern to check if two variables represent the same instance (or
 That not only means equality by type and value but literary being the same instance(s) of data in a database. 
 It is often helpful in negation.
 
+<!-- test-ignore -->
 ```typeql
 match
   $x isa person;
@@ -486,6 +517,7 @@ The above query returns pairs of users that are not the same user.
 
 By default, a collection of patterns in a `match` clause, divided by semicolons, constructs a conjunction of patterns.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name "Kevin Morrison";
@@ -510,6 +542,7 @@ which matching `person` entities plays the `permitted-subject` role.
 To include patterns in the form of a disjunction, we need to wrap each pattern in `{}` and place the `or` keyword 
 in between them.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name $n;
@@ -571,6 +604,7 @@ Use the example below to send a `get` query to a database schema (querying for t
 
 Get all attributes owned by `user` type and any of its subtypes:
 
+<!-- test-ignore -->
 ```typeql
 match
   $u sub user, owns $a; 
@@ -591,6 +625,7 @@ Use the examples below to try different types of queries to a database data (que
 
 To read data from a database use get query.
 
+<!-- test-ignore -->
 ```typeql
 match 
   $u isa user, has credential $cr; 
@@ -606,6 +641,7 @@ For more information on how to read data please see the [Reading data](05-read.m
 
 To write new data to a database use insert query.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name "Bob";
@@ -623,6 +659,7 @@ For more information on how to write data please see the [Writing data](04-write
 
 To delete data from a database use delete query.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has email "bob@vaticle.com";
@@ -639,6 +676,7 @@ For more information on how to delete data please see the [Writing data](04-writ
 
 To update data in a database we use a combined `match-delete-insert` query.
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name "Masako Holley", has email $email;
@@ -664,6 +702,7 @@ in a database that might or might not lead to an empty response.
 
 For example:
 
+<!-- test-ignore -->
 ```typeql
 match
   $p isa person, has full-name $p-fname;

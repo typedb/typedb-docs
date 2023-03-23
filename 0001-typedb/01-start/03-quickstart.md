@@ -40,6 +40,7 @@ It’s recommended to use TypeDB and TypeDB Studio of the same version number in
 
 Run the following command in a terminal:
 
+<!-- test-ignore -->
 ```bash
 typedb server
 ```
@@ -102,6 +103,7 @@ To prepare the schema definition file:
 4. Enter `iam-schema.tql` in the [**Save As**] field
 5. Click the [**Save**] button
 
+<!-- test-ignore -->
 ```typeql
 #
 # Copyright (C) 2022 Vaticle
@@ -500,6 +502,7 @@ To execute a simple schema query:
 4. Copy the TypeQL statement below
 5. Click the green “play” button
 
+<!-- test-ignore -->
 ```typeql
 match $s sub subject;
 ```
@@ -520,6 +523,7 @@ To create the file:
 4. Enter `iam-data.tql` in the [**Save As**] field
 5. Click the [**Save**] button
 
+<!-- test-ignore -->
 ```typeql
 # Subjects
 insert $p isa person, has full-name "Masako Holley", has email "masako.holley@vaticle.com";  # No access
@@ -649,6 +653,7 @@ To execute a simple data query:
 4. Replace the TypeQL statement in the Text-editor panel with the one below
 5. Click the green “play” button
 
+<!-- test-ignore -->
 ```typeql
 match $p isa person, has full-name $fn; $f isa file, has path $fp;
 ```

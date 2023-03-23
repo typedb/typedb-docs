@@ -16,12 +16,14 @@ toc: false
 
 1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running:
 
+<!-- test-ignore -->
    ```bash
    docker version
    ```
 
 2. Pull the latest TypeDB Docker image:
 
+<!-- test-ignore -->
    ```bash
    docker pull vaticle/typedb:latest
    ```
@@ -35,6 +37,7 @@ The TypeDB container exposes TypeDB’s default port, `1729`, and uses its defau
 The following command starts a named TypeDB container, maps its exposed port to the host machine and creates a named 
 volume mapped to the data directory — making it persistent across container restarts.
 
+<!-- test-ignore -->
 ```bash
 docker run --name try-typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ```
@@ -53,6 +56,7 @@ The following variables should be noted and can be modified:
 
 ### Stop
 
+<!-- test-ignore -->
 ```bash
 docker stop try-typedb
 ```
@@ -75,6 +79,7 @@ docker stop try-typedb
    Create a new directory, extract the contents of the zip file and move them (hereinafter replace `2.15.0` with the 
    version downloaded):
 
+   <!-- test-ignore -->
    ```shell
    mkdir "C:\Program Files\TypeDB"
    tar xvf ./Downloads/typedb-all-windows-2.15.0.zip
@@ -83,6 +88,7 @@ docker stop try-typedb
 
 4. Update the PATH environment variable with the TypeDB installation directory:
 
+   <!-- test-ignore -->
    ```shell
    setx /M PATH "%path%;C:\Program Files\TypeDB"
    ```
@@ -91,6 +97,7 @@ docker stop try-typedb
 
 Run the following command in a terminal:
 
+<!-- test-ignore -->
 ```shell
 typedb server
 ```
@@ -107,6 +114,7 @@ opening a new terminal to run TypeDB Console.
 [Note]
 If the following error occurs, please try to install the "C++ redistributable" by following the instructions here.
 
+<!-- test-ignore -->
 ```shell
 Exception in thread "main" java.lang.UnsatisfiedLinkError:
 C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
@@ -125,6 +133,7 @@ Press Ctrl-C in the terminal running TypeDB.
 
 1. Add the TypeDB repository:
    
+   <!-- test-ignore -->
    ```bash
    sudo apt install software-properties-common apt-transport-https gpg
    gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C
@@ -134,11 +143,13 @@ Press Ctrl-C in the terminal running TypeDB.
 
 2. Update the package cache:
 
+   <!-- test-ignore -->
    ```bash
    sudo apt update
    ```
 3. Ensure Java 11+ is installed:
 
+   <!-- test-ignore -->
    ```bash
    sudo apt install openjdk-11-jre
    ```
@@ -148,12 +159,14 @@ Press Ctrl-C in the terminal running TypeDB.
 
 4. Check the latest version number for typedb-server and its dependencies:
 
+   <!-- test-ignore -->
    ```bash
    apt show typedb-server
    ```
 
    This will show you console output like this:
 
+   <!-- test-ignore -->
    ```bash
    Package: typedb-server
    Version: 2.15.0
@@ -176,6 +189,7 @@ Press Ctrl-C in the terminal running TypeDB.
 5. Install TypeDB using the versions from the previous command (here we will use typedb-server version 2.15 for 
    example):
 
+   <!-- test-ignore -->
    ```bash
    sudo apt install typedb-server=2.15.0 typedb-console=2.15.0 typedb-bin=2.12.0
    ```
@@ -204,6 +218,7 @@ the `typedb-bin` version required and invoke an `apt install` command with the s
    Create a new directory, extract the contents of the zip file and move them
    (hereinafter replace `2.15.0` with the version downloaded):
    
+   <!-- test-ignore -->
    ```bash
    mkdir /opt/typedb
    tar -xzf ~/Downloads/typedb-all-linux-2.15.0.tar.gz
@@ -212,6 +227,7 @@ the `typedb-bin` version required and invoke an `apt install` command with the s
    
 4. Add a symlink to the TypeDB executable in the /usr/local/bin directory:
 
+   <!-- test-ignore -->
    ```bash
    ln -s /opt/typedb/typedb /usr/local/bin/typedb
    ```
@@ -220,6 +236,7 @@ the `typedb-bin` version required and invoke an `apt install` command with the s
 
 Run the following command in a terminal:
 
+<!-- test-ignore -->
 ```shell
 typedb server
 ```
@@ -244,6 +261,7 @@ Press Ctrl-C in the terminal running TypeDB.
 
 2. Install TypeDB:
 
+   <!-- test-ignore -->
    ```sh
    brew install typedb
    ```
@@ -263,12 +281,14 @@ Press Ctrl-C in the terminal running TypeDB.
 
    Extract the downloaded archive (hereinafter replace `2.15.0` with the version downloaded):
    
+   <!-- test-ignore -->
    ```bash
    unzip ~/Downloads/typedb-all-mac-2.15.0.zip
    ```   
 
 4. Create a new directory and move the contents of the extracted zip file to it:
-   
+
+   <!-- test-ignore -->  
    ```bash
    sudo mkdir /opt/typedb
    sudo mv ~/Downloads/typedb-all-mac-2.15.0/*(DN) /opt/typedb
@@ -276,6 +296,7 @@ Press Ctrl-C in the terminal running TypeDB.
 
 5. Add a symlink to typedb executable in the /usr/local/bin directory:
    
+   <!-- test-ignore -->
    ```bash
    ln -s /opt/typedb/typedb /usr/local/bin/typedb
    ```
@@ -284,6 +305,7 @@ Press Ctrl-C in the terminal running TypeDB.
 
 Run the following command in a terminal:
 
+<!-- test-ignore -->
 ```bash
 typedb server
 ```
