@@ -125,10 +125,10 @@ client.databases().create("test-db");
 client.databases().get("test-db").schema();
 
 // get all databases
-client.databases().all()
+client.databases().all();
 
 // check if database exists
-client.databases().contains("test-db")
+client.databases().contains("test-db");
 
 // delete database
 client.databases().get("test-db").delete();
@@ -199,7 +199,7 @@ transaction iam data read
 
 <!-- test-ignore -->
 ```java
-TypeDBSession session = client.session("iam", TypeDBSession.Type.DATA)
+TypeDBSession session = client.session("iam", TypeDBSession.Type.DATA);
 ```
 
 [tab:end]
