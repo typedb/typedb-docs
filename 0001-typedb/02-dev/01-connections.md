@@ -24,6 +24,7 @@ It’s recommended to instantiate a single client per application.
 
 [tab:TypeDB Console]
 
+<!-- test-ignore -->
 ```bash
 typedb console --server=0.0.0.0:1729 
 ```
@@ -40,6 +41,7 @@ TypeDBClient client = TypeDB.coreClient("0.0.0.0:1729");
 
 [tab:Node.js]
 
+<!-- test-ignore -->
 ```javascript
 client = TypeDB.coreClient("0.0.0.0:1729");
 ```
@@ -48,6 +50,7 @@ client = TypeDB.coreClient("0.0.0.0:1729");
 
 [tab:Python]
 
+<!-- test-ignore -->
 ```python
 TypeDB.core_client("0.0.0.0:1729") as client:
 ```
@@ -72,6 +75,7 @@ necessary (e.g., to support more applications). The **best practice** is to keep
 
 [tab:TypeDB Console]
 
+<!-- test-ignore -->
 ```bash
 # create database
 database create test-db
@@ -90,6 +94,7 @@ database delete test-db
 
 [tab:Java]
 
+<!-- test-ignore -->
 ```java
 // create database
 client.databases().create("test-db");
@@ -111,6 +116,7 @@ client.databases().get("test-db").delete();
 
 [tab:Node.js]
 
+<!-- test-ignore -->
 ```javascript
 // create database
 client.databases().create("test-db");
@@ -132,6 +138,7 @@ client.databases().get("test-db").delete();
 
 [tab:Python]
 
+<!-- test-ignore -->
 ```python
 # create database
 client.databases().create("test-db")
@@ -181,6 +188,7 @@ Once a session has been opened, clients can open and close transactions to read 
 
 [tab:TypeDB Console]
 
+<!-- test-ignore -->
 ```
 transaction iam data read
 ```
@@ -189,6 +197,7 @@ transaction iam data read
 
 [tab:Java]
 
+<!-- test-ignore -->
 ```java
 TypeDBSession session = client.session("iam", TypeDBSession.Type.DATA)
 ```
@@ -197,6 +206,7 @@ TypeDBSession session = client.session("iam", TypeDBSession.Type.DATA)
 
 [tab:Node.js]
 
+<!-- test-ignore -->
 ```javascript
 session = await client.session("iam", SessionType.DATA);
 ```
@@ -205,6 +215,7 @@ session = await client.session("iam", SessionType.DATA);
 
 [tab:Python]
 
+<!-- test-ignore -->
 ```python
 client.session("iam", SessionType.DATA) as session:
 ```
@@ -235,6 +246,7 @@ In addition, transactions must be explicit — clients must open and close trans
 
 [tab:TypeDB Console]
 
+<!-- test-ignore -->
 ```typeql
 # start transaction
 transaction iam data write
@@ -251,6 +263,7 @@ commit
 
 [tab:Java]
 
+<!-- test-ignore -->
 ```java
 // start transaction
 TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE);
@@ -267,6 +280,7 @@ Transaction.commit();
 
 [tab:Node.js]
 
+<!-- test-ignore -->
 ```javascript
 // start transaction
 const transaction = await session.transaction(TransactionType.WRITE);
@@ -282,6 +296,7 @@ transaction.commit();
 
 [tab:Python]
 
+<!-- test-ignore -->
 ```python
 # start transaction
 with session.transaction(TransactionType.WRITE) as transaction:
