@@ -41,7 +41,7 @@ TypeDBClient client = TypeDB.coreClient("0.0.0.0:1729");
 [tab:Node.js]
 
 ```javascript
-client = TypeDB.coreClient("localhost:1729");
+client = TypeDB.coreClient("0.0.0.0:1729");
 ```
 
 [tab:end]
@@ -49,7 +49,7 @@ client = TypeDB.coreClient("localhost:1729");
 [tab:Python]
 
 ```python
-TypeDB.core_client(“0.0.0.0:1729”) as client:
+TypeDB.core_client("0.0.0.0:1729") as client:
 ```
 
 [tab:end]
@@ -72,17 +72,17 @@ necessary (e.g., to support more applications). The **best practice** is to keep
 
 [tab:TypeDB Console]
 
-```
-// create database
+```bash
+# create database
 database create test-db
 
-// get database schema
+# get database schema
 database schema test-db
 
-// get all databases
+# get all databases
 database list
 
-// delete database
+# delete database
 database delete test-db
 ```
 
@@ -133,19 +133,19 @@ client.databases().get("test-db").delete();
 [tab:Python]
 
 ```python
-// create database
+# create database
 client.databases().create("test-db")
 
-// get database schema
+# get database schema
 client.databases().get("test-db").schema()
 
-// get all databases
+# get all databases
 client.databases().all()
 
-// check if database exists
+# check if database exists
 client.databases().contains("test-db")
 
-// delete database
+# delete database
 client.databases().get("test-db").delete()
 ```
 
@@ -235,15 +235,15 @@ In addition, transactions must be explicit — clients must open and close trans
 
 [tab:TypeDB Console]
 
-```
-// start transaction
+```typeql
+# start transaction
 transaction iam data write
 
 insert $x isa person;
 $x has full-name "Kevin";
 $x has email "Kevin@vaticle.com";
 
-// commit changes
+# commit changes
 commit
 ```
 
@@ -283,7 +283,7 @@ transaction.commit();
 [tab:Python]
 
 ```python
-// start transaction
+# start transaction
 with session.transaction(TransactionType.WRITE) as transaction:
     
     transaction.query().insert(insert_query1)
@@ -291,7 +291,7 @@ with session.transaction(TransactionType.WRITE) as transaction:
 
     transaction.query().insert(insert_queryN)
 
-// commit changes
+# commit changes
     transaction.commit()
 ```
 [tab:end]
