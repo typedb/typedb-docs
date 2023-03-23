@@ -52,7 +52,7 @@ client = TypeDB.coreClient("0.0.0.0:1729");
 
 <!-- test-ignore -->
 ```python
-TypeDB.core_client("0.0.0.0:1729") as client:
+client = TypeDB.core_client("0.0.0.0:1729")
 ```
 
 [tab:end]
@@ -83,7 +83,7 @@ database create test-db
 # get database schema
 database schema test-db
 
-# get all databases
+# list all databases
 database list
 
 # delete database
@@ -217,7 +217,7 @@ session = await client.session("iam", SessionType.DATA);
 
 <!-- test-ignore -->
 ```python
-client.session("iam", SessionType.DATA) as session:
+session = client.session("iam", SessionType.DATA)
 ```
 
 [tab:end]
@@ -299,13 +299,11 @@ transaction.commit();
 <!-- test-ignore -->
 ```python
 # start transaction
-with session.transaction(TransactionType.WRITE) as transaction:
-    
-    transaction.query().insert(insert_query1)
-    transaction.query().insert(insert_query2)
+transaction = session.transaction(TransactionType.WRITE)
+transaction.query().insert(insert_query1)
+transaction.query().insert(insert_query2)
 
-    transaction.query().insert(insert_queryN)
-
+transaction.query().insert(insert_queryN)
 # commit changes
     transaction.commit()
 ```
