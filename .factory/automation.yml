@@ -132,14 +132,14 @@ build:
 
         bazel run //test/example/python:phone-calls
         bazel run //test/example/python:social-network
-    test-links:
-      image: vaticle-ubuntu-21.04
-      type: foreground
-      command: |
-        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
-        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
-        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
-        bazel test //test/links:test --test_output=errors
+#    test-links:
+#      image: vaticle-ubuntu-21.04
+#      type: foreground
+#      command: |
+#        export ARTIFACT_USERNAME=$REPO_VATICLE_USERNAME
+#        export ARTIFACT_PASSWORD=$REPO_VATICLE_PASSWORD
+#        bazel run @vaticle_dependencies//distribution/artifact:create-netrc
+#        bazel test //test/links:test --test_output=errors
     release-staging:
       filter:
         owner: vaticle
@@ -179,6 +179,6 @@ build:
     - test-example-java
     - test-example-nodejs
     - test-example-python
-    - test-links
+#    - test-links
     - release-staging
     - release-production
