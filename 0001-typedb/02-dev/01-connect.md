@@ -1,17 +1,17 @@
 ---
-pageTitle: Connections
+pageTitle: Connect
 keywords: typedb, basics, connect, connection, session, database
 longTailKeywords: basic concepts of typedb, typedb connection, typedb database, typedb session
 summary: Brief description of connection to TypeDB.
 toc: false
 ---
 
-# Connections
+# Connect
 
 ## Clients
 
 TypeDB server accepts remote connections from a number of [TypeDB Clients](../../02-clients/00-clients.md) via 
-[gRPC](https://en.wikipedia.org/wiki/GRPC) protocol.
+[gRPC](https://en.wikipedia.org/wiki/GRPC).
 
 Once connected, TypeDB clients can manage [databases](#databases) and [sessions](#sessions).
 
@@ -59,13 +59,13 @@ client = TypeDB.core_client("0.0.0.0:1729")
 </div>
 
 NOTE: To connect to TypeDB Cloud use `clusterClient`/`cluster_client` instead of `coreClient`/`core_client`. 
-It requires a second argument of `TypeDBCredential` type. Make sure to import this class from TypeDB Client.
+It requires a second argument of `TypeDBCredential` type.
 
 ## Databases
 
 TypeDB instances can contain multiple databases. A database consists of a [schema](../02-dev/02-schema.md) and 
-[data](../02-dev/04-write.md) – and is both separate and independent of any other database. It is not possible to 
-interact with one database from another. However, clients can connect to multiple databases simultaneously.
+[data](../02-dev/04-write.md) – and is both separate and independent of any other database. It is not possible for two
+databases to influence each other. However, clients can connect to multiple databases simultaneously.
 
 <div class="note">
 [Note]
@@ -121,19 +121,19 @@ client.databases().get("test-db").delete();
 <!-- test-ignore -->
 ```javascript
 // create database
-client.databases().create("test-db");
+await client.databases().create("test-db");
 
 // get database schema
-client.databases().get("test-db").schema();
+await client.databases().get("test-db").schema();
 
 // get all databases
-client.databases().all();
+await client.databases().all();
 
 // check if database exists
-client.databases().contains("test-db");
+await client.databases().contains("test-db");
 
 // delete database
-client.databases().get("test-db").delete();
+await (await client.databases().get("test-db")).delete();
 ```
 
 [tab:end]
@@ -168,10 +168,10 @@ There are two types of sessions:
 - SCHEMA sessions,
 - DATA sessions. 
 
-| Session type | Read data | Write data | Read schema  | Write schema |
-|--------------|-----------|------------|--------------|--------------|
-| DATA         | Yes       | Yes        | Yes          | Yes          |
-| SCHEMA       | Yes       | No         | Yes          | No           |
+| Session type | Read data |  Write data  | Read schema |  Write schema   |
+|:------------:|:---------:|:------------:|:-----------:|:---------------:|
+|     DATA     |    Yes    |     Yes      |     Yes     |     **No**      |
+|    SCHEMA    |    Yes    |    **No**    |     Yes     |       Yes       |
 
 TypeDB clients should read and write data in DATA sessions.
 
@@ -179,9 +179,9 @@ TypeDB clients should read and write schema in SCHEMA sessions.
 
 <div class="note">
 [Note]
-If a client needs to read both schema and data from a database, it can be done in any session type. But it is 
-NOT possible to modify a schema and its data in the same session, regardless of the type. Write transactions are strict 
-to the session types.
+If a client needs to read both schema and data from a database, it can be done in any session type (usually used 
+when data query needs information on types). But it is NOT possible to modify a schema and its data in the same session, 
+regardless of the type. Write transactions are strict to the session types.
 </div>
 
 Once a session has been opened, clients can open and close transactions to read and write a database’s schema or data.
@@ -242,7 +242,10 @@ There are two types of transactions:
 - READ transactions
 - WRITE transactions
 
-In addition, transactions must be explicit — clients must open and close transactions via an API.
+<div class="note">
+[Note]
+Transactions must be explicitly opened and closed by clients via [API](08-api.md).
+</div>
 
 <div class="tabs dark">
 

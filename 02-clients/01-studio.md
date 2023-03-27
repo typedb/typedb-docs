@@ -36,7 +36,7 @@ requirement is:
 
 <div class="note">
 [Note]
-The default TypeDB settings are to run server on localhost with port number 1729.
+The default TypeDB settings are to run server on `localhost` with port number `1729`.
 </div>
 
 <div class="note">

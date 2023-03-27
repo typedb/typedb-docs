@@ -33,8 +33,8 @@ While the `match` clause can be used to read types from a schema, the [define](0
 
 <div class="note">
 [Important]
-If a `match` clause is **not** combined with a `get`, `insert` or `delete` clause, TypeDB will assume it is a get query and 
-add an implicit `get` clause to return all variables defined in the `match` clause.
+If a `match` clause is **not** followed by a `get`, `insert` or `delete` clause, TypeDB assumes it is a 
+[get query](05-read.md#get-query) and add an implicit `get` clause to return all variables defined in the `match` clause.
 </div>
 
 ## Patterns overview
@@ -61,9 +61,9 @@ at the constructs of a typical statement.
 
 ## Variables
 
-Variables can:
+A variable can:
 
-- reference both data and schema concepts.
+- reference either instances of data or types.
 - reference all (zero, one or many) concepts that comply with constraints described in a query patterns.
 
 <div class="note">
@@ -181,8 +181,8 @@ match $t sub thing;
 
 <div class="note">
 [Warning]
-The `thing` built-in type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
-built-in type instead. To produce the same result as the above example, use the following query:
+The `thing` base type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
+base type instead. To produce the same result as the above example, use the following query:
 
 <!-- test-ignore -->
 ```typeql
@@ -290,8 +290,8 @@ All `entity` types, `relation` types, `attribute` types and `roles` subtype the 
 
 <div class="note">
 [Warning]
-The `thing` built-in type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
-built-in type instead. To produce the same result as the above example, use the following query:
+The `thing` base type will be deprecated in TypeDB version 3.0. Consider using `entity`, `attribute`, or `relation` 
+base type instead. To produce the same result as the above example, use the following query:
 
 <!-- test-ignore -->
 ```typeql

@@ -85,7 +85,7 @@ The feature of attribute type owning another attribute types will be deprecated 
 
 ### Inheritance
 
-A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its supertype. However, while an entity or relation type can only have a single supertype, entity, and relation types can be subtypes of other entity and relation subtypes, resulting in a type hierarchy. For example, “business unit” subtypes “user group”, which subtypes “subject”, which subtypes “Entity type” built-in type.
+A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its supertype. However, while an entity or relation type can only have a single supertype, entity, and relation types can be subtypes of other entity and relation subtypes, resulting in a type hierarchy. For example, “business unit” subtypes “user group”, which subtypes “subject”, which subtypes “Entity type” base type.
 
 <div class="note">
 [Note]

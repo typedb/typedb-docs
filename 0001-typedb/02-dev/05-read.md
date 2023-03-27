@@ -89,7 +89,7 @@ three variables.
 
 #### Limit the results
 
-Use the `limit` keyword followed by the maximum number of results to limit the number of results returned.
+Use the `limit` keyword followed by a positive integer to limit the number of results returned.
 
 <!-- test-ignore -->
 ```typeql
@@ -104,7 +104,8 @@ This query returns only one single (and random) instance of type `person`. Consi
 #### Sort the Answers
 
 Use the `sort` keyword followed by a variable, to sort the answers by the variable. A second argument is optional 
-and determines the sorting order: `asc` (ascending) or `desc` (descending). By default it’s ascending.
+and determines the sorting order: `asc` (ascending) or `desc` (descending). By default, if no second argument is set, 
+the ascending order will be used.
 
 <!-- test-ignore -->
 ```typeql
@@ -133,8 +134,8 @@ The example above will return all `full-name` and `email` attributes of all `per
 #### Offset the Answers
 
 Use the `offset` keyword followed by the number to offset the answers by. This is commonly used with the `limit` 
-keyword to return a desired range of the answers. Don’t forget to [sort](#sort-the-answers) the results to guarantee 
-they will stay in the same order while you move through them.
+keyword to return a desired range of the answers. Don’t forget to [sort](#sort-the-answers) the results to ensure 
+predictable and deterministic results.
 
 <!-- test-ignore -->
 ```typeql
@@ -266,9 +267,9 @@ get $o, $fp; count;
 
 <div class="note">
 [Note]
-The `count` function is applied to every result returned. If more than one variable mentioned in get, than count 
-will show the number of unique results. This is also the case, when no `get` clause added, which actually means that 
-all matched variables are included.
+The `count` function is applied to every result returned. If more than one variable mentioned in get, then `count` 
+will show the number of unique combinations of results. This is also the case when no `get` clause is added, which 
+actually means that all matched variables are included.
 </div>
 
 <!-- test-ignore -->

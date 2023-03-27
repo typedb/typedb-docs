@@ -11,9 +11,8 @@ toc: false
 ## Overview
 
 This Quickstart guide goes through the step-by-step process of creating and interacting with a TypeDB database designed 
-for an
-[Identity and Access Management](https://en.wikipedia.org/wiki/Identity_management) solution that will be described 
-[later](04-iam-schema.md).
+for an [Identity and Access Management](https://en.wikipedia.org/wiki/Identity_management) solution that will be 
+described [later](04-iam-schema.md).
 
 <div class="note">
 [Important]
@@ -56,7 +55,7 @@ After showing the TypeDB ASCII logo and the bootup completion time, TypeDB is re
 Launch TypeDB Studio, then:
 
 1. Click the [**Connect to TypeDB**] button (right side of the toolbar).
-2. Enter localhost:1729 in the [**Address**] field.
+2. Enter `localhost:1729` in the [**Address**] field.
 3. Click the [**Connect**] button (the dialog will close after a successful connection).
 
 ![Connection Manager Connected](../../images/studio/connection-interface-connected.png)
@@ -136,15 +135,6 @@ company-membership sub relation,
 
 parent-company sub attribute,
     value string;
-
-#rule attribute-parent-company:
-#    when {
-#        (parent-company: $c, company-member: $t) isa company-membership;
-#        $c has name $c-name;
-#        ?name-value = $c-name
-#    } then {
-#        $t has parent-company ?name-value;
-#    };
 
 rule attribute-parent-company:
     when {
@@ -500,7 +490,7 @@ To execute a simple schema query:
 
 1. Ensure the [**Session type**] (schema / data) switch is set to `schema` (next to the database dropdown).
 2. Ensure the [**Transaction type**] (write / read) switch is set to `read`.
-3. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel.
+3. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the [**Text-editor**] panel.
 4. Copy the TypeQL statement below.
 5. Click the green “play” button.
 
@@ -512,8 +502,8 @@ The above query returns all types in the schema and displays the results as a gr
 
 <div class="note">
 [Warning]
-The `thing` built-in type will be deprecated in TypeDB version `3.0`. Consider using `entity`, `attribute`, or `relation` 
-built-in type instead. To produce the same result as the above example, use the following query:
+The `thing` base type will be deprecated in TypeDB version `3.0`. Consider using `entity`, `attribute`, or `relation` 
+base type instead. To produce the same result as the above example, use the following query:
 
 <!-- test-ignore -->
 ```typeql
@@ -526,11 +516,11 @@ match $s sub $t; { $t type entity; } or { $t type relation; } or { $t type attri
 
 ### Insert data
 
-We will insert data the same way we created the schema, by creating a TQL file in our project and executing it.
+We will insert data the same way we created the schema, by creating a `.tql` file in our project and executing it.
 
 To create the file:
 
-1. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the Text-editor panel.
+1. Click the `+` icon right from the [**Project**] panel next to the `iam-schema.tql` tab in the [**Text-editor**] panel.
 2. Copy the TypeQL statements below.
 3. Click the save icon (left side of toolbar).
 4. Enter `iam-data.tql` in the [**Save As**] field.
@@ -657,10 +647,10 @@ The transaction has been committed, and data can now be queried.
 
 To retrieve data from a database:
 
-1. Click the `+` icon right from the [**Project**] panel next to the `iam-data.tql` tab in the Text-editor panel.
+1. Click the `+` icon right from the [**Project**] panel next to the `iam-data.tql` tab in the [**Text-editor**] panel.
 2. Ensure the [Session type] (schema / data) switch (next to the database dropdown) is set to `data`.
 3. Ensure the [Transaction type] (write / read) switch is set to `read`.
-4. Replace the TypeQL statement in the Text-editor panel with the one below.
+4. Replace the TypeQL statement in the [**Text-editor**] panel with the one below.
 5. Click the green “play” button.
 
 <!-- test-ignore -->

@@ -51,7 +51,7 @@ Will shorten this page. Especially if we would use a single example with all thr
 ### Define an entity
 
 To define a new [entity](02-schema.md#entity), we use the `sub` keyword followed by `entity` thus creating a subtype of
-the built-in `entity` type.
+the base `entity` type.
 
 <div class="tabs dark">
 
