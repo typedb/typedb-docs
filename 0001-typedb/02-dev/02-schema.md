@@ -32,7 +32,7 @@ Creating a type means subtyping a base type or a user-defined type. The base typ
 
 |      Type      |              Instance of Type               |
 |:--------------:|:-------------------------------------------:|
-|  Entity type   |    Entity <br/>(instance of Entity type)    |
+|  Entity type   |    Entity <br/>(Instance of Entity type)    |
 | Relation type  |  Relation <br/>(Instance of Relation type)  |
 | Attribute type | Attribute <br/>(Instance of Attribute type) |
 
@@ -221,7 +221,7 @@ To produce the same result as the above example, use the following query:
 
 <!-- test-ignore -->
 ```typeql
-match $t sub $a;
+match $s sub $t; { $t type entity; } or { $t type relation; } or { $t type attribute; };
 ```
 </div>
 

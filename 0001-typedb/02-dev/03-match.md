@@ -186,7 +186,7 @@ built-in type instead. To produce the same result as the above example, use the 
 
 <!-- test-ignore -->
 ```typeql
-match $t sub $a;
+match $s sub $t; { $t type entity; } or { $t type relation; } or { $t type attribute; };
 ```
 
 </div>
