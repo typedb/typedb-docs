@@ -59,11 +59,20 @@ at the constructs of a typical statement.
 
 - We mark the end of the statement with a semicolon (`;`).
 
+A TypeQL pattern is like a system of equations, where every equation is a statement with variables. TypeDB will try 
+to find all solutions for a pattern. And a solution is just a set of values for the variables that satisfy all the 
+equations (statements of pattern) simultaneously.
+
+For example, in the statement above TypeDB will find all solutions that include a person with a full name of 
+`Masako Holley` having any email. What if there will be one person with the full name like that, but it will have two
+emails? Then TypeDB will find two solutions. And every solution will include every variable value. So the `person` 
+entity as well as `full-name` attribute will be included twice, but with different `email` attributes.
+
 ## Variables
 
 A variable can:
 
-- reference either instances of data or types.
+- reference either instance of data or type.
 - reference all (zero, one or many) concepts that comply with constraints described in a query patterns.
 
 <div class="note">
