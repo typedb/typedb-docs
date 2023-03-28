@@ -705,8 +705,11 @@ Rules are defined in TypeQL with the following syntax:
 <!-- test-ignore -->
 ```typeql
 rule <label>:
-when {<pattern>  [(, <pattern>)...]}
-then <pattern>
+when {
+    <pattern>  [(<pattern>)...]
+} then {
+    <pattern>
+};
 ```
 
 The `rule`, `when`, and `then` keywords are specific to rule definitions.
