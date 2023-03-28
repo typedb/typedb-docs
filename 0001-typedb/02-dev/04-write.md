@@ -2,7 +2,7 @@
 pageTitle: Writing data
 keywords: typeql, typedb, query, insert, delete, update, write
 longTailKeywords: typeql insert, typeql write data, typeql delete, typeql update
-Summary: Writing data in TypeDB.
+Summary: Writing data in a TypeDB database.
 ---
 
 # Writing data
@@ -32,11 +32,11 @@ Insert queries are written in TypeQL with the following syntax:
 
 <!-- test-ignore -->
 ```typeql
-[match <pattern> [(, <pattern>)...]] 
-insert <pattern> [(, <pattern>)...] 
+[match <pattern>]
+insert <pattern>
 ```
 
-The optional `match` clause uses one or more patterns to find existing data which is needed to insert new data. 
+The optional `match` clause uses a pattern to find existing data which is needed to insert new data. 
 For example, to insert a new relation, we need to match every entity, attribute, and/or other relation that will 
 play a role in it to be able to address them in the `insert` clause. 
 
@@ -45,8 +45,19 @@ the `match` clause.
 
 <div class="note">
 [Note]
-Patterns consist of variables and properties for data instances. For more information see the 
-[Patterns overview](03-match.md#query-pattern-anatomy) section.
+A pattern consists of variables and constraints for concepts. For more information see the 
+[Pattern syntax](03-match.md#pattern-syntax) section.
+</div>
+
+The `insert` query is the only query that can be without a `match` clause. In that case the pattern in the `insert` 
+clause will be used exactly once per query. 
+
+In case there is a `match` clause before an `insert` clause then the number of inserts will depend on the number of 
+answers matched by `match` clause. In that case `insert` clause will be executed once per every matched answer.
+
+<div class="note">
+[Important]
+If there is no matches for a `match` clause in an `insert` query then there will be no inserts. 
 </div>
 
 <div class="note">
@@ -306,8 +317,8 @@ Delete queries are written in TypeQL with the following syntax:
 
 <!-- test-ignore -->
 ```typeql
-match <pattern> [(, <pattern>)...] 
-delete <pattern> [(, <pattern>)...]
+match <pattern>
+delete <pattern>
 ```
 
 The `match` clause uses patterns to find existing data/references which may be removed. The `delete` clause uses a 
@@ -315,8 +326,16 @@ pattern to specify which data/references found by the `match` clause should be r
 
 <div class="note">
 [Note]
-Patterns consist of variables and properties for data instances. For more information see the 
-[Patterns overview](03-match.md#query-pattern-anatomy) section.
+A pattern consists of variables and constraints for concepts. For more information see the 
+[Pattern syntax](03-match.md#pattern-syntax) section.
+</div>
+
+The number of deleted concepts depends on the number of answers matched by `match` clause. `delete` clause will be 
+executed once per every matched answer.
+
+<div class="note">
+[Important]
+If there is no matches for a `match` clause in a `delete` query then there will be no deletes. 
 </div>
 
 <div class="note">
@@ -485,9 +504,9 @@ Updates are written in TypeQL with the following syntax:
 
 <!-- test-ignore -->
 ```typeql
-match <pattern> [(, <pattern>)...]
-delete <pattern> [(, <pattern>)...]
-insert <pattern> [(, <pattern>)...]
+match <pattern>
+delete <pattern>
+insert <pattern>
 ```
 
 The `match` clause uses patterns to find existing data/references to be changed. The `delete` clause uses a pattern 
@@ -496,8 +515,17 @@ to specify the data/references which will replace it.
 
 <div class="note">
 [Note]
-Patterns consist of variables and properties for data instances. For more information see the 
-[Patterns overview](03-match.md#query-pattern-anatomy) section.
+A pattern consists of variables and constraints for concepts. For more information see the 
+[Pattern syntax](03-match.md#pattern-syntax) section.
+</div>
+
+The number of deleted and inserted concepts depends on the number of answers matched by `match` clause. `delete` 
+clause as well as `insert` clause will be executed once per every matched answer.
+
+<div class="note">
+[Important]
+If there is no matches for a `match` clause in a update (`match-delete-insert`) query then there will be no deletes 
+and no inserts. 
 </div>
 
 <div class="note">
