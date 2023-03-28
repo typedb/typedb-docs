@@ -1,14 +1,16 @@
 ---
-pageTitle: Match query
+pageTitle: Matching patterns
 keywords: typeql, query, match, pattern, statement, variable
-longTailKeywords: typeql match, match get, query patterns, match clause, typeql variables
+longTailKeywords: typeql match, query patterns, match clause, typeql variables, answers
 Summary: Targeting instances of data or schema types that match expressive patterns in TypeDB.
 ---
 
 # Matching patterns
 
-TypeDB uses patterns to read and write data in a database, and to read the types in its schema. 
-In [TypeQL](../../11-query/00-overview.md), a `match`, `get`, `insert` or `delete` keyword followed by one or more 
+TypeDB queries are written in [TypeQL](../../11-query/00-overview.md) and use patterns to manipulate schema and data of 
+a database.
+
+In TypeQL, a `match`, `get`, `insert` or `delete` keyword followed by one or more 
 patterns is a clause, with one or more clauses forming a query.
 
 These clauses can be combined to create four different types of queries:
@@ -23,7 +25,7 @@ These clauses can be combined to create four different types of queries:
   - [Delete](04-write.md#delete-query) (match-delete) query — to delete data.
   - [Update](04-write.md#update) (match-delete-insert) query — to delete and then insert data.
 
-A `match` clause is optional for Insert queries, but required for Get, Delete and Update queries.
+A `match` clause is optional for Insert queries, but required for all others.
 
 <div class="note">
 [Note]
@@ -34,55 +36,65 @@ While the `match` clause can be used to read types from a schema, the [define](0
 <div class="note">
 [Important]
 If a `match` clause is **not** followed by a `get`, `insert` or `delete` clause, TypeDB assumes it is a 
-[get query](05-read.md#get-query) and add an implicit `get` clause to return all variables defined in the `match` clause.
+[get query](05-read.md#get-query) and add an implicit `get` clause to return all variables defined in the `match` 
+clause.
 </div>
 
 ## Patterns overview
 
-At the core of each query sits a query pattern that describes a subset of data of our particular interest. Here we 
-examine the structure of query patterns closer. In general, patterns can be thought of as different arrangements of 
-statement collections. TypeQL statements constitute the smallest building blocks of queries. Let’s have a close look 
-at the constructs of a typical statement.
+TypeQL is **declarative** language. When writing TypeQL patterns for queries, we describe a set of 
+requirements or constraints for the concepts (types or instances) we would like to match (to perform 
+[get](05-read.md#get-query)/[insert](04-write.md#insert-query)/[delete](04-write.md#delete-query)/
+[update](04-write.md#update) query). Rather than writing an algorithm of how the data should be retrieved, we declare 
+requirements and the TypeDB query processor will take care of finding an optimal way to retrieve it.
+
+<div class="note">
+[Note]
+TypeQL is both a [Data Definition Language](https://en.wikipedia.org/wiki/Data_definition_language) and 
+[Data Manipulation Language](https://en.wikipedia.org/wiki/Data_manipulation_language).
+</div>
+
+In general, a pattern can be thought of as a system of equations, where every equation is a single statement. TypeDB 
+will solve the system to find all solutions. Every solution includes a value for every variable.
+
+TypeQL statements constitute the smallest building blocks of queries. Please find below a close look at the typical 
+statement structure.
 
 ![Statement structure](../../images/query/statement-structure.png)
 
 - A TypeQL variable is prefixed with a dollar sign `$`. Most statements start with a variable (`V`) providing a 
-  reference to a concept or multiple concepts. For more information on variables please see [Variables](#variables) 
-  section.
+  reference to a concept or multiple concepts (up to one per every solution found). For more information on variables 
+  please see [Variables](#variables) section.
 
 - The variable is followed by a comma-separated list of constraints (`p1`, `p2`, `p3`) describing the concepts the 
-  variable refers to. Here we can see that all the concepts that variable `$p` refers to, must be of type `person`. The 
-  matched instances are expected to own an attribute of type `full-name` with the value of `Masako Holley`. Additionally, 
-  we require the concepts to own an attribute of type `email` with any value. We assign an extra `$email` variable to 
-  those emails owned by the `$p`. Consequently, after performing a match on this statement, we should obtain all 
-  sets of concepts that satisfy our statement.
+  variable refers to.
 
 - We mark the end of the statement with a semicolon (`;`).
 
-A TypeQL pattern is like a system of equations, where every equation is a statement with variables. TypeDB will try 
-to find all solutions for a pattern. And a solution is just a set of values for the variables that satisfy all the 
-equations (statements of pattern) simultaneously.
+It's important to understand that the result of a `match` clause with any pattern is a set of solutions found. 
+The length of the set is equal to the number of solutions found, hence it can be: 
 
-For example, in the statement above TypeDB will find all solutions that include a person with a full name of 
-`Masako Holley` having any email. What if there will be one person with the full name like that, but it will have two
-emails? Then TypeDB will find two solutions. And every solution will include every variable value. So the `person` 
-entity as well as `full-name` attribute will be included twice, but with different `email` attributes.
+- zero, 
+- one,
+- or many. 
+
+For example, in the statement above TypeDB will find all solutions that include a `person` entity that has a 
+`full-name` attribute of `Masako Holley` and has any email. 
+
+What if there is no `person` entity with this particular name in a database? Then a set of zero solutions (answers) 
+will be returned, regardless of the emails.
+
+What if there is one `person` with the `full-name` attribute like that, but it has two `email` attributes? 
+Then TypeDB will find two solutions/answers. And every answer will include that one `person` entity and one of the 
+emails.
 
 ## Variables
 
 A variable can:
 
-- reference either instance of data or type.
-- reference all (zero, one or many) concepts that comply with constraints described in a query patterns.
-
-<div class="note">
-[Important]
-TypeQL is **declarative**. When writing TypeQL patterns for queries, we simply describe a **set of requirements** for 
-the information we would like to match (retrieve to perform [get](05-read.md#get-query)/
-[insert](04-write.md#insert-query)/[delete](04-write.md#delete-query)), rather than writing an algorithm of how 
-should it be obtained. Once we specify the target information to match, the TypeQL query processor will take care of 
-finding an optimal way to retrieve it.
-</div>
+- reference either instance of data or type from a database.
+- reference exactly one concept per every answer (solution) found. But the concept may be repeated in different 
+  answers.  
 
 There is some freedom in forming and composing our statements. For example, as shown below, we could write our single
 statement with three constraints:
@@ -92,7 +104,8 @@ statement with three constraints:
 $p isa person, has full-name 'Masako Holley', has email $email;
 ```
 
-However, we can also use separate patterns to achieve the same result:
+However, we can also separate this statement into three different statements in the same pattern to achieve the same 
+result:
 
 <!-- test-ignore -->
 ```typeql
@@ -156,20 +169,20 @@ The patterns below can be used to find data in a database.
 
 The following operators are supported for comparing attribute values: `=`, `!=`, `>`, `>=`, `<` and `<=`.
 
-### Combining patterns
+### Combining statements
 
 ![Combining statements](../../images/query/pattern-structure.png)
 
 By arranging statements together, we can express more complex pattern scenarios and their corresponding data.
 
 - Statement: simplest possible arrangement — a single basic building block as [explained above](#patterns-overview).
-- Conjunction: a set of patterns where to satisfy a match, all patterns must be matched. We use conjunctions by default 
-  just by separating the partaking patterns with semicolons `;`.
-- Disjunction: a set of patterns where to satisfy a match, at least one pattern must be matched. We form
-  disjunctions by enclosing the partaking patterns within curly braces `{}` and joining them together with the 
+- Conjunction (logical `AND`): a set of statements where to satisfy a match, all statements must be true.
+  We use conjunctions by default just by separating the partaking statements with semicolons `;`.
+- Disjunction (logical `OR`): a set of statements where to satisfy a match, at least one statement must be matched. 
+  We form disjunctions by enclosing the partaking statements within curly braces `{}` and joining them together with the 
   keyword `or`.
-- Negation: a conjunctive pattern that explicitly defines conditions that must not to be met. We form negations by 
-  defining the pattern of interest inside a `not {};` block.
+- Negation (logical negation): a statement that explicitly defines conditions that must **not** to be met. We form 
+  negations by defining the conditions not to be met in curly brackets of a `not {};` block.
 
 ## Match clause
 
