@@ -1,8 +1,8 @@
 ---
 pageTitle: Matching patterns
 keywords: typeql, query, match, pattern, statement, variable
-longTailKeywords: typeql match, query patterns, match clause, typeql variables, answers
-Summary: Targeting instances of data or schema types that match expressive patterns in TypeDB.
+longTailKeywords: typeql match, query pattern, match clause, typeql variables, answers
+Summary: Targeting instances of data or schema types that match a TypeQL pattern.
 ---
 
 # Matching patterns
@@ -10,8 +10,8 @@ Summary: Targeting instances of data or schema types that match expressive patte
 TypeDB queries are written in [TypeQL](../../11-query/00-overview.md) and use patterns to manipulate schema and data of 
 a database.
 
-In TypeQL, a `match`, `get`, `insert` or `delete` keyword followed by one or more 
-patterns is a clause, with one or more clauses forming a query.
+In TypeQL, a `match`, `get`, `insert` or `delete` keyword followed by a pattern (consisting of one or more 
+statements) is a clause.
 
 These clauses can be combined to create four different types of queries:
 
@@ -42,7 +42,7 @@ clause.
 
 ## Patterns overview
 
-TypeQL is **declarative** language. When writing TypeQL patterns for queries, we describe a set of 
+TypeQL is **declarative** language. When writing TypeQL pattern for query, we describe a set of 
 requirements or constraints for the concepts (types or instances) we would like to match (to perform 
 [get](05-read.md#get-query)/[insert](04-write.md#insert-query)/[delete](04-write.md#delete-query)/
 [update](04-write.md#update) query). Rather than writing an algorithm of how the data should be retrieved, we declare 
@@ -55,7 +55,7 @@ TypeQL is both a [Data Definition Language](https://en.wikipedia.org/wiki/Data_d
 </div>
 
 In general, a pattern can be thought of as a system of equations, where every equation is a single statement. TypeDB 
-will solve the system to find all solutions. Every solution includes a value for every variable.
+will solve the system to find all solutions. Every solution includes a concept (type or instance) for every variable.
 
 TypeQL statements constitute the smallest building blocks of queries. Please find below a close look at the typical 
 statement structure.
@@ -141,7 +141,7 @@ indentation for all your queries, but that will make it harder to read them (for
 
 ### Schema
 
-The patterns below can be used to find types and roles defined in a database’s schema.
+The statements below can be used to find types and roles defined in a database’s schema.
 
 | **What we are looking for in a schema** | **Pattern syntax**                                      |
 |-----------------------------------------|---------------------------------------------------------|
@@ -154,7 +154,7 @@ The patterns below can be used to find types and roles defined in a database’s
 
 ### Data
 
-The patterns below can be used to find data in a database.
+The statements below can be used to find data in a database.
 
 | **What we are looking for in data** | **Pattern syntax**                                                                                                             |
 |-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
@@ -537,7 +537,8 @@ The above query returns pairs of users that are not the same user.
 
 #### Conjunctions
 
-By default, a collection of patterns in a `match` clause, divided by semicolons, constructs a conjunction of patterns.
+By default, a collection of statements in a `match` clause, divided by semicolons, constructs a conjunction of 
+statements.
 
 <!-- test-ignore -->
 ```typeql
@@ -548,7 +549,7 @@ match
   $pe(permitted-subject: $p, permitted-access: $ac) isa permission;
 ```
 
-The above example uses conjunction to ensure all patterns are matched:
+The above example uses conjunction to ensure all statements are matched:
 
 1. Find all `person` entities (`$p`) that have a `full-name` attribute whose value is `Kevin Morrison`.
 2. Find all `object` entities (`$o`) that have a `path attribute` (`$o-path`).
@@ -561,7 +562,7 @@ which matching `person` entities plays the `permitted-subject` role.
 
 #### Disjunctions
 
-To include patterns in the form of a disjunction, we need to wrap each pattern in `{}` and place the `or` keyword 
+To include statements in the form of a disjunction, we need to wrap each statement in `{}` and place the `or` keyword 
 in between them.
 
 <!-- test-ignore -->
@@ -572,7 +573,7 @@ match
 get $p;
 ```
 
-The above query uses disjunctions to ensure one of two patterns are matched:
+The above query uses disjunctions to ensure one of two statements are matched:
 
 1. Finds all `person` entities that have a `full-name` attribute ($n).
 2. Checks to see if `$n` contains the text “Masako” **OR** if `$n` contains the text “Kevin”:
@@ -719,8 +720,8 @@ For more information on how to update data please see the [Writing data](04-writ
 
 A `match` clause can only address data or types that already exist in a database.
 
-The **declarative** nature of the TypeQL means that if one of the `match` clause patterns can’t find any instances 
-in a database that might or might not lead to an empty response.
+The **declarative** nature of the TypeQL pattern means that if one of the `match` clause statements can’t find any 
+instances in a database that might lead to finding no matches/solutions/answers to a query with that pattern.
 
 For example:
 
