@@ -143,27 +143,27 @@ indentation for all your queries, but that will make it harder to read them (for
 
 The statements below can be used to find types and roles defined in a database’s schema.
 
-| **What we are looking for in a schema** | **Pattern syntax**                                      |
-|-----------------------------------------|---------------------------------------------------------|
-| type                                    | `$<var_label> type <type>`                              |
-| subtype                                 | `$<var_label> sub[!] <type>`                            |
-| role types in a relation                | `$ <var_label> <relation> relates $<var_label>`         |
-| players types in a relation             | `$<var_label> plays <relation>:<role>`                  |
-| owners of attribute type                | `$<var_label> owns <attr-type>`                         |
-| attribute subtype                       | `$<var> sub[!] <attribute-type> [, value <value-type>]` |
+| **What we are looking for in a schema** | **Pattern syntax**                                       |
+|-----------------------------------------|----------------------------------------------------------|
+| type                                    | `$<var_label> type <type>;`                              |
+| subtype                                 | `$<var_label> sub[!] <type>;`                            |
+| role types in a relation                | `$ <var_label> <relation> relates $<var_label>;`         |
+| players types in a relation             | `$<var_label> plays <relation>:<role>;`                  |
+| owners of attribute type                | `$<var_label> owns <attr-type>;`                         |
+| attribute subtype                       | `$<var> sub[!] <attribute-type> [, value <value-type>];` |
 
 ### Data
 
 The statements below can be used to find data in a database.
 
-| **What we are looking for in data** | **Pattern syntax**                                                                                                             |
-|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| instance                            | `$<var_label> isa[!] <type> [, <has-attribute expression>...]`                                                                 |
-| attribute                           | `$<var_label> [isa[!] <attr-type>] (contains "<text>" &#124; like "<regex>" &#124; <value>) [, <has-attribute expression>...]` |
-| relation                            | `[$<var_label>] ([<role>:] $<var_label> [, [<role>:] $<var_label>]...) isa <relation-type> [, <has-attribute expression>...]`  |
-| has-attribute expression            | `has <attr-type> ($<var_label> &#124; [<comparison-operator>] <value> )`                                                       |
-| comparison                          | `$<var_label> [<comparison-operator>] <value>`                                                                                 |
-| equal                               | `$<var_label> is $<var_label>`                                                                                                 |
+| **What we are looking for in data** | **Pattern syntax**                                                                                                              |
+|-------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| instance                            | `$<var_label> isa[!] <type> [, <has-attribute expression>...];`                                                                 |
+| attribute                           | `$<var_label> [isa[!] <attr-type>] (contains "<text>" &#124; like "<regex>" &#124; <value>) [, <has-attribute expression>...];` |
+| relation                            | `[$<var_label>] ([<role>:] $<var_label> [, [<role>:] $<var_label>]...) isa <relation-type> [, <has-attribute expression>...];`  |
+| has-attribute expression            | `has <attr-type> ($<var_label> &#124; [<comparison-operator>] <value> );`                                                       |
+| comparison                          | `$<var_label> [<comparison-operator>] <value>;`                                                                                 |
+| equal                               | `$<var_label> is $<var_label>;`                                                                                                 |
 
 ### Comparison operators
 

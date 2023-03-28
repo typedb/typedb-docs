@@ -2,31 +2,36 @@
 pageTitle: Reading data
 keywords: typeql, query, match, pattern, read
 longTailKeywords: typeql match, match get, typeql read, typedb read
-Summary: Reading data in TypeDB.
+Summary: Reading data from a TypeDB database.
 ---
 
 # Reading data
 
-To get data (and/or schema types) from a database, run queries which consist of match and/or get clauses in a `read` 
-transaction.
+There is only one query type to retrieve data instances and types from a database: get query.
 
 To try the following examples use [TypeDB Studio](../../02-clients/01-studio.md) or other TypeDB 
 [Clients](../../02-clients/00-clients.md).
 
+For those developing applications with [TypeDB drivers](../../02-clients/00-clients.md#typedb-drivers), please see the 
+instructions and examples of how to send a query for a specific language/framework: 
+[Java](../../02-clients/03-java.md), 
+[Node.js](../../02-clients/05-nodejs.md), 
+[Python](../../02-clients/04-python.md).
+
 ## Get query
 
-A get query is used to extract data instances or types (schema concepts) out of a database by describing the desired 
-result in the preceding match clause. Use modifiers such as `limit`, `sort` and `offset` to retrieve an optionally 
-sorted subset of the matched instances.
-
-The get query triggers a search in a database based on what has been described in the match clause. 
+A get query triggers a search in a database based on what has been described in the `match` clause. It is 
+used to extract concepts (data instances or types) out of a database. The result of a get query can be quite different, 
+depending on the query itself ([modifiers](#modifiers), [aggregation](#aggregation), [grouping](#group)) 
+and transaction options ([inference](06-infer.md#inferring-data)). For more information see the 
+[Response interpretation](07-response.md) page.
 
 ### Syntax
 
 Get queries are written in TypeQL with the following syntax:
 
 ```bash
-match pattern [(, pattern)...] 
+match <pattern>
 [get <variable> [(, <variable>)...];] 
 [sort <variable> [asc|desc];] 
 [offset <value>;] 
@@ -35,16 +40,20 @@ match pattern [(, pattern)...]
 [count;] [sum|max|min|mean|median|std <variable>;]
 ```
 
-Patterns consist of variables and properties for data instances. For more information see the 
-[Query pattern anatomy](03-match.md#query-pattern-anatomy) section.
-
 <div class="note">
 [Note]
-Get clause works like a filter for results. Get query without a get clause will have all variables mentioned in match 
-patterns returned.
+A pattern consists of variables and constraints for concepts. For more information see the 
+[Pattern syntax](03-match.md#pattern-syntax) section.
 </div>
 
-Aggregation functions must be at the end of the query and do not require a GET clause.
+<div class="note">
+[Important]
+A `get` clause works like a filter for variables in matched answers. Get query without a `get` clause will have all 
+variables mentioned in `match` clause pattern to be returned as concepts in every answer.
+</div>
+
+Aggregation functions, as well as modifiers, and grouping must be at the end of the query and do not require a `get` 
+clause.
 
 ### Variables
 
@@ -74,22 +83,52 @@ get $x-n, $act-n, $o-fp;
 
 The example above uses a `match` clause to do the following:
 
-1. Find `permission` relation (`$pe`) of `$x` and `$y` variables.
+1. Finds `permission` relation (`$pe`) of `$x` and `$y` variables.
 2. Finds `$x` as `person` entities that have `full-name` attribute with value of `$x-n`. 
 3. `$x-n` should contain string `Kevin`.
 4. Finds `access` relation of `$o` as accessed-object and `$act` as valid-action.
 5. `$act` should have `action-name` attribute with value of `$act-n`.
 6. `$o` should have `path` attribute with value of `$o-fp`.
 
-The `get` clause then filters the result from the `match` clause to get only the `person`’s `full-name` (`$x-n`), 
+The `get` clause then filters the answers from the `match` clause to get only the `person`’s `full-name` (`$x-n`), 
 `action`’s `action-name` (`$act-n`) and `path` of an `object` (`$o-fp`). Every returned result should contain all 
-three variables.
+three concepts.
+
+### Number of answers
+
+The number of answers returned depends on the get query (mostly `match` clause pattern) and database data/schema.
+
+For example, if we have **3** `person` entities and **10** `file` entities in a database with the IAM schema and  
+send the following get query:
+
+<!-- test-ignore -->
+```typeql
+match
+  $x isa person;
+  $f isa file;
+get $x, $f; 
+```
+
+How many results are we expecting to retrieve from a database?
+
+<div class="note">
+[Note]
+Spoiler: **13** is the wrong answer here.
+</div>
+
+As the example above doesn't have any [modifiers](#modifiers), [aggregation](#aggregation), or [grouping](#group) 
+the number of results will depend on the number of matched solutions for pattern in the `match` clause. So the 
+TypeDB query processor will explore all possible solutions: every solution consisting of exactly one `person` entity 
+and one `file` entity. There are only `3 * 10 = 30` possible combinations of person and file entities, so we will 
+get 30 answers.
+
+See the [Patterns overview](03-match.md#patterns-overview) section of the Matching patterns page for more information.
 
 ### Modifiers
 
 #### Limit the results
 
-Use the `limit` keyword followed by a positive integer to limit the number of results returned.
+Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
 
 <!-- test-ignore -->
 ```typeql
@@ -103,9 +142,8 @@ This query returns only one single (and random) instance of type `person`. Consi
 
 #### Sort the Answers
 
-Use the `sort` keyword followed by a variable, to sort the answers by the variable. A second argument is optional 
-and determines the sorting order: `asc` (ascending) or `desc` (descending). By default, if no second argument is set, 
-the ascending order will be used.
+Use the `sort` keyword followed by a variable, to sort the answers using a variable mentioned in the first argument. A 
+second argument is optional and determines the sorting order: `asc` (ascending, be default) or `desc` (descending).
 
 <!-- test-ignore -->
 ```typeql
@@ -114,7 +152,8 @@ get $n;
 sort $n asc;
 ```
 
-This query returns all `full-name` attributes of all `person` entities, sorted by their `full-name` in ascending order.
+This query returns all `full-name` attributes of all `person` entities, sorted by the value of `full-name` in ascending 
+order.
 
 To sort by multiple variables use the same syntax and add additional variables and optional sorting order arguments 
 with a comma separator. 
@@ -148,11 +187,7 @@ offset 6; limit 10;
 This sorts the `full-name` attributes of all `person` entities in ascending order, skips the first six and returns up 
 to the next ten. 
 
-For those developing applications with [TypeDB drivers](../../02-clients/00-clients.md#typedb-drivers), please see the 
-instructions and examples for a specific language/framework: [Java](../../02-clients/03-java.md), 
-[Node.js](../../02-clients/05-nodejs.md), [Python](../../02-clients/04-python.md).
-
-## Group
+### Group
 
 We use the `group` function, optionally followed by another aggregate function, to group the answers by the 
 specified matched variable.
@@ -207,7 +242,7 @@ There can be a difference in the `full-name` value for the `README.md` file sinc
 the `full-name`.
 </div>
 
-## Aggregation
+### Aggregation
 
 Aggregation performs a calculation on a set of values, and returns a single value. 
 
@@ -254,7 +289,7 @@ attribute of `size-kb`. Including all of the same values owned by different file
 will be returned this way).
 </div>
 
-### Count
+#### Count
 
 Use the count keyword to get the number of the specified matched variable.
 
@@ -291,7 +326,7 @@ with `path` and with a `valid action` for every group (grouped by the `path` of 
 The `group` clause should go before the aggregation function.
 </div>
 
-### Sum
+#### Sum
 
 Use the `sum` keyword to get the sum of the specified `long` or `double` values of matched variable.
 
@@ -303,7 +338,7 @@ get $f, $s;
 sum $s;
 ```
 
-### Maximum
+#### Maximum
 
 Use the `max` keyword to get the maximum value among the specified `long` or `double` values of matched variable.
 
@@ -314,7 +349,7 @@ match
 get $f, $s; max $s;
 ```
 
-### Minimum
+#### Minimum
 
 Use the `min` keyword to get the minimum value among the specified `long` or `double` values of matched variable.
 
@@ -325,7 +360,7 @@ match
 get $f, $s; min $s;
 ```
 
-### Mean
+#### Mean
 
 Use the `mean` keyword to get the average value of the specified `long` or `double` values of matched variable.
 
@@ -336,7 +371,7 @@ match
 get $f, $s; mean $s;
 ```
 
-### Median
+#### Median
 
 Use the `median` keyword to get the median value among the specified `long` or `double` values of matched variable.
 
@@ -347,7 +382,7 @@ match
 get $f, $s; median $s;
 ```
 
-### Standard deviation
+#### Standard deviation
 
 Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of matched 
 variable. Usually used with the average value, returned by the mean keyword.
