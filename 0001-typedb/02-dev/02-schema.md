@@ -36,7 +36,7 @@ Creating a type means subtyping a base type or a user-defined type. The base typ
 | Relation type  |  Relation <br/>(Instance of Relation type)  |
 | Attribute type | Attribute <br/>(Instance of Attribute type) |
 
-There is a strict hierarchy of types with all of the types being children (grandchildren, grand- grandchildren, etc.) 
+There is a strict hierarchy of types with all types being children (grandchildren, grand- grandchildren, etc.) 
 of a base type. Every type can have only one parent. There is also an internal type `role` that is used in relations. 
 Instances of types (i.e., the data) are known as `entities`, `relations`, and `attributes`.
 
@@ -317,17 +317,26 @@ object sub entity, abstract, plays access:accessed-object;
 
 ##### Subtypes another entity
 
-An entity type can subtype another entity type by replacing the `entity` keyword with the name of another entity type.
+<div class="note">
+[Note]
+All types that are subtyping `entity` base type directly or through other subtypes are called entity types. 
+Instances of these types are called entities. The same approach can be applied to attributes and relations.
+</div>
+
+An entity type can subtype another entity type by using the same `sub` keyword, but replacing the `entity` after it 
+with the name of another entity type to subtype.
 
 <!-- test-ignore -->
 ```typeql
 define
 
 path sub attribute, value string;
+
 object sub entity, abstract, owns object-type, plays access:accessed-object;
 resource sub object, abstract;
 file sub resource, owns path;
 ```
+
 In the above example, the `resource` and `file` entity types are subtypes of the `object`, which itself is a subtype 
 of the `entity` base type. They inherit the `object-type` attribute type ownership from it as well as its 
 `access:accessed-object` role. However, while the `resource` subtype is abstract, the `file` subtype is not. Hence, we 
