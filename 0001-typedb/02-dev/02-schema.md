@@ -85,11 +85,15 @@ The feature of attribute type owning another attribute types will be deprecated 
 
 ### Inheritance
 
-A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its supertype. However, while an entity or relation type can only have a single supertype, entity, and relation types can be subtypes of other entity and relation subtypes, resulting in a type hierarchy. For example, “business unit” subtypes “user group”, which subtypes “subject”, which subtypes “Entity type” base type.
+A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its 
+supertype. However, while a type can only have a single supertype, types can be subtypes of other subtypes, 
+resulting in a type hierarchy. For example, `business unit` subtypes `user group`, which subtypes `subject`, 
+which subtypes `entity` base type.
 
 <div class="note">
 [Note]
-While roles are not types, they can be extended similarly to the way entity and relation types are.
+While roles are not generally considered to be types, they can be inherited and even overriden as a part of relation 
+inheritance.
 </div>
 
 ## Rules
@@ -301,7 +305,7 @@ See example in [Key attribute](#define-attribute-types) section.
 
 ##### Plays a role
 
-To add roles that entities of a specific entity type can play, use the “plays” keyword.
+To add roles that entities of a specific entity type can play, use the `plays` keyword.
 
 <!-- test-ignore -->
 ```typeql
@@ -378,7 +382,7 @@ Attribute types are defined in TypeQL with the following pattern:
 
 <!-- test-ignore -->
 ```typeql
-<name> sub (attribute | <abstract attribute type name>) [(, abstract)], value <data type> [, regex “<expression>”]
+<name> sub (attribute | <abstract attribute type name>) [(, abstract)], value <data type> [, regex "<expression>"]
 
 [(, owns <attribute type name)...]
 
