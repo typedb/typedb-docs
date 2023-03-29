@@ -36,7 +36,7 @@ Creating a type means subtyping a base type or a user-defined type. The base typ
 | Relation type  |  Relation <br/>(Instance of Relation type)  |
 | Attribute type | Attribute <br/>(Instance of Attribute type) |
 
-There is a strict hierarchy of types with all of the types being children (grandchildren, grand- grandchildren, etc.) 
+There is a strict hierarchy of types with all types being children (grandchildren, grand- grandchildren, etc.) 
 of a base type. Every type can have only one parent. There is also an internal type `role` that is used in relations. 
 Instances of types (i.e., the data) are known as `entities`, `relations`, and `attributes`.
 
@@ -85,11 +85,15 @@ The feature of attribute type owning another attribute types will be deprecated 
 
 ### Inheritance
 
-A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its supertype. However, while an entity or relation type can only have a single supertype, entity, and relation types can be subtypes of other entity and relation subtypes, resulting in a type hierarchy. For example, “business unit” subtypes “user group”, which subtypes “subject”, which subtypes “Entity type” built-in type.
+A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its 
+supertype. However, while a type can only have a single supertype, types can be subtypes of other subtypes, 
+resulting in a type hierarchy. For example, `business unit` subtypes `user group`, which subtypes `subject`, 
+which subtypes `entity` base type.
 
 <div class="note">
 [Note]
-While roles are not types, they can be extended similarly to the way entity and relation types are.
+While roles are not generally considered to be types, they can be inherited and even overriden as a part of relation 
+inheritance.
 </div>
 
 ## Rules
@@ -301,7 +305,7 @@ See example in [Key attribute](#define-attribute-types) section.
 
 ##### Plays a role
 
-To add roles that entities of a specific entity type can play, use the “plays” keyword.
+To add roles that entities of a specific entity type can play, use the `plays` keyword.
 
 <!-- test-ignore -->
 ```typeql
@@ -313,17 +317,26 @@ object sub entity, abstract, plays access:accessed-object;
 
 ##### Subtypes another entity
 
-An entity type can subtype another entity type by replacing the `entity` keyword with the name of another entity type.
+<div class="note">
+[Note]
+All types that are subtyping `entity` base type directly or through other subtypes are called entity types. 
+Instances of these types are called entities. The same approach can be applied to attributes and relations.
+</div>
+
+An entity type can subtype another entity type by using the same `sub` keyword, but replacing the `entity` after it 
+with the name of another entity type to subtype.
 
 <!-- test-ignore -->
 ```typeql
 define
 
 path sub attribute, value string;
+
 object sub entity, abstract, owns object-type, plays access:accessed-object;
 resource sub object, abstract;
 file sub resource, owns path;
 ```
+
 In the above example, the `resource` and `file` entity types are subtypes of the `object`, which itself is a subtype 
 of the `entity` base type. They inherit the `object-type` attribute type ownership from it as well as its 
 `access:accessed-object` role. However, while the `resource` subtype is abstract, the `file` subtype is not. Hence, we 
@@ -378,7 +391,7 @@ Attribute types are defined in TypeQL with the following pattern:
 
 <!-- test-ignore -->
 ```typeql
-<name> sub (attribute | <abstract attribute type name>) [(, abstract)], value <data type> [, regex “<expression>”]
+<name> sub (attribute | <abstract attribute type name>) [(, abstract)], value <data type> [, regex "<expression>"]
 
 [(, owns <attribute type name)...]
 
