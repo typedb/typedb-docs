@@ -28,7 +28,6 @@ toc: false
    docker pull vaticle/typedb:latest
    ```
 
-
 ### Start
 
 The TypeDB container exposes TypeDB’s default port, `1729`, and uses its default data directory, 
@@ -76,23 +75,28 @@ docker stop try-typedb
 
 3. Extract archive
    
-   Create a new directory, extract the contents of the `.zip` file and move them (hereinafter replace `2.15.0` with the 
-   version downloaded):
+   Create a new directory for TypeDB files, extract the `.zip` file into the created directory.
+   It can be done through GUI or using the following commands (replace 
+   `C:\Users\username\Downloads\typedb-all-windows-2.15.0.zip` with the path to the downloaded archive):
 
    <!-- test-ignore -->
    ```shell
    mkdir "C:\Program Files\TypeDB"
-   cd Downloads
-   tar xvf typedb-all-windows-2.15.0.zip
-   move typedb-all-windows-2.15.0\* "C:\Program Files\TypeDB"
+   tar xvf "C:\Users\username\Downloads\typedb-all-windows-2.15.0.zip" -C "C:\Program Files\TypeDB"
    ```
 
-4. Update the PATH environment variable with the TypeDB installation directory:
+4. Update the `PATH` environment variable with the path to the `typedb.bat` file (replace `typedb-all-windows-2.15.0` 
+   with the actual name of the extracted directory):
 
    <!-- test-ignore -->
    ```shell
-   setx /M PATH "%path%;C:\Program Files\TypeDB"
+   setx /M PATH "%path%;C:\Program Files\TypeDB\typedb-all-windows-2.15.0"
    ```
+
+<div class="note">
+[Note]
+It may be required to restart your terminal window for the changes to environment variables to take effect.
+</div>
 
 ### Start
 
@@ -111,6 +115,12 @@ opening a new terminal to run TypeDB Console.
 
 <div class="note">
 [Note]
+Use a `typedb.bat server` command directly from the directory with TypeDB files to start a TypeDB server without 
+environment variables setup.
+</div>
+
+<div class="note">
+[Note]
 If the following error occurs, please try to install the "C++ redistributable" by following the instructions here.
 
 <!-- test-ignore -->
@@ -122,7 +132,7 @@ C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Ca
 
 ### Stop
 
-Press Ctrl-C in the terminal running TypeDB.
+Press Ctrl-C in the terminal running TypeDB. Confirm action if requested.
 
 ## Linux
 
@@ -185,8 +195,8 @@ Press Ctrl-C in the terminal running TypeDB.
    To get some other version of TypeDB installed, we can use the `apt show typedb-server=2.14.1`, where `2.14.1` — 
    the version we need.
 
-5. Install TypeDB using the versions from the previous command (here we will use typedb-server version `2.15` for 
-   example):
+5. Install `typedb-server`, `typedb-console`, and `typedb-bin` packages using the versions from the previous command 
+   (server and console have the same version number. Here we will use `2.15` for example):
 
    <!-- test-ignore -->
    ```bash
@@ -197,8 +207,8 @@ Press Ctrl-C in the terminal running TypeDB.
 [Note]
 The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin` that is why their version 
 numbers might differ. By default, APT will look for the exact same version of `typedb-bin` and that will result in an 
-error. To prevent this use `apt show` as shown above to display the dependencies of `typedb-server`, take note of 
-the `typedb-bin` version required and invoke an `apt install` command with the specific version of every package.
+error. To prevent this use `apt show` as shown above to invoke an `apt install` command with the specific version for 
+every package.
 </div>
 
 #### Manual
@@ -215,7 +225,7 @@ the `typedb-bin` version required and invoke an `apt install` command with the s
 3. Extract archive:
 
    Create a new directory, extract the contents of the `.zip` file and move them
-   (hereinafter replace `2.15.0` with the version downloaded):
+   (replace `2.15.0` with the version downloaded):
    
    <!-- test-ignore -->
    ```bash
@@ -223,11 +233,12 @@ the `typedb-bin` version required and invoke an `apt install` command with the s
    tar -xzf ~/Downloads/typedb-all-linux-2.15.0.tar.gz -C /opt/typedb
    ```
    
-4. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
+4. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory (replace `typedb-all-linux-2.15.0` 
+   with the actual name of the extracted directory):
 
    <!-- test-ignore -->
    ```bash
-   ln -s /opt/typedb/typedb /usr/local/bin/typedb
+   ln -s /opt/typedb/typedb-all-linux-2.15.0/typedb /usr/local/bin/typedb
    ```
 
 ### Start
@@ -273,31 +284,24 @@ Press Ctrl-C in the terminal running TypeDB.
 
 2. Download TypeDB
 
-   Download the latest release of TypeDB to the `~/Downloads` directory.
+   Download the latest release of [TypeDB](https://vaticle.com/download).   
 
 3. Extract archive
 
-   Extract the downloaded archive (hereinafter replace `2.15.0` with the version downloaded):
+   Create a new directory and extract the downloaded archive to the directory (replace `2.15.0` with the 
+   version downloaded):
    
    <!-- test-ignore -->
-   ```bash
-   cd ~/Downloads
-   unzip ~/Downloads/typedb-all-mac-2.15.0.zip
-   ```   
-
-4. Create a new directory and move the contents of the extracted `.zip` file to it:
-
-   <!-- test-ignore -->  
    ```bash
    sudo mkdir /opt/typedb
-   sudo mv ~/Downloads/typedb-all-mac-2.15.0/ /opt/typedb
+   unzip ~/Downloads/typedb-all-mac-2.15.0.zip -d /opt/typedb
    ```
-
-5. Add a symlink to typedb executable in the `/usr/local/bin` directory:
+   
+4. Add a symlink to typedb executable in the `/usr/local/bin` directory:
    
    <!-- test-ignore -->
    ```bash
-   ln -s /opt/typedb/typedb /usr/local/bin/typedb
+   ln -s /opt/typedb/typedb-all-mac-2.15.0/typedb /usr/local/bin/typedb
    ```
    
 ### Start
@@ -324,5 +328,5 @@ Press Ctrl-C in the terminal running TypeDB.
 ## After installation
 
 After the very first installation of TypeDB we recommend using our [Quickstart guide](03-quickstart.md) to set up a 
-database and try different types of queries with [TypeDB Studio](../../02-clients/01-studio.md). Alternatively you 
-can use some other [TypeDB Clients](../../02-clients/00-clients.md) to connect to a TypeDB server.
+database and try different types of queries with [TypeDB Studio](../../02-clients/01-studio.md). Alternatively, any 
+other [TypeDB Client](../../02-clients/00-clients.md) can be used to connect to a TypeDB server.
