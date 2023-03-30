@@ -264,7 +264,7 @@ inference option is enabled for transaction) but not the persisted database data
 
 In the rule above:
 - for every `subject` that already has permission to `modify_file` action on any `object`, 
-- adds `permission` to `view_file` on the same `object` for the same `subject`. 
+- adds permission to `view_file` on the same `object` for the same `subject`. 
  
 In short, if someone has **modify** access to a file, then they have **view** access too.
 
