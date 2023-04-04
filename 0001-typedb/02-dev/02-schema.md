@@ -707,8 +707,8 @@ The example above defines one attribute type and five relation types:
 
 Rules are defined independently of any types.
 
-They are executed only as a part of get queries when the [inference]() option is **enabled**. The results of rules 
-execution exist only within the transaction they run in. They are not persisted, and any data inferred in the 
+They are executed only as a part of get queries when the [inference](06-infer.md) option is **enabled**. The results of 
+rules execution exist only within the transaction they run in. They are not persisted, and any data inferred in the 
 transaction ceases to exist when the transaction is closed. Read more on rules in the [Rules](#rules) section.
 
 #### Syntax
@@ -735,9 +735,9 @@ constraints for **data** instances. For more information see the [Pattern syntax
 
 #### Rule Validation
 
-The `when` clause of a rule must be a [conjunctive](03-match.md#conjunctions) or 
-[disjunctive](03-match.md#disjunctions) pattern, whereas the `then` clause should describe a single relation or 
-ownership of an attribute(due to [Horn-clause logic](https://en.wikipedia.org/wiki/Horn_clause)).
+The `when` clause of a rule can be a multi statement pattern and include disjunctions, whereas the `then` clause should 
+describe a single relation or ownership of an attribute (due to 
+[Horn-clause logic](https://en.wikipedia.org/wiki/Horn_clause)).
 
 The `then` clause (conclusion) of a rule can’t use variables that aren’t defined in the `when` clause (condition).
 
