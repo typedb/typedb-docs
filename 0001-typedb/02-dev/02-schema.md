@@ -735,14 +735,19 @@ constraints for **data** instances. For more information see the [Pattern syntax
 
 #### Rule Validation
 
-The `when` clause of a rule can be a multi statement pattern and include disjunctions, whereas the `then` clause should 
-describe a single relation or ownership of an attribute (due to 
-[Horn-clause logic](https://en.wikipedia.org/wiki/Horn_clause)).
-
-The `then` clause (conclusion) of a rule can’t use variables that aren’t defined in the `when` clause (condition).
+The `when` clause (conclusion) of a rule can be a multi statement pattern and can include disjunctions and negations, 
+whereas the `then` clause (condition) should describe a single relation or constraint of ownership of an attribute 
+(due to [Horn-clause logic](https://en.wikipedia.org/wiki/Horn_clause)).
 
 When using a disjunction in a rule, the disjunctive parts must be bound by variables outside of the `or` statement. 
 These variables are the only ones permitted that can be used in the `then` clause.
+
+The `then` clause of a rule can’t use variables that aren’t defined in the `when` clause.
+
+The result of the `then` clause shall not invalidate the pattern, used in the `when` clause of the same rule. Be 
+carefull with negations. Placing the `then` clause statement in the `when` clause is not only redundant (rule will 
+not create a virtual data instance if it already exists, real or virtual one. There is no need to check for it not 
+existing in a rule).
 
 There are exactly **three** distinct **conclusions** permitted:
 
@@ -828,6 +833,9 @@ rule add-view-access:
 ```
 
 The example above illustrates a more complex rule, using the IAM schema.
+
+In short, the permission to access some file with action that has action-name `view_file` can be inferred by the rule 
+from the permission to `modify_file` with the same file.
 
 A full explanation of how this rule works is given in the [Example](06-infer.md#example) section of Inferring data page.
 
