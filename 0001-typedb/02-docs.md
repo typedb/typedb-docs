@@ -8,36 +8,48 @@ toc: false
 
 # Documentation overview
 
-Every product has a separate documentation block in the navigation menu on the left:
+This is the TypeDB server documentation section. It has the following sections:
 
-- [TypeDB](../001-typedb-old/01-overview.md) — our main product. It is a strongly typed database.
-- [TypeDB Cluster](../05-running-typedb-cluster/01-install-and-run.md) — enterprise version of the database with 
-  replication, backups and other premium functions.
-- [TypeDB Studio](../07-studio/00-overview.md) — our IDE designed for TypeDB and TypeQL.
-- [TypeDB Clients & APIs](../03-client-api/00-overview.md) — ways to communicate with TypeDB.
-- [TypeQL](../11-query/00-overview.md) — query language for TypeDB.
-
-At the end of the navigation menu you can find some additional info:
-
-- [Examples](../08-examples/00-overview.md) — examples of TypeDB usage.
-- Tutorials — advanced use case tutorials.
-- Migrating to TypeDB — materials on migrating from other databases to TypeDB. Including comparison of TypeDB to other 
-  popular database types:
-  - [SQL](../12-comparisons/00-sql-and-typeql.md)
-  - [Semantic web](../12-comparisons/01-semantic-web-and-typedb.md)
-  - [Graph](../12-comparisons/02-graph-databases-and-typedb.md)
+- **Getting started**
+  - [Introduction](01-start/01-introduction.md) — a brief description of TypeDB capabilities.
+  - [Installation](01-start/02-installation.md) — TypeDB server installation manual.
+  - [Quickstart guide](01-start/03-quickstart.md) — a guide to quickly set up a TypeDB database.
+  - [IAM schema explanation](01-start/04-iam-schema.md) — a brief description of IAM schema that widely used throughout 
+    the documentation.
+  - [Sample application](01-start/05-sample-app.md) — a simple example of how to use TypeDB with Java, Python, and 
+    Node.js.
+- **Development**
+  - [Connect](02-dev/01-connect.md) — TypeDB server and database connections
+  - [Schema](02-dev/02-schema.md) — types and rules definition
+  - [Matching patterns](02-dev/03-match.md) — patterns design and matching data
+  - [Writing data](02-dev/04-write.md) — data modification queries
+  - [Reading data](02-dev/05-read.md) — data retrieval queries
+  - [Inferring data](02-dev/06-infer.md) — data inference queries
+  - [Response interpretation](02-dev/07-response.md) — parsing query response
+  - [API and Drivers](02-dev/08-api.md) — brief description of Client API and TypeDB Drivers
+  - [Best practise](02-dev/09-best.md) — schema and query design tips
+- **Administration**
+  - [Configuration](03-admin/01-configuration.md) — TypeDB server configuration parameters and how to change 
+    configuration
+  - [Export/Import](03-admin/02-import-export.md) — exporting and importing database schema and data
+  - [Upgrading](03-admin/03-update.md) — how to migrate to a newer version of TypeDB
+  - [High Availability](03-admin/04-ha.md) — description of TypeDB high availability features
+  - [Security](03-admin/05-security.md) — description of TypeDB security features
+- **Tutorials**
+  - [Data migration](04-tutorials/01-data-migration.md) — How to load a dataset from an intermediate input format into 
+    TypeDB database
 
 ## Thinking in TypeQL and TypeDB
 
-The backbone of any TypeDB database is the representation of your domain: the [schema](../09-schema/00-overview.md).
-A TypeDB schema is the blueprint of a TypeDB knowledge graph. Using [TypeQL](../11-query/00-overview.md) language, we 
+The backbone of any TypeDB database is the representation of your domain: the [schema](02-dev/02-schema.md).
+A TypeDB schema is the blueprint of a TypeDB database. Using [TypeQL](../11-query/00-overview.md) language, we 
 define a schema to model a domain true to nature. The schema is made up of a set of types and rules, which harness 
 object-oriented principles and logical deduction.
 
 Types defined in a schema are all subtypes of the following basic ones: 
-- Entities. Representing the objects in your knowledge domain.
-- Relations. Representing n-ary relationships within your domain.
-- Attributes. Representing values.
+- Entities. Representing self-sufficient objects.
+- Relations. Representing n-ary relationships.
+- Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
 
 <div class="note">
 [Note]
@@ -46,5 +58,6 @@ These terms correspond to the components of an Entity-Relation-Attribute model, 
 also treated as first-class citizens.
 </div>
 
-Rules defined in your schema are deductive logic — encoded knowledge about your domain. They are when-then
-inferences that when applied to your data generate insights and new facts.
+Rules defined in your schema represent deductive logic. They are defined as condition (when clause) and conclusion 
+(then clause). Read queries with inference option enabled can generate insights based on the deductive logic 
+described with rules. Those insights are transaction bound and are not persisted.
