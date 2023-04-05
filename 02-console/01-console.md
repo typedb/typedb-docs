@@ -24,7 +24,7 @@ cd <your_typedb_console_dir>/
 
 ### Connect to TypeDB Cluster
 
-Go to the directory whe you have your `typedb-cluster-all` or `typedb-console` distribution unarchived, and run `./typedb console`
+Go to the directory where you have your `typedb-cluster-all` or `typedb-console` distribution unarchived, and run `./typedb console`
 ```
 cd <your_typedb_console_dir>/
 ./typedb console --cluster=127.0.0.1:1729 --username=<username> --password --tls-enabled=<true|false>

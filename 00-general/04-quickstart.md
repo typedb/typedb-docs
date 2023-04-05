@@ -101,7 +101,7 @@ social_network::data::write> source path-to-the-social-network/data.tql
 social_network::data::write> commit
 ```
 
-As you may have guessed, `social-network-data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-overview.md#a-hands-on-walkthrough) the dataset into the target database.
+As you may have guessed, `social-network/data.tql` contains a series of [TypeQL insert queries](../11-query/03-insert-query.md) that creates data instances in the social network knowledge graph. In a real-world application, it's more likely that we have the data in some data formats such as CSV, JSON or XML. In such a case, we need to use one of the [TypeDB Clients](../03-client-api/00-overview.md) to [migrate](../08-examples/00-overview.md#a-hands-on-walkthrough) the dataset into the target database.
 
 ### Query the Knowledge Graph
 Now that we have some data in our social network knowledge graph, we can go ahead and retrieve some information from it. To do this, we can use the [TypeDB Console](../02-console/01-console.md), [TypeDB Studio](../07-studio/00-overview.md) or one of the [TypeDB Clients](../03-client-api/00-overview.md).
@@ -128,15 +128,6 @@ The result contains the following answers:
 {$fn "Julie Hutchinson" isa full-name;}
 {$fn "Miriam Morton" isa full-name;}
 ```
-
-#### Visualise all risky banks 
-
-<div class = "note">
-[Warning]
-TypeDB Workbase is currently in the process of being replaced with a more performant application: TypeDB Studio, which is available as an alpha release on [github](https://github.com/vaticle/typedb-studio/releases)
-</div>
-
-![Visualise all risky banks](../images/quickstart/studio-risky-bank.png)
 
 #### Retrieve all employments using [Client Java](../03-client-api/01-java.md)
 
