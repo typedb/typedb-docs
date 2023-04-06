@@ -30,6 +30,10 @@ A TypeDB database consists of a schema and data. They are exported and imported 
 
 Migration using the export/import features is a two-step process: schema migration, followed by data migration.
 
+Both import and export of schema and data require an instance of TypeDB server to be working. If you are migrating 
+your data from one instance to another on the same server (for example — from old version to a newer one) be extra 
+careful with what instance being addressed by the commands.
+
 ## Export
 
 For the export to work make sure your TypeDB server with **the database to export** is working.
