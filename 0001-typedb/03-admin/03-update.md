@@ -35,7 +35,8 @@ from your TypeDB server files.
 
 ### Compatibility
 
-TypeDB will prevent you from using the same data files across incompatible database encoding versions. For more information on TypeDB server databases compatibility see table below.
+TypeDB will prevent you from using the same data files across incompatible database encoding versions. For more 
+information on TypeDB server databases compatibility see table below.
 
 | Database encoding Version | Compatible TypeDB Versions |
 |:-------------------------:|:--------------------------:|
