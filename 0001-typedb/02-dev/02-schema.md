@@ -142,27 +142,31 @@ are prevented with a tabling mechanism.
 ## Define schema
 
 TypeQL statements must begin with the `define` keyword in order to modify a schema (e.g., create **types** or 
-**rules**). However, when running multiple statements within a TQL file, the `define` keyword only has to be included 
+**rules**). 
+
+In order to use a new TypeDB database we need to define its schema first. Use TypeDB `define` queries in a `schema` 
+session with `write` transaction to do so. The TypeQL statements of these queries must begin with the `define` 
+keyword in order to define a schema (create types or rules). 
+
+However, when running multiple statements within a TQL file, the `define` keyword only has to be included 
 once at the very beginning.
 
 <div class="note">
 [Important]
-In order to modify a schema, a `schema` [session](01-connections.md#sessions) must be opened and a `write` 
+In order to define a schema, a `schema` [session](01-connections.md#sessions) must be opened and a `write` 
 [transaction](01-connections.md#transactions) started. The changes must be **committed** or they will NOT be permanent.
 </div>
 
-There is no limitation in terms of the order of types to define. You can define schema types in any order as long as 
+There is no limitation in the order of types to define. You can define schema types in any order as long as 
 the schema as a whole is valid. TypeDB Clients validate your schema definition requests before sending them to a TypeDB 
 server. You will not be able to commit changes if the schema definition query isn’t valid.
 
-### Creating a new database
+### Create a new database
 
-<div class="note">
-[Note]
-The examples below can and should be run in a separate empty database. It is recommended to create one and to run the 
-examples in the order they are shown. For more information on creating an empty database, see the 
-[Quickstart guide](../01-start/03-quickstart.md).
-</div>
+
+The examples below can and should be run in a separate empty database. It is recommended to create a new database 
+and to run the examples in the order they are shown. For more information on creating an empty database, see the 
+[Quickstart guide](../01-start/03-quickstart.md#create-a-database).
 
 <div class="note">
 [Important]
@@ -839,11 +843,19 @@ from the permission to `modify_file` with the same file.
 
 A full explanation of how this rule works is given in the [Example](06-infer.md#example) section of Inferring data page.
 
-## Modify schema
+## Modify existing schema
 
-### Adding types and rules
+### Add types and rules
 
-To add a type or a rule to an existing schema use [define](#define-schema) statement as usual.
+You can add types and rules to an existing schema by running the same [define](#define-schema) statement as usual.
+
+The define statements are idempotent. By sending the same define query twice or more times the very same resulting 
+schema must be achieved as if we send it only once. So types and/or rules will not be duplicated.
+
+A separate define statement for a new type or rule can be sent as a define query. Alternatively, the statement can be 
+added to the existing schema define statement and sent together. In this case only new types or rules will be added. 
+If you change name of the existing type or rule in the existing schema and then send it as define query then the 
+changed type or rule will be processed as a new one.
 
 ### Renaming types
 
@@ -881,7 +893,7 @@ We can undefine the association that a type has with an attribute.
 
 <!-- test-ignore -->
 ```typeql
-undefine object owns object-type;
+undefine subject owns credential;
 ```
 
 The query above removes ownership of the attribute type `object-type` from the entity type `object`. So that instances 
@@ -889,13 +901,14 @@ of `object` type will not have an ability to have ownership over instances of `o
 
 <div class="note">
 [Important]
-It's important to note that `undefine [label] sub [type], owns [attributes' label];` undefines the `label` type itself, 
+It's important to note that if we add the `sub` keyword to the `label` at the beginning: 
+`undefine [label] sub [type], owns [attributes' label];` it undefines the `label` type itself, 
 rather than just its association with the attribute type.
 
-For example, `undefine object sub entity, owns object-type;` will delete the `object` entity from the schema. 
-The ownership of the `object-type` attribute type by the `object` entity type will also be removed, but the 
-`object-type` attribute type will continue to exist. To undefine it from a schema use 
-`undefine object-type sub attribute;`.
+For example, `undefine subject sub entity, owns credential;` will delete the `subject` entity type from the schema. 
+The ownership of the `credential` attribute type by the `subject` entity type will also be removed, but the 
+`credential` attribute type will continue to exist. To undefine it from a schema use 
+`undefine credential sub attribute;`.
 </div>
 
 #### Undefine a relation
