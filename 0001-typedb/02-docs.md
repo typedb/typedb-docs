@@ -31,7 +31,7 @@ This is the TypeDB server documentation section. It has the following sections:
 - **Administration**
   - [Configuration](03-admin/01-configuration.md) — TypeDB server configuration parameters and how to change 
     configuration
-  - [Export/Import](03-admin/02-import-export.md) — exporting and importing database schema and data
+  - [Export/Import](03-admin/02-export-import.md) — exporting and importing database schema and data
   - [Upgrading](03-admin/03-update.md) — how to migrate to a newer version of TypeDB
   - [High Availability](03-admin/04-ha.md) — description of TypeDB high availability features
   - [Security](03-admin/05-security.md) — description of TypeDB security features

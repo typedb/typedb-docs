@@ -56,6 +56,9 @@ chapters:
             title: Response interpretation
             url: response
           -
+            title: Best practice
+            url: best
+          -
             title: APIs & Drivers
             url: api
       -
@@ -63,11 +66,14 @@ chapters:
         baseUrl: /docs/typedb/admin/
         pages:
           -
-            title: Overview
-            url: overview
+            title: Configuration
+            url: configuration
           -
-            title: Run modes
-            url: modes
+            title: Export & Import
+            url: export-import
+          -
+            title: Upgrading
+            url: update
           -
             title: High Availability
             url: ha
@@ -75,59 +81,56 @@ chapters:
             title: Security
             url: security
       -
-        title: Best Practices
-        baseUrl: /docs/typedb/security/
-        pages:
-          -
-            title: Managing Databases
-            url: managing
-          -
-            title: Migrating a Database
-            url: migrating
-#          -
-#            title: Configuring a Server
-#            url: upgrading
-          -
-            title: Upgrading a Server
-            url: upgrading
-      -
         title: Tutorials
         baseUrl: /docs/typedb/tutorial/
         pages:
           -
-            title: Managing Databases
-            url: managing
-          -
-            title: Migrating a Database
-            url: migrating
+            title: Data migration
+            url: data-migration
   -
     title: TypeDB Clients
     baseUrl: /docs/clients/
     sections:
       -
-        title: Common
+        title: Clients & Drivers
         hideTitle: true
         baseUrl: /docs/clients/
         pages:
           -
             title: Overview
-            url: overview
-          -
-            title: Other languages
-            url: other-languages
-          -
-            title: How to build a TypeDB Client
-            url: how-to-build-a-client
+            url: clients
           -
             title: TypeDB Studio
             url: studio
           -
             title: TypeDB Console
             url: console
+          -
+            title: Community Drivers
+            url: other-languages
+          -
+            title: How to build a new Client
+            url: new-client
+#      -
+#        title: Rust
+#        baseUrl: /docs/clients/rust/
+#        pages:
+#          -
+#            title: Install
+#            url: install
+#          -
+#            title: Tutorial
+#            url: tutorial
+#          -
+#            title: Reference
+#            url: reference
       -
-        title: Rust
-        # baseUrl: /docs/clients-and-apis/rust/
+        title: Java Driver
+        baseUrl: /docs/clients/java/
         pages:
+          -
+            title: Overview
+            url: overview
           -
             title: Install
             url: install
@@ -135,15 +138,15 @@ chapters:
             title: Tutorial
             url: tutorial
           -
-            title: Reference
+            title: API Reference
             url: reference
       -
-        title: Java
-        # baseUrl: /docs/clients-and-apis/java/
+        title: Python Driver
+        baseUrl: /docs/clients/python/
         pages:
           -
-            title: Java client
-            url: java
+            title: Overview
+            url: overview
           -
             title: Install
             url: install
@@ -151,15 +154,15 @@ chapters:
             title: Tutorial
             url: tutorial
           -
-            title: Reference
+            title: API Reference
             url: reference
       -
-        title: Node.js
-        # baseUrl: /docs/clients-and-apis/node-js/
+        title: Node.js Driver
+        baseUrl: /docs/clients/node-js/
         pages:
           -
-            title: NodeJS client
-            url: nodejs
+            title: Overview
+            url: overview
           -
             title: Install
             url: install
@@ -167,195 +170,5 @@ chapters:
             title: Tutorial
             url: tutorial
           -
-            title: Reference
+            title: API Reference
             url: reference
-      -
-        title: Python
-        # baseUrl: /docs/clients-and-apis/python/
-        pages:
-          -
-            title: Python client
-            url: python
-          -
-            title: Install
-            url: install
-          -
-            title: Tutorial
-            url: tutorial
-          -
-            title: Reference
-            url: reference
-  -
-    title: TypeQL
-    baseUrl: /docs/typeql/
-    sections:
-      -
-        title: Common
-        hideTitle: true
-        baseUrl: /docs/typeql/common/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: References
-            url: reference
-          -
-            title: Roadmap
-            url: roadmap
-      -
-        title: Defining Schema
-        baseUrl: /docs/typeql/schema/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Defining Types
-            url: types
-          -
-            title: Defining Rules
-            url: rules
-          -
-            title: Undefining Schema
-            url: undefine
-      -
-        title: Writing Data
-        baseUrl: /docs/typeql/writing-data/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Insert
-            url: insert
-          -
-            title: Delete
-            url: delete
-          -
-            title: Update
-            url: update
-      -
-        title: Matching Patterns
-        baseUrl: /docs/typeql/match/
-        pages:
-          -
-            title: Overview
-            url: overview
-          -
-            title: Constraints
-            url: constraints
-          -
-            title: Pattern
-            url: pattern
-          -
-            title: Modifiers
-            url: modifiers
-          -
-            title: Aggregate
-            url: aggregate
-          -
-            title: Group
-            url: group
-  -
-    title: Examples
-    baseUrl: /docs/examples/
-    sections:
-      -
-        title: Common
-        hideTitle: true
-        baseUrl: /docs/examples/common/
-        pages:
-          -
-            title: Overview
-            url: overview
-      -
-        title: By Use Case
-        baseUrl: /docs/examples/use-case/
-        pages:
-          -
-            title: IAM
-            url: iam
-          -
-            title: Knowledge Graph
-            url: knowledge-graph
-          -
-            title: Chat Bot
-            url: chat-bot
-      -
-        title: By Industry
-        baseUrl: /docs/examples/industry/
-        pages:
-          -
-            title: Biological
-            url: bio
-          -
-            title: CTI
-            url: knowledge-graph
-          -
-            title: CI Data Platform
-            url: chat-bot
-          -
-            title: Supply Chain Network
-            url: supply-chain
-  -
-    title: Migrating to TypeDB
-    baseUrl: /docs/migration/
-    sections:
-      -
-        title: Common
-        hideTitle: true
-        baseUrl: /docs/migration/common/
-        pages:
-          -
-            title: Overview
-            url: overview
-      -
-        title: SQL Databases
-        baseUrl: /docs/migration/sql/
-        pages:
-          -
-            title: Comparing SQL to TypeQL
-            url: compare
-          -
-            title: Migrating MySQL to TypeDB
-            url: mysql
-          -
-            title: Migrating Postgres to TypeDB
-            url: postgre
-      -
-        title: JSON Databases
-        baseUrl: /docs/migration/json/
-        pages:
-          -
-            title: Comparing MQL to TypeQL
-            url: compare
-          -
-            title: Migrating MongoDB to TypeDB
-            url: mongo
-      -
-        title: Graph Databases
-        baseUrl: /docs/migration/graph/
-        pages:
-          -
-            title: Comparing Cypher & Gremlin to TypeQL
-            url: compare
-          -
-            title: Migrating Neo4j to TypeDB
-            url: neo4j
-          -
-            title: Migrating DGraph to TypeDB
-            url: dgraph
-      -
-        title: Semantic Web
-        baseUrl: /docs/migration/graph/
-        pages:
-          -
-            title: Comparing RDF(S), OWL, and SPARQL to TypeQL
-            url: compare
-          -
-            title: Migrating from Stardog to TypeDB
-            url: stardog
-          -
-            title: Migrating from Virtuoso to TypeDB
-            url: virtuoso
