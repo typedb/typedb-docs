@@ -1,78 +1,141 @@
 ---
-pageTitle: API reference
-keywords: api, typedb, typeql, concept, reference
-longTailKeywords: TypeDB API, api reference, concept api, client api
-Summary: Reference for the TypeDB API.
+pageTitle: API & Drivers
+keywords: api, typedb, typeql, concept
+longTailKeywords: TypeDB API, concept api, client api
+Summary: TypeDB API and Drivers description.
 ---
 
-# API reference
+# API & Drivers
 
-## API structure
+TypeDB servers accept gRPC calls from [TypeDB Clients](../../02-clients/00-clients.md). This connection has "smart" 
+client architecture, meaning TypeDB Clients perform validation of queries, load balancing, and some other operations 
+transparent for users.
 
-TypeDB have "smart" client architecture, meaning [TypeDB Clients](../../02-clients/00-clients.md) perform validation 
-of queries, load balancing and some other operations transparent for users.
+To access all features of TypeDB and TypeDB Clients use the default interface provided by the clients:
 
-There is a part of TypeDB API that is specific for every TypeDB Client. It's called TypeDB Client API.
+* GUI from [TypeDB Studio](../../02-clients/01-studio.md),
+* CLI from [TypeDB Console](../../02-clients/02-console.md),
+* [Client API](../../02-clients/08-api.md) from TypeDB Drivers: 
+    * [Java](../../02-clients/03-java.md) Client API, 
+    * [Python](../../02-clients/04-python.md) Client API, 
+    * [Node.js](../../02-clients/05-nodejs.md) Client API, 
+    * or [other clients](../../02-clients/06-other-languages.md).
 
-But there is a common part of TypeDB API that sometimes called the TypeDB Concept API.
-
-## Concept Architecture
-
-Anything in TypeDB (other than [Rule](../../09-schema/03-rules.md)), whether a concept type or a data instance, is a 
-[Concept](../../04-concept-api/01-concept.md). The diagram below, illustrates how the Concept superclass is 
-inherited by 
-its direct and indirect descendants.
-
-![Concept Hierarchy](../../images/client-api/overview_hierarchy.png)
-
-**Type** refers to a Concept Type as defined in the [schema](../../09-schema/00-overview.md#typedb-data-model).
-
-**Thing** refers to an instance of data that is an instantiation of a Concept Type.
-
-## Local and Remote Concept API
-
-The Concept API architecture is implemented in 2 ways in each client: **local** and **remote**. The concepts share the same overall structure, but only a small set of methods are available on the *local* concepts.
-
-The difference is that local concept methods do not require a call to the server, while calls to methods on the *remote* concept API must make at least one full round-trip to the server to fetch a result. The execution time will include at least the network latency between your client and the TypeDB server.
+TypeDB Studio and TypeDB Console control sessions, transactions, and queries, as well as process the responses 
+automatically to present the results (in GUI and CLI respectively) to the user. 
 
 <div class="note">
 [Note]
-As an example, if you were to make 1,000 Remote Concept API calls and your latency (ping) from client to server is 10ms, you would spend a total of 10 seconds waiting for network round-trips.
-
-Where efficiency is a concern, especially when dealing with large numbers of results, we recommend that you include the required information to fetch in the query, rather than using the Remote Concept API.
+Both TypeDB Studio and TypeDB Console built on the base of the Java TypeDB Driver.
 </div>
 
-Queries always return local concepts. Local concepts must be [converted](#converting-local-concepts-to-remote-concepts) to remote concepts before remote methods are available.
+[TypeDB Drivers](../../02-clients/00-clients.md#typedb-drivers) provide greater flexibility and integration with 
+popular programming languages/frameworks at the cost of the requirement to perform session, transaction and data 
+manipulation manually. To interact with a TypeDB Driver use TypeDB Client API. There are slight differences between 
+Client APIs of different TypeDB Clients, including syntax, but they are very similar to each other by design.
 
-### Local Concept API
+Client API provide access to most functions of TypeDB Client and thus — most functions of TypeDB. The following is 
+the description of similar parts of APIs of different client. For more information on API methods — use the specific 
+TypeDB Driver documentation.
 
-Local Concept methods do not perform network operations. Local concepts are not bound to a transaction, so they can be safely used even after the transaction, session or client has been closed; however, the information contained may go out of date if another transaction modifies the Concepts on the server.
+## API structure
 
-In the Concept API documentation, the **(Local)** tag indicates that a method is available on *both local and remote* concepts. All other methods are only available on remote concepts.
+Any Client API divided into two big sections:
 
-### Remote Concept API
+* Query — classes and methods to connect to a TypeDB Server, manage sessions and transactions, send different types 
+  of queries.
+* Response — classes to store and provide processing methods for all concepts (types and instances) from a database.
 
-The remote concept API allows a user to make simple requests to the TypeDB server to discover information connected to a specific concept, or modify a concept. **All** remote concept operations require a network call to the TypeDB server.
+### Query
 
-Remote concepts must be linked to a **Transaction** in order to make calls. When remote concepts are returned by a Transaction method or a Remote Concept API method, they will inherit the same Transaction as the transaction/concept the method was called on. *When the Transaction is closed, the remote concept methods can no longer be used.
+To send a query to a TypeDB server a TypeDB Client needs to:
 
-Some remote concept methods are update, insert or delete operations, and will therefore fail if used on a concept that is linked to a *read* transaction.
+* establish a server [connection](01-connect.md#clients),
+* open a [Session](01-connect.md#sessions),
+* open a [Transaction](01-connect.md#transactions),
+* prepare TypeQL query string,
+* send the string as a proper typo of query.
+
+These operations are done using the special classes and methods provided by TypeDB Driver. See some examples 
+of how to do that with different TypeDB Drivers [Connections](01-connect.md), 
+[Sample Application](../01-start/05-sample-app.md) pages, or [TypeDB Clients](../../02-clients) documentation.
+
+All queries are written in TypeQL, but for some languages there are libraries to build the TypeQL queries in a more 
+native way. Like TypeQL [library for Java](https://github.com/vaticle/typeql/tree/master/java). 
+
+The exact syntax for these operations might be different in different languages. See the exact TypeDB Client 
+documentation for more information: [Java](../../02-clients/03-java.md), [Python](../../02-clients/04-python.md), 
+[Node.js](../../02-clients/05-nodejs.md).
+
+### Response
+
+In response to a query TypeDB server sends a response to the TypeDB Client. Client interprets the response and provides 
+either a processed result (TypeDB Studio and TypeDB Console) or a special objects and methods to process the results 
+(TypeDB Drivers). For every kind of query there is a predefined type of expected response and objects. 
+
+For more information on types(classes) of available objects and response types see the 
+[Response interpretation](07-response.md) page.
+
+For more information on types of response objects and their **methods** please see the [API reference](08-api.md) for 
+the specific driver/language type.
+
+## Local and remote methods
+
+Any Client API has two types of methods: 
+
+* local
+* remote
+
+The difference is that local concept methods do not require a call to the server, while calls to **remote** methods 
+on the Client API must make at least one full round-trip to a TypeDB server to fetch a result. The execution time 
+will include at least the network latency between TypeDB Client and TypeDB server.
 
 <div class="note">
-[Important]
-The interaction behaviour between remote concepts and results streaming is not well defined: this means that streamed query or method results may or may not see updates made using the concept API.
+[Note]
+For example, to make 1,000 Remote Client API calls and with latency (ping) from client to server being 10ms, you would 
+spend a total of 10 seconds waiting for network round-trips.
+
+When dealing with large numbers of results, we recommend to use a query to fetch all required information, rather than 
+using the Remote methods of Client API.
+</div>
+
+Queries always return **local** concepts. Local concepts must be 
+[explicitly converted](#converting-local-concepts-to-remote-concepts) to **remote** concepts to make remote **methods** 
+available.
+
+### Local concepts
+
+Local concept methods do not perform network operations. Local concepts are not bound to a transaction, so they can 
+be safely used even after the transaction, session or client has been closed; however, the information contained may 
+go out of date if another transaction modifies the concepts on the server.
+
+In the TypeDB Drivers documentation, the **Local** tag indicates that a method is available on **both** local and 
+remote concepts. All other methods are **only** available on remote concepts.
+
+### Remote concepts
+
+The remote concept methods allows a user to make simple requests to the TypeDB server to discover information 
+connected to a specific concept, or modify a concept. **All** remote concept operations require a network call to a 
+TypeDB server.
+
+Remote concepts must be linked to a **Transaction** in order to make calls. When remote concepts are returned by a 
+Transaction method or a Remote Client API method, they will inherit the same Transaction as the transaction/concept 
+the method was called on. When the Transaction is closed, the remote concept methods can no longer be used.
+
+Some remote concept methods are update, insert or delete operations, and will therefore fail if used on a concept 
+that is linked to a **read** transaction.
+
+<div class="note">
+[Warning]
+Streamed query or method results (that were already being streamed at the time of remote method call) may or may not 
+see updates made using the Client API.
 </div>
 
 ### Converting Local Concepts to Remote Concepts
 
-All local concepts have the method `asRemote(tx)`, where the `tx` parameter is a Transaction to use for the remote concept version of this local concept, and the returned value is the remote concept. See the `asRemote` method documentation for more details.
-
-In the sections that follow, we learn about the methods available on [Concept](../../04-concept-api/01-concept.md), 
-[Type](../../04-concept-api/02-type.md#type-methods), [ThingType](../../04-concept-api/02-type.md#thingtype-methods), 
-[EntityType](../../04-concept-api/02-type.md#entitytype-methods), 
-[AttributeType](../../04-concept-api/02-type.md#attributetype-methods), 
-[RelationType](../../04-concept-api/02-type.md#relationtype-methods), 
-[RoleType](../../04-concept-api/02-type.md#roletype-methods), 
-[Thing](../../04-concept-api/04-thing.md#thing-methods), 
-[Attribute](../../04-concept-api/04-thing.md#attribute-methods), 
-[Relation](../../04-concept-api/04-thing.md#relation-methods) and [Rule](../../04-concept-api/03-rule.md).
+All local concepts have the method `asRemote(tx)`, where the `tx` parameter is a Transaction to use for the remote 
+concept version of this local concept, and the returned value is the remote concept. See the `asRemote` method 
+documentation for more details: 
+[Java](../../02-clients/08-api.md#java#as-remote), 
+[Python](../../02-clients/08-api.md#python#as-remote), 
+[Node.js](../../02-clients/08-api.md#node#as-remote).
