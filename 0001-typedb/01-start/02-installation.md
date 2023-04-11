@@ -16,17 +16,17 @@ toc: false
 
 1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running:
 
-<!-- test-ignore -->
-   ```bash
-   docker version
-   ```
+   <!-- test-ignore -->
+      ```bash
+      docker version
+      ```
 
 2. Pull the latest TypeDB Docker image:
 
-<!-- test-ignore -->
-   ```bash
-   docker pull vaticle/typedb:latest
-   ```
+   <!-- test-ignore -->
+      ```bash
+      docker pull vaticle/typedb:latest
+      ```
 
 ### Start
 
