@@ -5,16 +5,20 @@ longTailKeywords: typedb client, typedb driver, client development, new client, 
 Summary: Guide to writing clients in new languages
 ---
 
+# Developing a new TypeDB Client
+
 ## Introduction
 
-Vaticle maintains official client drivers for Java, Python, and NodeJS. All our other client drivers are community-built.
+Vaticle maintains official TypeDB Clients (TypeDB Studio and Console) and Drivers for Java, Python, and NodeJS. All our 
+other TypeDB Clients or Drivers are community-built.
 
-It's possible to build a client for any language! A TypeDB client fundamentally is a lightweight frontend
+It's possible to build a TypeDB Client for any language! A TypeDB Client fundamentally is a lightweight frontend
 to the TypeDB server. This page is a guide for the components and protocols that need to be implemented.
 
 ## gRPC
 
-[gRPC](https://grpc.io/) is the network call framework that TypeDB uses. A TypeDB client needs a gRPC client library to communicate with the server. Most languages have gRPC libraries.
+[gRPC](https://grpc.io/) is the network call framework that TypeDB uses. A TypeDB client needs a gRPC client library 
+to communicate with the server. Most languages have gRPC libraries.
 
 ### Why use gRPC?
 
@@ -47,16 +51,17 @@ In our case, we only need client-side library compilation. Most languages have P
 TypeDB's protobuf definitions can be found at https://github.com/vaticle/typedb-protocol.
 During development, it's sufficient to manually copy-paste from this repository and do a one-time compilation.
 A more reliable method is to import the Protocol repo via a package manager and compile it at build time.
-TypeDB's build system, [Bazel](https://bazel.build/), offers one approach. If you'd like to use a different package manager, 
-the TypeDB team may also be able to help by setting up a distribution channel for your language's compiled protobuf files.
-If this is the case, please get in touch.
+TypeDB's build system, [Bazel](https://bazel.build/), offers one approach. If you'd like to use a different package 
+manager, the TypeDB team may also be able to help by setting up a distribution channel for your language's compiled 
+protobuf files. If this is the case, please get in touch.
 
 ## Client Code Architecture
 
 TypeDB’s official client drivers adhere to a common architecture. This greatly reduces the workload of
 maintaining them, so we also recommend community contributions to follow the same basic structure.
 
-This diagram shows all the packages (directories) in Client Java and their dependency graph:
+The following diagram shows all the packages (directories) in Client Java and their dependency graph:
+
 ![Client Package Structure](../images/client-api/package-structure.png)
 
 The entry point is the root package, in this case named `client-java`.
@@ -64,13 +69,19 @@ The entry point is the root package, in this case named `client-java`.
 `core` holds the basic building blocks: client, session, transaction.
 Then we have `query` for querying, `concept` for Concept API, `logic` for reasoning.
 
-There are many places you could start building a client. In this guide, we start by attempting to make a single gRPC call to TypeDB, and create a database.
+There are many places you could start building a client. In this guide, we start by attempting to make a single gRPC 
+call to TypeDB, and create a database.
 
 ## Tutorial: Create a Database
 
-Create a `TypeDB` source file in the root of the project, which should expose a function named `coreClient`, taking `address` as a parameter.
+Create a `TypeDB` source file in the root of the project, which should expose a function named `coreClient`, 
+taking `address` as a parameter.
 
-_Import statements are not included in this tutorial, except when importing from external libraries such as the TypeDB protobuf definitions._
+<div class="note">
+[Important]
+Import statements are not included in this tutorial, except when importing from external libraries such as the 
+TypeDB protobuf definitions.
+</div>
 
 <div class="tabs dark">
 
@@ -111,7 +122,11 @@ class TypeDB:
 
 `TypeDBClient` is not yet defined. Create a new directory named `api/connection` and create a `TypeDBClient` file there:
 
-(Note: if your language doesn't have interfaces or abstract classes, make `TypeDB.coreClient` return `CoreClient` instead, and skip this step)
+<div class="note">
+[Note]
+if your language doesn't have interfaces or abstract classes, make `TypeDB.coreClient` return `CoreClient` instead, 
+and skip this step.
+</div>
 
 <div class="tabs dark">
 
@@ -164,11 +179,17 @@ class TypeDBClient(ABC):
 
 The next step is to implement `connection/TypeDBClient` and its subclass `connection/core/CoreClient`.
 Create the directory structure: `connection/core` in the root of your project.
-Name the classes depending on language conventions: in Java/TypeScript, `TypeDBClientImpl` and `CoreClient`; in Python, `_TypeDBClient` and `_CoreClient`.
+Name the classes depending on language conventions: in Java/TypeScript, `TypeDBClientImpl` and `CoreClient`; in Python, 
+`_TypeDBClient` and `_CoreClient`.
 
-_Ensure that you've imported gRPC into your project, and refer to the [gRPC docs](https://grpc.io/docs/languages/) to learn how to create a Channel - the code varies by language._
+_Ensure that you've imported gRPC into your project, and refer to the [gRPC docs](https://grpc.io/docs/languages/) to 
+learn how to create a Channel - the code varies by language._
 
-(Note: In languages with no inheritance, adhere to this project structure as closely as possible, perhaps by writing top-level functions in the respective locations)
+<div class="note">
+[Note]
+In languages with no inheritance, adhere to this project structure as closely as possible, perhaps by writing 
+top-level functions in the respective locations.
+</div>
 
 <div class="tabs dark">
 
@@ -328,8 +349,11 @@ class _CoreClient(_TypeDBClientImpl):
 
 Finally, we implement `DatabaseManager`, and `CoreStub` to set up gRPC calls to the server.
 
-_You'll need to compile TypeDB's [protocol](https://github.com/vaticle/typedb-protocol) in order to do this.
-Most languages have protobuf compilers that you can use to generate a TypeDB protocol library for your language._
+<div class="note">
+[Important]
+You'll need to compile TypeDB's [protocol](https://github.com/vaticle/typedb-protocol) in order to do this.
+Most languages have protobuf compilers that you can use to generate a TypeDB protocol library for your language.
+</div>
 
 <div class="tabs dark">
 
@@ -518,7 +542,9 @@ class _CoreStub(TypeDBStub):
 
 </div>
 
-At this point, we have all the necessary components to create a database! [Run the TypeDB server locally](https://docs.vaticle.com/docs/typedb/install-and-run#start-the-typedb-server) and create a test function:
+At this point, we have all the necessary components to create a database! 
+[Run the TypeDB server locally](../0001-typedb/01-start/02-installation.md) and 
+create a test function:
 
 <div class="tabs dark">
 
@@ -556,34 +582,44 @@ def typedb_client_test():
 
 </div>
 
-We can verify that the database was created successfully using [Console's `database list` command](https://docs.vaticle.com/docs/console/console#database-management-commands), or by rerunning the test (which will throw an error saying that the database already exists).
+We can verify that the database was created successfully using 
+[Console's `database list` command](02-console.md#database-management-commands), or 
+by rerunning the test (which will throw an error saying that the database already exists).
 
-That concludes the basics tutorial. The following sections give an overview of the remaining components needed to open transactions, run queries, and take the client to 100% completion.
+That concludes the basics tutorial. The following sections give an overview of the remaining components needed to open 
+transactions, run queries, and take the client to 100% completion.
 
 We recommend using one of our existing Clients as a reference, and copying the implementation into your chosen language.
 
 ## Session and Transaction
 
-To query schema and data, we need to open a Session and Transaction of the appropriate types. For example, you can't modify schema in a data session.
+To query schema and data, we need to open a Session and Transaction of the appropriate types. For example, you can't 
+modify schema in a data session.
 
-A Session is essentially a long-lasting tunnel from client to database. However, we implement that with just simple RPC calls - Open and Close. 
+A Session is essentially a long-lasting tunnel from client to database. However, we implement that with just simple 
+RPC calls - Open and Close. 
 
-Sessions consume server resources, and may hold locks. If a client disconnects (say, by crashing) the server needs a way to know.
-So, we use a pulse mechanism. Every 5 seconds, a TypeDB client sends a Session Pulse to inform the server that the client is still alive.
-If no pulse is received in 30 seconds, the server times out the session, freeing up its resources for use elsewhere.
+Sessions consume server resources, and may hold locks. If a client disconnects (say, by crashing) the server needs a 
+way to know. So, we use a pulse mechanism. Every 5 seconds, a TypeDB client sends a Session Pulse to inform the 
+server that the client is still alive. If no pulse is received in 30 seconds, the server times out the session, 
+freeing up its resources for use elsewhere.
 
-Once a Session is open, we can open a Transaction inside it to read and write to the database. This is implemented with a bidirectional streaming RPC.
-Rather like a websocket, it’s a long-lasting tunnel that allows the client and server to talk to each other.
+Once a Session is open, we can open a Transaction inside it to read and write to the database. This is implemented 
+with a bidirectional streaming RPC. Rather like a websocket, it’s a long-lasting tunnel that allows the client and 
+server to talk to each other.
 
-TypeDB clients support multiple layers of concurrency. A Client can have many Sessions, and a Session can have many Transactions, and a Transaction can perform many Queries.
+TypeDB clients support multiple layers of concurrency. A Client can have many Sessions, and a Session can have many 
+Transactions, and a Transaction can perform many Queries.
 
 ![Concurrency Model](../images/client-api/concurrency-model.png)
 
 ## Inside a Transaction Stream
 
-Inside a transaction stream, the client sends requests, and the server is expected to respond to the client's requests in a timely manner.
+Inside a transaction stream, the client sends requests, and the server is expected to respond to the client's 
+requests in a timely manner.
 
-Each request must have the same message type. This is `Transaction.Client`, defined in [typedb-protocol](https://github.com/vaticle/typedb-protocol/blob/master/common/transaction.proto):
+Each request must have the same message type. This is `Transaction.Client`, defined in 
+[typedb-protocol](https://github.com/vaticle/typedb-protocol/blob/master/common/transaction.proto):
 
 ```protobuf
 // typedb-protocol/common/transaction.proto
@@ -611,13 +647,16 @@ message Transaction {
   }
 }
 ```
-Each **request message** is suffixed with `.Req`, and has a matching `.Res` (or `.ResPart`) to represent the server's response to that message.
+Each **request message** is suffixed with `.Req`, and has a matching `.Res` (or `.ResPart`) to represent the server's 
+response to that message.
 
-Now, there are two basic patterns to the communications; _single_ responses and _streamed_ responses, both of which are illustrated below.
+Now, there are two basic patterns to the communications; _single_ responses and _streamed_ responses, both of which 
+are illustrated below.
 
 ![Inside a Transaction Stream](../images/client-api/tx-stream.png)
 
-(Here, `Define.Req` and `Match.Req` are both types of `QueryManager.Req`, and `Type.Create.Req` and `GetThing.Req` are types of `ConceptManager.Req`)
+(Here, `Define.Req` and `Match.Req` are both types of `QueryManager.Req`, and `Type.Create.Req` and `GetThing.Req` are 
+types of `ConceptManager.Req`)
 
 ### Handling Streamed Responses
 
@@ -625,50 +664,58 @@ For requests such as TypeQL Match queries, the responses can be very long, so Ty
 We issue `Match.Req`, and get back multiple `Match.ResPart`s, which each contain some answers to the query.
 
 Getting all the answers may be costly in terms of server resources, and it can be wasteful if the client exits early.
-So we only auto-stream up to a certain limit, called the **prefetch size**, then we send a special message called “Continue”.
+So we only auto-stream up to a certain limit, called the **prefetch size**, then we send a special message called 
+“Continue”.
 If the client needs more answers, it should respond with a `Stream.Req`.
-That tells the server to continue streaming, and, when there are no answers left, it sends a `Stream.ResPart` with `state = DONE`. 
+That tells the server to continue streaming, and, when there are no answers left, it sends a `Stream.ResPart` 
+with `state = DONE`. 
 
-In a client, the Match response is typically represented as a Stream or Iterator. Seeing “DONE” from the server signals the end of iteration.
-The iterator implementation varies a bit by language. In Java, Streams are in-built; in Python we use an Iterator, and in NodeJS we use an Async Iterator. Use whatever is most natural in your language.
+In a client, the Match response is typically represented as a Stream or Iterator. Seeing “DONE” from the server 
+signals the end of iteration. The iterator implementation varies a bit by language. In Java, Streams are in-built; 
+in Python we use an Iterator, and in NodeJS we use an Async Iterator. Use whatever is most natural in your language.
 
 ### Handling Concurrent Requests
 
 Concurrent queries create a slight complication, since all the responses go down the same gRPC stream. We handle them
-by attaching a Request ID (`req_id`) to each request, and, whenever a Request is made, we create a Response Collector – essentially a bucket, or queue, that holds responses for this Query.
+by attaching a Request ID (`req_id`) to each request, and, whenever a Request is made, we create a Response 
+Collector – essentially a bucket, or queue, that holds responses for this Query.
 
 The queue fills up as answers are received from the server, and it gets emptied as the user iterates over these answers.
 
 ### Request Batching
 
-Loading bulk data may potentially require millions of INSERT queries, and gRPC can only send so many in a given timeframe.
-To mitigate this, we use request batching - see the `RequestTransmitter` class in any official client.
+Loading bulk data may potentially require millions of INSERT queries, and gRPC can only send so many in a given 
+timeframe. To mitigate this, we use request batching - see the `RequestTransmitter` class in any official client.
 It collects all requests in a 1ms time window, bundles them into a single gRPC message, and dispatches it. 
 
 ## Exploring Query Answers: Concept API
 
-The `ConceptMap` objects returned by a TypeQL Match query can contain any type of `Concept`. This `Concept` class hierarchy is reflected in TypeDB's client implementation and class structure.
+The `ConceptMap` objects returned by a TypeQL Match query can contain any type of `Concept`. This `Concept` class 
+hierarchy is reflected in TypeDB's client implementation and class structure.
 
 ![Concept Hierarchy](../images/client-api/overview_hierarchy.png)
 
-Implementing Concept API is not complicated, but it is quite long as there are a lot of methods. Concept methods either return single or streamed responses. `ThingType.getInstances` is an example of a Streamed Concept method.
+Implementing Concept API is not complicated, but it is quite long as there are a lot of methods. Concept methods 
+either return single or streamed responses. `ThingType.getInstances` is an example of a Streamed Concept method.
 
 ## TypeDB Cluster Client
 
-TypeDB Cluster runs as a distributed network of database servers which communicate internally to form a consensus when querying.
-If one server has an outage, we can recover from the issue by falling back to another server.
+TypeDB Cluster runs as a distributed network of database servers which communicate internally to form a consensus 
+when querying. If one server has an outage, we can recover from the issue by falling back to another server.
 To enable this, a Cluster client constructs 1 Core client per Cluster node:
 
 ![Cluster Client Architecture](../images/client-api/cluster.png)
 
 Suppose we open a Transaction to, say, Node 1, but we don’t get a response.
 
-In TypeDB, that would be a non-recoverable error. In Cluster, the Cluster client simply reroutes the request to a different
-Core client, which sends the request to its linked server. In this way, the client recovers from the failure and continues running as normal.
+In TypeDB, that would be a non-recoverable error. In Cluster, the Cluster client simply reroutes the request to a 
+different Core client, which sends the request to its linked server. In this way, the client recovers from the 
+failure and continues running as normal.
 
 ## Rapid Testing with BDD
 
-The recommended way to test a TypeDB Client is by using the [TypeDB Behaviour spec](https://github.com/vaticle/typedb-behaviour).
+The recommended way to test a TypeDB Client is by using the 
+[TypeDB Behaviour spec](https://github.com/vaticle/typedb-behaviour).
 It’s written in a language-agnostic syntax named [Gherkin](https://cucumber.io/docs/gherkin/reference/).
 Tests consist of named steps. To run the tests in a new client, you just need to implement the steps.
 This means you can test your client without having to write a single test!
@@ -685,5 +732,6 @@ Scenario: commit in a read transaction throws
 ## Conclusion
 
 A client is considered production-ready once it passes all the tests and adheres to the TypeDB architecture.
-If you encounter any difficulties along the way, do get in touch with the Vaticle team, preferably on [Discord](https://vaticle.com/discord) - we're happy to help speed up the development process.
+If you encounter any difficulties along the way, do get in touch with the Vaticle team, preferably on 
+[Discord](https://vaticle.com/discord) - we're happy to help speed up the development process.
 This will also enable us to add your project into the [TypeDB Open Source Initiative](https://typedb.org).

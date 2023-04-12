@@ -10,28 +10,31 @@ toc: false
 
 ## Overview
 
-A TypeDB Client is meant to be used for the purpose of managing and performing operations over databases on the TypeDB 
-server. Client uses `gRPC` to interact with the TypeDB server and provides a more user-friendly interface: API, GUI or 
-CLI.
+A TypeDB Client is meant to be used for the purpose of managing databases and performing operations (querying) with a
+database schema and data on the TypeDB server. A client uses `gRPC` to interact with a TypeDB server and provides 
+more user-friendly interface: API, GUI or CLI.
 
 Here is a list of existing TypeDB Clients:
 
 - Software tools:
   - [TypeDB Studio](01-studio.md)
   - [TypeDB Console](02-console.md)
-- [TypeDB drivers](#typedb-drivers)
+- [TypeDB drivers](#typedb-drivers) — libraries to connect to a TypeDB server with an application. There are:
   - Native drivers:
     - [Java](03-java.md)
-    - [Node.js](05-nodejs.md)
     - [Python](04-python.md)
+    - [Node.js](05-nodejs.md)
   - [Community drivers](06-other-languages.md)
 
 If you can't find a suitable client, consider [creating a new client](07-new-client.md).
 
 ## Architecture
 
-All TypeDB Clients share a common architecture. Simply put, the main components of any TypeDB client are the `client`
-itself, `session` and `transaction`.
+All TypeDB Clients share a common architecture. Simply put, the main components of any TypeDB Client are the classes 
+and methods to establish a connection to a TypeDB database, execute queries and parse responses.
+
+Specific information on the classes and methods provided in the API reference, but the syntax may vary for different 
+programming languages.
 
 ## Software tools
 
