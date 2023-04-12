@@ -46,7 +46,7 @@ database schema:
   represents an incomplete information state, such as a marriage in which only one of the spouses is known. While a 
   relation can be instantiated with only one roleplayer, a relation cannot logically exist without all of its 
   roleplayers, and so an instance of a relation always implies the existence of its missing roleplayers.
-* In an n-ary relation, every permutation of (**n-1**)-ary relation between its roleplayers must be valid.
+* In an n-ary relation, every combination of (**n-1**)-ary relation between its roleplayers must be valid.
   For example, a ternary relation between an actor, a film, and a role is valid because the following binary 
   relations are valid:
   * actor and film, 
@@ -79,7 +79,7 @@ database schema:
   would be to make `car` a subtype of `vehicle` and then have `car` play the role of `product` in, for instance, a 
   `purchase` relation.
 
-    In domains where cars are always products, for instance in a car dealership database (that might also sell 
+  In domains where cars are always products, for instance in a car dealership database (that might also sell 
   other products: parts, add-ons, and extended warranties, etc.), it might be safe to make it a subtype of 
   `product`, however this then means that the database cannot scale to consider cars in contexts other than being 
   products. This could be a worthwhile trade-off depending on the application, but should not be encouraged for 
