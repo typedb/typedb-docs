@@ -35,19 +35,19 @@ Use the source code below or the [explanation](#explanation) section to explore 
 from typedb.client import TypeDB, SessionType, TransactionType, TypeDBOptions
 from datetime import datetime
 
-print("\nIAM Sample App")
+print("IAM Sample App")
 
 print("Connecting to the server")
 with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
     print("Connecting to the `iam` database")
     with client.session("iam", SessionType.DATA) as session:  # Access data in the `iam` database as Session
-        print("\nRequest #1: User listing")
+        print("Request #1: User listing")
         with session.transaction(TransactionType.READ) as transaction:  # Open transaction to read
             typeql_read_query = "match $u isa user, has full-name $n, has email $e;"
             iterator = transaction.query().match(typeql_read_query)  # Executing query
-            k = 0
+            k = 0  # Reset counter
             for item in iterator:  # Iterating through results
-                k += 1  # Counter
+                k += 1
                 print("User #" + str(k) + ": " + item.get("n").get_value() + ", has E-Mail: " + item.get("e").get_value())
             print("Users found:", k)  # Print number of results
 
@@ -56,46 +56,45 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
                                 "$o isa object, has path $fp; $pa($o, $va) isa access; get $fp;"
             iterator = transaction.query().match(typeql_read_query)  # Executing query
-            k = 0
+            k = 0  # Reset counter
             for item in iterator:  # Iterating through results
-                k += 1  # Counter
+                k += 1
                 print("File #" + str(k) + ": " + item.get("fp").get_value())
             print("Files found:", k)  # Print number of results
 
-        print("\nRequest #3: Files that Kevin Morrison has view access to (with inference and pagination)")
-        typedb_options = TypeDBOptions.core()  # Initialising a new set of options
-        typedb_options.infer = True  # Enabling inference in this new set of options
-        with session.transaction(TransactionType.READ, typedb_options) as transaction:  # Open transaction to read with inference
+        print("\nRequest #3: Files that Kevin Morrison has view access to (with inference)")
+        with session.transaction(TransactionType.READ, TypeDBOptions.core().set_infer(True)) as transaction:  # Open transaction to read with inference
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
-                               "$o isa object, has path $fp; $pa($o, $va) isa access; " \
-                               "$va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
+                                "$o isa object, has path $fp; $pa($o, $va) isa access; " \
+                                "$va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
             iterator = transaction.query().match(typeql_read_query)  # Executing query
-            k = 0
+            k = 0  # Reset counter
             for item in iterator:  # Iterating through results
-                k += 1  # Counter
+                k += 1
                 print("File #" + str(k) + ": " + item.get("fp").get_value())
 
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
-                               "$o isa object, has path $fp; $pa($o, $va) isa access; " \
-                               "$va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
+                                "$o isa object, has path $fp; $pa($o, $va) isa access; " \
+                                "$va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
             iterator = transaction.query().match(typeql_read_query)  # Executing query
             for item in iterator:  # Iterating through results
-                k += 1  # Counter
+                k += 1
                 print("File #" + str(k) + ": " + item.get("fp").get_value())
             print("Files found:", k)  # Print number of results
 
         print("\nRequest #4: Add a new file and a view access to it")
         with session.transaction(TransactionType.WRITE) as transaction:  # Open transaction to write
-            path = "logs/" + datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".log"
-            typeql_insert_query = "insert $f isa file, has path '" + path + "';"
-            print("Inserting file:", path)
-            transaction.query().insert(typeql_insert_query)  # runs the query
-            typeql_insert_query = "match $f isa file, has path '" + path + "'; " \
+            filepath = "logs/" + datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".log"
+            typeql_insert_query = "insert $f isa file, has path '" + filepath + "';"
+            transaction.query().insert(typeql_insert_query)  # Executing query
+            print("Inserting file:", filepath)
+            typeql_insert_query = "match $f isa file, has path '" + filepath + "'; " \
                                   "$vav isa action, has action-name 'view_file'; " \
                                   "insert ($vav, $f) isa access;"
             print("Adding view access to the file")
-            transaction.query().insert(typeql_insert_query)  # runs the query
-            transaction.commit()  # commits the transaction
+            transaction.query().insert(typeql_insert_query)  # Executing query
+            transaction.commit()  # to persist changes, a 'write' transaction must be committed
+
 ```
 
 ### Explanation
@@ -237,17 +236,12 @@ import com.vaticle.typeql.lang.TypeQL;
 import static com.vaticle.typeql.lang.TypeQL.*;
 import com.vaticle.typeql.lang.query.TypeQLMatch;
 import com.vaticle.typeql.lang.query.TypeQLInsert;
-import com.vaticle.typedb.client.api.answer.ConceptMap;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main {
+    static int k = 0; // Counter
     public static void main(String[] args) {
         System.out.println("IAM Sample App");
 
@@ -259,145 +253,95 @@ public class Main {
             System.out.println("");
             System.out.println("Request #1: User listing");
             try (TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ)) { // READ transaction is open
-                List<PersonData> answer = new ArrayList<>(); // create a list for answers
-                readTransaction.query().match(
+                k = 0; // reset the counter
+                readTransaction.query().match( // Executing query
                         "match $u isa user, has full-name $n, has email $e;" // TypeQL query
-                ).forEach(result -> answer.add(new PersonData( // Store results as PersonData in the answer list
-                        result.get("n").asAttribute().asString().getValue(),
-                        result.get("e").asAttribute().asString().getValue())));
-                if (answer.isEmpty()) {
-                    System.out.println("Response is empty.");
-                } else {
-                    int k = 0; // create a counter
-                    for (PersonData i : answer) {
-                        k += 1;
-                        System.out.println("User #" + k + ": " + i.fullname + ", has E-mail: " + i.email);
-                    }
-                    System.out.println("Users found: " + k);
-                }
+                ).forEach(result -> { // Iterating through results
+                    String name = result.get("n").asAttribute().asString().getValue();
+                    String email = result.get("e").asAttribute().asString().getValue();
+                    k += 1;
+                    System.out.println("User #" + k + ": " + name + ", has E-mail: " + email);
+                });
+                System.out.println("Users found: " + k);
             }
 
             System.out.println("");
             System.out.println("Request #2: Files that Kevin Morrison has access to");
             try (TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ)) { // READ transaction is open
-                 List<String> answer = new ArrayList<>();
                 // String getQuery = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " +
                 //        "$o isa object, has path $fp; $pa($o, $va) isa access; get $fp;"; // Example of the same TypeQL query
-                TypeQLMatch.Filtered getQuery = TypeQL.match(
+                TypeQLMatch.Filtered getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
                         var("u").isa("user").has("full-name", "Kevin Morrison"),
                         var("p").rel("u").rel("pa").isa("permission"),
                         var("o").isa("object").has("path", var("fp")),
                         var("pa").rel("o").rel("va").isa("access")
                 ).get("fp");
-                Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
-                //answers.forEach(answer -> System.out.println(answer.get("fp").asThing().asAttribute().getValue()));
-                answers.forEach(result -> answer.add(result.get("fp").asAttribute().asString().getValue()));
-                if (answer.isEmpty()) {
-                    System.out.println("Response is empty.");
-                } else {
-                    int k = 0; // create a counter
-                    for (String i : answer) {
-                        k += 1;
-                        System.out.println("File #" + k + ": " + i);
-                    }
-                    System.out.println("Files found: " + k);
-                }
+                k = 0; // reset the counter
+                readTransaction.query().match(getQuery).forEach(result -> { // Executing query
+                    k += 1;
+                    System.out.println("File #" + k + ": " + result.get("fp").asAttribute().asString().getValue());
+                });
+                System.out.println("Files found: " + k);
             }
 
             System.out.println("");
             System.out.println("Request #3: Files that Kevin Morrison has view access to (with inference)");
             try (TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ, TypeDBOptions.core().infer(true))) { // READ transaction is open
-                List<String> answer = new ArrayList<>();
                 // String getQuery = "match $u isa user, has full-name 'Kevin Morrison';
                 // $p($u, $pa) isa permission;
                 // $o isa object, has path $fp;
                 // $pa($o, $va) isa access;
                 // $va isa action, has action-name 'view_file';
                 // get $fp; sort $fp asc; offset 0; limit 5;"
-                TypeQLMatch.Limited getQuery = TypeQL.match(
+                TypeQLMatch.Limited getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
                         var("u").isa("user").has("full-name", "Kevin Morrison"),
                         var("p").rel("u").rel("pa").isa("permission"),
                         var("o").isa("object").has("path", var("fp")),
                         var("pa").rel("o").rel("va").isa("access"),
                         var("va").isa("action").has("action-name", "view_file")
                 ).get("fp").sort("fp").offset(0).limit(5);
-                Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
-                answers.forEach(result -> answer.add(result.get("fp").asAttribute().asString().getValue()));
-                int k = 0; // create a counter
-                if (answer.isEmpty()) {
-                    System.out.println("Response is empty.");
-                } else {
-                    for (String i : answer) {
-                        k += 1;
-                        System.out.println("File #" + k + ": " + i);
-                    }
-                    //System.out.println("Files found (first batch): " + k);
-                }
+                k = 0; // reset the counter
+                readTransaction.query().match(getQuery).forEach(result -> { // Executing query
+                    k += 1;
+                    System.out.println("File #" + k + ": " + result.get("fp").asAttribute().asString().getValue());
+                });
 
-                List<String> answer2 = new ArrayList<>();
-                TypeQLMatch.Limited getQuery2 = TypeQL.match(
+                getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
                         var("u").isa("user").has("full-name", "Kevin Morrison"),
                         var("p").rel("u").rel("pa").isa("permission"),
                         var("o").isa("object").has("path", var("fp")),
                         var("pa").rel("o").rel("va").isa("access"),
                         var("va").isa("action").has("action-name", "view_file")
                 ).get("fp").sort("fp").offset(5).limit(5);
-                Stream<ConceptMap> answers2 = readTransaction.query().match(getQuery2);
-                answers2.forEach(result -> answer2.add(result.get("fp").asAttribute().asString().getValue()));
-                if (answer2.isEmpty()) {
-                    System.out.println("Response is empty for the files #6-10.");
-                } else {
-                    for (String i : answer2) {
-                        k += 1;
-                        System.out.println("File #" + k + ": " + i);
-                    }
-                    System.out.println("Files found: " + k);
-                }
+                readTransaction.query().match(getQuery).forEach(result -> { // Executing query
+                    k += 1;
+                    System.out.println("File #" + k + ": " + result.get("fp").asAttribute().asString().getValue());
+                });
+                System.out.println("Files found: " + k);
             }
 
             System.out.println("");
             System.out.println("Request #4: Add a new file and a view access to it");
             try (TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE)) { // WRITE transaction is open
-                String filepath = "logs/" + DateTime.now() + ".log";
+                String filepath = "logs/" + new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").format(new Date(System.currentTimeMillis())) + ".log";
                 // "insert $f isa file, has path '" + filepath + "';"
-                TypeQLInsert insertQuery = TypeQL.insert(var("f").isa("file").has("path", filepath));
+                TypeQLInsert insertQuery = TypeQL.insert(var("f").isa("file").has("path", filepath)); // Java query builder to prepare TypeQL query string
                 System.out.println("Inserting file: " + filepath);
-                List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
-                //System.out.println("Inserted a file with iid: " + insertedId.get(0).get("f").asThing().getIID());
-
+                writeTransaction.query().insert(insertQuery); // Executing query
                 // "match $f isa file, has path '" + filepath + "';
                 // $vav isa action, has action-name 'view_file';
                 // insert ($vav, $f) isa access;"
-                TypeQLInsert matchInsertQuery = TypeQL.match(
+                insertQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
                         var("f").isa("file").has("path", filepath),
                         var("vav").isa("action").has("action-name", "view_file")
                                 )
                         .insert(var("pa").rel("vav").rel("f").isa("access"));
                 System.out.println("Adding view access to the file");
-                List<ConceptMap> matchInsertedId = writeTransaction.query().insert(matchInsertQuery).collect(Collectors.toList());
-                //System.out.println("Inserted a relation with iid: " + matchInsertedId.get(0).get("pa").asThing().getIID());
-                writeTransaction.commit(); // to persist changes, a write transaction must always be committed
+                writeTransaction.query().insert(insertQuery); // Executing query
+                writeTransaction.commit(); // to persist changes, a 'write' transaction must be committed
             }
         }
         client.close(); // closing server connection
-    }
-}
-
-class PersonData {
-    public PersonData(String fullname, String email) {
-        this.fullname = fullname;
-        this.email = email;
-    }
-
-    public String fullname;
-    public String email;
-}
-
-class DateTime {
-    public static String now() {
-        SimpleDateFormat formatter = new SimpleDateFormat("Y-m-d-H-M-S");
-        Date date = new Date();
-        return(formatter.format(date));
     }
 }
 
@@ -555,118 +499,120 @@ const { SessionType } = require("typedb-client/api/connection/TypeDBSession");
 const { TransactionType } = require("typedb-client/api/connection/TypeDBTransaction");
 const { TypeDBOptions } = require("typedb-client/api/connection/TypeDBOptions");
 
-const databaseName  = "iam";
-const serverAddr = "localhost:1729";
-
 async function main() {
-    console.log("IAM Sample App")
+    console.log("IAM Sample App");
 
-    console.log("Connecting to the server")
-    const client = TypeDB.coreClient("0.0.0.0:1729");
-    console.log("Connecting to the `iam` database")
-    const session = await client.session("iam", SessionType.DATA);
-    
-    console.log("")
-    console.log("Request #1: User listing")
-    let transaction = await session.transaction(TransactionType.READ);
+    console.log("Connecting to the server");
+    const client = TypeDB.coreClient("0.0.0.0:1729"); // client is connected to the server
+    console.log("Connecting to the `iam` database");
+    let k; // define counter
+    let session // define session for later use
+    try {
+        session = await client.session("iam", SessionType.DATA); // session is open
 
-    let match_query = "match $u isa user, has full-name $n, has email $e;";
+        console.log("");
+        console.log("Request #1: User listing");
+        let transaction;
+        try {
+            transaction = await session.transaction(TransactionType.READ); // READ transaction is open
+            let match_query = "match $u isa user, has full-name $n, has email $e;"; // TypeQL query
+            let iterator = transaction.query.match(match_query); // Executing query
+            let answers = await iterator.collect();
+            let result = await Promise.all(
+                answers.map(answer =>
+                    [answer.map.get("n").value,
+                     answer.map.get("e").value]
+                )
+            );
+            k = 0; // reset the counter
+            for(let i = 0; i < result.length; i++) {
+                k++;
+                console.log("User #" + k + ": " + result[i][0] + ", has E-mail: " + result[i][1]);
+            };
+            console.log("Users found: " + k);
+        } finally {
+            transaction?.close();
+        }
 
-    let iterator = transaction.query.match(match_query);
-    let answers = await iterator.collect();
-    let result = await Promise.all(
-        answers.map(answer =>
-            [answer.map.get("n").value,
-             answer.map.get("e").value]
-        )
-    );
+        console.log("");
+        console.log("Request #2: Files that Kevin Morrison has access to");
+        try {
+            transaction = await session.transaction(TransactionType.READ); // READ transaction is open
+            match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; get $fp;";
+            iterator = transaction.query.match(match_query); // Executing query
+            answers = await iterator.collect();
+            result = await Promise.all(
+                answers.map(answer =>
+                    [answer.map.get("fp").value]
+                )
+            );
+            k = 0; // reset the counter
+            for(let i = 0; i < result.length; i++) {
+                k++;
+                console.log("File #" + k + ": " + result[i]);
+            }
+            console.log("Files found: " + k);
+        } finally {
+        await transaction.close();
+        };
 
-    k = 0;
-    for(let i = 0; i < result.length; i++) {
-        k++
-        console.log("User #" + k + ": " + result[i][0] + ", has E-mail: " + result[i][1]);
-    }
-    console.log("Users found: " + k);
-    await transaction.close();
+        console.log("");
+        console.log("Request #3: Files that Kevin Morrison has view access to (with inference)");
+        let options = TypeDBOptions.core();
+        options.infer = true; // set option to enable inference
+        try {
+            transaction = await session.transaction(TransactionType.READ, options); // READ transaction is open
+            match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
+            iterator = transaction.query.match(match_query); // Executing query
+            answers = await iterator.collect();
+            result = await Promise.all(
+                answers.map(answer =>
+                    [answer.map.get("fp").value]
+                )
+            );
+            k = 0; // reset the counter
+            for(let i = 0; i < result.length; i++) {
+                k++;
+                console.log("File #" + k + ": " + result[i]);
+            };
+            match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
+            iterator = transaction.query.match(match_query); // Executing query
+            answers = await iterator.collect();
+            result = await Promise.all(
+                answers.map(answer =>
+                    [answer.map.get("fp").value]
+                )
+            );
+            for(let i = 0; i < result.length; i++) {
+                k++;
+                console.log("File #" + k + ": " + result[i]);
+            };
+            console.log("Files found: " + k);
+        } finally {
+            await transaction.close();
+        };
 
-    console.log("")
-    console.log("Request #2: Files that Kevin Morrison has access to")
-    transaction = await session.transaction(TransactionType.READ);
-
-    match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; get $fp;";
-
-    iterator = transaction.query.match(match_query);
-    answers = await iterator.collect();
-    result = await Promise.all(
-        answers.map(answer =>
-            [answer.map.get("fp").value]
-        )
-    );
-
-    k = 0;
-    for(let i = 0; i < result.length; i++) {
-        k++
-        console.log("File #" + k + ": " + result[i]);
-    }
-    console.log("Files found: " + k);
-    await transaction.close();
-
-    console.log("")
-    console.log("Request #3: Files that Kevin Morrison has view access to (with inference)")
-    let options =  TypeDBOptions.core();
-    options.infer = true;
-    transaction = await session.transaction(TransactionType.READ, options);
-
-    match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
-
-    iterator = transaction.query.match(match_query);
-    answers = await iterator.collect();
-    result = await Promise.all(
-        answers.map(answer =>
-            [answer.map.get("fp").value]
-        )
-    );
-
-    k = 0;
-    for(let i = 0; i < result.length; i++) {
-        k++
-        console.log("File #" + k + ": " + result[i]);
-    }
-
-    match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
-
-    iterator = transaction.query.match(match_query);
-    answers = await iterator.collect();
-    result = await Promise.all(
-        answers.map(answer =>
-            [answer.map.get("fp").value]
-        )
-    );
-
-    for(let i = 0; i < result.length; i++) {
-        k++
-        console.log("File #" + k + ": " + result[i]);
-    }
-    console.log("Files found: " + k);
-    await transaction.close();
-
-    console.log("")
-    console.log("Request #4: Add a new file and a view access to it")
-    const today = new Date(Date.now());
-    transaction = await session.transaction(TransactionType.WRITE);
-    let filepath = "logs/" + today.toISOString() + ".log";
-
-    let insert_query = "insert $f isa file, has path '" + filepath + "';";
-    console.log("Inserting file: " + filepath);
-    transaction.query.insert(insert_query);
-    insert_query = "match $f isa file, has path '" + filepath + "'; $vav isa action, has action-name 'view_file'; insert ($vav, $f) isa access;"
-    console.log("Adding view access to the file");
-    await transaction.query.insert(insert_query);
-    await transaction.commit();
-
-    await session.close();
-    client.close();
-}
+        console.log("");
+        console.log("Request #4: Add a new file and a view access to it");
+        const today = new Date(Date.now());
+        try {
+            transaction = await session.transaction(TransactionType.WRITE); // WRITE transaction is open
+            let filepath = "logs/" + today.toISOString() + ".log";
+            let insert_query = "insert $f isa file, has path '" + filepath + "';";
+            console.log("Inserting file: " + filepath);
+            transaction.query.insert(insert_query); // Executing query
+            insert_query = "match $f isa file, has path '" + filepath + "'; $vav isa action, has action-name 'view_file'; insert ($vav, $f) isa access;";
+            console.log("Adding view access to the file");
+            await transaction.query.insert(insert_query); // Executing query
+            await transaction.commit(); // to persist changes, a 'write' transaction must be committed
+        } finally {
+        if (transaction.isOpen()) {await transaction.close()};
+        };
+    } finally {
+        await session?.close(); // close session
+        client.close(); // close server connection
+    };
+};
 
 main();
 
