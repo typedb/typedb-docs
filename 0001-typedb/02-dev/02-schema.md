@@ -36,9 +36,10 @@ Creating a type means subtyping a base type or a user-defined type. The base typ
 | Relation type  |  Relation <br/>(Instance of Relation type)  |
 | Attribute type | Attribute <br/>(Instance of Attribute type) |
 
-There is a strict hierarchy of types with all types being children (grandchildren, grand- grandchildren, etc.) 
-of a base type. Every type can have only one parent. There is also an internal type `role` that is used in relations. 
-Instances of types (i.e., the data) are known as `entities`, `relations`, and `attributes`.
+There is a strict hierarchy of types with all types being descendants (children, grandchildren, great-grandchildren, 
+etc.) of one of the base types. Every type can have only one parent. There is also an internal type `role` that is 
+used in relations. Instances of types (i.e., the data) are known as `entities`, `relations`, and `attributes`, 
+depending on which branch of types they are belong to.
 
 ### Thing type
 
@@ -51,30 +52,41 @@ The `thing` base type will be deprecated in TypeDB version 3.0.
 
 ### Entity types
 
-Entity types define the objects within the business domain (e.g., an organization, file, or user). Further, an entity 
-(as in instance of an entity type e.g., Vaticle LTD) can exist independently of any other instance of any type 
-(e.g., John Doe).
+Entity types define objects within our business domain (e.g., an organization, file, or user). 
 
-### Relation types
-
-Relation types define the roles participants can **play** in a relationship. The participants can be `entities`, 
-`relations`, or `attributes`. A `relation` type must specify at least one role. For example, `group-membership` 
-is a `relation` type that defines `user-group` and `group-member` roles. The `user-group` role is to be played 
-by a `user-group` entity whereas the `group-member` role is to be played by a `subject` entity.
-
-Roles allow the schema to enforce logical constraints. For example, a `group-membership` relation cannot associate 
-a `user` entity with a `file` entity.
+An instance of entity type (e.g., instance of `company` type) can exist independently of any 
+other instance of any type (e.g., a different instance of `company` type, an instance of `person` type).
 
 <div class="note">
 [Note]
-Roles can be queried like any other types even though roles do not have a direct type definition.
+In comparison — a relation is meaningless without its role-players, and
+an attribute is meaningless without being owned by any other instance.
+</div>
+
+### Relation types
+
+Relation types represent the relationships of other types in business domain model and define roles participants 
+can **play** in a relations. 
+
+Participants (or role-players) can be `entities`, `relations`, or `attributes`. A `relation` type must specify at least 
+one role. For example, `group-membership` is a `relation` type that defines `user-group` and `group-member` roles. 
+The `user-group` role is to be played by a `user-group` entity whereas the `group-member` role is to be played by 
+a `subject` type and all its subtypes entities.
+
+Roles allow a schema to enforce logical constraints on types of role-players. For example, a 
+`group-membership` relation cannot associate a `user` type entity with a `file` type entity.
+
+<div class="note">
+[Note]
+Roles can be queried like any other types even though roles do not have a direct type definition. Only as a part of 
+some relation.
 </div>
 
 ### Attribute types
 
-Attribute types represent the properties of `entity` and `relation` types (e.g., the name of a business unit or 
-a user) with a value. In TypeDB, any type can **own** an attribute type. However, different types can own the same 
-attribute type — and different instances can share ownership of the same attribute instance.
+Attribute types represent the properties of other types with a value. Mostly `entity` and `relation` types (e.g., 
+the name of a business unit or a user). In TypeDB, any type can **own** an attribute type. However, different types 
+can own the same attribute type — and different instances can share ownership of the same attribute instance.
 
 For example, multiple users can own the same instance of an attribute type with the value of `Alex`.
 
@@ -99,8 +111,8 @@ inheritance.
 ## Rules
 
 Reasoning engine uses rules as a set of logic to infer new data. A rule consists of a condition and a conclusion. 
-Condition is a pattern to look for in data and conclusion is an action to take for every found pattern-matching piece 
-of data. Rules are used by read queries for 
+Condition is a pattern to look for in data and conclusion is data to be virtually inserted for every result matched 
+with a pattern from condition. Rules are used by read queries for 
 [Inferring new data](06-infer.md).
 
 <div class="note">
@@ -254,9 +266,9 @@ Entity types are defined in TypeQL with the following pattern:
 
 <!-- test-ignore -->
 ```typeql
-<name> sub (entity | <entity type label>) [(, abstract)]
-[(, owns <attribute type name)...]
-[(, plays <relation type name>:<role>)...];
+<label> sub (entity | <entity type label>) [(, abstract)]
+[(, owns <attribute type label)...]
+[(, plays <relation type label>:<role>)...];
 ```
 
 #### Examples
@@ -283,9 +295,9 @@ define object sub entity, abstract;
 
 ##### Owns an attribute
 
-To define a new entity type that owns one or more attribute types, use the `owns` keyword followed by the name of the 
+To define a new entity type that owns one or more attribute types, use the `owns` keyword followed by the label of the 
 attribute type. The attribute types are appended to the entity type definition with commas. Note, attribute types must 
-be defined before or concurrently (in the same transaction) with its owner(s). You can add owners later but you can't 
+be defined before or concurrently (in the same transaction) with its owner(s). We can add owners later, but we can't 
 own non-existent attribute type.
 
 <!-- test-ignore -->
@@ -327,8 +339,8 @@ All types that are subtyping `entity` base type directly or through other subtyp
 Instances of these types are called entities. The same approach can be applied to attributes and relations.
 </div>
 
-An entity type can subtype another entity type by using the same `sub` keyword, but replacing the `entity` after it 
-with the name of another entity type to subtype.
+An entity type can subtype another entity type by using the same `sub` keyword, but replacing the `entity` keyword 
+after it with a label of another entity type to subtype.
 
 <!-- test-ignore -->
 ```typeql
@@ -351,18 +363,27 @@ subtype it or directly define ownership.
 
 ##### Overrides inherited attribute ownership
 
-To override an inherited ownership use `owns` keyword with the new attribute name, followed by the `as` keyword and 
-the inherited attribute type name. An attribute type with overridden ownership is defined in the schema as the 
-subtype of an inherited attribute type. Hence, an inherited attribute type is abstract and has the same value type 
-as the new attribute type.
+To override an inherited ownership use `owns` keyword with the new attribute type label, followed by the `as` keyword 
+and the inherited attribute type label. For example:
+
+<!-- test-ignore -->
+```typeql
+define file sub resource, owns file-type as object-type;
+```
+
+The new attribute type that overrides inherited type is defined in the schema as subtype of the inherited 
+attribute type. Hence, the inherited attribute type is abstract and has the same value type as the new attribute type.
+The example above in a schema would look like that:
 
 <!-- test-ignore -->
 ```typeql
 define
 
 path sub attribute, value string;
+
 object-type sub attribute, abstract, value string;
 file-type sub object-type, value string;
+
 object sub entity, abstract, owns object-type;
 resource sub object, abstract;
 file sub resource, owns path, owns file-type as object-type;
@@ -383,11 +404,16 @@ Any type can have an ownership over any attribute type.
 Attributes owning attributes feature will be deprecated in TypeDB version 3.0.
 </div>
 
+<div class="note">
+[Warning]
+Attributes playing role in a relation feature will be deprecated in TypeDB version 3.0.
+</div>
+
 Optionally, attribute types can:
 
 * be abstract.
 * own other attribute types (this will be deprecated).
-* play roles in relations.
+* play roles in relations (this will be deprecated).
 
 #### Syntax
 
@@ -395,14 +421,14 @@ Attribute types are defined in TypeQL with the following pattern:
 
 <!-- test-ignore -->
 ```typeql
-<name> sub (attribute | <abstract attribute type name>) [(, abstract)], value <data type> [, regex "<expression>"]
+<label> sub (attribute | <abstract attribute type label>) [(, abstract)], value <value type> [, regex "<expression>"]
 
-[(, owns <attribute type name)...]
+[(, owns <attribute type label)...]
 
-[(, plays <relation type name>:<role>)...];
+[(, plays <relation type label>:<role>)...];
 ```
 
-The following **data types** are supported:
+The following **value types** are supported:
 
 * `long` – a 64-bit signed integer.
 * `double` – a double-precision floating point number, including a decimal point.
@@ -435,13 +461,14 @@ validity sub attribute, value boolean;
 
 An attribute type can subtype another attribute type if its **abstract**. This is useful when the possible values of 
 an attribute type can be categorized, and applications can benefit from querying entities and relations not only by 
-the value of an attribute but also by the name of attribute type.
+a value of an attribute but also by a label of attribute type.
 
 <div class="note">
 [Important]
 An attribute type can only subtype an abstract attribute type. However, the subtype of an attribute type can itself be 
-abstract. Further, an attribute subtype must have the same **data type** as its parent attribute type. Note, the **data 
-type** of an attribute subtype can be omitted in its definition. It will be inherited from its parent attribute type.
+abstract. Further, an attribute subtype must have the same **value type** as its parent attribute type. Note, the 
+**value type** of an attribute subtype can be omitted in its definition. It will be inherited from its parent attribute 
+type.
 </div>
 
 <!-- test-ignore -->
@@ -533,10 +560,10 @@ Relation types are defined independently of other types but may subtype other re
 include ownership of attribute types, roles other types play within them, and roles they can play in other relation 
 types:
 
-* Owned attribute types are added with the `owns` keyword followed by the attribute type name.
-* Its own roles are added with the `relates` keyword followed by the role name. At least one role must be defined for 
+* Owned attribute types are added with the `owns` keyword followed by the attribute type label.
+* Its own roles are added with the `relates` keyword followed by the role label. At least one role must be defined for 
   any relation.
-* Roles it can play in other relations are added with the `plays` keyword followed by the relation type name and role.
+* Roles it can play in other relations are added with the `plays` keyword followed by the relation type label and role.
 
 #### Syntax
 
@@ -544,11 +571,11 @@ Relation types are defined in TypeQL with the following pattern:
 
 <!-- test-ignore -->
 ```typeql
-<name> sub (relation | <relation type label>) [(, abstract)]
-[(, owns <attribute type name)...]
-(, relates <role name>)
-[(, relates <role name>)...]
-[(, plays <relation type name>:<role>)...];
+<label> sub (relation | <relation type label>) [(, abstract)]
+[(, owns <attribute type label)...]
+(, relates <role label>)
+[(, relates <role label>)...]
+[(, plays <relation type label>:<role>)...];
 ```
 
 #### Examples
@@ -581,7 +608,7 @@ plays permission:permitted-access, plays change-request:requested-change;
 In the above example, `access` relation type can play the `permitted-access` role in `permission` relation type and 
 the `requested-change` role in `change-request` relation type. Besides, an `access` relation type relates an 
 `accessed-object` role (e.g., file) and a `valid-action` role (e.g., read). Thus a `permission` relation type relates 
-the `access` (i.e., read + file) and a `subject` (e.g., `person` with full-name attribute `Kevin Morrison`).
+the `access` (i.e., read + file) and a `subject` (e.g., `person` with `full-name` attribute `Kevin Morrison`).
 
 ##### Defines multiple roles
 
@@ -624,7 +651,7 @@ define membership sub relation, abstract, relates parent, relates member;
 
 ##### Subtypes another relation
 
-A relation type can subtype another relation type by replacing the `relation` keyword with the name of another 
+A relation type can subtype another relation type by replacing the `relation` keyword with the label of another 
 relation type. Subtype will inherit all owned attribute types and all roles related or played by the parent type.
 
 <!-- test-ignore -->
@@ -638,9 +665,9 @@ collection-membership sub membership;
 In the example above, the `collection-membership` relation type inherits the `parent` and `member` roles defined in 
 its parent type, `membership`.
 
-The names of the inherited roles can be overridden to distinguish between the roles inherited by a relation subtype 
+The labels of the inherited roles can be overridden to distinguish between the roles inherited by a relation subtype 
 vs. the roles defined by its parent type. However, the relation type being subtyped must be abstract. 
-It is not possible to override roles inherited by concrete relation types.
+It is not possible to override roles inherited from a concrete (not abstract) relation types.
 
 <!-- test-ignore -->
 ```typeql
@@ -748,10 +775,11 @@ These variables are the only ones permitted that can be used in the `then` claus
 
 The `then` clause of a rule can’t use variables that aren’t defined in the `when` clause.
 
-The result of the `then` clause shall not invalidate the pattern, used in the `when` clause of the same rule. Be 
-carefull with negations. Placing the `then` clause statement in the `when` clause is not only redundant (rule will 
-not create a virtual data instance if it already exists, real or virtual one. There is no need to check for it not 
-existing in a rule).
+The `then` clause of a rule must not insert any instance which occurs negated in its `when` clause , or in the `when` 
+clause of any rule it may trigger. Attempting to define such a rule will throw an error.
+
+Rules will not create duplicates of instances which are already in the database or have already been inferred. 
+There is no need to check if it already exists in a rule.
 
 There are exactly **three** distinct **conclusions** permitted:
 
