@@ -22,7 +22,7 @@ The resulting database (schema and data) will be needed for example queries thro
 
 ## Prerequisites
 
-This Quickstart guide takes advantage of TypeDB Studio, a desktop GUI tool for interacting with TypeDB. To proceed, 
+This Quickstart guide takes advantage of TypeDB Studio, an IDE (integrated development environment) for TypeDB. To proceed, 
 please install both TypeDB and TypeDB Studio:
 
 - [Install TypeDB](02-installation.md)
@@ -469,8 +469,8 @@ To execute the TypeQL statements in the opened file and send them as queries:
 
    ![Select transaction type](../../images/quickstart/studio-select-transaction-type.png)
 
-3. Click the green “play” button (middle of the toolbar) to start the transaction.
-4. Click the “checkmark” button (left of the “play” button) to commit the changes.
+3. Click the 'Run Query' button (with a 'play' symbol, in the middle of the toolbar) to start the transaction.
+4. Click the 'Commit Transaction' button (with a checkmark symbol, left of the 'Run Query' button) to commit the changes.
 
 The transaction has been committed, and `iam` database now has a schema.
 
