@@ -21,6 +21,12 @@ To modify the schema of a database, use [define](02-schema.md#define)/[undefine]
 To try the following examples use [TypeDB Studio](../../02-clients/01-studio.md) or one of the other TypeDB 
 [Clients](../../02-clients/00-clients.md).
 
+For those developing applications with [TypeDB drivers](../../02-clients/00-clients.md#typedb-drivers), please see the 
+instructions and examples for a specific language/framework: 
+[Java](../../02-clients/03-java.md), 
+[Node.js](../../02-clients/05-nodejs.md), 
+[Python](../../02-clients/04-python.md).
+
 ## Insert query
 
 An insert query, optionally preceded by a [match](03-match.md) clause, adds data (e.g., entities, relations and 
@@ -300,10 +306,6 @@ The above query, assuming the `name` attribute is unique for each `company` enti
 
 In short, it makes one company (Subsidiary) and member of another (Company).
 
-For those developing applications with [TypeDB drivers](../../02-clients/00-clients.md#typedb-drivers), please see the 
-instructions and examples for a specific language/framework: [Java](../../02-clients/03-java.md), 
-[Node.js](../../02-clients/05-nodejs.md), [Python](../../02-clients/04-python.md).
-
 ## Delete query
 
 A delete query is preceded by a `match` clause and removes data from a database. It can be used to remove entities, 
@@ -471,20 +473,32 @@ delete
   $o has $fp;
 ```
 
-The above query finds all `object` entities which own a `path` attribute whose value matches a regular expression 
-(`logs/.*`). It then removes their ownership of any and all matching `path` attributes. However, the attributes 
+The above query finds all `object` entities that has a `path` attribute whose value matches a regular expression 
+(`logs/.*`). It then removes their ownership of any matching `path` attributes. However, the attributes 
 themselves are not removed.
 
 <div class="note">
-[Note]
-The `isa path` expression is omitted because we are not deleting the `path` attributes themselves, but rather their 
-ownership by `object` entities. Further, do not include the attribute type name as it results in a derived `isa` 
-expression and results in an error.
+[Important]
+The `delete` clause can be altered a little to produce a very different result. Be aware of potential mistakes of 
+deleting the wrong data accidentally. See the examples below.
 </div>
 
-For those developing applications with [TypeDB drivers](../../02-clients/00-clients.md#typedb-drivers), please see the 
-instructions and examples for a specific language/framework: [Java](../../02-clients/03-java.md), 
-[Node.js](../../02-clients/05-nodejs.md), [Python](../../02-clients/04-python.md).
+The `isa object` expression in the query above is omitted because we are not deleting the `object` entities themselves, 
+but rather their ownership of `path` attributes. 
+
+For example, `delete $o isa object, has $fp;` clause with a `match` clause above deletes all matched objects `$o`. 
+Thus, deletes all their ownerships over any attributes, not only `$fp`.
+
+We do not include `path` into the `delete` clause as it's not needed for ownership deletion. The type of `$fp` should
+be specified in the `match` clause if it's important. In this case it is specified as `path` already.
+
+For example, `delete $o has path $fp;` clause with a `match` clause above produces an error.
+
+Finally, we can delete the attributes themselves, thus deleting ownerships over any of them by all instances of all 
+types.
+
+For example, `delete $fp isa path;` clause with a `match` clause above deletes all matched `path` attributes, thus 
+deleting all ownerships of these attributes from every owner of any type.
 
 ## Update
 
@@ -661,7 +675,3 @@ In short, all of Pearle Goodman’s permissions with write access will become pe
 After running the above query, all of the matched `access` relations `$ac_write` with `$a_write` as `valid-action` 
 still exist, but no longer play a role in the matched `permission` relations.
 </div> 
-
-For those developing applications with [TypeDB drivers](../../02-clients/00-clients.md#typedb-drivers), please see the 
-instructions and examples for a specific language/framework: [Java](../../02-clients/03-java.md), 
-[Node.js](../../02-clients/05-nodejs.md), [Python](../../02-clients/04-python.md).
