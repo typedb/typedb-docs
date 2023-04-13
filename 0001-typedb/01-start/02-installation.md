@@ -43,8 +43,7 @@ docker run --name try-typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/
 
 <div class="note">
 [Note]
-The `--platform linux/amd64` parameter is required to run the TypeDB container on MacOS with an ARM64 architecture 
-(e.g. M1 processor).
+The `--platform linux/amd64` parameter is required to run the TypeDB container on MacOS with an ARM64/AArch64 architecture. 
 </div>
 
 The following variables should be noted and can be modified:
@@ -196,7 +195,7 @@ Press Ctrl-C in the terminal running TypeDB. Confirm action if requested.
    the version we need.
 
 5. Install `typedb-server`, `typedb-console`, and `typedb-bin` packages using the versions from the previous command 
-   (server and console have the same version number. Here we will use `2.15` for example):
+   (server and console have the same version number. Here we will use `2.15.0` for example):
 
    <!-- test-ignore -->
    ```bash
