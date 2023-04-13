@@ -233,23 +233,23 @@ Thus, the `match` clause is used to identify the players of roles in a new relat
 <!-- test-ignore -->
 ```typeql
 match 
-  $s isa subject, has full-name "Pearle Goodman"; 
-  $o isa object, has path "zewhb.java"; 
-  $a isa action, has action-name "modify_file";
-  $ac (accessed-object: $o, valid-action: $a) isa access; 
+  $f isa file, has path "iopvu.java"; 
+  $op isa operation, has action-name "view_file"; 
 insert 
-  $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+  $a (accessed-object: $f, valid-action: $op) isa access;
 ```
-The above query:
 
-1. Finds a `subject` (`$s`) whose `full-name` attribute has a value of `Pearle Goodman`. 
-2. Finds an `object` (`$o`) 
-   whose `path` attribute has a value of `zewhb.java`.
-3. Finds an `action` (`$a`) whose action-name attribute has a value of `modify_file`.
-4. Finds an `access` relation (`$ac`) that relates the `$o` (as `access-object`) to `$a` (as `valid-action`). 
-5. Inserts a `permission` relation that relates `$s` (as `permitted-subject`) to `$ac` (as `permitted-access`).
+In the above example we match our role-players before inserting a relation. The number of relations being inserted 
+depends on the number of matched results. In our [IAM dataset](../01-start/03-quickstart.md#insert-data) there is only 
+one match by default. But if there will three results matched by the `match` clause — there are three relations 
+being inserted here.
 
-In short, it creates a `permission` letting `Pearle Goodman` modify the `zewhb.java` file.
+<div class="note">
+[Note]
+You can insert a relation with some roles missing a role-player, but that represents an incomplete data state (as 
+existence of a relation suggest existence of its role-players) and there needs to be at least one role-player in an 
+inserted relation.
+</div>
 
 #### Multiple role players
 
@@ -283,35 +283,43 @@ In short, it makes `Pearle Goodman` and `Masako Holley` owners of the `zewhb.jav
 
 In addition to entities and attributes, roles of relations can be played by other relations.
 
-<!--- #todo Doublecheck this example. It's probably not as reflexive as previous one and we don't have data for this 
-one in our dataset-->
-
 <!-- test-ignore -->
 ```typeql
 match 
-  $c1 isa company, has name "Company";
-  $c2 isa company, has name "Subsidiary";
-  $cm1 (parent-company: $c1) isa company-membership;
-  $cm2 (parent-company: $c2) isa company-membership;
-insert $cm1 (company-member: $cm2);
+  $s isa subject, has full-name "Pearle Goodman"; 
+  $o isa object, has path "zewhb.java"; 
+  $a isa action, has action-name "modify_file";
+  $ac (accessed-object: $o, valid-action: $a) isa access; 
+insert 
+  $p (permitted-subject: $s, permitted-access: $ac) isa permission;
 ```
+The above query:
 
-The above query, assuming the `name` attribute is unique for each `company` entity:
+1. Finds a `subject` (`$s`) whose `full-name` attribute has a value of `Pearle Goodman`. 
+2. Finds an `object` (`$o`) 
+   whose `path` attribute has a value of `zewhb.java`.
+3. Finds an `action` (`$a`) whose action-name attribute has a value of `modify_file`.
+4. Finds an `access` relation (`$ac`) that relates the `$o` (as `access-object`) to `$a` (as `valid-action`). 
+5. Inserts a `permission` relation that relates `$s` (as `permitted-subject`) to the relation `$ac` (as 
+   `permitted-access`).
 
-1. Finds a `company` entity (`$c1`, `Company`).
-2. Finds a `company` entity (`$c2`, `Subsidiary`). 
-3. Finds a `company-membership` entity (`$cm1`) with the `parent-company` role played by `$c1`. 
-4. Finds a `company-membership` entity (`$cm2`) with the `parent-company` role played by `$c2`. 
-5. Inserts `$cm2` as a player of the `company-member` role in `$cm1`.
+In short, it creates a `permission` letting `Pearle Goodman` modify the `zewhb.java` file.
 
-In short, it makes one company (Subsidiary) and member of another (Company).
+The relation of `access` type now plays role of `permitted-access` in the inserted relation of the `permission` type.
+
+<div class="note">
+[Warning]
+If `match` clause returns multiple matched solutions, then the `insert` clause is executed for every one of them.
+
+For more information see the [Matching patterns](03-match.md#patterns-overview) page.
+</div>
 
 ## Delete query
 
-A delete query is preceded by a `match` clause and removes data from a database. It can be used to remove entities, 
-relations, and attributes as well as references to them. 
-For example, to remove ownership of an attribute without deleting the attribute itself. Or, to remove the player of a 
-role from a relation without deleting either the player or the relation/role.
+A delete query is always preceded by a `match` clause and removes data from a database. It can be used to remove 
+entities, relations, and attributes as well as references to them, like attribute ownerships. For example, to remove 
+ownership of an attribute without deleting the attribute itself. Or, to remove the player of a role from a relation 
+without deleting either the player or the relation/role.
 
 ### Syntax
 
