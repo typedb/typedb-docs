@@ -88,6 +88,20 @@ What if there is one `person` with the `full-name` attribute like that, but it h
 Then TypeDB will find two solutions/answers. And every answer will include that one `person` entity and one of the 
 emails.
 
+<div class="note">
+[Warning]
+A `match` clause returns all possible [solutions](#patterns-overview) 
+(combinations of variables values that make pattern a `true` statement), including all possible permutations.
+
+It's very important to understand how `match` clause matches patterns. Especially if it's used as a part of an insert 
+or delete query, because the `insert` or `delete` clause in these will be executed once for every matched result 
+from `match` clause used.
+
+For example, if we match for all instances of two different types without any additional constraints. Let's say one of 
+the types has **2** instances and the other one has **10** instances. Then `match` clause will return all matched 
+combinations including all permutations: **20 matched results** in total.
+</div>
+
 ## Variables
 
 A variable can:
