@@ -30,7 +30,7 @@ TypeDB Cloud has the following security features:
 
 ### User authentication
 
-All external connections to a cluster of TypeDB Cloud require a user account credentials. Not for a user account 
+All external connections to a cluster of TypeDB Cloud require user account credentials. Not for a user account 
 used in the TypeDB Cloud web portal but a user account from the TypeDB Cloud cluster we are connecting to.
 
 Users can use usernames and passwords to identify and authenticate themselves. Passwords are stored only as 
@@ -46,16 +46,16 @@ User management features are a part of TypeDB Cloud.
 </div>
 
 Use [TypeDB Console](../../02-clients/02-console.md) or Client API to manage users. To connect to TypeDB with TypeDB 
-Console provide a username and password:
+Console provide a username and password (when prompted):
 
 <!-- test-ignore -->
 ```bash
-typedb console --cluster=<address> --username=<username> --password=<password>
+typedb console --cluster=<address> --username=<username> --password
 ```
 
 <div class="note">
 [Important]
-Use the Administrators account to be able to manage users.
+Use the `admin` account to manage users.
 </div>
 
 Use the following TypeDB Console commands to manage users.
@@ -71,7 +71,7 @@ Create a new user:
 
 <!-- test-ignore -->
 ```bash
-user create <username> <password>
+user create <username>
 ```
 
 Delete a user:
@@ -83,7 +83,7 @@ user delete <username>
 
 ## Encryption
 
-TypeDB and TypeDB Cloud encrypts all network traffic: 
+TypeDB Cloud encrypts all network traffic: 
 
 * TLS encryption is used for client/server communication.
 * CurveZMQ is used for cluster communication (TypeDB Cloud only).
@@ -95,7 +95,7 @@ only from servers that are set to be part of the cluster.
 
 All external and internal communications are [encrypted](#encryption) on the fly. 
 
-Additional connection security is achieved by using a CA certificate in the TLS encryption of Clients connections 
+Additional connection security can be achieved by using a specified CA certificate in the TLS encryption of Clients connections 
 (optional). 
 
 If no certificate is provided then the default operating system root certificates will be used to establish TLS 
