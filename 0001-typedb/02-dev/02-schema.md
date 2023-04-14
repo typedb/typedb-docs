@@ -852,7 +852,7 @@ rule all-relation-types-are-transitive:
 ```typeql
 define 
 
-rule add-view-access:
+rule add-view-permission:
     when {
         $modify isa action, has action-name "modify_file";
         $view isa action, has action-name "view_file";
@@ -866,8 +866,8 @@ rule add-view-access:
 
 The example above illustrates a more complex rule, using the IAM schema.
 
-In short, the permission to access some file with action that has action-name `view_file` can be inferred by the rule 
-from the permission to `modify_file` with the same file.
+In short, the permission to access some file with action that has `action-name` of `view_file` can be inferred by the 
+rule from the permission to `modify_file` the same file.
 
 A full explanation of how this rule works is given in the [Example](06-infer.md#example) section of Inferring data page.
 
@@ -882,12 +882,12 @@ schema must be achieved as if we send it only once. So types and/or rules will n
 
 A separate define statement for a new type or rule can be sent as a define query. Alternatively, the statement can be 
 added to the existing schema define statement and sent together. In this case only new types or rules will be added. 
-If you change name of the existing type or rule in the existing schema and then send it as define query then the 
-changed type or rule will be processed as a new one.
+If you change name (label) of the existing type or rule in the existing schema and then send it as define query then 
+the changed type or rule will be processed as a new one.
 
 ### Renaming types
 
-To rename a type use the [TypeDB Studio](../../02-clients/01-studio.md) or 
+To rename (change its label) a type use the [TypeDB Studio](../../02-clients/01-studio.md) or 
 [TypeDB API](08-api.md) Rename method for a Type class object.
 
 ### Deleting types & rules
@@ -972,5 +972,5 @@ and refer to the rule by its label. For example:
 
 <!-- test-ignore -->
 ```typeql
-undefine rule add-view-access;
+undefine rule add-view-permission;
 ```

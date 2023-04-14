@@ -216,9 +216,9 @@ There are multiple rules in the schema that can be used in different situations 
 10. `automatic-segregation-violation`
 11. `automatic-permission-invalidity`
 12. `automatic-permission-validity`
-13. `add-view-access`
+13. `add-view-permission`
 
-### Add-view-access rule
+### add-view-permission rule
 
 This simple rule illustrates basic inference. More information on rules can be found in the 
 [schema](../02-dev/02-schema.md#rules) documentation page.
@@ -227,7 +227,7 @@ This simple rule illustrates basic inference. More information on rules can be f
 ```typeql
 define
 
-rule add-view-access:
+rule add-view-permission:
 when {
     $modify isa action, has action-name "modify_file";
     $view isa action, has action-name "view_file";

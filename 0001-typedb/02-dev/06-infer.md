@@ -104,7 +104,7 @@ In the IAM database there are multiple rules, but we will use the one described 
 
 <!-- test-ignore -->
 ```typeql
-rule add-view-access:
+rule add-view-permission:
     when {
         $modify isa action, has action-name "modify_file";
         $view isa action, has action-name "view_file";
@@ -116,12 +116,12 @@ rule add-view-access:
     };
 ```
 
-By default, the IAM dataset used in the [Quickstart guide](../01-start/03-quickstart.md) sets only permissions for the 
+By default, the IAM dataset used in the [Quickstart guide](../01-start/03-quickstart.md) sets permissions only for the 
 `modify_file` action. 
 
-But the IAM schema has the rule called `add-view-access` (see above) to infer `view_file` action access from the 
-`modify_file` access. The `view_file` action access permission does not exist in the database but can be inferred by 
-the rule.
+But the IAM schema has the rule called `add-view-permission` (see above) to infer permission to `view_file` access 
+from the `modify_file` permission for the same file. The `view_file` action access permission does not exist in the 
+database, but it can be inferred by the rule.
 
 To do so, let’s use the following query:
 
@@ -136,7 +136,7 @@ match
 get $o-path;
 ```
 
-The above example should return `path` values for most files if the inference option is **enabled**. Without the 
+The above query should return `path` values for most files if the inference option is **enabled**. Without the 
 inference enabled the query should not return any results (for the default IAM dataset contains no permissions for 
 access with `view_file` action).
 
@@ -232,7 +232,7 @@ Explainable object: &lt;typedb.concept.answer.concept_map._ConceptMap.Explainabl
 Explainable part of query: { $pe (permitted-subject:$p, permitted-access:$ac); $pe isa permission; }
 Explanation #: 1
 
-Rule:  add-view-access
+Rule:  add-view-permission
 
 Condition:  [_1/_StringAttribute[action-name:0x836f800328000b6d6f646966795f66696c65]][_2/_StringAttribute[action-name:0x836f8003280009766965775f66696c65]][_3/_Relation[permission:0x847080038000000000000001]][ac_modify/_Relation[access:0x8470800a8000000000000003]][ac_view/_Relation[access:0x8470800a8000000000000011]][modify/_Entity[operation:0x826e800c8000000000000001]][obj/_Entity[file:0x826e80098000000000000004]][subj/_Entity[person:0x826e80018000000000000001]][view/_Entity[operation:0x826e800c8000000000000000]]
 
@@ -250,7 +250,7 @@ hence the result of which is being explained:
 
 <!-- test-ignore -->
 ```
-add-view-access
+add-view-permission
 ```
 
 The `explanation.variable_mapping()` method returns mapping of the variable names in the query with variable names in 

@@ -448,7 +448,7 @@ rule automatic-permission-validity:
         $p has validity true;
     };
     
-rule add-view-access:
+rule add-view-permission:
     when {
         $modify isa action, has action-name "modify_file";
         $view isa action, has action-name "view_file";
