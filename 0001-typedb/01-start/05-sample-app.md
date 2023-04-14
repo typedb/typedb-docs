@@ -1,12 +1,12 @@
 ---
-pageTitle: Sample Application
+pageTitle: Sample application
 keywords: getting started, typedb, typeql, tutorial, quickstart, application, app, example, sample
 longTailKeywords: get started with typedb, typedb tutorial, typedb quickstart, learn typedb, sample app, sample application
 summary: A simple example with a prototype application to run against a TypeDB database.
 toc: false
 ---
 
-# Sample Application
+# Sample application
 
 The following sample app implementations are all designed to connect to the [IAM](04-iam-schema.md) database located at 
 the TypeDB server with `0.0.0.0:1729` address. Please make sure you have TypeDB server running with the `iam` database 
