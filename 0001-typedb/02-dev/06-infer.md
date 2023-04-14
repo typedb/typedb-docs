@@ -158,8 +158,8 @@ permission to access with `action` with the `action-name` of `view_file`.
 
 There is specific type of query to use with the inferred results if we want them explained by a TypeDB server.
 
-When we get a result of a `get` query that was performed with inference option **enabled** we can use an **explain** 
-query to request additional information on how the exact instances of data were inferred.
+When we get a result of a `get` query that was performed with both inference and explain options **enabled** we 
+can use an **explain** query to request additional information on how the exact instances of data were inferred.
 
 To do that use `explainables` method on the `get` query result (`ConceptMap`). It returns a stream of `explainable` 
 objects. Send an `explainable` object with an **explain** query to get a stream of `explanations`.
