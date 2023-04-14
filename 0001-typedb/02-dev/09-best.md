@@ -117,14 +117,55 @@ awaited, or iterated, to retrieve the answers as they are computed.
 When a transaction is committed or closed, all of its asynchronous queries are completed first.
 </div>
 
-### Client API
+### API
 
 Data retrieved from a TypeDB database consists of concepts and delivered in the form of 
-[ConceptMaps](07-response.md#conceptmap). Use the methods introduced by the Client API to obtain more information  
-about the retrieved concept and its surroundings. Furthermore, the Client API allows us to traverse the neighbours 
-of a specific concept instance to obtain more insights.
+[ConceptMaps](07-response.md#conceptmap). Use the methods introduced by the TypeDB Client API to obtain more 
+information about the retrieved concept and its surroundings. Furthermore, the API allows us to traverse the 
+neighbours of a specific concept instance to obtain more insights.
 
 <div class="note">
 [Important]
 When retrieving a number of concepts it is more efficient to do that with a TypeQL query.
 </div>
+
+### Troubleshooting
+
+The following are some of the most common mistakes and nuances that we should know about and take into account to 
+prevent potential errors or fix bugs.
+
+#### Get clause alters results
+
+Using an optional [get](05-read.md#get-query) clause can alter the set of returned results. For example:
+
+<!-- test-ignore -->
+```typeql 
+match $p isa person, has full-name $n; get $n;
+```
+
+The above query returns full-names (`$n`) owned by `$p` of the `person` type. 
+
+Are we to expect to have a full name for every person instance in the results? No.
+
+1. A person can have more than one attribute of type `full-name`. Every instance of attribute will get to the results.
+2. A person can have no attributes of type `full-name`. In that case the person will not be represented by variable 
+   `$p`. That will person will not be accounted for.
+3. Finally, different people can have the same full names. In TypeDB that means different instances of `person` type 
+   can own the same instance of `full-name` type. By filtering results to get only full-names you will receive a
+   deduplicated list of full-names. Because it's just a list of all attributes owned by `$p` type. 
+
+To get complete information about all full names of every person, we need to modify the query as follows:
+
+<!-- test-ignore -->
+```typeql 
+match $p isa person, has full-name $n; get $p, $n;
+```
+
+With this slight alteration (we added variable `$p` to the `get` clause) the response will consist of pairs of 
+`person` type object and its owned `full-name` attribute. Because of the `person` object in the response any 
+repeated full names (represented in a database by the very same single attribute) will now be returned in pair with 
+their owner. If a person have two `full-name` attributes, than resulted response will contain two pairs with the 
+same `person` object but different `attributes`.
+
+We can further improve the output by [grouping](05-read.md#group) the results by `person` and/or applying 
+[aggregation](05-read.md#aggregation) to count the number of results.
