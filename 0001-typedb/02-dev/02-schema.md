@@ -146,9 +146,17 @@ Inference can only be used in a read transaction. Learn how to use inference on 
 <div class="note">
 [Note]
 The approach TypeDB uses is a [backward-chaining](https://en.wikipedia.org/wiki/Backward_chaining) execution on top 
-of [Horn-clause](https://en.wikipedia.org/wiki/Horn_clause) logic. Negation functionality follows the 
-[negation-as-failure](https://en.wikipedia.org/wiki/Negation_as_failure) model. Infinite recursion and non-termination 
-are prevented with a tabling mechanism.
+of [Horn-clause](https://en.wikipedia.org/wiki/Horn_clause) logic. 
+
+Negation functionality follows the set-difference semantics. It corresponds to negation-as-failure model under the 
+following conditions:
+
+- we have stratified negation,
+- the results are grounded,
+- we ensure all variables occurring both inside and outside the negation are bound by the time the negation is 
+  evaluated.
+
+Infinite recursion and non-termination are prevented with a tabling mechanism.
 </div>
 
 ## Define schema
