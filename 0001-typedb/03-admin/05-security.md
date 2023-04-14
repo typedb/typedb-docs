@@ -26,7 +26,7 @@ TypeDB Cloud has the following security features:
 * User account management,
 * User identification and authentication,
 * Password hashing with salt,
-* Password complexity requirements settings.
+* Password complexity requirements and expiration settings.
 
 ### User authentication
 
