@@ -338,6 +338,12 @@ get $f, $s;
 sum $s;
 ```
 
+<div class="note">
+[Warning]
+Omitting the variable `$f` in the `get` clause` of the above query will result in missing all duplicated values of `$s`
+from the aggregation. For more information see the [matching patterns](03-match.md#patterns-overview) page.
+</div>
+
 #### Maximum
 
 Use the `max` keyword to get the maximum value among the specified `long` or `double` values of matched variable.
