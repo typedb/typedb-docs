@@ -42,7 +42,7 @@ Please see the following tips for modelling your schema:
 The following principles are considered being useful to take into account when you develop a more sophisticated 
 database schema:
 
-* When inserting instances of a relation, it is not necessary to define all of its **roleplayers**. But this 
+* When inserting instances of a relation, it is not necessary to define all of its **role players**. But this 
   represents an incomplete information state, such as a marriage in which only one of the spouses is known. While a 
   relation can be instantiated with only one role player, and sometimes a relation can logically exist without some of its 
   role players, it's not always the case. So an instance of a relation can imply the existence of its missing role players.
@@ -55,7 +55,7 @@ database schema:
 * TypeQL extends the relational functionality of SQL and strongly types it, by separating entities and relations 
   into distinct **concepts** with distinct attributes. 
 
-    Relational tables are homogeneous in that they can be used both to represent a list of relation's roleplayers 
+    Relational tables (SQL) are homogeneous in that they can be used both to represent a list of relation's role players 
     (a join table) or a list of entity's attributes (a regular table). These two types of table are indistinguishable 
     from the perspective of a database engine without additional context or constraints.
 
