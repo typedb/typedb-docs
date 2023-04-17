@@ -57,7 +57,7 @@ database schema:
 
     Relational tables (SQL) are homogeneous in that they can be used both to represent a list of relation's role players 
     (a join table) or a list of entity's attributes (a regular table). These two types of table are indistinguishable 
-    from the perspective of a database engine without additional context or constraints.
+    from the perspective of an SQL database engine without additional context or constraints.
 
 * Each schema construct incurs a computational cost when traversed as part of a data query. Sorted in the order of 
   **increasing** cost, the constructs are:
