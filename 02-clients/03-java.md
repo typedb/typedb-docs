@@ -2,8 +2,7 @@
 pageTitle: Client Java
 keywords: typedb, client, java
 longTailKeywords: typedb java client, typedb client java, client java, java client
-Summary: API Reference of TypeDB Client Java.
-templatePath: 02-clients/references/
+Summary: Tutorial for TypeDB Client Java.
 ---
 
 ## Installation
@@ -190,29 +189,6 @@ By default, Client Java uses Logback to print errors and debugging info to stand
 
 </configuration>
 ```
-
-<hr style="margin-top: 40px;" />
-
-## API Reference
-
-{% include api/generic.html data=site.data.03_client_api.references.typedb language="java" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.client language="java" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.session language="java" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.options language="java" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="java" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.typeql language="java" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.query_manager language="java" %}
-
-{% include api/answers.html data=site.data.03_client_api.references.answer language="java" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="java" %}
-
 
 ## Version Compatibility
 
