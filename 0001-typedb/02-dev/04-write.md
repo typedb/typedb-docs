@@ -55,7 +55,7 @@ A pattern consists of variables and constraints for concepts. For more informati
 [Pattern syntax](03-match.md#pattern-syntax) section.
 </div>
 
-The `insert` query is the only query that can be without a `match` clause. In that case the pattern in the `insert` 
+The `insert` query is the only data query that can be without a `match` clause. In that case the pattern in the `insert` 
 clause will be used exactly once per query. 
 
 In case there is a `match` clause before an `insert` clause then the number of inserts will depend on the number of 
