@@ -29,8 +29,8 @@ A `match` clause is optional for Insert queries, but required for all others.
 
 <div class="note">
 [Note]
-While the `match` clause can be used to read types from a schema, the [define](02-schema.md#define) and 
-[undefine](02-schema.md#undefine) clauses must be used to write them.
+While the `match` clause can be used to read types from a schema, to write types to a schema use the 
+[define](02-schema.md#define) and [undefine](02-schema.md#undefine) clauses instead of insert/delete.
 </div>
 
 <div class="note">
