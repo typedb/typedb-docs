@@ -746,7 +746,7 @@ The example above defines one attribute type and five relation types:
 
 #### Overview
 
-Rules are defined independently of any types.
+Rules are defined independently of any types. Any types used in a rule must be defined in a schema.
 
 They are executed only as a part of get queries when the [inference](06-infer.md) option is **enabled**. The results of 
 rules execution exist only within the transaction they run in. They are not persisted, and any data inferred in the 
