@@ -236,7 +236,7 @@ Use a `subtype` pattern to find a specific type and all of its subtypes.
 match $o sub object;
 ```
 
-The above query finds the `object` type and all of its nested subtypes: direct (i.e. `resource` and `resource-collection`) 
+The above pattern finds the `object` type and all of its nested subtypes: direct (i.e. `resource` and `resource-collection`) 
 and indirect (i.e. `file`, `interface`, `directory` and `application`).
 
 ##### Direct subtypes
@@ -618,9 +618,9 @@ the access to be either `modify_file` or `view_file`.
 
 ## Query examples
 
-### How to send a query
+### How to execute a query
 
-The easiest way to send a query to the TypeDB server is to use [TypeDB Studio](../../02-clients/01-studio.md) to do so. 
+The easiest way to send a query to a TypeDB server is to use [TypeDB Studio](../../02-clients/01-studio.md) to do so. It will not only manage a DB connection for you, but also process the results.
 See the [Quickstart guide](../01-start/03-quickstart.md) for instructions on how to do this.
 
 Alternatively, you can use any other [TypeDB Client](../../02-clients/00-clients.md) to handle server connection, 
