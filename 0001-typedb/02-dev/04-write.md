@@ -239,15 +239,15 @@ insert
   $a (accessed-object: $f, valid-action: $op) isa access;
 ```
 
-In the above example we match our role-players before inserting a relation. The number of relations being inserted 
+In the above example we match our role players before inserting a relation. The number of relations being inserted 
 depends on the number of matched results. In our [IAM dataset](../01-start/03-quickstart.md#insert-data) there is only 
 one match by default. But if there will three results matched by the `match` clause — there are three relations 
 being inserted here.
 
 <div class="note">
 [Note]
-You can insert a relation with some roles missing a role-player, but that represents an incomplete data state (as 
-existence of a relation suggest existence of its role-players) and there needs to be at least one role-player in an 
+You can insert a relation with some roles missing a role player, but that represents an incomplete data state (as 
+existence of a relation suggest existence of its role players) and there needs to be at least one role player in an 
 inserted relation.
 </div>
 

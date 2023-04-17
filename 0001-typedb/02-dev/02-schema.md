@@ -59,7 +59,7 @@ other instance of any type (e.g., a different instance of `company` type, an ins
 
 <div class="note">
 [Note]
-In comparison — a relation is meaningless without its role-players, and
+In comparison — a relation is meaningless without its role players, and
 an attribute is meaningless without being owned by any other instance.
 </div>
 
@@ -68,12 +68,12 @@ an attribute is meaningless without being owned by any other instance.
 Relation types represent the relationships of other types in business domain model and define roles participants 
 can **play** in a relations. 
 
-Participants (or role-players) can be `entities`, `relations`, or `attributes`. A `relation` type must specify at least 
+Participants (or role players) can be `entities`, `relations`, or `attributes`. A `relation` type must specify at least 
 one role. For example, `group-membership` is a `relation` type that defines `user-group` and `group-member` roles. 
 The `user-group` role is to be played by a `user-group` entity whereas the `group-member` role is to be played by 
 a `subject` type and all its subtypes entities.
 
-Roles allow a schema to enforce logical constraints on types of role-players. For example, a 
+Roles allow a schema to enforce logical constraints on types of role players. For example, a 
 `group-membership` relation cannot associate a `user` type entity with a `file` type entity.
 
 <div class="note">
