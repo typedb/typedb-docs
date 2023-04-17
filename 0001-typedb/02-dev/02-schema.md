@@ -183,7 +183,6 @@ server. You will not be able to commit changes if the schema definition query is
 
 ### Create a new database
 
-
 The examples below can and should be run in a separate empty database. It is recommended to create a new database 
 and to run the examples in the order they are shown. For more information on creating an empty database, see the 
 [Quickstart guide](../01-start/03-quickstart.md#create-a-database).
@@ -192,8 +191,11 @@ and to run the examples in the order they are shown. For more information on cre
 [Important]
 Define queries are idempotent. Running the same define query a second time shall not produce any changes to the 
 database schema. Running a modified version of an already executed schema definition query can add concepts to the 
-schema but can’t modify existing ones. TypeQL schema statements do NOT replace existing type definitions but rather 
-add the missing parts.
+schema but mostly can’t modify existing ones. TypeQL schema statements do NOT replace existing type definitions 
+but rather add the missing parts.
+
+Two notable exceptions are: **rules** (defining a new rule with existing label/name will replace the existing rule) and 
+**annotations**, like the `@key` keyword (can be added or removed).
 </div>
 
 ### Query example
