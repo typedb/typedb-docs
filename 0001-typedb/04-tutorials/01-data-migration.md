@@ -51,15 +51,15 @@ The schema in the file above consists of the following types.
 **Entity** types:
 
 * `person`
-    * owns `first-name` attribute
-    * owns `last-name` attribute
-    * owns `phone-number` attribute
-    * owns `city` attribute
-    * owns `age` attribute
-    * owns `started-at` attribute
-    * owns `duration` attribute
+    * owns `first-name` attribute type
+    * owns `last-name` attribute type
+    * owns `phone-number` attribute type
+    * owns `city` attribute type
+    * owns `age` attribute type
+    * owns `started-at` attribute type
+    * owns `duration` attribute type
 * `company`
-    * owns `name` attribute
+    * owns `name` attribute type
 
 **Relation** types:
 
