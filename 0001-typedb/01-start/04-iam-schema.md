@@ -54,8 +54,8 @@ The main entity types in the IAM schema:
 - Object — Passive entity in the _system_, that contains or receives information, and upon which subjects perform
   operations. 
   - Resource — Anything usable or consumable in the _system_.
-    - File — File in some filesystem with `path` (to the file) and `size` (in KB) attributes.
-  - Resource-collection — A collection of resources on which the same operations can be performed.
+    - File — File in some filesystem with `path` (to the file) and `size-kb` (file size in kB) attributes.
+  - Resource-collection — A group of resources.
 - Action — An operation or operation set that can be performed on a specific type of object. Its name is stored in
   the `action-name` attribute.
 
@@ -170,8 +170,8 @@ Additionally, `action` can play a role in multiple relations:
 
 Finally, `action` has two subtypes, which are not abstract, so we can create instances of those subtypes:
 
-- `operation` — a single action type that can be performed with an object
-- `operation-set` — a set of actions that can be performed with an object
+- `operation` — a single action that can be performed on an object
+- `operation-set` — a set of actions that can be performed on an object
 
 Both subtypes inherit all the attribute and relation types defined in the action type.
 
