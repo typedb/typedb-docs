@@ -127,20 +127,29 @@ define
 
 company sub entity,
     owns name,
-    plays company-membership:parent-company;
+    plays company-membership:company;
 
 company-membership sub relation,
-    relates parent-company,
-    relates company-member;
+    relates company,
+    relates member;
 
-parent-company sub attribute,
+parent-company-name sub attribute,
     value string;
+
+#rule attribute-parent-company:
+#    when {
+#        (company: $c, member: $t) isa company-membership;
+#        $c has name $c-name;
+#        ?name-value = $c-name
+#    } then {
+#        $t has parent-company-name ?name-value;
+#    };
 
 rule attribute-parent-company:
     when {
-        (parent-company: $c, company-member: $t) isa company-membership;
+        (company: $c, member: $t) isa company-membership;
         $c has name $c-name;
-        $pc isa parent-company;
+        $pc isa parent-company-name;
         $c-name = $pc;
     } then {
         $t has $pc;
@@ -152,7 +161,7 @@ root-collection sub attribute,
 rule automatic-member-collection:
     when {
         $c isa resource-collection;
-        (collection-member: $c) isa collection-membership;
+        (member: $c) isa collection-membership;
     } then {
         $c has root-collection false;
     };
@@ -169,34 +178,35 @@ rule automatic-root-collection:
 
 subject sub entity,
     abstract,
-    owns parent-company,
+    owns parent-company-name,
     owns credential,
-    plays company-membership:company-member,
-    plays group-membership:group-member,
-    plays group-ownership:group-owner,
-    plays object-ownership:object-owner,
-    plays permission:permitted-subject,
-    plays change-request:requesting-subject,
-    plays change-request:requested-subject,
-    plays segregation-violation:violating-subject;
+    plays company-membership:member,
+    plays group-membership:member,
+    plays group-ownership:owner,
+    plays object-ownership:owner,
+    plays permission:subject,
+    plays change-request:requester,
+    plays change-request:requestee,
+    plays segregation-violation:subject;
 
 user sub subject,
     abstract;
 
 user-group sub subject,
     abstract,
-    plays group-membership:parent-group,
-    plays group-ownership:owned-group;
+    plays group-membership:group,
+    plays group-ownership:group,
+    plays group-maximisation-violation:group;
 
 object sub entity,
     abstract,
-    owns parent-company,
+    owns parent-company-name,
     owns object-type,
-    plays company-membership:company-member,
-    plays collection-membership:collection-member,
-    plays object-ownership:owned-object,
-    plays access:accessed-object,
-    plays segregation-violation:violating-object;
+    plays company-membership:member,
+    plays collection-membership:member,
+    plays object-ownership:object,
+    plays access:object,
+    plays segregation-violation:object;
 
 resource sub object,
     abstract;
@@ -204,89 +214,97 @@ resource sub object,
 resource-collection sub object,
     abstract,
     owns root-collection,
-    plays collection-membership:parent-collection;
+    plays collection-membership:collection;
 
 action sub entity,
     abstract,
-    owns parent-company,
-    owns action-name,
+    owns parent-company-name,
+    owns name,
     owns object-type,
-    plays company-membership:company-member,
-    plays set-membership:set-member,
-    plays access:valid-action,
-    plays segregation-policy:segregated-action;
+    plays company-membership:member,
+    plays set-membership:member,
+    plays access:action,
+    plays segregation-policy:action;
 
 operation sub action;
 
 operation-set sub action,
-    plays set-membership:parent-set;
+    plays set-membership:set;
 
 membership sub relation,
-    abstract,
+    # abstract,
     relates parent,
     relates member;
 
 group-membership sub membership,
-    relates parent-group as parent,
-    relates group-member as member;
+    relates group as parent;
 
 collection-membership sub membership,
-    relates parent-collection as parent,
-    relates collection-member as member;
+    relates collection as parent;
 
 set-membership sub membership,
-    relates parent-set as parent,
-    relates set-member as member;
+    relates set as parent;
 
 ownership sub relation,
-    abstract,
+    # abstract,
     relates owned,
     relates owner;
 
 group-ownership sub ownership,
-    relates owned-group as owned,
-    relates group-owner as owner,
+    relates group as owned,
     owns ownership-type;
 
 object-ownership sub ownership,
-    relates owned-object as owned,
-    relates object-owner as owner,
+    relates object as owned,
     owns ownership-type;
 
 access sub relation,
-    relates accessed-object,
-    relates valid-action,
-    plays permission:permitted-access,
-    plays change-request:requested-change;
+    relates object,
+    relates action,
+    plays permission:access,
+    plays change-request:change;
 
 permission sub relation,
-    relates permitted-subject,
-    relates permitted-access,
+    relates subject,
+    relates access,
     owns review-date,
-    owns validity;
+    owns validity,
+    plays permission-maximisation-violation:permission;
+
+direct-permission sub permission;
+inherited-permission sub permission;
 
 change-request sub relation,
-    relates requesting-subject,
-    relates requested-subject,
-    relates requested-change;
+    relates requester,
+    relates requestee,
+    relates change;
 
 segregation-policy sub relation,
-    relates segregated-action,
-    owns policy-name,
-    plays segregation-violation:violated-policy;
+    relates action,
+    owns name,
+    plays segregation-violation:policy;
 
-segregation-violation sub relation,
-    relates violating-subject,
-    relates violating-object,
-    relates violated-policy;
+violation sub relation,
+    abstract;
+
+segregation-violation sub violation,
+    relates subject,
+    relates object,
+    relates policy;
+
+maximization-violation sub violation,
+    abstract;
+
+permission-maximisation-violation sub maximization-violation,
+    relates permission;
+
+group-maximisation-violation sub maximization-violation,
+    relates group;
 
 credential sub attribute,
     value string;
 
 object-type sub attribute,
-    value string;
-
-action-name sub attribute,
     value string;
 
 ownership-type sub attribute,
@@ -297,9 +315,6 @@ review-date sub attribute,
 
 validity sub attribute,
     value boolean;
-
-policy-name sub attribute,
-    value string;
 
 person sub user,
     owns full-name,
@@ -361,79 +376,121 @@ size-kb sub attribute,
 
 rule transitive-membership:
     when {
-        ($parent-role: $e1, $member-role: $e2) isa! $membership-type;
-        ($parent-role: $e2, $member-role: $e3) isa! $membership-type;
-        $membership-type sub membership;
-        $membership-type relates $parent-role, relates $member-role;
+        ($parent: $e1, $member: $e2) isa! $membership;
+        ($parent: $e2, $member: $e3) isa! $membership;
+        $membership sub membership;
+        $membership relates $parent, relates $member;
     } then {
-        ($parent-role: $e1, $member-role: $e3) isa $membership-type;
+        ($parent: $e1, $member: $e3) isa $membership;
     };
 
-rule transitive-object-access:
+#rule transitive-object-access:
+#    when {
+#        (collection: $c1, member: $c2) isa collection-membership;
+#        $c1 isa! $c1-type;
+#        $c2 isa! $c2-type;
+#        $c1-type is $c2-type;
+#        (object: $c1, action: $a) isa access;
+#    } then {
+#        (object: $c2, action: $a) isa access;
+#    };
+#
+#rule transitive-action-access:
+#    when {
+#        (set: $s, member: $a) isa set-membership;
+#        (object: $o, action: $s) isa access;
+#    } then {
+#        (object: $o, action: $a) isa access;
+#    };
+
+rule subject-permission-inheritance:
     when {
-        (parent-collection: $c1, collection-member: $c2) isa collection-membership;
-        $c1 isa! $c1-type;
-        $c2 isa! $c2-type;
-        $c1-type is $c2-type;
-        (accessed-object: $c1, valid-action: $a) isa access;
+        $s isa subject;
+        (group: $g, member: $s) isa group-membership;
+        (subject: $g, access: $ac) isa permission;
     } then {
-        (accessed-object: $c2, valid-action: $a) isa access;
+        (subject: $s, access: $ac) isa inherited-permission;
     };
 
-rule transitive-action-access:
+rule object-permission-inheritance:
     when {
-        (parent-set: $s, set-member: $a) isa set-membership;
-        (accessed-object: $o, valid-action: $s) isa access;
+        $o isa object;
+        (collection: $c, member: $o) isa collection-membership;
+        $ac-c(object: $c, action: $a) isa access;
+        $ac-o(object: $o, action: $a) isa access;
+        (subject: $s, access: $ac-c) isa permission;
     } then {
-        (accessed-object: $o, valid-action: $a) isa access;
+        (subject: $s, access: $ac-o) isa inherited-permission;
     };
 
-rule transitive-subject-permission:
+rule action-permission-inheritance:
     when {
-        (parent-group: $g, group-member: $s) isa group-membership;
-        (permitted-subject: $g, permitted-access: $a) isa permission;
+        $a isa action;
+        (set: $se, member: $a) isa set-membership;
+        $ac-s(object: $o, action: $se) isa access;
+        $ac-a(object: $o, action: $a) isa access;
+        (subject: $s, access: $ac-s) isa permission;
     } then {
-        (permitted-subject: $s, permitted-access: $a) isa permission;
+        (subject: $s, access: $ac-a) isa inherited-permission;
     };
 
-rule transitive-object-permission:
+rule segregation-violation-detection:
     when {
-        (parent-collection: $c, collection-member: $o) isa collection-membership;
-        $ac-c(accessed-object: $c, valid-action: $a) isa access;
-        $ac-o(accessed-object: $o, valid-action: $a) isa access;
-        (permitted-subject: $s, permitted-access: $ac-c) isa permission;
+        $po(action: $a1, action: $a2) isa segregation-policy;
+        $ac1(object: $o, action: $a1) isa access;
+        $ac2(object: $o, action: $a2) isa access;
+        $p1(subject: $s, access: $ac1) isa permission;
+        $p2(subject: $s, access: $ac2) isa permission;
     } then {
-        (permitted-subject: $s, permitted-access: $ac-o) isa permission;
+        (subject: $s, object: $o, policy: $po) isa segregation-violation;
     };
 
-rule transitive-action-permission:
+rule permission-maximisation-violation-detection:
     when {
-        (parent-set: $s, set-member: $a) isa set-membership;
-        $ac-s(accessed-object: $o, valid-action: $s) isa access;
-        $ac-a(accessed-object: $o, valid-action: $a) isa access;
-        (permitted-subject: $su, permitted-access: $ac-s) isa permission;
+        $p-d(subject: $s, access: $ac) isa direct-permission;
+        $p-i(subject: $s, access: $ac) isa inherited-permission;
     } then {
-        (permitted-subject: $su, permitted-access: $ac-a) isa permission;
+        (permission: $p-d, permission: $p-i) isa permission-maximisation-violation;
     };
 
-rule automatic-segregation-violation:
-    when {
-        $s(segregated-action: $a1, segregated-action: $a2) isa segregation-policy;
-        $ac1(accessed-object: $o, valid-action: $a1) isa access;
-        $ac2(accessed-object: $o, valid-action: $a2) isa access;
-        $p1(permitted-subject: $su, permitted-access: $ac1) isa permission;
-        $p2(permitted-subject: $su, permitted-access: $ac2) isa permission;
-    } then {
-        (violating-subject: $su, violating-object: $o, violated-policy: $s) isa segregation-violation;
-    };
+#rule group-maximisation-violation-detection:
+#    when {
+#        $g1 isa user-group;
+#        $g2 isa user-group;
+#        not {
+#            (permitted-subject: $g1, permitted-access: $ac) isa permission;
+#            not { (subject: $g2, access: $ac) isa permission; };
+#            not { (group: $g1, member: $s) isa group-membership; };
+#            (group: $g2, member: $s) isa group-membership;
+#        };
+#    } then {
+#        (group: $g1, group: $g2) isa group-maximisation-violation;
+#    };
+
+#rule group-maximisation-violation-detection:
+#    when {
+#        $g1 isa user-group;
+#        $g2 isa user-group;
+#        {
+#            not { (permitted-subject: $g1, permitted-access: $ac) isa permission; };
+#        } or {
+#            (subject: $g2, access: $ac) isa permission;
+#        } or {
+#            (group: $g1, member: $s) isa group-membership;
+#        } or {
+#            not { (group: $g2, member: $s) isa group-membership; };
+#        };
+#    } then {
+#        (group: $g1, group: $g2) isa group-maximisation-violation;
+#    };
 
 rule automatic-permission-invalidity:
     when {
-        $s(segregated-action: $a1, segregated-action: $a2) isa segregation-policy;
-        $ac1(accessed-object: $o, valid-action: $a1) isa access;
-        $ac2(accessed-object: $o, valid-action: $a2) isa access;
-        $p1(permitted-subject: $su, permitted-access: $ac1) isa permission;
-        $p2(permitted-subject: $su, permitted-access: $ac2) isa permission;
+        $po(action: $a1, action: $a2) isa segregation-policy;
+        $ac1(object: $o, action: $a1) isa access;
+        $ac2(object: $o, action: $a2) isa access;
+        $p1(subject: $s, access: $ac1) isa permission;
+        $p2(subject: $s, access: $ac2) isa permission;
     } then {
         $p1 has validity false;
     };
@@ -447,16 +504,16 @@ rule automatic-permission-validity:
     } then {
         $p has validity true;
     };
-    
+
 rule add-view-permission:
     when {
-        $modify isa action, has action-name "modify_file";
-        $view isa action, has action-name "view_file";
-        $ac_modify (accessed-object: $obj, valid-action: $modify) isa access;
-        $ac_view (accessed-object: $obj, valid-action: $view) isa access;
-        (permitted-subject: $subj, permitted-access: $ac_modify) isa permission;
+        $modify isa action, has name "modify_file";
+        $view isa action, has name "view_file";
+        $ac_modify (object: $obj, action: $modify) isa access;
+        $ac_view (object: $obj, action: $view) isa access;
+        (subject: $subj, access: $ac_modify) isa permission;
     } then {
-        (permitted-subject: $subj, permitted-access: $ac_view) isa permission;
+        (subject: $subj, access: $ac_view) isa permission;
     };
 ```
 
@@ -546,92 +603,92 @@ insert $f isa file, has path "LICENSE";
 insert $f isa file, has path "README.md";
 
 # Operations
-insert $o isa operation, has action-name "modify_file";
-insert $o isa operation, has action-name "view_file";
+insert $o isa operation, has name "modify_file";
+insert $o isa operation, has name "view_file";
 
 # Potential access types
-match $ob isa file, has path "iopvu.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "zlckt.ts"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "psukg.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "axidw.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "lzfkn.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "zewhb.java"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "LICENSE"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "README.md"; $op isa operation, has action-name "modify_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "iopvu.java"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "zlckt.ts"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "psukg.java"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "axidw.java"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "lzfkn.java"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "zewhb.java"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "LICENSE"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "README.md"; $op isa operation, has name "modify_file"; insert $a (object: $ob, action: $op) isa access;
 
-match $ob isa file, has path "iopvu.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "zlckt.ts"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "psukg.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "axidw.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "lzfkn.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "zewhb.java"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "LICENSE"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
-match $ob isa file, has path "README.md"; $op isa operation, has action-name "view_file"; insert $a (accessed-object: $ob, valid-action: $op) isa access;
+match $ob isa file, has path "iopvu.java"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "zlckt.ts"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "psukg.java"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "axidw.java"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "lzfkn.java"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "budget_2022-05-01.xlsx"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "zewhb.java"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "budget_2021-08-01.xlsx"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "LICENSE"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
+match $ob isa file, has path "README.md"; $op isa operation, has name "view_file"; insert $a (object: $ob, action: $op) isa access;
 
 # Permissions
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "iopvu.java";
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access;
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access;
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "zlckt.ts"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "psukg.java"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "axidw.java"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "lzfkn.java"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "budget_2022-05-01.xlsx"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "zewhb.java"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "budget_2021-08-01.xlsx"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "LICENSE"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Kevin Morrison"; $o isa object, has path "README.md"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "budget_2022-05-01.xlsx"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "zewhb.java"; 
-      $a isa action, has action-name "view_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "view_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "budget_2021-08-01.xlsx"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "LICENSE"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 
 match $s isa subject, has full-name "Pearle Goodman"; $o isa object, has path "README.md"; 
-      $a isa action, has action-name "modify_file"; $ac (accessed-object: $o, valid-action: $a) isa access; 
-insert $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+      $a isa action, has name "modify_file"; $ac (object: $o, action: $a) isa access; 
+insert $p (subject: $s, access: $ac) isa permission;
 ```
 
 To execute the TypeQL statements copied from code block above:
