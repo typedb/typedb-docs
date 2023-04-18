@@ -53,9 +53,11 @@ Console provide a username and password (when prompted):
 typedb console --cluster=<address> --username=<username> --password
 ```
 
+After issuing this command we will be prompted to provide a password.
+
 <div class="note">
 [Important]
-Use the `admin` account to manage users.
+Only the administrator account (username `admin`) can perform user management actions.
 </div>
 
 Use the following TypeDB Console commands to manage users.
@@ -72,6 +74,20 @@ Create a new user:
 <!-- test-ignore -->
 ```bash
 user create <username>
+```
+
+Set password for a user:
+
+<!-- test-ignore -->
+```bash
+user set-password <username> 
+```
+
+Updating your own password:
+
+<!-- test-ignore -->
+```bash
+user update-password
 ```
 
 Delete a user:
