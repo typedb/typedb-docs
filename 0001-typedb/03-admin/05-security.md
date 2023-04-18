@@ -95,9 +95,7 @@ only from servers that are set to be part of the cluster.
 
 All external and internal communications are [encrypted](#encryption) on the fly. 
 
-Additional connection security can be achieved by using a specified CA certificate in the TLS encryption of Clients connections 
-(optional). 
-
+Set a CA certificate explicitly to be able to use a self-signed certificate or to avoid using 
+default certificates from an operating system.
 If no certificate is provided then the default operating system root certificates will be used to establish TLS 
-encryption. Set the certificate explicitly to be able to use a self-signed certificate or to avoid using 
-default certificates from operating system.
+encryption. 
