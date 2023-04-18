@@ -25,8 +25,7 @@ Please see the following tips for modelling your schema:
 
 * The best way to start modelling your database schema is to model entity types first and then proceed with connecting 
   them with relation types and assign ownership of attribute types to them later.
-* Try to create your schema as close to the data model as possible, including naming the types, building subtype 
-  hierarchy and connecting relations. That will make queries sound natural.
+* Schema of a DB defines a vocabulary for queries to that particular DB. The closer the schema resembles the real-life data, the simpler it is to read queries for people familiar with the terminology. Consider putting extra effort into the following aspects of designing a DB schema: accurate type labels/names, an intuitive hierarchy of subtypes, and designing relations in the most meaningful way.
 * Creating a schema is an iterative process. Don't forget that schema of a database can be updated. Consider testing your schema on a 
   small dataset first. The sooner the schema will be adapted to all use cases and tested for edge cases — the 
   smaller amount of work will be required to adapt all other code for changes in the schema.
