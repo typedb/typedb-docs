@@ -159,12 +159,12 @@ The `action` is an abstract type (a subtype of the base `entity` type) that has 
 
 - `action-name`
 - `object-type`
-- `parent-company`
+- `parent-company-name`
 
 Additionally, `action` can play a role in multiple relations:
 
 - `access` relation as role `valid-action`
-- `company-membership` as role `company-member`
+- `company-membership` as role `member`
 - `segregation-policy` as role `segregated-action`
 - `set-membership` as role `set-member`
 

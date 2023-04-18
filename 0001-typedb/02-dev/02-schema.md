@@ -656,7 +656,10 @@ defines and/or plays.
 
 <!-- test-ignore -->
 ```typeql
-define membership sub relation, abstract, relates parent, relates member;
+define
+
+violation sub relation, abstract,
+owns name;
 ```
 
 ##### Subtypes another relation
@@ -673,30 +676,27 @@ collection-membership sub membership;
 ```
 
 In the example above, the `collection-membership` relation type inherits the `parent` and `member` roles defined in 
-its parent type, `membership`.
+its parent type: `membership`.
 
 The labels of the inherited roles can be overridden to distinguish between the roles inherited by a relation subtype 
-vs. the roles defined by its parent type. However, the relation type being subtyped must be abstract. 
-It is not possible to override roles inherited from a concrete (not abstract) relation types.
+vs. the roles defined by its parent type.
 
 <!-- test-ignore -->
 ```typeql
 define
 
-membership sub relation, abstract, relates parent, relates member;
+membership sub relation, relates parent, relates member;
 
-collection-membership sub membership, 
-relates parent-collection as parent, 
-relates collection-member as member;
+collection-membership sub membership, relates collection as parent;
 ```
 
 In the example above, the `collection-membership` relation type subtypes the `membership` relation type, and overrides 
-the inherited `parent` role as `parent-collection` and the inherited `member` role as `collection-member`.
+the inherited `parent` role as `collection`. The inherited `member` role inherited as it is.
 
 <div class="note">
 [Note]
-The two examples above can be run back to back. The second one will update the `membership` relation type to make it 
-abstract, and the `collection-membership` type to override its inherited roles.
+The two examples above can be run back to back. The second one will update the `collection-membership` type to 
+override one of its inherited roles.
 </div>
 
 ##### Complex example
@@ -705,42 +705,38 @@ abstract, and the `collection-membership` type to override its inherited roles.
 ```typeql
 define
 
-ownership-type sub attribute, value string;
+ownership sub relation,
+    relates owned,
+    relates owner;
 
-ownership sub relation, abstract, 
-relates owned, 
-relates owner;
+group-ownership sub ownership,
+    relates group as owned,
+    owns ownership-type;
 
-group-ownership sub ownership, 
-relates owned-group as owned, 
-relates group-owner as owner, 
-owns ownership-type;
+object-ownership sub ownership,
+    relates object as owned,
+    owns ownership-type;
 
-object-ownership sub ownership, 
-relates owned-object as owned, 
-relates object-owner as owner, 
-owns ownership-type;
+access sub relation,
+    relates object,
+    relates action,
+    plays change-request:change;
 
-access sub relation, 
-relates accessed-object, 
-relates valid-action, 
-plays change-request:requested-change;
-
-change-request sub relation, 
-relates requesting-subject, 
-relates requested-subject, 
-relates requested-change;
+change-request sub relation,
+    relates requester,
+    relates requestee,
+    relates change;
 ```
 
 The example above defines one attribute type and five relation types:
 
-* `ownership` — subtypes the base `relation` type, is abstract, and relates `owned` and `owner` roles.
-* `group-ownership` — subtypes `ownership` relation type, relates `owned-group` as `owned` and `group-owner` as `owner`.
-* `object-ownership` — subtypes `ownership` relation, relates `owned-object` as `owned` and `object-owner` as `owner`.
-* `access` — subtypes the `relation` base type, relates `accessed-object` (e.g., files) and `valid-actions` (e.g., 
-  read), plays the role of `requested-change` in `change-request` relation type.
-* `change-request` — subtypes the `relation` base type, relates `requesting-subject`, `requested-subject` and
-  `requested-change`.
+* `ownership` — subtypes the `relation` base type, and relates `owned`, and `owner` roles.
+* `group-ownership` — subtypes `ownership` relation type, relates `group` as `owned`, and `owner` (inherited).
+* `object-ownership` — subtypes `ownership` relation, relates `object` as `owned`, and `owner` (inherited).
+* `access` — subtypes the `relation` base type, relates `object` (e.g., file) and `action` (e.g., 
+  read), plays the role of `change` in `change-request` relation type.
+* `change-request` — subtypes the `relation` base type, relates `requester`, `requestee` and
+  `change`.
 
 ### Define rules
 
