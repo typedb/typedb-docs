@@ -49,13 +49,13 @@ Use [TypeDB Console](../../02-clients/02-console.md) with the following command 
 
 <!-- test-ignore -->
 ```bash
-typedb console --command="database schema [database]" > [filename].tql
+typedb console --command="database schema <database>" > <filename>.tql
 ```
 
 , where: 
 
-* `[database]` — the name of the database to export data from;
-* `[filename]` — the name for the file to export to.
+* `<database>` — the name of the database to export data from;
+* `<filename>` — the name for the file to export to.
 
 <div class="note">
 [Important]
@@ -68,19 +68,19 @@ Use the following TypeDB command to export a database data into a file:
 
 <!-- test-ignore -->
 ```bash
-typedb server export --database=[database] --port=[server rpc port] --file=[filename].typedb
+typedb server export --database=<database> --port=<server rpc port> --file=<filename>.typedb
 ```
 
 , where: 
 
-* `[database]` — the name of the database to export data from;
-* `[server rpc port]` — the port number of the active TypeDB server to export from;
-* `[filename]` — the name for the file to export to.
+* `<database>` — the name of the database to export data from;
+* `<server rpc port>` — the port number of the active TypeDB server to export from;
+* `<filename>` — the name for the file to export to.
 
 <div class="note">
 [Note]
 In versions previous to **2.6.0**, the `--database=` and `--file=` named arguments are not used. 
-Use positional arguments instead. For example, `typedb server export [database] [filename].typedb`.
+Use positional arguments instead. For example, `typedb server export <database> <filename>.typedb`.
 </div>
 
 ## Import
@@ -89,23 +89,23 @@ For the import to work make sure your target TypeDB server (where your database 
 
 ### Schema
 
-Create a new database (replace the [new-db] placeholder with the name of the new database):
+Create a new database (replace the <new-db> placeholder with the name of the new database):
 
 <!-- test-ignore -->
 ```bash
-typedb console --command="database create [new-db]"
+typedb console --command="database create <new-db>"
 ```
 
 Import the schema from a `tql` file to the database:
 
 <!-- test-ignore -->
 ```bash
-typedb console --command="transaction [new-db] schema write" --command="source [filename].tql" --command="commit"
+typedb console --command="transaction <new-db> schema write" --command="source <filename>.tql" --command="commit"
 ```
 , where: 
 
-* `[new-db]` — the name of the new database to import schema to;
-* `[filename]` — the name for the schema file to import from.
+* `<new-db>` — the name of the new database to import schema to;
+* `<filename>` — the name for the schema file to import from.
 
 ### Data
 
@@ -113,19 +113,19 @@ Use the following TypeDB command to import data from a binary file into a databa
 
 <!-- test-ignore -->
 ```bash
-typedb server import --database=[database] --port=[server rpc port] --file=[filename].typedb
+typedb server import --database=<database> --port=<server rpc port> --file=<filename>.typedb
 ```
 
 , where: 
 
-* `[database]` — the name of the database to import data to;
-* `[server rpc port]` — the gRPC port number of the active TypeDB server to import to (default is 1729);
-* `[filename]` — the name for the file to import from.
+* `<database>` — the name of the database to import data to;
+* `<server rpc port>` — the gRPC port number of the active TypeDB server to import to (default is 1729);
+* `<filename>` — the name for the file to import from.
 
 <div class="note">
 [Note]
 In versions previous to **2.6.0**, the `--database=` and `--file=` named arguments are not used. 
-Use positional arguments instead. For example, `typedb server import [new-db] [filename].typedb`.
+Use positional arguments instead. For example, `typedb server import <new-db> <filename>.typedb`.
 </div>
 
 ## Troubleshooting
