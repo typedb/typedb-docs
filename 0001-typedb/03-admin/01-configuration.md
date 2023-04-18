@@ -16,7 +16,7 @@ There are two ways to configure TypeDB:
 ## Command line arguments
 
 Use command line arguments with the command `typedb server` to configure the server upon its launch. The command line 
-arguments will overwrite any relevant settings from the config file.
+arguments will override any relevant settings from the config file.
 
 All arguments must: 
 
@@ -48,7 +48,7 @@ This will list out how to use command line specific arguments as well as options
 
 ## Configuration file
 
-TypeDB accepts a configuration (config) file with a specific Yaml format. See the
+TypeDB accepts a configuration (config) file with a specific YAML format. See the
 [sample configuration](#sample-configuration) below.
 
 <div class="note">
