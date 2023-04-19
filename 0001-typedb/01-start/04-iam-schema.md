@@ -165,8 +165,8 @@ Additionally, `action` can play a role in multiple relations:
 
 - `access` relation as role `action`
 - `company-membership` as role `member`
-- `segregation-policy` as role `segregated-action`
-- `set-membership` as role `set-member`
+- `segregation-policy` as role `action`
+- `set-membership` as role `member`
 
 Finally, `action` has two subtypes, which are not abstract, so we can create instances of those subtypes:
 
@@ -197,7 +197,7 @@ groups:
 ## Segregation policy
 
 Relation type that adds information on [duty segregation](https://en.wikipedia.org/wiki/Separation_of_duties) policies. 
-It has a `name` attribute and a single role `segregated-action`. Usually, multiple instances of this role in a single 
+It has a `name` attribute and a single role `action`. Usually, multiple instances of this role in a single 
 relation mean these actions can’t be performed by one person.
 
 ## Rules
@@ -296,7 +296,8 @@ The miniature dataset that we have loaded in the [Quickstart guide](03-quickstar
   - All 10 `objects` set to have `modify_file` operation as `action`.
   - All 10 `objects` set to have `view_file` operation as `action`.
 - Permissions:
-  - Subject with `name` attribute `Kevin Morrison` set to have permission to `modify_file` action for all 10 subjects.
-  - Subject with `name` attribute `Pearle Goodman` set to have some random permissions to `modify_file` or `view_file` 
+  - Subject with `full-name` attribute `Kevin Morrison` set to have permission to `modify_file` action for all 10 
+    subjects.
+  - Subject with `full-name` attribute `Pearle Goodman` set to have some random permissions to `modify_file` or `view_file` 
     actions for some subjects.
-  - Subject with `name` attribute `Masako Holley` doesn't have any permissions.
+  - Subject with `full-name` attribute `Masako Holley` doesn't have any permissions.

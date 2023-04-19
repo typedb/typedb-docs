@@ -213,8 +213,8 @@ full-name sub attribute, value string;
 id sub attribute, abstract, value string;
 email sub id, value string;
 membership sub relation, abstract, relates parent, relates member;
-group-membership sub membership, relates parent-group as parent, relates group-member as member;
-subject sub entity, abstract, owns credential, plays group-membership:group-member;
+group-membership sub membership, relates group as parent;
+subject sub entity, abstract, owns credential, plays group-membership:member;
 user sub subject, abstract;
 person sub user, owns full-name, owns email;
 ```
@@ -643,9 +643,9 @@ A relation type can own zero, one or many attribute types.
 define
 
 segregation-policy sub relation, 
-relates segregated-action, 
-plays segregation-violation:violated-policy, 
-owns policy-name;
+relates action, 
+plays segregation-violation:policy, 
+owns name;
 ```
 
 ##### Abstract
