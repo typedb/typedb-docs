@@ -128,10 +128,12 @@ typedb server import --database=<database> --port=<server rpc port> --file=<file
 * `<server rpc port>` — the gRPC port number of the active TypeDB server to import to (default is 1729);
 * `<filename>` — the name for the file to import from.
 
+<!-- The symbols <> are substituted here for their alternatives ＜＞ due to HTML tags compatibility issue --->
+
 <div class="note">
 [Note]
 In versions previous to **2.6.0**, the `--database=` and `--file=` named arguments are not used. 
-Use positional arguments instead. For example, `typedb server import <new-db> <filename>.typedb`.
+Use positional arguments instead. For example, `typedb server import ＜new-db＞ ＜filename＞.typedb`.
 </div>
 
 ## Troubleshooting
