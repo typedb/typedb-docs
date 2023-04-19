@@ -337,8 +337,8 @@ To add roles that entities of a specific entity type can play, use the `plays` k
 ```typeql
 define
 
-access sub relation, relates accessed-object;
-object sub entity, abstract, plays access:accessed-object;
+access sub relation, relates object;
+object sub entity, abstract, plays access:object;
 ```
 
 ##### Subtypes another entity
@@ -358,14 +358,14 @@ define
 
 path sub attribute, value string;
 
-object sub entity, abstract, owns object-type, plays access:accessed-object;
+object sub entity, abstract, owns object-type, plays access:object;
 resource sub object, abstract;
 file sub resource, owns path;
 ```
 
 In the above example, the `resource` and `file` entity types are subtypes of the `object`, which itself is a subtype 
 of the `entity` base type. They inherit the `object-type` attribute type ownership from it as well as its 
-`access:accessed-object` role. However, while the `resource` subtype is abstract, the `file` subtype is not. Hence, we 
+`access:object` role. However, while the `resource` subtype is abstract, the `file` subtype is not. Hence, we 
 can create `file` entities, but not `resource` entities.
 
 Further, the `path` attribute type will only be owned by the `file` entity type and any other entity types which 
@@ -555,10 +555,10 @@ by attributes.
 
 <!-- test-ignore -->
 ```typeql
-define credential sub attribute, value string, plays change-request:requested-change;
+define credential sub attribute, value string, plays change-request:change;
 ```
 
-The above example creates the `credential` attribute type, and specifies it can play the role of `requested-change` in 
+The above example creates the `credential` attribute type, and specifies it can play the role of `change` in 
 the `change-request` relation type. While `change-requests` were intended to manage access changes, they can now be 
 used to manage `credential` changes as well.
 
@@ -594,12 +594,12 @@ Relation types are defined in TypeQL with the following pattern:
 
 The following statement creates an `access` relation that defines two roles:
 
-* `accessed-object` – played by instances of the `object` entity type or its subtypes (e.g. `file`).
-* `valid-action` – played by instances of the `action` entity type.
+* `object` – played by instances of the `object` entity type or its subtypes (e.g. `file`).
+* `action` – played by instances of the `action` entity type.
 
 <!-- test-ignore -->
 ```typeql
-define access sub relation, relates accessed-object, relates valid-action;
+define access sub relation, relates object, relates action;
 ```
 
 ##### Plays a role
@@ -611,13 +611,13 @@ In addition to defining its own roles played by other types, a relation type can
 define
 
 access sub relation,
-relates accessed-object, relates valid-action, 
-plays permission:permitted-access, plays change-request:requested-change;
+relates object, relates action, 
+plays permission:access, plays change-request:change;
 ```
 
-In the above example, `access` relation type can play the `permitted-access` role in `permission` relation type and 
-the `requested-change` role in `change-request` relation type. Besides, an `access` relation type relates an 
-`accessed-object` role (e.g., file) and a `valid-action` role (e.g., read). Thus a `permission` relation type relates 
+In the above example, `access` relation type can play the `access` role in `permission` relation type and 
+the `change` role in `change-request` relation type. Besides, an `access` relation type relates an 
+`object` role (e.g., file) and a `action` role (e.g., read). Thus a `permission` relation type relates 
 the `access` (i.e., read + file) and a `subject` (e.g., `person` with `full-name` attribute `Kevin Morrison`).
 
 ##### Defines multiple roles
@@ -629,9 +629,9 @@ A relation can define multiple roles (from one to many).
 define
 
 change-request sub relation, 
-relates requested-change, 
-relates requested-subject, 
-relates requesting-subject;
+relates change, 
+relates requestee, 
+relates requester;
 ```
 
 ##### Owns an attribute
@@ -860,19 +860,19 @@ define
 
 rule add-view-permission:
     when {
-        $modify isa action, has action-name "modify_file";
-        $view isa action, has action-name "view_file";
-        $ac_modify (accessed-object: $obj, valid-action: $modify) isa access;
-        $ac_view (accessed-object: $obj, valid-action: $view) isa access;
-        (permitted-subject: $subj, permitted-access: $ac_modify) isa permission;
+        $modify isa action, has name "modify_file";
+        $view isa action, has name "view_file";
+        $ac_modify (object: $obj, action: $modify) isa access;
+        $ac_view (object: $obj, action: $view) isa access;
+        (subject: $subj, access: $ac_modify) isa permission;
     } then {
-        (permitted-subject: $subj, permitted-access: $ac_view) isa permission;
+        (subject: $subj, access: $ac_view) isa permission;
     };
 ```
 
 The example above illustrates a more complex rule, using the IAM schema.
 
-In short, the permission to access some file with action that has `action-name` of `view_file` can be inferred by the 
+In short, the permission to access some file with action that has `name` of `view_file` can be inferred by the 
 rule from the permission to `modify_file` the same file.
 
 A full explanation of how this rule works is given in the [Example](06-infer.md#example) section of Inferring data page.

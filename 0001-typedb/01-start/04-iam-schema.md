@@ -57,7 +57,7 @@ The main entity types in the IAM schema:
     - File — File in some filesystem with `path` (to the file) and `size-kb` (file size in kB) attributes.
   - Resource-collection — A group of resources.
 - Action — An operation or operation set that can be performed on a specific type of object. Its name is stored in
-  the `action-name` attribute.
+  the `name` attribute.
 
 <div class="note">
 [Note]
@@ -87,11 +87,11 @@ There are two relation types involved:
 - `permission`
 - `access`
 
-The `permission` relation connects a `subject` (e.g. `person`) via a `permitted-subject` role and `access` relation via 
-`permitted-access` role.
+The `permission` relation connects a `subject` (e.g. `person`) via a `subject` role and `access` relation via 
+`access` role.
 
-The `access` relation connects an `object` (e.g. `file`) via an `accessed-object` role, `action` (e.g. `view_file`) via 
-the `valid-action` role, and plays a role of `permitted-access` in a `permission` relation.
+The `access` relation connects an `object` (e.g. `file`) via an `object` role, `action` (e.g. `view_file`) via 
+the `action` role, and plays a role of `access` in a `permission` relation.
 
 ![Permission and access relations](../../images/iam/permission-access.png)
 
@@ -157,13 +157,13 @@ It has all the attributes the subject supertype has and also two attributes of i
 
 The `action` is an abstract type (a subtype of the base `entity` type) that has three attributes:
 
-- `action-name`
+- `name`
 - `object-type`
 - `parent-company-name`
 
 Additionally, `action` can play a role in multiple relations:
 
-- `access` relation as role `valid-action`
+- `access` relation as role `action`
 - `company-membership` as role `member`
 - `segregation-policy` as role `segregated-action`
 - `set-membership` as role `set-member`
@@ -229,29 +229,29 @@ define
 
 rule add-view-permission:
 when {
-    $modify isa action, has action-name "modify_file";
-    $view isa action, has action-name "view_file";
-    $ac_modify (accessed-object: $obj, valid-action: $modify) isa access;
-    $ac_view (accessed-object: $obj, valid-action: $view) isa access;
-    (permitted-subject: $subj, permitted-access: $ac_modify) isa permission;
+    $modify isa action, has name "modify_file";
+    $view isa action, has name "view_file";
+    $ac_modify (object: $obj, action: $modify) isa access;
+    $ac_view (object: $obj, action: $view) isa access;
+    (subject: $subj, access: $ac_modify) isa permission;
 } then {
-    (permitted-subject: $subj, permitted-access: $ac_view) isa permission;
+    (subject: $subj, access: $ac_view) isa permission;
 };
 ```
 
 The `when` clause defines the following conditions:
 
-1. An `action` entity with action-name `modify_file`, assigned `$modify` variable.
-2. An `action` entity with action-name `view_file`, assigned `$view` variable.
-3. An `access` relation, that relates some `object` (`$obj`) to `$modify` as `valid-action` role, assigned `$ac_modify` 
+1. An `action` entity with name `modify_file`, assigned `$modify` variable.
+2. An `action` entity with name `view_file`, assigned `$view` variable.
+3. An `access` relation, that relates some `object` (`$obj`) to `$modify` as `action` role, assigned `$ac_modify` 
    variable.
 4. The similar relation but with `$view` instead and assigned `$ac_view` variable.
-5. A `permission` relation, that relates some `subject` (`$subj`) as `permitted-subject` to the `$ac_modify` as 
-   `permitted-access`.
+5. A `permission` relation, that relates some `subject` (`$subj`) as `subject` to the `$ac_modify` as 
+   `access`.
 
 The `then` clause defines the data to infer:
 
-1. A new `permission` relation, that relates the subject `$subj` as `permitted-subject` to `$ac_view` as `permitted access`.
+1. A new `permission` relation, that relates the subject `$subj` as `subject` to `$ac_view` as `permitted access`.
 
 <div class="note">
 [Note]
@@ -291,10 +291,10 @@ The miniature dataset that we have loaded in the [Quickstart guide](03-quickstar
 - Objects section:
   - 10 `objects` of the `file` type with `path` attribute and optional `size-kb` attribute.
 - Operations:
-  - Only 2 operations with `action-name` attributes with values `modify_file` and `view_file`.
+  - Only 2 operations with `name` attributes with values `modify_file` and `view_file`.
 - Potential access types:
-  - All 10 `objects` set to have `modify_file` operation as `valid-action`.
-  - All 10 `objects` set to have `view_file` operation as `valid-action`.
+  - All 10 `objects` set to have `modify_file` operation as `action`.
+  - All 10 `objects` set to have `view_file` operation as `action`.
 - Permissions:
   - Subject with `name` attribute `Kevin Morrison` set to have permission to `modify_file` action for all 10 subjects.
   - Subject with `name` attribute `Pearle Goodman` set to have some random permissions to `modify_file` or `view_file` 

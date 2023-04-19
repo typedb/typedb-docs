@@ -66,7 +66,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
         with session.transaction(TransactionType.READ, TypeDBOptions.core().set_infer(True)) as transaction:  # Open transaction to read with inference
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
                                 "$o isa object, has path $fp; $pa($o, $va) isa access; " \
-                                "$va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
+                                "$va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
             iterator = transaction.query().match(typeql_read_query)  # Executing query
             k = 0  # Reset counter
             for item in iterator:  # Iterating through results
@@ -75,7 +75,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
 
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
                                 "$o isa object, has path $fp; $pa($o, $va) isa access; " \
-                                "$va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
+                                "$va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
             iterator = transaction.query().match(typeql_read_query)  # Executing query
             for item in iterator:  # Iterating through results
                 k += 1
@@ -89,7 +89,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             transaction.query().insert(typeql_insert_query)  # Executing query
             print("Inserting file:", filepath)
             typeql_insert_query = "match $f isa file, has path '" + filepath + "'; " \
-                                  "$vav isa action, has action-name 'view_file'; " \
+                                  "$vav isa action, has name 'view_file'; " \
                                   "insert ($vav, $f) isa access;"
             print("Adding view access to the file")
             transaction.query().insert(typeql_insert_query)  # Executing query
@@ -155,7 +155,7 @@ TypeQL query used:
 ```typeql
 match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; 
       $o isa object, has path $fp; $pa($o, $va) isa access;
-      $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;
+      $va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;
 ```
 
 Simple explanation: This is the similar request to the previous one. The difference is we set the type of action (`$va`)
@@ -196,11 +196,11 @@ TypeQL query #2:
 
 <!-- test-ignore -->
 ```typeql
-match $f isa file, has path '" + path + "'; $vav isa action, has action-name 'view_file'; insert ($vav, $f) isa access;
+match $f isa file, has path '" + path + "'; $vav isa action, has name 'view_file'; insert ($vav, $f) isa access;
 ```
 
 Simple explanation: we seek `file` entity that has an attribute `path` with the value we generated before.
-And we find an `action`, that has a `action-name` attribute with the value of `view_file`. Then we insert an `access` 
+And we find an `action`, that has a `name` attribute with the value of `view_file`. Then we insert an `access` 
 relation inbetween the `file` and the `action`.
 
 <div class="note">
@@ -291,14 +291,14 @@ public class Main {
                 // $p($u, $pa) isa permission;
                 // $o isa object, has path $fp;
                 // $pa($o, $va) isa access;
-                // $va isa action, has action-name 'view_file';
+                // $va isa action, has name 'view_file';
                 // get $fp; sort $fp asc; offset 0; limit 5;"
                 TypeQLMatch.Limited getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
                         var("u").isa("user").has("full-name", "Kevin Morrison"),
                         var("p").rel("u").rel("pa").isa("permission"),
                         var("o").isa("object").has("path", var("fp")),
                         var("pa").rel("o").rel("va").isa("access"),
-                        var("va").isa("action").has("action-name", "view_file")
+                        var("va").isa("action").has("name", "view_file")
                 ).get("fp").sort("fp").offset(0).limit(5);
                 k = 0; // reset the counter
                 readTransaction.query().match(getQuery).forEach(result -> { // Executing query
@@ -311,7 +311,7 @@ public class Main {
                         var("p").rel("u").rel("pa").isa("permission"),
                         var("o").isa("object").has("path", var("fp")),
                         var("pa").rel("o").rel("va").isa("access"),
-                        var("va").isa("action").has("action-name", "view_file")
+                        var("va").isa("action").has("name", "view_file")
                 ).get("fp").sort("fp").offset(5).limit(5);
                 readTransaction.query().match(getQuery).forEach(result -> { // Executing query
                     k += 1;
@@ -329,11 +329,11 @@ public class Main {
                 System.out.println("Inserting file: " + filepath);
                 writeTransaction.query().insert(insertQuery); // Executing query
                 // "match $f isa file, has path '" + filepath + "';
-                // $vav isa action, has action-name 'view_file';
+                // $vav isa action, has name 'view_file';
                 // insert ($vav, $f) isa access;"
                 insertQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
                         var("f").isa("file").has("path", filepath),
-                        var("vav").isa("action").has("action-name", "view_file")
+                        var("vav").isa("action").has("name", "view_file")
                                 )
                         .insert(var("pa").rel("vav").rel("f").isa("access"));
                 System.out.println("Adding view access to the file");
@@ -418,7 +418,7 @@ TypeQLMatch.Limited getQuery = TypeQL.match(
         var("p").rel("u").rel("pa").isa("permission"),
         var("o").isa("object").has("path", var("fp")),
         var("pa").rel("o").rel("va").isa("access"),
-        var("va").isa("action").has("action-name", "view_file")
+        var("va").isa("action").has("name", "view_file")
 ).get("fp").sort("fp").offset(0).limit(5);
 ```
 
@@ -462,13 +462,13 @@ TypeQL query builder clause for query #2:
 ```java
 TypeQLInsert matchInsertQuery = TypeQL.match(
         var("f").isa("file").has("path", filepath),
-        var("vav").isa("action").has("action-name", "view_file")
+        var("vav").isa("action").has("name", "view_file")
                 )
         .insert(var("pa").rel("vav").rel("f").isa("access"));
 ```
 
 Simple explanation: we seek `file` entity that has an attribute `path` with the value we generated before.
-And we find an `action`, that has a `action-name` attribute with the value of `view_file`. Then we insert an `access` 
+And we find an `action`, that has a `name` attribute with the value of `view_file`. Then we insert an `access` 
 relation inbetween the `file` and the `action`.
 
 <div class="note">
@@ -562,7 +562,7 @@ async function main() {
         options.infer = true; // set option to enable inference
         try {
             transaction = await session.transaction(TransactionType.READ, options); // READ transaction is open
-            match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
+            match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
             iterator = transaction.query.match(match_query); // Executing query
             answers = await iterator.collect();
             result = await Promise.all(
@@ -575,7 +575,7 @@ async function main() {
                 k++;
                 console.log("File #" + k + ": " + result[i]);
             };
-            match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
+            match_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; $o isa object, has path $fp; $pa($o, $va) isa access; $va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
             iterator = transaction.query.match(match_query); // Executing query
             answers = await iterator.collect();
             result = await Promise.all(
@@ -601,7 +601,7 @@ async function main() {
             let insert_query = "insert $f isa file, has path '" + filepath + "';";
             console.log("Inserting file: " + filepath);
             transaction.query.insert(insert_query); // Executing query
-            insert_query = "match $f isa file, has path '" + filepath + "'; $vav isa action, has action-name 'view_file'; insert ($vav, $f) isa access;";
+            insert_query = "match $f isa file, has path '" + filepath + "'; $vav isa action, has name 'view_file'; insert ($vav, $f) isa access;";
             console.log("Adding view access to the file");
             await transaction.query.insert(insert_query); // Executing query
             await transaction.commit(); // to persist changes, a 'write' transaction must be committed
@@ -676,7 +676,7 @@ TypeQL query used:
 ```typeql
 match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; 
       $o isa object, has path $fp; $pa($o, $va) isa access;
-      $va isa action, has action-name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;
+      $va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;
 ```
 
 Simple explanation: This is the similar request to the previous one. The difference is we set the type of action (`$va`)
@@ -717,11 +717,11 @@ TypeQL query #2:
 
 <!-- test-ignore -->
 ```typeql
-match $f isa file, has path '" + path + "'; $vav isa action, has action-name 'view_file'; insert ($vav, $f) isa access;
+match $f isa file, has path '" + path + "'; $vav isa action, has name 'view_file'; insert ($vav, $f) isa access;
 ```
 
 Simple explanation: we seek `file` entity that has an attribute `path` with the value we generated before.
-And we find an `action`, that has a `action-name` attribute with the value of `view_file`. Then we insert an `access` 
+And we find an `action`, that has a `name` attribute with the value of `view_file`. Then we insert an `access` 
 relation inbetween the `file` and the `action`.
 
 <div class="note">

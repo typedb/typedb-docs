@@ -106,13 +106,13 @@ In the IAM database there are multiple rules, but we will use the one described 
 ```typeql
 rule add-view-permission:
     when {
-        $modify isa action, has action-name "modify_file";
-        $view isa action, has action-name "view_file";
-        $ac_modify (accessed-object: $obj, valid-action: $modify) isa access;
-        $ac_view (accessed-object: $obj, valid-action: $view) isa access;
-        (permitted-subject: $subj, permitted-access: $ac_modify) isa permission;
+        $modify isa action, has name "modify_file";
+        $view isa action, has name "view_file";
+        $ac_modify (object: $obj, action: $modify) isa access;
+        $ac_view (object: $obj, action: $view) isa access;
+        (subject: $subj, access: $ac_modify) isa permission;
     } then {
-        (permitted-subject: $subj, permitted-access: $ac_view) isa permission;
+        (subject: $subj, access: $ac_view) isa permission;
     };
 ```
 
@@ -130,9 +130,9 @@ To do so, let’s use the following query:
 match
     $p isa person, has full-name "Kevin Morrison";
     $o isa object, has path $o-path;
-    $a isa action, has action-name "view_file";
-    $ac(accessed-object: $o, valid-action: $a) isa access;
-    $pe(permitted-subject: $p, permitted-access: $ac) isa permission;
+    $a isa action, has name "view_file";
+    $ac(object: $o, action: $a) isa access;
+    $pe(subject: $p, access: $ac) isa permission;
 get $o-path;
 ```
 
@@ -146,13 +146,13 @@ The example is a `get` query with `match` clause and optional `get` clause that 
 
 1. Finds `person` entity (`$p`) with an attribute `full-name` equal to the `Kevin Morrison` string value.
 2. Finds all `object` entities (`$o`) with a `path` attribute (`$o-path`).
-3. Finds `action` entity (`$a`) with `action-name` of `view-file`.
-4. Finds `access` relation (`$ac`) that relates `$o` (as `accessed-object`) to `$a` (as `valid-action`).
-5. Finds all `permission` relations that relate `$p` (as `permitted-subject`) to `$ac` (as `permitted-access`).
+3. Finds `action` entity (`$a`) with `name` of `view-file`.
+4. Finds `access` relation (`$ac`) that relates `$o` (as `object`) to `$a` (as `action`).
+5. Finds all `permission` relations that relate `$p` (as `subject`) to `$ac` (as `access`).
 6. Filters the results to receive only the `$o-path` variable that complies with all the statements above.
 
 In short, it returns `path` attributes for every `object` that `person` with a `full-name` of `Kevin Morrison` has 
-permission to access with `action` with the `action-name` of `view_file`. 
+permission to access with `action` with the `name` of `view_file`. 
 
 ## Explain query
 
@@ -186,8 +186,8 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
         typedb_options.explain = True
         with session.transaction(TransactionType.READ, typedb_options) as transaction:  
             typeql_read_query = "match $p isa person, has full-name $p-fname; $o isa object, has path $o-path;" \
-                                "$a isa action, has action-name 'view_file'; $ac(accessed-object: $o, valid-action: $a) isa access;" \
-                                "$pe(permitted-subject: $p, permitted-access: $ac) isa permission; $p-fname = 'Kevin Morrison';" \
+                                "$a isa action, has name 'view_file'; $ac(object: $o, action: $a) isa access;" \
+                                "$pe(subject: $p, access: $ac) isa permission; $p-fname = 'Kevin Morrison';" \
                                 "get $o-path; sort $o-path asc;"
             iterator = transaction.query().match(typeql_read_query)
             i = 0
@@ -229,14 +229,14 @@ The result should be similar to the following:
 Read result #: 10 , File path: zlckt.ts
 Explainable #: 1 , Explained variable: pe
 Explainable object: &lt;typedb.concept.answer.concept_map._ConceptMap.Explainable object at 0x105cb34f0>
-Explainable part of query: { $pe (permitted-subject:$p, permitted-access:$ac); $pe isa permission; }
+Explainable part of query: { $pe (subject:$p, access:$ac); $pe isa permission; }
 Explanation #: 1
 
 Rule:  add-view-permission
 
-Condition:  [_1/_StringAttribute[action-name:0x836f800328000b6d6f646966795f66696c65]][_2/_StringAttribute[action-name:0x836f8003280009766965775f66696c65]][_3/_Relation[permission:0x847080038000000000000001]][ac_modify/_Relation[access:0x8470800a8000000000000003]][ac_view/_Relation[access:0x8470800a8000000000000011]][modify/_Entity[operation:0x826e800c8000000000000001]][obj/_Entity[file:0x826e80098000000000000004]][subj/_Entity[person:0x826e80018000000000000001]][view/_Entity[operation:0x826e800c8000000000000000]]
+Condition:  [_1/_StringAttribute[name:0x836f800328000b6d6f646966795f66696c65]][_2/_StringAttribute[name:0x836f8003280009766965775f66696c65]][_3/_Relation[permission:0x847080038000000000000001]][ac_modify/_Relation[access:0x8470800a8000000000000003]][ac_view/_Relation[access:0x8470800a8000000000000011]][modify/_Entity[operation:0x826e800c8000000000000001]][obj/_Entity[file:0x826e80098000000000000004]][subj/_Entity[person:0x826e80018000000000000001]][view/_Entity[operation:0x826e800c8000000000000000]]
 
-Conclusion:  [_/_Relation[permission:0x847080037fffffffffffffff]][_permission/_RelationType[label: permission]][_permission:permitted-access/_RoleType[label: permission:permitted-access]][_permission:permitted-subject/_RoleType[label: permission:permitted-subject]][ac_view/_Relation[access:0x8470800a8000000000000011]][subj/_Entity[person:0x826e80018000000000000001]]
+Conclusion:  [_/_Relation[permission:0x847080037fffffffffffffff]][_permission/_RelationType[label: permission]][_permission:access/_RoleType[label: permission:access]][_permission:subject/_RoleType[label: permission:subject]][ac_view/_Relation[access:0x8470800a8000000000000011]][subj/_Entity[person:0x826e80018000000000000001]]
 
 Variables used in explanation:  {'p': {'subj'}, 'ac': {'ac_view'}, 'pe': {'_'}}
 
@@ -267,19 +267,19 @@ For the rule condition defined as:
 
 <!-- test-ignore -->
 ```
-$modify isa action, has action-name "modify_file";
-$view isa action, has action-name "view_file";
-$ac_modify (accessed-object: $obj, valid-action: $modify) isa access;
-$ac_view (accessed-object: $obj, valid-action: $view) isa access;
-(permitted-subject: $subj, permitted-access: $ac_modify) isa permission; \
+$modify isa action, has name "modify_file";
+$view isa action, has name "view_file";
+$ac_modify (object: $obj, action: $modify) isa access;
+$ac_view (object: $obj, action: $view) isa access;
+(subject: $subj, access: $ac_modify) isa permission; \
 ```
 
 We got the condition explained with particular instances from the IAM dataset:
 
 <!-- test-ignore -->
 ```
-[_1/_StringAttribute[action-name:0x836f800328000b6d6f646966795f66696c65]]
-[_2/_StringAttribute[action-name:0x836f8003280009766965775f66696c65]]
+[_1/_StringAttribute[name:0x836f800328000b6d6f646966795f66696c65]]
+[_2/_StringAttribute[name:0x836f8003280009766965775f66696c65]]
 [_3/_Relation[permission:0x847080038000000000000001]]
 [ac_modify/_Relation[access:0x8470800a8000000000000003]]
 [ac_view/_Relation[access:0x8470800a8000000000000011]]
@@ -313,7 +313,7 @@ For the rule condition defined as:
 
 <!-- test-ignore -->
 ```
-(permitted-subject: $subj, permitted-access: $ac_view) isa permission;
+(subject: $subj, access: $ac_view) isa permission;
 ```
 
 We got the conclusion explained with particular instances from the IAM dataset:
@@ -322,8 +322,8 @@ We got the conclusion explained with particular instances from the IAM dataset:
 ```
 [_/_Relation[permission:0x847080037fffffffffffffff]]
 [_permission/_RelationType[label: permission]]
-[_permission:permitted-access/_RoleType[label: permission:permitted-access]] 
-[_permission:permitted-subject/_RoleType[label: permission:permitted-subject]] 
+[_permission:access/_RoleType[label: permission:access]] 
+[_permission:subject/_RoleType[label: permission:subject]] 
 [ac_view/_Relation[access:0x8470800a8000000000000011]]
 [subj/_Entity[person:0x826e80018000000000000001]]
 ```

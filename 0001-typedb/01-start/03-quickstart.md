@@ -458,7 +458,7 @@ rule permission-maximisation-violation-detection:
 #        $g1 isa user-group;
 #        $g2 isa user-group;
 #        not {
-#            (permitted-subject: $g1, permitted-access: $ac) isa permission;
+#            (subject: $g1, access: $ac) isa permission;
 #            not { (subject: $g2, access: $ac) isa permission; };
 #            not { (group: $g1, member: $s) isa group-membership; };
 #            (group: $g2, member: $s) isa group-membership;
@@ -472,7 +472,7 @@ rule permission-maximisation-violation-detection:
 #        $g1 isa user-group;
 #        $g2 isa user-group;
 #        {
-#            not { (permitted-subject: $g1, permitted-access: $ac) isa permission; };
+#            not { (subject: $g1, access: $ac) isa permission; };
 #        } or {
 #            (subject: $g2, access: $ac) isa permission;
 #        } or {
