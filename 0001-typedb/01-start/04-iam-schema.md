@@ -87,11 +87,12 @@ There are two relation types involved:
 - `permission`
 - `access`
 
-The `permission` relation connects a `subject` (e.g. `person`) via a `subject` role and `access` relation via 
-`access` role.
+The `permission` relation connects a `subject` (e.g. an instance of a `person` type) via a `subject` role
+and a  relation of the `access` type via an `access` role.
 
-The `access` relation connects an `object` (e.g. `file`) via an `object` role, `action` (e.g. `view_file`) via 
-the `action` role, and plays a role of `access` in a `permission` relation.
+The `access` relation connects an `object` (e.g. an instance of the `file` type) via 
+an `object` role, `action` (e.g. an instance of `action` type with `name` attribute of `view_file`) 
+via the `action` role, and plays a role of `access` in a `permission` relation.
 
 ![Permission and access relations](../../images/iam/permission-access.png)
 
@@ -155,16 +156,14 @@ It has all the attributes the subject supertype has and also two attributes of i
 
 ## Action entity
 
-The `action` is an abstract type (a subtype of the base `entity` type) that has three attributes:
+The `action` is an abstract type (a subtype of the `entity` base type) that has three attributes:
 
 - `name`
 - `object-type`
-- `parent-company-name`
 
 Additionally, `action` can play a role in multiple relations:
 
 - `access` relation as role `action`
-- `company-membership` as role `member`
 - `segregation-policy` as role `action`
 - `set-membership` as role `member`
 
