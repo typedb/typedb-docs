@@ -266,7 +266,7 @@ match
   $p2 isa subject, has full-name "Masako Holley"; 
   $o isa object, has path "zewhb.java"; 
 insert 
-  $obj-ownership (object-owner: $p1, object-owner: $p2, owned-object: $o) isa object-ownership;
+  $obj-ownership (owner: $p1, owner: $p2, object: $o) isa object-ownership;
 ```
 
 The above query:
@@ -274,8 +274,8 @@ The above query:
 1. Finds a `person` entity (`$p1`) by its `full-name` attribute `Pearle Goodman`. 
 2. Finds a `person` entity (`$p2`) by its `full-name` attribute `Masako Holley`. 
 3. Finds an `object` entity (`$o`, `zewhb.java`). 
-4. Inserts an `object-ownership` relation (`$obj-ownership`) which relates `$p1` (as `object-owner`) and `$p2` (as 
-  `object-owner`) to `$o` (as `owned-object`).
+4. Inserts an `object-ownership` relation (`$obj-ownership`) which relates `$p1` (as `owner`) and `$p2` (as 
+  `owner`) to `$o` (as `object`).
 
 In short, it makes `Pearle Goodman` and `Masako Holley` owners of the `zewhb.java` file.
 
@@ -418,26 +418,26 @@ Use a match clause followed by the `delete` keyword and a pattern to remove a pl
 match
   $p isa subject, has full-name "Masako Holley"; 
   $o isa object, has path "zewhb.java"; 
-  $oo (object-owner: $p, object-owned: $o) isa object-ownership; 
+  $oo (owner: $p, owned: $o) isa object-ownership; 
 delete 
-  $oo (object-owner: $p);
+  $oo (owner: $p);
 ```
 
 The above query, assuming the `full-name` attribute is unique for each `subject` entity, and the `path` attribute 
 unique for each `object`:
 
-1. Finds a `subject` entity ($p, Masako Holley)
-2. Finds an `object` entity ($o, zewhb.java)
-3. Finds an `object-owner` relation ($oo) relating $p (object-owner) to $o (object-owned).
-4. Deletes $p as a player of the `object-owner` role in $oo
+1. Finds a `subject` entity (`$p`, `Masako Holley`)
+2. Finds an `object` entity (`$o`, `zewhb.java`)
+3. Finds an `owner` relation (`$oo`) relating `$p` (`owner`) to `$o` (`owned`).
+4. Deletes `$`p as a player of the `owner` role in `$oo`
 
 In short, it removes `Masako Holley` as an owner of the `zewhb.java` file. However, the relation itself stays and any 
-other `subject` entities playing the `object-owner` role will continue to do so.
+other `subject` entities playing the `owner` role will continue to do so.
 
 <div class="note">
 [Note]
 The `isa object-ownership` expression is omitted because we are not deleting the `object-ownership` relation itself, 
-but rather a specific player of its `object-owner` role.
+but rather a specific player of its `owner` role.
 </div>
 
 ### Attributes
