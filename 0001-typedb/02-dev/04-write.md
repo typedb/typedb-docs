@@ -234,9 +234,9 @@ Thus, the `match` clause is used to identify the players of roles in a new relat
 ```typeql
 match 
   $f isa file, has path "iopvu.java"; 
-  $op isa operation, has action-name "view_file"; 
+  $op isa operation, has name "view_file"; 
 insert 
-  $a (accessed-object: $f, valid-action: $op) isa access;
+  $a (object: $f, action: $op) isa access;
 ```
 
 In the above example we match our role players before inserting a relation. The number of relations being inserted 
@@ -288,24 +288,24 @@ In addition to entities and attributes, roles of relations can be played by othe
 match 
   $s isa subject, has full-name "Pearle Goodman"; 
   $o isa object, has path "zewhb.java"; 
-  $a isa action, has action-name "modify_file";
-  $ac (accessed-object: $o, valid-action: $a) isa access; 
+  $a isa action, has name "modify_file";
+  $ac (object: $o, action: $a) isa access; 
 insert 
-  $p (permitted-subject: $s, permitted-access: $ac) isa permission;
+  $p (subject: $s, access: $ac) isa permission;
 ```
 The above query:
 
 1. Finds a `subject` (`$s`) whose `full-name` attribute has a value of `Pearle Goodman`. 
 2. Finds an `object` (`$o`) 
    whose `path` attribute has a value of `zewhb.java`.
-3. Finds an `action` (`$a`) whose action-name attribute has a value of `modify_file`.
-4. Finds an `access` relation (`$ac`) that relates the `$o` (as `access-object`) to `$a` (as `valid-action`). 
-5. Inserts a `permission` relation that relates `$s` (as `permitted-subject`) to the relation `$ac` (as 
-   `permitted-access`).
+3. Finds an `action` (`$a`) whose name attribute has a value of `modify_file`.
+4. Finds an `access` relation (`$ac`) that relates the `$o` (as `access-object`) to `$a` (as `action`). 
+5. Inserts a `permission` relation that relates `$s` (as `subject`) to the relation `$ac` (as 
+   `access`).
 
 In short, it creates a `permission` letting `Pearle Goodman` modify the `zewhb.java` file.
 
-The relation of `access` type now plays role of `permitted-access` in the inserted relation of the `permission` type.
+The relation of `access` type now plays role of `access` in the inserted relation of the `permission` type.
 
 <div class="note">
 [Warning]
@@ -389,9 +389,9 @@ from a database.
 ```typeql
 match
   $p isa subject, has full-name "Pearle Goodman";
-  $a isa action, has action-name "modify_file";
-  $ac (accessed-object: $o, valid-action: $a) isa access; 
-  $pe (permitted-subject: $p, permitted-access: $ac) isa permission;
+  $a isa action, has name "modify_file";
+  $ac (object: $o, action: $a) isa access; 
+  $pe (subject: $p, access: $ac) isa permission;
 delete 
   $pe isa permission;
 ```
@@ -399,10 +399,10 @@ delete
 The above query does the following:
 
 1. Finds a `subject` entity ($p), with full-name attribute value of `Pearle Goodman`.
-2. Finds an `action` entity ($a), with action-name attribute value of `modify_file`.
-3. Finds `access` relations ($ac) relating any object (as accessed-object) to the action $a (as valid-action).
-4. Finds `permission` relations ($pe) relating the `subject` entity $p (as permitted-subject) to the `access` 
-   relations $ac (as permitted-access).
+2. Finds an `action` entity ($a), with name attribute value of `modify_file`.
+3. Finds `access` relations ($ac) relating any object (as object) to the action $a (as action).
+4. Finds `permission` relations ($pe) relating the `subject` entity $p (as subject) to the `access` 
+   relations $ac (as access).
 5. Deletes all matched permissions $pe.
 
 In short, it removes all of the permissions which let Pearle Goodman modify files.
@@ -653,33 +653,33 @@ To replace a role player, we combine the steps for extending the relation, with 
 ```typeql
 match
   $p isa person, has full-name "Pearle Goodman";
-  $a_write isa action, has action-name "modify_file";
-  $a_read isa action, has action-name "view_file";
-  $ac_write (accessed-object: $o, valid-action: $a_write) isa access; 
-  $ac_read (accessed-object: $o, valid-action: $a_read) isa access; 
-  $pe (permitted-subject: $p, permitted-access: $ac_write) isa permission;
+  $a_write isa action, has name "modify_file";
+  $a_read isa action, has name "view_file";
+  $ac_write (object: $o, action: $a_write) isa access; 
+  $ac_read (object: $o, action: $a_read) isa access; 
+  $pe (subject: $p, access: $ac_write) isa permission;
 delete 
-  $pe (permitted-access: $ac_write);
+  $pe (access: $ac_write);
 insert 
-  $pe (permitted-access: $ac_read);
+  $pe (access: $ac_read);
 ```
 
 The above query does the following: 
 
 1. Finds a `person` entity (`$p`) with a `full-name` of `Pearle Goodman`.
-2. Finds an `action` entity (`$a_write`) with `action-name` of `modify_file`).
-3. Finds an `action` entity (`$a_read`)  with `action-name` of `read_file`).
-4. Finds all `access` relations (`$ac_write`) that relate any `object` (as `accessed-object`) to `$a_write` (as `valid-action`).
-5. Finds all `access` relations (`$ac_read`) that relate any `object` (as `accessed-object`) to `$a_read` (as `valid-action`).
-6. Finds all permissions (`$pe`) that relate `$p` (as `permitted-subject`) to `$ac_write` (as `permitted-access`).
-7. Removes all write accesses (`$ac_write`) as a player of the `permitted-access` role in matching permission relations
+2. Finds an `action` entity (`$a_write`) with `name` of `modify_file`).
+3. Finds an `action` entity (`$a_read`)  with `name` of `read_file`).
+4. Finds all `access` relations (`$ac_write`) that relate any `object` (as `object`) to `$a_write` (as `action`).
+5. Finds all `access` relations (`$ac_read`) that relate any `object` (as `object`) to `$a_read` (as `action`).
+6. Finds all permissions (`$pe`) that relate `$p` (as `subject`) to `$ac_write` (as `access`).
+7. Removes all write accesses (`$ac_write`) as a player of the `access` role in matching permission relations
    (`$pe`).
-8. Adds all read accesses (`$ac_read`) as a player of the `permitted-access` role in matching permission relations (`$pe`).
+8. Adds all read accesses (`$ac_read`) as a player of the `access` role in matching permission relations (`$pe`).
 
 In short, all of Pearle Goodman’s permissions with write access will become permissions with read access.
 
 <div class="note">
 [Note]
-After running the above query, all of the matched `access` relations `$ac_write` with `$a_write` as `valid-action` 
+After running the above query, all of the matched `access` relations `$ac_write` with `$a_write` as `action` 
 still exist, but no longer play a role in the matched `permission` relations.
 </div> 

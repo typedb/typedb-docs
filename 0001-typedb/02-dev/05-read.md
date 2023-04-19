@@ -75,8 +75,8 @@ match
   $pe ($x, $y) isa permission;
   $x isa person, has full-name $x-n;
   $x-n contains "Kevin";
-  $y (accessed-object: $o, valid-action: $act) isa access;
-  $act has action-name $act-n;
+  $y (object: $o, action: $act) isa access;
+  $act has name $act-n;
   $o has path $o-fp;
 get $x-n, $act-n, $o-fp;
 ```
@@ -86,12 +86,12 @@ The example above uses a `match` clause to do the following:
 1. Finds `permission` relation (`$pe`) of `$x` and `$y` variables.
 2. Finds `$x` as `person` entities that have `full-name` attribute with value of `$x-n`. 
 3. `$x-n` should contain string `Kevin`.
-4. Finds `access` relation of `$o` as accessed-object and `$act` as valid-action.
-5. `$act` should have `action-name` attribute with value of `$act-n`.
+4. Finds `access` relation of `$o` as object and `$act` as action.
+5. `$act` should have `name` attribute with value of `$act-n`.
 6. `$o` should have `path` attribute with value of `$o-fp`.
 
 The `get` clause then filters the answers from the `match` clause to get only the `person`’s `full-name` (`$x-n`), 
-`action`’s `action-name` (`$act-n`) and `path` of an `object` (`$o-fp`). Every returned result should contain all 
+`action`’s `name` (`$act-n`) and `path` of an `object` (`$o-fp`). Every returned result should contain all 
 three concepts.
 
 ### Number of answers
@@ -197,8 +197,8 @@ specified matched variable.
 match
   $pe ($x, $y) isa permission;
   $x isa person, has full-name $x-n;
-  $y (accessed-object: $o, valid-action: $act) isa access;
-  $act has action-name $act-n;
+  $y (object: $o, action: $act) isa access;
+  $act has name $act-n;
   $o has path $o-fp;
 get $x-n, $act-n, $o-fp; 
 sort $o-fp asc;
@@ -207,7 +207,7 @@ group $o-fp;
 ```
 
 This query returns the `full-name` attributes of all `person` entities, the `path` attributes of the `object` entities 
-in any `access` relations that are part of the `permission` relation with the `person` entities and the `action-name` 
+in any `access` relations that are part of the `permission` relation with the `person` entities and the `name` 
 attribute of the `action` entity in those `access` relations. The results are then sorted by the `path` attribute in 
 ascending order, limited by only first 3 results and grouped by `path` variable values.
 
@@ -218,18 +218,18 @@ the IAM schema and dataset from the [Quickstart guide](../01-start/03-quickstart
 ```typeql
 "LICENSE" isa path => {
     {
-        $act-n "modify_file" isa action-name;
+        $act-n "modify_file" isa name;
         $x-n "Pearle Goodman" isa full-name;
         $o-fp "LICENSE" isa path;
     }    {
-        $act-n "modify_file" isa action-name;
+        $act-n "modify_file" isa name;
         $x-n "Kevin Morrison" isa full-name;
         $o-fp "LICENSE" isa path;
     }
 }
 "README.md" isa path => {
     {
-        $act-n "modify_file" isa action-name;
+        $act-n "modify_file" isa name;
         $x-n "Pearle Goodman" isa full-name;
         $o-fp "README.md" isa path;
     }
@@ -312,8 +312,8 @@ actually means that all matched variables are included.
 match
   $pe ($x, $y) isa permission;
   $x isa person, has full-name $x-n;
-  $y (accessed-object: $o, valid-action: $act) isa access;
-  $act has action-name $act-n;
+  $y (object: $o, action: $act) isa access;
+  $act has name $act-n;
   $o has path $o-fp;
 get $x-n, $act-n, $o-fp; group $o-fp; count;
 ```

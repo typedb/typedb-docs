@@ -278,10 +278,10 @@ Use a "players types in a relation" pattern to find all types that place a speci
 
 <!-- test-ignore -->
 ```typeql
-match $p plays permission:permitted-subject;
+match $p plays permission:subject;
 ```
 
-The above query finds all types that can play the `permitted-subject` role in the `permission` relation type.
+The above query finds all types that can play the `subject` role in the `permission` relation type.
 
 ##### Owners of a specific attribute type
 
@@ -303,8 +303,8 @@ Use the `role types in a relation` pattern to find all roles in a specific relat
 match permission relates $r;
 ```
 
-The above query finds all the roles defined in the `permission` relation type (`permission:permitted-access` and 
-`permission:permitted-subject`).
+The above query finds all the roles defined in the `permission` relation type (`permission:access` and 
+`permission:subject`).
 
 ### Data queries
 
@@ -438,11 +438,11 @@ specified instance.
 ```typeql
 match
   $p isa person, has full-name "Kevin Morrison";
-  $pe (permitted-subject: $p) isa permission;
+  $pe (subject: $p) isa permission;
 ```
 
 The above query finds all `person` entities (`$p`) owning a `full-name` attribute with a value of `Kevin Morrison` 
-and then it finds all `permission` relations (`$pe`) in which those entities `$p` play the `permitted-subject` role.
+and then it finds all `permission` relations (`$pe`) in which those entities `$p` play the `subject` role.
 
 ##### Owners of a specific attribute (with value)
 
@@ -451,7 +451,7 @@ specific attribute with a specific value.
 
 <!-- test-ignore -->
 ```typeql
-match $pe (permitted-subject: $p, permitted-access: $ac) isa permission, has validity "True";
+match $pe (subject: $p, access: $ac) isa permission, has validity "True";
 ```
 
 The above query finds all `permission` relations which have a `validity` attribute whose value is “True”.
@@ -462,7 +462,7 @@ The relation variable can be omitted when only the role players are needed.
 
 <!-- test-ignore -->
 ```typeql
-match (permitted-subject: $p, permitted-access: $ac) isa permission;
+match (subject: $p, access: $ac) isa permission;
 ```
 
 ##### With no role names
@@ -559,20 +559,20 @@ statements.
 match
   $p isa person, has full-name "Kevin Morrison";
   $o isa object, has path $o-path;
-  $ac(accessed-object: $o) isa access;
-  $pe(permitted-subject: $p, permitted-access: $ac) isa permission;
+  $ac(object: $o) isa access;
+  $pe(subject: $p, access: $ac) isa permission;
 ```
 
 The above example uses conjunction to ensure all statements are matched:
 
 1. Find all `person` entities (`$p`) that have a `full-name` attribute whose value is `Kevin Morrison`.
 2. Find all `object` entities (`$o`) that have a `path attribute` (`$o-path`).
-3. Find all `access` relations (`$ac`) where `$o` plays the `accessed-object` role.
-4. Find all `permission` relations (`$pe`) where `$p` plays the `permitted-subject` role, `$ac` the `permitted-access` role.
+3. Find all `access` relations (`$ac`) where `$o` plays the `object` role.
+4. Find all `permission` relations (`$pe`) where `$p` plays the `subject` role, `$ac` the `access` role.
 
-The `object` entities are limited to those which play the `accessed-object` role in `access` relations, themselves 
-limited to those which play the `permitted-access` role in `permission` relations, themselves limited to those in 
-which matching `person` entities plays the `permitted-subject` role.
+The `object` entities are limited to those which play the `object` role in `access` relations, themselves 
+limited to those which play the `access` role in `permission` relations, themselves limited to those in 
+which matching `person` entities plays the `subject` role.
 
 #### Disjunctions
 
@@ -744,9 +744,9 @@ For example:
 match
   $p isa person, has full-name $p-fname;
   $o isa object, has path $o-path;
-  $a isa action, has action-name "view_file";
-  $ac(accessed-object: $o, valid-action: $a) isa access;
-  $pe(permitted-subject: $p, permitted-access: $ac) isa permission;
+  $a isa action, has name "view_file";
+  $ac(object: $o, action: $a) isa access;
+  $pe(subject: $p, access: $ac) isa permission;
   $p-fname = "Kevin Morrison";
 ```
 
@@ -755,10 +755,10 @@ The above query does the following:
    later set as string `Kevin Morrison`. There is actually only one such person in the **IAM database** by default.
 2. Finds all `object` entities (`$o`) that have `path` attribute (`$o-path`). The value of the attribute is not 
    limited but assigned a variable `$o-path`.
-3. Finds all `action` entities (`$a`) that have `action-name` attribute with the value of `view_file`. There is 
+3. Finds all `action` entities (`$a`) that have `name` attribute with the value of `view_file`. There is 
    actually only one such action in the **IAM database** by default.
-4. Finds all `access` relations (`$ac`) that relate `$o` (as `accessed-object` role) to `$a` (as `valid-action` role).
-5. Finds all `permission` relations (`$pe`) that relate `$p` (as `permitted-subject` role) to `$ac` (as `permitted-access` role).
+4. Finds all `access` relations (`$ac`) that relate `$o` (as `object` role) to `$a` (as `action` role).
+5. Finds all `permission` relations (`$pe`) that relate `$p` (as `subject` role) to `$ac` (as `access` role).
 6. States that `$p-fname` variable equals by value to a string `Kevin Morrison`.
 
 This `match` clause can be a part of any query. For example, by appending a `delete $pe isa permission` statement 
