@@ -77,10 +77,16 @@ typedb server export --database=<database> --port=<server rpc port> --file=<file
 * `<server rpc port>` — the port number of the active TypeDB server to export from;
 * `<filename>` — the name for the file to export to.
 
+<!-- The symbols <> are substituted here for their alternatives ＜＞ due to HTML tags compatibility issue --->
+
 <div class="note">
 [Note]
-In versions previous to **2.6.0**, the `--database=` and `--file=` named arguments are not used. 
-Use positional arguments instead. For example, `typedb server export <database> <filename>.typedb`.
+  In versions previous to **2.6.0**, the `--database=` and `--file=` named arguments are not used. 
+  Use positional arguments instead. For example:
+  ```typeql
+  typedb server export ＜database＞ ＜filename＞.typedb
+  ```
+
 </div>
 
 ## Import
