@@ -28,7 +28,6 @@ please install both TypeDB and TypeDB Studio:
 - [Install TypeDB](02-installation.md)
 - [Install TypeDB Studio](../../02-clients/01-studio.md#get-typedb-studio)
 
-IMPORTANT:
 <div class="note">
 [Important]
 It’s recommended to use TypeDB and TypeDB Studio of the same version number in order to ensure compatibility. If 
@@ -722,9 +721,28 @@ the image below.
 
 ## Schema and data
 
-The Quickstart guide above provides a fast and easy way to set up the minimum IAM database environment.
+The Quickstart guide above provides a fast and easy way to set up the minimum IAM database environment:
+a TypeDB database with IAM schema and a small dataset. It can be used for examples in this documentation
+or for independent exploration of TypeDB features.
 
-The files that have been used in the guide:
+The files that have been used in the guide above:
 
 - [iam-schema.tql](../../files/iam/iam-schema.tql) — TypeQL script for the IAM schema definition.
 - [iam-data.tql](../../files/iam/iam-data.tql) — TypeQL script to load a sample dataset into the IAM schema.
+
+We can do the same process of creating a database, loading schema and data through any other TypeDB Client. Here is 
+an example with TypeDB Console:
+
+```bash
+# create database
+typedb console --command="database create test-iam-db"
+
+# load schema into the new database from a file
+typedb console --command="transaction test-iam-db schema write" --command="source iam-schema.tql" --command="commit"
+
+# load data into the new database from a file
+typedb console --command="transaction test-iam-db data write" --command="source iam-data.tql" --command="commit"
+
+# check the data loaded (single quotes for bash syntax compatibility with the variable $t)
+typedb console --command="transaction test-iam-db data read" --command='match $t isa thing; get $t;'
+```
