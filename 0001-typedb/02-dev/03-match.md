@@ -132,9 +132,12 @@ Lastly, to create a viable query from that statement, we need to add the keyword
 it is ready to be sent to the TypeDB server in a data read transaction to a database with an appropriate schema.
 
 <div class="note">
-[Note]
-If you want to run these and other examples from our documentation, make sure you have completed the 
+[Important]
+To run these and other examples from our documentation, make sure to complete the 
 [Quickstart guide](../01-start/03-quickstart.md) to set up the database with relevant schema and dataset.
+
+Do not use the database created for the [schema](02-schema.md) page, as it was only for demonstration of schema 
+definition.
 </div>
 
 <!-- test-ignore -->
@@ -147,8 +150,8 @@ match
 
 <div class="note">
 [Note]
-All indentation and line breaking is optional in TypeQL. You can even try using a single line or a completely random 
-indentation for all your queries, but that will make it harder to read them (for humans).
+All indentation and line breaking is optional in TypeQL. We can even try using a single line or a completely random 
+indentation for all our queries, but that will make it harder to read them (for humans).
 </div>
 
 ## Pattern syntax
@@ -620,10 +623,11 @@ the access to be either `modify_file` or `view_file`.
 
 ### How to execute a query
 
-The easiest way to send a query to a TypeDB server is to use [TypeDB Studio](../../02-clients/01-studio.md) to do so. It will not only manage a DB connection for you, but also process the results.
+The easiest way to send a query to a TypeDB server is to use [TypeDB Studio](../../02-clients/01-studio.md) to do so. 
+It will not only manage a DB connection for us, but also process the results.
 See the [Quickstart guide](../01-start/03-quickstart.md) for instructions on how to do this.
 
-Alternatively, you can use any other [TypeDB Client](../../02-clients/00-clients.md) to handle server connection, 
+Alternatively, we can use any other [TypeDB Client](../../02-clients/00-clients.md) to handle server connection, 
 sessions, transactions, etc.
 
 Among the list of clients, there are TypeDB drivers for different programming languages. Sending a query in one of 
@@ -786,7 +790,3 @@ variables, mentioned in the `match` clause.
 
 [//]: # ()
 [//]: # (NOTE: You shouldn’t use this feature in your business logic.)
-
-
-
-

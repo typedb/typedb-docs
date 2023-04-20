@@ -92,7 +92,7 @@ will include at least the network latency between TypeDB Client and TypeDB serve
 
 <div class="note">
 [Note]
-For example, to make 1,000 Remote Client API calls and with latency (ping) from client to server being 10ms, you would 
+For example, to make 1,000 Remote Client API calls and with latency (ping) from client to server being 10ms, we would 
 spend a total of 10 seconds waiting for network round-trips.
 
 When dealing with large numbers of results, we recommend to use a query to fetch all required information, rather than 

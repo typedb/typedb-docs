@@ -21,7 +21,7 @@ any database with compatible schema on a TypeDB server.
 Using the export feature is the best way to migrate to a version of TypeDB that is not backward compatible.
 </div>
 
-The exported binary file might be up to two times larger than the original database. Please ensure your disk has enough 
+The exported binary file might be up to two times larger than the original database. Please ensure the disk has enough 
 free capacity to store a file of this size.
 
 ## Migration process
@@ -30,18 +30,18 @@ A TypeDB database consists of a schema and data. They are exported and imported 
 
 Migration using the export/import features is a two-step process: schema migration, followed by data migration.
 
-Both import and export of schema and data require an instance of TypeDB server to be working. If you are migrating 
-your data from one instance to another on the same server (for example — from old version to a newer one) be extra 
-careful with what instance being addressed by the commands.
+Both import and export of schema and data require an instance of TypeDB server to be working. If we are migrating 
+our data from one instance to another on the same server (for example — from old version to a newer one) be extra 
+careful with what TypeDB server instance being addressed by the commands.
+
+The following schema export and import instructions are for the TypeDB Console, but import of a schema can be done with 
+any TypeDB Client.
+
+The data of a database can be exported and imported only by a TypeDB server itself.
 
 ## Export
 
-For the export to work make sure your TypeDB server with **the database to export** is working.
-
-You can use any TypeDB Client to import schema, but only TypeDB Console can export schema. The following instructions 
-are for the TypeDB Console.
-
-The data of a database can be exported and imported only by a TypeDB server itself.
+For the export to work make sure the TypeDB server with **the database to export** is working.
 
 ### Schema
 
@@ -87,7 +87,7 @@ Use positional arguments instead. For example, `typedb server export ＜database
 
 ## Import
 
-For the import to work make sure your target TypeDB server (where your database will be **migrated to**) is working.
+For the import to work make sure the target TypeDB server (where the database will be **migrated to**) is working.
 
 ### Schema
 
@@ -134,13 +134,13 @@ Use positional arguments instead. For example, `typedb server import ＜new-db�
 
 ## Troubleshooting
 
-If you encounter migration errors, follow this checklist:
+Follow this checklist if any errors occur:
 
-* Ensure that you are running the correct `typedb` command with the **correct TypeDB server** (use `./typedb` instead 
+* Ensure running the correct `typedb` command with the **correct TypeDB server** (use `./typedb` instead 
   of `typedb` to use the TypeDB binary in the current directory instead of the default TypeDB server installation).
 * Ensure that the schema has been imported correctly to the new database. 
   Use [TypeDB Studio](../../02-clients/01-studio.md) or [TypeDB Console](../../02-clients/02-console.md) to check the 
   schema.
 * Ensure that the correct path was specified for the datafile import.
 
-If you have any further errors, please join one of our communities and ask for assistance.
+If any errors persist, please join one of our communities and ask for assistance.

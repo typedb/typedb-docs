@@ -69,7 +69,7 @@ Every iteration should return result as a [ConceptMap](#conceptmap) object.
 
 A delete query can only return a Future object of a void (empty response).
 
-You can’t retrieve any useful data from the Future object for a delete query.
+We can’t retrieve any useful data from the Future object for a delete query.
 
 ### Update (match-delete-insert) query
 
@@ -155,7 +155,7 @@ server. To wait for a query to finish execution, and return its result if there 
 
 Invoking a TypeQL query sends it to a TypeDB server, where it will be completed in the background. Local processing 
 can take place while waiting for responses to be received. Take advantage of these asynchronous queries to mask network 
-round-trip costs and increases your throughput. 
+round-trip costs and increases throughput. 
 
-For example, if you are performing 10 get queries in a transaction, it’s best to send them all to the server before 
+For example, if we are performing 10 get queries in a transaction, it’s best to send them all to the server before 
 iterating over any of their answers.

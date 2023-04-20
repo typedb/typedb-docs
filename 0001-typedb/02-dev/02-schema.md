@@ -20,7 +20,7 @@ create schemas that mirror their object model simplifying both design and develo
 ![Types hierarchy](../../images/schema/thing-era-role-rule.png)
 
 TypeDB schemas are written with TypeQL which is both Data Definition Language and Data Manipulation Language (used 
-for schema and data queries). You can see a complete set of TypeQL syntax and grammar rules in ANTLR v.4 specification 
+for schema and data queries). We can see a complete set of TypeQL syntax and grammar rules in ANTLR v.4 specification 
 file: [TypeQL.g4](https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4).
 
 ## Types
@@ -177,9 +177,9 @@ In order to define a schema, a `schema` [session](01-connections.md#sessions) mu
 [transaction](01-connections.md#transactions) started. The changes must be **committed** or they will NOT be permanent.
 </div>
 
-There is no limitation in the order of types to define. You can define schema types in any order as long as 
-the schema as a whole is valid. TypeDB Clients validate your schema definition requests before sending them to a TypeDB 
-server. You will not be able to commit changes if the schema definition query isn’t valid.
+There is no limitation in the order of types to define. We can define schema types in any order as long as 
+the schema as a whole is valid. TypeDB Clients validate our schema definition requests before sending them to a TypeDB 
+server. We will not be able to commit changes if the schema definition query isn’t valid.
 
 ### Create a new database
 
@@ -255,7 +255,7 @@ match $s sub $t; { $t type entity; } or { $t type relation; } or { $t type attri
 ```
 </div>
 
-In the following sections, you can find more detailed information on different schema definition queries and 
+In the following sections, we can find more detailed information on different schema definition queries and 
 possibilities.
 
 ### Define entity types
@@ -793,7 +793,7 @@ There are exactly **three** distinct **conclusions** permitted:
 2. Ownership of an attribute defined by its value.
 3. Ownership of an attribute defined by a variable.
 
-The `then` clause must be insertable according to the schema (e.g. you cannot give an attribute to an instance that is 
+The `then` clause must be insertable according to the schema (e.g. we cannot give an attribute to an instance that is 
 not allowed to own that attribute type).
 
 #### Examples
@@ -881,14 +881,14 @@ A full explanation of how this rule works is given in the [Example](06-infer.md#
 
 ### Add types and rules
 
-You can add types and rules to an existing schema by running the same [define](#define-schema) statement as usual.
+We can add types and rules to an existing schema by running the same [define](#define-schema) statement as usual.
 
 The define statements are idempotent. By sending the same define query twice or more times the very same resulting 
 schema must be achieved as if we send it only once. So types and/or rules will not be duplicated.
 
 A separate define statement for a new type or rule can be sent as a define query. Alternatively, the statement can be 
 added to the existing schema define statement and sent together. In this case only new types or rules will be added. 
-If you change name (label) of the existing type or rule in the existing schema and then send it as define query then 
+If we change name (label) of the existing type or rule in the existing schema and then send it as define query then 
 the changed type or rule will be processed as a new one.
 
 ### Renaming types
@@ -961,7 +961,7 @@ change-request sub relation;
 #### Undefine a supertype
 
 When a type to be undefined is a supertype to something else, we must first undefine all its subtypes before 
-undefining the supertype itself. You can use the same transaction to delete both the supertype and all its subtypes.
+undefining the supertype itself. We can use the same transaction to delete both the supertype and all its subtypes.
 
 <!-- test-ignore -->
 ```typeql

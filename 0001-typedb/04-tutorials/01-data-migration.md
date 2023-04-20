@@ -7,9 +7,9 @@ Summary: A basic tutorial to load data into a TypeDB database.
 
 # Data migration tutorial
 
-Migrating your data from other sources into TypeDB is an important step. It is considered that you have already 
-developed a [schema](../02-dev/02-schema.md) for the TypeDB database according to your data model. Accurate and 
-comprehensive schema design will simplify not only data migration but also the design of your queries later on.
+Migrating data from other sources into TypeDB is an important step. It is considered that we have already 
+developed a [schema](../02-dev/02-schema.md) for the TypeDB database according to the data model. Accurate and 
+comprehensive schema design will simplify not only data migration but also the design of data queries later on.
 
 <div class="note">
 [Note]
@@ -175,7 +175,7 @@ Use TypeDB server (v.**2.11.1+**), Java version **11+** and any IDE, for example
 
 #### Clone the repository
 
-Clone the [TypeDB Examples](https://github.com/vaticle/typedb-examples) repository to your local machine.
+Clone the [TypeDB Examples](https://github.com/vaticle/typedb-examples) repository to the local machine.
 
 #### Start migration
 
@@ -367,7 +367,7 @@ clone the [TypeDB repository](https://github.com/vaticle/typedb-examples) and fo
 
 #### Copy the dataset
 
-Create a new directory on your desktop.
+Create a new directory on the local machine.
 
 Choose one of the input formats, download the files, and place them in the new directory inside a subdirectory named `data`.
 
@@ -616,7 +616,7 @@ To migrate the sample dataset into the TypeDB database `phone_calls` follow the 
 
 #### Copy the dataset
 
-Create a new directory on your desktop.
+Create a new directory on the local machine.
 
 Choose one of the input formats, download the files, and place them in the new directory inside a subdirectory 
 named `data`.

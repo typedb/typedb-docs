@@ -41,7 +41,7 @@ This is the TypeDB server documentation section. It has the following sections:
 
 ## Thinking in TypeQL and TypeDB
 
-The backbone of any TypeDB database is the representation of your domain: the [schema](02-dev/02-schema.md).
+The backbone of any TypeDB database is the representation of our domain: the [schema](02-dev/02-schema.md).
 A TypeDB schema is the blueprint of a TypeDB database. Using [TypeQL](../11-query/00-overview.md) language, we 
 define a schema to model a domain true to nature. The schema is made up of a set of types and rules, which harness 
 object-oriented principles and logical deduction.
@@ -58,6 +58,6 @@ These terms correspond to the components of an Entity-Relation-Attribute model, 
 also treated as first-class citizens.
 </div>
 
-Rules defined in your schema represent deductive logic. They are defined as condition (when clause) and conclusion 
+Rules defined in a schema represent deductive logic. They are defined as condition (when clause) and conclusion 
 (then clause). Read queries with inference option enabled can generate insights based on the deductive logic 
 described with rules. Those insights are transaction bound and are not persisted.

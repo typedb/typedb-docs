@@ -63,7 +63,7 @@ TypeDB ships with a default configuration file. The location of this file varies
 If downloaded manually, find the configuration file in the `server/conf` directory inside the unzipped folder.
 
 If installed using Homebrew, check the following directory (replace the `{version-number}` variable with number of 
-your version):
+installed version):
 
 <!-- test-ignore -->
 ```
@@ -145,8 +145,8 @@ For production use, it is recommended that the `server.data` is set to a path ou
 with TypeDB server files). This helps to make the process of upgrading TypeDB easier.
 </div>
 
-If the index cache is too small relative to your dataset, you may find severely degraded performance. We recommend 
-allocating at least **2%** of your database size equivalent to the index cache. For example, with **100 GB** of 
+If the index cache is too small relative to the dataset, we may find severely degraded performance. We recommend 
+allocating at least **2%** of a database size equivalent to the index cache. For example, with **100 GB** of 
 on-disk data in a database, allocate at least **2 GB** of index cache. Allocating more can improve performance.
 
 Additionally, we recommend the sum of data and index caches equal to about **20%** of the total memory of the server.

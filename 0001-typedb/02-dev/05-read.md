@@ -269,7 +269,7 @@ For example:
 match $f isa file, has size-kb $s; get $s;
 ```
 
-If you query the example above, only attribute `$s` will be returned with its value. But all the duplicated values of 
+If we query the example above, only attribute `$s` will be returned with its value. But all the duplicated values of 
 `$s` will be omitted. Because what we are querying is all attribute instances. And when two different entities have 
 the same attribute (with the same value) it's still only one attribute.
 
