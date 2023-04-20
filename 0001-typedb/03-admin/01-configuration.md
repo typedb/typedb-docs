@@ -203,13 +203,15 @@ cluster will not accept connections from servers that are not in the list.
 Changes to the server configuration require a server restart to take effect.
 </div>
 
-To add or remove server to/from a cluster:
+### Add or remove cluster's servers
+
+To add or remove a server to/from a cluster:
 
 1. Stop all TypeDB servers in the cluster.
 2. Update the configuration files of all (both new and old) TypeDB servers.
-3. Start all TypeDB servers which will be part of the new cluster.
+3. Start all TypeDB servers of the new cluster.
 
-## Machine configuration
+## Host machine requirements
 
 The minimum host machine configuration for running a single TypeDB database is 4 (v)CPUs, 10 GB memory, with SSD.
 
