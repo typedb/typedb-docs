@@ -61,7 +61,7 @@ Launch TypeDB Studio, then:
 
 ### Create a project
 
-TypeDB Studio projects allow you to organize and save related queries for future reuse.
+TypeDB Studio projects allow us to organize and save related queries for future reuse.
 
 ![Project Interface empty](../../images/quickstart/studio-projects-empty.png)
 

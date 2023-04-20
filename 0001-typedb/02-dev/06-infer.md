@@ -52,7 +52,7 @@ These are general tips for making queries with reasoning execute faster:
 
 
 1. Adding a limit to the query. Without a limit, the reasoning engine is forced to explore all possible ways to answer 
-   the query exhaustively. If you only need 1 answer, adding `limit 1;` to the match query can significantly improve 
+   the query exhaustively. If we only need 1 answer, adding `limit 1;` to the match query can significantly improve 
    query times.
 2. Using the same transaction for multiple reasoning queries. Because inferred data is cleared between transactions, 
    running the same or similar queries within one transaction can reuse previously inferred data. Combined with a limit 
@@ -77,7 +77,7 @@ To send a request with inference enabled in [TypeDB Studio](#client/studio) foll
 
 ### TypeDB Console
 
-Set the `infer` option to `true` when you start the read transaction. For example:
+Set the `infer` option to `true` when starting the read transaction. For example:
 
 <!-- test-ignore -->
 ```
@@ -86,7 +86,7 @@ transaction typedb data read --infer true
 
 ### TypeDB Drivers
 
-Set the `infer` option to `True` when you start the read transaction. For example:
+Set the `infer` option to `True` when starting the read transaction. For example:
 
 <!-- #todo Consider adding other languages--->
 

@@ -246,7 +246,7 @@ being inserted here.
 
 <div class="note">
 [Note]
-You can insert a relation with some roles missing a role player, but that represents an incomplete data state (as 
+We can insert a relation with some roles missing a role player, but that represents an incomplete data state (as 
 existence of a relation suggest existence of its role players) and there needs to be at least one role player in an 
 inserted relation.
 </div>

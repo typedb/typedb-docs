@@ -94,7 +94,7 @@ docker stop try-typedb
 
 <div class="note">
 [Note]
-It may be required to restart your terminal window for the changes to environment variables to take effect.
+It may be required to restart the terminal window for the changes to environment variables to take effect.
 </div>
 
 ### Start
@@ -172,7 +172,7 @@ Press Ctrl-C in the terminal running TypeDB. Confirm action if requested.
    apt show typedb-server
    ```
 
-   This will show you console output like this:
+   This will show a console output like this:
 
    <!-- test-ignore -->
    ```bash

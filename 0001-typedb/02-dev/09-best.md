@@ -21,24 +21,28 @@ There are only three base types (excluding roles):
 * A **relation** is a single concept with an existence that depends on at least one other concept. It cannot be 
   conceptualized without those concepts: it is impossible to imagine a marriage without considering its spouses.
 
-Please see the following tips for modelling your schema:
+Please see the following tips for modelling a schema:
 
-* The best way to start modelling your database schema is to model entity types first and then proceed with connecting 
+* The best way to start modelling a database schema is to model entity types first and then proceed with connecting 
   them with relation types and assign ownership of attribute types to them later.
-* Schema of a DB defines a vocabulary for queries to that particular DB. The closer the schema resembles the real-life data, the simpler it is to read queries for people familiar with the terminology. Consider putting extra effort into the following aspects of designing a DB schema: accurate type labels/names, an intuitive hierarchy of subtypes, and designing relations in the most meaningful way.
-* Creating a schema is an iterative process. Don't forget that schema of a database can be updated. Consider testing your schema on a 
+* Schema of a DB defines a vocabulary for queries to that particular DB. The closer the schema resembles the real-life 
+  data, the simpler it is to read queries for people familiar with the terminology. Consider putting extra effort into 
+  the following aspects of designing a DB schema: accurate type labels/names, an intuitive hierarchy of subtypes, and 
+  designing relations in the most meaningful way.
+* Creating a schema is an iterative process. Don't forget that schema of a database can be updated. Consider testing 
+  schema on a 
   small dataset first. The sooner the schema will be adapted to all use cases and tested for edge cases — the 
   smaller amount of work will be required to adapt all other code for changes in the schema.
-* Implementing drastic changes to your database schema is possible by undefining old types/rules (after undefining 
-  all subtypes and deleting all instances of data of these types) and defining new ones. You can even use the Client API 
+* Implementing drastic changes to a database schema is possible by undefining old types/rules (after undefining 
+  all subtypes and deleting all instances of data of these types) and defining new ones. We can even use the Client API 
   or TypeDB Studio to rename types without deleting them. However, it might be easier to create a new database and 
-  upload your new schema and data from scratch.
+  upload new schema and data from scratch.
 * It’s easier to debug queries using TypeDB Studio, than with any TypeDB Driver, because Studio manages sessions 
-  and transactions for you, and can visualise query results.
+  and transactions for us, and can visualise query results.
 
 ### Advanced tips
 
-The following principles are considered being useful to take into account when you develop a more sophisticated 
+The following principles are considered being useful to take into account when we develop a more sophisticated 
 database schema:
 
 * When inserting instances of a relation, it is not necessary to define all of its **role players**. But this 
@@ -87,17 +91,17 @@ database schema:
 
 TypeDB query engine will try to retrieve/process all required concepts in the most optimal and efficient way.
 
-If you have a problem with your query, we recommend trying to execute it with TypeDB Studio just to see whether 
+If there is any problem with a query, we recommend trying to execute it with TypeDB Studio just to see whether 
 the problem lies within the query itself, or other parts of applications logic, like connection control.
 
-To optimise execution time of your query try to do the following:
+To optimise execution time of a query try to do the following:
 
 * Limit the number of concepts being processed by adding additional [constraints](03-match.md#patterns-overview) to 
-  variables in your `match` clauses.
+  variables in `match` clauses.
 * Limit the number of results returned by using pagination (limit + offset) or [aggregation](05-read.md#aggregation) 
   when possible.
-* Disable inference if you don’t need it in your transaction. 
-* Consider sending all queries that you can before starting to iterate through responses. TypeDB process most queries asynchronously.
+* Disable inference if it's not needed in the transaction. 
+* Consider sending all queries before starting to iterate through responses. TypeDB process most queries asynchronously.
 
 ### Async Queries
 
@@ -147,7 +151,7 @@ Are we to expect to have a full name for every person instance in the results? N
 2. A person can have no attributes of type `full-name`. In that case the person will not be represented by variable 
    `$p`. That will person will not be accounted for.
 3. Finally, different people can have the same full names. In TypeDB that means different instances of `person` type 
-   can own the same instance of `full-name` type. By filtering results to get only full-names you will receive a
+   can own the same instance of `full-name` type. By filtering results to get only full-names we will receive a
    deduplicated list of full-names. Because it's just a list of all attributes owned by `$p` type. 
 
 To get complete information about all full names of every person, we need to modify the query as follows:

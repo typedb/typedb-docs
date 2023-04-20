@@ -83,7 +83,7 @@ Set password for a user:
 user set-password <username> 
 ```
 
-Updating your own password:
+Updating password of the current user:
 
 <!-- test-ignore -->
 ```bash
