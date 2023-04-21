@@ -150,19 +150,19 @@ methods:
         Deletes the database of the current session.
     java:
       <<: *method-database-delete
-      method: session.database().name();
+      method: session.database().delete();
       returns:
-        - String
+        - void
     javascript:
       <<: *method-database-delete
-      method: session.database().name();
+      method: session.database().delete();
       returns:
-        - String
+        - void
     python:
       <<: *method-database-delete
-      method: session.database().name()
+      method: session.database().delete()
       returns:
-        - String
+        - void
   - method:
     common: &method-close
       title: Close the session
