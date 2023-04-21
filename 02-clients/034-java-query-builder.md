@@ -33,6 +33,7 @@ The latest version of `typeql-lang` can be found in the
 
 Then we import `TypeQL`.
 
+<!-- test-ignore -->
 ```java
 import com.vaticle.typeql.lang.TypeQL;
 ```

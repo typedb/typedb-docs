@@ -1,0 +1,243 @@
+methods:
+  - method:
+    common: &method-create
+      title: Create instance
+      description: Creates and returns an instance of this RelationType.
+    java:
+      <<: *method-create
+      method: relationType.asRemote(Transaction tx).create();
+      returns:
+        - "[`Relation`](../concept-api/thing?tab=java#relation-methods)"
+    javascript:
+      <<: *method-create
+      method: await relationType.asRemote(tx).create();
+      returns:
+        - "[`Relation`](../concept-api/thing?tab=nodejs#relation-methods)"
+    python:
+      <<: *method-create
+      method: relation_type.as_remote(tx).create()
+      returns:
+        - "[`Relation`](../concept-api/thing?tab=python#relation-methods)"
+
+  - method:
+    common: &method-getrelates
+      title: Retrieve roles
+      description: Retrieve roles that this RelationType relates to directly or via inheritance.
+    java:
+      <<: *method-getrelates
+      method: relationType.asRemote(Transaction tx).getRelates();
+      returns:
+        - "[Stream](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
+    javascript:
+      <<: *method-getrelates
+      method: relationType.asRemote(tx).getRelates();
+      returns:
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-getrelates
+      method: relation_type.as_remote(tx).get_relates()
+      returns:
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
+
+  - method:
+    common: &method-getrelatesexplicit
+      title: Retrieve direct roles
+      description: Retrieve roles that this RelationType relates to directly.
+    java:
+      <<: *method-getrelatesexplicit
+      method: relationType.asRemote(Transaction tx).getRelatesExplicit();
+      returns:
+        - "[Stream](../client-api/nodejs#stream)<[`RoleType`](../concept-api/type?tab=java#roletype-methods)>"
+    javascript:
+      <<: *method-getrelatesexplicit
+      method: relationType.asRemote(tx).getRelatesExplicit();
+      returns:
+        - "[Stream](../client-api/nodejs#stream) of [`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-getrelatesexplicit
+      method: relation_type.as_remote(tx).get_relates_explicit()
+      returns:
+        - "Iterator of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
+
+  - method:
+    common: &method-getrelates-label
+      title: Retrieve specific role
+      description: Retrieve the role that this RelationType relates to, if it exists, with the specified label.
+      accepts:
+        param:
+          name: label
+          description: Label of the role we wish to retrieve.
+          type: string
+          required: true
+    java:
+      <<: *method-getrelates-label
+      method: relationType.asRemote(Transaction tx).getRelates(String label);
+      returns:
+        - "[`RoleType`](../concept-api/type?tab=java#roletype-methods)"
+    javascript:
+      <<: *method-getrelates-label
+      method: await relationType.asRemote(tx).getRelates(label);
+      returns:
+        - "[`RoleType`](../concept-api/type?tab=javascript#roletype-methods)"
+    python:
+      <<: *method-getrelates-label
+      method: relation_type.as_remote(tx).get_relates(label)
+      returns:
+        - "[`RoleType`](../concept-api/type?tab=python#roletype-methods)"
+
+  - method:
+    common: &method-relates
+      title: Set new role
+      description: Sets the new role that this RelationType relates to. If you are setting an overriding type this way, you have to also pass the overridden type as a second argument.
+      accepts:
+        param:
+          name: label
+          description: The new role for the RelationType to relate to.
+          type: string
+          required: true
+          default: N/A
+        param2:
+          name: overriddenRoleLabel
+          description: The label being overridden, if applicable
+          type: string
+          required: false
+          default: N/A
+    java:
+      <<: *method-relates
+      method: relationType.asRemote(Transaction tx).setRelates(String label, String overriddenRoleLabel);
+      returns:
+        - void
+    javascript:
+      <<: *method-relates
+      method: await relationType.asRemote(tx).setRelates(label, overriddenRoleLabel);
+      returns:
+        - void
+    python:
+      <<: *method-relates
+      method: relation_type.as_remote(tx).set_relates(label, overriddenRoleLabel)
+      returns:
+        - None
+
+  - method:
+    common: &method-unrelate
+      title: Remove role
+      description: Disallows this RelationType from relating to the given role.
+      accepts:
+        param:
+          name: role
+          description: The role to not relate to the relation type.
+          type: RoleType
+          required: true
+          default: N/A
+    java:
+      <<: *method-unrelate
+      method: relationType.asRemote(Transaction tx).unsetRelates(RoleType role);
+      returns:
+        - void
+    javascript:
+      <<: *method-unrelate
+      method: await relationType.asRemote(tx).unsetRelates(role);
+      returns:
+        - void
+    python:
+      <<: *method-unrelate
+      method: relation_type.as_remote(tx).unset_relates(role)
+      returns:
+        - None
+
+  - method:
+    common: &method-setsupertype
+      title: Set supertype
+      description: Sets the supplied RelationType as the supertype of the current RelationType
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: relationType
+          description: The RelationType to set as the supertype of this RelationType
+          type: RelationType
+          required: true
+          default: N/A
+    java:
+      <<: *method-setsupertype
+      method: relationType.asRemote(Transaction tx).setSupertype(RelationType relationType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: relationType.asRemote(tx).setSupertype(relationType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: relation_type.as_remote(tx).set_supertype(relation_type)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
+      returns:
+        - None
+
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the RelationType.
+    java:
+      <<: *method-getSubtypes
+      method: type.asRemote(Transaction tx).getSubtypes();
+      returns:
+        - Stream<[`RelationType`](../concept-api/type?tab=java#relationtype-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.asRemote(tx).getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream)<[`RelationType`](../concept-api/type?tab=javascript#relationtype-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.as_remote(tx).get_subtypes()
+      returns:
+        - Iterator of [`RelationType`](../concept-api/type?tab=python#relationtype-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this RelationType
+      description: Retrieves all direct and indirect Relations that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.asRemote(Transaction tx).getInstances();
+      returns:
+        - Stream<[`Relation`](../concept-api/thing?tab=java#relation-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.asRemote(tx).getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`Relation`](../concept-api/thing?tab=javascript#relation-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.as_remote(tx).get_instances()
+      returns:
+        - Iterator of [`Relation`](../concept-api/thing?tab=python#relation-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the RelationType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteRelationType`"
+    java:
+      <<: *method-asRemote
+      method: relationType.asRemote(Transaction tx);
+      returns:
+        - "`RelationType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: relationType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: relationType.as_remote(tx)

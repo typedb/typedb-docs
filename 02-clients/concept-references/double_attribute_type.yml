@@ -1,0 +1,171 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this DoubleAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - DoubleAttribute
+      accepts: &method-put-accepts
+        param: &method-put-accepts-value
+          name: value
+          description: The value of the instance to be put
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: doubleAttributeType.asRemote(Transaction tx).put(double value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: double
+    javascript:
+      <<: *method-put
+      method: await doubleAttributeType.asRemote(tx).put(value);
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: number
+    python:
+      <<: *method-put
+      method: doubleAttributeType.as_remote(tx).put(value)
+      accepts:
+        <<: *method-put-accepts
+        param:
+          <<: *method-put-accepts-value
+          type: float
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if it exists, of this DoubleAttributeType with the specified value.
+      returns:
+        - DoubleAttribute
+      accepts: &method-get-accepts
+        param: &method-get-accepts-value
+          name: value
+          description: The value of the instance to be retrieved
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: doubleAttributeType.asRemote(Transaction tx).get(double value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: long
+    javascript:
+      <<: *method-get
+      method: await doubleAttributeType.asRemote(tx).get(value);
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: number
+    python:
+      <<: *method-get
+      method: doubleAttributeType.as_remote(tx).get(value)
+      accepts:
+        <<: *method-get-accepts
+        param:
+          <<: *method-get-accepts-value
+          type: float
+
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied DoubleAttributeType as the supertype of the current DoubleAttributeType
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: doubleAttributeType
+          description: The AttributeType to set as the supertype of this DoubleAttributeType
+          type: DoubleAttributeType
+          required: true
+          default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.asRemote(Transaction tx).setSupertype(AttributeType.Double doubleAttributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.asRemote(tx).setSupertype(doubleAttributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.as_remote(tx).set_supertype(doubleAttributeType)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
+      returns:
+        - None
+
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the DoubleAttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.asRemote(Transaction tx).getSubtypes();
+      returns:
+        - Stream<[`AttributeType.Double`](../concept-api/type?tab=java#doubleattributetype-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.asRemote(tx).getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`DoubleAttributeType`](../concept-api/type?tab=javascript#doubleattributetype-methods)>"
+    python:
+      <<: *method-getSubtypes
+      method: type.as_remote(tx).get_subtypes()
+      returns:
+        - Iterator of [`DoubleAttributeType`](../concept-api/type?tab=python#doubleattributetype-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this DoubleAttributeType
+      description: Retrieves all direct and indirect DoubleAttributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.asRemote(Transaction tx).getInstances();
+      returns:
+        - Stream<[`DoubleAttribute`](../concept-api/thing?tab=java#attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.asRemote(tx).getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`DoubleAttribute`](../concept-api/thing?tab=javascript#attribute-methods)>"
+    python:
+      <<: *method-getInstances
+      method: type.as_remote(tx).get_instances()
+      returns:
+        - Iterator of [`DoubleAttribute`](../concept-api/thing?tab=python#attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the DoubleAttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteDoubleAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: doubleAttributeType.asRemote(Transaction tx);
+      returns:
+        - "`DoubleAttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: doubleAttributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: doubleAttributeType.as_remote(tx)

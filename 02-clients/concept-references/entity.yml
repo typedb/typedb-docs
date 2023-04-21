@@ -1,0 +1,44 @@
+methods:
+  - method:
+    common: &method-type
+      title: Retrieve type (Local)
+      description: Retrieves the type which this Entity belongs to.
+    java:
+      <<: *method-type
+      method: entity.getType();
+      returns:
+        - "[`EntityType`](../concept-api/type?tab=java#entitytype-methods)"
+    javascript:
+      <<: *method-type
+      method: entity.type;
+      returns:
+        - "[`EntityType`](../concept-api/type?tab=javascript#entitytype-methods)"
+    python:
+      <<: *method-type
+      method: entity.get_type()
+      returns:
+        - "[`EntityType`](../concept-api/type?tab=python#entitytype-methods)"
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the Entity.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: tx
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteEntity`"
+    java:
+      <<: *method-asRemote
+      method: entity.asRemote(tx);
+      returns:
+        - "`Entity.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: entity.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: entity.as_remote(tx)

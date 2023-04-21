@@ -1,0 +1,102 @@
+
+title: "LogicManager"
+methods:
+  - method:
+      common: &method-getRules
+        title: Retrieve rules
+        description: Retrieves all defined rules
+      java:
+        <<: *method-getRules
+        method: transaction.logic().getRules();
+        returns:
+          - "Stream<[`Rule`](../concept-api/rule?tab=java#rule-methods)>"
+      javascript:
+        <<: *method-getRules
+        method: await transaction.logic().getRules();
+        returns:
+          - "Stream of [`Rule`](../concept-api/rule?tab=javascript#rule-methods)"
+      python:
+        <<: *method-getRules
+        method: transaction.logic().get_rules()
+        returns:
+          - "Iterator of [`Rule`](../concept-api/rule?tab=python#rule-methods)"
+
+  - method:
+    common: &method-getRule
+      title: Retrieve a Rule
+      description: Retrieves the Rule that has the given label.
+      accepts:
+        param:
+          name: label
+          description: The label of the Rule to create or retrive.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-getRule
+      method: transaction.logic().getRule(String label);
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=java#rule-methods)"
+    javascript:
+      <<: *method-getRule
+      method: await transaction.logic().getRule(label);
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=javascript#rule-methods)"
+    python:
+      <<: *method-getRule
+      method: transaction.logic().get_rule(label)
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=python#rule-methods)"
+
+  - method:
+    common: &method-putRule
+      title: Create or retrieve a Rule
+      description: Creates a new Rule if none exists with the given label, or retrieves the existing one.
+      accepts: &accepts-putRule
+        param1:
+          name: label
+          description: The label of the Rule to create or retrive.
+          type: String
+          required: true
+          default: N/A
+        param2:
+          name: when
+          description: The when body of the rule to create.
+          type: String
+          required: true
+          default: N/A
+        param3:
+          name: then
+          description: The then body of the rule to create.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-putRule
+      method: transaction.logic().putRule(String label, Pattern when, Pattern then);
+      accepts:
+        <<: *accepts-putRule
+        param2:
+          name: when
+          description: The pattern describing the when body of the rule.
+          type: "[`com.vaticle.typeql.lang.pattern.Pattern`](#typeql)"
+          required: true
+          default: N/A
+        param3:
+          name: then
+          description: The pattern describing the then body of the rule.
+          type: "[`com.vaticle.typeql.lang.pattern.Pattern`](#typeql)"
+          required: true
+          default: N/A
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=java#rule-methods)"
+    javascript:
+      <<: *method-putRule
+      method: await transaction.logic().putRule(label, when, then);
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=javascript#rule-methods)"
+    python:
+      <<: *method-putRule
+      method: transaction.logic().put_rule(label, when, then)
+      returns:
+        - "[`Rule`](../concept-api/rule?tab=python#rule-methods)"

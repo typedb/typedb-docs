@@ -1,0 +1,112 @@
+methods:
+  - method:
+    common: &method-create
+      title: Create instance
+      description: Creates and returns a new instance of this EntityType.
+    java:
+      <<: *method-create
+      method: entityType.asRemote(Transaction tx).create();
+      returns:
+        - "[`Entity`](../concept-api/thing?tab=java#entity-methods)"
+    javascript:
+      <<: *method-create
+      method: await entityType.asRemote(tx).create();
+      returns:
+        - "[`Entity`](../concept-api/thing?tab=javascript#entity-methods)"
+    python:
+      <<: *method-create
+      method: entity_type.as_remote(tx).create()
+      returns:
+        - "[`Entity`](../concept-api/thing?tab=python#entity-methods)"
+      
+  - method:
+    common: &method-setsupertype
+      title: Set supertype
+      description: Sets the supplied EntityType as the supertype of the current EntityType
+      accepts:
+        param:
+          name: entityType
+          description: The EntityType to set as the supertype of this EntityType
+          type: EntityType
+          required: true
+          default: N/A
+    java:
+      <<: *method-setsupertype
+      method: entityType.asRemote(Transaction tx).setSupertype(EntityType entityType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: entityType.asRemote(tx).setSupertype(entityType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: entity_type.as_remote(tx).set_supertype(entity_type)
+      returns:
+        - None
+
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the EntityType.
+    java:
+      <<: *method-getSubtypes
+      method: type.asRemote(Transaction tx).getSubtypes();
+      returns:
+        - Stream<[`EntityType`](#entitytype-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.asRemote(tx).getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`EntityType`](#entitytype-methods)"
+    python:
+      <<: *method-getSubtypes
+      method: type.as_remote(tx).get_subtypes()
+      returns:
+        - Iterator of [`EntityType`](#entitytype-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this EntityType
+      description: Retrieves all direct and indirect Entity objects that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.asRemote(Transaction tx).getInstances();
+      returns:
+        - Stream<[`Entity`](../concept-api/thing?tab=java#entity-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.asRemote(tx).getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`Entity`](../concept-api/thing?tab=javascript#entity-methods)"
+    python:
+      <<: *method-getInstances
+      method: type.as_remote(tx).get_instances()
+      returns:
+        - Iterator of [`Entity`](../concept-api/thing?tab=python#entity-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the EntityType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteEntityType`"
+    java:
+      <<: *method-asRemote
+      method: entityType.asRemote(Transaction tx);
+      returns:
+        - "`EntityType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: entityType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: entity_type.as_remote(tx)

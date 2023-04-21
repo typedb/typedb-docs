@@ -1,0 +1,192 @@
+methods:
+  - method:
+    common: &method-put
+      title: Put instance
+      description: Puts and returns a new instance of this StringAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+      returns:
+        - StringAttribute
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be put
+          type: string
+          required: true
+          default: N/A
+    java:
+      <<: *method-put
+      method: stringAttributeType.asRemote(Transaction tx).put(String value);
+    javascript:
+      <<: *method-put
+      method: await stringAttributeType.asRemote(tx).put(value);
+    python:
+      <<: *method-put
+      method: string_attribute_type.as_remote(tx).put(value)
+
+  - method:
+    common: &method-get
+      title: Get instance
+      description: Returns the instance, if it exists, of this StringAttributeType with the specified value.
+      returns:
+        - StringAttribute
+      accepts:
+        param:
+          name: value
+          description: The value of the instance to be retrieved
+          type: string
+          required: true
+          default: N/A
+    java:
+      <<: *method-get
+      method: stringAttributeType.asRemote(Transaction tx).get(String value);
+    javascript:
+      <<: *method-get
+      method: await stringAttributeType.asRemote(tx).get(value);
+    python:
+      <<: *method-get
+      method: stringAttributeType.as_remote(tx).get(value)
+  - method:
+    common: &method-regex-retrieve
+      title: Retrieve regex
+      description: Retrieves the regex that all instances of this StringAttributeType must conform to.
+    java:
+      <<: *method-regex-retrieve
+      method: stringAttributeType.asRemote(Transaction tx).getRegex();
+      returns:
+        - string
+        - "`null`"
+    javascript:
+      <<: *method-regex-retrieve
+      method: await stringAttributeType.asRemote(tx).getRegex();
+      returns:
+        - string
+        - None
+    python:
+      <<: *method-regex-retrieve
+      method: string_attribute_type.as_remote(tx).get_regex()
+      returns:
+        - string
+        - "`null`"
+
+  - method:
+    common: &method-regex-set
+      title: Set regex
+      description: Set the regex that all instances of this StringAttributeType must conform to.
+      accepts:
+        param:
+          name: regex
+          description: The regex that all instances of this StringAttributeType must conform to.
+          type: string
+          required: true
+          default: N/A
+    java:
+      <<: *method-regex-set
+      method: stringAttributeType.asRemote(Transaction tx).setRegex(String regex);
+      returns:
+        - void
+    javascript:
+      <<: *method-regex-set
+      method: await stringAttributeType.asRemote(tx).setRegex(regex);
+      returns:
+        - void
+    python:
+      <<: *method-regex-set
+      method: string_attribute_type.as_remote(tx).set_regex(regex)
+      returns:
+        - void
+
+  - method:
+    common: &method-setsupertype
+      title: Set Supertype
+      description: Sets the supplied StringAttributeType as the supertype of the current StringAttributeType
+      accepts: &accepts-setsupertype
+        param: &accepts-setsupertype-attributetype
+          name: stringAttributeType
+          description: The AttributeType to set as the supertype of this StringAttributeType
+          type: StringAttributeType
+          required: true
+          default: N/A
+    java:
+      <<: *method-setsupertype
+      method: attributeType.asRemote(Transaction tx).setSupertype(AttributeType.String stringAttributeType);
+      returns:
+        - void
+    javascript:
+      <<: *method-setsupertype
+      method: attributeType.asRemote(tx).setSupertype(stringAttributeType);
+      returns:
+        - void
+    python:
+      <<: *method-setsupertype
+      method: attributeType.as_remote(tx).set_supertype(string_attribute_type)
+      accepts:
+        <<: *accepts-setsupertype
+        param:
+          <<: *accepts-setsupertype-attributetype
+          name: _type
+      returns:
+        - None
+
+  - method:
+    common: &method-getSubtypes
+      title: Retrieve all subtypes
+      description: Retrieves all direct and indirect subtypes of the StringAttributeType.
+    java:
+      <<: *method-getSubtypes
+      method: type.asRemote(Transaction tx).getSubtypes();
+      returns:
+        - Stream<[`AttributeType.String`](../concept-api/type?tab=java#stringattributetype-methods)>
+    javascript:
+      <<: *method-getSubtypes
+      method: type.asRemote(tx).getSubtypes()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`StringAttributeType`](../concept-api/type?tab=javascript#stringattributetype-methods)"
+    python:
+      <<: *method-getSubtypes
+      method: type.as_remote(tx).get_subtypes()
+      returns:
+        - Iterator of [`StringAttributeType`](../concept-api/type?tab=python#stringattributetype-methods)
+
+  - method:
+    common: &method-getInstances
+      title: Retrieve all instances of this StringAttributeType
+      description: Retrieves all direct and indirect StringAttributes that are instances of this Type.
+    java:
+      <<: *method-getInstances
+      method: type.asRemote(Transaction tx).getInstances();
+      returns:
+        - Stream<[`StringAttribute`](../concept-api/thing?tab=java#attribute-methods)>
+    javascript:
+      <<: *method-getInstances
+      method: type.asRemote(tx).getInstances()
+      returns:
+        - "[`Stream`](../client-api/nodejs#stream) of [`StringAttribute`](../concept-api/thing?tab=javascript#attribute-methods)"
+    python:
+      <<: *method-getInstances
+      method: type.as_remote(tx).get_instances()
+      returns:
+        - Iterator of [`StringAttribute`](../concept-api/thing?tab=python#attribute-methods)
+
+  - method:
+    common: &method-asRemote
+      title: Get a Remote version of the StringAttributeType.
+      description: The remote version uses the given transaction to execute every method call.
+      accepts:
+        param:
+          name: transaction
+          description: The transaction to be used to make method calls.
+          type: Transaction
+          required: true
+          default: N/A
+      returns:
+        - "`RemoteStringAttributeType`"
+    java:
+      <<: *method-asRemote
+      method: stringAttributeType.asRemote(Transaction tx);
+      returns:
+        - "`StringAttributeType.Remote`"
+    javascript:
+      <<: *method-asRemote
+      method: stringAttributeType.asRemote(tx);
+    python:
+      <<: *method-asRemote
+      method: stringAttributeType.as_remote(tx)
