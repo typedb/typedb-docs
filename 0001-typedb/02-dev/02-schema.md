@@ -930,8 +930,8 @@ We can undefine the association that a type has with an attribute.
 undefine subject owns credential;
 ```
 
-The query above removes ownership of the attribute type `object-type` from the entity type `object`. So that instances 
-of `object` type will not have an ability to have ownership over instances of `object-type` anymore.
+The query above removes ownership of the attribute type `credential` from the entity type `subject`. So that instances 
+of `subject` type will not have an ability to have ownership over instances of `credential` anymore.
 
 <div class="note">
 [Important]
