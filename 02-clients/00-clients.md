@@ -98,7 +98,7 @@ surroundings.
 For more information see the [API](../0001-typedb/02-dev/08-api.md) page in TypeDB Documentation.
 For exact syntax reference see the reference pages related to:
 
-- [Java](03-java-ref.md)
+- [Java](033-java-api-ref.md)
 - [Node.js](05-nodejs-ref.md)
 - [Python](04-python-ref.md)
 

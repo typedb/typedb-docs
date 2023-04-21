@@ -9,41 +9,35 @@ toc: true
 
 # Java API reference
 
-## Query
+## Query section
 
 {% include api/generic.html data=site.data.03_client_api.references.typedb language="java" %}
 
-### Client
+### Client methods
 
 {% include api/generic.html data=site.data.03_client_api.references.client language="java" %}
 
-### Session
+### Session methods
 
 {% include api/generic.html data=site.data.03_client_api.references.session language="java" %}
 
-### Options
+### Options methods
 
 {% include api/generic.html data=site.data.03_client_api.references.options language="java" %}
 
-### Transaction
+### Transaction methods
 
 {% include api/generic.html data=site.data.03_client_api.references.transaction language="java" %}
 
-### TypeQL
-
-{% include api/generic.html data=site.data.03_client_api.references.typeql language="java" %}
-
-### Query
+### Query methods
 
 {% include api/generic.html data=site.data.03_client_api.references.query_manager language="java" %}
 
-## Response
+## Response section
 
 {% include api/answers.html data=site.data.03_client_api.references.answer language="java" %}
 
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="java" %}
-
-### Concept Methods
+### Concept methods
 
 `Concept` is inherited and extended by [`Type`](#type-methods) and [`Data`](#data-methods).
 
@@ -51,13 +45,17 @@ toc: true
 
 {% include api/generic.html data=site.data.04_concept_api.references.concept_manager language="java" %}
 
-### Type Methods
+### Future methods
+
+{% include api/generic.html data=site.data.03_client_api.references.query_future language="java" %}
+
+### Type methods
 
 `Type` has all the [`Concept` methods](#concept-methods) plus what follows.
 
 {% include api/generic.html data=site.data.04_concept_api.references.type language="java" %}
 
-#### ThingType Methods
+#### ThingType methods
 
 <!-- #todo Update the Thing keyword as soon as API implementation update will change it --->
 
@@ -65,84 +63,85 @@ toc: true
 
 {% include api/generic.html data=site.data.04_concept_api.references.thing_type language="java" %}
 
-#### EntityType Methods
+#### EntityType methods
+
 `EntityType` has all the [`ThingType` methods](#thingtype-methods) plus what follows.
 
 {% include api/generic.html data=site.data.04_concept_api.references.entity_type language="java" %}
 
-#### AttributeType Methods
-
-`AttributeType` has all the [`ThingType` methods](#thingtype-methods) plus what follows.
-
-{% include api/generic.html data=site.data.04_concept_api.references.attribute_type language="java" %}
-
-#### BooleanAttributeType Methods
-
-`BooleanAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
-
-{% include api/generic.html data=site.data.04_concept_api.references.boolean_attribute_type language="java" %}
-
-#### LongAttributeType Methods
-
-`LongAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
-
-{% include api/generic.html data=site.data.04_concept_api.references.long_attribute_type language="java" %}
-
-#### DoubleAttributeType Methods
-
-`DoubleAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
-
-{% include api/generic.html data=site.data.04_concept_api.references.double_attribute_type language="java" %}
-
-#### StringAttributeType Methods
-
-`StringAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
-
-{% include api/generic.html data=site.data.04_concept_api.references.string_attribute_type language="java" %}
-
-#### DateTimeAttributeType Methods
-
-`DateTimeAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
-
-{% include api/generic.html data=site.data.04_concept_api.references.datetime_attribute_type language="java" %}
-
-#### RelationType Methods
+#### RelationType methods
 
 `RelationType` has all the [`ThingType` methods](#thingtype-methods) plus what follows.
 
 {% include api/generic.html data=site.data.04_concept_api.references.relation_type language="java" %}
 
-#### RoleType Methods
+##### RoleType methods
 
 `RoleType` has all the [`Type` methods](#type-methods) plus what follows.
 
 {% include api/generic.html data=site.data.04_concept_api.references.role_type language="java" %}
 
-### Rule Methods
+#### AttributeType methods
+
+`AttributeType` has all the [`ThingType` methods](#thingtype-methods) plus what follows.
+
+{% include api/generic.html data=site.data.04_concept_api.references.attribute_type language="java" %}
+
+##### BooleanAttributeType methods
+
+`BooleanAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
+
+{% include api/generic.html data=site.data.04_concept_api.references.boolean_attribute_type language="java" %}
+
+##### LongAttributeType methods
+
+`LongAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
+
+{% include api/generic.html data=site.data.04_concept_api.references.long_attribute_type language="java" %}
+
+##### DoubleAttributeType methods
+
+`DoubleAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
+
+{% include api/generic.html data=site.data.04_concept_api.references.double_attribute_type language="java" %}
+
+##### StringAttributeType methods
+
+`StringAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
+
+{% include api/generic.html data=site.data.04_concept_api.references.string_attribute_type language="java" %}
+
+##### DateTimeAttributeType methods
+
+`DateTimeAttributeType` has all the [`AttributeType` methods](#attributetype-methods) plus what follows.
+
+{% include api/generic.html data=site.data.04_concept_api.references.datetime_attribute_type language="java" %}
+
+### Rule methods
 
 {% include api/generic.html data=site.data.04_concept_api.references.rule language="java" %}
 
 {% include api/generic.html data=site.data.04_concept_api.references.logic_manager language="java" %}
 
-### Data Methods
+### Data methods
 
 `Data` has all the [`Concept` methods](#concept-methods) plus what follows.
 
 {% include api/generic.html data=site.data.04_concept_api.references.thing language="java" %}
 
-#### Entity Methods
+#### Entity methods
 
 `Entity` has all the [`Data` methods](#data-methods) plus what follows.
 
 {% include api/generic.html data=site.data.04_concept_api.references.entity language="java" %}
 
-#### Attribute Methods
+#### Attribute methods
 
 `Attribute` has all the [`Data` methods](#data-methods) plus what follows.
 
 {% include api/generic.html data=site.data.04_concept_api.references.attribute language="java" %}
 
-#### Relation Methods
+#### Relation methods
 
 `Relation` has all the [`Data` methods](#data-methods) plus what follows.
 

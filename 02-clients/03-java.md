@@ -1,194 +1,25 @@
 ---
-pageTitle: Client Java
-keywords: typedb, client, java
-longTailKeywords: typedb java client, typedb client java, client java, java client
-Summary: Tutorial for TypeDB Client Java.
+pageTitle: Java TypeDB Driver overview
+keywords: typedb, client, driver, java
+longTailKeywords: typedb java client, typedb java driver, client java, java driver
+Summary: Overview for TypeDB Driver Java.
 ---
 
-## Installation
+# Java TypeDB Driver overview
 
-#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#version-compatibility)
+Java Driver was developed by Vaticle to enable TypeDB support for Java software and developers.
 
-```xml
-<repositories>
-    <repository>
-        <id>repo.vaticle.com</id>
-        <url>https://repo.vaticle.com/repository/maven/</url>
-    </repository>
-</repositories>
-<dependencies>
-    <dependency>
-        &lt;groupId&gt;com.vaticle.typedb&lt;/groupId&gt;
-        &lt;artifactId&gt;typedb-client&lt;/artifactId&gt;
-        <version>{version}</version>
-    </dependency>
-</dependencies>
-```
+For exact installation instructions — see the [installation ](031-java-install.md) page.
 
-If you want to depend on snapshot versions of Client Java, by referring to the GitHub commit `sha`, you can add our snapshot repository to your list of Maven repositories.
+Explore the Java Driver [tutorial](032-java-tutorial.md) with example of connecting to TypeDB.
 
-```xml
-<repositories>
-    <repository>
-        <id>repo.vaticle.com.snapshot</id>
-        <name>repo.vaticle.comai</name>
-        <url>https://repo.vaticle.com/repository/maven-snapshot/</url>
-    </repository>
-</repositories>
-```
+Use the [API reference](033-java-api-ref.md) page for documentation of the methods and objects used in the Driver.
 
-### Resources
-
-- [Client Java on GitHub](https://github.com/vaticle/typedb-client-java)
-- [Releases](https://github.com/vaticle/typedb-client-java/releases)
-- [Examples](https://github.com/vaticle/typedb-examples)
-
-## Quickstart
-First make sure, the [TypeDB Server](/docs/typedb/install-and-run#start-the-typedb-server) is running.
-
-Import `com.vaticle.typedb.client.TypeDB`, instantiate a TypeDB Core client and open a session to a [database](../06-management/01-database.md).
-
-<!-- test-example TypeDBQuickstartA.java -->
-```java
-package com.vaticle.doc.examples;
-
-
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.TypeDB;
-
-public class TypeDBQuickstartA {
-    public static void main(String[] args) {
-        TypeDBClient client = TypeDB.coreClient("localhost:1729");
-        // client is open
-        TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA);
-        // session is open
-        session.close();
-        // session is closed
-        client.close();
-        // client is closed
-    }
-}
-```
-
-Create transactions to use for reading and writing data.
-
-<!-- test-example TypeDBQuickstartB.java -->
-```java
-package com.vaticle.doc.examples;
-
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
-import com.vaticle.typedb.client.TypeDB;
-
-public class TypeDBQuickstartB {
-    public static void main(String[] args) {
-        TypeDBClient client = TypeDB.coreClient("localhost:1729");
-
-        try (TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA)) {
-            // creating a write transaction
-            TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE);
-            // write transaction is open
-            // write transaction must always be committed (closed)
-            writeTransaction.commit();
-    
-            // creating a read transaction
-            TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ);
-            // read transaction is open
-            // read transaction must always be closed
-            readTransaction.close();
-        }
-
-        client.close();
-    }
-}
-```
-
-Running basic retrieval and insertion queries.
-
-<!-- test-example TypeDBQuickstartC.java -->
-```java
-package com.vaticle.doc.examples;
-
-
-import com.vaticle.typedb.client.api.TypeDBClient;
-import com.vaticle.typedb.client.api.TypeDBSession;
-import com.vaticle.typedb.client.api.TypeDBTransaction;
-import com.vaticle.typedb.client.TypeDB;
-import com.vaticle.typeql.lang.TypeQL;
-import static com.vaticle.typeql.lang.TypeQL.*;
-import com.vaticle.typeql.lang.query.TypeQLMatch;
-import com.vaticle.typeql.lang.query.TypeQLInsert;
-import com.vaticle.typedb.client.api.answer.ConceptMap;
-
-import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
-
-public class TypeDBQuickstartC {
-    public static void main(String[] args) {
-        TypeDBClient client = TypeDB.coreClient("localhost:1729");
-
-        try (TypeDBSession session = client.session("social_network", TypeDBSession.Type.DATA)) {
-            
-            try (TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                // Insert a person using a WRITE transaction
-                TypeQLInsert insertQuery = TypeQL.insert(var("x").isa("person").has("email", "x@email.com"));
-                List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
-                System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").asThing().getIID());
-                // to persist changes, a write transaction must always be committed (closed)
-                writeTransaction.commit();
-            }
-            
-            try (TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ)) {
-                // Read the person using a READ only transaction
-                TypeQLMatch.Limited getQuery = TypeQL.match(var("p").isa("person")).get("p").limit(10);
-                Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
-                answers.forEach(answer -> System.out.println(answer.get("p").asThing().getIID()));
-            }
-        }
-
-        client.close();
-    }
-}
-
-```
 <div class="note">
-[Important]
-Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
+[Note]
+If you have any more questions about the Java Driver after reading the documentation — feel free to ask on our 
+[Discord](https://vaticle.com/discord) community server.
 </div>
-
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to queries.
-
-To view examples of running various TypeQL queries using the Java client, head over to their dedicated documentation pages as listed below.
-
-- [Insert](../11-query/03-insert-query.md)
-- [Get](../11-query/02-get-query.md)
-- [Delete](../11-query/04-delete-query.md)
-- [Update](../11-query/05-update-query.md)
-- [Aggregate](../11-query/06-aggregate-query.md)
-
-## Logging
-By default, Client Java uses Logback to print errors and debugging info to standard output. As it is quite verbose, we recommend that in most scenarios you create a Logback configuration file and set the minimum log level to ERROR. You can do so with the following steps:
-
-1. Create a file in your `resources` path (`src/main/resources` by default in a Maven project) named `logback.xml`.
-2. Copy the following document into `logback.xml`:
-
-```xml
-<configuration>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <root level="ERROR">
-        <appender-ref ref="STDOUT"/>
-    </root>
-
-</configuration>
-```
 
 ## Version Compatibility
 
