@@ -148,7 +148,7 @@ TypeDB Workbase is currently in the process of being replaced with a more perfor
 
 ![Visualise all risky banks](../images/quickstart/studio-risky-bank.png)
 
-#### Retrieve all employments using [Client Java](../02-clients/03-java.md)
+#### Retrieve all employments using [Client Java](../02-clients/java/01-java-overview.md)
 
 <!-- test-example SocialNetworkQuickstartQuery.java -->
 ```java
@@ -196,7 +196,7 @@ public class SocialNetworkQuickstartQuery {
 }
 ```
 
-#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](../02-clients/04-python.md)
+#### Lazily retrieve all photos and videos that have been found funny by women using [Client Python](../02-clients/python/01-python-overview.md)
 
 <!-- test-example social_network_quickstart_query.py -->
 ```python
@@ -222,7 +222,7 @@ with TypeDB.core_client("localhost:1729") as client:
           print(answer.get("fun").get_value()) # get attribute value
 ```
 
-#### Retrieve the average salary of all employees at Pharos using [Client Node.js](../02-clients/05-nodejs.md)
+#### Retrieve the average salary of all employees at Pharos using [Client Node.js](../02-clients/node-js/01-node-js-overview.md)
 
 <!-- test-example socialNetworkQuickstartQuery.js -->
 ```javascript

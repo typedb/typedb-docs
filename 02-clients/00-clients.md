@@ -21,9 +21,9 @@ Here is a list of existing TypeDB Clients:
   - [TypeDB Console](02-console.md)
 - [TypeDB drivers](#typedb-drivers) — libraries to connect to a TypeDB server with an application. There are:
   - Native drivers:
-    - [Java](03-java.md)
-    - [Python](04-python.md)
-    - [Node.js](05-nodejs.md)
+    - [Java](java/01-java-overview.md)
+    - [Python](python/01-python-overview.md)
+    - [Node.js](node-js/01-node-js-overview.md)
   - [Community drivers](06-other-languages.md)
 
 If you can't find a suitable client, consider [creating a new client](07-new-client.md).
@@ -58,9 +58,9 @@ some popular programming languages.
 The following TypeDB Drivers are officially supported and actively maintained by the Vaticle. They 
 usually support latest TypeDB features and receive continuous bug fixes and improvements.
 
-- [Java](03-java.md)
-- [Node.js](05-nodejs.md)
-- [Python](04-python.md)
+- [Java](java/01-java-overview.md)
+- [Node.js](node-js/01-node-js-overview.md)
+- [Python](python/01-python-overview.md)
 
 We also have some community projects for [other Languages](06-other-languages.md)
 
@@ -98,12 +98,12 @@ surroundings.
 For more information see the [API](../0001-typedb/02-dev/08-api.md) page in TypeDB Documentation.
 For exact syntax reference see the reference pages related to:
 
-- [Java](033-java-api-ref.md)
-- [Node.js](05-nodejs-ref.md)
-- [Python](04-python-ref.md)
+- [Java](java/04-java-api-ref.md)
+- [Node.js](node-js/04-node-js-api-ref.md)
+- [Python](python/04-python-api-ref.md)
 
 For examples see the API pages related to:
 
-- [Java](03-java.md)
-- [Node.js](05-nodejs.md)
-- [Python](04-python.md)
+- [Java](java/01-java-overview.md)
+- [Node.js](node-js/01-node-js-overview.md)
+- [Python](python/01-python-overview.md)

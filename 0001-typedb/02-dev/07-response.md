@@ -99,9 +99,9 @@ response depend on the TypeDB Driver used.
 
 The following is a very basic description of objects used to interpret the results from the TypeDB query response. 
 For more information please see the [API & Drivers](08-api.md) page and documentation for the 
-[Java](../../02-clients/03-java.md), 
-[Python](../../02-clients/04-python.md), and 
-[Node.js](../../02-clients/05-nodejs.md) TypeDB Drivers respectively.
+[Java](../../02-clients/java/01-java-overview.md), 
+[Python](../../02-clients/python/01-python-overview.md), and 
+[Node.js](../../02-clients/node-js/01-node-js-overview.md) TypeDB Drivers respectively.
 
 ### ConceptMap
 

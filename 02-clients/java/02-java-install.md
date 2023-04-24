@@ -1,19 +1,19 @@
 ---
 pageTitle: Client Java installation
-keywords: typedb, client, java, install, repository
+keywords: typedb, client, driver, java, install, repository
 longTailKeywords: typedb java client, typedb client java, client java, java client
-Summary: Tutorial for TypeDB Client Java.
+Summary: Installation guide for TypeDB Java Driver.
 ---
 
-## Installation
+# Installation
 
-### Prerequisites
+## Prerequisites
 
 To use the Java Driver, you need a compatible version of TypeDB Server running. Please see the
-[Compatibility Table](03-java.md#version-compatibility) to check what version do you need, depending on the TypeDB 
+[Compatibility Table](01-java-overview.md#version-compatibility) to check what version do you need, depending on the TypeDB 
 server version being used.
 
-### Add a repository with TypeDB Java client to Maven
+## Add a repository with TypeDB Java Driver/Client to Maven
 
 Add the code below to the `pom.xml` file in your Maven project.
 
@@ -53,7 +53,7 @@ snapshot repository to your list of Maven repositories.
 </repositories>
 ```
 
-### (Optional) Add logging config
+## (Optional) Add logging config
 
 By default, the Java Driver uses Logback to print errors and debugging info to standard output. As it is quite verbose, 
 use the following steps to set the minimum log level to `ERROR`:
@@ -77,8 +77,8 @@ use the following steps to set the minimum log level to `ERROR`:
 </configuration>
 ```
 
-### Resources
+## Resources
 
-- [Client Java on GitHub](https://github.com/vaticle/typedb-client-java)
+- [Java Driver on GitHub](https://github.com/vaticle/typedb-client-java)
 - [Releases](https://github.com/vaticle/typedb-client-java/releases)
 - [Examples](https://github.com/vaticle/typedb-examples)

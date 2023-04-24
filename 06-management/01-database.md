@@ -15,13 +15,13 @@ Databases are isolated from one another. Even when running on the same TypeDB Se
 </div>
 
 ### Creating a Database
-We can create a new a database via the TypeDB Clients ([Java](../02-clients/03-java.md), [Node.js](../02-clients/05-nodejs.md) and [Python](../02-clients/04-python.md)) as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
+We can create a new a database via the TypeDB Clients ([Java](../02-clients/java/01-java-overview.md), [Node.js](../02-clients/node-js/01-node-js-overview.md) and [Python](../02-clients/python/01-python-overview.md)) as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
 
 ### Listing All Databases
-We can list all databases of the running TypeDB server via the TypeDB Clients [Node.js](../02-clients/05-nodejs.md#retrieve-all-databases) and [Python](../02-clients/04-python.md#retrieve-all-databases), as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
+We can list all databases of the running TypeDB server via the TypeDB Clients [Node.js](../02-clients/node-js/01-node-js-overview.md#retrieve-all-databases) and [Python](../02-clients/python/01-python-overview.md#retrieve-all-databases), as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
 
 ### Deleting a Database
-We can delete a database via the TypeDB Clients [Java](../02-clients/03-java.md#delete-a-database), [Node.js](../02-clients/05-nodejs.md#delete-a-database) and [Python](../02-clients/04-python.md#delete-a-database), as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
+We can delete a database via the TypeDB Clients [Java](../02-clients/java/01-java-overview.md#delete-a-database), [Node.js](../02-clients/node-js/01-node-js-overview.md#delete-a-database) and [Python](../02-clients/python/01-python-overview.md#delete-a-database), as well as [TypeDB Console](../02-console/01-console.md) and [Studio](../07-studio/01-quickstart.md).
 
 ### Renaming a Database
 Once we have created a database, its name can no longer be changed. The only way to achieve a renamed database is to [migrate](../06-management/04-migration-and-backup.md) the data from the database with the old name to the newly created database.

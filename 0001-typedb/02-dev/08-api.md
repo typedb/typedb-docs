@@ -16,9 +16,9 @@ To access all features of TypeDB and TypeDB Clients use the default interface pr
 * GUI from [TypeDB Studio](../../02-clients/01-studio.md),
 * CLI from [TypeDB Console](../../02-clients/02-console.md),
 * [Client API](../../02-clients/08-api.md) from TypeDB Drivers: 
-    * [Java](../../02-clients/03-java.md) Client API, 
-    * [Python](../../02-clients/04-python.md) Client API, 
-    * [Node.js](../../02-clients/05-nodejs.md) Client API, 
+    * [Java](../../02-clients/java/01-java-overview.md) Client API, 
+    * [Python](../../02-clients/python/01-python-overview.md) Client API, 
+    * [Node.js](../../02-clients/node-js/01-node-js-overview.md) Client API, 
     * or [other clients](../../02-clients/06-other-languages.md).
 
 TypeDB Studio and TypeDB Console control sessions, transactions, and queries, as well as process the responses 
@@ -64,8 +64,8 @@ All queries are written in TypeQL, but for some languages there are libraries to
 native way. Like TypeQL [library for Java](https://github.com/vaticle/typeql/tree/master/java). 
 
 The exact syntax for these operations might be different in different languages. See the exact TypeDB Client 
-documentation for more information: [Java](../../02-clients/03-java.md), [Python](../../02-clients/04-python.md), 
-[Node.js](../../02-clients/05-nodejs.md).
+documentation for more information: [Java](../../02-clients/java/01-java-overview.md), [Python](../../02-clients/python/01-python-overview.md), 
+[Node.js](../../02-clients/node-js/01-node-js-overview.md).
 
 ### Response
 

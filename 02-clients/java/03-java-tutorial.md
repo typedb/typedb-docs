@@ -2,14 +2,14 @@
 pageTitle: Java Driver tutorial
 keywords: typedb, client, java
 longTailKeywords: typedb java client, typedb client java, client java, java client
-Summary: Tutorial for TypeDB Client Java.
+Summary: Tutorial for TypeDB Java Driver.
 ---
 
 # Java Driver tutorial
 
 ## Prerequisites
 
-Make sure to install the Java Driver as per [Installation](031-java-install.md) page. The TypeDB server is also 
+Make sure to install the Java Driver as per [Installation](02-java-install.md) page. The TypeDB server is also 
 needs to be installed and running.
 
 ## Importing Java Driver and connecting to a server
@@ -20,8 +20,10 @@ Import the following modules:
 - `com.vaticle.typedb.client.api.TypeDBClient`
 - `com.vaticle.typedb.client.api.TypeDBSession`
 
-Instantiate a TypeDB Core client and open a [session](../0001-typedb/02-dev/01-connect.md#sessions) to a 
-[database](../0001-typedb/02-dev/01-connect.md#databases). 
+## Connecting
+
+Instantiate a TypeDB Core client and open a [session](../../0001-typedb/02-dev/01-connect.md#sessions) to a 
+[database](../../0001-typedb/02-dev/01-connect.md#databases). 
 
 <div class="note">
 [Note]
@@ -89,7 +91,7 @@ public class TypeDBQuickstartB {
 }
 ```
 
-## Sending queries
+## Querying
 
 Running basic retrieval and insertion queries.
 
@@ -148,12 +150,12 @@ however, must be explicitly closed by calling the `close()` method on it.
 
 ## Where to go next
 
-Check out the [Response](033-java-api-ref.md#response) section of API reference page to learn about the available 
+Check out the [Response](04-java-api-ref.md#response-section) section of API reference page to learn about the available 
 methods on the concepts retrieved as the answers to queries.
 
 To view examples of various TypeQL queries, head over to 
-[Writing data](../0001-typedb/02-dev/04-write.md) and
-[Reading data](../0001-typedb/02-dev/05-read.md) pages.
+[Writing data](../../0001-typedb/02-dev/04-write.md) and
+[Reading data](../../0001-typedb/02-dev/05-read.md) pages.
 
 For some more Java Driver examples — see the 
-[Java implementation](../0001-typedb/01-start/05-sample-app.md#java-implementation) on the Sample application page.
+[Java implementation](../../0001-typedb/01-start/05-sample-app.md#java-implementation) on the Sample application page.

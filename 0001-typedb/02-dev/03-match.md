@@ -633,9 +633,9 @@ sessions, transactions, etc.
 Among the list of clients, there are TypeDB drivers for different programming languages. Sending a query in one of 
 those should be as easy as calling a function. But it might require additional efforts to control session and 
 transaction. For example, see how to send a query in some of the most popular programming languages: 
-[Java](../../02-clients/03-java.md), 
-[Node.js](../../02-clients/05-nodejs.md), 
-[Python](../../02-clients/04-python.md).
+[Java](../../02-clients/java/01-java-overview.md), 
+[Node.js](../../02-clients/node-js/01-node-js-overview.md), 
+[Python](../../02-clients/python/01-python-overview.md).
 
 ### Schema
 

@@ -23,9 +23,9 @@ To try the following examples use [TypeDB Studio](../../02-clients/01-studio.md)
 
 For those developing applications with [TypeDB drivers](../../02-clients/00-clients.md#typedb-drivers), please see the 
 instructions and examples for a specific language/framework: 
-[Java](../../02-clients/03-java.md), 
-[Node.js](../../02-clients/05-nodejs.md), 
-[Python](../../02-clients/04-python.md).
+[Java](../../02-clients/java/01-java-overview.md), 
+[Node.js](../../02-clients/node-js/01-node-js-overview.md), 
+[Python](../../02-clients/python/01-python-overview.md).
 
 ## Insert query
 

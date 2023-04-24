@@ -24,7 +24,7 @@ Sample application have the following implementations:
 The following Python script executes 4 simple requests to the `iam` database. 
 
 We can save it locally and run it with the [Python](https://www.python.org/downloads/) v.3.9+. Make sure to install 
-[typedb python driver](../../02-clients/04-python.md) with pip.
+[Typedb Python Driver](../../02-clients/python/02-python-install.md) with pip.
 
 Use the source code below or the [explanation](#explanation) section to explore 4 requests performed in the sample app.
 
@@ -214,7 +214,8 @@ are done we commit the write transaction. It is important not to forget to commi
 
 The following Java code can be built into a sample application that sends 4 simple requests to the `iam` database. 
 
-We can save it locally, build with maven and run it with the Java v.19+.
+We can save it locally, build with maven and run it with the Java v.19+.  Make sure to install 
+[Typedb Java Driver](../../02-clients/java/02-java-install.md) with pip.
 
 <!--- #todo Update the link to the repo with some vaticle repo -->
 Alternatively, we can clone the full [repository](https://github.com/izmalk/iam-sample-app-java) with maven specs and 
@@ -483,7 +484,7 @@ are done we commit the write transaction. It is important not to forget to commi
 The following Javascript code executes 4 simple requests to the `iam` database. 
 
 We can save it locally and run it with the **Node.js** version **16** and `npm`. Make sure to install 
-[TypeDB Node.js driver](../../02-clients/05-nodejs.md) with `npm install typedb-client`.
+[TypeDB Node.js driver](../../02-clients/node-js/02-node-js-install.md) with `npm install typedb-client`.
 
 Use the source code below or the [explanation](#explanation) section to explore 4 requests performed in the sample app.
 

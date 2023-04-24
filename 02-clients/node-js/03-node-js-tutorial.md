@@ -1,27 +1,18 @@
 ---
-pageTitle: Client Node.js
-keywords: typedb, client, node.js
-longTailKeywords: typedb node.js client, typedb client node.js, client node.js, python node.js
-Summary: API Reference of TypeDB Client Node.js.
+pageTitle: Java Driver tutorial
+keywords: typedb, client, java
+longTailKeywords: typedb java client, typedb client java, client java, java client
+Summary: Tutorial for TypeDB Node.js Driver.
 ---
 
-## Installation
+# Node.js Driver tutorial
 
-#### To use this client, you need a compatible TypeDB Server running. Visit our [Compatibility Table](#version-compatibility)
+## Prerequisites
 
+Make sure to install the Java Driver as per [Installation](02-java-install.md) page. The TypeDB server is also 
+needs to be installed and running.
 
-```
-npm install typedb-client
-```
-
-### Resources
-
-- [Client Node.js on GitHub](https://github.com/vaticle/typedb-client-nodejs)
-- [Releases](https://github.com/vaticle/typedb-client-nodejs/releases)
-- [Examples](https://github.com/vaticle/typedb-examples)
-
-## Quickstart
-First make sure that the [TypeDB server](/docs/typedb/install-and-run#start-the-typedb-server) is running.
+## Importing
 
 In your source, require `typedb-client`.
 
@@ -29,6 +20,19 @@ In your source, require `typedb-client`.
 ```javascript
 const { TypeDB } = require("typedb-client");
 ```
+
+## Connecting
+
+Instantiate a TypeDB Core client and open a [session](../../0001-typedb/02-dev/01-connect.md#sessions) to a 
+[database](../../0001-typedb/02-dev/01-connect.md#databases). 
+
+<div class="note">
+[Note]
+If you don't have a database, you can find how to create one on the 
+[Quickstart](../0001-typedb/01-start/03-quickstart.md#create-a-database) page.
+
+The name for the database should be `social_network`.
+</div>
 
 Instantiate a client and open a session.
 
@@ -47,6 +51,8 @@ async function openSession (database) {
 
 openSession("social_network");
 ```
+
+## Creating transactions
 
 Create transactions to use for reading and writing data.
 
@@ -75,6 +81,8 @@ async function createTransactions (database) {
 
 createTransactions("social_network");
 ```
+
+## Querying
 
 Running basic retrieval and insertion queries.
 
@@ -128,14 +136,14 @@ runBasicQueries("social_network");
 Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction, however, must be explicitly closed by calling the `close()` method on it.
 </div>
 
-Check out the [Concept API](../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
+Check out the [Concept API](../../04-concept-api/00-overview.md) to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
 To view examples of running various queries using the Node.js client, head over to their dedicated documentation pages as listed below:
-- [Insert](../11-query/03-insert-query.md)
-- [Get](../11-query/02-get-query.md)
-- [Delete](../11-query/04-delete-query.md)
-- [Update](../11-query/05-update-query.md)
-- [Aggregate](../11-query/06-aggregate-query.md)
+- [Insert](../../11-query/03-insert-query.md)
+- [Get](../../11-query/02-get-query.md)
+- [Delete](../../11-query/04-delete-query.md)
+- [Update](../../11-query/05-update-query.md)
+- [Aggregate](../../11-query/06-aggregate-query.md)
 
 ## API Reference
 

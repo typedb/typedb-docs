@@ -7,7 +7,7 @@ Summary: Learn how to use Client Python to migrate CSV, JSON and XML data into a
 
 ## Goal
 
-In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](../08-examples/01-phone-calls-schema.md) using [Client Python](../02-clients/04-python.md).
+In this tutorial, our aim is to migrate some actual data to the `phone_calls` knowledge graph that we [defined previously](../08-examples/01-phone-calls-schema.md) using [Client Python](../02-clients/python/01-python-overview.md).
 
 ## A Quick Look at the Schema
 
@@ -19,7 +19,7 @@ Before we get started with migration, let’s have a quick reminder of how the s
 
 Let’s go through a summary of how the migration takes place.
 
-1.  we need a way to talk to our TypeDB [database](../06-management/01-database.md). To do this, we use [Client Python](../02-clients/04-python.md).
+1.  we need a way to talk to our TypeDB [database](../06-management/01-database.md). To do this, we use [Client Python](../02-clients/python/01-python-overview.md).
 2.  we go through each data file, extracting each data item and parsing it to a Python dictionary.
 3.  we pass each data item (in the form of a Python dictionary) to its corresponding template function, which in turn gives us the constructed TypeQL query for inserting that item into TypeDB.
 4.  we execute each of those queries to load the data into our target database — `phone_calls`.
@@ -30,7 +30,7 @@ Before moving on, make sure you have **Python3** and **Pip3** installed and the 
 
 1.  Create a directory named `phone_calls` on your desktop.
 2.  cd to the phone_calls directory via terminal.
-3.  Run `pip3 install typedb-client` to install the TypeDB [Client Python](../02-clients/04-python.md).
+3.  Run `pip3 install typedb-client` to install the TypeDB [Client Python](../02-clients/python/01-python-overview.md).
 4.  Open the `phone_calls` directory in your favourite text editor.
 5.  Create a `migrate.py` file in the root directory. This is where we’re going to write all our code.
 

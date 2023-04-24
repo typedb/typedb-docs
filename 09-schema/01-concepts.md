@@ -10,7 +10,7 @@ As the name suggests, we use the `define` keyword to develop the [schema](../09-
 
 When defining the schema in a single `schema.tql` file, the keyword `define` needs to be included only once at the very top.
 
-We can also use the `define` keyword in the interactive mode of the [TypeDB Console](../02-console/01-console.md) as well as the TypeDB Clients [Java](../02-clients/03-java.md), [Python](../02-clients/04-python.md) and [Node.js](../02-clients/05-nodejs.md).
+We can also use the `define` keyword in the interactive mode of the [TypeDB Console](../02-console/01-console.md) as well as the TypeDB Clients [Java](../02-clients/java/01-java-overview.md), [Python](../02-clients/python/01-python-overview.md) and [Node.js](../02-clients/node-js/01-node-js-overview.md).
 
 To try the following examples with one of the TypeDB clients, follows these [Clients Guide](#clients-guide).
 

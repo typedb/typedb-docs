@@ -113,9 +113,9 @@ class LinksTest(unittest.TestCase):
                 "clients": "00-clients.md",
             }
             client_page_mapping = {
-                "java": "03-java.md",
-                "python": "04-python.md",
-                "javascript": "05-nodejs.md",
+                "java": "01-java-overview.md",
+                "python": "01-java-overview.md",
+                "javascript": "01-java-overview.md",
             }
 
             with open(autolink_keywords_path, encoding='utf-8') as autolink_keywords_file:

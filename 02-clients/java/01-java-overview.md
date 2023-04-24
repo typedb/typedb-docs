@@ -9,11 +9,13 @@ Summary: Overview for TypeDB Driver Java.
 
 Java Driver was developed by Vaticle to enable TypeDB support for Java software and developers.
 
-For exact installation instructions — see the [installation ](031-java-install.md) page.
+For exact installation instructions — see the [installation ](02-java-install.md) page.
 
-Explore the Java Driver [tutorial](032-java-tutorial.md) with example of connecting to TypeDB.
+Explore the Java Driver [tutorial](03-java-tutorial.md) with example of connecting to TypeDB.
 
-Use the [API reference](033-java-api-ref.md) page for documentation of the methods and objects used in the Driver.
+Use the [API reference](04-java-api-ref.md) page for documentation of the methods and objects used in the Driver.
+
+Learn to use native Java syntax to build TypeQL queries with [Java query builder](05-java-query-builder.md).
 
 <div class="note">
 [Note]

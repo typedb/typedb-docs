@@ -26,9 +26,9 @@ List:
 - [TypeDB Studio](../07-studio/00-overview.md)
 - [TypeDB drivers](../03-client-api/00-overview.md)
   - Supported drivers
-    - [**Java**](../02-clients/03-java.md)
-    - [**Node.js**](../02-clients/05-nodejs.md)
-    - [**Python**](../02-clients/04-python.md)
+    - [**Java**](../02-clients/java/01-java-overview.md)
+    - [**Node.js**](../02-clients/node-js/01-node-js-overview.md)
+    - [**Python**](../02-clients/python/01-python-overview.md)
   - [Other drivers](../02-clients/06-other-languages.md)
 
 If you can't find a suitable client, consider [creating a new client](../02-clients/07-new-client.md).
