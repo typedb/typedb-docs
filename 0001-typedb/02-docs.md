@@ -41,12 +41,15 @@ This is the TypeDB server documentation section. It has the following sections:
 
 ## Thinking in TypeQL and TypeDB
 
+<!-- #todo Change the link to TypeQL --->
+
 The backbone of any TypeDB database is the representation of our domain: the [schema](02-dev/02-schema.md).
 A TypeDB schema is the blueprint of a TypeDB database. Using [TypeQL](../11-query/00-overview.md) language, we 
 define a schema to model a domain true to nature. The schema is made up of a set of types and rules, which harness 
 object-oriented principles and logical deduction.
 
 Types defined in a schema are all subtypes of the following basic ones: 
+
 - Entities. Representing self-sufficient objects.
 - Relations. Representing n-ary relationships.
 - Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
