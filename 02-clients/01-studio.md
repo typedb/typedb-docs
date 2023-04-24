@@ -1,13 +1,15 @@
 ---
 pageTitle: TypeDB Studio
-keywords: typedb, studio, studio quickstart
-longTailKeywords: typedb studio, typedb studio preferences, typedb studio connection, typedb studio get started
-summary: Brief intro and Quickstart guide for TypeDB Studio.
+keywords: typedb, client, studio
+longTailKeywords: typedb studio, typedb studio preferences, typedb studio connection
+summary: Brief intro for TypeDB Studio.
 toc: false
 ---
 
+# TypeDB Studio
+
 TypeDB Studio is an IDE specifically designed to work with 
-[TypeQL](../11-query/00-overview.md) query language and TypeDB databases.
+[TypeQL]() query language and TypeDB databases.
 
 It has unique set of functions and abilities to help with development using TypeDB:
 

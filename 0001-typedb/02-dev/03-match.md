@@ -7,6 +7,8 @@ Summary: Targeting instances of data or schema types that match a TypeQL pattern
 
 # Matching patterns
 
+<!-- #todo Change the link to TypeQL --->
+
 TypeDB queries are written in [TypeQL](../../11-query/00-overview.md) and use patterns to manipulate schema and data of 
 a database.
 
