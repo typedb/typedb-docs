@@ -2,7 +2,7 @@
 pageTitle: TypeDB Clients
 keywords: typedb, console, studio, client, api, drivers
 longTailKeywords: typedb client api, typedb api, client api, typedb studio, typedb console
-Summary: All you need to know about the architecture of a TypeDB Client.
+Summary: TypeDB Clients overview.
 toc: false
 ---
 
@@ -14,7 +14,7 @@ A TypeDB Client is meant to be used for the purpose of managing databases and pe
 database schema and data on the TypeDB server. A client uses `gRPC` to interact with a TypeDB server and provides 
 more user-friendly interface: API, GUI or CLI.
 
-Here is a list of existing TypeDB Clients:
+Here is a list of existing **TypeDB Clients**:
 
 - Software tools:
   - [TypeDB Studio](01-studio.md)
@@ -28,15 +28,31 @@ Here is a list of existing TypeDB Clients:
 
 If you can't find a suitable client, consider [creating a new client](07-new-client.md).
 
-## Architecture
+## Architecture of a TypeDB Client
 
-All TypeDB Clients share a common architecture. Simply put, the main components of any TypeDB Client are the classes 
-and methods to establish a connection to a TypeDB database, execute queries and parse responses.
+All TypeDB Clients share a common architecture. A TypeDB Client needs a `gRPC` client library to communicate with 
+the  server. Most languages have `gRPC` libraries.
+
+A TypeDB Client provides a human or machine interface and interacts with TypeDB server, but also it performs query 
+validation, local processing, load-balancing (TypeDB Cloud only) and authentication (TypeDB Cloud only).
+
+The following schema is the dependency graph of a typical TypeDB Client.
+
+![Structure of a TypeDB Client](../images/client-api/client-structure.png)
+
+Simply put, the main components of any TypeDB Client are the classes 
+and methods to establish a connection to a TypeDB database, execute queries and parse responses. Software tools 
+take care of internal processes and provide a user-friendly interface for user (graphical or console). Language 
+specific libraries (or so called TypeDB Drivers) provide more direct access to the classes and methods via TypeDB API.
 
 Specific information on the classes and methods provided in the API reference, but the syntax may vary for different 
-programming languages.
+programming languages:
 
-![Structure of a TypeDB Client Application](../images/client-api/client-server-comms.png)
+- [Java Driver API reference](java/04-java-api-ref.md),
+- [Python Driver API reference](python/04-python-api-ref.md),
+- [Node.js Driver API reference](node-js/04-node-js-api-ref.md).
+
+![Client types and server interaction](../images/client-api/client-server-comms.png)
 
 ## Software tools
 
@@ -45,15 +61,21 @@ To work with TypeDB databases we can use one of the standalone software tools:
 1. [TypeDB Studio](01-studio.md) (GUI).
 2. [TypeDB Console](02-console.md) (CLI).
 
-Both tools are complete software products that can be used to connect to TypeDB and interact with it.
+Both tools are complete software products that can be used to connect to TypeDB and interact with it. They take care 
+of connection, session and transaction management, automate query sending and process the query response.
 
-TypeDB Studio is mostly remarkable for its friendly graphical user interface, types explorer and graph visualization.
-TypeDB Console is a powerful CLI tool often used to manage TypeDB server and its databases.
+TypeDB Studio is mostly remarkable for its friendly graphical user interface (**GUI**), types explorer and graph 
+visualization. For more information on how to use it see the [TypeDB Studio](01-studio.md) page or the
+[Quickstart guide](../0001-typedb/01-start/03-quickstart.md).
+
+TypeDB Console is a powerful command line (**CLI**) tool often used to manage TypeDB server and its databases. For more 
+information on how to use it see the [TypeDB Console](02-console.md) page.
 
 ## TypeDB drivers
 
-If we are developing our own application (software) we can use one of the libraries (or drivers) that are available for 
-some popular programming languages.
+A TypeDB Driver, is a library used to connect to a TypeDB server. If we are building an 
+application that uses a TypeDB database, we would need a TypeDB driver at our application layer to handle the
+database operations. TypeDB Drivers are available for some of the most popular programming languages.
 
 The following TypeDB Drivers are officially supported and actively maintained by the Vaticle. They 
 usually support latest TypeDB features and receive continuous bug fixes and improvements.
@@ -61,49 +83,7 @@ usually support latest TypeDB features and receive continuous bug fixes and impr
 - [Java](java/01-java-overview.md)
 - [Node.js](node-js/01-node-js-overview.md)
 - [Python](python/01-python-overview.md)
+- [Rust](https://github.com/vaticle/typedb-client-rust) (Under development)
 
-We also have some community projects for [other Languages](06-other-languages.md)
-
-### What is a TypeDB driver?
-
-A TypeDB Driver, is a library used to connect to a TypeDB server. If we are building an 
-application that uses a TypeDB database, we would need a TypeDB driver at our application layer to handle the
-database operations.
-
-### Async Queries
-
-Invoking a TypeQL query sends the query to the TypeDB server, where it will be completed in the background. Local 
-processing can take place while waiting for responses to be received. Take advantage of these asynchronous queries to 
-mask network round-trip costs and increases your throughput. For example, if you are performing 10 match queries in a 
-transaction, it's best to send them all to the server _before_ iterating over any of their answers.
-
-Queries that return answers, such as [get](../0001-typedb/02-dev/05-read.md#get-query), return them as Futures, Streams 
-or Iterators depending on the Client used and the query type. These can then be awaited, or iterated, to retrieve the 
-answers as they are computed.
-
-<div class="note">
-[Important]
-When a transaction is committed or closed, all of its asynchronous queries are completed first.
-</div>
-
-### Investigating Answers
-
-Depending on the type of the query carried out by a transaction, we retrieve different forms of answers. For more 
-information see the [Response interpretation](../0001-typedb/02-dev/07-response.md) page. 
-
-Quite often in a response form a TypeDB server we can get a ConceptMap that maps variables used in a query to 
-instances of data from a database. To process this information we use methods, provided by a TypeDB Driver. 
-The API provided by Driver can be used to obtain more information about the retrieved concept and its 
-surroundings. 
-For more information see the [API](../0001-typedb/02-dev/08-api.md) page in TypeDB Documentation.
-For exact syntax reference see the reference pages related to:
-
-- [Java](java/04-java-api-ref.md)
-- [Node.js](node-js/04-node-js-api-ref.md)
-- [Python](python/04-python-api-ref.md)
-
-For examples see the API pages related to:
-
-- [Java](java/01-java-overview.md)
-- [Node.js](node-js/01-node-js-overview.md)
-- [Python](python/01-python-overview.md)
+We also have some community projects for [other Languages](06-other-languages.md) and provide support for creating your 
+own [new client](07-new-client.md).

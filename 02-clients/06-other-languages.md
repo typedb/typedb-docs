@@ -11,13 +11,13 @@ Community client drivers are not maintained by Vaticle. They are built and maint
 
 ## TypeDB Clients developed by the community
 
-- **Julia**: https://github.com/Humans-of-Julia/TypeDBClient.jl
+- [Julia](https://github.com/Humans-of-Julia/TypeDBClient.jl)
 
 ## TypeDB Clients under development by the community
 
-- **C#**: https://github.com/typedb-osi/typedb-client-csharp
-- **Haskell**: https://github.com/typedb-osi/typedb-client-haskell
-- **Go**: https://github.com/taliesins/typedb-client-go
+- [C#](https://github.com/typedb-osi/typedb-client-csharp)
+- [Haskell](https://github.com/typedb-osi/typedb-client-haskell)
+- [Go](https://github.com/taliesins/typedb-client-go)
 
 ## Contributing
 
@@ -28,4 +28,4 @@ towards any of the community clients, or any other OSI projects, join us on [Dis
 
 ## TypeDB Clients under development by Vaticle
 
-- **Rust**: https://github.com/vaticle/typedb-client-rust
+- [Rust](https://github.com/vaticle/typedb-client-rust)

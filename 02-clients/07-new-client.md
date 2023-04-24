@@ -62,7 +62,7 @@ maintaining them, so we also recommend community contributions to follow the sam
 
 The following diagram shows all the packages (directories) in Client Java and their dependency graph:
 
-![Client Package Structure](../images/client-api/package-structure.png)
+![Client Package Structure](../images/client-api/response-structure.png)
 
 The entry point is the root package, in this case named `client-java`.
 `api` is where we declare all the available client methods – basically all the interfaces.

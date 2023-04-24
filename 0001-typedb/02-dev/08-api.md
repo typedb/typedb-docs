@@ -15,10 +15,10 @@ To access all features of TypeDB and TypeDB Clients use the default interface pr
 
 * GUI from [TypeDB Studio](../../02-clients/01-studio.md),
 * CLI from [TypeDB Console](../../02-clients/02-console.md),
-* [Client API](../../02-clients/08-api.md) from TypeDB Drivers: 
-    * [Java](../../02-clients/java/01-java-overview.md) Client API, 
-    * [Python](../../02-clients/python/01-python-overview.md) Client API, 
-    * [Node.js](../../02-clients/node-js/01-node-js-overview.md) Client API, 
+* API from TypeDB Drivers: 
+    * [Java](../../02-clients/java/01-java-overview.md) API, 
+    * [Python](../../02-clients/python/01-python-overview.md) API, 
+    * [Node.js](../../02-clients/node-js/01-node-js-overview.md) API, 
     * or [other clients](../../02-clients/06-other-languages.md).
 
 TypeDB Studio and TypeDB Console control sessions, transactions, and queries, as well as process the responses 
@@ -136,6 +136,6 @@ see updates made using the Client API.
 All local concepts have the method `asRemote(tx)`, where the `tx` parameter is a Transaction to use for the remote 
 concept version of this local concept, and the returned value is the remote concept. See the `asRemote` method 
 documentation for more details: 
-[Java](../../02-clients/08-api.md#java#as-remote), 
-[Python](../../02-clients/08-api.md#python#as-remote), 
-[Node.js](../../02-clients/08-api.md#node#as-remote).
+[Java](../../02-clients/java/04-java-api-ref.md#concept-methods), 
+[Python](../../02-clients/python/04-python-api-ref.md#concept-methods), 
+[Node.js](../../02-clients/node-js/04-node-js-api-ref.md#concept-methods).
