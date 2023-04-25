@@ -53,7 +53,7 @@ TypeDB accepts a configuration (config) file with a specific YAML format. See th
 
 <div class="note">
 [Important]
-In order for any change in configuration file to take effect, restart the TypeDB Server.
+In order for any change in configuration file to take effect, restart the TypeDB server.
 </div>
 
 ### The default location of the config file

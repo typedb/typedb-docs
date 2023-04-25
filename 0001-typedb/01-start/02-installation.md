@@ -2,7 +2,7 @@
 pageTitle: Installation
 keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker
 longTailKeywords: typedb on linux, typedb on mac, typedb on windows, start typedb server
-summary: Install and run the TypeDB Server on Linux, Mac or Windows.
+summary: Install and run the TypeDB server on Linux, Mac or Windows.
 toc: false
 ---
 
@@ -312,7 +312,7 @@ Run the following command in a terminal:
 typedb server
 ```
 
-Now we can start the TypeDB Server by using the `typedb server` command in local terminal.
+Now we can start the TypeDB server by using the `typedb server` command in local terminal.
 
 <div class="note">
 [Note]

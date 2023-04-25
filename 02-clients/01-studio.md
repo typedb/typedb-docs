@@ -21,102 +21,153 @@ It has unique set of functions and abilities to help with development using Type
 - Local query validation with constraints of an actual database schema before sending the query to server.
 - Graph visualization for query responses.
 
-## Get TypeDB Studio
-
-TypeDB Studio is available for the following OS:
-
-- Linux
-- MacOS
-- Windows
+## Installation
 
 ### Requirements
 
-To use TypeDB Studio we need to download, install and launch a compatible version of TypeDB first. So, the only 
-requirement is:
-
-- Working [TypeDB Server](../0001-typedb/01-start/02-installation.md) instance.
+TypeDB Studio do not require any additional packages to be installed prior the installation, but it needs a TypeDB 
+server to perform most it's functions. We can use either remote or local TypeDB server.
 
 <div class="note">
 [Note]
-The default TypeDB settings are to run server on `localhost` with port number `1729`.
+The default TypeDB settings are to run server listening for `localhost` connections with port number `1729`.
 </div>
 
 <div class="note">
 [Important]
-We recommend using the latest versions of TypeDB and TypeDB Studio. In case we need to use some other version of TypeDB 
-make sure to use compatible version of TypeDB Studio. Usually this means that versions of both products should be equal.
+We recommend using the latest version of TypeDB server and a [compatible](#version-compatibility) version of TypeDB 
+Studio. 
 </div>
 
-### Download & Install
+### Download & install
 
-We can use a package manager to download and install TypeDB Studio. For example, on MacOS we can use Homebrew:
+Download TypeDB distributive/package for your particular OS from the 
+[Download page](https://vaticle.com/download#typedb-studio. 
 
-<!---
-Add tabs for every OS and commands.
--->
+Follow proper installation procedure of the OS in use.
+
+<div class="note">
+[Important]
+Make sure to grant access for installation wizard to install TypeDB Studio in case any security prompts will appear.
+</div>
+
+<div class="note">
+[Note]
+For **macOS** TypeDB Studio can be installed via homebrew:
 
 ```
 brew tap vaticle/tap
 brew install --cask vaticle/tap/typedb-studio
 ```
+</div>
 
-Alternatively we can visit the [Download Centre](https://vaticle.com/download#typedb-studio) to download and install 
-the compatible release of TypeDB Studio.
+## Prepare for work
 
-### Launch TypeDB Studio
+Right after starting TypeDB Studio we can see its main window as it is shown below.
 
-We can start TypeDB Studio as any other GUI application on the OS we are using.
+![TypeDB Studio GUI](../images/studio/studio-gui.png)
 
-## Connect to TypeDB Server
+To use most of TypeDB Studio functions we need to connect to a TypeDB server and 
+choose a project directory.
 
-At the top right-hand corner click `Connect to TypeDB`.
+The main blocks of the graphical interface (GUI) are (marked with respected numbers on the image above):
+
+1. Projects panel
+2. Types browser
+3. Text-editor panel
+4. Toolbar
+
+### Connect to TypeDB server
+
+At the top right-hand corner click the [**Connect to TypeDB**] button. It will open a windows with the same name and 
+the connection settings as shown below.
 
 ![Connection Manager Disconnected](../images/studio/connection-interface-disconnected.png)
 
-Fill in the address of the TypeDB Server. By default, it's: `localhost:1729`. Click the Connect button.
+Fill in the address of the TypeDB Server. By default, it's: `localhost:1729`. Click the [**Connect**] button.
 
 ![Connection Manager Connected](../images/studio/connection-interface-connected.png)
 
-Once we've connected successfully, the connection manager will reflect this in with the status field in
-the bottom left-hand corner. Additionally, the address will be reflected in the top right-hand corner of Studio.
+Once we've connected successfully, the connection manager will reflect this in with the green status field in
+the bottom left-hand corner, as shown above. You can close the window with connection. 
 
-## Disconnect from TypeDB server
+<div class="note">
+[Note]
+When Studio connected to a TypeDB server it will display the server address at the top right corner instead of the 
+label of the `Connect to TypeDB` button.
+</div>
 
-At the top right-hand corner click `Connect to TypeDB`.
+### Disconnect from TypeDB server
 
+At the top right-hand corner click the button with the server address in it.
 
+In the `Connect to TypeDB` window click on the [**Disconnect**] button.
 
-## Create a Database
+### Create a database
 
-![Database Manager Empty](../images/studio/studio-database.png)
+Make sure TypeDB Studio is connected to a TypeDB server and click on the [**Manage Databases**] button (with a 
+database icon) as shown below.
 
-Go to the databases manager by clicking on the database icon in the top left-hand corner.
+![Database icon](../images/studio/studio-database.png)
+
+Enter the name for the new database at the text field at the bottom of the `Manage Databases` window and hit 
+[**Create**].
 
 ![Database Manager Empty](../images/studio/databases-interface-no-databases.png)
 
-Enter the name for the new database and hit 'Create'.
+Our database appeared at the list of databases. Now we can close the `Manage Databases` window by clicking the 
+[**Close**] button.
 
-![Database Manager With Phone Calls Database](../images/studio/databases-interface-iam-database.png)
+![Database Manager with IAM database](../images/studio/databases-interface-iam-database.png)
 
-Now we've successfully created a database. We can select it by clicking the dropdown menu titled 'Select Databases' 
-immediately right of the databases icon.
+### Select active database
 
-## Create a Project Folder
+TypeDB Studio lets us work with one database at a time. Thus, to perform any query we need to choose a database 
+first. 
 
-Studio will store queries we save in a project folder on local machine, so we don't need to rewrite all queries each 
-time we open Studio. To open a project folder click on the open folder icon left of the database icon or 
-on the Open Project button in the Project section on the left (under the database icon).
+We can select it by clicking the dropdown menu at the toolbar titled [**database (none)**] or with a name of 
+previously selected database. It is the only dropdown menu in the toolbar and is located immediately right of the 
+databases icon.
+
+<div class="note">
+[Note]
+If the dropdown menu isn't active it usually means that we didn't connect to a server yet.
+</div>
+
+After selecting the database to work with from a list of all databases on the server Studio connected with, we will 
+see types hierarchy of the selected database in the Types browser (bottom left of the screen). For example, for any 
+empty database (with no schema defined) it will show only the base types:
+
+- attribute
+- entity
+- relation
+
+### Open a project folder
+
+Studio stores queries we save on a local machine in a project folder, so we don't need to rewrite all queries each 
+time we open Studio. To select a project folder click on the open folder icon left of the database icon or 
+on the [**Open Project**] button in the `Projects` panel on the left (under the database icon).
 
 ![Project Interface Prompt to Open](../images/studio/project-interface-open.png)
 
 <div class="note">
 [Note]
-If the Project section is not showing try hitting Project button on the left edge of the TypeDB Studio screen.
+If the Project section is not showing try clicking Project button on the left edge of the TypeDB Studio screen.
 </div>
 
-## Write a Schema
+## Basic operations
 
-Create a new file by clicking the '+' icon in the section right of the project view.
+### File operations
+
+
+
+### Write & Read a Schema
+
+
+
+
+
+Create a new file by clicking the `+` icon in the section right of the project view.
 
 ![Create a New File](../images/studio/project-new-file.png)
 
@@ -136,7 +187,7 @@ Finally, commit the transaction by clicking the green tick.
 
 As a result we get a notification pop-up with a transaction confirmation or an error.
 
-## Reading a Schema
+### Reading a Schema
 
 To read a complete database schema we need to make sure session and transaction types are set to `schema` and `read` 
 respectively first.
@@ -156,12 +207,12 @@ Errors shown as a pop-up and the output block under the text editor shows detail
 In case of a successful `read` transaction we get a response. If the response contains ConceptMap (returns some 
 data), we will see a Graph tab with visualization of the response data.
 
-## Write & Read Data
+### Write & Read Data
 
 The process is exactly the same as with writing and reading a schema. 
 Just make sure session and transaction types are set to `data` and `write` / `read` respectively first.
 
-## Types explorer
+## Types explorer capabilities
 
 Under the Project section that shows the Project folder TypeDB has Types section that shows all types of the schema of 
 the current database. 
@@ -188,6 +239,15 @@ arrows pointing down or up respectively.
 We can export schema of the database by clicking Export Schema button (second in row from left to right) on the top of 
 the Types section. It creates a new tab with inserted TypeQL code that creates the exact schema that is in the current 
 database.
+
+<div class="note">
+[Warning]
+The export schema button doesn't include rules into its output. That will be fixed in some of the next versions of 
+the TypeDB Studio. 
+</div>
+
+
+
 
 ### Types browser
 
@@ -230,3 +290,10 @@ deleting this type. For example, we can't
 [delete a type that has a subtype](../../09-schema/01-concepts.md#undefine-a-supertype). See 
 [more](../../09-schema/01-concepts.md#undefine) on these conditions.
 </div>
+
+## Version Compatibility
+
+|      Studio      |      TypeDB      |  TypeDB Cluster  |
+|:----------------:|:----------------:|:----------------:|
+| 2.14.1 to 2.14.2 | 2.14.1 to 2.14.2 |      2.14.1      |
+|      2.11.0      |      2.11.1      | 2.11.1 to 2.11.2 |

@@ -42,7 +42,7 @@ TypeDB Driver documentation.
 
 Any Client API divided into two big sections:
 
-* Query — classes and methods to connect to a TypeDB Server, manage sessions and transactions, send different types 
+* Query — classes and methods to connect to a TypeDB server, manage sessions and transactions, send different types 
   of queries.
 * Response — classes to store and provide processing methods for all concepts (types and instances) from a database.
 

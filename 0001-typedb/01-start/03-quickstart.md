@@ -26,7 +26,7 @@ This Quickstart guide takes advantage of TypeDB Studio, an IDE (integrated devel
 please install both TypeDB and TypeDB Studio:
 
 - [Install TypeDB](02-installation.md)
-- [Install TypeDB Studio](../../02-clients/01-studio.md#get-typedb-studio)
+- [Install TypeDB Studio](../../02-clients/01-studio.md#installation)
 
 <div class="note">
 [Important]
