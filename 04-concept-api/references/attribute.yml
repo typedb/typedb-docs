@@ -183,21 +183,21 @@ methods:
         - boolean
 
   - method:
-    common: &method-isdouble
+    common: &method-isdatetime
       title: Check if value is of type datetime (Local)
       description: Returns true if the attribute value is of type datetime. Otherwise, returns false.
     java:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.isDateTime();
       returns:
         - boolean
     javascript:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.isDateTime();
       returns:
         - boolean
     python:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.is_datetime()
       returns:
         - boolean
