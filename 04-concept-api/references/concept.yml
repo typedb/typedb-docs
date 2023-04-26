@@ -381,7 +381,7 @@ methods:
       method: concept.toJSON();
     javascript:
       <<: *method-toJSON
-      method: await concept.toJSON();
+      method: await concept.toJSONRecord();
     python:
       <<: *method-toJSON
-      method: concept.toJSON()
+      method: concept.to_json()

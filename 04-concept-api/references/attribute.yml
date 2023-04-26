@@ -212,7 +212,7 @@ methods:
       method: attribute.toJSON();
     javascript:
       <<: *method-toJSON
-      method: await attribute.toJSON();
+      method: await attribute.toJSONRecord();
     python:
       <<: *method-toJSON
-      method: attribute.toJSON()
+      method: attribute.to_json()

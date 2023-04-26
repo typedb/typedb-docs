@@ -123,10 +123,10 @@ types:
           method: concept_map.toJSON();
         javascript:
           <<: *method-toJSON
-          method: await concept_map.toJSON();
+          method: await concept_map.toJSONRecord();
         python:
           <<: *method-toJSON
-          method: concept_map.toJSON()
+          method: concept_map.to_json()
 
       - method:
         common: &method-conceptmap-explainables

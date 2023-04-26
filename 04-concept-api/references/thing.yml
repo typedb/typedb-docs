@@ -322,7 +322,7 @@ methods:
       method: thing.toJSON();
     javascript:
       <<: *method-toJSON
-      method: await thing.toJSON();
+      method: await thing.toJSONRecord();
     python:
       <<: *method-toJSON
-      method: thing.toJSON()
+      method: thing.to_json()
