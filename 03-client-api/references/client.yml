@@ -206,16 +206,6 @@ methods:
       method: client.user();
       returns:
         - <user>
-    javascript:
-      <<: *method-user
-      method: await client.user();
-      returns:
-        - String
-    python:
-      <<: *method-user
-      method: client.user()
-      returns:
-        - User
 
   - method:
     common: &method-users-contains
