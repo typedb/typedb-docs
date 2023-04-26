@@ -311,3 +311,18 @@ methods:
           type: "list of [`RoleType`](../concept-api/type?tab=python#roletype-methods)"
       returns:
         - "Iterator of [`Relation`](../concept-api/thing?tab=python#relation-methods)"
+
+  - method:
+    common: &method-toJSON
+      title: Retrieve a Thing as JSON.
+      returns:
+        - JSON
+    java:
+      <<: *method-toJSON
+      method: thing.toJSON();
+    javascript:
+      <<: *method-toJSON
+      method: await thing.toJSONRecord();
+    python:
+      <<: *method-toJSON
+      method: thing.to_json()

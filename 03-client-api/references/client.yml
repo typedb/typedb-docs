@@ -198,6 +198,16 @@ methods:
         - list of User
 
   - method:
+    common: &method-user
+      title: Retrieve current user
+      description: Retrieves the currently authenticated user.
+    java:
+      <<: *method-user
+      method: client.user();
+      returns:
+        - <user>
+
+  - method:
     common: &method-users-contains
       title: Check if a user exists
       description: Checks if a user with the given name exists

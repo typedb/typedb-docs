@@ -187,17 +187,32 @@ methods:
       title: Check if value is of type datetime (Local)
       description: Returns true if the attribute value is of type datetime. Otherwise, returns false.
     java:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.isDateTime();
       returns:
         - boolean
     javascript:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.isDateTime();
       returns:
         - boolean
     python:
-      <<: *method-isdouble
+      <<: *method-isdatetime
       method: attribute.is_datetime()
       returns:
         - boolean
+
+  - method:
+    common: &method-toJSON
+      title: Retrieve an attribute as JSON.
+      returns:
+        - JSON with fields `type`, `value_type` and `value`
+    java:
+      <<: *method-toJSON
+      method: attribute.toJSON();
+    javascript:
+      <<: *method-toJSON
+      method: await attribute.toJSONRecord();
+    python:
+      <<: *method-toJSON
+      method: attribute.to_json()

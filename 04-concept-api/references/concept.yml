@@ -370,3 +370,18 @@ methods:
     python:
       <<: *method-isDeleted
       method: concept.as_remote(tx).is_deleted()
+
+  - method:
+    common: &method-toJSON
+      title: Retrieve a concept as JSON.
+      returns:
+        - JSON
+    java:
+      <<: *method-toJSON
+      method: concept.toJSON();
+    javascript:
+      <<: *method-toJSON
+      method: await concept.toJSONRecord();
+    python:
+      <<: *method-toJSON
+      method: concept.to_json()
