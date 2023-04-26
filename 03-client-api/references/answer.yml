@@ -114,8 +114,8 @@ types:
 
       - method:
         common: &method-toJSON
-          title: Retrieve a concept map as a JSON
-          description: Produces a concept map as a JSON, where keys are variable names and values are concepts.
+          title: Retrieve a concept map as JSON
+          description: Produces a concept map as a JSON object, where keys are variable names and values are concepts.
           returns:
             - JSON
         java:
