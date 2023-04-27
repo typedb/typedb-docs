@@ -105,8 +105,8 @@ In the `Connect to TypeDB` window click on the [**Disconnect**] button.
 
 ### Create a database
 
-Make sure TypeDB Studio is connected to a TypeDB server and click on the [**Manage Databases**] button (with a 
-database icon) as shown below.
+To create a new database make sure TypeDB Studio is connected to a TypeDB server and click on the [**Manage 
+Databases**] button (with a database icon) as shown below.
 
 ![Database icon](../images/studio/studio-database.png)
 
@@ -142,11 +142,11 @@ empty database (with no schema defined) it will show only the base types:
 - entity
 - relation
 
-### Open a project folder
+### Open a project directory
 
-Studio stores queries we save on a local machine in a project folder, so we don't need to rewrite all queries each 
-time we open Studio. To select a project folder click on the open folder icon left of the database icon or 
-on the [**Open Project**] button in the `Projects` panel on the left (under the database icon).
+TypeDB Studio stores queries we save on a local machine in a project directory, so we don't need to rewrite all queries 
+each time we open Studio. To select a project directory click on the open folder icon left of the database icon or 
+click on the [**Open Project**] button in the `Projects` panel on the left (under the database icon).
 
 ![Project Interface Prompt to Open](../images/studio/project-interface-open.png)
 
@@ -161,78 +161,140 @@ If the Project panel is not displayed try clicking Project button on the left ed
 
 #### Create a new file
 
-To create a new file we use the button with the plus (`+`) icon. It is located at the top of the Text-editor panel 
+To create a new file use the button with the plus (`+`) icon. It is located at the top of the Text-editor panel 
 under the Toolbar. It's horizontal position adjusted for the number of tabs opened in the text-editor — the 
 button with plus icon will always stay at the right end of the tabs of the Text-editor.
 
-depends on the contents of the Text-editor tabs. If there are no tabs 
-opened in the Text-editor panel, then the button will be on the left side (top left corner of the Text-editor panel).
-
-
-
-
-See image below.
-
-
-
-
-
-
-
-### Write & Read a Schema
-
-
-
-
-
-Create a new file by clicking the `+` icon in the section right of the project view.
+Upon clicking on the plus button a new tab will be opened with the default filename. For new files by default 
+filename consists of `Untitled` word, followed by a number, starting from `1` and a file extension of `.tql`.
 
 ![Create a New File](../images/studio/project-new-file.png)
 
-Write or insert the schema code (in TypeQL) into the Studios text editor.
+This file will be stored at the hidden folder in the current project directory until it will be saved with some 
+other name and path.
 
-![Paste in Our Schema](../images/studio/project-schema-pasted.png)
+#### Open an existing file
 
-Make sure session and transaction types are set to `schema` and `write` respectively.
-These can be found to the right of the database selector.
-Then click the green play button to run the queries.
+You can open any existing file in the current Project directory by double-clicking on the file in the 
+Project panel. I will create a new tab in the Text-editor panel with the contents of the file.
 
-![Write the Schema](../images/studio/project-schema-query-run.png)
+#### Save a file
 
-Finally, commit the transaction by clicking the green tick.
+Any file edited in the Text-editor panel is auto saved with a small delay. That includes new files that wasn't 
+assigned a specific name yet. Those are saved into the hidden folder with their default names. That way if we close 
+TypeDB Studio the all files will be persisted and upon starting the Studio again all files in the hidden folder will 
+be opened automatically.
+
+Upon manual save those Untitled files will be saved with the specified filename and path and deleted from the hidden 
+folder.
+
+To save file manually use the [**Save Current File**] button at the left end of the toolbar.
+
+### Query design
+
+One of the most important functions of TypeDB Studio is to provide an environment to design and debug queries to 
+TypeDB databases. For that we have the Text-editor panel with TypeQL syntax highlighting and the Toolbar with 
+transaction controls.
+
+#### Text-editor panel
+
+Text-editor panel doesn't have a visible title, but it's the biggest area in the middle of the TypeDB Studio that is 
+being used to work with text information. It does have tabs at the top to switch between different opened files.
+
+The currently selected file's content displayed in the main section with lines numeration at the left edge of the 
+Text-editor panel.
+
+All text in the Text-editor panel will be displayed with TypeQL syntax highlighting.
+
+In the bottom right corner of TypeDB Studio window there is an indicator for cursor location that contains the line 
+number and current symbol position in that line.
+
+You can activate the following functions from the context menu available by right-clicking inside the Text-editor 
+main section:
+
+- Copy/Cut/Paste
+- Find/Replace
+- Run File/Run Selection
+- Increase/Decrease/Reset Text Size
+
+#### Run panel
+
+Under the Text-editor panel there is the Run panel, but it is collapsed by default. To expand it perform any query or 
+just click on the reversed tick icon in the bottom right corner of TypeDB Studio window, above the cursor location 
+indicator.
+
+Run panel has 2 sets tabs:
+
+- Tabs at the top of the Run panel are for different query attempts. 
+  
+  By default, every query sent will overwrite the 
+  existing tab, but if you enable the pin icon at the beginning of the tab name - the tab will become pinned and 
+  stay. A new tab will appear on the right from the last pinned one upon next query execution.
+
+- Tabs at the bottom of the Run panel are for different results for the currently selected query attempt (tab at the 
+  top of the Run panel). These include the `Log` tab with direct textual Studio output and the `Graph` tabs (one per 
+  every query statement in the Text-editor panel) with graph visualization of response.
+
+### Transaction control
+
+To execute a query written in the Text-editor panel we have the Toolbar elements right from the database selection 
+drop-down menu. See below.
+
+![Transaction controls](../images/studio/studio-transaction-controls.png)
+
+From left to right:
+
+- [Session](../0001-typedb/02-dev/01-connect.md#sessions) type switch:
+  - `schema` — to use schema session type
+  - `data` — to use data session type
+- [Transaction](../0001-typedb/02-dev/01-connect.md#transactions) type switch:
+  - `write` — to use write transaction
+  - `read` — to use read transaction
+- `snapshot` — enables snapshot feature that encapsulates transaction in a snapshot of a database's data until the 
+  transaction committed or closed. Write transactions are always snapshoted. Only available for read transactions.
+- `infer` — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
+  transactions.
+- `explain` — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
+  `explainables` methods for results.
+- Circle icon — transaction activity indicator. Green if there is a transaction opened by TypeDB Studio at this 
+  moment. Grey if there is no opened transaction. Rotating animation — TypeDB Studio processing the results 
+  (including additional API calls).
+- X icon — close active transaction without committing the results.
+- U-turn icon — revert the transaction results without closing it.
+- Tick icon — commit the transaction.
+- "Play" icon (triangle) — Run query or queries in the active tab of the Text-editor panel. It will open a 
+  transaction (with the session type and transaction type specified in the Toolbar on the left) and execute the TypeQL 
+  code against the selected database.
+- Lighting icon — stop query execution after the next result.
+
+#### Run query
+
+Make sure TypeDB Studio [connected](#connect-to-typedb-server) to a TypeDB Server, 
+database [selected](#select-active-database) and Project directory [opened](#open-a-project-directory).
+
+1. Write a new or open an existing file with query to run.
+
+   ![Query text](../images/studio/project-schema-pasted.png)
+
+2. Choose the correct session (schema/data) type and transaction (read/write) type to run the query by clicking on 
+   those options on the Toolbar switches.
+
+3. Run query by clicking on the "play" button. 
+
+   ![Write the Schema](../images/studio/project-schema-query-run.png)
+
+4. If it's the `write` transaction type — wait for transaction control options to be ready and commit or close the 
+   transaction.
+
+As a result we get a notification pop-up with a transaction confirmation (see example below) or an error.
 
 ![Commit the Transaction](../images/studio/project-schema-committed.png)
 
-As a result we get a notification pop-up with a transaction confirmation or an error.
-
-### Reading a Schema
-
-To read a complete database schema we need to make sure session and transaction types are set to `schema` and `read` 
-respectively first.
-
-Insert the following request to the text editor:
-
-```typeql
-match $s sub thing;
-```
-
-Then click the green play button to run the query.
-
-As a result of a `read` transaction we will get an error or a response.
-
-Errors shown as a pop-up and the output block under the text editor shows detailed information on what went wrong.
-
-In case of a successful `read` transaction we get a response. If the response contains ConceptMap (returns some 
-data), we will see a Graph tab with visualization of the response data.
-
-### Write & Read Data
-
-The process is exactly the same as with writing and reading a schema. 
-Just make sure session and transaction types are set to `data` and `write` / `read` respectively first.
+<!-- #todo Add some example with IAM --->
 
 ## Types explorer capabilities
 
-Under the Project section that shows the Project folder TypeDB has Types section that shows all types of the schema of 
+Under the Project panel that shows the Project directory TypeDB has Types section that shows all types of the schema of 
 the current database. 
 
 <div class="note">
@@ -263,9 +325,6 @@ database.
 The export schema button doesn't include rules into its output. That will be fixed in some of the next versions of 
 the TypeDB Studio. 
 </div>
-
-
-
 
 ### Types browser
 
@@ -308,6 +367,25 @@ deleting this type. For example, we can't
 [delete a type that has a subtype](../../09-schema/01-concepts.md#undefine-a-supertype). See 
 [more](../../09-schema/01-concepts.md#undefine) on these conditions.
 </div>
+
+## Settings
+
+To configure TypeDB Studio open the **Manage Preferences** window by clicking on the button with the gear icon in the 
+top right corner of the TypeDB Studio window.
+
+TypeDB Studio has the following settings available:
+
+- Graph Visualiser
+  - Enable Graph Output — Turns on visualization of query results as graphs on a separate tab of the Run panel. 
+    Default value: **On**.
+- Project Manager
+  - Set Ignored Paths — All paths mentioned here will be invisible in any Project directory opened in Studio. 
+    Default value: `.git`.
+- Query Runner
+  - Default Match Query Limit — Limits the maximum number of results to be returned from a get query to a database 
+    if no limit explicitly stated in the query. Default value: **1000**.
+- Text Editor
+  - Enable Autosave — Enables autosave function for files opened in TypeDB Studio. Default value: **On**.
 
 ## Version Compatibility
 
