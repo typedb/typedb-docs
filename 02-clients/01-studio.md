@@ -152,12 +152,30 @@ on the [**Open Project**] button in the `Projects` panel on the left (under the 
 
 <div class="note">
 [Note]
-If the Project section is not showing try clicking Project button on the left edge of the TypeDB Studio screen.
+If the Project panel is not displayed try clicking Project button on the left edge of the TypeDB Studio window.
 </div>
 
 ## Basic operations
 
 ### File operations
+
+#### Create a new file
+
+To create a new file we use the button with the plus (`+`) icon. It is located at the top of the Text-editor panel 
+under the Toolbar. It's horizontal position adjusted for the number of tabs opened in the text-editor — the 
+button with plus icon will always stay at the right end of the tabs of the Text-editor.
+
+depends on the contents of the Text-editor tabs. If there are no tabs 
+opened in the Text-editor panel, then the button will be on the left side (top left corner of the Text-editor panel).
+
+
+
+
+See image below.
+
+
+
+
 
 
 
@@ -219,7 +237,7 @@ the current database.
 
 <div class="note">
 [Note]
-If the Types section is not showing try hitting Types button on the left edge of the TypeDB Studio screen.
+If the Types panel is not displayed try hitting Types button on the left edge of the TypeDB Studio window.
 </div>
 
 All types are divided in three top level types:
