@@ -41,7 +41,7 @@ Studio.
 
 ### Download & install
 
-Download TypeDB distributive/package for your particular OS from the 
+Download TypeDB distributive/package for any popular OS family from the
 [Download page](https://vaticle.com/download#typedb-studio. 
 
 Follow proper installation procedure of the OS in use.
@@ -74,7 +74,7 @@ The main blocks of the graphical interface (GUI) are (marked with respected numb
 
 1. Projects panel
 2. Types browser
-3. Text-editor panel
+3. Text editor panel
 4. Toolbar
 
 ### Connect to TypeDB server
@@ -89,11 +89,12 @@ Fill in the address of the TypeDB Server. By default, it's: `localhost:1729`. Cl
 ![Connection Manager Connected](../images/studio/connection-interface-connected.png)
 
 Once we've connected successfully, the connection manager will reflect this in with the green status field in
-the bottom left-hand corner, as shown above. You can close the window with connection. 
+the bottom left-hand corner, as shown above. The window with connection settings will not close automatically, so it 
+needs to be closed by clicking the [**Close**] button.
 
 <div class="note">
 [Note]
-When Studio connected to a TypeDB server it will display the server address at the top right corner instead of the 
+When Studio connected to a TypeDB server it will display the server address in the top right corner instead of the 
 label of the `Connect to TypeDB` button.
 </div>
 
@@ -152,7 +153,7 @@ click on the [**Open Project**] button in the `Projects` panel on the left (unde
 
 <div class="note">
 [Note]
-If the Project panel is not displayed try clicking Project button on the left edge of the TypeDB Studio window.
+If the Project panel is not displayed — click the Project vertical tab on the left edge of the TypeDB Studio window.
 </div>
 
 ## Basic operations
@@ -161,9 +162,9 @@ If the Project panel is not displayed try clicking Project button on the left ed
 
 #### Create a new file
 
-To create a new file use the button with the plus (`+`) icon. It is located at the top of the Text-editor panel 
-under the Toolbar. It's horizontal position adjusted for the number of tabs opened in the text-editor — the 
-button with plus icon will always stay at the right end of the tabs of the Text-editor.
+To create a new file use the button with the plus (`+`) icon. It is located at the top of the Text editor panel 
+under the Toolbar. It's horizontal position adjusted for the number of tabs opened in the Text editor — the 
+button with plus icon will always stay at the right end of the tabs of the Text editor.
 
 Upon clicking on the plus button a new tab will be opened with the default filename. For new files by default 
 filename consists of `Untitled` word, followed by a number, starting from `1` and a file extension of `.tql`.
@@ -175,12 +176,14 @@ other name and path.
 
 #### Open an existing file
 
-You can open any existing file in the current Project directory by double-clicking on the file in the 
-Project panel. I will create a new tab in the Text-editor panel with the contents of the file.
+We can open any existing file in the current Project directory by double-clicking on the file in the 
+Project panel. It will create a new tab in the Text editor panel with the contents of the file. 
+
+If there is already a tab with the file opened it will become active instead of creating a new one.
 
 #### Save a file
 
-Any file edited in the Text-editor panel is auto saved with a small delay. That includes new files that wasn't 
+Any file edited in the Text editor panel is auto saved with a small delay. That includes new files that wasn't 
 assigned a specific name yet. Those are saved into the hidden folder with their default names. That way if we close 
 TypeDB Studio the all files will be persisted and upon starting the Studio again all files in the hidden folder will 
 be opened automatically.
@@ -193,23 +196,23 @@ To save file manually use the [**Save Current File**] button at the left end of 
 ### Query design
 
 One of the most important functions of TypeDB Studio is to provide an environment to design and debug queries to 
-TypeDB databases. For that we have the Text-editor panel with TypeQL syntax highlighting and the Toolbar with 
+TypeDB databases. For that we have the Text editor panel with TypeQL syntax highlighting and the Toolbar with 
 transaction controls.
 
-#### Text-editor panel
+#### Text editor panel
 
-Text-editor panel doesn't have a visible title, but it's the biggest area in the middle of the TypeDB Studio that is 
+Text editor panel doesn't have a visible title, but it's the biggest area in the middle of the TypeDB Studio that is 
 being used to work with text information. It does have tabs at the top to switch between different opened files.
 
 The currently selected file's content displayed in the main section with lines numeration at the left edge of the 
-Text-editor panel.
+Text editor panel.
 
-All text in the Text-editor panel will be displayed with TypeQL syntax highlighting.
+All text in the Text editor panel will be displayed with TypeQL syntax highlighting.
 
 In the bottom right corner of TypeDB Studio window there is an indicator for cursor location that contains the line 
 number and current symbol position in that line.
 
-You can activate the following functions from the context menu available by right-clicking inside the Text-editor 
+The following functions can be activated from the context menu available by right-clicking inside the Text editor 
 main section:
 
 - Copy/Cut/Paste
@@ -219,7 +222,7 @@ main section:
 
 #### Run panel
 
-Under the Text-editor panel there is the Run panel, but it is collapsed by default. To expand it perform any query or 
+Under the Text editor panel there is the Run panel, but it is collapsed by default. To expand it perform any query or 
 just click on the reversed tick icon in the bottom right corner of TypeDB Studio window, above the cursor location 
 indicator.
 
@@ -228,17 +231,17 @@ Run panel has 2 sets tabs:
 - Tabs at the top of the Run panel are for different query attempts. 
   
   By default, every query sent will overwrite the 
-  existing tab, but if you enable the pin icon at the beginning of the tab name - the tab will become pinned and 
-  stay. A new tab will appear on the right from the last pinned one upon next query execution.
+  existing tab, but if we enable the pin icon at the beginning of the tab name by clicking it — the tab will become 
+  pinned and stay. A new tab will appear on the right from the last pinned one upon next query execution.
 
 - Tabs at the bottom of the Run panel are for different results for the currently selected query attempt (tab at the 
   top of the Run panel). These include the `Log` tab with direct textual Studio output and the `Graph` tabs (one per 
-  every query statement in the Text-editor panel) with graph visualization of response.
+  every query statement in the Text editor panel) with graph visualization of response.
 
 ### Transaction control
 
-To execute a query written in the Text-editor panel we have the Toolbar elements right from the database selection 
-drop-down menu. See below.
+To execute a query written in the Text editor panel we have the **Toolbar** elements located right from the database 
+selection drop-down menu. See below.
 
 ![Transaction controls](../images/studio/studio-transaction-controls.png)
 
@@ -250,59 +253,65 @@ From left to right:
 - [Transaction](../0001-typedb/02-dev/01-connect.md#transactions) type switch:
   - `write` — to use write transaction
   - `read` — to use read transaction
-- `snapshot` — enables snapshot feature that encapsulates transaction in a snapshot of a database's data until the 
+- `snapshot` button — enables snapshot feature that encapsulates transaction in a snapshot of a database's data until 
+  the 
   transaction committed or closed. Write transactions are always snapshoted. Only available for read transactions.
-- `infer` — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
+- `infer` button — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
   transactions.
-- `explain` — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
+- `explain` button — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
   `explainables` methods for results.
-- Circle icon — transaction activity indicator. Green if there is a transaction opened by TypeDB Studio at this 
-  moment. Grey if there is no opened transaction. Rotating animation — TypeDB Studio processing the results 
-  (including additional API calls).
-- X icon — close active transaction without committing the results.
-- U-turn icon — revert the transaction results without closing it.
-- Tick icon — commit the transaction.
-- "Play" icon (triangle) — Run query or queries in the active tab of the Text-editor panel. It will open a 
-  transaction (with the session type and transaction type specified in the Toolbar on the left) and execute the TypeQL 
-  code against the selected database.
-- Lighting icon — stop query execution after the next result.
+- Transaction status (Circle (●) icon) indicator — transaction activity indicator. Green if there is a transaction 
+  opened by TypeDB Studio at this moment. Grey if there is no opened transaction. Rotating animation — TypeDB 
+  Studio processing the query or the results (including additional API calls).
+- Close transaction (X icon) button — close active transaction without committing the results.
+- Rollback transaction (U-turn (⟲) icon) button — revert the transaction results without closing it.
+- Tick (✔) icon button — commit the transaction.
+- Commit transaction (Play (▶) icon) button — run query or queries in the active tab of the Text editor panel. It will 
+  open a transaction (with the session type and transaction type specified in the Toolbar on the left) and execute 
+  the TypeQL code against the selected database.
+- Lighting (⚡) icon — stop query execution after the next result.
 
 #### Run query
 
 Make sure TypeDB Studio [connected](#connect-to-typedb-server) to a TypeDB Server, 
 database [selected](#select-active-database) and Project directory [opened](#open-a-project-directory).
 
-1. Write a new or open an existing file with query to run.
+1. [Write a new](#create-a-new-file) or [open an existing](#open-an-existing-file) file with query to run.
 
    ![Query text](../images/studio/project-schema-pasted.png)
 
-2. Choose the correct session (schema/data) type and transaction (read/write) type to run the query by clicking on 
-   those options on the Toolbar switches.
+2. Choose the correct session (`schema`/`data`) type and transaction (`read`/`write`) type to run the query by  
+   clicking on those options on the Toolbar switches.
 
-3. Run query by clicking on the "play" button. 
+3. Run query by clicking on the play icon button. 
 
    ![Write the Schema](../images/studio/project-schema-query-run.png)
 
 4. If it's the `write` transaction type — wait for transaction control options to be ready and commit or close the 
-   transaction.
+   transaction (by clicking on the tick or X icon buttons respectively).
 
-As a result we get a notification pop-up with a transaction confirmation (see example below) or an error.
+The result of the query is displayed in the Run panel under the Text editor.
+
+If any error occurs during the query validation or transaction it is shown as red popup in the bottom right corner of 
+the TypeDB Studio window. Additional information about the error is displayed in the results of the query in the 
+Run panel.
+
+If a `write` transaction committed successfully — a blue pop-up with a transaction confirmation is displayed. See 
+example below.
 
 ![Commit the Transaction](../images/studio/project-schema-committed.png)
 
-<!-- #todo Add some example with IAM --->
-
 ## Types explorer capabilities
 
-Under the Project panel that shows the Project directory TypeDB has Types section that shows all types of the schema of 
+Under the Project panel that shows the Project directory TypeDB has Types panel that shows all types of the schema of 
 the current database. 
 
 <div class="note">
 [Note]
-If the Types panel is not displayed try hitting Types button on the left edge of the TypeDB Studio window.
+If the Types panel is not displayed — click the Types vertical tab on the left edge of the TypeDB Studio window.
 </div>
 
-All types are divided in three top level types:
+All types are divided in three top level [base types](../0001-typedb/02-dev/02-schema.md#types):
 
 - Attribute
 - Entity
@@ -310,40 +319,50 @@ All types are divided in three top level types:
 
 ![Types explorer](../images/studio/types-explorer.png)
 
-All types displayed in the exact structure they were created (subtypes inside their parents). We can easily collapse or 
-expand all the types in the structure tree by clicking the associated buttons on the top of the Types Section with 
-arrows pointing down or up respectively.
+All types displayed in the exact hierarchy they were created (subtypes inside their supertypes). We can easily 
+collapse or expand all the types in the structure tree by clicking the associated buttons on the top of the Types panel 
+with arrows pointing down or up respectively.
+
+Types panel can be closed by clicking the X icon in the top right corner of the panel. To reopen the panel click the 
+Types tab on the left edge of the TypeDB Studio window.
 
 ### Export schema
 
-We can export schema of the database by clicking Export Schema button (second in row from left to right) on the top of 
-the Types section. It creates a new tab with inserted TypeQL code that creates the exact schema that is in the current 
-database.
+We can export schema of the database by clicking the [**Export Schema**] button (second in row from left to right) on 
+the top of the Types panel. It creates a new tab with inserted TypeQL code that creates the exact schema that is in 
+the current database.
 
 <div class="note">
 [Warning]
-The export schema button doesn't include rules into its output. That will be fixed in some of the next versions of 
-the TypeDB Studio. 
+The [**Export Schema**] button doesn't include rules into its output. That will be fixed in some of the next 
+versions of the TypeDB Studio. 
 </div>
 
-### Types browser
+### Type browser
 
 By double-clicking any type we can open the type browser window that shows all information about the selected type and
 allows us to easily edit the type. 
 
 ![Types browser](../images/studio/types-browser.png)
 
-We can rename the type, change its supertype, abstract property, see all the related types (owned attributes or owners, 
-played roles and subtypes). By clicking on one of the related types we can see all information about it.
+We can rename the type, change its supertype, abstract property, see all the connected types (subtypes, owned 
+attributes or owners of this particular attribute, related and played roles). By clicking on one of the connected 
+types we can see all information about it as well.
 
 ### Rename a type
 
-We can rename a type in two ways:
+<div class="note">
+[Warning]
+For the renaming functions to be active set the session type switch to the `schema` and transaction type switch to 
+the `write` options first.
+</div>
+
+In TypeDB Studio we can rename a type in two ways:
 
 - Open the type browser window by double-clicking on the type. At the very top click on the pencil icon immediately 
-  right from the type name. Edit the name in the Label field and press Rename button to finalize.
+  right from the type name. Edit the name in the Label field and press [**Rename**] button to finalize.
 - Right-click on the type in the types explorer list. Click on the Rename Type option. Edit the name in the Label field 
-  and press Rename button to finalize.
+  and press [**Rename**] button to finalize.
 
 <div class="note">
 [Note]
@@ -353,19 +372,26 @@ loosing existing data. All existing instances of the type will be available unde
 
 ### Delete a type
 
-We can delete a type in two ways:
+<div class="note">
+[Warning]
+For the deleting functions to be active set the session type switch to the `schema` and transaction type switch to 
+the `write` options first.
+</div>
 
-- Open the type browser window by double-clicking on the type. At the very bottom click on the delete button and press 
-  Confirm button. Commit the transaction with the green tick at the top of the Studio window.
-- Right-click on the type in the types explorer list. Click on the Delete option and press Confirm button. Commit the 
+In TypeDB Studio we can delete a type in two ways:
+
+- Open the type browser window by double-clicking on the type. At the very bottom click on the [**Delete**] button and 
+  press [**Confirm**] button. Commit the transaction with the green tick at the top of the Studio window.
+- Right-click on the type in the types explorer list. Click on the Delete option and press [**Confirm**] button. Commit 
+  the 
   transaction with the green tick at the top of the Studio window.
 
 <div class="note">
 [Note]
-In some cases Delete option and button can be disabled. That means there are some conditions that prevent us from 
+In some cases the Delete option and button can be disabled. That means there are some conditions that prevent us from 
 deleting this type. For example, we can't 
-[delete a type that has a subtype](../../09-schema/01-concepts.md#undefine-a-supertype). See 
-[more](../../09-schema/01-concepts.md#undefine) on these conditions.
+[delete a type that has a subtype](../0001-typedb/02-dev/02-schema.md#undefine-a-supertype). See 
+[more](../0001-typedb/02-dev/02-schema.md) on these conditions.
 </div>
 
 ## Settings
