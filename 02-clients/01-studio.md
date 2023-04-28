@@ -191,7 +191,7 @@ be opened automatically.
 Upon manual save those Untitled files will be saved with the specified filename and path and deleted from the hidden 
 folder.
 
-To save file manually use the [**Save Current File**] button at the left end of the toolbar.
+To save file manually use the [**Save Current File**] (floppy disk 💾 icon) button at the left end of the toolbar.
 
 ### Query design
 
@@ -238,7 +238,7 @@ Run panel has 2 sets tabs:
   top of the Run panel). These include the `Log` tab with direct textual Studio output and the `Graph` tabs (one per 
   every query statement in the Text editor panel) with graph visualization of response.
 
-### Transaction control
+#### Transaction control
 
 To execute a query written in the Text editor panel we have the **Toolbar** elements located right from the database 
 selection drop-down menu. See below.
@@ -253,25 +253,26 @@ From left to right:
 - [Transaction](../0001-typedb/02-dev/01-connect.md#transactions) type switch:
   - `write` — to use write transaction
   - `read` — to use read transaction
-- `snapshot` button — enables snapshot feature that encapsulates transaction in a snapshot of a database's data until 
-  the 
-  transaction committed or closed. Write transactions are always snapshoted. Only available for read transactions.
-- `infer` button — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
+- [**snapshot**] button — enables snapshot feature that encapsulates transaction in a snapshot of a database's data 
+  until the transaction committed or closed. Write transactions are always snapshoted. Only available for read 
   transactions.
-- `explain` button — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
+- [**infer**] button — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
+  transactions.
+- [**explain**] button — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
   `explainables` methods for results.
-- Transaction status (Circle (●) icon) indicator — transaction activity indicator. Green if there is a transaction 
+- [**Transaction status**] (Circle (●) icon) indicator — transaction activity indicator. Green if there is a 
+  transaction 
   opened by TypeDB Studio at this moment. Grey if there is no opened transaction. Rotating animation — TypeDB 
   Studio processing the query or the results (including additional API calls).
-- Close transaction (X icon) button — close active transaction without committing the results.
-- Rollback transaction (U-turn (⟲) icon) button — revert the transaction results without closing it.
-- Tick (✔) icon button — commit the transaction.
-- Commit transaction (Play (▶) icon) button — run query or queries in the active tab of the Text editor panel. It will 
+- [**Close transaction**] (x icon) button — close active transaction without committing the results.
+- [**Rollback transaction**] (U-turn (⟲) icon) button — revert the transaction results without closing it.
+- [**Commit transaction**] (Tick (✔) icon) button — commit the changes and close the transaction.
+- [**Run Query**] (play (▶) icon) button — run query or queries in the active tab of the Text editor panel. It will 
   open a transaction (with the session type and transaction type specified in the Toolbar on the left) and execute 
   the TypeQL code against the selected database.
-- Lighting (⚡) icon — stop query execution after the next result.
+- [**Stop Signal**] (lighting (⚡) icon) button — stop query execution after the next result.
 
-#### Run query
+##### Run query
 
 Make sure TypeDB Studio [connected](#connect-to-typedb-server) to a TypeDB Server, 
 database [selected](#select-active-database) and Project directory [opened](#open-a-project-directory).
@@ -283,12 +284,12 @@ database [selected](#select-active-database) and Project directory [opened](#ope
 2. Choose the correct session (`schema`/`data`) type and transaction (`read`/`write`) type to run the query by  
    clicking on those options on the Toolbar switches.
 
-3. Run query by clicking on the play icon button. 
+3. Run query by clicking on the [**Run Query**] (▶) button. 
 
    ![Write the Schema](../images/studio/project-schema-query-run.png)
 
 4. If it's the `write` transaction type — wait for transaction control options to be ready and commit or close the 
-   transaction (by clicking on the tick or X icon buttons respectively).
+   transaction (by clicking on the [**Commit transaction**] (✔) or [**Close transaction**] (x) buttons respectively).
 
 The result of the query is displayed in the Run panel under the Text editor.
 
@@ -388,16 +389,17 @@ In TypeDB Studio we can delete a type in two ways:
 
 <div class="note">
 [Note]
-In some cases the Delete option and button can be disabled. That means there are some conditions that prevent us from 
-deleting this type. For example, we can't 
+
+In some cases the [**Delete**] option and button can be disabled. That means there are some conditions that prevent us 
+from deleting this type. For example, we can't 
 [delete a type that has a subtype](../0001-typedb/02-dev/02-schema.md#undefine-a-supertype). See 
-[more](../0001-typedb/02-dev/02-schema.md) on these conditions.
+[more](../0001-typedb/02-dev/02-schema.md#undefine-a-type) on these conditions.
 </div>
 
 ## Settings
 
-To configure TypeDB Studio open the **Manage Preferences** window by clicking on the button with the gear icon in the 
-top right corner of the TypeDB Studio window.
+To configure TypeDB Studio open the **Manage Preferences** window by clicking on the button with the gear (⚙) icon 
+in the top right corner of the TypeDB Studio window.
 
 TypeDB Studio has the following settings available:
 
