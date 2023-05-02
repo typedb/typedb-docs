@@ -9,7 +9,7 @@ Summary: Tutorial for TypeDB Node.js Driver.
 
 ## Prerequisites
 
-Make sure to install the Java Driver as per [Installation](02-java-install.md) page. The TypeDB server is also 
+Make sure to install the Java Driver as per [Installation](02-node-js-install.md) page. The TypeDB server is also 
 needs to be installed and running.
 
 ## Importing
@@ -145,36 +145,15 @@ To view examples of running various queries using the Node.js client, head over 
 - [Update](../../11-query/05-update-query.md)
 - [Aggregate](../../11-query/06-aggregate-query.md)
 
-## API Reference
+## Where to go next
 
-{% include api/generic.html data=site.data.03_client_api.references.typedb language="javascript" %}
+Check out the [Response](04-node-js-api-ref.md#response-section) section of API reference page to learn about the available 
+methods on the concepts retrieved as the answers to queries.
 
-{% include api/generic.html data=site.data.03_client_api.references.client language="javascript" %}
+To view examples of various TypeQL queries, head over to 
+[Writing data](../../0001-typedb/02-dev/04-write.md) and
+[Reading data](../../0001-typedb/02-dev/05-read.md) pages.
 
-{% include api/generic.html data=site.data.03_client_api.references.session language="javascript" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.options language="javascript" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.transaction language="javascript" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.query_manager language="javascript" %}
-
-{% include api/answers.html data=site.data.03_client_api.references.answer language="javascript" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.query_future language="javascript" %}
-
-{% include api/generic.html data=site.data.03_client_api.references.stream language="javascript" %}
-
-
-## Version Compatibility
-
-| Client Node.js  |     TypeDB      | TypeDB Cluster  |   Node    |
-|:---------------:|:---------------:|:---------------:|:---------:|
-| 2.9.0 to 2.11.1 | 2.9.0 to 2.11.1 | 2.9.0 to 2.11.2 | \>= 14.15 |
-|      2.8.0      |      2.8.0      |       N/A       | \>= 14.15 |
-| 2.6.0 to 2.6.2  | 2.6.0 to 2.7.1  |       N/A       | \>= 14.15 |
-| 2.4.0 to 2.5.0  | 2.1.2 to 2.5.0  |      2.5.0      | \>= 14.15 |
-| 2.1.0 to 2.2.0  | 2.1.2 to 2.5.0  | 2.1.2 to 2.3.0  | \>= 14.15 |
-|      2.0.1      |      2.0.2      |      2.0.2      | \>= 14.15 |
-|      2.0.0      |  2.0.0, 2.0.1   |  2.0.0, 2.0.1   | \>= 14.15 |
-|      1.8.0      | 1.8.0 to 1.8.4  |       N/A       |  \>= 6.5  |
+For some more Python Driver examples — see the 
+[Python implementation](../../0001-typedb/01-start/05-sample-app.md#nodejs-implementation) on the Sample application 
+page.

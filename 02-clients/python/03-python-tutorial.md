@@ -108,7 +108,7 @@ at the end of the `with` block. Otherwise, remember to call `transaction.close()
 
 ## Where to go next
 
-Check out the [Response](04-python-api-ref.md#response) section of API reference page to learn about the available 
+Check out the [Response](04-python-api-ref.md#response-section) section of API reference page to learn about the available 
 methods on the concepts retrieved as the answers to queries.
 
 To view examples of various TypeQL queries, head over to 

@@ -88,9 +88,8 @@ Fill in the address of the TypeDB Server. By default, it's: `localhost:1729`. Cl
 
 ![Connection Manager Connected](../images/studio/connection-interface-connected.png)
 
-Once we've connected successfully, the connection manager will reflect this in with the green status field in
-the bottom left-hand corner, as shown above. The window with connection settings will not close automatically, so it 
-needs to be closed by clicking the [**Close**] button.
+Once TypeDB Studio connected to a TypeDB server successfully, the connection manager window should close automatically. 
+If we reopen the window we can find the green status field in the bottom left corner, as shown above.
 
 <div class="note">
 [Note]
@@ -384,8 +383,7 @@ In TypeDB Studio we can delete a type in two ways:
 - Open the type browser window by double-clicking on the type. At the very bottom click on the [**Delete**] button and 
   press [**Confirm**] button. Commit the transaction with the green tick at the top of the Studio window.
 - Right-click on the type in the types explorer list. Click on the Delete option and press [**Confirm**] button. Commit 
-  the 
-  transaction with the green tick at the top of the Studio window.
+  the transaction with the green tick at the top of the Studio window.
 
 <div class="note">
 [Note]
