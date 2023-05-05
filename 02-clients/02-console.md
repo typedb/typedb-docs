@@ -121,7 +121,7 @@ Use [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/
 
 Most systems also allow us to set the system-wide locale, however this impacts the appearance of other applications.
 
-## Command line arguments
+## Non-interactive mode
 
 We can provide several command-line arguments when running Console in the terminal.
 
@@ -138,16 +138,35 @@ We can provide several command-line arguments when running Console in the termin
 | `--script=<script>`     |        | Script with commands to run in the Console, without interactive mode. |
 | `--version`             | `-V`   | Print version information and exit.                                   |
 
-## Console commands
+### Scripting
 
-TypeDB Console provides two levels of interaction: database-level commands and transaction-level commands. 
+To invoke TypeDB Console in a non-interactive manner, we can define a script file that contains the list of commands to 
+run, then invoke console with `typedb console --script=<script>`. 
+
+The indentation in the script file are only for visual guide and will be ignored by the console. Each line in the 
+script is interpreted as one command, so multiline query is not available in this mode. 
+
+### Command line arguments
+
+We can also specify the commands to run directly 
+from the command line using `typedb console --command=<command1> --command=<command2> ...`.
+
+## Interactive mode
+
+TypeDB Console provides two levels of interaction: 
+
+- database-level commands, 
+- and transaction-level commands. 
+
 The database-level command is the first level of interaction, i.e. first-level 
-[REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop). From one of the database-level commands, we
+[REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop). 
+
+From one of the database-level commands, we
 can open a transaction to the database. This will open a transaction-level interface, i.e. second-level REPL.
 
 ### Database management commands
 
-Give any of these commands inside a console at the `>` prompt.
+Give any of these commands inside a console at the `>` prompt in the first level of interaction.
 
 | Command                                   | Description                                                                                                          |
 |-------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
@@ -165,7 +184,12 @@ Give any of these commands inside a console at the `>` prompt.
 
 ### Transaction querying commands
 
-Give any of these commands inside a console at the `>` prompt.
+Give any of these commands inside a console at the `>` prompt in the second level of interaction.
+
+<div class="note">
+[Note]
+Usually the `>` sign preceded by the database name and session/transaction types.
+</div>
 
 | Command         | Description                                                                                                                                  |
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -174,7 +198,7 @@ Give any of these commands inside a console at the `>` prompt.
 | `commit`        | Commit the transaction changes and close transaction.                                                                                        |
 | `rollback`      | Will remove any uncommitted changes we've made in the transaction, while leaving transaction open.                                           |
 | `close`         | Close the transaction without committing changes, and takes us back to the database-level interface, i.e. first-level REPL.                  |
-| `help`          | Print this help menu.                                                                                                                        |
+| `help`          | Print help menu.                                                                                                                             |
 | `clear`         | Clear console screen.                                                                                                                        |
 | `exit`          | Exit console.                                                                                                                                |
 
@@ -193,70 +217,36 @@ transaction typedb data read --infer true
 | `--explain`                     | `true⎮false`   | Enable or disable inference explanations                       |
 | `--parallel`                    | `true⎮false`   | Enable or disable parallel query execution                     |
 | `--batch-size`                  | `1..[max int]` | Set RPC answer batch size                                      |
-| `--prefetch`                    | `true|false`   | Enable or disable RPC answer prefetch                          |
+| `--prefetch`                    | `true⎮false`   | Enable or disable RPC answer prefetch                          |
 | `--session-idle-timeout`        | `1..[max int]` | Kill idle session timeout (ms)                                 |
 | `--schema-lock-acquire-timeout` | `1..[max int]` | Acquire exclusive schema session timeout (ms)                  |
-| `--read-any-replica`            | `true|false`   | Allow or disallow reads from any replica (TypeDB Cloud only)   |
-
-### Non-interactive mode
-
-To invoke TypeDB Console in a non-interactive manner, we can define a script file that contains the list of commands to 
-run, then invoke console with `typedb console --script=<script>`. 
-
-We can also specify the commands to run directly 
-from the command line using `typedb console --command=<command1> --command=<command2> ...`.
-
-For example given the following command script file:
-
-<!-- test-ignore -->
-```
-database create test
-transaction test schema write
-    define person sub entity;
-    commit
-transaction test data write
-    insert $x isa person;
-    commit
-transaction test data read
-    match $x isa person;
-    close
-database delete test
-```
-
-We will see the following output:
-
-<!-- test-ignore -->
-```
-> ./typedb console --script=script                                                                                                                                                                                                                    73.830s
-+ database create test
-Database 'test' created
-+ transaction test schema write
-++ define person sub entity;
-Concepts have been defined
-++ commit
-Transaction changes committed
-+ transaction test data write
-++ insert $x isa person;
-{ $x iid 0x966e80017fffffffffffffff isa person; }
-answers: 1, duration: 87 ms
-++ commit
-Transaction changes committed
-+ transaction test data read
-++ match $x isa person;
-{ $x iid 0x966e80018000000000000000 isa person; }
-answers: 1, duration: 25 ms
-++ close
-Transaction closed without committing changes
-+ database delete test
-Database 'test' deleted
-```
-
-The indentation in the script file are only for visual guide and will be ignored by the console. Each line in the 
-script is interpreted as one command, so multiline query is not available in this mode.
+| `--read-any-replica`            | `true⎮false`   | Allow or disallow reads from any replica (TypeDB Cloud only)   |
 
 ## Examples
 
+### Interactive mode
+
 The following example illustrates how to create a database, define a schema, and insert some data into TypeDB.
+
+<div class="note">
+[Warning]
+When using interactive mode (REPL) of TypeDB Console, use Enter to start a new line of query, double Enter (or Enter 
+on an empty line) to send a query.
+</div>
+
+<div class="note">
+[Note]
+The following code block shows terminal input and output at the same time.
+
+To be able to easily recognize inputs, they have one of the following prompts at the beginning of the line:
+
+- `$` — for bash input
+- `>` — for typedb console inputs
+- `typedb::schema::write>` — for schema write transaction inputs
+- `typedb::data::write>` — for data write transaction inputs
+
+The asterisk (`*`) is used to notify that current transaction has uncommitted changes.
+</div>
 
 <!-- test-ignore -->
 ```typeql
@@ -275,14 +265,15 @@ typedb
 typedb::schema::write> define person sub entity;
 
 Concepts have been defined
-typedb::schema::write> commit
+typedb::schema::write*> commit
 Transaction changes committed
 
 > transaction typedb data write
 typedb::data::write> insert $p isa person;
 
-{ p iid 0x966e80017fffffffffffffff isa person; }
-typedb::data::write> commit
+{ $p iid 0x826e80017fffffffffffffff isa person; }
+answers: 1, total (with concept details) duration: 160 ms
+typedb::data::write*> commit
 Transaction changes committed
 
 > exit
@@ -291,7 +282,12 @@ Transaction changes committed
 The above example creates a database with name `typedb`, lists all databases an the server, defines a schema for the 
 database created earlier, then inserts an instance of `person` type into the database.
 
-The following example achieves the same results but with the `typedb2` database name via command line arguments. 
+### Non-interactive mode
+
+#### Command line arguments example
+
+The following example achieves the same results as the previous one but with the `typedb2` database name and via 
+command line arguments. 
 
 <!-- test-ignore -->
 ```typeql
@@ -325,4 +321,56 @@ Transaction changes committed
 answers: 1, total (with concept details) duration: 56 ms
 ++ commit
 Transaction changes committed
+```
+
+#### Script example
+
+Prepare the following script file:
+
+<!-- test-ignore -->
+```
+database create test
+transaction test schema write
+    define person sub entity;
+    commit
+transaction test data write
+    insert $x isa person;
+    commit
+transaction test data read
+    match $x isa person;
+    close
+database delete test
+```
+
+Use the following command to execute the script:
+
+```
+typedb console --script=script   
+```
+
+We will see the following output:
+
+<!-- test-ignore -->
+```                                                                                                                                                                                                               73.830s
++ database create test
+Database 'test' created
++ transaction test schema write
+++ define person sub entity;
+Concepts have been defined
+++ commit
+Transaction changes committed
++ transaction test data write
+++ insert $x isa person;
+{ $x iid 0x966e80017fffffffffffffff isa person; }
+answers: 1, duration: 87 ms
+++ commit
+Transaction changes committed
++ transaction test data read
+++ match $x isa person;
+{ $x iid 0x966e80018000000000000000 isa person; }
+answers: 1, duration: 25 ms
+++ close
+Transaction closed without committing changes
++ database delete test
+Database 'test' deleted
 ```
