@@ -127,12 +127,12 @@ We can provide several command-line arguments when running Console in the termin
 
 | Option                  | Alias  | Description                                                           |
 |-------------------------|--------|-----------------------------------------------------------------------|
-| `--server=<address>`    |        | Address to which Console will connect to. (TypeDB only)               |
-| `--cluster=<address>`   |        | Address to which Console will connect to. (TypeDB Cluster only)       |
-| `--username=<username>` |        | Username (TypeDB Cluster only)                                        |
-| `--password`            |        | Password (TypeDB Cluster only)                                        |
-| `--tls-enabled`         |        | Whether to connect with TLS encryption (TypeDB Cluster only)          |
-| `--tls-root-ca=<path>`  |        | Path to the TLS root CA file (TypeDB Cluster only)                    |
+| `--server=<address>`    |        | Address to which Console will connect to. (Not for the TypeDB Cloud)  |
+| `--cluster=<address>`   |        | Address to which Console will connect to. (TypeDB Cloud only)         |
+| `--username=<username>` |        | Username (TypeDB Cloud only)                                          |
+| `--password`            |        | Password (TypeDB Cloud only)                                          |
+| `--tls-enabled`         |        | Whether to connect with TLS encryption (TypeDB Cloud only)            |
+| `--tls-root-ca=<path>`  |        | Path to the TLS root CA file (TypeDB Cloud only)                      |
 | `--help`                | `-h`   | Show help message.                                                    |
 | `--command=<commands>`  |        | Commands to run in the Console, without interactive mode              |
 | `--script=<script>`     |        | Script with commands to run in the Console, without interactive mode. |
@@ -149,19 +149,19 @@ can open a transaction to the database. This will open a transaction-level inter
 
 Give any of these commands inside a console at the `>` prompt.
 
-| Command                                   | Description                                                                                                            |
-|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| `database create <db>`                    | Create a database with name `<db>` on the server.                                                                      |
-| `database list`                           | List the databases on the server                                                                                       |
-| `database delete <db>`                    | Delete a database with name `<db>` on the server                                                                       |
-| `database schema <db>`                    | Print schema of a database with name `<db>` on the server                                                              |
-| `user create <username>`                  | Create a user with name `<username>` on the server (TypeDB Cluster only)                                               |
-| `user list`                               | List the users on the server (TypeDB Cluster only)                                                                     |
-| `user delete <username>`                  | Delete a user with name `<username>` on the server (TypeDB Cluster only)                                               |
-| `transaction <db> schema⎮data read⎮write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.   |
-| `help`                                    | Print help menu                                                                                                        |
-| `clear`                                   | Clear console screen                                                                                                   |
-| `exit`                                    | Exit console                                                                                                           |
+| Command                                   | Description                                                                                                          |
+|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `database create <db>`                    | Create a database with name `<db>` on the server.                                                                    |
+| `database list`                           | List the databases on the server                                                                                     |
+| `database delete <db>`                    | Delete a database with name `<db>` on the server                                                                     |
+| `database schema <db>`                    | Print schema of a database with name `<db>` on the server                                                            |
+| `user create <username>`                  | Create a user with name `<username>` on the server (TypeDB Cloud only)                                               |
+| `user list`                               | List the users on the server (TypeDB Cloud only)                                                                     |
+| `user delete <username>`                  | Delete a user with name `<username>` on the server (TypeDB Cloud only)                                               |
+| `transaction <db> schema⎮data read⎮write` | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`. |
+| `help`                                    | Print help menu                                                                                                      |
+| `clear`                                   | Clear console screen                                                                                                 |
+| `exit`                                    | Exit console                                                                                                         |
 
 ### Transaction querying commands
 
