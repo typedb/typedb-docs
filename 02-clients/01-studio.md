@@ -253,12 +253,12 @@ From left to right:
   - `write` — to use write transaction
   - `read` — to use read transaction
 - [**snapshot**] button — enables snapshot feature that encapsulates transaction in a snapshot of a database's data 
-  until the transaction committed or closed. Write transactions are always snapshoted. Only available for read 
+  until the transaction committed or closed. Write transactions are always snapshoted. May be enabled or disabled for read 
   transactions.
 - [**infer**] button — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
   transactions.
 - [**explain**] button — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
-  `explainables` methods for results.
+  `explainables` methods for results. Only available for read transactions with **snapshot** and **infer** enabled.
 - [**Transaction status**] (Circle (●) icon) indicator — transaction activity indicator. Green if there is a 
   transaction 
   opened by TypeDB Studio at this moment. Gray if there is no opened transaction. Rotating animation — TypeDB 
