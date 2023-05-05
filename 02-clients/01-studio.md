@@ -42,7 +42,7 @@ Studio.
 ### Download & install
 
 Download TypeDB distributive/package for any popular OS family from the
-[Download page](https://vaticle.com/download#typedb-studio. 
+[Download page](https://vaticle.com/download#typedb-studio). 
 
 Follow proper installation procedure of the OS in use.
 
@@ -222,7 +222,7 @@ main section:
 #### Run panel
 
 Under the Text editor panel there is the Run panel, but it is collapsed by default. To expand it perform any query or 
-just click on the reversed tick icon in the bottom right corner of TypeDB Studio window, above the cursor location 
+just click on the upwards-pointing chevron in the bottom right corner of TypeDB Studio window, above the cursor location 
 indicator.
 
 Run panel has 2 sets tabs:
@@ -261,7 +261,7 @@ From left to right:
   `explainables` methods for results.
 - [**Transaction status**] (Circle (●) icon) indicator — transaction activity indicator. Green if there is a 
   transaction 
-  opened by TypeDB Studio at this moment. Grey if there is no opened transaction. Rotating animation — TypeDB 
+  opened by TypeDB Studio at this moment. Gray if there is no opened transaction. Rotating animation — TypeDB 
   Studio processing the query or the results (including additional API calls).
 - [**Close transaction**] (x icon) button — close active transaction without committing the results.
 - [**Rollback transaction**] (U-turn (⟲) icon) button — revert the transaction results without closing it.
