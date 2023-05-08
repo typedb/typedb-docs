@@ -8,8 +8,10 @@ toc: false
 
 # TypeDB Studio
 
+![TypeDB Studio](../images/studio/studio.png)
+
 TypeDB Studio is an IDE specifically designed to work with 
-[TypeQL]() query language and TypeDB databases.
+[TypeQL](https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4) query language and TypeDB databases.
 
 It has unique set of functions and abilities to help with development using TypeDB:
 
@@ -55,7 +57,7 @@ Make sure to grant access for installation wizard to install TypeDB Studio in ca
 [Note]
 For **macOS** TypeDB Studio can be installed via homebrew:
 
-```
+```bash
 brew tap vaticle/tap
 brew install --cask vaticle/tap/typedb-studio
 ```
@@ -113,12 +115,12 @@ Databases**] button (with a database icon) as shown below.
 Enter the name for the new database at the text field at the bottom of the `Manage Databases` window and hit 
 [**Create**].
 
-![Database Manager Empty](../images/studio/databases-interface-no-databases.png)
+![Database Manager with IAM database](../images/studio/databases-interface-iam-database.png)
 
 Our database appeared at the list of databases. Now we can close the `Manage Databases` window by clicking the 
 [**Close**] button.
 
-![Database Manager with IAM database](../images/studio/databases-interface-iam-database.png)
+
 
 ### Select active database
 
@@ -237,6 +239,8 @@ Run panel has 2 sets tabs:
   top of the Run panel). These include the `Log` tab with direct textual Studio output and the `Graph` tabs (one per 
   every query statement in the Text editor panel) with graph visualization of response.
 
+<!-- #todo add Log tab section and Graph visualization section with preview panel description --->
+
 #### Transaction control
 
 To execute a query written in the Text editor panel we have the **Toolbar** elements located right from the database 
@@ -244,32 +248,32 @@ selection drop-down menu. See below.
 
 ![Transaction controls](../images/studio/studio-transaction-controls.png)
 
-From left to right:
+From left to right (numbered respectively to the screenshot numbers):
 
-- [Session](../0001-typedb/02-dev/01-connect.md#sessions) type switch:
-  - `schema` — to use schema session type
-  - `data` — to use data session type
-- [Transaction](../0001-typedb/02-dev/01-connect.md#transactions) type switch:
-  - `write` — to use write transaction
-  - `read` — to use read transaction
-- [**snapshot**] button — enables snapshot feature that encapsulates transaction in a snapshot of a database's data 
+1. [Session](../0001-typedb/02-dev/01-connect.md#sessions) type switch:
+   - `schema` — to use schema session type
+   - `data` — to use data session type
+2. [Transaction](../0001-typedb/02-dev/01-connect.md#transactions) type switch:
+   - `write` — to use write transaction
+   - `read` — to use read transaction
+3. [**snapshot**] button — enables snapshot feature that encapsulates transaction in a snapshot of a database's data 
   until the transaction committed or closed. Write transactions are always snapshoted. May be enabled or disabled for read 
   transactions.
-- [**infer**] button — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
+4. [**infer**] button — enable [inferring data](../0001-typedb/02-dev/06-infer.md) by rules. Only available for read 
   transactions.
-- [**explain**] button — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
+5. [**explain**] button — enable [explanations](../0001-typedb/02-dev/06-infer.md#explain-query) mechanics by providing 
   `explainables` methods for results. Only available for read transactions with **snapshot** and **infer** enabled.
-- [**Transaction status**] (Circle (●) icon) indicator — transaction activity indicator. Green if there is a 
+6. [**Transaction status**] (Circle (●) icon) indicator — transaction activity indicator. Green if there is a 
   transaction 
   opened by TypeDB Studio at this moment. Gray if there is no opened transaction. Rotating animation — TypeDB 
   Studio processing the query or the results (including additional API calls).
-- [**Close transaction**] (x icon) button — close active transaction without committing the results.
-- [**Rollback transaction**] (U-turn (⟲) icon) button — revert the transaction results without closing it.
-- [**Commit transaction**] (Tick (✔) icon) button — commit the changes and close the transaction.
-- [**Run Query**] (play (▶) icon) button — run query or queries in the active tab of the Text editor panel. It will 
+7. [**Close transaction**] (x icon) button — close active transaction without committing the results.
+8. [**Rollback transaction**] (U-turn (⟲) icon) button — revert the transaction results without closing it.
+9. [**Commit transaction**] (Tick (✔) icon) button — commit the changes and close the transaction.
+10. [**Run Query**] (play (▶) icon) button — run query or queries in the active tab of the Text editor panel. It will 
   open a transaction (with the session type and transaction type specified in the Toolbar on the left) and execute 
   the TypeQL code against the selected database.
-- [**Stop Signal**] (lighting (⚡) icon) button — stop query execution after the next result.
+11. [**Stop Signal**] (lighting (⚡) icon) button — stop query execution after the next result.
 
 ##### Run query
 
@@ -283,7 +287,8 @@ database [selected](#select-active-database) and Project directory [opened](#ope
 2. Choose the correct session (`schema`/`data`) type and transaction (`read`/`write`) type to run the query by  
    clicking on those options on the Toolbar switches.
 
-3. Run query by clicking on the [**Run Query**] (▶) button. 
+3. Run query by clicking on the [**Run Query**] (▶) button. Run panel will be expanded on the bottom of the query to 
+   show the results of the query execution attempt.
 
    ![Write the Schema](../images/studio/project-schema-query-run.png)
 
