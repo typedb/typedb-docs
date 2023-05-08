@@ -31,7 +31,7 @@ If you can't find a suitable client, consider [creating a new client](07-new-cli
 ## Architecture of a TypeDB Client
 
 All TypeDB Clients share a common architecture. A TypeDB Client needs a `gRPC` client library to communicate with 
-the  server. Most languages have `gRPC` libraries.
+the server.
 
 A TypeDB Client provides a human or machine interface and interacts with TypeDB server, but also it performs query 
 validation, local processing, load-balancing (TypeDB Cloud only) and authentication (TypeDB Cloud only).
