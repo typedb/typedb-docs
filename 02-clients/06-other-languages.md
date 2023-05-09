@@ -5,7 +5,7 @@ longTailKeywords: typedb client, typedb community client, typedb julia client, t
 Summary: Community-maintained TypeDB client drivers
 ---
 
-# Community TypeDB Client
+# Community TypeDB Clients
 
 Community client drivers are not maintained by Vaticle. They are built and maintained fully by the community.
 
