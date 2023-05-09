@@ -418,7 +418,7 @@ TypeDB Studio has the following settings available:
 
 ## Version Compatibility
 
-|      Studio      |      TypeDB      |  TypeDB Cluster  |
+|      Studio      |      TypeDB      |   TypeDB Cloud   |
 |:----------------:|:----------------:|:----------------:|
 | 2.14.1 to 2.14.2 | 2.14.1 to 2.14.2 |      2.14.1      |
 |      2.11.0      |      2.11.1      | 2.11.1 to 2.11.2 |
