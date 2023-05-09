@@ -10,12 +10,12 @@ toc: false
 
 ![TypeDB Studio](../images/studio/studio.png)
 
-TypeDB Studio is an IDE specifically designed to work with 
-[TypeQL](https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4) query language and TypeDB databases.
+TypeDB Studio is an IDE specifically designed for TypeDB databases and 
+TypeDB's query language — [TypeQL](https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4).
 
 It has unique set of functions and abilities to help with development using TypeDB:
 
-- Friendly graphical user interface (GUI) to design schemas and queries for TypeDB databases.
+- Friendly GUI to design schemas and queries for TypeDB databases.
 - Syntax highlighting for TypeQL.
 - Connection to TypeDB servers, including handling transactions.
 - Types explorer for a TypeDB database.
@@ -69,7 +69,7 @@ Right after starting TypeDB Studio we can see its main window as it is shown bel
 
 ![TypeDB Studio GUI](../images/studio/studio-gui.png)
 
-The main panels of the graphical interface (GUI) are (marked with respected numbers on the image above):
+The main panels of the GUI are marked with the following numbers on the image above:
 
 1. Projects panel
 2. Types panel (Types explorer)
