@@ -14,7 +14,7 @@ needs to be installed and running.
 
 ## Importing
 
-In your source, require `typedb-client`.
+Use the `require` keyword with the `typedb-client`.
 
 <!-- test-example socialNetworkNodejsClientA.js -->
 ```javascript

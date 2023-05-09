@@ -14,7 +14,7 @@ needs to be installed and running.
 
 ## Importing
 
-In the interpreter or in your source code, import everything from `typedb.client`.
+In the interpreter or in the source code, import everything from `typedb.client`.
 
 <!-- test-example social_network_python_client_a.py -->
 ```python
