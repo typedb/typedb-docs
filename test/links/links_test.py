@@ -110,16 +110,16 @@ class LinksTest(unittest.TestCase):
                 "../query/aggregate-query": "11-query/06-aggregate-query.md",
             }
             client_page_mapping = {
-                "java": "01-java.md",
-                "python": "02-python.md",
-                "javascript": "03-nodejs.md",
+                "java": "java/01-java-overview.md",
+                "python": "python/01-python-overview.md",
+                "javascript": "node-js/01-node-js-overview.md",
             }
 
             with open(autolink_keywords_path, encoding='utf-8') as autolink_keywords_file:
                 content = autolink_keywords_file.read().split("codeKeywordsToLink = ")[1]
                 content = re.sub(r'\/\/\s.*', '', content)  # removes comments
                 autolink_keywords = ast.literal_eval(content)  # converts string to dict
-                common_base_url = "03-client-api/{client}"
+                common_base_url = "02-clients/{client}"
 
                 for keyword in autolink_keywords["keywords"]:
                     anchor = keyword["anchor"].replace("#", "")
