@@ -64,14 +64,14 @@ To work with TypeDB databases we can use one of the standalone software tools:
 Both tools are complete software products that can be used to connect to TypeDB and interact with it. They take care 
 of connection, session and transaction management, automate query sending and process the query response.
 
-TypeDB Studio is mostly remarkable for its friendly graphical user interface (**GUI**), types explorer and graph 
-visualization. For more information on how to use it see the [TypeDB Studio](01-studio.md) page or the
+TypeDB Studio is mostly remarkable for its friendly graphical user interface (**GUI**), types explorer, type browser, 
+and graph visualization. For more information on how to use it see the [TypeDB Studio](01-studio.md) page or the
 [Quickstart guide](../0001-typedb/01-start/03-quickstart.md).
 
 TypeDB Console is a powerful command line (**CLI**) tool often used to manage TypeDB server and its databases. For more 
 information on how to use it see the [TypeDB Console](02-console.md) page.
 
-## TypeDB drivers
+## TypeDB Drivers
 
 A TypeDB Driver, is a library used to connect to a TypeDB server. If we are building an 
 application that uses a TypeDB database, we would need a TypeDB driver at our application layer to handle the
