@@ -113,6 +113,22 @@ types:
             - "[`Concept`](../concept-api/concept?tab=javascript#concept-methods)"
 
       - method:
+        common: &method-toJSON
+          title: Retrieve a concept map as JSON
+          description: Produces a concept map as a JSON object, where keys are variable names and values are concepts.
+          returns:
+            - JSON
+        java:
+          <<: *method-toJSON
+          method: concept_map.toJSON();
+        javascript:
+          <<: *method-toJSON
+          method: await concept_map.toJSONRecord();
+        python:
+          <<: *method-toJSON
+          method: concept_map.to_json()
+
+      - method:
         common: &method-conceptmap-explainables
           title: Retrieve explainable concepts
           description: Gets the [Explainables](#explainables) object for this ConceptMap, exposing which of the Concepts in this ConceptMap are explainable

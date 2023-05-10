@@ -198,6 +198,16 @@ methods:
         - list of User
 
   - method:
+    common: &method-user
+      title: Retrieve current user
+      description: Retrieves the currently authenticated user.
+    java:
+      <<: *method-user
+      method: client.user();
+      returns:
+        - <user>
+
+  - method:
     common: &method-users-contains
       title: Check if a user exists
       description: Checks if a user with the given name exists
@@ -301,17 +311,50 @@ methods:
           default: N/A
     java:
       <<: *method-users-delete
-      method: client.users().get(String user).delete();
+      method: client.users().delete(String username);
       returns:
         - void
     javascript:
       <<: *method-users-delete
-      method: await (await client.users.get("user name")).delete();
+      method: await (await client.users.delete("username"));
       returns:
         - void
     python:
       <<: *method-users-delete
-      method: client.users().get("user name").delete()
+      method: client.users().delete("username")
+      returns:
+        - None
+
+  - method:
+    common: &method-users-password-set
+      title: Set a user's password
+      description: Deletes a user with the given name.
+      accepts: &accepts-users-password-set
+        param1: &accepts-users-password-set-user
+          name: user
+          description: The name of the user to update the password of.
+          type: String
+          required: true
+          default: N/A
+        param2: &accepts-users-password-set-password
+          name: password
+          description: User's new password.
+          type: String
+          required: true
+          default: N/A
+    java:
+      <<: *method-users-password-set
+      method: client.users().passwordSet(String username, String password);
+      returns:
+        - void
+    javascript:
+      <<: *method-users-password-set
+      method: await (await client.users.passwordSet("username", "password"));
+      returns:
+        - void
+    python:
+      <<: *method-users-password-set
+      method: client.users().passwordSet("username", "password")
       returns:
         - None
 
