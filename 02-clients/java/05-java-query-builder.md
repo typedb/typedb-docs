@@ -5,15 +5,19 @@ longTailKeywords: typedb java client, typedb client java, client java, java clie
 Summary: Tutorial for TypeDB Client Java.
 ---
 
-## Java query builder
+# Java query builder
 
-The Java builder library can be used to programmatically construct TypeQL queries with native Java code.
+The Java query builder library can be used to programmatically construct TypeQL queries with native Java code.
 
-To use TypeQL, we first add it as a dependency to our `pom.xml`. Don't forget to replace the `{version}` placeholder 
-with exact version of the library.
+To use TypeQL, we first add it as a dependency to our `pom.xml`. 
+
+<div class="note">
+[Important]
+Don't forget to replace the `{version}` placeholder with exact version of the library.
+</div>
 
 The latest version of `typeql-lang` can be found in the 
-[public Maven repository](https://repo.vaticle.com/#browse/browse:maven:com%2Fvaticle%2Ftypeql%2Ftypeql-lang).
+[Vaticle's public Maven repository](https://repo.vaticle.com/#browse/browse:maven:com%2Fvaticle%2Ftypeql%2Ftypeql-lang).
 
 ```xml
 <repositories>
@@ -40,18 +44,64 @@ import com.vaticle.typeql.lang.TypeQL;
 
 We are now ready to construct TypeQL queries, using the methods available on the `TypeQL` class.
 
-<!-- #todo Add query examples here
+## Examples
 
-[//]: # (Check out the following pages to learn, by example, how the TypeQL API allows construction of various TypeQL queries:)
+Using the Java query builder library is quite simple as it produces a TypeQL string.
 
-[//]: # (- [Expressive patterns]&#40;../query/match-clause&#41;)
+See the examples below.
 
-[//]: # (- [Retrieval queries]&#40;../query/get-query&#41;)
+### Example 1: A get query
 
-[//]: # (- [Insertion queries]&#40;../query/insert-query&#41;)
+<!-- test-ignore -->
+```java
+TypeQLMatch.Filtered getQuery = TypeQL.match(
+        var("u").isa("user").has("full-name", "Kevin Morrison"),
+        var("p").rel("u").rel("pa").isa("permission"),
+        var("o").isa("object").has("path", var("fp")),
+        var("pa").rel("o").rel("va").isa("access")
+).get("fp");
+```
 
-[//]: # (- [Deletion queries]&#40;../query/delete-query&#41;)
+As the result of the above example we should get a TypeQL query in a `getQuery` variable that can be used for a 
+match query like in the following line.
 
-[//]: # (- [Aggregation queries]&#40;../query/aggregate-query&#41;)
+<!-- test-ignore -->
+```java
+readTransaction.query().match(getQuery)
+```
 
---->
+The result should be the same as if we set `getQuery` variable as a TypeQL string.
+
+<!-- test-ignore -->
+```java
+String getQuery = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " +
+                  "$o isa object, has path $fp; $pa($o, $va) isa access; get $fp;";
+```
+
+### Example 2: A get query with additional parameters
+
+The following example showcases the usage of sorting, offsetting and limiting a get query.
+
+<!-- test-ignore -->
+```java
+TypeQLMatch.Limited getQuery = TypeQL.match(
+        var("u").isa("user").has("full-name", "Kevin Morrison"),
+        var("p").rel("u").rel("pa").isa("permission"),
+        var("o").isa("object").has("path", var("fp")),
+        var("pa").rel("o").rel("va").isa("access"),
+        var("va").isa("action").has("name", "view_file")
+).get("fp").sort("fp").offset(0).limit(5);
+```
+
+### Example 3: An insert query
+
+The following example showcases the usage of insert query.
+
+<!-- test-ignore -->
+```java
+insertQuery = TypeQL.match(
+        var("f").isa("file").has("path", filepath),
+        var("vav").isa("action").has("name", "view_file")
+                )
+        .insert(var("pa").rel("vav").rel("f").isa("access"));
+```
