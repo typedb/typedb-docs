@@ -1,0 +1,17 @@
+=== Instantiating a TypeDB Core client
+
+[source,java]
+TypeDB.coreClient(String address, int parallelisation);
+
+In order to communicate with TypeDB Core databases via sessions and transactions, we first need to instantiate a TypeDB Core client. The created object connects our application with the running TypeDB Server.
+
+==== Accepts
+[cols="^,^,^,^,^",options="header",]
+|===
+|Param |Description |Type |Required |Default
+|*address* |The address (host:port) on which the TypeDB Server is running |String |true |
+|*parallelisation* |The number of threads to use for server communication |int |false |	
+Scales based on host machine’s number of available CPU cores
+|===
+
+*Returns* `Client`
