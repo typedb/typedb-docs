@@ -5,7 +5,7 @@ longTailKeywords: typedb python client, typedb client python, client python, pyt
 Summary: Installation guide for TypeDB Python Driver.
 ---
 
-# Installation
+# Python Driver installation
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ To use the Python Driver, you need a compatible version of TypeDB Server running
 [Compatibility Table](01-python-overview.md#version-compatibility) to check what version do you need, depending on the TypeDB 
 server version being used.
 
-## Install TypeDB Python Driver
+## Install
 
 To install TypeDB Python Driver (or TypeDB Client for Python):
 
@@ -26,8 +26,9 @@ pip install typedb-client
 If you encounter an error or have multiple Python versions installed, try to replace the `pip` command with the `pip3`.
 </div>
 
-### Resources
+## Additional resources
 
+- [Version compatibility](01-python-overview.md#version-compatibility)
 - [Python Driver on GitHub](https://github.com/vaticle/typedb-client-python)
 - [Releases](https://github.com/vaticle/typedb-client-python/releases)
 - [Examples](https://github.com/vaticle/typedb-examples)

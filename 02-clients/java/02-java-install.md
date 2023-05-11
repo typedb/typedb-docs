@@ -1,17 +1,17 @@
 ---
-pageTitle: Client Java installation
+pageTitle: Java Driver installation
 keywords: typedb, client, driver, java, install, repository
 longTailKeywords: typedb java client, typedb client java, client java, java client
 Summary: Installation guide for TypeDB Java Driver.
 ---
 
-# Installation
+# Java Driver installation
 
 ## Prerequisites
 
 To use the Java Driver, you need a compatible version of TypeDB Server running. Please see the
-[Compatibility Table](01-java-overview.md#version-compatibility) to check what version do you need, depending on the TypeDB 
-server version being used.
+[Compatibility Table](01-java-overview.md#version-compatibility) to check what version do you need, depending on 
+the TypeDB server version being used.
 
 ## Add a repository with TypeDB Java Driver/Client to Maven
 
@@ -77,8 +77,9 @@ use the following steps to set the minimum log level to `ERROR`:
 </configuration>
 ```
 
-## Resources
+## Additional resources
 
+- [Version compatibility](01-java-overview.md#version-compatibility)
 - [Java Driver on GitHub](https://github.com/vaticle/typedb-client-java)
 - [Releases](https://github.com/vaticle/typedb-client-java/releases)
 - [Examples](https://github.com/vaticle/typedb-examples)
