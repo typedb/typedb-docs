@@ -7,7 +7,7 @@ Summary: Overview for TypeDB Driver Python.
 
 # Python TypeDB Driver overview
 
-Python Driver was developed by Vaticle to enable TypeDB support for Python software and developers.
+The Python Driver was developed by Vaticle to enable TypeDB support for Python software and developers.
 
 For exact installation instructions — see the [installation ](02-python-install.md) page.
 

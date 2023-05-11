@@ -7,7 +7,7 @@ Summary: Overview for TypeDB Driver Java.
 
 # Java TypeDB Driver overview
 
-Java Driver was developed by Vaticle to enable TypeDB support for Java software and developers.
+The Java Driver was developed by Vaticle to enable TypeDB support for Java software and developers.
 
 For exact installation instructions — see the [installation ](02-java-install.md) page.
 

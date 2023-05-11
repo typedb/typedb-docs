@@ -7,7 +7,7 @@ Summary: Overview for TypeDB Driver Node.js.
 
 # Node.js TypeDB Driver overview
 
-Node.js Driver was developed by Vaticle to enable TypeDB support for Node.js software and developers.
+The Node.js Driver was developed by Vaticle to enable TypeDB support for Node.js software and developers.
 
 For exact installation instructions — see the [installation ](02-node-js-install.md) page.
 
