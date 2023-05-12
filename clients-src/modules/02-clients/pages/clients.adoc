@@ -1,0 +1,86 @@
+= Clients
+:Summary: TypeDB Clients overview.
+:keywords: typedb, console, studio, client, api, drivers
+:longTailKeywords: typedb client api, typedb api, client api, typedb studio, typedb console
+:pageTitle: TypeDB Clients
+:toc: false
+
+== Overview
+
+A TypeDB Client is meant to be used for the purpose of managing databases and performing operations (querying) with a
+database schema and data on the TypeDB server. A client uses `gRPC` to interact with a TypeDB server and provides
+more user-friendly interface: API, GUI or CLI.
+
+Here is a list of existing *TypeDB Clients*:
+
+* Software tools:
+ ** xref:01-studio.adoc[TypeDB Studio]
+ ** xref:02-console.adoc[TypeDB Console]
+* <<typedb-drivers,TypeDB drivers>> -- libraries to connect to a TypeDB server with an application. There are:
+ ** Native drivers:
+  *** xref:java/01-java-overview.adoc[Java]
+  *** xref:python/01-python-overview.adoc[Python]
+  *** xref:node-js/01-node-js-overview.adoc[Node.js]
+ ** xref:06-other-languages.adoc[Community drivers]
+
+If you can't find a suitable client, consider xref:07-new-client.adoc[creating a new client].
+
+== Architecture of a TypeDB Client
+
+All TypeDB Clients share a common architecture. A TypeDB Client needs a `gRPC` client library to communicate with
+the server.
+
+A TypeDB Client provides a human or machine interface and interacts with TypeDB server, but also it performs query
+validation, local processing, load-balancing (TypeDB Cloud only) and authentication (TypeDB Cloud only).
+
+The following schema is the dependency graph of a typical TypeDB Client.
+
+image::../images/client-api/client-structure.png[Structure of a TypeDB Client]
+
+Simply put, the main components of any TypeDB Client are the classes
+and methods to establish a connection to a TypeDB database, execute queries and parse responses. Software tools
+take care of internal processes and provide a user-friendly interface for user (graphical or console). Language
+specific libraries (or so called TypeDB Drivers) provide more direct access to the classes and methods via TypeDB API.
+
+Specific information on the classes and methods provided in the API reference, but the syntax may vary for different
+programming languages:
+
+* xref:java/04-java-api-ref.adoc[Java Driver API reference],
+* xref:python/04-python-api-ref.adoc[Python Driver API reference],
+* xref:node-js/04-node-js-api-ref.adoc[Node.js Driver API reference].
+
+image::../images/client-api/client-server-comms.png[Client types and server interaction]
+
+== Software tools
+
+To work with TypeDB databases we can use one of the standalone software tools:
+
+. xref:01-studio.adoc[TypeDB Studio] (GUI).
+. xref:02-console.adoc[TypeDB Console] (CLI).
+
+Both tools are complete software products that can be used to connect to TypeDB and interact with it. They take care
+of connection, session and transaction management, automate query sending and process the query response.
+
+TypeDB Studio is mostly remarkable for its friendly graphical user interface (*GUI*), types explorer, type browser,
+and graph visualization. For more information on how to use it see the xref:01-studio.adoc[TypeDB Studio] page or the
+xref:../0001-typedb/01-start/03-quickstart.adoc[Quickstart guide].
+
+TypeDB Console is a powerful command line (*CLI*) tool often used to manage TypeDB server and its databases. For more
+information on how to use it see the xref:02-console.adoc[TypeDB Console] page.
+
+== TypeDB Drivers
+
+A TypeDB Driver, is a library used to connect to a TypeDB server. If we are building an
+application that uses a TypeDB database, we would need a TypeDB driver at our application layer to handle the
+database operations. TypeDB Drivers are available for some of the most popular programming languages.
+
+The following TypeDB Drivers are officially supported and actively maintained by the Vaticle. They
+usually support latest TypeDB features and receive continuous bug fixes and improvements.
+
+* xref:java/01-java-overview.adoc[Java]
+* xref:node-js/01-node-js-overview.adoc[Node.js]
+* xref:python/01-python-overview.adoc[Python]
+* https://github.com/vaticle/typedb-client-rust[Rust] (Under development)
+
+We also have some community projects for xref:06-other-languages.adoc[other Languages] and provide support for creating your
+own xref:07-new-client.adoc[new client].

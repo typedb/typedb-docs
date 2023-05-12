@@ -1,0 +1,58 @@
+= Documentation overview
+:keywords: typedb, typeql, documentation, overview, introduction
+:longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: Documentation overview
+:summary: A birds-eye view of TypeQL and TypeDB
+:toc: false
+
+This is the TypeDB server documentation section. It has the following sections:
+
+* *Getting started*
+ ** xref:01-start/01-introduction.adoc[Introduction] -- a brief description of TypeDB capabilities.
+ ** xref:01-start/02-installation.adoc[Installation] -- TypeDB server installation manual.
+ ** xref:01-start/03-quickstart.adoc[Quickstart guide] -- a guide to quickly set up a TypeDB database.
+ ** xref:01-start/04-iam-schema.adoc[IAM schema explanation] -- a brief description of IAM schema that widely used throughout
+the documentation.
+ ** xref:01-start/05-sample-app.adoc[Sample application] -- a simple example of how to use TypeDB with Java, Python, and
+Node.js.
+* *Development*
+ ** xref:02-dev/01-connect.adoc[Connect] -- TypeDB server and database connections
+ ** xref:02-dev/02-schema.adoc[Schema] -- types and rules definition
+ ** xref:02-dev/03-match.adoc[Matching patterns] -- patterns design and matching data
+ ** xref:02-dev/04-write.adoc[Writing data] -- data modification queries
+ ** xref:02-dev/05-read.adoc[Reading data] -- data retrieval queries
+ ** xref:02-dev/06-infer.adoc[Inferring data] -- data inference queries
+ ** xref:02-dev/07-response.adoc[Response interpretation] -- parsing query response
+ ** xref:02-dev/08-api.adoc[API and Drivers] -- brief description of Client API and TypeDB Drivers
+ ** xref:02-dev/09-best.adoc[Best practise] -- schema and query design tips
+* *Administration*
+ ** xref:03-admin/01-configuration.adoc[Configuration] -- TypeDB server configuration parameters and how to change
+configuration
+ ** xref:03-admin/02-export-import.adoc[Export and import] -- exporting and importing database schema and data
+ ** xref:03-admin/03-update.adoc[Upgrading] -- how to migrate to a newer version of TypeDB
+ ** xref:03-admin/04-ha.adoc[High availability] -- description of TypeDB high availability features
+ ** xref:03-admin/05-security.adoc[Security] -- description of TypeDB security features
+* *Tutorials*
+ ** xref:04-tutorials/01-data-migration.adoc[Data migration] -- How to load a dataset from an intermediate input format into
+TypeDB database
+
+== Thinking in TypeQL and TypeDB
+
+// #todo Change the link to TypeQL -
+
+The backbone of any TypeDB database is the representation of our domain: the xref:02-dev/02-schema.adoc[schema].
+A TypeDB schema is the blueprint of a TypeDB database. Using xref:../11-query/00-overview.adoc[TypeQL] language, we
+define a schema to model a domain true to nature. The schema is made up of a set of types and rules, which harness
+object-oriented principles and logical deduction.
+
+Types defined in a schema are all subtypes of the following basic ones:
+
+* Entities. Representing self-sufficient objects.
+* Relations. Representing n-ary relationships.
+* Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
+
+[Note] These terms correspond to the components of an Entity-Relation-Attribute model, an extension of the well-known [ER model](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model), in which attributes (properties) also treated as first-class citizens.
+
+Rules defined in a schema represent deductive logic. They are defined as condition (when clause) and conclusion
+(then clause). Read queries with inference option enabled can generate insights based on the deductive logic
+described with rules. Those insights are transaction bound and are not persisted.
