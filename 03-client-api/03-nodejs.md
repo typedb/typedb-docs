@@ -17,7 +17,7 @@ npm install typedb-client
 
 - [Client Node.js on GitHub](https://github.com/vaticle/typedb-client-nodejs)
 - [Releases](https://github.com/vaticle/typedb-client-nodejs/releases)
-- [Examples](https://github.com/vaticle/typedb-examples)
+- [Examples](https://github.com/vaticle/typedb-driver-examples)
 
 ## Quickstart
 
