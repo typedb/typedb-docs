@@ -82,7 +82,7 @@ use the following steps to set the minimum log level to ERROR:
 
 - [Client Java on GitHub](https://github.com/vaticle/typedb-client-java)
 - [Releases](https://github.com/vaticle/typedb-client-java/releases)
-- [Examples](https://github.com/vaticle/typedb-examples)
+- [Examples](https://github.com/vaticle/typedb-driver-examples)
 
 ## Quickstart
 

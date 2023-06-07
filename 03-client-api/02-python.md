@@ -23,7 +23,7 @@ pip3 install typedb-client
 
 - [Client Python on GitHub](https://github.com/vaticle/typedb-client-python)
 - [Releases](https://github.com/vaticle/typedb-client-python/releases)
-- [Examples](https://github.com/vaticle/typedb-examples)
+- [Examples](https://github.com/vaticle/typedb-driver-examples)
 
 ## Quickstart
 
