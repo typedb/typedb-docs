@@ -1,0 +1,34 @@
+== Convert the stream into array
+
+=== Syntax
+
+[source,javascript]
+----
+await iterator.collect();
+----
+
+=== Description
+
+Consumes the iterator and collects all the elements into an array.
+
+=== Returns
+
+* Array
+
+== Convert the stream via a supplied function
+
+=== Syntax
+
+[source,javascript]
+----
+iterator.map(function);
+----
+
+=== Description
+
+Transforms the stream into a new stream by running the supplied function on all the elements.
+
+=== Returns
+
+* Stream
+

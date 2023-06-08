@@ -1,0 +1,104 @@
+= TypeDB introduction
+:keywords: typedb, database, documentation, introduction, overview
+:longTailKeywords: typedb introduction, typedb overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: TypeDB introduction
+:summary: A birds-eye view of TypeDB.
+
+== Summary
+
+TypeDB:
+
+* Is a strongly typed database that is unique in many ways:
+ ** has its own special xref:02-dev/schema.adoc[static type system],
+ ** uses xref:02-dev/schema.adoc#_entity_types[Entity-Relationship model], extended with
+xref:02-dev/schema.adoc#_attribute_types[Attributes] and xref:02-dev/schema.adoc#_rules[Rules],
+// - #todo add link to the types article
+ ** supports subtyping and inheritance like OOP languages,
+ ** uses declarative queries with its own query language: xref:02-dev/match.adoc#_patterns_overview[TypeQL]. We set the
+requirements for results but not how to achieve it.
+* Is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP]) DBMS with
+xref:02-dev/connect.adoc#_acid_guarantees[ACID] guarantees.
+* Has data separated by xref:02-dev/connect.adoc#_databases[databases], each one with its own
+xref:02-dev/schema.adoc[schema].
+
+////
+Comparison of TypeDB with most common types of databases:
+
+* xref:../../12-comparisons/00-sql-and-typeql.adoc[SQL]
+* xref:../../12-comparisons/01-semantic-web-and-typedb.adoc[Semantic web]
+* xref:../../12-comparisons/02-graph-databases-and-typedb.adoc[Graph]
+////
+
+== Introduction
+
+TypeDB is a new kind of DBMS:
+
+* not an SQL, but uses enhanced Entity-Relationship model, further extended by attributes as first-class citizens;
+* not a graph database, but utilizes power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs] without the
+  need for developers to understand how it works to use it.
+
+TypeDB guarantees data integrity and safety while enabling data-level inferences within the database.
+Strong type system with subtyping and inheritance helps us break down complex problems into a
+meaningful and logical data models. TypeDB uses its own declarative query language, TypeQL, that gives powerful
+abstraction over implementation of storage, to enable us to use complex data patterns and reasoning engine.
+
+With TypeQL we describe data that we need by xref:02-dev/match.adoc#_patterns_overview[patterns],
+consisting of constraints. TypeDB will use those patterns to retrieve all data, that satisfies all the constraints,
+in the most efficient way. We don't have to think about query optimization, limitations of data storage
+implementation, etc.
+
+By combining TypeQL and TypeDB, we can close the gap between the language of our domain, and what the
+database can interpret and respond to. Queries written in TypeQL are humanely readable. Carefully designed database
+xref:02-dev/schema.adoc#_types[schema] lets us use terminology of the business domain we are modelling.
+Making our queries sounding familiar for subject-matter experts. This new paradigm gives a higher level of
+flexibility and expressivity to simplify our work and tackle domains that seemed impossibly complex before.
+
+TypeQL and TypeDB allow us to build a data model out of entity, relation, and attribute types. Inheritance allows
+subtypes to be defined simply and reduce complexity, while roles and rules further enhance our schema. These
+abstractions provide a higher-level framework to build intuitive and understandable models.
+
+// We can use the power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs] without the need to understand graphs!
+
+In other databases, relations may be implemented with a join table (SQL), or an edge between two vertices
+(graph databases). TypeDB relations generalize both: they flexibly relate one, two, or any number of data instances
+at the same time.
+
+////
+In other databases, relations may be implemented with a join table
+(xref:../../12-comparisons/00-sql-and-typeql.adoc[SQL]), or an edge between two vertices
+(xref:../../12-comparisons/02-graph-databases-and-typedb.adoc[graph] databases). TypeDB relations generalize both: they
+flexibly relate one, two, or any number of data instances at the same time.
+////
+
+This expanded idea of a relation is more powerful than either SQL or graph relations. However, we can further
+improve this idea: if we allow relations to not just specify which instances relate to each other, but also _how_
+they relate by adding context. This has been implemented in the form of a role. Any relation type specifies one or many
+roles that are related by this relation. Any type in a schema can play roles that were specifically defined in the type
+definition.
+
+Finally, we can use reasoning engine to infer new data based on the patterns found in database. To be able to do that
+we define rules in the database schema. Rules can dramatically shorten complex queries (e.g., transitivity of
+relations), perform xref::02-dev/infer.adoc#_explain_query[explainable] knowledge discovery, and implement business
+logic at the database level.
+
+== Learn more
+
+1. First things first -- use xref::01-start/installation.adoc[installation guide] to install TypeDB on the
+   local machine.
+
+2. We strongly recommend starting TypeDB journey with our xref::01-start/quickstart.adoc[Quickstart guide].
+   It goes through the step-by-step process of creating a new database, applying schema, loading sample data,
+   and querying. The resulting environment is suitable for executing most examples in our documentation.
+   On top of that it familiarizes users with TypeDB Studio — IDE, specifically designed for TypeDB
+   database management and development.
+
+Alternatively we can proceed directly to TypeDB developers section to learn more about terminology and how to use
+TypeDB:
+
+[start=3]
+1. xref:02-dev/connect.adoc[Connect] page: Connecting to TypeDB, using databases, sessions, transactions.
+2. xref:02-dev/schema.adoc[Schema] page: What are the types and rules, how to define, undefine, and use them.
+3. xref:02-dev/match.adoc[Matching patterns] page: Query patterns, `match` clause.
+4. xref:02-dev/write.adoc[Writing] and xref:02-dev/read.adoc[Reading] data pages: How to use Insert, Delete, Update,
+   and Get queries.
+5. xref:02-dev/response.adoc[Response interpretation] page: How to recognize and use responses from TypeDB.

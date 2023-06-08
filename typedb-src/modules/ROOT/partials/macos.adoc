@@ -1,0 +1,60 @@
+// tag::install-homebrew[]
+
+. Ensure https://brew.sh/[Homebrew] is installed.
+. Install TypeDB:
++
+[,bash]
+----
+brew install typedb
+----
+
+// end::install-homebrew[]
+
+// tag::install-manual[]
+
+. Ensure Java 11+ is installed.
+TypeDB supports the https://jdk.java.net[OpenJDK] and
+https://www.oracle.com/java/technologies/downloads/[Oracle JDK].
+
+. Download the latest release of xref:typedb:resources:downloads.adoc#_typedb[TypeDB].
+
+. Create a new directory, extract the contents of the `.zip` archive into the created directory
+(replace `~/Downloads/typedb-all-mac-{latest-version}.zip` with the path to the downloaded archive):
++
+[,bash,subs=attributes+]
+----
+sudo mkdir /opt/typedb
+unzip ~/Downloads/typedb-all-mac-{latest-version}.zip -d /opt/typedb
+----
+
+. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory (replace `typedb-all-mac-{latest-version}`
+with the actual name of the extracted directory):
++
+[,bash,subs=attributes+]
+----
+ln -s /opt/typedb/typedb-all-mac-{latest-version}/typedb /usr/local/bin/typedb
+----
+
+// end::install-manual[]
+
+// tag::start[]
+
+Run the following command in a terminal:
+
+[,bash]
+----
+typedb server
+----
+
+Now we can start the TypeDB server by using the `typedb server` command in the local terminal.
+
+TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB server will be shut down.
+We recommend opening a new terminal to run TypeDB Console.
+
+// end::start[]
+
+// tag::stop[]
+
+Press kbd:[Ctrl+C] in the terminal running TypeDB.
+
+// end::stop[]

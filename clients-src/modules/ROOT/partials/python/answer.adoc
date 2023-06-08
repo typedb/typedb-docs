@@ -1,0 +1,421 @@
+== Retrieve a mapping of variables to concepts
+
+=== Syntax
+
+[source,python]
+----
+concept_map.map()
+----
+
+=== Description
+
+Produces a dictionary where keys are variable names and values are [`concept`] s.
+
+=== Returns
+
+* Dictionary of String to [`Concept`] 
+
+== Retrieve concepts
+
+=== Syntax
+
+[source,python]
+----
+concept_map.concepts()
+----
+
+=== Description
+
+Return an iterable collection of all the [`concept`] s in this ConceptMap.
+
+=== Returns
+
+* Iterable of Concept
+
+== Retrieve a concept corresponding to a specific variable
+
+=== Syntax
+
+[source,python]
+----
+conceptMap.get(cVar(var))
+----
+
+=== Description
+
+Retrieve a concept for a given variable name
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| var | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`Concept`] 
+
+== Retrieve explainable concepts
+
+=== Syntax
+
+[source,python]
+----
+concept_map.explainables()
+----
+
+=== Description
+
+Gets the [Explainables]  object for this ConceptMap, exposing which of the Concepts in this ConceptMap are explainable
+
+=== Returns
+
+* [`ConceptMap.Explainables`] 
+
+== Retrieve numeric value of an aggregate answer as an integer
+
+=== Syntax
+
+[source,python]
+----
+numeric.as_int();
+----
+
+=== Returns
+
+* int
+
+== Retrieve numeric value of an aggregate answer as a float
+
+=== Syntax
+
+[source,python]
+----
+numeric.as_float();
+----
+
+=== Returns
+
+* `float`
+
+== Checks if the type of an aggregate answer is an integer
+
+=== Syntax
+
+[source,python]
+----
+numeric.is_int();
+----
+
+=== Returns
+
+* boolean
+
+== Checks if the type of an aggregate answer is a float
+
+=== Syntax
+
+[source,python]
+----
+numeric.is_float();
+----
+
+=== Returns
+
+* boolean
+
+== Checks if the type of an aggregate answer is not a number
+
+=== Syntax
+
+[source,python]
+----
+concept_map_group.is_NaN()
+----
+
+=== Returns
+
+* boolean
+
+== Retrieve the concept that is the group owner
+
+=== Syntax
+
+[source,python]
+----
+concept_map_group.owner()
+----
+
+=== Returns
+
+* [`Concept`] 
+
+== Retrieve the ConceptMaps of the group
+
+=== Syntax
+
+[source,python]
+----
+concept_map_group.concept_maps();
+----
+
+=== Returns
+
+* List of [`ConceptMap`] s
+
+== Retrieve the concept that is the group owner
+
+=== Syntax
+
+[source,python]
+----
+numeric_group.owner()
+----
+
+=== Returns
+
+* [`Concept`] 
+
+== Retrieve the Numeric answer of the group
+
+=== Syntax
+
+[source,python]
+----
+numeric_group.numeric()
+----
+
+=== Returns
+
+* [Numeric] 
+
+== Retrieve explainable relation
+
+=== Syntax
+
+[source,python]
+----
+concept_map.explainables().relation(variable);
+----
+
+=== Description
+
+Retrieves the explainable relation with the given variable name.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`ConceptMap.Explainable`] 
+
+== Retrieve explainable attribute
+
+=== Syntax
+
+[source,python]
+----
+concept_map.explainables().attribute(variable);
+----
+
+=== Description
+
+Retrieves the explainable attribute with the given variable name.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`ConceptMap.Explainable`] 
+
+== Retrieve explainable ownership
+
+=== Syntax
+
+[source,python]
+----
+concept_map.explainables().ownership(owner_var, attribute_var);
+----
+
+=== Description
+
+Retrieves the explainable attribute ownership with the pair of (owner, attribute) variable names.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`ConceptMap.Explainable`] 
+
+== Retrieve explainable relations
+
+=== Syntax
+
+[source,python]
+----
+concept_map.explainables().relations();
+----
+
+=== Description
+
+Retrieves all of this ConceptMap's explainable relations.
+
+=== Returns
+
+* Dictionary of String to [`ConceptMap.Explainable`] 
+
+== Retrieve explainable attributes
+
+=== Syntax
+
+[source,python]
+----
+concept_map.explainables().attributes();
+----
+
+=== Description
+
+Retrieves all of this ConceptMap's explainable attributes.
+
+=== Returns
+
+* Dictionary of String to [`ConceptMap.Explainable`] 
+
+== Retrieve explainable ownerships
+
+=== Syntax
+
+[source,python]
+----
+concept_map.explainables().ownerships();
+----
+
+=== Description
+
+Retrieves all of this ConceptMap's explainable attribute ownerships.
+
+=== Returns
+
+* Dictionary of (String, String) to [`ConceptMap.Explainable`] 
+
+== Retrieve conjunction
+
+=== Syntax
+
+[source,python]
+----
+explainable.conjunction()
+----
+
+=== Description
+
+Retrieves the subquery of the original query that is actually being explained.
+
+=== Returns
+
+* String
+
+== Retrieve ID
+
+=== Syntax
+
+[source,python]
+----
+explainable.explainable_id()
+----
+
+=== Description
+
+Retrieves the unique ID that identifies this Explainable.
+
+=== Returns
+
+* int
+
+== Retrieve the rule
+
+=== Syntax
+
+[source,python]
+----
+explanation.rule()
+----
+
+=== Description
+
+Retrieves the Rule for this Explanation.
+
+=== Returns
+
+* Rule
+
+== Retrieve the conclusion
+
+=== Syntax
+
+[source,python]
+----
+explanation.conclusion()
+----
+
+=== Description
+
+Retrieves the Conclusion for this Explanation.
+
+=== Returns
+
+* ConceptMap
+
+== Retrieve the condition
+
+=== Syntax
+
+[source,python]
+----
+explanation.condition()
+----
+
+=== Description
+
+Retrieves the Condition for this Explanation.
+
+=== Returns
+
+* ConceptMap
+
+== Retrieve the variable mapping
+
+=== Syntax
+
+[source,python]
+----
+explanation.variable_mapping()
+----
+
+=== Description
+
+Retrieves the mapping between rule variables and query variables for this Explanation.
+
+=== Returns
+
+* Map<String, Set<String>>
+

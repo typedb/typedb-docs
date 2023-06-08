@@ -1,0 +1,134 @@
+== Put instance
+
+=== Syntax
+
+[source,java]
+----
+longAttributeType.asRemote(Transaction tx).put(long value);
+----
+
+=== Description
+
+Puts and returns a new instance of this LongAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value | The value of the instance to be put | long | True | N/A
+|===
+
+=== Returns
+
+* LongAttribute
+
+== Get instance
+
+=== Syntax
+
+[source,java]
+----
+longAttributeType.asRemote(Transaction tx).get(long value);
+----
+
+=== Description
+
+Returns the instance, if it exists, of this LongAttributeType with the specified value.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value | The value of the instance to be retrieved | long | True | N/A
+|===
+
+=== Returns
+
+* LongAttribute
+
+== Set Supertype
+
+=== Syntax
+
+[source,java]
+----
+attributeType.asRemote(Transaction tx).setSupertype(AttributeType.Long longAttributeType);
+----
+
+=== Description
+
+Sets the supplied LongAttributeType as the supertype of the current LongAttributeType
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| longAttributeType | The AttributeType to set as the supertype of this LongAttributeType | LongAttributeType | True | N/A
+|===
+
+=== Returns
+
+* void
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,java]
+----
+type.asRemote(Transaction tx).getSubtypes();
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the LongAttributeType.
+
+=== Returns
+
+* Stream<[`AttributeType.Long`] >
+
+== Retrieve all instances of this LongAttributeType
+
+=== Syntax
+
+[source,java]
+----
+type.asRemote(Transaction tx).getInstances();
+----
+
+=== Description
+
+Retrieves all direct and indirect LongAttributes that are instances of this Type.
+
+=== Returns
+
+* Stream<[`LongAttribute`] >
+
+== Get a Remote version of the LongAttributeType.
+
+=== Syntax
+
+[source,java]
+----
+longAttributeType.asRemote(Transaction tx);
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transaction | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `LongAttributeType.Remote`
+

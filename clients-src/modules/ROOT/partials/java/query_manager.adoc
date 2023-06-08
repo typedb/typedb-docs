@@ -1,0 +1,260 @@
+== Execute a TypeQL Match (Get) query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().match(TypeQLMatch query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Match (Get) query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Match (Get) query to be executed. | `TypeQLMatch` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* Stream<[ConceptMap] >
+
+== Execute a TypeQL Match Aggregate query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().match(TypeQLMatch.Aggregate query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Match Aggregate query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Match Aggregate query to be executed. | `TypeQLMatch.Aggregate` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* [QueryFuture] <[Numeric] >
+
+== Execute a TypeQL Match Group query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().match(TypeQLMatch.Group query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Match Group query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Match Group query to be executed. | `TypeQLMatch.Group` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* Stream<[ConceptMapGroup] >
+
+== Execute a TypeQL Match Group Aggregate query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().match(TypeQLMatch.Group.Aggregate query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Match Group Aggregate query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Match Group Aggregate query to be executed. | `TypeQLMatch.Group.Aggregate` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* Stream<[NumericGroup] >
+
+== Execute a TypeQL Insert query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().insert(TypeQLInsert query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Insert query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Insert query to be executed. | `TypeQLInsert` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* Stream<[ConceptMap] >
+
+== Execute a TypeQL Delete query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().delete(TypeQLDelete query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Delete query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Delete query to be executed. | `TypeQLDelete` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* [`QueryFuture`] 
+
+== Execute a TypeQL Update query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().update(TypeQLUpdate query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Update query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Update query to be executed. | `TypeQLUpdate` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* Stream<[ConceptMap] >
+
+== Execute a TypeQL Explain query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().explain(ConceptMap.Explainable explainable, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Explain query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| explainable | The Explainable to be explained. | [`ConceptMap.Explainable`]  | True |
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* Stream<[Explanation] >
+
+== Execute a TypeQL Define query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().define(TypeQLDefine query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Define query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Define query to be executed. | `TypeQLDefine` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* [`QueryFuture`] 
+
+== Execute a TypeQL Undefine query
+
+=== Syntax
+
+[source,java]
+----
+transaction.query().undefine(TypeQLUndefine query, TypeDBOptions options);
+----
+
+=== Description
+
+Performs a TypeQL Undefine query in the transaction.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| query | The TypeQL Undefine query to be executed. | `TypeQLUndefine` | True | N/A
+| options | Specify query options | [`TypeDBOptions`]  | False | default TypeDBOptions - uses server defaults
+|===
+
+=== Returns
+
+* [`QueryFuture`] 
+

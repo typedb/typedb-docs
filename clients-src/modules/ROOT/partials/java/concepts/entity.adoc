@@ -1,0 +1,42 @@
+== Retrieve type (Local)
+
+=== Syntax
+
+[source,java]
+----
+entity.getType();
+----
+
+=== Description
+
+Retrieves the type which this Entity belongs to.
+
+=== Returns
+
+* [`EntityType`] 
+
+== Get a Remote version of the Entity.
+
+=== Syntax
+
+[source,java]
+----
+entity.asRemote(tx);
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| tx | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `Entity.Remote`
+
