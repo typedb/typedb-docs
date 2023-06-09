@@ -5,7 +5,7 @@
 :summary: A simple example with a prototype application to run against a TypeDB database.
 :tabs-sync-option:
 
-The following sample app implementations are all designed to connect to the xref:01-start/iam-schema.adoc[IAM]
+The following sample app implementations are all designed to connect to the xref:04-tutorials/iam-schema.adoc[IAM]
 database located at the TypeDB server with `0.0.0.0:1729` address. Please make sure to have TypeDB server running
 with the `iam` database created and both *schema* and *data* loaded. Use the
 xref:01-start/installation.adoc[Installation guide] to prepare the server
@@ -105,7 +105,7 @@ return the `path` attributes (`$fp`) of any `object` that the `user` has `permis
 [NOTE]
 ====
 Note that users and files don't have a singular relation that connects them directly. According to the `iam`
-xref::01-start/iam-schema.adoc[schema] we need two relations to connect them: `permission` and `access`. Both
+xref:04-tutorials/iam-schema.adoc[schema] we need two relations to connect them: `permission` and `access`. Both
 relations must be used to make a decision of whether a user has access to a file.
 ====
 

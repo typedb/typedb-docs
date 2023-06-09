@@ -17,15 +17,15 @@ under a single management framework.
 
 [NOTE]
 ====
-The terminology used in the IAM xref:typedb::01-start/quickstart.adoc#_iam_schema[schema] is defined
+The terminology used in the IAM xref:01-start/quickstart.adoc#_iam_schema[schema] is defined
 according to the sources mentioned above and the ISO/IEC 15408-1 standard within the context of an information system.
 ====
 
 [NOTE]
 ====
-The IAM xref:typedb::01-start/quickstart.adoc#_iam_schema[schema] and accompanying
-xref:typedb::01-start/quickstart.adoc#_iam_microdataset[dataset] described here are used in most examples throughout
-TypeDB documentation, including the xref:typedb::01-start/quickstart.adoc[Quickstart guide].
+The IAM xref:01-start/quickstart.adoc#_iam_schema[schema] and accompanying
+xref:01-start/quickstart.adoc#_iam_microdataset[dataset] described here are used in most examples throughout
+TypeDB documentation, including the xref:01-start/quickstart.adoc[Quickstart guide].
 ====
 
 == Overview
@@ -305,12 +305,5 @@ actions for some subjects.
 
 == Learn more
 
-After completing this page we can recommend the following order of topics to continue exploring TypeDB:
-
-1. (Optional) Explore xref::01-start/sample-app.adoc[sample application] written in Java, Python, or Node.js.
-2. Find out more about how to xref::02-dev/connect.adoc[connect] to TypeDB, and use databases, sessions
-   and transactions.
-3. Learn how to define a database xref::02-dev/schema.adoc[schema], xref::02-dev/match.adoc[match a pattern], or
-   design a query to xref::02-dev/write.adoc[write] or xref::02-dev/read.adoc[read] data.
-4. Check out how to interpret the TypeDB xref::02-dev/response.adoc[responses] to a query.
-5. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find one most suitable.
+After completing this page we recommend to explore xref:04-tutorials/sample-app.adoc[sample application] written
+in Java, Python, and Node.js or check out xref:clients:ROOT:clients.adoc[TypeDB Clients] to find the most suitable one.

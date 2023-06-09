@@ -8,6 +8,9 @@
 
 [#_install]
 
+[#_package]
+== Install with a package manager
+
 [tabs]
 ====
 Docker::
@@ -25,28 +28,63 @@ include::partial$win.adoc[tag=install]
 Linux::
 +
 --
-*To install via APT:*
 include::partial$linux.adoc[tag=install-apt]
+--
 
-*To install manually:*
+macOS (*Intel/x64*)::
++
+--
+*Homebrew (not recommended for `AArch64`):*
+include::partial$macos.adoc[tag=install-homebrew]
+--
+macOS (*AArch64*)::
++
+--
+We don't recommend using Homebrew for `ARM64`/`AArch64` architecture. Use manual installation instead.
+
+For more information: see https://forum.vaticle.com/t/running-typedb-on-an-m1-macbook/[Running TypeDB on an M1 MacBook].
+--
+====
+
+== Download and install manually
+
+[tabs]
+====
+Docker::
++
+--
+include::partial$docker.adoc[tag=install]
+--
+
+Windows::
++
+--
+include::partial$win.adoc[tag=install]
+--
+
+Linux::
++
+--
 include::partial$linux.adoc[tag=install-manual]
 --
 
-macOS::
+macOS (*Intel/x64*)::
 +
 --
-For `ARM64`/`AArch64` architecture: use JDK that targets `x86/x64` architecture. For more information: see
-https://forum.vaticle.com/t/running-typedb-on-an-m1-macbook/[Running TypeDB on an M1 MacBook].
+include::partial$macos.adoc[tag=install-manual]
+--
 
-*To install via Homebrew (not recommended for `ARM64`):*
-include::partial$macos.adoc[tag=install-homebrew]
+macOS (*AArch64*)::
++
+--
+See the https://forum.vaticle.com/t/running-typedb-on-an-m1-macbook/[Running TypeDB on an M1 MacBook] and then install
+manually:
 
-*To install manually:*
 include::partial$macos.adoc[tag=install-manual]
 --
 ====
 
-== Start
+== Start the server
 
 [tabs]
 ====
@@ -68,14 +106,20 @@ Linux::
 include::partial$linux.adoc[tag=start]
 --
 
-macOS::
+macOS (*Intel/x64*)::
++
+--
+include::partial$macos.adoc[tag=start]
+--
+
+macOS (*AArch64*)::
 +
 --
 include::partial$macos.adoc[tag=start]
 --
 ====
 
-== Stop
+== Stop the server
 
 [tabs]
 ====
@@ -97,7 +141,13 @@ Linux::
 include::partial$linux.adoc[tag=stop]
 --
 
-macOS::
+macOS (*Intel/x64*)::
++
+--
+include::partial$macos.adoc[tag=stop]
+--
+
+macOS (*AArch64*)::
 +
 --
 include::partial$macos.adoc[tag=stop]
