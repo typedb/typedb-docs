@@ -80,10 +80,11 @@ For example:
 .Type trees example
 //[plantuml, tree, svg]
 //[plantuml, target=tree, format=svg]
-[plantuml,tree,svg]
-....
-include::image$tree.puml[]
-....
+//[plantuml,tree,svg]
+//....
+//include::image$tree.puml[]
+//....
+image::root-types-trees.png[]
 
 TypeDB schemas resemble logical data models, removing the need to create a separate physical data model and allowing
 developers to create schemas that mirror their object model simplifying both design and development.
@@ -178,11 +179,13 @@ for the particular instance of `person` entity type in an `employment` relation 
 .Company entity type instances example
 //[plantuml, company, svg]
 //[plantuml, target=company, format=svg]  ////  asciidoctor-diagram ////
-[plantuml,company,svg]
+//[plantuml,company,svg]
 //kroki
-....
-include::image$company.puml[]
-....
+//....
+//include::image$company.puml[]
+//....
+image::instances-example.png[]
+
 ====
 
 For more information on how to define an `entity` subtype see the <<_define_entity_types,Define entity types>>
