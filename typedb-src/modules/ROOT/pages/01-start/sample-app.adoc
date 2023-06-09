@@ -228,7 +228,7 @@ relation in between the `file` and the `action`.
 
 [NOTE]
 ====
-Note that we create `file` first. If we try to set `access` to a non-existent `file` our request will succeed
+Note that we create `file` first. If we try to set `access` to a nonexistent `file` our request will succeed
 (if we don't make any mistakes in the syntax of the query) but will not insert any new data (relation). After both
 requests are done we commit the write transaction. It is important not to forget to commit changes.
 ====

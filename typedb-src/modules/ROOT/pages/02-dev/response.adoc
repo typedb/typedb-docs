@@ -63,7 +63,7 @@ section below.
 The ordinary xref:02-dev/read.adoc#_get_query[get query] (without xref:02-dev/read.adoc#_aggregation[aggregation] or
 xref:02-dev/read.adoc#_group[grouping]) returns a stream/iterator of a ConceptMap objects.
 
-Every iteration returns result as a <<_conceptmap,ConceptMap>> object.
+Every iteration returns the result as a <<_conceptmap,ConceptMap>> object.
 
 === Get query with aggregation
 
@@ -76,7 +76,7 @@ Use <<_future,Future>> object's `get()` method to wait and retrieve the <<_numer
 
 The get query with *grouping* returns a stream/iterator of ConceptMapGroup objects.
 
-Every iteration should return result as a <<_conceptmapgroup,ConceptMapGroup>> object.
+Every iteration should return the result as a <<_conceptmapgroup,ConceptMapGroup>> object.
 
 Use ConceptMapGroup object to retrieve <<_conceptmap,ConceptMap>>.
 
@@ -84,7 +84,7 @@ Use ConceptMapGroup object to retrieve <<_conceptmap,ConceptMap>>.
 
 The get query with *grouping* and *aggregation* returns a stream/iterator of a NumericGroup objects.
 
-Every iteration should return result as a <<_numericgroup,NumericGroup>> object.
+Every iteration should return the result as a <<_numericgroup,NumericGroup>> object.
 
 Use NumericGroup object to retrieve <<_numeric,Numeric>>.
 
@@ -93,7 +93,7 @@ Use NumericGroup object to retrieve <<_numeric,Numeric>>.
 
 An insert query returns a stream/iterator of a ConceptMap objects.
 
-Every iteration should return result as a <<_conceptmap,ConceptMap>> object.
+Every iteration should return the result as a <<_conceptmap,ConceptMap>> object.
 
 [#_delete_query]
 === Delete query
@@ -178,7 +178,7 @@ xref:02-dev/infer.adoc#_explain_query[explain query] use `explainables` and `exp
 
 == Number of answers
 
-If the query type can return *multiple* results (e.g.,a get query) then the result of such query type is a
+If the query type can return *multiple* results (e.g., a get query) then the result of such query type is a
 *stream/iterator* to iterate through all the results. Even if the actual query of such type returns one result or no
 results at all -- it returns a stream/iterator with one or zero iterations respectively.
 

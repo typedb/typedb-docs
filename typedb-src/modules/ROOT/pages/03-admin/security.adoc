@@ -26,13 +26,18 @@ TypeDB Cloud has the following security features:
 
 === User authentication
 
-All external connections to a cluster of TypeDB Cloud require user account credentials. Not for a user account
-used in the TypeDB Cloud web portal but a user account from the TypeDB Cloud cluster we are connecting to.
+All external connections to a cluster of TypeDB Cloud require user account credentials.
 
 Users can use usernames and passwords to identify and authenticate themselves. Passwords are stored only as
 irreversible *password hash + salt*.
 
 Administrators can adjust settings for *password strength requirements* and reset users passwords.
+
+[NOTE]
+====
+For TypeDB auth we should use the user account from the cluster we are connecting to, not the user account from
+TypeDB Cloud web portal.
+====
 
 === User management
 
@@ -79,7 +84,7 @@ Set password for a user:
 user set-password <username>
 ----
 
-Updating password of the current user:
+Update password of the current user:
 
 [,bash]
 ----

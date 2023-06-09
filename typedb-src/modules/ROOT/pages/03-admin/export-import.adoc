@@ -28,7 +28,7 @@ Migration using the export/import features is a two-step process: schema migrati
 
 Both import and export of schema and data require an instance of TypeDB server to be working. If we are migrating
 our data from one instance to another on the same server (for example -- from old version to a newer one) be extra
-careful with what TypeDB server instance being addressed by the commands.
+careful with what TypeDB server instance is being addressed by the commands.
 
 The following schema export and import instructions are for the TypeDB Console, but import of a schema can be done with
 any TypeDB Client.
@@ -129,7 +129,7 @@ arguments instead. For example, `typedb server import <new-db> <filename>.typedb
 
 Follow this checklist if any errors occur:
 
-* Ensure running the correct `typedb` command with the *correct TypeDB server* (use `./typedb` instead
+* Ensure that the correct `typedb` command is running with the *correct TypeDB server* (use `./typedb` instead
 of `typedb` to use the TypeDB binary in the current directory instead of the default TypeDB server installation).
 * Ensure that the schema has been imported correctly to the new database.
 Use xref:clients::studio.adoc[TypeDB Studio] or xref:clients::console.adoc[TypeDB Console] to check the

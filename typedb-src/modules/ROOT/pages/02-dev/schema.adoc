@@ -115,6 +115,7 @@ For example, `business unit` subtypes `user group`, which subtypes `subject`, wh
 Roles can be inherited and even overridden as a part of relation inheritance.
 ====
 
+[#_thing_type]
 === Thing type
 
 There is an internal type called `thing` that can be used to address all types
@@ -480,7 +481,7 @@ define object sub entity, abstract;
 To define a new entity type that owns one or more attribute types, use the `owns` keyword followed by the label of the
 attribute type. The attribute types are appended to the entity type definition with commas. Note, attribute types must
 be defined before or concurrently (in the same transaction) with its owner(s). We can add owners later, but we can't
-own non-existent attribute types.
+own nonexistent attribute types.
 
 [,typeql]
 ----

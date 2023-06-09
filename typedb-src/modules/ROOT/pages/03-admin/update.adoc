@@ -8,10 +8,10 @@ Upgrading TypeDB installation to a newer version of TypeDB server and keeping al
 different ways:
 
 * by reusing or copying data files used for persistent storage by the server itself.
-* by exporting schema and data of databases needed and them importing them to a newer installation.
+* by exporting schema and data of databases needed and then importing them to a newer installation.
 
 The data files method usually is the fastest one, but it may not always be possible due to compatibility issues
-in case there were some breaking changes in stored data internal format. We can check what versions of TypeDB are
+in case there were some breaking changes in the stored data internal format. We can check what versions of TypeDB are
 compatible with each other in the <<_compatibility,Compatibility>> section below.
 
 == Copying the data files
@@ -24,8 +24,8 @@ directory (set by the `storage.data` parameter in the
 xref:03-admin/configuration.adoc#_the_default_location_of_the_config_file[config]) into the data directory of the new
 TypeDB server installation.
 
-Alternatively, just update the new servers
-xref:03-admin/configuration.adoc#_the_default_location_of_the_config_file[configuration file] to the use the same
+Alternatively, just update the new server's
+xref:03-admin/configuration.adoc#_the_default_location_of_the_config_file[configuration file] to use the same
 *data directory* path as the old one. That is why we xref:03-admin/configuration.adoc#_storage_configuration[recommend]
 storing data separately from TypeDB server files.
 
@@ -33,7 +33,7 @@ storing data separately from TypeDB server files.
 === Compatibility
 
 TypeDB will prevent us from using the same data files across incompatible database encoding versions. For more
-information on TypeDB server databases compatibility see table below.
+information on TypeDB server database compatibility see the table below.
 
 [cols="^,^"]
 |===
@@ -54,5 +54,5 @@ To migrate data between different database encoding versions use the <<_export_a
 [#_export_and_import]
 == Export and import
 
-We can use export/import functionality to migrate our data while switching to a newer version of TypeDB server.
-Please see the xref:03-admin/export-import.adoc[Export/import] page to see how to do that.
+We can use the export/import functionality to migrate our data while switching to a newer version of TypeDB server.
+Please see the xref:03-admin/export-import.adoc[Export/import] page for information on how to do that.

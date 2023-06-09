@@ -4,7 +4,7 @@
 :longTailKeywords: TypeDB best practice, query design, schema design
 :pageTitle: Best practices
 
-== Schema modelling
+== Schema modeling
 
 === Tips for beginners
 
@@ -18,29 +18,27 @@ other entities: a car can be imagined without considering its parts.
 * A *relation* is a single concept with an existence that depends on at least one other concept. It cannot be
 conceptualized without those concepts: it is impossible to imagine a marriage without considering its spouses.
 
-Please see the following tips for modelling a schema:
+Please see the following tips for modeling a schema:
 
-* The best way to start modelling a database schema is to model entity types first and then proceed with connecting
+* The best way to start modeling a database schema is to model entity types first and then proceed with connecting
 them with relation types and assign ownership of attribute types to them later.
 * Schema of a DB defines a vocabulary for queries to that particular DB. The closer the schema resembles the real-life
 data, the simpler it is to read queries for people familiar with the terminology. Consider putting extra effort into
 the following aspects of designing a DB schema: accurate type labels/names, an intuitive hierarchy of subtypes, and
 designing relations in the most meaningful way.
-* Creating a schema is an iterative process. Don't forget that schema of a database can be updated. Consider testing
-schema on a
-small dataset first. The sooner the schema will be adapted to all use cases and tested for edge cases -- the
-smaller amount of work will be required to adapt all other code for changes in the schema.
+* Creating a schema is an iterative process. Don't forget that the schema of a database can be updated. Consider
+testing schema on a small dataset first. The sooner the schema will be adapted to all use cases and tested for edge
+cases -- the smaller amount of work will be required to adapt all other code for changes in the schema.
 * Implementing drastic changes to a database schema is possible by undefining old types/rules (after undefining
 all subtypes and deleting all instances of data of these types) and defining new ones. We can even use the Client API
 or TypeDB Studio to rename types without deleting them. However, it might be easier to create a new database and
 upload new schema and data from scratch.
 * It's easier to debug queries using TypeDB Studio, than with any TypeDB Driver, because Studio manages sessions
-and transactions for us, and can visualise query results.
+and transactions for us, and can visualize query results.
 
 === Advanced tips
 
-The following principles are considered being useful to take into account when we develop a more sophisticated
-database schema:
+The following principles are considered useful when we develop a more sophisticated database schema:
 
 * When inserting instances of a relation, it is not necessary to define all of its *role players*. But this
 represents an incomplete information state, such as a marriage in which only one of the spouses is known. While a
@@ -59,7 +57,7 @@ Relational tables (SQL) are homogeneous in that they can be used both to represe
 (a join table) or a list of entity's attributes (a regular table). These two types of table are indistinguishable
 from the perspective of an SQL database engine without additional context or constraints.
 
-* Each schema construct incurs a computational cost when traversed as part of a data query. Sorted in the order of
+* Each schema construct incurs a computational cost when traversed as part of a query. Sorted in the order of
 *increasing* cost, the constructs are:
 
 . Attributes
@@ -81,17 +79,17 @@ would be to make `car` a subtype of `vehicle` and then have `car` play the role 
 +
 In domains where cars are always products, for instance in a car dealership database (that might also sell
 other products: parts, add-ons, and extended warranties, etc.), it might be safe to make it a subtype of
-`product`, however this then means that the database cannot scale to consider cars in contexts other than being
-products. This could be a worthwhile tradeoff in very well specified models.
+`product`; however, this then means that the database cannot scale to consider cars in contexts other than being
+products. This could be a worthwhile trade-off in very well specified models.
 
 == Developing a query
 
 TypeDB query engine will try to retrieve/process all required concepts in the most optimal and efficient way.
 
 If there is any problem with a query, we recommend trying to execute it with TypeDB Studio just to see whether
-the problem lies within the query itself, or other parts of applications logic, like connection control.
+the problem lies within the query itself, or other parts of the application logic, like connection control.
 
-To optimise execution of a query try to do the following:
+To optimize execution of a query try to do the following:
 
 * Keep the number of databases on TypeDB ser **under 10** since it's optimised for smaller numbers of databases per
   server.
@@ -102,17 +100,18 @@ To optimise execution of a query try to do the following:
 * Limit the number of results returned by using pagination (limit + offset) or
   xref:02-dev/read.adoc#_aggregation[aggregation] when possible.
 * Disable inference if it's not needed in the transaction.
-* Consider sending all queries before starting to iterate through responses. TypeDB process most queries asynchronously.
+* Consider sending all queries before starting to iterate through responses. TypeDB processes most queries
+  asynchronously.
 
-=== Async Queries
+=== Async queries
 
-All TypeQL queries sent to a TypeDB server, will be processed by it asynchronously. Local
+All TypeQL queries sent to a TypeDB server will be processed by it asynchronously. Local
 processing can take place while waiting for responses to be received. Take advantage of these asynchronous queries
-to mask network round-trip costs and increases throughput. For example, to perform 10 get queries in a transaction,
+to mask network round-trip costs and increase throughput. For example, to perform 10 get queries in a transaction,
 it's best to send them all to the server before iterating over any of their answers.
 
-Queries that return answers, such as get, insert return them as Streams/Iterators or Futures. These can then be
-awaited, or iterated, to retrieve the answers as they are computed.
+Queries that return answers (e.g., get, insert) return them as Streams/Iterators or Futures (if there can be only a
+single answer). These can then be awaited, or iterated, to retrieve the answers as they are computed.
 
 [IMPORTANT]
 ====
@@ -121,10 +120,10 @@ When a transaction is committed or closed, all of its asynchronous queries are c
 
 === API
 
-Data retrieved from a TypeDB database consists of concepts and delivered in the form of
+Data retrieved from a TypeDB database consists of concepts and is delivered in the form of
 xref:02-dev/response.adoc#_conceptmap[ConceptMaps]. Use the methods introduced by the TypeDB Client API to obtain more
 information about the retrieved concept. To explore the concept's surroundings, the API has methods to traverse the
-neighbours of a specific concept instance to obtain more insights.
+neighbors of a specific concept instance to obtain more insights.
 
 [IMPORTANT]
 ====

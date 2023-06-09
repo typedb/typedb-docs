@@ -22,16 +22,16 @@ automatically to present the results (in GUI and CLI respectively) to user.
 
 [NOTE]
 ====
-Both TypeDB Studio and TypeDB Console built on the base of the Java Driver.
+Both TypeDB Studio and TypeDB Console are built on the base of the Java Driver.
 ====
 
 xref:clients::clients.adoc#_typedb_drivers[TypeDB Drivers] provide greater flexibility and integration with
-popular programming languages/frameworks at the cost of the requirement to perform session, transaction and data
+popular programming languages/frameworks at the cost of the requirement to perform session, transaction, and data
 manipulation manually. To interact with a TypeDB Driver use TypeDB Driver API. There are slight differences between
 Driver APIs of different TypeDB Drivers, including syntax, but they are very similar to each other by design.
 
-Driver API provide access to most functions of TypeDB Driver and thus -- most functions of TypeDB. The following is
-a description of similar parts of APIs of different drivers. For more information on API methods -- use the specific
+Driver API provides access to most functions of TypeDB Driver, and thus most functions of TypeDB. The following is
+a description of similar parts of APIs of different drivers. For more information on API methods, use the specific
 TypeDB Driver documentation.
 
 == API structure
@@ -51,11 +51,11 @@ To send a query to a TypeDB server a TypeDB Driver needs to:
 * open a xref:02-dev/connect.adoc#_sessions[Session],
 * open a xref:02-dev/connect.adoc#_transactions[Transaction],
 * prepare TypeQL query string,
-* send the string as a proper typo of query.
+* send the string as a proper type of query.
 
 These operations are done using the special classes and methods provided by TypeDB Driver. See some examples
-of how to do that with different TypeDB Drivers: xref:02-dev/connect.adoc[Connections],
-xref:01-start/sample-app.adoc[Sample Application] pages, or in the
+of how to do that with different TypeDB Drivers: xref:02-dev/connect.adoc[Connection],
+xref:01-start/sample-app.adoc[Sample application] pages, or in the
 xref:clients::/clients.adoc#_typedb_drivers[TypeDB Drivers] documentation.
 
 All queries are written in TypeQL, but for some languages there are libraries to build the TypeQL queries in a more
@@ -73,7 +73,7 @@ In response to a query TypeDB server sends a response to the TypeDB Client. Clie
 either a processed result (TypeDB Studio and TypeDB Console) or a special objects and methods to process the results
 (TypeDB Drivers). For every kind of query there is a predefined type of expected response and objects.
 
-For more information on types(classes) of available objects and response types see the
+For more information on types (classes) of available objects and response types see the
 xref:02-dev/response.adoc[Response interpretation] page.
 
 For more information on types of response objects and their *methods* please see the xref:02-dev/api.adoc[API reference]
@@ -94,7 +94,7 @@ will include at least the network latency between TypeDB Client and TypeDB serve
 ====
 For example, to make 1,000 Remote Driver API calls and with latency (ping) from client to server being 10ms, we would
 spend a total of 10 seconds waiting for network round-trips. When dealing with large numbers of results, we recommend
-to use a query to fetch all required information, rather than using the Remote methods of Driver API.
+using a query to fetch all required information, rather than using the Remote methods of Driver API.
 ====
 
 Queries always return *local* concepts. Local concepts must be
@@ -104,7 +104,7 @@ available.
 === Local concepts
 
 Local concept methods do not perform network operations. Local concepts are not bound to a transaction, so they can
-be safely used even after the transaction, session or client has been closed; however, the information contained may
+be safely used even after the transaction, session, or client has been closed; however, the information contained may
 go out of date if another transaction modifies the concepts on the server.
 
 In the TypeDB Drivers documentation, the *Local* tag indicates that a method is available on *both* local and
@@ -120,7 +120,7 @@ Remote concepts must be linked to a *Transaction* in order to make calls. When r
 Transaction method or a Remote Driver API method, they will inherit the same Transaction as the transaction/concept
 the method was called on. When the Transaction is closed, the remote concept methods can no longer be used.
 
-Some remote concept methods are update, insert or delete operations, and will therefore fail if used on a concept
+Some remote concept methods are update, insert, or delete operations, and will therefore fail if used on a concept
 that is linked to a *read* transaction.
 
 [WARNING]
@@ -130,7 +130,7 @@ see updates made using the Driver API.
 ====
 
 [#_converting_local_concepts_to_remote_concepts]
-=== Converting Local Concepts to Remote Concepts
+=== Converting local concepts to remote concepts
 
 All local concepts have the method `asRemote(tx)`, where the `tx` parameter is a Transaction to use for the remote
 concept version of this local concept, and the returned value is the remote concept. See the `asRemote` method

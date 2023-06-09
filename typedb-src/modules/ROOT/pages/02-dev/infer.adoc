@@ -33,7 +33,7 @@ leading to complex behaviors emerging from a few simple rules.
 
 == Limitations
 
-Inference works by rules defined in a schema of a database. Hence, what possible to infer is limited by what can be
+Inference works by rules defined in a schema of a database. Hence, what's possible to infer is limited by what can be
 defined in a rule. See the xref:02-dev/schema.adoc#_rule_validation[rule validation] section for more information on
 what can and can't be defined in a rule.
 
@@ -163,11 +163,11 @@ There is specific type of query to use with the inferred results if we want them
 When we get a result of a `get` query that was performed with both inference and explain options *enabled* we
 can use an *explain* query to request additional information on how the exact instances of data were inferred.
 
-To do that use `explainables` method on the `get` query result (`ConceptMap`). It returns a stream of `explainable`
+To do that use the `explainables` method on the `get` query result (`ConceptMap`). It returns a stream of `explainable`
 objects. Send an `explainable` object with an *explain* query to get a stream of `explanations`.
 
 Every `explanation` include information about what rule was used to obtain this inferred result,
-condition of the rule, conclusion of the rule and variable mapping.
+condition of the rule, conclusion of the rule, and variable mapping.
 
 === Python example
 //#todo Add examples on other languages
@@ -313,8 +313,8 @@ Instead of a <RootType> placeholder we can get one of this:
 - `RoleType`
 ====
 
-Those are exact instances of data that was matched by the rule. For example, `obj` is a `file` type entity that has
-an attribute of `path` type of value `zlckt.ts`. We didn't get the `path` in the explanation because it wasn't
+Those are exact instances of data that were matched by the rule. For example, `obj` is a `file` type entity that has
+an attribute of `path` type with the value `zlckt.ts`. We didn't get the `path` in the explanation because it wasn't
 mentioned in the rule, but was able to obtain it by the API call from the get query result:
 
 ----

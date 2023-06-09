@@ -60,7 +60,7 @@ xref:02-dev/match.adoc#_pattern_syntax[Pattern syntax] section.
 [IMPORTANT]
 ====
 A `get` clause works like a filter for variables in matched answers. Get query without a `get` clause will have all
-variables mentioned in `match` clause pattern to be returned as concepts in every answer.
+variables mentioned in the `match` clause pattern to be returned as concepts in every answer.
 ====
 
 Aggregation functions, as well as modifiers, and grouping must be at the end of the query and do not require a `get`
@@ -104,15 +104,15 @@ get $x-n, $act-n, $o-fp;
 The example above uses a `match` clause to do the following:
 
 . Finds `permission` relation (`$pe`) of `$x` and `$y` variables.
-. Finds `$x` as `person` entities that have `full-name` attribute with value of `$x-n`.
+. Finds `$x` as `person` entities that have the `full-name` attribute with the value of `$x-n`.
 . `$x-n` should contain string `Kevin`.
 . Finds `access` relation of `$o` as object and `$act` as action.
-. `$act` should have `name` attribute with value of `$act-n`.
-. `$o` should have `path` attribute with value of `$o-fp`.
+. `$act` should have the `name` attribute with the value of `$act-n`.
+. `$o` should have the `path` attribute with the value of `$o-fp`.
 
-The `get` clause then filters the answers from the `match` clause to get only the `person` `full-name` (`$x-n`),
-`action` `name` (`$act-n`) and `path` of an `object` (`$o-fp`). Every returned result should contain all
-three concepts.
+The `get` clause then filters the answers from the `match` clause to get only the `full-name` attribute of a `person`
+type (`$x-n`), `name` attribute of an `action` type (`$act-n`), and `path` of an `object` (`$o-fp`).
+Every returned result should contain all three concepts.
 
 === Number of answers
 
@@ -137,7 +137,7 @@ Spoiler: **13** is the wrong answer here.
 ====
 
 As the example above doesn't have any <<_modifiers,modifiers>>, <<_aggregation,aggregation>>, or <<_group,grouping>>
-the number of results will depend on the number of matched solutions for pattern in the `match` clause. So the
+the number of results will depend on the number of matched solutions for the pattern in the `match` clause. So the
 TypeDB query processor will explore all possible solutions: every solution consisting of exactly one `person` entity
 and one `file` entity. There are only `3 * 10 = 30` possible combinations of person and file entities, so we will
 get 30 answers.
@@ -163,10 +163,10 @@ This query returns only one single (and random) instance of type `person`. Consi
 <<_sort_the_answers,sorting aggregation>> to receive less random and more predictable results.
 
 [#_sort_the_answers]
-==== Sort the Answers
+==== Sort the answers
 
-Use the `sort` keyword followed by a variable, to sort the answers using a variable mentioned in the first argument. A
-second argument is optional and determines the sorting order: `asc` (ascending, be default) or `desc` (descending).
+Use the `sort` keyword followed by a variable to sort the answers using a variable mentioned in the first argument. A
+second argument is optional and determines the sorting order: `asc` (ascending, by default) or `desc` (descending).
 
 [,typeql]
 ----
@@ -193,9 +193,9 @@ sort $n asc, $e desc;
 The example above will return all `full-name` and `email` attributes of all `person` entities, sorted by their
 `full-name` in ascending order first and then by `email` in descending order.
 
-==== Offset the Answers
+==== Offset the answers
 
-Use the `offset` keyword followed by the number to offset the answers by. This is commonly used with the `limit`
+Use the `offset` keyword followed by the number to offset the answers. This is commonly used with the `limit`
 keyword to return a desired range of the answers. Don't forget to <<_sort_the_answers,sort>> the results to ensure
 predictable and deterministic results.
 
@@ -207,7 +207,7 @@ sort $n asc;
 offset 6; limit 10;
 ----
 
-This sorts the `full-name` attributes of all `person` entities in ascending order, skips the first six and returns up
+This sorts the `full-name` attributes of all `person` entities in ascending order, skips the first six, and returns up
 to the next ten.
 
 [#_group]
@@ -231,9 +231,9 @@ group $o-fp;
 ----
 
 This query returns the `full-name` attributes of all `person` entities, the `path` attributes of the `object` entities
-in any `access` relations that are part of the `permission` relation with the `person` entities and the `name`
+in any `access` relations that are part of the `permission` relation with the `person` entities, and the `name`
 attribute of the `action` entity in those `access` relations. The results are then sorted by the `path` attribute in
-ascending order, limited by only first 3 results and grouped by `path` variable values.
+ascending order, limited by the only first three results and grouped by `path` variable values.
 
 The following or similar result can be obtained by running the query above without inference on the TypeDB server with
 the IAM schema and dataset from the xref:01-start/quickstart.adoc[Quickstart guide].
@@ -273,15 +273,15 @@ Aggregation performs a calculation on a set of values, and returns a single valu
 
 TypeDB supports the following types of aggregation:
 
-* count
-* sum
-* max
-* mean
-* median
+* `count`
+* `sum`
+* `max`
+* `mean`
+* `median`
 
 To perform aggregation in TypeDB, we first write a xref:02-dev/match.adoc[match clause] to describe the set of data,
 then follow that by get to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate
-function to perform on the variable of interest.
+function to perform aggregation on the variable of interest.
 
 [NOTE]
 ====
@@ -301,7 +301,7 @@ get $o, $fp; count;
 
 [NOTE]
 ====
-The `count` function is applied to every result returned. If more than one variable mentioned in get, then `count`
+The `count` function is applied to every result returned. If more than one variable is mentioned in `get`, then `count`
 will show the number of unique combinations of results. This is also the case when no `get` clause is added,
 which actually means that all matched variables are included.
 ====
@@ -327,7 +327,7 @@ The `group` clause should go before the aggregation function.
 
 ==== Sum
 
-Use the `sum` keyword to get the sum of the specified `long` or `double` values of matched variable.
+Use the `sum` keyword to get the sum of the specified `long` or `double` values of the matched variable.
 
 [,typeql]
 ----
@@ -339,14 +339,15 @@ sum $s;
 
 [WARNING]
 ====
-Omitting the variable `$f` in the `get` clause` of the above query will result in missing all duplicated values
-of `$s` from the aggregation. For more information see the xref:02-dev/match.adoc#_patterns_overview[matching patterns]
-page.
+Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
+of `$s` from the aggregation.
+
+For more information see the xref:02-dev/match.adoc#_solutions[Matching patterns] page.
 ====
 
 ==== Maximum
 
-Use the `max` keyword to get the maximum value among the specified `long` or `double` values of matched variable.
+Use the `max` keyword to get the maximum value among the specified `long` or `double` values of the matched variable.
 
 [,typeql]
 ----
@@ -357,7 +358,7 @@ get $f, $s; max $s;
 
 ==== Minimum
 
-Use the `min` keyword to get the minimum value among the specified `long` or `double` values of matched variable.
+Use the `min` keyword to get the minimum value among the specified `long` or `double` values of the matched variable.
 
 [,typeql]
 ----
@@ -368,7 +369,7 @@ get $f, $s; min $s;
 
 ==== Mean
 
-Use the `mean` keyword to get the average value of the specified `long` or `double` values of matched variable.
+Use the `mean` keyword to get the average value of the specified `long` or `double` values of the matched variable.
 
 [,typeql]
 ----
@@ -379,7 +380,7 @@ get $f, $s; mean $s;
 
 ==== Median
 
-Use the `median` keyword to get the median value among the specified `long` or `double` values of matched variable.
+Use the `median` keyword to get the median value among the specified `long` or `double` values of the matched variable.
 
 [,typeql]
 ----
@@ -390,8 +391,8 @@ get $f, $s; median $s;
 
 ==== Standard deviation
 
-Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of matched
-variable. Usually used with the average value, returned by the mean keyword.
+Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of the matched
+variable. This is usually used with the average value, and returned by the mean keyword.
 
 [,typeql]
 ----

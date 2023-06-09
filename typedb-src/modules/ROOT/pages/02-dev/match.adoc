@@ -7,9 +7,9 @@
 
 // #todo Change the link to TypeQL -
 
-TypeDB queries are written in TypeQL and use patterns to manipulate schema and data of a database.
+TypeDB queries are written in TypeQL and use patterns to manipulate the schema and data of a database.
 
-In TypeQL, a `match`, `get`, `insert` or `delete` keyword followed by a pattern (consisting of one or more
+In TypeQL, a `match`, `get`, `insert`, or `delete` keyword followed by a pattern (consisting of one or more
 statements) is a clause.
 
 These clauses can be combined to create four different types of queries:
@@ -21,7 +21,7 @@ These clauses can be combined to create four different types of queries:
  ** xref:02-dev/write.adoc#_delete_query[Delete] (match-delete) query -- to delete data.
  ** xref:02-dev/write.adoc#_update[Update] (match-delete-insert) query -- to delete and then insert data.
 
-A `match` clause is optional for Insert queries, but required for all others.
+A `match` clause is optional for insert queries, but required for all others.
 
 [NOTE]
 ====
@@ -32,19 +32,18 @@ xref:02-dev/schema.adoc#_undefine_a_type[undefine] clauses instead of insert/del
 
 [IMPORTANT]
 ====
-If a `match` clause is **not** followed by a `get`, `insert` or `delete` clause, TypeDB assumes it is a
-xref:02-dev/read.adoc#_get_query[get query] and add an implicit `get` clause to return all variables defined in the
+If a `match` clause is **not** followed by a `get`, `insert`, or `delete` clause, TypeDB assumes it is a
+xref:02-dev/read.adoc#_get_query[get query] and adds an implicit `get` clause to return all variables defined in the
 `match` clause.
 ====
 
 [#_patterns_overview]
 == Patterns overview
 
-TypeQL is *declarative* language. When writing TypeQL pattern for query, we describe a set of
+TypeQL is *declarative* language. When writing a TypeQL pattern for query, we describe a set of
 requirements or constraints for the concepts (types or instances) we would like to match (to perform
-xref:02-dev/read.adoc#_get_query[get]/xref:02-dev/write.adoc#_insert_query[insert]/
-xref:02-dev/write.adoc#_delete_query[delete]/
-xref:02-dev/write.adoc#_update[update] query). Rather than writing an algorithm of how the data should be retrieved,
+xref:02-dev/read.adoc#_get_query[get]/xref:02-dev/write.adoc#_insert_query[insert]/xref:02-dev/write.adoc#_delete_query[delete]/xref:02-dev/write.adoc#_update[update] query).
+Rather than writing an algorithm of how the data should be retrieved,
 we declare requirements and the TypeDB query processor will take care of finding an optimal way to retrieve it.
 
 [NOTE]
@@ -56,28 +55,29 @@ https://en.wikipedia.org/wiki/Data_manipulation_language[Data Manipulation Langu
 In general, a pattern can be thought of as a system of equations, where every equation is a single statement. TypeDB
 will solve the system to find all solutions. Every solution includes a concept (type or instance) for every variable.
 
-TypeQL statements constitute the smallest building blocks of queries. Please find below a close look at the typical
+TypeQL statements constitute the smallest building blocks of queries. Please find below a closer look at the typical
 statement structure.
 
+[#_statement-structure]
 image::statement-structure.png[Statement structure]
 
 * A TypeQL variable is prefixed with a dollar sign `$`. Most statements start with a variable (`V`) providing a
 reference to a concept or multiple concepts (up to one per every solution found). For more information on variables
-please see <<_variables,Variables>> section.
+see the <<_variables,Variables>> section.
 * The variable is followed by a comma-separated list of constraints (`p1`, `p2`, `p3`) describing the concepts the
 variable refers to.
 * We mark the end of the statement with a semicolon (`;`).
 
 [#_solutions]
-It's important to understand that the result of a `match` clause with any pattern is a set of solutions found.
+It's important to understand that the *result* of a `match` clause with any pattern is a *set of solutions found*.
 The length of the set is equal to the number of solutions found, hence it can be:
 
-* zero,
-* one,
-* or many.
+* Zero -- No solutions found (nothing matched the pattern). Empty set returned.
+* One -- Exactly one solution found and returned in a set.
+* Many -- Multiple solutions found, including all possible permutations. All of them returned in a set.
 
-For example, in the statement above TypeDB will find all solutions that include a `person` entity that has a
-`full-name` attribute of `Masako Holley` and has any email.
+For example, in the <<_statement-structure,statement>> above TypeDB will find all solutions that include a `person`
+entity that has a `full-name` attribute of `Masako Holley` and has any email.
 
 What if there is no `person` entity with this particular name in a database? Then a set of zero solutions (answers)
 will be returned, regardless of the emails.
@@ -107,7 +107,7 @@ There are two types of variables:
   and other xref:02-dev/match.adoc#_built_in_functions[built-in functions], requiring direct operation on values.
 
 A concept variable starts with dollar sign `$` followed by variable label (for example, `$x`) and reference exactly
-one concept per every answer (solution) found for a pattern. See <<_example>> below.
+one concept (type or data) per every answer (solution) found for a pattern. See <<_example>> below.
 
 A value variable starts with question mark `?` followed by variable label (for example, `?x`) and reference exactly
 one value per every answer (solution) found for a pattern. See <<_value_variables>> below.
@@ -152,7 +152,7 @@ match
 [IMPORTANT]
 ====
 To run these and other examples from our documentation, make sure to complete the
-xref:01-start/quickstart.adoc[Quickstart guide] to set up the database with relevant schema and dataset. Do not use
+xref:01-start/quickstart.adoc[Quickstart guide] to set up the database with the relevant schema and dataset. Do not use
 the database created for the xref:02-dev/schema.adoc[schema] page, as it was only for demonstration of schema
 definition.
 ====
@@ -160,7 +160,7 @@ definition.
 [NOTE]
 ====
 All indentation and line breaking is optional in TypeQL. We can even try using a single line or a completely random
-indentation for all our queries, but that will make it harder to read them (for humans).
+indentation for all our queries, but that will make it harder for us to read them.
 ====
 
 [#_value_variables]
@@ -270,7 +270,7 @@ The statements below can be used to find data in a database.
 
 === Comparison operators
 
-The following operators are supported for comparing attribute values: `==`, `!=`, `>`, `>=`, `<` and `+<=+`.
+The following operators are supported for comparing attribute values: `==`, `!=`, `>`, `>=`, `<`, and `+<=+`.
 
 [WARNING]
 ====
@@ -346,14 +346,16 @@ image::pattern-structure.png[Combining statements]
 
 By arranging statements together, we can express more complex pattern scenarios and their corresponding data.
 
-* Statement: simplest possible arrangement -- a single basic building block as <<_patterns_overview,explained above>>.
-* Conjunction (logical `AND`): a set of statements where to satisfy a match, all statements must be true.
+* *Statement*: Simplest possible arrangement -- a single basic building block as <<_patterns_overview,explained above>>.
+* *Conjunction* (logical `AND`): A set of statements, where to satisfy a match, all statements must be true.
 We use conjunctions by default just by separating the partaking statements with semicolons `;`.
-* Disjunction (logical `OR`): a set of statements where to satisfy a match, at least one statement must be matched.
+* *Disjunction* (logical `OR`): A set of statements, where to satisfy a match, at least one statement must be matched.
 We form disjunctions by enclosing the partaking statements within curly braces `{}` and joining them together with the
 keyword `or`.
-* Negation (logical negation): a statement that explicitly defines conditions that must *not* to be met. We form
-negations by defining the conditions not to be met in curly brackets of a `not {};` block.
+* *Negation* (logical negation): A statement that explicitly defines conditions that must *not* to be met. We form
+negations by defining the conditions *not* to be met in curly brackets of a `not {};` block.
+
+See the <<_complex_example,complex example>> below.
 
 == Match clause examples
 
@@ -365,7 +367,8 @@ A `match` clause can be used to find types or roles in a database schema.
 
 ===== All types
 
-Use a `subtype` pattern with type `thing` to find all types defined in a schema.
+Use a `subtype` pattern with the built-in type `thing` to find all types defined in a schema. For more information see
+the xref:typedb::02-dev/schema.adoc#_thing_type[Thing type] section.
 
 [,typeql]
 ----
@@ -393,8 +396,8 @@ Use a `subtype` pattern to find a specific type and all of its subtypes.
 match $o sub object;
 ----
 
-The above pattern finds the `object` type and all of its nested subtypes: direct (i.e. `resource` and `resource-collection`)
-and indirect (i.e. `file`, `interface`, `directory` and `application`).
+The above pattern finds the `object` type and all of its nested subtypes: direct (i.e., `resource` and `resource-collection`)
+and indirect (i.e., `file`, `interface`, `directory`, and `application`).
 
 ===== Direct subtypes
 
@@ -405,7 +408,7 @@ Use a `subtype` pattern with an exclamation mark (`!`) to find the direct subtyp
 match $o sub! object;
 ----
 
-The above query finds all direct subtypes of the `object` type (i.e. `resource` and `resource-collection`).
+The above query finds all direct subtypes of the `object` type (i.e., `resource` and `resource-collection`).
 
 ===== Attribute types (by value type)
 
@@ -469,17 +472,13 @@ A `match` clause can be used to find data in a database.
 
 ==== All data
 
-Use an `instance` pattern with type `thing` to find all entities, relations and attributes.
+Use an `instance` pattern with type `thing` to find all entities, relations, and attributes (instances of data).
+For more information see the xref:typedb::02-dev/schema.adoc#_thing_type[Thing type] section.
 
 [,typeql]
 ----
 match $t isa thing;
 ----
-
-[NOTE]
-====
-All `entity` types, `relation` types, `attribute` types and `roles` subtype the `thing` type.
-====
 
 [WARNING]
 ====
@@ -549,7 +548,7 @@ attributes, each of a specific type.
 match $p isa person, has full-name $n, has email $email, has credential $cr;
 ----
 
-The above query finds all `person` entities that have `full-name`, `email` and `credential` attributes.
+The above query finds all `person` entities that have `full-name`, `email`, and `credential` attributes.
 
 ===== Owners of a specific attribute (by type and value)
 
@@ -586,11 +585,11 @@ match
 ==== Relation matching
 
 The pattern used to find relations is different from the one used to find entities because relations have role players
-(entities, other relations and/or attributes).
+(entities, other relations, and/or attributes).
 
 ===== Role players
 
-Use a `relation pattern` witch matched role player to find all relations of a specific type that relate a
+Use a `relation pattern` with a matched role player to find all relations of a specific type that relate a
 specified instance.
 
 [,typeql]
@@ -682,7 +681,7 @@ The above query finds all attributes whose value contains the text `Masako`, reg
 
 ===== Value matching regex
 
-Use an `attribute` pattern with `like` keyword, and a regular expression to find all attributes whose value matches
+Use an `attribute` pattern with `like` keyword and a regular expression to find all attributes whose value matches
 the specified regular expression pattern.
 
 [,typeql]
@@ -896,9 +895,9 @@ The above example uses conjunction to ensure all statements are matched:
 . Find all `access` relations (`$ac`) where `$o` plays the `object` role.
 . Find all `permission` relations (`$pe`) where `$p` plays the `subject` role, `$ac` the `access` role.
 
-The `object` entities are limited to those which play the `object` role in `access` relations, themselves
-limited to those which play the `access` role in `permission` relations, themselves limited to those in
-which matching `person` entities plays the `subject` role.
+The `object` entities are limited to those which play the `object` role in `access` relations, which are themselves
+limited to those which play the `access` role in `permission` relations. The `permission` relations are limited to
+those in which matching `person` entities play the `subject` role.
 
 ==== Disjunctions
 
@@ -922,6 +921,7 @@ The above query uses disjunctions to ensure one of two statements are matched:
 
 The `person` entities are limited to those that have a `full-name` attribute whose value contains `Masako` or `Kevin`.
 
+[#_complex_example]
 ==== Complex example
 
 To better illustrate the possibilities, we will now look at an example of a more complex pattern.
@@ -930,7 +930,7 @@ image::example-pattern.png[Complex example]
 
 The pattern is a conjunction of five different pattern types:
 
-. *Conjunction 1* specifies the variables for two `person` instances, their `full-names`, `action` and `file` that
+. *Conjunction 1* specifies the variables for two `person` instances, their `full-names`, `action`, and `file` that
 has path `README.md`, specifies their types.
 . *Disjunction* specifies that the actions of interest are either `modify_file` or `view_file`.
 . *Negation 1* specifies that person `$p1` shall not have `full-name` with value of `Masako Holley`.
@@ -938,7 +938,7 @@ has path `README.md`, specifies their types.
 . *Conjunction 2* defines the pattern requiring the `file` to have `access` with `action` that we specified earlier,
 and both instances of `person` to have a `permission` to the specified `access`.
 
-In short, the above example finds pairs of people who are both have permission to access the same file
+In short, the above example finds pairs of people who both have permission to access the same file
 with a path of `README.md`. The pattern additionally specifies both of them to not have name `Masako Holley` and
 the access to be either `modify_file` or `view_file`.
 
@@ -946,15 +946,15 @@ the access to be either `modify_file` or `view_file`.
 
 === How to execute a query
 
-The easiest way to send a query to a TypeDB server is to use xref:clients::studio.adoc[TypeDB Studio] to do so.
-It will not only manage a DB connection for us, but also process the results.
+The easiest way to send a query to a TypeDB server is to use xref:clients::studio.adoc[TypeDB Studio].
+It will not only manage a TypeDB database connection for us, but will also process the results.
 See the xref:01-start/quickstart.adoc[Quickstart guide] for instructions on how to do this.
 
 Alternatively, we can use any other xref:clients::clients.adoc[TypeDB Client] to handle server connection,
 sessions, transactions, etc.
 
 Among the list of Clients, there are TypeDB drivers for different programming languages. Sending a query in one of
-those should be as easy as calling a function. But it might require additional efforts to control session and
+those should be as easy as calling a function. But it might require additional effort to control the session and
 transaction. For example, see how to send a query in some of the most popular programming languages:
 xref:clients::java/java-overview.adoc[Java],
 xref:clients::node-js/node-js-overview.adoc[Node.js],
@@ -962,7 +962,7 @@ xref:clients::python/python-overview.adoc[Python].
 
 === Schema
 
-Use the example below to send a `get` query to a database schema (querying for types).
+Use the example below to send a *get* query to a database schema (querying for types).
 
 *Get query*
 
@@ -984,7 +984,7 @@ get $a;
 
 === Data
 
-Use the examples below to try different types of queries to a database data (querying for data instances).
+Use the examples below to try different types of queries to a database's data (querying for data instances).
 
 ==== Get query
 
@@ -998,13 +998,13 @@ get $cr;
 ----
 
 The above example matches all instances of the `user` type and all its subtypes that have `credential` attribute.
-Get clause filters the result so only the `credential` attributes will be returned.
+The get clause filters the result so only the `credential` attributes will be returned.
 
 For more information on how to read data please see the xref:02-dev/read.adoc[Reading data] page.
 
 ==== Insert query
 
-To write new data to a database use insert query.
+To write new data to a database use the insert query.
 
 [,typeql]
 ----
@@ -1014,15 +1014,15 @@ insert
   $p has email "bob@vaticle.com";
 ----
 
-The above example matches all instances of the `person` type and all its subtypes that have `full-name` attribute
-with value of `Bob`. Then it inserts the data that all matched instances of `person` have `email` attribute with
-value of `bob@vaticle.com`.
+The above example matches all instances of the `person` type and all its subtypes that have a `full-name` attribute
+with the value of `Bob`. Then it inserts the data that all matched instances of `person` have ownership over the `email`
+attribute type instance with the value of `bob@vaticle.com`.
 
 For more information on how to write data please see the xref:02-dev/write.adoc#_insert_query[Writing data] page.
 
 ==== Delete query
 
-To delete data from a database use delete query.
+To delete data from a database use the delete query.
 
 [,typeql]
 ----
@@ -1032,8 +1032,8 @@ delete
   $p isa person;
 ----
 
-The above example matches all instances of the `person` type and all its subtypes that have `email` attribute
-with value of `bob@vaticle.com`. Then it deletes the matched instances of `person`.
+The above example matches all instances of the `person` type and all its subtypes that have an `email` attribute
+with the value of `bob@vaticle.com`. Then it deletes the matched instances of `person`.
 
 For more information on how to delete data please see the xref:02-dev/write.adoc#_delete_query[Writing data] page.
 
@@ -1051,12 +1051,26 @@ insert
   $p has email "m.holley@vaticle.com";
 ----
 
-The above example matches all instances of the `person` type and all its subtypes that have `full-name` attribute
-with value of `Masako Holley` and have `email` attribute (assigning the `$email` variable). It proceeds with
-deleting the ownership of any `email` attributes that the matched `person` instances have. Finally, it inserts
-the data that all matched instances of `person` have `email` attribute with value of `m.holley@vaticle.com`.
+The above example matches all instances of the `person` type and all its subtypes that have a `full-name` attribute
+with the value of `Masako Holley` and have an `email` attribute (assigning the `$email` variable). It proceeds with
+deleting the ownership of any `email` attributes that the matched `person` instances have. Finally, it inserts the
+data that all matched instances of `person` have ownership over the `email` attribute with the value
+of `m.holley@vaticle.com`.
 
-For more information on how to update data please see the xref:02-dev/write.adoc#_update[Writing data] page.
+[NOTE]
+====
+The `$email` variable can only have one concept for every matched pattern (solution for the `match` clause). So if
+there will be more than one e-mail matched, then the result of match clause will contain multiple solutions.
+
+Both delete clause and insert clause will be executed once for every matched pattern. But the insertion of ownership of
+`email` attribute with the same value twice will not produce any duplication. Because any attribute instance can be
+owned only once. Hence, all previously existent "email" attributes will be deleted and only one inserted.
+====
+
+For more information on how to update data see the xref:02-dev/write.adoc#_update[Writing data] page.
+
+For more information on how pattern matching produces multiple results see the Patterns overview
+<<#_solutions,solutions>> description at the beginning of this page.
 
 === Complex query example
 
@@ -1094,11 +1108,12 @@ This `match` clause can be a part of any query. For example, by appending a `del
 we can create a delete query that deletes all access to action `view_file` on all objects with any path attribute
 owned for a person `Kevin Morrison`.
 
-If we change the value of the `$p-fname` variable to something non-existent in the database we are querying then
+If we change the value of the `$p-fname` variable to something nonexistent in our database then the
 `match` clause will return no results. Appending the same `delete` statement to such `match` clause would create a
-useless query that can't delete anything because can't find any data to delete.
+useless query that can't delete anything because it can't find any data to delete.
 
 [NOTE]
 ====
-By default, without any other keywords added after a `match` clause, it performs as a get query and returns all variables, mentioned in the `match` clause.
+By default, without any other keywords added after a `match` clause, it performs as a get query and returns all
+variables, mentioned in the `match` clause.
 ====
