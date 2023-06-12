@@ -2,7 +2,7 @@
 :keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker
 :longTailKeywords: typedb on linux, typedb on mac, typedb on windows, start typedb server
 :pageTitle: Installation
-:summary: Install and run the TypeDB server on Linux, mac or Windows.
+:summary: Download, install and run a TypeDB server on Linux, mac or Windows.
 :tabs-sync-option:
 :experimental:
 
@@ -22,7 +22,7 @@ include::partial$docker.adoc[tag=install]
 Windows::
 +
 --
-include::partial$win.adoc[tag=install]
+No package manager option for Windows. See the <<_manual>> section below.
 --
 
 Linux::
@@ -34,7 +34,6 @@ include::partial$linux.adoc[tag=install-apt]
 macOS (*Intel/x64*)::
 +
 --
-*Homebrew (not recommended for `AArch64`):*
 include::partial$macos.adoc[tag=install-homebrew]
 --
 macOS (*AArch64*)::
@@ -46,6 +45,7 @@ For more information: see https://forum.vaticle.com/t/running-typedb-on-an-m1-ma
 --
 ====
 
+[#_manual]
 == Download and install manually
 
 [tabs]
@@ -53,7 +53,7 @@ For more information: see https://forum.vaticle.com/t/running-typedb-on-an-m1-ma
 Docker::
 +
 --
-include::partial$docker.adoc[tag=install]
+include::partial$docker.adoc[tag=download&install]
 --
 
 Windows::
@@ -156,7 +156,7 @@ include::partial$macos.adoc[tag=stop]
 
 == After installation
 
-After the very first installation of TypeDB we recommend using our xref:01-start/quickstart.adoc[Quickstart guide]
+After the very first installation of TypeDB we recommend using our xref:quickstart.adoc[Quickstart guide]
 to set up a database and try different types of queries with xref:clients::studio.adoc[TypeDB Studio].
 
 Alternatively, any other xref:clients::clients.adoc[TypeDB Client] can be used to connect to a TypeDB server.

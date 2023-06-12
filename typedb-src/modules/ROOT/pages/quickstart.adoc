@@ -43,7 +43,7 @@ It was specifically designed to connect to TypeDB servers (Core and Enterprise),
 
 To proceed, please install both TypeDB and TypeDB Studio:
 
-* xref:01-start/installation.adoc#_install[Install TypeDB]
+* xref:installation.adoc#_install[Install TypeDB]
 * xref:clients:ROOT:studio.adoc#_download_install[Install TypeDB Studio]
 
 [IMPORTANT]
@@ -51,7 +51,7 @@ To proceed, please install both TypeDB and TypeDB Studio:
 Use the same version numbers for TypeDB and TypeDB Studio in order to ensure compatibility.
 
 If TypeDB Studio doesn't have a version similar to the TypeDB release -- use the
-xref:clients::studio.adoc#_version_compatibility[Version compatibility] table to determine a compatible version.
+xref:clients:ROOT:studio.adoc#_version_compatibility[Version compatibility] table to determine a compatible version.
 ====
 
 Alternatively, we can <<#_console_quickstart,use>> any other TypeDB Client to achieve the same results.
@@ -269,9 +269,9 @@ Here are the files used in the guide above:
   IAM schema.
 
 We can do the same process of creating a database, loading schema and data through any other
-xref:clients::clients.adoc[TypeDB Client].
+xref:clients:ROOT:clients.adoc[TypeDB Client].
 
-Here is an example with the xref:clients::console.adoc[TypeDB Console]:
+Here is an example with the xref:clients:ROOT:console.adoc[TypeDB Console]:
 
 [#_console_quickstart]
 .TypeDB Console commands
@@ -294,11 +294,11 @@ typedb console --command="transaction test-iam-db data read" --command='match $t
 
 After completing this guide we can recommend the following order of topics to continue exploring TypeDB:
 
-1. Find out more about how to xref::02-dev/connect.adoc[connect] to TypeDB, and use databases, sessions
+1. Find out more about how to xref:02-dev/connect.adoc[connect] to TypeDB, and use databases, sessions
    and transactions.
-2. Learn how to define a database xref::02-dev/schema.adoc[schema], xref::02-dev/match.adoc[match a pattern], or
-   design a query to xref::02-dev/write.adoc[write] or xref::02-dev/read.adoc[read] data.
-3. Check out how to interpret the TypeDB xref::02-dev/response.adoc[responses] to a query.
+2. Learn how to define a database xref:02-dev/schema.adoc[schema], xref:02-dev/match.adoc[match a pattern], or
+   design a query to xref:02-dev/write.adoc[write] or xref:02-dev/read.adoc[read] data.
+3. Check out how to interpret the TypeDB xref:02-dev/response.adoc[responses] to a query.
 4. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find one most suitable.
 5. (Optional) Learn more about the xref:04-tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
    majority of examples throughout this documentation.

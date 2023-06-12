@@ -152,7 +152,7 @@ match
 [IMPORTANT]
 ====
 To run these and other examples from our documentation, make sure to complete the
-xref:01-start/quickstart.adoc[Quickstart guide] to set up the database with the relevant schema and dataset. Do not use
+xref:quickstart.adoc[Quickstart guide] to set up the database with the relevant schema and dataset. Do not use
 the database created for the xref:02-dev/schema.adoc[schema] page, as it was only for demonstration of schema
 definition.
 ====
@@ -948,7 +948,7 @@ the access to be either `modify_file` or `view_file`.
 
 The easiest way to send a query to a TypeDB server is to use xref:clients::studio.adoc[TypeDB Studio].
 It will not only manage a TypeDB database connection for us, but will also process the results.
-See the xref:01-start/quickstart.adoc[Quickstart guide] for instructions on how to do this.
+See the xref:quickstart.adoc[Quickstart guide] for instructions on how to do this.
 
 Alternatively, we can use any other xref:clients::clients.adoc[TypeDB Client] to handle server connection,
 sessions, transactions, etc.

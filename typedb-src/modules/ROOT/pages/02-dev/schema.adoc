@@ -357,7 +357,7 @@ the rest of the documentation. However, some queries on this page result in modi
 used in the Quickstart guide. These occasional modifications are needed to demonstrate what TypeQL is capable of.
 
 To avoid any errors and/or data loss it is recommended to use a separate database for all examples on this page. For
-more information on creating a new database, see the xref:01-start/quickstart.adoc#_create_a_database[Quickstart guide].
+more information on creating a new database, see the xref:quickstart.adoc#_create_a_database[Quickstart guide].
 ====
 
 [,typeql]
@@ -392,7 +392,7 @@ group-membership sub membership,
 ----
 
 The above example can be run in xref:clients::studio.adoc[TypeDB Studio]. See the
-xref:01-start/quickstart.adoc[Quickstart guide] for full descriptions of the following steps:
+xref:quickstart.adoc[Quickstart guide] for full descriptions of the following steps:
 
 . Make sure TypeDB server is up.
 . Start TypeDB Studio.
@@ -777,6 +777,12 @@ of a `file`, each with its own `filepath` -- and symlinks can be created that po
 While it is more common for the roles in relations to be played by entities or other relations, they can also be played
 by attributes.
 
+[WARNING]
+====
+Attributes playing a role in a relation feature will be deprecated in one of the upcoming versions and deleted in
+TypeDB version 3.0.
+====
+
 [,typeql]
 ----
 define credential sub attribute, value string, plays change-request:change;
@@ -896,7 +902,10 @@ relation type. The subtype will inherit all owned attribute types and all roles 
 ----
 define
 
-membership sub relation, relates parent, relates member;
+membership sub relation,
+  relates parent,
+  relates member;
+
 collection-membership sub membership;
 ----
 
@@ -910,9 +919,12 @@ versus the roles defined by its parent type.
 ----
 define
 
-membership sub relation, relates parent, relates member;
+membership sub relation,
+  relates parent,
+  relates member;
 
-collection-membership sub membership, relates collection as parent;
+collection-membership sub membership,
+  relates collection as parent;
 ----
 
 In the example above, the `collection-membership` relation type subtypes the `membership` relation type, and overrides
@@ -920,8 +932,17 @@ the inherited `parent` role as `collection`. The inherited `member` role inherit
 
 [NOTE]
 ====
-The two examples above can be run back to back. The second one will update the `collection-membership` type to override one of its inherited roles.
+The two examples above can be run one after another. The second one will update the `collection-membership` type to
+override one of its inherited roles.
 ====
+
+[IMPORTANT]
+====
+By overriding an inherited role, we implicitly prevent the sub-relation from relating the role that would otherwise be
+inherited.
+====
+
+//#todo add another example on inherited overriden roles:
 
 ===== Complex example
 
@@ -952,15 +973,16 @@ change-request sub relation,
     relates change;
 ----
 
+//#todo add illustration for this example
+
 The example above defines one attribute type and five relation types:
 
 * `ownership` -- subtypes the `relation` built-in type, and relates `owned`, and `owner` roles.
 * `group-ownership` -- subtypes `ownership` relation type, relates `group` as `owned`, and `owner` (inherited).
 * `object-ownership` -- subtypes `ownership` relation, relates `object` as `owned`, and `owner` (inherited).
 * `access` -- subtypes the `relation` built-in type, relates `object` (e.g., file) and `action` (e.g.,
-read), plays the role of `change` in `change-request` relation type.
-* `change-request` -- subtypes the `relation` built-in type, relates `requester`, `requestee` and
-`change`.
+  read), plays the role of `change` in `change-request` relation type.
+* `change-request` -- subtypes the `relation` built-in type, relates `requester`, `requestee` and `change`.
 
 [#_define_rules]
 === Define rules

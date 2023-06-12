@@ -78,15 +78,15 @@ definition.
 
 Finally, we can use reasoning engine to infer new data based on the patterns found in database. To be able to do that
 we define rules in the database schema. Rules can dramatically shorten complex queries (e.g., transitivity of
-relations), perform xref::02-dev/infer.adoc#_explain_query[explainable] knowledge discovery, and implement business
+relations), perform xref:02-dev/infer.adoc#_explain_query[explainable] knowledge discovery, and implement business
 logic at the database level.
 
 == Learn more
 
-1. First things first -- use xref::01-start/installation.adoc[installation guide] to install TypeDB on the
+1. First things first -- use xref:installation.adoc[installation guide] to install TypeDB on the
    local machine.
 
-2. We strongly recommend starting TypeDB journey with our xref::01-start/quickstart.adoc[Quickstart guide].
+2. We strongly recommend starting TypeDB journey with our xref:quickstart.adoc[Quickstart guide].
    It goes through the step-by-step process of creating a new database, applying schema, loading sample data,
    and querying. The resulting environment is suitable for executing most examples in our documentation.
    On top of that it familiarizes users with TypeDB Studio — IDE, specifically designed for TypeDB
