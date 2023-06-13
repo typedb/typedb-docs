@@ -86,8 +86,8 @@ due to the older server lacking the API to check the protocol version.
 [#_databases]
 == Databases
 
-TypeDB instances can contain multiple databases. A database consists of a xref:02-dev/schema.adoc[schema] and
-xref:02-dev/write.adoc[data] -- and is both separate and independent of any other database. It is not possible for two
+TypeDB instances can contain multiple databases. A database consists of a xref:dev/schema.adoc[schema] and
+xref:dev/write.adoc[data] -- and is both separate and independent of any other database. It is not possible for two
 databases to influence each other. However, Сlients can connect to multiple databases simultaneously.
 
 [NOTE]
@@ -285,7 +285,7 @@ There are two types of transactions:
 
 [NOTE]
 ====
-Transactions must be explicitly opened and closed by TypeDB Clients. For drivers see the xref:02-dev/api.adoc[API] page.
+Transactions must be explicitly opened and closed by TypeDB Clients. For drivers see the xref:dev/api.adoc[API] page.
 ====
 
 [tabs]
@@ -372,7 +372,7 @@ caused by transactions that will not be completed and terminate unresponsive tra
 * Avoid long-running transactions which can result in conflicts and resource contention.
 * Transactions should group logically coherent queries.
 
-For more advices and *best practices* visit the xref:02-dev/best.adoc[Best practices] page.
+For more advices and *best practices* visit the xref:dev/best.adoc[Best practices] page.
 
 [#_acid_guarantees]
 == ACID guarantees
@@ -424,7 +424,7 @@ Successful write transactions are written to the write-ahead log before returnin
 transaction is not successful, all changes are rolled back.
 
 For TypeDB Enterprise and TypeDB Cloud installations transaction acknowledgement is sent to the client after majority
-of replicas replicated the transaction results. See xref:03-admin/ha.adoc#_replication[Replication] for details.
+of replicas replicated the transaction results. See xref:admin/ha.adoc#_replication[Replication] for details.
 
 [#_schema_integrity]
 === Schema integrity enforcement

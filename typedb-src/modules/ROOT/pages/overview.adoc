@@ -10,34 +10,34 @@ This is the TypeDB server documentation section. It has the following sections:
 * xref:installation.adoc[] -- TypeDB server installation manual.
 * xref:quickstart.adoc[] -- a guide to quickly set up a TypeDB database.
 * *Development*
- ** xref:02-dev/connect.adoc[] -- TypeDB server and database connections
- ** xref:02-dev/schema.adoc[] -- types and rules definition
- ** xref:02-dev/match.adoc[] -- patterns design and matching data
- ** xref:02-dev/write.adoc[] -- data modification queries
- ** xref:02-dev/read.adoc[] -- data retrieval queries
- ** xref:02-dev/infer.adoc[] -- data inference queries
- ** xref:02-dev/response.adoc[] -- parsing query response
- ** xref:02-dev/api.adoc[] -- brief description of Client API and TypeDB Drivers
- ** xref:02-dev/best.adoc[] -- schema and query design tips
+ ** xref:dev/connect.adoc[] -- TypeDB server and database connections
+ ** xref:dev/schema.adoc[] -- types and rules definition
+ ** xref:dev/match.adoc[] -- patterns design and matching data
+ ** xref:dev/write.adoc[] -- data modification queries
+ ** xref:dev/read.adoc[] -- data retrieval queries
+ ** xref:dev/infer.adoc[] -- data inference queries
+ ** xref:dev/response.adoc[] -- parsing query response
+ ** xref:dev/api.adoc[] -- brief description of Client API and TypeDB Drivers
+ ** xref:dev/best.adoc[] -- schema and query design tips
 * *Administration*
- ** xref:03-admin/configuration.adoc[] -- TypeDB server configuration parameters and how to change
+ ** xref:admin/configuration.adoc[] -- TypeDB server configuration parameters and how to change
  configuration
- ** xref:03-admin/export-import.adoc[] -- exporting and importing database schema and data
- ** xref:03-admin/update.adoc[] -- how to migrate to a newer version of TypeDB
- ** xref:03-admin/ha.adoc[] -- description of TypeDB high availability features
- ** xref:03-admin/security.adoc[] -- description of TypeDB security features
+ ** xref:admin/export-import.adoc[] -- exporting and importing database schema and data
+ ** xref:admin/update.adoc[] -- how to migrate to a newer version of TypeDB
+ ** xref:admin/ha.adoc[] -- description of TypeDB high availability features
+ ** xref:admin/security.adoc[] -- description of TypeDB security features
 * *Tutorials*
- ** xref:04-tutorials/iam-schema.adoc[] -- a brief description of IAM schema that widely used throughout the documentation.
- ** xref:04-tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js.
- ** xref:04-tutorials/data-migration.adoc[Data migration] -- How to load a dataset from an intermediate input format
+ ** xref:tutorials/iam-schema.adoc[] -- a brief description of IAM schema that widely used throughout the documentation.
+ ** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js.
+ ** xref:tutorials/data-migration.adoc[Data migration] -- How to load a dataset from an intermediate input format
  into TypeDB database
- ** xref:04-tutorials/new-driver-tutorial.adoc[New client] -- How to create a new client
+ ** xref:tutorials/new-driver-tutorial.adoc[New client] -- How to create a new client
 
 == Thinking in TypeQL and TypeDB
 
 // #todo Change the link to TypeQL -
 
-The backbone of any TypeDB database is the representation of our domain: the xref:02-dev/schema.adoc[schema].
+The backbone of any TypeDB database is the representation of our domain: the xref:dev/schema.adoc[schema].
 A TypeDB schema is the blueprint of a TypeDB database. Using TypeQL language, we
 define a schema to model a domain true to nature. The schema is made up of a set of types and rules, which harness
 object-oriented principles and logical deduction.

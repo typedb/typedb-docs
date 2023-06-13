@@ -21,8 +21,8 @@ xref:clients::node-js/node-js-overview.adoc[Node.js].
 A get query triggers a search in a database based on what has been described in the `match` clause. It is
 used to extract concepts (data instances or types) out of a database. The result of a get query can be quite different,
 depending on the query itself (<<_modifiers,modifiers>>, <<_aggregation,aggregation>>, <<_group,grouping>>)
-and transaction options (xref:02-dev/infer.adoc#_inferring_data[inference]). For more information see the
-xref:02-dev/response.adoc[Response interpretation] page.
+and transaction options (xref:dev/infer.adoc#_inferring_data[inference]). For more information see the
+xref:dev/response.adoc[Response interpretation] page.
 
 [NOTE]
 ====
@@ -54,7 +54,7 @@ match <pattern>
 [NOTE]
 ====
 A pattern consists of variables and constraints for concepts. For more information see the
-xref:02-dev/match.adoc#_pattern_syntax[Pattern syntax] section.
+xref:dev/match.adoc#_pattern_syntax[Pattern syntax] section.
 ====
 
 [IMPORTANT]
@@ -142,7 +142,7 @@ TypeDB query processor will explore all possible solutions: every solution consi
 and one `file` entity. There are only `3 * 10 = 30` possible combinations of person and file entities, so we will
 get 30 answers.
 
-See the xref:02-dev/match.adoc#_patterns_overview[Patterns overview] section of the Matching patterns page for
+See the xref:dev/match.adoc#_patterns_overview[Patterns overview] section of the Matching patterns page for
 more information.
 
 [#_modifiers]
@@ -279,7 +279,7 @@ TypeDB supports the following types of aggregation:
 * `mean`
 * `median`
 
-To perform aggregation in TypeDB, we first write a xref:02-dev/match.adoc[match clause] to describe the set of data,
+To perform aggregation in TypeDB, we first write a xref:dev/match.adoc[match clause] to describe the set of data,
 then follow that by get to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate
 function to perform aggregation on the variable of interest.
 
@@ -342,7 +342,7 @@ sum $s;
 Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
 of `$s` from the aggregation.
 
-For more information see the xref:02-dev/match.adoc#_solutions[Matching patterns] page.
+For more information see the xref:dev/match.adoc#_solutions[Matching patterns] page.
 ====
 
 ==== Maximum

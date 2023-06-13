@@ -5,7 +5,7 @@
 :summary: A simple example with a prototype application to run against a TypeDB database.
 :tabs-sync-option:
 
-The following sample app implementations are all designed to connect to the xref:04-tutorials/iam-schema.adoc[IAM]
+The following sample app implementations are all designed to connect to the xref:tutorials/iam-schema.adoc[IAM]
 database located at the TypeDB server with `0.0.0.0:1729` address. Please make sure to have TypeDB server running
 with the `iam` database created and both *schema* and *data* loaded. Use the
 xref:installation.adoc[Installation guide] to prepare the server
@@ -60,7 +60,7 @@ explicit `get` statement it is assumed that we get all the variables that were a
 ====
 Note that users that do not have `full-name` or `email` attributes added to them will not be shown in
 the results of this request. Additionally, users that have multiple full-names or emails will be mentioned more than once.
-For more information see the xref:02-dev/match.adoc#_solutions[matching patterns] explanation.
+For more information see the xref:dev/match.adoc#_solutions[matching patterns] explanation.
 ====
 
 ==== List all the files that Kevin Morrison has access to
@@ -105,7 +105,7 @@ return the `path` attributes (`$fp`) of any `object` that the `user` has `permis
 [NOTE]
 ====
 Note that users and files don't have a singular relation that connects them directly. According to the `iam`
-xref:04-tutorials/iam-schema.adoc[schema] we need two relations to connect them: `permission` and `access`. Both
+xref:tutorials/iam-schema.adoc[schema] we need two relations to connect them: `permission` and `access`. Both
 relations must be used to make a decision of whether a user has access to a file.
 ====
 
@@ -152,7 +152,7 @@ starting from number six.
 [NOTE]
 ====
 Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
-xref:02-dev/schema.adoc#_rules[rule]. To use inference in this query we modify TypeDB options and send the modified set
+xref:dev/schema.adoc#_rules[rule]. To use inference in this query we modify TypeDB options and send the modified set
 of options to the transaction call.
 ====
 

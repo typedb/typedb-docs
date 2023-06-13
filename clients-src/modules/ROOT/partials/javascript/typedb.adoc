@@ -10,14 +10,14 @@ TypeDB.coreClient(address);
 === Description
 
 In order to communicate with TypeDB Core databases via sessions and transactions, we first need to instantiate a TypeDB Core client.
-The created object connects our application with the running TypeDB Server.
+The created object connects our application with the running TypeDB server.
 
 === Input parameters
 
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| address | The address (host:port) on which the TypeDB Server is running | String | True |  
+| address | The address (host:port) on which the TypeDB server is running | String | True |
 |===
 
 === Returns

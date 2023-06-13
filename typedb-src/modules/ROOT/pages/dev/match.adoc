@@ -15,25 +15,25 @@ statements) is a clause.
 These clauses can be combined to create four different types of queries:
 
 * Reading schema and data
- ** xref:02-dev/read.adoc#_get_query[Get] (match-get) query -- to retrieve data instances or schema types.
+ ** xref:dev/read.adoc#_get_query[Get] (match-get) query -- to retrieve data instances or schema types.
 * Writing data
- ** xref:02-dev/write.adoc#_insert_query[Insert] (match-insert) query -- to insert data.
- ** xref:02-dev/write.adoc#_delete_query[Delete] (match-delete) query -- to delete data.
- ** xref:02-dev/write.adoc#_update[Update] (match-delete-insert) query -- to delete and then insert data.
+ ** xref:dev/write.adoc#_insert_query[Insert] (match-insert) query -- to insert data.
+ ** xref:dev/write.adoc#_delete_query[Delete] (match-delete) query -- to delete data.
+ ** xref:dev/write.adoc#_update[Update] (match-delete-insert) query -- to delete and then insert data.
 
 A `match` clause is optional for insert queries, but required for all others.
 
 [NOTE]
 ====
 While the `match` clause can be used to read types from a schema, to write types to a schema use the
-xref:02-dev/schema.adoc#_define[define] and
-xref:02-dev/schema.adoc#_undefine_a_type[undefine] clauses instead of insert/delete.
+xref:dev/schema.adoc#_define[define] and
+xref:dev/schema.adoc#_undefine_a_type[undefine] clauses instead of insert/delete.
 ====
 
 [IMPORTANT]
 ====
 If a `match` clause is **not** followed by a `get`, `insert`, or `delete` clause, TypeDB assumes it is a
-xref:02-dev/read.adoc#_get_query[get query] and adds an implicit `get` clause to return all variables defined in the
+xref:dev/read.adoc#_get_query[get query] and adds an implicit `get` clause to return all variables defined in the
 `match` clause.
 ====
 
@@ -42,7 +42,7 @@ xref:02-dev/read.adoc#_get_query[get query] and adds an implicit `get` clause to
 
 TypeQL is *declarative* language. When writing a TypeQL pattern for query, we describe a set of
 requirements or constraints for the concepts (types or instances) we would like to match (to perform
-xref:02-dev/read.adoc#_get_query[get]/xref:02-dev/write.adoc#_insert_query[insert]/xref:02-dev/write.adoc#_delete_query[delete]/xref:02-dev/write.adoc#_update[update] query).
+xref:dev/read.adoc#_get_query[get]/xref:dev/write.adoc#_insert_query[insert]/xref:dev/write.adoc#_delete_query[delete]/xref:dev/write.adoc#_update[update] query).
 Rather than writing an algorithm of how the data should be retrieved,
 we declare requirements and the TypeDB query processor will take care of finding an optimal way to retrieve it.
 
@@ -103,8 +103,8 @@ permutations: **20 matched results** in total.
 There are two types of variables:
 
 * Concept variable -- used *by default* in most queries. Reference a concept (either an instance of data or a type).
-* Value variable -- used only in computation, like xref:02-dev/match.adoc#_arithmetic_operations[arithmetic operations]
-  and other xref:02-dev/match.adoc#_built_in_functions[built-in functions], requiring direct operation on values.
+* Value variable -- used only in computation, like xref:dev/match.adoc#_arithmetic_operations[arithmetic operations]
+  and other xref:dev/match.adoc#_built_in_functions[built-in functions], requiring direct operation on values.
 
 A concept variable starts with dollar sign `$` followed by variable label (for example, `$x`) and reference exactly
 one concept (type or data) per every answer (solution) found for a pattern. See <<_example>> below.
@@ -153,7 +153,7 @@ match
 ====
 To run these and other examples from our documentation, make sure to complete the
 xref:quickstart.adoc[Quickstart guide] to set up the database with the relevant schema and dataset. Do not use
-the database created for the xref:02-dev/schema.adoc[schema] page, as it was only for demonstration of schema
+the database created for the xref:dev/schema.adoc[schema] page, as it was only for demonstration of schema
 definition.
 ====
 
@@ -166,8 +166,8 @@ indentation for all our queries, but that will make it harder for us to read the
 [#_value_variables]
 === Value variables
 
-Additionally, to the default concept xref::02-dev/read.adoc#_variables[variables], that address concepts inside a
-TypeDB database, there is a special type of variables, used only for xref:02-dev/match.adoc#_computation[computation].
+Additionally, to the default concept xref::dev/read.adoc#_variables[variables], that address concepts inside a
+TypeDB database, there is a special type of variables, used only for xref:dev/match.adoc#_computation[computation].
 
 They are called Value variables.
 
@@ -368,7 +368,7 @@ A `match` clause can be used to find types or roles in a database schema.
 ===== All types
 
 Use a `subtype` pattern with the built-in type `thing` to find all types defined in a schema. For more information see
-the xref:typedb::02-dev/schema.adoc#_thing_type[Thing type] section.
+the xref:typedb::dev/schema.adoc#_thing_type[Thing type] section.
 
 [,typeql]
 ----
@@ -473,7 +473,7 @@ A `match` clause can be used to find data in a database.
 ==== All data
 
 Use an `instance` pattern with type `thing` to find all entities, relations, and attributes (instances of data).
-For more information see the xref:typedb::02-dev/schema.adoc#_thing_type[Thing type] section.
+For more information see the xref:typedb::dev/schema.adoc#_thing_type[Thing type] section.
 
 [,typeql]
 ----
@@ -975,11 +975,11 @@ match
 get $a;
 ----
 
-*Insert query* -- Use xref:02-dev/schema.adoc#_define_schema[define] instead.
+*Insert query* -- Use xref:dev/schema.adoc#_define_schema[define] instead.
 
-*Delete query* -- Use xref:02-dev/schema.adoc#_undefine_a_type[undefine] instead.
+*Delete query* -- Use xref:dev/schema.adoc#_undefine_a_type[undefine] instead.
 
-*Update* -- Use xref:02-dev/schema.adoc#_define_schema[define] and xref:02-dev/schema.adoc#_undefine_a_type[undefine]
+*Update* -- Use xref:dev/schema.adoc#_define_schema[define] and xref:dev/schema.adoc#_undefine_a_type[undefine]
  instead.
 
 === Data
@@ -1000,7 +1000,7 @@ get $cr;
 The above example matches all instances of the `user` type and all its subtypes that have `credential` attribute.
 The get clause filters the result so only the `credential` attributes will be returned.
 
-For more information on how to read data please see the xref:02-dev/read.adoc[Reading data] page.
+For more information on how to read data please see the xref:dev/read.adoc[Reading data] page.
 
 ==== Insert query
 
@@ -1018,7 +1018,7 @@ The above example matches all instances of the `person` type and all its subtype
 with the value of `Bob`. Then it inserts the data that all matched instances of `person` have ownership over the `email`
 attribute type instance with the value of `bob@vaticle.com`.
 
-For more information on how to write data please see the xref:02-dev/write.adoc#_insert_query[Writing data] page.
+For more information on how to write data please see the xref:dev/write.adoc#_insert_query[Writing data] page.
 
 ==== Delete query
 
@@ -1035,7 +1035,7 @@ delete
 The above example matches all instances of the `person` type and all its subtypes that have an `email` attribute
 with the value of `bob@vaticle.com`. Then it deletes the matched instances of `person`.
 
-For more information on how to delete data please see the xref:02-dev/write.adoc#_delete_query[Writing data] page.
+For more information on how to delete data please see the xref:dev/write.adoc#_delete_query[Writing data] page.
 
 ==== Update
 
@@ -1067,7 +1067,7 @@ Both delete clause and insert clause will be executed once for every matched pat
 owned only once. Hence, all previously existent "email" attributes will be deleted and only one inserted.
 ====
 
-For more information on how to update data see the xref:02-dev/write.adoc#_update[Writing data] page.
+For more information on how to update data see the xref:dev/write.adoc#_update[Writing data] page.
 
 For more information on how pattern matching produces multiple results see the Patterns overview
 <<#_solutions,solutions>> description at the beginning of this page.

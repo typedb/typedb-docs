@@ -247,7 +247,7 @@ A rule consists of a condition and a conclusion.
 Condition is a pattern to look for in data and conclusion is data to be virtually inserted for every result matched
 with a pattern from condition.
 
-Rules are used by queries for xref:02-dev/infer.adoc[Inferring new data] only in read transactions, and only if
+Rules are used by queries for xref:dev/infer.adoc[Inferring new data] only in read transactions, and only if
 inference option is enabled.
 
 [IMPORTANT]
@@ -295,7 +295,7 @@ evaluated.
 Infinite recursion and non-termination are prevented with a tabling mechanism.
 ====
 
-We can use xref::02-dev/match.adoc#_computation[computation] operations and functions in the condition pattern. And we
+We can use xref::dev/match.adoc#_computation[computation] operations and functions in the condition pattern. And we
 can use value variables in the conclusion of a rule.
 
 [WARNING]
@@ -323,8 +323,8 @@ once at the very beginning.
 
 [IMPORTANT]
 ====
-In order to define a schema, a `schema` xref:02-dev/connect.adoc#_sessions[session] must be opened and a `write`
-xref:02-dev/connect.adoc#_transactions[transaction] started. The changes must be *committed*, or they will NOT be
+In order to define a schema, a `schema` xref:dev/connect.adoc#_sessions[session] must be opened and a `write`
+xref:dev/connect.adoc#_transactions[transaction] started. The changes must be *committed*, or they will NOT be
 permanent.
 ====
 
@@ -352,7 +352,7 @@ Two notable exceptions are:
 
 [IMPORTANT]
 ====
-The following examples define parts of the xref:04-tutorials/iam-schema.adoc[IAM schema] that will be used throughout
+The following examples define parts of the xref:tutorials/iam-schema.adoc[IAM schema] that will be used throughout
 the rest of the documentation. However, some queries on this page result in modification of the original IAM schema
 used in the Quickstart guide. These occasional modifications are needed to demonstrate what TypeQL is capable of.
 
@@ -500,7 +500,7 @@ object sub entity, abstract, owns object-type;
 By default, an entity can have multiple attributes of the same type: zero, one, or many.
 
 By having multiple attributes of the same type we're effectively creating a
-xref:02-dev/write.adoc#_multivalued_attributes[multivalued attribute] (as if having an attribute type instantiated
+xref:dev/write.adoc#_multivalued_attributes[multivalued attribute] (as if having an attribute type instantiated
 with multiple values).
 
 Use the `@key` keyword to limit the cardinality to exactly *one* and add *uniqueness* constraint.
@@ -991,7 +991,7 @@ The example above defines one attribute type and five relation types:
 
 Rules are defined independently of any types. Any types used in a rule must be defined in a schema.
 
-They are executed only as a part of get queries when the xref:02-dev/infer.adoc[inference] option is *enabled*. The
+They are executed only as a part of get queries when the xref:dev/infer.adoc[inference] option is *enabled*. The
 results of rules execution exist only within the transaction they run in. They are not persisted, and any data inferred
 in the transaction ceases to exist when the transaction is closed. Read more on rules in the <<_rules,Rules>> section.
 
@@ -1015,7 +1015,7 @@ The `rule`, `when`, and `then` keywords are specific to rule definitions.
 ====
 Unlike other `define` statements for schema definitions, the rule syntax uses patterns consisting of
 variables and constraints for **data** instances. For more information see the
-xref:02-dev/match.adoc#_pattern_syntax[Pattern syntax] section.
+xref:dev/match.adoc#_pattern_syntax[Pattern syntax] section.
 ====
 
 [#_rule_validation]
@@ -1110,7 +1110,7 @@ The above query defines additional attribute subtype `size-mb`, defines that it 
 subtype and creates a rule `size-convert` to create ownership of `size-mb` with the value *1024 times lower* than
 `size-kb` to any `file` instance that has `size-kb`.
 
-With this rule defined and inference option xref::02-dev/infer.adoc#_how_to_use_inference[enabled] we can try the
+With this rule defined and inference option xref::dev/infer.adoc#_how_to_use_inference[enabled] we can try the
 following query:
 
 [,typeql]
@@ -1197,7 +1197,7 @@ The example above illustrates a more complex rule, using the IAM schema.
 In short, the permission to access some file with action that has `name` of `view_file` can be inferred by the
 rule from the permission to `modify_file` the same file.
 
-A full explanation of how this rule works is given in the xref:02-dev/infer.adoc#_example[Example] section of
+A full explanation of how this rule works is given in the xref:dev/infer.adoc#_example[Example] section of
 Inferring data page.
 
 == Modify existing schema
@@ -1217,7 +1217,7 @@ the changed type or rule will be processed as a new one.
 === Renaming types
 
 To rename (change its label) a type use the xref:clients::studio.adoc[TypeDB Studio] or
-xref:02-dev/api.adoc[TypeDB API] rename method for a type class object.
+xref:dev/api.adoc[TypeDB API] rename method for a type class object.
 
 === Deleting types and rules
 

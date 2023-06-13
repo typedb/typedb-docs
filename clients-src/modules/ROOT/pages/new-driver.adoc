@@ -44,15 +44,15 @@ The entry point is the root package, in this case named `client-java`.
 Then we have `query` for querying, `concept` for the API to be able to process concepts, `logic` for reasoning.
 
 There are many places we could start building a client. In the
-xref:typedb::04-tutorials/new-driver-tutorial.adoc[How to build a new TypeDB Client] tutorial, we start by
+xref:typedb::tutorials/new-driver-tutorial.adoc[How to build a new TypeDB Client] tutorial, we start by
 attempting to make a single gRPC call to TypeDB, and create a database.
 
 === Connection and databases
 
-To instantiate a client we need to be able to establish a network connection to a single TypeDB server or a TypeDB
-cluster.
+To instantiate a client we need to be able to establish a network connection to a TypeDB Core server or a
+TypeDB Enterprise cluster.
 
-This connection opens us basic features of xref:typedb::02-dev/connect.adoc#_databases[database] management, user
+This connection opens us basic features of xref:typedb::dev/connect.adoc#_databases[database] management, user
 management (TypeDB Cloud only) and enables us to open a session.
 
 ==== gRPC
@@ -196,10 +196,10 @@ It collects all requests in a 1ms time window, bundles them into a single gRPC m
 
 === Exploring query answers
 
-See the xref:typedb::02-dev/response.adoc[Response interpretation] page to find information of possible
+See the xref:typedb::dev/response.adoc[Response interpretation] page to find information of possible
 response to different query types.
 
-The `ConceptMap` objects returned by a xref:typedb::02-dev/read.adoc#_get_query[Get query] can contain
+The `ConceptMap` objects returned by a xref:typedb::dev/read.adoc#_get_query[Get query] can contain
 any type of `Concept`. This `Concept` class hierarchy is reflected in a TypeDB Driver implementation and class
 structure.
 
@@ -216,11 +216,12 @@ Implementing all concept methods for TypeDB API is not complicated, but it is qu
 lot of methods. Concept methods either return single or streamed responses. `ThingType.getInstances` is an example
 of a Streamed Concept method.
 
-== TypeDB Cloud client
+== TypeDB cluster client
 
-TypeDB Cloud uses clusters of TypeDB servers that run as a distributed network of database servers which communicate
-internally to form a consensus when querying. If one server has an outage, we can recover from the issue by falling
-back to another server. To enable this, TypeDB Driver constructs 1 Core client per TypeDB server (cluster node):
+TypeDB Cloud and TypeDB Enterprise use clusters of TypeDB Enterprise servers that run as a distributed network of
+database servers which communicate internally to form a consensus when querying. If one server has an outage, we can
+recover from the issue by falling back to another server. To enable this, TypeDB Driver constructs 1 Core client per a
+TypeDB server (cluster node):
 
 image::cluster.png[Cluster client Architecture]
 
@@ -254,7 +255,7 @@ Scenario: commit in a read transaction throws
 A driver is considered production-ready once it passes all the <<_behavioral_testing,tests>> and adheres to the
 TypeDB architecture.
 
-Check the xref:typedb::04-tutorials/new-driver-tutorial.adoc[How to build a new TypeDB Driver]
+Check the xref:typedb::tutorials/new-driver-tutorial.adoc[How to build a new TypeDB Driver]
 tutorial to see some examples. For more information see the source codes of our TypeDB Drivers:
 https://github.com/vaticle/typedb-client-java[Java],
 https://github.com/vaticle/typedb-client-python[Python],

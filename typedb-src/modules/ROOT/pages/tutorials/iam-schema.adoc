@@ -38,7 +38,7 @@ As with any TypeDB schema, the IAM schema consists of:
  ** Attribute types
 * Rules
 
-The xref:02-dev/schema.adoc[schema] page provides more information to better understand the
+The xref:dev/schema.adoc[schema] page provides more information to better understand the
 terminology of TypeDB schemas.
 
 As for the terminology of the IAM data model -- the main entity types in the IAM schema are:
@@ -219,7 +219,7 @@ There are multiple rules in the schema that can be used in different situations 
 === add-view-permission rule
 
 This simple rule illustrates basic inference. More information on rules can be found in the
-xref:02-dev/schema.adoc#_rules[schema] documentation page.
+xref:dev/schema.adoc#_rules[schema] documentation page.
 
 [,typeql]
 ----
@@ -269,7 +269,7 @@ In short, if someone has *modify* access to a file, then they have *view* access
 
 It's easy to check this rule in action: by creating a `modify_file` access `permission` for a `subject`/`object` pair,
 and then checking the `view_file` access `permission` for the same pair of `subject`/`object` with the
-xref:02-dev/infer.adoc#_inference[inference] option enabled.
+xref:dev/infer.adoc#_inference[inference] option enabled.
 
 [#_full_schema]
 == Full schema
@@ -305,5 +305,5 @@ actions for some subjects.
 
 == Learn more
 
-After completing this page we recommend to explore xref:04-tutorials/sample-app.adoc[sample application] written
+After completing this page we recommend to explore xref:tutorials/sample-app.adoc[sample application] written
 in Java, Python, and Node.js or check out xref:clients:ROOT:clients.adoc[TypeDB Clients] to find the most suitable one.

@@ -6,7 +6,7 @@
 :tabs-sync-option:
 
 Migrating data from other sources into TypeDB is an important step. It is considered that we have already
-developed a xref:02-dev/schema.adoc[schema] for the TypeDB database according to the data model. Accurate and
+developed a xref:dev/schema.adoc[schema] for the TypeDB database according to the data model. Accurate and
 comprehensive schema design will simplify not only data migration but also the design of data queries later on.
 
 [NOTE]
@@ -18,7 +18,7 @@ https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_call
 https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_calls/nodejs#quickstart[Node.js] versions directly.
 ====
 
-To load data into a TypeDB database we need to perform xref:02-dev/write.adoc#_insert_query[insert] queries.
+To load data into a TypeDB database we need to perform xref:dev/write.adoc#_insert_query[insert] queries.
 The following <<_application,example>> showcases how to load <<_dataset,sample data>> from
 `CSV`, `JSON`, and `XML` formats using TypeDB Drivers for
 <<_java,Java>>,
@@ -78,11 +78,13 @@ The schema in the file above consists of the following types.
 * `duration` of `long` value type
 * `name` of `string` value type
 
-Use TypeDB Studio or any other TypeDB Client to create a new database named `phone_calls` in a TypeDB server and
-import the schema https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/schema.tql[file].
-The instructions how to create a database and load a schema with TypeDB Studio can be found in the
-xref:quickstart.adoc[Quickstart guide]
-(make sure to use the schema file above instead of the IAM schema code/file).
+Use TypeDB Studio or any other TypeDB Client to xref:clients::studio.adoc#_create_a_database[create a new database]
+named `phone_calls` in a TypeDB server and import the schema
+https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/schema.tql[file].
+
+The step-by-step instructions how to create a database and load a schema file with TypeDB Studio can be found in the
+xref:quickstart.adoc[Quickstart guide]. Make sure to use the schema file provided above instead of the IAM schema
+code/file from the Quickstart guide.
 
 [#_dataset]
 === Dataset
@@ -114,7 +116,9 @@ The Phone Calls example application showcases:
 ====
 For any of the following language specific variant the following software is required:
 
-- TypeDB server (v.*2.11.1+*),
+//#todo Update the example to support latest TypeDB
+
+- TypeDB Core server (v.*2.11.1+*),
 - Java version *11+*,
 - any IDE, for example, IntelliJ IDEA.
 ====

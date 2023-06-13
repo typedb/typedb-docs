@@ -60,8 +60,8 @@ section below.
 
 === Get query
 
-The ordinary xref:02-dev/read.adoc#_get_query[get query] (without xref:02-dev/read.adoc#_aggregation[aggregation] or
-xref:02-dev/read.adoc#_group[grouping]) returns a stream/iterator of a ConceptMap objects.
+The ordinary xref:dev/read.adoc#_get_query[get query] (without xref:dev/read.adoc#_aggregation[aggregation] or
+xref:dev/read.adoc#_group[grouping]) returns a stream/iterator of a ConceptMap objects.
 
 Every iteration returns the result as a <<_conceptmap,ConceptMap>> object.
 
@@ -118,7 +118,7 @@ Similar to a <<_delete_query,delete>> query.
 
 Explain query returns a stream/iterator of an Explanation objects.
 
-For more information on inference explanation please see the xref:02-dev/infer.adoc[Inferring data] page.
+For more information on inference explanation please see the xref:dev/infer.adoc[Inferring data] page.
 
 [#_response_formats]
 == Response formats
@@ -130,7 +130,7 @@ For xref:clients::clients.adoc#_typedb_drivers[TypeDB Drivers]: the specific met
 response depend on the TypeDB Driver used.
 
 The following is a very basic description of objects used to interpret the results from the TypeDB query response.
-For more information please see the xref:02-dev/api.adoc[API & Drivers] page and documentation for the
+For more information please see the xref:dev/api.adoc[API & Drivers] page and documentation for the
 xref:clients::java/java-overview.adoc[Java],
 xref:clients::python/python-overview.adoc[Python], and
 xref:clients::node-js/node-js-overview.adoc[Node.js] TypeDB Drivers respectively.
@@ -173,8 +173,8 @@ Future object represents an asynchronous query result to be able to get the valu
 === Explanation
 
 Explanation is a special object returned as a response to an explain query.
-These are used to explain xref:02-dev/infer.adoc[data inference]. To perform an
-xref:02-dev/infer.adoc#_explain_query[explain query] use `explainables` and `explainable` objects.
+These are used to explain xref:dev/infer.adoc[data inference]. To perform an
+xref:dev/infer.adoc#_explain_query[explain query] use `explainables` and `explainable` objects.
 
 == Number of answers
 

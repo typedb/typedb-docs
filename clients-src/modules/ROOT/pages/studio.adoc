@@ -56,7 +56,12 @@ Make sure to grant access for installation wizard to install TypeDB Studio in ca
 
 [NOTE]
 ====
-For **macOS** TypeDB Studio can be installed via homebrew: ```bash brew tap vaticle/tap brew install --cask vaticle/tap/typedb-studio ```
+For **macOS** TypeDB Studio can be installed via homebrew (not recommended for `AArch64` architecture):
+
+[,bash]
+----
+bash brew tap vaticle/tap brew install --cask vaticle/tap/typedb-studio
+----
 ====
 
 == Prepare for work
@@ -83,7 +88,7 @@ the connection settings as shown below.
 
 image::studio/connection-interface-disconnected.png[Connection Manager Disconnected]
 
-Fill in the address of the TypeDB Server. By default, it's: `localhost:1729`. Click the btn:[Connect] button.
+Fill in the address of the TypeDB server. By default, it's: `localhost:1729`. Click the btn:[Connect] button.
 
 image::studio/connection-interface-connected.png[Connection Manager Connected]
 
@@ -92,7 +97,8 @@ If we reopen the window we can find the green status field in the bottom left co
 
 [NOTE]
 ====
-When Studio connected to a TypeDB server it will display the server address in the top right corner instead of the label of the `Connect to TypeDB` button.
+When Studio connected to a TypeDB server it will display the server address in the top right corner instead of the
+label of the `Connect to TypeDB` button.
 ====
 
 === Disconnect from TypeDB server
@@ -101,6 +107,7 @@ At the top right-hand corner click the button with the server address in it.
 
 In the `Connect to TypeDB` window click on the btn:[Disconnect] button.
 
+[#_create_a_database]
 === Create a database
 
 To create a new database make sure TypeDB Studio is connected to a TypeDB server and click on the
@@ -206,6 +213,8 @@ All text in the *Text editor* panel will be displayed with TypeQL syntax highlig
 In the bottom right corner of TypeDB Studio window there is an indicator for cursor location that contains the line
 number and current symbol position in that line.
 
+//#todo rewrite from being descriptive to a proper documenting Studio functions
+
 The following functions can be activated from the context menu available by right-clicking inside the *Text editor*
 main section:
 
@@ -243,18 +252,18 @@ image::studio/studio-transaction-controls.png[Transaction controls]
 
 From left to right (numbered respectively to the screenshot numbers):
 
-. xref:typedb::02-dev/connect.adoc#_sessions[Session] type switch:
+. xref:typedb::dev/connect.adoc#_sessions[Session] type switch:
  ** `schema` -- to use schema session type
  ** `data` -- to use data session type
-. xref:typedb::02-dev/connect.adoc#_transactions[Transaction] type switch:
+. xref:typedb::dev/connect.adoc#_transactions[Transaction] type switch:
  ** `write` -- to use write transaction
  ** `read` -- to use read transaction
 . btn:[snapshot] button -- enables snapshot feature that encapsulates transaction in a snapshot of a database's data
 until the transaction committed or closed. Write transactions are always snapshoted. May be enabled or disabled
 for read transactions.
-. btn:[infer] button -- enable xref:typedb::/02-dev/infer.adoc[inferring data] by rules. Only available for read
+. btn:[infer] button -- enable xref:typedb::/dev/infer.adoc[inferring data] by rules. Only available for read
 transactions.
-. btn:[explain] button -- enable xref:typedb::02-dev/infer.adoc#_explain_query[explanations] mechanics by providing
+. btn:[explain] button -- enable xref:typedb::dev/infer.adoc#_explain_query[explanations] mechanics by providing
 `explainables` methods for results. Only available for read transactions with *snapshot* and *infer* enabled.
 . btn:[Transaction status] (Circle (●) icon) indicator -- transaction activity indicator. Green if there is a
 transaction opened by TypeDB Studio at this moment. Gray if there is no opened transaction. Rotating animation --
@@ -269,7 +278,7 @@ and execute the TypeQL code against the selected database.
 
 ===== Run query
 
-Make sure TypeDB Studio <<_connect_to_typedb_server,connected>> to a TypeDB Server,
+Make sure TypeDB Studio <<_connect_to_typedb_server,connected>> to a TypeDB server,
 database <<_select_active_database,selected>> and project directory <<_open_a_project_directory,opened>>.
 
 . <<_create_a_new_file,Write a new>> or <<_open_an_existing_file,open an existing>> file with query to run.
@@ -309,7 +318,7 @@ If the *Types* panel is not displayed -- click the *Types* vertical tab on the l
 window.
 ====
 
-All types are divided in three top level xref:typedb::02-dev/schema.adoc#_types[built-in types]:
+All types are divided in three top level xref:typedb::dev/schema.adoc#_types[built-in types]:
 
 * Attribute
 * Entity
@@ -370,14 +379,16 @@ and press btn:[Rename] button to finalize.
 
 [NOTE]
 ====
-Renaming a type in any of this two ways will update the relevant type references in the schema and will not lead to loosing existing data. All existing instances of the type will be available under the new types name.
+Renaming a type in any of this two ways will update the relevant type references in the schema and will not lead
+to loosing existing data. All existing instances of the type will be available under the new types name.
 ====
 
 === Delete a type
 
 [WARNING]
 ====
-For the deleting functions to be active set the session type switch to the `schema` and transaction type switch to the `write` options first.
+For the deleting functions to be active set the session type switch to the `schema` and transaction type switch to
+the `write` options first.
 ====
 
 In TypeDB Studio we can delete a type in two ways:
@@ -391,8 +402,8 @@ the transaction with the green tick at the top of the Studio window.
 ====
 In some cases the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
 from deleting this type. For example, we can't
-xref:typedb::02-dev/schema.adoc#_undefine_a_supertype[delete a type that has a subtype].
-See xref:typedb::02-dev/schema.adoc#_undefine_a_type[more] on these conditions.
+xref:typedb::dev/schema.adoc#_undefine_a_supertype[delete a type that has a subtype].
+See xref:typedb::dev/schema.adoc#_undefine_a_type[more] on these conditions.
 ====
 
 == Settings

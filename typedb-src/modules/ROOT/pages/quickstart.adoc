@@ -18,7 +18,7 @@ In this Quickstart guide we will learn how to do the following basic TypeDB oper
 
 For the purpose of this guide we will use sample schema and dataset designed for an
 https://en.wikipedia.org/wiki/Identity_management[Identity and Access Management] solution that will be
-described xref:04-tutorials/iam-schema.adoc[later].
+described xref:tutorials/iam-schema.adoc[later].
 
 [IMPORTANT]
 ====
@@ -121,7 +121,7 @@ image::database-manager-iam.png[Database Manager With Phone Calls Database]
 
 // #todo Change the link to TypeQL -
 
-A xref:02-dev/schema.adoc[TypeDB schema] contains entity, relation, and attribute type definitions that make up the
+A xref:dev/schema.adoc[TypeDB schema] contains entity, relation, and attribute type definitions that make up the
 data model, as well as rules which may be applied to it -- all of which are expressed in TypeQL,
 TypeDB's query language.
 
@@ -294,12 +294,12 @@ typedb console --command="transaction test-iam-db data read" --command='match $t
 
 After completing this guide we can recommend the following order of topics to continue exploring TypeDB:
 
-1. Find out more about how to xref:02-dev/connect.adoc[connect] to TypeDB, and use databases, sessions
+1. Find out more about how to xref:dev/connect.adoc[connect] to TypeDB, and use databases, sessions
    and transactions.
-2. Learn how to define a database xref:02-dev/schema.adoc[schema], xref:02-dev/match.adoc[match a pattern], or
-   design a query to xref:02-dev/write.adoc[write] or xref:02-dev/read.adoc[read] data.
-3. Check out how to interpret the TypeDB xref:02-dev/response.adoc[responses] to a query.
+2. Learn how to define a database xref:dev/schema.adoc[schema], xref:dev/match.adoc[match a pattern], or
+   design a query to xref:dev/write.adoc[write] or xref:dev/read.adoc[read] data.
+3. Check out how to interpret the TypeDB xref:dev/response.adoc[responses] to a query.
 4. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find one most suitable.
-5. (Optional) Learn more about the xref:04-tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
+5. (Optional) Learn more about the xref:tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
    majority of examples throughout this documentation.
-6. (Optional) Explore xref:04-tutorials/sample-app.adoc[sample application] written in Java, Python, or Node.js.
+6. (Optional) Explore xref:tutorials/sample-app.adoc[sample application] written in Java, Python, or Node.js.
