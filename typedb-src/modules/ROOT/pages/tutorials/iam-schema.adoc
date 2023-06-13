@@ -67,7 +67,7 @@ The main relation types in the IAM schema:
 
 The types mentioned above combined together in a schema will look like this:
 
-image::iam-simplified-schema.png[IAM core schema]
+image::iam-simplified-schema.png[IAM core schema, width=60%, link=self]
 
 The illustration above is not the full IAM schema but only the most important part of it. The least important parts
 have been omitted from the image to reduce the complexity of the schema. For a full version, please see the image in
@@ -90,7 +90,7 @@ The `access` relation connects an `object` (e.g., an instance of the `file` type
 an `object` role, `action` (e.g., an instance of `action` type with `name` attribute of `view_file`)
 via the `action` role, and plays a role of `access` in a `permission` relation.
 
-image::iam-permission-access.png[Permission and access relations]
+image::iam-permission-access.png[Permission and access relations, width = 75%, link=self]
 
 Taken together, a `subject` has permission to perform a specific action on a specific object. For example, `John Smith`
 has permission to read the `README.md` file.
@@ -200,26 +200,11 @@ relation mean these actions can't be performed by one person.
 
 == Rules
 
-There are multiple rules in the schema that can be used in different situations and queries.
+There is only one rule in the IAM schema used in our documentation:
 
-. `attribute-parent-company`
-. `automatic-member-collection`
-. `automatic-root-collection`
-. `transitive-membership`
-. `transitive-object-access`
-. `transitive-action-access`
-. `transitive-subject-permission`
-. `transitive-object-permission`
-. `transitive-action-permission`
-. `automatic-segregation-violation`
-. `automatic-permission-invalidity`
-. `automatic-permission-validity`
-. `add-view-permission`
+* `add-view-permission`
 
-=== add-view-permission rule
-
-This simple rule illustrates basic inference. More information on rules can be found in the
-xref:dev/schema.adoc#_rules[schema] documentation page.
+This simple rule illustrates basic inference.
 
 [,typeql]
 ----
@@ -258,7 +243,9 @@ transaction with inference option enabled. They will influence the results of qu
 inference option is enabled for transaction) but not the persisted database data.
 ====
 
-==== Explanation
+More information on rules can be found in the xref:dev/schema.adoc#_rules[schema] documentation page.
+
+=== Add-view-permission rule explanation
 
 In the rule above:
 
@@ -276,11 +263,11 @@ xref:dev/infer.adoc#_inference[inference] option enabled.
 
 This is the TypeDB Studio visualization of the full IAM schema:
 
-image::iam-full-schema-studio.png[Full schema in studio graph visualizer]
+image::iam-full-schema-studio.png[Full schema in studio graph visualizer, width = 80%, link=self, allign="center"]
 
 And this is the same schema but without all the attributes and streamlined a bit:
 
-image::iam-full-schema.png[Full schema visualization]
+image::iam-full-schema.png[Full schema visualization, width = 80%, link=self, allign="center"]
 
 == Sample dataset
 

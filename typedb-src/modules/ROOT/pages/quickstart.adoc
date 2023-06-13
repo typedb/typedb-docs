@@ -70,7 +70,7 @@ typedb server
 
 After displaying the TypeDB ASCII logo and the bootup completion time, TypeDB is ready for connections.
 
-image::launched-typedb.png[TypeDB server bootup message]
+image::launched-typedb.png[TypeDB server bootup message, width = 600, link=self]
 // ,width=640,height=480
 
 === Connect to TypeDB
@@ -81,7 +81,7 @@ Launch TypeDB Studio, and connect to TypeDB:
 . Enter `localhost:1729` in the *Address* field.
 . Click the btn:[Connect] button (the dialog will close after a successful connection).
 
-image::connection-interface-connected.png[Connection Manager: Connected, role=half-width]
+image::connection-interface-connected.png[Connection Manager: Connected, width = 75%, link=self]
 
 === Choose a project directory
 
@@ -89,7 +89,7 @@ TypeDB Studio project directory is set to allow us to organize and save related 
 
 The files and folders in the current project directory is shown in the Project panel on left side of the window.
 
-image::studio-project-empty.png[Project Interface empty, width=250]
+image::studio-project-empty.png[Project Interface empty, width = 75%, link=self]
 
 To select a project directory:
 
@@ -100,19 +100,19 @@ To select a project directory:
 The *Project* panel will now display the contents of the selected directory and a hidden subdirectory for
 unsaved files.
 
-image::studio-project-iam.png[Project Interface With Open Folder,width=250]
+image::studio-project-iam.png[Project Interface With Open Folder, width = 250, link=self]
 
 [#_create_a_database]
 === Create a database
 
 . Click the database icon to open the *Manage Databases* dialog (left side of the toolbar).
 +
-image::studio-database.png[Database Manager button]
+image::studio-database.png[Database Manager button, width = 75%, link=self]
 
 . Enter `iam` in the text field, and click the btn:[Create] button next to it.
 . Click the btn:[Close] button in the bottom right.
 +
-image::database-manager-iam.png[Database Manager With Phone Calls Database]
+image::database-manager-iam.png[Database Manager With Phone Calls Database, width = 75%, link=self]
 
 . Select `iam` from the database dropdown (next to the database icon).
 
@@ -152,7 +152,7 @@ To execute the TypeQL statements in the opened file and send them as queries:
 . Ensure the btn:[Session type] (`schema` / `data`) switch (next to the database dropdown) is set to `schema`.
 . Ensure the btn:[Transaction type] (`write` / `read`) switch is set to `write`.
 +
-image::quickstart-studio-select-transaction-type.png[Select transaction type]
+image::quickstart-studio-select-transaction-type.png[Select transaction type, width = 100%, link=self]
 
 . Click the btn:[Run Query] button (with a "play" symbol, in the middle of the toolbar) to start the transaction.
 . Click the btn:[Commit Transaction] button (with a "checkmark" symbol, left of the btn:[Run Query] button) to commit
@@ -162,7 +162,7 @@ The transaction has been committed, and `iam` database now has a schema.
 
 The Types panel will now display the entity, relation, and attribute types within a type hierarchy of the IAM schema.
 
-image::studio-type-browser-iam.png[Type browser with IAM schema]
+image::studio-type-browser-iam.png[Type browser with IAM schema, width = 75%, link=self]
 
 Data can now be inserted.
 
@@ -200,7 +200,7 @@ match $s sub $t; {$t type entity;} or {$t type relation;} or {$t type attribute;
 ----
 ====
 
-image::studio-iam-schema.png[IAM schema graph]
+image::iam-full-schema-studio.png[IAM schema graph, width = 600, link=self]
 
 [#_insert_data]
 === Insert data
@@ -254,7 +254,7 @@ match $f isa file, has path $fp;
 The above query returns all `file` entities with their `path` attributes. Be default, TypeDB Studio displays the
 results as shown in the image below.
 
-image::studio-iam-data.png[IAM data example]
+image::studio-iam-data.png[IAM data example, width = 75%, link=self]
 
 == Schema and data
 
