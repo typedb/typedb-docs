@@ -21,11 +21,16 @@ The terminology used in the IAM xref:quickstart.adoc#_iam_schema[schema] is defi
 according to the sources mentioned above and the ISO/IEC 15408-1 standard within the context of an information system.
 ====
 
-[NOTE]
+[IMPORTANT]
 ====
-The IAM xref:quickstart.adoc#_iam_schema[schema] and accompanying
-xref:quickstart.adoc#_iam_microdataset[dataset] described here are used in most examples throughout
-TypeDB documentation, including the xref:quickstart.adoc[Quickstart guide].
+The IAM schema and accompanying dataset described on this page are used in the most examples throughout the
+TypeDB documentation.
+
+* xref:attachment$iam-schema.tql[iam-schema.tql]
+* xref:attachment$iam-data.tql[iam-data.tql]
+
+Check our xref:quickstart.adoc[Quickstart guide] for step-by-step instructions how to load the schema and data to a
+TypeDB database.
 ====
 
 == Overview
@@ -38,8 +43,10 @@ As with any TypeDB schema, the IAM schema consists of:
  ** Attribute types
 * Rules
 
-The xref:dev/schema.adoc[schema] page provides more information to better understand the
-terminology of TypeDB schemas.
+[NOTE]
+====
+The xref:dev/schema.adoc[schema] page provides more information to better understand the terminology of TypeDB schemas.
+====
 
 As for the terminology of the IAM data model -- the main entity types in the IAM schema are:
 
@@ -62,10 +69,10 @@ In the list above some entities have attributes that are mentioned in their desc
 
 The main relation types in the IAM schema:
 
-* Permission -- A relation that relates a subject to a specific access.
-* Access -- A relation that relates an object to a valid action performed on it.
+* `permission` -- A relation that relates a subject to a specific access.
+* `access` -- A relation that relates an object to a valid action performed on it.
 
-The types mentioned above combined together in a schema will look like this:
+The types mentioned above combined in a schema will look like this:
 
 image::iam-simplified-schema.png[IAM core schema, width=60%, link=self]
 
@@ -78,10 +85,7 @@ the <<_full_schema,Full schema>> section below.
 One of the core elements of the IAM schema is the relations between `subject` and `object` entity types that allow
 us to set `permissions` to access something.
 
-There are two relation types involved:
-
-* `permission`
-* `access`
+There are two relation types involved: `permission` and `access`.
 
 The `permission` relation connects a `subject` (e.g., an instance of a `person` type) via a `subject` role
 and a  relation of the `access` type via an `access` role.
@@ -90,6 +94,9 @@ The `access` relation connects an `object` (e.g., an instance of the `file` type
 an `object` role, `action` (e.g., an instance of `action` type with `name` attribute of `view_file`)
 via the `action` role, and plays a role of `access` in a `permission` relation.
 
+See the diagram below:
+
+.Permission and access relations
 image::iam-permission-access.png[Permission and access relations, width = 75%, link=self]
 
 Taken together, a `subject` has permission to perform a specific action on a specific object. For example, `John Smith`
@@ -102,12 +109,9 @@ The `object` is a subtype of the base `entity` type with multiple subtypes of it
 * Object
  ** Resource
   *** File
-  *** Interface
   *** Record
  ** Resource-collection
-  *** Application
   *** Directory
-  *** Table
   *** Database
 
 === File entity
@@ -128,13 +132,13 @@ It has all the attributes the `object` supertype has and also two attributes of 
 
 The `subject` is a subtype of the base `entity` type with multiple subtypes of its own:
 
-* Subject
- ** User
-  *** Person
- ** User-group
-  *** Business-unit
-  *** User-account
-  *** User-role
+* subject
+ ** user
+  *** person
+ ** user-group
+  *** business-unit
+  *** user-account
+  *** user-role
 
 === Person entity
 
@@ -293,4 +297,4 @@ actions for some subjects.
 == Learn more
 
 After completing this page we recommend to explore xref:tutorials/sample-app.adoc[sample application] written
-in Java, Python, and Node.js or check out xref:clients:ROOT:clients.adoc[TypeDB Clients] to find the most suitable one.
+in Java, Python, and Node.js or learn more about xref:clients:ROOT:clients.adoc[TypeDB Clients].
