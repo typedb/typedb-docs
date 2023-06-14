@@ -36,7 +36,7 @@ TypeDB Driver documentation.
 
 == API structure
 
-Any Driver API divided into two big sections:
+Driver API is divided into two big sections:
 
 * Query section -- classes and methods to connect to a TypeDB server, manage sessions and transactions, send different
   types of queries.
@@ -78,6 +78,17 @@ xref:dev/response.adoc[Response interpretation] page.
 
 For more information on types of response objects and their *methods* please see the xref:dev/api.adoc[API reference]
 for the specific driver/language type.
+
+[NOTE]
+====
+TypeDB Driver API methods can be used to get a JSON out of Concept returned in a response.
+
+The exact syntax differs for every language specific API:
+
+* xref:clients:ROOT:java/java-api-ref.adoc#_retrieve_a_concept_as_json[Java]
+* xref:clients:ROOT:python/python-api-ref.adoc#_retrieve_a_concept_as_json[Python]
+* xref:clients:ROOT:node-js/node-js-api-ref.adoc#_retrieve_a_concept_as_json[Node.js]
+====
 
 == Local and remote methods
 

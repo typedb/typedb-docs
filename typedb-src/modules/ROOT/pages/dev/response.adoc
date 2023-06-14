@@ -4,8 +4,9 @@
 :longTailKeywords: typeql response, concept map, typeql variables
 :pageTitle: Response interpretation
 
-TypeDB can return a response in different formats, depending on a type of query. The response will be interpreted by a
-TypeDB Client being used. TypeDB Client provides classes and methods for different response types respectively. Please
+TypeDB can return a response to a TypeQL query in different formats, depending on a type of query.
+The server response will be processed by a TypeDB Client.
+TypeDB Client provides classes and methods for different response types respectively. Please
 see the table below for mapping of response format to a type of query that has been sent.
 
 [cols="^1,^4,^4"]
@@ -52,6 +53,9 @@ see the table below for mapping of response format to a type of query that has b
 | Explain
 | Stream/Iterator of *Explanation*
 |===
+
+TypeDB xref:dev/api.adoc[Driver API] methods can be used to process the objects returned: get values of attributes,
+get JSON representation of data, or even get other concepts from a database.
 
 == Expected results
 
@@ -154,6 +158,17 @@ It's a container for a <<_conceptmap,ConceptMap>> object with an owner.
 Object to represent a type or an instance of a type (data) from a database.
 
 There are separate methods for every built-in type and for instances of every built-in type.
+
+[NOTE]
+====
+TypeDB Driver API methods can be used to get a JSON out of Concept returned in a response.
+
+The exact syntax differs for every language specific API:
+
+* xref:clients:ROOT:java/java-api-ref.adoc#_retrieve_a_concept_as_json[Java]
+* xref:clients:ROOT:python/python-api-ref.adoc#_retrieve_a_concept_as_json[Python]
+* xref:clients:ROOT:node-js/node-js-api-ref.adoc#_retrieve_a_concept_as_json[Node.js]
+====
 
 [#_numeric]
 === Numeric
