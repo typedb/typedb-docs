@@ -163,8 +163,8 @@ Create the directory structure: `connection/core` in the root of the project.
 Name the classes depending on language conventions: in Java/TypeScript, `TypeDBClientImpl` and `CoreClient`; in Python,
 `_TypeDBClient` and `_CoreClient`.
 
-Ensure that gRPC is imported into the project, and refer to the https://grpc.io/docs/languages/[gRPC docs] to
-learn how to create a Channel -- the code varies by language.
+Ensure that gRPC is imported into the project, and refer to the https://grpc.io/docs/languages/[gRPC docs,window=_blank]
+to learn how to create a Channel -- the code varies by language.
 
 [NOTE]
 ====
@@ -341,7 +341,7 @@ Finally, we implement `DatabaseManager`, and `CoreStub` to set up gRPC calls to 
 
 [IMPORTANT]
 ====
-We'll need to compile TypeDB's https://github.com/vaticle/typedb-protocol[protocol] in order to do this.
+We'll need to compile TypeDB's https://github.com/vaticle/typedb-protocol[protocol,window=_blank] in order to do this.
 Most languages have protobuf compilers that we can use to generate a TypeDB protocol library for the language we use.
 ====
 

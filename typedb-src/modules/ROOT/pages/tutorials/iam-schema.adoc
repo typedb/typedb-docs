@@ -9,9 +9,9 @@
 *Identity and access management* (*IAM*) is a complex field that has seen massive growth over the past two decades
 to meet user demand. IAM systems have become progressively more complicated to account for the variety of user
 requirements and to ensure compatibility with a backlog of legacy systems. This has led to the definition of standards
-by governing bodies, such as https://doi.org/10.6028/NIST.SP.800-63-3[NIST], in an attempt to unify and simplify the
+by governing bodies, such as https://doi.org/10.6028/NIST.SP.800-63-3[NIST,window=_blank], in an attempt to unify and simplify the
 state of IAM ecosystems, as well as to establish best practices. Modern IAM systems, such as the
-https://www.rsa.com/solutions/identity-governance-and-administration/[RSA's Identity Governance and Administration Platform],
+https://www.rsa.com/solutions/identity-governance-and-administration/[RSA's Identity Governance and Administration Platform,window=_blank],
 implement these models while providing APIs to existing IAM systems an organization might have in order to unify IAM
 under a single management framework.
 
@@ -26,8 +26,8 @@ according to the sources mentioned above and the ISO/IEC 15408-1 standard within
 The IAM schema and accompanying dataset described on this page are used in the most examples throughout the
 TypeDB documentation.
 
-* xref:attachment$iam-schema.tql[iam-schema.tql]
-* xref:attachment$iam-data.tql[iam-data.tql]
+* xref:attachment$iam-schema.tql[iam-schema.tql,window=_blank]
+* xref:attachment$iam-data.tql[iam-data.tql,window=_blank]
 
 Check our xref:quickstart.adoc[Quickstart guide] for step-by-step instructions how to load the schema and data to a
 TypeDB database.
@@ -197,7 +197,7 @@ groups:
 == Segregation policy
 
 `segregation-policy` is a relation type that adds information on
-https://en.wikipedia.org/wiki/Separation_of_duties[duty segregation] policies.
+https://en.wikipedia.org/wiki/Separation_of_duties[duty segregation,window=_blank] policies.
 
 It has a `name` attribute and a single role `action`. Usually, multiple instances of this role in a single
 relation mean these actions can't be performed by one person.

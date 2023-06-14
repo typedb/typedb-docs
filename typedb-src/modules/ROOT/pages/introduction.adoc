@@ -16,7 +16,7 @@ xref:dev/schema.adoc#_attribute_types[Attributes] and xref:dev/schema.adoc#_rule
  ** supports subtyping and inheritance like OOP languages,
  ** uses declarative queries with its own query language: xref:dev/match.adoc#_patterns_overview[TypeQL]. We set the
 requirements for results but not how to achieve it.
-* Is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP]) DBMS with
+* Is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank]) DBMS with
 xref:dev/connect.adoc#_acid_guarantees[ACID] guarantees.
 * Has data separated by xref:dev/connect.adoc#_databases[databases], each one with its own
 xref:dev/schema.adoc[schema].
@@ -34,8 +34,8 @@ Comparison of TypeDB with most common types of databases:
 TypeDB is a new kind of DBMS:
 
 * not an SQL, but uses enhanced Entity-Relationship model, further extended by attributes as first-class citizens;
-* not a graph database, but utilizes power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs] without the
-  need for developers to understand how it works to use it.
+* not a graph database, but utilizes power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs,window=_blank]
+  without the need for developers to understand how it works to use it.
 
 TypeDB guarantees data integrity and safety while enabling data-level inferences within the database.
 Strong type system with subtyping and inheritance helps us break down complex problems into a

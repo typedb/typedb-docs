@@ -57,8 +57,8 @@ management (TypeDB Cloud only) and enables us to open a session.
 
 ==== gRPC
 
-https://grpc.io/[gRPC] is the network call framework that TypeDB uses. A TypeDB Driver needs a gRPC client library
-to communicate with the server. Most languages have gRPC libraries.
+https://grpc.io/[gRPC,window=_blank] is the network call framework that TypeDB uses. A TypeDB Driver needs a gRPC client
+library to communicate with the server. Most languages have gRPC libraries.
 
 Architecturally, gRPC is an alternative to HTTP (say, REST API or websockets). In TypeDB's client-server architecture,
 performance is critical, and gRPC fits well with TypeDB's scaling model. It establishes a long-lasting connection,
@@ -83,15 +83,17 @@ message Attribute {
 
 ==== TypeDB protocol
 
-https://developers.google.com/protocol-buffers[Protocol Buffers] is the encoding used to serialise network messages.
+https://developers.google.com/protocol-buffers[Protocol Buffers,window=_blank] is the encoding used to serialise
+network messages.
 Proto definition files can be compiled into server-side and client-side libraries using a Protobuf Compiler.
 In our case, we only need client-side library compilation. Most languages have Protobuf compilers available.
 
-TypeDB's protobuf definitions can be found in the https://github.com/vaticle/typedb-protocol[GitHub repository].
+TypeDB's protobuf definitions can be found in the
+https://github.com/vaticle/typedb-protocol[GitHub repository,window=_blank].
 During development, it's sufficient to manually copy-paste from this repository and do a one-time compilation.
 A more reliable method is to import the Protocol repo via a package manager and compile it at build time.
-TypeDB's build system, https://bazel.build/[Bazel], offers one approach. If we'd like to use a different package
-manager, the TypeDB team may also be able to help by setting up a distribution channel for the chosen language's
+TypeDB's build system, https://bazel.build/[Bazel,window=_blank], offers one approach. If we'd like to use a different
+package manager, the TypeDB team may also be able to help by setting up a distribution channel for the chosen language's
 compiled protobuf files. If this is the case, please get in touch.
 
 === Session and transaction
@@ -122,7 +124,7 @@ Inside a transaction stream, the client sends requests, and the server is expect
 requests in a timely manner.
 
 Each request must have the same message type. This is `Transaction.Client`, defined in
-https://github.com/vaticle/typedb-protocol/blob/master/common/transaction.proto[typedb-protocol]:
+https://github.com/vaticle/typedb-protocol/blob/master/common/transaction.proto[typedb-protocol,window=_blank]:
 
 [,protobuf]
 ----
@@ -235,8 +237,8 @@ failure and continues running as normal.
 == Behavioral testing
 
 The recommended way to test a TypeDB Driver is by using the
-https://github.com/vaticle/typedb-behaviour[TypeDB Behaviour spec].
-It's written in a language-agnostic syntax named https://cucumber.io/docs/gherkin/reference/[Gherkin].
+https://github.com/vaticle/typedb-behaviour[TypeDB Behaviour spec,window=_blank].
+It's written in a language-agnostic syntax named https://cucumber.io/docs/gherkin/reference/[Gherkin,window=_blank].
 Tests consist of named steps. To run the tests in a new driver, we just need to implement the steps.
 This means we can test our driver without having to write a single test!
 
@@ -257,10 +259,10 @@ TypeDB architecture.
 
 Check the xref:typedb::tutorials/new-driver-tutorial.adoc[How to build a new TypeDB Driver]
 tutorial to see some examples. For more information see the source codes of our TypeDB Drivers:
-https://github.com/vaticle/typedb-client-java[Java],
-https://github.com/vaticle/typedb-client-python[Python],
-https://github.com/vaticle/typedb-client-nodejs[Node.js].
+https://github.com/vaticle/typedb-client-java[Java,window=_blank],
+https://github.com/vaticle/typedb-client-python[Python,window=_blank],
+https://github.com/vaticle/typedb-client-nodejs[Node.js,window=_blank].
 
-Do get in touch with the Vaticle team on https://vaticle.com/discord[Discord].
+Do get in touch with the Vaticle team on https://vaticle.com/discord[Discord,window=_blank].
 We're happy to help speed up the development process.
-This will also enable us to add your project into the https://typedb.org[TypeDB Open Source Initiative].
+This will also enable us to add your project into the https://typedb.org[TypeDB Open Source Initiative,window=_blank].

@@ -10,8 +10,8 @@ A TypeDB Client is any software that can connect to a TypeDB.
 It is meant to be used for the purpose of managing databases and performing operations (querying) with a
 database schema and data on the TypeDB server.
 
-TypeDB uses its own https://github.com/vaticle/typedb-protocol[TypeDB Client RPC] protocol via `gRPC` interface
-to accept connections from Clients. To connect we can use xref:studio.adoc[TypeDB Studio],
+TypeDB uses its own https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank] protocol via `gRPC`
+interface to accept connections from Clients. To connect we can use xref:studio.adoc[TypeDB Studio],
 xref:console.adoc[TypeDB Console], or we can build our own application (Client).
 
 A TypeDB Client uses `gRPC` to connect with a TypeDB server and provides more user-friendly interface: API, GUI or CLI.
@@ -48,13 +48,13 @@ TypeDB Console
   ** xref:java/java-overview.adoc[Java]
   ** xref:python/python-overview.adoc[Python]
   ** xref:node-js/node-js-overview.adoc[Node.js]
-  ** Rust [Under development]
+  ** Rust (https://github.com/vaticle/typedb-client-rust[Under development,window=_blank])
 
 If there is no suitable client in the list, check the xref:other-languages.adoc[Community drivers],
 or consider xref:new-driver.adoc[creating a new client].
 
 There is also a community driven Jupyter notebook plugin to work with TypeDB:
-https://pypi.org/project/typedb-jupyter/[TypeDB Jupyter connector].
+https://pypi.org/project/typedb-jupyter/[TypeDB Jupyter connector,window=_blank].
 
 [IMPORTANT]
 ====
@@ -83,7 +83,7 @@ of connection, session and transaction management, automate query sending and pr
 [#_typedb_drivers]
 == TypeDB Drivers
 
-A TypeDB Driver, is a library that implements https://github.com/vaticle/typedb-protocol[TypeDB Client RPC]
+A TypeDB Driver, is a library that implements https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank]
 protocol and provides TypeDB Driver API.
 
 A TypeDB Driver can be used to connect to a TypeDB server. If we are building an application that uses a TypeDB database,
@@ -96,7 +96,7 @@ usually support latest TypeDB features and receive continuous bug fixes and impr
 * xref:java/java-overview.adoc[Java]
 * xref:node-js/node-js-overview.adoc[Node.js]
 * xref:python/python-overview.adoc[Python]
-* Rust (https://github.com/vaticle/typedb-client-rust[Under development])
+* Rust (https://github.com/vaticle/typedb-client-rust[Under development,window=_blank])
 
 We also have some community projects for xref:other-languages.adoc[other Languages] and provide support for
 creating a xref:new-driver.adoc[new client].

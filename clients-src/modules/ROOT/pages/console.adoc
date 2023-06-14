@@ -87,11 +87,11 @@ Copyright (C) 2022 Vaticle
 
 === Locale settings
 
-TypeDB can store string attributes that have characters outside the https://ascii.cl/[ASCII] range (for example:
-non-English letters, symbols, and emojis). To manipulate them using Console, the console terminal must use a locale
-with a compatible code set, such as Unicode.
+TypeDB can store string attributes that have characters outside the https://ascii.cl/[ASCII,window=_blank] range (for
+example: non-English letters, symbols, and emojis). To manipulate them using Console, the Console's terminal must use a
+locale with a compatible code set, such as Unicode.
 
-If it doesn't, these characters will most likely be rendered as "?" symbols in Console. If this issue occurs we can use
+If it doesn't, these characters will most likely be rendered as `?` symbols in Console. If this issue occurs we can use
 the following fix:
 
 [tab:Linux]
@@ -125,9 +125,9 @@ bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 Windows::
 +
 --
-Use https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-gb&gl=GB[Windows Terminal] or run
-https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/chcp[chcp] in the terminal
-(e.g: `chcp 936` for Chinese text).
+Use https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-gb&gl=GB[Windows Terminal,window=_blank]
+or run https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/chcp[chcp,window=_blank] in the
+terminal (e.g: `chcp 936` for Chinese text).
 --
 
 ====
@@ -212,7 +212,7 @@ TypeDB Console provides two levels of interaction:
 * and transaction-level commands.
 
 The database-level command is the first level of interaction, i.e. first-level
-https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL].
+https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank].
 
 From one of the database-level commands, we
 can open a transaction to the database. This will open a transaction-level interface, i.e. second-level REPL.

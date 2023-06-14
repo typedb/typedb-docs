@@ -12,7 +12,7 @@ describe the business domain it represents.
 
 TypeDB schemas are written with TypeQL which is both data definition language (DDL) and data manipulation language
 (DML): it is used for both schema and data queries). We can see a complete set of TypeQL syntax and grammar rules in the
-*ANTLR v.4* specification file: https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4].
+*ANTLR v.4* specification file: https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
 
 [#_types]
 == Types
@@ -281,8 +281,8 @@ Inference can only be used in a read transaction.
 
 [NOTE]
 ====
-The approach TypeDB uses is a https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining] execution on top of
-https://en.wikipedia.org/wiki/Horn_clause[Horn-clause] logic.
+The approach TypeDB uses is a https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining,window=_blank]
+execution on top of https://en.wikipedia.org/wiki/Horn_clause[Horn-clause,window=_blank] logic.
 
 Negation functionality follows the set-difference semantics. It corresponds to negation-as-failure model under the
 following conditions:
@@ -1023,7 +1023,7 @@ xref:dev/match.adoc#_pattern_syntax[Pattern syntax] section.
 
 The `when` clause (condition) of a rule can be a multi statement pattern and can include disjunctions and negations,
 whereas the `then` clause (conclusion) should describe a single relation or constraint of ownership of an attribute
-(due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic]).
+(due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic,window=_blank]).
 
 When using a disjunction in a rule, the disjunctive parts must be bound by variables outside of the `or` statement.
 These variables are the only ones permitted that can be used in the `then` clause.

@@ -11,11 +11,13 @@ comprehensive schema design will simplify not only data migration but also the d
 
 [NOTE]
 ====
-This tutorial is based on the **Phone calls** example in https://github.com/vaticle/typedb-driver-examples[TypeDB Examples]
+This tutorial is based on the **Phone calls** example in
+https://github.com/vaticle/typedb-driver-examples[TypeDB Examples,window=_blank]
 repository. Advanced users may find it faster to follow the readme files for
-https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_calls/java#quickstart[Java],
-https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_calls/python#quickstart[Python],
-https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_calls/nodejs#quickstart[Node.js] versions directly.
+https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_calls/java#quickstart[Java,window=_blank],
+https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_calls/python#quickstart[Python,window=_blank],
+https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_calls/nodejs#quickstart[Node.js,window=_blank]
+versions directly.
 ====
 
 To load data into a TypeDB database we need to perform xref:dev/write.adoc#_insert_query[insert] queries.
@@ -37,7 +39,7 @@ which are both provided below.
 
 The schema of the `phone_calls` database is defined by the following file:
 
-https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/schema.tql[schema.tql].
+https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/schema.tql[schema.tql,window=_blank].
 
 See the visualization below.
 
@@ -80,7 +82,7 @@ The schema in the file above consists of the following types.
 
 Use TypeDB Studio or any other TypeDB Client to xref:clients::studio.adoc#_create_a_database[create a new database]
 named `phone_calls` in a TypeDB server and import the schema
-https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/schema.tql[file].
+https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/schema.tql[file,window=_blank].
 
 The step-by-step instructions how to create a database and load a schema file with TypeDB Studio can be found in the
 xref:quickstart.adoc[Quickstart guide]. Make sure to use the schema file provided above instead of the IAM schema
@@ -160,7 +162,8 @@ For Node.js sample application the following software needs to be installed:
 
 ==== Clone the repository
 
-Clone the https://github.com/vaticle/typedb-driver-examples[TypeDB Examples] repository to the local machine.
+Clone the https://github.com/vaticle/typedb-driver-examples[TypeDB Examples,window=_blank] repository to the local
+machine.
 
 ==== Start migration
 
@@ -201,9 +204,9 @@ bazel run //telecom/phone_calls/java:xml-migration
 ==== Application logic
 
 Data migration code is located inside `+{format}Migration.java+` file, where *\{format}* is
-https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/java/CSVMigration.java[CSV],
-https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/java/JSONMigration.java[JSON], or
-https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/java/XMLMigration.java[XML].
+https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/java/CSVMigration.java[CSV,window=_blank],
+https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/java/JSONMigration.java[JSON,window=_blank], or
+https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/java/XMLMigration.java[XML,window=_blank].
 
 The `+{format}Migration+` class calls the `initialiseInputs()` method, which returns a collection of `Input` called
 `inputs`. We then use each element in this collection to load each file from dataset into TypeDB database with
@@ -374,8 +377,8 @@ follow the instructions in the console.
 === Python
 
 To migrate the sample dataset into the TypeDB database `phone_calls` follow the steps below. Alternatively,
-clone the https://github.com/vaticle/typedb-driver-examples[TypeDB repository] and follow the readme file in the
-`telecom/phone_calls/python` directory.
+clone the https://github.com/vaticle/typedb-driver-examples[TypeDB repository,window=_blank] and follow the readme file
+in the `telecom/phone_calls/python` directory.
 
 ==== Copy the dataset
 
@@ -389,7 +392,7 @@ include::partial$migration-dataset.adoc[]
 ==== Copy the source codes
 
 Copy the following source files from the `telecom/phone_calls` directory in the
-https://github.com/vaticle/typedb-driver-examples[TypeDB Examples] repository into the new directory:
+https://github.com/vaticle/typedb-driver-examples[TypeDB Examples,window=_blank] repository into the new directory:
 
 * migrate_csv.py
 * migrate_json.py
@@ -608,8 +611,8 @@ follow the instructions in the console.
 === Node.js
 
 To migrate the sample dataset into the TypeDB database `phone_calls` follow the steps below. Alternatively, clone the
-https://github.com/vaticle/typedb-driver-examples[TypeDB examples] repository and follow the readme file in the
-`telecom/phone_calls/nodejs` directory.
+https://github.com/vaticle/typedb-driver-examples[TypeDB Examples,window=_blank] repository and follow the readme file
+in the `telecom/phone_calls/nodejs` directory.
 
 ==== Copy the dataset
 
@@ -623,7 +626,7 @@ include::partial$migration-dataset.adoc[]
 ==== Copy the source codes
 
 Copy the following source files from the `telecom/phone_calls` directory in the
-https://github.com/vaticle/typedb-driver-examples[TypeDB Examples] repository into the new directory:
+https://github.com/vaticle/typedb-driver-examples[TypeDB Examples,window=_blank] repository into the new directory:
 
 * migrateCsv.js
 * migrateJson.js

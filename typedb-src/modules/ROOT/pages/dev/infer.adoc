@@ -27,9 +27,9 @@ The results are transaction-bound and are not persisted.
 When executing a `get` query with infer transaction option <<_how_to_use_inference,enabled>> (`True`), TypeDB
 inspects and triggers rules that may lead to new answers to the query and then performs the query execution.
 It returns data that answers the query taking into account inference results. This approach is known as
-https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining] (starting from the query, then finding applicable
-rules and generating new relevant data). Reasoning can proceed from one rule to other rules, including recursively,
-leading to complex behaviors emerging from a few simple rules.
+https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining,window=_blank] (starting from the query, then finding
+applicable rules and generating new relevant data). Reasoning can proceed from one rule to other rules, including
+recursively, leading to complex behaviors emerging from a few simple rules.
 
 == Limitations
 
