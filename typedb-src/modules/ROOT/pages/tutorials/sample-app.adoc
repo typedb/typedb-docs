@@ -63,7 +63,7 @@ the results of this request. Additionally, users that have multiple full-names o
 For more information see the xref:dev/match.adoc#_solutions[matching patterns] explanation.
 ====
 
-==== List all the files that Kevin Morrison has access to
+=== List all the files that Kevin Morrison has access to
 
 [tabs]
 ====
@@ -109,7 +109,7 @@ xref:tutorials/iam-schema.adoc[schema] we need two relations to connect them: `p
 relations must be used to make a decision of whether a user has access to a file.
 ====
 
-==== List all the files Kevin has view_file access to (with inference)
+=== List all the files Kevin has view_file access to (with inference)
 
 [tabs]
 ====
@@ -164,7 +164,7 @@ of the results by `path` variable. Otherwise, we can't guarantee the results wil
 send a request.
 ====
 
-==== Insert a new file and then insert an access relation to it
+=== Insert a new file and then insert an access relation to it
 
 First, we generate a new value for the `filepath` variable, consisting of `logs/` prefix, current date and time
 in compact format, and `.log` ending.
