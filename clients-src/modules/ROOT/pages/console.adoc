@@ -211,11 +211,11 @@ TypeDB Console provides two levels of interaction:
 * database-level commands,
 * and transaction-level commands.
 
-The database-level command is the first level of interaction, i.e. first-level
+The database-level command is the first level of interaction, i.e., first-level
 https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank].
 
 From one of the database-level commands, we
-can open a transaction to the database. This will open a transaction-level interface, i.e. second-level REPL.
+can open a transaction to the database. This will open a transaction-level interface, i.e., second-level REPL.
 
 [#_database_management_commands]
 === Database management commands
@@ -288,7 +288,8 @@ Usually the `>` sign preceded by the database name and session/transaction types
 | Will remove any uncommitted changes we've made in the transaction, while leaving transaction open.
 
 | `close`
-| Close the transaction without committing changes, and takes us back to the database-level interface, i.e. first-level REPL.
+| Close the transaction without committing changes, and takes us back to the database-level interface, i.e.,
+first-level REPL.
 
 | `help`
 | Print help menu.

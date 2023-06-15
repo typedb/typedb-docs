@@ -112,7 +112,7 @@ image::studio-database.png[Database Manager button, width = 75%, link=self]
 . Enter `iam` in the text field, and click the btn:[Create] button next to it.
 . Click the btn:[Close] button in the bottom right.
 +
-image::database-manager-iam.png[Database Manager With Phone Calls Database, width = 75%, link=self]
+image::database-manager-iam.png[Database Manager With Phone Calls Database, width = 60%, link=self]
 
 . Select `iam` from the database dropdown (next to the database icon).
 
@@ -149,8 +149,8 @@ Or open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql] file.
 
 To execute the TypeQL statements in the opened file and send them as queries:
 
-. Ensure the btn:[Session type] (`schema` / `data`) switch (next to the database dropdown) is set to `schema`.
-. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to `write`.
+. Ensure the btn:[Session type] (`schema` / `data`) switch (next to the database dropdown) is set to the `schema`.
+. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to the `write`.
 +
 image::quickstart-studio-select-transaction-type.png[Select transaction type, width = 100%, link=self]
 
@@ -158,7 +158,7 @@ image::quickstart-studio-select-transaction-type.png[Select transaction type, wi
 . Click the btn:[Commit Transaction] button (with a "checkmark" symbol, left of the btn:[Run Query] button) to commit
   the changes.
 
-The transaction has been committed, and `iam` database now has a schema.
+The transaction has been committed, and the `iam` database now has a schema.
 
 The Types panel will now display the entity, relation, and attribute types within a type hierarchy of the IAM schema.
 
@@ -174,8 +174,8 @@ TypeQL can be used to query schema types.
 
 To execute a simple schema query:
 
-. Ensure the btn:[Session type] (`schema` / `data`) switch is set to `schema` (next to the database dropdown).
-. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to `read`.
+. Ensure the btn:[Session type] (`schema` / `data`) switch is set to the `schema` (next to the database dropdown).
+. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to the `read`.
 . Click the `+` icon right from the *Project* panel next to the `iam-schema.tql` tab in the *Text editor* panel.
 . Copy the TypeQL statement below.
 . Click the btn:[Run Query] button (with a "play" symbol)
@@ -186,7 +186,7 @@ match $t sub thing;
 ----
 
 The above query returns all types in the schema of the current database.
-By default, the results in TypeDB Studio are visualised as a graph.
+By default, the results in TypeDB Studio are visualized as a graph.
 
 [WARNING]
 ====
@@ -211,7 +211,7 @@ To create the file:
 
 . Click the `+` icon right from the *Project* panel, next to the `iam-schema.tql` tab in the *Text editor* panel.
 . Locate `iam-data.tql` file listing below and copy its contents inside the new tab.
-. Click the save icon (left side of toolbar).
+. Click the save icon (left side of the toolbar).
 . Enter `iam-data.tql` in the *Save As* field.
 . Click the btn:[Save] button.
 
@@ -229,20 +229,20 @@ Or open the xref:typedb::attachment$iam-data.tql[iam-data.tql] file.
 
 To execute the TypeQL statements copied from the code block above:
 
-. Ensure the btn:[Session type] (`schema` / `data`) switch (next to the database dropdown) is set to `data`.
-. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to `write`.
+. Ensure the btn:[Session type] (`schema` / `data`) switch (next to the database dropdown) is set to the `data`.
+. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to the `write`.
 . Click the btn:[Run Query] button (with a "play" symbol).
 . Click the btn:[Commit Transaction] button (with a "checkmark" symbol).
 
-The transaction has been committed, and data can now be queried.
+The transaction has been committed, and the data can now be queried.
 
 === Read data
 
 To retrieve data from a database:
 
 . Click the `+` icon right from the *Project* panel next to the `iam-data.tql` tab in the *Text editor* panel.
-. Ensure the btn:[Session type] (`schema` / `data`) switch (next to the database dropdown) is set to `data`.
-. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to `read`.
+. Ensure the btn:[Session type] (`schema` / `data`) switch (next to the database dropdown) is set to the `data`.
+. Ensure the btn:[Transaction type] (`write` / `read`) switch is set to the `read`.
 . Replace the TypeQL statement in the *Text editor* panel with the one below.
 . Click the btn:[Run Query] button (with a "play" symbol).
 
@@ -251,7 +251,7 @@ To retrieve data from a database:
 match $f isa file, has path $fp;
 ----
 
-The above query returns all `file` entities with their `path` attributes. Be default, TypeDB Studio displays the
+The above query returns all `file` entities with their `path` attributes. By default, TypeDB Studio displays the
 results as shown in the image below.
 
 image::studio-iam-data.png[IAM data example, width = 75%, link=self]
@@ -268,7 +268,7 @@ Here are the files used in the guide above:
 * xref:attachment$iam-data.tql[iam-data.tql,window=_blank] -- TypeQL script to load a sample dataset into a database with the
   IAM schema.
 
-We can do the same process of creating a database, loading schema and data through any other
+We can do the same process of creating a database, and loading schema and data through any other
 xref:clients:ROOT:clients.adoc[TypeDB Client].
 
 Here is an example with the xref:clients:ROOT:console.adoc[TypeDB Console]:
@@ -294,7 +294,7 @@ typedb console --command="transaction test-iam-db data read" --command='match $t
 
 After completing this guide we can recommend the following order of topics to continue exploring TypeDB:
 
-1. Find out more about how to xref:dev/connect.adoc[connect] to TypeDB, and use databases, sessions
+1. Find out more about how to xref:dev/connect.adoc[connect] to TypeDB, and use databases, sessions,
    and transactions.
 2. Learn how to define a database xref:dev/schema.adoc[schema], xref:dev/match.adoc[match a pattern], or
    design a query to xref:dev/write.adoc[write] or xref:dev/read.adoc[read] data.
@@ -302,4 +302,4 @@ After completing this guide we can recommend the following order of topics to co
 4. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find one most suitable.
 5. (Optional) Learn more about the xref:tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
    majority of examples throughout this documentation.
-6. (Optional) Explore xref:tutorials/sample-app.adoc[sample application] written in Java, Python, or Node.js.
+6. (Optional) Explore the xref:tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.

@@ -8,7 +8,7 @@
 [#_clients]
 == Clients
 
-TypeDB server accepts remote connections from a number of xref:clients::clients.adoc[TypeDB Clients] via
+TypeDB server accepts remote connections from xref:clients::clients.adoc[TypeDB Clients] via
 https://en.wikipedia.org/wiki/GRPC[gRPC,window=_blank].
 
 Once connected, TypeDB Clients can manage <<_databases,databases>>, <<_sessions,sessions>>, and
@@ -67,15 +67,15 @@ It requires a second argument of `TypeDBCredential` type.
 [#_protocol_version]
 === Protocol version control
 
-There is a server-side check for TypeDB protocol version. If incompatible version of a TypeDB
-Client tries to connect to a TypeDB server, server will throw an error instead of initiating the connection.
+There is a server-side check for the TypeDB protocol version. If an incompatible version of a TypeDB
+Client tries to connect to a TypeDB server, the server will send an error instead of initiating the connection.
 
-This is to prevent any potential errors with using incompatible versions of client and server.
+This is to prevent any potential errors from using incompatible versions of the client and the server.
 
-In the `2.18.0` version of TypeDB the TypeDB protocol has version number 1.
+In the `2.18.0` version of TypeDB, the TypeDB protocol has version number 1.
 
-For backwards compatibility protocol version control will allow TypeDB Clients versions prior to `2.18.0` (i.e. with
-protocol version N/A, or < 1) connect with TypeDB server with protocol version 1.
+For backward compatibility protocol version control will allow TypeDB Clients versions prior to `2.18.0` (i.e., with
+protocol version N/A, or < 1) to connect with a TypeDB server with protocol version 1.
 
 [NOTE]
 ====
@@ -87,12 +87,12 @@ due to the older server lacking the API to check the protocol version.
 == Databases
 
 TypeDB instances can contain multiple databases. A database consists of a xref:dev/schema.adoc[schema] and
-xref:dev/write.adoc[data] -- and is both separate and independent of any other database. It is not possible for two
-databases to influence each other. However, Сlients can connect to multiple databases simultaneously.
+xref:dev/write.adoc[data] -- and is both separate and independent of any other database. Two databases can't influence
+each other. However, Clients can connect to multiple databases simultaneously.
 
 [NOTE]
 ====
-TypeDB is optimized for a small number of databases. It's recommended to start with a single database, and add more if
+TypeDB is optimized for a small number of databases. It's recommended to start with a single database and add more if
 necessary (e.g., to support more applications). The **best practice** is to keep the number of databases **under 10**.
 ====
 
@@ -172,11 +172,17 @@ await (await client.databases().get("test-db")).delete();
 [#_sessions]
 == Sessions
 
-Session is like a tunnel connection to a database in a TypeDB server. An open session lets you open transactions in it.
+A session is like a tunnel connection to a database in a TypeDB server. An open session lets you open transactions
+in it.
 
-Any TypeDB Client will automatically exchange internal signals with server to keep the session alive when it's open.
-If server doesn't receive this signal for a period of time bigger than timeout (30 secs by default) server will
+image::clients::concurrency-model.png[Session-transaction-query,link=self,width=100%]
+
+[IMPORTANT]
+====
+Any TypeDB Client will automatically exchange internal signals with the server to keep the session alive when it's open.
+If the server doesn't receive this signal for a period of time bigger than timeout (30 secs by default) it will
 forcibly close the session due to inactivity.
+====
 
 There are two types of sessions:
 
@@ -213,7 +219,7 @@ TypeDB Clients should read and write schema in SCHEMA sessions.
 [NOTE]
 ====
 If a client needs to read both schema and data from a database, it can be done in any session type (usually used when
-data query needs information on types). But it is NOT possible to modify a schema and its data in the same session,
+a data query needs information on types). But it is NOT possible to modify a schema and its data in the same session,
 regardless of the type.
 
 Write transactions are strict to the session types (see the table above for illustration).
@@ -263,14 +269,21 @@ session = await client.session("iam", SessionType.DATA);
 
 [NOTE]
 ====
-It is recommended to avoid long-running sessions, because of possible network failures.
+Sessions must be explicitly opened and closed by TypeDB Clients.
 
-There is a timelimit for inactive transactions. By default, it's 300 seconds.
-
-//There is also a transaction (query?) duration limit
+For more information on how to do it with TypeDB Drivers see the xref:dev/api.adoc[API] page, or language specific
+API reference:
+xref:clients::java/java-api-ref.adoc#_session_create[Java],
+xref:clients::python/python-api-ref.adoc#_session_create[Python],
+xref:clients::node-js/node-js-api-ref.adoc#_session_create[Node.js].
 ====
 
-A good principle to follow is for logically coherent transactions to be grouped together into a session.
+[IMPORTANT]
+====
+It is recommended to avoid long-running sessions, because of possible network failures.
+====
+
+A good principle to follow is for logically coherent transactions to be grouped into a session.
 
 [#_transactions]
 == Transactions
@@ -282,11 +295,6 @@ There are two types of transactions:
 
 * READ transactions
 * WRITE transactions
-
-[NOTE]
-====
-Transactions must be explicitly opened and closed by TypeDB Clients. For drivers see the xref:dev/api.adoc[API] page.
-====
 
 [tabs]
 ====
@@ -353,16 +361,27 @@ transaction.commit();
 
 [NOTE]
 ====
-TypeDB Studio lets developers commit/rollback transactions through its GUI.
+Transactions must be explicitly opened and closed by TypeDB Clients.
+
+For more information on how to do it with TypeDB Drivers see the xref:dev/api.adoc[API] page, or language specific
+API reference:
+xref:clients::java/java-api-ref.adoc#_create_transaction[Java],
+xref:clients::python/python-api-ref.adoc#_create_transaction[Python],
+xref:clients::node-js/node-js-api-ref.adoc#_create_transaction[Node.js].
 ====
+
+TypeDB Studio lets developers commit/rollback transactions through its GUI.
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free
 read/write transactions. For more information see the <<_acid_guarantees>> section below.
 
 === Transaction time limit
 
+[IMPORTANT]
+====
 TypeDB transactions have a duration limit. By default, it's *5 minutes*.
 The default value can be changed with Client options.
+====
 
 The time limit is intended to encourage short-lived transactions, prevent memory leaks
 caused by transactions that will not be completed and terminate unresponsive transactions.

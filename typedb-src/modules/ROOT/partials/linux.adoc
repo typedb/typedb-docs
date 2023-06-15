@@ -22,7 +22,7 @@ sudo apt update
 sudo apt install openjdk-11-jre
 ----
 +
-TypeDB supports the https://jdk.java.net[OpenJDK,window=_blank] and
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 . Check the latest version number for typedb-server and its dependencies:
 +
@@ -47,8 +47,8 @@ APT-Sources: https://repo.vaticle.com/repository/apt trusty/main all Packages
 Description: TypeDB (server)
 ----
 +
-Take a note of the latest typedb-server version shown at the `Package` field and the corresponding `typedb-bin`
-package version shown at the `Depends` field.
+Take note of the latest typedb-server version shown in the `Package` field and the corresponding `typedb-bin`
+package version shown in the `Depends` field.
 +
 To get some other version of TypeDB installed, we can use the `apt show typedb-server=2.14.1`, where `2.14.1` --
 version number, can be replaced with the version we need.
@@ -70,7 +70,7 @@ specific version for every package.
 // tag::install-manual[]
 
 . Ensure Java 11+ is installed.
-TypeDB supports the https://jdk.java.net[OpenJDK,window=_blank] and
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 
 . Get the latest release for Linux:

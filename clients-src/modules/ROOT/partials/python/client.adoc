@@ -1,3 +1,4 @@
+[#_session_create]
 == Create a session for a database
 
 === Syntax
@@ -10,6 +11,9 @@ client.session(database, session_type, options)
 === Description
 
 Opens a communication tunnel (session) to the given database on the running TypeDB server.
+
+For more information on the methods, available with sessions, see the
+xref:clients::python/python-api-ref.adoc#_session_methods[Session methods] section.
 
 === Input parameters
 
@@ -28,7 +32,7 @@ Opens a communication tunnel (session) to the given database on the running Type
 
 === Returns
 
-* [Session] 
+* xref:clients::python/python-api-ref.adoc#_session_methods[Session]
 
 == Retrieve all databases
 
