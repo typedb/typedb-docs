@@ -3,11 +3,12 @@
 :longTailKeywords: TypeDB administration, TypeDB configuration, TypeDB settings, changing settings
 :pageTitle: Configuration
 :summary: TypeDB configuration guide.
+//:stem:
 
 There are two ways to configure TypeDB:
 
 * <<_command_line_arguments,command line arguments>>,
-* <<_configuration_file,configuration file>>.
+* and <<_configuration_file,configuration file>>.
 
 [#_command_line_arguments]
 == Command line arguments
@@ -28,9 +29,9 @@ Some arguments are exclusive to the command line interface:
 * `--version`: print out the version of the server and exit.
 * `--config /path/to/external/typedb-config.yml`: use the specified configuration file.
 
-Additional arguments available are derived from the configuration `yaml` file. Any value from the configuration file
-can be overridden by a command line argument, as shown in the relevant
-<<_configuration_file_options_via_command_line_arguments,section>>.
+Additional arguments are derived from the configuration `.yaml` file. Any value from the configuration file
+can be overridden by a command line argument, as shown in the <<_configuration_file_options_via_command_line_arguments>>
+section.
 
 === Getting help
 
@@ -41,7 +42,7 @@ For all available commands via the command line use the `--help` argument to get
 typedb server --help
 ----
 
-This will list out how to use command line specific arguments as well as options derived from the configuration file.
+This will list out how to use specific command line arguments as well as options derived from the configuration file.
 
 [#_configuration_file]
 == Configuration file
@@ -51,7 +52,7 @@ TypeDB accepts a configuration (config) file with a specific YAML format. See th
 
 [IMPORTANT]
 ====
-In order for any change in configuration file to take effect, restart the TypeDB server.
+For any change in the configuration file to take effect, restart the TypeDB server.
 ====
 
 [#_the_default_location_of_the_config_file]
@@ -61,8 +62,8 @@ TypeDB ships with a default configuration file. The location of this file varies
 
 If downloaded manually, find the configuration file in the `server/conf` directory inside the unzipped folder.
 
-If installed using Homebrew, check the following directory (replace the `+{version-number}+` variable with number of
-installed version):
+If installed using Homebrew, check the following directory (replace the `+{version-number}+` placeholder with the exact
+version installed):
 
 ----
 /usr/local/Cellar/typedb/{version-number}/libexec/server/conf/config.yml
@@ -124,9 +125,9 @@ vaticle-factory:
 
 The server section of the configuration file contains network and RPC options.
 
-* `address`: the address to listen for gRPC clients on.
+* `address`: the address to listen for TypeDB Clients connections via `gRPC`.
 +
-Use the `0.0.0.0` IP-address to listen to all connections and `localhost` for connections from the local machine.
+Use the `0.0.0.0` IP address to listen to all connections and `localhost` for connections from the local machine.
 
 [#_storage_configuration]
 === Storage configuration
@@ -166,7 +167,7 @@ There are three subsections:
 
 Use command line arguments to override any option in the configuration file.
 
-For example, the configuration file sets the server address as:
+For example, the configuration file sets the server address as the following:
 
 [,yaml]
 ----
@@ -186,7 +187,7 @@ Use the same approach to set a completely new section of the configuration that 
 example, to define a new logger subsection to print out all query plans, we could do the following to set the package
 `com.vaticle.typedb.core.traversal` to output on a more verbose level:
 
-[,yaml]
+[,bash]
 ----
 typedb server  \
   --server.address 0.0.0.0:1730  \
@@ -198,7 +199,7 @@ typedb server  \
 == Cluster configuration
 
 Every server in a cluster has its own config file that contains a list of known servers in the cluster. A server in a
-cluster will not accept connections from servers that are not in the list.
+cluster will not accept connections from servers that are not on the list.
 
 [NOTE]
 ====
@@ -226,23 +227,28 @@ The minimum host machine configuration for running a single TypeDB database is 4
 The recommended starting configuration is 8 (v)CPUs, 16 GB memory, and SSD. Bulk loading is scaled effectively by
 adding more CPU cores.
 
-The memory breakdown of TypeDB is the following:
+The following is the breakdown of TypeDB memory requirements:
 
-* the JVM memory: configurable when booting the server with `JAVAOPTS="-Xmx4g"` typedb server. This gives the JVM 4 GB
+* the JVM memory: is configurable when booting the server with `JAVAOPTS="-Xmx4g"` typedb server. This gives the JVM *4 GB*
 of memory. Defaults to *25%* of system memory on most machines.
 * storage-layer baseline consumption: approximately *2 GB*.
 * storage-layer caches: this is about *2x* cache size per database. If the *data and index caches* sum up to *1 GB*,
 the memory requirement is *2 GB* in working memory.
 * memory per CPU: approximately *0.5 GB* additional per (v)CPU under full load.
 
-We can estimate the amount of memory the server will need to run a single database with these factors:
+We can estimate the amount of memory the server will need to run a single database with the following equation:
+
+////
+[stem]
+++++
+"required memory" = "JVM memory" + "2 GB" + (2 xx "configured db-caches in GB") + ("0.5 GB" xx "Number of CPUs")
+++++
+////
 
 `required memory = JVM memory + 2 GB + (2 × configured db-caches in GB) + (0.5 GB × CPUs)`
 
-//#todo try asciimath here
-
 For example, on a 4 CPU machine, with the default 1 GB of per-database storage caches, and the JVM using 4 GB of RAM,
-the default requirement for memory would be: 4 GB + 2 GB + (2 × 1 GB) + (0.5 GB × 4) = *10 GB*.
+the default requirement for memory would be: `4 GB + 2 GB + (2 × 1 GB) + (0.5 GB × 4)` = *10 GB*.
 
 Each additional database will consume an additional amount at least equal to the cache requirements (in this example,
 an additional 2 GB of memory for each database).
@@ -250,7 +256,7 @@ an additional 2 GB of memory for each database).
 === Open file limit
 
 To support large data volumes, it is important to check the open file limit the operating system imposes. Some Unix
-distributions default to `1024` open file descriptors. This can be checked with:
+distributions default to `1024` open file descriptors. This can be checked with the following command:
 
 [,bash]
 ----

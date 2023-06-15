@@ -17,7 +17,7 @@ This is the TypeDB server documentation section. It has the following sections:
  ** xref:dev/read.adoc[] -- data retrieval queries
  ** xref:dev/infer.adoc[] -- data inference queries
  ** xref:dev/response.adoc[] -- parsing query response
- ** xref:dev/api.adoc[] -- brief description of Client API and TypeDB Drivers
+ ** xref:dev/api.adoc[] -- brief description of TypeDB Driver API and TypeDB Drivers
  ** xref:dev/best.adoc[] -- schema and query design tips
 * *Administration*
  ** xref:admin/configuration.adoc[] -- TypeDB server configuration parameters and host machine requirements
@@ -28,20 +28,20 @@ This is the TypeDB server documentation section. It has the following sections:
 * *Tutorials*
  ** xref:tutorials/iam-schema.adoc[] -- a brief description of IAM schema that is widely used throughout the documentation
  ** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js
- ** xref:tutorials/data-migration.adoc[Data migration] -- How to load a dataset from an intermediate input format
+ ** xref:tutorials/data-migration.adoc[Data migration] -- how to load a dataset from an intermediate input format
  into a TypeDB database
- ** xref:tutorials/new-driver-tutorial.adoc[New client] -- How to create a new client
+ ** xref:tutorials/new-driver-tutorial.adoc[New client] -- how to create a new client
 
 == Thinking in TypeQL and TypeDB
 
 // #todo Change the link to TypeQL -
 
-The backbone of any TypeDB database is the representation of our domain: the xref:dev/schema.adoc[schema].
-A TypeDB schema is the blueprint of a TypeDB database. Using TypeQL language, we
-define a schema to model a domain true to nature. The schema is made up of a set of types and rules, which harness
-object-oriented principles and logical deduction.
+The backbone of any TypeDB database is the representation of our business domain: the xref:dev/schema.adoc[schema].
+A TypeDB schema is the blueprint of a TypeDB database. Using TypeQL language, we define a schema to model a domain
+true to nature. The schema is made up of a set of xref:dev/schema.adoc#_types[types] and
+xref:dev/schema.adoc#_rules[rules], which harness strong typing with inheritance and logical deduction.
 
-Types defined in a schema are all subtypes of the following basic ones:
+User-defined types in a schema are all subtypes of the following built-in root types:
 
 * Entities. Representing self-sufficient objects.
 * Relations. Representing n-ary relationships.
