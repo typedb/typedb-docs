@@ -267,16 +267,16 @@ session = await client.session("iam", SessionType.DATA);
 --
 ====
 
-[NOTE]
-====
 Sessions must be explicitly opened and closed by TypeDB Clients.
 
-For more information on how to do it with TypeDB Drivers see the xref:dev/api.adoc[API] page, or language specific
-API reference:
-xref:clients::java/java-api-ref.adoc#_session_create[Java],
-xref:clients::python/python-api-ref.adoc#_session_create[Python],
-xref:clients::node-js/node-js-api-ref.adoc#_session_create[Node.js].
-====
+For more information on how to do it with different Clients see the documentation:
+
+* xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
+* xref:clients::console.adoc#_database_management_commands[TypeDB Console]
+* TypeDB Drivers:
+** xref:clients::java/java-api-ref.adoc#_session_create[Java],
+** xref:clients::python/python-api-ref.adoc#_session_create[Python],
+** xref:clients::node-js/node-js-api-ref.adoc#_session_create[Node.js].
 
 [IMPORTANT]
 ====
@@ -359,18 +359,18 @@ transaction.commit();
 --
 ====
 
-[NOTE]
-====
-Transactions must be explicitly opened and closed by TypeDB Clients.
-
-For more information on how to do it with TypeDB Drivers see the xref:dev/api.adoc[API] page, or language specific
-API reference:
-xref:clients::java/java-api-ref.adoc#_create_transaction[Java],
-xref:clients::python/python-api-ref.adoc#_create_transaction[Python],
-xref:clients::node-js/node-js-api-ref.adoc#_create_transaction[Node.js].
-====
+Transactions must be explicitly opened and closed by a TypeDB Client.
 
 TypeDB Studio lets developers commit/rollback transactions through its GUI.
+
+For more information on how to do it with different Clients see the documentation:
+
+* xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
+* xref:clients::console.adoc#_transaction_querying_commands[TypeDB Console]
+* TypeDB Drivers:
+** xref:clients::java/java-api-ref.adoc#_create_transaction[Java],
+** xref:clients::python/python-api-ref.adoc#_create_transaction[Python],
+** xref:clients::node-js/node-js-api-ref.adoc#_create_transaction[Node.js].
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free
 read/write transactions. For more information see the <<_acid_guarantees>> section below.
