@@ -2,18 +2,22 @@
 [#_node_js_implementation]
 The following Javascript code executes four simple requests to the `iam` database.
 
-We can save it locally and run it with the *Node.js* version *16* and `npm`.Make sure to install
+We can save it locally or clone the https://github.com/izmalk/iam-sample-app-node-js[repository,window=_blank].
+
+Make sure to install *Node.js* version *16+*, `npm`, and
 xref:clients::node-js/node-js-install.adoc[TypeDB Node.js driver] with `npm install typedb-client`.
 
-Use the source code below or the xref:tutorials/sample-app.adoc#_explanation[explanation] section to explore four
+To run this sample application use the following command from the directory with the source code:
+
+[,bash]
+----
+node sample.js
+----
+
+Use the source code below or the xref:tutorials/sample-app.adoc#_explanation[Explanation] section below to explore four
 requests performed in the sample app.
 
 // - #todo Update the link to the repo with some vaticle repo
-
-Alternatively, we can clone the full
-https://github.com/izmalk/iam-sample-app-node-js/blob/main/sample.js[repository,window=_blank].
-
-// - #todo Add tabs!
 
 [,javascript]
 ----
@@ -26,7 +30,7 @@ async function main() {
     console.log("IAM Sample App");
 
     console.log("Connecting to the server");
-    const client = TypeDB.coreClient("0.0.0.0:1729"); // client is connected to the server
+    const client = await TypeDB.coreClient("0.0.0.0:1729"); // client is connected to the server
     console.log("Connecting to the `iam` database");
     let k; // define counter
     let session // define session for later use
