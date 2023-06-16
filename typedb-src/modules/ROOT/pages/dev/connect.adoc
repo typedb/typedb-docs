@@ -87,8 +87,8 @@ due to the older server lacking the API to check the protocol version.
 == Databases
 
 TypeDB instances can contain multiple databases. A database consists of a xref:dev/schema.adoc[schema] and
-xref:dev/write.adoc[data] -- and is both separate and independent of any other database. Two databases can't influence
-each other. However, Clients can connect to multiple databases simultaneously.
+xref:dev/write.adoc[data]. It is both separate and independent of any other database: two databases can't influence
+each other. However, TypeDB Clients can connect to multiple databases simultaneously.
 
 [NOTE]
 ====
@@ -391,7 +391,7 @@ caused by transactions that will not be completed and terminate unresponsive tra
 * Avoid long-running transactions which can result in conflicts and resource contention.
 * Transactions should group logically coherent queries.
 
-For more advices and *best practices* visit the xref:dev/best.adoc[Best practices] page.
+For more advice and *best practices* visit the xref:dev/best.adoc[Best practices] page.
 
 [#_acid_guarantees]
 == ACID guarantees
@@ -421,7 +421,7 @@ transaction will fail and be rolled back.
 === Isolation
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support simultaneous, lock-free
-read/write transactions. Thus, a transaction operates on its own snapshot of the data, independent of any other. All
+read/write transactions. Thus, a transaction operates on its snapshot of the data, independent of any other. All
 of its changes are hidden from other transactions. However, they will become visible immediately after a successful
 commit.
 
@@ -442,7 +442,7 @@ TypeDB durability guarantees do not apply when storage devices become corrupt or
 Successful write transactions are written to the write-ahead log before returning a response to the client. If a
 transaction is not successful, all changes are rolled back.
 
-For TypeDB Enterprise and TypeDB Cloud installations transaction acknowledgement is sent to the client after majority
+For TypeDB Enterprise and TypeDB Cloud installations, transaction acknowledgment is sent to the client after a majority
 of replicas replicated the transaction results. See xref:admin/ha.adoc#_replication[Replication] for details.
 
 [#_schema_integrity]
@@ -458,7 +458,7 @@ of replicas replicated the transaction results. See xref:admin/ha.adoc#_replicat
 
 [NOTE]
 ====
-If anything prevents us from opening a session TypeDB will wait for a timeout about 10 seconds and, if the problem
+If anything prevents us from opening a session TypeDB will wait for a timeout of about *10 seconds* and, if the problem
 persists, throw an error:
 
 ----
