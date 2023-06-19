@@ -7,7 +7,7 @@
 
 TypeDB schema is like a blueprint of a database. It contains all user-defined <<_types,types>> and <<_rules,rules>>
 used in a database.
-The types within a schema also defines data model, its constraints, and the vocabulary used in TypeQL queries to
+The types within a schema also define the data model, its constraints, and the vocabulary used in TypeQL queries to
 describe the business domain it represents.
 
 TypeDB schemas are written with TypeQL which is both data definition language (DDL) and data manipulation language
@@ -54,14 +54,13 @@ All root types are abstract types. Meaning we can't instantiate them (insert an 
 type).
 
 All we can do with an abstract type is to subtype it. That's why when we say *entity type* we usually mean a subtype
-of the `entity` root type.
-
-The same way we can address *relation type* or *attribute type* instead of mentioning subtypes of the root types.
+of the `entity` root type. In the same way we can address *relation type* or *attribute type* instead of mentioning
+subtypes of the root types.
 ====
 
 [NOTE]
 ====
-To avoid ambiguity when using type labels we should try to provide context or specify what exactly do
+To avoid ambiguity when using type labels we should try to provide context or specify what exactly
 we mean:
 
 - the type and all its subtypes (the default variant),
@@ -69,15 +68,15 @@ we mean:
 - or instances of data of this particular type, and instances of data of all its subtypes.
 ====
 
-All three built-in types are called `root` types. Because all user-defined types are being
+All three built-in types are called `root` types. Because all user-defined types are
 subtypes (direct or non-direct) of those root types (see in green color in the example below).
 
 There is a strict hierarchy of types, so the whole typing system always can be represented by 3 independent
-trees with a single root type (built-in type) at the top of each tree. Any type have only one parent (supertype).
+trees with a single root type (built-in type) at the top of each tree. Any type has only one parent (supertype).
 
 For example:
 
-.Type trees example
+//.Type trees example
 //[plantuml, tree, svg]
 //[plantuml, target=tree, format=svg]
 //[plantuml,tree,svg]
@@ -138,45 +137,45 @@ The `thing` built-in type will be deprecated in one of the upcoming versions and
 
 The `entity` root type is representing all its subtypes that we will call *entity types*.
 
-Entity types define classification of objects within data model of our business domain.
+Entity types define the classification of objects within the data model of our business domain.
 
 Instance of data of an entity type represents a standalone object that exists in our data model independently.
 
 .Entity
 ====
-Like a company (instance of `company` type) can exist regardless of existence of other companies, or `person` type
+A company (instance of `company` type) can exist regardless of the existence of other companies, `person` type
 instances, or even `file` type instances.
 
 In comparison -- a relation is meaningless without its role players, and an attribute is meaningless without being
 owned.
 ====
 
-Unlike an `attribute`, an instance of an entity `entity` don't have a value. To define a new entity type we need
+Instance of an entity doesn't have a value, unlike an instance of an attribute type. To define a new entity type we need
 to set its label and what type it's a subtype of. For more information on how to define an `entity` type see
 the <<_define_entity_types>> section.
 
-To set a property of an entity (like a name of a company) we need to define an ownership by this entity of an instance
-of an `atribute` type with required value.
+To set a property of an entity (like a name of a company) we need to define ownership by this entity of an instance
+of an `attribute` type with the required value.
 
 To define a relationship between an entity and some other user-defined types we need to define a relation with roles,
-as well as define an ability on the involved types to play those roles.
+as well as define the ability of the involved types to play those roles.
 
-Entity is usually characterized and can be addressed via any combination of the following:
+An entity is usually characterized and can be addressed via any combination of the following:
 
-* owned attributes (instance of a `company` type that has `name` attribute with value `Vaticle LTD`),
-* played roles in relations (instance of a `company` type that plays `employer` role in the `employment` relation where
-  a particular instance of `person` type playing the `employee` role).
+* owned attributes (instance of the `company` type that has the `name` attribute with value `Vaticle LTD`),
+* played roles in relations (instance of the `company` type that plays the `employer` role in the `employment` relation
+  where a particular instance of the `person` type plays the `employee` role).
 
 .Entity types and instances
 ====
 For example, there could be entity types like `company`, `file`, or `person`.
 
-Given the `company` entity type defined in a database schema we can insert instances of data of this type in such
-a database. Every instance of `company` type inserted into database will represent a company, that can be addressed
-by whatever attributes it has (e.g., name, registration number), or by roles played in relations (e.g., `employer`
-for the particular instance of `person` entity type in an `employment` relation type).
+Given the `company` entity type defined in a database schema, we can insert instances of data of this type in such
+a database. Every instance of the `company` type inserted into the database will represent a company, that can be
+addressed by whatever attributes it has (e.g., name, registration number), or by roles played in relations (e.g.,
+`employer` for the particular instance of `person` entity type in an `employment` relation type).
 
-.Company entity type instances example
+//.Company entity type instances example
 //[plantuml, company, svg]
 //[plantuml, target=company, format=svg]  ////  asciidoctor-diagram ////
 //[plantuml,company,svg]
@@ -220,13 +219,14 @@ The `attribute` root type is representing all its subtypes that we will call *at
 
 Instances of attribute types have values. To define a new attribute type we need to set its label, what type
 it's a subtype of, and its value type. For more information on the types of values that attributes can have: see the
-<<_value_types,value types list>> .
+<<_value_types, list of value types>>.
 
 Attribute types represent the properties of other types. Mostly `entity` and `relation` types (e.g.,
 the name of a business unit or a user). In TypeDB, any type can *own* an attribute type. However, different types
 can own the same attribute type -- and different instances can share ownership of the same attribute instance.
 
-For example, multiple users can own the same instance of an attribute type with label `name` and the value of `Alex`.
+For example, multiple users can own the same instance of an attribute type with the label `name` and the value of
+`Alex`.
 
 [WARNING]
 ====
@@ -236,7 +236,7 @@ deleted in TypeDB version 3.0.
 
 Every instance of an attribute type can be uniquely addressed by its type and value.
 
-For more information on how to define a `attribute` subtype see the <<_define_attribute_types>> section.
+For more information on how to define an `attribute` subtype see the <<_define_attribute_types>> section.
 
 [#_rules]
 == Rules
@@ -247,20 +247,20 @@ A rule consists of a condition and a conclusion.
 Condition is a pattern to look for in data and conclusion is data to be virtually inserted for every result matched
 with a pattern from condition.
 
-Rules are used by queries for xref:dev/infer.adoc[Inferring new data] only in read transactions, and only if
+Rules are used by queries for xref:dev/infer.adoc[Inferring new data] only in read transactions, and only if the
 inference option is enabled.
 
 [IMPORTANT]
 ====
 Rules can't change persisted data in a database. Instead, all the reasoning is done within a dataset of the transaction.
-Only the results of queries in this transaction is influenced by the inference.
+Only the results of queries in this transaction are influenced by the inference.
 During a single transaction, newly inferred facts will be retained and reused (with corresponding performance gains).
 New transactions will re-compute inferred facts again.
 ====
 
-The rules syntax uses `when` and `then` keywords as in `if`/`then` statement that produce virtual relations or
-attributes when the conditions are met. Read more on how to create rules in a schema in the
-<<_define_rules,Define rules>> section. See the example of rules syntax below.
+The rules syntax uses `when` and `then` keywords that produce virtual relation or
+attribute ownership when the conditions are met. Read more on how to create rules in a schema in the
+<<_define_rules,Define rules>> section. See the example of a rule below.
 
 [,typeql]
 ----
