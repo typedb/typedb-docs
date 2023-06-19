@@ -7,40 +7,18 @@
 == Overview
 
 A TypeDB Client is any software that can connect to a TypeDB.
-It is meant to be used for the purpose of managing databases and performing operations (querying) with a
-database schema and data on the TypeDB server.
 
-TypeDB uses its own https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank] protocol via `gRPC`
-interface to accept connections from Clients. To connect we can use xref:studio.adoc[TypeDB Studio],
-xref:console.adoc[TypeDB Console], or we can build our own application (Client).
+All TypeDB Clients use https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank] protocol based on
+`gRPC` framework under the hood to communicate with a TypeDB server and provide more user-friendly interface:
+API, GUI, or CLI.
 
-A TypeDB Client uses `gRPC` to connect with a TypeDB server and provides more user-friendly interface: API, GUI or CLI.
-
-To build an application capable of connecting to TypeDB via *TypeDB Client RPC* protocol we can use one of the existing
-libraries implementing it, called <<_typedb_drivers,TypeDB Drivers>>, or we can implement it ourselves as a
+To build a custom application capable of connecting to TypeDB via *TypeDB Client RPC* protocol we can use one of the
+existing libraries implementing it, called <<_typedb_drivers,TypeDB Drivers>>, or we can implement it ourselves as a
 xref:new-driver.adoc[new driver].
 
 image::client-server-comms.png[Client types and server interaction]
 
-//#todo Update terminology on image
-
 Here is a list of existing *TypeDB Clients*:
-////
-.TypeDB Clients
-[cols="^1,^3,^3",options="header"]
-|===
-| Client type | Built by Vaticle | Built by community
-
-| Applications
-| TypeDB Studio,
-TypeDB Console
-| TypeDB Loader
-
-| Drivers
-| Java, Python, Node.js, Rust
-| Julia, Go, Haskell, C#
-|===
-////
 
 * xref:studio.adoc[TypeDB Studio]
 * xref:console.adoc[TypeDB Console]
@@ -56,18 +34,18 @@ or consider xref:new-driver.adoc[creating a new client].
 There is also a community driven Jupyter notebook plugin to work with TypeDB:
 https://pypi.org/project/typedb-jupyter/[TypeDB Jupyter connector,window=_blank].
 
-[IMPORTANT]
+[NOTE]
 ====
-Both TypeDB Drivers and applications built with them can be addressed as TypeDB Clients. But the implementation of the
-TypeDB Client RPC protocol is in the TypeDB Driver.
+Both TypeDB Drivers and applications built with them can be addressed as TypeDB Clients.
 
 For example, both TypeDB Studio and TypeDB Console are built with TypeDB Java Driver inside.
 ====
 
-[WARNING]
+[IMPORTANT]
 ====
-All TypeDB Clients are subjects to xref:typedb::dev/connect.adoc#_protocol_version[protocol version control].
-TypeDB Client of an incompatible version won't be able to establish a connection to a TypeDB server.
+All TypeDB Clients validate compatibility with the TypeDB server when establishing a connection.
+This is done using xref:typedb::dev/connect.adoc#_protocol_version[protocol versioning], and
+ensures that the Client can't send or receive unexpected data from the server.
 ====
 
 == Standalone applications
@@ -75,46 +53,39 @@ TypeDB Client of an incompatible version won't be able to establish a connection
 To work with TypeDB databases we can use one of the standalone software tools developed by Vaticle:
 
 . xref:studio.adoc[TypeDB Studio] -- IDE with GUI and TypeQL syntax highlighting.
-. xref:console.adoc[TypeDB Console] -- powerful CLI tool, most useful for automation.
+. xref:console.adoc[TypeDB Console] -- powerful CLI tool, often used for automation.
 
-Both tools are complete software products that can be used to connect to TypeDB and interact with it. They take care
-of connection, session and transaction management, automate query sending and process the query response.
+Both tools are complete software products that can be used to connect to TypeDB and interact with it. They manage
+connections, sessions and transactions, as well as submitting queries and reading back the responses.
 
 [#_typedb_drivers]
 == TypeDB Drivers
 
-A TypeDB Driver, is a library that implements https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank]
-protocol and provides TypeDB Driver API.
-
-A TypeDB Driver can be used to connect to a TypeDB server. If we are building an application that uses a TypeDB database,
-we would need a TypeDB driver at our application layer to handle the database operations.
-TypeDB Drivers are available for some of the most popular programming languages.
+A TypeDB Driver is a library that implements https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank]
+protocol and provides <<_driver_api,TypeDB Driver API>>. TypeDB Drivers are available for some of the most popular
+programming languages, allowing you to build applications that connect to a TypeDB database easily.
 
 The following TypeDB Drivers are officially supported and actively maintained by the Vaticle. They
-usually support latest TypeDB features and receive continuous bug fixes and improvements.
+support latest TypeDB features and receive continuous bug fixes and improvements.
 
 * xref:java/java-overview.adoc[Java]
 * xref:node-js/node-js-overview.adoc[Node.js]
 * xref:python/python-overview.adoc[Python]
 * Rust (https://github.com/vaticle/typedb-client-rust[Under development,window=_blank])
 
-We also have some community projects for xref:other-languages.adoc[other Languages] and provide support for
-creating a xref:new-driver.adoc[new client].
+We also have some community projects for xref:other-languages.adoc[other languages] and provide support for
+creating a xref:new-driver.adoc[new driver].
 
 === Architecture of a TypeDB Driver
 
-All TypeDB Drivers share a common architecture. A TypeDB Drivers needs a `gRPC` client library to communicate with
-the server.
-
-A TypeDB Client provides a human or machine interface and interacts with TypeDB server, but also it performs query
-validation, local processing, load-balancing (TypeDB Cloud only) and authentication (TypeDB Cloud only).
+All TypeDB Drivers share a common architecture and capabilities. The core components have to do with providing a human
+or machine interface, opening and managing connections, sessions, and transactions, as well as validating and
+submitting queries, processing responses, load-balancing (TypeDB Enterprise & TypeDB Cloud only), and authentication
+(TypeDB Enterprise & TypeDB Cloud only).
 
 The following schema is the dependency graph of a typical TypeDB Client.
 
 image::client-structure.png[Structure of a TypeDB Client]
-
-//#todo Update Cluster to be Enterprise
-//#todo Redraw in new design
 
 Simply put, the main components of any TypeDB Client are the classes
 and methods to establish a connection to a TypeDB database, execute queries and process responses.
@@ -122,6 +93,7 @@ and methods to establish a connection to a TypeDB database, execute queries and 
 TypeDB Clients in the form of standalone applications usually take care of internal processes and provide a
 user-friendly interface for user (graphical or command-line).
 
+[#_driver_api]
 Language specific libraries (or TypeDB Drivers) provide more direct access to the classes and methods via
 TypeDB Driver API:
 
