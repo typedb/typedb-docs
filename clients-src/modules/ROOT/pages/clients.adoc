@@ -16,14 +16,6 @@ image::client-server-comms.png[Client types and server interaction]
 
 //#todo Update terminology on image
 
-//#todo is this "important"? Or more of "note"?
-
-[IMPORTANT]
-====
-User-friendly standalone applications also use a lower-level Driver to handle communication with the server.
-
-For example, both TypeDB Studio and TypeDB Console are built on top of the Java TypeDB Driver.
-====
 
 //#todo putting protocol versioning as a 'WARNING' is off-putting - we can frame it as a good thing!
 [IMPORTANT]
@@ -43,6 +35,14 @@ To work with TypeDB databases we can use one of the standalone software tools de
 
 Both tools are complete software products that can be used to connect to TypeDB and interact with it. They manage
 connections, sessions and transactions, as well as submitting queries and reading back the responses.
+
+//#todo is this "important"? Or more of "note"?
+[IMPORTANT]
+====
+User-friendly standalone applications also use a lower-level Driver to handle communication with the server.
+
+For example, both TypeDB Studio and TypeDB Console are built on top of the Java TypeDB Driver.
+====
 
 [#_typedb_drivers]
 == TypeDB Drivers
