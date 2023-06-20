@@ -207,16 +207,12 @@ from the command line using `+typedb console --command=<command1> --command=<com
 [#_REPL]
 == Interactive mode
 
-TypeDB Console provides two levels of interaction:
+TypeDB Console provides two levels of interaction
+(https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank]):
 
-1. Database-level commands
-2. Transaction-level commands
-
-The database-level command is the first level of interaction, i.e., first-level
-https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank].
-
-From one of the database-level commands, we
-can open a transaction to the database. This will open a transaction-level interface, i.e., second-level REPL.
+1. *Database-level commands* is the first level of interaction, i.e., *first-level REPL*.
+   From one of the database-level commands, we can open a transaction to the database.
+2. *Transaction-level commands* is the second level of interaction, i.e., *second-level REPL*.
 
 [#_database_management_commands]
 === Database management commands
