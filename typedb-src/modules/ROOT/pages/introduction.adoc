@@ -29,13 +29,40 @@ Comparison of TypeDB with most common types of databases:
 * xref:../../12-comparisons/02-graph-databases-and-typedb.adoc[Graph]
 ////
 
-== Introduction
+//== Thinking in TypeQL and TypeDB
+
+// #todo Change the link to TypeQL -
+
+The core of any TypeDB database is the representation of our business domain: the xref:dev/schema.adoc[schema].
+A schema is the blueprint of a TypeDB database. Using TypeQL, we define a schema to model a domain
+true to nature:
+
+* Types are defined to add context and constraints on data, using strong typing with inheritance. All user-defined
+  types in a schema are subtypes of other user-defined types or one the following built-in root types:
+** Entities. Representing self-sufficient objects.
+** Relations. Representing n-ary relationships.
+** Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
+* Rules are defined to add logical deduction to the schema. Any read queries with the inference option enabled can
+  benefit from new attribute ownerships or relations that are being deducted from patterns in data. Those inferred
+  concepts are transaction bound and are not persisted in a database.
+
+// ** Context helps us to correctly model, classify and query our data the most logical way.
+// ** Constraints are used for query validation and limiting the scope of queries.
+
+== TypeDB description
 
 TypeDB is a new kind of DBMS:
 
 * not an SQL, but uses an enhanced Entity-Relationship model, further extended by attributes as first-class citizens;
 * not a graph database, but utilizes the power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs,window=_blank]
   without the need for developers to understand how it works to use it.
+
+[NOTE]
+====
+The terms Entity, Relation, and Attribute correspond to the components of an Entity-Relation-Attribute model, an
+extension of the well-known https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model[ER model,window=_blank],
+in which attributes (properties) are also treated as first-class citizens.
+====
 
 TypeDB guarantees data integrity and safety while enabling data-level inferences within the database.
 A strong type system with subtyping and inheritance helps us break down complex problems into

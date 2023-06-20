@@ -32,32 +32,6 @@ This is the TypeDB server documentation section. It has the following sections:
  into a TypeDB database
  ** xref:tutorials/new-driver-tutorial.adoc[New client] -- how to create a new client
 
-== Thinking in TypeQL and TypeDB
-
-// #todo Change the link to TypeQL -
-
-The backbone of any TypeDB database is the representation of our business domain: the xref:dev/schema.adoc[schema].
-A TypeDB schema is the blueprint of a TypeDB database. Using TypeQL language, we define a schema to model a domain
-true to nature. The schema is made up of a set of xref:dev/schema.adoc#_types[types] and
-xref:dev/schema.adoc#_rules[rules], which harness strong typing with inheritance and logical deduction.
-
-User-defined types in a schema are all subtypes of the following built-in root types:
-
-* Entities. Representing self-sufficient objects.
-* Relations. Representing n-ary relationships.
-* Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
-
-[NOTE]
-====
-These terms correspond to the components of an Entity-Relation-Attribute model, an extension of the well-known
-https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model[ER model,window=_blank], in which attributes
-(properties) are also treated as first-class citizens.
-====
-
-Rules defined in a schema represent deductive logic. They are defined as condition (when clause) and conclusion
-(then clause). Read queries with the inference option enabled can generate insights based on the deductive logic
-described with rules. Those insights are transaction bound and are not persisted.
-
 == Where to go from here?
 
 For a bird-eye view of the TypeDB features see the xref:introduction.adoc[] page.
@@ -70,3 +44,5 @@ If you already have a working TypeDB environment we recommend you explore the fo
 * the *Development* section for the in-detail documentation of the TypeDB development workflow,
 * the *Administration* section for the instructions for setting up a production environment,
 * or the *Tutorials* section for how-to guides and the xref:tutorials/iam-schema.adoc[].
+
+There is a separate documentation section for xref:clients::clients.adoc[TypeDB Clients].
