@@ -20,9 +20,10 @@ image::client-server-comms.png[Client types and server interaction]
 
 Here is a list of existing *TypeDB Clients*:
 
-* xref:studio.adoc[TypeDB Studio]
-* xref:console.adoc[TypeDB Console]
-* <<_typedb_drivers,TypeDB Drivers>> -- libraries to connect to a TypeDB server with an application. There are:
+* <<_standalone_applications,Standalone applications>>:
+  ** xref:studio.adoc[TypeDB Studio]
+  ** xref:console.adoc[TypeDB Console]
+* <<_typedb_drivers,TypeDB Drivers>>:
   ** xref:java/java-overview.adoc[Java]
   ** xref:python/python-overview.adoc[Python]
   ** xref:node-js/node-js-overview.adoc[Node.js]
@@ -48,6 +49,7 @@ This is done using xref:typedb::dev/connect.adoc#_protocol_version[protocol vers
 ensures that the Client can't send or receive unexpected data from the server.
 ====
 
+[#_standalone_applications]
 == Standalone applications
 
 To work with TypeDB databases we can use one of the standalone software tools developed by Vaticle:
@@ -65,7 +67,7 @@ A TypeDB Driver is a library that implements https://github.com/vaticle/typedb-p
 protocol and provides <<_driver_api,TypeDB Driver API>>. TypeDB Drivers are available for some of the most popular
 programming languages, allowing you to build applications that connect to a TypeDB database easily.
 
-The following TypeDB Drivers are officially supported and actively maintained by the Vaticle. They
+The following TypeDB Drivers are officially supported and actively maintained by Vaticle. They
 support latest TypeDB features and receive continuous bug fixes and improvements.
 
 * xref:java/java-overview.adoc[Java]
