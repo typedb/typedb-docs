@@ -57,17 +57,17 @@ Copyright (C) 2022 Vaticle
 >
 ----
 
-=== TypeDB Cloud
+=== TypeDB Cloud / TypeDB Enterprise
 
-There is a slight difference when accessing TypeDB Cloud as it requires additional parameters (`cluster`,
-`username`,`password`, etc.):
+There is a slight difference when accessing TypeDB cluster (TypeDB Cloud or TypeDB Enterprise) as it requires
+additional parameters (`cluster`, `username`, `password`, etc.):
 
 [,bash]
 ----
 ./typedb console --cluster=127.0.0.1:1729 --username=<username> --password --tls-enabled=<true|false>
 ----
 
-As a result we will get a password request.
+As a result we get a password prompt.
 
 [,bash]
 ----
@@ -138,7 +138,7 @@ Most systems also allow us to set the system-wide locale, however this impacts t
 
 We can provide several command-line arguments when running Console in the terminal.
 
-[cols=".^2,^.^1,3"]
+[cols=".^2,^.^1,6"]
 |===
 ^| Option | Alias ^| Description
 
@@ -204,12 +204,13 @@ script is interpreted as one command, so multiline query is not available in thi
 We can also specify the commands to run directly
 from the command line using `+typedb console --command=<command1> --command=<command2> ...+`.
 
+[#_REPL]
 == Interactive mode
 
 TypeDB Console provides two levels of interaction:
 
-* database-level commands,
-* and transaction-level commands.
+1. Database-level commands
+2. Transaction-level commands
 
 The database-level command is the first level of interaction, i.e., first-level
 https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank].
@@ -220,7 +221,7 @@ can open a transaction to the database. This will open a transaction-level inter
 [#_database_management_commands]
 === Database management commands
 
-Give any of these commands inside a console at the `>` prompt in the first level of interaction.
+Give any of these commands inside a console at the `>` prompt in the first level of interaction (<<_REPL,REPL>>).
 [cols=".^2,3"]
 |===
 ^.^| Command ^.^| Description
@@ -265,19 +266,20 @@ Give any of these commands inside a console at the `>` prompt in the first level
 [#_transaction_querying_commands]
 === Transaction querying commands
 
-Give any of these commands inside a console at the `>` prompt in the second level of interaction.
+Give any of these commands inside a console at the `>` prompt in the second level of interaction (<<_REPL,REPL>>).
 
 [NOTE]
 ====
 Usually the `>` sign preceded by the database name and session/transaction types.
 ====
 
-[cols=".^1,3"]
+[cols=".^1,4"]
 |===
 ^| Command ^.^| Description
 
 | `<query>`
-| Once we're in the transaction REPL, the terminal immediately accepts a multi-line TypeQL query, and will execute it when we hit enter twice.
+| Once we're in the transaction <<_REPL,REPL>>, the terminal immediately accepts a multi-line TypeQL query, and will
+execute it when we hit kbd:[Enter] twice.
 
 | `source <file>`
 | Run TypeQL queries in a file, which we can refer to using relative or absolute path. On Windows escape `\` by writing `\\`.
@@ -290,7 +292,7 @@ Usually the `>` sign preceded by the database name and session/transaction types
 
 | `close`
 | Close the transaction without committing changes, and takes us back to the database-level interface, i.e.,
-first-level REPL.
+first-level <<_REPL,REPL>>.
 
 | `help`
 | Print help menu.
@@ -310,7 +312,7 @@ The following flags can be passed to the `transaction <db> schema⎮data read⎮
 transaction typedb data read --infer true
 ----
 
-[cols=".^2,^.^1,.^2"]
+[cols=".^2,^.^1,.^3"]
 |===
 ^| Option | Allowed values ^.^| Description
 
@@ -360,8 +362,8 @@ The following example illustrates how to create a database, define a schema, and
 
 [WARNING]
 ====
-When using interactive mode (REPL) of TypeDB Console, use Enter to start a new line of query, double Enter (or Enter
-on an empty line) to send a query.
+When using interactive mode (<<_REPL,REPL>>) of the TypeDB Console, use kbd:[Enter] to start a new line of query,
+double kbd:[Enter] (or kbd:[Enter] on an empty line) to send a query.
 ====
 
 [NOTE]

@@ -9,8 +9,8 @@
 A TypeDB Client is any software that can connect to a TypeDB.
 
 All TypeDB Clients use https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank] protocol based on
-`gRPC` framework under the hood to communicate with a TypeDB server and provide more user-friendly interface:
-API, GUI, or CLI.
+the xref:clients::new-driver.adoc#_grpc[gRPC,window=_blank] framework under the hood to communicate with a TypeDB
+server and provide more user-friendly interface: API, GUI, or CLI.
 
 To build a custom application capable of connecting to TypeDB via *TypeDB Client RPC* protocol we can use one of the
 existing libraries implementing it, called <<_typedb_drivers,TypeDB Drivers>>, or we can implement it ourselves as a
@@ -39,7 +39,7 @@ https://pypi.org/project/typedb-jupyter/[TypeDB Jupyter connector,window=_blank]
 ====
 Both TypeDB Drivers and applications built with them can be addressed as TypeDB Clients.
 
-For example, both TypeDB Studio and TypeDB Console are built with TypeDB Java Driver inside.
+For example, TypeDB Studio and TypeDB Console are built with TypeDB Java Driver inside.
 ====
 
 [IMPORTANT]

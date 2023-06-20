@@ -40,13 +40,6 @@ TypeDB.clusterClient(Set<String> addresses, TypeDBCredential credential, int par
 In order to communicate with TypeDB Cluster databases via sessions and transactions, we first need to instantiate a
 TypeDB Cluster client. The created object connects our application with the running TypeDB Cluster.
 
-[WARNING]
-====
-Node.js and Python Drivers always have TLS enabled!
-
-They can only connect to a server that is set up with TLS.
-====
-
 When instantiating a TypeDB Cluster client, it is sufficient to supply the address of just one server, as the addresses
 of the other servers will be relayed back to the client. However, to avoid failure in the unlikely event that the
 single server whose address is provided fails before communicating the addresses of the others, it is best practice to
