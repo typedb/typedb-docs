@@ -5,18 +5,10 @@
 :longTailKeywords: typedb inference, typedb reasoning, reasoning engine
 :pageTitle: Inferring data
 
-== Rules
-
-
-
-
-
-
-
 [#_how_to_use_inference]
 == How to use inference
 
-Inference is enabled as a read transaction option.
+Inference is enabled as a Read xref:dev/connect.adoc#_transactions[transaction] option.
 
 === TypeDB Studio
 
@@ -39,7 +31,9 @@ transaction typedb data read --infer true
 
 === TypeDB Drivers
 
-Set the `infer` option to `True` when starting the read transaction. For example:
+Set the `infer` option to `True` when starting the read transaction.
+
+For example:
 
 // #todo Consider adding other languages-
 

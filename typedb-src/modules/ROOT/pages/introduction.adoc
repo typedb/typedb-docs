@@ -32,7 +32,7 @@ Comparison of TypeDB with most common types of databases:
 
 // #todo Change the link to TypeQL -
 
-The core of any TypeDB database is the representation of our business domain: the xref:typeql:ROOT:schema.adoc[schema].
+The core of any TypeDB database is the representation of our business domain: the xref:dev/def-schema.adoc#_schema[schema].
 A schema is the blueprint of a TypeDB database. Using TypeQL, we define a schema to model a domain
 true to nature:
 
@@ -68,22 +68,16 @@ A strong type system with subtyping and inheritance helps us break down complex 
 meaningful and logical data models. TypeDB uses its own declarative query language, TypeQL, that gives powerful
 abstraction over the implementation of storage to enable us to use complex data patterns and the reasoning engine.
 
-With TypeQL, we describe data that we need by xref:typeql:ROOT:match.adoc#_patterns_overview[patterns]
+With TypeQL, we describe data that we need by xref:typedb::fun/patterns.adoc#_patterns_overview[patterns]
 consisting of constraints. TypeDB will use those patterns to retrieve all data that satisfies all the constraints
 in the most efficient way. We don't have to think about query optimization, limitations of data storage
 implementation, etc.
 
 By combining TypeQL and TypeDB, we can close the gap between the language of our domain and the database. Queries
-written in TypeQL are humanely readable. Carefully designed database xref:typeql:ROOT:schema.adoc#_types[schema] lets us
+written in TypeQL are humanely readable. Carefully designed database xref:dev/def-schema.adoc#_schema[schema] lets us
 use the terminology of the business domain, making our queries sound familiar to subject-matter experts. This new
 paradigm gives us a higher level of flexibility and expressivity to simplify our work and tackle domains that
 seemed impossibly complex before.
-
-By combining TypeQL and TypeDB, we can close the gap between the language of our domain and what the
-database can interpret and respond to. Queries written in TypeQL are humanely readable. Carefully designed database
-xref:typeql:ROOT:schema.adoc#_types[schema] lets us use the terminology of the business domain we are modeling.
-Making our queries sound familiar to subject-matter experts. This new paradigm gives a higher level of
-flexibility and expressivity to simplify our work and tackle domains that seemed impossibly complex before.
 
 TypeQL and TypeDB allow us to build a data model with entity, relation, and attribute types. Inheritance allows us to
 define a hierarchy of subtypes and reduce complexity, while rules and relations with type constraints on their
@@ -122,14 +116,25 @@ logic at the database level.
    local machine.
 
 2. The TypeDB journey starts with our xref:quickstart.adoc[Quickstart guide].
-   It goes through the step-by-step process of creating a new database, applying schema, loading sample data,
++
+It goes through the step-by-step process of creating a new database, applying schema, loading sample data,
    and querying. The resulting environment is suitable for executing most examples in our documentation.
    On top of that it familiarizes users with TypeDB Studio — IDE, specifically designed for TypeDB
    database management and development.
 
-3. xref:dev/connect.adoc[Connect] page: Connect to TypeDB using databases, sessions, transactions, and ACID
+3. Fundamentals -- essential knowledge of how TypeDB works:
+
+    * xref:fun/types.adoc[]
+    * xref:fun/queries.adoc[]
+    * xref:fun/patterns.adoc[]
+    * xref:fun/inference.adoc[]
+
+4. xref:dev/connect.adoc[Connect] page: Connect to TypeDB using databases, sessions, transactions, and ACID
    guarantees.
-4. xref:typeql:ROOT:schema.adoc[Schema] page: What are the types and rules, and how to define, undefine, and use them?
-5. xref:typeql:ROOT:match.adoc[Matching patterns] page: Learn about query patterns and `match` clause.
-6. xref:typeql:ROOT:write.adoc[Writing] and xref:typeql:ROOT:read.adoc[Reading] data pages: Insert, Delete, Update, and Get queries.
+
+5. xref:dev/def-schema.adoc#_schema[Define schema] page: Find out how to define, undefine, and modify types and rules.
+
+6. xref:typedb::dev/write.adoc[Writing data] and xref:typedb::dev/read.adoc[Reading data] pages: How to perform Insert,
+   Delete, Update, and Get queries.
+
 7. xref:dev/response.adoc[Response interpretation] page: How to use responses from TypeDB.

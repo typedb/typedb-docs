@@ -64,8 +64,9 @@ section below.
 
 === Get query
 
-The ordinary xref:typeql:ROOT:read.adoc#_get_query[get query] (without xref:typeql:ROOT:read.adoc#_aggregation[aggregation] or
-xref:typeql:ROOT:read.adoc#_group[grouping]) returns a stream/iterator of a ConceptMap objects.
+The ordinary xref:typedb::dev/read.adoc#_get[Get query] (without
+xref:typedb:ROOT:fun/queries.adoc#_modifiers[aggregation] or
+xref:typedb:ROOT:fun/queries.adoc#_modifiers[grouping]) returns a stream/iterator of a ConceptMap objects.
 
 Every iteration returns the result as a <<_conceptmap,ConceptMap>> object.
 

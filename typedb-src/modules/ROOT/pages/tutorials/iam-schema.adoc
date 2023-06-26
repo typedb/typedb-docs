@@ -45,7 +45,8 @@ As with any TypeDB schema, the IAM schema consists of:
 
 [NOTE]
 ====
-The xref:typeql:ROOT:schema.adoc[schema] page provides more information to better understand the terminology of TypeDB schemas.
+The xref:dev/def-schema.adoc[schema] page provides more information to better understand the terminology of
+TypeDB schemas.
 ====
 
 As for the terminology of the IAM data model -- the main entity types in the IAM schema are:
@@ -247,7 +248,7 @@ transaction with inference option enabled. They will influence the results of qu
 inference option is enabled for transaction) but not the persisted database data.
 ====
 
-More information on rules can be found in the xref:typeql:ROOT:schema.adoc#_rules[schema] documentation page.
+More information on rules can be found in the xref:fun/inference.adoc#_rules[Inference] documentation page.
 
 === Add-view-permission rule explanation
 

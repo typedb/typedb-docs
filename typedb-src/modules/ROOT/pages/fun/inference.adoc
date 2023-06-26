@@ -5,7 +5,7 @@
 :pageTitle: Inference
 
 [#_inference]
-TypeDB is capable of reasoning over data via rules xref:typeql:ROOT:schema.adoc#_define_rules[defined] in the schema.
+TypeDB is capable of reasoning over data via rules xref:dev/def-schema.adoc#_define_rules[defined] in the schema.
 
 The reasoning engine uses <<_rules,rules>> as a set of logic to infer new data, based on the existence of patterns in
 data of a TypeDB database.
@@ -20,8 +20,8 @@ The results are transaction-bound and are not persisted. As soon as transaction 
 perish.
 ====
 
-When executing a `get` query with the `infer` transaction option <<_how_to_use_inference,enabled>> (`True`), TypeDB
-inspects and triggers rules that may lead to new answers to the query.
+When executing a `get` query with the `infer` transaction option xref:dev/infer.adoc#_how_to_use_inference[enabled]
+(`True`), TypeDB inspects and triggers rules that may lead to new answers to the query.
 
 It returns data that answers the query taking into account inference results. Reasoning can proceed from one rule
 to another, including recursion, leading to complex behaviors emerging from a few simple rules.
@@ -35,7 +35,7 @@ facts again.
 Inference works by rules defined in a schema of a database.
 
 What's possible to infer is limited by what can be defined in a rule.
-See the xref:typeql:ROOT:schema.adoc#_rule_validation[rule validation] section for more information.
+See the xref:fun/inference.adoc#_rule_validation[rule validation] section for more information.
 
 A conclusion of a rule produces can:
 
@@ -47,8 +47,8 @@ A conclusion of a rule produces can:
 
 Rules are a part of schema and represent the embedded logic of the data model.
 
-Rules can dramatically shorten complex queries, perform <<_explain_query,explainable>> knowledge discovery, and
-implement business logic at the database level.
+Rules can dramatically shorten complex queries, perform xref:typedb::dev/infer.adoc#_explain_query[explainable]
+knowledge discovery, and implement business logic at the database level.
 
 A rule consists of a *condition* and a *conclusion*.
 
@@ -71,10 +71,11 @@ when {
 ----
 ====
 
-Read more on how to create rules in a schema in the <<_define_rules,Define rules>> section.
+Read more on how to create rules in a schema in the xref:typedb::dev/def-schema.adoc#_define_rules[Define rules]
+section of the xref:typedb::dev/def-schema.adoc[] page.
 
-We can use xref:match.adoc#_computation[computation] operations and functions in the condition pattern. And we
-can use value variables in the conclusion of a rule.
+We can use xref:typedb::fun/patterns.adoc#_computation[computation] operations and functions in the condition pattern.
+And we can use value variables in the conclusion of a rule.
 
 [WARNING]
 ====

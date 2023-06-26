@@ -90,7 +90,7 @@ There are two types of variables:
   and other <<_built_in_functions,built-in functions>>, requiring direct operation on values.
 
 A concept variable starts with dollar sign `$` followed by variable label (for example, `$x`) and reference exactly
-one concept (type or data) per every answer (solution) found for a pattern. See <<_example>> below.
+one concept (type or data) per every answer (solution) found for a pattern.
 
 A value variable starts with question mark `?` followed by variable label (for example, `?x`) and reference exactly
 one value per every answer (solution) found for a pattern. See <<_value_variables>> below.
@@ -122,8 +122,8 @@ It will be removed from the TypeQL syntax in later versions of TypeDB.
 [#_value_variables]
 === Value variables
 
-Additionally, to the default concept xref:read.adoc#_variables[variables], that address concepts inside a
-TypeDB database, there is a special type of variables, used only for xref:match.adoc#_computation[computation].
+Additionally, to the default concept variables, that address concepts inside a
+TypeDB database, there is a special type of variables, used only for <<_computation,computation>>.
 
 They are called Value variables.
 
@@ -178,18 +178,25 @@ and add 1 to the result. Hence, every result for this query consists of `$s` and
 The following keywords can be used for arithmetic operations between value variables, values of attributes, that are
 stored in concept variables, or constants:
 
-1. `()` -- parentheses. See <<#_using_parentheses,example>>.
-2. `^` -- exponentiation (power). See <<#_using_exponentiation,example>>.
-3. `*` -- multiplication. See <<#_using_multiplication,example>>.
-4. `/` -- division. See <<#_using_division,example>>.
+//#todo reimplement the links to examples
+1. `()` -- parentheses.
+//See <<#_using_parentheses,example>>.
+2. `^` -- exponentiation (power).
+//See <<#_using_exponentiation,example>>.
+3. `*` -- multiplication.
+//See <<#_using_multiplication,example>>.
+4. `/` -- division.
+//See <<#_using_division,example>>.
 5. `%` -- https://en.wikipedia.org/wiki/Modulo[modulo,window=_blank]. Returns the remainder of a division.
-   See <<#_using_modulo,example>>.
-6. `+` -- addition. See <<#_using_addition,example>>.
-7. `-` -- subtraction. See <<#_using_subtraction,example>>.
+//See <<#_using_modulo,example>>.
+6. `+` -- addition.
+//See <<#_using_addition,example>>.
+7. `-` -- subtraction.
+//See <<#_using_subtraction,example>>.
 
 [IMPORTANT]
 ====
-The above list is sorted by the order in which those operations applied.
+The above list is sorted by the order in which those operations are applied.
 ====
 
 .See example
@@ -212,12 +219,19 @@ with value, that after dividing it by 1024 (to get megabytes out of kilobytes), 
 Built-in functions usually invoked with adjacent parentheses that contain arguments to apply function on. Those
 arguments, separated by a comma as a separator. The following built-in functions are available in TypeDB:
 
-* `min` -- found minimum of the arguments. See <<#_using_minimum_function,example>>.
-* `max` -- found maximum of the arguments. See <<#_using_maximum_function,example>>.
-* `floor` -- floor function (rounding down). See <<#_using_floor_function,example>>.
-* `ceil` -- ceiling function (rounding up). See <<#_using_ceiling_function,example>>.
-* `round` -- default rounding function. See <<#_using_rounding_function,example>>.
-* `abs` -- modulus (or absolute value) function. See <<#_using_absolute_value_function,example>>.
+//#todo Reimplement the links to examples
+* `min` -- found minimum of the arguments.
+//See <<#_using_minimum_function,example>>.
+* `max` -- found maximum of the arguments.
+//See <<#_using_maximum_function,example>>.
+* `floor` -- floor function (rounding down).
+//See <<#_using_floor_function,example>>.
+* `ceil` -- ceiling function (rounding up).
+//See <<#_using_ceiling_function,example>>.
+* `round` -- default rounding function.
+//See <<#_using_rounding_function,example>>.
+* `abs` -- modulus (or absolute value) function.
+//See <<#_using_absolute_value_function,example>>.
 
 == Combining statements
 
@@ -236,4 +250,25 @@ keyword `or`.
 negations by defining the conditions *not* to be met in curly brackets of a `not {};` block.
 
 See the <<_complex_example,complex example>> below.
+
+[#_complex_example]
+=== Complex example
+
+To better illustrate the possibilities, we will now look at an example of a more complex pattern.
+
+image::example-pattern.png[Complex example]
+
+The pattern is a conjunction of five different pattern types:
+
+. *Conjunction 1* specifies the variables for two `person` instances, their `full-names`, `action`, and `file` that
+has path `README.md`, specifies their types.
+. *Disjunction* specifies that the actions of interest are either `modify_file` or `view_file`.
+. *Negation 1* specifies that person `$p1` shall not have `full-name` with value of `Masako Holley`.
+. *Negation 2* specifies that person `$p2` shall not have `full-name` with value of `Masako Holley`.
+. *Conjunction 2* specifies that the `file` to have `access` with `action` that we specified earlier,
+and both instances of `person` to have a `permission` to the specified `access`.
+
+In short, the above example finds pairs of people who both have permission to access the same file
+with a path of `README.md`. The pattern additionally specifies both of them to not have name `Masako Holley` and
+the access to be either `modify_file` or `view_file`.
 
