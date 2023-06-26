@@ -319,7 +319,7 @@ If the *Types* panel is not displayed -- click the *Types* vertical tab on the l
 window.
 ====
 
-All types are divided in three top level xref:typedb::dev/schema.adoc#_types[built-in types]:
+All types are divided in three top level xref:typedb::fun/types.adoc#_type[built-in types]:
 
 * Attribute
 * Entity
@@ -402,9 +402,11 @@ the transaction with the green tick at the top of the Studio window.
 [NOTE]
 ====
 In some cases the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
-from deleting this type. For example, we can't
-xref:typedb::dev/schema.adoc#_undefine_a_supertype[delete a type that has a subtype].
-See xref:typedb::dev/schema.adoc#_undefine_a_type[more] on these conditions.
+from deleting this type.
+
+For example, we can't xref:typedb::dev/def-schema.adoc#_undefine_subtype[delete a type that has a subtype].
+
+See xref:typeql::schema/undefine.adoc[more,window=_blank] on these conditions.
 ====
 
 == Settings

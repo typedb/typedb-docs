@@ -9,17 +9,16 @@
 TypeDB:
 
 * Is a strongly typed database that is unique in many ways:
- ** has its own special xref:dev/schema.adoc#_types[static type system],
- ** uses xref:dev/schema.adoc#_entity_types[Entity-Relationship model], extended with
-xref:dev/schema.adoc#_attribute_types[Attributes] and xref:dev/schema.adoc#_rules[Rules],
+ ** has its own special xref:fun/types.adoc[static type system],
+ ** uses xref:fun/types.adoc#_root[Entity-Relationship model], extended with
+xref:fun/types.adoc#_attribute_types[Attributes] and xref:fun/inference.adoc#_rules[Rules],
 // - #todo add link to the types article
  ** supports subtyping and inheritance like OOP languages,
- ** uses declarative queries with its own query language: xref:dev/match.adoc#_patterns_overview[TypeQL]. We set the
-requirements for the result but do not specify how to achieve it.
+ ** uses declarative queries with its own query language: xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank].
+ We set the requirements for the result but do not specify how to achieve it.
 * Is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank]) DBMS with
 xref:dev/connect.adoc#_acid_guarantees[ACID] guarantees.
-* Has data separated by xref:dev/connect.adoc#_databases[databases], each one with its own
-xref:dev/schema.adoc[schema].
+* Has data separated by xref:dev/connect.adoc#_databases[databases], each one with its own schema.
 
 ////
 Comparison of TypeDB with most common types of databases:
@@ -33,7 +32,7 @@ Comparison of TypeDB with most common types of databases:
 
 // #todo Change the link to TypeQL -
 
-The core of any TypeDB database is the representation of our business domain: the xref:dev/schema.adoc[schema].
+The core of any TypeDB database is the representation of our business domain: the xref:typeql:ROOT:schema.adoc[schema].
 A schema is the blueprint of a TypeDB database. Using TypeQL, we define a schema to model a domain
 true to nature:
 
@@ -69,20 +68,20 @@ A strong type system with subtyping and inheritance helps us break down complex 
 meaningful and logical data models. TypeDB uses its own declarative query language, TypeQL, that gives powerful
 abstraction over the implementation of storage to enable us to use complex data patterns and the reasoning engine.
 
-With TypeQL, we describe data that we need by xref:dev/match.adoc#_patterns_overview[patterns]
+With TypeQL, we describe data that we need by xref:typeql:ROOT:match.adoc#_patterns_overview[patterns]
 consisting of constraints. TypeDB will use those patterns to retrieve all data that satisfies all the constraints
 in the most efficient way. We don't have to think about query optimization, limitations of data storage
 implementation, etc.
 
 By combining TypeQL and TypeDB, we can close the gap between the language of our domain and the database. Queries
-written in TypeQL are humanely readable. Carefully designed database xref:dev/schema.adoc#_types[schema] lets us
+written in TypeQL are humanely readable. Carefully designed database xref:typeql:ROOT:schema.adoc#_types[schema] lets us
 use the terminology of the business domain, making our queries sound familiar to subject-matter experts. This new
 paradigm gives us a higher level of flexibility and expressivity to simplify our work and tackle domains that
 seemed impossibly complex before.
 
 By combining TypeQL and TypeDB, we can close the gap between the language of our domain and what the
 database can interpret and respond to. Queries written in TypeQL are humanely readable. Carefully designed database
-xref:dev/schema.adoc#_types[schema] lets us use the terminology of the business domain we are modeling.
+xref:typeql:ROOT:schema.adoc#_types[schema] lets us use the terminology of the business domain we are modeling.
 Making our queries sound familiar to subject-matter experts. This new paradigm gives a higher level of
 flexibility and expressivity to simplify our work and tackle domains that seemed impossibly complex before.
 
@@ -130,7 +129,7 @@ logic at the database level.
 
 3. xref:dev/connect.adoc[Connect] page: Connect to TypeDB using databases, sessions, transactions, and ACID
    guarantees.
-4. xref:dev/schema.adoc[Schema] page: What are the types and rules, and how to define, undefine, and use them?
-5. xref:dev/match.adoc[Matching patterns] page: Learn about query patterns and `match` clause.
-6. xref:dev/write.adoc[Writing] and xref:dev/read.adoc[Reading] data pages: Insert, Delete, Update, and Get queries.
+4. xref:typeql:ROOT:schema.adoc[Schema] page: What are the types and rules, and how to define, undefine, and use them?
+5. xref:typeql:ROOT:match.adoc[Matching patterns] page: Learn about query patterns and `match` clause.
+6. xref:typeql:ROOT:write.adoc[Writing] and xref:typeql:ROOT:read.adoc[Reading] data pages: Insert, Delete, Update, and Get queries.
 7. xref:dev/response.adoc[Response interpretation] page: How to use responses from TypeDB.

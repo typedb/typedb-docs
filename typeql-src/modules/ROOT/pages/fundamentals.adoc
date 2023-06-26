@@ -1,0 +1,53 @@
+= Fundamentals
+:keywords: typedb, typeql, documentation, overview, introduction
+:longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: Fundamentals
+:summary: TypeQL essentials
+
+TypeQL is *declarative* language. Rather than writing an algorithm of how the data should be retrieved,
+we declare requirements and the TypeDB query processor will take care of finding an optimal way to retrieve it.
+
+TypeQL is both a https://en.wikipedia.org/wiki/Data_definition_language[Data Definition Language,window=_blank] (DDL)
+and https://en.wikipedia.org/wiki/Data_manipulation_language[Data Manipulation Language,window=_blank] (DML). That means
+we can use TypeQL for both:
+
+* database <<_schema,schema>> definition
+* and <<_data,data>> read&write queries.
+
+
+.TypeQL constructs
+* query
+** clause
+*** keyword (match, get, insert, delete)
+*** pattern
+**** statement
+***** keyword
+***** variable
+***** value
+
+image::statement-structure.png[]
+
+image::example-pattern.png[]
+
+[#_schema]
+== Schema
+
+TypeDB schema is like a blueprint of a database.
+
+It contains all user-defined <<_types,types>> and <<_rules,rules>> used in a database.
+
+
+
+[#_types]
+=== Types
+
+
+
+[#_rules]
+=== Rules
+
+
+
+[#_data]
+== Data
+

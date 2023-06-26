@@ -1,0 +1,206 @@
+= Type system
+:Summary: Introduction to the type system in TypeDB.
+:keywords: typeql, schema, type, hierarchy, inheritance
+:longTailKeywords: type hierarchy, data model,
+:pageTitle: Type system
+
+A TypeDB database consists of a schema and data.
+
+A schema consists of xref:fun/types.adoc#_type[types] & xref:fun/inference.adoc#_rules[rules].
+
+TypeDB databases have static typing with strict type hierarchy achieved by inheritance.
+
+[#_type]
+== Type
+
+A type represents a constraint on the interpretation of data. A type for a data instance is like a class for an object
+in OOP.
+
+A type can be addressed by its label. A type label is unique in a schema of a database.
+
+We can define a new type only as a subtype of an existing one.
+
+A new empty database has a set of built-in types. These built-in types called root types, because all user defined
+types will be subtypes (direct or non-direct) of those root types.
+
+[#_root]
+.Root (built-in) types
+[cols="^.^1, ^.^3, ^.^4",options="header"]
+|===
+| Root type label | A subtype of the root type | An instance of data of a subtype
+
+| `entity`
+| Entity type
+| Instance of entity type
+
+| `relation`
+| Relation type
+| Instance of relation type
+
+| `attribute`
+| Attribute type
+| Instance of attribute type
+
+// | `role`
+// | `role`
+// | N/A
+|===
+
+[#_inheritance]
+== Inheritance
+
+A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its
+supertype.
+
+[NOTE]
+====
+Roles can be inherited and even overridden as a part of relation inheritance.
+====
+
+Type can only have a single supertype.
+
+Types can be subtypes of other subtypes, resulting in a type hierarchy.
+
+.See simple example
+[%collapsible]
+====
+For example, `business unit` subtypes `user group`, which subtypes `subject`, which subtypes `entity` root type.
+Also `person` subtypes `user`, that subtypes `subject`:
+
+* entity
+** subject
+*** user group
+**** business unit
+*** user
+**** person
+====
+
+There is a strict hierarchy of types, so the whole typing system of a TypeDB database always can be represented
+by three independent trees with one of the root types at the top of each tree.
+
+.See hierarchy trees example
+[%collapsible]
+====
+For example, a schema with the following types:
+
+* entity
+** person
+** vehicle
+*** car
+*** motorcycle
+*** bicycle
+
+* relation
+** owning
+** using
+*** driving
+*** traveling
+
+* attribute
+** model
+** name
+*** full-name
+*** nickname
+
+can be visualized as following type hierarchy:
+
+image::root-types-trees.png[]
+====
+
+[#_abstract_types]
+== Abstract types
+
+All root types are abstract types.
+
+An abstract type can't be instantiated (we can't insert an instance of data of this type). All we can do with an
+abstract type is to subtype it.
+
+The opposite of an abstract type is a concrete type. All types are concrete by default.
+
+To see how to define an abstract type see the xref:dev/def-schema.adoc[Define types] section of the
+xref:dev/def-schema.adoc[Define schema] page.
+
+[#_thing_type]
+== Thing type
+
+There is an internal type called `thing` that can be used to address all types (both built-in and user-defined) in the
+schema.
+
+All other types are effectively subtypes of the `thing`.
+
+image::thing-era-role-rule.png[Types hierarchy]
+
+[WARNING]
+====
+The `thing` built-in type will be deprecated in one of the upcoming versions and deleted in TypeDB version 3.0.
+====
+
+[#_entity_types]
+=== Entity types
+
+The `entity` root type is representing all its subtypes that we will call *entity types*. For more
+information on how to define an entity type see the <<_define_entity_types>> section.
+
+Entity types define the classification of objects within the data model of our business domain.
+
+Instance of data of an entity type represents a standalone object that exists in our data model independently.
+
+[#_relation_types]
+=== Relation types
+
+The `relation` root type is representing all its subtypes that we will call *relation types*.
+
+Relation types define relationships between types in a schema, including *roles* for other types to *play*.
+To be able to play a role in a relation, it must be explicitly stated in the type definition. For more
+information on how to define a relation type see the <<_define_relation_types>> section.
+
+A relation type must specify at least one role.
+
+.See example
+[%collapsible]
+====
+For example, `group-membership` is a relation type that defines `user-group` and `group-member` roles.
+
+The `user-group` role is to be played by a `user-group` entity whereas the `group-member` role is to be played by
+a `subject` type (and all its subtypes).
+====
+
+Roles allow a schema to enforce logical constraints on types of role players.
+
+.See example
+[%collapsible]
+====
+For example, a `group-membership` relation cannot associate a `user` type entity with a `file` type entity, because
+`file` type entity can't play any role in a `group-membership` relation.
+====
+
+[#_attribute_types]
+=== Attribute types
+
+The `attribute` root type is representing all its subtypes that we will call *attribute types*.
+
+Instances of attribute types have values. To define a new attribute type we need to set its label, what type
+it's a subtype of, and its value type. For more information on how to define an `attribute` subtype see the
+<<_define_attribute_types>> section.
+
+Attribute types represent the properties of other types. Mostly `entity` and `relation` types (e.g.,
+the name of a business unit or a user). In TypeDB, any type can *own* an attribute type. However, different types
+can own the same attribute type -- and different instances can share ownership of the same attribute instance.
+
+.See example
+[%collapsible]
+====
+For example, multiple users can own the same instance of an attribute type with the label `name` and the value of
+`Alex`.
+====
+
+[WARNING]
+====
+The feature of an attribute type owning another attribute type will be deprecated in one of the upcoming versions and
+deleted in TypeDB version 3.0.
+====
+
+Every instance of an attribute type can be uniquely addressed by its type and value.
+
+
+

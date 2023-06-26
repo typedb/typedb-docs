@@ -1,0 +1,17 @@
+= Deep dive in the Inference
+
+[NOTE]
+====
+The approach TypeDB uses is a https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining,window=_blank]
+execution on top of https://en.wikipedia.org/wiki/Horn_clause[Horn-clause,window=_blank] logic.
+
+Negation functionality follows the set-difference semantics. It corresponds to negation-as-failure model under the
+following conditions:
+
+- We have stratified negation.
+- The results are grounded.
+- We ensure all variables occurring both inside and outside the negation are bound by the time the negation is
+evaluated.
+
+Infinite recursion and non-termination are prevented with a tabling mechanism.
+====

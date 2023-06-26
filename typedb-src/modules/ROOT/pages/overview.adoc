@@ -9,15 +9,25 @@ This is the TypeDB server documentation section. It has the following sections:
 * xref:introduction.adoc[] -- a brief description of TypeDB capabilities
 * xref:installation.adoc[] -- TypeDB server installation manual
 * xref:quickstart.adoc[] -- a guide to quickly set up a TypeDB database
+
+* *Fundamentals*
+** xref:fun/types.adoc[Type system] -- essential information on types and inheritance
+//*** xref:fun/types-dd.adoc[Deep dive in the type system]
+** xref:fun/queries.adoc[Patterns] -- essential information on pattern matching
+//*** xref:fun/queries-dd.adoc[Deep dive in the patterns]
+** xref:fun/inference.adoc[Inference] -- essential information on rules and reasoning (inference)
+//*** xref:fun/inference-dd.adoc[Deep dive in the inference]
+** xref:deep/deep-dive.adoc[Deep dive] -- additional (non-essential) information
+
 * *Development*
  ** xref:dev/connect.adoc[] -- TypeDB server and database connections
- ** xref:dev/schema.adoc[] -- types and rules definition
- ** xref:dev/match.adoc[] -- patterns design and matching data
- ** xref:dev/write.adoc[] -- data modification queries
- ** xref:dev/read.adoc[] -- data retrieval queries
+ ** xref:dev/def-schema.adoc[] -- database schema definition
+ ** xref:dev/write.adoc[] -- writing data queries
+ ** xref:dev/read.adoc[] -- reading data queries
  ** xref:dev/infer.adoc[] -- data inference queries
- ** xref:dev/response.adoc[] -- parsing query response
+ ** xref:dev/response.adoc[] -- query response formats
  ** xref:dev/api.adoc[] -- brief description of TypeDB Driver API and TypeDB Drivers
+// #todo Consider moving API to Clients section with tabs
  ** xref:dev/best.adoc[] -- schema and query design tips
 * *Administration*
  ** xref:admin/configuration.adoc[] -- TypeDB server configuration parameters and host machine requirements

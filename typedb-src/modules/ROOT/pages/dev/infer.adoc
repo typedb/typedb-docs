@@ -7,58 +7,11 @@
 
 == Rules
 
-TypeDB is capable of reasoning over data via rules xref:dev/schema.adoc#_define_rules[defined] in the schema.
-They can be used to infer new data, based on the existence of patterns in data of a TypeDB database.
 
-Rules can dramatically shorten complex queries, perform <<_explain_query,explainable>> knowledge discovery, and
-implement business logic at the database level.
 
-[#_inference]
-== Inference
 
-[IMPORTANT]
-====
-Reasoning, or inference, is performed at a query time in a `read` transaction.
-The results are transaction-bound and are not persisted.
-====
 
-// #todo Double-check and possibly rewrite the next part-
 
-When executing a `get` query with infer transaction option <<_how_to_use_inference,enabled>> (`True`), TypeDB
-inspects and triggers rules that may lead to new answers to the query and then performs the query execution.
-It returns data that answers the query taking into account inference results. This approach is known as
-https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining,window=_blank] (starting from the query, then finding
-applicable rules and generating new relevant data). Reasoning can proceed from one rule to other rules, including
-recursively, leading to complex behaviors emerging from a few simple rules.
-
-== Limitations
-
-Inference works by rules defined in a schema of a database. Hence, what's possible to infer is limited by what can be
-defined in a rule. See the xref:dev/schema.adoc#_rule_validation[rule validation] section for more information on
-what can and can't be defined in a rule.
-
-[IMPORTANT]
-====
-Only `read` transactions can use inference from rules.
-====
-
-Inferred facts are transaction-bound: during a single transaction, newly inferred data will be retained and reused
-(with corresponding performance gains). As soon as the transaction is closed all the inferred data is lost. New
-transactions will not be able to reuse previously inferred data and their queries will re-compute inferred facts
-again.
-
-== Inference optimization
-
-These are general tips for making queries with reasoning execute faster:
-
-. Adding a limit to the query. Without a limit, the reasoning engine is forced to explore all possible ways to answer
-the query exhaustively. If we only need 1 answer, adding `limit 1;` to the get query can significantly improve
-query times.
-. Using the same transaction for multiple reasoning queries. Because inferred data is cleared between transactions,
-running the same or similar queries within one transaction can reuse previously inferred data. Combined with a limit
-on the query, it might be possible to avoid having to do any new reasoning at all.
-. For complex queries, it can also be beneficial to add more CPU cores, as the reasoning engine is able to explore
-more paths in the database concurrently.
 
 [#_how_to_use_inference]
 == How to use inference
@@ -362,3 +315,16 @@ Instead of a <RootType> placeholder we can get one of this:
 - `_AttributeType`
 - `RoleType`
 ====
+
+== Inference optimization
+
+These are general tips for making queries with reasoning execute faster:
+
+. Adding a limit to the query. Without a limit, the reasoning engine is forced to explore all possible ways to answer
+the query exhaustively. If we only need 1 answer, adding `limit 1;` to the get query can significantly improve
+query times.
+. Using the same transaction for multiple reasoning queries. Because inferred data is cleared between transactions,
+running the same or similar queries within one transaction can reuse previously inferred data. Combined with a limit
+on the query, it might be possible to avoid having to do any new reasoning at all.
+. For complex queries, it can also be beneficial to add more CPU cores, as the reasoning engine is able to explore
+more paths in the database concurrently.

@@ -1,0 +1,40 @@
+= Overview
+:keywords: typeql, documentation, overview, query, DDL, DML
+:longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: Documentation overview
+:summary: A birds-eye view of TypeQL and TypeDB
+
+All queries to a TypeDB database are written in TypeQL.
+
+TypeQL is *declarative* query language.
+
+[NOTE]
+====
+TypeQL is both a https://en.wikipedia.org/wiki/Data_definition_language[Data Definition Language,window=_blank] (DDL)
+and https://en.wikipedia.org/wiki/Data_manipulation_language[Data Manipulation Language,window=_blank] (DML).
+====
+
+This is the TypeQL documentation portal. It has the following pages:
+
+* xref:fundamentals.adoc[] -- essential knowledge and terminology
+* xref:patterns.adoc[] -- querying with TypeQL
+
+* Schema -- How to define a schema with TypeQL (DDL).
+** xref:schema/def-type.adoc[]
+** xref:schema/def-rule.adoc[]
+** xref:schema/undefine.adoc[]
+
+* Data -- How to read & write Data with TypeQL (DML).
+** xref:data/basic-queries.adoc[]
+** xref:data/basic-patterns.adoc[]
+** xref:data/insert.adoc[]
+** xref:data/delete.adoc[]
+** xref:data/update.adoc[]
+** xref:data/get.adoc[]
+** xref:data/advanced.adoc[]
+
+* xref:grammar.adoc[]
+
+== Where to go from here?
+
+

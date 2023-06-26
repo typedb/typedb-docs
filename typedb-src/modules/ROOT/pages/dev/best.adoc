@@ -96,9 +96,9 @@ To optimize execution of a query try to do the following:
 * Avoid long-running transactions which can result in conflicts and resource contention.
 * A good principle to follow is that transactions group logically coherent queries.
 * Limit the number of concepts being processed by adding additional
-  xref:dev/match.adoc#_patterns_overview[constraints] to variables in `match` clauses.
+  xref:typeql:ROOT:match.adoc#_patterns_overview[constraints] to variables in `match` clauses.
 * Limit the number of results returned by using pagination (limit + offset) or
-  xref:dev/read.adoc#_aggregation[aggregation] when possible.
+  xref:typeql:ROOT:read.adoc#_aggregation[aggregation] when possible.
 * Disable inference if it's not needed in the transaction.
 * Consider sending all queries before starting to iterate through responses. TypeDB processes most queries
   asynchronously.
@@ -136,7 +136,7 @@ The following are some of the most common mistakes and misunderstandings that co
 
 ==== Get clause alters results
 
-Using an optional xref:dev/read.adoc#_get_query[get] clause can alter the set of returned results. For example:
+Using an optional xref:typeql:ROOT:read.adoc#_get_query[get] clause can alter the set of returned results. For example:
 
 [,typeql]
 ----
@@ -167,5 +167,5 @@ repeated full names (represented in a database by the very same single attribute
 their owner. If a person has two `full-name` attributes, then the resulting response will contain two pairs with the
 same `person` object but different `attributes`.
 
-We can further improve the output by xref:dev/read.adoc#_group[grouping] the results by `person` and/or applying
-xref:dev/read.adoc#_aggregation[aggregation] to count the number of results.
+We can further improve the output by xref:typeql:ROOT:read.adoc#_group[grouping] the results by `person` and/or applying
+xref:typeql:ROOT:read.adoc#_aggregation[aggregation] to count the number of results.

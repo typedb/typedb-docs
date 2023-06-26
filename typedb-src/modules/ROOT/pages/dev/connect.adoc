@@ -1,7 +1,7 @@
-= Connect
+= Connecting
 :keywords: typedb, basics, connect, connection, session, database
 :longTailKeywords: basic concepts of typedb, typedb connection, typedb database, typedb session
-:pageTitle: Connect
+:pageTitle: Connecting
 :summary: Brief description of connection to TypeDB.
 :tabs-sync-option:
 
@@ -86,8 +86,8 @@ due to the older server lacking the API to check the protocol version.
 [#_databases]
 == Databases
 
-TypeDB instances can contain multiple databases. A database consists of a xref:dev/schema.adoc[schema] and
-xref:dev/write.adoc[data]. It is both separate and independent of any other database: two databases can't influence
+TypeDB instances can contain multiple databases. A database consists of a xref:typeql:ROOT:schema.adoc[schema] and
+xref:typeql:ROOT:write.adoc[data]. It is both separate and independent of any other database: two databases can't influence
 each other. However, TypeDB Clients can connect to multiple databases simultaneously.
 
 [NOTE]
@@ -397,13 +397,14 @@ For more advice and *best practices* visit the xref:dev/best.adoc[Best practices
 == ACID guarantees
 
 All TypeDB transactions have ACID guarantees.
-Schema operations have additional concurrency <<_schema_integrity,restrictions>> to guarantee schema integrity.
 
 * <<_atomicity>>
 * <<_consistency>>
 * <<_isolation>>
 * <<_durability>>
-* <<_schema_integrity>>
+
+Schema operations have additional concurrency restrictions to guarantee schema integrity.
+See the <<_schema_integrity>> section.
 
 [#_atomicity]
 === Atomicity

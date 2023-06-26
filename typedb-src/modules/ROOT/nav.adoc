@@ -1,12 +1,26 @@
+// TypeDB
+
 * xref:overview.adoc[]
 * xref:introduction.adoc[]
 * xref:installation.adoc[]
 * xref:quickstart.adoc[]
 
+////
+* Fundamentals
+** Strong Typing
+** Pattern Matching
+** Inferring Data
+////
+
+* *Fundamentals*
+** xref:fun/types.adoc[]
+** xref:fun/queries.adoc[]
+** xref:fun/patterns.adoc[]
+** xref:fun/inference.adoc[]
+
 * Development
 ** xref:dev/connect.adoc[]
-** xref:dev/schema.adoc[]
-** xref:dev/match.adoc[]
+** xref:dev/def-schema.adoc[]
 ** xref:dev/write.adoc[]
 ** xref:dev/read.adoc[]
 ** xref:dev/infer.adoc[]
@@ -27,5 +41,11 @@
 ** xref:tutorials/data-migration.adoc[]
 ** xref:tutorials/new-driver-tutorial.adoc[]
 
+//* Deep dive
+//** xref:deep/deep-dive.adoc[Deep dive in Fundamentals]
+//*** xref:fun/types-dd.adoc[Deep dive in the type system]
+//*** xref:fun/queries-dd.adoc[Deep dive in the patterns]
+//*** xref:fun/inference-dd.adoc[Deep dive in the inference]
+
 //.Resources
-* xref:resources:releases.adoc[]
+* xref:resources:releases.adoc[Releases]

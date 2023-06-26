@@ -1,0 +1,134 @@
+= Inference
+:Summary: TypeDB inference queries.
+:keywords: typedb, query, inference, reasoning, rules, deduction, logic
+:longTailKeywords: typedb inference, typedb reasoning, reasoning engine
+:pageTitle: Inference
+
+[#_inference]
+TypeDB is capable of reasoning over data via rules xref:typeql:ROOT:schema.adoc#_define_rules[defined] in the schema.
+
+The reasoning engine uses <<_rules,rules>> as a set of logic to infer new data, based on the existence of patterns in
+data of a TypeDB database.
+
+[IMPORTANT]
+====
+Reasoning, or inference, is performed at a query time.
+
+Only `read` transactions can use inference from rules.
+
+The results are transaction-bound and are not persisted. As soon as transaction is closed -- all inference results
+perish.
+====
+
+When executing a `get` query with the `infer` transaction option <<_how_to_use_inference,enabled>> (`True`), TypeDB
+inspects and triggers rules that may lead to new answers to the query.
+
+It returns data that answers the query taking into account inference results. Reasoning can proceed from one rule
+to another, including recursion, leading to complex behaviors emerging from a few simple rules.
+
+During a single transaction, inferred facts will be retained and reused (with corresponding performance gains).
+These inferred data will be lost as soon as we close the transaction. A new transactions will re-compute inferred
+facts again.
+
+== Limitations
+
+Inference works by rules defined in a schema of a database.
+
+What's possible to infer is limited by what can be defined in a rule.
+See the xref:typeql:ROOT:schema.adoc#_rule_validation[rule validation] section for more information.
+
+A conclusion of a rule produces can:
+
+* insert an inferred relation
+* insert an inferred attribute ownership
+
+[#_rules]
+== Rules
+
+Rules are a part of schema and represent the embedded logic of the data model.
+
+Rules can dramatically shorten complex queries, perform <<_explain_query,explainable>> knowledge discovery, and
+implement business logic at the database level.
+
+A rule consists of a *condition* and a *conclusion*.
+
+*Condition* is a pattern to look for in data and conclusion is data to be virtually inserted for every result matched
+with a pattern from *condition*.
+
+The rules syntax uses `when` and `then` keywords for condition and conclusion respectively.
+
+.See rule syntax example
+[%collapsible]
+====
+[,typeql]
+----
+rule rule-label:
+when {
+    ## the conditions
+} then {
+    ## the conclusion
+};
+----
+====
+
+Read more on how to create rules in a schema in the <<_define_rules,Define rules>> section.
+
+We can use xref:match.adoc#_computation[computation] operations and functions in the condition pattern. And we
+can use value variables in the conclusion of a rule.
+
+[WARNING]
+====
+It is possible to create a recursive logic in the line of `n = n +1` by assigning an attribute ownership with value of
+value variable. Such a rule, if triggered can run indefinitely, while transaction lasts and can cause an out of memory
+error.
+====
+
+[#_rule_validation]
+=== Rule validation
+
+The `when` clause (condition) of a rule can be a multi statement pattern and can include disjunctions and negations.
+
+The `then` clause (conclusion) should describe a single relation or constraint of ownership of an attribute
+(due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic,window=_blank]).
+
+When using a disjunction in a rule, the disjunctive parts must be bound by variables outside of the `or` statement.
+These variables are the only ones permitted that can be used in the `then` clause.
+
+Since version `2.18.0` we can use abstract types in a rule as long as all the type variables that define which
+instances to create during materialisation are concrete (non-abstract).
+
+.See example with abstract types
+[%collapsible]
+====
+[,typeql]
+----
+define
+
+abstract-person sub entity, abstract, plays friendship:friend; #abstract
+friendship sub relation, relates friend;  #non-abstract
+
+rule concrete-relation-over-abstract-players:
+when {
+   $x isa abstract-person;
+} then {
+   (friend: $x) isa friendship;
+};
+----
+====
+
+The `then` clause of a rule can't use variables that aren't defined/bound in the `when` clause.
+
+The `then` clause of a rule must not insert any instance which occurs negated in its `when` clause, or in the `when`
+clause of any rule it may trigger. Attempting to define such a rule will throw an error.
+
+Rules will not create duplicates of instances which are already in the database or have already been inferred.
+There is no need to check if it already exists in a rule.
+
+There are exactly *three* distinct *conclusions* permitted:
+
+. A new relation.
+. Ownership of an attribute defined by its value.
+. Ownership of an attribute defined by a variable.
+
+The `then` clause must be insertable according to the schema (e.g.,we cannot give an attribute to an instance that is
+not allowed to own that attribute type).

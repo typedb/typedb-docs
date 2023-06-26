@@ -4,73 +4,41 @@
 :longTailKeywords: typeql get, match get, typeql read, typedb read
 :pageTitle: Reading data
 
-There is only one query type to retrieve data instances and types from a database: get query.
+There is only one query type that can read data from a TypeDB database: <<_get>>.
 
-To try the following examples use xref:clients::studio.adoc[TypeDB Studio] or other TypeDB
-xref:clients::clients.adoc[Clients].
+[IMPORTANT]
+====
+All examples provided on this page are designed for the IAM database schema and data.
+To set the IAM database follow the xref:quickstart.adoc[].
+====
 
-For those developing applications with xref:clients::clients.adoc#_typedb_drivers[TypeDB Drivers], please see the
-instructions and examples of how to send a query for a specific language/framework:
-xref:clients::java/java-overview.adoc[Java],
-xref:clients::python/python-overview.adoc[Python],
-xref:clients::node-js/node-js-overview.adoc[Node.js].
-
-[#_get_query]
+[#_get]
 == Get query
 
-A get query triggers a search in a database based on what has been described in the `match` clause. It is
-used to extract concepts (data instances or types) out of a database. The result of a get query can be quite different,
-depending on the query itself (<<_modifiers,modifiers>>, <<_aggregation,aggregation>>, <<_group,grouping>>)
-and transaction options (xref:dev/infer.adoc#_inferring_data[inference]). For more information see the
-xref:dev/response.adoc[Response interpretation] page.
-
-[NOTE]
-====
-Get queries was previously known as Match queries.
-
-The name of the query changed but TypeDB Driver API can still lag behind (for the backwards compatibility),
-using the old terminology in its methods.
-
-To address this issue we use both old and new names in the Driver API documentation, like that: Match (Get) query.
-Eventually, Driver API methods will be updated with the new name, and the double names as well as this Note block
-will be deleted.
-====
+A Get query is used to retrieve data from a TypeDB database.
 
 === Syntax
 
 Get queries are written in TypeQL with the following syntax:
 
-[,bash]
+[,typeql]
 ----
 match <pattern>
-[get <variable> [(, <variable>)...];]
-[sort <variable> [asc|desc];]
-[offset <value>;]
-[limit <value>;]
-[group <variable>;]
-[count;] [sum|max|min|mean|median|std <variable>;]
+  [get <variable> [(, <variable>)...];]
+  [sort <variable> [asc|desc];]
+  [offset <value>;]
+  [limit <value>;]
+  [group <variable>;]
+  [count;] [sum|max|min|mean|median|std <variable>;]
 ----
 
-[NOTE]
-====
-A pattern consists of variables and constraints for concepts. For more information see the
-xref:dev/match.adoc#_pattern_syntax[Pattern syntax] section.
-====
+=== Behavior
 
-[IMPORTANT]
-====
-A `get` clause works like a filter for variables in matched answers. Get query without a `get` clause will have all
-variables mentioned in the `match` clause pattern to be returned as concepts in every answer.
-====
+See the xref:typedb::fun/queries.adoc#_get_query[Get query] section of the xref:typedb::fun/queries.adoc[] page.
 
-Aggregation functions, as well as modifiers, and grouping must be at the end of the query and do not require a `get`
-clause.
+=== Examples
 
-[#_variables]
-=== Variables
-
-A `get` clause is used to specify which variables (concept variables and/or value variables) to include in the results.
-If omitted, every variable is included.
+A simple example:
 
 [,typeql]
 ----
@@ -84,10 +52,12 @@ This example query contains the following variables:
 * `$p`,
 * `$e`.
 
-The `name` attribute is not bound to a variable in this query.
+The `full-name` attribute is not bound to a variable in this query.
 
-The example above matches person (`$p`) with a `full-name` attribute value of `Kevin Morrison`, and `email` attribute
-(`$e`). The `get` clause then filters the results to receive only the `email` (`$e`) attributes.
+The example above matches person (`$p`) that has a `full-name` attribute value of `Kevin Morrison`, and has `email`
+attribute (`$e`). The `get` clause then filters the results to receive only the `email` (`$e`) attributes.
+
+A more complex example:
 
 [,typeql]
 ----
@@ -103,118 +73,22 @@ get $x-n, $act-n, $o-fp;
 
 The example above uses a `match` clause to do the following:
 
-. Finds `permission` relation (`$pe`) of `$x` and `$y` variables.
-. Finds `$x` as `person` entities that have the `full-name` attribute with the value of `$x-n`.
+. Find `permission` relation (`$pe`), connecting `$x` and `$y` variables.
+. Find `$x` as instance of `person` entity type that has the `full-name` attribute with the value of `$x-n`.
 . `$x-n` should contain string `Kevin`.
-. Finds `access` relation of `$o` as object and `$act` as action.
+. Find `access` relation of `$o` as `object` role and `$act` as `action` role.
 . `$act` should have the `name` attribute with the value of `$act-n`.
 . `$o` should have the `path` attribute with the value of `$o-fp`.
 
-The `get` clause then filters the answers from the `match` clause to get only the `full-name` attribute of a `person`
-type (`$x-n`), `name` attribute of an `action` type (`$act-n`), and `path` of an `object` (`$o-fp`).
+The `get` clause then filters the answers from the `match` clause to retrieve only the following:
+
+* `$x-n`,
+* `$act-n`,
+* `$o-fp`.
+
 Every returned result should contain all three concepts.
 
-=== Number of answers
-
-The number of answers returned depends on the get query (mostly `match` clause pattern) and database data/schema.
-
-For example, if we have *3* `person` entities and *10* `file` entities in a database with the IAM schema and +
-send the following get query:
-
-[,typeql]
-----
-match
-  $x isa person;
-  $f isa file;
-get $x, $f;
-----
-
-How many results are we expecting to retrieve from a database?
-
-[NOTE]
-====
-Spoiler: **13** is the wrong answer here.
-====
-
-As the example above doesn't have any <<_modifiers,modifiers>>, <<_aggregation,aggregation>>, or <<_group,grouping>>
-the number of results will depend on the number of matched solutions for the pattern in the `match` clause. So the
-TypeDB query processor will explore all possible solutions: every solution consisting of exactly one `person` entity
-and one `file` entity. There are only `3 * 10 = 30` possible combinations of person and file entities, so we will
-get 30 answers.
-
-See the xref:dev/match.adoc#_patterns_overview[Patterns overview] section of the Matching patterns page for
-more information.
-
-[#_modifiers]
-=== Modifiers
-
-==== Limit the results
-
-Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
-
-[,typeql]
-----
-match $p isa person;
-get $p;
-limit 1;
-----
-
-This query returns only one single (and random) instance of type `person`. Consider using `limit` with
-<<_sort_the_answers,sorting aggregation>> to receive less random and more predictable results.
-
-[#_sort_the_answers]
-==== Sort the answers
-
-Use the `sort` keyword followed by a variable to sort the answers using a variable mentioned in the first argument. A
-second argument is optional and determines the sorting order: `asc` (ascending, by default) or `desc` (descending).
-
-[,typeql]
-----
-match $p isa person, has full-name $n;
-get $n;
-sort $n asc;
-----
-
-This query returns all `full-name` attributes of all `person` entities, sorted by the value of `full-name` in ascending
-order.
-
-To sort by multiple variables use the same syntax and add additional variables and optional sorting order arguments
-with a comma separator.
-
-For example:
-
-[,typeql]
-----
-match $p isa person, has full-name $n, has email $e;
-get $n, $e;
-sort $n asc, $e desc;
-----
-
-The example above will return all `full-name` and `email` attributes of all `person` entities, sorted by their
-`full-name` in ascending order first and then by `email` in descending order.
-
-==== Offset the answers
-
-Use the `offset` keyword followed by the number to offset the answers. This is commonly used with the `limit`
-keyword to return a desired range of the answers. Don't forget to <<_sort_the_answers,sort>> the results to ensure
-predictable and deterministic results.
-
-[,typeql]
-----
-match $p isa person, has full-name $n;
-get $n;
-sort $n asc;
-offset 6; limit 10;
-----
-
-This sorts the `full-name` attributes of all `person` entities in ascending order, skips the first six, and returns up
-to the next ten.
-
-[#_group]
-=== Group
-
-We use the `group` function, optionally followed by another aggregate function, to group the answers by the
-specified matched variable.
+An example with xref:fun/queries.adoc#_modifiers[modifiers]:
 
 [,typeql]
 ----
@@ -230,13 +104,20 @@ limit 3;
 group $o-fp;
 ----
 
-This query returns the `full-name` attributes of all `person` entities, the `path` attributes of the `object` entities
-in any `access` relations that are part of the `permission` relation with the `person` entities, and the `name`
-attribute of the `action` entity in those `access` relations. The results are then sorted by the `path` attribute in
-ascending order, limited by the only first three results and grouped by `path` variable values.
+The `get` clause filters the answers from the `match` clause to retrieve only the following:
 
+* `$x-n`,
+* `$act-n`,
+* `$o-fp`.
+
+Then we sort the results by the `$o-fp` in ascending order, limit the number of results to the first three, and
+group the results by the `$o-fp` variable values.
+
+.See example of response to such a query
+[%collapsible]
+====
 The following or similar result can be obtained by running the query above without inference on the TypeDB server with
-the IAM schema and dataset from the xref:quickstart.adoc[Quickstart guide].
+the IAM schema and dataset from the xref:typedb:ROOT:quickstart.adoc[Quickstart guide].
 
 [,typeql]
 ----
@@ -259,144 +140,4 @@ the IAM schema and dataset from the xref:quickstart.adoc[Quickstart guide].
     }
 }
 ----
-
-[NOTE]
 ====
-There can be a difference in the `full-name` value for the `README.md` file since we used `sort` by the `path` and
-not the `full-name`.
-====
-
-[#_aggregation]
-=== Aggregation
-
-Aggregation performs a calculation on a set of values, and returns a single value.
-
-TypeDB supports the following types of aggregation:
-
-* `count`
-* `sum`
-* `max`
-* `mean`
-* `median`
-
-To perform aggregation in TypeDB, we first write a xref:dev/match.adoc[match clause] to describe the set of data,
-then follow that by get to retrieve a distinct set of answers based on the specified variables, and lastly an aggregate
-function to perform aggregation on the variable of interest.
-
-[NOTE]
-====
-Aggregation uses data returned by the query to perform the calculation. For example:
-====
-
-==== Count
-
-Use the count keyword to get the number of the specified matched variable.
-
-[,typeql]
-----
-match
-  $o isa object, has path $fp;
-get $o, $fp; count;
-----
-
-[NOTE]
-====
-The `count` function is applied to every result returned. If more than one variable is mentioned in `get`, then `count`
-will show the number of unique combinations of results. This is also the case when no `get` clause is added,
-which actually means that all matched variables are included.
-====
-
-[,typeql]
-----
-match
-  $pe ($x, $y) isa permission;
-  $x isa person, has full-name $x-n;
-  $y (object: $o, action: $act) isa access;
-  $act has name $act-n;
-  $o has path $o-fp;
-get $x-n, $act-n, $o-fp; group $o-fp; count;
-----
-
-This query returns the total count of `person` instances that have `full-name` as well as any `access` to an `object`
-with `path` and with a `valid action` for every group (grouped by the `path` of the `object`).
-
-[NOTE]
-====
-The `group` clause should go before the aggregation function.
-====
-
-==== Sum
-
-Use the `sum` keyword to get the sum of the specified `long` or `double` values of the matched variable.
-
-[,typeql]
-----
-match
-  $f isa file, has size-kb $s;
-get $f, $s;
-sum $s;
-----
-
-[WARNING]
-====
-Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
-of `$s` from the aggregation.
-
-For more information see the xref:dev/match.adoc#_solutions[Matching patterns] page.
-====
-
-==== Maximum
-
-Use the `max` keyword to get the maximum value among the specified `long` or `double` values of the matched variable.
-
-[,typeql]
-----
-match
-  $f isa file, has size-kb $s;
-get $f, $s; max $s;
-----
-
-==== Minimum
-
-Use the `min` keyword to get the minimum value among the specified `long` or `double` values of the matched variable.
-
-[,typeql]
-----
-match
-  $f isa file, has size-kb $s;
-get $f, $s; min $s;
-----
-
-==== Mean
-
-Use the `mean` keyword to get the average value of the specified `long` or `double` values of the matched variable.
-
-[,typeql]
-----
-match
-  $f isa file, has size-kb $s;
-get $f, $s; mean $s;
-----
-
-==== Median
-
-Use the `median` keyword to get the median value among the specified `long` or `double` values of the matched variable.
-
-[,typeql]
-----
-match
-  $f isa file, has size-kb $s;
-get $f, $s; median $s;
-----
-
-==== Standard deviation
-
-Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of the matched
-variable. This is usually used with the average value, and returned by the mean keyword.
-
-[,typeql]
-----
-match
-  $f isa file, has size-kb $s;
-get $f, $s; std $s;
-----
