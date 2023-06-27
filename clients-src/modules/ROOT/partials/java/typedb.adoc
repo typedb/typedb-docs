@@ -26,7 +26,7 @@ The created object connects our application with the running TypeDB server.
 
 * <<_client_methods,Client>>
 
-== Instantiating a TypeDB Cluster client
+== Instantiating a TypeDB cluster client
 
 === Syntax
 
@@ -37,10 +37,11 @@ TypeDB.clusterClient(Set<String> addresses, TypeDBCredential credential, int par
 
 === Description
 
-In order to communicate with TypeDB Cluster databases via sessions and transactions, we first need to instantiate a
-TypeDB Cluster client. The created object connects our application with the running TypeDB Cluster.
+In order to communicate with TypeDB cluster (TypeDB Enterprise & TypeDB Cloud) databases via sessions and transactions,
+we first need to instantiate a TypeDB Cluster client. The created object connects our application with the running
+TypeDB cluster.
 
-When instantiating a TypeDB Cluster client, it is sufficient to supply the address of just one server, as the addresses
+When instantiating a TypeDB cluster client, it is sufficient to supply the address of just one server, as the addresses
 of the other servers will be relayed back to the client. However, to avoid failure in the unlikely event that the
 single server whose address is provided fails before communicating the addresses of the others, it is best practice to
 supply addresses of all the servers.
@@ -50,7 +51,7 @@ supply addresses of all the servers.
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| addresses | Addresses (host:port) on which TypeDB Cluster nodes are running | Set of String | True |  
+| addresses | Addresses (host:port) on which TypeDB cluster nodes are running | Set of String | True |
 | credential | User credential and TLS encryption setting | TypeDBCredential | True |  
 | parallelisation | The number of threads to use for server communication | int | False | Scales based on host machine's number of available CPU cores
 |===

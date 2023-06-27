@@ -73,7 +73,7 @@ To instantiate a client we need to be able to establish a network connection to 
 TypeDB Enterprise cluster.
 
 This connection opens us basic features of xref:typedb::dev/connect.adoc#_databases[database] management, user
-management (TypeDB Cloud only) and enables us to open a session.
+management (TypeDB Enterprise & TypeDB Cloud only) and enables us to open a session.
 
 [#_grpc]
 ==== gRPC
@@ -250,9 +250,9 @@ image::cluster.png[Cluster client Architecture]
 
 Suppose we open a Transaction to, say, Node 1, but we don't get a response.
 
-In TypeDB, that would be a non-recoverable error. In TypeDB Cluster, the Cluster client simply reroutes the request
-to a different Core client, which sends the request to its linked server. In this way, the client recovers from the
-failure and continues running as normal.
+In TypeDB, that would be a non-recoverable error. In TypeDB Enterprise & TypeDB Cloud, the Cluster client simply
+reroutes the request to a different Core client, which sends the request to its linked server. In this way, the
+client recovers from the failure and continues running as normal.
 
 [#_behavioral_testing]
 == Behavioral testing

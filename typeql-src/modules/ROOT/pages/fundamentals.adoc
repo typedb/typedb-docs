@@ -14,6 +14,8 @@ we can use TypeQL for both:
 * database <<_schema,schema>> definition
 * and <<_data,data>> read&write queries.
 
+We can see the complete set of the TypeQL syntax and grammar rules in the *ANTLR v.4* specification file:
+https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
 
 .TypeQL constructs
 * query
@@ -34,19 +36,304 @@ image::example-pattern.png[]
 
 TypeDB schema is like a blueprint of a database.
 
-It contains all user-defined <<_types,types>> and <<_rules,rules>> used in a database.
+Every instance of data inserted in a TypeDB database must be assigned a type and be validated against constraints.
 
-
+A database schema contains all user-defined <<_types,types>> and <<_rules,rules>> used in a database.
 
 [#_types]
 === Types
 
+A type is a constraint on the interpretation of data.
+
+A definition of a type in a database schema describes:
+
+* type hierarchy -- every user-defined type has only one parent or supertype.
+* constraints -- what a type can do: what role to play, what attributes it can own. For attributes we also set the
+  value type. Subtype inherits constraints of its supertype.
+
+A type can be addressed by its label (name). A type label is unique in a schema of a database.
+
+All user-defined types must subtype another user-defined type or one of the root (built-in) types.
+See the table below for the root types.
+
+.Root (built-in) types
+[cols="^.^1, ^.^3, ^.^4",options="header"]
+|===
+| Root type label | A subtype of the root type | An instance of data of a subtype
+
+| `entity`
+| Entity type
+| Instance of entity type
+
+| `relation`
+| Relation type
+| Instance of relation type
+
+| `attribute`
+| Attribute type
+| Instance of attribute type
+
+// | `role`
+// | `role`
+// | N/A
+|===
+
+[IMPORTANT]
+====
+All root types are abstract types. Meaning we can't instantiate them (insert an instance of data of this abstract
+type).
+
+All we can do with an abstract type is to subtype it. That's why when we say *entity type* we usually mean a subtype
+of the `entity` root type. In the same way we can address *relation type* or *attribute type* instead of mentioning
+subtypes of the root types.
+====
+
+[NOTE]
+====
+To avoid ambiguity when using type labels we should try to provide context or specify what exactly
+we mean:
+
+- the type and all its subtypes (the default variant),
+- the exact type, without any of its subtypes,
+- or instances of data of this particular type, and instances of data of all its subtypes.
+====
+
+All three built-in types are called `root` types. Because all user-defined types are
+subtypes (direct or non-direct) of those root types (see in green color in the example below).
+
+There is a strict hierarchy of types, so the whole typing system always can be represented by 3 independent
+trees with a single root type (built-in type) at the top of each tree. Any type has only one parent (supertype).
+
+For example:
+
+//.Type trees example
+//[plantuml, tree, svg]
+//[plantuml, target=tree, format=svg]
+//[plantuml,tree,svg]
+//....
+//include::image$tree.puml[]
+//....
+image::root-types-trees.png[]
+
+TypeDB schemas resemble logical data models, removing the need to create a separate physical data model and allowing
+developers to create schemas that mirror their object model simplifying both design and development.
+
+As a result, TypeDB schemas look like entity-relationship (ER) diagrams. With entities, relations, and attributes
+connected by roles of relations, and ownerships of attributes, but also subtyping (see <<_inheritance,inheritance>>
+below).
+
+[#_inheritance]
+=== Inheritance
+
+A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its
+supertype. However, while a type can only have a single supertype, types can be subtypes of other subtypes,
+resulting in a type hierarchy.
+
+For example, `business unit` subtypes `user group`, which subtypes `subject`, which subtypes `entity` built-in type:
+
+* entity
+** subject
+*** user group
+**** business unit
+*** user
+**** person
+
+[NOTE]
+====
+Roles can be inherited and even overridden as a part of relation inheritance.
+====
+
+[#_thing_type]
+=== Thing type
+
+There is an internal type called `thing` that can be used to address all types
+(both built-in and user-defined) or instances of all types (effectively — all data).
+
+All other types are subtypes of the `thing`.
+
+image::thing-era-role-rule.png[Types hierarchy]
+
+// #todo Redraw the diagram. Without the Thing. Consider using PlantUML
+
+[WARNING]
+====
+The `thing` built-in type will be deprecated in one of the upcoming versions and deleted in TypeDB version 3.0.
+====
+
+[#_entity_types]
+=== Entity types
+
+The `entity` root type is representing all its subtypes that we will call *entity types*.
+
+Entity types define the classification of objects within the data model of our business domain.
+
+Instance of data of an entity type represents a standalone object that exists in our data model independently.
+
+.Entity
+====
+A company (instance of `company` type) can exist regardless of the existence of other companies, `person` type
+instances, or even `file` type instances.
+
+In comparison -- a relation is meaningless without its role players, and an attribute is meaningless without being
+owned. Like a friendship is meaningless without a friend and name is meaningless without assigning it to a person or an
+object.
+====
+
+Instance of an entity doesn't have a value, unlike an instance of an attribute type. To define a new entity type we need
+to set its label and what type it's a subtype of. For more information on how to define an `entity` type see
+the <<_define_entity_types>> section.
+
+To set a property of an entity (like a name of a company) we need to define ownership by this entity of an instance
+of an `attribute` type with the required value.
+
+To define a relationship between an entity and some other user-defined types we need to define a relation with roles,
+as well as define the ability of the involved types to play those roles.
+
+An entity is usually characterized and can be addressed via any combination of the following:
+
+* owned attributes (instance of the `company` type that has the `name` attribute with value `Vaticle LTD`),
+* played roles in relations (instance of the `company` type that plays the `employer` role in the `employment` relation
+  where a particular instance of the `person` type plays the `employee` role).
+
+.Entity types and instances
+====
+For example, there could be entity types like `company`, `file`, or `person`.
+
+Given the `company` entity type defined in a database schema, we can insert instances of data of this type in such
+a database. Every instance of the `company` type inserted into the database will represent a company, that can be
+addressed by whatever attributes it has (e.g., name, registration number), or by roles played in relations (e.g.,
+`employer` for the particular instance of `person` entity type in an `employment` relation type).
+
+//.Company entity type instances example
+//[plantuml, company, svg]
+//[plantuml, target=company, format=svg]  ////  asciidoctor-diagram ////
+//[plantuml,company,svg]
+//kroki
+//....
+//include::image$company.puml[]
+//....
+image::instances-example.png[]
+
+====
+
+For more information on how to define an `entity` subtype see the <<_define_entity_types,Define entity types>>
+section.
+
+=== Relation types
+
+The `relation` root type is representing all its subtypes that we will call *relation types*.
+
+Relation types define relationships between types in a schema, including *roles* for other types to *play*.
+To be able to play a role in a relation, it must be explicitly stated in the type definition. For more
+information on how to define a `relation` subtype see the <<_define_relation_types>> section.
+
+A `relation` type must specify at least one role.
+For example, `group-membership` is a `relation` type that defines `user-group` and `group-member` roles.
+The `user-group` role is to be played by a `user-group` entity whereas the `group-member` role is to be played by
+a `subject` type and all its subtypes entities.
+
+Roles allow a schema to enforce logical constraints on types of role players.
+For example, a `group-membership` relation cannot associate a `user` type entity with a `file` type entity, because
+`file` type entity can't play any role in a `group-membership` relation.
+
+[NOTE]
+====
+Roles can be used in queries as a part of a relation even though roles do not have a direct type definition.
+====
+
+[#_attribute_types]
+=== Attribute types
+
+The `attribute` root type is representing all its subtypes that we will call *attribute types*.
+
+Instances of attribute types have values. To define a new attribute type we need to set its label, what type
+it's a subtype of, and its value type. For more information on the types of values that attributes can have: see the
+<<_value_types, list of value types>>.
+
+Attribute types represent the properties of other types. Mostly `entity` and `relation` types (e.g.,
+the name of a business unit or a user). In TypeDB, any type can *own* an attribute type. However, different types
+can own the same attribute type -- and different instances can share ownership of the same attribute instance.
+
+For example, multiple users can own the same instance of an attribute type with the label `name` and the value of
+`Alex`.
+
+[WARNING]
+====
+The feature of an attribute type owning another attribute type will be deprecated in one of the upcoming versions and
+deleted in TypeDB version 3.0.
+====
+
+Every instance of an attribute type can be uniquely addressed by its type and value.
+
+For more information on how to define an `attribute` subtype see the <<_define_attribute_types>> section.
 
 
 [#_rules]
 === Rules
 
+Rules are a part of schema and define embedded logic. The reasoning engine uses rules as a set of logic to infer new data.
 
+A rule consists of a condition and a conclusion.
+Condition is a pattern to look for in data and conclusion is data to be virtually inserted for every result matched
+with a pattern from condition.
+
+Rules are used by queries for xref:typedb:ROOT:dev/infer.adoc[Inferring new data] only in read transactions, and only if the
+inference option is enabled.
+
+[IMPORTANT]
+====
+Rules can't change persisted data in a database. Instead, all the reasoning is done within a dataset of the transaction.
+Only the results of queries in this transaction are influenced by the inference.
+During a single transaction, newly inferred facts will be retained and reused (with corresponding performance gains).
+New transactions will re-compute inferred facts again.
+====
+
+The rules syntax uses `when` and `then` keywords that produce virtual relation or
+attribute ownership when the conditions are met. Read more on how to create rules in a schema in the
+<<_define_rules,Define rules>> section. See the example of a rule below.
+
+[,typeql]
+----
+define
+
+rule rule-label:
+when {
+    ## the conditions
+} then {
+    ## the conclusion
+};
+----
+
+[IMPORTANT]
+====
+Inference can only be used in a read transaction.
+====
+
+[NOTE]
+====
+The approach TypeDB uses is a https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining,window=_blank]
+execution on top of https://en.wikipedia.org/wiki/Horn_clause[Horn-clause,window=_blank] logic.
+
+Negation functionality follows the set-difference semantics. It corresponds to negation-as-failure model under the
+following conditions:
+
+- We have stratified negation.
+- The results are grounded.
+- We ensure all variables occurring both inside and outside the negation are bound by the time the negation is
+evaluated.
+
+Infinite recursion and non-termination are prevented with a tabling mechanism.
+====
+
+We can use xref:match.adoc#_computation[computation] operations and functions in the condition pattern. And we
+can use value variables in the conclusion of a rule.
+
+[WARNING]
+====
+It is possible to create a recursive logic in the line of `n = n +1` by assigning an attribute ownership with value of
+value variable. Such a rule, if triggered can run indefinitely, while transaction lasts and can cause an out of memory
+error.
+====
 
 [#_data]
 == Data

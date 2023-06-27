@@ -146,33 +146,33 @@ We can provide several command-line arguments when running Console in the termin
 |
 | Address to which Console will connect to: IP address and IP port separated by colon.
 Default value: `localhost:1729`. +
-(*Not for the TypeDB Cloud*)
+(*Not for the TypeDB Enterprise & TypeDB Cloud*)
 
 | `--cluster=<address>`
 |
 | Address to which Console will connect to. +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 //#todo Add Default value or example
 
 | `--username=<username>`
 |
 | Username +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `--password`
 |
 | Password +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `--tls-enabled`
 |
 | Whether to connect with TLS encryption +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `--tls-root-ca=<path>`
 |
 | Path to the TLS root CA file +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `--help`
 | `-h`
@@ -236,15 +236,15 @@ Give any of these commands inside a console at the `>` prompt in the first level
 
 | `user create <username>`
 | Create a user with name `<username>` on the server +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `user list`
 | List the users on the server +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `user delete <username>`
 | Delete a user with name `<username>` on the server +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `transaction <db> schema⎮data read⎮write`
 | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.
@@ -347,7 +347,7 @@ transaction typedb data read --infer true
 | `--read-any-replica`
 | `true⎮false`
 | Allow or disallow reads from any replica +
-(*TypeDB Cloud only*)
+(*TypeDB Enterprise & TypeDB Cloud only*)
 |===
 
 == Examples

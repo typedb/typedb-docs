@@ -1,0 +1,112 @@
+= Modify existing schema
+:Summary: Introduction to the TypeDB Schema.
+:keywords: typeql, schema, type hierarchy, reserved keywords
+:longTailKeywords: typeql schema, typeql type hierarchy, typeql data model, typeql reserved keyword
+:pageTitle: Modify existing schema
+
+== Add
+
+We can add types and rules to an existing schema by running the same define statement as usual.
+
+The define statements are idempotent. By sending the same define query twice or more times the very same resulting
+schema must be achieved as if we send it only once. So types and/or rules will not be duplicated.
+
+A separate define statement for a new type or rule can be sent as a `define` query. Alternatively, the statement can be
+added to the existing schema define statement and sent together. In this case only new types or rules will be added.
+If we change name (label) of the existing type or rule in the existing schema and then send it as define query then
+the changed type or rule will be processed as a new one.
+//#todo Add examples. Step by step adding constraints.
+
+== Rename
+
+To rename (change its label) a type use the xref:clients:ROOT:studio.adoc[TypeDB Studio] or
+xref:typedb:ROOT:dev/api.adoc[TypeDB API] rename method for a type class object.
+//#todo Add instructions to respected pages and provide specific links here
+
+== Delete
+
+Use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
+
+[IMPORTANT]
+====
+Don't forget to `commit` after executing an `undefine` statement. Otherwise, any changes is NOT committed to a database.
+====
+
+[#_undefine_a_type]
+=== Undefine a type
+
+To delete a user-defined type from a schema use the keyword `undefine` with the label of a type to delete and `sub`
+keyword, followed by the supertype (direct or not) of the deleted type.
+
+[,typeql]
+----
+undefine subject sub entity;
+----
+
+[WARNING]
+====
+Types with existing subtypes or instances can't be undefined. Undefine any subtypes and delete any data instances of
+a type to be able to undefine it.
+====
+
+=== Undefine an attribute's association
+
+We can undefine the association that a type has with an attribute.
+
+[,typeql]
+----
+undefine subject owns credential;
+----
+
+The query above removes ownership of the attribute type `credential` from the entity type `subject`. Therefore,
+instances of `subject` type will not have the ability to have ownership over instances of `credential` type anymore.
+
+[IMPORTANT]
+====
+It's important to note that if we add the `sub` keyword to the `label` at the beginning: `undefine [label] sub [type],
+owns [attributes' label];` it undefines the `label` type itself, rather than just its association with the attribute
+type.
+
+For example, `undefine subject sub entity, owns credential;` will delete the `subject` entity type from the
+schema. The ownership of the `credential` attribute type by the `subject` entity type will also be removed, but the
+`credential` attribute type will continue to exist. To undefine it from a schema use `undefine credential sub
+attribute;`.
+====
+
+=== Undefine a relation
+
+Undefining a relation type inherently undefines all of its roles. Therefore, when a relation type is undefined any types
+that were playing roles in that relation type will no longer play those roles. Given a `change-request` relation type
+we can undefine it as shown below.
+
+[,typeql]
+----
+undefine
+
+change-request sub relation;
+----
+
+[#_undefine_a_supertype]
+=== Undefine a supertype
+
+When a type to be undefined is a supertype to something else, we must first undefine all its subtypes before
+undefining the supertype itself. We can use the same query to delete both the supertype and all its subtypes.
+
+[,typeql]
+----
+undefine
+
+object sub entity;
+resource sub object;
+----
+
+=== Undefine a rule
+
+Rules like any other schema members can be undefined. Consequently, to delete a rule use the `undefine rule` keywords
+and refer to the rule by its label. For example:
+
+[,typeql]
+----
+undefine rule add-view-permission;
+----
+

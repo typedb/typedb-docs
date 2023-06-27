@@ -17,17 +17,16 @@ and https://en.wikipedia.org/wiki/Data_manipulation_language[Data Manipulation L
 This is the TypeQL documentation portal. It has the following pages:
 
 * xref:fundamentals.adoc[] -- essential knowledge and terminology
-* xref:patterns.adoc[] -- querying with TypeQL
+* xref:queries.adoc[] -- querying with TypeQL
 
 [#_schema]
 * Schema -- How to define a schema with TypeQL (DDL).
 ** xref:schema/def-type.adoc[]
 ** xref:schema/def-rule.adoc[]
-** xref:schema/undefine.adoc[]
+** xref:schema/modify.adoc[]
 
 [#_data]
 * Data -- How to read & write Data with TypeQL (DML).
-** xref:data/basic-queries.adoc[]
 ** xref:data/basic-patterns.adoc[]
 ** xref:data/insert.adoc[]
 ** xref:data/delete.adoc[]
@@ -39,8 +38,8 @@ This is the TypeQL documentation portal. It has the following pages:
 
 == Where to go from here?
 
-See the xref:fundamentals.adoc[] page for essential knowledge about TypeQL, and the xref:patterns.adoc[] page for
-pattern writing tips and examples.
+See the xref:fundamentals.adoc[] page for essential knowledge about TypeQL, and the xref:data/basic-patterns.adoc[]
+page for pattern writing tips and examples.
 
 The <<_schema,Schema>> section for the in-detail documentation of the TypeQL as a Data definition language (DDL) --
 how to define a TypeDB database schema.

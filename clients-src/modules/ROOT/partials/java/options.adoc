@@ -1,7 +1,7 @@
 [#_options]
 The transaction query options object `TypeDBOptions` can be used to override the default server behaviour
 query processing. Use `TypeDBOptions.core()` to create a new TypeDB Core options object, or `TypeDBOptions.cluster()`
-for TypeDB Cluster.
+for cluster client for TypeDB Enterprise & TypeDB Cloud.
 
 The options are:
 
