@@ -117,7 +117,7 @@ image::database-manager-iam.png[Database Manager With Phone Calls Database, widt
 . Select `iam` from the database dropdown (next to the database icon).
 
 [#_prepare_a_tql_file]
-=== Prepare a TQL file
+=== Prepare a TypeQL file
 
 // #todo Change the link to TypeQL -
 
@@ -294,12 +294,17 @@ typedb console --command="transaction test-iam-db data read" --command='match $t
 
 After completing this guide we can recommend the following order of topics to continue exploring TypeDB:
 
-1. Find out more about how to xref:dev/connect.adoc[connect] to TypeDB, and use databases, sessions,
+1. Explore the Fundamentals section for essential information of how TypeDB works:
+    * xref:fun/types.adoc[]
+    * xref:fun/queries.adoc[]
+    * xref:fun/patterns.adoc[]
+    * xref:fun/inference.adoc[]
+2. Find out more about how to xref:dev/connect.adoc[connect] to TypeDB, and use databases, sessions,
    and transactions.
-2. Learn how to define a database xref:dev/def-schema.adoc[schema], xref:fun/patterns.adoc[match a pattern], or
-   design a query to xref:dev/write.adoc[write] or xref:dev/read.adoc[read] data.
-3. Check out how to interpret the TypeDB xref:dev/response.adoc[responses] to a query.
-4. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find one most suitable.
-5. (Optional) Learn more about the xref:tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
+3. Learn how to define a xref:dev/def-schema.adoc[schema] of a database.
+4. Discover how to xref:dev/write.adoc[write] or xref:dev/read.adoc[read] data from a TypeDB database.
+5. Check out how to interpret a TypeDB xref:dev/response.adoc[responses] to a query.
+6. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find the most suitable one.
+7. (Optional) Learn more about the xref:tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
    majority of examples throughout this documentation.
-6. (Optional) Explore the xref:tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
+8. (Optional) Explore the xref:tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.

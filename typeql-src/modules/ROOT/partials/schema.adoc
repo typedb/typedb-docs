@@ -148,7 +148,8 @@ A company (instance of `company` type) can exist regardless of the existence of 
 instances, or even `file` type instances.
 
 In comparison -- a relation is meaningless without its role players, and an attribute is meaningless without being
-owned.
+owned. Like a friendship is meaningless without a friend and name is meaningless without assigning it to a person or an
+object.
 ====
 
 Instance of an entity doesn't have a value, unlike an instance of an attribute type. To define a new entity type we need
@@ -484,7 +485,7 @@ define object sub entity, abstract;
 
 To define a new entity type that owns one or more attribute types, use the `owns` keyword followed by the label of the
 attribute type. The attribute types are appended to the entity type definition with commas. Note, attribute types must
-be defined before or concurrently (in the same transaction) with its owner(s). We can add owners later, but we can't
+be defined before or concurrently (in the same query) with its owner(s). We can add owners later, but we can't
 own nonexistent attribute types.
 
 [,typeql]
@@ -627,7 +628,7 @@ The following *value types* are supported:
 * `long` -- a 64-bit signed integer
 * `double` -- a double-precision floating point number, including a decimal point
 * `string` -- enclosed in double `"` or single `'` quotes
-* `boolean` -- true or false
+* `boolean` -- `true` or `false`
 * `datetime` -- a date or date-time in the following formats:
  ** `yyyy-mm-dd`
  ** `yyyy-mm-ddThh:mm`
@@ -1287,7 +1288,7 @@ change-request sub relation;
 ==== Undefine a supertype
 
 When a type to be undefined is a supertype to something else, we must first undefine all its subtypes before
-undefining the supertype itself. We can use the same transaction to delete both the supertype and all its subtypes.
+undefining the supertype itself. We can use the same query to delete both the supertype and all its subtypes.
 
 [,typeql]
 ----

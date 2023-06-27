@@ -11,13 +11,10 @@ This is the TypeDB server documentation section. It has the following sections:
 * xref:quickstart.adoc[] -- a guide to quickly set up a TypeDB database
 
 * *Fundamentals*
-** xref:fun/types.adoc[Type system] -- essential information on types and inheritance
-//*** xref:fun/types-dd.adoc[Deep dive in the type system]
-** xref:fun/queries.adoc[Patterns] -- essential information on pattern matching
-//*** xref:fun/queries-dd.adoc[Deep dive in the patterns]
-** xref:fun/inference.adoc[Inference] -- essential information on rules and reasoning (inference)
-//*** xref:fun/inference-dd.adoc[Deep dive in the inference]
-** xref:deep/deep-dive.adoc[Deep dive] -- additional (non-essential) information
+** xref:fun/types.adoc[] -- essential information on types and inheritance
+** xref:fun/queries.adoc[] -- essential information on queries
+** xref:fun/patterns.adoc[] -- essential information on pattern matching
+** xref:fun/inference.adoc[] -- essential information on rules and reasoning (inference)
 
 * *Development*
  ** xref:dev/connect.adoc[] -- TypeDB server and database connections
@@ -51,8 +48,12 @@ set up a TypeDB environment to explore its capabilities further.
 
 If you already have a working TypeDB environment, we recommend you explore the following:
 
+* the *Fundamentals* section for essential knowledge about TypeDB,
 * the *Development* section for the in-detail documentation of the TypeDB development workflow,
 * the *Administration* section for the instructions for setting up a production environment,
 * or the *Tutorials* section for how-to guides and the xref:tutorials/iam-schema.adoc[].
 
-There is a separate documentation section for xref:clients::clients.adoc[TypeDB Clients].
+There are separate documentation sections for:
+
+* xref:clients::clients.adoc[TypeDB Clients]
+* xref:typeql::overview.adoc[TypeQL]

@@ -138,8 +138,9 @@ The `thing` built-in type will be deprecated in one of the upcoming versions and
 [#_entity_types]
 === Entity types
 
-The `entity` root type is representing all its subtypes that we will call *entity types*. For more
-information on how to define an entity type see the <<_define_entity_types>> section.
+The `entity` root type is representing all its subtypes that we will call *entity types*.
+For more information on how to define an entity type see the
+xref:dev/def-schema.adoc#_define_entity_type[Defining schema] page.
 
 Entity types define the classification of objects within the data model of our business domain.
 
@@ -151,8 +152,9 @@ Instance of data of an entity type represents a standalone object that exists in
 The `relation` root type is representing all its subtypes that we will call *relation types*.
 
 Relation types define relationships between types in a schema, including *roles* for other types to *play*.
-To be able to play a role in a relation, it must be explicitly stated in the type definition. For more
-information on how to define a relation type see the <<_define_relation_types>> section.
+To be able to play a role in a relation, it must be explicitly stated in the type definition.
+For more information on how to define a relation type see the
+xref:dev/def-schema.adoc#_define_relation_type[Defining schema] page.
 
 A relation type must specify at least one role.
 
@@ -180,8 +182,9 @@ For example, a `group-membership` relation cannot associate a `user` type entity
 The `attribute` root type is representing all its subtypes that we will call *attribute types*.
 
 Instances of attribute types have values. To define a new attribute type we need to set its label, what type
-it's a subtype of, and its value type. For more information on how to define an `attribute` subtype see the
-<<_define_attribute_types>> section.
+it's a subtype of, and its value type.
+For more information on how to define an `attribute` subtype see the
+xref:dev/def-schema.adoc#_define_attribute_type[Defining schema] page.
 
 Attribute types represent the properties of other types. Mostly `entity` and `relation` types (e.g.,
 the name of a business unit or a user). In TypeDB, any type can *own* an attribute type. However, different types
@@ -202,5 +205,14 @@ deleted in TypeDB version 3.0.
 
 Every instance of an attribute type can be uniquely addressed by its type and value.
 
+== Learn more
 
+This was the first page of the *Fundamentals* section.
 
+We recommend finishing the rest of the section:
+
+    1. xref:fun/queries.adoc[]
+    2. xref:fun/patterns.adoc[]
+    3. xref:fun/inference.adoc[]
+
+But if you want to learn more about TypeQL see the xref:typeql::overview.adoc[TypeQL documentation,window=_blank].

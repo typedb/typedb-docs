@@ -42,7 +42,7 @@ true to nature:
 ** Relations. Representing n-ary relationships.
 ** Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
 * Rules are defined to add a logical deduction to the schema. Any read queries with the inference option enabled can
-  benefit from new attribute ownerships or relations that are deducted from data patterns. Those inferred
+  benefit from new attribute ownerships or relations that are deduced from data patterns. Those inferred
   concepts are transaction bound and are not persisted in a database.
 
 // ** Context helps us to correctly model, classify and query our data the most logical way.
@@ -52,7 +52,8 @@ true to nature:
 
 TypeDB is a new kind of DBMS:
 
-* not an SQL, but uses an enhanced Entity-Relationship model, further extended by attributes as first-class citizens;
+* not an SQL database, but uses an enhanced Entity-Relationship model, further extended by attributes as first-class
+  citizens;
 * not a graph database, but utilizes the power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs,window=_blank]
   without the need for developers to understand how it works to use it.
 
@@ -74,7 +75,7 @@ in the most efficient way. We don't have to think about query optimization, limi
 implementation, etc.
 
 By combining TypeQL and TypeDB, we can close the gap between the language of our domain and the database. Queries
-written in TypeQL are humanely readable. Carefully designed database xref:dev/def-schema.adoc#_schema[schema] lets us
+written in TypeQL are easily readable. Carefully designed database xref:dev/def-schema.adoc#_schema[schema] lets us
 use the terminology of the business domain, making our queries sound familiar to subject-matter experts. This new
 paradigm gives us a higher level of flexibility and expressivity to simplify our work and tackle domains that
 seemed impossibly complex before.
@@ -112,8 +113,7 @@ logic at the database level.
 
 == Learn more
 
-1. First, use the xref:installation.adoc[installation guide] to install TypeDB on the
-   local machine.
+1. First, use the xref:installation.adoc[installation guide] to install TypeDB on the local machine.
 
 2. The TypeDB journey starts with our xref:quickstart.adoc[Quickstart guide].
 +
@@ -132,7 +132,8 @@ It goes through the step-by-step process of creating a new database, applying sc
 4. xref:dev/connect.adoc[Connect] page: Connect to TypeDB using databases, sessions, transactions, and ACID
    guarantees.
 
-5. xref:dev/def-schema.adoc#_schema[Define schema] page: Find out how to define, undefine, and modify types and rules.
+5. xref:dev/def-schema.adoc#_schema[Define schema] page: Find out how to define, undefine, and modify types and rules
+   in a TypeDB database.
 
 6. xref:typedb::dev/write.adoc[Writing data] and xref:typedb::dev/read.adoc[Reading data] pages: How to perform Insert,
    Delete, Update, and Get queries.

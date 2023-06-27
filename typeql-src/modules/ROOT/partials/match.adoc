@@ -230,7 +230,7 @@ The statements below can be used to find types and roles defined in a database's
 | `$<var_label> sub[!] <type>;`
 
 | role type in a relation
-| `$ <var_label> <relation> relates $<var_label>;`
+| `<relation> relates $<var_label>;`
 
 | players type in a relation
 | `$<var_label> plays <relation>:<role>;`
@@ -241,6 +241,7 @@ The statements below can be used to find types and roles defined in a database's
 | attribute subtype
 | `$<var> sub[!] <attribute-type> [, value <value-type>];`
 |===
+//#todo Add column Examples!
 
 === Data
 
@@ -435,7 +436,7 @@ The above query returns the `object` type, and none of its nested subtypes (dire
 
 ===== Players of a specific role
 
-Use a "players types in a relation" pattern to find all types that place a specific role in a specific relation type.
+Use a "players type in a relation" pattern to find all types that play a specific role in a specific relation type.
 
 [,typeql]
 ----
@@ -610,10 +611,10 @@ specific attribute with a specific value.
 
 [,typeql]
 ----
-match $pe (subject: $p, access: $ac) isa permission, has validity "True";
+match $pe (subject: $p, access: $ac) isa permission, has validity true;
 ----
 
-The above query finds all `permission` relations which have a `validity` attribute whose value is "`True`".
+The above query finds all `permission` relations which have a `validity` attribute whose value is `true`.
 
 ===== With no relation variable
 
@@ -632,6 +633,8 @@ The names of a relation's roles can be omitted.
 ----
 match $pe ($p, $ac) isa permission;
 ----
+
+This will match any valid combination of roles.
 
 ==== Attribute matching
 
@@ -834,7 +837,7 @@ match
 ----
 
 In the above example we set the value variable `?x` to be equal to the result of floor function (the greatest integer
-less than or equal to the real argument).
+less than or equal to the argument).
 
 [#_using_ceiling_function]
 ===== Using ceiling function
@@ -847,7 +850,7 @@ match
 ----
 
 In the above example we set the value variable `?x` to be equal to the result of ceiling function (the least integer
-greater than or equal to the real argument).
+greater than or equal to the argument).
 
 [#_using_rounding_function]
 ===== Using rounding function
@@ -915,7 +918,7 @@ get $p;
 
 The above query uses disjunctions to ensure one of two statements are matched:
 
-. Finds all `person` entities that have a `full-name` attribute ($n).
+. Finds all `person` entities that have a `full-name` attribute (`$n`).
 . Checks to see if `$n` contains the text "`Masako`" *OR* if `$n` contains the text "`Kevin`":
  ** If either statement is true, there is a match.
  ** If neither statement is true, there is NO match.

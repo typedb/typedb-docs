@@ -319,12 +319,12 @@ Java::
 [,java]
 ----
 // start transaction
-TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE);
-Transaction.query().insert(insertQuery1);
-Transaction.query().insert(insertQuery2);
-Transaction.query().insert(insertQueryN);
+TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
+transaction.query().insert(insertQuery1);
+transaction.query().insert(insertQuery2);
+transaction.query().insert(insertQueryN);
 // commit changes
-Transaction.commit();
+transaction.commit();
 ----
 --
 
@@ -471,3 +471,11 @@ Hence, we can always:
 
 * open *Data* session,
 * open a *Read* transaction in an existing session of any type.
+
+== Learn more
+
+With the essential knowledge of the *Fundamentals* section and the ability to connect to a TypeDB databases, described
+on this page, let's try defining our own xref:typedb::dev/def-schema.adoc[schema].
+
+After that we can try xref:typedb::dev/write.adoc[writing] and xref:typedb::dev/read.adoc[reading] data from
+a database.

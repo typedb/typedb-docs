@@ -67,7 +67,7 @@ If there are no matches for a `match` clause in an `insert` query then there wil
 
 [NOTE]
 ====
-The `insert` clause can have multiple patterns to insert in one query. But it can't insert types
+The `insert` clause can have multiple statements in its pattern to insert in one query. But it can't insert types
 (use xref:schema.adoc#_define_schema[define] to insert new types) and can't have the following:
 
 - Conjunction
@@ -182,8 +182,8 @@ new attribute would be created and owned by the `file` entity.
 TypeDB supports multivalued attributes by allowing entities, relations, and attributes to own multiple attributes
 of the same attribute type.
 
-For example, if the `person` entity type can own an `email` attribute type, am instance of `person` entity type
-can own multiple (from 0 to many) `email` attributes with different values.
+For example, if the `person` entity type can own an `email` attribute type, than instance of `person`
+can own multiple (from zero to many) `email` attributes with different values.
 
 ===== Example 1
 
@@ -350,7 +350,7 @@ If there are no matches for a `match` clause in a `delete` query then there will
 
 [NOTE]
 ====
-The `delete` clause can have multiple patterns to delete in one query. But it can't delete types (use
+The `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
 xref:schema.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
 
 - Conjunction
@@ -358,8 +358,6 @@ xref:schema.adoc#_undefine_a_type[undefine] to delete types) and can't have the 
 - Negation
 - `is` keyword
 ====
-
-If multiple patterns are needed to delete data, run multiple queries in the same transaction.
 
 === Entities
 
@@ -551,7 +549,7 @@ If there are no matches for a `match` clause in an update (`match-delete-insert`
 
 [NOTE]
 ====
-The `delete` clause can have multiple patterns to delete in one query. But it can't delete types (use
+The `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
 xref:schema.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
 
 - Conjunction
@@ -562,7 +560,7 @@ xref:schema.adoc#_undefine_a_type[undefine] to delete types) and can't have the 
 
 [NOTE]
 ====
-The `insert` clause can have multiple patterns to insert in one query. But it can't insert types (use
+The `insert` clause can have multiple statements in its pattern to insert in one query. But it can't insert types (use
 xref:schema.adoc#_define_schema[define] to insert new types) and can't have the following:
 
 - Conjunction
@@ -570,8 +568,6 @@ xref:schema.adoc#_define_schema[define] to insert new types) and can't have the 
 - Negation
 - `is` keyword
 ====
-
-If multiple patterns are needed to update data, run multiple queries in the same transaction.
 
 === Updating attribute values
 

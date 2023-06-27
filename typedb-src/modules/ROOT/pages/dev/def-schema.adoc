@@ -112,6 +112,7 @@ All types, mentioned in a type definition (owned attributes or relation that the
 in the schema or be defined in the same query.
 ====
 
+[#_define_entity_type]
 === Define entity type
 
 See the xref:_define_types[] section.
@@ -121,6 +122,7 @@ No specific syntax for entities.
 For more information about entity types see the xref:fun/types.adoc#_entity_types[Entity types] section in
 xref:fun/types.adoc[] page.
 
+[#_define_relation_type]
 === Define relation type
 
 To define a relation type use the following syntax:
@@ -168,6 +170,7 @@ In the above example we define:
 For more information about relation types see the xref:fun/types.adoc#_relation_types[Relation types] section in
 xref:fun/types.adoc[] page.
 
+[#_define_attribute_type]
 === Define attribute type
 
 To define an attribute type use the following syntax:
@@ -353,3 +356,11 @@ xref:clients::node-js/node-js-api-ref.adoc#_rename_type_label[Node.js].
 
 To modify a rule xref:_define_rules[define a new rule] with the same label. It will overwrite the existing rule upon
 commit.
+
+== Learn more
+
+After we define the schema of our database we can try xref:typedb::dev/write.adoc[writing] and
+xref:typedb::dev/read.adoc[reading] data from the database.
+
+In case there is no database schema ready yet, we can use the xref:attachment$iam-schema.tql[IAM schema,window=_blank]
+to try all the queries.
