@@ -15,11 +15,11 @@ statements) is a clause.
 These clauses can be combined to create four different types of queries:
 
 * Reading schema and data
- ** xref:read.adoc#_get_query[Get] (match-get) query -- to retrieve data instances or schema types.
+ ** xref:typeql::data/get.adoc[Get] (match-get) query -- to retrieve data instances or schema types.
 * Writing data
- ** xref:write.adoc#_insert_query[Insert] (match-insert) query -- to insert data.
- ** xref:write.adoc#_delete_query[Delete] (match-delete) query -- to delete data.
- ** xref:write.adoc#_update[Update] (match-delete-insert) query -- to delete and then insert data.
+ ** xref:typeql::data/insert.adoc[Insert] (match-insert) query -- to insert data.
+ ** xref:typeql::data/delete.adoc[Delete] (match-delete) query -- to delete data.
+ ** xref:typeql::data/update.adoc[Update] (match-delete-insert) query -- to delete and then insert data.
 
 A `match` clause is optional for insert queries, but required for all others.
 

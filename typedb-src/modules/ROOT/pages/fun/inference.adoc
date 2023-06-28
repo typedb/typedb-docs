@@ -52,8 +52,9 @@ knowledge discovery, and implement business logic at the database level.
 
 A rule consists of a *condition* and a *conclusion*.
 
-*Condition* is a pattern to look for in data and conclusion is data to be virtually inserted for every result matched
-with a pattern from *condition*.
+*Condition* is a pattern to look for in data.
+
+*Conclusion* is data to be virtually inserted for every result matched with a pattern from *condition*.
 
 The rules syntax uses `when` and `then` keywords for condition and conclusion respectively.
 
@@ -71,18 +72,23 @@ when {
 ----
 ====
 
-Read more on how to create rules in a schema in the xref:typedb::dev/def-schema.adoc#_define_rules[Define rules]
-section of the xref:typedb::dev/def-schema.adoc[] page.
-
-We can use xref:typedb::fun/patterns.adoc#_computation[computation] operations and functions in the condition pattern.
-And we can use value variables in the conclusion of a rule.
-
 [WARNING]
 ====
 It is possible to create a recursive logic in the line of `n = n +1` by assigning an attribute ownership with value of
 value variable. Such a rule, if triggered can run indefinitely, while transaction lasts and can cause an out of memory
 error.
 ====
+
+Rules can't change persisted data in a database. Instead, all the reasoning is done within a dataset of the transaction.
+Only the results of queries in this transaction are influenced by the inference.
+During a single transaction, newly inferred facts will be retained and reused (with corresponding performance gains).
+New transactions will re-compute inferred facts again.
+
+Read more on how to create rules in a schema in the xref:typedb::dev/def-schema.adoc#_define_rules[Define rules]
+section of the xref:typedb::dev/def-schema.adoc[] page.
+
+We can use xref:typedb::fun/patterns.adoc#_computation[computation] operations and functions in the condition pattern.
+And we can use value variables in the conclusion of a rule.
 
 [#_rule_validation]
 === Rule validation

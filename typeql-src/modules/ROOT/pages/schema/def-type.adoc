@@ -196,7 +196,7 @@ object sub entity, abstract, owns object-type;
 By default, an entity can have multiple attributes of the same type: zero, one, or many.
 
 By having multiple attributes of the same type we're effectively creating a
-xref:write.adoc#_multivalued_attributes[multivalued attribute] (as if having an attribute type instantiated
+xref:typeql::data/insert.adoc#_multivalued_attributes[multivalued attribute] (as if having an attribute type instantiated
 with multiple values).
 
 Use the `@key` keyword to limit the cardinality to exactly *one* and add *uniqueness* constraint.

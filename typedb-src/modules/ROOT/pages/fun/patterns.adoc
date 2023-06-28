@@ -10,9 +10,10 @@ image::statement-structure.png[]
 image::example-pattern.png[]
 ////
 
-TypeDB xref:fun/queries.adoc[queries] are written in xref:typeql::overview.adoc[TypeQL] and use *patterns* to
+TypeDB xref:typedb::fun/queries.adoc[queries] are written in xref:typeql::overview.adoc[TypeQL] and use *patterns* to
 manipulate the schema and data of a database.
 
+// tag::patterns_body[]
 [#_patterns_overview]
 //== Patterns overview
 
@@ -271,6 +272,7 @@ and both instances of `person` to have a `permission` to the specified `access`.
 In short, the above example finds pairs of people who both have permission to access the same file
 with a path of `README.md`. The pattern additionally specifies both of them to not have name `Masako Holley` and
 the access to be either `modify_file` or `view_file`.
+// end::patterns_body[]
 
 == Learn more
 
@@ -278,7 +280,7 @@ This was the third page of the *Fundamentals* section.
 
 Only one page left to go:
 
-    1. xref:fun/inference.adoc[]
+    1. xref:typedb::fun/inference.adoc[]
 
 If you want to skip inference for now you can continue to the *Development* section, starting from the
 xref:typedb::dev/connect.adoc[] page.

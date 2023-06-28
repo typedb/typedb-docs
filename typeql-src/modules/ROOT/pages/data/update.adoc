@@ -32,7 +32,7 @@ to specify the data/references which will replace it.
 [NOTE]
 ====
 A pattern consists of variables and constraints for concepts. For more information see the
-xref:match.adoc#_pattern_syntax[Pattern syntax] section.
+xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 ====
 
 The number of deleted and inserted concepts depends on the number of answers matched by the `match` clause. The `delete`
@@ -46,7 +46,7 @@ If there are no matches for a `match` clause in an update (`match-delete-insert`
 [NOTE]
 ====
 The `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
-xref:schema.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
+xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
 
 - Conjunction
 - Disjunction
@@ -57,7 +57,7 @@ xref:schema.adoc#_undefine_a_type[undefine] to delete types) and can't have the 
 [NOTE]
 ====
 The `insert` clause can have multiple statements in its pattern to insert in one query. But it can't insert types (use
-xref:schema.adoc#_define_schema[define] to insert new types) and can't have the following:
+xref:schema/def-type.adoc[define] to insert new types) and can't have the following:
 
 - Conjunction
 - Disjunction

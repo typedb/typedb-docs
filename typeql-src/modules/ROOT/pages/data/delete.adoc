@@ -25,7 +25,7 @@ pattern to specify which data/references, that was found by the `match` clause, 
 [NOTE]
 ====
 A pattern consists of variables and constraints for concepts. For more information see the
-xref:match.adoc#_pattern_syntax[Pattern syntax] section.
+xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 ====
 
 The number of deleted concepts depends on the number of answers matched by the `match` clause. The `delete` clause
@@ -39,7 +39,7 @@ If there are no matches for a `match` clause in a `delete` query then there will
 [NOTE]
 ====
 The `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
-xref:schema.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
+xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
 
 - Conjunction
 - Disjunction
