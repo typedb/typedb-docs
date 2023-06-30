@@ -113,9 +113,10 @@ TypeDB's protobuf definitions can be found in the
 https://github.com/vaticle/typedb-protocol[GitHub repository,window=_blank].
 During development, it's sufficient to manually copy-paste from this repository and do a one-time compilation.
 A more reliable method is to import the Protocol repo via a package manager and compile it at build time.
-TypeDB's build system, https://bazel.build/[Bazel,window=_blank], offers one approach. If we'd like to use a different
-package manager, the TypeDB team may also be able to help by setting up a distribution channel for the chosen language's
-compiled protobuf files. If this is the case, please get in touch.
+TypeDB's build system, https://bazel.build/[Bazel,window=_blank], offers one approach.
+
+If there will be a need to use a different package manager, the TypeDB team may also be able to help by setting up
+a distribution channel for the chosen language's compiled protobuf files. If this is the case, please get in touch.
 
 === Session and transaction
 
@@ -286,4 +287,5 @@ https://github.com/vaticle/typedb-client-nodejs[Node.js,window=_blank].
 
 Do get in touch with the Vaticle team on https://vaticle.com/discord[Discord,window=_blank].
 We're happy to help speed up the development process.
-This will also enable us to add your project into the https://typedb.org[TypeDB Open Source Initiative,window=_blank].
+
+//This will also enable us to add your project into the https://typedb.org[TypeDB Open Source Initiative,window=_blank].

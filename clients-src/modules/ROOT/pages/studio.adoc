@@ -10,14 +10,14 @@
 image::studio/studio.png[TypeDB Studio]
 
 TypeDB Studio is an IDE specifically designed for TypeDB databases and
-TypeDB's query language -- https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL,window=_blank].
+TypeDB's query language -- xref:typeql::fundamentals.adoc[TypeQL,window=_blank].
 
 It has unique set of functions and abilities to help with development using TypeDB:
 
 * Friendly GUI to design schemas and queries for TypeDB databases.
 * Syntax highlighting for TypeQL.
 * Connection to TypeDB servers, including handling transactions.
-* Type browser for types in a TypeDB database.
+* Type Browser for exploring types in a TypeDB database.
 * Query execution, including schema and data, read and write transactions.
 * Local query validation with constraints of an actual database schema before sending the query to server.
 * Graph visualization for query responses.
@@ -139,7 +139,7 @@ If the dropdown menu isn't active it usually means that we didn't connect to a s
 ====
 
 After selecting the database to work with from a list, we will see it's name on the dropdown list and types
-hierarchy of the selected database in the <<_types_browser_capabilities,Types browser>> (bottom left of the screen).
+hierarchy of the selected database in the <<_types_browser_capabilities,Type browser>> (bottom left of the screen).
 
 [#_open_a_project_directory]
 === Open a project directory
@@ -205,7 +205,7 @@ with transaction controls.
 *Text editor* panel doesn't have a visible title, but it's the biggest area in the middle of the TypeDB Studio +
 that is being used to work with text information. It does have tabs at the top to switch between different opened files.
 
-The currently selected file's content displayed in the main section with lines numeration at the left edge of the
+The currently selected file's content displayed in the main section with line numbers at the left edge of the
 *Text editor* panel.
 
 All text in the *Text editor* panel will be displayed with TypeQL syntax highlighting.
@@ -286,10 +286,11 @@ database <<_select_active_database,selected>> and project directory <<_open_a_pr
 +
 image::studio/project-schema-pasted.png[Query text]
 
-. Choose the correct session (`schema`/`data`) type and transaction (`read`/`write`) type to run the query by +
-clicking on those options on the *Toolbar* switches.
-. Run query by clicking on the btn:[Run Query] (▶) button. *Run* panel will be expanded on the bottom of the +
-query to show the results of the query execution attempt.
+. Choose the correct xref:typedb::dev/connect.adoc#_sessions[session,window=_blank] (`schema`/`data`) type and
+  xref:typedb::dev/connect.adoc#_transactions[transaction,window=_blank] (`read`/`write`) type to run the query
+  by clicking on those options on the *Toolbar* switches.
+. Run query by clicking on the btn:[Run Query] (▶) button. *Run* panel will be expanded on the bottom of the
+  query to show the results of the query execution attempt.
 +
 image::studio/project-schema-query-run.png[Write the Schema]
 
@@ -308,15 +309,15 @@ example below.
 image::studio/project-schema-committed.png[Commit the Transaction]
 
 [#_types_browser_capabilities]
-== Types browser capabilities
+== Type browser capabilities
 
-Under the *Projects* panel that shows the project directory TypeDB has *Types* panel that shows all types of
+Under the *Projects* panel that shows the project directory TypeDB has *Type Browser* panel that shows all types of
 the schema of the current database.
 
 [NOTE]
 ====
-If the *Types* panel is not displayed -- click the *Types* vertical tab on the left edge of the TypeDB Studio
-window.
+If the *Type Browser* panel is not displayed -- click the *Type Browser* vertical tab on the left edge of the
+TypeDB Studio window.
 ====
 
 All types are divided in three top level xref:typedb::fun/types.adoc#_type[built-in types]:
@@ -329,20 +330,20 @@ In an empty database (without a schema) only these three built-in types shown in
 
 In a database with a schema all types displayed in the exact hierarchy they were created (subtypes inside their
 supertypes). We can easily collapse or expand all the types in the structure tree by clicking the associated buttons
-on the top of the *Types* panel with double chevrons (arrow heads) pointing down or up respectively.
+on the top of the *Type Browser* panel with double chevrons (arrow heads) pointing down or up respectively.
 
 image::studio/type-browser.png[Type browser,width=300]
 
 Double-clicking on any type will open the <<_type_editor,Type editor>> with information about the selected type
 in a tab of the *Text editor*.
 
-*Types* panel can be closed by clicking the *X* icon in the top right corner of the panel. To reopen the panel
-click the *Types* tab on the left edge of the TypeDB Studio window.
+*Type Browser* panel can be closed by clicking the *X* icon in the top right corner of the panel. To reopen the panel
+click the *Type Browser* tab on the left edge of the TypeDB Studio window.
 
 === Export schema
 
 We can export schema of the database by clicking the btn:[Export Schema Types] button (second in row from left to
-right) on the top of the *Types* panel. It creates a new tab with inserted TypeQL code that creates the exact
+right) on the top of the *Type Browser* panel. It creates a new tab with inserted TypeQL code that creates the exact
 schema that is in the current database.
 
 [WARNING]
@@ -360,8 +361,9 @@ allows us to easily edit the type.
 image::studio/type-editor.png[Types editor]
 
 We can rename the type, change its supertype, abstract property, see all the connected types (subtypes, owned
-attributes or owners of this particular attribute, related and played roles). By clicking on one of the connected
-types we can see all information about it as well.
+attributes or owners of this particular attribute, related and played roles).
+
+By clicking on one of the connected types we can see all information about it as well.
 
 === Rename a type
 

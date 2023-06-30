@@ -55,9 +55,9 @@ See the examples below.
 ----
 TypeQLMatch.Filtered getQuery = TypeQL.match(
         cVar("u").isa("user").has("full-name", "Kevin Morrison"),
-        cVar("p").rel("u").rel("pa").isa("permission"),
+        cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
         cVar("o").isa("object").has("path", cVar("fp")),
-        cVar("pa").rel("o").rel("va").isa("access")
+        cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access")
 ).get(cVar("fp"));
 ----
 
@@ -93,9 +93,9 @@ The following example showcases the usage of sorting, offsetting and limiting a 
 ----
 TypeQLMatch.Limited getQuery = TypeQL.match(
         cVar("u").isa("user").has("full-name", "Kevin Morrison"),
-        cVar("p").rel("u").rel("pa").isa("permission"),
+        cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
         cVar("o").isa("object").has("path", cVar("fp")),
-        cVar("pa").rel("o").rel("va").isa("access"),
+        cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access"),
         cVar("va").isa("action").has("name", "view_file")
 ).get(cVar("fp")).sort(cVar("fp")).offset(0).limit(5);
 ----
@@ -122,5 +122,5 @@ insertQuery = TypeQL.match(
         cVar("f").isa("file").has("path", filepath),
         cVar("vav").isa("action").has("name", "view_file")
                 )
-        .insert(cVar("pa").rel("vav").rel("f").isa("access"));
+        .insert(cVar("pa").rel(cVar("vav")).rel(cVar("f")).isa("access"));
 ----

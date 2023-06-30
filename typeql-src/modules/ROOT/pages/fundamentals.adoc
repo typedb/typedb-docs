@@ -40,16 +40,6 @@ All other TypeQL clauses consist of the defining keyword (the same as the name o
 For more information on patterns see the xref:typeql::data/basic-patterns.adoc[]
 and the xref:typeql::data/advanced.adoc[] pages.
 
-////
-include::typedb::fun/patterns.adoc[tag=patterns_overview, leveloffset = +1]
-
-include::typedb::fun/patterns.adoc[tag=variables, leveloffset = +1]
-
-include::typedb::fun/patterns.adoc[tag=combining, leveloffset = +1]
-
-include::typedb::fun/patterns.adoc[tag=complex_example, leveloffset = +1]
-////
-
 [#_schema]
 == Schema
 
@@ -58,6 +48,17 @@ TypeDB schema is like a blueprint of a database.
 A database schema contains all user-defined <<_types,types>> and <<_rules,rules>> used in a database.
 
 Every instance of data inserted in a TypeDB database must be assigned a type and be validated against constraints.
+
+[NOTE]
+====
+Database schemas written in TypeQL resemble logical data models of relational databases.
+TypeDB removing the need to create a separate physical data model and allowing developers to create schemas that
+mirror their object model simplifying both design and development.
+
+As a result, TypeDB schemas look like entity-relationship (ER) diagrams. With entities, relations, and attributes
+connected by roles of relations, and ownerships of attributes, but also subtyping (see <<_inheritance,inheritance>>
+below).
+====
 
 [#_types]
 === Types
@@ -95,10 +96,6 @@ types will be subtypes (direct or non-direct) of those root types.
 | `attribute`
 | Attribute type
 | Instance of attribute type
-
-// | `role`
-// | `role`
-// | N/A
 |===
 
 [IMPORTANT]
@@ -120,16 +117,6 @@ we mean:
 - the exact type, without any of its subtypes,
 - or instances of data of this particular type, and instances of data of all its subtypes.
 ====
-
-////
-TypeDB schemas resemble logical data models of relational databases.
-TypeDB removing the need to create a separate physical data model and allowing developers to create schemas that
-mirror their object model simplifying both design and development.
-
-As a result, TypeDB schemas look like entity-relationship (ER) diagrams. With entities, relations, and attributes
-connected by roles of relations, and ownerships of attributes, but also subtyping (see <<_inheritance,inheritance>>
-below).
-////
 
 [#_inheritance]
 === Inheritance
@@ -224,22 +211,6 @@ image::thing-era-role-rule.png[Types hierarchy]
 The `thing` built-in type will be deprecated in one of the upcoming versions and deleted in TypeDB version 3.0.
 ====
 // end::thing_type_basics[]
-
-////
-
-===  Attribute types
-
-
-
-=== Relation types
-
-
-
-=== Entity types
-
-
-////
-
 
 [#_entity_types]
 === Entity types
