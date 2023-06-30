@@ -1,0 +1,896 @@
+= TypeQL rules visualization
+
+== eof_query
+
+image::diagram/eof_query.png[eof_query]
+
+== eof_queries
+
+image::diagram/eof_queries.png[eof_queries]
+
+== eof_pattern
+
+image::diagram/eof_pattern.png[eof_pattern]
+
+== eof_patterns
+
+image::diagram/eof_patterns.png[eof_patterns]
+
+== eof_definables
+
+image::diagram/eof_definables.png[eof_definables]
+
+== eof_variable
+
+image::diagram/eof_variable.png[eof_variable]
+
+== eof_label
+
+image::diagram/eof_label.png[eof_label]
+
+== eof_schema_rule
+
+image::diagram/eof_schema_rule.png[eof_schema_rule]
+
+== query
+
+image::diagram/query.png[query]
+
+referenced by:
+
+* eof_queries
+* eof_query
+
+== query_define
+
+image::diagram/query_define.png[query_define]
+
+referenced by:
+
+* query
+
+== query_undefine
+
+image::diagram/query_undefine.png[query_undefine]
+
+referenced by:
+
+* query
+
+== query_insert
+
+image::diagram/query_insert.png[query_insert]
+
+referenced by:
+
+* query
+
+== query_update
+
+image::diagram/query_update.png[query_update]
+
+referenced by:
+
+* query
+
+== query_delete
+
+image::diagram/query_delete.png[query_delete]
+
+referenced by:
+
+* query
+* query_update
+
+== query_match
+
+image::diagram/query_match.png[query_match]
+
+referenced by:
+
+* query
+* query_match_aggregate
+* query_match_group
+* query_match_group_agg
+
+== query_match_aggregate
+
+image::diagram/query_match_aggregate.png[query_match_aggregate]
+
+referenced by:
+
+* query
+
+== query_match_group
+
+image::diagram/query_match_group.png[query_match_group]
+
+referenced by:
+
+* query
+
+== query_match_group_agg
+
+image::diagram/query_match_group_agg.png[query_match_group_agg]
+
+referenced by:
+
+* query
+
+== modifiers
+
+image::diagram/modifiers.png[modifiers]
+
+referenced by:
+
+* query_match
+
+== filter
+
+image::diagram/filter.png[filter]
+
+referenced by:
+
+* modifiers
+
+== sort
+
+image::diagram/sort.png[sort]
+
+referenced by:
+
+* modifiers
+
+== var_order
+
+image::diagram/var_order.png[var_order]
+
+referenced by:
+
+* sort
+
+== offset
+
+image::diagram/offset.png[offset]
+
+referenced by:
+
+* modifiers
+
+== limit
+
+image::diagram/limit.png[limit]
+
+referenced by:
+
+* modifiers
+
+== match_aggregate
+
+image::diagram/match_aggregate.png[match_aggregate]
+
+referenced by:
+
+* query_match_aggregate
+* query_match_group_agg
+
+== aggregate_method
+
+image::diagram/aggregate_method.png[aggregate_method]
+
+referenced by:
+
+* match_aggregate
+
+== match_group
+
+image::diagram/match_group.png[match_group]
+
+referenced by:
+
+* query_match_group
+* query_match_group_agg
+
+== definables
+
+image::diagram/definables.png[definables]
+
+referenced by:
+
+* eof_definables
+* query_define
+* query_undefine
+
+== definable
+
+image::diagram/definable.png[definable]
+
+referenced by:
+
+* definables
+
+== patterns
+
+image::diagram/patterns.png[patterns]
+
+referenced by:
+
+* eof_patterns
+* pattern_conjunction
+* pattern_disjunction
+* pattern_negation
+* query_delete
+* query_insert
+* query_match
+* schema_rule
+
+== pattern
+
+image::diagram/pattern.png[pattern]
+
+referenced by:
+
+* eof_pattern
+* patterns
+
+== pattern_conjunction
+
+image::diagram/pattern_conjunction.png[pattern_conjunction]
+
+referenced by:
+
+* pattern
+
+== pattern_disjunction
+
+image::diagram/pattern_disjunction.png[pattern_disjunction]
+
+referenced by:
+
+* pattern
+
+== pattern_negation
+
+image::diagram/pattern_negation.png[pattern_negation]
+
+referenced by:
+
+* pattern
+
+== pattern_variable
+
+image::diagram/pattern_variable.png[pattern_variable]
+
+referenced by:
+
+* eof_variable
+* pattern
+
+== variable_concept
+
+image::diagram/variable_concept.png[variable_concept]
+
+referenced by:
+
+* pattern_variable
+
+== variable_type
+
+image::diagram/variable_type.png[variable_type]
+
+referenced by:
+
+* definable
+* pattern_variable
+
+== type_constraint
+
+image::diagram/type_constraint.png[type_constraint]
+
+referenced by:
+
+* variable_type
+
+== annotations_owns
+
+image::diagram/annotations_owns.png[annotations_owns]
+
+referenced by:
+
+* type_constraint
+
+== variable_value
+
+image::diagram/variable_value.png[variable_value]
+
+referenced by:
+
+* pattern_variable
+
+== variable_things
+
+image::diagram/variable_things.png[variable_things]
+
+referenced by:
+
+* query_delete
+* query_insert
+* query_update
+
+== variable_thing_any
+
+image::diagram/variable_thing_any.png[variable_thing_any]
+
+referenced by:
+
+* pattern_variable
+* schema_rule
+* variable_things
+
+== variable_thing
+
+image::diagram/variable_thing.png[variable_thing]
+
+referenced by:
+
+* variable_thing_any
+
+== variable_relation
+
+image::diagram/variable_relation.png[variable_relation]
+
+referenced by:
+
+* variable_thing_any
+
+== variable_attribute
+
+image::diagram/variable_attribute.png[variable_attribute]
+
+referenced by:
+
+* variable_thing_any
+
+== relation
+
+image::diagram/relation.png[relation]
+
+referenced by:
+
+* variable_relation
+
+== role_player
+
+image::diagram/role_player.png[role_player]
+
+referenced by:
+
+* relation
+
+== player
+
+image::diagram/player.png[player]
+
+referenced by:
+
+* role_player
+
+== attributes
+
+image::diagram/attributes.png[attributes]
+
+referenced by:
+
+* variable_attribute
+* variable_relation
+* variable_thing
+
+== attribute
+
+image::diagram/attribute.png[attribute]
+
+referenced by:
+
+* attributes
+
+== predicate
+
+image::diagram/predicate.png[predicate]
+
+referenced by:
+
+* attribute
+* variable_attribute
+* variable_value
+
+== predicate_equality
+
+image::diagram/predicate_equality.png[predicate_equality]
+
+referenced by:
+
+* predicate
+
+== predicate_substring
+
+image::diagram/predicate_substring.png[predicate_substring]
+
+referenced by:
+
+* predicate
+
+== predicate_value
+
+image::diagram/predicate_value.png[predicate_value]
+
+referenced by:
+
+* predicate
+
+== expression
+
+image::diagram/expression.png[expression]
+
+referenced by:
+
+* expression
+* expression_arguments
+* expression_base
+* variable_value
+
+== expression_base
+
+image::diagram/expression_base.png[expression_base]
+
+referenced by:
+
+* expression
+
+== expression_function
+
+image::diagram/expression_function.png[expression_function]
+
+referenced by:
+
+* expression_base
+
+== expression_function_name
+
+image::diagram/expression_function_name.png[expression_function_name]
+
+referenced by:
+
+* expression_function
+
+== expression_arguments
+
+image::diagram/expression_arguments.png[expression_arguments]
+
+referenced by:
+
+* expression_function
+
+== schema_rule
+
+image::diagram/schema_rule.png[schema_rule]
+
+referenced by:
+
+* definable
+* eof_schema_rule
+
+== type_any
+
+image::diagram/type_any.png[type_any]
+
+referenced by:
+
+* type_constraint
+* variable_type
+
+== type_scoped
+
+image::diagram/type_scoped.png[type_scoped]
+
+referenced by:
+
+* type_any
+* type_constraint
+
+== type
+
+image::diagram/type.png[type]
+
+referenced by:
+
+* role_player
+* type_any
+* type_constraint
+* variable_attribute
+* variable_relation
+* variable_thing
+
+== label_any
+
+image::diagram/label_any.png[label_any]
+
+referenced by:
+
+* type_constraint
+
+== label_scoped
+
+image::diagram/label_scoped.png[label_scoped]
+
+referenced by:
+
+* label_any
+* type_scoped
+
+== label
+
+image::diagram/label.png[label]
+
+referenced by:
+
+* attribute
+* eof_label
+* label_any
+* schema_rule
+* type
+
+== type_native
+
+image::diagram/type_native.png[type_native]
+
+referenced by:
+
+* label
+
+== value_type
+
+image::diagram/value_type.png[value_type]
+
+referenced by:
+
+* type_constraint
+
+== value
+
+image::diagram/value.png[value]
+
+referenced by:
+
+* expression_base
+* predicate
+* predicate_value
+
+== signed_long
+
+image::diagram/signed_long.png[signed_long]
+
+referenced by:
+
+* value
+
+== signed_double
+
+image::diagram/signed_double.png[signed_double]
+
+referenced by:
+
+* value
+
+== sign
+
+image::diagram/sign.png[sign]
+
+referenced by:
+
+* signed_double
+* signed_long
+
+== unreserved
+
+image::diagram/unreserved.png[unreserved]
+
+referenced by:
+
+* label
+
+== _
+
+![_](diagram/_.png)
+
+== ORDER_
+
+image::diagram/ORDER_.png[ORDER_]
+
+referenced by:
+
+* var_order
+
+== SUB_
+
+image::diagram/SUB_.png[SUB_]
+
+referenced by:
+
+* type_constraint
+
+== ISA_
+
+image::diagram/ISA_.png[ISA_]
+
+referenced by:
+
+* variable_attribute
+* variable_relation
+* variable_thing
+
+== EXPR_FUNC_NAME
+
+image::diagram/EXPR_FUNC_NAME.png[EXPR_FUNC_NAME]
+
+referenced by:
+
+* expression_function_name
+* unreserved
+
+== BOOLEAN_
+
+image::diagram/BOOLEAN_.png[BOOLEAN_]
+
+referenced by:
+
+* value
+
+== STRING_
+
+image::diagram/STRING_.png[STRING_]
+
+referenced by:
+
+* predicate
+* type_constraint
+* value
+
+== LONG_
+
+image::diagram/LONG_.png[LONG_]
+
+referenced by:
+
+* limit
+* offset
+* signed_long
+
+== DOUBLE_
+
+image::diagram/DOUBLE_.png[DOUBLE_]
+
+referenced by:
+
+* signed_double
+
+== DATE_
+
+image::diagram/DATE_.png[DATE_]
+
+referenced by:
+
+* value
+
+== DATETIME_
+
+image::diagram/DATETIME_.png[DATETIME_]
+
+referenced by:
+
+* value
+
+== VAR_CONCEPT_
+
+image::diagram/VAR_CONCEPT_.png[VAR_CONCEPT_]
+
+referenced by:
+
+* attribute
+* expression_base
+* filter
+* match_aggregate
+* match_group
+* player
+* predicate_value
+* type
+* type_any
+* type_scoped
+* var_order
+* variable_attribute
+* variable_concept
+* variable_relation
+* variable_thing
+
+== VAR_CONCEPT_NAMED_
+
+image::diagram/VAR_CONCEPT_NAMED_.png[VAR_CONCEPT_NAMED_]
+
+referenced by:
+
+* VAR_CONCEPT_
+
+== VAR_VALUE_
+
+image::diagram/VAR_VALUE_.png[VAR_VALUE_]
+
+referenced by:
+
+* attribute
+* expression_base
+* filter
+* match_aggregate
+* match_group
+* predicate_value
+* var_order
+* variable_value
+
+== IID_
+
+image::diagram/IID_.png[IID_]
+
+referenced by:
+
+* variable_thing
+
+== LABEL_
+
+image::diagram/LABEL_.png[LABEL_]
+
+referenced by:
+
+* LABEL_SCOPED_
+* label
+
+== LABEL_SCOPED_
+
+image::diagram/LABEL_SCOPED_.png[LABEL_SCOPED_]
+
+referenced by:
+
+* label_scoped
+
+== TYPE_CHAR_H_
+
+image::diagram/TYPE_CHAR_H_.png[TYPE_CHAR_H_]
+
+referenced by:
+
+* LABEL_
+* TYPE_CHAR_T_
+
+== TYPE_CHAR_T_
+
+image::diagram/TYPE_CHAR_T_.png[TYPE_CHAR_T_]
+
+referenced by:
+
+* LABEL_
+
+== DATE_FRAGMENT_
+
+image::diagram/DATE_FRAGMENT_.png[DATE_FRAGMENT_]
+
+referenced by:
+
+* DATETIME_
+* DATE_
+
+== MONTH_
+
+image::diagram/MONTH_.png[MONTH_]
+
+referenced by:
+
+* DATE_FRAGMENT_
+
+== DAY_
+
+image::diagram/DAY_.png[DAY_]
+
+referenced by:
+
+* DATE_FRAGMENT_
+
+== YEAR_
+
+image::diagram/YEAR_.png[YEAR_]
+
+referenced by:
+
+* DATE_FRAGMENT_
+
+== TIME_
+
+image::diagram/TIME_.png[TIME_]
+
+referenced by:
+
+* DATETIME_
+
+== HOUR_
+
+image::diagram/HOUR_.png[HOUR_]
+
+referenced by:
+
+* TIME_
+
+== MINUTE_
+
+image::diagram/MINUTE_.png[MINUTE_]
+
+referenced by:
+
+* TIME_
+
+== SECOND_
+
+image::diagram/SECOND_.png[SECOND_]
+
+referenced by:
+
+* TIME_
+
+== SECOND_FRACTION_
+
+image::diagram/SECOND_FRACTION_.png[SECOND_FRACTION_]
+
+referenced by:
+
+* TIME_
+
+== ESCAPE_SEQ_
+
+image::diagram/ESCAPE_SEQ_.png[ESCAPE_SEQ_]
+
+referenced by:
+
+* STRING_
+
+== COMMENT
+
+image::diagram/COMMENT.png[COMMENT]
+
+referenced by:
+
+* _
+
+== WS
+
+image::diagram/WS.png[WS]
+
+referenced by:
+
+* _
+
+== UNRECOGNISED
+
+image::diagram/UNRECOGNISED.png[UNRECOGNISED]
+
+== EOF
+
+image::diagram/EOF.png[EOF]
+
+referenced by:
+
+* COMMENT
+* eof_definables
+* eof_label
+* eof_pattern
+* eof_patterns
+* eof_queries
+* eof_query
+* eof_schema_rule
+* eof_variable
+
+image:diagram/rr-2.0.png[rr-2.0] generated by http://bottlecaps.de/rr/ui[RR - Railroad Diagram Generator]

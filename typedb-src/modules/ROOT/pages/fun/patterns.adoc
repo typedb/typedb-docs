@@ -14,10 +14,11 @@ TypeDB xref:typedb::fun/queries.adoc[queries] are written in xref:typeql::overvi
 manipulate the schema and data of a database.
 
 // tag::patterns_body[]
+// tag::patterns_overview[]
 [#_patterns_overview]
 //== Patterns overview
 
-A pattern consists of statements.
+A pattern is a set of statements.
 
 Every statement ends with a semicolon and consists of:
 
@@ -78,7 +79,9 @@ For example, we match for all instances of *two* different types without any add
 Let's say one of the types has **2** instances and the other one has **10** instances. Then `match` clause returns
 all matched combinations including all permutations: **20 matched results** in total.
 ====
+// end::patterns_overview[]
 
+// tag::variables[]
 [#_variables]
 == Variables
 
@@ -95,7 +98,9 @@ one concept (type or data) per every answer (solution) found for a pattern.
 
 A value variable starts with question mark `?` followed by variable label (for example, `?x`) and reference exactly
 one value per every answer (solution) found for a pattern. See <<_value_variables>> below.
+// end::variables[]
 
+[#_comparison_operators]
 === Comparison operators
 
 The following operators are supported for comparing attribute values: `==`, `!=`, `>`, `>=`, `<`, and `+<=+`.
@@ -234,6 +239,8 @@ arguments, separated by a comma as a separator. The following built-in functions
 * `abs` -- modulus (or absolute value) function.
 //See <<#_using_absolute_value_function,example>>.
 
+// tag::combining[]
+[#_combining_statements]
 == Combining statements
 
 image::pattern-structure.png[Combining statements]
@@ -249,9 +256,11 @@ We form disjunctions by enclosing the partaking statements within curly braces `
 keyword `or`.
 * *Negation* (logical negation): A statement that explicitly defines conditions that must *not* to be met. We form
 negations by defining the conditions *not* to be met in curly brackets of a `not {};` block.
+// end::combining[]
 
 See the <<_complex_example,complex example>> below.
 
+// tag::complex_example[]
 [#_complex_example]
 === Complex example
 
@@ -272,6 +281,7 @@ and both instances of `person` to have a `permission` to the specified `access`.
 In short, the above example finds pairs of people who both have permission to access the same file
 with a path of `README.md`. The pattern additionally specifies both of them to not have name `Masako Holley` and
 the access to be either `modify_file` or `view_file`.
+// end::complex_example[]
 // end::patterns_body[]
 
 == Learn more

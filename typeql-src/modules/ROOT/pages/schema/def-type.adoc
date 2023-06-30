@@ -1,3 +1,4 @@
+[#_define_types]
 = Define types
 :Summary: Defining types with TypeQL.
 :keywords: typeql, schema, type, inheritance
@@ -44,8 +45,54 @@ Two notable exceptions are:
 - and **annotations**, like the `@key` keyword (can be removed by redefining an attribute ownership).
 ====
 
-== Query example
+[#_define_query]
+== Define query
 
+A define query adds new or modifies existing types and/or rules in the database schema.
+
+A define query consists of a single `define` clause.
+
+=== Syntax
+
+Define queries are written in TypeQL with the following syntax:
+
+[,typeql]
+----
+define <pattern>
+----
+
+The pattern used in the define query is limited to the DDL part of TypeQL as it declares only types (and rules),
+but not instances of data.
+
+=== Type definition syntax
+
+This is the generic syntax of the define query for a type definition:
+
+[,typeql]
+----
+define
+
+<label> sub <supertype labell>
+[(, abstract)]
+[, value <value-type>]
+(, relates <role label>)
+[(, relates <role label>)...]
+[(, owns <attribute type label> [@annotation])...]
+[(, plays <relation type label>:<role>)...];
+----
+
+The line with the `value` keyword is relevant only for attribute types definition.
+
+The lines with the `relates` keyword are relevant only for relation types definition.
+
+See the specific syntax for
+xref:typeql::schema/def-type.adoc#_define_entity_types[entity type],
+xref:typeql::schema/def-type.adoc#_define_relation_types[relation type], or
+xref:typeql::schema/def-type.adoc#_define_attribute_types[attribute type] below.
+
+=== Example
+
+////
 [IMPORTANT]
 ====
 The following examples define parts of the xref:typedb:ROOT:tutorials/iam-schema.adoc[IAM schema] that will be used throughout
@@ -55,6 +102,7 @@ used in the Quickstart guide. These occasional modifications are needed to demon
 To avoid any errors and/or data loss it is recommended to use a separate database for all examples on this page. For
 more information on creating a new database, see the xref:typedb:ROOT:quickstart.adoc#_create_a_database[Quickstart guide].
 ====
+////
 
 [,typeql]
 ----

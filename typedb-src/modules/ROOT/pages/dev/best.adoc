@@ -6,19 +6,26 @@
 
 == Schema modeling
 
+There are only three root types:
+
+  * `entity`
+  * `relation`
+  * `attribute`
+
+An *attribute type* (subtype of the `attribute` root type) is a single concept with a fixed value in a given domain.
+That attribute is a property of the domain rather than of its owners, and so is not uniquely defined by any concepts
+that might own it, nor does it require any owners to exist: a name of value "Bob" can be owned by either no one, one
+particular person, or multiple people.
+
+An *entity type* (subtype of the `entity` root type) is a single concept with an independent existence. It might
+practically require other entities to exist, such as a car that cannot exist without its parts, but can be
+conceptualized without reference to those other entities: a car can be imagined without considering its parts.
+
+A *relation type* (subtype of the `relation` root type) is a single concept with an existence that depends on at
+least one other concept. It cannot be conceptualized without those concepts: it is impossible to imagine a marriage
+without considering its spouses.
+
 === Tips for beginners
-
-There are only three built-in types (excluding roles):
-
-* An *attribute* is a single concept with a fixed value in a given domain. That attribute is a property of the domain rather than of its
-owners, and so is not uniquely defined by any concepts that might own it, nor does it require any owners to exist: a name of value "Bob" can be owned by either no one, one particular person, or multiple people.
-* An *entity* is a single concept with an independent existence. It might practically require other entities to
-exist, such as a car that cannot exist without its parts, but can be conceptualized without reference to those
-other entities: a car can be imagined without considering its parts.
-* A *relation* is a single concept with an existence that depends on at least one other concept. It cannot be
-conceptualized without those concepts: it is impossible to imagine a marriage without considering its spouses.
-
-Please see the following tips for modeling a schema:
 
 * The best way to start modeling a database schema is to model entity types first and then proceed with connecting
 them with relation types and assign ownership of attribute types to them later.
@@ -37,8 +44,6 @@ upload new schema and data from scratch.
 and transactions for us, and can visualize query results.
 
 === Advanced tips
-
-The following principles are considered useful when we develop a more sophisticated database schema:
 
 * When inserting instances of a relation, it is not necessary to define all of its *role players*. But this
 represents an incomplete information state, such as a marriage in which only one of the spouses is known. While a
@@ -103,7 +108,7 @@ To optimize execution of a query try to do the following:
 * Consider sending all queries before starting to iterate through responses. TypeDB processes most queries
   asynchronously.
 
-=== Async queries
+=== Async query processing
 
 All TypeQL queries sent to a TypeDB server will be processed by it asynchronously. Local
 processing can take place while waiting for responses to be received. Take advantage of these asynchronous queries
