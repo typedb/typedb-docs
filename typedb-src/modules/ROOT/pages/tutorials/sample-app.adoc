@@ -87,11 +87,11 @@ TypeQL query builder clause used:
 
 [,java]
 ----
-TypeQLMatch.Filtered getQuery = TypeQL.match(
+TypeQLMatch.Filtered getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
         cVar("u").isa("user").has("full-name", "Kevin Morrison"),
-        cVar("p").rel("u").rel("pa").isa("permission"),
+        cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
         cVar("o").isa("object").has("path", cVar("fp")),
-        cVar("pa").rel("o").rel("va").isa("access")
+        cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access")
 ).get(cVar("fp"));
 ----
 --
@@ -134,11 +134,11 @@ TypeQL query builder clause #1 used:
 
 [,java]
 ----
-TypeQLMatch.Limited getQuery = TypeQL.match(
+TypeQLMatch.Limited getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
         cVar("u").isa("user").has("full-name", "Kevin Morrison"),
-        cVar("p").rel("u").rel("pa").isa("permission"),
+        cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
         cVar("o").isa("object").has("path", cVar("fp")),
-        cVar("pa").rel("o").rel("va").isa("access"),
+        cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access"),
         cVar("va").isa("action").has("name", "view_file")
 ).get(cVar("fp")).sort(cVar("fp")).offset(0).limit(5);
 ----
@@ -167,8 +167,10 @@ send a request.
 
 === Insert a new file and then insert an access relation to it
 
-First, we generate a new value for the `filepath` variable, consisting of `logs/` prefix, current date and time
-in compact format, and `.log` ending.
+First, we generate a new value for the `path` attribute of the query (stored locally in the variable called filepath),
+consisting of `logs/` prefix, current date and time in compact format, and `.log` ending.
+
+The following queries are displayed in their final form, with the `path` attribute generated value.
 
 Query #1:
 
@@ -179,7 +181,7 @@ TypeQL syntax::
 --
 [,typeql]
 ----
-insert $f isa file, has path '" + path + "';
+insert $f isa file, has path 'logs/2023-06-30T12:04:36.351.log';
 ----
 --
 
@@ -188,7 +190,7 @@ Java Builder syntax::
 --
 [,java]
 ----
-TypeQLInsert insertQuery = TypeQL.insert(cVar("f").isa("file").has("path", filepath));
+TypeQLInsert insertQuery = TypeQL.insert(cVar("f").isa("file").has("path", "logs/2023-06-30T12:04:36.351.log"));
 ----
 --
 ====
@@ -205,7 +207,11 @@ TypeQL syntax::
 --
 [,typeql]
 ----
-match $f isa file, has path '" + path + "'; $vav isa action, has name 'view_file'; insert ($vav, $f) isa access;
+match
+  $f isa file, has path 'logs/2023-06-30T12:04:36.351.log';
+  $vav isa action, has name 'view_file';
+insert
+  ($vav, $f) isa access;
 ----
 --
 
@@ -214,11 +220,11 @@ Java Builder syntax::
 --
 [,java]
 ----
-TypeQLInsert matchInsertQuery = TypeQL.match(
-        cVar("f").isa("file").has("path", filepath),
+insertQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
+        cVar("f").isa("file").has("path", "logs/2023-06-30T12:04:36.351.log"),
         cVar("vav").isa("action").has("name", "view_file")
                 )
-        .insert(cVar("pa").rel("vav").rel("f").isa("access"));
+        .insert(cVar("pa").rel(cVar("vav")).rel(cVar("f")).isa("access"));
 ----
 --
 ====

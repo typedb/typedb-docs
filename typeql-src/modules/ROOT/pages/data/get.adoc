@@ -6,6 +6,9 @@
 
 There is only one query type to retrieve data instances and types from a database: get query.
 
+.How to try a Get query
+[%collapsible]
+====
 To try the following examples use xref:clients:ROOT:studio.adoc[TypeDB Studio] or other TypeDB
 xref:clients:ROOT:clients.adoc[Clients].
 
@@ -14,11 +17,9 @@ instructions and examples of how to send a query for a specific language/framewo
 xref:clients:ROOT:java/java-overview.adoc[Java],
 xref:clients:ROOT:python/python-overview.adoc[Python],
 xref:clients:ROOT:node-js/node-js-overview.adoc[Node.js].
+====
 
-[#_get_query]
-== Get query
-
-A get query triggers a search in a database based on what has been described in the `match` clause. It is
+A Get query triggers a search in a database based on what has been described in the `match` clause. It is
 used to extract concepts (data instances or types) out of a database. The result of a get query can be quite different,
 depending on the query itself (<<_modifiers,modifiers>>, <<_aggregation,aggregation>>, <<_group,grouping>>)
 and transaction options (xref:typedb:ROOT:dev/infer.adoc#_inferring_data[inference]). For more information see the
@@ -36,7 +37,7 @@ Eventually, Driver API methods will be updated with the new name, and the double
 will be deleted.
 ====
 
-=== Syntax
+== Syntax
 
 Get queries are written in TypeQL with the following syntax:
 
@@ -67,7 +68,7 @@ Aggregation functions, as well as modifiers, and grouping must be at the end of 
 clause.
 
 [#_variables]
-=== Variables
+== Variables
 
 A `get` clause is used to specify which variables (concept variables and/or value variables) to include in the results.
 If omitted, every variable is included.
@@ -114,7 +115,7 @@ The `get` clause then filters the answers from the `match` clause to get only th
 type (`$x-n`), `name` attribute of an `action` type (`$act-n`), and `path` of an `object` (`$o-fp`).
 Every returned result should contain all three concepts.
 
-=== Number of answers
+== Number of answers
 
 The number of answers returned depends on the get query (mostly `match` clause pattern) and database data/schema.
 
@@ -146,9 +147,9 @@ See the xref:data/basic-patterns.adoc#_patterns_overview[Patterns overview] sect
 more information.
 
 [#_modifiers]
-=== Modifiers
+== Modifiers
 
-==== Limit the results
+=== Limit the results
 
 Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
 
@@ -163,7 +164,7 @@ This query returns only one single (and random) instance of type `person`. Consi
 <<_sort_the_answers,sorting aggregation>> to receive less random and more predictable results.
 
 [#_sort_the_answers]
-==== Sort the answers
+=== Sort the answers
 
 Use the `sort` keyword followed by a variable to sort the answers using a variable mentioned in the first argument. A
 second argument is optional and determines the sorting order: `asc` (ascending, by default) or `desc` (descending).
@@ -193,7 +194,7 @@ sort $n asc, $e desc;
 The example above will return all `full-name` and `email` attributes of all `person` entities, sorted by their
 `full-name` in ascending order first and then by `email` in descending order.
 
-==== Offset the answers
+=== Offset the answers
 
 Use the `offset` keyword followed by the number to offset the answers. This is commonly used with the `limit`
 keyword to return a desired range of the answers. Don't forget to <<_sort_the_answers,sort>> the results to ensure
@@ -273,11 +274,13 @@ Aggregation performs a calculation on a set of values, and returns a single valu
 
 TypeDB supports the following types of aggregation:
 
-* `count`
-* `sum`
-* `max`
-* `mean`
-* `median`
+* <<_count>>
+* <<_sum>>
+* <<_maximum>>
+* <<_minimum>>
+* <<_mean>>
+* <<_median>>
+* <<_standard_deviation>>
 
 To perform aggregation in TypeDB, we first write a xref:queries.adoc#_match[match clause] to describe the set of
 data, then follow that by get to retrieve a distinct set of answers based on the specified variables, and lastly an
@@ -288,6 +291,7 @@ aggregate function to perform aggregation on the variable of interest.
 Aggregation uses data returned by the query to perform the calculation. For example:
 ====
 
+[#_count]
 ==== Count
 
 Use the count keyword to get the number of the specified matched variable.
@@ -325,6 +329,7 @@ with `path` and with a `valid action` for every group (grouped by the `path` of 
 The `group` clause should go before the aggregation function.
 ====
 
+[#_sum]
 ==== Sum
 
 Use the `sum` keyword to get the sum of the specified `long` or `double` values of the matched variable.
@@ -345,6 +350,7 @@ of `$s` from the aggregation.
 For more information see the xref:data/basic-patterns.adoc#_solutions[Matching patterns] page.
 ====
 
+[#_maximum]
 ==== Maximum
 
 Use the `max` keyword to get the maximum value among the specified `long` or `double` values of the matched variable.
@@ -356,6 +362,7 @@ match
 get $f, $s; max $s;
 ----
 
+[#_minimum]
 ==== Minimum
 
 Use the `min` keyword to get the minimum value among the specified `long` or `double` values of the matched variable.
@@ -367,6 +374,7 @@ match
 get $f, $s; min $s;
 ----
 
+[#_mean]
 ==== Mean
 
 Use the `mean` keyword to get the average value of the specified `long` or `double` values of the matched variable.
@@ -378,6 +386,7 @@ match
 get $f, $s; mean $s;
 ----
 
+[#_median]
 ==== Median
 
 Use the `median` keyword to get the median value among the specified `long` or `double` values of the matched variable.
@@ -389,6 +398,7 @@ match
 get $f, $s; median $s;
 ----
 
+[#_standard_deviation]
 ==== Standard deviation
 
 Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of the matched

@@ -64,13 +64,13 @@ from the perspective of an SQL database engine without additional context or con
 
 * Each schema construct incurs a computational cost when traversed as part of a query. Sorted in the order of
 *increasing* cost, the constructs are:
-
-. Attributes
-. Entities
-. Subtypes
-. Binary relations
-. N-ary relations
-. Rules
++
+  . Attributes
+  . Entities
+  . Subtypes
+  . Binary relations
+  . N-ary relations
+  . Rules
 +
 Thus, it is important to consider the value of employing a rule, as the gain in query simplicity can be offset by
 the computational cost.
