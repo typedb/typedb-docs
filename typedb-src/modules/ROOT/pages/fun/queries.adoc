@@ -257,11 +257,12 @@ Optionally, a `get` clause can have modifiers added after the list of variables.
 
 Those modifiers can drastically change the output of the Get query:
 
-* sort -- sorting the results by a variable;
-* offset + limit -- used for pagination of results;
-* group -- grouping results by a variable;
-* aggregation -- process the results to produce a value for an answer;
-// count sum,max,min,mean,median,std <var>
+* xref:typeql::data/get.adoc#_sort_the_answers[sort] -- sorting the results by a variable;
+* xref:typeql::data/get.adoc#_offset_the_answers[offset] + xref:typeql::data/get.adoc#_limit_the_results[limit] --
+  used for pagination of results;
+* xref:typeql::data/get.adoc#_group[group] -- grouping results by a variable;
+* xref:typeql::data/get.adoc#_aggregation[aggregation] -- process the results to produce a value for an answer.
+// count | sum,max,min,mean,median,std <var>
 
 [#_insert_query]
 == Insert query

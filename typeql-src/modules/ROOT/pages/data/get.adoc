@@ -149,6 +149,7 @@ more information.
 [#_modifiers]
 == Modifiers
 
+[#_limit_the_results]
 === Limit the results
 
 Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
@@ -194,10 +195,11 @@ sort $n asc, $e desc;
 The example above will return all `full-name` and `email` attributes of all `person` entities, sorted by their
 `full-name` in ascending order first and then by `email` in descending order.
 
+[#_offset_the_answers]
 === Offset the answers
 
-Use the `offset` keyword followed by the number to offset the answers. This is commonly used with the `limit`
-keyword to return a desired range of the answers. Don't forget to <<_sort_the_answers,sort>> the results to ensure
+Use the `offset` keyword followed by the number to offset the answers.This is commonly used with the `limit`
+keyword to return a desired range of the answers.Don't forget to <<_sort_the_answers,sort>> the results to ensure
 predictable and deterministic results.
 
 [,typeql]

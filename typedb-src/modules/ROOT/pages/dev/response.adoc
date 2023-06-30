@@ -9,53 +9,54 @@ The server response will be processed by a TypeDB Client.
 TypeDB Client provides classes and methods for different response types respectively. Please
 see the table below for mapping of response format to a type of query that has been sent.
 
-[cols="^1,^4,^4"]
+[cols="^.^1,^.^4,^.^4"]
 |===
 | *#* | *Query type* | *Response format*
 
 | 1
-| Get query
+| xref:typedb::dev/read.adoc#_get[Get query]
 | Stream/Iterator of *ConceptMap*
 
 | 2
-| Get query with aggregation
+| Get query with xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
 | *Future* of *Numeric*
 
 | 3
-| Get query with grouping
+| Get query with xref:typeql::data/get.adoc#_group[grouping,window=_blank]
 | Stream/Iterator of *ConceptMapGroup*
 
 | 4
-| Get query with grouping and aggregation
+| Get query with xref:typeql::data/get.adoc#_group[grouping,window=_blank] and
+xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
 | Stream/Iterator of *NumericGroup*
 
 | 5
-| Insert query
+| xref:typedb::dev/write.adoc#_insert[Insert query]
 | Stream/Iterator of *ConceptMap*
 
 | 6
-| Delete query
+| xref:typedb::dev/write.adoc#_delete_query[Delete query]
 | *Future* (of empty response)
 
 | 7
-| Update (match-delete-insert) query
+| xref:typedb::dev/write.adoc#_update_query[Update query]
 | Stream/Iterator of *ConceptMap*
 
 | 8
-| Define
+| xref:typedb::dev/def-schema.adoc#_define_types[Define]
 | *Future* (of empty response)
 
 | 9
-| Undefine
+| xref:typedb::dev/def-schema.adoc#_undefine[Undefine]
 | *Future* (of empty response)
 
 | 10
-| Explain
+| xref:typedb::dev/infer.adoc#_explain_query[Explain]
 | Stream/Iterator of *Explanation*
 |===
 
 TypeDB xref:dev/api.adoc[Driver API] methods can be used to process the objects returned: get values of attributes,
-get JSON representation of data, or even get other concepts from a database.
+get <<_json,JSON>> representation of data, or even get other concepts from a database.
 
 == Expected results
 
@@ -160,6 +161,7 @@ Object to represent a type or an instance of a type (data) from a database.
 
 There are separate methods for every built-in type and for instances of every built-in type.
 
+[#_json]
 [NOTE]
 ====
 TypeDB Driver API methods can be used to get a JSON out of Concept returned in a response.

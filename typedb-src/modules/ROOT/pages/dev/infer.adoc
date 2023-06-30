@@ -4,6 +4,7 @@
 :keywords: typedb, query, inference, reasoning, rules, deduction, logic
 :longTailKeywords: typedb inference, typedb reasoning, reasoning engine
 :pageTitle: Inferring data
+:experimental:
 
 [#_how_to_use_inference]
 == How to use inference
@@ -33,7 +34,7 @@ transaction typedb data read --infer true
 
 Set the `infer` option to `True` when starting the read transaction.
 
-For example:
+For example (in Python):
 
 // #todo Consider adding other languages-
 
@@ -85,7 +86,7 @@ get $o-path;
 ----
 
 The above query should return `path` values for most files if the inference option is *enabled*. Without the
-inference enabled the query should not return any results (for the default IAM dataset contains no permissions for
+inference enabled the query should not return any results (as the default IAM dataset contains no permissions for
 access with `view_file` action).
 
 === Query explanation
@@ -107,11 +108,13 @@ permission to access with `action` with the `name` of `view_file`.
 
 There is specific type of query to use with the inferred results if we want them explained by a TypeDB server.
 
-When we get a result of a `get` query that was performed with both inference and explain options *enabled* we
-can use an *explain* query to request additional information on how the exact instances of data were inferred.
+An Explain query does not use any TypeQL syntax.
+
+When we get a result of a Get query that was performed with both `inference` and `explain` options *enabled* we
+can use an Explain query to request additional information on exactly how the instances of data were inferred.
 
 To do that use the `explainables` method on the `get` query result (`ConceptMap`). It returns a stream of `explainable`
-objects. Send an `explainable` object with an *explain* query to get a stream of `explanations`.
+objects. Send an `explainable` object with an *Explain* query to get a stream of `explanations`.
 
 Every `explanation` include information about what rule was used to obtain this inferred result,
 condition of the rule, conclusion of the rule, and variable mapping.
@@ -165,6 +168,17 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
                         print("----------------------------------------------------------")
 ----
 
+////
+Use enumerate() instead of simple counter:
+
+    iterator = transaction.query().match(typeql_read_query)
+    for i, item in enumerate(iterator):  # Iterating through results
+        explainable_relations = item.explainables().relations()
+        for e, explainable in enumerate(explainable_relations):
+            explain_iterator = transaction.query().explain(explainable_relations[explainable])
+            for ex, explanation in enumerate(explain_iterator):
+////
+
 The script above runs the query from the <<_example,example>> in the previous section. The inference option provides
 the result of 10 files (by default in the IAM database from the xref:quickstart.adoc[Quickstart guide]).
 And `explain` option enables the `explainables` to be received and used in the *explain* queries (one explain query
@@ -177,7 +191,7 @@ The result should be similar to the following:
 ----
 Read result #: 10 , File path: zlckt.ts
 Explainable #: 1 , Explained variable: pe
-Explainable object: &lt;typedb.concept.answer.concept_map._ConceptMap.Explainable object at 0x105cb34f0>
+Explainable object: <typedb.concept.answer.concept_map._ConceptMap.Explainable object at 0x105cb34f0>
 Explainable part of query: { $pe (subject:$p, access:$ac); $pe isa permission; }
 Explanation #: 1
 
