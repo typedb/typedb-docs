@@ -635,28 +635,6 @@ With the `get` clause, we filter the results to get the `person` instances and t
 `certified-fortune-teller` attribute (represented by the `$cft` variable in the pattern) for every matched result
 in a database.
 
-[NOTE]
-====
-Why not filter for just `$cft` variable instead?
-
-That can drastically alter the returned results as the returned results are deduplicated by design. See the
-xref:typeql:ROOT:data/basic-patterns.adoc#_solutions[Basic patterns] page for more information on the number of results
-for pattern matching.
-
-For example, let's say we have ten people with the name `Bob` and age `31` in our database. Five of them have
-`certified-fortune-teller` with the value `false`, one has it as `true`, and the rest don't have ownership of the
-attribute.
-
-Those that don't have the attribute ownership won't be matched by the `match` clause at all. So we expect to get *six*
-results in the original query: five `person` instances owning the attribute with value `false` and one with `true`.
-
-If we use `get $cft;` clause instead, we'll get only two results in response: an instance of the
-`certified-fortune-teller` type with the `true` value and another instance of the type with the `false` value.
-Because these are the only instances of the `certified-fortune-teller` type there are. Those five instances of `person`
-type all have ownership over the xref:typeql:ROOT:fundamentals.adoc#_attribute_types[same instance] of the
-`certified-fortune-teller` attribute type with the value `false`.
-
-To get all the results, we add the `person` type  instances to the answer because those are unique.
-Even if some of them might have the exact same set of owned attributes, instances of the `person` type are
-different instances nonetheless.
-====
+For more information why the `get` clause in the above example needs `$p` see the
+xref:typeql:ROOT:data/get.adoc#_number_of_answers[Get query] page or the
+xref:typeql:ROOT:data/get.adoc#_explanation_of_filter[example explanation].

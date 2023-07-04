@@ -115,11 +115,19 @@ The `get` clause then filters the answers from the `match` clause to get only th
 type (`$x-n`), `name` attribute of an `action` type (`$act-n`), and `path` of an `object` (`$o-fp`).
 Every returned result should contain all three concepts.
 
+[#_number_of_answers]
 == Number of answers
 
-The number of answers returned depends on the get query (mostly `match` clause pattern) and database data/schema.
+The number of answers returned by the Get query depends on:
 
-For example, if we have *3* `person` entities and *10* `file` entities in a database with the IAM schema and +
+* Number of matched results by the match clause. See the <<_answers_example_1,example #1>> below and the
+xref:typeql::data/basic-patterns.adoc#_solutions[Pattern matching essentials] page.
+* Number of solutions returned after filtering with the `get` clause. See the example #2 below.
+
+[#_answers_example_1]
+=== Example #1: Permutations
+
+For example, if we have *3* `person` entities and *10* `file` entities in a database with the IAM schema and
 send the following get query:
 
 [,typeql]
@@ -145,6 +153,109 @@ get 30 answers.
 
 See the xref:data/basic-patterns.adoc#_patterns_overview[Patterns overview] section of the Matching patterns page for
 more information.
+
+[#_answers_example_2]
+=== Example #2: Variables filtering
+
+Given the following schema:
+
+[,typeql]
+----
+define
+
+person sub entity,
+  owns name,
+  owns age,
+  owns certified-fortune-teller;
+
+name sub attribute, value string;
+age sub attribute, value long;
+certified-fortune-teller sub attribute, value boolean;
+----
+
+Let's explore the following query:
+
+[,typeql]
+----
+match
+  $p isa person, has name `Bob`, has age 31, has certified-fortune-teller $cft;
+get
+  $p, $cft;
+----
+
+The above query will find every `person` entity that has ownership over the instance of the attribute type `name` with
+the value of `Bob`, ownership of the `age` with the value of `31` and the ownership of the `certified-fortune-teller`
+attribute with any value.
+
+With the `get` clause, we filter the results to get the `person` instances and the corresponding
+`certified-fortune-teller` attribute (represented by the `$cft` variable in the pattern) for every matched result
+in a database.
+
+[#_explanation_of_filter]
+Why not filter for just the `$cft` variable instead?
+
+That can drastically alter the returned results as the returned results are deduplicated by design. See the
+xref:typeql:ROOT:data/basic-patterns.adoc#_solutions[Basic patterns] page for more information on the number of results
+for pattern matching.
+
+For example, let's say we have ten people with the name `Bob` and age `31` in our database. Five of them have
+`certified-fortune-teller` with the value `false`, one has it as `true`, and the rest don't have ownership of the
+attribute.
+
+[#_answers_example2_dataset]
+.See how to load such a dataset in a database
+[%collapsible]
+====
+To insert this dataset with anything xref:clients::clients.adoc[other] than xref:clients::studio.adoc[TypeDB Studio] --
+make sure to send every line, except from comments, as a separate insert query. In TypeDB Studio we can just paste the
+TypeQL in the text editor and send all the queries by a single run button click in a data/write mode. Make sure to
+commit the changes in any client.
+
+[,typeql]
+----
+  # These are the 5 instances of people with name Bob, age 31 and not cretified fortune tellers
+  insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+  insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+  insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+  insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+  insert $p isa person, has name "Bob", has name "Bobby", has age 31, has certified-fortune-teller false;
+
+  # This is the one and only instance of a person with name Bob, age 31 and a cretified fortune teller
+  insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller true;
+
+  # These are the 4 instances of people with name Bob, age 31. No ownership of the boolean attribute
+  insert $p isa person, has name "Bob", has age 31;
+  insert $p isa person, has name "Bob", has name "Robert Jr.", has age 31;
+  insert $p isa person, has name "Bob", has age 31;
+  insert $p isa person, has name "Bob", has age 31;
+
+  # These are some random people, that doesn't meet pattern (Name: Bob and Age: 31)
+  insert $p isa person, has name "Bob", has age 20;
+  insert $p isa person, has name "Alex", has age 78, has certified-fortune-teller false;
+  insert $p isa person, has name "Alice", has age 31, has certified-fortune-teller true;
+  insert $p isa person;
+----
+
+For more information on how to insert data into a TypeDB database, see the xref:typeql::data/insert.adoc[] page.
+====
+
+Those that don't have the attribute ownership won't be matched by the `match` clause at all. So we expect to get *six*
+results in the original query: five `person` instances owning the attribute with value `false` and one with `true`.
+
+If we use `get $cft;` clause instead, we'll get only two results in response, because we will only get
+`certified-fortune-teller` instances and there are only two of those: an instance with the `true` value and another
+instance of the type with the `false` value.
+
+The five instances of `person` type all have ownership over the
+xref:typeql:ROOT:fundamentals.adoc#_attribute_types[same instance] of the `certified-fortune-teller` attribute type
+with the value `false`.
+
+To get all the results, we add the `person` type instances to the answer because those are unique.
+Even if some of them might have the exact same set of owned attributes, instances of the `person` type are
+different instances nonetheless.
+
+To try the get queries in that example we need the schema <<_answers_example_2,provided>> at the very beginning and
+the dataset <<_answers_example2_dataset,provided>> above.
 
 [#_modifiers]
 == Modifiers

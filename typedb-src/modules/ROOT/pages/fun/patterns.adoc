@@ -43,14 +43,16 @@ see the <<_variables,Variables>> section.
 variable refers to.
 * The end of the statement is marked with a semicolon (`;`).
 
+[#_solutions]
+[caption=""]
+.Solving a pattern as a system of equations
 ====
 A pattern can be thought of as a system of equations, where every equation is a single statement.
 
 TypeDB will solve the system to find all solutions. Every solution includes a concept (type or instance of data)
-for every concept variable and value for every value variable.
+for every <<_concept_variable,concept variable>> and value for every <<_value_variables,value variable>>.
 ====
 
-[#_solutions]
 It's important to understand that the *result* of a `match` clause with any pattern is a *set of solutions found*.
 The length of the set is equal to the number of solutions found, hence it can be:
 
