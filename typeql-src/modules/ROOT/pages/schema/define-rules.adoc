@@ -6,7 +6,7 @@
 
 Rules are defined independently of any types. Any types used in a rule must be defined in a schema.
 
-They are executed only as a part of get queries when the xref:typedb:ROOT:dev/infer.adoc[inference] option is *enabled*.
+They are executed only as a part of get queries when the xref:typedb:ROOT:development/infer.adoc[inference] option is *enabled*.
 The results of rules execution exist only within the transaction they run in. They are not persisted, and any data
 inferred in the transaction ceases to exist when the transaction is closed. Read more on rules in the
 xref:typeql::schema/define-rules.adoc[] page.
@@ -30,7 +30,7 @@ The `rule`, `when`, and `then` keywords are specific to rule definitions.
 [IMPORTANT]
 ====
 Unlike other `define` statements for schema definitions, the rule syntax uses patterns consisting of
-variables and constraints for **data** instances. For more information see the
+variables and constraints for **data** instances. For more information, see the
 xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 ====
 
@@ -142,7 +142,7 @@ The above query defines additional attribute subtype `size-mb`, defines that it 
 subtype and creates a rule `size-convert` to create ownership of `size-mb` with the value *1024 times lower* than
 `size-kb` to any `file` instance that has `size-kb`.
 
-With this rule defined and inference option xref:typedb:ROOT:dev/infer.adoc#_how_to_use_inference[enabled] we can try the
+With this rule defined and inference option xref:typedb:ROOT:development/infer.adoc#_how_to_use_inference[enabled] we can try the
 following query:
 
 [,typeql]
@@ -229,5 +229,5 @@ The example above illustrates a more complex rule, using the IAM schema.
 In short, the permission to access some file with action that has `name` of `view_file` can be inferred by the
 rule from the permission to `modify_file` the same file.
 
-A full explanation of how this rule works is given in the xref:typedb:ROOT:dev/infer.adoc#_example[Example] section of
+A full explanation of how this rule works is given in the xref:typedb:ROOT:development/infer.adoc#_example[Example] section of
 Inferring data page.

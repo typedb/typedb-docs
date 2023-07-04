@@ -46,7 +46,7 @@ For example, TypeDB Studio and TypeDB Console are built with TypeDB Java Driver 
 [IMPORTANT]
 ====
 All TypeDB Clients validate compatibility with the TypeDB server when establishing a connection.
-This is done using xref:typedb::dev/connect.adoc#_protocol_version[protocol versioning], and
+This is done using xref:typedb::development/connect.adoc#_protocol_version[protocol versioning], and
 ensures that the Client can't send or receive unexpected data from the server.
 ====
 

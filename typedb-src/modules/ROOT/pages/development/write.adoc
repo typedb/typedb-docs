@@ -10,7 +10,7 @@ There are multiple query types that can modify data in a TypeDB database:
 * <<_delete_query>>
 * <<_update_query,Update>> (or match-delete-insert) query
 
-To send a writing data query we need to use xref:dev/connect.adoc#_transactions[Write transaction].
+To send a writing data query we need to use xref:development/connect.adoc#_transactions[Write transaction].
 
 [IMPORTANT]
 ====
@@ -37,7 +37,7 @@ insert <pattern>
 
 === Behavior
 
-See the xref:typedb::fun/queries.adoc#_insert_query[Insert query] section of the xref:typedb::fun/queries.adoc[] page.
+See the xref:typedb::fundamentals/queries.adoc#_insert_query[Insert query] section of the xref:typedb::fundamentals/queries.adoc[] page.
 
 === Examples
 
@@ -110,7 +110,7 @@ delete <pattern>
 
 === Behavior
 
-See the xref:typedb::fun/queries.adoc#_delete_query[Delete query] section of the xref:typedb::fun/queries.adoc[] page.
+See the xref:typedb::fundamentals/queries.adoc#_delete_query[Delete query] section of the xref:typedb::fundamentals/queries.adoc[] page.
 
 === Examples
 
@@ -155,7 +155,7 @@ In short, it removes all of the permissions that let Pearle Goodman to modify fi
 == Update query
 
 An update  query is just a `match-delete-insert`. It removes and then adds data based on the `match`, `delete`,
-and `insert` xref:fun/patterns.adoc[patterns].
+and `insert` xref:fundamentals/patterns.adoc[patterns].
 
 === Syntax
 
@@ -170,7 +170,7 @@ insert <pattern>
 
 === Behavior
 
-See the xref:typedb::fun/queries.adoc#_update_query[Update query] section of the xref:typedb::fun/queries.adoc[] page.
+See the xref:typedb::fundamentals/queries.adoc#_update_query[Update query] section of the xref:typedb::fundamentals/queries.adoc[] page.
 
 === Examples
 
@@ -235,7 +235,7 @@ exist, but no longer play a role in the matched `permission` relations.
 
 == Learn more
 
-After we write some data into the database, we can try to xref:typedb::dev/read.adoc[read] it.
+After we write some data into the database, we can try to xref:typedb::development/read.adoc[read] it.
 
 In case there is no dataset ready yet for insertion, see the
 xref:attachment$iam-schema.tql[IAM sample dataset,window=_blank] for examples.

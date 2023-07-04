@@ -3,8 +3,16 @@
 :keywords: typeql, query, match, pattern, statement, variable
 :longTailKeywords: typeql match, query pattern, match clause, typeql variables, answers
 :pageTitle: Advanced patterns & Queries
+:toc: macro
+:toclevels: 5
 
 Explore the xref:typeql::data/basic-patterns.adoc[] page before continue reading this page.
+
+.See full table of contents for this page
+[%collapsible]
+====
+toc::[]
+====
 
 [#_pattern_syntax]
 == Pattern syntax
@@ -129,7 +137,7 @@ xref:typeql::data/basic-patterns.adoc#_combining_statements[combining statements
 [#_all_types]
 ===== All types
 
-Use a `subtype` pattern with the built-in type `thing` to find all types defined in a schema. For more information see
+Use a `subtype` pattern with the built-in type `thing` to find all types defined in a schema. For more information, see
 the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
 
 [,typeql]
@@ -746,8 +754,8 @@ count;
 ----
 
 The above example retrieves all instances of the `person` type, that have ownership over at least one instances of
-`full-name` attribute type and at least one instance of `email` attribute. We then filter the response to contain only
-`$p` and `$e` in every result.
+`full-name` attribute type and at least one instance of `email` attribute.
+We then filter the response to contain only the `$p` and the `$e` in every result.
 We further add modifiers to group results by the `$p` variable and count the number of results in every group.
 
 The resulted response should look like this:
@@ -782,7 +790,7 @@ Without modifiers the response would look like the following:
 
 For more information on how to use the Get query please see the xref:typeql::data/get.adoc[] page.
 
-==== Insert query
+=== Insert query
 
 To write new data to a database use the insert query.
 
@@ -813,7 +821,7 @@ attribute type instance with the value `bob2@vaticle.com`.
 
 For more information on the Insert query please see the xref:typeql::data/insert.adoc[] page.
 
-==== Delete query
+=== Delete query
 
 To delete data from a database use the delete query.
 
@@ -836,7 +844,7 @@ ownership between them gets deleted.
 
 For more information on how to delete data please see the xref:typeql::data/delete.adoc[] page.
 
-==== Update
+=== Update
 
 To update data in a database we use a combined `match-delete-insert` query.
 
@@ -872,7 +880,7 @@ be deleted and only one inserted.
 
 For more information on how to use the Update query see the xref:typeql::data/update.adoc[] page.
 
-=== Complex query example
+=== Complex pattern query example
 
 A `match` clause can only address data or types that already exist in a database.
 

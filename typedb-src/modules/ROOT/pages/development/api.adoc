@@ -47,14 +47,14 @@ Driver API is divided into two big sections:
 
 To send a query to a TypeDB server a TypeDB Driver needs to:
 
-* establish a server xref:dev/connect.adoc#_clients[connection],
-* open a xref:dev/connect.adoc#_sessions[Session],
-* open a xref:dev/connect.adoc#_transactions[Transaction],
+* establish a server xref:development/connect.adoc#_clients[connection],
+* open a xref:development/connect.adoc#_sessions[Session],
+* open a xref:development/connect.adoc#_transactions[Transaction],
 * prepare TypeQL query string,
 * send the string as a proper type of query.
 
 These operations are done using the special classes and methods provided by TypeDB Driver. See some examples
-of how to do that with different TypeDB Drivers: xref:dev/connect.adoc[Connection],
+of how to do that with different TypeDB Drivers: xref:development/connect.adoc[Connection],
 xref:tutorials/sample-app.adoc[Sample application] pages, or in the
 xref:clients::/clients.adoc#_typedb_drivers[TypeDB Drivers] documentation.
 
@@ -74,9 +74,9 @@ either a processed result (TypeDB Studio and TypeDB Console) or a special object
 (TypeDB Drivers). For every kind of query there is a predefined type of expected response and objects.
 
 For more information on types (classes) of available objects and response types see the
-xref:dev/response.adoc[Response interpretation] page.
+xref:development/response.adoc[Response interpretation] page.
 
-For more information on types of response objects and their *methods* please see the xref:dev/api.adoc[API reference]
+For more information on types of response objects and their *methods* please see the xref:development/api.adoc[API reference]
 for the specific driver/language type.
 
 [NOTE]

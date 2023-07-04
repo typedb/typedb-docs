@@ -72,7 +72,7 @@ attempting to make a single gRPC call to TypeDB, and create a database.
 To instantiate a client we need to be able to establish a network connection to a TypeDB Core server or a
 TypeDB Enterprise cluster.
 
-This connection opens us basic features of xref:typedb::dev/connect.adoc#_databases[database] management, user
+This connection opens us basic features of xref:typedb::development/connect.adoc#_databases[database] management, user
 management (TypeDB Enterprise & TypeDB Cloud only) and enables us to open a session.
 
 [#_grpc]
@@ -220,10 +220,10 @@ It collects all requests in a 1ms time window, bundles them into a single gRPC m
 
 === Exploring query answers
 
-See the xref:typedb::dev/response.adoc[Response interpretation] page to find information of possible
+See the xref:typedb::development/response.adoc[Response interpretation] page to find information of possible
 response to different query types.
 
-The `ConceptMap` objects returned by a xref:typedb::dev/read.adoc#_get[Get query] can contain
+The `ConceptMap` objects returned by a xref:typedb::development/read.adoc#_get[Get query] can contain
 any type of `Concept`. This `Concept` class hierarchy is reflected in a TypeDB Driver implementation and class
 structure.
 
@@ -280,7 +280,7 @@ A driver is considered production-ready once it passes all the <<_behavioral_tes
 TypeDB architecture.
 
 Check the xref:typedb::tutorials/new-driver-tutorial.adoc[How to build a new TypeDB Driver]
-tutorial to see some examples. For more information see the source codes of our TypeDB Drivers:
+tutorial to see some examples. For more information, see the source codes of our TypeDB Drivers:
 https://github.com/vaticle/typedb-client-java[Java,window=_blank],
 https://github.com/vaticle/typedb-client-python[Python,window=_blank],
 https://github.com/vaticle/typedb-client-nodejs[Node.js,window=_blank].

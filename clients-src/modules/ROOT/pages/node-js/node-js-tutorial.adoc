@@ -22,8 +22,8 @@ const { TypeDB } = require("typedb-client");
 
 == Connecting
 
-Instantiate a TypeDB Core client and open a xref:typedb::dev/connect.adoc#_sessions[session] to a
-xref:typedb::dev/connect.adoc#_databases[database].
+Instantiate a TypeDB Core client and open a xref:typedb::development/connect.adoc#_sessions[session] to a
+xref:typedb::development/connect.adoc#_databases[database].
 
 [NOTE]
 ====
@@ -146,10 +146,10 @@ Check out the xref:node-js/node-js-api-ref.adoc[API Reference] to learn about th
 To view examples of running various queries using TypeQL, head over to their dedicated documentation pages
 as listed below:
 
-* xref:typedb::dev/write.adoc#_insert[Insert]
-* xref:typedb::dev/write.adoc#_delete_query[Delete]
-* xref:typedb::dev/write.adoc#_update_query[Update]
-* xref:typedb::dev/read.adoc#_get[Get]
+* xref:typedb::development/write.adoc#_insert[Insert]
+* xref:typedb::development/write.adoc#_delete_query[Delete]
+* xref:typedb::development/write.adoc#_update_query[Update]
+* xref:typedb::development/read.adoc#_get[Get]
 //#todo update to TypeQL full examples
 
 == Where to go next
@@ -158,8 +158,8 @@ Check out the xref:node-js/node-js-api-ref.adoc#_response_section[Response] sect
 about the available methods on the concepts retrieved as the answers to queries.
 
 To view examples of various TypeQL queries, head over to
-xref:typedb::dev/write.adoc[Writing data] and
-xref:typedb::dev/read.adoc[Reading data] pages.
+xref:typedb::development/write.adoc[Writing data] and
+xref:typedb::development/read.adoc[Reading data] pages.
 
 For some more Python Driver examples -- see the
 xref:typedb:ROOT:tutorials/sample-app.adoc#_node_js_implementation[Python implementation] on the Sample application

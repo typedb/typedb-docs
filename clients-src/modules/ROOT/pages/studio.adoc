@@ -253,18 +253,18 @@ image::studio/studio-transaction-controls.png[Transaction controls]
 
 From left to right (numbered respectively to the screenshot numbers):
 
-. xref:typedb::dev/connect.adoc#_sessions[Session] type switch:
+. xref:typedb::development/connect.adoc#_sessions[Session] type switch:
  ** `schema` -- to use schema session type
  ** `data` -- to use data session type
-. xref:typedb::dev/connect.adoc#_transactions[Transaction] type switch:
+. xref:typedb::development/connect.adoc#_transactions[Transaction] type switch:
  ** `write` -- to use write transaction
  ** `read` -- to use read transaction
 . btn:[snapshot] button -- enables snapshot feature that encapsulates transaction in a snapshot of a database's data
 until the transaction committed or closed. Write transactions are always snapshoted. May be enabled or disabled
 for read transactions.
-. btn:[infer] button -- enable xref:typedb::/dev/infer.adoc[inferring data] by rules. Only available for read
+. btn:[infer] button -- enable xref:typedb::/development/infer.adoc[inferring data] by rules. Only available for read
 transactions.
-. btn:[explain] button -- enable xref:typedb::dev/infer.adoc#_explain_query[explanations] mechanics by providing
+. btn:[explain] button -- enable xref:typedb::development/infer.adoc#_explain_query[explanations] mechanics by providing
 `explainables` methods for results. Only available for read transactions with *snapshot* and *infer* enabled.
 . btn:[Transaction status] (Circle (●) icon) indicator -- transaction activity indicator. Green if there is a
 transaction opened by TypeDB Studio at this moment. Gray if there is no opened transaction. Rotating animation --
@@ -286,8 +286,8 @@ database <<_select_active_database,selected>> and project directory <<_open_a_pr
 +
 image::studio/project-schema-pasted.png[Query text]
 
-. Choose the correct xref:typedb::dev/connect.adoc#_sessions[session,window=_blank] (`schema`/`data`) type and
-  xref:typedb::dev/connect.adoc#_transactions[transaction,window=_blank] (`read`/`write`) type to run the query
+. Choose the correct xref:typedb::development/connect.adoc#_sessions[session,window=_blank] (`schema`/`data`) type and
+  xref:typedb::development/connect.adoc#_transactions[transaction,window=_blank] (`read`/`write`) type to run the query
   by clicking on those options on the *Toolbar* switches.
 . Run query by clicking on the btn:[Run Query] (▶) button. *Run* panel will be expanded on the bottom of the
   query to show the results of the query execution attempt.
@@ -320,7 +320,7 @@ If the *Type Browser* panel is not displayed -- click the *Type Browser* vertica
 TypeDB Studio window.
 ====
 
-All types are divided in three top level xref:typedb::fun/types.adoc#_type[built-in types]:
+All types are divided in three top level xref:typedb::fundamentals/types.adoc#_type[built-in types]:
 
 * Attribute
 * Entity
@@ -406,7 +406,7 @@ the transaction with the green tick at the top of the Studio window.
 In some cases the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
 from deleting this type.
 
-For example, we can't xref:typedb::dev/schema.adoc#_undefine_subtype[delete a type that has a subtype].
+For example, we can't xref:typedb::development/schema.adoc#_undefine_subtype[delete a type that has a subtype].
 ====
 
 == Settings

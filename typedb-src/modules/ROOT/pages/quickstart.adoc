@@ -121,7 +121,7 @@ image::database-manager-iam.png[Database Manager With Phone Calls Database, widt
 
 // #todo Change the link to TypeQL -
 
-A xref:dev/schema.adoc[TypeDB schema] contains entity, relation, and attribute type definitions that make up the
+A xref:development/schema.adoc[TypeDB schema] contains entity, relation, and attribute type definitions that make up the
 data model, as well as rules which may be applied to it -- all of which are expressed in
 xref:typeql::overview.adoc[TypeQL], TypeDB's query language.
 
@@ -295,15 +295,15 @@ typedb console --command="transaction test-iam-db data read" --command='match $t
 After completing this guide we can recommend the following order of topics to continue exploring TypeDB:
 
 1. Explore the Fundamentals section for essential information of how TypeDB works:
-    * xref:fun/types.adoc[]
-    * xref:fun/queries.adoc[]
-    * xref:fun/patterns.adoc[]
-    * xref:fun/inference.adoc[]
-2. Find out more about how to xref:dev/connect.adoc[connect] to TypeDB, and use databases, sessions,
+    * xref:fundamentals/types.adoc[]
+    * xref:fundamentals/queries.adoc[]
+    * xref:fundamentals/patterns.adoc[]
+    * xref:fundamentals/inference.adoc[]
+2. Find out more about how to xref:development/connect.adoc[connect] to TypeDB, and use databases, sessions,
    and transactions.
-3. Learn how to define a xref:dev/schema.adoc[schema] of a database.
-4. Discover how to xref:dev/write.adoc[write] or xref:dev/read.adoc[read] data from a TypeDB database.
-5. Check out how to interpret a TypeDB xref:dev/response.adoc[responses] to a query.
+3. Learn how to define a xref:development/schema.adoc[schema] of a database.
+4. Discover how to xref:development/write.adoc[write] or xref:development/read.adoc[read] data from a TypeDB database.
+5. Check out how to interpret a TypeDB xref:development/response.adoc[responses] to a query.
 6. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find the most suitable one.
 7. (Optional) Learn more about the xref:tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
    majority of examples throughout this documentation.

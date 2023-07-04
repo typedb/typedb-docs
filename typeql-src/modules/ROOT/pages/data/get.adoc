@@ -4,8 +4,11 @@
 :longTailKeywords: typeql get, match get, typeql read, typedb read
 :pageTitle: Reading data
 
-There is only one query type to retrieve data instances and types from a database: get query.
+A get query retrieves data from a TypeDB database. It is the only type of query to be used in a read transaction
+Hence, it’s the only query type that can use xref:typeql::schema/define-rules.adoc[rules]-based
+xref:typedb::fundamentals/inference.adoc[inference,window=_blank].
 
+////
 .How to try a Get query
 [%collapsible]
 ====
@@ -18,23 +21,20 @@ xref:clients:ROOT:java/java-overview.adoc[Java],
 xref:clients:ROOT:python/python-overview.adoc[Python],
 xref:clients:ROOT:node-js/node-js-overview.adoc[Node.js].
 ====
+////
 
-A Get query triggers a search in a database based on what has been described in the `match` clause. It is
-used to extract concepts (data instances or types) out of a database. The result of a get query can be quite different,
-depending on the query itself (<<_modifiers,modifiers>>, <<_aggregation,aggregation>>, <<_group,grouping>>)
-and transaction options (xref:typedb:ROOT:dev/infer.adoc#_inferring_data[inference]). For more information see the
-xref:typedb:ROOT:dev/response.adoc[Response interpretation] page.
+A Get query triggers a search in a database based on the xref:typeql::data/basic-patterns.adoc[pattern] in the
+`match` clause. It is used to retrieve concepts (data instances or types) and values from a database. The result of
+a get query can differ depending on the query itself. <<_modifiers,Modifiers>>, including
+<<_aggregation,aggregation>> and <<_group,grouping>>, can drastically change the response format.
+For more information, see the xref:typedb:ROOT:development/response.adoc[Response interpretation] page.
 
 [NOTE]
 ====
-Get queries was previously known as Match queries.
+Get queries were previously known as Match queries.
 
-The name of the query changed but TypeDB Driver API can still lag behind (for the backwards compatibility),
+The query's name has been changed, but TypeDB Driver API can still lag behind (for backward compatibility),
 using the old terminology in its methods.
-
-To address this issue we use both old and new names in the Driver API documentation, like that: Match (Get) query.
-Eventually, Driver API methods will be updated with the new name, and the double names as well as this Note block
-will be deleted.
 ====
 
 == Syntax
@@ -54,18 +54,18 @@ match <pattern>
 
 [NOTE]
 ====
-A pattern consists of variables and constraints for concepts. For more information see the
+A pattern consists of variables and constraints for concepts. For more information, see the
 xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 ====
 
 [IMPORTANT]
 ====
 A `get` clause works like a filter for variables in matched answers. Get query without a `get` clause will have all
-variables mentioned in the `match` clause pattern to be returned as concepts in every answer.
+variables mentioned in the `match` clause pattern returned as concepts in every answer.
 ====
 
-Aggregation functions, as well as modifiers, and grouping must be at the end of the query and do not require a `get`
-clause.
+Modifiers, like aggregation functions and grouping, must be at the end of the query and do not require an explicit
+`get` clause.
 
 [#_variables]
 == Variables
@@ -87,8 +87,8 @@ This example query contains the following variables:
 
 The `full-name` attribute is not bound to a variable in this query.
 
-The example above matches person (`$p`) with a `full-name` attribute value of `Kevin Morrison`, and `email` attribute
-(`$e`). The `get` clause then filters the results to receive only the `email` (`$e`) attributes.
+The example above matches person (`$p`) with a `full-name` attribute value of `Kevin Morrison` and `email` attribute
+with any value (`$e`). The `get` clause then filters the results to receive only the `email` (`$e`) attributes.
 
 [,typeql]
 ----
@@ -106,13 +106,13 @@ The example above uses a `match` clause to do the following:
 
 . Finds `permission` relation (`$pe`) of `$x` and `$y` variables.
 . Finds `$x` as `person` entities that have the `full-name` attribute with the value of `$x-n`.
-. `$x-n` should contain string `Kevin`.
+. `$x-n` should contain the string `Kevin`.
 . Finds `access` relation of `$o` as object and `$act` as action.
 . `$act` should have the `name` attribute with the value of `$act-n`.
 . `$o` should have the `path` attribute with the value of `$o-fp`.
 
-The `get` clause then filters the answers from the `match` clause to get only the `full-name` attribute of a `person`
-type (`$x-n`), `name` attribute of an `action` type (`$act-n`), and `path` of an `object` (`$o-fp`).
+The `get` clause then filters the answers from the `match` clause to get only the `full-name` attribute (`$x-n`)
+of the `person` type, the `name` attribute (`$act-n`) of the `action` type, and the `path` (`$o-fp`) of the `object`.
 Every returned result should contain all three concepts.
 
 [#_number_of_answers]
@@ -120,16 +120,20 @@ Every returned result should contain all three concepts.
 
 The number of answers returned by the Get query depends on:
 
-* Number of matched results by the match clause. See the <<_answers_example_1,example #1>> below and the
+* The number of matched results by the match clause. See the <<_answers_example_1,example #1>> below and the
 xref:typeql::data/basic-patterns.adoc#_solutions[Pattern matching essentials] page.
-* Number of solutions returned after filtering with the `get` clause. See the example #2 below.
+* The number of results returned after filtering with the `get` clause. See the <<#_answers_example_2,example #2>>
+below.
 
 [#_answers_example_1]
 === Example #1: Permutations
 
-For example, if we have *3* `person` entities and *10* `file` entities in a database with the IAM schema and
+For example, if we have *three* `person` entities and *ten* `file` entities in a database with the IAM schema and
 send the following get query:
 
+//#todo Replace the example to exclude the disjoint match pattern
+//it can be a relation like $f($x,$y) isa friendship
+//or an attribute ownership, like $x has $y
 [,typeql]
 ----
 match
@@ -149,7 +153,7 @@ As the example above doesn't have any <<_modifiers,modifiers>>, <<_aggregation,a
 the number of results will depend on the number of matched solutions for the pattern in the `match` clause. So the
 TypeDB query processor will explore all possible solutions: every solution consisting of exactly one `person` entity
 and one `file` entity. There are only `3 * 10 = 30` possible combinations of person and file entities, so we will
-get 30 answers.
+get *30* results.
 
 See the xref:data/basic-patterns.adoc#_patterns_overview[Patterns overview] section of the Matching patterns page for
 more information.
@@ -242,7 +246,7 @@ For more information on how to insert data into a TypeDB database, see the xref:
 Those that don't have the attribute ownership won't be matched by the `match` clause at all. So we expect to get *six*
 results in the original query: five `person` instances owning the attribute with value `false` and one with `true`.
 
-If we use `get $cft;` clause instead, we'll get only two results in response, because we will only get
+If we use `get $cft;` clause instead, we'll get only two results in response because we will only get
 `certified-fortune-teller` instances and there are only two of those: an instance with the `true` value and another
 instance of the type with the `false` value.
 
@@ -254,8 +258,8 @@ To get all the results, we add the `person` type instances to the answer because
 Even if some of them might have the exact same set of owned attributes, instances of the `person` type are
 different instances nonetheless.
 
-To try the get queries in that example we need the schema <<_answers_example_2,provided>> at the very beginning and
-the dataset <<_answers_example2_dataset,provided>> above.
+To try the get queries in that example, we need to load the <<_answers_example_2,schema>> and
+the <<_answers_example2_dataset,dataset>> provided above into a TypeDB database first.
 
 [#_modifiers]
 == Modifiers
@@ -291,7 +295,7 @@ sort $n asc;
 This query returns all `full-name` attributes of all `person` entities, sorted by the value of `full-name` in ascending
 order.
 
-To sort by multiple variables use the same syntax and add additional variables and optional sorting order arguments
+To sort by multiple variables, use the same syntax and add additional variables and optional sorting order arguments
 with a comma separator.
 
 For example:
@@ -309,8 +313,8 @@ The example above will return all `full-name` and `email` attributes of all `per
 [#_offset_the_answers]
 === Offset the answers
 
-Use the `offset` keyword followed by the number to offset the answers.This is commonly used with the `limit`
-keyword to return a desired range of the answers.Don't forget to <<_sort_the_answers,sort>> the results to ensure
+Use the `offset` keyword followed by the number to offset the answers. This is commonly used with the `limit`
+keyword to return a desired range of answers. Don't forget to <<_sort_the_answers,sort>> the results to ensure
 predictable and deterministic results.
 
 [,typeql]
@@ -347,7 +351,7 @@ group $o-fp;
 This query returns the `full-name` attributes of all `person` entities, the `path` attributes of the `object` entities
 in any `access` relations that are part of the `permission` relation with the `person` entities, and the `name`
 attribute of the `action` entity in those `access` relations. The results are then sorted by the `path` attribute in
-ascending order, limited by the only first three results and grouped by `path` variable values.
+ascending order, limited by only the first three results, and grouped by `path` variable values.
 
 The following or similar result can be obtained by running the query above without inference on the TypeDB server with
 the IAM schema and dataset from the xref:typedb:ROOT:quickstart.adoc[Quickstart guide].
@@ -383,7 +387,7 @@ not the `full-name`.
 [#_aggregation]
 === Aggregation
 
-Aggregation performs a calculation on a set of values, and returns a single value.
+Aggregation performs a calculation on a set of values and returns a single value.
 
 TypeDB supports the following types of aggregation:
 
@@ -396,7 +400,7 @@ TypeDB supports the following types of aggregation:
 * <<_standard_deviation>>
 
 To perform aggregation in TypeDB, we first write a xref:queries.adoc#_match[match clause] to describe the set of
-data, then follow that by get to retrieve a distinct set of answers based on the specified variables, and lastly an
+data, then follow that by get to retrieve a distinct set of answers based on the specified variables, and lastly, an
 aggregate function to perform aggregation on the variable of interest.
 
 [NOTE]
@@ -460,7 +464,7 @@ sum $s;
 Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
 of `$s` from the aggregation.
 
-For more information see the xref:data/basic-patterns.adoc#_solutions[Matching patterns] page.
+For more information, see the xref:data/basic-patterns.adoc#_solutions[Matching patterns] page.
 ====
 
 [#_maximum]
@@ -515,7 +519,7 @@ get $f, $s; median $s;
 ==== Standard deviation
 
 Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of the matched
-variable. This is usually used with the average value, and returned by the mean keyword.
+variable. This is usually used with the average value and returned by the mean keyword.
 
 [,typeql]
 ----

@@ -14,7 +14,7 @@ see the table below for mapping of response format to a type of query that has b
 | *#* | *Query type* | *Response format*
 
 | 1
-| xref:typedb::dev/read.adoc#_get[Get query]
+| xref:typedb::development/read.adoc#_get[Get query]
 | Stream/Iterator of *ConceptMap*
 
 | 2
@@ -31,31 +31,31 @@ xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
 | Stream/Iterator of *NumericGroup*
 
 | 5
-| xref:typedb::dev/write.adoc#_insert[Insert query]
+| xref:typedb::development/write.adoc#_insert[Insert query]
 | Stream/Iterator of *ConceptMap*
 
 | 6
-| xref:typedb::dev/write.adoc#_delete_query[Delete query]
+| xref:typedb::development/write.adoc#_delete_query[Delete query]
 | *Future* (of empty response)
 
 | 7
-| xref:typedb::dev/write.adoc#_update_query[Update query]
+| xref:typedb::development/write.adoc#_update_query[Update query]
 | Stream/Iterator of *ConceptMap*
 
 | 8
-| xref:typedb::dev/schema.adoc#_define_types[Define]
+| xref:typedb::development/schema.adoc#_define_types[Define]
 | *Future* (of empty response)
 
 | 9
-| xref:typedb::dev/schema.adoc#_undefine[Undefine]
+| xref:typedb::development/schema.adoc#_undefine[Undefine]
 | *Future* (of empty response)
 
 | 10
-| xref:typedb::dev/infer.adoc#_explain_query[Explain]
+| xref:typedb::development/infer.adoc#_explain_query[Explain]
 | Stream/Iterator of *Explanation*
 |===
 
-TypeDB xref:dev/api.adoc[Driver API] methods can be used to process the objects returned: get values of attributes,
+TypeDB xref:development/api.adoc[Driver API] methods can be used to process the objects returned: get values of attributes,
 get <<_json,JSON>> representation of data, or even get other concepts from a database.
 
 == Expected results
@@ -65,9 +65,9 @@ section below.
 
 === Get query
 
-The ordinary xref:typedb::dev/read.adoc#_get[Get query] (without
-xref:typedb:ROOT:fun/queries.adoc#_modifiers[aggregation] or
-xref:typedb:ROOT:fun/queries.adoc#_modifiers[grouping]) returns a stream/iterator of a ConceptMap objects.
+The ordinary xref:typedb::development/read.adoc#_get[Get query] (without
+xref:typedb:ROOT:fundamentals/queries.adoc#_modifiers[aggregation] or
+xref:typedb:ROOT:fundamentals/queries.adoc#_modifiers[grouping]) returns a stream/iterator of a ConceptMap objects.
 
 Every iteration returns the result as a <<_conceptmap,ConceptMap>> object.
 
@@ -124,7 +124,7 @@ Similar to a <<_delete_query,delete>> query.
 
 Explain query returns a stream/iterator of an Explanation objects.
 
-For more information on inference explanation please see the xref:dev/infer.adoc[Inferring data] page.
+For more information on inference explanation please see the xref:development/infer.adoc[Inferring data] page.
 
 [#_response_formats]
 == Response formats
@@ -136,7 +136,7 @@ For xref:clients::clients.adoc#_typedb_drivers[TypeDB Drivers]: the specific met
 response depend on the TypeDB Driver used.
 
 The following is a very basic description of objects used to interpret the results from the TypeDB query response.
-For more information please see the xref:dev/api.adoc[API & Drivers] page and documentation for the
+For more information please see the xref:development/api.adoc[API & Drivers] page and documentation for the
 xref:clients::java/java-overview.adoc[Java],
 xref:clients::python/python-overview.adoc[Python], and
 xref:clients::node-js/node-js-overview.adoc[Node.js] TypeDB Drivers respectively.
@@ -191,8 +191,8 @@ Future object represents an asynchronous query result to be able to get the valu
 === Explanation
 
 Explanation is a special object returned as a response to an explain query.
-These are used to explain xref:dev/infer.adoc[data inference]. To perform an
-xref:dev/infer.adoc#_explain_query[explain query] use `explainables` and `explainable` objects.
+These are used to explain xref:development/infer.adoc[data inference]. To perform an
+xref:development/infer.adoc#_explain_query[explain query] use `explainables` and `explainable` objects.
 
 == Number of answers
 

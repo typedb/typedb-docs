@@ -20,8 +20,8 @@ once at the very beginning.
 
 [IMPORTANT]
 ====
-In order to define a schema, a `schema` xref:typedb:ROOT:dev/connect.adoc#_sessions[session] must be opened and a `write`
-xref:typedb:ROOT:dev/connect.adoc#_transactions[transaction] started. The changes must be *committed*, or they will NOT be
+In order to define a schema, a `schema` xref:typedb:ROOT:development/connect.adoc#_sessions[session] must be opened and a `write`
+xref:typedb:ROOT:development/connect.adoc#_transactions[transaction] started. The changes must be *committed*, or they will NOT be
 permanent.
 ====
 
