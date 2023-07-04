@@ -6,8 +6,8 @@
 
 All queries to a TypeDB database are written in TypeQL.
 
-TypeQL is *declarative* query language.
-Rather than writing an algorithm of how the data should be retrieved, we declare requirements and the TypeDB query
+TypeQL is a *declarative* query language.
+Rather than writing an algorithm of how the data should be retrieved, we declare requirements, and the TypeDB query
 processor will take care of finding an optimal way to retrieve and process the data.
 
 [NOTE]
@@ -25,11 +25,18 @@ https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window
 
 == Query structure
 
-A TypeQL xref:queries.adoc[query] consists of clauses: `define`, `undefine`, `match`, `get`, `insert`, `delete`.
+A TypeQL xref:queries.adoc[query] consists of clauses:
+
+* `define`
+* `undefine`
+* `match`
+* `get`
+* `insert`
+* `delete`
 
 The `get` clause starts with the `get` keyword, followed by a list of variables and optional modifiers at the end.
 
-All other TypeQL clauses consist of the defining keyword (the same as the name of the clause) and a pattern.
+All other TypeQL clauses consist of the defining keyword (the same as the clause's name) and a pattern.
 
 .TypeQL query structure
 * Query
@@ -37,7 +44,7 @@ All other TypeQL clauses consist of the defining keyword (the same as the name o
 *** Pattern
 **** Statement
 
-For more information on patterns see the xref:typeql::data/basic-patterns.adoc[]
+For more information on patterns, see the xref:typeql::data/basic-patterns.adoc[]
 and the xref:typeql::data/advanced.adoc[] pages.
 
 [#_schema]
@@ -52,11 +59,11 @@ Every instance of data inserted in a TypeDB database must be assigned a type and
 [NOTE]
 ====
 Database schemas written in TypeQL resemble logical data models of relational databases.
-TypeDB removing the need to create a separate physical data model and allowing developers to create schemas that
-mirror their object model simplifying both design and development.
+TypeDB removes the need to create a separate physical data model and allows developers to create schemas that mirror
+their object model, simplifying design and development.
 
-As a result, TypeDB schemas look like entity-relationship (ER) diagrams. With entities, relations, and attributes
-connected by roles of relations, and ownerships of attributes, but also subtyping (see <<_inheritance,inheritance>>
+As a result, TypeDB schemas look like entity-relationship (ER) diagrams with entities, relations, and attributes
+connected by roles of relations and ownerships of attributes, but also subtyping (see <<_inheritance,inheritance>>
 below).
 ====
 
@@ -77,7 +84,7 @@ A type can be addressed by its label (name). A type label is unique in a schema 
 
 We can define a new type only as a subtype of an existing one.
 
-A new empty database has a set of built-in types. These built-in types called root types, because all user defined
+A new empty database has a set of built-in types. These built-in types are called root types because all user-defined
 types will be subtypes (direct or non-direct) of those root types.
 
 .Root (built-in) types
@@ -102,20 +109,20 @@ types will be subtypes (direct or non-direct) of those root types.
 ====
 All root types are <<_abstract_types,abstract>> types.
 
-That's why when we say *entity type* we usually mean a subtype of the `entity` root type.
-In the same way we can address *relation type* or *attribute type* instead of mentioning
+That's why when we say *entity type*, we usually mean a subtype of the `entity` root type.
+In the same way, we can address *relation type* or *attribute type* instead of mentioning
 subtypes of the root types.
 ====
 // end::types_basics[]
 
 [NOTE]
 ====
-To avoid ambiguity when using type labels we should try to provide context or specify what exactly
+To avoid ambiguity when using type labels, we should try to provide context or specify what exactly
 we mean:
 
 - the type and all its subtypes (the default variant),
 - the exact type, without any of its subtypes,
-- or instances of data of this particular type, and instances of data of all its subtypes.
+- or instances of data of this particular type and instances of data of all its subtypes.
 ====
 
 [#_inheritance]
@@ -138,7 +145,7 @@ Types can be subtypes of other subtypes, resulting in a type hierarchy.
 [%collapsible]
 ====
 For example, `business unit` subtypes `user group`, which subtypes `subject`, which subtypes `entity` root type.
-Also `person` subtypes `user`, that subtypes `subject`:
+Also, `person` subtypes `user`, that subtypes `subject`:
 
 * entity
 ** subject
@@ -148,7 +155,7 @@ Also `person` subtypes `user`, that subtypes `subject`:
 **** person
 ====
 
-There is a strict hierarchy of types, so the whole typing system of a TypeDB database always can be represented
+There is a strict hierarchy of types, so the whole typing system of a TypeDB database can always be represented
 by three independent trees with one of the root types at the top of each tree.
 
 .See hierarchy trees example
@@ -197,10 +204,10 @@ The opposite of an abstract type is a concrete type. All types are concrete by d
 === Thing type
 // tag::thing_type_basics[]
 
-There is an internal type called `thing` that can be used to address all types
-(both built-in and user-defined) or instances of all types (effectively — all data).
+An internal type called `thing` can be used to address all types (both built-in and user-defined) or instances of all
+types (effectively — all data).
 
-All other types are subtypes of the `thing`.
+All types are subtypes of the `thing`, including the root types.
 
 image::thing-era-role-rule.png[Types hierarchy]
 
@@ -208,7 +215,7 @@ image::thing-era-role-rule.png[Types hierarchy]
 
 [WARNING]
 ====
-The `thing` built-in type will be deprecated in one of the upcoming versions and deleted in TypeDB version 3.0.
+The `thing` internal type will be deprecated in one of the upcoming versions and deleted in TypeDB version 3.0.
 ====
 // end::thing_type_basics[]
 
@@ -243,7 +250,7 @@ name sub attribute, value string;
 
 person sub entity,
   owns name,
-  playes spouce:marriage;
+  plays spouse:marriage;
 
 marriage sub relation,
   relates spouse;
@@ -254,17 +261,17 @@ An instance of the `person` type can be inserted in a database:
 * without owning any instances of the `name` attribute type, nor playing any roles,
 * owning exactly one instance of the `name` attribute type with some value and playing a role of a spouse in a marriage
   relation,
-* owning multiple names and/or playing a role of spouse in multiple instances of the `marriage` relation type.
+* owning multiple names and/or playing the role `spouse` in multiple instances of the `marriage` relation type.
 ====
 //#todo Improve the example
 
-To define a new entity type we need to set its label and what type it's a subtype of.
+To define a new entity type, we need to set its label and what type it's a subtype of.
 
-To set a property of an entity (like a name of a person) we need to define ownership by this entity of an instance
+To set a property of an entity (like a name of a person), we need to define ownership by this entity of an instance
 of an `attribute` type with the required value.
 
-To define a relationship between an entity and some other user-defined types we need to define a relation with roles,
-as well as define the ability of the involved types to play those roles.
+To define a relationship between an entity and some other user-defined types, we need to define a relation with roles
+and the ability of the involved types to play those roles.
 
 .Entity types and instances example
 [%collapsible]
@@ -285,9 +292,9 @@ is that there are two distinct objects. But its really hard to tell which one is
 related data inserted.
 ====
 
-For more information on how to define an `entity` type see the
-xref:typeql::schema/def-type.adoc#_define_entity_types[Define entity types] section on the
-xref:typeql::schema/def-type.adoc[] page.
+For more information on how to define an `entity` type, see the
+xref:typeql::schema/define-types.adoc#_define_entity_types[Define entity types] section on the
+xref:typeql::schema/define-types.adoc[] page.
 
 === Relation types
 // tag::relation_type_basics[]
@@ -295,8 +302,8 @@ xref:typeql::schema/def-type.adoc[] page.
 Relation types (or subtypes of the `relation` root type) represent relationships between types.
 Relation types have roles.
 
-Other types can play roles in relations if it's mentioned in their definition. Instance of other
-type can be a role player for a role in the instance of a relation.
+Other types can play roles in relations if it’s mentioned in their definition. An instance of another type
+can be a role player for a role in the instance of a relation.
 
 An instance of a relation can be uniquely addressed by a combination of its type, owned attributes, and role players.
 
@@ -307,7 +314,7 @@ role players.
 
 // tag::relation_type_examples[]
 
-.See group-membership example
+.See the group-membership example
 [%collapsible]
 ====
 For example, given the schema:
@@ -335,7 +342,7 @@ a `subject` type and all its subtypes entities.
 
 Roles allow a schema to enforce logical constraints on types of role players.
 
-.See example of a role type constraint
+.See the example of a role type constraint
 [%collapsible]
 ====
 For example, a `group-membership` relation cannot associate a `user` type entity with a `file` type entity, because
@@ -378,22 +385,22 @@ It is impossible to imagine a marriage without considering its spouses.
 ////
 
 For more
-information on how to define a `relation` subtype see the
-xref:typeql::schema/def-type.adoc#_define_relation_types[Define relation types] section on the
-xref:typeql::schema/def-type.adoc[] page.
+information on how to define a `relation` subtype, see the
+xref:typeql::schema/define-types.adoc#_define_relation_types[Define relation types] section on the
+xref:typeql::schema/define-types.adoc[] page.
 
 [#_attribute_types]
 === Attribute types
 // tag::attribute_type_basics[]
 
-Attribute types (or subtypes of the `attribute` root type) represent properties that can be owned by other types.
+Attribute types (or subtypes of the `attribute` root type) represent properties that other types can own.
 
-Attribute types have a value type and instances of attribute types have a value.
+Attribute types have a value type, and instances of attribute types have a value.
 This value is fixed and unique for every given instance of the attribute type.
 
 Other types can own an attribute type.
 That means that instances of these other types can own an instance of this attribute type.
-Which is usually means that an object in our domain have a property with the matching value.
+This usually means that an object in our domain has a property with the matching value.
 
 An instance of an attribute type can be uniquely addressed by its type and value.
 
@@ -404,9 +411,9 @@ share ownership of the same attribute instance.
 
 // end::attribute_type_basics[]
 
-For more information on the types of values that attributes can have: see the
-xref:typeql::schema/def-type.adoc#_value_types[list of value types] on the
-xref:typeql::schema/def-type.adoc[] page.
+For more information on the types of values, attributes can have: see the
+xref:typeql::schema/define-types.adoc#_value_types[list of value types] on the
+xref:typeql::schema/define-types.adoc[] page.
 
 // tag::attribute_type_example[]
 
@@ -429,7 +436,7 @@ An instance of an attribute type `name` with a value "Bob" can be owned by:
 
 * no one (no instance of the `person` type owns the instance of the `name` type with value "Bob"),
 * one particular person (there is one person with such a name),
-* or multiple people (there are multiple people with name `Bob`. All of the `pesron` type instances have ownership of
+* or multiple people (there are multiple people with the name `Bob`. All of the `pesron` type instances have ownership of
   the same instance of the `name` type with the value "Bob").
 ====
 // end::attribute_type_example[]
@@ -442,9 +449,9 @@ deleted in TypeDB version 3.0.
 ====
 // end::attribute_type_own_depr[]
 
-For more information on how to define an `attribute` subtype see the
-xref:typeql::schema/def-type.adoc#_define_attribute_types[Define attribute types] section on the
-xref:typeql::schema/def-type.adoc[] page.
+For more information on how to define an `attribute` subtype, see the
+xref:typeql::schema/define-types.adoc#_define_attribute_types[Define attribute types] section on the
+xref:typeql::schema/define-types.adoc[] page.
 
 [#_rules]
 === Rules
@@ -461,7 +468,8 @@ A rule consists of a *condition* and a *conclusion*.
 
 A *condition* is a pattern to look for in data.
 
-A *conclusion* is a pattern to insert virtual (inferred) data for every result matched with a pattern from *condition*.
+A *conclusion* is a pattern to insert virtual (inferred) data for every result matched with a pattern from the
+*condition*.
 
 [IMPORTANT]
 ====
@@ -472,23 +480,23 @@ Rules can't change persisted data in a database.
 All reasoning is done within a dataset of a transaction.
 ====
 
-The rules syntax uses `when` and `then` keywords for condition and conclusion respectively.
+The rules syntax uses `when` and `then` keywords for condition and conclusion, respectively.
 
 .Rule syntax
 [,typeql]
 ----
 rule rule-label:
 when {
-    ## the condition
+    ## The condition
 } then {
-    ## the conclusion
+    ## The conclusion
 };
 ----
 
 The conclusion can be used to create a single virtual instance of data: a relation or ownership of an attribute.
 
-Rules are used by queries for xref:typedb:ROOT:dev/infer.adoc[Inferring new data] only in read transactions,
-and only if the inference option is enabled.
+Queries use rules for xref:typedb:ROOT:dev/infer.adoc[Inferring new data] only in read transactions and only if
+the inference option is *enabled*.
 
 // end::rules_basics[]
 
@@ -507,6 +515,8 @@ rule add-view-permission: when {
     (subject: $subj, access: $ac_view) isa permission;
 };
 ----
+
+See the xref:typedb::tutorials/iam-schema.adoc#_add_view_permission_rule_explanation[explanation,window=_blank].
 ====
 
 We can use xref:data/basic-patterns.adoc#_computation[computation] operations and functions in the condition pattern.
@@ -514,22 +524,22 @@ And we can use value variables in the conclusion of a rule.
 
 [WARNING]
 ====
-It is possible to create a recursive logic in the line of `n = n +1` by assigning an attribute ownership with value of
-value variable. Such a rule, if triggered can run indefinitely, while transaction lasts and can cause an out of memory
-error.
+It is possible to create a recursive logic in the line of `n = n +1` by assigning attribute ownership with the value
+of a value variable. If triggered, such a rule can run indefinitely while the transaction lasts and can cause an
+out-of-memory error.
 ====
 
-For more information on how to create rules in a schema see the xref:typeql::schema/def-rule.adoc[] page.
+For more information on how to create rules in a schema, see the xref:typeql::schema/define-rules.adoc[] page.
 
 [#_data]
 == Data
 
-Every piece of data stored in a TypeDB database must be an instance of a <<_types,type>>,
-xref:typeql::schema/def-type.adoc[defined] in the schema of the database.
+Every piece of data stored in a TypeDB database must be an instance of a <<_types,type>>
+xref:typeql::schema/define-types.adoc[defined] in the schema of the database.
 
-In other words, to insert a data into a TypeDB database we must use the types, defined in the schema of the database.
+In other words, to insert data into a TypeDB database, we must use the types defined in the schema of the database.
 
-The schema defines the vocabulary we use to query our data. See <<_data_example,example>> below.
+The schema defines the vocabulary we use to query our data. See the <<_data_example,example>> below.
 
 For more information about reading and writing data, see the following pages:
 
@@ -551,37 +561,45 @@ define
 person sub entity,
   owns name,
   owns age,
-  owns certified-future-teller;
+  owns certified-fortune-teller;
 
 name sub attribute, value string;
 age sub attribute, value long;
-certified-future-teller sub attribute, value boolean;
+certified-fortune-teller sub attribute, value boolean;
 ----
 
-The simplest xref:typeql::data/insert.adoc[insert query] can look like this:
+The simplest xref:typeql::data/insert.adoc[Insert query] can look like this:
 
 [,typeql]
 ----
 insert $p isa person;
 ----
 
-But what is the use of an empty entity without any attributes owned or roles played in relations?
+By inserting information, that some unbound variable `isa` *<type>* we create an instance of the type. The `person` is
+the type label in this example.
 
-More useful example of insert query can look as the following:
+But what is the use of an instance of an entity type without any attributes owned or roles played in relations?
+
+A more useful example of an insert query can look as the following:
 
 [,typeql]
 ----
-insert $p isa person, has name "Bob", has age 31, has certified-future-teller false;
+insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
 ----
 
-Now to read that data we can use the xref:typeql::data/get.adoc[get] query:
+That creates an entity and assigns an ownership of three attributes of different types to the newly created entity.
+
+If any of attributes with the given value didn't exist prior to this query -- TypeDB will create an instance of an
+attribute with the required value automatically.
+
+Now to read that data, we can use the xref:typeql::data/get.adoc[Get] query:
 
 [,typeql]
 ----
 match $p isa person;
 ----
 
-This should return us all instances of the `person` type. But yet again -- what is the use for entities without their
+This should return to us all instances of the `person` type. But yet again -- what is the use for entities without their
 properties? Let's query for all attributes owned by the `person` type instances:
 
 [,typeql]
@@ -589,11 +607,56 @@ properties? Let's query for all attributes owned by the `person` type instances:
 match $p isa person, has $a;
 ----
 
-This should return us the `Bob` of age `31`.
+The response should consist of pairs of the `person` type instance with an instance of an attribute type owned by it,
+including our `Bob` with the `age` of `31`.
 
 [NOTE]
 ====
-The result of the above query will not return us the
-first instance of `person` type we inserted, because it has no attributes, hence doesn't fit in the `match` clause
-pattern. Specifically, it doesn't match the `has $a` part.
+The result of the above query will not return us the first instance of the `person` type we inserted.
+It has no attributes. Hence, it doesn't fit in the `match` clause pattern: it doesn't match the `has $a` part.
+====
+
+Let's query specifically for `Bob`, age `31`, and retrieve the value of the boolean attribute
+`certified-fortune-teller`:
+
+[,typeql]
+----
+match
+  $p isa person, has name `Bob`, has age 31, has certified-fortune-teller $cft;
+get
+  $p, $cft;
+----
+
+The above query will find every `person` entity that has ownership over the instance of the attribute type `name` with
+the value of `Bob`, ownership of the `age` with the value of `31` and the ownership of the `certified-fortune-teller`
+attribute with any value.
+
+With the `get` clause, we filter the results to get the `person` instances and the corresponding
+`certified-fortune-teller` attribute (represented by the `$cft` variable in the pattern) for every matched result
+in a database.
+
+[NOTE]
+====
+Why not filter for just `$cft` variable instead?
+
+That can drastically alter the returned results as the returned results are deduplicated by design. See the
+xref:typeql:ROOT:data/basic-patterns.adoc#_solutions[Basic patterns] page for more information on the number of results
+for pattern matching.
+
+For example, let's say we have ten people with the name `Bob` and age `31` in our database. Five of them have
+`certified-fortune-teller` with the value `false`, one has it as `true`, and the rest don't have ownership of the
+attribute.
+
+Those that don't have the attribute ownership won't be matched by the `match` clause at all. So we expect to get *six*
+results in the original query: five `person` instances owning the attribute with value `false` and one with `true`.
+
+If we use `get $cft;` clause instead, we'll get only two results in response: an instance of the
+`certified-fortune-teller` type with the `true` value and another instance of the type with the `false` value.
+Because these are the only instances of the `certified-fortune-teller` type there are. Those five instances of `person`
+type all have ownership over the xref:typeql:ROOT:fundamentals.adoc#_attribute_types[same instance] of the
+`certified-fortune-teller` attribute type with the value `false`.
+
+To get all the results, we add the `person` type  instances to the answer because those are unique.
+Even if some of them might have the exact same set of owned attributes, instances of the `person` type are
+different instances nonetheless.
 ====

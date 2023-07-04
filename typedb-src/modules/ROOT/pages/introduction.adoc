@@ -32,7 +32,7 @@ Comparison of TypeDB with most common types of databases:
 
 // #todo Change the link to TypeQL -
 
-The core of any TypeDB database is the representation of our business domain: the xref:dev/def-schema.adoc#_schema[schema].
+The core of any TypeDB database is the representation of our business domain: the xref:dev/schema.adoc#_schema[schema].
 A schema is the blueprint of a TypeDB database. Using TypeQL, we define a schema to model a domain
 true to nature:
 
@@ -75,7 +75,7 @@ in the most efficient way. We don't have to think about query optimization, limi
 implementation, etc.
 
 By combining TypeQL and TypeDB, we can close the gap between the language of our domain and the database. Queries
-written in TypeQL are easily readable. Carefully designed database xref:dev/def-schema.adoc#_schema[schema] lets us
+written in TypeQL are easily readable. Carefully designed database xref:dev/schema.adoc#_schema[schema] lets us
 use the terminology of the business domain, making our queries sound familiar to subject-matter experts. This new
 paradigm gives us a higher level of flexibility and expressivity to simplify our work and tackle domains that
 seemed impossibly complex before.
@@ -132,7 +132,7 @@ It goes through the step-by-step process of creating a new database, applying sc
 4. xref:dev/connect.adoc[Connect] page: Connect to TypeDB using databases, sessions, transactions, and ACID
    guarantees.
 
-5. xref:dev/def-schema.adoc#_schema[Define schema] page: Find out how to define, undefine, and modify types and rules
+5. xref:dev/schema.adoc#_schema[Define schema] page: Find out how to define, undefine, and modify types and rules
    in a TypeDB database.
 
 6. xref:typedb::dev/write.adoc[Writing data] and xref:typedb::dev/read.adoc[Reading data] pages: How to perform Insert,

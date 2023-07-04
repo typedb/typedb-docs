@@ -9,7 +9,7 @@ Rules are defined independently of any types. Any types used in a rule must be d
 They are executed only as a part of get queries when the xref:typedb:ROOT:dev/infer.adoc[inference] option is *enabled*.
 The results of rules execution exist only within the transaction they run in. They are not persisted, and any data
 inferred in the transaction ceases to exist when the transaction is closed. Read more on rules in the
-xref:typeql::schema/def-rule.adoc[] page.
+xref:typeql::schema/define-rules.adoc[] page.
 
 == Syntax
 

@@ -15,26 +15,6 @@ TypeQL query consists of clauses (one, two, or three).
 
 A clause always start with a keyword, that defines the type of clause.
 
-////
-A clause consists of:
-
-* a keyword,
-* a pattern,
-* and sometimes optional modifiers at the end.
-
-.TypeQL constructs
-* query
-** clause
-*** keyword (match, get, insert, delete)
-*** pattern
-// **** statement
-// ***** keyword
-// ***** variable
-// ***** value
-// *** modifier
-
-////
-
 [cols="^.^2,^.^1,^.^2,^.^2,^.^1"]
 |===
 |Query type | № of clauses | Clause(s) | Keyword | Mandatory
@@ -106,11 +86,11 @@ A Define query is used to define types and rules in the schema.
 
 A Define query consists of a single `define` clause.
 
-For more information on the Define query see the xref:typeql::schema/def-type.adoc[window=_blank] and
-xref:typeql::schema/def-rule.adoc[window=_blank] pages.
+For more information on the Define query see the xref:typeql::schema/define-types.adoc[window=_blank] and
+xref:typeql::schema/define-rules.adoc[window=_blank] pages.
 //#todo Check all the content we are linking to is implemented
 
-For examples of how to perform a Define query see the xref:typedb::dev/def-schema.adoc[] page.
+For examples of how to perform a Define query see the xref:typedb::dev/schema.adoc[] page.
 
 [#_define_clause]
 === Define clause
@@ -127,8 +107,8 @@ A `define` clause has the following syntax:
 define <pattern>
 ----
 
-A pattern used in the `define` clause is limited to xref:typeql::schema/def-type.adoc[defining types,window=_blank] and
-xref:typeql::schema/def-rule.adoc[rules,window=_blank]: the DDL part of the TypeQL.
+A pattern used in the `define` clause is limited to xref:typeql::schema/define-types.adoc[defining types,window=_blank] and
+xref:typeql::schema/define-rules.adoc[rules,window=_blank]: the DDL part of the TypeQL.
 
 [#_undefine_query]
 == Undefine query
@@ -136,14 +116,14 @@ xref:typeql::schema/def-rule.adoc[rules,window=_blank]: the DDL part of the Type
 A `define` clause removes the concepts and the constraints, described by its pattern, from the schema of the current
 database.
 
-An Undefine query is used to xref:typedb::dev/def-schema.adoc#_undefine[undefine] types and rules in the schema.
+An Undefine query is used to xref:typedb::dev/schema.adoc#_undefine[undefine] types and rules in the schema.
 
 A Undefine query consists of a single `undefine` clause.
 
 For more information on the Undefine query see the xref:typeql::schema/modify.adoc[window=_blank] page in the
 xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
 
-For examples of how to perform an Undefine query see the xref:typedb::dev/def-schema.adoc[] page.
+For examples of how to perform an Undefine query see the xref:typedb::dev/schema.adoc[] page.
 
 [#_undefine_clause]
 === Undefine clause
@@ -297,7 +277,7 @@ If there are no matches for a `match` clause in an `insert` query then there wil
 ====
 
 The `insert` clause can have a pattern with multiple statements to insert in one query. But it can't insert types
-(use xref:typedb::dev/def-schema.adoc#_define_types[define] to insert new types) and can't have the following:
+(use xref:typedb::dev/schema.adoc#_define_types[define] to insert new types) and can't have the following:
 
 - Conjunction
 - Disjunction
@@ -364,7 +344,7 @@ If there are no matches for a `match` clause in a `delete` query then there will
 ====
 
 The `delete` clause can have a pattern with multiple statements to delete in one query. But it can't delete types (use
-xref:typedb::dev/def-schema.adoc#_undefine_types[undefine] to delete types) and can't have the following:
+xref:typedb::dev/schema.adoc#_undefine_types[undefine] to delete types) and can't have the following:
 
 - Conjunction
 - Disjunction
