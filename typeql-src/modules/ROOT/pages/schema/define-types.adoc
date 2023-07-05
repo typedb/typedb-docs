@@ -4,30 +4,31 @@
 :keywords: typeql, schema, type, inheritance
 :longTailKeywords: typeql schema, typeql type hierarchy, typeql data model
 :pageTitle: Define types
+:toc: macro
+:toclevels: 5
+:experimental:
 
-See the xref:fundamentals.adoc[] page for more information about xref:fundamentals.adoc#_schema[schema] and
-xref:fundamentals.adoc#_types[types].
+See the xref:typeql::fundamentals.adoc[] page for more information about xref:typeql::fundamentals.adoc#_schema[schema]
+and xref:typeql::fundamentals.adoc#_types[types].
 
-TypeQL statements must begin with the `define` keyword in order to modify a schema (e.g., to create *types* or
-*rules*).
+.See the full table of contents for this page
+[%collapsible]
+====
+toc::[]
+====
 
-In order to use a new TypeDB database we need to define its schema first. Use TypeDB `define` queries in a `schema`
-session with `write` transaction to do so. The TypeQL statements of these queries must begin with the `define`
-keyword in order to define a schema (create types or rules).
-
-However, when running multiple statements within a TypeQL file (`.tql`), the `define` keyword only has to be included
-once at the very beginning.
+To use a new TypeDB database, we need to define its schema first. We can do it with a <<#_define_query>>.
 
 [IMPORTANT]
 ====
-In order to define a schema, a `schema` xref:typedb:ROOT:development/connect.adoc#_sessions[session] must be opened and a `write`
-xref:typedb:ROOT:development/connect.adoc#_transactions[transaction] started. The changes must be *committed*, or they will NOT be
-permanent.
+To define a schema, a `schema` xref:typedb:ROOT:development/connect.adoc#_sessions[session] must be opened,
+and a `write` xref:typedb:ROOT:development/connect.adoc#_transactions[transaction] started.
+The changes must be *committed*, or they will NOT be permanent.
 ====
 
-There is no limitation in the order of types to define. We can define schema types in any order as long as
-the schema as a whole is valid. TypeDB Clients validate our schema definition requests before sending them to a TypeDB
-server. We will not be able to commit changes if the schema definition query isn't valid.
+There is no limitation in the order of types to define. We can define schema types in any order if the schema is valid.
+TypeDB Clients validate our schema definition requests before sending them to a TypeDB
+server. We will not be able to commit changes if the resulting schema isn't valid.
 
 [IMPORTANT]
 ====
@@ -41,8 +42,9 @@ rather add the missing parts.
 
 Two notable exceptions are:
 
-- **rules** (defining a new rule with existing label/name will replace the existing rule completely),
-- and **annotations**, like the `@key` keyword (can be removed by redefining an attribute ownership).
+- **rules** (defining a new rule with an existing label/name will replace the existing rule completely), and
+- **annotations**, like the `@key` keyword (which we can remove by redefining attribute ownership without the
+  annotation).
 ====
 
 [#_define_query]
@@ -51,6 +53,17 @@ Two notable exceptions are:
 A define query adds new or modifies existing types and/or rules in the database schema.
 
 A define query consists of a single `define` clause.
+
+TypeQL `define` clause must begin with the `define` keyword.
+
+We can run multiple statements as a single query.
+The `define` keyword must only be included once per query at the beginning.
+
+[IMPORTANT]
+====
+This page only covers how to define types.
+For defining rules, see the xref:typeql::schema/define-rules.adoc[] page.
+====
 
 === Syntax
 
@@ -86,9 +99,9 @@ The line with the `value` keyword is relevant only for attribute types definitio
 The lines with the `relates` keyword are relevant only for relation types definition.
 
 See the specific syntax for
-xref:typeql::schema/define-types.adoc#_define_entity_types[entity type],
-xref:typeql::schema/define-types.adoc#_define_relation_types[relation type], or
-xref:typeql::schema/define-types.adoc#_define_attribute_types[attribute type] below.
+xref:typeql::schema/define-types.adoc#_define_entity_types[entity types],
+xref:typeql::schema/define-types.adoc#_define_relation_types[relation types], or
+xref:typeql::schema/define-types.adoc#_define_attribute_types[attribute types] below.
 
 === Example
 
@@ -138,7 +151,7 @@ group-membership sub membership,
 The above example can be run in xref:clients:ROOT:studio.adoc[TypeDB Studio]. See the
 xref:typedb:ROOT:quickstart.adoc[Quickstart guide] for full descriptions of the following steps:
 
-. Make sure TypeDB server is up.
+. Make sure a TypeDB server is up.
 . Start TypeDB Studio.
 . Connect TypeDB Studio to the server.
 . Create or select a new database.
@@ -214,9 +227,10 @@ define object sub entity;
 
 ==== Abstract
 
-Optionally, entity types can be defined as `abstract`. An abstract entity type can't be instantiated and must be
-subtyped in order to create entities. It exists only so other entity types can inherit the attribute types it owns
-and the roles it plays.
+Optionally, types can be defined as `abstract`. An abstract type can't be instantiated and must be
+subtyped in order to create entities. It exists only so other types can inherit ownerships over attribute types it
+owns and the roles it plays. We can use abstract types in queries, expecting to retrieve instances of its concrete
+subtypes.
 
 [,typeql]
 ----
@@ -251,7 +265,7 @@ Use the `@key` keyword to limit the cardinality to exactly *one* and add *unique
 Hence, the instance of the type with key ownership will have exactly one (no more and no less)
 key attribute instance.
 
-See example in <<_key_attribute,Key attribute>> section.
+See the example in the <<_key_attribute,Key attribute>> section.
 
 ==== Plays a role
 
@@ -414,9 +428,9 @@ owns name;
 
 ==== Abstract
 
-Optionally, relation types can be defined as `abstract` so they must be subtyped in order to create relations. An
+Optionally, relation types can be defined as `abstract`, so they must be subtyped in order to create instances. An
 abstract relation type exists only so other relation types can inherit the attribute types it owns and the roles it
-defines and/or plays.
+defines and plays.
 
 [,typeql]
 ----
@@ -460,8 +474,8 @@ collection-membership sub membership,
   relates collection as parent;
 ----
 
-In the example above, the `collection-membership` relation type subtypes the `membership` relation type, and overrides
-the inherited `parent` role as `collection`. The inherited `member` role inherited as it is.
+In the example above, the `collection-membership` relation type subtypes the `membership` relation type and overrides
+the inherited `parent` role as `collection`. The inherited `member` role is inherited as it is.
 
 [NOTE]
 ====

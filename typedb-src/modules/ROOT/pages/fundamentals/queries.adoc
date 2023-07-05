@@ -4,6 +4,7 @@
 :longTailKeywords: typeql match, typeql query, typedb query, match clause
 :pageTitle: Queries
 
+//#todo Move the content to the TypeQL docs and leave and include directive here?
 // tag::queries_body[]
 All queries to a TypeDB database are written in TypeQL.
 
@@ -146,7 +147,7 @@ TypeDB database schema.
 
 A Get query consists of a `match` clause and an *optional* `get` clause.
 
-A Get query will return a stream of results (with any number of results: from zero to many).
+A Get query returns a stream of results (with any number of results: from zero to many).
 
 [NOTE]
 ====
@@ -221,12 +222,12 @@ get $p, $f;
 
 The variable or variables mentioned in a `get` clause must be bound (set) in the `match` clause of the same query.
 
-A Get query with a `get` clause will return its results filtered -- only variables mentioned in the `get` clause will
-be returned. Every result will have a concept or a value for any variable mentioned in the `get` clause.
+A Get query with a `get` clause returns its results filtered -- only variables mentioned in the `get` clause are
+returned. Every result has a concept or a value for any variable mentioned in the `get` clause.
 
 [IMPORTANT]
 ====
-A Get query without the `get` clause will return all variables mentioned in the `match` clause.
+A Get query without the `get` clause returns all variables mentioned in the `match` clause.
 ====
 
 [#_modifiers]
@@ -255,17 +256,13 @@ xref:typedb::fundamentals/patterns.adoc#_patterns_overview[pattern]
 to find existing data which is needed as a context to insert new data. If no context is required (no existing data
 to link with the inserted data) -- there is no need for a `match` clause in this query.
 
-The xref:typedb::fundamentals/queries.adoc#_insert[`insert`] clause uses a pattern to specify the data to be inserted and may
-include references to the existing data found by the optional `match` clause.
+The xref:typedb::fundamentals/queries.adoc#_insert[`insert`] clause uses a pattern to specify the data to be inserted
+and may include references to the existing data found by the optional `match` clause.
 
-.See example
-[%collapsible]
-====
-To insert a new relation instance, we need to match every instance that will play a role in it to be
+For example, to insert a new relation instance, we need to match every instance that will play a role in it to be
 able to address them in the `insert` clause.
-====
 
-An Insert query will return a stream of inserted concepts (with any number of results: from zero to many).
+An Insert query returns a stream of inserted concepts (with any number of results: from zero to many).
 
 The `insert` clause will be executed exactly once for every matched pattern found by the `match` clause. If the `match`
 clause is omitted the `insert` query will be executed exactly once.
@@ -315,6 +312,20 @@ insert <pattern>
 ----
 insert $p has email "email@vaticle.com";
 ----
+
+The above example requires a preceding `match` clause to bind the `$p` variable. For example, to match some
+`person` type instances first, to insert the email ownership only for them.
+
+Alternatively, we can use insert query without a `match` clause, like that:
+
+[,typeql]
+----
+insert $p isa person, has email "email@vaticle.com";
+----
+
+This version doesn't require a `match` clause, because it binds the only variable it has to a `person` type.
+It creates a new instance of the `person` type in a database, before inserting an ownership of the email for the
+instance.
 ====
 
 A pattern used in an `insert` clause can use the variables from the preceding `match` clause.
@@ -423,13 +434,13 @@ xref:typedb::fundamentals/queries.adoc#_define_query[define] to insert new types
 - `is` keyword
 
 Unlike other databases, TypeDB does not update data in place. Data is updated by replacing references to it.
-In relations, when a player is removed from a role, the player itself is not removed from the database.
+When we remove a player from a role in a relation, the player itself is not removed from the database, but rather the
+information of it playing the role.
 
 In addition, attributes are immutable. Rather than changing the value of an owned attribute,
 the ownership of it is replaced with the ownership of a new/different attribute.
 
-For more information on the Update query, see the xref:typeql::data/update.adoc[Update,window=_blank] page in the
-xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
+For more information on the Update query, see the xref:typeql::data/update.adoc[window=_blank] page.
 
 .See the update query example
 [%collapsible]
