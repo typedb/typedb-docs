@@ -4,12 +4,15 @@
 :longTailKeywords: typeql schema, typeql rules, typeql logic
 :pageTitle: Define rules
 
-Rules are defined independently of any types. Any types used in a rule must be defined in a schema.
+Rules are defined independently of types in the same schema.
+However, any types used in a rule must be defined in the schema.
 
-They are executed only as a part of get queries when the xref:typedb:ROOT:development/infer.adoc[inference] option is *enabled*.
-The results of rules execution exist only within the transaction they run in. They are not persisted, and any data
-inferred in the transaction ceases to exist when the transaction is closed. Read more on rules in the
-xref:typeql::schema/define-rules.adoc[] page.
+They are executed only as a part of xref:typeql::data/get.adoc[Get queries] when the
+xref:typedb:ROOT:development/infer.adoc[inference] option is *enabled* in a *read* transaction.
+
+The results inferred by rules are virtual because they exist only within the transaction. They are not persisted
+in a database, and any data inferred in a query ceases to exist when the transaction is closed.
+Read more on rules in the <<_rule_validation>> section.
 
 == Syntax
 
@@ -25,7 +28,7 @@ when {
 };
 ----
 
-The `rule`, `when`, and `then` keywords are specific to rule definitions.
+Use the `rule`, `when`, and `then` keywords for a rule definition.
 
 [IMPORTANT]
 ====
@@ -37,22 +40,26 @@ xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 [#_rule_validation]
 == Rule validation
 
-The `when` clause (condition) of a rule can be a multi statement pattern and can include disjunctions and negations,
-whereas the `then` clause (conclusion) should describe a single relation or constraint of ownership of an attribute
-(due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic,window=_blank]).
+// tag::rule_validation[]
+A rule's `when` clause (condition) can be a pattern with multiple statements, including disjunctions and negations.
 
-When using a disjunction in a rule, the disjunctive parts must be bound by variables outside of the `or` statement.
-These variables are the only ones permitted that can be used in the `then` clause.
+A `then` clause (conclusion) describes a <<_single_conclusion,single>> relation or a constraint of ownership of
+an attribute (due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic,window=_blank]).
 
-Since version 2.18 we can use abstract types in a rule as long as all the type variables that define which instances
-to create during materialisation are concrete (non-abstract).
+When using a disjunction in a rule, the disjunctive parts must be bound by variables outside the `or` statement.
+These variables are the only ones permitted in the `then` clause.
 
-.See example
+Since version `2.18.0`, we can use xref:typeql::schema/define-types.adoc#_abstract_types[abstract] types in a rule
+as long as all the type variables that define which instances to create during materialization are concrete
+(non-abstract).
+
+.See the example with abstract types
 [%collapsible]
 ====
 [,typeql]
 ----
 define
+
 abstract-person sub entity, abstract, plays friendship:friend; #abstract
 friendship sub relation, relates friend;  #non-abstract
 
@@ -68,27 +75,29 @@ when {
 The `then` clause of a rule can't use variables (either concept variables or value variables) that aren't defined in
 the `when` clause.
 
-The `then` clause of a rule must not insert any instance which occurs negated in its `when` clause , or in the `when`
+The `then` clause of a rule must not insert any instance which occurs negated in its `when` clause or in the `when`
 clause of any rule it may trigger. Attempting to define such a rule will throw an error.
 
-Rules will not create duplicates of instances which are already in the database or have already been inferred.
+Rules will not create duplicates of instances that are already in the database or have already been inferred.
 There is no need to check if it already exists in a rule.
 
+[#_single_conclusion]
 There are exactly *three* distinct *conclusions* permitted:
 
 . A new relation.
 . Ownership of an attribute defined by its value.
 . Ownership of an attribute defined by a variable.
 
-The `then` clause must be insertable according to the schema (e.g.,we cannot give an attribute to an instance that is
-not allowed to own that attribute type).
+The `then` clause must be insertable according to the schema (e.g., we can't give an attribute to an instance
+that can't own that attribute type).
+// end::rule_validation[]
 
 == Rule processing (inference)
 
 The approach TypeDB uses is a https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining,window=_blank]
 execution on top of https://en.wikipedia.org/wiki/Horn_clause[Horn-clause,window=_blank] logic.
 
-Negation functionality follows the set-difference semantics. It corresponds to negation-as-failure model under the
+Negation functionality follows the set-difference semantics. It corresponds to the negation-as-failure model under the
 following conditions:
 
 - We have stratified negation.
@@ -97,7 +106,6 @@ following conditions:
 evaluated.
 
 Infinite recursion and non-termination are prevented with a tabling mechanism.
-
 
 == Examples
 
@@ -116,7 +124,7 @@ rule test:
 ----
 
 The example above demonstrates a simple rule. All `person` entities matched by a read query with the inference option
-*enabled* will have a `full-name` attribute with the value `Dude`, even if they have an existing `full-name`
+*enabled* will have a `full-name` attribute with the value `Dude`, even if they have other `full-name`
 attributes with different values.
 
 === Using value variables
@@ -138,12 +146,12 @@ rule size-covert:
     };
 ----
 
-The above query defines additional attribute subtype `size-mb`, defines that it can be owned by the `file` entity
-subtype and creates a rule `size-convert` to create ownership of `size-mb` with the value *1024 times lower* than
+The above query defines an additional attribute subtype `size-mb`, defines that it can be owned by the `file` entity
+subtype, and creates a rule `size-convert` to create ownership of `size-mb` with the value *1024* times lower than
 `size-kb` to any `file` instance that has `size-kb`.
 
-With this rule defined and inference option xref:typedb:ROOT:development/infer.adoc#_how_to_use_inference[enabled] we can try the
-following query:
+With this rule defined and the inference option xref:typedb:ROOT:development/infer.adoc#_how_to_use_inference[enabled],
+we can try the following query:
 
 [,typeql]
 ----
@@ -152,7 +160,7 @@ match
     $mb > 1;
 ----
 
-With the default IAM dataset sample this query shall return only one result (because all others will have `size-mb`
+With the default IAM dataset sample, this query shall return only one result (because all others will have `size-mb`
 lower than 1), similar to this:
 
 [,typeql]
@@ -166,8 +174,8 @@ lower than 1), similar to this:
 
 [IMPORTANT]
 ====
-The value of `size-mb` is not persisted in the database, but instead -- inferred by the `size-covert` rule every time
-we do a read transaction with inference option enabled, and query for `size-mb`.
+The value of `size-mb` is not persisted in the database but instead -- inferred by the `size-covert` rule every time
+we do a read transaction with the inference option enabled and query for `size-mb`.
 ====
 
 === Transitive rule
@@ -205,6 +213,7 @@ rule all-relation-types-are-transitive:
         ($role1: $x, $role2: $z) isa $relation;
     };
 ----
+//#todo Add advanced transitivity page or blog post here
 
 === Complex rule
 
@@ -224,10 +233,10 @@ rule add-view-permission:
     };
 ----
 
-The example above illustrates a more complex rule, using the IAM schema.
+The example above illustrates a more complex rule using the IAM schema.
 
-In short, the permission to access some file with action that has `name` of `view_file` can be inferred by the
+In short, the permission to access some file with the action that has `name` of `view_file` can be inferred by the
 rule from the permission to `modify_file` the same file.
 
-A full explanation of how this rule works is given in the xref:typedb:ROOT:development/infer.adoc#_example[Example] section of
-Inferring data page.
+The xref:typedb:ROOT:development/infer.adoc#_example[Example] section of Inferring data page gives a full explanation
+of how this rule works.

@@ -214,7 +214,7 @@ The condition definition goes inside the `when` clause.
 
 The conclusion definition goes inside the `then` clause.
 
-For more information about rules see the xref:fundamentals/inference.adoc#_rules[] page.
+For more information about rules see the xref:typeql::schema/define-rules.adoc[,window=_blank] page.
 
 [#_undefine]
 == Undefine
@@ -346,11 +346,7 @@ For the query to succeed we need both the `item` and the `size` types to exist i
 
 === Rename types
 
-To rename a type (to change its label) use the xref:clients:ROOT:studio.adoc[TypeDB Studio] or
-xref:typedb:ROOT:development/api.adoc[TypeDB Driver API] rename method for a type class object:
-xref:clients::java/java-api-ref.adoc#_rename_type_label[Java],
-xref:clients::python/python-api-ref.adoc#_rename_type_label[Python],
-xref:clients::node-js/node-js-api-ref.adoc#_rename_type_label[Node.js].
+include::typeql::schema/modify.adoc[tag=rename]
 
 === Modify rules
 

@@ -17,12 +17,6 @@ If we change name (label) of the existing type or rule in the existing schema an
 the changed type or rule will be processed as a new one.
 //#todo Add examples. Step by step adding constraints.
 
-== Rename
-
-To rename (change its label) a type use the xref:clients:ROOT:studio.adoc[TypeDB Studio] or
-xref:typedb:ROOT:development/api.adoc[TypeDB API] rename method for a type class object.
-//#todo Add instructions to respected pages and provide specific links here
-
 == Delete
 
 Use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
@@ -110,3 +104,17 @@ and refer to the rule by its label. For example:
 undefine rule add-view-permission;
 ----
 
+== Rename a type
+
+// tag::rename[]
+To rename a type (to change its label) use the xref:clients:ROOT:studio.adoc[TypeDB Studio] or
+xref:typedb:ROOT:development/api.adoc[TypeDB Driver API] rename method for a type class object:
+xref:clients::java/java-api-ref.adoc#_rename_type_label[Java],
+xref:clients::python/python-api-ref.adoc#_rename_type_label[Python],
+xref:clients::node-js/node-js-api-ref.adoc#_rename_type_label[Node.js].
+// end::rename[]
+
+== Modify a rule
+
+To modify a rule xref:typeql::schema/define-rules.adoc[define a new rule] with the same label.
+It will overwrite the existing rule upon commit.

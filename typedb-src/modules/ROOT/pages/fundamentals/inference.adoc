@@ -35,24 +35,14 @@ facts again.
 Inference works by rules defined in a schema of a database.
 
 What's possible to infer is limited by what can be defined in a rule.
-See the xref:fundamentals/inference.adoc#_rule_validation[rule validation] section for more information.
-
-A conclusion of a rule produces can:
-
-* insert an inferred relation
-* insert an inferred attribute ownership
+See the <<_rule_validation>> section for more information.
 
 [#_rules]
 == Rules
 
 include::typeql::fundamentals.adoc[tag=rules_basics]
 
-[WARNING]
-====
-It is possible to create a recursive logic in the line of `n = n +1` by assigning an attribute ownership with value of
-value variable. Such a rule, if triggered can run indefinitely, while transaction lasts and can cause an out of memory
-error.
-====
+include::typeql::fundamentals.adoc[tag=recursive_logic]
 
 Read more on how to create rules in a schema in the xref:typedb::development/schema.adoc#_define_rules[Define rules]
 section of the xref:typedb::development/schema.adoc[] page.
@@ -63,52 +53,7 @@ And we can use value variables in the conclusion of a rule.
 [#_rule_validation]
 === Rule validation
 
-The `when` clause (condition) of a rule can be a multi statement pattern and can include disjunctions and negations.
-
-The `then` clause (conclusion) should describe a single relation or constraint of ownership of an attribute
-(due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic,window=_blank]).
-
-When using a disjunction in a rule, the disjunctive parts must be bound by variables outside of the `or` statement.
-These variables are the only ones permitted that can be used in the `then` clause.
-
-Since version `2.18.0` we can use abstract types in a rule as long as all the type variables that define which
-instances to create during materialisation are concrete (non-abstract).
-
-.See example with abstract types
-[%collapsible]
-====
-[,typeql]
-----
-define
-
-abstract-person sub entity, abstract, plays friendship:friend; #abstract
-friendship sub relation, relates friend;  #non-abstract
-
-rule concrete-relation-over-abstract-players:
-when {
-   $x isa abstract-person;
-} then {
-   (friend: $x) isa friendship;
-};
-----
-====
-
-The `then` clause of a rule can't use variables that aren't defined/bound in the `when` clause.
-
-The `then` clause of a rule must not insert any instance which occurs negated in its `when` clause, or in the `when`
-clause of any rule it may trigger. Attempting to define such a rule will throw an error.
-
-Rules will not create duplicates of instances which are already in the database or have already been inferred.
-There is no need to check if it already exists in a rule.
-
-There are exactly *three* distinct *conclusions* permitted:
-
-. A new relation.
-. Ownership of an attribute defined by its value.
-. Ownership of an attribute defined by a variable.
-
-The `then` clause must be insertable according to the schema (e.g.,we cannot give an attribute to an instance that is
-not allowed to own that attribute type).
+include::typeql::schema/define-rules.adoc[tag=rule_validation]
 
 == Learn more
 

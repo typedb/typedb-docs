@@ -522,12 +522,14 @@ See the xref:typedb::tutorials/iam-schema.adoc#_add_view_permission_rule_explana
 We can use xref:data/basic-patterns.adoc#_computation[computation] operations and functions in the condition pattern.
 And we can use value variables in the conclusion of a rule.
 
+// tag::recursive_logic[]
 [WARNING]
 ====
 It is possible to create a recursive logic in the line of `n = n +1` by assigning attribute ownership with the value
 of a value variable. If triggered, such a rule can run indefinitely while the transaction lasts and can cause an
 out-of-memory error.
 ====
+// end::recursive_logic[]
 
 For more information on how to create rules in a schema, see the xref:typeql::schema/define-rules.adoc[] page.
 
