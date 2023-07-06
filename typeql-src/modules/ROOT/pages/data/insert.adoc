@@ -4,8 +4,7 @@
 :longTailKeywords: typeql insert, typeql write data, typeql delete, typeql update
 :pageTitle: Insert query
 
-An insert query, optionally preceded by a xref:queries.adoc#_match[match] clause, adds data (e.g., entities,
-relations, and attributes) to a database.
+An insert query adds data (e.g., entities, relations, and attributes) to a database.
 
 == Syntax
 
@@ -17,7 +16,8 @@ Insert queries are written in TypeQL with the following syntax:
 insert <pattern>
 ----
 
-The optional `match` clause uses a pattern to find existing data which is needed to insert new data.
+The optional `match` clause uses a pattern to find existing data needed to insert new data.
+
 For example, to insert a new relation, we need to match every entity, attribute, and/or other relation that will
 play a role in it to be able to address them in the `insert` clause.
 
@@ -30,15 +30,15 @@ A pattern consists of variables and constraints for concepts. For more informati
 xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 ====
 
-The `insert` query is the only data query that can be without a `match` clause. In that case the pattern in the `insert`
-clause will be used exactly once per query.
+The `insert` query is the only data query that can be without a `match` clause. In that case, the `insert` clause
+pattern will be used once per query.
 
-In case there is a `match` clause before an `insert` clause then the number of inserts will depend on the number of
-answers matched by the `match` clause. In that case the `insert` clause will be executed once per every matched answer.
+If there is a `match` clause before an `insert` clause, then the number of inserts will depend on the number of
+answers matched by the `match` clause. The `insert` clause will be executed once per every matched answer.
 
 [IMPORTANT]
 ====
-If there are no matches for a `match` clause in an `insert` query then there will be no inserts.
+If there are no matches for a `match` clause in an `insert` query, then there will be no inserts.
 ====
 
 [NOTE]
@@ -63,7 +63,7 @@ The above query inserts a `person` entity with a `full-name` attribute whose val
 
 [NOTE]
 ====
-If there is no attribute with this value then it will be created by this query.
+If there is no attribute with this value, then it will be created by this query.
 ====
 
 === Example match-insert query
@@ -76,7 +76,7 @@ insert
   $p has email "bob@vaticle.com";
 ----
 
-The above query finds a `person` entity whose `full-name` attribute has a value of `Bob`, and makes it the owner of
+The above query finds a `person` entity whose `full-name` attribute has a value of `Bob` and makes it the owner of
 an `email` attribute with a value of `bob@vaticle.com`.
 
 == Entities
@@ -88,7 +88,7 @@ Use the `insert` keyword followed by a pattern to insert an entity.
 insert $p isa person, has full-name "John Parkson", has email "john.parkson@gmail.com", has credential "qwerty1";
 ----
 
-The above query inserts a `person` entity with following attributes:
+The above query inserts a `person` entity with the following attributes:
 
 * `full-name` -- value is `John Parkson`,
 * `email` -- value is `john.parkson@gmail.com`,
@@ -96,11 +96,11 @@ The above query inserts a `person` entity with following attributes:
 
 [NOTE]
 ====
-If the above query were to be run multiple times, it would create multiple `person` entities -- all owning the same
+If the above query were run multiple times, it would create multiple `person` entities owning the same
 attributes. However, if the `person` entity type definition specified an `email` attribute with the `@key` keyword
-(which adds a xref:schema/define-types.adoc#_key_attribute[uniqueness constraint]), the query would succeed the first time and
-fail every time thereafter because, in this case, only one `person` entity can own any `email` attribute with a
-specific value.
+(which adds a xref:schema/define-types.adoc#_key_attribute[uniqueness constraint]), the query would succeed the first
+time and fail every time after that because, in this case, only one `person` entity can own any `email` attribute with
+a specific value.
 ====
 
 == Relations
@@ -118,16 +118,15 @@ insert
   $a (object: $f, action: $op) isa access;
 ----
 
-In the above example we match our role players before inserting a relation. The number of relations being inserted
-depends on the number of matched results. In our xref:typedb:ROOT:quickstart.adoc#_insert_data[IAM dataset] there is only
-one match by default. But if there are three results matched by the `match` clause -- there will be three relations
-inserted here.
+In this example, we match our role players before inserting a relation. The number of relations depends on the number
+of matched results. In our xref:typedb:ROOT:quickstart.adoc#_insert_data[IAM dataset], there is only one match.
+If the `match` clause matches three results, three relations is inserted.
 
 [NOTE]
 ====
 We can insert a relation with some roles missing a role player, but that represents an incomplete data state (as
-existence of a relation suggest existence of its role players) and there needs to be at least one role player in an
-inserted relation.
+the existence of a relation suggests the existence of its role players), and there needs to be at least one role
+player in an instance of a relation type.
 ====
 
 === Multiple role players
@@ -160,7 +159,7 @@ In short, it makes `Pearle Goodman` and `Masako Holley` owners of the `zewhb.jav
 
 === Relations as role players
 
-In addition to entities and attributes, roles of relations can be played by other relations.
+In addition to entities and attributes, the roles of a relation can be played by other relations.
 
 [,typeql]
 ----
@@ -183,7 +182,7 @@ whose `path` attribute has a value of `zewhb.java`.
 . Inserts a `permission` relation that relates `$s` (as `subject`) to the relation `$ac` (as
 `access`).
 
-In short, it creates a `permission` that lets `Pearle Goodman` modify the `zewhb.java` file.
+In short, it creates the `permission` that lets `Pearle Goodman` to modify the `zewhb.java` file.
 
 The relation of `access` type now plays the role of `access` in the inserted relation of the `permission` type.
 
@@ -209,9 +208,10 @@ Use the `insert` keyword followed by a pattern to insert an attribute.
 insert $s 34 isa size-kb;
 ----
 
-The above query inserts a `size-kb` attribute with a value of `34`. The variable `$s` is optional.
+The above query inserts a `size-kb` attribute with a value of `34`. The variable `$s` is optional in this particular
+query.
 
-However, it is more common to insert one or more attributes with a new entity, relation, or attribute as owner.
+However, inserting one or more attributes with a new entity or a relation as owner is more common.
 
 [,typeql]
 ----
@@ -236,8 +236,8 @@ value of `README.md`. Then, it makes the matching entity/entities own a `size-kb
 
 [NOTE]
 ====
-In the last two examples, if there was an existing `size-kb` attribute with a specified value, a new attribute would
-not be created. Instead, the `file` entity would end up owning the existing one. If an existing one did not exist, a
+In the last two examples, a new attribute would not be created if there was an existing `size-kb` attribute with the
+specified value. Instead, the `file` entity would end up owning the existing one. If an existing one did not exist, a
 new attribute would be created and owned by the `file` entity.
 ====
 
@@ -249,7 +249,7 @@ new attribute would be created and owned by the `file` entity.
 TypeDB supports multivalued attributes by allowing entities, relations, and attributes to own multiple attributes
 of the same attribute type.
 
-For example, if the `person` entity type can own an `email` attribute type, than instance of `person`
+For example, if the `person` entity type can own the `email` attribute type, then an instance of the `person`
 can own multiple (from zero to many) `email` attributes with different values.
 
 ==== Example 1
