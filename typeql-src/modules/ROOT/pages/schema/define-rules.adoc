@@ -10,9 +10,13 @@ However, any types used in a rule must be defined in the schema.
 They are executed only as a part of xref:typeql::data/get.adoc[Get queries] when the
 xref:typedb:ROOT:development/infer.adoc[inference] option is *enabled* in a *read* transaction.
 
+[IMPORTANT]
+====
 The results inferred by rules are virtual because they exist only within the transaction. They are not persisted
 in a database, and any data inferred in a query ceases to exist when the transaction is closed.
-Read more on rules in the <<_rule_validation>> section.
+====
+
+Read more on rules in the <<_rule_validation>> section below.
 
 == Syntax
 

@@ -30,6 +30,7 @@ There is no limitation in the order of types to define. We can define schema typ
 TypeDB Clients validate our schema definition requests before sending them to a TypeDB
 server. We will not be able to commit changes if the resulting schema isn't valid.
 
+// tag::idempotence[]
 [IMPORTANT]
 ====
 Define queries are idempotent.
@@ -38,7 +39,7 @@ Running the same define query a second time shall not produce any changes to the
 
 Running a modified version of an already executed schema definition query can add concepts to the
 schema but mostly can't modify existing ones. TypeQL schema statements do NOT replace existing type definitions but
-rather add the missing parts.
+add missing parts.
 
 Two notable exceptions are:
 
@@ -46,6 +47,7 @@ Two notable exceptions are:
 - **annotations**, like the `@key` keyword (which we can remove by redefining attribute ownership without the
   annotation).
 ====
+// end::idempotence[]
 
 [#_define_query]
 == Define query
