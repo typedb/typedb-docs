@@ -2,32 +2,18 @@
 :Summary: Reading data from a TypeDB database with a Get query.
 :keywords: typeql, query, get, match, pattern, read, retrieve
 :longTailKeywords: typeql get, match get, typeql read, typedb read
-:pageTitle: Reading data
+:pageTitle: Get query
 
-A get query retrieves data from a TypeDB database. It is the only type of query to be used in a read transaction
+A get query retrieves data from a TypeDB database.
+
+It is the only type of query to be used in a read transaction.
 Hence, it’s the only query type that can use xref:typeql::schema/define-rules.adoc[rules]-based
 xref:typedb::fundamentals/inference.adoc[inference,window=_blank].
 
-////
-.How to try a Get query
-[%collapsible]
-====
-To try the following examples use xref:clients:ROOT:studio.adoc[TypeDB Studio] or other TypeDB
-xref:clients:ROOT:clients.adoc[Clients].
-
-For those developing applications with xref:clients:ROOT:clients.adoc#_typedb_drivers[TypeDB Drivers], please see the
-instructions and examples of how to send a query for a specific language/framework:
-xref:clients:ROOT:java/java-overview.adoc[Java],
-xref:clients:ROOT:python/python-overview.adoc[Python],
-xref:clients:ROOT:node-js/node-js-overview.adoc[Node.js].
-====
-////
-
 A Get query triggers a search in a database based on the xref:typeql::data/basic-patterns.adoc[pattern] in the
-`match` clause. It is used to retrieve concepts (data instances or types) and values from a database. The result of
-a get query can differ depending on the query itself. <<_modifiers,Modifiers>>, including
-<<_aggregation,aggregation>> and <<_group,grouping>>, can drastically change the response format.
-For more information, see the xref:typedb:ROOT:development/response.adoc[Response interpretation] page.
+`match` clause. It retrieves concepts and values from a database. The result of a get query can vary depending on the
+query. <<_modifiers,Modifiers>>, including <<_aggregation,aggregation>> and <<_group,grouping>>, can drastically change
+the response format. See the xref:typedb:ROOT:development/response.adoc[Response interpretation] page.
 
 [NOTE]
 ====
@@ -149,9 +135,9 @@ How many results are we expecting to retrieve from a database?
 Spoiler: **13** is the wrong answer here.
 ====
 
-As the example above doesn't have any <<_modifiers,modifiers>>, <<_aggregation,aggregation>>, or <<_group,grouping>>
+As the example above doesn't have any <<_modifiers,modifiers>>, <<_aggregation,aggregation>>, or <<_group,grouping>>,
 the number of results will depend on the number of matched solutions for the pattern in the `match` clause. So the
-TypeDB query processor will explore all possible solutions: every solution consisting of exactly one `person` entity
+TypeDB query processor will explore all possible solutions: each consisting of one `person` entity
 and one `file` entity. There are only `3 * 10 = 30` possible combinations of person and file entities, so we will
 get *30* results.
 
@@ -247,7 +233,7 @@ Those that don't have the attribute ownership won't be matched by the `match` cl
 results in the original query: five `person` instances owning the attribute with value `false` and one with `true`.
 
 If we use `get $cft;` clause instead, we'll get only two results in response because we will only get
-`certified-fortune-teller` instances and there are only two of those: an instance with the `true` value and another
+`certified-fortune-teller` instances, and there are only two of those: an instance with the `true` value and another
 instance of the type with the `false` value.
 
 The five instances of `person` type all have ownership over the
