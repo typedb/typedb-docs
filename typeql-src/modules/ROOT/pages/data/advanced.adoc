@@ -19,8 +19,8 @@ toc::[]
 
 === Schema
 
-The statements below can be used as a standalone patterns or in a
-xref:typeql::data/basic-patterns.adoc#_combining_statements[combination] with other statements
+The statements below can be used as standalone patterns or
+xref:typeql::data/basic-patterns.adoc#_combining_statements[combined] with other statements
 to find types defined in a database's schema.
 
 Use the xref:data/get.adoc[Get] query to try them.
@@ -88,7 +88,7 @@ The patterns below are designed for the IAM schema and dataset, but they can ret
 | `$p isa! person, has $a;`
 
 | Attribute
-| `+$<var_label> [isa[!] <attr-type>] (contains "<text>" &#124; like "<regex>" &#124; <value>) [, <has-attribute statement>...];+`
+| `+$<var_label> [isa[!] <attr-type>] (contains "<text>" \| like "<regex>" \| <value>) [, <has-attribute statement>...];+`
 a|
 * `$a "Kevin Morrison";`
 * `$b isa full-name;`
@@ -99,7 +99,7 @@ a|
 | `$pe (subject: $p, access: $ac) isa permission, has validity true;`
 
 | has-attribute statement
-| `+has <attr-type> ($<var_label> &#124; [<comparison-operator>] <value> );+`
+| `+has <attr-type> ($<var_label> \| [<comparison-operator>] <value> );+`
 | `$f has size-kb > 300;`
 
 | comparison

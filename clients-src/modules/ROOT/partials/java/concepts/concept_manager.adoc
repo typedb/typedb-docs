@@ -210,7 +210,8 @@ Creates a new AttributeType if none exists with the given label, or retrieves th
 |===
 |Name |Description |Type |Required |Default Value
 | label | The label of the AttributeType to create or retrieve. | string | True | N/A
-| valueType | The value type of the AttributeType to create or retrieve. | AttributeType.ValueType (STRING &#124; DATETIME &#124; LONG &#124; DOUBLE &#124; BOOLEAN) | True | N/A
+| valueType | The value type of the AttributeType to create or retrieve.
+| AttributeType.ValueType (STRING \| DATETIME \| LONG \| DOUBLE \| BOOLEAN) | True | N/A
 |===
 
 === Returns
