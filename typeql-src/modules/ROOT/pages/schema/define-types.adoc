@@ -177,17 +177,7 @@ match $s sub thing;
 
 image::schema-example-1.png[Schema visualization example]
 
-[WARNING]
-====
-The `thing` built-in type will be deprecated in one of the upcoming versions and deleted in TypeDB version 3.0. To
-produce the same result as the above example,
-use the following query:
-
-[,typeql]
-----
-match $s sub $t; { $t type entity; } or { $t type relation; } or { $t type attribute; };
-----
-====
+include::typedb::quickstart.adoc[tag=thing_deprecation]
 
 In the following sections, we can find more detailed information on different schema definition queries and
 possibilities.

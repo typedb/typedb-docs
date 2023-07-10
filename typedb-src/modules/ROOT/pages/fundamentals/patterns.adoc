@@ -155,7 +155,7 @@ elements:
 * <<_arithmetic_operations,arithmetic operation>>,
 * other <<_built_in_functions,built-in function>>.
 
-.See expression example
+.See an example of a query with expression
 [%collapsible]
 ====
 [,typeql]
@@ -164,7 +164,6 @@ match
   $s isa size-kb;
   ?x = round($s/2) + 1;
 ----
-====
 
 The query above will find all instances of data for the `size-kb` attribute type for a concept variable `$s`.
 For a value variable `?x`, we divide the value of the instance of the attribute in `$s` by a constant value `2`,
@@ -172,6 +171,8 @@ rounding it, and adding `1` to the result. Hence, every result for this query co
 
 * `$s` equals to a value of an attribute of `size-kb` type,
 * `?x` equals the result of the computation described in the query, which depends on the attribute's value.
+
+====
 
 [#_computation]
 === Computation
@@ -212,10 +213,10 @@ $f isa file, has size-kb $s;
 ?mb = $s/1024;
 ?mb > 1;
 ----
-====
 
 In the example above, we designed a pattern to find instances of data for `file` type owning `size-kb` attribute
 with a value that, after dividing it by 1024 (to get megabytes out of kilobytes), is bigger than 1.
+====
 
 [#_built_in_functions]
 ==== Built-in functions

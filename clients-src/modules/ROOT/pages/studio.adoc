@@ -77,8 +77,7 @@ The main panels of the GUI are marked with the following numbers on the image ab
 . Text editor tab
 . Toolbar
 
-To use most of TypeDB Studio functions we need to connect to a TypeDB server and
-choose a project directory.
+To use most of TypeDB Studio functions we need to connect to a TypeDB server and choose a project directory.
 
 [#_connect_to_typedb_server]
 === Connect to TypeDB server
@@ -200,6 +199,7 @@ One of the most important functions of TypeDB Studio is to provide an environmen
 TypeDB databases. For that we have the *Text editor* panel with TypeQL syntax highlighting and the *Toolbar*
 with transaction controls.
 
+[#_text_editor_panel]
 ==== Text editor panel
 
 *Text editor* panel doesn't have a visible title, but it's the biggest area in the middle of the TypeDB Studio +
@@ -223,31 +223,75 @@ main section:
 * Run File/Run Selection
 * Increase/Decrease/Reset Text Size
 
-==== Run panel
+=== Query execution
 
-Under the *Text editor* panel there is the *Run* panel, but it is collapsed by default. To expand it perform any
-query or just click on the upwards-pointing chevron in the bottom right corner of TypeDB Studio window, above the
-cursor location indicator.
+To <<_run_query,run>> a query that we have prepared in a tab of the <<_text_editor_panel>>,
+use the <<_transaction_control, transaction controls>> in the top *Toolbar*.
+
+[#_run_query]
+==== How to run a query
+
+Make sure TypeDB Studio is <<_connect_to_typedb_server,connected>> to a TypeDB server,
+database is <<_select_active_database,selected>> and project directory is <<_open_a_project_directory,opened>>.
+
+. Make sure the query to run is open in the active tab of the text-editor panel. +
+If it's not the case: <<_create_a_new_file,write a new one>> or <<_open_an_existing_file,open an existing>> file
+with query to run.
++
+image::studio/project-schema-pasted.png[Query text]
+
+. Choose the correct xref:typedb::development/connect.adoc#_sessions[session,window=_blank] (`schema`/`data`) type and
+  xref:typedb::development/connect.adoc#_transactions[transaction,window=_blank] (`read`/`write`) type to run the query
+  by clicking on those options on the *Toolbar* switches.
+. Run the query by clicking on the btn:[Run Query] (▶) button. +
+*Run* panel will be expanded on the bottom of the query to show the results of the query execution attempt.
++
+image::studio/project-schema-query-run.png[Write the Schema]
+
+. If it's the `write` transaction type -- wait for transaction control options to be ready and commit or close the
+transaction (by clicking on the btn:[Commit transaction] (✔) or btn:[Close transaction] (x) buttons respectively).
+
+The result of the query is displayed in the *Run* panel under the Text editor.
+
+If any error occurs during the query validation or transaction it is shown as red popup in the bottom right corner of
+the TypeDB Studio window. Additional information about the error is displayed in the results of the query in the
+*Run* panel.
+
+If a `write` transaction committed successfully -- a blue pop-up with a transaction confirmation is displayed.
+See example below.
+
+image::studio/project-schema-committed.png[Commit the Transaction]
+
+For more information on different control elements for query execution, see the <<_transaction_control>> section below.
+
+[#_results]
+==== How to see results
+
+Under the *Text editor* panel there is the *Run* panel, but it is collapsed by default if no query has been run yet.
+
+To expand it perform any query or just click on the upwards-pointing chevron in the bottom right corner of
+TypeDB Studio window, above the cursor location indicator.
 
 *Run* panel has 2 sets tabs:
 
 * Tabs at the top of the *Run* panel are for different query attempts.
 +
-By default, every query sent will overwrite the
-existing tab, but if we enable the pin icon at the beginning of the tab name by clicking it -- the tab will become
-pinned and stay. A new tab will appear on the right from the last pinned one upon next query execution.
+By default, every query sent will overwrite the existing tab, but if we enable the pin icon at the beginning
+of the tab name by clicking it -- the tab will become pinned and stay. A new tab will appear on the right from
+the last pinned one upon next query execution.
 
 * Tabs at the bottom of the *Run* panel are for different results for the currently selected query attempt (tab
 at the top of the *Run* panel). These include the `Log` tab with direct textual Studio output and the `Graph`
 tabs (one per every query statement in the *Text editor* panel) with graph visualization of response.
 
+Use `Log` tab to see textual output from the query execution (including error and query execution messages)
 // #todo add Log tab section and Graph visualization section with preview panel description -
 
 [#_transaction_control]
-==== Transaction control
+=== Transaction controls
 
-To execute a query written in the *Text editor* panel we have the *Toolbar* elements located right from the
-database selection drop-down menu. See below.
+To control query execution we have the top *Toolbar* elements located to the right from the database selection
+drop-down menu. See below.
 
 image::studio/studio-transaction-controls.png[Transaction controls]
 
@@ -277,36 +321,62 @@ It will open a transaction (with the session type and transaction type specified
 and execute the TypeQL code against the selected database.
 . btn:[Stop Signal] (lighting (⚡) icon) button -- stop query execution after the next result.
 
-===== Run query
+[#_inference]
+== Inference
 
-Make sure TypeDB Studio <<_connect_to_typedb_server,connected>> to a TypeDB server,
-database <<_select_active_database,selected>> and project directory <<_open_a_project_directory,opened>>.
+To run a query with inference, simply switch the inference option *on* before executing a query.
 
-. <<_create_a_new_file,Write a new>> or <<_open_an_existing_file,open an existing>> file with query to run.
-+
-image::studio/project-schema-pasted.png[Query text]
+The xref:typedb::fundamentals/inference.adoc[inference] transaction option can be switched *on* and *off* with
+the btn:[infer] button in the top *Toolbar*.
 
-. Choose the correct xref:typedb::development/connect.adoc#_sessions[session,window=_blank] (`schema`/`data`) type and
-  xref:typedb::development/connect.adoc#_transactions[transaction,window=_blank] (`read`/`write`) type to run the query
-  by clicking on those options on the *Toolbar* switches.
-. Run query by clicking on the btn:[Run Query] (▶) button. *Run* panel will be expanded on the bottom of the
-  query to show the results of the query execution attempt.
-+
-image::studio/project-schema-query-run.png[Write the Schema]
+[NOTE]
+====
+If the btn:[infer] button is inactive, double-check the following prerequisites are met:
 
-. If it's the `write` transaction type -- wait for transaction control options to be ready and commit or close the
-transaction (by clicking on the btn:[Commit transaction] (✔) or btn:[Close transaction] (x) buttons respectively).
+- there is an active database <<_connect_to_typedb_server,connection>>;
+- there is a database <<_select_active_database,selected>>;
+- the transaction type is set to *read*.
+====
 
-The result of the query is displayed in the *Run* panel under the Text editor.
+As a result of running a query with inference we can get <<_results,results>> in the *Run* panel. If there are any
+inferred instances of data they will be shown with green lining in the graph visualization. And inferred connections
+(ownerships or roles played) will be shown as green arrows. See the example below.
 
-If any error occurs during the query validation or transaction it is shown as red popup in the bottom right corner of
-the TypeDB Studio window. Additional information about the error is displayed in the results of the query in the
-*Run* panel.
+[#_inference_results]
+image::clients::studio/inference.png[Inference results example]
 
-If a `write` transaction committed successfully -- a blue pop-up with a transaction confirmation is displayed. See
-example below.
+[#_explanation]
+=== Explanation
 
-image::studio/project-schema-committed.png[Commit the Transaction]
+To run a query with explanation, simply switch the explanation option *on* before executing a query. To be able to do
+that the inference and the snapshot options must also be enabled.
+
+The xref:typedb::development/infer.adoc#_explain_query[explanation] transaction option can be switched
+*on* and *off* with the btn:[explain] button in the top *Toolbar*. The inference and snapshot options can be enabled
+by the btn:[infer] and the btn:[snapshot] buttons respectively.
+
+[NOTE]
+====
+If the btn:[explain] button is inactive, double-check the following:
+
+- the btn:[infer] button is *on*;
+- the btn:[snapshot] button is *on*;
+- there is an active database <<_connect_to_typedb_server,connection>>;
+- there is a database <<_select_active_database,selected>>;
+- the transaction type is set to *read*.
+====
+
+As a result of running a query with inference and explanation options we can get <<_results,results>> in the
+*Run* panel. If there are any inferred instances of data they will be shown with green lining in the graph
+visualization. And inferred connections (ownerships or roles played) will be shown as green arrows. As it was shown
+in the <<_inference_results,inference example>> above.
+
+The only difference is -- double-clicking on any explainable inferred results will spawn an explanation. An explanation
+is a set of additional instances and connections, that provide a direct explanation of the selected explainable inferred
+result. See the example below.
+
+[#_explanation_results]
+image::clients::studio/explanation.png[Explanation example]
 
 [#_types_browser_capabilities]
 == Type browser capabilities
@@ -377,8 +447,8 @@ In TypeDB Studio we can rename a type in two ways:
 
 * Open the type editor window by double-clicking on the type. At the very top click on the pencil icon immediately
 right from the type name. Edit the name in the Label field and press btn:[Rename] button to finalize.
-* Right-click on the type in the *Type browser* list. Click on the *Rename Type* option. Edit the name in the Label field
-and press btn:[Rename] button to finalize.
+* Right-click on the type in the *Type browser* list. Click on the *Rename Type* option. Edit the name in the Label
+field and press btn:[Rename] button to finalize.
 
 [NOTE]
 ====
@@ -437,8 +507,8 @@ if no limit explicitly stated in the query. Default value: *1000*.
 
 | 2.18.0
 | 1
-| 2.18.0
-| 2.18.0
+| 2.18.0 - 2.19.1
+| 2.18.0 - 2.19.1
 
 | 2.14.1 to 2.17.0
 | N/A

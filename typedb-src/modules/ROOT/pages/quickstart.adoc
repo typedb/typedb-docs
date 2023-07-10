@@ -188,17 +188,21 @@ match $t sub thing;
 The above query returns all types in the schema of the current database.
 By default, the results in TypeDB Studio are visualized as a graph.
 
+// tag::thing_deprecation[]
 [WARNING]
 ====
-The `thing` built-in type will be deprecated in one of the upcoming versions and deleted in TypeDB version `3.0`.
-Consider using `entity`, `attribute`, or `relation` built-in types instead. To produce the same result as the above
-example, use the following query:
+The `thing` internal type will be deprecated in one of the upcoming versions and deleted in TypeDB version `3.0`.
+
+Consider using `entity`, `attribute`, or `relation` built-in types instead.
+
+To produce the same result as the above example, use the following query:
 
 [,typeql]
 ----
 match $s sub $t; {$t type entity;} or {$t type relation;} or {$t type attribute;};
 ----
 ====
+// end::thing_deprecation[]
 
 image::iam-full-schema-studio.png[IAM schema graph, width = 600, link=self]
 
@@ -256,7 +260,7 @@ results as shown in the image below.
 
 image::studio-iam-data.png[IAM data example, width = 55%, link=self, window=_blank]
 
-== Schema and data
+== Summary
 
 The Quickstart guide above provides a fast and easy way to set up the minimum IAM database environment:
 a TypeDB database with IAM schema and a small dataset. It can be used for examples in this documentation
