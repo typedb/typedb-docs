@@ -25,7 +25,8 @@ https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window
 
 == Query structure
 
-A TypeQL xref:queries.adoc[query] consists of clauses:
+A TypeQL xref:typeql::queries.adoc[query] consists of clauses (one, two or three).
+There are the following types of clauses:
 
 * `define`
 * `undefine`
@@ -34,15 +35,76 @@ A TypeQL xref:queries.adoc[query] consists of clauses:
 * `insert`
 * `delete`
 
-The `get` clause starts with the `get` keyword, followed by a list of variables and optional modifiers at the end.
+A clause contains a single pattern, or a list of variables:
 
-All other TypeQL clauses consist of the defining keyword (the same as the clause's name) and a pattern.
+- The `get` clause starts with the `get` keyword, followed by a list of variables and optional modifiers at the end.
+- All other TypeQL clauses consist of the defining keyword (the same as the clause's name) and a pattern.
+
+A pattern consists of one or more statements.
 
 .TypeQL query structure
 * Query
 ** Clause
 *** Pattern
 **** Statement
+
+.See a simple query example
+[%collapsible]
+====
+[,typeql]
+----
+match $p isa person;
+get $p;
+limit 1;
+----
+
+In the example above we can see a single xref:typeql::data/get.adoc[Get] query with two clauses: `match` and `get`.
+The query also has a modifier to xref:typeql::data/get.adoc#_limit_the_results[limit] the number of results returned
+to exactly one.
+====
+
+A string or a file with multiple TypeQL queries is a script.
+
+.See a TypeQL script example
+[%collapsible]
+====
+[,typeql]
+----
+insert
+$p isa person,
+  has full-name "Masako Holley",
+  has email "masako.holley@vaticle.com";
+insert
+$p isa person,
+  has full-name "Pearle Goodman",
+  has email "pearle.goodman@vaticle.com";
+insert
+$p isa person,
+  has full-name "Kevin Morrison",
+  has email "kevin.morrison@vaticle.com";
+----
+
+The above example contains three xref:typeql::data/insert.adoc[insert] queries without a match clause.
+
+To rewrite it as a single query we need to remove the second and third `insert` keyword and change variables, so that
+they are not overlapping (otherwise, we will insert a single person entity with three full-names and three emails):
+
+[,typeql]
+----
+insert
+$p1 isa person,
+  has full-name "Masako Holley",
+  has email "masako.holley@vaticle.com";
+
+$p2 isa person,
+  has full-name "Pearle Goodman",
+  has email "pearle.goodman@vaticle.com";
+
+$p3 isa person,
+  has full-name "Kevin Morrison",
+  has email "kevin.morrison@vaticle.com";
+----
+====
 
 For more information on patterns, see the xref:typeql::data/basic-patterns.adoc[]
 and the xref:typeql::data/advanced.adoc[] pages.
@@ -144,7 +206,7 @@ Types can be subtypes of other subtypes, resulting in a type hierarchy.
 .See simple example
 [%collapsible]
 ====
-For example, `business unit` subtypes `user group`, which subtypes `subject`, which subtypes `entity` root type.
+For example, `business-unit` subtypes `user-group`, which subtypes `subject`, which subtypes `entity` root type.
 Also, `person` subtypes `user`, that subtypes `subject`:
 
 * entity
@@ -153,6 +215,19 @@ Also, `person` subtypes `user`, that subtypes `subject`:
 **** business unit
 *** user
 **** person
+
+In TypeQL we can define these types with the following query:
+
+[,typeql]
+----
+define
+
+subject sub entity;
+user-group sub subject;
+business-unit sub user-group;
+user sub subject;
+person sub user;
+----
 ====
 
 There is a strict hierarchy of types, so the whole typing system of a TypeDB database can always be represented
@@ -637,6 +712,64 @@ in a database.
 For more information why the `get` clause in the above example needs `$p` see the
 xref:typeql:ROOT:data/get.adoc#_number_of_answers[Get query] page or the
 xref:typeql:ROOT:data/get.adoc#_explanation_of_filter[example explanation].
+
+== Formatting
+
+=== Indentation
+
+Any indentation in TypeQL will be ignored and serves are only for visual aid.
+
+.See an example indentation
+[%collapsible]
+====
+The following three queries are identical in their result:
+
+[,typeql]
+----
+insert $p isa person, has full-name "Masako Holley", has email "masako.holley@vaticle.com";
+
+insert
+$p isa person,
+  has full-name "Masako Holley",
+  has email "masako.holley@vaticle.com";
+
+insert
+$p
+isa
+person
+,
+has
+full-name
+"Masako Holley"
+,
+has
+email
+"masako.holley@vaticle.com"
+;
+----
+====
+
+//#todo TypeQL Styleguide
+
+=== Comments
+
+TypeQL uses in-line comments only. To make a comment use the `#` symbol.
+
+.See a comment example
+[%collapsible]
+====
+[,typeql]
+----
+# This is the first query
+insert # this is the insert query without a match clause
+$p isa person; # this line inserts a person entity
+$p has full-name "Bob"; # in this line we add a constraint to a $p in the same query
+
+# This is the second query
+insert
+$p isa person, has full-name "Alex"; # In this query we insert a new person, rather adding to an existing one
+----
+====
 
 == Learn more
 

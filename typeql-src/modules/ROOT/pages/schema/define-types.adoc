@@ -133,7 +133,7 @@ email sub id, value string;
 subject sub entity,
     abstract,
     owns credential,
-    plays group-membership:member;
+    plays group-membership:group-member;
 
 user sub subject,
     abstract;
@@ -146,8 +146,10 @@ membership sub relation,
     abstract,
     relates parent,
     relates member;
+
 group-membership sub membership,
-    relates group as parent;
+    relates group as parent,
+    relates group-member as member;
 ----
 
 The above example can be run in xref:clients:ROOT:studio.adoc[TypeDB Studio]. See the
@@ -166,14 +168,17 @@ xref:typedb:ROOT:quickstart.adoc[Quickstart guide] for full descriptions of the 
 
 //#todo insert real images of icons above
 
-After a successful commit, all the types can be seen in the Types panel in the bottom left part of the Studio window.
-In addition, the following query can be run in a new tab in *Schema* / *Read* mode to see the schema visualized
-as a graph (as shown below).
+After a successful commit, all the types can be seen in the Type Browser panel in the bottom left part of the Studio
+window.
+
+The following query can be run in a new tab in *Schema* / *Read* mode to see the schema visualized as a graph.
 
 [,typeql]
 ----
 match $s sub thing;
 ----
+
+As the result of the above query TypeDB Studio should display a graph visualization of the schema defined earlier.
 
 image::schema-example-1.png[Schema visualization example]
 

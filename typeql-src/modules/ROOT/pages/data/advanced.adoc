@@ -262,7 +262,7 @@ include::typedb::quickstart.adoc[tag=thing_deprecation]
 [#_entity_matching]
 ==== Entity matching
 
-===== Specific types or nested subtypes instances
+===== Instances of the specific type or its subtypes
 
 Use an `instance` pattern to find all entities of a specific entity type (and of all its subtypes).
 
@@ -271,7 +271,7 @@ Use an `instance` pattern to find all entities of a specific entity type (and of
 match $p isa person;
 ----
 
-The above query returns all entities of the `person` entity and any of its nested subtypes.
+The above query returns all entities of the `person` entity and any of its subtypes.
 
 [IMPORTANT]
 ====
@@ -281,17 +281,17 @@ To limit results to only direct instances of the given type use `isa!` instead. 
 ====
 
 [#_specific_types_instances]
-===== Specific types instances
+===== Instances of the specific type only
 
 Use an `instance` pattern with an exclamation mark (`!`) to find all entities of a specific type only
-(and none of its nested subtypes).
+(and none of its subtypes).
 
 [,typeql]
 ----
 match $u isa! user;
 ----
 
-The above query finds all `user` entities. It excludes any entities whose type is a nested subtype of `user`,
+The above query finds all `user` entities. It excludes any entities whose type is a subtype of `user`,
 so `person` entities would not be included.
 
 ===== Owners of a specific attribute type
@@ -767,6 +767,14 @@ Without modifiers the response would look like the following:
     $e "m.holley@vaticle.com" isa email;
 }
 ----
+
+[WARNING]
+====
+The `iid` field is an internal id, used to address in query results different instances that doesn't have a value.
+
+It should not be used for any logic as there are no guarantees provided regarding it.
+It may be deprecated in future versions of TypeDB.
+====
 
 For more information on how to use the Get query please see the xref:typeql::data/get.adoc[] page.
 
