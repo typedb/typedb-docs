@@ -140,11 +140,11 @@ are only used within the scope of a particular query or rule.
 To persist the value of a value variable, we can use an attribute type with a matching value type.
 Value variables can be one of the following value types (the same as value types for attributes):
 
-* `long`,
-* `double`,
-* `boolean`,
-* `string`,
-* `datetime`.
+* `long`
+* `double`
+* `boolean`
+* `string`
+* `datetime`
 
 [#_expression]
 An *expression* describes a computation of the value for a value variable. It contains any combination of the following
@@ -180,28 +180,28 @@ rounding it, and adding `1` to the result. Hence, every result for this query co
 [#_arithmetic_operations]
 ==== Arithmetic operations
 
-The following keywords can be used for arithmetic operations between value variables, values of attributes that are
-stored in concept variables, or constants:
+The following keywords can be used for arithmetic operations between <<_value_variables,value variables>>,
+values of attributes that are stored in concept variables, or constants:
 
 //#todo reimplement the links to examples
 1. `()` -- parentheses.
-//See <<#_using_parentheses,example>>.
+See an xref:typeql::data/advanced.adoc#_using_parentheses[example].
 2. `^` -- exponentiation (power).
-//See <<#_using_exponentiation,example>>.
+See an xref:typeql::data/advanced.adoc#_using_exponentiation[example].
 3. `*` -- multiplication.
-//See <<#_using_multiplication,example>>.
+See an xref:typeql::data/advanced.adoc#_using_multiplication[example].
 4. `/` -- division.
-//See <<#_using_division,example>>.
+See an xref:typeql::data/advanced.adoc#_using_division[example].
 5. `%` -- https://en.wikipedia.org/wiki/Modulo[modulo,window=_blank]. Returns the remainder of a division.
-//See <<#_using_modulo,example>>.
+See an xref:typeql::data/advanced.adoc#_using_modulo[example].
 6. `+` -- addition.
-//See <<#_using_addition,example>>.
+See an xref:typeql::data/advanced.adoc#_using_addition[example].
 7. `-` -- subtraction.
-//See <<#_using_subtraction,example>>.
+See an xref:typeql::data/advanced.adoc#_using_subtraction[example].
 
 [IMPORTANT]
 ====
-The above list is sorted by the order in which those operations are applied.
+The above list is sorted by the order in which those operations are applied in an expression.
 ====
 
 .See example
@@ -226,17 +226,17 @@ Those arguments are separated by a comma as a separator. The following built-in 
 
 //#todo Reimplement the links to examples
 * `min` -- the minimum of the arguments.
-//See <<#_using_minimum_function,example>>.
+See xref:typeql::data/advanced.adoc#_using_minimum_function[example].
 * `max` -- the maximum of the arguments.
-//See <<#_using_maximum_function,example>>.
+See xref:typeql::data/advanced.adoc#_using_maximum_function[example].
 * `floor` -- the floor function (rounding down).
-//See <<#_using_floor_function,example>>.
+See xref:typeql::data/advanced.adoc#_using_floor_function[example].
 * `ceil` -- the ceiling function (rounding up).
-//See <<#_using_ceiling_function,example>>.
+See xref:typeql::data/advanced.adoc#_using_ceiling_function[example].
 * `round` -- the default (half-way up) rounding function.
-//See <<#_using_rounding_function,example>>.
+See xref:typeql::data/advanced.adoc#_using_rounding_function[example].
 * `abs` -- the modulus (or absolute value) function.
-//See <<#_using_absolute_value_function,example>>.
+See xref:typeql::data/advanced.adoc#_using_absolute_value_function[example].
 
 // tag::combining[]
 [#_combining_statements]
