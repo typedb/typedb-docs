@@ -1,0 +1,141 @@
+= Introduction
+:keywords: typedb, database, documentation, introduction, overview
+:longTailKeywords: typedb introduction, typedb overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: TypeDB introduction
+:summary: A birds-eye view of TypeDB.
+
+== Summary
+
+TypeDB:
+
+* Is a strongly typed database that is unique in many ways:
+ ** has its own special xref:fundamentals/types.adoc[static type system],
+ ** uses xref:fundamentals/types.adoc#_root[Entity-Relationship model], extended with
+xref:fundamentals/types.adoc#_attribute_types[Attributes] and xref:fundamentals/inference.adoc#_rules[Rules],
+// - #todo add link to the types article
+ ** supports subtyping and inheritance like OOP languages,
+ ** uses declarative queries with its own query language: xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank].
+ We set the requirements for the result but do not specify how to achieve it.
+* Is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank]) DBMS with
+xref:development/connect.adoc#_acid_guarantees[ACID] guarantees.
+* Has data separated by xref:development/connect.adoc#_databases[databases], each one with its own schema.
+
+////
+Comparison of TypeDB with most common types of databases:
+
+* xref:../../12-comparisons/00-sql-and-typeql.adoc[SQL]
+* xref:../../12-comparisons/01-semantic-web-and-typedb.adoc[Semantic web]
+* xref:../../12-comparisons/02-graph-databases-and-typedb.adoc[Graph]
+////
+
+//== Thinking in TypeQL and TypeDB
+
+// #todo Change the link to TypeQL -
+
+The core of any TypeDB database is the representation of our business domain: the xref:development/schema.adoc#_schema[schema].
+A schema is the blueprint of a TypeDB database. Using TypeQL, we define a schema to model a domain
+true to nature:
+
+* Types are defined to add context and constraints to data using strong typing with inheritance. All user-defined
+  types in a schema are subtypes of other user-defined types or one of the following built-in root types:
+** Entities. Representing self-sufficient objects.
+** Relations. Representing n-ary relationships.
+** Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
+* Rules are defined to add a logical deduction to the schema. Any read queries with the inference option enabled can
+  benefit from new attribute ownerships or relations that are deduced from data patterns. Those inferred
+  concepts are transaction bound and are not persisted in a database.
+
+// ** Context helps us to correctly model, classify and query our data the most logical way.
+// ** Constraints are used for query validation and limiting the scope of queries.
+
+== TypeDB description
+
+TypeDB is a new kind of DBMS:
+
+* not an SQL database, but uses an enhanced Entity-Relationship model, further extended by attributes as first-class
+  citizens;
+* not a graph database, but utilizes the power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs,window=_blank]
+  without the need for developers to understand how it works to use it.
+
+[NOTE]
+====
+Entity, Relation, and Attribute correspond to the components of an Entity-Relation-Attribute model, an
+extension of the well-known https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model[ER model,window=_blank],
+in which attributes (properties) are also treated as first-class citizens.
+====
+
+TypeDB guarantees data integrity and safety while enabling data-level inferences within the database.
+A strong type system with subtyping and inheritance helps us break down complex problems into
+meaningful and logical data models. TypeDB uses its own declarative query language, TypeQL, that gives powerful
+abstraction over the implementation of storage to enable us to use complex data patterns and the reasoning engine.
+
+With TypeQL, we describe data that we need by xref:typedb::fundamentals/patterns.adoc#_patterns_overview[patterns]
+consisting of constraints. TypeDB will use those patterns to retrieve all data that satisfies all the constraints
+in the most efficient way. We don't have to think about query optimization, limitations of data storage
+implementation, etc.
+
+By combining TypeQL and TypeDB, we can close the gap between the language of our domain and the database. Queries
+written in TypeQL are easily readable. Carefully designed database xref:development/schema.adoc#_schema[schema] lets us
+use the terminology of the business domain, making our queries sound familiar to subject-matter experts. This new
+paradigm gives us a higher level of flexibility and expressivity to simplify our work and tackle domains that
+seemed impossibly complex before.
+
+TypeQL and TypeDB allow us to build a data model with entity, relation, and attribute types. Inheritance allows us to
+define a hierarchy of subtypes and reduce complexity, while rules and relations with type constraints on their
+role-players further enhance our schema. These abstractions provide a higher-level framework to build intuitive
+and understandable models.
+
+// We can use the power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs] without the need to understand graphs!
+
+In other databases, we implement relations with a join table (SQL) or an edge between two vertices
+(graph databases). TypeDB relations generalize both: they flexibly relate one, two, or any number of roles. And each
+role can be played by any types defined as role-players for this particular role in the schema.
+
+////
+In other databases, relations may be implemented with a join table
+(xref:../../12-comparisons/00-sql-and-typeql.adoc[SQL]), or an edge between two vertices
+(xref:../../12-comparisons/02-graph-databases-and-typedb.adoc[graph] databases). TypeDB relations generalize both: they
+flexibly relate one, two, or any number of data instances at the same time.
+////
+
+This expanded idea of a relation is more powerful than either SQL or graph relations. However, we can further
+improve this idea: if we allow relations not just to specify which instances relate to each other but also _how_
+they relate by adding context. This has been implemented in the form of a role.
+
+Any relation type specifies one or many roles connected by this relation. Any type in a schema can play roles
+that were explicitly defined in the type definition. Roles have labels that provide the context and type
+constraints for roles to enforce this context.
+
+Finally, we can use the reasoning engine to infer new data based on the patterns found in the database. To do
+that, we define rules in the database schema. Rules can dramatically shorten complex queries (e.g., transitivity of
+relations), perform xref:development/infer.adoc#_explain_query[explainable] knowledge discovery, and implement business
+logic at the database level.
+
+== Learn more
+
+1. First, use the xref:installation.adoc[installation guide] to install TypeDB on the local machine.
+
+2. The TypeDB journey starts with our xref:quickstart.adoc[Quickstart guide].
++
+It goes through the step-by-step process of creating a new database, applying schema, loading sample data,
+   and querying. The resulting environment is suitable for executing most examples in our documentation.
+   On top of that it familiarizes users with TypeDB Studio — IDE, specifically designed for TypeDB
+   database management and development.
+
+3. Fundamentals -- essential knowledge of how TypeDB works:
+
+    * xref:fundamentals/types.adoc[]
+    * xref:fundamentals/queries.adoc[]
+    * xref:fundamentals/patterns.adoc[]
+    * xref:fundamentals/inference.adoc[]
+
+4. xref:development/connect.adoc[Connect] page: Connect to TypeDB using databases, sessions, transactions, and ACID
+   guarantees.
+
+5. xref:development/schema.adoc#_schema[Define schema] page: Find out how to define, undefine, and modify types and rules
+   in a TypeDB database.
+
+6. xref:typedb::development/write.adoc[Writing data] and xref:typedb::development/read.adoc[Reading data] pages: How to perform Insert,
+   Delete, Update, and Get queries.
+
+7. xref:development/response.adoc[Response interpretation] page: How to use responses from TypeDB.

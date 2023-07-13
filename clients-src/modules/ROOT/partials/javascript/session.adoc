@@ -1,0 +1,96 @@
+[#_create_transaction]
+== Open a transaction
+
+=== Syntax
+
+[source,javascript]
+----
+await session.transaction(transactionType, options);
+----
+
+=== Description
+
+Opens a transaction to perform read or write queries on the database connected to the session.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transactionType | The type of transaction to be created (READ or WRITE). | Transaction.Type | True |  
+| options | Options for the session. | [`TypeDBOptions`]  | False | N/A
+|===
+
+=== Returns
+
+* xref:clients::node-js/node-js-api-ref.adoc#_transaction_methods[Transaction]
+
+== Check if a session is open
+
+=== Syntax
+
+[source,javascript]
+----
+await session.isOpen();
+----
+
+=== Description
+
+Checks whether a session is presently open.
+
+=== Returns
+
+* boolean
+
+== Check the session's type
+
+=== Syntax
+
+[source,javascript]
+----
+session.type;
+----
+
+=== Description
+
+Checks the current session's type (SCHEMA or DATA)
+
+=== Returns
+
+* SessionType
+
+== Check the session's database
+
+=== Syntax
+
+[source,javascript]
+----
+session.database();
+----
+
+=== Description
+
+Returns a string indicating what database the session is operating over.
+
+=== Returns
+
+* String
+
+== Close a session
+
+=== Syntax
+
+[source,javascript]
+----
+await session.close();
+----
+
+=== Description
+
+Closes the session.
+**Before opening a new session, the session currently open should first be closed.**
+
+=== Returns
+
+* void
+

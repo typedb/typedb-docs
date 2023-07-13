@@ -1,0 +1,52 @@
+== Retrieve a Rule
+
+=== Syntax
+
+[source,javascript]
+----
+await transaction.logic().getRule(label);
+----
+
+=== Description
+
+Retrieves the Rule that has the given label.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| label | The label of the Rule to create or retrive. | String | True | N/A
+|===
+
+=== Returns
+
+* [`Rule`] 
+
+== Create or retrieve a Rule
+
+=== Syntax
+
+[source,javascript]
+----
+await transaction.logic().putRule(label, when, then);
+----
+
+=== Description
+
+Creates a new Rule if none exists with the given label, or retrieves the existing one.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| label | The label of the Rule to create or retrive. | String | True | N/A
+| when | The when body of the rule to create. | String | True | N/A
+| then | The then body of the rule to create. | String | True | N/A
+|===
+
+=== Returns
+
+* [`Rule`] 
+

@@ -1,0 +1,106 @@
+= Node.js Driver installation
+:Summary: Installation guide for TypeDB Node.js Driver.
+:keywords: typedb, client, driver, node.js, install, repository
+:longTailKeywords: typedb node.js client, typedb client node.js, client node.js, node.js client
+:pageTitle: Node.js Driver installation
+
+== Prerequisites
+
+To use the Node.js Driver, we need a compatible version of TypeDB server running. Please see the
+xref:node-js/node-js-install.adoc#_version_compatibility[Compatibility Table] to check what version do we need,
+depending on the TypeDB server version being used.
+
+== Install
+
+To install TypeDB Node.js Driver (or TypeDB Client for Node.js):
+
+----
+npm install typedb-client
+----
+
+== Additional resources
+
+* xref:node-js/node-js-install.adoc#_version_compatibility[Version compatibility]
+* https://github.com/vaticle/typedb-client-nodejs[Node.js Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-client-nodejs/releases[Releases,window=_blank]
+* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^2,^.^1,^.^2,^.^2,^.^2"]
+|===
+| Node.js Driver | Protocol version | TypeDB | TypeDB Enterprise & TypeDB Cloud | Node
+
+| 2.18.1 to 2.18.2
+| 1
+| 2.18.0 - 2.19.1
+| 2.18.0 - 2.19.1
+| >= 14.15
+
+| 2.17.0
+| N/A
+| 2.17.0
+| 2.17.0
+| >= 14.15
+
+| 2.16.1
+| N/A
+| 2.16.1
+| 2.16.1
+| >= 14.15
+
+| 2.14.2
+| N/A
+| 2.12.0 to 2.15.0
+| 2.13.0 to 2.15.0
+| >= 14.15
+
+| 2.9.0 to 2.11.1
+| N/A
+| 2.9.0 to 2.11.1
+| 2.9.0 to 2.11.2
+| >= 14.15
+
+| 2.8.0
+| N/A
+| 2.8.0
+| N/A
+| >= 14.15
+
+| 2.6.0 to 2.6.2
+| N/A
+| 2.6.0 to 2.7.1
+| N/A
+| >= 14.15
+
+| 2.4.0 to 2.5.0
+| N/A
+| 2.1.2 to 2.5.0
+| 2.5.0
+| >= 14.15
+
+| 2.1.0 to 2.2.0
+| N/A
+| 2.1.2 to 2.5.0
+| 2.1.2 to 2.3.0
+| >= 14.15
+
+| 2.0.1
+| N/A
+| 2.0.2
+| 2.0.2
+| >= 14.15
+
+| 2.0.0
+| N/A
+| 2.0.0, 2.0.1
+| 2.0.0, 2.0.1
+| >= 14.15
+
+| 1.8.0
+| N/A
+| 1.8.0 to 1.8.4
+| N/A
+| >= 6.5
+|===

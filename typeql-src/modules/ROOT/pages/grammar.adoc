@@ -1,0 +1,62 @@
+= TypeQL grammar reference
+:keywords: typedb, typeql, documentation, reference
+:longTailKeywords: typeql reference, query reference
+:pageTitle: TypeQL grammar reference
+:summary: TypeQL grammar reference.
+
+The https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[specification] file for ANTLR v.4
+contains all the grammar rules for the TypeQL.
+
+The diagrams visualizing most of the rules from the grammar specification file can be seen at the
+xref:grammar-rrd.adoc[] page.
+
+See the full listing of the file below:
+
+[source]
+----
+include::partial$TypeQL.g4[]
+----
+
+////
+
+== Query
+
+//image::typeql::rrd/query.rrd.svg[Static,300]
+
+image::typeql::rrd/query.rrd.svg[Interactive,300,opts=interactive]
+
+//image::typeql::rrd/query.rrd.svg[Embedded,300,opts=inline]
+
+//We can generate those in Python, but to show them in good design - is the challenge here.
+
+== Define
+
+image::typeql::rrd/query_define.rrd.svg[]
+
+== Undefine
+
+image::typeql::rrd/query_undefine.rrd.svg[]
+
+== Get
+
+image::typeql::rrd/query_match.rrd.svg[]
+
+=== Modifiers
+
+image::typeql::rrd/modifiers.rrd.svg[]
+
+== Insert
+
+image::typeql::rrd/query_insert.rrd.svg[]
+
+== Delete
+
+image::typeql::rrd/query_delete.rrd.svg[]
+
+== Update
+
+image::typeql::rrd/query_update.rrd.svg[]
+
+== Pattern
+
+////

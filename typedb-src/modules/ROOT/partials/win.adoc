@@ -1,0 +1,55 @@
+// tag::install[]
+
+. Ensure Java 11+ is installed. TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+  https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
+
+. Get the latest release for Windows:
+include::typedb:resources:partial$latest-version.adoc[tag=win]
+
+. Create a new directory for TypeDB files, and extract the `.zip` archive into the created directory.
+It can be done through GUI or using the following commands (replace
+`C:\Users\username\Downloads\typedb-all-windows-{latest-version}.zip` with the path to the downloaded archive):
++
+[,shell,subs=attributes+]
+----
+mkdir "C:\Program Files\TypeDB"
+tar xvf "C:\Users\username\Downloads\typedb-all-windows-{latest-version}.zip" -C "C:\Program Files\TypeDB"
+----
+
+. Update the `PATH` environment variable with the path to the `typedb.bat` file (replace
+`typedb-all-windows-{latest-version}` with the actual name of the extracted directory):
++
+[,shell,subs=attributes+]
+----
+setx /M PATH "%path%;C:\Program Files\TypeDB\typedb-all-windows-{latest-version}"
+----
+
+It may be required to restart the terminal window for the changes to environment variables to take effect.
+
+// end::install[]
+
+// tag::start[]
+
+Run the following command in a terminal:
+
+[,shell]
+----
+typedb server
+----
+
+TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB will be shut down. We recommend
+opening a new terminal to run TypeDB Console.
+
+Use a `typedb.bat server` command directly from the directory with TypeDB files to start a TypeDB server without
+environment variables setup.
+
+If the following error occurs, please try to install the "C++ redistributable" by following the instructions
+https://developers.google.com/optimization/install/python/windows#microsoft-visual-c-redistributable[here,window=_blank].
+
+// end::start[]
+
+// tag::stop[]
+
+Press kbd:[Ctrl+C] in the terminal running TypeDB. Confirm action if requested.
+
+// end::stop[]

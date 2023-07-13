@@ -1,0 +1,129 @@
+= Modify existing schema
+:Summary: Introduction to the TypeDB Schema.
+:keywords: typeql, schema, type hierarchy, reserved keywords
+:longTailKeywords: typeql schema, typeql type hierarchy, typeql data model, typeql reserved keyword
+:pageTitle: Modify existing schema
+
+== Add
+
+We can add types and rules to an existing schema by running new define statements to the same database as usual.
+
+The define statements are idempotent. By sending the same define query twice or more times, the resulting
+schema must be achieved as if we send it only once. So types and/or rules will not be duplicated.
+
+A separate define statement for a new type or a rule can be sent as a `define` query. Alternatively, the statement
+can be added to the define statement of the existing schema and sent together. Only new types and/or rules will be
+added in this case. If we change the name (label) of the existing type or rule in the existing schema and then send it
+as a define query, then the changed type or rule will be processed as a new one.
+//#todo Add examples. Step by step adding constraints.
+
+include::typeql::schema/define-types.adoc[tag=idempotence]
+
+== Delete
+
+Use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
+
+[IMPORTANT]
+====
+Don't forget to `commit` after executing an `undefine` statement. Otherwise, any changes are NOT committed to a database.
+====
+
+[#_undefine_a_type]
+=== Undefine a type
+
+To delete a user-defined type from a schema use the keyword `undefine` with the label of a type to delete and `sub`
+keyword, followed by the supertype (direct or not) of the deleted type.
+
+[,typeql]
+----
+undefine subject sub entity;
+----
+
+[WARNING]
+====
+Types with existing subtypes or instances can't be undefined. Undefine any subtypes and delete any data instances of
+a type to be able to undefine it.
+====
+
+=== Undefine an attribute's association
+
+We can undefine the association that a type has with an attribute.
+
+[,typeql]
+----
+undefine subject owns credential;
+----
+
+The query above removes ownership of the attribute type `credential` from the entity type `subject`. Therefore,
+instances of the `subject` type will no longer be able to have ownership over instances of the `credential` type.
+
+[IMPORTANT]
+====
+It's important to note that if we add the `sub` keyword to the `label` at the beginning: `undefine [label] sub [type],
+owns [attributes' label];` it undefines the `label` type itself, rather than just its association with the attribute
+type.
+
+For example, `undefine subject sub entity, owns credential;` will delete the `subject` entity type from the
+schema. The ownership of the `credential` attribute type by the `subject` entity type will also be removed, but the
+`credential` attribute type will continue to exist. To undefine it from a schema, use `undefine credential sub
+attribute;`.
+====
+
+=== Undefine a relation
+
+Undefining a relation type undefines all of its roles. Therefore, when a relation type is undefined any types
+that were playing roles in that relation type will no longer play those roles. Given a `change-request` relation type,
+we can undefine it as shown below.
+
+[,typeql]
+----
+undefine
+
+change-request sub relation;
+----
+
+[#_undefine_a_supertype]
+=== Undefine a supertype
+
+When a type to be undefined is a supertype to some other types, we must first undefine all its subtypes before
+undefining the supertype itself. We can use the same query to delete both the supertype and all its subtypes.
+
+[,typeql]
+----
+undefine
+
+object sub entity;
+resource sub object;
+----
+
+[IMPORTANT]
+====
+If you are using the same query to undefine supertype and all its subtypes, make sure to use the supertype label
+in the subtypes undefine statements (directly right from the `sub` keyword). Otherwise, query will fail as invalid,
+due to one of the deleted types having subtypes.
+====
+
+=== Undefine a rule
+
+Rules, like any other schema members, can be undefined. Hence, to delete a rule, use the `undefine rule` keywords
+and refer to the rule by its label. For example:
+
+[,typeql]
+----
+undefine rule add-view-permission;
+----
+
+== Rename a type
+
+// tag::rename[]
+To rename a type (to change its label), use the xref:clients:ROOT:studio.adoc[TypeDB Studio] or
+xref:typedb:ROOT:development/api.adoc[TypeDB Driver API] rename method for a type class object:
+xref:clients::java/java-api-ref.adoc#_rename_type_label[Java],
+xref:clients::python/python-api-ref.adoc#_rename_type_label[Python],
+xref:clients::node-js/node-js-api-ref.adoc#_rename_type_label[Node.js].
+// end::rename[]
+
+== Modify a rule
+
+To modify a rule, xref:typeql::schema/define-rules.adoc[define a new rule] with the same label.
+It will overwrite the existing rule upon commit.

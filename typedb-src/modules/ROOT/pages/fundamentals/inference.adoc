@@ -1,0 +1,71 @@
+= Inference
+:Summary: TypeDB inference queries.
+:keywords: typedb, query, inference, reasoning, rules, deduction, logic
+:longTailKeywords: typedb inference, typedb reasoning, reasoning engine
+:pageTitle: Inference
+
+[#_inference]
+TypeDB is capable of reasoning over data via rules xref:development/schema.adoc#_define_rules[defined] in the schema.
+
+The reasoning engine uses <<_rules,rules>> as a set of logic to infer new data, based on the existence of patterns in
+data of a TypeDB database.
+
+[IMPORTANT]
+====
+Reasoning, or inference, is performed at a query time.
+
+Only `read` transactions can use inference from rules.
+
+The results are transaction-bound and are not persisted. As soon as transaction is closed -- all inference results
+perish.
+====
+
+When executing a `get` query with the `infer` transaction option xref:development/infer.adoc#_how_to_use_inference[enabled]
+(`True`), TypeDB inspects and triggers rules that may lead to new answers to the query.
+
+It returns data that answers the query taking into account inference results. Reasoning can proceed from one rule
+to another, including recursion, leading to complex behaviors emerging from a few simple rules.
+
+During a single transaction, inferred facts will be retained and reused (with corresponding performance gains).
+These inferred data will be lost as soon as we close the transaction. A new transactions will re-compute inferred
+facts again.
+
+== Limitations
+
+Inference works by rules defined in a schema of a database.
+
+What's possible to infer is limited by what can be defined in a rule.
+See the <<_rule_validation>> section for more information.
+
+[#_rules]
+== Rules
+
+include::typeql::fundamentals.adoc[tag=rules_basics]
+
+include::typeql::fundamentals.adoc[tag=recursive_logic]
+
+Read more on how to create rules in a schema in the xref:typedb::development/schema.adoc#_define_rules[Define rules]
+section of the xref:typedb::development/schema.adoc[] page.
+
+We can use xref:typedb::fundamentals/patterns.adoc#_computation[computation] operations and functions in the condition pattern.
+And we can use value variables in the conclusion of a rule.
+
+[#_rule_validation]
+=== Rule validation
+
+include::typeql::schema/define-rules.adoc[tag=rule_validation]
+
+== Learn more
+
+This was the last page of the *Fundamentals* section.
+
+We recommend to continue exploring TypeDB by going through the *Development* section:
+
+* xref:development/connect.adoc[]
+* xref:development/schema.adoc[]
+* xref:development/write.adoc[]
+* xref:development/read.adoc[]
+* xref:development/infer.adoc[]
+* xref:development/response.adoc[]
+* xref:development/api.adoc[]
+* xref:development/best.adoc[]

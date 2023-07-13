@@ -1,0 +1,185 @@
+== Retrieve type (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.type;
+----
+
+=== Description
+
+Retrieves the type which this Attribute belongs to.
+
+=== Returns
+
+* [`AttributeType`] 
+
+== Retrieve value (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.value;
+----
+
+=== Description
+
+Retrieves the value which the Attribute instance holds.
+
+=== Returns
+
+* string
+* number
+* boolean
+* Date
+
+== Retrieve owners
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.asRemote(tx).getOwners(ownerType);
+----
+
+=== Description
+
+Retrieves the instances that own this Attribute.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| ownerType | If specified, filter results for only owners of the given type | Type | False | N/A
+|===
+
+=== Returns
+
+* [Stream]  of [`Thing`] 
+
+== Get a Remote version of the Attribute.
+
+=== Syntax
+
+[source,javascript]
+----
+concept.asRemote(tx);
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transaction | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteAttribute`
+
+== Check if value is of type boolean (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.isBoolean();
+----
+
+=== Description
+
+Returns true if the attribute value is of type boolean. Otherwise, returns false.
+
+=== Returns
+
+* boolean
+
+== Check if value is of type long (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.isLong();
+----
+
+=== Description
+
+Returns true if the attribute value is of type long. Otherwise, returns false.
+
+=== Returns
+
+* boolean
+
+== Check if value is of type double (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.isDouble();
+----
+
+=== Description
+
+Returns true if the attribute value is of type double. Otherwise, returns false.
+
+=== Returns
+
+* boolean
+
+== Check if value is of type string (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.isString();
+----
+
+=== Description
+
+Returns true if the attribute value is of type string. Otherwise, returns false.
+
+=== Returns
+
+* boolean
+
+== Check if value is of type datetime (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+attribute.isDateTime();
+----
+
+=== Description
+
+Returns true if the attribute value is of type datetime. Otherwise, returns false.
+
+=== Returns
+
+* boolean
+
+== Retrieve an attribute as JSON.
+
+=== Syntax
+
+[source,javascript]
+----
+await attribute.toJSONRecord();
+----
+
+=== Returns
+
+* JSON with fields `type`, `value_type` and `value`
+

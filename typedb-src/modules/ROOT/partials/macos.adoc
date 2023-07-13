@@ -1,0 +1,68 @@
+// tag::install-homebrew[]
+
+. Ensure https://brew.sh/[Homebrew,window=_blank] is installed.
+. Install TypeDB:
++
+[,bash]
+----
+brew install typedb
+----
+
+For the versions prior to `2.19.0` and `ARM64`/`AArch64` architecture (e.g., a macbook with the `M1` processor)
+we don't recommend using Homebrew.
+
+To install the older versions of TypeDB on `ARM64` architecture, see the
+https://forum.vaticle.com/t/running-typedb-on-an-m1-macbook/[Running TypeDB on an M1 MacBook,window=_blank] and
+use the <<_manual,manual>> installation instead.
+
+// end::install-homebrew[]
+
+// tag::install-manual[]
+
+. Ensure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
+
+. Get the latest release for linux:
+include::typedb:resources:partial$latest-version.adoc[tag=mac]
+
+. Create a new directory, extract the contents of the `.zip` archive into the created directory
+(replace `~/Downloads/typedb-all-mac-{latest-version}.zip` with the path to the downloaded archive):
++
+[,bash,subs=attributes+]
+----
+sudo mkdir /opt/typedb
+unzip ~/Downloads/typedb-all-mac-{latest-version}.zip -d /opt/typedb
+----
+
+. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory (replace `typedb-all-mac-{latest-version}`
+with the actual name of the extracted directory):
++
+[,bash,subs=attributes+]
+----
+ln -s /opt/typedb/typedb-all-mac-{latest-version}/typedb /usr/local/bin/typedb
+----
+
+// end::install-manual[]
+
+// tag::start[]
+
+Run the following command in a terminal:
+
+[,bash]
+----
+typedb server
+----
+
+Now we can start the TypeDB server by using the `typedb server` command in the local terminal.
+
+TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB server will be shut down.
+We recommend opening a new terminal to run TypeDB Console.
+
+// end::start[]
+
+// tag::stop[]
+
+Press kbd:[Ctrl+C] in the terminal running TypeDB.
+
+// end::stop[]

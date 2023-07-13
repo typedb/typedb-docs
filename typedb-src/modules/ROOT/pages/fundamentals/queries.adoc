@@ -1,0 +1,488 @@
+= Queries
+:Summary: Querying a TypeDB database.
+:keywords: typeql, typedb, query, match
+:longTailKeywords: typeql match, typeql query, typedb query, match clause
+:pageTitle: Queries
+
+//#todo Move the content to the TypeQL docs and leave and include directive here?
+// tag::queries_body[]
+All queries to a TypeDB database are written in TypeQL.
+
+TypeQL is a *declarative* query language. For more information, see the xref:typeql::overview.adoc[TypeQL] section.
+
+A top-level TypeQL construct is a query.
+
+TypeQL query consists of clauses (one, two, or three).
+
+A clause always starts with a keyword that defines the type of clause.
+
+[cols="^.^2,^.^1,^.^2,^.^2,^.^1"]
+|===
+|Query type | № of clauses | Clause(s) | Keyword | Mandatory
+
+|<<_define_query,Define>>
+|1
+|<<_define_clause,Define>>
+|`define`
+|Yes
+
+|<<_undefine_query,Undefine>>
+|1
+|<<_undefine_clause,Undefine>>
+|`undefine`
+|Yes
+
+.2+|<<_get_query,Get>>
+.2+|1-2
+|<<_match,Match>>
+|`match`
+|Yes
+
+
+|<<_get_clause,Get>>
+|`get`
+|*No*
+
+.2+|<<_insert_query,Insert>>
+.2+|1-2
+|<<_match,Match>>
+|`match`
+|*No*
+
+
+|<<_insert,Insert>>
+|`insert`
+|Yes
+
+.2+|<<_delete_query,Delete>>
+.2+|2
+|<<_match,Match>>
+|`match`
+|Yes
+
+
+|<<_delete,Delete>>
+|`delete`
+|Yes
+
+.3+|<<_update_query,Update>>
+.3+|3
+|<<_match,Match>>
+|`match`
+|Yes
+
+|<<_delete,Delete>>
+|`delete`
+|Yes
+
+|<<_insert,Insert>>
+|`insert`
+|Yes
+|===
+
+[#_define_query]
+== Define query
+
+A Define query is used to define types and rules in the schema.
+
+A Define query consists of a single `define` clause.
+
+For more information on the Define query, see the
+xref:typeql::schema/define-types.adoc#_define_query[Define types,window=_blank] and
+xref:typeql::schema/define-rules.adoc[window=_blank] pages.
+
+For examples of how to perform a Define query, see the xref:typedb::development/schema.adoc[] page.
+
+[#_define_clause]
+=== Define clause
+
+A `define` clause adds the concepts and the constraints, described by its pattern, to the schema of the current
+database.
+
+A `define` clause is used only in the Define query.
+
+A `define` clause has the following syntax:
+
+[,typeql]
+----
+define <pattern>
+----
+
+A pattern used in the `define` clause is limited to xref:typeql::schema/define-types.adoc[defining types,window=_blank] and
+xref:typeql::schema/define-rules.adoc[rules,window=_blank]: the DDL part of the TypeQL.
+
+[#_undefine_query]
+== Undefine query
+
+An `undefine` clause removes the concepts, the constraints, and the rules described by its pattern, from the schema
+of the current database.
+
+An Undefine query consists of a single `undefine` clause.
+
+For more information on the Undefine query, see the
+xref:typeql::schema/modify.adoc#_undefine_a_type[Modify existing schema,window=_blank] page.
+
+For examples of how to perform an Undefine query, see the
+xref:typedb::development/schema.adoc#_undefine[Defining schema] page.
+
+[#_undefine_clause]
+=== Undefine clause
+
+An `undefine` clause is used only in the Undefine query.
+
+An `undefine` clause has the following syntax:
+
+[,typeql]
+----
+undefine <pattern>
+----
+
+A pattern used in the `undefine` clause is xref:typeql::schema/modify.adoc[limited] to the DDL part of the TypeQL.
+
+[#_get_query]
+== Get query
+
+A Get query is used to retrieve data from the TypeDB database. But it can also be used to retrieve types from the
+TypeDB database schema.
+
+A Get query consists of a `match` clause and an *optional* `get` clause.
+
+A Get query returns a stream of results (with any number of results: from zero to many).
+
+[NOTE]
+====
+Get queries were previously known as Match queries.
+
+The old naming can be seen in some Driver API methods for backward compatibility.
+====
+
+For more information on the Get query, see the xref:typeql::data/get.adoc[window=_blank] page in the
+xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
+
+For examples of how to perform a Get query, see the xref:typedb::development/read.adoc[] page.
+
+[#_match]
+=== Match clause
+
+A `match` clause is one of the most important. It’s used to find data and types in the TypeDB database for later use
+in the consequent clause of the same query.
+
+By default, if no other clause is provided after the `match` clause it will retrieve all matched concepts (data and/or
+types) as per the Get query behavior.
+
+A `match` clause is widely used in different types of queries:
+
+* <<_get_query,Get query>>
+* <<_insert_query,Insert query>> (the `match` clause is optional)
+* <<_delete_query,Delete query>>
+* <<_update_query,Update query>>
+
+A `match` clause has the following syntax:
+
+[,typeql]
+----
+match <pattern>
+----
+
+.See the match clause example
+[%collapsible]
+====
+[,typeql]
+----
+match $p isa person, has full-name $f;
+----
+====
+
+A pattern used in the `match` clause can address both types and data instances.
+See the xref:typedb::fundamentals/patterns.adoc[] page for more information.
+
+[#_get_clause]
+=== Get clause
+
+A `get` clause serves as a filter for matched concepts from a `match` clause to be retrieved in a Get query.
+
+A `get` clause is optional in a Get query.
+
+A `get` clause has the following syntax:
+
+[,typeql]
+----
+[get <variable> [(, <variable>)...];]
+[modifiers]
+----
+
+.See the get clause example
+[%collapsible]
+====
+[,typeql]
+----
+get $p, $f;
+----
+====
+
+The variable or variables mentioned in a `get` clause must be bound (set) in the `match` clause of the same query.
+
+A Get query with a `get` clause returns its results filtered -- only variables mentioned in the `get` clause are
+returned. Every result has a concept or a value for any variable mentioned in the `get` clause.
+
+[IMPORTANT]
+====
+A Get query without the `get` clause returns all variables mentioned in the `match` clause.
+====
+
+[#_modifiers]
+==== Modifiers
+
+Optionally, a `get` clause can have modifiers added after the list of variables.
+
+Those modifiers can drastically change the output of the Get query:
+
+* xref:typeql::data/get.adoc#_sort_the_answers[sort] -- sorting the results by a variable;
+* xref:typeql::data/get.adoc#_offset_the_answers[offset] + xref:typeql::data/get.adoc#_limit_the_results[limit] --
+  used for pagination of results;
+* xref:typeql::data/get.adoc#_group[group] -- grouping results by a variable;
+* xref:typeql::data/get.adoc#_aggregation[aggregation] -- process the results to produce a value for an answer.
+// count | sum,max,min,mean,median,std <var>
+
+[#_insert_query]
+== Insert query
+
+An Insert query is used to add data to the TypeDB database.
+
+An Insert query consists of an *optional* `match` clause and an `insert` clause.
+
+The optional xref:typedb::fundamentals/queries.adoc#_match[`match`] clause uses a
+xref:typedb::fundamentals/patterns.adoc#_patterns_overview[pattern]
+to find existing data which is needed as a context to insert new data. If no context is required (no existing data
+to link with the inserted data) -- there is no need for a `match` clause in this query.
+
+The xref:typedb::fundamentals/queries.adoc#_insert[`insert`] clause uses a pattern to specify the data to be inserted
+and may include references to the existing data found by the optional `match` clause.
+
+For example, to insert a new relation instance, we need to match every instance that will play a role in it to be
+able to address them in the `insert` clause.
+
+An Insert query returns a stream of inserted concepts (with any number of results: from zero to many).
+
+The `insert` clause will be executed exactly once for every matched pattern found by the `match` clause. If the `match`
+clause is omitted the `insert` query will be executed exactly once.
+
+[IMPORTANT]
+====
+If there are no matches for a `match` clause in an `insert` query, then there will be no inserts.
+====
+
+The `insert` clause can have a pattern with multiple statements to insert in one query. But it can't insert types
+(use xref:typedb::development/schema.adoc#_define_types[define] to insert new types) and can't have the following:
+
+- Conjunction
+- Disjunction
+- Negation
+- `is` keyword
+
+For more information on the Insert query, see the xref:typeql::data/insert.adoc[window=_blank] page in the
+xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
+
+For examples of how to perform an Insert query, see the xref:typedb::development/write.adoc#_insert[Insert query] section of the
+xref:typedb::development/write.adoc[] page.
+
+=== Match clause
+
+See the <<_match>> section above.
+
+[#_insert]
+=== Insert clause
+
+An `insert` clause is used to add new data to a database.
+
+If the inserted data is somehow connected to the data existing in the database, we need to use the `match` clause
+before the `insert` clause in the same Insert query.
+
+An `insert` clause has the following syntax:
+
+[,typeql]
+----
+insert <pattern>
+----
+
+.See the insert clause example
+[%collapsible]
+====
+[,typeql]
+----
+insert $p has email "email@vaticle.com";
+----
+
+The above example requires a preceding `match` clause to bind the `$p` variable. For example, to match some
+`person` type instances first, to insert the email ownership only for them.
+
+Alternatively, we can use insert query without a `match` clause, like that:
+
+[,typeql]
+----
+insert $p isa person, has email "email@vaticle.com";
+----
+
+This version doesn't require a `match` clause, because it binds the only variable it has to a `person` type.
+It creates a new instance of the `person` type in a database, before inserting an ownership of the email for the
+instance.
+====
+
+A pattern used in an `insert` clause can use the variables from the preceding `match` clause.
+See the xref:typedb::fundamentals/patterns.adoc[] page for more information.
+
+[#_delete_query]
+== Delete query
+
+A Delete query is used to remove data from the TypeDB database.
+
+A Delete query consists of a `match` clause and a `delete` clause.
+
+A `match` clause uses a xref:typedb::fundamentals/patterns.adoc#_patterns_overview[pattern] to find existing
+data/references which may be removed. To delete existing data, we need to find it first.
+
+A `delete` clause uses a pattern to specify precisely the data to be removed.
+
+For example, to remove ownership of an attribute without deleting the attribute itself.
+Or, to remove the player of a role from a relation without deleting either the player or the relation/role.
+
+The deletion pattern is executed exactly once for every result matched by the `match` clause.
+
+[IMPORTANT]
+====
+If there are no matches for a `match` clause in a `delete` query, then there will be no deletes.
+====
+
+The `delete` clause can have a pattern with multiple statements to delete in one query. But it can't delete types (use
+xref:typedb::development/schema.adoc#_undefine_types[undefine] to delete types) and can't have the following:
+
+- Conjunction
+- Disjunction
+- Negation
+- `is` keyword
+
+For more information on the Delete query, see the xref:typeql::data/delete.adoc[Delete,window=_blank] page in the
+xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
+
+For examples of how to perform a Delete query, see the xref:typedb::development/write.adoc#_delete_query[Delete query] section of the
+xref:typedb::development/write.adoc[] page.
+
+=== Match clause
+
+See the <<_match>> section above.
+
+[#_delete]
+=== Delete clause
+
+A `delete` clause is used to delete data from a database.
+
+A `delete` clause has the following syntax:
+
+[,typeql]
+----
+delete <pattern>
+----
+
+.See the delete clause example
+[%collapsible]
+====
+[,typeql]
+----
+delete $p has email $e;
+----
+====
+
+A pattern used in a `delete` clause must use the variables from the preceding `match` clause.
+See the xref:typedb::fundamentals/patterns.adoc[Patterns] page for more information.
+
+[#_update_query]
+== Update query
+
+An Update query removes data from the TypeDB database and then inserts new data instead.
+
+An Update query consists of a `match` clause, a `delete` clause, and an `insert` clause.
+
+A `match` clause uses xref:typedb::fundamentals/patterns.adoc[patterns] to find existing data/references to be changed.
+To delete existing data, we need to find it first.
+
+A `delete` clause is used to precisely select what to delete with a pattern. The deletion pattern is executed exactly
+once for every result matched by the `match` clause.
+
+An `insert` clause is used to insert new data after the deletion of the old one. The insertion pattern is executed
+exactly once for every result matched by the `match` clause.
+
+[IMPORTANT]
+====
+If there are no matches for a `match` clause in an update (`match-delete-insert`) query, then there will be no
+deletes and no inserts.
+====
+
+The `delete` clause can have a pattern with multiple statements to delete in one query. But it can't delete types (use
+xref:typedb::fundamentals/queries.adoc#_undefine_query[undefine] to delete types) and can't have the following:
+
+- Conjunction
+- Disjunction
+- Negation
+- `is` keyword
+
+The `insert` clause can have a pattern with multiple statements to insert in one query. But it can't insert types (use
+xref:typedb::fundamentals/queries.adoc#_define_query[define] to insert new types) and can't have the following:
+
+- Conjunction
+- Disjunction
+- Negation
+- `is` keyword
+
+Unlike other databases, TypeDB does not update data in place. Data is updated by replacing references to it.
+When we remove a player from a role in a relation, the player itself is not removed from the database, but rather the
+information of it playing the role.
+
+In addition, attributes are immutable. Rather than changing the value of an owned attribute,
+the ownership of it is replaced with the ownership of a new/different attribute.
+
+For more information on the Update query, see the xref:typeql::data/update.adoc[window=_blank] page.
+
+.See the update query example
+[%collapsible]
+====
+[,typeql]
+----
+match
+  $p isa person, has full-name $n;
+  $n contains "inappropriate word";
+delete
+  $p has $n;
+insert
+  $p has full-name "deleted";
+----
+
+For every instance of `person` entity type with owned attribute of `full-name` type, which value contains
+`inappropriate word` string, we delete the ownership of the attribute and insert an ownership of a new one with the
+value of `deleted` to the same entity.
+====
+
+For more examples of how to perform an Update query, see the
+xref:typedb::development/write.adoc#_update_query[Update query]
+section of the xref:typedb::development/write.adoc[] page.
+
+=== Match clause
+
+See the <<_match>> section above.
+
+=== Delete clause
+
+See the <<_delete>> section above.
+
+=== Insert clause
+
+See the <<_insert>> section above.
+// end::queries_body[]
+
+== Learn more
+
+This was the second page of the *Fundamentals* section.
+
+We recommend finishing the rest of the section:
+
+    1. xref:typedb::fundamentals/patterns.adoc[]
+    2. xref:typedb::fundamentals/inference.adoc[]

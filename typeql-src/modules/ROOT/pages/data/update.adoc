@@ -1,0 +1,174 @@
+= Update query
+:Summary: Updating data in a TypeDB database.
+:keywords: typeql, typedb, query, update, replace, write, delete
+:longTailKeywords: typeql insert, typeql write data, typeql delete data, typeql update
+:pageTitle: Update query
+
+An update is actually a `match-delete-insert` query, and it removes and then adds data based on the `match`, `delete`,
+and `insert` patterns.
+
+Unlike other databases, TypeDB does not update data in place. Data is updated by
+replacing references to it. In relations, when a player is removed from a role, the player itself is not removed from
+the database.
+
+In addition, attributes are immutable. Rather than changing the value of an owned attribute,
+the ownership of it is replaced with the ownership of a new/different attribute.
+
+== Syntax
+
+Updates are written in TypeQL with the following syntax:
+
+[,typeql]
+----
+match <pattern>
+delete <pattern>
+insert <pattern>
+----
+
+The `match` clause uses patterns to find existing data/references to be changed. The `delete` clause uses a pattern
+to specify which data/references found by the `match` clause should be removed. The `insert` clause uses a pattern
+to specify the data/references which will replace it.
+
+[NOTE]
+====
+A pattern consists of variables and constraints for concepts. For more information, see the
+xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
+====
+
+The number of deleted and inserted concepts depends on the number of answers matched by the `match` clause. The `delete`
+clause, as well as the `insert` clause, will be executed once per every matched answer.
+
+[IMPORTANT]
+====
+If there are no matches for a `match` clause in an update (`match-delete-insert`) query, then there will be no deletes
+and no inserts.
+====
+
+[NOTE]
+====
+The `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
+xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
+
+- Conjunction
+- Disjunction
+- Negation
+- `is` keyword
+====
+
+[NOTE]
+====
+The `insert` clause can have multiple statements in its pattern to insert in one query. But it can't insert types (use
+xref:schema/define-types.adoc[define] to insert new types) and can't have the following:
+
+- Conjunction
+- Disjunction
+- Negation
+- `is` keyword
+====
+
+== Updating attribute values
+
+=== Replacing ownership
+
+In many cases, the desired effect is to change the value of an owned attribute. We can't change the value of an
+attribute as attributes are immutable, but we can change the owned attribute. To update an attribute owned by an
+entity, its ownership must first be removed. Then, the entity can be assigned ownership of an attribute with a
+different value. It can be an existing attribute or a new one.
+
+[,typeql]
+----
+match
+  $p isa person, has full-name "Masako Holley", has email $email;
+delete
+  $p has $email;
+insert
+  $p has email "m.holley@vaticle.com";
+----
+
+The above query does the following:
+
+. Finds all `person` entities (`$p`) that have a `full-name` attribute with a value of `Masako Holley`.
+. Deletes `$p``'s ownership of its current `email` attribute.
+. Makes `$p` the owner of an `email` attribute with a value of `m.holley@vaticle.com`.
+
+If there is an existing `email` attribute with a value of `m.holley@vaticle.com`, the matching `person` entities will
+now own it. Otherwise, a new one will be created and owned by the matching `person` entities.
+
+[NOTE]
+====
+An `email` attribute with the previous value of `masako.holley@vaticle.com` will still exist, but it will no longer be owned by the matching `person` entities.
+====
+
+=== Replacing attributes
+
+There may be times when the desired effect is to change the value of multiple owned attributes, all of the same type.
+This is done by removing them and inserting the ownership of a new/different attribute.
+
+[,typeql]
+----
+match
+  $p isa person, has full-name $n;
+  $n contains "inappropriate word";
+delete
+  $n isa full-name;
+insert
+  $p has full-name "deleted";
+----
+
+The above query:
+
+. Finds all `person` entities (`$p`) with at least one owned `full-name` attribute (`$n`).
+. Filters `$n` (and consequently `$p`) to only those that contain the string `inappropriate word`.
+. Removes these `full-name` attributes that contain the string from the database.
+. Makes `$p` (all entities of person that had `full-names` that contained the string) the owners of a `full-name`
+attribute with a value of `deleted`.
+
+If a similar query has been run before, there may be an existing attribute with a value of `deleted`, which the matching
+`person` entities will now own. If not, a new `full-name` attribute will be inserted, and the matching `person` entities
+will own it.
+
+[NOTE]
+====
+After running the above query, there will be a single `full-name` attribute with a value of `deleted`, which is owned by
+the matching entities, and any `full-name` attributes which had contained the string `inappropriate word` will no
+longer exist.
+====
+
+== Updating a relation's role player
+
+To replace a role player, we combine the steps for extending the relation with steps for deleting a role player:
+
+[,typeql]
+----
+match
+  $p isa person, has full-name "Pearle Goodman";
+  $a_write isa action, has name "modify_file";
+  $a_read isa action, has name "view_file";
+  $ac_write (object: $o, action: $a_write) isa access;
+  $ac_read (object: $o, action: $a_read) isa access;
+  $pe (subject: $p, access: $ac_write) isa permission;
+delete
+  $pe (access: $ac_write);
+insert
+  $pe (access: $ac_read);
+----
+
+The above query does the following:
+
+. Finds a `person` entity (`$p`) with a `full-name` of `Pearle Goodman`.
+. Finds an `action` entity (`$a_write`) with `name` of `modify_file`).
+. Finds an `action` entity (`$a_read`)  with `name` of `read_file`).
+. Finds all `access` relations (`$ac_write`) that relate any `object` (as `object`) to `$a_write` (as `action`).
+. Finds all `access` relations (`$ac_read`) that relate any `object` (as `object`) to `$a_read` (as `action`).
+. Finds all permissions (`$pe`) that relate `$p` (as `subject`) to `$ac_write` (as `access`).
+. Removes all write accesses (`$ac_write`) as a player of the `access` role in matching permission relations
+(`$pe`).
+. Adds all read accesses (`$ac_read`) as a player of the `access` role in matching permission relations (`$pe`).
+
+In short, all of Pearle Goodman's permissions with write access will become permissions with read access.
+
+[NOTE]
+====
+After running the above query, all matched `access` relations `$ac_write` with `$a_write` as `action` still
+exist but no longer play a role in the matched `permission` relations.
+====

@@ -1,0 +1,313 @@
+== Get a Remote version of the ThingType.
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx)
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| tx | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteThingType`
+
+== Retrieve direct supertype
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_supertype()
+----
+
+=== Description
+
+Retrieves the most immediate supertype of the ThingType.
+
+=== Returns
+
+* [`ThingType`] 
+* None
+
+== Retrieve all supertypes
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_supertypes()
+----
+
+=== Description
+
+Retrieves all supertypes of the ThingType.
+
+=== Returns
+
+* Iterator of [`ThingType`] 
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_subtypes()
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the ThingType.
+
+=== Returns
+
+* Iterator of [`ThingType`] 
+
+== Retrieve instances
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_instances()
+----
+
+=== Returns
+
+* Iterator of [`Thing`] 
+
+== Set abstract
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).set_abstract()
+----
+
+=== Description
+
+Set a ThingType to be abstract, meaning it cannot have instances.
+
+=== Returns
+
+* None
+
+== Unset abstract
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).unset_abstract()
+----
+
+=== Description
+
+Set a ThingType to be non-abstract, meaning it can have instances.
+
+=== Returns
+
+* None
+
+== Add new playable role
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).set_plays(role_type, overridden_type=None)
+----
+
+=== Description
+
+Allows the instances of this type to play the given role.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| role_type | The role to be played by the instances of this type. | [`RoleType`]  | True | N/A
+| overridden_type | The role type that this role overrides, if applicable. | [`RoleType`]  | False | None
+|===
+
+=== Returns
+
+* None
+
+== Add attribute ownership
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).set_owns(attribute_type, overridden_type=None, is_key=False);
+----
+
+=== Description
+
+Allows the instances of this type to own the given `AttributeType`.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
+| overriddenType | The AttributeType that this attribute ownership overrides, if applicable. | [`AttributeType`]  | False | None
+| isKey | Whether this AttributeType is to be owned as a unique key. | bool | False | False
+|===
+
+=== Returns
+
+* None
+
+== Retrieve playable roles
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_plays()
+----
+
+=== Description
+
+Retrieves all direct and inherited roles that are allowed to be played by the instances of this type.
+
+=== Returns
+
+* Iterator of [`RoleType`] 
+
+== Retrieve playable roles
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_plays_explicit()
+----
+
+=== Description
+
+Retrieves all direct roles that are allowed to be played by the instances of this type.
+
+=== Returns
+
+* Iterator of [`RoleType`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_owns(value_type=None, keys_only=False)
+----
+
+=== Description
+
+Retrieves attribute types that the instances of this type are allowed to own directly or via inheritance.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
+| keys_only | If set to `True`, then only attribute types owned as keys will be retrieved. | bool | False | False
+|===
+
+=== Returns
+
+* Iterator of [`AttributeType`] 
+
+== Retrieve direct attributes
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).get_owns_explicit(value_type=None, keys_only=False)
+----
+
+=== Description
+
+Retrieves attribute types that the instances of this type are allowed to own directly.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
+| keys_only | If set to `True`, then only attribute types owned as keys will be retrieved. | bool | False | False
+|===
+
+=== Returns
+
+* Iterator of [`AttributeType`] 
+
+== Remove role
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).unset_plays(role)
+----
+
+=== Description
+
+Disallows the instances of this type from playing the given role.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| role | The role to not be played by the instances of this type. | [`RoleType`]  | True | N/A
+|===
+
+=== Returns
+
+* None
+
+== Remove attribute
+
+=== Syntax
+
+[source,python]
+----
+thing_type.as_remote(tx).unset_owns(attribute_type)
+----
+
+=== Description
+
+Disallows the instances of this type from owning the given `AttributeType`.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attribute_type | The AttributeType to not be owned by the type. | [`AttributeType`]  | True | N/A
+|===
+
+=== Returns
+
+* None
+

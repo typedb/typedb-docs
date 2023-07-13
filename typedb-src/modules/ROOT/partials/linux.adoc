@@ -1,0 +1,116 @@
+// tag::install-apt[]
+
+. Add the TypeDB repository:
++
+[,bash]
+----
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C
+gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+echo "deb [ arch=all ] https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
+----
+. Update the package cache:
++
+[,bash]
+----
+sudo apt update
+----
+. Ensure Java 11+ is installed:
++
+[,bash]
+----
+sudo apt install openjdk-11-jre
+----
++
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
+. Check the latest version number for typedb-server and its dependencies:
++
+[,bash]
+----
+apt show typedb-server
+----
++
+This will show a console output like this:
++
+[,bash]
+----
+Package: typedb-server
+Version: 2.15.0
+Priority: optional
+Section: contrib/devel
+Maintainer: Vaticle <community@vaticle.com>
+Installed-Size: unknown
+Depends: openjdk-11-jre, typedb-bin (=2.12.0)
+Download-Size: 71.8 MB
+APT-Sources: https://repo.vaticle.com/repository/apt trusty/main all Packages
+Description: TypeDB (server)
+----
++
+Take note of the latest typedb-server version shown in the `Package` field and the corresponding `typedb-bin`
+package version shown in the `Depends` field.
++
+To get some other version of TypeDB installed, we can use the `apt show typedb-server=2.14.1`, where `2.14.1` --
+version number, can be replaced with the version we need.
+. Install `typedb-server`, `typedb-console`, and `typedb-bin` packages using the versions from the previous command
+(server and console have the same version number. Here we will use `2.15.0` for example):
++
+[,bash]
+----
+sudo apt install typedb-server=2.15.0 typedb-console=2.15.0 typedb-bin=2.12.0
+----
+
+The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin` that is why their
+version numbers might differ. By default, APT will look for the exact same version of `typedb-bin` and that will
+result in an error. To prevent this use `apt show` as shown above to invoke an `apt install` command with the
+specific version for every package.
+
+// end::install-apt[]
+
+// tag::install-manual[]
+
+. Ensure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
+
+. Get the latest release for Linux:
+include::typedb:resources:partial$latest-version.adoc[tag=linux]
+
+. Create a new directory, extract the contents of the `.zip` archive into the created directory
+(replace `~/Downloads/typedb-all-linux-{latest-version}.tar.gz` with the path to the downloaded archive):
++
+[,bash,subs=attributes+]
+----
+mkdir /opt/typedb
+tar -xzf ~/Downloads/typedb-all-linux-{latest-version}.tar.gz -C /opt/typedb
+----
+
+. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory (replace `typedb-all-linux-{latest-version}`
+with the actual name of the extracted directory):
++
+[,bash,subs=attributes+]
+----
+ln -s /opt/typedb/typedb-all-linux-{latest-version}/typedb /usr/local/bin/typedb
+----
+
+// end::install-manual[]
+
+// tag::start[]
+
+Run the following command in a terminal:
+
+[,shell]
+----
+typedb server
+----
+
+TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB will be shut down. We
+recommend opening a new terminal to run TypeDB Console.
+
+// end::start[]
+
+// tag::stop[]
+
+Press kbd:[Ctrl+C] in the terminal running TypeDB.
+
+// end::stop[]

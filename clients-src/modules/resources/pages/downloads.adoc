@@ -1,0 +1,102 @@
+= Downloads
+:keywords: typedb, clients, drivers, download, save, file, distributive, installator, bin, archive, mac, windows, docker, linux
+:longTailKeywords: typedb client on linux, typedb client on mac, typedb client on windows, download typedb client, download typedb driver, download driver, download studio, download console
+:pageTitle: Downloads
+:summary: Download any version of TypeDB Client here.
+:tabs-sync-option:
+:repo: https://github.com/vaticle/typedb-studio/releases/
+
+== TypeDB Console
+
+TypeDB Console is distributed with both TypeDB Core and TypeDB Enterprise.
+
+Make sure to download an archive with keyword `all` in its name: xref:typedb:resources:releases.adoc[Download]
+TypeDB and find TypeDB Console in the same archive.
+
+[NOTE]
+====
+There is also a *server-only* version available for download from the
+https://github.com/vaticle/typedb/releases[GitHub,window=_blank]. It has `server` keyword instead of `all` in its name.
+====
+
+////
+[NOTE]
+====
+Make sure not to download server only version: the archive should have the keyword `all` in its name.
+====
+////
+
+[#_typedb_studio]
+== TypeDB Studio
+
+.Latest version
+[cols="^.^1,^.^2,^.^2,^.^2",caption="",options="header"]
+|===
+|Release notes |Windows |Linux |macOS
+
+include::partial$latest-version.adoc[]
+|===
+
+.See all versions
+[%collapsible]
+====
+.All versions
+[cols="^.^1,^.^2,^.^2,^.^2",caption="",options="header"]
+|===
+|Release notes |Windows |Linux |macOS
+
+include::partial$all-versions.adoc[]
+
+|===
+====
+
+== TypeDB Drivers
+
+[tabs]
+====
+Java::
++
+--
+Please follow the xref:clients::java/java-install.adoc[installation guide] to add TypeDB Java Driver to a
+project/application.
+
+Alternatively we can download TypeDB Java Driver by the following link:
+
+- https://repo.vaticle.com/service/rest/repository/browse/maven/com/vaticle/typedb/typedb-client/
+
+For more information on the Driver versions check the
+xref:clients::java/java-install.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-client-java/releases[release notes,window=_blank].
+--
+
+Python::
++
+--
+Please follow the xref:clients::python/python-install.adoc[installation guide] to add TypeDB Python Driver to a
+project/application.
+
+To download TypeDB Python Driver we can use any of the following options:
+
+- `pip install typedb-client`
+- https://pypi.org/project/typedb-client/#files[,window=_blank]
+
+For more information on the Driver versions check the
+xref:clients::python/python-install.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-client-python/releases[release notes,window=_blank].
+--
+
+Node.js::
++
+--
+Please follow the xref:clients::node-js/node-js-install.adoc[installation guide] to add TypeDB Node.js Driver to a
+project/application.
+
+To download TypeDB Node.js Driver we can use the following command:
+
+- `npm install typedb-client`
+
+For more information on the Driver versions check the
+xref:clients::node-js/node-js-install.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-client-nodejs/releases/[release notes,window=_blank].
+--
+====

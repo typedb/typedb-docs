@@ -1,0 +1,43 @@
+= Overview
+:keywords: typeql, documentation, overview, query, DDL, DML
+:longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: Documentation overview
+:summary: A birds-eye view of TypeQL and TypeDB
+
+This is the TypeQL documentation portal. It has the following pages:
+
+* xref:fundamentals.adoc[] -- essential knowledge and terminology
+* xref:queries.adoc[] -- querying with TypeQL
+
+[#_schema]
+* Schema -- How to define a schema with TypeQL (DDL).
+** xref:schema/define-types.adoc[]
+** xref:schema/define-rules.adoc[]
+** xref:schema/modify.adoc[]
+
+[#_data]
+* Data -- How to read & write Data with TypeQL (DML).
+** xref:data/basic-patterns.adoc[]
+** xref:data/insert.adoc[]
+** xref:data/delete.adoc[]
+** xref:data/update.adoc[]
+** xref:data/get.adoc[]
+** xref:data/advanced.adoc[]
+
+* xref:grammar.adoc[]
+
+== Where to go from here?
+
+See the xref:typeql::fundamentals.adoc[] page for essential knowledge about TypeQL and the xref:typeql::queries.adoc[]
+page for an overview of all query types.
+
+Explore the <<_schema,Schema>> section for the in-detail documentation of the TypeQL as a Data definition language
+(DDL) -- how to define a TypeDB database schema.
+
+Check the <<_data,Data>> section for the documentation of TypeQL as a Data manipulation language (DML) --
+how to build queries to a TypeDB database.
+
+There are also separate documentation portal sections for:
+
+* xref:typedb::overview.adoc[TypeDB]
+* xref:clients::clients.adoc[TypeDB Clients]

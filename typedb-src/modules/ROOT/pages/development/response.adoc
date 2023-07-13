@@ -1,0 +1,216 @@
+= Response interpretation
+:Summary: TypeDB query response interpretation.
+:keywords: typeql, query, response, result, answer, concept
+:longTailKeywords: typeql response, concept map, typeql variables
+:pageTitle: Response interpretation
+
+TypeDB can return a response to a TypeQL query in different formats, depending on a type of query.
+The server response will be processed by a TypeDB Client.
+TypeDB Client provides classes and methods for different response types respectively. Please
+see the table below for mapping of response format to a type of query that has been sent.
+
+[cols="^.^1,^.^4,^.^4"]
+|===
+| *#* | *Query type* | *Response format*
+
+| 1
+| xref:typedb::development/read.adoc#_get[Get query]
+| Stream/Iterator of *ConceptMap*
+
+| 2
+| Get query with xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
+| *Future* of *Numeric*
+
+| 3
+| Get query with xref:typeql::data/get.adoc#_group[grouping,window=_blank]
+| Stream/Iterator of *ConceptMapGroup*
+
+| 4
+| Get query with xref:typeql::data/get.adoc#_group[grouping,window=_blank] and
+xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
+| Stream/Iterator of *NumericGroup*
+
+| 5
+| xref:typedb::development/write.adoc#_insert[Insert query]
+| Stream/Iterator of *ConceptMap*
+
+| 6
+| xref:typedb::development/write.adoc#_delete_query[Delete query]
+| *Future* (of empty response)
+
+| 7
+| xref:typedb::development/write.adoc#_update_query[Update query]
+| Stream/Iterator of *ConceptMap*
+
+| 8
+| xref:typedb::development/schema.adoc#_define_types[Define]
+| *Future* (of empty response)
+
+| 9
+| xref:typedb::development/schema.adoc#_undefine[Undefine]
+| *Future* (of empty response)
+
+| 10
+| xref:typedb::development/infer.adoc#_explain_query[Explain]
+| Stream/Iterator of *Explanation*
+|===
+
+TypeDB xref:development/api.adoc[Driver API] methods can be used to process the objects returned: get values of attributes,
+get <<_json,JSON>> representation of data, or even get other concepts from a database.
+
+== Expected results
+
+See the table above for an overview of response formats. For more details see the <<_response_formats,Response formats>>
+section below.
+
+=== Get query
+
+The ordinary xref:typedb::development/read.adoc#_get[Get query] (without
+xref:typedb:ROOT:fundamentals/queries.adoc#_modifiers[aggregation] or
+xref:typedb:ROOT:fundamentals/queries.adoc#_modifiers[grouping]) returns a stream/iterator of a ConceptMap objects.
+
+Every iteration returns the result as a <<_conceptmap,ConceptMap>> object.
+
+=== Get query with aggregation
+
+The get query with *aggregation* can only return a singular value (aggregated result). Hence, it returns a Future
+object of Numeric.
+
+Use <<_future,Future>> object's `get()` method to wait and retrieve the <<_numeric,Numeric>> object when it's ready.
+
+=== Get query with grouping
+
+The get query with *grouping* returns a stream/iterator of ConceptMapGroup objects.
+
+Every iteration should return the result as a <<_conceptmapgroup,ConceptMapGroup>> object.
+
+Use ConceptMapGroup object to retrieve <<_conceptmap,ConceptMap>>.
+
+=== Get query with grouping and aggregation
+
+The get query with *grouping* and *aggregation* returns a stream/iterator of a NumericGroup objects.
+
+Every iteration should return the result as a <<_numericgroup,NumericGroup>> object.
+
+Use NumericGroup object to retrieve <<_numeric,Numeric>>.
+
+[#_insert_query]
+=== Insert query
+
+An insert query returns a stream/iterator of a ConceptMap objects.
+
+Every iteration should return the result as a <<_conceptmap,ConceptMap>> object.
+
+[#_delete_query]
+=== Delete query
+
+Delete query can only return a Future object of a void (empty response).
+
+We can't retrieve any useful data from the Future object for delete query.
+
+=== Update (match-delete-insert) query
+
+Similar to an <<_insert_query,insert>> query.
+
+=== Define query
+
+Similar to a <<_delete_query,delete>> query.
+
+=== Undefine query
+
+Similar to a <<_delete_query,delete>> query.
+
+=== Explain
+
+Explain query returns a stream/iterator of an Explanation objects.
+
+For more information on inference explanation please see the xref:development/infer.adoc[Inferring data] page.
+
+[#_response_formats]
+== Response formats
+
+xref:clients::studio.adoc[TypeDB Studio] and xref:clients::console.adoc[TypeDB Console] process the
+responses automatically to present the results (in GUI and CLI respectively) to the user.
+
+For xref:clients::clients.adoc#_typedb_drivers[TypeDB Drivers]: the specific methods/calls used to interpret the
+response depend on the TypeDB Driver used.
+
+The following is a very basic description of objects used to interpret the results from the TypeDB query response.
+For more information please see the xref:development/api.adoc[API & Drivers] page and documentation for the
+xref:clients::java/java-overview.adoc[Java],
+xref:clients::python/python-overview.adoc[Python], and
+xref:clients::node-js/node-js-overview.adoc[Node.js] TypeDB Drivers respectively.
+
+[#_conceptmap]
+=== ConceptMap
+
+ConceptMap is a special object, made for mapping of variables from a query to concepts in a database. Its methods
+provide a way to interact with the concepts.
+
+Usually represents a single solution/answer from a stream of answers for a TypeDB query.
+
+[#_conceptmapgroup]
+=== ConceptMapGroup
+
+It's a container for a <<_conceptmap,ConceptMap>> object with an owner.
+
+[#_concept]
+=== Concept
+
+Object to represent a type or an instance of a type (data) from a database.
+
+There are separate methods for every built-in type and for instances of every built-in type.
+
+[#_json]
+[NOTE]
+====
+TypeDB Driver API methods can be used to get a JSON out of Concept returned in a response.
+
+The exact syntax differs for every language specific API:
+
+* xref:clients:ROOT:java/java-api-ref.adoc#_retrieve_a_concept_as_json[Java]
+* xref:clients:ROOT:python/python-api-ref.adoc#_retrieve_a_concept_as_json[Python]
+* xref:clients:ROOT:node-js/node-js-api-ref.adoc#_retrieve_a_concept_as_json[Node.js]
+====
+
+[#_numeric]
+=== Numeric
+
+Numeric object represents a numeric value.
+
+[#_numericgroup]
+=== NumericGroup
+
+NumericGroup object has not only a Numeric object but also an owner.
+
+[#_future]
+=== Future
+
+Future object represents an asynchronous query result to be able to get the value later, when query execution completes.
+
+=== Explanation
+
+Explanation is a special object returned as a response to an explain query.
+These are used to explain xref:development/infer.adoc[data inference]. To perform an
+xref:development/infer.adoc#_explain_query[explain query] use `explainables` and `explainable` objects.
+
+== Number of answers
+
+If the query type can return *multiple* results (e.g., a get query) then the result of such query type is a
+*stream/iterator* to iterate through all the results. Even if the actual query of such type returns one result or no
+results at all -- it returns a stream/iterator with one or zero iterations respectively.
+
+Query types that can return only a single answer or a void (an empty response) are executed fully asynchronous on the
+server. To wait for a query to finish execution, and return its result if there is one, use the `get()` method of the
+*Future* object returned by the query.
+
+== Best practice
+
+=== Asynchronous queries
+
+Invoking a TypeQL query sends it to a TypeDB server, where it will be completed in the background. Local processing
+can take place while waiting for responses to be received. Take advantage of these asynchronous queries to mask network
+round-trip costs and increases throughput.
+
+For example, if we are performing 10 get queries in a transaction, it's best to send them all to the server before
+iterating over any of their answers.

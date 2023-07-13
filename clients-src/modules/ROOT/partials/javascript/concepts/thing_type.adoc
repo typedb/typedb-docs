@@ -1,0 +1,389 @@
+== Get a Remote version of the ThingType.
+
+=== Syntax
+
+[source,javascript]
+----
+thingType.asRemote(tx);
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| tx | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteThingType`
+
+== Retrieve direct supertype
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).getSupertype();
+----
+
+=== Description
+
+Retrieves the most immediate supertype of the ThingType.
+
+=== Returns
+
+* [`ThingType`] 
+* `null`
+
+== Retrieve all supertypes
+
+=== Syntax
+
+[source,javascript]
+----
+thingType.asRemote(tx).getSupertypes()
+----
+
+=== Description
+
+Retrieves all supertypes of the ThingType.
+
+=== Returns
+
+* [`Stream`] <[`ThingType`] >
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,javascript]
+----
+thingType.asRemote(tx).getSubtypes()
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the ThingType.
+
+=== Returns
+
+* [`Stream`]  of [`ThingType`] 
+
+== Retrieve instances
+
+=== Syntax
+
+[source,javascript]
+----
+thingType.asRemote(tx).getInstances();
+----
+
+=== Returns
+
+* [`Stream`]  of [`Thing`] 
+
+== Set abstract
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).setAbstract();
+----
+
+=== Description
+
+Set a ThingType to be abstract, meaning it cannot have instances.
+
+=== Returns
+
+* void
+
+== Unset abstract
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).unsetAbstract();
+----
+
+=== Description
+
+Set a ThingType to be non-abstract, meaning it can have instances.
+
+=== Returns
+
+* void
+
+== Add new playable role
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).setPlays(roleType, overriddenType);
+----
+
+=== Description
+
+Allows the instances of this type to play the given role.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| roleType | The role to be played by the instances of this type. | [`RoleType`]  | True | N/A
+| overriddenType | The role type that this role overrides, if applicable. | [`RoleType`]  | False | undefined
+|===
+
+=== Returns
+
+* void
+
+== Add attribute ownership
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).setOwns(attributeType, isKey);
+----
+
+=== Description
+
+Allows the instances of this type to own the given `AttributeType`.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
+| isKey | Whether this AttributeType is to be owned as a unique key. | boolean | False | False
+|===
+
+=== Returns
+
+* void
+
+== Add attribute ownership
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).setOwns(attributeType, overriddenType, isKey);
+----
+
+=== Description
+
+Allows the instances of this type to own the given `AttributeType`.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
+| overriddenType | The AttributeType that this attribute ownership overrides, if applicable. | [`AttributeType`]  | False | None
+| isKey | Whether this AttributeType is to be owned as a unique key. | boolean | False | False
+|===
+
+=== Returns
+
+* void
+
+== Retrieve playable roles
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).getPlays();
+----
+
+=== Description
+
+Retrieves all direct and inherited roles that are allowed to be played by the instances of this type.
+
+=== Returns
+
+* [`Stream`]  of [`RoleType`] 
+
+== Retrieve playable roles
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).getPlaysExplicit();
+----
+
+=== Description
+
+Retrieves all direct roles that are allowed to be played by the instances of this type.
+
+=== Returns
+
+* [`Stream`]  of [`RoleType`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).getOwns(keysOnly);
+----
+
+=== Description
+
+Retrieves attribute types that the instances of this type are allowed to own directly or via inheritance.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+|===
+
+=== Returns
+
+* [`Stream`]  of [`AttributeType`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).getOwnsExplicit(keysOnly);
+----
+
+=== Description
+
+Retrieves attribute types that the instances of this type are allowed to own directly.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+|===
+
+=== Returns
+
+* [`Stream`]  of [`AttributeType`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).getOwns(valueType, keysOnly);
+----
+
+=== Description
+
+Retrieves attribute types that the instances of this type are allowed to own directly or via inheritance.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| valueType | If specified, only attribute types of this ValueType will be retrieved. | `AttributeType.ValueType` | False | None
+| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+|===
+
+=== Returns
+
+* [`Stream`]  of [`AttributeType`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).getOwnsExplicit(valueType, keysOnly);
+----
+
+=== Description
+
+Retrieves attribute types that the instances of this type are allowed to own directly.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| valueType | If specified, only attribute types of this ValueType will be retrieved. | `AttributeType.ValueType` | False | None
+| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+|===
+
+=== Returns
+
+* [`Stream`]  of [`AttributeType`] 
+
+== Remove role
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).unsetPlays(role);
+----
+
+=== Description
+
+Disallows the instances of this type from playing the given role.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| role | The role to not be played by the instances of this type. | [`RoleType`]  | True | N/A
+|===
+
+=== Returns
+
+* void
+
+== Remove attribute
+
+=== Syntax
+
+[source,javascript]
+----
+await thingType.asRemote(tx).unsetOwns(attributeType);
+----
+
+=== Description
+
+Disallows the instances of this type from owning the given `AttributeType`.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attributeType | The AttributeType to not be owned by the type. | [`AttributeType`]  | True | N/A
+|===
+
+=== Returns
+
+* void
+

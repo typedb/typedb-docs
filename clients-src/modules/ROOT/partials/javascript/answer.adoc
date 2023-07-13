@@ -1,0 +1,395 @@
+== Retrieve a mapping of variables to concepts
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.map;
+----
+
+=== Description
+
+Produces a Map where keys are variable names and values are [`concept`] s.
+
+=== Returns
+
+* `Map<String, Concept>`
+
+== Retrieve concepts
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.concepts();
+----
+
+=== Description
+
+Return an iterator of all the [`concept`] s in this ConceptMap.
+
+=== Returns
+
+* Iterator of Concept
+
+== Retrieve a concept corresponding to a specific variable
+
+=== Syntax
+
+[source,javascript]
+----
+concept_map.get(cVar(var))
+----
+
+=== Description
+
+Retrieve a concept for a given variable name
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| var | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`Concept`] 
+
+== Retrieve explainable concepts
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.explainables
+----
+
+=== Description
+
+Gets the [Explainables]  object for this ConceptMap, exposing which of the Concepts in this ConceptMap are explainable
+
+=== Returns
+
+* [`ConceptMap.Explainables`] 
+
+== Retrieve numeric value of an aggregate answer
+
+=== Syntax
+
+[source,javascript]
+----
+numeric.asNumber();
+----
+
+=== Returns
+
+* number
+
+== Checks if the type of an aggregate answer is a number
+
+=== Syntax
+
+[source,javascript]
+----
+numeric.isNumber();
+----
+
+=== Returns
+
+* boolean
+
+== Checks if the type of an aggregate answer is not a number
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMapGroup.isNaN();
+----
+
+=== Returns
+
+* boolean
+
+== Retrieve the concept that is the group owner
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMapGroup.owner;
+----
+
+=== Returns
+
+* [`Concept`] 
+
+== Retrieve the ConceptMaps of the group
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMapGroup.conceptMaps;
+----
+
+=== Returns
+
+* Array of [`ConceptMap`] s
+
+== Retrieve the concept that is the group owner
+
+=== Syntax
+
+[source,javascript]
+----
+numericGroup.owner;
+----
+
+=== Returns
+
+* [`Concept`] 
+
+== Retrieve the Numeric answer of the group
+
+=== Syntax
+
+[source,javascript]
+----
+numericGroup.numeric;
+----
+
+=== Returns
+
+* [Numeric] 
+
+== Retrieve explainable relation
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.explainables.relation(variable);
+----
+
+=== Description
+
+Retrieves the explainable relation with the given variable name.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`ConceptMap.Explainable`] 
+
+== Retrieve explainable attribute
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.explainables.attribute(variable);
+----
+
+=== Description
+
+Retrieves the explainable attribute with the given variable name.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`ConceptMap.Explainable`] 
+
+== Retrieve explainable ownership
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.explainables.ownership(ownerVar, attributeVar);
+----
+
+=== Description
+
+Retrieves the explainable attribute ownership with the pair of (owner, attribute) variable names.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+=== Returns
+
+* [`ConceptMap.Explainable`] 
+
+== Retrieve explainable relations
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.explainables.relations;
+----
+
+=== Description
+
+Retrieves all of this ConceptMap's explainable relations.
+
+=== Returns
+
+* Map<String, [`ConceptMap.Explainable`] >
+
+== Retrieve explainable attributes
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.explainables.attributes;
+----
+
+=== Description
+
+Retrieves all of this ConceptMap's explainable attributes.
+
+=== Returns
+
+* Map<String, [`ConceptMap.Explainable`] >
+
+== Retrieve explainable ownerships
+
+=== Syntax
+
+[source,javascript]
+----
+conceptMap.explainables.ownerships;
+----
+
+=== Description
+
+Retrieves all of this ConceptMap's explainable attribute ownerships.
+
+=== Returns
+
+* Map<[String, String], [`ConceptMap.Explainable`] >
+
+== Retrieve conjunction
+
+=== Syntax
+
+[source,javascript]
+----
+explainable.conjunction
+----
+
+=== Description
+
+Retrieves the subquery of the original query that is actually being explained.
+
+=== Returns
+
+* String
+
+== Retrieve ID
+
+=== Syntax
+
+[source,javascript]
+----
+explainable.id
+----
+
+=== Description
+
+Retrieves the unique ID that identifies this Explainable.
+
+=== Returns
+
+* number
+
+== Retrieve the rule
+
+=== Syntax
+
+[source,javascript]
+----
+explanation.rule;
+----
+
+=== Description
+
+Retrieves the Rule for this Explanation.
+
+=== Returns
+
+* Rule
+
+== Retrieve the conclusion
+
+=== Syntax
+
+[source,javascript]
+----
+explanation.conclusion
+----
+
+=== Description
+
+Retrieves the Conclusion for this Explanation.
+
+=== Returns
+
+* ConceptMap
+
+== Retrieve the condition
+
+=== Syntax
+
+[source,javascript]
+----
+explanation.condition
+----
+
+=== Description
+
+Retrieves the Condition for this Explanation.
+
+=== Returns
+
+* ConceptMap
+
+== Retrieve the variable mapping
+
+=== Syntax
+
+[source,javascript]
+----
+explanation.variableMapping
+----
+
+=== Description
+
+Retrieves the mapping between rule variables and query variables for this Explanation.
+
+=== Returns
+
+* Map<String, Set<String>>
+

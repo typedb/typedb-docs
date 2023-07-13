@@ -1,0 +1,223 @@
+== Retrieve valuetype (Local)
+
+=== Syntax
+
+[source,python]
+----
+attributeType.get_value_type()
+----
+
+=== Description
+
+Retrieves the valuetype of this AttributeType.
+
+=== Returns
+
+* AttributeType.ValueType (STRING | DATETIME | LONG | DOUBLE | BOOLEAN)
+
+== Set supertype
+
+=== Syntax
+
+[source,python]
+----
+attributeType.as_remote(tx).set_supertype(attribute_type)
+----
+
+=== Description
+
+Sets the supplied AttributeType as the supertype of the current AttributeType
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attribute_type | The AttributeType to set as the supertype of this AttributeType | AttributeType | True | N/A
+|===
+
+=== Returns
+
+* None
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,python]
+----
+attributeType.as_remote(tx).get_subtypes()
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the AttributeType.
+
+=== Returns
+
+* Iterator of [`AttributeType`] 
+
+== Retrieve all instances of this AttributeType
+
+=== Syntax
+
+[source,python]
+----
+attributeType.as_remote(tx).get_instances()
+----
+
+=== Description
+
+Retrieves all direct and indirect Attributes that are instances of this Type.
+
+=== Returns
+
+* Iterator of [`Attribute`] 
+
+== Retrieve direct and inherited owners of this Type of Attribute
+
+=== Syntax
+
+[source,python]
+----
+attributeType.as_remote(tx).get_owners(annotations: Set["Annotation"])
+----
+
+=== Description
+
+Retrieve all Things that own an attribute of this type.
+Optionally, only fetches Things that own an attribute of this type with annotation set provided.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+
+| Annotation
+| Only retrieve things that have an attribute of this type with the exact annotation set.
+a|
+* `ThingType.Annotation.KEY`
+* `ThingType.Annotations.UNIQUE`
+| False | N/A
+|===
+
+=== Returns
+
+* Iterator of [`Thing`] 
+
+== Retrieve direct owners of this Type of Attribute
+
+=== Syntax
+
+[source,python]
+----
+attribute_type.as_remote(tx).get_owners_explicit(only_key)
+----
+
+=== Description
+
+Retrieve all Things that directly own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| onlyKey | If true, only retrieve things that have an attribute of this type as a key. | boolean | False | False
+|===
+
+=== Returns
+
+* Iterator of [`Thing`] 
+
+== Get a Remote version of the AttributeType.
+
+=== Syntax
+
+[source,python]
+----
+attributeType.as_remote(tx)
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transaction | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteAttributeType`
+
+== Check if value is of type boolean
+
+=== Syntax
+
+[source,python]
+----
+attributeType.is_boolean()
+----
+
+=== Description
+
+Returns true if the value for attributes of this type is of type boolean. Otherwise, returns false.
+
+== Check if value is of type long
+
+=== Syntax
+
+[source,python]
+----
+attributeType.is_long()
+----
+
+=== Description
+
+Returns true if the value for attributes of this type is of type long. Otherwise, returns false.
+
+== Check if value is of type double
+
+=== Syntax
+
+[source,python]
+----
+attributeType.is_double()
+----
+
+=== Description
+
+Returns true if the value for attributes of this type is of type double. Otherwise, returns false.
+
+== Check if value is of type string
+
+=== Syntax
+
+[source,python]
+----
+attributeType.is_string()
+----
+
+=== Description
+
+Returns true if the value for attributes of this type is of type string. Otherwise, returns false.
+
+== Check if value is of type datetime
+
+=== Syntax
+
+[source,python]
+----
+attributeType.is_datetime()
+----
+
+=== Description
+
+Returns true if the value for attributes of this type datetime. Otherwise, returns false.
+

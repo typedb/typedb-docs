@@ -1,0 +1,241 @@
+= Sample application
+:keywords: getting started, typedb, typeql, tutorial, quickstart, application, app, example, sample
+:longTailKeywords: get started with typedb, typedb tutorial, typedb quickstart, learn typedb, sample app, sample application
+:pageTitle: Sample application
+:summary: A simple example with a prototype application to run against a TypeDB database.
+:tabs-sync-option:
+
+The following sample app implementations are all designed to connect to the xref:tutorials/iam-schema.adoc[IAM]
+database located at the TypeDB server with `0.0.0.0:1729` address. Please make sure to have TypeDB server running
+with the `iam` database created and both *schema* and *data* loaded. Use the
+xref:installation.adoc[Installation guide] to prepare the server
+and the xref:quickstart.adoc[Quickstart guide] to prepare the database.
+
+The sample application has the following implementations:
+
+* <<_python_implementation,Python>>
+* <<_java_implementation,Java>>
+* <<_node_js_implementation,Node.js>>
+
+== Implementation
+
+[tabs]
+====
+Java::
++
+--
+include::partial$sample-app-java.adoc[]
+--
+
+Python::
++
+--
+include::partial$sample-app-python.adoc[]
+--
+
+Node.js::
++
+--
+include::partial$sample-app-node.adoc[]
+--
+====
+
+[#_explanation]
+== Explanation
+
+=== List names and e-mails for all users that have them
+
+TypeQL query used:
+
+[,typeql]
+----
+match $u isa user, has full-name $n, has email $e;
+----
+
+*Simple explanation*: we go through all entities of `user` subtype (assigning a variable `$u` for those) that have
+`full-name` attribute (variable `$n` assigned for those) and `email` attribute (variable `$e`). Since we don't have an
+explicit `get` statement it is assumed that we get all the variables that were assigned in the query.
+
+[NOTE]
+====
+Note that users that do not have `full-name` or `email` attributes added to them will not be shown in
+the results of this request. Additionally, users that have multiple full-names or emails will be mentioned more than once.
+
+For more information, see the xref:typedb::fundamentals/patterns.adoc#_solutions[matching patterns] explanation.
+====
+
+=== List all the files that Kevin Morrison has access to
+
+[tabs]
+====
+TypeQL syntax::
++
+--
+TypeQL query used:
+
+[,typeql]
+----
+match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission;
+      $o isa object, has path $fp; $pa($o, $va) isa access; get $fp;
+----
+--
+
+Java Builder syntax::
++
+--
+TypeQL query builder clause used:
+
+[,java]
+----
+TypeQLMatch.Filtered getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
+        cVar("u").isa("user").has("full-name", "Kevin Morrison"),
+        cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
+        cVar("o").isa("object").has("path", cVar("fp")),
+        cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access")
+).get(cVar("fp"));
+----
+--
+====
+
+*Simple explanation*: we look for a `user` (variable `$u`) with attribute `full-name` of value `Kevin Morrison` assigned.
+Then we search for a `permission` relation (`$p`) in between this user `$u` and potential access `$pa`.
+Finally, we state that an `object` (`$o`) with a path `$fp` should be a part of `$pa` `access` relation, without
+having to specify what kind of action `$va` it should be. From all the variables requested, we only want it to
+return the `path` attributes (`$fp`) of any `object` that the `user` has `permission` to `access`.
+
+[NOTE]
+====
+Note that users and files don't have a singular relation that connects them directly. According to the `iam`
+xref:tutorials/iam-schema.adoc[schema] we need two relations to connect them: `permission` and `access`. Both
+relations must be used to make a decision of whether a user has access to a file.
+====
+
+=== List all the files Kevin has view_file access to (with inference)
+
+[tabs]
+====
+TypeQL syntax::
++
+--
+TypeQL query used:
+
+[,typeql]
+----
+match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission;
+      $o isa object, has path $fp; $pa($o, $va) isa access;
+      $va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;
+----
+--
+
+Java Builder syntax::
++
+--
+TypeQL query builder clause #1 used:
+
+[,java]
+----
+TypeQLMatch.Limited getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
+        cVar("u").isa("user").has("full-name", "Kevin Morrison"),
+        cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
+        cVar("o").isa("object").has("path", cVar("fp")),
+        cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access"),
+        cVar("va").isa("action").has("name", "view_file")
+).get(cVar("fp")).sort(cVar("fp")).offset(0).limit(5);
+----
+--
+====
+
+*Simple explanation*: This is a similar request to the previous one. The difference is we set the type of action (`$va`)
+that the user has access to the `view_file`. We still get only `path` (`$fp`), but can now sort in ascending order
+and get it in two portions: this particular request gets the very first five entries. Later ones will get another five,
+starting from number six.
+
+[NOTE]
+====
+Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
+xref:fundamentals/inference.adoc#_rules[rule]. To use inference in this query we modify TypeDB options and send the modified set
+of options to the transaction call.
+====
+
+[NOTE]
+====
+To make things a bit more interesting we split this into two separate queries by using an `offset` keyword: we
+get the first five results and then five more results with an offset of five. To be able to do that we apply sorting
+of the results by `path` variable. Otherwise, we can't guarantee the results will be in the same order every time we
+send a request.
+====
+
+=== Insert a new file and then insert an access relation to it
+
+First, we generate a new value for the `path` attribute of the query (stored locally in the variable called filepath),
+consisting of `logs/` prefix, current date and time in compact format, and `.log` ending.
+
+The following queries are displayed in their final form, with the `path` attribute generated value.
+
+Query #1:
+
+[tabs]
+====
+TypeQL syntax::
++
+--
+[,typeql]
+----
+insert $f isa file, has path 'logs/2023-06-30T12:04:36.351.log';
+----
+--
+
+Java Builder syntax::
++
+--
+[,java]
+----
+TypeQLInsert insertQuery = TypeQL.insert(cVar("f").isa("file").has("path", "logs/2023-06-30T12:04:36.351.log"));
+----
+--
+====
+
+*Simple explanation*: we insert a `file` entity (instance of data) that has an attribute `path` with the value we
+generated before.
+
+Query #2:
+
+[tabs]
+====
+TypeQL syntax::
++
+--
+[,typeql]
+----
+match
+  $f isa file, has path 'logs/2023-06-30T12:04:36.351.log';
+  $vav isa action, has name 'view_file';
+insert
+  ($vav, $f) isa access;
+----
+--
+
+Java Builder syntax::
++
+--
+[,java]
+----
+insertQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
+        cVar("f").isa("file").has("path", "logs/2023-06-30T12:04:36.351.log"),
+        cVar("vav").isa("action").has("name", "view_file")
+                )
+        .insert(cVar("pa").rel(cVar("vav")).rel(cVar("f")).isa("access"));
+----
+--
+====
+
+*Simple explanation*: we look for a `file` entity that has an attribute `path` with the value we generated before.
+And we find an `action`, that has a `name` attribute with the value of `view_file`. Then we insert an `access`
+relation in between the `file` and the `action`.
+
+[NOTE]
+====
+Note that we create `file` first. If we try to set `access` to a nonexistent `file` our request will succeed
+(if we don't make any mistakes in the syntax of the query) but will not insert any new data (relation). After both
+requests are done we commit the write transaction. It is important not to forget to commit changes.
+====

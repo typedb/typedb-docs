@@ -1,0 +1,248 @@
+= Define rules
+:Summary: Defining rules with TypeQL.
+:keywords: typeql, schema, rule, logic, inference
+:longTailKeywords: typeql schema, typeql rules, typeql logic
+:pageTitle: Define rules
+
+Rules are defined independently of types in the same schema.
+However, any types used in a rule must be defined in the schema.
+
+They are executed only as a part of xref:typeql::data/get.adoc[Get queries] when the
+xref:typedb:ROOT:development/infer.adoc[inference] option is *enabled* in a *read* transaction.
+
+[IMPORTANT]
+====
+The results inferred by rules are virtual because they exist only within the transaction. They are not persisted
+in a database, and any data inferred in a query ceases to exist when the transaction is closed.
+====
+
+Read more on rules in the <<_rule_validation>> section below.
+
+== Syntax
+
+Rules are defined in TypeQL with the following syntax:
+
+[,typeql]
+----
+rule <label>:
+when {
+    <pattern>
+} then {
+    <pattern>
+};
+----
+
+Use the `rule`, `when`, and `then` keywords for a rule definition.
+
+[IMPORTANT]
+====
+Unlike other `define` statements for schema definitions, the rule syntax uses patterns consisting of
+variables and constraints for **data** instances. For more information, see the
+xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
+====
+
+[#_rule_validation]
+== Rule validation
+
+// tag::rule_validation[]
+A rule's `when` clause (condition) can be a pattern with multiple statements, including disjunctions and negations.
+
+A `then` clause (conclusion) describes a <<_single_conclusion,single>> relation or a constraint of ownership of
+an attribute (due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic,window=_blank]).
+
+When using a disjunction in a rule, the disjunctive parts must be bound by variables outside the `or` statement.
+These variables are the only ones permitted in the `then` clause.
+
+Since version `2.18.0`, we can use xref:typeql::schema/define-types.adoc#_abstract_types[abstract] types in a rule
+as long as all the type variables that define which instances to create during materialization are concrete
+(non-abstract).
+
+.See the example with abstract types
+[%collapsible]
+====
+[,typeql]
+----
+define
+
+abstract-person sub entity, abstract, plays friendship:friend; #abstract
+friendship sub relation, relates friend;  #non-abstract
+
+rule concrete-relation-over-abstract-players:
+when {
+   $x isa abstract-person;
+} then {
+   (friend: $x) isa friendship;
+};
+----
+====
+
+The `then` clause of a rule can't use variables (either concept variables or value variables) that aren't defined in
+the `when` clause.
+
+The `then` clause of a rule must not insert any instance which occurs negated in its `when` clause or in the `when`
+clause of any rule it may trigger. Attempting to define such a rule will throw an error.
+
+Rules will not create duplicates of instances that are already in the database or have already been inferred.
+There is no need to check if it already exists in a rule.
+
+[#_single_conclusion]
+There are exactly *three* distinct *conclusions* permitted:
+
+. A new relation.
+. Ownership of an attribute defined by its value.
+. Ownership of an attribute defined by a variable.
+
+The `then` clause must be insertable according to the schema (e.g., we can't give an attribute to an instance
+that can't own that attribute type).
+// end::rule_validation[]
+
+== Rule processing (inference)
+
+The approach TypeDB uses is a https://en.wikipedia.org/wiki/Backward_chaining[backward-chaining,window=_blank]
+execution on top of https://en.wikipedia.org/wiki/Horn_clause[Horn-clause,window=_blank] logic.
+
+Negation functionality follows the set-difference semantics. It corresponds to the negation-as-failure model under the
+following conditions:
+
+- We have stratified negation.
+- The results are grounded.
+- We ensure all variables occurring both inside and outside the negation are bound by the time the negation is
+evaluated.
+
+Infinite recursion and non-termination are prevented with a tabling mechanism.
+
+== Examples
+
+=== Basic
+
+[,typeql]
+----
+define
+
+rule test:
+    when {
+        $p isa person;
+    } then {
+        $p has full-name "Dude";
+    };
+----
+
+The example above demonstrates a simple rule. All `person` entities matched by a read query with the inference option
+*enabled* will have a `full-name` attribute with the value `Dude`, even if they have other `full-name`
+attributes with different values.
+
+=== Using value variables
+
+[,typeql]
+----
+define
+
+size-mb sub attribute, value double;
+
+file owns size-mb;
+
+rule size-covert:
+    when {
+        $f isa file, has size-kb $s;
+        ?mb = $s/1024;
+    } then {
+        $f has size-mb ?mb;
+    };
+----
+
+The above query defines an additional attribute subtype `size-mb`, defines that it can be owned by the `file` entity
+subtype, and creates a rule `size-convert` to create ownership of `size-mb` with the value *1024* times lower than
+`size-kb` to any `file` instance that has `size-kb`. The rule uses a
+xref:typeql::data/basic-patterns.adoc#_value_variables[value variable] for
+xref:data/basic-patterns.adoc#_arithmetic_operations[arithmetics].
+
+With this rule defined and the inference option xref:typedb:ROOT:development/infer.adoc#_how_to_use_inference[enabled],
+we can try the following query:
+
+[,typeql]
+----
+match
+    $f isa file, has size-kb $s, has size-mb $mb;
+    $mb > 1;
+----
+
+With the default IAM dataset sample, this query shall return only one result (because all others will have `size-mb`
+lower than 1), similar to this:
+
+[,typeql]
+----
+{
+    $f iid 0x826e80078000000000000000 isa file;
+    $mb 1.6650390625 isa size-mb;
+    $s 1705 isa size-kb;
+}
+----
+
+[IMPORTANT]
+====
+The value of `size-mb` is not persisted in the database but instead -- inferred by the `size-covert` rule every time
+we do a read transaction with the inference option enabled and query for `size-mb`.
+====
+
+=== Transitive rule
+
+[,typeql]
+----
+define
+
+rule transitive-reachability:
+    when {
+        (from: $x, to: $y) isa rel;
+        (from: $y, to: $z) isa rel;
+    } then {
+        (from: $x, to: $z) isa rel;
+    };
+----
+
+The example above allows for the transitivity of relations. We can interpret this rule as joining two relations
+together. It creates a relation `x` to `z`, given that there are relations of `x` to `y` and `y` to `z`.
+
+=== Advanced transitivity usage
+
+When inferring relations, it is possible to variablize any part of the `then` clause of the rule. For example, if we
+want a rule to infer many types of relations, we could propose a rule such as:
+
+[,typeql]
+----
+define
+
+rule all-relation-types-are-transitive:
+    when {
+        ($role1: $x, $role2: $y) isa! $relation;
+        ($role1: $y, $role2: $z) isa! $relation;
+    } then {
+        ($role1: $x, $role2: $z) isa $relation;
+    };
+----
+//#todo Add advanced transitivity page or blog post here
+
+=== Complex rule
+
+[,typeql]
+----
+define
+
+rule add-view-permission:
+    when {
+        $modify isa action, has name "modify_file";
+        $view isa action, has name "view_file";
+        $ac_modify (object: $obj, action: $modify) isa access;
+        $ac_view (object: $obj, action: $view) isa access;
+        (subject: $subj, access: $ac_modify) isa permission;
+    } then {
+        (subject: $subj, access: $ac_view) isa permission;
+    };
+----
+
+The example above illustrates a more complex rule using the IAM schema.
+
+In short, the permission to access some file with the action that has `name` of `view_file` can be inferred by the
+rule from the permission to `modify_file` the same file.
+
+The xref:typedb:ROOT:development/infer.adoc#_example[Example] section of Inferring data page gives a full explanation
+of how this rule works.

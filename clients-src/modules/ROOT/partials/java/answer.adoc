@@ -1,0 +1,463 @@
+- <<_conceptmap_methods>>
+- <<_numeric_methods>>
+- <<_conceptmapgroup_methods>>
+- <<_numeric_group_methods>>
+- <<_explainables_methods>>
+- <<_explainables_methods>>
+- <<_explanation_methods>>
+
+[#_conceptmap_methods]
+== ConceptMap methods
+=== Retrieve a mapping of variables to concepts
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.map();
+----
+
+==== Description
+
+Produces a Map where keys are query variables, and values are xref:typedb::development/response.adoc#_concept[concepts].
+
+==== Returns
+
+* Map<String, <<_concept_methods,Concept>>>
+
+=== Retrieve concepts
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.concepts();
+----
+
+==== Description
+
+Return a collection of all the xref:typedb::development/response.adoc#_concept[concepts] in this ConceptMap.
+
+==== Returns
+
+* Collection<<<_concept,Concept>>>
+
+=== Retrieve a concept corresponding to a specific variable
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.get(cVar(String var))
+----
+
+==== Description
+
+Retrieve a concept for a given variable name
+
+==== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| var | The string representation of a variable | String |  |  
+|===
+
+==== Returns
+
+* xref:java/java-api-ref.adoc#_concept[`Concept`]
+
+=== Retrieve explainable concepts
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.explainables()
+----
+
+==== Description
+
+Gets the <<_explainables_methods,Explainables>> object for this ConceptMap, exposing which of the Concepts in this
+ConceptMap are explainable
+
+==== Returns
+
+* <<_explainables_methods,`ConceptMap.Explainables`>>
+
+[#_numeric_methods]
+== Numeric methods
+
+=== Retrieve numeric value of an aggregate answer as a long
+
+==== Syntax
+
+[source,java]
+----
+numeric.asLong();
+----
+
+==== Returns
+
+* long
+
+=== Retrieve numeric value of an aggregate answer as a double
+
+==== Syntax
+
+[source,java]
+----
+numeric.asDouble();
+----
+
+==== Returns
+
+* double
+
+=== Retrieve numeric value of an aggregate answer
+
+==== Syntax
+
+[source,java]
+----
+numeric.asNumber();
+----
+
+==== Returns
+
+* Number
+
+=== Checks if the type of an aggregate answer is a long
+
+==== Syntax
+
+[source,java]
+----
+numeric.isLong();
+----
+
+==== Returns
+
+* boolean
+
+=== Checks if the type of an aggregate answer is a double
+
+==== Syntax
+
+[source,java]
+----
+numeric.isDouble();
+----
+
+==== Returns
+
+* boolean
+
+[#_conceptmapgroup_methods]
+== ConceptMapGroup methods
+
+=== Checks if the type of an aggregate answer is not a number
+
+==== Syntax
+
+[source,java]
+----
+conceptMapGroup.isNaN();
+----
+
+==== Returns
+
+* boolean
+
+=== Retrieve the concept that is the group owner
+
+==== Syntax
+
+[source,java]
+----
+conceptMapGroup.owner();
+----
+
+==== Returns
+
+* xref:java/java-api-ref.adoc#_concept[`Concept`]
+
+=== Retrieve the ConceptMaps of the group
+
+==== Syntax
+
+[source,java]
+----
+conceptMapGroup.conceptMaps();
+----
+
+==== Returns
+
+* List<<<_conceptmap,`ConceptMap`>>>
+
+[#_numeric_group_methods]
+== Numeric Group methods
+
+=== Retrieve the concept that is the group owner
+
+==== Syntax
+
+[source,java]
+----
+numericGroup.owner();
+----
+
+==== Returns
+
+* xref:java/java-api-ref.adoc#_concept[`Concept`]
+
+=== Retrieve the Numeric answer of the group
+
+==== Syntax
+
+[source,java]
+----
+numericGroup.numeric();
+----
+
+==== Returns
+
+* [Numeric] 
+
+[#_explainables_methods]
+== Explainables methods
+
+=== Retrieve explainable relation
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.explainables().relation(String variable);
+----
+
+==== Description
+
+Retrieves the explainable relation with the given variable name.
+
+==== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+==== Returns
+
+* [`ConceptMap.Explainable`] 
+
+=== Retrieve explainable attribute
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.explainables().attribute(String variable);
+----
+
+==== Description
+
+Retrieves the explainable attribute with the given variable name.
+
+==== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+==== Returns
+
+* [`ConceptMap.Explainable`] 
+
+=== Retrieve explainable ownership
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.explainables().ownership(String ownerVar, String attributeVar);
+----
+
+==== Description
+
+Retrieves the explainable attribute ownership with the pair of (owner, attribute) variable names.
+
+==== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| variable | The string representation of a variable | String |  |  
+|===
+
+==== Returns
+
+* [`ConceptMap.Explainable`] 
+
+=== Retrieve explainable relations
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.explainables().relations();
+----
+
+==== Description
+
+Retrieves all of this ConceptMap's explainable relations.
+
+==== Returns
+
+* Map<String, [`ConceptMap.Explainable`] >
+
+=== Retrieve explainable attributes
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.explainables().attributes();
+----
+
+==== Description
+
+Retrieves all of this ConceptMap's explainable attributes.
+
+==== Returns
+
+* Map<String, [`ConceptMap.Explainable`] >
+
+=== Retrieve explainable ownerships
+
+==== Syntax
+
+[source,java]
+----
+conceptMap.explainables().ownerships();
+----
+
+==== Description
+
+Retrieves all of this ConceptMap's explainable attribute ownerships.
+
+==== Returns
+
+* Map<Pair<String, String>, [`ConceptMap.Explainable`] >
+
+[#_explainable]
+[#_explainable_methods]
+== Explainable methods
+
+=== Retrieve conjunction
+
+==== Syntax
+
+[source,java]
+----
+explainable.conjunction()
+----
+
+==== Description
+
+Retrieves the subquery of the original query that is actually being explained.
+
+==== Returns
+
+* String
+
+=== Retrieve ID
+
+==== Syntax
+
+[source,java]
+----
+explainable.id()
+----
+
+==== Description
+
+Retrieves the unique ID that identifies this Explainable.
+
+==== Returns
+
+* long
+
+[#_explanation_methods]
+== Explanation methods
+
+=== Retrieve the rule
+
+==== Syntax
+
+[source,java]
+----
+explanation.rule();
+----
+
+==== Description
+
+Retrieves the Rule for this Explanation.
+
+==== Returns
+
+* Rule
+
+=== Retrieve the conclusion
+
+==== Syntax
+
+[source,java]
+----
+explanation.conclusion()
+----
+
+==== Description
+
+Retrieves the Conclusion for this Explanation.
+
+==== Returns
+
+* ConceptMap
+
+=== Retrieve the condition
+
+==== Syntax
+
+[source,java]
+----
+explanation.condition()
+----
+
+==== Description
+
+Retrieves the Condition for this Explanation.
+
+==== Returns
+
+* ConceptMap
+
+=== Retrieve the variable mapping
+
+==== Syntax
+
+[source,java]
+----
+explanation.variableMapping()
+----
+
+==== Description
+
+Retrieves the mapping between rule variables and query variables for this Explanation.
+
+==== Returns
+
+* Map<String, Set<String>>

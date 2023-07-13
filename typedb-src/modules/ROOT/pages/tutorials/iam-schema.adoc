@@ -1,0 +1,302 @@
+= IAM schema explanation
+:keywords: iam, typedb, typeql, tutorial, quickstart, application, app, example, sample, schema
+:longTailKeywords: identity and access, identity and access management, iam schema explanation, typedb tutorial, typedb quickstart, learn typedb, sample app, sample application
+:pageTitle: IAM schema explanation
+:summary: Explanation of the IAM schema, widely used throughout TypeDB documentation.
+
+== Introduction
+
+*Identity and access management* (*IAM*) is a complex field that has seen massive growth over the past two decades
+to meet user demand. IAM systems have become progressively more complicated to account for the variety of user
+requirements and to ensure compatibility with a backlog of legacy systems. This has led to the definition of standards
+by governing bodies, such as https://doi.org/10.6028/NIST.SP.800-63-3[NIST,window=_blank], in an attempt to unify and simplify the
+state of IAM ecosystems, as well as to establish best practices. Modern IAM systems, such as the
+https://www.rsa.com/solutions/identity-governance-and-administration/[RSA's Identity Governance and Administration Platform,window=_blank],
+implement these models while providing APIs to existing IAM systems an organization might have in order to unify IAM
+under a single management framework.
+
+[NOTE]
+====
+The terminology used in the IAM xref:quickstart.adoc#_iam_schema[schema] is defined
+according to the sources mentioned above and the ISO/IEC 15408-1 standard within the context of an information system.
+====
+
+[IMPORTANT]
+====
+The IAM schema and accompanying dataset described on this page are used in the most examples throughout the
+TypeDB documentation.
+
+* xref:attachment$iam-schema.tql[iam-schema.tql,window=_blank]
+* xref:attachment$iam-data.tql[iam-data.tql,window=_blank]
+
+Check our xref:quickstart.adoc[Quickstart guide] for step-by-step instructions how to load the schema and data to a
+TypeDB database.
+====
+
+== Overview
+
+As with any TypeDB schema, the IAM schema consists of:
+
+* Types
+ ** Entity types
+ ** Relation types
+ ** Attribute types
+* Rules
+
+[NOTE]
+====
+The xref:development/schema.adoc[schema] page provides more information to better understand the terminology of
+TypeDB schemas.
+====
+
+As for the terminology of the IAM data model -- the main entity types in the IAM schema are:
+
+* Subject -- Active entity in the _system_ that performs operations on objects.
+ ** User -- Human or IT entity possibly interacting with the _system_ from outside of the _system_ boundary.
+  *** Person -- User with `credentials`, `email`, and `full-name` attributes.
+ ** User-group -- A group of users that share the same role.
+* Object -- Passive entity in the _system_, that contains or receives information, and upon which subjects perform
+operations.
+ ** Resource -- Anything usable or consumable in the _system_.
+  *** File -- File in some filesystem with `path` (to the file) and `size-kb` (file size in kB) attributes.
+ ** Resource-collection -- A group of resources.
+* Action -- An operation or operation set that can be performed on a specific type of object. Its name is stored in
+the `name` attribute.
+
+[NOTE]
+====
+In the list above some entities have attributes that are mentioned in their description.
+====
+
+The main relation types in the IAM schema:
+
+* `permission` -- A relation that relates a subject to a specific access.
+* `access` -- A relation that relates an object to a valid action performed on it.
+
+The types mentioned above combined in a schema will look like this:
+
+image::iam-simplified-schema.png[IAM core schema, width=60%, link=self]
+
+The illustration above is not the full IAM schema but only the most important part of it. The least important parts
+have been omitted from the image to reduce the complexity of the schema. For a full version, please see the image in
+the <<_full_schema,Full schema>> section below.
+
+== Permission and Access relations
+
+One of the core elements of the IAM schema is the relations between `subject` and `object` entity types that allow
+us to set `permissions` to access something.
+
+There are two relation types involved: `permission` and `access`.
+
+The `permission` relation connects a `subject` (e.g., an instance of a `person` type) via a `subject` role
+and a  relation of the `access` type via an `access` role.
+
+The `access` relation connects an `object` (e.g., an instance of the `file` type) via
+an `object` role, `action` (e.g., an instance of `action` type with `name` attribute of `view_file`)
+via the `action` role, and plays a role of `access` in a `permission` relation.
+
+See the diagram below:
+
+.Permission and access relations
+image::iam-permission-access.png[Permission and access relations, width = 75%, link=self]
+
+Taken together, a `subject` has permission to perform a specific action on a specific object. For example, `John Smith`
+has permission to read the `README.md` file.
+
+== Object subtypes
+
+The `object` is a subtype of the base `entity` type with multiple subtypes of its own:
+
+* Object
+ ** Resource
+  *** File
+  *** Record
+ ** Resource-collection
+  *** Directory
+  *** Database
+
+=== File entity
+
+The `file` type is not a direct subtype of the `object` type, but a subtype of the `resource` type, which is a subtype
+of the `object` type. That also makes the `file` type a subtype of the `object` type, just not a direct subtype.
+
+The `resource` subtype doesn't have any relations or attributes of its own, only those inherited from the `object` type.
+
+The `file` type plays the same roles as the `object` supertype (parent in inheritance).
+
+It has all the attributes the `object` supertype has and also two attributes of its own:
+
+* `path` -- the path to the file on the filesystem
+* `size-kb` -- the size of the file in KB
+
+== Subject subtypes
+
+The `subject` is a subtype of the base `entity` type with multiple subtypes of its own:
+
+* subject
+ ** user
+  *** person
+ ** user-group
+  *** business-unit
+  *** user-account
+  *** user-role
+
+=== Person entity
+
+The `person` type is not a direct subtype of the `subject` type. It is a subtype of the `user` type, which is a direct
+subtype of the `subject` type. That also makes the `person` type a subtype of the `subject` type.
+
+But the `user` subtype doesn't have any relations or attributes of its own, only those inherited from the `subject` type.
+
+The `person` type plays the same roles as the `subject` supertype.
+
+It has all the attributes the subject supertype has as well as two attributes of its own:
+
+* `full-name` -- the full name of the person. Usually includes first name and last name.
+* `email` -- the e-mail address of the person.
+
+== Action entity
+
+The `action` is an abstract type (can't be instantiated), a subtype of the `entity` built-in type that has
+two attributes:
+
+* `name`
+* `object-type`
+
+Additionally, `action` can play a role in multiple relations:
+
+* in a `access` relation as role `action`,
+* in a `segregation-policy` relation as role `action`,
+* in a `set-membership` relation as role `member`.
+
+Finally, `action` has two subtypes, which are not abstract, so we can create instances of those subtypes:
+
+* `operation` -- a single action that can be performed on an object
+* `operation-set` -- a set of actions that can be performed on an object
+
+Both subtypes inherit all the attribute and relation types defined in the action type.
+
+== Membership subtypes
+
+The `membership` is a relation type that has multiple subtypes for different kinds of relations, regarding membership
+in groups:
+
+* `membership`:
+ ** `collection-membership` -- combines objects in resource-collections
+ ** `group-membership` -- combines subjects in user-groups
+ ** `set-membership` -- combines actions in operation-sets
+
+== Ownership subtypes
+
+The `ownership` is a relation type that has multiple subtypes for different kinds of relations, regarding ownership
+groups:
+
+* `ownership`:
+ ** `object-ownership` -- assigns an owner of the subject type for an object
+ ** `group-ownership` -- assigns an owner of the subject type for a user-group
+
+== Segregation policy
+
+`segregation-policy` is a relation type that adds information on
+https://en.wikipedia.org/wiki/Separation_of_duties[duty segregation,window=_blank] policies.
+
+It has a `name` attribute and a single role `action`. Usually, multiple instances of this role in a single
+relation mean these actions can't be performed by one person.
+
+== Rules
+
+There is only one rule in the IAM schema used in our documentation:
+
+* `add-view-permission`
+
+This simple rule illustrates basic inference.
+
+[,typeql]
+----
+define
+
+rule add-view-permission:
+when {
+    $modify isa action, has name "modify_file";
+    $view isa action, has name "view_file";
+    $ac_modify (object: $obj, action: $modify) isa access;
+    $ac_view (object: $obj, action: $view) isa access;
+    (subject: $subj, access: $ac_modify) isa permission;
+} then {
+    (subject: $subj, access: $ac_view) isa permission;
+};
+----
+
+The `when` clause defines the following conditions:
+
+. An `action` entity with name `modify_file`, assigned `$modify` variable.
+. An `action` entity with name `view_file`, assigned `$view` variable.
+. An `access` relation, that relates some `object` (`$obj`) to `$modify` as `action` role, assigned `$ac_modify`
+variable.
+. The similar relation but with `$view` instead and assigned `$ac_view` variable.
+. A `permission` relation, that relates some `subject` (`$subj`) as `subject` to the `$ac_modify` as
+`access`.
+
+The `then` clause defines the data to infer:
+
+. A new `permission` relation, that relates the subject `$subj` as `subject` to `$ac_view` as `permitted access`.
+
+[NOTE]
+====
+These new `permission` relations, created by the rule, will not be persisted as they will be created inside a **read**
+transaction with inference option enabled. They will influence the results of queries of the transaction (because
+inference option is enabled for transaction) but not the persisted database data.
+====
+
+More information on rules can be found in the xref:fundamentals/inference.adoc#_rules[Inference] documentation page.
+
+[#_add_view_permission_rule_explanation]
+=== Add-view-permission rule explanation
+
+In the rule above:
+
+* for every `subject` that already has permission to `modify_file` action on any `object`:
+** adds permission to `view_file` on the same `object` for the same `subject`.
+
+In short, if someone has *modify* access to a file, then they have *view* access too.
+
+It's easy to check this rule in action: by creating a `modify_file` access `permission` for a `subject`/`object` pair,
+and then checking the `view_file` access `permission` for the same pair of `subject`/`object` with the
+xref:development/infer.adoc#_how_to_use_inference[inference] option enabled.
+
+[#_full_schema]
+== Full schema
+
+This is the TypeDB Studio visualization of the full IAM schema:
+
+image::iam-full-schema-studio.png[Full schema in studio graph visualizer, width = 80%, link=self, allign="center"]
+
+And this is the same schema but without all the attributes and streamlined a bit:
+
+image::iam-full-schema.png[Full schema visualization, width = 80%, link=self, allign="center"]
+
+== Sample dataset
+
+The sample dataset that we loaded in the xref:quickstart.adoc#_iam_microdataset[Quickstart guide]
+consists of the following:
+
+* Subjects:
+ ** 3 subjects with `full-name` and `email` attributes.
+* Objects:
+ ** 10 `objects` of the `file` type with `path` attribute and optional `size-kb` attribute.
+* Operations:
+ ** Only 2 operations with `name` attributes with values `modify_file` and `view_file`.
+* Potential access types:
+ ** All 10 `objects` set to have `modify_file` operation as `action`.
+ ** All 10 `objects` set to have `view_file` operation as `action`.
+* Permissions:
+ ** Subject with `full-name` attribute `Kevin Morrison` set to have permission to `modify_file` action for all 10
+objects.
+ ** Subject with `full-name` attribute `Pearle Goodman` set to have some random permissions to `modify_file` or
+`view_file` actions for some objects.
+ ** Subject with `full-name` attribute `Masako Holley` doesn't have any permissions.
+
+== Learn more
+
+After completing this page we recommend to explore xref:tutorials/sample-app.adoc[sample application] written
+in Java, Python, and Node.js or learn more about xref:clients:ROOT:clients.adoc[TypeDB Clients].

@@ -1,0 +1,162 @@
+== Get a Remote version of the role type.
+
+=== Syntax
+
+[source,python]
+----
+role_type.as_remote(tx)
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| tx | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteRoleType`
+
+== Retrieve scope (Local)
+
+=== Syntax
+
+[source,python]
+----
+role_type.get_label().scope()
+----
+
+=== Description
+
+Retrieves the scope (defined relation label) of the role type.
+
+=== Returns
+
+* String
+
+== Retrieve scoped label (Local)
+
+=== Syntax
+
+[source,python]
+----
+role_type.get_label().scoped_name()
+----
+
+=== Description
+
+Retrieves the scoped label (relation:role) of the role type.
+
+=== Returns
+
+* String
+
+== Retrieve direct supertype
+
+=== Syntax
+
+[source,python]
+----
+type.as_remote(tx).get_supertype()
+----
+
+=== Description
+
+Retrieves the most immediate supertype of the role type.
+
+=== Returns
+
+* [`RoleType`] 
+* None
+
+== Retrieve all supertypes
+
+=== Syntax
+
+[source,python]
+----
+type.as_remote(tx).get_supertypes()
+----
+
+=== Description
+
+Retrieves all supertypes of the role type.
+
+=== Returns
+
+* Iterator of [`RoleType`] 
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,python]
+----
+type.as_remote(tx).get_subtypes()
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the type.
+
+=== Returns
+
+* Iterator of [`RoleType`] 
+
+== Retrieve relation
+
+=== Syntax
+
+[source,python]
+----
+role.as_remote(tx).get_relation_type()
+----
+
+=== Description
+
+Retrieves the Relation instance that this role is directly related to.
+
+=== Returns
+
+* [`RelationType`] 
+
+== Retrieve relation types
+
+=== Syntax
+
+[source,python]
+----
+role.as_remote(tx).get_relation_types()
+----
+
+=== Description
+
+Retrieves the RelationTypes that this role is related to.
+
+=== Returns
+
+* Iterator of [`RelationType`] 
+
+== Retrieve role players
+
+=== Syntax
+
+[source,python]
+----
+role.as_remote(tx).get_players()
+----
+
+=== Description
+
+Retrieves the ThingTypes whose instances play this role.
+
+=== Returns
+
+* Iterator of [`ThingType`](/docs/concept-api/type?tab=python)
+
