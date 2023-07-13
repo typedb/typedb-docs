@@ -1,1 +1,0 @@
-exports_files(["generate_standalone_tests.py"])
