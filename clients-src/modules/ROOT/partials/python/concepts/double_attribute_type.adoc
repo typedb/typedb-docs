@@ -1,0 +1,134 @@
+== Put instance
+
+=== Syntax
+
+[source,python]
+----
+doubleAttributeType.as_remote(tx).put(value)
+----
+
+=== Description
+
+Puts and returns a new instance of this DoubleAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value | The value of the instance to be put | float | True | N/A
+|===
+
+=== Returns
+
+* DoubleAttribute
+
+== Get instance
+
+=== Syntax
+
+[source,python]
+----
+doubleAttributeType.as_remote(tx).get(value)
+----
+
+=== Description
+
+Returns the instance, if it exists, of this DoubleAttributeType with the specified value.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value | The value of the instance to be retrieved | float | True | N/A
+|===
+
+=== Returns
+
+* DoubleAttribute
+
+== Set Supertype
+
+=== Syntax
+
+[source,python]
+----
+attributeType.as_remote(tx).set_supertype(doubleAttributeType)
+----
+
+=== Description
+
+Sets the supplied DoubleAttributeType as the supertype of the current DoubleAttributeType
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| _type | The AttributeType to set as the supertype of this DoubleAttributeType | DoubleAttributeType | True | N/A
+|===
+
+=== Returns
+
+* None
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,python]
+----
+type.as_remote(tx).get_subtypes()
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the DoubleAttributeType.
+
+=== Returns
+
+* Iterator of [`DoubleAttributeType`] 
+
+== Retrieve all instances of this DoubleAttributeType
+
+=== Syntax
+
+[source,python]
+----
+type.as_remote(tx).get_instances()
+----
+
+=== Description
+
+Retrieves all direct and indirect DoubleAttributes that are instances of this Type.
+
+=== Returns
+
+* Iterator of [`DoubleAttribute`] 
+
+== Get a Remote version of the DoubleAttributeType.
+
+=== Syntax
+
+[source,python]
+----
+doubleAttributeType.as_remote(tx)
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transaction | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteDoubleAttributeType`
+

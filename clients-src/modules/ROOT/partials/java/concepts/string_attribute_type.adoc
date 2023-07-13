@@ -1,0 +1,177 @@
+== Put instance
+
+=== Syntax
+
+[source,java]
+----
+stringAttributeType.asRemote(Transaction tx).put(String value);
+----
+
+=== Description
+
+Puts and returns a new instance of this StringAttributeType with the specified value. If an attribute with this value does not yet exist, it will be created.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value | The value of the instance to be put | string | True | N/A
+|===
+
+=== Returns
+
+* StringAttribute
+
+== Get instance
+
+=== Syntax
+
+[source,java]
+----
+stringAttributeType.asRemote(Transaction tx).get(String value);
+----
+
+=== Description
+
+Returns the instance, if it exists, of this StringAttributeType with the specified value.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| value | The value of the instance to be retrieved | string | True | N/A
+|===
+
+=== Returns
+
+* StringAttribute
+
+== Retrieve regex
+
+=== Syntax
+
+[source,java]
+----
+stringAttributeType.asRemote(Transaction tx).getRegex();
+----
+
+=== Description
+
+Retrieves the regex that all instances of this StringAttributeType must conform to.
+
+=== Returns
+
+* string
+* `null`
+
+== Set regex
+
+=== Syntax
+
+[source,java]
+----
+stringAttributeType.asRemote(Transaction tx).setRegex(String regex);
+----
+
+=== Description
+
+Set the regex that all instances of this StringAttributeType must conform to.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| regex | The regex that all instances of this StringAttributeType must conform to. | string | True | N/A
+|===
+
+=== Returns
+
+* void
+
+== Set Supertype
+
+=== Syntax
+
+[source,java]
+----
+attributeType.asRemote(Transaction tx).setSupertype(AttributeType.String stringAttributeType);
+----
+
+=== Description
+
+Sets the supplied StringAttributeType as the supertype of the current StringAttributeType
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| stringAttributeType | The AttributeType to set as the supertype of this StringAttributeType | StringAttributeType | True | N/A
+|===
+
+=== Returns
+
+* void
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,java]
+----
+type.asRemote(Transaction tx).getSubtypes();
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the StringAttributeType.
+
+=== Returns
+
+* Stream<[`AttributeType.String`] >
+
+== Retrieve all instances of this StringAttributeType
+
+=== Syntax
+
+[source,java]
+----
+type.asRemote(Transaction tx).getInstances();
+----
+
+=== Description
+
+Retrieves all direct and indirect StringAttributes that are instances of this Type.
+
+=== Returns
+
+* Stream<[`StringAttribute`] >
+
+== Get a Remote version of the StringAttributeType.
+
+=== Syntax
+
+[source,java]
+----
+stringAttributeType.asRemote(Transaction tx);
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transaction | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `StringAttributeType.Remote`
+

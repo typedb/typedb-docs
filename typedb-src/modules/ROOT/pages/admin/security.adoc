@@ -1,0 +1,123 @@
+= Security features
+:keywords: typedb, security, auth, authentication, encryption, vulnerability
+:longTailKeywords: TypeDB security, user authentication, data encryption
+:pageTitle: Security features
+:summary: TypeDB high availability guarantees and solution.
+
+[NOTE]
+====
+Most of the security features are available only in TypeDB Enterprise & TypeDB Cloud.
+====
+
+== Access control
+
+[NOTE]
+====
+Access control features are a part of TypeDB Enterprise & TypeDB Cloud.
+====
+
+TypeDB Enterprise & TypeDB Cloud have the following security features:
+
+* https://en.wikipedia.org/wiki/Discretionary_access_control[Discretionary access control],
+* User account management,
+* User identification and authentication,
+* Password hashing with salt,
+* Password complexity requirements and expiration settings.
+
+=== User authentication
+
+All external connections to a cluster of TypeDB (TypeDB Enterprise or TypeDB Cloud) require user account credentials.
+
+Users can use usernames and passwords to identify and authenticate themselves. Passwords are stored only as
+irreversible *password hash + salt*.
+
+Administrators can adjust settings for *password strength requirements* and reset users passwords.
+
+[NOTE]
+====
+For TypeDB auth we should use the user account from the cluster we are connecting to, not the user account from
+TypeDB Cloud web portal.
+====
+
+=== User management
+
+[NOTE]
+====
+User management features are a part of TypeDB Enterprise & TypeDB Cloud.
+====
+
+Use xref:clients::console.adoc#_database_management_commands[TypeDB Console] or xref:development/api.adoc[TypeDB Driver API]
+(xref:clients::java/java-api-ref.adoc#_users[Java],
+xref:clients::python/python-api-ref.adoc#_users[Python],
+xref:clients::node-js/node-js-api-ref.adoc#_users[Node.js])
+to manage users.
+To connect to TypeDB with TypeDB Console provide a username and password (when prompted):
+
+[,bash]
+----
+typedb console --cluster=<address> --username=<username> --password
+----
+
+After issuing this command we will be prompted to provide a password.
+
+[IMPORTANT]
+====
+Only the administrator account (username `admin`) can perform user management actions.
+====
+
+Use the following TypeDB Console commands to manage users.
+
+Retrieve a list of all users:
+
+[,bash]
+----
+user list
+----
+
+Create a new user:
+
+[,bash]
+----
+user create <username>
+----
+
+Set password for a user:
+
+[,bash]
+----
+user set-password <username>
+----
+
+Update password of the current user:
+
+[,bash]
+----
+user update-password
+----
+
+Delete a user:
+
+[,bash]
+----
+user delete <username>
+----
+
+[#_encryption]
+== Encryption
+
+TypeDB Enterprise & TypeDB Cloud encrypt all network traffic:
+
+* TLS encryption is used for client/server communication.
+* CurveZMQ is used for cluster communication (TypeDB Enterprise & TypeDB Cloud).
+
+== Cluster security
+
+TypeDB Enterprise & TypeDB Cloud clusters accept external communications only with valid credentials and internal
+cluster communications only from servers that are set to be a part of the cluster.
+
+All external and internal communications are <<_encryption,encrypted>> on the fly.
+
+Set a CA certificate explicitly to be able to use a self-signed certificate or to avoid using
+default certificates from an operating system.
+If no certificate is provided then the default operating system root certificates will be used to establish TLS
+encryption.

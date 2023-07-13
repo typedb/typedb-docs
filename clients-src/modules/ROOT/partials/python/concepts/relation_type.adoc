@@ -1,0 +1,212 @@
+== Create instance
+
+=== Syntax
+
+[source,python]
+----
+relation_type.as_remote(tx).create()
+----
+
+=== Description
+
+Creates and returns an instance of this RelationType.
+
+=== Returns
+
+* [`Relation`] 
+
+== Retrieve roles
+
+=== Syntax
+
+[source,python]
+----
+relation_type.as_remote(tx).get_relates()
+----
+
+=== Description
+
+Retrieve roles that this RelationType relates to directly or via inheritance.
+
+=== Returns
+
+* Iterator of [`RoleType`] 
+
+== Retrieve direct roles
+
+=== Syntax
+
+[source,python]
+----
+relation_type.as_remote(tx).get_relates_explicit()
+----
+
+=== Description
+
+Retrieve roles that this RelationType relates to directly.
+
+=== Returns
+
+* Iterator of [`RoleType`] 
+
+== Retrieve specific role
+
+=== Syntax
+
+[source,python]
+----
+relation_type.as_remote(tx).get_relates(label)
+----
+
+=== Description
+
+Retrieve the role that this RelationType relates to, if it exists, with the specified label.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| label | Label of the role we wish to retrieve. | string | True |  
+|===
+
+=== Returns
+
+* [`RoleType`] 
+
+== Set new role
+
+=== Syntax
+
+[source,python]
+----
+relation_type.as_remote(tx).set_relates(label, overriddenRoleLabel)
+----
+
+=== Description
+
+Sets the new role that this RelationType relates to. If we are setting an overriding type this way, we have to also
+pass the overridden type as a second argument.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| label | The new role for the RelationType to relate to. | string | True | N/A
+| overriddenRoleLabel | The label being overridden, if applicable | string | False | N/A
+|===
+
+=== Returns
+
+* None
+
+== Remove role
+
+=== Syntax
+
+[source,python]
+----
+relation_type.as_remote(tx).unset_relates(role)
+----
+
+=== Description
+
+Disallows this RelationType from relating to the given role.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| role | The role to not relate to the relation type. | RoleType | True | N/A
+|===
+
+=== Returns
+
+* None
+
+== Set supertype
+
+=== Syntax
+
+[source,python]
+----
+relation_type.as_remote(tx).set_supertype(relation_type)
+----
+
+=== Description
+
+Sets the supplied RelationType as the supertype of the current RelationType
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| _type | The RelationType to set as the supertype of this RelationType | RelationType | True | N/A
+|===
+
+=== Returns
+
+* None
+
+== Retrieve all subtypes
+
+=== Syntax
+
+[source,python]
+----
+type.as_remote(tx).get_subtypes()
+----
+
+=== Description
+
+Retrieves all direct and indirect subtypes of the RelationType.
+
+=== Returns
+
+* Iterator of [`RelationType`] 
+
+== Retrieve all instances of this RelationType
+
+=== Syntax
+
+[source,python]
+----
+type.as_remote(tx).get_instances()
+----
+
+=== Description
+
+Retrieves all direct and indirect Relations that are instances of this Type.
+
+=== Returns
+
+* Iterator of [`Relation`] 
+
+== Get a Remote version of the RelationType.
+
+=== Syntax
+
+[source,python]
+----
+relationType.as_remote(tx)
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transaction | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteRelationType`
+

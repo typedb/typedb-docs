@@ -1,0 +1,58 @@
+= Upgrading
+:keywords: typedb, upgrade, version, update, migration, compatibility
+:longTailKeywords: updating TypeDB, upgrading TypeDB, migrating TypeDB
+:pageTitle: Upgrading
+:summary: TypeDB version upgrading.
+
+Upgrading TypeDB installation to a newer version of TypeDB server and keeping all the data can be performed in two
+different ways:
+
+* by reusing or copying data files used for persistent storage by the server itself.
+* by exporting schema and data of databases needed and then importing them to a newer installation.
+
+The data files method usually is the fastest one, but it may not always be possible due to compatibility issues
+in case there were some breaking changes in the stored data internal format. We can check what versions of TypeDB are
+compatible with each other in the <<_compatibility,Compatibility>> section below.
+
+== Copying the data files
+
+One of the methods to migrate data from one TypeDB server version to another is by copying the data directory between
+server installations.
+
+To do this, simply shut down the servers of the old version, and copy the database to migrate from the data
+directory (set by the `storage.data` parameter in the
+xref:admin/configuration.adoc#_the_default_location_of_the_config_file[config]) into the data directory of the new
+TypeDB server installation.
+
+Alternatively, just update the new server's
+xref:admin/configuration.adoc#_the_default_location_of_the_config_file[configuration file] to use the same
+*data directory* path as the old one. That is why we xref:admin/configuration.adoc#_storage_configuration[recommend]
+storing data separately from TypeDB server files.
+
+[#_compatibility]
+=== Compatibility
+
+TypeDB will prevent us from using the same data files across incompatible database encoding versions. For more
+information on TypeDB server database compatibility see the table below.
+
+[cols="^,^"]
+|===
+| Database encoding Version | Compatible TypeDB Versions
+
+| 0
+| 2.0.0 - 2.5.0
+
+| 1
+| 2.6.0 - 2.7.1
+
+| 2
+| 2.8.0 - latest
+|===
+
+To migrate data between different database encoding versions use the <<_export_and_import,Export and import>> features.
+
+[#_export_and_import]
+== Export and import
+
+We can use the export/import functionality to migrate our data while switching to a newer version of TypeDB server.
+Please see the xref:admin/export-import.adoc[Export/import] page for information on how to do that.

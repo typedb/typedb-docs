@@ -1,0 +1,137 @@
+= Download & Install
+:keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker
+:longTailKeywords: typedb on linux, typedb on mac, typedb on windows, start typedb server
+:pageTitle: Installation
+:summary: Download, install and run a TypeDB server on Linux, mac or Windows.
+:tabs-sync-option:
+:experimental:
+
+[#_install]
+
+[#_package]
+== Install with a package manager
+
+[tabs]
+====
+Docker::
++
+--
+include::partial$docker.adoc[tag=install]
+--
+
+Windows::
++
+--
+No package manager option for Windows. See the <<_manual>> section below.
+--
+
+Linux::
++
+--
+include::partial$linux.adoc[tag=install-apt]
+--
+
+macOS::
++
+--
+include::partial$macos.adoc[tag=install-homebrew]
+--
+====
+
+[#_manual]
+== Download and install manually
+
+[tabs]
+====
+Docker::
++
+--
+include::partial$docker.adoc[tag=download&install]
+--
+
+Windows::
++
+--
+include::partial$win.adoc[tag=install]
+--
+
+Linux::
++
+--
+include::partial$linux.adoc[tag=install-manual]
+--
+
+macOS::
++
+--
+include::partial$macos.adoc[tag=install-manual]
+--
+====
+
+== Start the server
+
+[tabs]
+====
+Docker::
++
+--
+include::partial$docker.adoc[tag=start]
+--
+
+Windows::
++
+--
+include::partial$win.adoc[tag=start]
+--
+
+Linux::
++
+--
+include::partial$linux.adoc[tag=start]
+--
+
+macOS::
++
+--
+include::partial$macos.adoc[tag=start]
+--
+====
+
+== Stop the server
+
+[tabs]
+====
+Docker::
++
+--
+include::partial$docker.adoc[tag=stop]
+--
+
+Windows::
++
+--
+include::partial$win.adoc[tag=stop]
+--
+
+Linux::
++
+--
+include::partial$linux.adoc[tag=stop]
+--
+
+macOS::
++
+--
+include::partial$macos.adoc[tag=stop]
+--
+====
+
+== After installation
+
+After the very first installation of TypeDB we recommend using our xref:quickstart.adoc[Quickstart guide]
+to set up a database and try different types of queries with xref:clients::studio.adoc[TypeDB Studio].
+
+Alternatively, any other xref:clients::clients.adoc[TypeDB Client] can be used to connect to a TypeDB server.
+
+To learn more about TypeDB check the Fundamentals section, starting from the
+xref:typedb::fundamentals/types.adoc[Type system] page.

@@ -1,0 +1,68 @@
+== Instantiating a TypeDB Core client
+
+=== Syntax
+
+[source,python]
+----
+TypeDB.core_client(address, parallelisation)
+----
+
+=== Description
+
+In order to communicate with TypeDB Core databases via sessions and transactions, we first need to instantiate a TypeDB
+Core client. The created object connects our application with the running TypeDB server.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| address | The address (host:port) on which the TypeDB server is running | String | True |
+| parallelisation | The number of threads to use for server communication | int | False | 2
+|===
+
+=== Returns
+
+* [Client] 
+
+== Instantiating a TypeDB cluster client
+
+=== Syntax
+
+[source,python]
+----
+TypeDB.cluster_client(addresses, credential, parallelisation)
+----
+
+=== Description
+
+In order to communicate with TypeDB cluster databases via sessions and transactions, we first need to instantiate a
+TypeDB cluster client.
+The created object connects our application with the running TypeDB cluster.
+
+[WARNING]
+====
+Node.js and Python Drivers always have TLS enabled!
+
+They can only connect to a server that is set up with TLS.
+====
+
+When instantiating a TypeDB cluster client, it is sufficient to supply the address of just one server, as the
+addresses of the other servers will be relayed back to the client. However, to avoid failure in the unlikely
+event that the single server whose address is provided fails before communicating the addresses of the others,
+it is best practice to supply addresses of all the servers.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| addresses | Addresses (host:port) on which TypeDB cluster nodes are running | list of String | True |
+| credential | User credential and TLS encryption setting | TypeDBCredential | True |  
+| parallelisation | The number of threads to use for server communication | int | False | 2
+|===
+
+=== Returns
+
+* [Client] 
+

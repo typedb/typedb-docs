@@ -1,0 +1,42 @@
+== Retrieve type (Local)
+
+=== Syntax
+
+[source,python]
+----
+entity.get_type()
+----
+
+=== Description
+
+Retrieves the type which this Entity belongs to.
+
+=== Returns
+
+* [`EntityType`] 
+
+== Get a Remote version of the Entity.
+
+=== Syntax
+
+[source,python]
+----
+entity.as_remote(tx)
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| tx | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteEntity`
+

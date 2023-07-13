@@ -1,0 +1,280 @@
+[#_options]
+The transaction query options object `TypeDBOptions` can be used to override the default server behaviour
+query processing. Use `TypeDBOptions.core()` to create a new TypeDB Core options object, or `TypeDBOptions.cluster()`
+for cluster client for TypeDB Enterprise & TypeDB Cloud.
+
+The options are:
+
+- `infer`: whether to enable inference for the provided query (only settable at transaction level and above, and only
+  affects **read** transactions) (default: `false`).
+- `explain`: whether to enable explanations for the provided query (only affects **read** transactions)
+  (default: `false`).
+- `parallel`: whether the server should use parallel or single-threaded execution (default: `true`).
+- `prefetchSize`: a guideline number of answers that the server should send before the client issues a fresh request
+  (default: `50`).
+- `traceInference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with
+  `parallel = false`. (default: `false`).
+- `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it
+  (default: `true` if query type is `match`, otherwise `false`).
+- `sessionIdleTimeoutMillis`: this timeout allows the server to close sessions if a client terminates or becomes
+  unresponsive (default: `30_000`).
+- `transactionTimeoutMillis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed
+  transactions (default: `300_000`).
+- `schemaLockAcquireTimeoutMillis`: how long the client should wait if opening a session or transaction is blocked by
+  a schema write lock (default: `10_000`).
+
+`TypeDBClusterOptions` has an additional option:
+
+- `readAnyReplica`: enables reading data from any replica, potentially boosting read throughput (default: `false`).
+
+== Explicitly enable or disable inference
+
+=== Syntax
+
+[source,java]
+----
+options.setInfer(boolean enabled)
+----
+
+=== Description
+
+Override the server defaults to enable or disable inference for the provided query (only settable at transaction level and above, and only affects **read** transactions).
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| enabled | explicitly set inference on or off for this query | boolean | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Explicitly enable or disable explanations
+
+=== Syntax
+
+[source,java]
+----
+options.setExplain(boolean enabled)
+----
+
+=== Description
+
+Override the server defaults to enable or disable explanation availability for the provided query (only affects
+**read** transactions).
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| enabled | explicitly set explanations on or off for this query | boolean | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Force the server parallelism
+
+=== Syntax
+
+[source,java]
+----
+options.setParallel(boolean parallel)
+----
+
+=== Description
+
+Override the server defaults to use parallel or single-threaded query execution
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| parallel | use parallel or single-threaded query execution | boolean | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Explicitly set query prefetch to a certain size
+
+=== Syntax
+
+[source,java]
+----
+options.setPrefetchSize(int size)
+----
+
+=== Description
+
+Override the server defaults for answer batch streaming. This tells the server to pre-compute and stream this number of answers at a time. These are buffered in the client until read. A larger batch size causes the server to compute more answers at a time, blocking the transaction until the batch is computed.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| size |  | int | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Trace and log reasoning inference
+
+=== Syntax
+
+[source,java]
+----
+options.setTraceInference(boolean traceInference)
+----
+
+=== Description
+
+Create reasoning traces as graphs logged in the logging directory. Should be used with `parallel = false`
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| traceInference | trace reasoning execution as graphs in log directory | boolean | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Explicitly enable or disable prefetch
+
+=== Syntax
+
+[source,java]
+----
+options.setPrefetch(boolean prefetch)
+----
+
+=== Description
+
+If enabled, the first batch of answers is streamed to the client even without an explicit request for it
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| prefetch | if set to true, the first batch of answers is streamed to the client even without an explicit request for it | boolean | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Override default session idle timeout
+
+=== Syntax
+
+[source,java]
+----
+options.setSessionIdleTimeoutMillis(int timeout)
+----
+
+=== Description
+
+This timeout allows the server to close sessions if a client terminates or becomes unresponsive
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| timeout |  | int | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Override default transaction timeout
+
+=== Syntax
+
+[source,java]
+----
+options.setTransactionTimeoutMillis(int timeout)
+----
+
+=== Description
+
+This timeout automatically closes transactions that exceed the configured time. This prevents memory leaks caused by transactions accidentally left unclosed, and kills unresponsive transactions.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| timeout |  | int | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Override default schema lock acquire timeout
+
+=== Syntax
+
+[source,java]
+----
+options.setSchemaLockAcquireTimeoutMillis(int timeout)
+----
+
+=== Description
+
+This timeout allows the server to close sessions if a client terminates or becomes unresponsive
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| timeout |  | int | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+
+== Enable reading data from any replica
+
+=== Syntax
+
+[source,java]
+----
+clusterOptions.setReadAnyReplica(bool readAnyReplica)
+----
+
+=== Description
+
+Used to enable reading data from any replica, potentially boosting read throughput
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| readAnyReplica |  | boolean | True |  
+|===
+
+=== Returns
+
+* <<_options,TypeDBOptions>>
+

@@ -1,0 +1,30 @@
+[#_options]
+The transaction query options object `TypeDBOptions` can be used to override the default server behaviour
+query processing. Use `TypeDBOptions.core()` to create a new TypeDB Core options object, or `TypeDBOptions.cluster()`
+for cluster client for TypeDB Enterprise & TypeDB Cloud..
+
+The options are:
+
+- `infer`: whether to enable inference for the provided query (only settable at transaction level and above,
+  and only affects **read** transactions) (default: `False`)
+- `explain`: whether to enable explanations for the provided query (only affects **read** transactions)
+  (default: `False`)
+- `parallel`: whether the server should use parallel or single-threaded execution (default: `True`)
+- `prefetch_size`: a guideline number of answers that the server should send before the client issues a fresh request
+  (default: `50`)
+- `trace_inference`: if enabled, outputs reasoning tracing graphs in the logging directory. Should be used with
+  `parallel = False`. (default: `False`)
+- `prefetch`: if enabled, the first batch of answers is streamed to the client even without an explicit request for it
+  (default: `True` if query type is `match`, otherwise `False`)
+- `session_idle_timeout_millis`: this timeout allows the server to close sessions if a client terminates or becomes
+  unresponsive (default: `30_000`)
+- `transaction_timeout_millis`: this timeout will automatically kill transactions, preventing memory leaks in unclosed
+  transactions (default: `300_000`)
+- `schema_lock_acquire_timeout_millis`: how long the client should wait if opening a session or transaction is blocked
+  by a schema write lock (default: `10_000`)
+
+`TypeDBClusterOptions` has an additional option:
+
+- `read_any_replica`: enables reading data from any replica, potentially boosting read throughput (default: `False`)
+
+//#todo Investigate options methods for python

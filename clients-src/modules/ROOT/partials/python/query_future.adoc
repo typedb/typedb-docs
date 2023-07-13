@@ -1,0 +1,34 @@
+== Get the query result
+
+=== Syntax
+
+[source,python]
+----
+future.get()
+----
+
+=== Description
+
+Waits for the query to finish execution, and returns its result, if present.
+
+=== Returns
+
+* Returns according to type of query executed
+
+== Map the query result
+
+=== Syntax
+
+[source,python]
+----
+future.map(function)
+----
+
+=== Description
+
+Transforms the QueryFuture into a new QueryFuture by running the supplied function on the query result when it is returned.
+
+=== Returns
+
+* Return type of supplied function
+

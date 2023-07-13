@@ -1,0 +1,602 @@
+= How to create a new TypeDB Driver
+:Summary: Tutorial on how to build a new TypeDB Driver.
+:keywords: typedb, client, driver, grpc
+:longTailKeywords: TypeDB driver, building new driver, developing new driver
+:pageTitle: How to create a new TypeDB Driver
+:tabs-sync-option:
+
+This tutorial can guide us through the very beginning of creating a new TypeDB Driver. We strongly recommend
+using one of the existing TypeDB Drivers first to gain some experience with the TypeDB. See the list of available
+Drivers on the xref:clients::clients.adoc#_typedb_drivers[Clients overview] page.
+
+[NOTE]
+====
+TypeDB Driver is an important part of any TypeDB Client. We will use both terms in this tutorial, and it's important not
+to be confused by what is what.
+
+*TypeDB Client* -- any software that can connect to TypeDB and provide us with some kind of interface we
+can use: API, CLI, or GUI.
+
+*TypeDB Driver* -- a library that implements TypeDB Client RPC protocol to connect to TypeDB and provides an API to
+use it. Usually, Drivers are used as a part of other applications to connect to TypeDB.
+
+For convenience, the term TypeDB Clients includes all TypeDB Drivers.
+====
+
+There are many places we could start building a TypeDB Driver.
+In this tutorial, we start by attempting to make a single gRPC call to a TypeDB server to create a database.
+
+== Step 1: Create the main function to connect to a server
+
+Create a `TypeDB` source file in the root of the project, which should expose a function named `coreClient`,
+taking `address` as a parameter.
+
+////
+#todo add the imports!
+
+// TypeDB.java
+# moved it outside the next code block. To test whether it will fix the indentation
+-
+////
+
+[IMPORTANT]
+====
+Import statements are not included in this tutorial, except when importing from external libraries such as the TypeDB
+protobuf definitions.
+====
+
+[tabs]
+====
+Java::
++
+--
+[,java]
+----
+// TypeDB.java
+public class TypeDB {
+    public static TypeDBClient coreClient(String address) {
+        return new CoreClient(address);
+    }
+}
+----
+--
+
+Python::
++
+--
+[,python]
+----
+# typedb/client.py (named to allow importing from typedb.client)
+class TypeDB:
+    @staticmethod
+    def core_client(address: str, parallelisation: int = 2) -> TypeDBClient:
+        return _CoreClient(address, parallelisation)
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+// TypeDB.ts
+export namespace TypeDB {
+    export function coreClient(address: string): TypeDBClient {
+        return new CoreClient(address);
+    }
+}
+----
+--
+====
+
+== Step 2: Database manager
+
+`TypeDBClient` is not yet defined. Create a new directory named `api/connection` and create a `TypeDBClient` file there:
+
+[NOTE]
+====
+If the selected language doesn't have interfaces or abstract classes, make `TypeDB.coreClient` return `CoreClient`
+instead, and skip this step.
+====
+
+[tabs]
+====
+Java::
++
+--
+[,java]
+----
+// api/connection/TypeDBClient.java
+public interface TypeDBClient extends AutoCloseable {
+    DatabaseManager databases();
+    void close();
+}
+----
+--
+
+Python::
++
+--
+[,python]
+----
+# typedb/api/connection/client.py
+from abc import ABC, abstractmethod
+
+class TypeDBClient(ABC):
+    @abstractmethod
+    def databases(self) -> DatabaseManager:
+        pass
+
+    @abstractmethod
+    def close(self) -> None:
+        pass
+
+    @abstractmethod
+    def __enter__(self):
+        pass
+
+    @abstractmethod
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+// api/connection/TypeDBClient.ts
+export interface TypeDBClient {
+    readonly databases: DatabaseManager;
+    close(): Promise<void>;
+}
+----
+--
+====
+
+== Step 3: gRPC connection implementation
+
+The next step is to implement `connection/TypeDBClient` and its subclass `connection/core/CoreClient`.
+Create the directory structure: `connection/core` in the root of the project.
+
+Name the classes depending on language conventions: in Java/TypeScript, `TypeDBClientImpl` and `CoreClient`; in Python,
+`_TypeDBClient` and `_CoreClient`.
+
+Ensure that gRPC is imported into the project, and refer to the https://grpc.io/docs/languages/[gRPC docs,window=_blank]
+to learn how to create a Channel -- the code varies by language.
+
+[NOTE]
+====
+In languages with no inheritance, adhere to this project structure as closely as possible, perhaps by writing top-level
+functions in the respective locations.
+====
+
+[tabs]
+====
+Java::
++
+--
+[,java]
+----
+// connection/TypeDBClientImpl.java
+public abstract class TypeDBClientImpl implements TypeDBClient {
+    private final TypeDBDatabaseManagerImpl databaseMgr;
+
+    protected TypeDBClientImpl() {
+        databaseMgr = new TypeDBDatabaseManagerImpl(this);
+    }
+
+    @Override
+    public TypeDBDatabaseManagerImpl databases() {
+        return databaseMgr;
+    }
+
+    public abstract ManagedChannel channel();
+
+    public abstract TypeDBStub stub();
+
+    @Override
+    public void close() {
+        try {
+            channel().shutdown().awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+// connection/core/CoreClient.java
+public class CoreClient extends TypeDBClientImpl {
+    private final ManagedChannel channel;
+    private final TypeDBStub stub;
+
+    public CoreClient(String address) {
+        super();
+        channel = NettyChannelBuilder.forTarget(address).usePlaintext().build();
+        stub = CoreStub.create(channel);
+    }
+
+    @Override
+    public ManagedChannel channel() {
+        return channel;
+    }
+
+    @Override
+    public TypeDBStub stub() {
+        return stub;
+    }
+}
+----
+--
+
+Python::
++
+--
+[,python]
+----
+# typedb/connection/client.py
+class _TypeDBClientImpl(TypeDBClient):
+    def __init__(self):
+        pass
+
+    def databases(self) -> _TypeDBDatabaseManagerImpl:
+        pass
+
+    def stub(self) -> TypeDBStub:
+        pass
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+        if exc_tb is not None:
+            return False
+
+    def close(self) -> None:
+        pass
+
+# typedb/connection/core/client.py
+from grpc import Channel, insecure_channel
+
+class _CoreClient(_TypeDBClientImpl):
+    def __init__(self, address: str):
+        super(_CoreClient, self).__init__()
+        self._channel = insecure_channel(address)
+        self._stub = _CoreStub(self._channel)
+        self._databases = _TypeDBDatabaseManagerImpl(self._stub)
+
+    def databases(self) -> _TypeDBDatabaseManagerImpl:
+        return self._databases
+
+    def stub(self) -> _CoreStub:
+        return self._stub
+
+    def close(self) -> None:
+        super().close()
+        self._channel.close()
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+// connection/TypeDBClientImpl.ts
+export abstract class TypeDBClientImpl implements TypeDBClient {
+    private _isOpen: boolean;
+
+    protected constructor() {
+        this._isOpen = true;
+    }
+
+    isOpen(): boolean {
+        return this._isOpen;
+    }
+
+    abstract get databases(): TypeDBDatabaseManagerImpl;
+
+    abstract stub(): TypeDBStub;
+
+    async close(): Promise<void> {
+        if (this._isOpen) {
+            this._isOpen = false;
+        }
+    }
+}
+
+// connection/core/CoreClient.ts
+export class CoreClient extends TypeDBClientImpl {
+    private readonly _stub: CoreStub;
+    private readonly _databases: TypeDBDatabaseManagerImpl;
+
+    constructor(address: string) {
+        super();
+        this._stub = new CoreStub(address);
+        this._databases = new TypeDBDatabaseManagerImpl(this._stub);
+    }
+
+    get databases(): TypeDBDatabaseManagerImpl {
+        return this._databases;
+    }
+
+    stub(): TypeDBStub {
+        return this._stub;
+    }
+
+    async close(): Promise<void> {
+        await super.close();
+        this._stub.close();
+    }
+}
+----
+--
+====
+
+== Step 4: Implementing database creation
+
+Finally, we implement `DatabaseManager`, and `CoreStub` to set up gRPC calls to the server.
+
+[IMPORTANT]
+====
+We'll need to compile TypeDB's https://github.com/vaticle/typedb-protocol[protocol,window=_blank] in order to do this.
+Most languages have protobuf compilers that we can use to generate a TypeDB protocol library for the language we use.
+====
+
+[tabs]
+====
+Java::
++
+--
+[,java]
+----
+// api/database/DatabaseManager.java
+public interface DatabaseManager {
+    void create(String name);
+}
+
+// connection/TypeDBDatabaseManagerImpl.java
+import com.vaticle.typedb.protocol.CoreDatabaseProto;
+
+public class TypeDBDatabaseManagerImpl implements DatabaseManager {
+    private final TypeDBClientImpl client;
+
+    public TypeDBDatabaseManagerImpl(TypeDBClientImpl client) {
+        this.client = client;
+    }
+
+    @Override
+    public void create(String name) {
+        stub().databasesCreate(CoreDatabaseProto.CoreDatabaseManager.Create.Req.newBuilder().setName(name).build());
+    }
+
+    TypeDBStub stub() {
+        return client.stub();
+    }
+}
+
+// common/rpc/TypeDBStub.java
+import com.vaticle.typedb.protocol.CoreDatabaseProto;
+import com.vaticle.typedb.protocol.TypeDBGrpc;
+
+public abstract class TypeDBStub {
+    public CoreDatabaseProto.CoreDatabaseManager.Create.Res databasesCreate(CoreDatabaseProto.CoreDatabaseManager.Create.Req request) {
+        return blockingStub().databasesCreate(request);
+    }
+
+    protected abstract TypeDBGrpc.TypeDBBlockingStub blockingStub();
+}
+
+// connection/core/CoreStub.java
+import com.vaticle.typedb.protocol.TypeDBGrpc;
+import io.grpc.ManagedChannel;
+
+public class CoreStub extends TypeDBStub {
+    private final ManagedChannel channel;
+    private final TypeDBGrpc.TypeDBBlockingStub blockingStub;
+
+    private CoreStub(ManagedChannel channel) {
+        super();
+        this.channel = channel;
+        this.blockingStub = TypeDBGrpc.newBlockingStub(channel);
+    }
+
+    public static CoreStub create(ManagedChannel channel) {
+        return new CoreStub(channel);
+    }
+
+    @Override
+    protected TypeDBGrpc.TypeDBBlockingStub blockingStub() {
+        return blockingStub;
+    }
+}
+----
+--
+
+Python::
++
+--
+[,python]
+----
+# typedb/api/connection/database.py
+from abc import ABC, abstractmethod
+
+class DatabaseManager(ABC):
+    @abstractmethod
+    def create(self, name: str) -> None:
+        pass
+
+# typedb/connection/database_manager.py
+import typedb_protocol.core.core_database_pb2 as core_database_proto
+
+class _TypeDBDatabaseManagerImpl(DatabaseManager):
+    def __init__(self, stub: TypeDBStub):
+        self._stub = stub
+
+    def create(self, name: str) -> None:
+        req = core_database_proto.CoreDatabaseManager.Create.Req()
+        req.name = name
+        self._stub.databases_create(req)
+
+    def stub(self) -> TypeDBStub:
+        return self._stub
+
+# typedb/common/rpc/stub.py
+import typedb_protocol.core.core_database_pb2 as core_database_proto
+import typedb_protocol.core.core_service_pb2_grpc as core_service_proto
+
+class TypeDBStub(ABC):
+    def databases_create(self, req: core_database_proto.CoreDatabaseManager.Create.Req) -> core_database_proto.CoreDatabaseManager.Create.Res:
+        return self.stub().databases_create(req)
+
+    def stub(self) -> core_service_proto.TypeDBStub:
+        pass
+
+# typedb/connection/core/stub.py
+from grpc import Channel
+import typedb_protocol.core.core_service_pb2_grpc as core_service_proto
+
+class _CoreStub(TypeDBStub):
+    def __init__(self, channel: Channel):
+        super(_CoreStub, self).__init__()
+        self._channel = channel
+        self._stub = core_service_proto.TypeDBStub(channel)
+
+    def stub(self) -> TypeDBStub:
+        return self._stub
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+// api/connection/database/TypeDBClient.ts
+export interface DatabaseManager {
+    create(name: string): Promise<void>;
+}
+
+// connection/TypeDBDatabaseManagerImpl.ts
+import { CoreDatabaseManager } from "typedb-protocol/core/core_database_pb";
+
+export class TypeDBDatabaseManagerImpl implements DatabaseManager {
+    private readonly _stub: TypeDBStub;
+
+    constructor(client: TypeDBStub) {
+        this._stub = client;
+    }
+
+    public create(name: string): Promise<void> {
+        return this._stub.databasesCreate(new CoreDatabaseManager.Create.Req().setName(name));
+    }
+
+    stub() {
+        return this._stub;
+    }
+}
+
+// common/rpc/TypeDBStub.ts
+import { CoreDatabaseManager } from "typedb-protocol/core/core_database_pb";
+import { TypeDBClient } from "typedb-protocol/core/core_service_grpc_pb";
+
+export abstract class TypeDBStub {
+    databasesCreate(req: CoreDatabaseManager.Create.Req): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.stub().databases_create(req, (err) => {
+                if (err) reject(new Error(err));
+                else resolve();
+            })
+        });
+    }
+
+    abstract stub(): TypeDBClient;
+}
+
+// connection/core/CoreStub.ts
+import { ChannelCredentials } from "@grpc/grpc-js";
+import { TypeDBClient } from "typedb-protocol/core/core_service_grpc_pb";
+
+export class CoreStub extends TypeDBStub {
+    private readonly _stub: TypeDBClient;
+
+    constructor(address: string) {
+        super();
+        this._stub = new TypeDBClient(address, ChannelCredentials.createInsecure());
+    }
+
+    stub(): TypeDBClient {
+        return this._stub;
+    }
+
+    close(): void {
+        this._stub.close();
+    }
+}
+----
+--
+====
+
+== Step 5: Testing
+
+At this point, we have all the necessary components to create a database!
+xref:installation.adoc[Run the TypeDB server locally] and
+create a test function:
+
+[tabs]
+====
+Java::
++
+--
+[,java]
+----
+public static void typeDBClientTest() {
+    try (TypeDBClient client = TypeDB.coreClient("127.0.0.1:1729")) {
+        client.databases().create("typedb");
+    }
+}
+----
+--
+
+Python::
++
+--
+[,python]
+----
+def typedb_client_test():
+    with TypeDB.core_client("127.0.0.1:1729") as client:
+        client.databases().create("typedb")
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+async function typeDBClientTest() {
+    try {
+        const client = TypeDB.coreClient("127.0.0.1:1729");
+        await client.databases().create("typedb");
+    } finally {
+        client?.close();
+    }
+}
+----
+--
+====
+
+Run the test function.
+
+Now we can verify that the database was created successfully using
+xref:clients::console.adoc#_database_management_commands[TypeDB Console] `database list` command, or
+by running the test *again* (which will throw an error saying that the database already exists).
+
+That concludes the basics tutorial for creating a new TypeDB Driver.
+
+Refer to the xref:clients::new-driver.adoc[Developing a new TypeDB Driver] page for more information of the
+remaining components needed to open transactions, run queries, and take the Driver to 100% completion.
+
+We recommend using one of our existing Drivers as a reference, and copying the implementation into the chosen language.

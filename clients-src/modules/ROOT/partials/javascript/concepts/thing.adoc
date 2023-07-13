@@ -1,0 +1,256 @@
+== Retrieves internal ID (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+thing.iid;
+----
+
+=== Description
+
+Retrieves the unique id of the Thing.
+
+=== Returns
+
+* string
+
+== Get a Remote version of the Thing.
+
+=== Syntax
+
+[source,javascript]
+----
+thing.asRemote(tx);
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| tx | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteThing`
+
+== Retrieve type (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+thing.type;
+----
+
+=== Description
+
+Retrieves the type which this Thing belongs to.
+
+=== Returns
+
+* [`ThingType`] 
+
+== Check if inferred (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+thing.inferred;
+----
+
+=== Description
+
+Checks if this Thing is inferred by a [Reasoning Rule] .
+
+=== Returns
+
+* boolean
+
+== Assign attribute
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.asRemote(tx).setHas(attribute);
+----
+
+=== Description
+
+Assigns an Attribute to be owned by this Thing.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attribute | The Attribute to be owned by this Thing. | [`Attribute`]  | True | N/A
+|===
+
+=== Returns
+
+* [`Thing`] 
+
+== Unassign attribute
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.asRemote(tx).unsetHas(attribute);
+----
+
+=== Description
+
+Unassigns an Attribute from this Thing.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attribute | The Attribute to be disowned from this Thing. | [`Attribute`]  | True | N/A
+|===
+
+=== Returns
+
+* [`Thing`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.asRemote(tx).getHas(onlyKey);
+----
+
+=== Description
+
+Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| onlyKey | If set to `true`, only attributes owned as a key will be retrieved. | boolean | False | False
+|===
+
+=== Returns
+
+* [`Stream`]  of [`Attribute`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.asRemote(tx).getHas(attributeType);
+----
+
+=== Description
+
+Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attributeType | The AttributeType to filter the attributes by. | [`AttributeType`]  | False | None
+|===
+
+=== Returns
+
+* [`Stream`]  of [`Attribute`] 
+
+== Retrieve attributes
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.asRemote(tx).getHas(attributeTypes);
+----
+
+=== Description
+
+Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| attributeTypes | The AttributeTypes to filter the attributes by. | Array of [`AttributeType`]  | False | (empty array)
+|===
+
+=== Returns
+
+* [`Stream`]  of [`Attribute`] 
+
+== Retrieve roles
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.asRemote(tx).getPlaying();
+----
+
+=== Description
+
+Retrieves the roles that this Thing is currently playing.
+
+=== Returns
+
+* [`Stream`]  of [`RoleType`] 
+
+== Retrieve relations
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.asRemote(tx).getRelations(roleTypes);
+----
+
+=== Description
+
+Retrieves all the Relations which this Thing plays a role in, optionally filtered by one or more given roles.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| roleTypes | The list of roles to filter the relations by. | Array of [`RoleType`]  | False | N/A
+|===
+
+=== Returns
+
+* [`Stream`]  of [`Relation`] 
+
+== Retrieve a Thing as JSON.
+
+=== Syntax
+
+[source,javascript]
+----
+await thing.toJSONRecord();
+----
+
+=== Returns
+
+* JSON
+

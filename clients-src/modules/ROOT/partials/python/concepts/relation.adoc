@@ -1,0 +1,153 @@
+== Retrieve type (Local)
+
+=== Syntax
+
+[source,python]
+----
+relation.get_type()
+----
+
+=== Description
+
+Retrieves the type which this Relation belongs to.
+
+=== Returns
+
+* [`RelationType`] 
+
+== Retrieve role players per role
+
+=== Syntax
+
+[source,python]
+----
+relation.as_remote(tx).get_players_by_role_type()
+----
+
+=== Description
+
+Retrieves a map of all instances involved in the Relation and the role each play.
+
+=== Returns
+
+* Dictionary of [`Role`]  to List of [`Thing`] 
+
+== Retrieve role types currently played
+
+=== Syntax
+
+[source,python]
+----
+relation.as_remote(tx).get_relating()
+----
+
+=== Description
+
+Retrieves all role types currently played in this Relation.
+
+=== Returns
+
+* Iterator of [`RoleType`] 
+
+== Retrieve role players
+
+=== Syntax
+
+[source,python]
+----
+relation.as_remote(tx).get_players(role_types)
+----
+
+=== Description
+
+Retrieves all roleplayers of this this Relation, optionally filtered by given role types.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| role | The roles to filter the role players by. | List of [`RoleType`]  | False | N/A
+|===
+
+=== Returns
+
+* Iterator of [`Thing`] 
+
+== Add roleplayer
+
+=== Syntax
+
+[source,python]
+----
+relation.as_remote(tx).add_player(role, thing)
+----
+
+=== Description
+
+Adds a new roleplayer to play the given role in this Relation.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| role | The role to be played by the `thing` | [`RoleType`]  | True | N/A
+| thing | The thing to play the `role` | [`Thing`]  | True | N/A
+|===
+
+=== Returns
+
+* None
+
+== Remove a roleplayer
+
+=== Syntax
+
+[source,python]
+----
+relation.as_remote(tx).remove_player(role, thing)
+----
+
+=== Description
+
+Removes the association of the given instance that plays the given role in this Relation.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| role | The role to no longer be played by the `thing` in this Relation. | [`RoleType`]  | True | N/A
+| thing | The instance to no longer play the `role` in this Relation. | [`Thing`]  | True | N/A
+|===
+
+=== Returns
+
+* None
+
+== Get a Remote version of the Relation.
+
+=== Syntax
+
+[source,python]
+----
+relation.as_remote(tx)
+----
+
+=== Description
+
+The remote version uses the given transaction to execute every method call.
+
+=== Input parameters
+
+[options="header"]
+|===
+|Name |Description |Type |Required |Default Value
+| transaction | The transaction to be used to make method calls. | Transaction | True | N/A
+|===
+
+=== Returns
+
+* `RemoteRelation`
+

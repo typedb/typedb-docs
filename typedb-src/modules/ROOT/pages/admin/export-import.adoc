@@ -1,0 +1,108 @@
+= Export and import
+:keywords: typedb, import, export, backup, save
+:longTailKeywords: TypeDB import data, TypeDB export data, TypeDB import database, TypeDB export database
+:pageTitle: Export and import
+:summary: TypeDB import and export functions.
+
+TypeDB can export and import both schema and data of a database.
+
+TypeDB offers a way to export database data into a binary format. The resulting file can be used to import the data on
+any database with compatible schema on a TypeDB server.
+
+[NOTE]
+====
+Using the export feature is the best way to migrate to a version of TypeDB that is not backward compatible with the
+current one in use.
+====
+
+The exported binary file might be up to two times larger than the original database. Please ensure the disk has enough
+free capacity to store a file of this size.
+
+== Migration process
+
+A TypeDB database consists of a schema and data.
+
+Since version `2.19.0` the TypeDB server export and import can process both schema and data.
+
+[IMPORTANT]
+====
+Prior to the `2.19.0` version of TypeDB, the export process included a separate schema export with any TypeDB Client
+and data export by the TypeDB server export command, followed by import of the schema (by any TypeDB Client),
+and finally -- import of data through TypeDB server import command. See the example below.
+====
+
+.See the example of the migration commands for versions prior to 2.19.0
+[%collapsible]
+====
+1. Export the schema into a file: +
+`typedb console --command="database schema <database>" > <filename>.tql`
+2. Delete the first line of the exported tql file.
+3. Export the data into a file: +
+`typedb server export --database=<database> --port=<server rpc port> --file=<filename>.typedb`
+4. Create a database in the new server: +
+`typedb console --command="database create <new-db>"` +
+This and the following commands should be addressed to the *new server*, that will be importing the database.
+5. Import the schema into the new database: +
+`typedb console --command="transaction <new-db> schema write" --command="source <filename>.tql" --command="commit"`
+6. Import the data into the new database: +
+`typedb server import --database=<database> --port=<server rpc port> --file=<filename>.typedb`
+====
+
+== Export
+
+For the export to work make sure the TypeDB server with *the database to export* is working.
+
+[,bash]
+----
+typedb server export --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
+----
+
+Where:
+
+* `<database>` -- the name of the database to export data from;
+* `<server rpc port>` -- the port number of the active local TypeDB server to export from;
+* `<data_filename>.typedb` -- the name of the file to export data to;
+* `<schema_filename>.tql` -- the name of the file to export schema to.
+
+[NOTE]
+====
+In versions previous to **2.6.0**, named arguments (e.g., the `--database=` and `--file=` or `--data`) are not used.
+Use positional arguments instead. For example, `typedb server export <database> <filename>.typedb`.
+====
+
+== Import
+
+For the import to work make sure the target TypeDB server (where the database will be *migrated to*) is working.
+
+[,bash]
+----
+typedb server import --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
+----
+
+Where:
+
+* `<database>` -- the name of the database (non-existent or empty) to import data to;
+* `<server rpc port>` -- the port number of the active local TypeDB server to import to;
+* `<data_filename>.typedb` -- the name of the file to import data from;
+* `<schema_filename>.tql` -- the name of the file to import schema from.
+
+[NOTE]
+====
+In versions previous to **2.6.0**, the `--database=` and `--file=` named arguments are not used. Use positional
+arguments instead. For example, `typedb server import <new-db> <filename>.typedb`.
+====
+
+== Troubleshooting
+
+Follow this checklist if any errors occur:
+
+* Ensure that the correct `typedb` command is running with the *correct TypeDB server* (use `./typedb` instead
+of `typedb` to use the TypeDB binary in the current directory instead of the default TypeDB server installation). +
+Exporting should be done with the same version as the server we are exporting from. +
+Importing should be done with the same version we are importing to.
+* Ensure that the schema has been imported correctly to the new database. +
+Use xref:clients::studio.adoc[TypeDB Studio] or xref:clients::console.adoc[TypeDB Console] to check the
+schema after import.
+* Ensure that the correct path was specified for the datafile import.
+
+If any errors persist, please join one of our communities and ask for assistance.
