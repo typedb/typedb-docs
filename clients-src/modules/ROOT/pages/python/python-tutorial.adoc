@@ -25,6 +25,14 @@ from typedb.client import *
 Instantiate a TypeDB Core client and open a xref:typedb::development/connect.adoc#_sessions[session] to a
 xref:typedb::development/connect.adoc#_databases[database].
 
+[NOTE]
+====
+Find out how to create a database in TypeDB on the
+xref:typedb:ROOT:quickstart.adoc#_create_a_database[Quickstart guide] page.
+
+The name for the database should be `social_network`.
+====
+
 [,python]
 ----
 from typedb.client import *

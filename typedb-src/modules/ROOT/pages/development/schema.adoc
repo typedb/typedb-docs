@@ -83,7 +83,7 @@ file sub resource,
 If we try to run this example in an empty database it will throw an error, because the `path` and `size-kb` attribute
 types we mentioned as owned by the `file` entity type actually need to exist in the schema.
 
-They can be defined in the schema prior to our query (e.g., if you run this query on the database from the
+They can be defined in the schema prior to our query (e.g., if we run this query on the database from the
 xref:quickstart.adoc[Quickstart] page), or we can define them in the same query. To do that, use the following query
 instead:
 
