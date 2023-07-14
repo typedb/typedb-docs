@@ -98,9 +98,9 @@ resource sub object;
 
 [IMPORTANT]
 ====
-If you are using the same query to undefine supertype and all its subtypes, make sure to use the supertype label
-in the subtypes undefine statements (directly right from the `sub` keyword). Otherwise, query will fail as invalid,
-due to one of the deleted types having subtypes.
+If we are using the same query to undefine supertype and all its subtypes, we need to make sure to use the supertype
+label in the subtypes undefine statements (directly right from the `sub` keyword). Otherwise, query will fail as
+invalid, due to one of the deleted types having subtypes.
 ====
 
 === Undefine a rule
