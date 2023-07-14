@@ -1,0 +1,38 @@
+
+== Retrieve value (Local)
+
+=== Syntax
+
+[source,python]
+----
+value.get_value()
+----
+
+=== Description
+
+Retrieves the value which the value variable holds.
+
+=== Returns
+
+* `string`
+* `int`
+* `float`
+* `boolean`
+* `Date`
+
+== Retrieve valuetype (Local)
+
+=== Syntax
+
+[source,python]
+----
+value.get_value_type()
+----
+
+=== Description
+
+Retrieves the valuetype of the value in value variable.
+
+=== Returns
+
+* AttributeType.ValueType (STRING | DATETIME | LONG | DOUBLE | BOOLEAN)

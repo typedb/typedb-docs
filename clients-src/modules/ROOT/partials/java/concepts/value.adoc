@@ -1,0 +1,37 @@
+== Retrieve value (Local)
+
+=== Syntax
+
+[source,java]
+----
+concept.getValue();
+----
+
+=== Description
+
+Retrieves the value which the value variable holds.
+
+=== Returns
+
+* `string`
+* `long`
+* `float`
+* `boolean`
+* `date`
+
+== Retrieve valuetype (Local)
+
+=== Syntax
+
+[source,java]
+----
+concept.getValueType();
+----
+
+=== Description
+
+Retrieves the valuetype of the value in value variable.
+
+=== Returns
+
+* ValueType (STRING | DATETIME | LONG | DOUBLE | BOOLEAN)

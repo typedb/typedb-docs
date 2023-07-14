@@ -1,0 +1,36 @@
+== Retrieve value (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+concept.value;
+----
+
+=== Description
+
+Retrieves the value which the value variable holds.
+
+=== Returns
+
+* string
+* number
+* boolean
+* Date
+
+== Retrieve valuetype (Local)
+
+=== Syntax
+
+[source,javascript]
+----
+concept.valueType;
+----
+
+=== Description
+
+Retrieves the valuetype of the value in value variable.
+
+=== Returns
+
+* ValueType (STRING | DATETIME | LONG | DOUBLE | BOOLEAN)

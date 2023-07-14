@@ -159,7 +159,7 @@ concept.is_relation()
 
 [source,python]
 ----
-concept.as_type();
+concept.as_type()
 ----
 
 === Description
@@ -176,7 +176,7 @@ Casts the concept as Type so that we can call the Type methods on it.
 
 [source,python]
 ----
-concept.as_thing();
+concept.as_thing()
 ----
 
 === Description
@@ -366,41 +366,3 @@ concept.to_json()
 === Returns
 
 * JSON
-
-== Retrieve value (Local)
-
-=== Syntax
-
-[source,python]
-----
-concept.get_value()
-----
-
-=== Description
-
-Retrieves the value which the value variable holds.
-
-=== Returns
-
-* `string`
-* `int`
-* `float`
-* `boolean`
-* `Date`
-
-== Retrieve valuetype (Local)
-
-=== Syntax
-
-[source,python]
-----
-concept.get_value_type()
-----
-
-=== Description
-
-Retrieves the valuetype of the value in value variable.
-
-=== Returns
-
-* AttributeType.ValueType (STRING | DATETIME | LONG | DOUBLE | BOOLEAN)
