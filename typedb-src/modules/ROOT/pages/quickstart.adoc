@@ -128,13 +128,10 @@ xref:typeql::overview.adoc[TypeQL], TypeDB's query language.
 To prepare the schema definition file:
 
 . Click the `+` icon in the top left corner of the *Text editor* panel (directly right from the *Project* panel).
-. Locate `iam-schema.tql` file listing below and copy its contents inside the new tab.
-. Click the save icon on the left side of the toolbar.
-. Enter `iam-schema.tql` in the *Save As* field.
-. Click the btn:[Save] button.
-
+. Copy the `iam-schema.tql` file listing below inside the new tab.
++
 [#_iam_schema]
-.See the full listing of `iam-schema.tql`
+.See the full listing of the `iam-schema.tql` file
 [%collapsible]
 ====
 [,typeql]
@@ -142,8 +139,15 @@ To prepare the schema definition file:
 include::typedb::attachment$iam-schema.tql[lines=17..]
 ----
 ====
+. Click the save icon on the left side of the toolbar.
+. Enter `iam-schema.tql` in the *Save As* field.
+. Click the btn:[Save] button.
 
-Or open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file.
+[NOTE]
+====
+Find the `iam-schema.tql` file listing expandable <<_iam_schema,above>> or download the file:
+xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank].
+====
 
 === Upload the schema
 
@@ -213,14 +217,11 @@ We will insert data the same way we created the schema, by creating a `.tql` fil
 
 To create the file:
 
-. Click the `+` icon right from the *Project* panel, next to the `iam-schema.tql` tab in the *Text editor* panel.
-. Locate `iam-data.tql` file listing below and copy its contents inside the new tab.
-. Click the save icon (left side of the toolbar).
-. Enter `iam-data.tql` in the *Save As* field.
-. Click the btn:[Save] button.
-
+. Click the `+` icon right from the *Project* panel in the top of the *Text editor* panel, to create a new tab.
+. Copy the `iam-data.tql` file listing below inside the new tab.
++
 [#_iam_microdataset]
-.See the full listing of `iam-data.tql`
+.See the full listing of the `iam-data.tql` file
 [%collapsible]
 ====
 [,typeql]
@@ -228,8 +229,18 @@ To create the file:
 include::typedb::attachment$iam-data.tql[lines=17..]
 ----
 ====
+. Click the save icon (left side of the toolbar).
+. Enter `iam-data.tql` in the *Save As* field.
+. Click the btn:[Save] button.
 
-Or open the xref:typedb::attachment$iam-data.tql[iam-data.tql,window=_blank] file.
+[NOTE]
+====
+Find the `iam-data.tql` file listing expandable <<_iam_microdataset,above>> or download the file:
+xref:typedb::attachment$iam-data.tql[iam-data.tql,window=_blank].
+
+To insert this data to a TypeDB database we need to <<_prepare_a_tql_file,define>> the correct
+<<_iam_schema,schema>> first.
+====
 
 To execute the TypeQL statements copied from the code block above:
 
