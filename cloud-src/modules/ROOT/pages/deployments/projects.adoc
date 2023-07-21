@@ -1,0 +1,62 @@
+= Project management
+:keywords: typedb, cloud, projects
+:longTailKeywords: typedb cloud projects, resource groups, create project
+:pageTitle: Projects
+:summary: Project management details.
+:experimental:
+
+// tag::intro[]
+Projects are used to group resources (deployments) to simplify access configuration by assigning access to a project
+rather than every deployment.
+// end::intro[]
+
+[NOTE]
+====
+Every new organization is created with the default project in it by default.
+====
+
+[#_create]
+== Create a Project
+
+To create a new project, complete the following steps:
+
+1. xref:user-management/organization.adoc#_select[Select] an Organization to create a project in.
+2. Open the Projects page from the navigation menu on the left.
+3. Click the btn:[Create] button in the top toolbar.
+4. Enter a new project ID for the new project and click btn:[Submit].
+
+[#_delete]
+== Delete a Project
+
+1. Open the Projects page from the main navigation menu on the left.
+2. Select the project to delete by clicking on it in the list.
+3. Click the btn:[Delete] button at the bottom.
+   Confirm the deletion by clicking on the btn:[Delete] button in the confirmation window.
+
+[#_user]
+== Add a user
+
+// tag::user[]
+Users are added to projects via teams.
+// end::user[]
+See the xref:cloud::deployments/projects.adoc#_team[Add a Team] section below.
+
+[#_team]
+== Add a Team
+
+1. xref:user-management/organization.adoc#_select[Select] an Organization with the project we add a team to.
+2. Open the Projects page from the navigation menu on the left.
+3. Click the btn:[Add Team] button in the top Teams section.
+4. Enter the Team ID for the team and click btn:[Submit].
+
+[#_deployment]
+== Add a deployment
+
+// tag::deployment[]
+We can add a deployment from the Projects page. To do that, complete the following tasks:
+
+1. xref:user-management/organization.adoc#_select[Select] an Organization with the project we add a team to.
+2. Open the Projects page from the navigation menu on the left.
+3. Click the btn:[New Deployment] button.
+4. Edit the form with the Deployment ID, Location, and number of servers in the cluster. Click the btn:[Submit] button.
+// end::deployment[]

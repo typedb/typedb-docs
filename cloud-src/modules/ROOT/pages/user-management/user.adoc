@@ -1,0 +1,40 @@
+= Users
+:keywords: typedb, cloud, users
+:longTailKeywords: typedb cloud user management, user management
+:pageTitle: Users
+:summary: User management details.
+:experimental:
+
+[#_create]
+== Create a new user
+
+include::cloud::account.adoc[tag=create-account]
+
+[#_delete]
+== Delete a user
+
+This feature is not active in the alpha testing stage of the TypeDB Cloud.
+
+[#_details]
+== Show details for a user
+
+1. xref:cloud::user-management/organization.adoc#_select[Select] an active organization in the drop-down menu.
+2. Open the Users page from the main navigation menu on the left.
+3. Select the user by clicking on it in the list.
+
+[#_organization]
+== Invite to an Organization
+
+include::cloud::user-management/organization.adoc[tag=invite_into_organization]
+
+[#_team]
+== Invite to a Team
+
+include::cloud::user-management/team.adoc[tag=invite]
+
+[#_project]
+== Invite to a Project
+
+include::cloud::deployments/projects.adoc[tag=user]
+
+See the xref:cloud::user-management/user.adoc#_team[Invite to a Team] section above.
