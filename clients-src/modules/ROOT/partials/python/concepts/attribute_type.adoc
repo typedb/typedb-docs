@@ -80,7 +80,7 @@ Retrieves all direct and indirect Attributes that are instances of this Type.
 
 [source,python]
 ----
-attributeType.as_remote(tx).get_owners(annotations: Set["Annotation"])
+attribute_type.as_remote(tx).get_owners(annotations_set)
 ----
 
 === Description
@@ -94,11 +94,17 @@ Optionally, only fetches Things that own an attribute of this type with annotati
 |===
 |Name |Description |Type |Required |Default Value
 
-| Annotation
+| annotations_set
 | Only retrieve things that have an attribute of this type with the exact annotation set.
-a|
-* `ThingType.Annotation.KEY`
-* `ThingType.Annotations.UNIQUE`
+a| `annotations=set_of_annotations`
+
+Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
+
+* `Annotations.KEY`
+* `Annotations.UNIQUE`
+
+To be able to do that, don't forget to import `Annotations`:
+`from typedb.client import Annotations`.
 | False | N/A
 |===
 
@@ -112,19 +118,32 @@ a|
 
 [source,python]
 ----
-attribute_type.as_remote(tx).get_owners_explicit(only_key)
+attribute_type.as_remote(tx).get_owners_explicit(annotations_set)
 ----
 
 === Description
 
-Retrieve all Things that directly own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
+Retrieve all Things that directly own an attribute of this type.
+Optionally, only fetches Things that own an attribute with annotations.
 
 === Input parameters
 
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| onlyKey | If true, only retrieve things that have an attribute of this type as a key. | boolean | False | False
+
+| annotations_set
+| Only retrieve things that have an attribute of this type with the exact annotation set.
+a| `annotations=set_of_annotations`
+
+Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
+
+* `Annotations.KEY`
+* `Annotations.UNIQUE`
+
+To be able to do that, don't forget to import `Annotations`:
+`from typedb.client import Annotations`.
+| False | N/A
 |===
 
 === Returns
