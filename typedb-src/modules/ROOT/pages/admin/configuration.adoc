@@ -161,10 +161,10 @@ There are three subsections:
 ** User-defined output channel name
 *** `type` -- it's either `file` or `stdout`.
 *** `directory` -- filepath, relative to the server binary. Only available for `type: file`.
-*** `file-size-cap` -- maximum size of a log file. If the log file reaches the limit, we start writing in a new file
-    in the same directory. This is similar to the `maxsize` config option in logrotate. Only available for `type: file`.
-*** `archives-size-cap` -- maximum size of all log files. If the summ of all log files in the directory reaches
-    the limit, we remove the oldest one. Only available for `type: file`.
+*** `file-size-cap` -- maximum size of a log file. If the log file reaches the limit, a new file in the same directory
+    will be started. This is similar to the `maxsize` config option in logrotate. Only available for `type: file`.
+*** `archives-size-cap` -- maximum size of all log files. If the total size of all log files in the directory reaches
+    the limit, the oldest one gets removed. Only available for `type: file`.
 * `logger`: Set up logging for modules in TypeDB, along with a log level and output targets (referencing outputs by
   name defined under the outputs section).
 * `debugger`: Set up TypeDB-specific debuggers. Right now, the only defined type is `type: reasoner`.
