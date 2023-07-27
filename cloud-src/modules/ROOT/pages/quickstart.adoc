@@ -53,18 +53,27 @@ For example, to connect via TypeDB Console:
 // tag::console-connect[]
 [,bash]
 ----
-typedb console --cluster=<address> --username=admin --password=password --tls-enabled=false
+typedb console --cluster=<address> --username=admin --password=password --tls-enabled=true --tls-root-ca=<path_to_ca>
 ----
 
 where:
 
 *  `<address>` -- is the address of a server in the TypeDB Cloud installation we are connecting to,
 including the port number. +
-For example, `a242676f5710e462e9eed7a78d795ecb-196767772.eu-west-2.elb.amazonaws.com:1729`.
+For example, `deployment-78678ca6-afda-4792-b5b8-0cb6b540d8ee-0.deployment-78678ca6-afda-4792-b5b8-0cb6b540d8ee.cloud.typedb.com:1729`.
 * `admin` -- is the default username for the default user.
 * `password` -- is the default password for the default user.
-* `false` -- is the TLS encryption setting. It's false (disabled) by default for now, but that can change soon as
-TypeDB Cloud is in alpha testing stage.
+* `true` -- is the TLS encryption setting. It's true (enabled) by default.
+* `<path_to_ca>` -- the path to the CA certificate.
+
+.See example
+[%collapsible]
+====
+[,bash]
+----
+typedb console --cluster=deployment-78678ca6-afda-4792-b5b8-0cb6b540d8ee-0.deployment-78678ca6-afda-4792-b5b8-0cb6b540d8ee.cloud.typedb.com:1729  --username=admin --password=password --tls-enabled=true --tls-root-ca=./typedb-cloud-root-ca.pem
+----
+====
 
 As a result, we get a welcome message from TypeDB Console, and if the connection is successful,
 it's followed by a command line prompt.

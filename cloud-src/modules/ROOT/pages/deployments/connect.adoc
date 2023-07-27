@@ -17,22 +17,25 @@ As such, it can receive connections from xref:clients::clients.adoc[TypeDB Clien
 
 To connect to a TypeDB Cloud deployment, we need the following information:
 
-* *Address* of any server in the deployment:
+* *Address* of at least one server in the deployment:
 ** IP or domain name -- generated for every server in a deployment by TypeDB Cloud.
 ** Port number that the server is configured to listen to -- by default, it's `1729`.
 * *Credentials* of any user to authenticate on the server:
 ** Username -- by default, it's `admin`.
 ** Password -- by default, it's `password`.
 
-////
-* Whether the encryption is enabled or not.
-** If the encryption is enabled - whether to use the default certificate or a custom one.
-////
-
 To get the *address* of the server in a deployment, use the following steps:
 
 * Open the xref:deployments/management.adoc#_details[deployment details] page.
 * Find the `Address` column in the table in the `Machines` section.
+
+[NOTE]
+====
+Ideally, we want to use all servers of the deployments cluster to connect to with a TypeDB Client.
+
+But if we set the address for only one server, TypeDB Client will get information on all servers in the
+cluster upon connection.
+====
 
 Connection to a TypeDB Enterprise server requires valid *credentials* of a user existing on that server.
 
@@ -130,14 +133,6 @@ xref:clients::node-js/node-js-api-ref.adoc#_instantiating_a_typedb_cluster_clien
 
 See the xref:clients::node-js/node-js-tutorial.adoc[] page to learn more about using the library.
 --
-====
-
-[IMPORTANT]
-====
-Ideally, we want to use all servers of the deployments cluster to connect to with a TypeDB Client.
-
-But if we set the address for only one server, TypeDB Client will get information on all servers in the
-cluster upon connection.
 ====
 
 ==  What to do next?
