@@ -130,13 +130,13 @@ Unassigns an Attribute from this Thing.
 
 [source,python]
 ----
-thing.as_remote(tx).get_has(attribute_type=None, attribute_types=[], annotations_set)
+thing.as_remote(tx).get_has(attribute_type=None, attribute_types=[], annotations=frozenset())
 ----
 
 === Description
 
-Retrieves the Attributes that this Thing owns.
-Optionally filtered by one or more AttributeTypes.
+Retrieves the Attributes that this Thing owns. +
+Optionally filtered by one or more AttributeTypes. +
 Optionally filtered by a specific set of annotations.
 
 === Input parameters
@@ -144,20 +144,9 @@ Optionally filtered by a specific set of annotations.
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| attribute_type | The AttributeType to filter the attributes by. | `AttributeType` | False | None
-| attribute_types | The AttributeTypes to filter the attributes by. | list of `AttributeType` | False | []
-| annotations_set
-| Only retrieve attributes with the exact annotation set.
-a| `annotations=set_of_annotations`
-
-Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
-
-* `Annotations.KEY`
-* `Annotations.UNIQUE`
-
-To be able to do that, don't forget to import `Annotations`:
-`from typedb.client import Annotations`.
-| False | N/A
+| attribute_type | The AttributeType to filter the attributes by. | `AttributeType` | False | `None`
+| attribute_types | The AttributeTypes to filter the attributes by. | list of `AttributeType` | False | `None`
+| annotations | Only retrieve attributes with the exact annotation set. | set of `Annotations` | False | frozenset()
 |===
 
 === Returns

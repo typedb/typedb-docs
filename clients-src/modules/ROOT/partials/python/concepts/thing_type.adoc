@@ -154,7 +154,7 @@ Allows the instances of this type to play the given role.
 
 [source,python]
 ----
-thing_type.as_remote(tx).set_owns(attribute_type, overridden_type=None, annotations_set);
+thing_type.as_remote(tx).set_owns(attribute_type, overridden_type=None, annotations=frozenset());
 ----
 
 === Description
@@ -168,18 +168,7 @@ Allows the instances of this type to own the given `AttributeType`.
 |Name |Description |Type |Required |Default Value
 | attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
 | overriddenType | The AttributeType that this attribute ownership overrides, if applicable. | [`AttributeType`]  | False | None
-| annotations_set
-| Adds the set of annotations to the ownership.
-a| `annotations=set_of_annotations`
-
-Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
-
-* `Annotations.KEY`
-* `Annotations.UNIQUE`
-
-To be able to do that, don't forget to import `Annotations`:
-`from typedb.client import Annotations`.
-| False | N/A
+| annotations | Adds the set of annotations to the ownership. | set of `Annotations` | False | frozenset()
 |===
 
 === Returns
@@ -226,7 +215,7 @@ Retrieves all direct roles that are allowed to be played by the instances of thi
 
 [source,python]
 ----
-thing_type.as_remote(tx).get_owns(value_type=None, annotations_set)
+thing_type.as_remote(tx).get_owns(value_type=None, annotations=frozenset())
 ----
 
 === Description
@@ -239,18 +228,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
-| annotations_set
-| Only retrieve attribute types owned with the exact annotation set.
-a| `annotations=set_of_annotations`
-
-Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
-
-* `Annotations.KEY`
-* `Annotations.UNIQUE`
-
-To be able to do that, don't forget to import `Annotations`:
-`from typedb.client import Annotations`.
-| False | N/A
+| annotations | Only retrieve attribute types owned with the exact annotation set. | set of `Annotations` | False | frozenset()
 |===
 
 === Returns
@@ -261,9 +239,9 @@ To be able to do that, don't forget to import `Annotations`:
 
 === Syntax
 
-[source,python]
+[options="header"]
 ----
-thing_type.as_remote(tx).get_owns_explicit(value_type=None, annotations_set)
+thing_type.as_remote(tx).get_owns_explicit(value_type=None, annotations=frozenset())
 ----
 
 === Description
@@ -276,18 +254,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
-| annotations_set
-| Only retrieve attribute types owned with the exact annotation set.
-a| `annotations=set_of_annotations`
-
-Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
-
-* `Annotations.KEY`
-* `Annotations.UNIQUE`
-
-To be able to do that, don't forget to import `Annotations`:
-`from typedb.client import Annotations`.
-| False | N/A
+annotations | Only retrieve attribute types owned with the exact annotation set. | set of `Annotations` | False | frozenset()
 |===
 
 === Returns

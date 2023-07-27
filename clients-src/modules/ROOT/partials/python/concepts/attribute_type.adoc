@@ -80,7 +80,7 @@ Retrieves all direct and indirect Attributes that are instances of this Type.
 
 [source,python]
 ----
-attribute_type.as_remote(tx).get_owners(annotations_set)
+attribute_type.as_remote(tx).get_owners(annotations=frozenset())
 ----
 
 === Description
@@ -94,18 +94,11 @@ Optionally, only fetches Things that own an attribute of this type with annotati
 |===
 |Name |Description |Type |Required |Default Value
 
-| annotations_set
+| annotations
 | Only retrieve things that have an attribute of this type with the exact annotation set.
-a| `annotations=set_of_annotations`
-
-Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
-
-* `Annotations.KEY`
-* `Annotations.UNIQUE`
-
-To be able to do that, don't forget to import `Annotations`:
-`from typedb.client import Annotations`.
-| False | N/A
+| set of `Annotations`
+| False
+| frozenset()
 |===
 
 === Returns
@@ -118,7 +111,7 @@ To be able to do that, don't forget to import `Annotations`:
 
 [source,python]
 ----
-attribute_type.as_remote(tx).get_owners_explicit(annotations_set)
+attribute_type.as_remote(tx).get_owners_explicit(annotations=frozenset())
 ----
 
 === Description
@@ -132,18 +125,11 @@ Optionally, only fetches Things that own an attribute with annotations.
 |===
 |Name |Description |Type |Required |Default Value
 
-| annotations_set
+| annotations
 | Only retrieve things that have an attribute of this type with the exact annotation set.
-a| `annotations=set_of_annotations`
-
-Where `set_of_annotations` is a set of Enums from the `typedb.client.Annotations`:
-
-* `Annotations.KEY`
-* `Annotations.UNIQUE`
-
-To be able to do that, don't forget to import `Annotations`:
-`from typedb.client import Annotations`.
-| False | N/A
+| set of `Annotations`
+| False
+| frozenset()
 |===
 
 === Returns
