@@ -239,7 +239,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 
 === Syntax
 
-[options="header"]
+[source,python]
 ----
 thing_type.as_remote(tx).get_owns_explicit(value_type=None, annotations=frozenset())
 ----
