@@ -136,8 +136,8 @@ thing.as_remote(tx).get_has(attribute_type=None, attribute_types=[], annotations
 === Description
 
 Retrieves the Attributes that this Thing owns. +
-Optionally filtered by one or more AttributeTypes. +
-Optionally filtered by a specific set of annotations.
+Optionally, filtered by one or more AttributeTypes. +
+Optionally, filtered by annotations.
 
 === Input parameters
 
@@ -146,7 +146,7 @@ Optionally filtered by a specific set of annotations.
 |Name |Description |Type |Required |Default Value
 | attribute_type | The AttributeType to filter the attributes by. | `AttributeType` | False | `None`
 | attribute_types | The AttributeTypes to filter the attributes by. | list of `AttributeType` | False | `None`
-| annotations | Only retrieve attributes with the exact annotation set. | set of `Annotations` | False | frozenset()
+| annotations | Only retrieve attributes with annotations (KEY or UNIQUE). | set of `Annotations` | False | frozenset()
 |===
 
 === Returns

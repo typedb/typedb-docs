@@ -136,14 +136,14 @@ thing.asRemote(Transaction tx).getHas(Set<TypeQLToken.Annotation> annotations);
 === Description
 
 Retrieves the Attributes that this Thing owns. +
-Optionally filtered by the exact set of annotations.
+Optionally, filtered by annotations provided.
 
 === Input parameters
 
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| annotations | Only retrieve attributes with the exact annotation set. | set of `Annotation` | False | Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
+| annotations | Only retrieve attributes with annotations (KEY or UNIQUE). | set of `Annotation` | False | Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
 |===
 
 === Returns

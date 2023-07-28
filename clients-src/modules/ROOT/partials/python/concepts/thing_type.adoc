@@ -168,7 +168,7 @@ Allows the instances of this type to own the given `AttributeType`.
 |Name |Description |Type |Required |Default Value
 | attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
 | overriddenType | The AttributeType that this attribute ownership overrides, if applicable. | [`AttributeType`]  | False | None
-| annotations | Adds the set of annotations to the ownership. | set of `Annotations` | False | frozenset()
+| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotations` | False | frozenset()
 |===
 
 === Returns
@@ -228,7 +228,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
-| annotations | Only retrieve attribute types owned with the exact annotation set. | set of `Annotations` | False | frozenset()
+| annotations | Only retrieve attribute types owned with annotations (KEY or UNIQUE). | set of `Annotations` | False | frozenset()
 |===
 
 === Returns
@@ -254,7 +254,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
-annotations | Only retrieve attribute types owned with the exact annotation set. | set of `Annotations` | False | frozenset()
+annotations | Only retrieve attribute types owned with annotations (KEY or UNIQUE). | set of `Annotations` | False | frozenset()
 |===
 
 === Returns
