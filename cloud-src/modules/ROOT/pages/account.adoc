@@ -1,0 +1,75 @@
+= Account
+:keywords: typedb, cloud, account, password, profile, settings
+:longTailKeywords: typedb cloud account, account settings, password change
+:pageTitle: Account
+:summary: Personal account management.
+:experimental:
+
+== Account registration
+
+// tag::create-account[]
+During alpha testing, access to the TypeDB Cloud is restricted by an invite-only policy.
+
+To send a request to join the alpha test of TypeDB Cloud, use the following
+https://typedb.com/deploy?dialog=cloud-waitlist[form].
+// end::create-account[]
+
+== Log In
+
+// tag::log-in[]
+Head to the https://cloud.typedb.com/[main page] of TypeDB Cloud and use the credentials provided by Vaticle to log in.
+// end::log-in[]
+
+[#_log_out]
+== Log out
+
+On any page of the TypeDB Cloud web portal, click on the gear (⚙) icon in the top right corner and click on the
+*Log out* option in the drop-down menu.
+
+[#_settings]
+== Account settings
+
+To open setting for current account on any page of the TypeDB Cloud web portal, click on the gear (⚙) icon in
+the top right corner and click on the *Settings* option.
+
+The page includes User Details and Organizations blocks.
+
+=== Show/Edit user details
+
+Open the xref:cloud::account.adoc#_settings[Account settings] page.
+
+.User details
+* User ID -- the username of the user.
+* Email -- the email address to send notifications and password reset requests to the user.
+* First Name
+* Last Name
+
+To edit the user details in the User Details section of the page, click the btn:[Edit] button.
+Apply changes and click the btn:[Submit] button.
+
+=== Change password
+
+To change the password of an account make sure to <<_log_out,log out>> of the TypeDB to get to the Log in page.
+Use the *Forget password* link there and follow the instructions on the screen.
+
+== Join an organization, team, or project
+
+=== Organization
+
+include::cloud::user-management/organization.adoc[tag=intro]
+
+include::cloud::user-management/organization.adoc[tag=join_organization]
+
+=== Team
+
+include::cloud::user-management/team.adoc[tag=intro]
+
+include::cloud::user-management/team.adoc[tag=invite]
+
+=== Project
+
+include::cloud::deployments/projects.adoc[tag=intro]
+
+include::cloud::deployments/projects.adoc[tag=user]
+
+See the xref:cloud::account.adoc#_team[Team] section above.

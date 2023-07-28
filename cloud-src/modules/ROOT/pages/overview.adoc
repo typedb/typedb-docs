@@ -1,0 +1,66 @@
+= Overview
+:keywords: typeql, documentation, overview, query, DDL, DML
+:longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: Documentation overview
+:summary: A birds-eye view of TypeQL and TypeDB
+
+// tag::alpha-test-warning[]
+[WARNING]
+====
+TypeDB Cloud service is in an alpha testing stage.
+
+We do not recommend storing sensitive or important information in any deployments of TypeDB Cloud before it is
+released for general availability.
+
+This service is provided for testing purposes only. Please, provide any feedback on an appropriate
+https://discord.com/channels/665254494820368395/1121450949664325702[channel] in our
+https://typedb.com/discord[community].
+====
+// end::alpha-test-warning[]
+
+This is the TypeDB Cloud documentation portal. It has the following pages:
+
+* xref:introduction.adoc[] -- a birds-eye view of TypeDB Cloud.
+* xref:quickstart.adoc[] -- a quick guide on how to log in, create a TypeDB deployment and connect to it.
+* xref:account.adoc[] -- register an account, log in/out, change password, and manage settings.
+
+* Deployments
+** xref:deployments/management.adoc[] -- create, destroy, suspend, and resume deployments of TypeDB.
+** xref:deployments/connect.adoc[] -- connect to a TypeDB Enterprise cluster/deployment.
+** xref:deployments/projects.adoc[] -- group deployments together.
+
+* User management
+** xref:user-management/user.adoc[] -- create, delete, and manage users.
+** xref:user-management/team.adoc[] -- group users in teams.
+** xref:user-management/organization.adoc[] -- group users in organizations.
+** _Access management_ (*soon*)
+
+////
+* Configuration
+** xref:configuration/overview.adoc[] -- organization-wise settings.
+////
+
+//The following features are still under development:
+
+* _Backups_ (*soon*)
+* _Billing_ (*soon*)
+
+////
+** Tariffs & Charges
+** Balance and bills
+** Payment methods
+** Questions and answers
+////
+
+
+== Where to go from here?
+
+For more information on the TypeDB Cloud service, see the xref:introduction.adoc[] page.
+
+See the xref:quickstart.adoc[] page to find out how to create an account and try TypeDB Cloud.
+
+There are also separate documentation portal sections for:
+
+* xref:typedb::overview.adoc[TypeDB] -- the main section about the TypeDB server.
+* xref:clients::clients.adoc[TypeDB Clients] -- all about TypeDB Studio, TypeDB Console, and TypeDB Drivers.
+* xref:typeql::overview.adoc[TypeQL] -- the query language used by TypeDB.
