@@ -167,7 +167,7 @@ Allows the instances of this type to own the given `AttributeType`.
 |===
 |Name |Description |Type |Required |Default Value
 | attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
-| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotation` | False | Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
+| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotation` | False | Collections.emptySet();
 |===
 
 === Returns
@@ -194,7 +194,7 @@ Allows the instances of this type to own the given `AttributeType`.
 |Name |Description |Type |Required |Default Value
 | attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
 | overriddenType | The AttributeType that this attribute ownership overrides, if applicable. | [`AttributeType`]  | False | None
-| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotation` | False | Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
+| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotation` | False | Collections.emptySet();
 |===
 
 === Returns
@@ -257,7 +257,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 | Only retrieve attribute types owned with annotations (KEY or UNIQUE).
 | set of `Annotation`
 | False
-| Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
+| Collections.emptySet();
 |===
 
 === Returns
@@ -286,7 +286,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 | Only retrieve attribute types owned with annotations (KEY or UNIQUE).
 | set of `Annotation`
 | False
-| Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
+| Collections.emptySet();
 |===
 
 === Returns
@@ -316,7 +316,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 | Only retrieve attribute types owned with annotations (KEY or UNIQUE).
 | set of `Annotation`
 | False
-| Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
+| Collections.emptySet();
 |===
 
 === Returns
@@ -346,7 +346,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 | Only retrieve attribute types owned with annotations (KEY or UNIQUE).
 | set of `Annotation`
 | False
-| Set<TypeQLToken.Annotation> annotations = Collections.emptySet();
+| Collections.emptySet();
 |===
 
 === Returns
