@@ -2,25 +2,25 @@
 :keywords: typedb, typeql, documentation, overview, introduction
 :longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
 :pageTitle: Documentation overview
-:summary: A birds-eye view of TypeQL and TypeDB
+:summary: A bird's-eye view of TypeQL and TypeDB
 
-This is the TypeDB server documentation section. It has the following sections:
+TypeDB server documentationm, which contains the following subsections:
 
-* xref:introduction.adoc[] -- a brief description of TypeDB capabilities
+* xref:introduction.adoc[] -- brief description of TypeDB's capabilities
 * xref:installation.adoc[] -- TypeDB server installation manual
-* xref:quickstart.adoc[] -- a guide to quickly set up a TypeDB database
+* xref:quickstart.adoc[] -- guide to quickly set up a TypeDB database
 
 * *Fundamentals*
-** xref:fundamentals/types.adoc[] -- essential information on types and inheritance
-** xref:fundamentals/queries.adoc[] -- essential information on queries
-** xref:fundamentals/patterns.adoc[] -- essential information on pattern matching
-** xref:fundamentals/inference.adoc[] -- essential information on rules and reasoning (inference)
+** xref:fundamentals/types.adoc[] -- types and inheritance
+** xref:fundamentals/queries.adoc[] -- queries and clauses
+** xref:fundamentals/patterns.adoc[] -- query patterns
+** xref:fundamentals/inference.adoc[] -- rules and reasoning
 
 * *Development*
  ** xref:development/connect.adoc[] -- TypeDB server and database connections
  ** xref:development/schema.adoc[] -- database schema definition
- ** xref:development/write.adoc[] -- writing data queries
- ** xref:development/read.adoc[] -- reading data queries
+ ** xref:development/write.adoc[] -- data write queries
+ ** xref:development/read.adoc[] -- data read queries
  ** xref:development/infer.adoc[] -- data inference queries
  ** xref:development/response.adoc[] -- query response formats
  ** xref:development/api.adoc[] -- brief description of TypeDB Driver API and TypeDB Drivers
@@ -30,28 +30,28 @@ This is the TypeDB server documentation section. It has the following sections:
  ** xref:admin/configuration.adoc[] -- TypeDB server configuration parameters and host machine requirements
  ** xref:admin/export-import.adoc[] -- exporting and importing database schema and data
  ** xref:admin/update.adoc[] -- how to migrate to a newer version of TypeDB
- ** xref:admin/ha.adoc[] -- description of TypeDB high availability features
- ** xref:admin/security.adoc[] -- description of TypeDB security features
+ ** xref:admin/ha.adoc[] -- TypeDB's high availability features
+ ** xref:admin/security.adoc[] -- TypeDB's security features
 * *Tutorials*
  ** xref:tutorials/iam-schema.adoc[] -- a brief description of IAM schema that is widely used throughout the documentation
- ** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js
+ ** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python and Node.js
  ** xref:tutorials/data-migration.adoc[] -- how to load a dataset from an intermediate input format
  into a TypeDB database
  ** xref:tutorials/new-driver-tutorial.adoc[New client] -- how to create a new client
 
 == Where to go from here?
 
-For a birds-eye view of the TypeDB features, see the xref:introduction.adoc[] page.
+For a bird's-eye view of TypeDB's features, see the xref:introduction.adoc[] page.
 
-For a more practical approach — xref:installation.adoc[install] a TypeDB server and use our xref:quickstart.adoc[] to
-set up a TypeDB environment to explore its capabilities further.
+For a more practical approach, xref:installation.adoc[install] a TypeDB server and use our xref:quickstart.adoc[] to
+set up a TypeDB environment and further explore its capabilities.
 
-Upon setting up a working TypeDB environment, we recommend to explore the following:
+After setting up a working TypeDB environment, we recommend reading the following sections:
 
-* the *Fundamentals* section for essential knowledge about TypeDB,
-* the *Development* section for the in-detail documentation of the TypeDB development workflow,
-* the *Operations* section for the instructions for setting up a production environment,
-* or the *Tutorials* section for how-to guides and the xref:tutorials/iam-schema.adoc[].
+* *Fundamentals* -- essential knowledge about TypeDB
+* *Development* -- detailed documentation of the TypeDB development workflow
+* *Operations* -- instructions for setting up a production environment
+* *Tutorials* -- including how-to guides and the xref:tutorials/iam-schema.adoc[]
 
 There are separate documentation sections for:
 
