@@ -6,19 +6,18 @@
 
 == Summary
 
-TypeDB:
+TypeDB is a strongly typed database that is unique in many ways. TypeDB:
 
-* Is a strongly typed database that is unique in many ways:
- ** has its own special xref:fundamentals/types.adoc[static type system],
- ** uses xref:fundamentals/types.adoc#_root[Entity-Relationship model], extended with
-xref:fundamentals/types.adoc#_attribute_types[Attributes] and xref:fundamentals/inference.adoc#_rules[Rules],
+* has its own special xref:fundamentals/types.adoc[static type system];
+* uses an xref:fundamentals/types.adoc#_root[Entity-Relationship model], extended with
+xref:fundamentals/types.adoc#_attribute_types[Attributes] and xref:fundamentals/inference.adoc#_rules[Rules];
 // - #todo add link to the types article
- ** supports subtyping and inheritance like OOP languages,
- ** uses declarative queries with its own query language: xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank].
- We set the requirements for the result but do not specify how to achieve it.
-* Is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank]) DBMS with
-xref:development/connect.adoc#_acid_guarantees[ACID] guarantees.
-* Has data separated by xref:development/connect.adoc#_databases[databases], each one with its own schema.
+* supports subtyping and inheritance like OOP languages;
+* uses declarative queries with its own query language, xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank],
+in which we set the requirements for the result but do not specify how to achieve it.
+* is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank]) DBMS with
+xref:development/connect.adoc#_acid_guarantees[ACID] guarantees; and
+* separates data into xref:development/connect.adoc#_databases[databases], each of which has its own schema.
 
 ////
 Comparison of TypeDB with most common types of databases:
@@ -32,7 +31,7 @@ Comparison of TypeDB with most common types of databases:
 
 // #todo Change the link to TypeQL -
 
-The core of any TypeDB database is the representation of our business domain: the xref:development/schema.adoc#_schema[schema].
+The core of any TypeDB database is the representation of the business domain: the xref:development/schema.adoc#_schema[schema].
 A schema is the blueprint of a TypeDB database. Using TypeQL, we define a schema to model a domain
 true to nature:
 
