@@ -8,16 +8,15 @@
 
 TypeDB is a strongly typed database that is unique in many ways. TypeDB:
 
-* has its own special xref:fundamentals/types.adoc[static type system];
+* has its own special xref:fundamentals/types.adoc[static type system]
 * uses an xref:fundamentals/types.adoc#_root[Entity-Relationship model], extended with
-xref:fundamentals/types.adoc#_attribute_types[Attributes] and xref:fundamentals/inference.adoc#_rules[Rules];
+xref:fundamentals/types.adoc#_attribute_types[Attributes] and xref:fundamentals/inference.adoc#_rules[Rules]
 // - #todo add link to the types article
-* supports subtyping and inheritance like OOP languages;
-* uses declarative queries with its own query language, xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank],
-in which we set the requirements for the result but do not specify how to achieve it.
+* supports subtyping and inheritance like OOP languages
+* uses its own declarative query language, xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank]
 * is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank]) DBMS with
-xref:development/connect.adoc#_acid_guarantees[ACID] guarantees; and
-* separates data into xref:development/connect.adoc#_databases[databases], each of which has its own schema.
+xref:development/connect.adoc#_acid_guarantees[ACID] guarantees
+* separates data into xref:development/connect.adoc#_databases[databases]
 
 ////
 Comparison of TypeDB with most common types of databases:
@@ -31,38 +30,37 @@ Comparison of TypeDB with most common types of databases:
 
 // #todo Change the link to TypeQL -
 
-The core of any TypeDB database is the representation of the business domain: the xref:development/schema.adoc#_schema[schema].
-A schema is the blueprint of a TypeDB database. Using TypeQL, we define a schema to model a domain
-true to nature:
+The core of any TypeDB database is the xref:development/schema.adoc#_schema[schema], which is a conceptual data respresentation rather than physical one.
+Using TypeQL, we define a schema to model a domain true to nature:
 
-* Types are defined to add context and constraints to data using strong typing with inheritance. All user-defined
-  types in a schema are subtypes of other user-defined types or one of the following built-in root types:
-** Entities. Representing self-sufficient objects.
-** Relations. Representing n-ary relationships.
-** Attributes. Representing properties with a value: numeric, text string, boolean, or date&time.
-* Rules are defined to add a logical deduction to the schema. Any read queries with the inference option enabled can
-  benefit from new attribute ownerships or relations that are deduced from data patterns. Those inferred
-  concepts are transaction bound and are not persisted in a database.
+* Types can add context and constraints to data using strong typing with inheritance. All user-defined
+  types are subtypes of other user-defined types or of one of the following built-in types:
+** Entities -- self-sufficient objects
+** Relations -- n-ary relationships
+** Attributes -- a value which can be numeric, text string, boolean or date/time
+* Rules add logical deduction to a schema. When read queries are run with the inference option enabled, TypeDB deduces new attribute ownerships and relations based on these rules.
+  benefit from new attribute ownerships or relations that are deduced from data patterns.
 
 // ** Context helps us to correctly model, classify and query our data the most logical way.
 // ** Constraints are used for query validation and limiting the scope of queries.
 
 == TypeDB description
 
-TypeDB is a new kind of DBMS:
+TypeDB is a revolutionary new database system. TypeDB is _not_:
 
-* not an SQL database, but uses an enhanced Entity-Relationship model, further extended by attributes as first-class
-  citizens;
-* not a graph database, but utilizes the power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs,window=_blank]
-  without the need for developers to understand how it works to use it.
+* an SQL database, but it uses an enhanced Entity-Relationship model, further extended by attributes as first-class
+  citizens
+* a graph database, but utilizes the power of https://en.wikipedia.org/wiki/Hypergraph[hypergraphs,window=_blank]
+  without developers having to understand the implementation details
 
 [NOTE]
 ====
-Entity, Relation, and Attribute correspond to the components of an Entity-Relation-Attribute model, an
+_Entity_, _Relation_ and _Attribute_ correspond to the components of an Entity-Relation-Attribute model, an
 extension of the well-known https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model[ER model,window=_blank],
-in which attributes (properties) are also treated as first-class citizens.
+in which attributes are also treated as first-class citizens.
 ====
 
+// # What's the intended arc of the next nine paragraphs?
 TypeDB guarantees data integrity and safety while enabling data-level inferences within the database.
 A strong type system with subtyping and inheritance helps us break down complex problems into
 meaningful and logical data models. TypeDB uses its own declarative query language, TypeQL, that gives powerful
@@ -112,13 +110,13 @@ logic at the database level.
 
 == Learn more
 
-1. First, use the xref:installation.adoc[installation guide] to install TypeDB on the local machine.
+1. First, use the xref:installation.adoc[installation guide] to install TypeDB.
 
 2. The TypeDB journey starts with our xref:quickstart.adoc[Quickstart guide].
 +
-It goes through the step-by-step process of creating a new database, applying schema, loading sample data,
+It goes through the step-by-step process of creating a new database, applying schema, loading sample data
    and querying. The resulting environment is suitable for executing most examples in our documentation.
-   On top of that it familiarizes users with TypeDB Studio — IDE, specifically designed for TypeDB
+   On top of that it familiarizes users with TypeDB Studio, an IDE specifically designed for TypeDB
    database management and development.
 
 3. Fundamentals -- essential knowledge of how TypeDB works:
