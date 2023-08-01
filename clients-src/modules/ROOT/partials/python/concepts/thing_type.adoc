@@ -154,7 +154,7 @@ Allows the instances of this type to play the given role.
 
 [source,python]
 ----
-thing_type.as_remote(tx).set_owns(attribute_type, overridden_type=None, is_key=False);
+thing_type.as_remote(tx).set_owns(attribute_type, overridden_type=None, annotations=frozenset());
 ----
 
 === Description
@@ -168,7 +168,7 @@ Allows the instances of this type to own the given `AttributeType`.
 |Name |Description |Type |Required |Default Value
 | attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
 | overriddenType | The AttributeType that this attribute ownership overrides, if applicable. | [`AttributeType`]  | False | None
-| isKey | Whether this AttributeType is to be owned as a unique key. | bool | False | False
+| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotations` | False | frozenset()
 |===
 
 === Returns
@@ -215,7 +215,7 @@ Retrieves all direct roles that are allowed to be played by the instances of thi
 
 [source,python]
 ----
-thing_type.as_remote(tx).get_owns(value_type=None, keys_only=False)
+thing_type.as_remote(tx).get_owns(value_type=None, annotations=frozenset())
 ----
 
 === Description
@@ -228,7 +228,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
-| keys_only | If set to `True`, then only attribute types owned as keys will be retrieved. | bool | False | False
+| annotations | Only retrieve attribute types owned with annotations (KEY or UNIQUE). | set of `Annotations` | False | frozenset()
 |===
 
 === Returns
@@ -241,7 +241,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 
 [source,python]
 ----
-thing_type.as_remote(tx).get_owns_explicit(value_type=None, keys_only=False)
+thing_type.as_remote(tx).get_owns_explicit(value_type=None, annotations=frozenset())
 ----
 
 === Description
@@ -254,7 +254,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | value_type | If specified, only attribute types of this ValueType will be retrieved. | `ValueType` | False | None
-| keys_only | If set to `True`, then only attribute types owned as keys will be retrieved. | bool | False | False
+annotations | Only retrieve attribute types owned with annotations (KEY or UNIQUE). | set of `Annotations` | False | frozenset()
 |===
 
 === Returns

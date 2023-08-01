@@ -154,7 +154,7 @@ Allows the instances of this type to play the given role.
 
 [source,java]
 ----
-thingType.asRemote(Transaction tx).setOwns(AttributeType attributeType, boolean isKey);
+thingType.asRemote(Transaction tx).setOwns(AttributeType attributeType, Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
@@ -167,20 +167,20 @@ Allows the instances of this type to own the given `AttributeType`.
 |===
 |Name |Description |Type |Required |Default Value
 | attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
-| isKey | Whether this AttributeType is to be owned as a unique key. | boolean | False | False
+| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotation` | False | Collections.emptySet();
 |===
 
 === Returns
 
 * void
 
-== Add attribute ownership
+== Add attribute ownership (overriden)
 
 === Syntax
 
 [source,java]
 ----
-thingType.asRemote(Transaction tx).setOwns(AttributeType attributeType, AttributeType overriddenType, boolean isKey);
+thingType.asRemote(Transaction tx).setOwns(AttributeType attributeType, AttributeType overriddenType, Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
@@ -194,7 +194,7 @@ Allows the instances of this type to own the given `AttributeType`.
 |Name |Description |Type |Required |Default Value
 | attributeType | The AttributeType to be owned by the instances of this type. | [`AttributeType`]  | True | N/A
 | overriddenType | The AttributeType that this attribute ownership overrides, if applicable. | [`AttributeType`]  | False | None
-| isKey | Whether this AttributeType is to be owned as a unique key. | boolean | False | False
+| annotations | Adds annotations (KEY or UNIQUE) to the ownership. | set of `Annotation` | False | Collections.emptySet();
 |===
 
 === Returns
@@ -241,7 +241,7 @@ Retrieves all direct roles that are allowed to be played by the instances of thi
 
 [source,java]
 ----
-thingType.asRemote(Transaction tx).getOwns(boolean keysOnly);
+thingType.asRemote(Transaction tx).getOwns(Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
@@ -253,7 +253,11 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+| annotations
+| Only retrieve attribute types owned with annotations (KEY or UNIQUE).
+| set of `Annotation`
+| False
+| Collections.emptySet();
 |===
 
 === Returns
@@ -266,7 +270,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 
 [source,java]
 ----
-thingType.asRemote(Transaction tx).getOwnsExplicit(boolean keysOnly);
+thingType.asRemote(Transaction tx).getOwnsExplicit(Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
@@ -278,7 +282,11 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+| annotations
+| Only retrieve attribute types owned with annotations (KEY or UNIQUE).
+| set of `Annotation`
+| False
+| Collections.emptySet();
 |===
 
 === Returns
@@ -291,7 +299,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 
 [source,java]
 ----
-thingType.asRemote(Transaction tx).getOwns(AttributeType.ValueType valueType, boolean keysOnly);
+thingType.asRemote(Transaction tx).getOwns(AttributeType.ValueType valueType, Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
@@ -304,7 +312,11 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | valueType | If specified, only attribute types of this ValueType will be retrieved. | `AttributeType.ValueType` | False | None
-| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+| annotations
+| Only retrieve attribute types owned with annotations (KEY or UNIQUE).
+| set of `Annotation`
+| False
+| Collections.emptySet();
 |===
 
 === Returns
@@ -317,7 +329,7 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 
 [source,java]
 ----
-thingType.asRemote(Transaction tx).getOwnsExplicit(AttributeType.ValueType valueType, boolean keysOnly);
+thingType.asRemote(Transaction tx).getOwnsExplicit(AttributeType.ValueType valueType, Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
@@ -330,7 +342,11 @@ Retrieves attribute types that the instances of this type are allowed to own dir
 |===
 |Name |Description |Type |Required |Default Value
 | valueType | If specified, only attribute types of this ValueType will be retrieved. | `AttributeType.ValueType` | False | None
-| keysOnly | If set to `true`, then only attribute types owned as keys will be retrieved. | boolean | False | False
+| annotations
+| Only retrieve attribute types owned with annotations (KEY or UNIQUE).
+| set of `Annotation`
+| False
+| Collections.emptySet();
 |===
 
 === Returns

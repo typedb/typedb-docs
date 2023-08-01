@@ -80,13 +80,13 @@ Retrieves all direct and indirect Attributes that are instances of this Type.
 
 [source,python]
 ----
-attributeType.as_remote(tx).get_owners(annotations: Set["Annotation"])
+attribute_type.as_remote(tx).get_owners(annotations=frozenset())
 ----
 
 === Description
 
-Retrieve all Things that own an attribute of this type.
-Optionally, only fetches Things that own an attribute of this type with annotation set provided.
+Retrieve all Things that own an attribute of this type. +
+Optionally, filtered by annotations.
 
 === Input parameters
 
@@ -94,12 +94,11 @@ Optionally, only fetches Things that own an attribute of this type with annotati
 |===
 |Name |Description |Type |Required |Default Value
 
-| Annotation
-| Only retrieve things that have an attribute of this type with the exact annotation set.
-a|
-* `ThingType.Annotation.KEY`
-* `ThingType.Annotations.UNIQUE`
-| False | N/A
+| annotations
+| Only retrieve things that have an attribute of this type with annotations (KEY or UNIQUE).
+| set of `Annotations`
+| False
+| frozenset()
 |===
 
 === Returns
@@ -112,19 +111,25 @@ a|
 
 [source,python]
 ----
-attribute_type.as_remote(tx).get_owners_explicit(only_key)
+attribute_type.as_remote(tx).get_owners_explicit(annotations=frozenset())
 ----
 
 === Description
 
-Retrieve all Things that directly own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
+Retrieve all Things that directly own an attribute of this type.
+Optionally, filtered by annotations.
 
 === Input parameters
 
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| onlyKey | If true, only retrieve things that have an attribute of this type as a key. | boolean | False | False
+
+| annotations
+| Only retrieve things that directly have an attribute of this type with annotations (KEY or UNIQUE).
+| set of `Annotations`
+| False
+| frozenset()
 |===
 
 === Returns

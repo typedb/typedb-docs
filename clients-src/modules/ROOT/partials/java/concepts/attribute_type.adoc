@@ -85,8 +85,8 @@ attributeType.asRemote(Transaction tx).getOwners(Set<TypeQLToken.Annotation> ann
 
 === Description
 
-Retrieve all Things that own an attribute of this type.
-Optionally, only fetches Things that own an attribute of this type with annotation set provided.
+Retrieve all Things that own an attribute of this type. +
+Optionally, filtered by annotations provided.
 
 === Input parameters
 
@@ -94,12 +94,12 @@ Optionally, only fetches Things that own an attribute of this type with annotati
 |===
 |Name |Description |Type |Required |Default Value
 
-| Annotation
-| Only retrieve things that have an attribute of this type with the exact annotation set.
-a|
-* `TypeQLToken.Annotation.KEY`
-* `TypeQLToken.Annotation.UNIQUE`
-| False | N/A
+| annotations
+| Only retrieve things that have an attribute of this type with annotations (KEY or UNIQUE).
+| set of `Annotation`
+| False
+| Collections.emptySet();
+
 |===
 
 === Returns
@@ -112,19 +112,23 @@ a|
 
 [source,java]
 ----
-attributeType.asRemote(Transaction tx).getOwnersExplicit(boolean onlyKey);
+attributeType.asRemote(Transaction tx).getOwnersExplicit(Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
 
-Retrieve all Things that directly own an attribute of this type. Optionally, only fetches Things that own an attribute of this type as a key.
+Retrieve all Things that directly own an attribute of this type. +
+Optionally, filtered by annotations provided.
 
 === Input parameters
 
 [options="header"]
 |===
-|Name |Description |Type |Required |Default Value
-| onlyKey | If true, only retrieve things that have an attribute of this type as a key. | boolean | False | False
+| annotations
+| Only retrieve things that have an attribute of this type with annotations (KEY or UNIQUE).
+| set of `Annotation`
+| False
+| Collections.emptySet();
 |===
 
 === Returns
