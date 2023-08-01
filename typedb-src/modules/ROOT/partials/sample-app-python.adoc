@@ -26,7 +26,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             k = 0  # Reset counter
             for item in iterator:  # Iterating through results
                 k += 1
-                print("User #" + str(k) + ": " + item.get(cVar("n")).get_value() + ", has E-Mail: " + item.get(cVar("e")).get_value())
+                print("User #" + str(k) + ": " + item.get("n").get_value() + ", has E-Mail: " + item.get("e").get_value())
             print("Users found:", k)  # Print number of results
 
         print("\nRequest #2: Files that Kevin Morrison has access to")
@@ -37,7 +37,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             k = 0  # Reset counter
             for item in iterator:  # Iterating through results
                 k += 1
-                print("File #" + str(k) + ": " + item.get(cVar("fp")).get_value())
+                print("File #" + str(k) + ": " + item.get("fp").get_value())
             print("Files found:", k)  # Print number of results
 
         print("\nRequest #3: Files that Kevin Morrison has view access to (with inference)")
@@ -49,7 +49,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             k = 0  # Reset counter
             for item in iterator:  # Iterating through results
                 k += 1
-                print("File #" + str(k) + ": " + item.get(cVar("fp")).get_value())
+                print("File #" + str(k) + ": " + item.get("fp").get_value())
 
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
                                 "$o isa object, has path $fp; $pa($o, $va) isa access; " \
@@ -57,7 +57,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             iterator = transaction.query().match(typeql_read_query)  # Executing query
             for item in iterator:  # Iterating through results
                 k += 1
-                print("File #" + str(k) + ": " + item.get(cVar("fp")).get_value())
+                print("File #" + str(k) + ": " + item.get("fp").get_value())
             print("Files found:", k)  # Print number of results
 
         print("\nRequest #4: Add a new file and a view access to it")

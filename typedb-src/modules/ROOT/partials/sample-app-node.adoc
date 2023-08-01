@@ -47,8 +47,8 @@ async function main() {
             let answers = await iterator.collect();
             let result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get(cVar("n")).value,
-                     answer.map.get(cVar("e")).value]
+                    [answer.map.get("n").value,
+                     answer.map.get("e").value]
                 )
             );
             k = 0; // reset the counter
@@ -70,7 +70,7 @@ async function main() {
             answers = await iterator.collect();
             result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get(cVar("fp")).value]
+                    [answer.map.get("fp").value]
                 )
             );
             k = 0; // reset the counter
@@ -94,7 +94,7 @@ async function main() {
             answers = await iterator.collect();
             result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get(cVar("fp")).value]
+                    [answer.map.get("fp").value]
                 )
             );
             k = 0; // reset the counter
@@ -107,7 +107,7 @@ async function main() {
             answers = await iterator.collect();
             result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get(cVar("fp")).value]
+                    [answer.map.get("fp").value]
                 )
             );
             for(let i = 0; i < result.length; i++) {
