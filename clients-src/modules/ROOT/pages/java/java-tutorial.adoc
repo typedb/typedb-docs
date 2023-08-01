@@ -126,7 +126,7 @@ public class TypeDBQuickstartC {
                 // Insert a person using a WRITE transaction
                 TypeQLInsert insertQuery = TypeQL.insert(cVar("x").isa("person").has("email", "x@email.com"));
                 List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
-                System.out.println("Inserted a person with ID: " + insertedId.get(0).get(cVar("x")).asThing().getIID());
+                System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").asThing().getIID());
                 // to persist changes, a write transaction must always be committed (closed)
                 writeTransaction.commit();
             }
@@ -135,7 +135,7 @@ public class TypeDBQuickstartC {
                 // Read the person using a READ only transaction
                 TypeQLMatch.Limited getQuery = TypeQL.match(cVar("p").isa("person")).get(cVar("p")).limit(10);
                 Stream<ConceptMap> answers = readTransaction.query().match(getQuery);
-                answers.forEach(answer -> System.out.println(answer.get(cVar("p")).asThing().getIID()));
+                answers.forEach(answer -> System.out.println(answer.get("p").asThing().getIID()));
             }
         }
 
