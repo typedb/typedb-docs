@@ -130,21 +130,23 @@ Unassigns an Attribute from this Thing.
 
 [source,python]
 ----
-thing.as_remote(tx).get_has(attribute_type=None, attribute_types=[], only_key=False)
+thing.as_remote(tx).get_has(attribute_type=None, attribute_types=[], annotations=frozenset())
 ----
 
 === Description
 
-Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+Retrieves the Attributes that this Thing owns. +
+Optionally, filtered by one or more AttributeTypes. +
+Optionally, filtered by annotations.
 
 === Input parameters
 
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| attribute_type | The AttributeType to filter the attributes by. | `AttributeType` | False | None
-| attribute_types | The AttributeTypes to filter the attributes by. | list of `AttributeType` | False | []
-| only_key | If set to `True`, only attributes owned as a key will be retrieved. | boolean | False | False
+| attribute_type | The AttributeType to filter the attributes by. | `AttributeType` | False | `None`
+| attribute_types | The AttributeTypes to filter the attributes by. | list of `AttributeType` | False | `None`
+| annotations | Only retrieve attributes with annotations (KEY or UNIQUE). | set of `Annotations` | False | frozenset()
 |===
 
 === Returns

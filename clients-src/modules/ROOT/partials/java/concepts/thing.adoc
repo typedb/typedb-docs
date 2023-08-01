@@ -130,19 +130,20 @@ Unassigns an Attribute from this Thing.
 
 [source,java]
 ----
-thing.asRemote(Transaction tx).getHas(boolean onlyKey));
+thing.asRemote(Transaction tx).getHas(Set<TypeQLToken.Annotation> annotations);
 ----
 
 === Description
 
-Retrieves the Attributes that this Thing owns, optionally filtered by one or more AttributeTypes.
+Retrieves the Attributes that this Thing owns. +
+Optionally, filtered by annotations provided.
 
 === Input parameters
 
 [options="header"]
 |===
 |Name |Description |Type |Required |Default Value
-| onlyKey | If set to `true`, only attributes owned as a key will be retrieved. | boolean | False | False
+| annotations | Only retrieve attributes with annotations (KEY or UNIQUE). | set of `Annotation` | False | Collections.emptySet();
 |===
 
 === Returns
