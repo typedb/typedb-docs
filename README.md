@@ -1,44 +1,37 @@
 # Vaticle Documentation
 
-[![CircleCI](https://circleci.com/gh/vaticle/docs/tree/master.svg?style=shield)](https://circleci.com/gh/vaticle/docs)
+[![Discord](https://img.shields.io/discord/665254494820368395?color=7389D8&label=chat&logo=discord&logoColor=ffffff)](https://typedb.com/discord)
+[![Discussion Forum](https://img.shields.io/discourse/https/forum.typedb.com/topics.svg)](https://forum.typedb.com/)
+[![Stack Overflow](https://img.shields.io/badge/stackoverflow-typedb-796de3.svg)](https://stackoverflow.com/questions/tagged/typedb)
+[![Stack Overflow](https://img.shields.io/badge/stackoverflow-typeql-3dce8c.svg)](https://stackoverflow.com/questions/tagged/typeql)
 
-This repository contains all content that powers the Vaticle Documentation Portal, accessible at [docs.vaticle.com](http://docs.vaticle.com).
+This repository contains all content that powers the Vaticle Documentation Portal, accessible at [https://typedb.com/docs](https://typedb.com/docs).
 
 ---
 
 ## Contribute
 
-- Fork this repository.
 - Read the [Contribution Guidelines](#contribution-guidelines) carefully.
+- Fork this repository.
 - Make the desired changes.
-- Issue pull request(s) and select the `base` branch in accordance with the [Branch Classifications](#branch-classifications).
+- Issue pull request(s) and select the `base` branch in accordance with the [Branch Classifications](#branches).
 
 ---
 
 ## Branches
 
-At any given time, this repository has at least 1 and at most 2 branches, i.e. `master` and `development`.
+At any given time, this repository has at least two branches, i.e. `master` and `development`.
 
-### Master Branch
+The `master` branch contains the content for the published documentation, available at the
+[Documentation portal](https://typedb.com/docs).
 
-The master branch contains the content for the live documentation of the current release. Unless the changes to be made in docs, are with regards to the documentation of a new feature that is yet to be released, they are all meant to be made on the _master_ branch.
+The `development` branch contains the content of the documentation to be published soon, 
+available at the [staging environment](https://development.typedb.com/docs).
 
-If at the time of submitting changes to _master_, the _development_ is also present, then changes made on the master branch need to be made on the development branch as well. To avoid bring unwanted changes to the development branch, commits need to be cherry-picked for the PR with _development_ as its base. The steps to accomplish this are as follows.
+Main workflow is to merge changes to the `development` branch, test them in the staging environment, 
+and publish to production by cherry-picking the changes to the `master` branch.
 
-1. `git checkout development`
-2. `git pull <name of the vaticle/docs remote> development`
-3. `git checkout -b <name of the branch to be the head of the upcoming PR>`
-4. `git cherry-pick <SHA of the commit that represents the beginning of changes in the previous (master) PR>..<SHA of the commit that represents the end of changes in previous (master) PR>`
-5. commit any other changes that are exclusive for the next release
-5. `git push <name of the fork remote> <name of the current branch>`
-6. issue the PR and select `development` as the _base_ branch
-
-### Development Branch
-
-The development branch contains the content of the documentation for the next immediate release.
-PRs that have the `development` branch as their _base_, contains changes that are either:
-- previously made on `master` and should also be reflected for the next release, or
-- meant to introduce a new future/change that will only be available as a part of the next release
+Hot fixes can be merged directly to the `master` branch, and then cherry-picked into the `development` branch.
 
 ---
 
@@ -254,21 +247,3 @@ The documentation of each interface to TypeDB (i.e. clients, Studio, Console, et
 - Second and third columns are dedicated to TypeDB and TypeDB Cluster, respectively, where each cell may contain one or more version numbers.
   -  If there need to be 2 version numbers, they are to be separated by a `, ` (e.g. `1.5.2, 1.5.3`).
   -  If there need to be more than 2 version numbers, a range is provided (e.g. `1.5.4 to 1.5.7`).
-
-### API References
-
-API references are written and maintained in `.yml` files. To work, with these files, you need to have a solid understanding of YAML anchors and references.
-
-Client API reference files are accessible via [`03-client-api/references`](03-client-api/references) and Concept API references via [`04-concept-api/references`](04-client-api/references).
-
-### Tests
-
-- A code block of `java` that is not preceded by any test flags, will be tested as a _Query_. Such code blocks are expected to contain an instantiation of a TypeQL query.
-- A code block of `typeql` that is not preceded by any test flags, will be tested either as a _pattern_ or a _query_. It will be tested as a query if it contains any query keywords (`match`, `define`, `insert`). Otherwise, it will be tested as a pattern.
-- A code block that follows the `<!-- test-example file-name.extension -->` flag, will be tested as an _example_. Such code blocks are expected to contain a self-contained piece of code with its only requirements being:
-  - a running TypeDB Server
-  - the schema loaded into the target database
-- Code blocks that have no language name, will not be tested.
-- Code blocks whose language is not `java`, `javascript` or `python` will not be tested.
-- Code blocks that follow the `<!-- test-ignore -->` flag, will not be tested.
-- Code blocks that follow the `<!-- test-delay -->` flag, will not be tested. The flag is expected to be removed in the next major or minor release.
