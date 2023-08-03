@@ -2,21 +2,25 @@
 :keywords: typedb, typeql, documentation, overview, introduction
 :longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
 :pageTitle: Documentation overview
-:summary: A bird's-eye view of TypeQL and TypeDB
+:summary: Welcome! This is the official documentation for TypeDB.
 
-TypeDB server documentation, which contains the following subsections:
+Welcome! This is the official documentation for TypeDB Core.
+
+== Documentation structure
 
 * xref:introduction.adoc[] -- brief description of TypeDB's capabilities
 * xref:installation.adoc[] -- TypeDB server installation manual
 * xref:quickstart.adoc[] -- guide to quickly set up a TypeDB database
 
-* *Fundamentals*
-** xref:fundamentals/types.adoc[] -- types and inheritance
-** xref:fundamentals/queries.adoc[] -- queries and clauses
-** xref:fundamentals/patterns.adoc[] -- patterns and variables
-** xref:fundamentals/inference.adoc[] -- inference and rules
+=== Fundamentals
 
-* *Development*
+* xref:fundamentals/types.adoc[] -- types and inheritance
+* xref:fundamentals/queries.adoc[] -- queries and clauses
+* xref:fundamentals/patterns.adoc[] -- patterns and variables
+* xref:fundamentals/inference.adoc[] -- inference and rules
+
+=== Development
+
  ** xref:development/connect.adoc[] -- TypeDB server and database connections
  ** xref:development/schema.adoc[] -- database schema definition
  ** xref:development/write.adoc[] -- data write queries
@@ -26,13 +30,17 @@ TypeDB server documentation, which contains the following subsections:
  ** xref:development/api.adoc[] -- brief description of TypeDB Driver API and TypeDB Drivers
 // #todo Consider moving API to Clients section with tabs
  ** xref:development/best.adoc[] -- schema and query design tips
-* *Operations*
+
+=== Operations
+
  ** xref:admin/configuration.adoc[] -- server configuration parameters and host machine requirements
  ** xref:admin/export-import.adoc[] -- exporting and importing database schema and data
  ** xref:admin/update.adoc[] -- how to migrate to a newer version of TypeDB
  ** xref:admin/ha.adoc[] -- high availability features
  ** xref:admin/security.adoc[] -- security features
-* *Tutorials*
+
+=== Tutorials
+
  ** xref:tutorials/iam-schema.adoc[] -- a brief description of IAM schema that is widely used throughout the documentation
  ** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js
  ** xref:tutorials/data-migration.adoc[] -- how to load a dataset from an intermediate input format
