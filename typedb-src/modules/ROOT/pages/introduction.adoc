@@ -2,21 +2,20 @@
 :keywords: typedb, database, documentation, introduction, overview
 :longTailKeywords: typedb introduction, typedb overview, learn typedb, learn typeql, typedb schema, typedb data model
 :pageTitle: TypeDB introduction
-:summary: A birds-eye view of TypeDB.
+:summary: A bird's-eye view of TypeDB.
 
 == Summary
 
-TypeDB is a strongly typed database that is unique in many ways. TypeDB:
+TypeDB is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank])
+strongly typed DBMS with xref:development/connect.adoc#_acid_guarantees[ACID] guarantees that is unique in many ways:
 
-* has its own special xref:fundamentals/types.adoc[static type system]
-* uses an xref:fundamentals/types.adoc#_root[Entity-Relationship model], extended with
+* has its own special xref:fundamentals/types.adoc[static type system] that lets us create our own types by
+  subtyping and xref:typedb::fundamentals/types.adoc#_inheritance[inheritance] like OOP languages
+// #todo add a better link for strong typing
+* uses an xref:fundamentals/types.adoc#_type[Entity-Relationship model], extended with
 xref:fundamentals/types.adoc#_attribute_types[Attributes] and xref:fundamentals/inference.adoc#_rules[Rules]
-// - #todo add link to the types article
-* supports subtyping and inheritance like OOP languages
-* uses its own declarative query language, xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank]
-* is a transactional (https://en.wikipedia.org/wiki/Online_transaction_processing[OLTP,window=_blank]) DBMS with
-xref:development/connect.adoc#_acid_guarantees[ACID] guarantees
-* separates data into xref:development/connect.adoc#_databases[databases]
+// #todo add link to the types article?
+* uses its own declarative query language: xref:typeql:ROOT:overview.adoc[TypeQL,window=_blank]
 
 ////
 Comparison of TypeDB with most common types of databases:
@@ -28,18 +27,20 @@ Comparison of TypeDB with most common types of databases:
 
 //== Thinking in TypeQL and TypeDB
 
-// #todo Change the link to TypeQL -
+The core of any TypeDB database is the xref:development/schema.adoc#_schema[schema], which is a conceptual data
+representation rather than physical one.
 
-The core of any TypeDB database is the xref:development/schema.adoc#_schema[schema], which is a conceptual data respresentation rather than physical one.
-Using TypeQL, we define a schema to model a domain true to nature:
+Using TypeQL, we define a schema to model a domain true to nature.
 
-* Types can add context and constraints to data using strong typing with inheritance. All user-defined
-  types are subtypes of other user-defined types or of one of the following built-in types:
-** Entities -- self-sufficient objects
-** Relations -- n-ary relationships
-** Attributes -- a value which can be numeric, text string, boolean or date/time
-* Rules add logical deduction to a schema. When read queries are run with the inference option enabled, TypeDB deduces new attribute ownerships and relations based on these rules.
-  benefit from new attribute ownerships or relations that are deduced from data patterns.
+Types can add context and constraints to data using strong typing with inheritance.
+All user-defined types are subtypes of other user-defined types or of one of the following built-in types:
+
+* Entities -- self-sufficient objects
+* Relations -- n-ary relationships
+* Attributes -- a value which can be numeric, text string, boolean or date/time
+
+Rules add logical deduction to a schema. When read queries are run with the inference option enabled,
+TypeDB deduces new attribute ownerships and relations based on these rules.
 
 // ** Context helps us to correctly model, classify and query our data the most logical way.
 // ** Constraints are used for query validation and limiting the scope of queries.
