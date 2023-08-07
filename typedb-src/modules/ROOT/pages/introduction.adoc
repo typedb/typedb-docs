@@ -16,8 +16,8 @@ strongly typed DBMS with xref:development/connect.adoc#_acid_guarantees[ACID] gu
 * uses an xref:fundamentals/types.adoc#_type[Entity-Relationship model], extended with
 xref:fundamentals/types.adoc#_attribute_types[Attributes] as first-class citizens
 // #todo add link to the types article?
-* can use rule-based embedded logic to xref:fundamentals/inference.adoc[infer] new data from existing data,
-  that matches specified patterns
+* can use rule-based embedded logic to xref:fundamentals/inference.adoc[infer] new data from existing data
+  that match specified patterns
 
 ////
 Comparison of TypeDB with most common types of databases:
@@ -32,14 +32,14 @@ Comparison of TypeDB with most common types of databases:
 The core of any TypeDB database is the xref:development/schema.adoc#_schema[schema], which is a conceptual (logical)
 data representation rather than a physical one.
 
-Using TypeQL, we define a schema to model business domain true to nature.
+Using TypeQL, we define a schema to model business domains true to nature.
 
-All user-defined types are either subtypes of other user-defined types or directly subtype one of the following
+All user-defined types either subtype other user-defined types or directly subtype one of the following
 built-in types:
 
 * Entities -- self-sufficient objects
 * Relations -- n-ary relationships
-* Attributes -- a property with a value which can be numeric, text string, boolean or date&time
+* Attributes -- a property with a value that can be numeric, text string, boolean or date&time
 
 ////
 [NOTE]
@@ -50,9 +50,9 @@ in which attributes are also treated as first-class citizens.
 ====
 ////
 
-Accurate type hierarchy can add context and constraints to data using strong typing with inheritance.
+An accurate type hierarchy can add context and constraints to data using strong typing with inheritance.
 
-Finally, rules add logical deduction to a schema. When Get queries are run with the inference transaction
+Finally, rules add a logical deduction to a schema. When Get queries are run with the inference transaction
 option enabled, TypeDB deduces new attribute ownerships and relations based on these rules.
 
 // ** Context helps us to correctly model, classify and query our data the most logical way.
@@ -60,7 +60,7 @@ option enabled, TypeDB deduces new attribute ownerships and relations based on t
 
 == TypeDB classification
 
-TypeDB is a new kind of database management system, combining strongly-typed type system, fully declarative
+TypeDB is a new kind of database management system, combining a strongly-typed type system, fully declarative
 query language, and inference.
 
 We prefer to classify TypeDB as a strongly-typed DBMS.
@@ -77,35 +77,34 @@ Some examples of what TypeDB is *not*:
 == TypeDB description
 
 // very high level short description with hypothesis at the end
-TypeDB is a strongly-typed database which encourages us to model data naturally, and to create a logical and accurate
+TypeDB is a strongly-typed database that encourages us to model data naturally and to create a logical and accurate
 reflection of our business domain. Further, its fully declarative query language, TypeQL, combined with its powerful
 reasoning engine, makes it easy to find data by simply describing what you’re looking for.
 
 // schema modelling and top features
-TypeDB allows us to model data directly on logical level with object-oriented principles. Composed of entity,
+TypeDB allows us to model data directly on the logical level with object-oriented principles. Composed of entity,
 relationship, and attribute types, as well as type hierarchies, roles, and rules, TypeDB allows you to think
 higher-level as opposed to join-tables, columns, documents, vertices, edges, and properties.
 
 * Inheritance and type inference allow us to define a hierarchy of subtypes to reduce complexity and add context to
   the data.
-* Type constraints of relation roles and attribute ownerships further enhance our schema, provide not only type
-  validation to prevent errors, but also a meaning for a data context and an optimization for query execution.
-* Apply object-oriented principles such as abstraction, inheritance and polymorphism in your data model, just like
-  you do in your application model.
+* Type constraints of relation roles and attribute ownerships further enhance our schema and provide not only type
+  validation to prevent errors but also a meaning for a data context and an optimization for query execution.
+* Apply object-oriented principles such as abstraction, inheritance, and polymorphism in a data model, just like
+  in our application model.
 * Create unary or n-ary relations (i.e., hyper-relations) to communicate the full context of relationships.
-* Finally, rule inference provides not only query simplification (like views in SQL), but also an embedded logic
-  for our schema.
+* Finally, rule inference provides query simplification (like views in SQL) and an embedded logic for our schema.
 
-These abstractions provide a higher-level framework to build an intuitive and understandable data model in the form of
+These features provide a higher-level framework to build an intuitive and understandable data model in the form of
 a database schema.
 
 // queries and patterns
-TypeQL brings together xref:typedb::fundamentals/patterns.adoc#_patterns_overview[pattern] matching and composability,
+TypeQL combines xref:typedb::fundamentals/patterns.adoc#_patterns_overview[pattern] matching and composability,
 so writing queries is as easy as describing the data we’re looking for. We never have to tell the database what to do.
-Its intuitive syntax and use of variables grants a near limitless degree of expressiveness to TypeQL.
-By simply adding or removing statements to a query pattern, we can narrow or expand the scope of its results.
+Its intuitive syntax and use of variables grant a near-limitless degree of expressiveness to TypeQL.
+We can narrow or expand the scope of its results by simply adding statements to a query pattern.
 We don't have to think about query optimization, limitations of data storage implementation, etc.
-Queries written in TypeQL are easily readable, sound natural and familiar to subject-matter experts.
+Queries written in TypeQL are easily readable and sound natural to subject-matter experts.
 
 // inference
 Finally, we can use the reasoning engine to infer new data based on the patterns found in the database. To do
@@ -116,7 +115,7 @@ logic at the database level.
 // Conclusion
 By combining TypeQL and TypeDB, we can close the gap between the language of our domain and the database.
 TypeDB is optimized for easier data modeling and query design.
-Concentrated on your applications logic and leave the data storage implementation details for TypeDB!
+Concentrate on the application logic and leave the data storage implementation details for TypeDB!
 
 //TypeDB is optimized not for reading or writing vast amounts of data but for easier data modeling and query design.
 
@@ -153,9 +152,9 @@ constraints for roles to enforce this context.
 2. Make your first steps by connecting to TypeDB server with TypeDB Studio using the
    xref:quickstart.adoc[Quickstart guide].
 +
-It goes through the step-by-step process of creating a new database, applying schema, loading sample data
+It goes through the step-by-step process of creating a new database, applying schema, loading sample data,
    and querying. The resulting environment is suitable for executing most examples in our documentation.
-   On top of that it familiarizes users with TypeDB Studio, an IDE specifically designed for TypeDB
+   On top of that, it familiarizes users with TypeDB Studio, an IDE specifically designed for TypeDB
    database management and development.
 
 3. Fundamentals -- essential knowledge of how TypeDB works:
