@@ -37,7 +37,7 @@ docker run --name try-typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/
 ----
 
 The `--platform linux/amd64` parameter is required to run the TypeDB container on macOS with the `ARM64`/`AArch64`
-architecture. The support for the `ARM64` architecture on Linux will be available in one of the future versions of
+architecture. Support for `linux/arm64` will be released in a future version of
 TypeDB.
 
 The following variables should be noted and can be modified:
