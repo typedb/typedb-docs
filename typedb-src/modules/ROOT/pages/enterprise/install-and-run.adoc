@@ -32,8 +32,8 @@ location on your machine that is easily accessible via terminal.
 If TypeDB Cluster doesn't have a distribution you need, please open an issue
 https://github.com/vaticle/typedb/issues[on GitHub].
 
-Having installed or downloaded TypeDB Cluster, we can now start the
-_Cluster_ and interact with xref:clients::console.adoc[].
+Having downloaded TypeDB, we can now <<_starting_and_stopping_a_multi_node_cluster,start>> the Cluster and
+interact with xref:clients::console.adoc[].
 --
 
 macOS::
@@ -42,8 +42,10 @@ macOS::
 *Manual Download*
 
 Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest release], unzip it in a
-location on your machine that is easily accessible via a terminal. Having installed or downloaded TypeDB, we can now
-start the _Server_ and interact with xref:clients::console.adoc[].
+location on your machine that is easily accessible via a terminal.
+
+Having downloaded TypeDB, we can now <<_starting_and_stopping_a_multi_node_cluster,start>> the Cluster and
+interact with xref:clients::console.adoc[].
 --
 
 Windows::
@@ -53,7 +55,9 @@ Windows::
 
 Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest release], unzip it in a
 location on your machine that is easily accessible via a command prompt.
-Having downloaded TypeDB, we can now start the _Server_ and interact with xref:clients::console.adoc[].
+
+Having downloaded TypeDB, we can now <<_starting_and_stopping_a_multi_node_cluster,start>> the Cluster and
+interact with xref:clients::console.adoc[].
 --
 
 Docker::
@@ -110,6 +114,7 @@ Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder
 
 To stop the TypeDB Cluster, press Ctrl+C in the terminal session you are running TypeDB Cluster from.
 
+[#_starting_and_stopping_a_multi_node_cluster]
 == Starting and Stopping a multi-node Cluster
 
 === Starting
@@ -126,7 +131,7 @@ Each node binds to three ports: a client port which TypeDB client drivers connec
 For this tutorial, it's assumed that all three nodes are on the same virtual network and have the relevant ports open
 and are uninhibited by any firewall. The nodes have IP addresses `10.0.0.1`, `10.0.0.2` and `10.0.0.3` respectively.
 
-[Note]
+[NOTE]
 ====
 If you're using a single machine to host all nodes, you can prefix the port with the node number; this way the
 ports `1729`, `1730`, `1731` would turn into `11729`, `11730`, `11731`; `21729`, `21730`, `21731` and so on.
