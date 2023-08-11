@@ -3,7 +3,6 @@
 :longTailKeywords: typedb cluster on linux, typedb cluster on mac, typedb cluster on windows, start typedb cluster, run typedb cluster
 :pageTitle: Install and Run TypeDB Cluster
 :summary: Install and run the TypeDB Cluster on Linux, Mac or Windows.
-:toc: false
 
 == Obtaining Commercial License
 
@@ -103,7 +102,8 @@ docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux/typedb console'
 
 === Starting
 
-If you have installed TypeDB using a package manager, to start the TypeDB Cluster, open a terminal and run `typedb cluster`.
+If you have installed TypeDB using a package manager, to start the TypeDB Cluster, open a terminal and run
+`typedb cluster`.
 
 Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb cluster`.
 
@@ -118,7 +118,7 @@ To stop the TypeDB Cluster, press Ctrl+C in the terminal session you are running
 While it's possible to run TypeDB Cluster in a single-node mode, a truly highly-available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster. At any given point in time,
 one of those servers acts as a leader and the others are followers. Increasing the number of nodes increases the
-Cluster's tolerance to failure: to tolerate N nodes failing, Cluster needs to consist of 2*N+1 nodes.
+Cluster's tolerance to failure: to tolerate N nodes failing, Cluster needs to consist of `2N + 1` nodes.
 This section describes how you can set up a 3-node cluster (in this case, one node can fail and no data is lost).
 
 Each node binds to three ports: a client port which TypeDB client drivers connect to (`1729`), and two server ports
@@ -216,7 +216,8 @@ private network using ports `1730` and `1731`.
 
 === Stopping
 
-Stopping TypeDB Cluster is done the same way as on a single node: pressing Ctrl+C in the terminal that was used to start it.
+Stopping TypeDB Cluster is done the same way as on a single node: pressing Ctrl+C in the terminal that was used to
+start it.
 All nodes must be shut down independently in the same way.
 
 == Summary

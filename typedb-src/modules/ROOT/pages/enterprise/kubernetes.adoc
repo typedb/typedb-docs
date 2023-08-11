@@ -32,7 +32,8 @@ The certificates need to be generated and then added to Kubernetes Secrets.
 
 An external certificate can either be obtained from trusted third party providers such as
 https://www.cloudflare.com/[CloudFlare] or https://letsencrypt.org/[letsencrypt.org].
-Alternatively, it is also possible to generate it manually with https://github.com/FiloSottile/mkcert/releases[`mkcert`]:
+Alternatively, it is also possible to generate it manually with
+https://github.com/FiloSottile/mkcert/releases[`mkcert`]:
 
 [,bash]
 ----
@@ -199,8 +200,9 @@ This deployment mode is primarily inteded for development purpose. Certain adjus
 deployment modes:
 
 * Minikube only has a single node, so `singlePodPerNode` needs to be set to `false`
-* Minikube's node only has as much CPUs as the local machine: `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-Therefore, for deploying a 3-node TypeDB Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
+* Minikube's node only has as much CPUs as the local machine:
+  `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
+   Therefore, for deploying a 3-node TypeDB Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
 as total storage required is `storage.size` multiplied by `replicas`. In our example, total storage requirement is 30Gi.
 
@@ -257,7 +259,7 @@ Configurable settings for Helm package include:
 
 These are the common error scenarios and how to troubleshoot them:
 
-==== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state:
+==== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
 
 This means the secret to pull the image from Docker Hub has not been created.
 Make sure you've followed <<initial-setup,Initial Setup>> instructions and verify that the pull secret is present by
