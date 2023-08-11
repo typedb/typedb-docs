@@ -9,6 +9,7 @@
 
 This guide describes how to deploy a 3-node TypeDB Cluster onto Kubernetes using https://helm.sh/[Helm] package manager.
 
+[#_initial_setup]
 === Initial Setup
 
 First, create a secret to access TypeDB Cluster image on Docker Hub:
@@ -262,7 +263,7 @@ These are the common error scenarios and how to troubleshoot them:
 ==== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
 
 This means the secret to pull the image from Docker Hub has not been created.
-Make sure you've followed <<initial-setup,Initial Setup>> instructions and verify that the pull secret is present by
+Make sure you've followed <<_initial_setup,Initial Setup>> instructions and verify that the pull secret is present by
 executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
 
 [,bash]
