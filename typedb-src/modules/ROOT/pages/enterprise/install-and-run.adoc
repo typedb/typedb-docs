@@ -43,7 +43,7 @@ macOS::
 
 Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest release], unzip it in a
 location on your machine that is easily accessible via a terminal. Having installed or downloaded TypeDB, we can now
-start the _Server_ and interact with the xref:clients::console.adoc[].
+start the _Server_ and interact with xref:clients::console.adoc[].
 --
 
 Windows::
@@ -53,7 +53,7 @@ Windows::
 
 Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest release], unzip it in a
 location on your machine that is easily accessible via a command prompt.
-Having downloaded TypeDB, we can now start the _Server_ and interact with the xref:clients::console.adoc[].
+Having downloaded TypeDB, we can now start the _Server_ and interact with xref:clients::console.adoc[].
 --
 
 Docker::
@@ -88,7 +88,7 @@ docker run --name typedb -d -v $(pwd)/db/:/opt/typedb-cluster-all-linux/server/d
 ----
 
 Having started the instance, the TypeDB Cluster is expected to be running on port `1729` on your machine.
-To interact with the [TypeDB Console](../02-console/01-console.md), run:
+To interact with xref:clients::console.adoc[], run:
 
 [,bash]
 ----
@@ -96,7 +96,6 @@ docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux/typedb console'
 ----
 --
 ====
-
 
 == Starting and Stopping a single node Cluster
 
