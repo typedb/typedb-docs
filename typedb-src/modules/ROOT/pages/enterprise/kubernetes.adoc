@@ -13,6 +13,7 @@ This guide describes how to deploy a 3-node TypeDB Cluster onto Kubernetes using
 
 First, create a secret to access TypeDB Cluster image on Docker Hub:
 
+[,bash]
 ----
 kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
 --docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
@@ -20,6 +21,7 @@ kubectl create secret docker-registry private-docker-hub --docker-server=https:/
 
 Next, add the Vaticle Helm repo:
 
+[,bash]
 ----
 helm repo add vaticle https://repo.vaticle.com/repository/helm/
 ----
@@ -80,6 +82,7 @@ This deployment mode is preferred if your application is located within the same
 In order to select this mode, ensure that the `exposed` flag is set to `false`.
 
 *Deploying without in-flight encryption*
+
 [,bash]
 ----
 helm install typedb-cluster vaticle/typedb-cluster --set "exposed=false,encrypted=false"
