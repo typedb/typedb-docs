@@ -47,8 +47,15 @@ This will list out how to use specific command line arguments as well as options
 [#_configuration_file]
 == Configuration file
 
-TypeDB accepts a configuration (config) file with a specific YAML format. See the
+TypeDB accepts a configuration (or config) file with a specific YAML format. See the
 <<_sample_configuration,sample configuration>> below.
+
+This file usually has four top level sections:
+
+* <<_server,`server`>>
+* <<_storage_configuration,`storage`>>
+* <<_log,`log`>>
+* `vaticle-factory`
 
 [IMPORTANT]
 ====
@@ -93,24 +100,26 @@ storage:
     index: 500mb
 log:
   output:
-    stdout: # note: this is a user-defined name
+    stdout:   # note: this is a user-defined name
       type: stdout
-    file: # note: this is a user-defined name
+    file:     # note: this is a user-defined name
       type: file
-      directory: server/logs
-      file-size-cap: 50mb
-      archives-size-cap: 1gb
+      base-dir: server/logs        # previous called 'directory'
+      file-size-limit: 50mb        # previous called 'file-size-cap'
+      archive-grouping: month
+      archive-age-limit: 1 year
+      archives-size-limit: 1gb     # previous called 'archives-size-cap'
   logger:
-    default: # note: the default logger must be defined
+    default:  # note: the default logger must be defined
       level: warn
       output: [ stdout, file ]
-    typedb: # note: this is a user-defined name
+    typedb:   # note: this is a user-defined name
       filter: com.vaticle.typedb.core
       level: info
       output: [ stdout, file ]
     storage:
       filter: com.vaticle.typedb.core.database
-      level: info # on 'debug' the server will periodically log database storage properties
+      level: info  # on 'debug' the server will periodically log database storage properties
       output: [ stdout, file ]
   debugger:
     reasoner: # note: this is a user-defined name
@@ -121,18 +130,19 @@ vaticle-factory:
   enable: false
 ----
 
-=== Server configuration
+[#_server]
+=== Server
 
-The server section of the configuration file contains network and RPC options.
+The `server` section of the configuration file contains network and RPC options.
 
 * `address`: the address to listen for TypeDB Clients connections via `gRPC`.
 +
 Use the `0.0.0.0` IP address to listen to all connections and `localhost` for connections from the local machine.
 
 [#_storage_configuration]
-=== Storage configuration
+=== Storage
 
-The storage section of the configuration file contains the storage layer options of TypeDB.
+The `storage` section of the configuration file contains the storage layer options.
 
 * `data`: the location to write user data to. Defaults to within the server distribution under server/data.
 * `database-cache`: *per-database* configuration for storage-level caching
@@ -151,23 +161,86 @@ on-disk data in a database, allocate at least *2 GB* of index cache. Allocating 
 
 Additionally, we recommend the sum of data and index caches equal to about *20%* of the total memory of the server.
 
-=== Logging configuration
+[#_log]
+=== Log
 
-The log section of the configuration file contains the logging behavior options of TypeDB.
+The `log` section of the configuration file contains the logging options.
 
 There are three subsections:
 
-* `output`: Define destinations to write logs to.
-** User-defined output channel name
-*** `type` -- it's either `file` or `stdout`.
-*** `directory` -- filepath, relative to the server binary. Only available for `type: file`.
-*** `file-size-cap` -- maximum size of a log file. If the log file reaches the limit, a new file in the same directory
-    will be started. This is similar to the `maxsize` config option in logrotate. Only available for `type: file`.
-*** `archives-size-cap` -- maximum size of all log files. If the total size of all log files in the directory reaches
-    the limit, the oldest one gets removed. Only available for `type: file`.
-* `logger`: Set up logging for modules in TypeDB, along with a log level and output targets (referencing outputs by
-  name defined under the outputs section).
-* `debugger`: Set up TypeDB-specific debuggers. Right now, the only defined type is `type: reasoner`.
+* <<_output,`output`>>
+* <<_logger,`logger`>>
+* <<_debugger,`debugger`>>
+
+[#_output]
+==== Output
+
+`output` subsection defines destinations to write logs to.
+
+* User-defined output channel name
+
+** `type` -- it's either `file` or `stdout`.
+** `base-dir` -- filepath, relative to the server binary. Only available for `type: file`.
+** `file-size-limit` -- maximum size of a log file. If the log file reaches the limit, a new file in the same directory
+   will be started. This is similar to the `maxsize` config option in logrotate. Only available for `type: file`.
+** `archive-grouping` -- configures the rollover and naming policy of archives produced by the logger. +
+   Possible value variants are as follows:
+
+*** `minute` or `minutes`
+//yyyyMMdd-HHmm - internal filename format of a log archive
+*** `hour` or `hours`
+*** `day` or `days`
+*** `week` or `weeks`
+//yyyy-ww
+*** `month` or `months`
+*** `year` or `years`
+
+// Filename template:
+// typedb + fileDateFormat(outputType.archiveGrouping()) + `.0.` log.gz
+// For example, `typedb_202306.0.log.gz`.
+
+** `archive-age-limit` -- configures how long archive files are kept. +
+   Old archives are only deleted when new ones are produced. +
+   The value should be a positive integer, followed by one of the following values for units:
+
+*** `minute` or `minutes`
+*** `hour` or `hours`
+*** `day` or `days`
+*** `week` or `weeks`
+*** `month` or `months`
+*** `year` or `years`
+
+** `archives-size-limit` -- maximum size of all log files. If the total size of all log files in the directory reaches
+   the limit, the oldest one gets removed. Only available for `type: file`. +
+   The value should be a positive integer, followed by one of the following values for units:
+
+*** `kb`
+*** `mb`
+*** `gb`
+
+[#_logger]
+==== Logger
+
+`logger` subsection configures logging for modules in TypeDB, along with a log level and output targets
+(referencing outputs by name defined under the outputs section).
+
+* `level` -- verbosity level. +
+  One of the following values can be used:
+
+** `warn`
+** `info`
+** `debug`
+//#todo Add documentation on verbosity levels differences
+
+* `output` -- destination of the log output. Input format is a list of output channels, each of which must be defined
+  in the <<_output,output>> subsection.
+
+[#_debugger]
+==== Debugger
+
+`debugger` subsection configures TypeDB-specific debuggers.
+
+Right now, the only defined type is `type: reasoner`.
 
 [#_configuration_file_options_via_command_line_arguments]
 == Configuration file options via command line arguments
