@@ -104,16 +104,16 @@ log:
       type: stdout
     file:     # note: this is a user-defined name
       type: file
-      base-dir: server/logs        # renamed from 'directory'
-      file-size-limit: 50mb        # renamed from 'file-size-cap'
+      base-dir: server/logs        # previous called 'directory'
+      file-size-limit: 50mb        # previous called 'file-size-cap'
       archive-grouping: month
       archive-age-limit: 1 year
-      archives-size-limit: 1gb     # renamed from 'archives-size-cap'
+      archives-size-limit: 1gb     # previous called 'archives-size-cap'
   logger:
     default:  # note: the default logger must be defined
       level: warn
       output: [ stdout, file ]
-    typedb:  # note: this is a user-defined name
+    typedb:   # note: this is a user-defined name
       filter: com.vaticle.typedb.core
       level: info
       output: [ stdout, file ]
@@ -211,7 +211,12 @@ There are three subsections:
 *** `year` or `years`
 
 ** `archives-size-limit` -- maximum size of all log files. If the total size of all log files in the directory reaches
-   the limit, the oldest one gets removed. Only available for `type: file`.
+   the limit, the oldest one gets removed. Only available for `type: file`. +
+   The value should be a positive integer, followed by one of the following values for units:
+
+*** `kb`
+*** `mb`
+*** `gb`
 
 [#_logger]
 ==== Logger
