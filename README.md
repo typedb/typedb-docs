@@ -84,12 +84,12 @@ Use American.
 
 **Headings**
 - There are multiple levels of headings used across all markdown files:
-  - h1 (`#`) — page title. Only one per page at the very beginning.
-  - h2 (`##`)
-  - h3 (`###`)
-  - h4 (`####`)
+  - h1 (`=`) — page title. Only one per page at the very beginning.
+  - h2 (`==`)
+  - h3 (`===`)
+  - h4 (`====`)
 - Use sentence case.
-- `####` always comes after a `###` which always comes after a `##`.
+- `====` always comes after a `===` which always comes after a `==`.
 
 **Verbs and Pronouns**
 
