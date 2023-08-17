@@ -135,13 +135,47 @@ neighbors of a specific concept instance to obtain more insights.
 When retrieving a large number of concepts it is more efficient to do that with a TypeQL query.
 ====
 
-=== Troubleshooting
+== Common pitfalls & troubleshooting
+//Common pitfalls, tricky examples, and their explanations
 
 The following are some of the most common mistakes and misunderstandings that could cause errors.
 
-==== Get clause alters results
+=== The number of results for a query
 
-A xref:typedb::development/read.adoc#_get[get] clause can alter the set of returned results. For example:
+A `match` clause of a query does not only set context for execution of the query, but also defines the number of
+retrieved solutions for a xref:typeql::queries.adoc#_get_query[Get query] and the number of deletes and/or inserts for
+xref:typeql::queries.adoc#_delete_query[Delete]/xref:typeql::queries.adoc#_insert_query[Insert]/xref:typeql::queries.adoc#_update_query[Update]
+queries.
+
+[NOTE]
+====
+The only exception is an Insert query, as it can be without a `match` clause. In that case, the `insert` clause of such
+an Insert query will be executed exactly once. In any case, insert query returns inserted concepts as a response.
+====
+
+It’s important to understand that the result of a `match` clause with any pattern is a set of solutions found.
+
+Every solution contains an answer for every variable (a concept for a concept variable or a value for a value variable)
+in the pattern of the `match` clause.
+
+The length of the set is equal to the number of solutions found.Hence, it can be the following:
+
+- Zero -- No solutions found (nothing matched the pattern).
+- One -- Exactly one solution found and returned in a set.
+- Many -- Multiple solutions found, including all possible permutations.All of them returned in a set.
+
+If we add a `get` clause in a Get query, it filters all the answers in the set to only include the variables
+listed in the `get` clause. But it can also alter the number of results (the length of the set).
+See the <<_get_clause_alters_the_number_of_results>> section below.
+
+[#_get_clause_alters_the_number_of_results]
+=== Get clause alters the number of results
+
+Using an optional xref:typedb::development/read.adoc#_get[get] clause can alter the set of returned results.
+
+This is due to the fact that we return a set of solutions. Naturally, these solutions are deduplicated.
+
+For example:
 
 [,typeql]
 ----
@@ -150,7 +184,7 @@ match $p isa person, has full-name $n; get $n;
 
 The above query returns full-names (`$n`) owned by `$p` of the `person` type.
 
-Are we to expect to have a full name for every person instance in the results? No.
+Are we to expect to have a full name for every person instance in the results? *No*.
 
 . A person can have more than one attribute of type `full-name`. Every instance of attribute will get to the results.
 . A person can have no attributes of type `full-name`. In that case the person will not be represented by variable
@@ -172,5 +206,445 @@ repeated full names (represented in a database by the very same single attribute
 their owner. If a person has two `full-name` attributes, then the resulting response will contain two pairs with the
 same `person` object but different `attributes`.
 
-We can further improve the output by xref:typedb:ROOT:basics/queries.adoc#_modifiers[grouping] the results by `person`
-and/or applying xref:typedb:ROOT:basics/queries.adoc#_modifiers[aggregation] to count the number of results.
+We can further improve the output by xref:typedb:ROOT:basics/queries.adoc#_modifiers[grouping] the results by
+`person` and/or applying xref:typedb:ROOT:basics/queries.adoc#_modifiers[aggregation] to count the number of
+results.
+
+=== The uniqueness of attributes
+
+TypeDB considers attributes to be first-class features and stores only unique values.
+
+Any instance of any attribute type is unique. But ownership of that instance of an attribute type can be assigned any
+number of times -- from zero to many. If multiple instances of some different types all have ownership over an attribute
+with the same type and value, then they all have ownership of the same single instance.
+
+Any attempt to insert a new instance of an attribute type with an existing value will not create a new instance.
+If we try to insert ownership of an attribute type instance that was not inserted before, we will achieve that by
+implicitly creating the attribute instance we are assigning ownership of.
+
+This contrasts with an SQL model where "attributes" are columns in a table, and values can be repeated in each row.
+
+When combined with how pattern matching works -- it can create interesting, but surprising results.
+
+==== Example 1
+
+[,typeql]
+----
+    match
+    $p isa person, has name $n;
+    get $n;
+    count;
+----
+
+In the above example, we’re matching every pair of `$p` and `$n` where `$p has $n`, and counting the number of results.
+
+The `get` modifier filters the results so that every result contains only `$n`.
+And that can drastically change the response.
+
+In this case, the `get` modifier means that names shared between more than one person will only be counted once,
+but only names owned by at least one person will be included.
+
+==== Example 2
+
+[,typeql]
+----
+    match
+    $p isa person, has name $n;
+    get $p;
+    count;
+----
+
+The same query as before, except for the `get` filters results to provide only `$p` – instances of the `person` entity
+type.
+
+This means that people with more than one name will only be counted once.
+However, the condition `$p has $n` must still hold true for every result, so only people with at least one name will
+be included in the count.
+
+==== Example 3
+
+[,typeql]
+----
+    match
+    $p isa person, has name $n;
+    get $p, $n;
+    count;
+----
+
+In the final example, we’re still matching every pair of `$p` and `$n` where `$p has $n`.
+But we are getting (filtering the results to get) both `$p` and `$n` for every result and counting the number of results.
+
+We count every person’s name, including those that are shared by multiple individuals.
+If a person does not have a name listed in the database, they will not be included in the count.
+
+=== Attribute ownership
+
+If a type can own an attribute, an instance of that type doesn’t own any attributes unless such information was
+inserted explicitly.
+
+Inserting ownership of an attribute must include its type and value because an attribute instance can be addressed
+only by its type and value.
+
+==== Example 1
+
+Consider two queries:
+
+[,typeql]
+----
+    match
+    $p isa person;
+    get $p;
+
+    match
+    $p isa person, has name $n;
+    get $p;
+----
+
+The first one returns all instances of the `person` type.
+
+The second one returns all instances of the `person` type, except those that do not own any instances of the `name` type.
+
+We can use the following query to get those instances, excluded from the second query:
+
+[,typeql]
+----
+    match
+    $p isa person;
+    not { $p has name $n; };
+    get $p;
+----
+
+==== Example 2
+
+[,typeql]
+----
+    match
+    $p isa person, has name "Bob", has email $e;
+    get $e;
+----
+
+The above query finds a person that owns an attribute of type `name` and value `Bob` and owns an attribute of type
+`email`. It filters theresults only to contain `$e` – instances of the `email` type.
+
+What if there are multiple instances of the `person` type matched with the pattern? Or what if there is only one
+instance of `person`, but it has multiple instances of the `email` type? Both those cases will lead
+to a response with multiple matched results. And since we are filtering by only the `$e` variable -- there will be
+no way to distinguish the two cases without additional queries or changing the initial query.
+
+One of the ways to fix the initial query would be to do it like this:
+
+[,typeql]
+----
+    match
+    $p isa person, has name "Bob", has email $e;
+    get $p, $e; group $p;
+----
+
+The query above not only returns pairs of instances for `$p` and `$e` in the pattern but also groups the results by
+the `$p` for easier navigation.
+
+==== Example 3
+
+Consider two queries:
+
+[,typeql]
+----
+    match
+    $p isa person, has name "";
+    get $p;
+
+    match
+    $p isa person;
+    not { $p has name $n; };
+    get $p;
+----
+
+Having an ownership of an attribute with an empty string value is not the same as not having an ownership of any
+instance of the attribute type. Despite superficial appearances, these match statements are looking for vastly
+different entities within the database.
+
+In the first query, we’re retrieving every person `$p` that has a name equal to an empty string.
+This will not retrieve people without names, as we’ve stated the constraint `$p has name` in our query, and in fact,
+it will only retrieve those people who have specifically been given ownership of a name attribute with an empty string
+as its value, a very unlikely case.
+
+Meanwhile, in the second query, we are retrieving every person `$p` where it is not the case that the constraint
+`$p has name` applies. This would return every person that does not have any names.
+
+=== Attribute cardinality
+
+Attributes can be used in a way that might be unexpected if you view the world as SQL-style tables.
+By default, there is no limit to the number of instances of a particular attribute type that an instance can own.
+
+==== Example 1
+
+An instance of the `person` type could own any number of `name` attribute type instances, even though logically,
+a person can only have one at a time. Inserting a second name for the person would result in the person having two
+names rather than the first name being replaced:
+
+[,typeql]
+----
+    match
+    $p isa person, has name "Kevin Morrison";
+    insert
+    $p has name "Gavin Harrison";
+----
+
+If the goal is to replace an existing attribute with a new one, the existing ones must first be deleted:
+
+[,typeql]
+----
+    match
+    $p isa person, has name $n;
+    $n = "Kevin Morrison";
+    delete
+    $p has name $n;
+    insert
+    $p has name "Gavin Harrison";
+----
+
+=== Unlinking attributes
+
+Once created, attributes continue to exist in the database even if they have no owners. When deleting an instance of
+any type, it’s also important not to blindly delete the attributes it owns, as those attributes might also be owned
+by other entities. The easiest approach is to allow attributes to become orphaned (not owned by anyone) and then
+regularly clean them up using the following query:
+
+[,typeql]
+----
+    match
+    $a isa attribute;
+    not { $t owns $a };
+    delete
+    $a isa attribute;
+----
+
+The occurrence of `attribute` in this query can also be swapped for another attribute type name so as only to clean up
+orphaned attributes of that type.
+
+=== Inserting relations is not idempotent
+
+Inserting multiple relations of the same type, with the same roleplayers playing the same roles, will lead to
+duplicate relations.
+
+==== Example 1
+
+Consider the `company` and the `person` type instances that we insert an `employment` relation between:
+
+[,typeql]
+----
+    match
+    $p isa person, has name "Kevin Morrison";
+    $c isa company, has name "Vaticle";
+    insert
+    (employer: $c, employee: $p) isa employment;
+----
+
+In this query, we do not check that there is not already an employment relation between `$p` and `$c`, so if one
+already exists then a new one will be inserted anyway.
+
+==== Example 2
+
+[,typeql]
+----
+    match
+    $p isa person, has name "Kevin Morrison";
+    $c isa company, has name "Vaticle";
+    $e(employer: $c, employee: $p) isa employment;
+    get $e;
+----
+
+This is the query to check whether there is an `employment` relation between the instances of the `company` and
+`person` types.
+
+==== Example 3
+
+It can be modified to be used for inserting the relation only if it doesn’t exist yet:
+
+[,typeql]
+----
+    match
+    $p isa person, has name "Kevin Morrison";
+    $c isa company, has name "Vaticle";
+    not { (employer: $c, employee: $p) isa employment; };
+    insert
+    (employer: $c, employee: $p) isa employment;
+----
+
+==== Example 4
+
+We can use the same pattern to update an existing relation with new data:
+
+[,typeql]
+----
+    match
+    $p isa person, has name "Kevin Morrison";
+    $c isa company, has name "Vaticle";
+    $e(employer: $c, employee: $p) isa employment;
+    insert
+    $e has end-date 2023-11-21T18:00:00;
+----
+
+//=== Rules & Transitivity
+
+=== Chaining transitive rules more efficiently
+
+When writing a rule that implements transitivity, if the rule is written naively, then sometimes it can lead to
+significant performance overhead. TypeDB’s rule inference is still being actively developed, so the rule-inference
+reasoner optimization algorithms should improve drastically in upcoming releases. In the meantime, rule structure
+can be optimized to improve performance in these cases.
+
+==== Example 1
+
+Consider the following schema and data:
+
+[,typeql]
+----
+    define
+    user sub entity,
+        owns name,
+        plays group-membership:member;
+    user-group sub entity,
+        owns name,
+        plays group-membership:group,
+        plays group-membership:member;
+    group-membership sub relation,
+        relates group,
+        relates member;
+    name sub attribute,
+        value string;
+
+    insert
+    $u isa user, has name "Kevin Morrison";
+    $a isa user-group, has name "Group A";
+    $b isa user-group, has name "Group B";
+    $c isa user-group, has name "Group C";
+    $d isa user-group, has name "Group D";
+    (group: $a, member: $u) isa group-membership;
+    (group: $b, member: $a) isa group-membership;
+    (group: $c, member: $b) isa group-membership;
+    (group: $d, member: $c) isa group-membership;
+----
+
+Add a rule that makes group memberships transitive:
+
+[,typeql]
+----
+    define
+    rule transitive-group-membership:
+        when {
+            (group: $x, member: $y) isa group-membership;
+            (group: $y, member: $z) isa group-membership;
+        } then {
+            (group: $x, member: $z) isa group-membership;
+        };
+----
+
+And then we query for Kevin’s group memberships:
+
+[,typeql]
+----
+    match
+    $u isa user, has name "Kevin Morrison";
+    $g isa user-group, has name $n;
+    (group: $g, member: $u) isa group-membership;
+    get $n;
+----
+
+This will return four results: Groups A, B, C, and D.
+
+However, the number of `group membership` instances that must be inferred to prove this is exponential in the worst
+casefootnote:[The
+number of ways a transitive relation inferred by the existence of n
+atomic relations can be inferred is equal to the (n-1)𝗍𝗁
+https://en.wikipedia.org/wiki/Catalan_number[Catalan number] `Cn-1` , so
+the total computational cost to the reasoner to infer the memberships of
+Groups `A`-`D` is proportional to `(C0+C1+C2+C3)=9`. While this does not seem
+particularly significant, the Catalan numbers grow exponentially with `n`,
+so the total cost to infer the memberships of a chain of ten Groups `A`-`J`
+is proportional to `(C0+…+C9)=6918`.].
+
+In order to limit the number of inferences that take place and improve query performance, the rule can be replaced
+with the following subtype and the new rule:
+
+[,typeql]
+----
+    define
+
+    inferred-group-membership sub group-membership;
+
+    rule forwards-transitive-group-membership:
+        when {
+            (group: $x, member: $y) isa! group-membership;
+            (group: $y, member: $z) isa group-membership;
+        } then {
+            (group: $x, member: $z) isa inferred-group-membership;
+        };
+----
+
+Here, the `isa` keyword has been replaced with the type-strict `isa!` keyword on the first line of the new rule’s
+condition, and its conclusion creates a special type of inferred group membership that has now been defined.
+This rule is optimized to perform only a linear number of inferences while still producing identical results when
+querying Kevin’s group memberships as above.
+
+However, while querying for all the members of a group will still produce identical results, those queries will require
+a quadratic number of inferences, as with the query:
+
+[,typeql]
+----
+    match
+    $u isa user, has name $n;
+    $g isa user-group, has name "D";
+    (group: $g, member: $u) isa group-membership;
+    get $n;
+----
+
+In order to optimize the rule for these kinds of queries, we move the `isa!` from the first line of the conditions
+to the second to define a slightly different version of this new rule:
+
+[,typeql]
+----
+    rule backwards-transitive-group-membership:
+        when {
+            (group: $x, member: $y) isa group-membership;
+            (group: $y, member: $z) isa! group-membership;
+        } then {
+            (group: $x, member: $z) isa inferred-group-membership;
+        };
+----
+
+It is currently not possible to produce a rule that is maximally optimized for both kinds of queries, and defining
+both the forwards and backward transitive rules in the schema will result in quadratic performance for both rather
+than linear for either. As a result, while both versions of the new rule will perform better than the naive form if
+the best performance is required, then the version should be chosen depending on the types of queries that will be
+performed most often.
+
+==== Example 2
+
+General versions of the rules:
+
+[,typeql]
+----
+    rule forwards-transitive-relation:
+        when {
+            (role1: $x, role2: $y) isa! my-relation;
+            (role1: $y, role2: $z) isa my-relation;
+        } then {
+            (role1: $x, role2: $z) isa inferred-my-relation;
+        };
+
+    rule backwards-transitive-relation:
+        when {
+            (role1: $x, role2: $y) isa my-relation;
+            (role1: $y, role2: $z) isa! my-relation;
+        } then {
+            (role1: $x, role2: $z) isa inferred-my-relation;
+        };
+----
+
+The forwards transitive form should be used where queries normally search for players of `role1` based on a given
+player of `role2`.
+
+The backwards transitive form should be used where queries normally search for players of `role2` based on a given
+player of `role1`. In either case, queries will produce identical results, and performance is still better for both
+kinds of queries than with the naive form of the rule.
