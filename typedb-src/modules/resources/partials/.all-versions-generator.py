@@ -77,7 +77,7 @@ def get_versions(url):
     return result
 
 
-def generate_table_contents(versions, hash=False):
+def generate_table_contents(versions, hash=False, tags=False):
     result = ""
     for version in versions:
         result += '\n| ' + version["release_notes"] + '[' + version["version"] + ']' + '\n'
@@ -87,7 +87,14 @@ def generate_table_contents(versions, hash=False):
         result += '----' + '\n'
 
         for os in ["win", "lin", "mac"]:
-            result += '| ' + version[os]["url"] + '[Download]' + '\n'
+            result += '|'
+            if tags:
+                result += '\n' + '// tag::' + os + '[]' + '\n'
+            else:
+                result += ' '
+            result += version[os]["url"] + '[Download]' + '\n'
+            if tags:
+                result += '// end::' + os + '[]' + '\n'
             result += '// Check: ' + version[os]["check"] + '\n'
             if hash:
                 result += '| ' + version[os]["hash"] + '[_SHA256_]' + '\n'
@@ -108,6 +115,6 @@ all_downloads = generate_table_contents(versions)
 write_file(filename_all, all_downloads)
 print("\nFile", filename_all, "write complete!")
 
-latest_downloads = generate_table_contents([versions[0]])
+latest_downloads = generate_table_contents([versions[0]], tags=True)
 write_file(filename_latest, latest_downloads)
 print("\nFile", filename_latest, "write complete!")
