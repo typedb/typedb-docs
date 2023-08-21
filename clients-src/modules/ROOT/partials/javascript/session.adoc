@@ -59,7 +59,7 @@ Checks the current session's type (SCHEMA or DATA)
 
 * SessionType
 
-== Check the session's database
+== Get the session's database
 
 === Syntax
 
@@ -70,11 +70,62 @@ session.database();
 
 === Description
 
-Returns a string indicating what database the session is operating over.
+Returns the database of the session.
+
+=== Returns
+
+* Database object
+
+== Retrieve name of the database in the session
+
+=== Syntax
+
+[source,java]
+----
+session.database().name();
+----
+
+=== Description
+
+Returns the current database name as a string.
 
 === Returns
 
 * String
+
+== Retrieve schema of the database in the session
+
+=== Syntax
+
+[source,java]
+----
+session.database().schema();
+----
+
+=== Description
+
+Returns a full schema text as a valid TypeQL define query string.
+
+=== Returns
+
+* String
+
+== Delete a database of the session
+
+=== Syntax
+
+[source,java]
+----
+session.database().delete();
+----
+
+=== Description
+
+Deletes the database of the current session.
+
+=== Returns
+
+* void
 
 == Close a session
 
