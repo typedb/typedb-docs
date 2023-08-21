@@ -82,7 +82,7 @@ Returns the database of the session.
 
 [source,java]
 ----
-session.database().name();
+session.database().name()
 ----
 
 === Description
@@ -99,7 +99,7 @@ Returns the current database name as a string.
 
 [source,java]
 ----
-session.database().schema();
+session.database().schema()
 ----
 
 === Description
@@ -116,7 +116,7 @@ Returns a full schema text as a valid TypeQL define query string.
 
 [source,java]
 ----
-session.database().delete();
+session.database().delete()
 ----
 
 === Description
