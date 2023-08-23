@@ -104,11 +104,11 @@ log:
       type: stdout
     file:     # note: this is a user-defined name
       type: file
-      base-dir: server/logs        # previous called 'directory'
-      file-size-limit: 50mb        # previous called 'file-size-cap'
+      base-dir: server/logs
+      file-size-limit: 50mb
       archive-grouping: month
       archive-age-limit: 1 year
-      archives-size-limit: 1gb     # previous called 'archives-size-cap'
+      archives-size-limit: 1gb
   logger:
     default:  # note: the default logger must be defined
       level: warn
@@ -119,7 +119,7 @@ log:
       output: [ stdout, file ]
     storage:
       filter: com.vaticle.typedb.core.database
-      level: info  # on 'debug' the server will periodically log database storage properties
+      level: info
       output: [ stdout, file ]
   debugger:
     reasoner: # note: this is a user-defined name
@@ -180,8 +180,10 @@ There are three subsections:
 * User-defined output channel name
 
 ** `type` -- it's either `file` or `stdout`.
-** `base-dir` -- filepath, relative to the server binary. Only available for `type: file`.
-** `file-size-limit` -- maximum size of a log file. If the log file reaches the limit, a new file in the same directory
+** `base-dir` (`directory` prior to version `2.21.0`) -- filepath, relative to the server binary.
+   Only available for `type: file`.
+** `file-size-limit` (`file-size-cap` prior to version `2.21.0`)  -- maximum size of a log file.
+   If the log file reaches the limit, a new file in the same directory
    will be started. This is similar to the `maxsize` config option in logrotate. Only available for `type: file`.
 ** `archive-grouping` -- configures the rollover and naming policy of archives produced by the logger. +
    Possible value variants are as follows:
@@ -196,7 +198,7 @@ There are three subsections:
 *** `year` or `years`
 
 // Filename template:
-// typedb + fileDateFormat(outputType.archiveGrouping()) + `.0.` log.gz
+// typedb + fileDateFormat(outputType.archiveGrouping()) + .0.log.gz
 // For example, `typedb_202306.0.log.gz`.
 
 ** `archive-age-limit` -- configures how long archive files are kept. +
@@ -210,7 +212,8 @@ There are three subsections:
 *** `month` or `months`
 *** `year` or `years`
 
-** `archives-size-limit` -- maximum size of all log files. If the total size of all log files in the directory reaches
+** `archives-size-limit` (`archives-size-cap` prior to version `2.21.0`) --
+   maximum size of all log files. If the total size of all log files in the directory reaches
    the limit, the oldest one gets removed. Only available for `type: file`. +
    The value should be a positive integer, followed by one of the following values for units:
 
@@ -224,16 +227,22 @@ There are three subsections:
 `logger` subsection configures logging for modules in TypeDB, along with a log level and output targets
 (referencing outputs by name defined under the outputs section).
 
+* `output` -- destination of the log output. Input format is a list of output channels, each of which must be defined
+  in the <<_output,output>> subsection.
+
 * `level` -- verbosity level. +
   One of the following values can be used:
 
 ** `warn`
 ** `info`
 ** `debug`
-//#todo Add documentation on verbosity levels differences
 
-* `output` -- destination of the log output. Input format is a list of output channels, each of which must be defined
-  in the <<_output,output>> subsection.
+[NOTE]
+====
+On `debug` level the server will periodically log database storage properties.
+====
+
+//#todo Add documentation on verbosity levels differences
 
 [#_debugger]
 ==== Debugger
