@@ -29,10 +29,9 @@ without considering its spouses.
 
 * The best way to start modeling a database schema is to model entity types first and then proceed with connecting
 them with relation types and assign ownership of attribute types to them later.
-* The schema of a DB defines a vocabulary for queries to that particular DB. The closer the schema resembles the real-life
-data, the simpler it is to read queries for people familiar with the terminology. Consider putting extra effort into
-the following aspects of designing a DB schema: accurate type labels/names, an intuitive hierarchy of subtypes, and
-designing relations in the most meaningful way.
+* The schema defines the vocabulary for queries to a particular database. The closer the schema resembles the real-life
+data, the simpler it is for people familiar with the terminology to read and understand the queries. Consider putting extra effort into
+the following aspects of designing a DB schema: an intuitive hierarchy of subtypes, meaningfully designed relations, and accurate type labels and names.
 * Creating a schema is an iterative process. Don't forget that the schema of a database can be updated. Consider
 testing schema on a small dataset first. The sooner the schema will be adapted to all use cases and tested for edge
 cases -- the smaller amount of work will be required to adapt all other code for changes in the schema.
@@ -184,7 +183,7 @@ match $p isa person, has full-name $n; get $n;
 
 The above query returns full-names (`$n`) owned by `$p` of the `person` type.
 
-Can we expect to have a full name for every person instance in the results? *No*.
+Can we expect the response to have the full-names of every person instance? *No*.
 
 . A person can have more than one attribute of type `full-name`. Every instance of attribute will get to the results.
 . A person can have no attributes of type `full-name`. In that case, the person will not be represented by the variable
@@ -223,7 +222,7 @@ Any attempt to insert a new instance of an attribute type with an existing value
 Suppose we insert ownership of an attribute type instance that was not inserted before.
 In that case, we achieve that by implicitly creating the attribute instance we assign ownership.
 
-This contrasts with an SQL model where "attributes" are columns in a table, and values can be repeated in each row.
+This is in contrast to the SQL model where "attributes" are columns in a table, and values can be repeated in each row.
 
 Combined with how pattern matching works -- it can create interesting, but surprising results.
 
