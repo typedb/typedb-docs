@@ -203,7 +203,9 @@ There are three subsections:
 
 ** `archive-age-limit` -- configures how long archive files are kept. +
    Old archives are only deleted when new ones are produced. +
-   The value should be a positive integer, followed by one of the following values for units:
+   If the value is set to *zero*, then the age is unlimited (old logs are not deleted).
+   Otherwise, the value should be a *positive integer*, followed by a whitespace and one of the following values for
+   units:
 
 *** `minute` or `minutes`
 *** `hour` or `hours`
@@ -215,7 +217,9 @@ There are three subsections:
 ** `archives-size-limit` (`archives-size-cap` prior to version `2.21.0`) --
    maximum size of all log files. If the total size of all log files in the directory reaches
    the limit, the oldest one gets removed. Only available for `type: file`. +
-   The value should be a positive integer, followed by one of the following values for units:
+   If the value is set to *zero*, then the total size is unlimited (older logs are not deleted to preserve total size
+   limitation of the log archives).
+   Otherwise, the value should be a *positive integer*, followed by one of the following values for units:
 
 *** `kb`
 *** `mb`
