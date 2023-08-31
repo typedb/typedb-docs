@@ -30,7 +30,9 @@ xref:typedb::development/connect.adoc#_databases[database].
 Find out how to create a database in TypeDB on the
 xref:typedb:ROOT:quickstart.adoc#_create_a_database[Quickstart guide] page.
 
-The name for the database should be `social_network`.
+The name for the database should be `social_network`. +
+The database should have the following schema loaded: xref:attachment$schema.tql[schema.tql]. +
+The database should have the following data inserted: xref:attachment$data.tql[data.tql].
 ====
 
 Instantiate a client and open a session.
