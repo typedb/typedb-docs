@@ -267,12 +267,14 @@ image::root-types-trees.png[]
 == Abstract types
 // tag::abstract_basics[]
 
-All root types are abstract types.
-
 An abstract type can't be instantiated (we can't insert an instance of data of this type). All we can do with an
 abstract type is to subtype it.
 
-The opposite of an abstract type is a concrete type. All types are concrete by default.
+All root types are abstract types.
+
+The opposite of an abstract type is a concrete type.
+
+All user-defined types are concrete types by default.
 // end::abstract_basics[]
 
 [#_thing_type]
@@ -411,21 +413,85 @@ user sub subject;
 The `user-group` role is to be played by a `user-group` entity type whereas the `group-member` role is to be played by
 a `subject` type and all its subtypes entities.
 ====
+// end::relation_type_examples[]
+
+==== Roles
+
+Roles are special internal types used by relations. We can't create an instance of a role in a database.
+But we can set an instance of another type (role player) to play a role in a particular instance of a relation type.
 
 Roles allow a schema to enforce logical constraints on types of role players.
 
-.See the example of a role type constraint
+.See the example of a role player's type constraint
 [%collapsible]
 ====
-For example, a `group-membership` relation cannot associate a `user` type entity with a `file` type entity, because
-`file` type entity can't play any role in a `group-membership` relation.
+For example, given the schema below, a `file` type entity can't play any role in a `group-membership` relation,
+and a `user` type entity can play the `group-member` role of a `group-membership` relation because it inherits it
+from the `subject` type.
+
+[,typeql]
+----
+define
+
+group-membership sub relation,
+    relates user-group,
+    relates group-member;
+
+user-group sub entity
+    plays group-membership:user-group;
+
+subject sub entity,
+    plays group-membership:group-member;
+user sub subject;
+
+file sub entity;
+----
 ====
 
-// end::relation_type_examples[]
+==== Abstract roles
 
-[NOTE]
+[IMPORTANT]
 ====
-Roles can be used in queries as a part of a relation even though roles do not have a direct type definition.
+Since TypeDB v.2.22.0, all roles are concrete, even in <<_abstract_types,abstract>> relations.
+====
+
+.See the example of a concrete role in abstract type
+[%collapsible]
+====
+For example, given the following schema:
+
+[,typeql]
+----
+define
+
+membership sub relation,
+    abstract,
+    relates member;
+
+group-membership sub membership;
+----
+
+The concrete relation type `group-membership` inherits the `member` role from the abstract relation
+type `membership`.
+
+Previously, that would make the role `membership` to be abstract. To insert an instance
+of the `group-membership` type, we would have to override the abstract role with a concrete one with a new name.
+
+Now, we can use the role `membership` directly without the need to override it with a new role:
+
+[,typeql]
+----
+insert
+(member: $x) isa group-membership;
+----
+====
+
+[WARNING]
+====
+Older databases, created in previous versions of TypeDB, can retain older behaviour.
+
+The best way to switch to the new behavior is to install the TypeDB v.2.22.0+, create a new database,
+define the same schema, and load the same data into it.
 ====
 
 ////
