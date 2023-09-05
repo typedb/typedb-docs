@@ -488,7 +488,7 @@ insert
 
 [WARNING]
 ====
-Older databases, created in previous versions of TypeDB, can retain older behaviour.
+Old databases created in previous versions of TypeDB can retain the old behaviour with possible abstract roles.
 
 The best way to switch to the new behavior is to install the TypeDB v.2.22.0+, create a new database,
 define the same schema, and load the same data into it.
