@@ -266,7 +266,7 @@ image::root-types-trees.png[]
 // end::inheritance_basics[]
 
 [#_abstract_types]
-== Abstract types
+=== Abstract types
 // tag::abstract_basics[]
 
 An abstract type can't be instantiated (we can't insert an instance of data of this type). All we can do with an
@@ -326,7 +326,7 @@ name sub attribute, value string;
 
 person sub entity,
     owns name,
-    plays spouse:marriage;
+    plays marriage:spouse;
 
 marriage sub relation,
     relates spouse;
