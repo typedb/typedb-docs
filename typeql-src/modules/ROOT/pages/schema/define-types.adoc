@@ -294,7 +294,7 @@ object sub entity,
 [NOTE]
 ====
 All types that are subtyping `entity` built-in type directly or through other subtypes are called entity types.
-Instances of these types are called entities. The same approach can be applied to attributes and relations.
+Instances of entity types are called entities. A similar terminology is applied to attributes and relations.
 ====
 
 An entity type can subtype another entity type by using the same `sub` keyword, but replacing the `entity` keyword
