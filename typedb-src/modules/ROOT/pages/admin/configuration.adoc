@@ -124,7 +124,7 @@ log:
   debugger:
     reasoner: # note: this is a user-defined name
       enable: false
-      type: reasoner
+      type: reasoner-tracer
       output: file
 vaticle-factory:
   enable: false
@@ -231,6 +231,13 @@ There are three subsections:
 `logger` subsection configures logging for modules in TypeDB, along with a log level and output targets
 (referencing outputs by name defined under the outputs section).
 
+////
+* `filter` -- a filter by TypeDB component. Possible values include the following:
+** `com.vaticle.typedb.core`
+** `com.vaticle.typedb.core.database`
+** `com.vaticle.typedb.core.reasoner.planner`
+** `com.vaticle.typedb.core.reasoner.common.ReasonerPerfCounters`
+////
 * `output` -- destination of the log output. Input format is a list of output channels, each of which must be defined
   in the <<_output,output>> subsection.
 
@@ -253,7 +260,37 @@ On `debug` level the server will periodically log database storage properties.
 
 `debugger` subsection configures TypeDB-specific debuggers.
 
-Right now, the only defined type is `type: reasoner`.
+Possible values for the `type` field are the following:
+
+* `reasoner-tracer`
+* `reasoner-perf-counters`
+
+////
+.Performance counter config example
+[%collapsible]
+====
+[,yaml]
+----
+log:
+  ...
+  logger:
+    ...
+    reasoner-perf-counters:
+      filter: com.vaticle.typedb.core.reasoner.common.ReasonerPerfCounters
+      level: debug
+      output: [ stdout ]
+  ...
+  debugger:
+    reasoner-tracer:
+      enable: false
+      type: reasoner-tracer
+      output: file
+    reasoner-perf-counters:
+      enable: true
+      type: reasoner-perf-counters
+----
+====
+////
 
 [#_configuration_file_options_via_command_line_arguments]
 == Configuration file options via command line arguments
