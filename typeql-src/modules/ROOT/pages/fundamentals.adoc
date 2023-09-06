@@ -72,16 +72,18 @@ A string or a file with multiple TypeQL queries is a script.
 ----
 insert
 $p isa person,
-  has full-name "Masako Holley",
-  has email "masako.holley@vaticle.com";
+    has full-name "Masako Holley",
+    has email "masako.holley@vaticle.com";
+
 insert
 $p isa person,
-  has full-name "Pearle Goodman",
-  has email "pearle.goodman@vaticle.com";
+    has full-name "Pearle Goodman",
+    has email "pearle.goodman@vaticle.com";
+
 insert
 $p isa person,
-  has full-name "Kevin Morrison",
-  has email "kevin.morrison@vaticle.com";
+    has full-name "Kevin Morrison",
+    has email "kevin.morrison@vaticle.com";
 ----
 
 The above example contains three xref:typeql::data/insert.adoc[insert] queries without a match clause.
@@ -93,16 +95,16 @@ they are not overlapping (otherwise, we will insert a single person entity with 
 ----
 insert
 $p1 isa person,
-  has full-name "Masako Holley",
-  has email "masako.holley@vaticle.com";
+    has full-name "Masako Holley",
+    has email "masako.holley@vaticle.com";
 
 $p2 isa person,
-  has full-name "Pearle Goodman",
-  has email "pearle.goodman@vaticle.com";
+    has full-name "Pearle Goodman",
+    has email "pearle.goodman@vaticle.com";
 
 $p3 isa person,
-  has full-name "Kevin Morrison",
-  has email "kevin.morrison@vaticle.com";
+    has full-name "Kevin Morrison",
+    has email "kevin.morrison@vaticle.com";
 ----
 ====
 
@@ -267,12 +269,14 @@ image::root-types-trees.png[]
 === Abstract types
 // tag::abstract_basics[]
 
-All root types are abstract types.
-
 An abstract type can't be instantiated (we can't insert an instance of data of this type). All we can do with an
 abstract type is to subtype it.
 
-The opposite of an abstract type is a concrete type. All types are concrete by default.
+All root types are abstract types.
+
+The opposite of an abstract type is a concrete type.
+
+All user-defined types are concrete types by default.
 // end::abstract_basics[]
 
 [#_thing_type]
@@ -321,11 +325,11 @@ define
 name sub attribute, value string;
 
 person sub entity,
-  owns name,
-  plays marriage:spouse;
+    owns name,
+    plays marriage:spouse;
 
 marriage sub relation,
-  relates spouse;
+    relates spouse;
 ----
 
 An instance of the `person` type can be inserted in a database:
@@ -396,14 +400,14 @@ For example, given the schema:
 define
 
 group-membership sub relation,
-  relates user-group,
-  relates group-member;
+    relates user-group,
+    relates group-member;
 
 user-group sub entity
-  plays group-membership:user-group;
+    plays group-membership:user-group;
 
 subject sub entity,
-  plays group-membership:group-member;
+    plays group-membership:group-member;
 user sub subject;
 ----
 
@@ -411,21 +415,147 @@ user sub subject;
 The `user-group` role is to be played by a `user-group` entity type whereas the `group-member` role is to be played by
 a `subject` type and all its subtypes entities.
 ====
+// end::relation_type_examples[]
+
+==== Roles
+
+Roles are special internal types used by relations. We can't create an instance of a role in a database.
+But we can set an instance of another type (role player) to play a role in a particular instance of a relation type.
 
 Roles allow a schema to enforce logical constraints on types of role players.
 
-.See the example of a role type constraint
+.See the example of a role player's type constraint
 [%collapsible]
 ====
-For example, a `group-membership` relation cannot associate a `user` type entity with a `file` type entity, because
-`file` type entity can't play any role in a `group-membership` relation.
+For example, given the schema below, a `file` type entity can't play any role in a `group-membership` relation,
+and a `user` type entity can play the `group-member` role of a `group-membership` relation because it inherits it
+from the `subject` type.
+
+[,typeql]
+----
+define
+
+group-membership sub relation,
+    relates user-group,
+    relates group-member;
+
+user-group sub entity
+    plays group-membership:user-group;
+
+subject sub entity,
+    plays group-membership:group-member;
+user sub subject;
+
+file sub entity;
+----
 ====
 
-// end::relation_type_examples[]
+==== Abstract roles
 
-[NOTE]
+[IMPORTANT]
 ====
-Roles can be used in queries as a part of a relation even though roles do not have a direct type definition.
+Since TypeDB v.`2.22.0`, all roles are concrete, even in <<_abstract_types,abstract>> relations.
+====
+
+.See the example of a concrete role in abstract type
+[%collapsible]
+====
+Given the following schema:
+
+[,typeql]
+----
+define
+
+membership sub relation,
+    abstract,
+    relates member;
+
+group-membership sub membership;
+----
+
+The concrete relation type `group-membership` inherits the `member` role from the abstract relation
+type `membership`.
+
+Before version `2.22.0` of TypeDB, roles of abstract relations are also abstract.
+It would make the role `member` abstract.
+//Even if it is inherited by a concrete relation, an abstract role continues to be abstract.
+//We can't use an abstract role to insert an instance of a relation type.
+We have to xref:typeql::schema/define-types.adoc#_overrides_a_role[override]
+an abstract role with a new concrete role to use it for data.
+
+////
+[,typeql]
+----
+define
+
+group-membership sub membership,
+    relates group-member as member;
+----
+
+Then we can insert an instance of the `group-membership` type with the new role:
+
+[,typeql]
+----
+insert
+(group-member: $x) isa group-membership;
+----
+////
+
+Since version `2.22.0` of TypeDB, all roles are concrete.
+We can use a role inherited from an abstract relation directly without the need to override it with a new role:
+
+[,typeql]
+----
+insert
+(member: $x) isa group-membership;
+----
+====
+
+[WARNING]
+====
+Databases created in versions of TypeDB prior to `2.22.0` will continue to use abstract roles for abstract relation,
+defined in schema prior to update for version `2.22.0` or newer.
+
+The best way to switch to the new behavior is to install the TypeDB v.`2.22.0+`, create a new database,
+define the same schema, and load the same data into it.
+
+.See the alternative way to manually upgrade database schema
+[%collapsible]
+=====
+The alternative way to migrate to the new behaviour is to reset (unset and set) the abstractness of each abstract
+relation type via the Driver API methods:
+
+.Abstract methods
+[cols="^.^1,^.^2,^.^2,^.^2",caption="",options="header"]
+|===
+| Method | TypeDB Java Driver | TypeDB Python Driver | TypeDB Node.js Driver
+
+| Is `abstract`
+| xref:clients::java/java-api-ref.adoc#_check_if_type_is_abstract_local[isAbstract();]
+| xref:clients::python/python-api-ref.adoc#_check_if_type_is_abstract_local[is_abstract()]
+| xref:clients::node-js/node-js-api-ref.adoc#_check_if_type_is_abstract_local[abstract;]
+
+| Set `abstract`
+| xref:clients::java/java-api-ref.adoc#_set_abstract[setAbstract();]
+| xref:clients::python/python-api-ref.adoc#_set_abstract[set_abstract()]
+| xref:clients::node-js/node-js-api-ref.adoc#_set_abstract[setAbstract();]
+
+| Unset `abstract`
+| xref:clients::java/java-api-ref.adoc#_unset_abstract[unsetAbstract();]
+| xref:clients::python/python-api-ref.adoc#_unset_abstract[unset_abstract()]
+| xref:clients::node-js/node-js-api-ref.adoc#_unset_abstract[unsetAbstract();]
+|===
+
+.Pseudocode example
+[,python]
+----
+for rel_type in relation_types:
+  if rel_type.is_abstract():
+    rel_type.unset_abstract()
+    rel_type.set_abstract()
+commit()
+----
+=====
 ====
 
 ////
@@ -501,7 +631,7 @@ define
 name sub attribute, value string;
 
 person sub entity,
-  owns name;
+    owns name;
 ----
 
 An instance of an attribute type `name` with a value "Bob" can be owned by:
@@ -633,9 +763,9 @@ Given the following schema:
 define
 
 person sub entity,
-  owns name,
-  owns age,
-  owns certified-fortune-teller;
+    owns name,
+    owns age,
+    owns certified-fortune-teller;
 
 name sub attribute, value string;
 age sub attribute, value long;
@@ -658,7 +788,11 @@ A more useful example of an insert query can look as the following:
 
 [,typeql]
 ----
-insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+insert
+$p isa person,
+    has name "Bob",
+    has age 31,
+    has certified-fortune-teller false;
 ----
 
 That creates an entity and assigns an ownership of three attributes of different types to the newly created entity.
@@ -678,7 +812,9 @@ properties? Let's query for all attributes owned by the `person` type instances:
 
 [,typeql]
 ----
-match $p isa person, has $a;
+match
+$p isa person,
+    has $a;
 ----
 
 The response should consist of pairs of the `person` type instance with an instance of an attribute type owned by it,
@@ -696,9 +832,8 @@ Let's query specifically for `Bob`, age `31`, and retrieve the value of the bool
 [,typeql]
 ----
 match
-  $p isa person, has name `Bob`, has age 31, has certified-fortune-teller $cft;
-get
-  $p, $cft;
+    $p isa person, has name `Bob`, has age 31, has certified-fortune-teller $cft;
+get $p, $cft;
 ----
 
 The above query will find every `person` entity that has ownership over the instance of the attribute type `name` with
@@ -730,8 +865,8 @@ insert $p isa person, has full-name "Masako Holley", has email "masako.holley@va
 
 insert
 $p isa person,
-  has full-name "Masako Holley",
-  has email "masako.holley@vaticle.com";
+    has full-name "Masako Holley",
+    has email "masako.holley@vaticle.com";
 
 insert
 $p
@@ -763,11 +898,11 @@ TypeQL uses in-line comments only. To make a comment use the `#` symbol.
 # This is the first query
 insert # this is the insert query without a match clause
 $p isa person; # this line inserts a person entity
-$p has full-name "Bob"; # in this line we add a constraint to a $p in the same query
+$p has full-name "Bob"; # we add a constraint to the $p variable used in a previous line
 
 # This is the second query
 insert
-$p isa person, has full-name "Alex"; # In this query we insert a new person, rather adding to an existing one
+$p isa person, has full-name "Alex"; # In this query we insert another person
 ----
 ====
 
@@ -779,4 +914,3 @@ Or skip it and go straight to the Schema and Data sections of this documentation
 type.
 
 Use the xref:typeql::grammar.adoc[] page for factual information about syntax of TypeQL.
-

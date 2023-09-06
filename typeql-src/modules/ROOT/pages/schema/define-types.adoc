@@ -219,7 +219,9 @@ The following `define` query creates a new entity type, `object`, by subtyping t
 
 [,typeql]
 ----
-define object sub entity;
+define
+
+object sub entity;
 ----
 
 [#_abstract_types]
@@ -232,7 +234,10 @@ subtypes.
 
 [,typeql]
 ----
-define object sub entity, abstract;
+define
+
+object sub entity,
+    abstract;
 ----
 
 ==== Owns an attribute
@@ -247,7 +252,10 @@ own nonexistent attribute types.
 define
 
 object-type sub attribute, value string;
-object sub entity, abstract, owns object-type;
+
+object sub entity,
+    abstract,
+    owns object-type;
 ----
 
 [#_cardinality]
@@ -273,15 +281,20 @@ To add roles that entities of a specific entity type can play, use the `plays` k
 ----
 define
 
-access sub relation, relates object;
-object sub entity, abstract, plays access:object;
+access sub relation,
+    relates object;
+
+object sub entity,
+    abstract,
+    plays access:object;
 ----
 
 ==== Subtypes another entity
 
 [NOTE]
 ====
-All types that are subtyping `entity` built-in type directly or through other subtypes are called entity types. Instances of these types are called entities. The same approach can be applied to attributes and relations.
+All types that are subtyping `entity` built-in type directly or through other subtypes are called entity types.
+Instances of entity types are called entities. A similar terminology is applied to attributes and relations.
 ====
 
 An entity type can subtype another entity type by using the same `sub` keyword, but replacing the `entity` keyword
@@ -293,9 +306,14 @@ define
 
 path sub attribute, value string;
 
-object sub entity, abstract, owns object-type, plays access:object;
-resource sub object, abstract;
-file sub resource, owns path;
+object sub entity,
+    abstract,
+    owns object-type,
+    plays access:object;
+resource sub object,
+    abstract;
+file sub resource,
+    owns path;
 ----
 
 In the above example, the `resource` and `file` entity types are subtypes of the `object`, which itself is a subtype
@@ -329,9 +347,14 @@ path sub attribute, value string;
 object-type sub attribute, abstract, value string;
 file-type sub object-type, value string;
 
-object sub entity, abstract, owns object-type;
-resource sub object, abstract;
-file sub resource, owns path, owns file-type as object-type;
+object sub entity,
+    abstract,
+    owns object-type;
+resource sub object,
+    abstract;
+file sub resource,
+    owns path,
+    owns file-type as object-type;
 ----
 
 In the above example, the `file` entity type owns the `path` and `file-type` attribute types, with the `file-type`
@@ -375,7 +398,11 @@ The following statement creates an `access` relation that defines two roles:
 
 [,typeql]
 ----
-define access sub relation, relates object, relates action;
+define
+
+access sub relation,
+    relates object,
+    relates action;
 ----
 
 ==== Plays a role
@@ -387,8 +414,10 @@ In addition to defining its own roles played by other types, a relation type can
 define
 
 access sub relation,
-relates object, relates action,
-plays permission:access, plays change-request:change;
+    relates object,
+    relates action,
+    plays permission:access,
+    plays change-request:change;
 ----
 
 In the above example, `access` relation type can play the `access` role in `permission` relation type and
@@ -405,9 +434,9 @@ A relation can define multiple roles (from one to many).
 define
 
 change-request sub relation,
-relates change,
-relates requestee,
-relates requester;
+    relates change,
+    relates requestee,
+    relates requester;
 ----
 
 ==== Owns an attribute
@@ -419,9 +448,9 @@ A relation type can own zero, one, or many attribute types.
 define
 
 segregation-policy sub relation,
-relates action,
-plays segregation-violation:policy,
-owns name;
+    relates action,
+    plays segregation-violation:policy,
+    owns name;
 ----
 
 ==== Abstract
@@ -434,8 +463,9 @@ defines and plays.
 ----
 define
 
-violation sub relation, abstract,
-owns name;
+violation sub relation,
+    abstract,
+    owns name;
 ----
 
 ==== Subtypes another relation
@@ -448,14 +478,17 @@ relation type. The subtype will inherit all owned attribute types and all roles 
 define
 
 membership sub relation,
-  relates parent,
-  relates member;
+    relates parent,
+    relates member;
 
 collection-membership sub membership;
 ----
 
 In the example above, the `collection-membership` relation type inherits the `parent` and `member` roles defined in
 its parent type: `membership`.
+
+[#_overrides_a_role]
+==== Overrides a role
 
 The labels of the inherited roles can be overridden to distinguish between the roles inherited by a relation subtype
 versus the roles defined by its parent type.
@@ -465,11 +498,11 @@ versus the roles defined by its parent type.
 define
 
 membership sub relation,
-  relates parent,
-  relates member;
+    relates parent,
+    relates member;
 
 collection-membership sub membership,
-  relates collection as parent;
+    relates collection as parent;
 ----
 
 In the example above, the `collection-membership` relation type subtypes the `membership` relation type and overrides
@@ -638,7 +671,10 @@ This prevents two instances of the same type from owning the same attribute inst
 define
 
 object-type sub attribute, value string;
-object sub entity, abstract, owns object-type @unique;
+
+object sub entity,
+    abstract,
+    owns object-type @unique;
 ----
 
 [IMPORTANT]
@@ -655,9 +691,16 @@ Unique annotation can be inherited, even using override of an ownership.
 [,typeql]
 ----
 define
-organisation sub entity, abstract, owns organisation-id @unique;
+
+organisation sub entity,
+    abstract,
+    owns organisation-id @unique;
+
 organisation-id sub attribute, abstract, value string;
-non-profit sub organisation, owns nonprofit-id as organisation-id;
+
+non-profit sub organisation,
+    owns nonprofit-id as organisation-id;
+
 nonprofit-id sub organisation-id, value string;
 ----
 In this example `non-profit` owns `nonprofit-id` with unique constraint. It's inherited from `organizatrion-id`.
@@ -676,7 +719,10 @@ Hence, the instance of the type with attribute ownership with `@key` annotation 
 define
 
 object-type sub attribute, value string;
-object sub entity, abstract, owns object-type @key;
+
+object sub entity,
+    abstract,
+    owns object-type @key;
 ----
 
 [WARNING]
@@ -691,7 +737,9 @@ set of options.
 
 [,typeql]
 ----
-define visibility sub attribute, value string, regex "^(public|private|closed)$";
+define
+
+visibility sub attribute, value string, regex "^(public|private|closed)$";
 ----
 
 The above example defines an attribute type: `visibility`. It is intended for user groups, and specifies a regex to
@@ -713,7 +761,10 @@ version 3.0.
 define
 
 symlink sub attribute, value string;
-filepath sub attribute, value string, owns symlink;
+
+filepath sub attribute,
+    value string,
+    owns symlink;
 ----
 
 The above example creates an attribute type `filepath`, intended for files. It is assumed there can be multiple copies
@@ -733,7 +784,11 @@ TypeDB version 3.0.
 
 [,typeql]
 ----
-define credential sub attribute, value string, plays change-request:change;
+define
+
+credential sub attribute,
+    value string,
+    plays change-request:change;
 ----
 
 The above example creates the `credential` attribute type, and specifies it can play the role of `change` in
