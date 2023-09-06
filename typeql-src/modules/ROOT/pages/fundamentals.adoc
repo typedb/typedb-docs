@@ -460,7 +460,7 @@ Since TypeDB v.2.22.0, all roles are concrete, even in <<_abstract_types,abstrac
 .See the example of a concrete role in abstract type
 [%collapsible]
 ====
-For example, given the following schema:
+Given the following schema:
 
 [,typeql]
 ----
@@ -494,6 +494,8 @@ Old databases created in previous versions of TypeDB can retain the old behaviou
 
 The best way to switch to the new behavior is to install the TypeDB v.2.22.0+, create a new database,
 define the same schema, and load the same data into it.
+
+Contact us on our https://typedb.com/discord[Discord] if you need to do an in-place upgrade.
 ====
 
 ////
