@@ -53,6 +53,16 @@ xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't ha
 - `is` keyword
 ====
 
+== Idempotent deletes
+
+Since TypeDB version 2.22.0 delete queries are idempotent.
+
+[WARNING]
+====
+Prior to TypeDB v.2.22.0 a delete query would fail (throw an error) if a `delete` clause would try to delete
+a previously deleted or non-existent data.
+====
+
 == Entities
 
 Use a match clause followed by the `delete` keyword and a pattern containing an `isa` statement to remove an entity
