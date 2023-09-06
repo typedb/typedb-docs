@@ -487,6 +487,9 @@ collection-membership sub membership;
 In the example above, the `collection-membership` relation type inherits the `parent` and `member` roles defined in
 its parent type: `membership`.
 
+[#_overrides_a_role]
+==== Overrides a role
+
 The labels of the inherited roles can be overridden to distinguish between the roles inherited by a relation subtype
 versus the roles defined by its parent type.
 

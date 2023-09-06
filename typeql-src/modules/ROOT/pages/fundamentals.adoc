@@ -454,7 +454,7 @@ file sub entity;
 
 [IMPORTANT]
 ====
-Since TypeDB v.2.22.0, all roles are concrete, even in <<_abstract_types,abstract>> relations.
+Since TypeDB v.`2.22.0`, all roles are concrete, even in <<_abstract_types,abstract>> relations.
 ====
 
 .See the example of a concrete role in abstract type
@@ -476,10 +476,33 @@ group-membership sub membership;
 The concrete relation type `group-membership` inherits the `member` role from the abstract relation
 type `membership`.
 
-Previously, that would make the role `membership` to be abstract. To insert an instance
-of the `group-membership` type, we would have to override the abstract role with a concrete one with a new name.
+Before version `2.22.0` of TypeDB, roles of abstract relations are also abstract.
+It would make the role `member` abstract.
+//Even if it is inherited by a concrete relation, an abstract role continues to be abstract.
+//We can't use an abstract role to insert an instance of a relation type.
+We have to xref:typeql::schema/define-types.adoc#_overrides_a_role[override]
+an abstract role with a new concrete role to use it for data.
 
-Now, we can use the role `membership` directly without the need to override it with a new role:
+////
+[,typeql]
+----
+define
+
+group-membership sub membership,
+    relates group-member as member;
+----
+
+Then we can insert an instance of the `group-membership` type with the new role:
+
+[,typeql]
+----
+insert
+(group-member: $x) isa group-membership;
+----
+////
+
+Since version `2.22.0` of TypeDB, all roles are concrete.
+We can use a role inherited from an abstract relation directly without the need to override it with a new role:
 
 [,typeql]
 ----
@@ -490,12 +513,13 @@ insert
 
 [WARNING]
 ====
-Old databases created in previous versions of TypeDB can retain the old behaviour with possible abstract roles.
+Databases created in versions of TypeDB prior to `2.22.0` will continue to use abstract roles for abstract relation,
+defined in schema prior to update for version `2.22.0` or newer.
 
-The best way to switch to the new behavior is to install the TypeDB v.2.22.0+, create a new database,
+The best way to switch to the new behavior is to install the TypeDB v.`2.22.0+`, create a new database,
 define the same schema, and load the same data into it.
 
-Contact us on our https://typedb.com/discord[Discord] if you need to do an in-place upgrade.
+Contact us on our https://typedb.com/discord[Discord] if you need to upgrade an existing database without recreating it.
 ====
 
 ////
