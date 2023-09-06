@@ -519,7 +519,43 @@ defined in schema prior to update for version `2.22.0` or newer.
 The best way to switch to the new behavior is to install the TypeDB v.`2.22.0+`, create a new database,
 define the same schema, and load the same data into it.
 
-Contact us on our https://typedb.com/discord[Discord] if you need to upgrade an existing database without recreating it.
+.See the alternative way to manually upgrade database schema
+[%collapsible]
+=====
+The alternative way to migrate to the new behaviour is to reset (unset and set) the abstractness of each abstract
+relation type via the Driver API methods:
+
+.Abstract methods
+[cols="^.^1,^.^2,^.^2,^.^2",caption="",options="header"]
+|===
+| Method | TypeDB Java Driver | TypeDB Python Driver | TypeDB Node.js Driver
+
+| Is `abstract`
+| xref:clients::java/java-api-ref.adoc#_check_if_type_is_abstract_local[isAbstract();]
+| xref:clients::python/python-api-ref.adoc#_check_if_type_is_abstract_local[is_abstract()]
+| xref:clients::node-js/node-js-api-ref.adoc#_check_if_type_is_abstract_local[abstract;]
+
+| Set `abstract`
+| xref:clients::java/java-api-ref.adoc#_set_abstract[setAbstract();]
+| xref:clients::python/python-api-ref.adoc#_set_abstract[set_abstract()]
+| xref:clients::node-js/node-js-api-ref.adoc#_set_abstract[setAbstract();]
+
+| Unset `abstract`
+| xref:clients::java/java-api-ref.adoc#_unset_abstract[unsetAbstract();]
+| xref:clients::python/python-api-ref.adoc#_unset_abstract[unset_abstract()]
+| xref:clients::node-js/node-js-api-ref.adoc#_unset_abstract[unsetAbstract();]
+|===
+
+.Pseudocode example
+[,python]
+----
+for rel_type in relation_types:
+  if rel_type.is_abstract():
+    rel_type.unset_abstract()
+    rel_type.set_abstract()
+commit()
+----
+=====
 ====
 
 ////
