@@ -322,7 +322,7 @@ name sub attribute, value string;
 
 person sub entity,
   owns name,
-  plays spouse:marriage;
+  plays marriage:spouse;
 
 marriage sub relation,
   relates spouse;
