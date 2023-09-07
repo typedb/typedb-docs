@@ -53,13 +53,13 @@ xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't ha
 - `is` keyword
 ====
 
-== Idempotent deletes
+== Deduplicated deletes
 
-Since TypeDB version 2.22.0 delete queries are idempotent.
+Since TypeDB version `2.22.0`, delete queries are deduplicated.
 
 [WARNING]
 ====
-Prior to TypeDB v.2.22.0 a delete query would fail (throw an error) if a `delete` clause would try to delete
+Prior to TypeDB v.`2.22.0`, a delete query would fail (throw an error) if its `delete` clause would try to delete
 a previously deleted or non-existent data.
 ====
 
