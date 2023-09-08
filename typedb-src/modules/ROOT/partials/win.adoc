@@ -40,12 +40,17 @@ typedb server
 TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB will be shut down. We recommend
 opening a new terminal to run TypeDB Console.
 
-Use a `typedb.bat server` command directly from the directory with TypeDB files to start a TypeDB server without
-environment variables setup.
+Alternatively, use a `typedb.bat server` command directly from the directory with TypeDB files to start a TypeDB server
+without environment variables setup.
 
 If the following error occurs, please try to install the "C++ redistributable" by following the instructions
-https://developers.google.com/optimization/install/python/windows#microsoft-visual-c-redistributable[here,window=_blank].
+https://developers.google.com/optimization/install/java/binary_windows#microsoft_visual_c_redistributable[here,window=_blank].
 
+[,shell]
+----
+Exception in thread "main" java.lang.UnsatisfiedLinkError:
+C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
+----
 // end::start[]
 
 // tag::stop[]
