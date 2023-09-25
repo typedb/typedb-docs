@@ -19,11 +19,23 @@ use the <<_manual,manual>> installation instead.
 
 // tag::install-manual[]
 
+TypeDB runs on both `ARM` and `Intel` architectures natively,
+but performance is best when you match your native architecture and don't run via
+https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta].
+Both TypeDB and Java SDK should match your hardware architecture for the best performance.
+
 . Ensure Java 11+ is installed.
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
++
+To check what Java SDK versions are installed on your local machine, use the following command:
++
+[,bash]
+----
+/usr/libexec/java_home -V
+----
 
-. Get the latest release for linux:
+. Get the latest TypeDB Core release for macOS:
 include::typedb:resources:partial$latest-version.adoc[tag=mac]
 
 . Create a new directory, extract the contents of the `.zip` archive into the created directory
