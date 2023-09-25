@@ -19,6 +19,10 @@ use the <<_manual,manual>> installation instead.
 
 // tag::install-manual[]
 
+TypeDB runs on both ARM and Intel architectures natively,
+but performance is best when you match your native architecture and don't run via
+https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta].
+
 . Ensure Java 11+ is installed.
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
