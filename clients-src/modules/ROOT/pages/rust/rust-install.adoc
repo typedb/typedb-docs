@@ -1,0 +1,43 @@
+= Rust Driver installation
+:Summary: Installation guide for TypeDB Rust Driver.
+:keywords: typedb, client, driver, rust, install, repository
+:longTailKeywords: typedb rust client, typedb client rust, client rust, rust client
+:pageTitle: Rust Driver installation
+
+== Prerequisites
+
+To use the TypeDB Rust Driver, you need a compatible version of TypeDB running. Please see the
+xref:rust/rust-install.adoc#_version_compatibility[Version compatibility table] to check what version you need,
+depending on the TypeDB version being used.
+
+== Install
+
+To install TypeDB Rust Driver:
+
+----
+cargo add typedb-driver
+----
+//cargo add typedb-driver@2.24.5
+
+== Additional resources
+
+* xref:rust/rust-install.adoc#_version_compatibility[Version compatibility]
+* https://github.com/vaticle/typedb-driver[Rust Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+* https://crates.io/crates/typedb-driver[Crates.io]
+//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^2,^.^1,^.^2,^.^2,^.^2"]
+|===
+| Rust Driver | Protocol version | TypeDB Core | TypeDB Enterprise & TypeDB Cloud | Rust
+
+| 2.24.5
+| 1
+| 2.23.0
+| 2.23.0
+| 1.68.0+
+//#todo Add Rust version requirements!
+|===
