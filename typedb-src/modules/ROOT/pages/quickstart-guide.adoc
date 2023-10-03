@@ -21,12 +21,12 @@ For this Quickstart guide, you need to download and use the following files:
 //* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL define query for the IAM schema.
 [#_iam_microdataset]
 * link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[iam-data.tql,window=_blank]
-  -- TypeQL insert queries of a sample dataset for the IAM schema.
-//* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL insert queries of minimalistic dataset for the IAM schema.
+  -- TypeQL insert queries for a sample dataset for the IAM schema.
+//* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL insert queries for a minimal dataset for the IAM schema.
 
 === Install and run TypeDB
 
-To proceed, please ensure you have TypeDB server (or cluster)
+Ensure you have TypeDB server (or cluster)
 xref:installation.adoc#_install[installed,window=_blank] and
 xref:installation.adoc#_start_the_server[running,window=_blank].
 
@@ -34,7 +34,6 @@ xref:installation.adoc#_start_the_server[running,window=_blank].
 == Select a TypeDB Client to proceed
 
 Choose either TypeDB Console (CLI) or TypeDB Studio (GUI) in the tabs below and complete all the steps.
-
 We recommend familiarizing yourself with at least one of these two Clients, before trying to start developing
 your own application with language-specific TypeDB Drivers.
 
@@ -73,7 +72,7 @@ For more information on how to use it, see the xref:clients:ROOT:studio.adoc[,wi
 TypeDB Console::
 +
 --
-By default, TypeDB Console will try to connect to the default server address of `localhost:1729`.
+By default, TypeDB Console will try to connect to `localhost:1729`.
 
 .Server connection example
 [,bash]
@@ -87,8 +86,6 @@ typedb console --server 127.0.0.1:1729
 typedb console --cluster=i0.deployment-a4fa2444.cloud.typedb.com:1729 --username=admin --password --tls-enabled --tls-root-ca="/Users/username/typedb-cloud/typedb-cloud-root-ca.pem"
 ----
 
-To exit TypeDB Console, press kbd:[Ctrl+C].
-
 [NOTE]
 =====
 The fastest way to go through all the steps of this guide is to use the
@@ -101,8 +98,8 @@ TypeDB Studio::
 --
 Connect to TypeDB:
 
-. Click the btn:[Connect to TypeDB] button on the right side of the toolbar.
-. Enter TypeDB server address (e.g., `localhost:1729`) in the *Address* field and click the btn:[Connect] button.
+. Click btn:[Connect to TypeDB] on the right side of the toolbar.
+. Enter TypeDB server address (e.g., `localhost:1729`) and click btn:[Connect].
 
 1. Select the `TypeDB Cluster` option in the *Server* field.
 2. Click the btn:[Manage Cluster Addresses] button and add all known addresses for TypeDB servers on the cluster you
@@ -110,11 +107,10 @@ Connect to TypeDB:
 3. Fill all other fields with appropriate information and click the btn:[Connect] button.
 
 Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as a
-xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by using one of the following
-buttons:
+xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by clicking either:
 
 * btn:[Open Project] button in the *Project* panel (upper left);
-* btn:[Open Project Directory] button with a folder icon, leftmost on the top toolbar.
+* Folder icon (the first icon on the top toolbar).
 --
 ====
 
