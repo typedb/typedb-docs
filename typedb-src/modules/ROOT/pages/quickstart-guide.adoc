@@ -6,23 +6,27 @@
 :tabs-sync-option:
 :experimental:
 
-This Quickstart guide shows how to set up a TypeDB database and execute queries with it.
+This Quickstart guide shows how to set up a TypeDB database and run queries.
 
 == Prerequisites
 
 [#_download_sample_data]
 === Download schema and data
 
-For the purpose of this Quickstart guide, use the following files:
+For this Quickstart guide, you need to download and use the following files:
 
 [#_iam_schema]
-* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL define query for the IAM schema.
+* link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[iam-schema.tql,window=_blank]
+  -- The TypeQL define query for the IAM schema.
+//* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL define query for the IAM schema.
 [#_iam_microdataset]
-* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL insert queries of minimalistic dataset for the IAM schema.
+* link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[iam-data.tql,window=_blank]
+  -- TypeQL insert queries of a sample dataset for the IAM schema.
+//* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL insert queries of minimalistic dataset for the IAM schema.
 
 === Install and run TypeDB
 
-To proceed, please make sure you have TypeDB server (or cluster)
+To proceed, please ensure you have TypeDB server (or cluster)
 xref:installation.adoc#_install[installed,window=_blank] and
 xref:installation.adoc#_start_the_server[running,window=_blank].
 
@@ -31,7 +35,7 @@ xref:installation.adoc#_start_the_server[running,window=_blank].
 
 Choose either TypeDB Console (CLI) or TypeDB Studio (GUI) in the tabs below and complete all the steps.
 
-We recommend familiarizing yourself with at least one of these two Clients, before trying to start developing with
+We recommend familiarizing yourself with at least one of these two Clients, before trying to start developing
 your own application with language-specific TypeDB Drivers.
 
 [tabs]
@@ -43,7 +47,7 @@ TypeDB Console is a CLI TypeDB Client.
 
 image::typedb::quickstart-console.png[TypeDB Console, width = 75%, link=self]
 
-TypeDB Console is usually installed together with TypeDB server and in the same directory.
+TypeDB Console is usually installed together with a TypeDB server in the same directory.
 
 For more information on how to use it, see the xref:clients:ROOT:console.adoc[,window=_blank] page.
 --
@@ -87,9 +91,9 @@ To exit TypeDB Console press kbd:[Ctrl+C].
 
 [NOTE]
 =====
-The fastest way to go through all the steps is to use
+The fastest way to go through all the steps of this guide is to use the
 xref:clients:ROOT:console.adoc#_non_interactive_mode[non-interactive]
-mode by issuing the following commands directly in a local terminal (not in a TypeDB Console prompt).
+mode by issuing the commands directly in a local terminal (not in a TypeDB Console prompt).
 =====
 --
 TypeDB Studio::
@@ -97,7 +101,7 @@ TypeDB Studio::
 --
 Connect to TypeDB:
 
-. Click the btn:[Connect to TypeDB] button  on the right side of the toolbar.
+. Click the btn:[Connect to TypeDB] button on the right side of the toolbar.
 . Enter TypeDB server address (e.g., `localhost:1729`) in the *Address* field and click the btn:[Connect] button.
 
 1. Select `TypeDB Cluster` option in the *Server* field.
@@ -293,24 +297,6 @@ match $t sub thing;
 . Run the query.
 --
 ====
-
-////
-// tag::thing_deprecation[]
-[WARNING]
-====
-The `thing` internal type will be deprecated in one of the upcoming versions and deleted in TypeDB version `3.0`.
-
-Consider using `entity`, `attribute`, or `relation` built-in types instead.
-
-To produce the same result as the above example (except for the `thing` type), use the following query:
-
-[,typeql]
-----
-match $s sub $t; {$t type entity;} or {$t type relation;} or {$t type attribute;};
-----
-====
-// end::thing_deprecation[]
-////
 
 [#_get_query__get_all_emails_of_kevin]
 === Get all emails of Kevin
