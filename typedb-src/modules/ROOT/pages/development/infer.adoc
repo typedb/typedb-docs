@@ -65,7 +65,7 @@ rule add-view-permission:
     };
 ----
 
-By default, the IAM dataset used in the xref:quickstart.adoc[Quickstart guide] sets permissions only for the
+By default, the IAM dataset used in the xref:quickstart-guide.adoc[Quickstart guide] sets permissions only for the
 `modify_file` action.
 
 But the IAM schema has the rule called `add-view-permission` (see above) to infer permission to `view_file` access
@@ -123,7 +123,7 @@ condition of the rule, conclusion of the rule, and variable mapping.
 //#todo Add examples on other languages
 
 The following code (provided with a TypeDB server with IAM database from
-xref:quickstart.adoc[Quickstart guide]) can infer `view_file` permission for multiple files for a single
+xref:quickstart-guide.adoc[Quickstart guide]) can infer `view_file` permission for multiple files for a single
 user and explain every inferred result. Basically, we repeat the previous example and then request explanation of
 relation `$pe`.
 
@@ -180,7 +180,7 @@ Use enumerate() instead of simple counter:
 ////
 
 The script above runs the query from the <<_example,example>> in the previous section. The inference option provides
-the result of 10 files (by default in the IAM database from the xref:quickstart.adoc[Quickstart guide]).
+the result of 10 files (by default in the IAM database from the xref:quickstart-guide.adoc[Quickstart guide]).
 And `explain` option enables the `explainables` to be received and used in the *explain* queries (one explain query
 for each result that needs to be explained).
 

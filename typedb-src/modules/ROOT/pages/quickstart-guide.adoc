@@ -1,0 +1,539 @@
+= Quickstart guide
+:keywords: getting started, typedb, typeql, tutorial, quickstart, console, studio
+:longTailKeywords: get started with typedb, typedb tutorial, typedb quickstart, learn typedb
+:pageTitle: Quickstart guide
+:summary: Learn how to create a TypeDB database, load schema and data, perform queries.
+:tabs-sync-option:
+:experimental:
+
+This Quickstart guide shows how to set up a TypeDB database and execute queries with it.
+
+== Prerequisites
+
+[#_download_sample_data]
+=== Download schema and data
+
+For the purpose of this Quickstart guide, use the following files:
+
+[#_iam_schema]
+* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL define query for the IAM schema.
+[#_iam_microdataset]
+* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL insert queries of minimalistic dataset for the IAM schema.
+
+=== Install and run TypeDB
+
+To proceed, please make sure you have TypeDB server (or cluster)
+xref:installation.adoc#_install[installed,window=_blank] and
+xref:installation.adoc#_start_the_server[running,window=_blank].
+
+[#_typedb_client]
+== Select a TypeDB Client to proceed
+
+Choose either TypeDB Console (CLI) or TypeDB Studio (GUI) in the tabs below and complete all the steps.
+
+We recommend familiarizing yourself with at least one of these two Clients, before trying to start developing with
+your own application with language-specific TypeDB Drivers.
+
+[tabs]
+====
+TypeDB Console::
++
+--
+TypeDB Console is a CLI TypeDB Client.
+
+image::typedb::quickstart-console.png[TypeDB Console, width = 100%, link=self]
+
+TypeDB Console is usually installed together with TypeDB server and in the same directory.
+
+For more information on how to use it, see the xref:clients:ROOT:console.adoc[,window=_blank] page.
+--
+TypeDB Studio::
++
+--
+TypeDB Studio is a GUI TypeDB Client.
+
+image::typedb::quickstart-studio.png[TypeDB Studio, width = 100%, link=self]
+
+TypeDB Studio needs to be
+xref:clients:ROOT:studio.adoc#_download_install[installed]
+and launched separately from TypeDB.
+
+For more information on how to use it, see the xref:clients:ROOT:studio.adoc[,window=_blank] page.
+--
+====
+
+== Connect to TypeDB
+
+[tabs]
+====
+TypeDB Console::
++
+--
+By default, TypeDB Console will try to connect to the default server address of `localhost:1729`.
+
+.Server connection example
+[,bash]
+----
+typedb console --server 127.0.0.1:1729
+----
+
+.Cluster connection example (TLS encryption enabled)
+[,bash]
+----
+typedb console --cluster=i0.deployment-a4fa2444.cloud.typedb.com:1729 --username=admin --password --tls-enabled --tls-root-ca="/Users/username/typedb-cloud/typedb-cloud-root-ca.pem"
+----
+
+To exit TypeDB Console press kbd:[Ctrl+C].
+
+[NOTE]
+=====
+The fastest way to go through all the steps is to use
+xref:clients:ROOT:console.adoc#_non_interactive_mode[non-interactive]
+mode by issuing the following commands directly in a local terminal (not in a TypeDB Console prompt).
+=====
+--
+TypeDB Studio::
++
+--
+Connect to TypeDB:
+
+. Click the btn:[Connect to TypeDB] button  on the right side of the toolbar.
+. Enter TypeDB server address (e.g., `localhost:1729`) in the *Address* field and click the btn:[Connect] button.
+
+1. Select `TypeDB Cluster` option in the *Server* field.
+2. Click the btn:[Manage Cluster Addresses] button and add all known addresses for TypeDB servers on the cluster you
+   are connecting.
+3. Fill all other fields with appropriate information and click the btn:[Connect] button.
+
+Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as
+xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by using one of the following
+buttons:
+
+* btn:[Open Project] button in the *Project* panel (upper left);
+* btn:[Open Project Directory] button with a folder icon, leftmost on the top toolbar.
+--
+====
+
+== Create a new database
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+
+[,bash]
+----
+typedb console --command="database create try-iam"
+----
+--
+TypeDB Studio::
++
+--
+
+. Open the *Manage Databases* dialog by clicking the database icon on the left side of the toolbar.
++
+image::studio-database.png[Database Manager button,width = 75%,link=self]
+. Enter `try-iam` in the text field, and click the btn:[Create] button next to it.
+. Now select `try-iam` from the database dropdown (next to the database icon).
+--
+====
+
+[#_define_a_schema_from_a_file]
+== Define a schema from a file
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+
+[,bash]
+----
+typedb console --command="transaction try-iam schema write" --command="source iam-schema.tql" --command="commit"
+----
+--
+TypeDB Studio::
++
+--
+Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file from the project panel on the top left.
+
+Define the schema for the database selected earlier, by executing the define query from the file:
+
+. Ensure the btn:[Session type] (`schema` / `data`) is set to the `schema` and the
+  btn:[Transaction type] (`write` / `read`) is set to the `write` in the toolbar.
+. Execute the query by clicking the btn:[Run Query] button.
+. Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
+--
+====
+
+Schema is defined. The database is ready to insert some data.
+
+== Load data from a file
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+
+[,bash]
+----
+typedb console --command="transaction try-iam data write" --command="source iam-data.tql" --command="commit"
+----
+--
+TypeDB Studio::
++
+--
+Open the xref:attachment$iam-data.tql[iam-data.tql] file from the project panel.
+
+Load the data into the database selected earlier, by executing the insert queries from the file:
+
+. Ensure the btn:[Session type] (`schema` / `data`) is set to the `data` and the btn:[Transaction type]
+  (`write` / `read`) is set to the `write` in the toolbar.
+. Execute all queries from the file by clicking the btn:[Run Query] button.
+. Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
+--
+====
+
+The data is persisted in the database. The database is ready for queries.
+
+[NOTE]
+====
+The IAM schema and data from this Quickstart guide are widely used in examples throughout the documentation.
+====
+
+== Simple examples
+
+We have prepared a few query examples below:
+
+* <<#_get_query__retrieve_all_data>>
+* <<#_get_query__retrieve_all_schema_types>>
+* <<#_get_query__get_all_emails_of_kevin>>
+* <<#_insert_query__add_a_new_email_for_kevin>>
+* <<#_update_query__change_the_newly_added_email_for_kevin>>
+* <<#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin>>
+
+For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL] documentation.
+//#todo Add the TypeDB in 20 queries page
+
+[#_get_query__retrieve_all_data]
+=== Get all data
+
+The following query retrieves all data from a database.
+
+[,typeql]
+----
+match $t isa thing;
+----
+
+To try it, choose a TypeDB Client below and follow the steps.
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+[,bash]
+----
+typedb console --command="transaction try-iam data read" --command='match $t isa thing;'
+----
+--
+TypeDB Studio::
++
+--
+. Select `data` session and `read` transaction in the top toolbar.
+. Open a new tab and insert the following TypeQL query:
++
+[,typeql]
+----
+match $t isa thing;
+----
+. Run the query.
+--
+====
+
+[#_get_query__retrieve_all_schema_types]
+=== Get all schema types
+
+The following query retrieves all types from a schema of a database.
+
+[,typeql]
+----
+match $t sub thing;
+----
+
+To try it, choose a TypeDB Client below and follow the steps.
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+[,bash]
+----
+typedb console --command="transaction try-iam schema read" --command='match $t sub thing;'
+----
+--
+TypeDB Studio::
++
+--
+. Select `data` session and `read` transaction in the top toolbar.
+. Open a new tab and insert the following TypeQL query:
++
+[,typeql]
+----
+match $t sub thing;
+----
+. Run the query.
+--
+====
+
+////
+// tag::thing_deprecation[]
+[WARNING]
+====
+The `thing` internal type will be deprecated in one of the upcoming versions and deleted in TypeDB version `3.0`.
+
+Consider using `entity`, `attribute`, or `relation` built-in types instead.
+
+To produce the same result as the above example (except for the `thing` type), use the following query:
+
+[,typeql]
+----
+match $s sub $t; {$t type entity;} or {$t type relation;} or {$t type attribute;};
+----
+====
+// end::thing_deprecation[]
+////
+
+[#_get_query__get_all_emails_of_kevin]
+=== Get all emails of Kevin
+
+The following query retrieves all emails owned by every person with a full name that contains "Kevin".
+We have only one such person in the IAM database we have created above.
+
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn;
+    $fn contains "Kevin";
+    $p has email $e;
+get $e;
+----
+
+To try it, choose a TypeDB Client below and follow the steps.
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+[,bash]
+----
+typedb console --command="transaction try-iam data read" --command='match $p isa person, has full-name $fn; $fn contains "Kevin"; $p has email $e; get $e;'
+----
+--
+TypeDB Studio::
++
+--
+. Select `data` session and `read` transaction in the top toolbar.
+. Open a new tab and insert the following TypeQL query:
++
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn;
+    $fn contains "Kevin";
+    $p has email $e;
+get $e;
+----
+. Run the query.
+--
+====
+
+[#_insert_query__add_a_new_email_for_kevin]
+=== Insert a new email for Kevin
+
+The following query inserts a new email "kevin@gmail.com" for every person with a full name that contains "Kevin".
+We have only one such person in the IAM database we have created above.
+
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn;
+    $fn contains "Kevin";
+insert
+    $p has email "kevin@gmail.com";
+----
+
+To try it, choose a TypeDB Client below and follow the steps.
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+[,bash]
+----
+typedb console --command="transaction try-iam data write" --command='match $p isa person, has full-name $fn; $fn contains "Kevin"; insert $p has email "kevin@gmail.com";' --command="commit"
+----
+--
+TypeDB Studio::
++
+--
+. Select `data` session and `write` transaction in the top toolbar.
+. Open a new tab and insert the following TypeQL query:
++
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn;
+    $fn contains "Kevin";
+insert
+    $p has email "kevin@gmail.com";
+----
+. Run the query.
+. Commit the transaction.
+--
+====
+
+Now Kevin has more than one email.
+
+[#_update_query__change_the_newly_added_email_for_kevin]
+=== Update the newly added email for Kevin
+
+The following query updates the new email "kevin@gmail.com" for every person with a full name that contains "Kevin"
+to be "kevin2@gmail.com" instead.
+We have only one such person in the IAM database we have created above.
+
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn,
+        has email $e;
+    $fn contains "Kevin";
+    $e = "kevin@gmail.com";
+delete $p has $e;
+insert $p has email "kevin2@gmail.com";
+----
+
+To try it, choose a TypeDB Client below and follow the steps.
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+[,bash]
+----
+typedb console --command="transaction try-iam data write" --command='match $p isa person, has full-name $fn, has email $e; $fn contains "Kevin"; $e = "kevin@gmail.com"; delete $p has $e; insert $p has email "kevin2@gmail.com";' --command="commit"
+----
+--
+TypeDB Studio::
++
+--
+. Select `data` session and `write` transaction in the top toolbar.
+. Open a new tab and insert the following TypeQL query:
++
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn,
+        has email $e;
+    $fn contains "Kevin";
+    $e = "kevin@gmail.com";
+delete $p has $e;
+insert $p has email "kevin2@gmail.com";
+----
+. Run the query.
+. Commit the transaction.
+--
+====
+
+[#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
+=== Delete ownership of the newly updated email from Kevin
+
+The following query deletes the ownership over the email "kevin2@gmail.com" for every person with a full name
+that contains "Kevin".
+We have only one such person in the IAM database we have created above.
+
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn,
+        has email $e;
+    $fn contains "Kevin";
+    $e = "kevin2@gmail.com";
+delete $p has $e;
+----
+
+To try it, choose a TypeDB Client below and follow the steps.
+
+[tabs]
+====
+TypeDB Console::
++
+--
+Use the following command in a local terminal:
+[,bash]
+----
+typedb console --command="transaction try-iam data write" --command='match $p isa person, has full-name $fn, has email $e; $fn contains "Kevin"; $e = "kevin2@gmail.com"; delete $p has $e;' --command="commit"
+----
+--
+TypeDB Studio::
++
+--
+. Select `data` session and `write` transaction in the top toolbar.
+. Open a new tab and insert the following TypeQL query:
++
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $fn,
+        has email $e;
+    $fn contains "Kevin";
+    $e = "kevin2@gmail.com";
+delete $p has $e;
+----
+. Run the query.
+. Commit the transaction.
+--
+====
+
+//#todo Add a page with more queries and a link to it. TypeQL showcase / Showcase queries / Featured queries
+
+== Learn more
+
+After completing this guide, we recommend the following order of topics to continue exploring TypeDB:
+
+1. Explore the Fundamentals section for essential information of how TypeDB works:
+    * xref:fundamentals/types.adoc[]
+    * xref:fundamentals/queries.adoc[]
+    * xref:fundamentals/patterns.adoc[]
+    * xref:fundamentals/inference.adoc[]
+2. Find out more about how to xref:development/connect.adoc[connect] to TypeDB, and use databases, sessions,
+   and transactions.
+3. Learn how to define a xref:development/schema.adoc[schema] of a database.
+4. Discover how to xref:development/write.adoc[write] or xref:development/read.adoc[read] data from a TypeDB database.
+5. Check out how to interpret a TypeDB xref:development/response.adoc[responses] to a query.
+6. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find the most suitable one.
+7. (Optional) Learn more about the xref:tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
+   majority of examples throughout this documentation.
+8. (Optional) Explore the xref:tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
