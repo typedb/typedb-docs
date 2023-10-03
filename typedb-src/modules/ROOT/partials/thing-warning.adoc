@@ -4,10 +4,13 @@ The `thing` internal type will be deprecated in one of the upcoming versions and
 
 Consider using `entity`, `attribute`, or `relation` built-in types instead.
 
-To produce the same result as the above example (except for the `thing` type), use the following query:
+For example:
 
+.Data retrieval example
 [,typeql]
 ----
-match $s sub $t; {$t type entity;} or {$t type relation;} or {$t type attribute;};
+match
+    $s isa $t;
+    {$t type entity;} or {$t type relation;} or {$t type attribute;};
 ----
 ====
