@@ -42,24 +42,20 @@ your own application with language-specific TypeDB Drivers.
 TypeDB Console::
 +
 --
-TypeDB Console is a CLI TypeDB Client.
+TypeDB Console is a TypeDB Client with CLI that is distributed and installed with TypeDB by default.
 
 image::typedb::quickstart-console.png[TypeDB Console, width = 75%, link=self]
-
-TypeDB Console is usually installed together with a TypeDB server in the same directory.
 
 For more information on how to use it, see the xref:clients:ROOT:console.adoc[,window=_blank] page.
 --
 TypeDB Studio::
 +
 --
-TypeDB Studio is a GUI TypeDB Client.
-
-image::typedb::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
-
-TypeDB Studio needs to be
+TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
 xref:clients:ROOT:studio.adoc#_download_install[installed]
 and launched separately from TypeDB.
+
+image::typedb::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
 For more information on how to use it, see the xref:clients:ROOT:studio.adoc[,window=_blank] page.
 --
@@ -85,45 +81,40 @@ typedb console --server 127.0.0.1:1729
 ----
 typedb console --cluster=i0.deployment-a4fa2444.cloud.typedb.com:1729 --username=admin --password --tls-enabled --tls-root-ca="/Users/username/typedb-cloud/typedb-cloud-root-ca.pem"
 ----
-
-[NOTE]
-=====
-The fastest way to go through all the steps of this guide is to use the
-xref:clients:ROOT:console.adoc#_non_interactive_mode[non-interactive]
-mode by issuing the commands directly in a local terminal (not in a TypeDB Console prompt).
-=====
 --
 TypeDB Studio::
 +
 --
-Connect to TypeDB:
+For TypeDB Core connection:
 
 . Click btn:[Connect to TypeDB] on the right side of the toolbar.
-. Enter TypeDB server address (e.g., `localhost:1729`) and click btn:[Connect].
+//. Ensure the `TypeDB` option is selected in the *Server* field.
+// We don't need that, because it is selected by default after new installation of Studio
+. Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
 
-1. Select the `TypeDB Cluster` option in the *Server* field.
-2. Click the btn:[Manage Cluster Addresses] button and add all known addresses for TypeDB servers on the cluster you
-   are connecting.
-3. Fill all other fields with appropriate information and click the btn:[Connect] button.
+For TypeDB Cloud or TypeDB Enterprise connection:
+
+. Click btn:[Connect to TypeDB] on the right side of the toolbar.
+. Select the `TypeDB Cluster` option in the *Server* field.
+. Click btn:[Manage Cluster Addresses] and add the address for each known TypeDB Enterprise server in a cluster.
+. Fill all other fields with appropriate information and click the btn:[Connect] button.
 
 Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as a
 xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by clicking either:
 
-* btn:[Open Project] button in the *Project* panel (upper left);
+* btn:[Open Project] in the *Project* panel (upper left); or
 * Folder icon (the first icon on the top toolbar).
 --
 ====
 
 == Create a new database
 
-To create a new database, follow the steps below.
-
 [tabs]
 ====
 TypeDB Console::
 +
 --
-Use the following command in a local terminal:
+Assuming TypeDB server or cluster is running locally run:
 
 [,bash]
 ----
@@ -133,10 +124,9 @@ typedb console --command="database create try-iam"
 TypeDB Studio::
 +
 --
-
 . Click the database icon (third button on the top toolbar).
 +
-image::studio-database.png[Database Manager button,width = 75%,link=self]
+image::studio-database.png[Database Manager button,width = 50%,link=self]
 . Enter `try-iam` and click btn:[Create].
 . Select `try-iam` from the database dropdown (to the right of the database icon).
 --
@@ -166,7 +156,7 @@ Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] fi
 
 Execute the define query from the file:
 
-. Ensure the Session toggle (`schema` / `data`) is set to `schema` and 
+. Ensure the Session toggle (`schema` / `data`) is set to `schema` and
   the Transaction toggle (`write` / `read`) is set to `write`.
 . Click btn:[Run Query].
 . Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
