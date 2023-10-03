@@ -213,28 +213,25 @@ For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL]
 [#_get_query__retrieve_all_data]
 === Get all data
 
-The following query retrieves all data from a database.
-
 [,typeql]
 ----
 match $t isa thing;
 ----
 
+Retrieves all data from a database.
+
 [#_get_query__retrieve_all_schema_types]
 === Get all types
-
-The following query retrieves all types from a schema of a database.
 
 [,typeql]
 ----
 match $t sub thing;
 ----
 
+Retrieves all types from a schema of a database.
+
 [#_get_query__get_all_emails_of_kevin]
 === Get all emails of Kevin
-
-The following query retrieves all emails owned by every person with a full name that contains "Kevin".
-We have only one such person in the IAM database we have created above.
 
 [,typeql]
 ----
@@ -246,10 +243,11 @@ match
 get $e;
 ----
 
+Retrieves all emails owned by every person with a full name that contains "Kevin".
+We have only one such person in the IAM database we have created above.
+
 [#_insert_query__add_a_new_email_for_kevin]
 === Insert a new email for Kevin
-
-The following query inserts a new email "kevin@gmail.com" for every person with a full name that contains "Kevin".
 
 [,typeql]
 ----
@@ -261,13 +259,11 @@ insert
     $p has email "kevin@gmail.com";
 ----
 
+Inserts a new email "kevin@gmail.com" for every person with a full name that contains "Kevin".
 Now Kevin has more than one email.
 
 [#_update_query__change_the_newly_added_email_for_kevin]
 === Update the newly added email for Kevin
-
-The following query updates the new email "kevin@gmail.com" for every person with a full name that contains "Kevin"
-to be "kevin2@gmail.com" instead.
 
 [,typeql]
 ----
@@ -281,11 +277,13 @@ delete $p has $e;
 insert $p has email "kevin2@gmail.com";
 ----
 
+Updates the new email "kevin@gmail.com" for every person with a full name that contains "Kevin"
+to be "kevin2@gmail.com" instead.
+It does that by deleting ownership over attribute with old value
+and inserting ownership over new value for the matched entity.
+
 [#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
 === Delete ownership of the newly updated email from Kevin
-
-The following query deletes the ownership over the email "kevin2@gmail.com" for every person with a full name
-that contains "Kevin".
 
 [,typeql]
 ----
@@ -297,6 +295,8 @@ match
     $e = "kevin2@gmail.com";
 delete $p has $e;
 ----
+
+Deletes the ownership over the email "kevin2@gmail.com" for every person with a full name that contains "Kevin".
 
 //#todo Add a link to the TypeDB in 20 queries page
 
