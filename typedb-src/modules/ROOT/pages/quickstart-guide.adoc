@@ -87,7 +87,7 @@ typedb console --server 127.0.0.1:1729
 typedb console --cluster=i0.deployment-a4fa2444.cloud.typedb.com:1729 --username=admin --password --tls-enabled --tls-root-ca="/Users/username/typedb-cloud/typedb-cloud-root-ca.pem"
 ----
 
-To exit TypeDB Console press kbd:[Ctrl+C].
+To exit TypeDB Console, press kbd:[Ctrl+C].
 
 [NOTE]
 =====
@@ -104,12 +104,12 @@ Connect to TypeDB:
 . Click the btn:[Connect to TypeDB] button on the right side of the toolbar.
 . Enter TypeDB server address (e.g., `localhost:1729`) in the *Address* field and click the btn:[Connect] button.
 
-1. Select `TypeDB Cluster` option in the *Server* field.
+1. Select the `TypeDB Cluster` option in the *Server* field.
 2. Click the btn:[Manage Cluster Addresses] button and add all known addresses for TypeDB servers on the cluster you
    are connecting.
 3. Fill all other fields with appropriate information and click the btn:[Connect] button.
 
-Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as
+Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as a
 xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by using one of the following
 buttons:
 
@@ -119,6 +119,8 @@ buttons:
 ====
 
 == Create a new database
+
+To create a new database, follow the steps below.
 
 [tabs]
 ====
@@ -147,6 +149,8 @@ image::studio-database.png[Database Manager button,width = 75%,link=self]
 [#_define_a_schema_from_a_file]
 == Define a schema from a file
 
+Before loading any data into a new database we shall define database's schema.
+
 [tabs]
 ====
 TypeDB Console::
@@ -162,20 +166,22 @@ typedb console --command="transaction try-iam schema write" --command="source ia
 TypeDB Studio::
 +
 --
-Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file from the project panel on the top left.
+Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file in TypeDB Studio.
 
-Define the schema for the database selected earlier, by executing the define query from the file:
+Execute the define query from the file:
 
 . Ensure the btn:[Session type] (`schema` / `data`) is set to the `schema` and the
   btn:[Transaction type] (`write` / `read`) is set to the `write` in the toolbar.
-. Execute the query by clicking the btn:[Run Query] button.
+. Run the query by clicking the btn:[Run Query] button.
 . Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
 --
 ====
 
-Schema is defined. The database is ready to insert some data.
+Schema is defined. The database is ready for inserting data.
 
 == Load data from a file
+
+Let's upload some data into the database.
 
 [tabs]
 ====
@@ -203,14 +209,17 @@ Load the data into the database selected earlier, by executing the insert querie
 --
 ====
 
-The data is persisted in the database. The database is ready for queries.
+Given there were no errors in the process, the data is persisted in the database.
+The database is ready for queries now.
+If you want, try some <<_query_examples,query examples>> below with the new database.
 
 [NOTE]
 ====
 The IAM schema and data from this Quickstart guide are widely used in examples throughout the documentation.
 ====
 
-== Simple examples
+[#_query_examples]
+== Query examples
 
 We have prepared a few query examples below:
 
