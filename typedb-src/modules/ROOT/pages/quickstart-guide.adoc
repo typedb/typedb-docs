@@ -159,7 +159,7 @@ Execute the define query from the file:
 . Ensure the Session toggle (`schema` / `data`) is set to `schema` and
   the Transaction toggle (`write` / `read`) is set to `write`.
 . Click btn:[Run Query].
-. Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
+. To commit the changes click btn:[Commit Transaction].
 --
 ====
 
@@ -184,14 +184,14 @@ typedb console --command="transaction try-iam data write" --command="source iam-
 TypeDB Studio::
 +
 --
-Open the xref:attachment$iam-data.tql[iam-data.tql] file from the project panel.
+Open the xref:attachment$iam-data.tql[iam-data.tql] file from the Project panel.
 
 Load the data into the database selected earlier, by executing the insert queries from the file:
 
 . Ensure the Session toggle is set to `data` and the Transaction toggle
   is set to `write`.
-. Execute all queries from the file by clicking the btn:[Run Query] button.
-. Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
+. Execute all queries in the file by clicking btn:[Run Query].
+. To commit the changes click btn:[Commit Transaction].
 --
 ====
 
