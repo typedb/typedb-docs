@@ -134,11 +134,11 @@ TypeDB Studio::
 +
 --
 
-. Open the *Manage Databases* dialog by clicking the database icon on the left side of the toolbar.
+. Click the database icon (third button on the top toolbar).
 +
 image::studio-database.png[Database Manager button,width = 75%,link=self]
-. Enter `try-iam` in the text field, and click the btn:[Create] button next to it.
-. Now select `try-iam` from the database dropdown (next to the database icon).
+. Enter `try-iam` and click btn:[Create].
+. Select `try-iam` from the database dropdown (to the right of the database icon).
 --
 ====
 
@@ -166,14 +166,14 @@ Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] fi
 
 Execute the define query from the file:
 
-. Ensure the btn:[Session type] (`schema` / `data`) is set to the `schema` and the
-  btn:[Transaction type] (`write` / `read`) is set to the `write` in the toolbar.
-. Run the query by clicking the btn:[Run Query] button.
+. Ensure the Session toggle (`schema` / `data`) is set to `schema` and 
+  the Transaction toggle (`write` / `read`) is set to `write`.
+. Click btn:[Run Query].
 . Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
 --
 ====
 
-Schema is defined. The database is ready for inserting data.
+Now that the schema has been defined, data can be inserted into the database.
 
 == Load data from a file
 
@@ -198,20 +198,20 @@ Open the xref:attachment$iam-data.tql[iam-data.tql] file from the project panel.
 
 Load the data into the database selected earlier, by executing the insert queries from the file:
 
-. Ensure the btn:[Session type] (`schema` / `data`) is set to the `data` and the btn:[Transaction type]
-  (`write` / `read`) is set to the `write` in the toolbar.
+. Ensure the Session toggle is set to `data` and the Transaction toggle
+  is set to `write`.
 . Execute all queries from the file by clicking the btn:[Run Query] button.
 . Commit the changes in transaction by clicking the btn:[Commit Transaction] button.
 --
 ====
 
-Given there were no errors in the process, the data is persisted in the database.
+Assuming there were no errors in the process, the data is persisted in the database.
 The database is ready for queries now.
 If you want, try some <<_query_examples,query examples>> below with the new database.
 
 [NOTE]
 ====
-The IAM schema and data from this Quickstart guide are widely used in examples throughout the documentation.
+The IAM schema and data from this Quickstart guide are used throughout the documentation.
 ====
 
 [#_query_examples]
@@ -267,7 +267,7 @@ match $t isa thing;
 ====
 
 [#_get_query__retrieve_all_schema_types]
-=== Get all schema types
+=== Get all types
 
 The following query retrieves all types from a schema of a database.
 
