@@ -283,13 +283,13 @@ insert $p has email "kevin2@gmail.com";
 The query above does the following:
 
 - Matches the person and its email with the value of `kevin@gmail.com`.
-- Deletes the ownership by the person over the email.
+- Deletes the ownership by the person of the email.
 - Inserts a new email owned by the person with value of `kevin2@gmail.com`.
 
 [#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
 === Delete ownership over the email for Kevin
 
-To delete the ownership over the email "kevin2@gmail.com" for every person with a full name that contains "Kevin":
+To delete the ownership of the email "kevin2@gmail.com" for every person with a full name that contains "Kevin":
 
 [,typeql]
 ----
