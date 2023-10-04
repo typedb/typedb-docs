@@ -207,8 +207,9 @@ Try sending the following queries:
 * <<#_update_query__change_the_newly_added_email_for_kevin>>
 * <<#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin>>
 
+//#todo Replace the link below with a more specific one in a TypeQL section. Query types?
 For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL] documentation.
-//#todo Add the TypeDB in 20 queries page
+//#todo Add the TypeDB in 20 queries page link
 
 [#_get_query__retrieve_all_data]
 === Get all data
@@ -255,8 +256,7 @@ match
     $p isa person,
         has full-name $fn;
     $fn contains "Kevin";
-insert
-    $p has email "kevin@gmail.com";
+insert $p has email "kevin@gmail.com";
 ----
 
 Inserts a new email "kevin@gmail.com" for every person with a full name that contains "Kevin".
