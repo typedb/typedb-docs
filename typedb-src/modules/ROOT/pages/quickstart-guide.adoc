@@ -17,12 +17,12 @@ For this Quickstart guide, you need to download and use the following files:
 
 [#_iam_schema]
 * link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[iam-schema.tql,window=_blank]
-  -- The TypeQL define query for the IAM schema.
-//* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL define query for the IAM schema.
+  -- The TypeQL Define query for the IAM schema.
+//* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL Define query for the IAM schema.
 [#_iam_microdataset]
 * link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[iam-data.tql,window=_blank]
-  -- TypeQL insert queries for a sample dataset for the IAM schema.
-//* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL insert queries for a minimal dataset for the IAM schema.
+  -- TypeQL Insert queries for a sample dataset for the IAM schema.
+//* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL Insert queries for a minimal dataset for the IAM schema.
 
 === Install and run TypeDB
 
@@ -150,12 +150,12 @@ TypeDB Studio::
 --
 Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file in TypeDB Studio.
 
-Execute the define query from the file:
+Execute the Define query from the file:
 
 . Ensure the Session toggle (`schema` / `data`) is set to `schema` and
   the Transaction toggle (`write` / `read`) is set to `write`.
 . Click btn:[Run Query].
-. To commit the changes, click btn:[Commit Transaction].
+. When the query has completed, click btn:[Commit Transaction].
 --
 ====
 
@@ -178,11 +178,11 @@ TypeDB Studio::
 --
 Open the xref:attachment$iam-data.tql[iam-data.tql] file from the Project panel.
 
-Execute all insert queries from the file:
+Execute all Insert queries from the file:
 
 . Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
 . Execute all queries in the file by clicking btn:[Run Query].
-. To commit the changes, click btn:[Commit Transaction].
+. When the queries have completed, click btn:[Commit Transaction].
 --
 ====
 
@@ -214,25 +214,28 @@ For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL]
 [#_get_query__retrieve_all_data]
 === Get all data
 
+To retrieve all data from a database:
+
 [,typeql]
 ----
 match $t isa thing;
 ----
 
-Retrieves all data from a database.
-
 [#_get_query__retrieve_all_schema_types]
 === Get all types
+
+To retrieve all types from a schema of a database:
 
 [,typeql]
 ----
 match $t sub thing;
 ----
 
-Retrieves all types from a schema of a database.
-
 [#_get_query__get_all_emails_of_kevin]
 === Get all emails of Kevin
+
+To retrieve all emails owned by every person with a full name that contains "Kevin"
+(we have only one such person in the example database):
 
 [,typeql]
 ----
@@ -244,11 +247,10 @@ match
 get $e;
 ----
 
-Retrieves all emails owned by every person with a full name that contains "Kevin".
-We have only one such person in the IAM database we have created above.
-
 [#_insert_query__add_a_new_email_for_kevin]
 === Insert a new email for Kevin
+
+To insert a new email (`kevin@gmail.com`) for every person with a full name that contains "Kevin":
 
 [,typeql]
 ----
@@ -259,11 +261,12 @@ match
 insert $p has email "kevin@gmail.com";
 ----
 
-Inserts a new email "kevin@gmail.com" for every person with a full name that contains "Kevin".
 Now Kevin has more than one email.
 
 [#_update_query__change_the_newly_added_email_for_kevin]
-=== Update the newly added email for Kevin
+=== Update the email for Kevin
+
+To update the email from `kevin@gmail.com` to `kevin2@gmail.com` for every person with a full name that contains "Kevin":
 
 [,typeql]
 ----
@@ -277,13 +280,16 @@ delete $p has $e;
 insert $p has email "kevin2@gmail.com";
 ----
 
-Updates the new email "kevin@gmail.com" for every person with a full name that contains "Kevin"
-to be "kevin2@gmail.com" instead.
-It does that by deleting ownership over attribute with old value
-and inserting ownership over new value for the matched entity.
+The query above does the following:
+
+- Matches the person and its email with the value of `kevin@gmail.com`.
+- Deletes the ownership by the person over the email.
+- Inserts a new email owned by the person with value of `kevin2@gmail.com`.
 
 [#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
-=== Delete ownership of the newly updated email from Kevin
+=== Delete ownership over the email for Kevin
+
+To delete the ownership over the email "kevin2@gmail.com" for every person with a full name that contains "Kevin":
 
 [,typeql]
 ----
@@ -296,8 +302,6 @@ match
 delete $p has $e;
 ----
 
-Deletes the ownership over the email "kevin2@gmail.com" for every person with a full name that contains "Kevin".
-
 //#todo Add a link to the TypeDB in 20 queries page
 
 == Learn more
@@ -309,7 +313,7 @@ After completing this guide, we recommend the following order of topics to conti
     * xref:fundamentals/queries.adoc[]
     * xref:fundamentals/patterns.adoc[]
     * xref:fundamentals/inference.adoc[]
-2. Find out more about how to xref:development/connect.adoc[connect] to TypeDB, and use databases, sessions,
+2. Find out more about how to xref:development/connect.adoc[connect] to TypeDB, use databases, sessions,
    and transactions.
 3. Learn how to define a xref:development/schema.adoc[schema] of a database.
 4. Discover how to xref:development/write.adoc[write] or xref:development/read.adoc[read] data from a TypeDB database.
