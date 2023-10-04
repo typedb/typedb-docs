@@ -282,9 +282,9 @@ insert $p has email "kevin2@gmail.com";
 
 The query above does the following:
 
-- Matches the person and its email with the value of `kevin@gmail.com`.
+- Matches the person and its email (`kevin@gmail.com`).
 - Deletes the ownership by the person of the email.
-- Inserts a new email owned by the person with value of `kevin2@gmail.com`.
+- Inserts a new email (`kevin2@gmail.com`) owned by the person.
 
 [#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
 === Delete ownership over the email for Kevin
