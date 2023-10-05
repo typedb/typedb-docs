@@ -227,7 +227,7 @@ For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL]
 [#_get_query__retrieve_all_data]
 === Get all data
 
-To retrieve all data from a database:
+To xref:typedb::development/read.adoc#_get[get] all data from a database:
 
 [,typeql]
 ----
@@ -237,7 +237,7 @@ match $t isa thing;
 [#_get_query__retrieve_all_schema_types]
 === Get all types
 
-To retrieve all types from a schema of a database:
+To xref:typedb::development/read.adoc#_get[get] all types from a schema of a database:
 
 [,typeql]
 ----
@@ -247,7 +247,7 @@ match $t sub thing;
 [#_get_query__get_all_emails_of_kevin]
 === Get all emails of Kevin
 
-To retrieve all emails owned by every person with a full name that contains "Kevin"
+To xref:typedb::development/read.adoc#_get[get] all emails owned by every person with a full name that contains "Kevin"
 (we have only one such person in the example database):
 
 [,typeql]
@@ -263,7 +263,8 @@ get $e;
 [#_insert_query__add_a_new_email_for_kevin]
 === Insert a new email for Kevin
 
-To insert a new email (`kevin@gmail.com`) for every person with a full name that contains "Kevin":
+To xref:typedb::development/write.adoc#_insert[insert] a new email (`kevin@gmail.com`) for every person with a full name
+that contains "Kevin":
 
 [,typeql]
 ----
@@ -279,7 +280,8 @@ Now Kevin has more than one email.
 [#_update_query__change_the_newly_added_email_for_kevin]
 === Update the email for Kevin
 
-To update the email from `kevin@gmail.com` to `kevin2@gmail.com` for every person with a full name that contains "Kevin":
+To xref:typedb::development/write.adoc#_update_query[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
+for every person with a full name that contains "Kevin":
 
 [,typeql]
 ----
@@ -302,7 +304,8 @@ The query above does the following:
 [#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
 === Delete ownership over the email for Kevin
 
-To delete the ownership of the email "kevin2@gmail.com" for every person with a full name that contains "Kevin":
+To xref:typedb::development/write.adoc#_delete_query[delete] the ownership of the email `kevin2@gmail.com`
+for every person with a full name that contains "Kevin":
 
 [,typeql]
 ----
