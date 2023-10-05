@@ -187,13 +187,26 @@ Execute all Insert queries from the file:
 ====
 
 Assuming there were no errors in the process, the data is persisted in the database.
-The database is ready for queries now.
-If you want, try some <<_query_examples,query examples>> below with the new database.
+
+== Finish
+
+Congratulations on completing the TypeDB quickstart!
+Now you can try sending your first queries to the database.
+We have prepared some simple <<_query_examples,query examples>> for you to try.
 
 [NOTE]
 ====
 The IAM schema and data from this Quickstart guide are used throughout the documentation.
+To learn more about the schema itself, check the xref:typedb::tutorials/iam-schema.adoc[] page.
 ====
+
+To learn about TypeDB's advanced and unique features such as
+polymorphic queries,
+type inference,
+type inheritance,
+rule-based reasoning,
+and n-ary relations, we recommend you check the <<_learn_more>> section.
+//#todo [TypeDB in 20 queries?]
 
 [#_query_examples]
 == Query examples
@@ -302,23 +315,23 @@ match
 delete $p has $e;
 ----
 
-//#todo Add a link to the TypeDB in 20 queries page
-
+[#_learn_more]
 == Learn more
 
 After completing this guide, we recommend the following order of topics to continue exploring TypeDB:
 
-1. Explore the Fundamentals section for essential information of how TypeDB works:
-    * xref:fundamentals/types.adoc[]
-    * xref:fundamentals/queries.adoc[]
-    * xref:fundamentals/patterns.adoc[]
-    * xref:fundamentals/inference.adoc[]
-2. Find out more about how to xref:development/connect.adoc[connect] to TypeDB, use databases, sessions,
-   and transactions.
-3. Learn how to define a xref:development/schema.adoc[schema] of a database.
-4. Discover how to xref:development/write.adoc[write] or xref:development/read.adoc[read] data from a TypeDB database.
-5. Check out how to interpret a TypeDB xref:development/response.adoc[responses] to a query.
-6. Explore all xref:clients:ROOT:clients.adoc[TypeDB Clients] to find the most suitable one.
-7. (Optional) Learn more about the xref:tutorials/iam-schema.adoc[IAM sample schema] that will be used in the
-   majority of examples throughout this documentation.
-8. (Optional) Explore the xref:tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
+//#todo Add another link to the TypeDB in 20 queries page
+
+1. Explore the Fundamentals section for essential information of how TypeDB works: xref:fundamentals/types.adoc[],
+xref:fundamentals/queries.adoc[], xref:fundamentals/patterns.adoc[], and xref:fundamentals/inference.adoc[];
+2. Discover how to xref:development/connect.adoc[connect] to TypeDB, manage transactions, and
+define a xref:development/schema.adoc[schema] of a database;
+3. Find out more about xref:development/write.adoc[writing] and xref:development/read.adoc[reading] data from a TypeDB
+database and how to interpret a xref:development/response.adoc[response] to a query;
+4. Explore how to create an application with TypeDB, using any of the
+   xref:clients:ROOT:clients.adoc#_typedb_drivers[TypeDB Drivers]:
+//  - xref:clients::rust/rust-overview.adoc[Rust Driver]
+    - xref:clients::python/python-overview.adoc[Python Driver];
+    - xref:clients::node-js/node-js-overview.adoc[Node.js Driver];
+    - xref:clients::java/java-overview.adoc[Java Driver].
+5. (Optional) Explore the xref:tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
