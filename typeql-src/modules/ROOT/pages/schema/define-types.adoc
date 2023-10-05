@@ -115,7 +115,7 @@ the rest of the documentation. However, some queries on this page result in modi
 used in the Quickstart guide. These occasional modifications are needed to demonstrate what TypeQL is capable of.
 
 To avoid any errors and/or data loss it is recommended to use a separate database for all examples on this page. For
-more information on creating a new database, see the xref:typedb:ROOT:quickstart.adoc#_create_a_database[Quickstart guide].
+more information on creating a new database, see the xref:typedb:ROOT:quickstart-guide.adoc#_create_a_database[Quickstart guide].
 ====
 ////
 
@@ -153,7 +153,7 @@ group-membership sub membership,
 ----
 
 The above example can be run in xref:clients:ROOT:studio.adoc[TypeDB Studio]. See the
-xref:typedb:ROOT:quickstart.adoc[Quickstart guide] for full descriptions of the following steps:
+xref:typedb:ROOT:quickstart-guide.adoc[Quickstart guide] for full descriptions of the following steps:
 
 . Make sure a TypeDB server is up.
 . Start TypeDB Studio.
@@ -182,7 +182,7 @@ As the result of the above query TypeDB Studio should display a graph visualizat
 
 image::schema-example-1.png[Schema visualization example]
 
-include::typedb::quickstart.adoc[tag=thing_deprecation]
+include::typedb::partial$thing-warning.adoc[]
 
 In the following sections, we can find more detailed information on different schema definition queries and
 possibilities.
