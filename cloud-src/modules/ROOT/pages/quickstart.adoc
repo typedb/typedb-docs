@@ -68,12 +68,12 @@ For example, `deployment-78678ca6-afda-4792-b5b8-0cb6b540d8ee-0.deployment-78678
 
 .See example
 [%collapsible]
-====
+=====
 [,bash]
 ----
 typedb console --cluster=deployment-78678ca6-afda-4792-b5b8-0cb6b540d8ee-0.deployment-78678ca6-afda-4792-b5b8-0cb6b540d8ee.cloud.typedb.com:1729  --username=admin --password=password --tls-enabled=true --tls-root-ca=./typedb-cloud-root-ca.pem
 ----
-====
+=====
 
 As a result, we get a welcome message from TypeDB Console, and if the connection is successful,
 it's followed by a command line prompt.
