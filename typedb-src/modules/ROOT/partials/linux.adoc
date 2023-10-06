@@ -31,7 +31,7 @@ https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 apt show typedb-server
 ----
 +
-This will show a console output like this:
+The above command's output:
 +
 [,bash]
 ----
@@ -47,11 +47,8 @@ APT-Sources: https://repo.vaticle.com/repository/apt trusty/main all Packages
 Description: TypeDB (server)
 ----
 +
-Take note of the latest typedb-server version shown in the `Package` field and the corresponding `typedb-bin`
-package version shown in the `Depends` field.
-+
-To get some other version of TypeDB installed, we can use the `apt show typedb-server=2.14.1`, where `2.14.1` --
-version number, can be replaced with the version we need.
+Take note of the latest `typedb-server` version in the `Version` field and the corresponding `typedb-bin`
+package version in the `Depends` field.
 . Install `typedb-server`, `typedb-console`, and `typedb-bin` packages using the versions from the previous command
 (server and console have the same version number):
 +
@@ -60,9 +57,9 @@ version number, can be replaced with the version we need.
 sudo apt install typedb-server=2.15.0 typedb-console=2.15.0 typedb-bin=2.12.0
 ----
 
-The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin` that is why their
-version numbers might differ. By default, APT will look for the exact same version of `typedb-bin` and that will
-result in an error. To prevent this use `apt show` as shown above to invoke an `apt install` command with the
+The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin`, so their
+version numbers might differ. By default, APT will look for the exact same version of `typedb-bin`,
+resulting in an error. To prevent this, use `apt show`, as shown above, to invoke an `apt install` command with the
 specific version for every package.
 
 // end::install-apt[]

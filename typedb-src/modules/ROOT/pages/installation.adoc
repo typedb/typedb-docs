@@ -12,7 +12,7 @@ Log in to https://cloud.typedb.com/[TypeDB Cloud] and add a new cloud deployment
 
 == TypeDB Enterprise
 
-Use the following guides to install and deploy TypeDB Enterprise cluster with Kubernetes:
+Use the following guides to install and deploy a TypeDB Enterprise cluster with Kubernetes:
 
 * xref:typedb::enterprise/install-and-run.adoc[]
 * xref:typedb::enterprise/kubernetes.adoc[]
@@ -36,7 +36,7 @@ include::partial$docker.adoc[tag=install]
 Windows::
 +
 --
-No package manager option for Windows. See the <<_manual>> section below.
+No package manager option is available for Windows. See the <<_manual>> section below.
 --
 
 Linux::
@@ -144,10 +144,11 @@ include::partial$macos.adoc[tag=stop]
 === After installation
 
 After the first installation of TypeDB, we highly recommend using our xref:quickstart-guide.adoc[]
-to set up a database and to try different types of queries.
+to set up a database and try different queries.
 //#todo Add TypeDB in 20 queries link
 
-Alternatively, you can explore the Fundamentals section for essential information of how TypeDB works:
+Alternatively, you can explore the Fundamentals section for essential information on TypeDB:
+//#todo Replace by new basics section
 xref:fundamentals/types.adoc[],
 xref:fundamentals/queries.adoc[],
 xref:fundamentals/patterns.adoc[],
