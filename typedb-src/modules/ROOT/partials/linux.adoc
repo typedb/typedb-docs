@@ -53,7 +53,7 @@ package version shown in the `Depends` field.
 To get some other version of TypeDB installed, we can use the `apt show typedb-server=2.14.1`, where `2.14.1` --
 version number, can be replaced with the version we need.
 . Install `typedb-server`, `typedb-console`, and `typedb-bin` packages using the versions from the previous command
-(server and console have the same version number. Here we will use `2.15.0` for example):
+(server and console have the same version number):
 +
 [,bash]
 ----
@@ -76,8 +76,7 @@ https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 . Get the latest release for Linux:
 include::typedb:resources:partial$latest-version.adoc[tag=lin]
 
-. Create a new directory, extract the contents of the `.zip` archive into the created directory
-(replace `~/Downloads/typedb-all-linux-{latest-version}.tar.gz` with the path to the downloaded archive):
+. Extract the archive into a new directory:
 +
 [,bash,subs=attributes+]
 ----
@@ -85,8 +84,7 @@ mkdir /opt/typedb
 tar -xzf ~/Downloads/typedb-all-linux-{latest-version}.tar.gz -C /opt/typedb
 ----
 
-. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory (replace `typedb-all-linux-{latest-version}`
-with the actual name of the extracted directory):
+. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
 [,bash,subs=attributes+]
 ----
@@ -97,20 +95,15 @@ ln -s /opt/typedb/typedb-all-linux-{latest-version}/typedb /usr/local/bin/typedb
 
 // tag::start[]
 
-Run the following command in a terminal:
-
 [,shell]
 ----
 typedb server
 ----
 
-TypeDB will run in the foreground. If the terminal running TypeDB is closed, TypeDB will be shut down. We
-recommend opening a new terminal to run TypeDB Console.
-
 // end::start[]
 
 // tag::stop[]
 
-Press kbd:[Ctrl+C] in the terminal running TypeDB.
+Close the terminal or press kbd:[Ctrl+C].
 
 // end::stop[]
