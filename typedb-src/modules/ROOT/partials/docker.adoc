@@ -1,21 +1,13 @@
 // tag::download&install[]
 
 Get the docker image from the https://hub.docker.com/r/vaticle/typedb/tags[Docker hub,window=_blank] or build it from
-https://github.com/vaticle/typedb/tags[source code,window=_blank] with bazel.
+https://github.com/vaticle/typedb/tags[source code,window=_blank] with Bazel.
 //docker_container_image
 
 // end::download&install[]
 
 // tag::install[]
 
-. Ensure https://docs.docker.com/get-docker/[Docker,window=_blank] is installed and running:
-+
-[,bash]
-----
-docker version
-----
-. Pull the latest TypeDB Docker image:
-+
 [,bash]
 ----
 docker pull vaticle/typedb:latest
@@ -25,26 +17,19 @@ docker pull vaticle/typedb:latest
 
 // tag::start[]
 
-The TypeDB container exposes TypeDB's default port, `1729`, and uses its default data directory,
-`/opt/typedb-all-linux/server/data`.
-
-The following command starts a named TypeDB container, maps its connection port to the host machine, and creates a
-docker volume named `try-typedb` mapped to the data directory -- making it persistent across container restarts.
-
 [,bash]
 ----
 docker run --name try-typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ----
 
 The `--platform linux/amd64` parameter is required to run the TypeDB container on macOS with the `ARM64`/`AArch64`
-architecture. Support for `linux/arm64` will be released in a future version of
-TypeDB.
+architecture.
+Support for `linux/arm64` will be released in a future version of TypeDB.
 
-The following variables should be noted and can be modified:
+The following parameters should be noted:
 
 * `try-typedb` -- the name of the container,
-* `try-typedb-data` -- the name of the volume to persist data,
-* `latest` -- the version of TypeDB.
+* `try-typedb-data` -- the name of the volume to persist data.
 
 // end::start[]
 
