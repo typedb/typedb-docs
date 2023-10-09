@@ -181,3 +181,4 @@ print("\nFile", filename_all, "write complete!")
 latest_downloads = generate_table_contents([versions[0]], tags=True)
 write_file(filename_latest, latest_downloads)
 print("\nFile", filename_latest, "write complete!")
+
