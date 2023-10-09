@@ -25,10 +25,12 @@ Here is a list of existing *TypeDB Clients*:
   ** xref:studio.adoc[TypeDB Studio]
   ** xref:console.adoc[TypeDB Console]
 * <<_typedb_drivers,TypeDB Drivers>>:
-  ** xref:java/java-overview.adoc[Java]
-  ** xref:python/python-overview.adoc[Python]
-  ** xref:node-js/node-js-overview.adoc[Node.js]
-  ** Rust (https://github.com/vaticle/typedb-client-rust[Under development,window=_blank])
+// tag::driver-list[]
+  ** xref:clients::rust/rust-overview.adoc[Rust]
+  ** xref:clients::python/python-overview.adoc[Python]
+  ** xref:clients::node-js/node-js-overview.adoc[Node.js]
+  ** xref:clients::java/java-overview.adoc[Java]
+// end::driver-list[]
 
 For other options, check the xref:other-languages.adoc[Community drivers],
 or consider xref:new-driver.adoc[creating a new client].
