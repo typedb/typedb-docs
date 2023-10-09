@@ -21,8 +21,8 @@ npm install typedb-client
 == Additional resources
 
 * xref:node-js/node-js-install.adoc#_version_compatibility[Version compatibility]
-* https://github.com/vaticle/typedb-client-nodejs[Node.js Driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-client-nodejs/releases[Releases,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/nodejs[Node.js Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 * https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
 [#_version_compatibility]
@@ -30,7 +30,13 @@ npm install typedb-client
 
 [cols="^.^2,^.^1,^.^2,^.^2,^.^2"]
 |===
-| Node.js Driver | Protocol version | TypeDB | TypeDB Enterprise & TypeDB Cloud | Node
+| Node.js Driver | Protocol encoding version | TypeDB | TypeDB Cloud & TypeDB Enterprise | Node
+
+| 2.24.14
+| 2
+| 2.24.12 to 2.24.14
+| 2.24.14
+| >= 14.15
 
 | 2.18.1, 2.18.2
 | 1

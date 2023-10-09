@@ -1,17 +1,7 @@
-= Kubernetes
-:keywords: typedb, cluster, kubernetes, cloud, deployment
-:longTailKeywords: typedb on kubernetes
-:pageTitle: Deploy TypeDB Cluster on Kubernetes
-:summary: Deploy TypeDB Cluster on Kubernetes
-
-== Deploying TypeDB Cluster onto Kubernetes
-
-This guide describes how to deploy a 3-node TypeDB Cluster onto Kubernetes using https://helm.sh/[Helm] package manager.
-
 [#_initial_setup]
-=== Initial Setup
+== Initial Setup
 
-First, create a secret to access TypeDB Cluster image on Docker Hub:
+First, create a secret to access TypeDB Enterprise image on Docker Hub:
 
 [,bash]
 ----
@@ -28,7 +18,7 @@ helm repo add vaticle https://repo.vaticle.com/repository/helm/
 
 *Create in-flight encryption certificates (optional)*
 
-This step is necessary if you wish to deploy TypeDB Cluster with in-flight encryption support.
+This step is necessary if you wish to deploy TypeDB Enterprise with in-flight encryption support.
 There are two certificates that need to be configured: external certificate (TLS) and internal certificate (Curve).
 The certificates need to be generated and then added to Kubernetes Secrets.
 
@@ -44,13 +34,13 @@ https://github.com/FiloSottile/mkcert/releases[`mkcert`]:
 
 Please note that an external certificate is always bound to URL address, not IP address.
 
-The internal certificate can be generated using the `create-encryption-mq-key.sh` tool bundled with TypeDB Cluster
+The internal certificate can be generated using the `create-encryption-mq-key.sh` tool bundled with TypeDB Enterprise
 distribution, which can be downloaded from
 https://repo.vaticle.com/#browse/browse:private-artifact:vaticle_typedb_cluster[repo.vaticle.com]:
 
 [,bash]
 ----
- $ # unpack distribution of TypeDB Cluster into `dist` folder
+ $ # unpack distribution of TypeDB Enterprise into `dist` folder
  $ ./dist/typedb-cluster-all-<platform>-<version>/tool/create-encryption-mq-key.sh
 ----
 
@@ -70,13 +60,13 @@ Additionally, the secret name in Kubernetes Secret needs to be identical to the 
 and contain exactly these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`,
 `mq-public-key`).
 
-=== Deployment Steps
+== Deployment Steps
 
 Once done, there are three alternative deployment modes that you can choose from: "Private Cluster", "Public Cluster",
 and "Public Cluster (Minikube)". Please see the explanation of each mode below in order to decide which one works best
 for your requirements.
 
-==== Deploying a Private Cluster
+=== Deploying a Private Cluster
 
 This deployment mode is preferred if your application is located within the same Kubernetes network as the cluster.
 In order to select this mode, ensure that the `exposed` flag is set to `false`.
@@ -110,7 +100,7 @@ Once the deployment has been completed, the servers would be accessible via the 
 network, ie., `typedb-cluster-0.typedb-cluster`, `typedb-cluster-1.typedb-cluster`, and
 `typedb-cluster-2.typedb-cluster`.
 
-==== Deploying a Public Cluster
+=== Deploying a Public Cluster
 
 If you need to access the cluster from outside of Kubernetes, then use this deployment mode. For example, this would be
 the suitable mode if you need to access the cluster from Studio or Console running on your local machine.
@@ -175,7 +165,7 @@ typedb-cluster-1.typedb-cluster.example.com => public IP/hostname of typedb-clus
 typedb-cluster-2.typedb-cluster.example.com => public IP/hostname of typedb-cluster-2 service
 ----
 
-==== Deploying a Public Cluster (Minikube)
+=== Deploying a Public Cluster (Minikube)
 
 Use this deployment mode for setting up a development cluster in your local machine. However, please note that in-flight
 encryption _cannot_ be enabled in this configuration.
@@ -205,11 +195,11 @@ deployment modes:
 * Minikube only has a single node, so `singlePodPerNode` needs to be set to `false`
 * Minikube's node only has as much CPUs as the local machine:
   `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-   Therefore, for deploying a 3-node TypeDB Cluster to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
+   Therefore, for deploying a 3-node TypeDB Enterprise to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
 as total storage required is `storage.size` multiplied by `replicas`. In our example, total storage requirement is 30Gi.
 
-=== Configuration Reference
+== Configuration Reference
 
 Configurable settings for Helm package include:
 
@@ -223,46 +213,46 @@ Configurable settings for Helm package include:
 
 | `replicas`
 | `3`
-| Number of TypeDB Cluster nodes to run
+| Number of TypeDB Enterprise nodes to run
 
 | `cpu`
 | `7`
-| How many CPUs should be allocated for each TypeDB Cluster node
+| How many CPUs should be allocated for each TypeDB Enterprise node
 
 | `storage.size`
 | `100Gi`
-| How much disk space should be allocated for each TypeDB Cluster node
+| How much disk space should be allocated for each TypeDB Enterprise node
 
 | `storage.persistent`
 | `true`
-| Whether TypeDB Cluster should use a persistent volume to store data
+| Whether TypeDB Enterprise should use a persistent volume to store data
 
 | `singlePodPerNode`
 | `true`
-| Whether TypeDB Cluster pods should be scheduled to different Kubernetes nodes
+| Whether TypeDB Enterprise pods should be scheduled to different Kubernetes nodes
 
 | `exposed`
 | `false`
-| Whether TypeDB Cluster supports connections via public IP/hostname (outside of Kubernetes network)
+| Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network)
 
 | `javaopts`
 | `null`
-| JVM options that controls various runtime aspects of TypeDB Cluster (e.g., `-Xmx`, `-Xms`)
+| JVM options that controls various runtime aspects of TypeDB Enterprise (e.g., `-Xmx`, `-Xms`)
 
 | `logstash.enabled`
 | `false`
-| Whether TypeDB Cluster pushes logs into Logstash
+| Whether TypeDB Enterprise pushes logs into Logstash
 
 | `logstash.uri`
 | `localhost:5044`
 | Hostname and port of a Logstash daemon accepting log records
 |===
 
-=== Troubleshooting
+== Troubleshooting
 
 These are the common error scenarios and how to troubleshoot them:
 
-==== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
+=== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
 
 This means the secret to pull the image from Docker Hub has not been created.
 Make sure you've followed <<_initial_setup,Initial Setup>> instructions and verify that the pull secret is present by
@@ -275,7 +265,7 @@ executing `kubectl get secret/private-docker-hub`. Correct state looks like this
  private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
 ----
 
-==== One or more pods of TypeDB Cluster are stuck in `Pending` state
+=== One or more pods of TypeDB Enterprise are stuck in `Pending` state
 
 This might mean pods requested more resources than available. To check if that's the case, run
 `kubectl describe pod/typedb-cluster-0` on a stuck pod (e.g. `typedb-cluster-0`). Error message similar to
@@ -283,13 +273,13 @@ This might mean pods requested more resources than available. To check if that's
 `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
 indicates that `cpu` or `storage.size` values need to be decreased.
 
-==== One or more pods of TypeDB Cluster are stuck in `CrashLoopBackOff` state
+=== One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
 
-This might indicate any misconfiguration of TypeDB Cluster. Please obtain the logs by executing
-`kubectl logs pod/typedb-cluster-0` and share them with TypeDB Cluster developers.
+This might indicate any misconfiguration of TypeDB Enterprise. Please obtain the logs by executing
+`kubectl logs pod/typedb-cluster-0` and share them with TypeDB Enterprise developers.
 
-=== Current Limitations
+== Current Limitations
 
 Deployment has several limitations which shall be resolved in the future:
 
-* TypeDB Cluster doesn't support dynamic reconfiguration of node count without restarting all of the nodes.
+* TypeDB Enterprise doesn't support dynamic reconfiguration of node count without restarting all of the nodes.

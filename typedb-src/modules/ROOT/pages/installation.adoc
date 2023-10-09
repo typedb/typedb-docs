@@ -1,4 +1,4 @@
-= Download & Install
+= Install and Run
 :keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker
 :longTailKeywords: typedb on linux, typedb on mac, typedb on windows, start typedb server
 :pageTitle: Installation
@@ -6,10 +6,21 @@
 :tabs-sync-option:
 :experimental:
 
+== TypeDB Cloud
+
+Log in to https://cloud.typedb.com/[TypeDB Cloud] and add a new cloud deployment.
+
+== TypeDB Enterprise
+
+Use the xref:admin/enterprise-deployment.adoc[] guide
+to install and deploy a TypeDB Enterprise cluster with Kubernetes.
+
+== TypeDB Core
+
 [#_install]
 
 [#_package]
-== Install with a package manager
+=== Install with a package manager
 
 [tabs]
 ====
@@ -22,7 +33,7 @@ include::partial$docker.adoc[tag=install]
 Windows::
 +
 --
-No package manager option for Windows. See the <<_manual>> section below.
+No package manager option is available for Windows. See the <<_manual>> section below.
 --
 
 Linux::
@@ -39,7 +50,7 @@ include::partial$macos.adoc[tag=install-homebrew]
 ====
 
 [#_manual]
-== Download and install manually
+=== Download and install manually
 
 [tabs]
 ====
@@ -68,7 +79,8 @@ include::partial$macos.adoc[tag=install-manual]
 --
 ====
 
-== Start the server
+[#_start_the_server]
+=== Start the server
 
 [tabs]
 ====
@@ -97,7 +109,7 @@ include::partial$macos.adoc[tag=start]
 --
 ====
 
-== Stop the server
+=== Stop the server
 
 [tabs]
 ====
@@ -126,12 +138,17 @@ include::partial$macos.adoc[tag=stop]
 --
 ====
 
-== After installation
+=== After installation
 
-After the very first installation of TypeDB we recommend using our xref:quickstart.adoc[Quickstart guide]
-to set up a database and try different types of queries with xref:clients::studio.adoc[TypeDB Studio].
+After the first installation of TypeDB, we highly recommend using our xref:quickstart-guide.adoc[]
+to set up a database and try different queries.
+//#todo Add TypeDB in 20 queries link
 
-Alternatively, any other xref:clients::clients.adoc[TypeDB Client] can be used to connect to a TypeDB server.
+Alternatively, you can explore the Fundamentals section for essential information on TypeDB:
+//#todo Replace by new basics section
+xref:fundamentals/types.adoc[],
+xref:fundamentals/queries.adoc[],
+xref:fundamentals/patterns.adoc[],
+and xref:fundamentals/inference.adoc[].
 
-To learn more about TypeDB check the Fundamentals section, starting from the
-xref:typedb::fundamentals/types.adoc[Type system] page.
+To learn more about how to connect to TypeDB, see the xref:development/connect.adoc[] page.

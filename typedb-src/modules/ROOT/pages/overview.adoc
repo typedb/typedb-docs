@@ -4,56 +4,66 @@
 :pageTitle: Documentation overview
 :summary: A birds-eye view of TypeQL and TypeDB
 
-This is the TypeDB server documentation section. It has the following sections:
+Welcome to the TypeDB technical documentation.
 
-* xref:introduction.adoc[] -- a brief description of TypeDB capabilities
+Check the layout of the TypeDB documentation below.
+
+== Get started
+
+* xref:introduction.adoc[] -- a brief description of TypeDB and its capabilities
 * xref:installation.adoc[] -- TypeDB server installation manual
-* xref:quickstart.adoc[] -- a guide to quickly set up a TypeDB database
+* xref:quickstart-guide.adoc[] -- a guide to quickly set up a TypeDB database
 
-* *Fundamentals*
+[#_fundamentals]
+== Fundamentals
+
 ** xref:fundamentals/types.adoc[] -- essential information on types and inheritance
 ** xref:fundamentals/queries.adoc[] -- essential information on queries
 ** xref:fundamentals/patterns.adoc[] -- essential information on pattern matching
 ** xref:fundamentals/inference.adoc[] -- essential information on rules and reasoning (inference)
 
-* *Development*
- ** xref:development/connect.adoc[] -- TypeDB server and database connections
- ** xref:development/schema.adoc[] -- database schema definition
- ** xref:development/write.adoc[] -- writing data queries
- ** xref:development/read.adoc[] -- reading data queries
- ** xref:development/infer.adoc[] -- data inference queries
- ** xref:development/response.adoc[] -- query response formats
- ** xref:development/api.adoc[] -- brief description of TypeDB Driver API and TypeDB Drivers
+[#_development]
+== Development
+
+** xref:development/connect.adoc[] -- TypeDB server and database connections
+** xref:development/schema.adoc[] -- database schema definition
+** xref:development/write.adoc[] -- writing data queries
+** xref:development/read.adoc[] -- reading data queries
+** xref:development/infer.adoc[] -- data inference queries
+** xref:development/response.adoc[] -- query response formats
+** xref:development/api.adoc[] -- brief description of TypeDB Driver API and TypeDB Drivers
 // #todo Consider moving API to Clients section with tabs
- ** xref:development/best.adoc[] -- schema and query design tips
-* *Operations*
- ** xref:admin/configuration.adoc[] -- TypeDB server configuration parameters and host machine requirements
- ** xref:admin/export-import.adoc[] -- exporting and importing database schema and data
- ** xref:admin/update.adoc[] -- how to migrate to a newer version of TypeDB
- ** xref:admin/ha.adoc[] -- description of TypeDB high availability features
- ** xref:admin/security.adoc[] -- description of TypeDB security features
-* *Tutorials*
- ** xref:tutorials/iam-schema.adoc[] -- a brief description of IAM schema that is widely used throughout the documentation
- ** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js
- ** xref:tutorials/data-migration.adoc[] -- how to load a dataset from an intermediate input format
- into a TypeDB database
- ** xref:tutorials/new-driver-tutorial.adoc[New client] -- how to create a new client
+** xref:development/best.adoc[] -- schema and query design tips
+
+[#_operations]
+== Operations
+
+** xref:admin/configuration.adoc[] -- TypeDB server configuration parameters and host machine requirements
+** xref:admin/export-import.adoc[] -- exporting and importing database schema and data
+** xref:admin/update.adoc[] -- how to migrate to a newer version of TypeDB
+** xref:admin/ha.adoc[] -- description of TypeDB high availability features
+** xref:admin/security.adoc[] -- description of TypeDB security features
+
+[#_tutorials]
+== Tutorials
+
+** xref:tutorials/iam-schema.adoc[] -- a brief description of IAM schema that is widely used throughout the documentation
+** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js
+** xref:tutorials/data-migration.adoc[] -- how to load a dataset from an intermediate input format
+into a TypeDB database
+// ** xref:tutorials/new-driver-tutorial.adoc[New client] -- how to create a new client
 
 == Where to go from here?
 
-For a birds-eye view of the TypeDB features, see the xref:introduction.adoc[] page.
+What is TypeDB? See the xref:introduction.adoc[] page.
 
-For a more practical approach — xref:installation.adoc[install] a TypeDB server and use our xref:quickstart.adoc[] to
-set up a TypeDB environment to explore its capabilities further.
+Then xref:installation.adoc[install] TypeDB and use xref:quickstart-guide.adoc[] to try it yourself.
 
-Upon setting up a working TypeDB environment, we recommend to explore the following:
+To learn more about TypeDB, check the major sections of the documentation:
 
-* the *Fundamentals* section for essential knowledge about TypeDB,
-* the *Development* section for the in-detail documentation of the TypeDB development workflow,
-* the *Operations* section for the instructions for setting up a production environment,
-* or the *Tutorials* section for how-to guides and the xref:tutorials/iam-schema.adoc[].
+* the <<_fundamentals,Fundamentals>> for essential knowledge about TypeDB,
+* the <<_development,Development>> for the in-detail documentation of the TypeDB development workflow,
+* the <<_operations,Operations>> for the instructions for setting up a production environment, or
+* the <<_tutorials,Tutorials>> for how-to guides and the xref:tutorials/iam-schema.adoc[].
 
-There are separate documentation sections for:
-
-* xref:clients::clients.adoc[TypeDB Clients]
-* xref:typeql::overview.adoc[TypeQL]
+Check our documentation for xref:typeql::overview.adoc[TypeQL] and xref:clients::clients.adoc[TypeDB Clients].

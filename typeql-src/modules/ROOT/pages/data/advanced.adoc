@@ -145,7 +145,7 @@ the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
 match $t sub thing;
 ----
 
-include::typedb::quickstart.adoc[tag=thing_deprecation]
+include::typedb::partial$thing-warning.adoc[]
 
 [#_specific_type_or_nested_subtype]
 ===== Specific type or nested subtype
@@ -257,7 +257,7 @@ match $t isa thing;
 
 For more information on `thing` type see the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
 
-include::typedb::quickstart.adoc[tag=thing_deprecation]
+include::typedb::partial$thing-warning.adoc[]
 
 [#_entity_matching]
 ==== Entity matching
