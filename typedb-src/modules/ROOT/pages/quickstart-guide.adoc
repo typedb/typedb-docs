@@ -31,123 +31,40 @@ xref:installation.adoc#_install[installed,window=_blank] and
 xref:installation.adoc#_start_the_server[running,window=_blank].
 
 [#_typedb_client]
-== Select a TypeDB Client to proceed
+== Run TypeDB Studio
 
-Choose either TypeDB Console (CLI) or TypeDB Studio (GUI) in the tabs below and complete all the steps.
-We recommend familiarizing yourself with at least one of these two Clients, before trying to start developing
-your own application with language-specific TypeDB Drivers.
-
-[tabs]
-====
-TypeDB Console::
-+
---
-TypeDB Console is a TypeDB Client with CLI that is distributed and installed with TypeDB by default.
-
-image::typedb::quickstart-console.png[TypeDB Console, width = 75%, link=self]
-
-For more information on how to use it, see the xref:clients:ROOT:console.adoc[,window=_blank] page.
---
-TypeDB Studio::
-+
---
-TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
-xref:clients:ROOT:studio.adoc#_download_install[installed]
+xref:clients:ROOT:studio.adoc[TypeDB Studio,window=_blank] is a standalone TypeDB Client with GUI that needs to be
+xref:clients:ROOT:studio.adoc#_download_install[installed,window=_blank]
 and launched separately from a TypeDB server.
 
 image::typedb::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
-For more information on how to use it, see the xref:clients:ROOT:studio.adoc[,window=_blank] page.
---
-====
-
 == Connect to TypeDB
-
-[tabs]
-====
-TypeDB Console::
-+
---
-By default, TypeDB Console will try to connect to `localhost:1729`.
-
-.Server connection example
-[,bash]
-----
-typedb console --server 127.0.0.1:1729
-----
-
-.Cluster connection example (TLS encryption enabled)
-[,bash]
-----
-typedb console --cluster=i0.deployment-a4fa2444.cloud.typedb.com:1729 --username=admin --password --tls-enabled --tls-root-ca="/Users/username/typedb-cloud/typedb-cloud-root-ca.pem"
-----
---
-TypeDB Studio::
-+
---
-For TypeDB Core connection:
 
 . Click btn:[Connect to TypeDB] on the right side of the toolbar.
 //. Ensure the `TypeDB` option is selected in the *Server* field.
 // We don't need that, because it is selected by default after new installation of Studio
 . Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
 
-For TypeDB Cloud or TypeDB Enterprise connection:
-
-. Click btn:[Connect to TypeDB] on the right side of the toolbar.
-. Select the `TypeDB Cluster` option in the *Server* field.
-. Click btn:[Manage Cluster Addresses] and add the address for each known TypeDB Enterprise server in a cluster.
-. Fill all other fields with appropriate information and click the btn:[Connect] button.
+== Select a project folder
 
 Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as a
 xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by clicking either:
 
 * btn:[Open Project] in the *Project* panel (upper left); or
 * Folder icon (the first icon on the top toolbar).
---
-====
 
 == Create a new database
 
-[tabs]
-====
-TypeDB Console::
-+
---
-Assuming TypeDB server or cluster is running locally run:
-
-[,bash]
-----
-typedb console --command="database create try-iam"
-----
---
-TypeDB Studio::
-+
---
-. Click the database icon (third button on the top toolbar).
+. Click the database icon (the third button in the top toolbar).
 +
 image::studio-database.png[Database Manager button,width = 50%,link=self]
 . Enter `try-iam` and click btn:[Create].
 . Select `try-iam` from the database dropdown (to the right of the database icon).
---
-====
 
 [#_define_a_schema_from_a_file]
 == Define a schema from a file
 
-[tabs]
-====
-TypeDB Console::
-+
---
-[,bash]
-----
-typedb console --command="transaction try-iam schema write" --command="source iam-schema.tql" --command="commit"
-----
---
-TypeDB Studio::
-+
---
 Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file in TypeDB Studio.
 
 Execute the Define query from the file:
@@ -156,26 +73,11 @@ Execute the Define query from the file:
   the Transaction toggle (`write` / `read`) is set to `write`.
 . Click btn:[Run Query].
 . When the query has completed, click btn:[Commit Transaction].
---
-====
 
 Now that the schema has been defined, data can be inserted into the database.
 
 == Load data from a file
 
-[tabs]
-====
-TypeDB Console::
-+
---
-[,bash]
-----
-typedb console --command="transaction try-iam data write" --command="source iam-data.tql" --command="commit"
-----
---
-TypeDB Studio::
-+
---
 Open the xref:attachment$iam-data.tql[iam-data.tql] file from the Project panel.
 
 Execute all Insert queries from the file:
@@ -183,14 +85,12 @@ Execute all Insert queries from the file:
 . Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
 . Execute all queries in the file by clicking btn:[Run Query].
 . When the queries have completed, click btn:[Commit Transaction].
---
-====
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
 == Finish
 
-Congratulations on completing the TypeDB quickstart!
+Congratulations on completing the TypeDB quickstart guide!
 Now you can try sending your first queries to the database.
 We have prepared some simple <<_query_examples,query examples>> for you to try.
 
