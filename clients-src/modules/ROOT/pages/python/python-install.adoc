@@ -12,20 +12,26 @@ depending on the TypeDB server version being used.
 
 == Install
 
-To install TypeDB Python Driver (or TypeDB Client for Python):
+To install TypeDB Python Driver:
 
+[,bash]
+----
+pip install typedb-driver
+----
+
+.See command for older versions (<2.24.0)
+[%collapsible]
+====
+[,bash]
 ----
 pip install typedb-client
 ----
-
-[NOTE]
-====
-If there is an error or multiple Python versions are installed, try to replace the `pip` command with the `pip3`.
 ====
 
 == Additional resources
 
 * xref:python/python-install.adoc#_version_compatibility[Version compatibility]
+* https://pypi.org/project/typedb-driver/[Pypi page for the TypeDB Driver,window=_blank]
 * https://github.com/vaticle/typedb-driver/tree/development/python[Python Driver on GitHub,window=_blank]
 * https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 * https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
