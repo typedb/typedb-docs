@@ -47,7 +47,7 @@ responses.
 .How to build this diagram from the source code
 [%collapsible]
 ====
-1. Clone the TypeDB Java driver https://github.com/vaticle/typedb-client-java[repository,window=_blank].
+1. Clone the TypeDB Driver https://github.com/vaticle/typedb-driver[repository,window=_blank].
 2. Ensure https://bazel.build/start[Bazel] is installed.
 3. Use the following command to gather info on call dependencies:
 +
@@ -276,14 +276,15 @@ Scenario: commit in a read transaction throws
 
 == Conclusion
 
-A driver is considered production-ready once it passes all the <<_behavioral_testing,tests>> and adheres to the
+A Driver is considered production-ready once it passes all the <<_behavioral_testing,tests>> and adheres to the
 TypeDB architecture.
 
 Check the xref:typedb::tutorials/new-driver-tutorial.adoc[How to build a new TypeDB Driver]
 tutorial to see some examples. For more information, see the source codes of our TypeDB Drivers:
-https://github.com/vaticle/typedb-client-java[Java,window=_blank],
-https://github.com/vaticle/typedb-client-python[Python,window=_blank],
-https://github.com/vaticle/typedb-client-nodejs[Node.js,window=_blank].
+https://github.com/vaticle/typedb-driver/tree/development/rust[Rust,window=_blank],
+https://github.com/vaticle/typedb-driver/tree/development/python[Python,window=_blank],
+https://github.com/vaticle/typedb-driver/tree/development/java[Java,window=_blank], and
+https://github.com/vaticle/typedb-driver/tree/development/nodejs[Node.js,window=_blank].
 
 Do get in touch with the Vaticle team on https://vaticle.com/discord[Discord,window=_blank].
 We're happy to help speed up the development process.

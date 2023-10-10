@@ -12,11 +12,21 @@ depending on the TypeDB server version being used.
 
 == Install
 
-To install TypeDB Node.js Driver (or TypeDB Client for Node.js):
+To install TypeDB Node.js Driver:
 
+[,bash]
+----
+npm install typedb-driver
+----
+
+.See command for older versions (<2.24.0)
+[%collapsible]
+====
+[,bash]
 ----
 npm install typedb-client
 ----
+====
 
 == Additional resources
 
