@@ -10,23 +10,9 @@ This Quickstart guide shows how to set up a TypeDB database and run queries.
 
 == Prerequisites
 
-[#_download_sample_data]
-=== Download schema and data
-
-For this Quickstart guide, you need to download and use the following files:
-
-[#_iam_schema]
-* link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[iam-schema.tql,window=_blank]
-  -- The TypeQL Define query for the IAM schema.
-//* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL Define query for the IAM schema.
-[#_iam_microdataset]
-* link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[iam-data.tql,window=_blank]
-  -- TypeQL Insert queries for a sample dataset for the IAM schema.
-//* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL Insert queries for a minimal dataset for the IAM schema.
-
 === Install and run TypeDB
 
-Ensure you have TypeDB server (or cluster)
+Ensure you have TypeDB Core server is
 xref:installation.adoc#_install[installed,window=_blank] and
 xref:installation.adoc#_start_the_server[running,window=_blank].
 
@@ -48,8 +34,8 @@ image::typedb::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
 == Select a project folder
 
-Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as a
-xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by clicking either:
+Select a xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank]
+to store project files by clicking either:
 
 * btn:[Open Project] in the *Project* panel (upper left); or
 * Folder icon (the first icon on the top toolbar).
@@ -65,10 +51,12 @@ image::studio-database.png[Database Manager button,width = 50%,link=self]
 [#_define_a_schema_from_a_file]
 == Define a schema from a file
 
-Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file in TypeDB Studio.
-
-Execute the Define query from the file:
-
+. Open a new tab and copy-paste the following Define query:
++
+[,typeql]
+----
+include::attachment$iam-schema.tql[]
+----
 . Ensure the Session toggle (`schema` / `data`) is set to `schema` and
   the Transaction toggle (`write` / `read`) is set to `write`.
 . Click btn:[Run Query].
@@ -78,10 +66,12 @@ Now that the schema has been defined, data can be inserted into the database.
 
 == Load data from a file
 
-Open the xref:attachment$iam-data.tql[iam-data.tql] file from the Project panel.
-
-Execute all Insert queries from the file:
-
+. Open a new tab and copy-paste the following Insert queries:
++
+[,typeql]
+----
+include::attachment$iam-data.tql[]
+----
 . Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
 . Execute all queries in the file by clicking btn:[Run Query].
 . When the queries have completed, click btn:[Commit Transaction].
@@ -93,12 +83,6 @@ Assuming there were no errors in the process, the data is persisted in the datab
 Congratulations on completing the TypeDB quickstart guide!
 Now you can try sending your first queries to the database.
 We have prepared some simple <<_query_examples,query examples>> for you to try.
-
-[NOTE]
-====
-The IAM schema and data from this Quickstart guide are used throughout the documentation.
-To learn more about the schema itself, check the xref:typedb::tutorials/iam-schema.adoc[] page.
-====
 
 To learn about TypeDB's advanced and unique features such as
 polymorphic queries,
@@ -113,8 +97,8 @@ and n-ary relations, we recommend you check the <<_learn_more>> section.
 
 Try sending the following queries:
 
-* <<#_get_query__retrieve_all_data>>
-* <<#_get_query__retrieve_all_schema_types>>
+* <<#_get_query__list_people>>
+* <<#_get_query__all_instances_and_attributes>>
 * <<#_get_query__get_all_emails_of_kevin>>
 * <<#_insert_query__add_a_new_email_for_kevin>>
 * <<#_update_query__change_the_newly_added_email_for_kevin>>
@@ -124,24 +108,29 @@ Try sending the following queries:
 For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL] documentation.
 //#todo Add the TypeDB in 20 queries page link
 
-[#_get_query__retrieve_all_data]
-=== Get all data
+[#_get_query__list_people]
+=== Get a list of all people with their emails
 
-To xref:typedb::development/read.adoc#_get[get] all data from a database:
-
-[,typeql]
-----
-match $t isa thing;
-----
-
-[#_get_query__retrieve_all_schema_types]
-=== Get all types
-
-To xref:typedb::development/read.adoc#_get[get] all types from a schema of a database:
+To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with their full names and emails:
 
 [,typeql]
 ----
-match $t sub thing;
+match
+    $p isa person,
+        has full-name $f,
+        has email $e;
+----
+
+[#_get_query__all_instances_and_attributes]
+=== Get all instances of a type with all attributes owned
+
+To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with all attributes owned:
+
+[,typeql]
+----
+match
+    $p isa person,
+        has $a;
 ----
 
 [#_get_query__get_all_emails_of_kevin]
