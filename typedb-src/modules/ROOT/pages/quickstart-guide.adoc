@@ -12,7 +12,7 @@ This Quickstart guide shows how to set up a TypeDB database and run queries.
 
 === Install and run TypeDB
 
-Ensure you have TypeDB Core server is
+Ensure you have TypeDB Core server
 xref:installation.adoc#_install[installed,window=_blank] and
 xref:installation.adoc#_start_the_server[running,window=_blank].
 
@@ -43,17 +43,17 @@ to store project files by clicking either:
 . Click the database icon (the third button in the top toolbar).
 +
 image::studio-database.png[Database Manager button,width = 50%,link=self]
-. Enter `try-iam` and click btn:[Create].
-. Select `try-iam` from the database dropdown (to the right of the database icon).
+. Enter `try-studio` and click btn:[Create].
+. Select `try-studio` from the database dropdown (to the right of the database icon).
 
-[#_define_a_schema_from_a_file]
-== Define a schema from a file
+[#_define_a_schema]
+== Define a schema
 
 . Open a new tab and copy-paste the following Define query:
 +
 [,typeql]
 ----
-include::attachment$iam-schema.tql[]
+include::attachment$quickstart-schema.tql[]
 ----
 . Ensure the Session toggle (`schema` / `data`) is set to `schema` and
   the Transaction toggle (`write` / `read`) is set to `write`.
@@ -62,13 +62,13 @@ include::attachment$iam-schema.tql[]
 
 Now that the schema has been defined, data can be inserted into the database.
 
-== Load data from a file
+== Load data
 
 . Open a new tab and copy-paste the following Insert queries:
 +
 [,typeql]
 ----
-include::attachment$iam-data.tql[]
+include::attachment$quickstart-data.tql[]
 ----
 . Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
 . Execute all queries in the file by clicking btn:[Run Query].
@@ -203,6 +203,81 @@ match
     $fn contains "Kevin";
     $e = "kevin2@gmail.com";
 delete $p has $e;
+----
+
+== Repeat with TypeDB Console
+
+[#_console_run]
+=== Run TypeDB Console
+
+[,bash]
+----
+typedb console
+----
+
+xref:clients::console.adoc[TypeDB Console] is usually distributed with TypeDB.
+You can find it with the TypeDB installed.
+
+[#_console_connect]
+=== Connect to TypeDB
+
+By default, TypeDB Console connects to the `localhost:1729` address.
+Upon connection, it shows a prompt for a CLI input.
+
+[#_console_create_db]
+=== Create a new database
+
+[,bash]
+----
+database create try-console
+----
+
+[#_console_define_a_schema]
+=== Define a schema
+
+. Open a transaction:
++
+[,bash]
+----
+transaction try-console schema write
+----
+. Run query:
++
+[,bash]
+----
+include::attachment$quickstart-schema.tql[]
+----
++
+Press btn:[Enter] twice to send the query.
+. Commit:
++
+[,bash]
+----
+commit
+----
+
+[#_console_load_data]
+=== Load data
+
+. Open a transaction:
++
+[,bash]
+----
+transaction try-console data write
+----
+. Run queries:
++
+[,bash]
+----
+include::attachment$quickstart-data.tql[]
+----
++
+Press btn:[Enter] twice to send the query.
+. Commit:
++
+[,bash]
+----
+commit
 ----
 
 [#_learn_more]
