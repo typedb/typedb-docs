@@ -27,6 +27,8 @@ image::typedb::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
 == Connect to TypeDB
 
+TypeDB Studio needs a network connection to a TypeDB server to manage databases and send queries:
+
 . Click btn:[Connect to TypeDB] on the right side of the toolbar.
 . Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
 
@@ -40,6 +42,8 @@ to store project files by clicking either:
 
 == Create a new database
 
+Create a database to play with:
+
 . Click the database icon (the third button in the top toolbar).
 +
 image::studio-database.png[Database Manager button,width = 50%,link=self]
@@ -48,6 +52,8 @@ image::studio-database.png[Database Manager button,width = 50%,link=self]
 
 [#_define_a_schema]
 == Define a schema
+
+A new database needs a schema before we can load any data:
 
 . Open a new tab and copy-paste the following Define query:
 +
@@ -63,6 +69,8 @@ include::attachment$quickstart-schema.tql[]
 Now that the schema has been defined, data can be inserted into the database.
 
 == Load data
+
+Now let's insert some sample data into the newly created database to be able to query in future steps:
 
 . Open a new tab and copy-paste the following Insert queries:
 +
@@ -207,6 +215,9 @@ delete $p has $e;
 
 == Repeat with TypeDB Console
 
+xref:clients::console.adoc[TypeDB Console] is usually distributed with TypeDB.
+You can find it with the TypeDB installed.
+
 [#_console_run]
 === Run TypeDB Console
 
@@ -214,9 +225,6 @@ delete $p has $e;
 ----
 typedb console
 ----
-
-xref:clients::console.adoc[TypeDB Console] is usually distributed with TypeDB.
-You can find it with the TypeDB installed.
 
 [#_console_connect]
 === Connect to TypeDB
