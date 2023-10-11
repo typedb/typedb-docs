@@ -1,0 +1,141 @@
+= Python Driver API reference
+:Summary: API Reference of TypeDB Driver for Python.
+:keywords: typedb, driver python
+:longTailKeywords: typedb python driver, typedb client python, python driver, API reference
+:pageTitle: Python Driver API reference
+//:toc: macro
+//:toclevels: 4
+
+//Python Driver API reference consists of two sections:
+
+////
+* connection
+* database
+* session
+* transaction
+* query
+* answer
+* concept
+* logic
+* user
+* common
+////
+
+////
+.See the full table of contents for this page
+[%collapsible]
+====
+toc::[]
+====
+////
+
+== Connection
+
+include::clients::partial$python3/connection/TypeDBDriver.adoc[]
+
+include::clients::partial$python3/connection/TypeDBCredential.adoc[]
+
+== Database
+
+include::clients::partial$python3/database/Database.adoc[]
+
+include::clients::partial$python3/database/DatabaseManager.adoc[]
+
+include::clients::partial$python3/database/Replica.adoc[]
+
+== Session
+
+include::clients::partial$python3/session/TypeDBSession.adoc[]
+
+include::clients::partial$python3/session/SessionType.adoc[]
+
+== Transaction
+
+include::clients::partial$python3/transaction/TypeDBTransaction.adoc[]
+
+include::clients::partial$python3/transaction/TransactionType.adoc[]
+
+include::clients::partial$python3/transaction/TypeDBOptions.adoc[]
+
+== Query
+
+include::clients::partial$python3/query/QueryManager.adoc[]
+
+include::clients::partial$python3/query/QueryErrorMessage.adoc[]
+
+== Answer
+
+include::clients::partial$python3/answer/ConceptMapGroup.adoc[]
+
+include::clients::partial$python3/answer/ConceptMap.adoc[]
+
+include::clients::partial$python3/answer/NumericGroup.adoc[]
+
+include::clients::partial$python3/answer/Numeric.adoc[]
+
+== Concept
+
+include::clients::partial$python3/concept/Concept.adoc[]
+
+include::clients::partial$python3/concept/ConceptManager.adoc[]
+
+== Types
+
+include::clients::partial$python3/schema/Type.adoc[]
+
+include::clients::partial$python3/schema/Label.adoc[]
+
+include::clients::partial$python3/schema/ThingType.adoc[]
+
+include::clients::partial$python3/schema/EntityType.adoc[]
+
+include::clients::partial$python3/schema/RelationType.adoc[]
+
+include::clients::partial$python3/schema/RoleType.adoc[]
+
+include::clients::partial$python3/schema/AttributeType.adoc[]
+
+include::clients::partial$python3/schema/Annotation.adoc[]
+
+include::clients::partial$python3/schema/Transitivity.adoc[]
+
+include::clients::partial$python3/schema/ValueType.adoc[]
+
+== Data
+
+include::clients::partial$python3/data/Thing.adoc[]
+
+include::clients::partial$python3/data/Entity.adoc[]
+
+include::clients::partial$python3/data/Relation.adoc[]
+
+include::clients::partial$python3/data/Attribute.adoc[]
+
+include::clients::partial$python3/data/Value.adoc[]
+
+== Logic
+
+include::clients::partial$python3/logic/LogicManager.adoc[]
+
+include::clients::partial$python3/logic/Rule.adoc[]
+
+== Explanation
+
+include::clients::partial$python3/explanation/Explanation.adoc[]
+
+include::clients::partial$python3/explanation/Explainables.adoc[]
+
+include::clients::partial$python3/explanation/Explainable.adoc[]
+
+== User
+
+include::clients::partial$python3/user/User.adoc[]
+
+include::clients::partial$python3/user/UserManager.adoc[]
+
+== Errors
+
+include::clients::partial$python3/errors/ErrorMessage.adoc[]
+include::clients::partial$python3/errors/DriverErrorMessage.adoc[]
+include::clients::partial$python3/errors/ConceptErrorMessage.adoc[]
+include::clients::partial$python3/errors/InternalErrorMessage.adoc[]
