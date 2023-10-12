@@ -5,7 +5,7 @@
 brew install typedb
 ----
 
-For older versions (prior to `2.19.0`) and `ARM64`/`AArch64` architecture (e.g., a MacBook with the `M1` processor),
+For older versions (prior to `2.19.0`) and `arm64` architecture (e.g., a MacBook with the `M1` processor),
 we don't recommend using Homebrew; see the
 https://forum.vaticle.com/t/running-typedb-on-an-m1-macbook/[Running TypeDB on an M1 MacBook,window=_blank] and
 use the <<_manual,manual>> installation instead.
@@ -14,7 +14,7 @@ use the <<_manual,manual>> installation instead.
 
 // tag::install-manual[]
 
-TypeDB runs natively on both `ARM` and `Intel` architectures.
+TypeDB runs natively on both `arm64` and `x86_64` architectures.
 For the best performance, make sure both TypeDB and Java SDK match your native architecture and don't run via
 https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta].
 

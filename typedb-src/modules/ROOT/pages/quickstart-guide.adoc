@@ -10,195 +10,85 @@ This Quickstart guide shows how to set up a TypeDB database and run queries.
 
 == Prerequisites
 
-[#_download_sample_data]
-=== Download schema and data
-
-For this Quickstart guide, you need to download and use the following files:
-
-[#_iam_schema]
-* link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[iam-schema.tql,window=_blank]
-  -- The TypeQL Define query for the IAM schema.
-//* xref:attachment$iam-schema.tql[iam-schema.tql] -- The TypeQL Define query for the IAM schema.
-[#_iam_microdataset]
-* link:https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[iam-data.tql,window=_blank]
-  -- TypeQL Insert queries for a sample dataset for the IAM schema.
-//* xref:attachment$iam-data.tql[iam-data.tql] -- TypeQL Insert queries for a minimal dataset for the IAM schema.
-
 === Install and run TypeDB
 
-Ensure you have TypeDB server (or cluster)
+Ensure you have TypeDB Core server
 xref:installation.adoc#_install[installed,window=_blank] and
 xref:installation.adoc#_start_the_server[running,window=_blank].
 
 [#_typedb_client]
-== Select a TypeDB Client to proceed
+== Run TypeDB Studio
 
-Choose either TypeDB Console (CLI) or TypeDB Studio (GUI) in the tabs below and complete all the steps.
-We recommend familiarizing yourself with at least one of these two Clients, before trying to start developing
-your own application with language-specific TypeDB Drivers.
-
-[tabs]
-====
-TypeDB Console::
-+
---
-TypeDB Console is a TypeDB Client with CLI that is distributed and installed with TypeDB by default.
-
-image::typedb::quickstart-console.png[TypeDB Console, width = 75%, link=self]
-
-For more information on how to use it, see the xref:clients:ROOT:console.adoc[,window=_blank] page.
---
-TypeDB Studio::
-+
---
-TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
-xref:clients:ROOT:studio.adoc#_download_install[installed]
+xref:clients:ROOT:studio.adoc[TypeDB Studio,window=_blank] is a standalone TypeDB Client with GUI that needs to be
+xref:clients:ROOT:studio.adoc#_download_install[installed,window=_blank]
 and launched separately from a TypeDB server.
 
 image::typedb::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
-For more information on how to use it, see the xref:clients:ROOT:studio.adoc[,window=_blank] page.
---
-====
-
 == Connect to TypeDB
 
-[tabs]
-====
-TypeDB Console::
-+
---
-By default, TypeDB Console will try to connect to `localhost:1729`.
-
-.Server connection example
-[,bash]
-----
-typedb console --server 127.0.0.1:1729
-----
-
-.Cluster connection example (TLS encryption enabled)
-[,bash]
-----
-typedb console --cluster=i0.deployment-a4fa2444.cloud.typedb.com:1729 --username=admin --password --tls-enabled --tls-root-ca="/Users/username/typedb-cloud/typedb-cloud-root-ca.pem"
-----
---
-TypeDB Studio::
-+
---
-For TypeDB Core connection:
+TypeDB Studio needs a network connection to a TypeDB server to manage databases and send queries:
 
 . Click btn:[Connect to TypeDB] on the right side of the toolbar.
-//. Ensure the `TypeDB` option is selected in the *Server* field.
-// We don't need that, because it is selected by default after new installation of Studio
 . Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
 
-For TypeDB Cloud or TypeDB Enterprise connection:
+== Select a project folder
 
-. Click btn:[Connect to TypeDB] on the right side of the toolbar.
-. Select the `TypeDB Cluster` option in the *Server* field.
-. Click btn:[Manage Cluster Addresses] and add the address for each known TypeDB Enterprise server in a cluster.
-. Fill all other fields with appropriate information and click the btn:[Connect] button.
-
-Select the folder with the <<_download_sample_data,downloaded TypeQL files>> as a
-xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank] by clicking either:
+Select a xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank]
+to store project files by clicking either:
 
 * btn:[Open Project] in the *Project* panel (upper left); or
 * Folder icon (the first icon on the top toolbar).
---
-====
 
 == Create a new database
 
-[tabs]
-====
-TypeDB Console::
-+
---
-Assuming TypeDB server or cluster is running locally run:
+Create a database to play with:
 
-[,bash]
-----
-typedb console --command="database create try-iam"
-----
---
-TypeDB Studio::
-+
---
-. Click the database icon (third button on the top toolbar).
+. Click the database icon (the third button in the top toolbar).
 +
 image::studio-database.png[Database Manager button,width = 50%,link=self]
-. Enter `try-iam` and click btn:[Create].
-. Select `try-iam` from the database dropdown (to the right of the database icon).
---
-====
+. Enter `try-studio` and click btn:[Create].
+. Select `try-studio` from the database dropdown (to the right of the database icon).
 
-[#_define_a_schema_from_a_file]
-== Define a schema from a file
+[#_define_a_schema]
+== Define a schema
 
-[tabs]
-====
-TypeDB Console::
+A new database needs a schema before we can load any data:
+
+. Open a new tab and copy-paste the following Define query:
 +
---
-[,bash]
+[,typeql]
 ----
-typedb console --command="transaction try-iam schema write" --command="source iam-schema.tql" --command="commit"
+include::attachment$quickstart-schema.tql[]
 ----
---
-TypeDB Studio::
-+
---
-Open the xref:typedb::attachment$iam-schema.tql[iam-schema.tql,window=_blank] file in TypeDB Studio.
-
-Execute the Define query from the file:
-
 . Ensure the Session toggle (`schema` / `data`) is set to `schema` and
   the Transaction toggle (`write` / `read`) is set to `write`.
 . Click btn:[Run Query].
 . When the query has completed, click btn:[Commit Transaction].
---
-====
 
 Now that the schema has been defined, data can be inserted into the database.
 
-== Load data from a file
+== Load data
 
-[tabs]
-====
-TypeDB Console::
+Now let's insert some sample data into the newly created database to be able to query in future steps:
+
+. Open a new tab and copy-paste the following Insert queries:
 +
---
-[,bash]
+[,typeql]
 ----
-typedb console --command="transaction try-iam data write" --command="source iam-data.tql" --command="commit"
+include::attachment$quickstart-data.tql[]
 ----
---
-TypeDB Studio::
-+
---
-Open the xref:attachment$iam-data.tql[iam-data.tql] file from the Project panel.
-
-Execute all Insert queries from the file:
-
 . Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
 . Execute all queries in the file by clicking btn:[Run Query].
 . When the queries have completed, click btn:[Commit Transaction].
---
-====
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
 == Finish
 
-Congratulations on completing the TypeDB quickstart!
+Congratulations on completing the TypeDB quickstart guide!
 Now you can try sending your first queries to the database.
 We have prepared some simple <<_query_examples,query examples>> for you to try.
-
-[NOTE]
-====
-The IAM schema and data from this Quickstart guide are used throughout the documentation.
-To learn more about the schema itself, check the xref:typedb::tutorials/iam-schema.adoc[] page.
-====
 
 To learn about TypeDB's advanced and unique features such as
 polymorphic queries,
@@ -213,8 +103,8 @@ and n-ary relations, we recommend you check the <<_learn_more>> section.
 
 Try sending the following queries:
 
-* <<#_get_query__retrieve_all_data>>
-* <<#_get_query__retrieve_all_schema_types>>
+* <<#_get_query__list_people>>
+* <<#_get_query__all_instances_and_attributes>>
 * <<#_get_query__get_all_emails_of_kevin>>
 * <<#_insert_query__add_a_new_email_for_kevin>>
 * <<#_update_query__change_the_newly_added_email_for_kevin>>
@@ -224,24 +114,29 @@ Try sending the following queries:
 For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL] documentation.
 //#todo Add the TypeDB in 20 queries page link
 
-[#_get_query__retrieve_all_data]
-=== Get all data
+[#_get_query__list_people]
+=== Get a list of all people with their emails
 
-To xref:typedb::development/read.adoc#_get[get] all data from a database:
-
-[,typeql]
-----
-match $t isa thing;
-----
-
-[#_get_query__retrieve_all_schema_types]
-=== Get all types
-
-To xref:typedb::development/read.adoc#_get[get] all types from a schema of a database:
+To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with their full names and emails:
 
 [,typeql]
 ----
-match $t sub thing;
+match
+    $p isa person,
+        has full-name $f,
+        has email $e;
+----
+
+[#_get_query__all_instances_and_attributes]
+=== Get all instances of a type with all attributes owned
+
+To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with all attributes owned:
+
+[,typeql]
+----
+match
+    $p isa person,
+        has $a;
 ----
 
 [#_get_query__get_all_emails_of_kevin]
@@ -316,6 +211,81 @@ match
     $fn contains "Kevin";
     $e = "kevin2@gmail.com";
 delete $p has $e;
+----
+
+== Repeat with TypeDB Console
+
+xref:clients::console.adoc[TypeDB Console] is usually distributed with TypeDB.
+You can find it with the TypeDB installed.
+
+[#_console_run]
+=== Run TypeDB Console
+
+[,bash]
+----
+typedb console
+----
+
+[#_console_connect]
+=== Connect to TypeDB
+
+By default, TypeDB Console connects to the `localhost:1729` address.
+Upon connection, it shows a prompt for a CLI input.
+
+[#_console_create_db]
+=== Create a new database
+
+[,bash]
+----
+database create try-console
+----
+
+[#_console_define_a_schema]
+=== Define a schema
+
+. Open a transaction:
++
+[,bash]
+----
+transaction try-console schema write
+----
+. Run query:
++
+[,typeql]
+----
+include::attachment$quickstart-schema.tql[]
+----
++
+Press btn:[Enter] twice to send the query.
+. Commit:
++
+[,bash]
+----
+commit
+----
+
+[#_console_load_data]
+=== Load data
+
+. Open a transaction:
++
+[,bash]
+----
+transaction try-console data write
+----
+. Run queries:
++
+[,typeql]
+----
+include::attachment$quickstart-data.tql[]
+----
++
+Press btn:[Enter] twice to send the query.
+. Commit:
++
+[,bash]
+----
+commit
 ----
 
 [#_learn_more]
