@@ -19,6 +19,41 @@ see below a curated list of example queries designed to give a brief idea of wha
 
 == First-class citizen ERA
 
+TypeQL implements the Enhanced Entity-Relation-Attribute model for its schemas and data.
+Entities, relations, and attributes are all first-class citizens and subtypable,
+allowing for expressive modeling without normalization or reification.
+
+[,typeql]
+----
+define
+
+id sub attribute, value string;
+email sub id;
+path sub id;
+name sub id;
+
+user sub entity,
+    owns email @unique,
+    plays permission:subject,
+    plays request:requestee;
+file sub entity,
+    owns path,
+    plays permission:object;
+action sub entity,
+    owns name,
+    plays permission:action;
+
+permission sub relation,
+    relates subject,
+    relates object,
+    relates action,
+    plays request:target;
+request sub relation,
+    relates target,
+    relates requestee;
+----
+
+
 == Composable patterns
 
 Basic match
