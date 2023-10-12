@@ -12,22 +12,24 @@ xref:typedb::development/connect.adoc[] page.
 
 To learn more about the queries, check the links in the respective section.
 
-To showcase at least some capabilities of TypeDB and its query language TypeQL,
-see below a curated list of example queries designed to give a brief idea of what can be done and how easy it is.
+To showcase the capabilities of TypeDB and its query language TypeQL,
+see below a short list of example queries designed to give a brief idea of what can be done and how easy it is.
 
 //toc::[]
 
-== First-class citizen ERA
+[#_era]
+== Entity-Relation-Attribute
 
-TypeQL implements the Enhanced Entity-Relation-Attribute model for its schemas and data.
+TypeQL implements the Enhanced *Entity-Relation-Attribute* model for its schemas and data.
 Entities, relations, and attributes are all first-class citizens and subtypable,
 allowing for expressive modeling without normalization or reification.
 
+.Define schema example
 [,typeql]
 ----
 define
 
-id sub attribute, value string;
+id sub attribute, abstract, value string;
 email sub id;
 path sub id;
 name sub id;
@@ -53,12 +55,89 @@ request sub relation,
     relates requestee;
 ----
 
+=== Retrieve all types from a schema
+
+To retrieve schema from a database it is sufficient to query for all subtypes of root types:
+`entity`, `relation`, and `attribute`.
+
+.Retrieve schema example
+[,typeql]
+----
+match
+    $t sub $r;
+    {$r sub entity;} or {$r sub relation;} or {$r sub attribute;};
+----
+
+The above query returns all types of a schema defined in a database.
+
+Now let's visualize the above schema by sending the schema types retrieval query via TypeDB Studio,
+that can build a graph visualization of a query result.
+
+image:typedb-in-20-queries/era-schema.png[era-schema, width=50%, link=self]
+
+=== Insert and retrieve data
+
+To insert some sample data to the above schema, you can use the following insert queries:
+
+.Insert sample data
+[,typeql]
+----
+insert
+    $u isa user,
+        has email "bob@vaticle.com";
+
+    $f isa file,
+        has path "docs/README.md";
+
+     $p(subject:$u, object:$f) isa permission;
+----
+
+The above query inserts two entities, two attributes, and a relation.
+To retrieve the inserted data, use the Get query:
+
+.Get sample data
+[,typeql]
+----
+match
+    $u isa user,
+        has email $e;
+
+    $f isa file,
+        has path $path;
+
+     $p(subject:$u, object:$f) isa permission;
+----
+
+For the query, the schema and the data above, see the result below.
+
+image:typedb-in-20-queries/era-data.png[era-data, width=50%, link=self]
+
+== Declarative schema
+
+[,typeql]
+----
+define
+
+full-name sub attribute, value string;
+id sub attribute, value string;
+email sub id;
+employee-id sub id;
+
+user sub entity,
+    owns full-name,
+    owns email @unique;
+employee sub user,
+    owns employee-id @key;
+----
 
 == Composable patterns
 
-Basic match
+=== Basic match
 
-Introduce more constraints
+
+
+
+=== Introduce more constraints
 
 == Match-insert
 
