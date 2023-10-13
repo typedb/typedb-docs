@@ -43,108 +43,131 @@ toc::[]
 [#_connection_header]
 == Connection
 
-include::clients::partial$python3/connection/TypeDBDriver.adoc[]
+include::clients::partial$rust/connection/Connection.adoc[]
 
-include::clients::partial$python3/connection/TypeDBCredential.adoc[]
+include::clients::partial$rust/connection/Credential.adoc[]
 
-include::clients::partial$python3/connection/DatabaseManager.adoc[]
+include::clients::partial$rust/connection/DatabaseManager.adoc[]
 
-include::clients::partial$python3/connection/Database.adoc[]
+include::clients::partial$rust/connection/Database.adoc[]
 
-include::clients::partial$python3/connection/Replica.adoc[]
+include::clients::partial$rust/connection/ReplicaInfo.adoc[]
 
-include::clients::partial$python3/connection/UserManager.adoc[]
+include::clients::partial$rust/connection/UserManager.adoc[]
 
-include::clients::partial$python3/connection/User.adoc[]
+include::clients::partial$rust/connection/User.adoc[]
 
 [#_session_header]
 == Session
 
-include::clients::partial$python3/session/TypeDBSession.adoc[]
+include::clients::partial$rust/session/Session.adoc[]
 
-include::clients::partial$python3/session/SessionType.adoc[]
+include::clients::partial$rust/session/SessionType.adoc[]
 
-include::clients::partial$python3/session/TypeDBOptions.adoc[]
+include::clients::partial$rust/session/Options.adoc[]
 
 [#_transaction_header]
 == Transaction
 
-include::clients::partial$python3/transaction/TypeDBTransaction.adoc[]
+include::clients::partial$rust/transaction/Transaction.adoc[]
 
-include::clients::partial$python3/transaction/TransactionType.adoc[]
+include::clients::partial$rust/transaction/TransactionType.adoc[]
 
-include::clients::partial$python3/transaction/QueryManager.adoc[]
+include::clients::partial$rust/transaction/QueryManager.adoc[]
 
 [#_answer_header]
 == Answer
 
-include::clients::partial$python3/answer/ConceptMapGroup.adoc[]
+include::clients::partial$rust/answer/ConceptMapGroup.adoc[]
 
-include::clients::partial$python3/answer/ConceptMap.adoc[]
+include::clients::partial$rust/answer/ConceptMap.adoc[]
 
-include::clients::partial$python3/answer/NumericGroup.adoc[]
+include::clients::partial$rust/answer/NumericGroup.adoc[]
 
-include::clients::partial$python3/answer/Numeric.adoc[]
+include::clients::partial$rust/answer/Numeric.adoc[]
 
-include::clients::partial$python3/answer/Explainables.adoc[]
+include::clients::partial$rust/answer/Explainables.adoc[]
 
-include::clients::partial$python3/answer/Explainable.adoc[]
+include::clients::partial$rust/answer/Explainable.adoc[]
 
-include::clients::partial$python3/answer/Explanation.adoc[]
+include::clients::partial$rust/answer/Explanation.adoc[]
 
 [#_concept_header]
 == Concept
 
-include::clients::partial$python3/concept/ConceptManager.adoc[]
+include::clients::partial$rust/concept/ConceptManager.adoc[]
 
-include::clients::partial$python3/concept/Concept.adoc[]
+include::clients::partial$rust/concept/Concept.adoc[]
 
 [#_schema_header]
 == Schema
 
-include::clients::partial$python3/schema/Type.adoc[]
+//include::clients::partial$rust/schema/Type.adoc[]
 
-include::clients::partial$python3/schema/Label.adoc[]
+include::clients::partial$rust/schema/RootThingType.adoc[]
 
-include::clients::partial$python3/schema/ThingType.adoc[]
+include::clients::partial$rust/schema/ThingType.adoc[]
 
-include::clients::partial$python3/schema/EntityType.adoc[]
+include::clients::partial$rust/schema/Trait_ThingTypeAPI.adoc[]
 
-include::clients::partial$python3/schema/RelationType.adoc[]
+include::clients::partial$rust/schema/EntityType.adoc[]
 
-include::clients::partial$python3/schema/RoleType.adoc[]
+include::clients::partial$rust/schema/Trait_EntityTypeAPI.adoc[]
 
-include::clients::partial$python3/schema/AttributeType.adoc[]
+include::clients::partial$rust/schema/RelationType.adoc[]
 
-include::clients::partial$python3/schema/Annotation.adoc[]
+include::clients::partial$rust/schema/Trait_RelationTypeAPI.adoc[]
 
-include::clients::partial$python3/schema/Transitivity.adoc[]
+include::clients::partial$rust/schema/RoleType.adoc[]
 
-include::clients::partial$python3/schema/ValueType.adoc[]
+include::clients::partial$rust/schema/Trait_RoleTypeAPI.adoc[]
+
+include::clients::partial$rust/schema/AttributeType.adoc[]
+
+include::clients::partial$rust/schema/Trait_AttributeTypeAPI.adoc[]
+
+include::clients::partial$rust/schema/Annotation.adoc[]
+
+include::clients::partial$rust/schema/Transitivity.adoc[]
+
+include::clients::partial$rust/schema/ValueType.adoc[]
+
+include::clients::partial$rust/schema/ScopedLabel.adoc[]
 
 [#_data_header]
 == Data
 
-include::clients::partial$python3/data/Thing.adoc[]
+include::clients::partial$rust/data/Thing.adoc[]
 
-include::clients::partial$python3/data/Entity.adoc[]
+include::clients::partial$rust/data/Trait_ThingAPI.adoc[]
 
-include::clients::partial$python3/data/Relation.adoc[]
+include::clients::partial$rust/data/Entity.adoc[]
 
-include::clients::partial$python3/data/Attribute.adoc[]
+//include::clients::partial$rust/data/Trait_EntityAPI.adoc[]
+//#todo Check why there is no such file
 
-include::clients::partial$python3/data/Value.adoc[]
+include::clients::partial$rust/data/Relation.adoc[]
+
+include::clients::partial$rust/data/Attribute.adoc[]
+
+include::clients::partial$rust/data/Value.adoc[]
 
 [#_logic_header]
 == Logic
 
-include::clients::partial$python3/logic/LogicManager.adoc[]
+include::clients::partial$rust/logic/LogicManager.adoc[]
 
-include::clients::partial$python3/logic/Rule.adoc[]
+include::clients::partial$rust/logic/Rule.adoc[]
+
+include::clients::partial$rust/logic/Trait_RuleAPI.adoc[]
 
 [#_errors_header]
 == Errors
 
-include::clients::partial$python3/errors/TypeDBDriverExceptionExt.adoc[]
+include::clients::partial$rust/errors/Error.adoc[]
 
-include::clients::partial$python3/errors/ErrorMessage.adoc[]
+include::clients::partial$rust/errors/ConnectionError.adoc[]
+
+include::clients::partial$rust/errors/SchemaException.adoc[]
+
+include::clients::partial$rust/errors/InternalError.adoc[]
