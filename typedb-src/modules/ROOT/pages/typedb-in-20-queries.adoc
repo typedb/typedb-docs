@@ -2,6 +2,7 @@
 //:toc: macro
 //:toclevels: 5
 //:toc-title: Top query examples:
+:example-caption!:
 
 This page is full of TypeQL query examples to showcase TypeDB features.
 Feel free to try any of the examples yourself.
@@ -18,13 +19,13 @@ see below a short list of example queries designed to give a brief idea of what 
 //toc::[]
 
 [#_era]
-== Entity-Relation-Attribute
+== #{counter:query}: Entity-Relation-Attribute
 
 TypeQL implements the Enhanced *Entity-Relation-Attribute* model for its schemas and data.
 Entities, relations, and attributes are all first-class citizens and subtypable,
 allowing for expressive modeling without normalization or reification.
 
-.Define schema example
+.Schema
 [,typeql]
 ----
 define
@@ -75,8 +76,8 @@ that can build a graph visualization of a query result.
 
 image:typedb-in-20-queries/era-schema.png[era-schema, width=50%, link=self]
 
-=== Insert and retrieve data
-
+.Insert and retrieve data
+====
 To insert some sample data to the above schema, you can use the following insert queries:
 
 .Insert sample data
@@ -111,15 +112,76 @@ match
 For the query, the schema and the data above, see the result below.
 
 image:typedb-in-20-queries/era-data.png[era-data, width=50%, link=self]
+====
 
-== Declarative schema
+[#_declarative]
+== #{counter:query}: Declarative schema
 
+The schema provides a structural blueprint for data organization, ensuring referential integrity in production.
+Extend your data model seamlessly in TypeDB,
+maintaining integrity during model updates and avoiding any query rewrites or code refactors.
+
+.Stage 1
+[,typeql]
+----
+define
+
+user sub entity,
+    owns full-name;
+
+full-name sub attribute, value string;
+----
+
+.Stage 2
+[,typeql]
+----
+define
+
+user sub entity,
+    owns full-name,
+    owns email @unique;
+
+full-name sub attribute, value string;
+
+id sub attribute, abstract, value string;
+email sub id;
+----
+
+.Stage 3
+[,typeql]
+----
+define
+
+user sub entity,
+    owns full-name,
+    owns email @unique;
+employee sub user,
+    owns employee-id @key;
+
+full-name sub attribute, value string;
+id sub attribute, abstract, value string;
+email sub id;
+employee-id sub id;
+----
+
+Declarative schema means that the result is not influenced by the order of statements.
+And statements are fully composable.
+The following variants are *equal* to the Stage 3 schema above.
+
+[caption=""]
+.Stage 3
+[tabs]
+====
+Variant 1::
++
+--
+.Attributes first
 [,typeql]
 ----
 define
 
 full-name sub attribute, value string;
-id sub attribute, value string;
+id sub attribute, abstract, value string;
 email sub id;
 employee-id sub id;
 
@@ -129,66 +191,710 @@ user sub entity,
 employee sub user,
     owns employee-id @key;
 ----
+--
 
-== Composable patterns
+Variant 2::
++
+--
+.Complex statements simplified
+[,typeql]
+----
+define
 
-=== Basic match
+user sub entity;
+user owns full-name;
+user owns email @unique;
+
+employee sub user;
+employee owns employee-id @key;
+
+full-name sub attribute, value string;
+id sub attribute, abstract, value string;
+email sub id;
+employee-id sub id;
+----
+--
+
+Variant 3::
++
+--
+.Random order of statements
+[,typeql]
+----
+define
+
+employee sub user,
+    owns employee-id @key;
+
+full-name sub attribute, value string;
+
+email sub id;
+
+id sub attribute, abstract, value string;
+
+employee-id sub id;
+
+user sub entity,
+    owns full-name,
+    owns email @unique;
+----
+--
+
+====
+
+For more information on database schemas, see the
+xref:typeql::fundamentals.adoc#_schema[schema] section on the
+xref:typeql::fundamentals.adoc[] page.
+
+[#_abstract]
+== #{counter:query}: Absract types
+
+Define abstract entity, relation, and attribute types in your schema to extend concrete types from.
+Build templates with ownership of abstract attributes and playing of abstract roles for subtypes to extend and override.
+
+.Schema
+[,typeql]
+----
+define
+
+id sub attribute, abstract, value string;
+email sub id;
+path sub id;
+
+user sub entity, abstract,
+    owns id;
+employee sub user,
+    owns email as id;
+resource sub entity, abstract,
+    owns id,
+    plays collection-membership:member;
+file sub resource,
+    owns path as id;
+
+membership sub relation, abstract,
+    relates parent,
+    relates member;
+team-membership sub membership,
+    relates team as parent;
+collection-membership sub membership,
+    relates collection as parent;
+----
+
+Abstract types `id`, `user`, `resource`, and `membership` can't be used to insert data, but can be subtyped.
+
+For more information on abstract types, see the
+xref:typeql::schema/define-types.adoc#_abstract_types[abstract types] section on the
+xref:typeql::schema/define-types.adoc[] page.
+
+[#_inheritance]
+== #{counter:query}: Type inheritance
+
+Type inheritance in TypeDB allows you to create new types based on existing ones,
+providing hierarchy and abstraction in your data model.
+By inheriting attributes and relationships from parent types, schema design is simplified,
+promoting reusability and consistency.
+
+.Schema
+[,typeql]
+----
+define
+
+user sub entity,
+    owns full-name,
+    owns email;
+
+intern sub user;
+
+employee sub user,
+    owns employee-id,
+    owns title;
+
+part-time-employee sub employee,
+    owns weekly-hours;
+
+full-name sub attribute, value string;
+id sub attribute, abstract, value string;
+email sub id;
+employee-id sub id;
+title sub attribute, value string;
+weekly-hours sub attribute, value long;
+----
+
+For more information on how type inheritance works, see the
+xref:typeql::fundamentals.adoc#_inheritance[inheritance] section on the
+xref:typeql::fundamentals.adoc[] page.
+
+[#_type_inference]
+== #{counter:query}: Type Inference
+
+TypeDB’s type inference resolves queries against the schema to generate polymorphic results.
+Queries on supertypes automatically return results for subtypes,
+and the types of variables can even be omitted to match only the shape of the data.
+
+.Schema
+[.typeql]
+----
+define
+
+user sub entity, abstract,
+    owns id,
+    plays resource-ownership:owner;
+employee sub user,
+    owns employee-id as id;
+resource sub entity, abstract,
+    owns id,
+    plays resource-ownership:resource;
+file sub resource,
+    owns path as id;
+database sub resource,
+    owns name as id;
+commit sub resource,
+    owns hash as id;
+resource-ownership sub relation,
+    relates resource,
+    relates owner;
+----
+
+//#todo We can simplify this query - so it will not use variables for everything.
+// It would be easier to understand the type inheritance with exact types used
+.Polymorphic query
+[,typeql]
+----
+match
+    $user has id $user-id;
+    $rsrc has id $rsrc-id;
+    ($user, $rsrc) isa $relation-type;
+----
+
+This query retrieves data by a pattern, that variablizes almost all types, except `id`.
+//#todo Add a link to learn more
+
+[#_semantic_validation]
+== #{counter:query}: Semantic Validation
+
+TypeDB validates all queries and rules against the type system defined in the schema to ensure semantic correctness.
+Nonsensical writes are automatically blocked,
+and nonsensical reads throw an exception instead of returning an empty result set.
+
+.Define schema
+[,typeql]
+----
+define
+
+weekly-hours sub attribute, value long;
+
+user sub entity,
+    owns full-name,
+    owns email @unique;
+employee sub user,
+    owns employee-id @key;
+
+full-time-employee sub employee;
+part-time-employee sub employee, owns weekly-hours;
+----
+
+.Insert data
+[,typeql]
+----
+insert $francois isa full-time-employee,
+    has full-name "François Durand",
+    has email "francois@vaticle.com",
+    has employee-id 184,
+    has weekly-hours 35;
+----
+
+The above query won't pass query validation for the `full-time-employee` can't have an ownership of the
+`weekly-hours` attribute, because it was not defined in the schema.
+
+.Error message example
+[,bash]
+----
+[THW03] Invalid Write: Attribute of type 'weekly-hours' is
+not defined to be owned by type 'full-time-employee'.
+----
+
+[#_rules]
+== #{counter:query}: Rule-Based Reasoning
+
+TypeDB’s symbolic reasoning enables the automated deduction of new facts and relationships
+based on existing data and rules you define.
+Rule chaining and branching allow complex behavior to arise from simple rules, creating rich, high-level insights.
+
+.Rule examples
+[,typeql]
+----
+define
+
+rule transitive-team-membership: when {
+    (team: $team-1, member: $team-2) isa team-membership;
+    (team: $team-2, member: $member) isa team-membership;
+} then {
+    (team: $team-1, member: $member) isa team-membership;
+};
+
+rule inherited-team-permission: when {
+    (team: $team, member: $member) isa team-membership;
+    (subject: $team, object: $obj, action: $act) isa permission;
+} then {
+    (subject: $member, object: $obj, action: $act) isa inherited-permission;
+};
+----
+
+For more information on rules, see the
+xref:typeql::schema/define-rules.adoc[] page.
+
+For more information on reasoning, see the
+xref:typedb::development/infer.adoc[] page.
+
+[#_explanations]
+== #{counter:query}: Explanations
+
+TypeDB's reasoning engine functions on deductive reasoning, so inferred data can always be traced back to its source.
+Perform root-cause analysis using TypeDB’s Explanations feature, guaranteeing accountability of generated data.
+
+[,typeql]
+----
+query = "match $perm isa inherited-permission;"
+
+with open_session.transaction(TransactionType.READ) as tx:
+    results = tx.query().match(query)
+    for result in results:
+        inherited_permission = result.explainables().relation("perm")
+        explanations = tx.query().explain(inherited_permission)
+        for explanation in explanations:
+            condition = explanation.condition()
+            rule = explanation.rule()
+            conclusion = explanation.conclusion()
+----
+
+[#_variable_types]
+== #{counter:query}: Variable Types
+
+Schema types and relation roles can be variablized in addition to data instances,
+making schema querying as easy as data querying.
+Queries can contain both schema and data constraints,
+allowing for patterns that represent highly complex conceptual structures.
+
+[,typeql]
+----
+define
+user sub entity, has full-name;
+    plays mentorship:mentor,
+    plays mentorship:trainee;
+employee sub user;
+contractor sub user;
+mentorship sub relation,
+    relates mentor,
+    relates trainee;
+
+match
+$user isa $user-type, has full-name;
+$user-type sub user;
+($role-1: $user, $role-2: $other-user) isa mentorship;
+mentorship relates $role-1, relates $role-2;
+----
+
+[#_Inheritance_polymorhipsm]
+== #{counter:query}: Inheritance Polymorphism
+
+TypeQL implements inheritance polymorphism,
+allowing subtypes to inherit the behaviors of the supertypes they extend, whether concrete or abstract.
+Write TypeQL queries that return results with a common supertype, without enumerating the subtypes.
+
+[,typeql]
+----
+define
+user sub entity,
+    owns full-name,
+    owns email @unique;
+employee sub user,
+    owns employee-id @key;
+
+insert
+$john isa employee,
+    has full-name "John Doe",
+    has email "john@vaticle.com",
+    has employee-id 183;
+----
+
+[#_interface_polymorhpism]
+== #{counter:query}: Interface Polymorphism
+
+Ensure conceptual consistency between defined types and their behaviors in perfect parallel to your object model
+by harnessing TypeQL’s interface polymorphism.
+Types can own the same attributes and play the same roles, even if they share no common supertypes.
+
+[,typeql]
+----
+define
+name sub attribute, value string;
+user sub entity, owns name;
+team sub entity, owns name;
+table sub entity, owns name;
+
+match
+$x has name;
+----
+
+== #{counter:query}: Parametric Polymorphism
+
+Write queries that create or delete data instances without specifying their types by utilizing parametric polymorphism.
+Queries are resolved against the schema when run,
+allowing them to write data of multiple types matching declared properties.
+
+[,typeql]
+----
+match
+$data isa $T;
+$data has data-expiration-date < 2023-09-27;
+
+delete
+$data isa $T;
+----
+
+== #{counter:query}: Near Natural Modern Language
+//Modified heading to add language. Otherwise, it was too vague
+
+Due to its OOP properties and simple syntax, queries written in TypeQL read close to natural language.
+Domain experts and non-technical users alike can quickly grasp the intent of a query,
+reducing the learning curve and making query maintenance a breeze.
+
+[,typeql]
+----
+match
+$kevin isa user, has email "kevin@vaticle.com";
+
+insert
+$chloe isa full-time-employee,
+    has full-name "Chloé Dupond",
+    has email "chloe@vaticle.com",
+    has employee-id 185,
+    has weekly-hours 35;
+$hire (employee: $chloe, ceo: $kevin) isa hiring,
+    has date 2023-09-27;
+----
+
+== #{counter:query}: Fully Declarative
+
+TypeQL is fully declarative, allowing you to define query patterns without considering execution strategy. TypeDB’s query planner always deconstructs queries into the most optimized plans, so you never have to think about the logical implementation.
+
+[,typeql]
+----
+define
+user sub entity,
+    owns full-name,
+    owns email;
+intern sub user;
+employee sub user,
+    owns employee-id;
+full-time-employee sub employee;
+part-time-employee sub employee,
+    owns weekly-hour;
+contractor sub user,
+    owns contract-number;
+
+match
+$user isa $user-type;
+$user-type sub user;
+fetch
+$user: attribute;
+$user-type;
+----
+
+== #{counter:query}: Composable Patterns
+
+Patterns in TypeQL are fully composable. Every complex pattern can be broken down into a conjunction of atomic constraints, which can be concatenated in any order. Any pattern composed of valid constraints is guaranteed to be valid itself, no matter how complex.
+
+[,typeql]
+----
+match
+$user isa user;
+
+match
+$user isa user;
+$user has email "john@vaticle.com";
+
+match
+$user isa user;
+$user has email "john@vaticle.com";
+(team: $team, member: $user) isa team-membership;
+
+match
+$user isa user;
+$user has email "john@vaticle.com";
+(team: $team, member: $user) isa team-membership;
+$team has name "Engineering";
+----
+
+== #{counter:query}: Nested Subqueries
+
+Search for complex data structures with a single query and network trip using nested subqueries. Retrieve results for nested queries as a list or perform aggregations over them, including results for optional attribute matches.
+
+[,typeql]
+----
+match $user is user;
+fetch
+$user: email, full-name, employee-id;
+teams: {
+    match
+    (team: $team, member: $user) isa team-membership;
+    fetch
+    $team: name;
+};
+permission-count: {
+    match
+    $perm (subject: $user) isa permission;
+    count;
+};
+----
+
+== #{counter:query}: Structured Results
+
+Query results can be serialized for easy consumption in your application with TypeQL’s native JSON outputs. Switch from an asynchronous answer stream to a single structured collection, and define the result format using projections in the query structure.
+
+[,typeql]
+----
+match $user isa full-time-employee;
+fetch $user as employee: attribute;
+limit 1;
+
+# JSON output:
+[{
+    "employee": {
+        "type": { "root": "entity", "label": "full-time-employee" },
+	"attribute": [
+            { "value": "Chloé Dupond", "value_type": "string", "type": { "root": "attribute", "label": "full-name" } },
+            { "value": "chloe@vaticle.com", "value_type": "string", "type": { "root": "attribute", "label": "email" } },
+            { "value": 185, "value_type": "long", "type": { "root": "attribute", "label": "employee-id" } },
+            { "value": 35, "value_type": "long", "type": { "root": "attribute", "label": "weekly-hours" } }
+        ]
+    }
+}]
+----
+
+== #{counter:query}: Aggregates and Expressions
+
+Perform basic mathematical operations directly in your queries or rules with aggregations and arithmetic expressions, enabling dynamic and efficient data computation.
+
+[,typeql]
+----
+match
+$user is user;
+$perm (subject: $user) isa permission;
+group $user;
+count;
+
+match
+$dir isa directory,
+    has path $path,
+    has size $kb;
+?gb = $kb / 1024 ^ 2;
+get $path, ?gb;
+----
+
+== #{counter:query}: Query Builder
+
+Use the TypeQL query builder to auto-generate queries using a code-first approach in Java or Rust, with other languages coming soon. This permits the generation of TypeDB queries through a robust and streamlined process.
+
+[,typeql]
+----
+TypeQLMatch.Filtered builtQuery = TypeQL.match(
+    cVar("user").isa("user").has("full-name", "Kevin Morrison"),
+    cVar("file").isa("file").has("path", cVar("path")),
+    cVar("perm").rel(cVar("user")).rel(cVar("file")).isa("permission")
+).get(cVar("path"));
+
+// builtQuery =
+// match $user isa user, has full-name 'Kevin Morrison';
+// $file isa file, has path $path;
+// $perm ($user, $file) isa permission;
+// get $path;
+----
+
+////
+== #{counter:query}: Query Templates
+
+Build query templates that accept a tuple of attribute values as parameters and execute them repeatedly for lists of supplied values. The template is stored in the transaction cache, reducing network load and ensuring sanitization of input strings.
 
 
+[,typeql]
+----
+
+----
+////
+
+== #{counter:query}: N-ary Relations
+
+Construct rich data representations by directly implementing unary,
+binary, ternary, and n-ary relations in your conceptual model.
+TypeQL’s expressivity allows you to use the same constructor format for all relations,
+regardless of the number of roleplayers.
+
+[,typeql]
+----
+match
+$omar isa contractor, has email "omar@vaticle.com";
+insert
+$term (user: $omar) isa user-termination,
+    has termination-date 2023-09-19,
+    has termination-reason "end of contract";
+
+match
+$naomi isa user, has email "naomi@vaticle.com";
+$eng isa group, has name "Engineering";
+insert
+$own (group: $eng, owner: $naomi) isa group-ownership;
+
+match
+$john isa user, has email "john@vaticle.com";
+$readme isa file, has path "/usr/johndoe/repos/typedb/readme.md";
+$edit isa action, has name "edit file";
+insert
+$perm (subject: $john, object: $readme, action: $edit) isa permission;
+----
+
+== #{counter:query}: Nested Relations
+
+Relations are first-class citizens in TypeQL and so can own attributes and play roles in other relations just like entities. With no limit to the depth of nesting for relations, you can express the full richness of your data without reifying your data model.
+
+[,typeql]
+----
+match
+$john isa user, has email "john@vaticle.com";
+$readme isa file, has path "/usr/johndoe/repos/typedb/readme.md";
+$edit isa action, has name "edit file";
+$perm (subject: $john, object: $readme, action: $edit) isa permission;
+$kevin isa user, has email "kevin@vaticle.com";
+
+insert
+$rqst (target: $perm, requestee: $kevin) isa change-request,
+    has requested-change "revoke";
+----
+
+== #{counter:query}: Variadic Relations
+
+With TypeQL’s expressive relation constructor, you can easily implement relations where the same roleplayer plays multiple roles, multiple roleplayers play the same role, or a combination of both. Read queries always return all matched roleplayers.
+
+[,typeql]
+----
+match
+$submit isa action, has name "submit order";
+$approve isa action, has name "approve order";
+insert
+(segregated-action: $submit, segregated-action: $approve) isa segregation-policy;
+
+match
+$kevin isa user, has email "kevin@vaticle.com";
+insert
+(reviewer: $kevin, reviewee: $kevin) isa permission-review;
+----
+
+== #{counter:query}: Cardinality Constraints
+
+All attributes and relations have many-to-many cardinality by default. Apply constraints in the schema to apply stricter cardinalities wherever needed, with the expressivity to select a single value or a specific range.
+
+[,typeql]
+----
+define
+
+name sub attribute, value string;
+object-type sub attribute, value string;
+
+action sub entity,
+    owns name @card(1),
+    owns object-type @card(1,*)
+    plays segregation-policy:segregated-action @card(0,*);
+
+segregation-policy sub relation,
+    relates segregated-action @card(2);
+----
+
+== #{counter:query}: Multi-Valued Attributes
+
+TypeQL is a conceptual data modeling language, and all attributes have many-to-many cardinality by default. Giving an entity or relation multiple attributes of the same type is as simple as declaring them in an insert, and read queries automatically return all values.
+
+[,typeql]
+----
+insert
+$john isa full-time-employee,
+    has primary-email "john.doe@vaticle.com",
+    has email "j.doe@vaticle.com",
+    has email "john@vaticle.com",
+    has email "sales@vaticle.com";
+----
+
+== #{counter:query}: Globally Unique Attributes
+
+Attributes are globally unique in TypeQL. If two entities each have an attribute with the same type and value, then they both have the same attribute instance. This allows for highly efficient data traversals, keeps disk usage low, and maintains a consistent model.
+
+[,typeql]
+----
+insert
+$roadmap isa file,
+    has path "/vaticle/feature-roadmap.pdf",
+    has confidentiality "public";
+$cloud isa repository,
+    has name "typedb-cloud",
+    has confidentiality "restricted";
+$sales isa database,
+    has name "sales",
+    has confidentiality "restricted";
+
+match $rsrc has confidentiality $conf;
+fetch $conf;
+----
+
+== #{counter:query}: No Nulls
+
+Unlike SQL and NoSQL modeling languages, TypeQL is entirely conceptual and does not need to implement nulls to store the absence of a value. Keep nulls out of your query results without compromising for a schema-less database.
+
+[,typeql]
+----
+insert
+$john isa user, has full-name "John Doe";
+$david isa user, has email "david@vaticle.com";
+
+match $user isa user;
+fetch $user: full-name, email;
+
+# JSON output:
+[{
+    "user": {
+        "type": { "root": "entity", "label": "user" },
+        "full-name": [
+            { "value": "John Doe", "value_type": "string", "type": { "root": "attribute", "label": "full-name" } }
+        ],
+        "email": []
+    }
+}, {
+    "user": {
+        "type": { "root": "entity", "label": "user" },
+        "full-name": [],
+        "email": [
+            { "value": "david@vaticle.com", "value_type": "string", "type": { "root": "attribute", "label": "email" } }
+        ]
+    }
+}]
+----
+
+== #{counter:query}: Attribute Constraints
+
+Define a key constraint on an attribute to make ownership of that attribute required and ensure a unique value. Alternatively, use a unique constraint instead to ensure uniqueness without requiring ownership. Apply regex constraints to string attributes to enforce defined patterns.
+
+[,typeql]
+----
+define
+full-name sub attribute, value string;
+office-location sub attribute, value string;
+id sub attribute, value string;
+email sub id;
+employee-id sub id;
+user sub entity,
+    owns full-name,
+    owns email @unique, regex "^(.+)@(\\S+)$";
+employee sub user,
+    owns employee-id @key,
+    owns office-location, regex "^(London|Paris|Dublin)$";
+----
 
 
-=== Introduce more constraints
-
-== Match-insert
-
-== Match-delete
-
-== Type inheritance
-
-== Polymorphic queries
-
-== Extending the schema
-
-Sub-typing
-
-Adding a role-player
-
-Adding attributes to entities
-
-etc...
-
-== Abstract and overriding
-
-== Relations
-
-=== n-ary
-
-=== Nested
-
-=== Variadic
-
-== Globally unique attributes
-
-== Attribute constraints
-
-Regex
-
-=== Annotations
-
-Key, Unique
-
-== Arithmetic expressions
-
-=== Other built-in functions
-
-== Inference
-
-=== Rules chaining
-
-=== Transitivity
-
-== Schema modifications
-
-=== TypeQL
-
-=== TypeDB Driver API
