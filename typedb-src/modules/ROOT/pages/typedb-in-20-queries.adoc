@@ -400,7 +400,16 @@ friendship sub relation,
 
 [,typeql]
 ----
+define
 
+name sub attribute, value string;
+
+company sub entity,
+    owns name;
+department sub entity,
+    owns name;
+club sub entity,
+    owns name;
 ----
 
 == #{counter:query}: Attribute annotations
@@ -411,7 +420,16 @@ friendship sub relation,
 
 [,typeql]
 ----
+define
 
+name sub attribute, value string;
+
+company sub entity,
+    owns name @key;
+department sub entity,
+    owns name @unique;
+club sub entity,
+    owns name;
 ----
 
 == #{counter:query}: Regex
@@ -421,10 +439,18 @@ friendship sub relation,
 //variable bounding with contatins? regex?
 
 
+[,typeql]
+----
+match
+    $x isa full-name;
+    $x like "(Masako Holley|Kevin Morrison)";
+----
 
 [,typeql]
 ----
+define
 
+status sub attribute, value string, regex "^(STARTED|STOPPED|DELETED)$";
 ----
 
 == #{counter:query}: Arithmetic expressions
@@ -433,7 +459,26 @@ friendship sub relation,
 
 [,typeql]
 ----
+define
 
+file sub entity,
+    owns path,
+    owns size-kb;
+size-kb sub attribute, value long;
+----
+
+[,typeql]
+----
+insert $f isa file, has path "config.yaml", has size-kb 35;
+----
+
+[,typeql]
+----
+match
+
+$f isa file, has size-kb $s;
+?mb = $s/1024;
+?mb < 1;
 ----
 
 == #{counter:query}: Rule-based inference
@@ -442,7 +487,16 @@ friendship sub relation,
 
 [,typeql]
 ----
+define
 
+person sub user;
+
+rule every-person-is-a-dude:
+    when {
+        $p isa person;
+    } then {
+        $p has full-name "Dude";
+    };
 ----
 
 == #{counter:query}: Rule chaining
@@ -457,10 +511,22 @@ friendship sub relation,
 == #{counter:query}: Rule transitivity
 
 
+collection-membership sub membership,
+relates collection as parent;
 
 [,typeql]
 ----
+define
 
+rule collection-transitivity:
+    when {
+        $f isa file;
+        $m2 isa collection-memebership;
+        $m1(member:$f) isa collection-membership;
+        $m2(member:$m1) isa collection-membership;
+    } then {
+        $m2($f) isa collection-membership;
+    };
 ----
 
 == #{counter:query}: Driver API schema modification
@@ -469,13 +535,10 @@ friendship sub relation,
 //change a supertype
 //etc.
 
+//step-by-step guide for Studio
 
-[,typeql]
-----
 
-----
-
-== #{counter:query}:
+== #{counter:query}: Find all permissions for Kevin
 
 
 
