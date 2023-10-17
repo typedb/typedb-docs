@@ -56,7 +56,7 @@ Make sure to grant access for installation wizard to install TypeDB Studio in ca
 
 [NOTE]
 ====
-For **macOS** TypeDB Studio can be installed via homebrew (not recommended for `AArch64` architecture):
+For **macOS** TypeDB Studio can be installed via homebrew (not recommended for `arm64` architecture):
 
 [,bash]
 ----
@@ -506,12 +506,17 @@ Default value: *On*.
 
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
-| TypeDB Studio | Protocol version | TypeDB | TypeDB Cloud & TypeDB Enterprise
+| TypeDB Studio | Protocol encoding version | TypeDB Core | TypeDB Cloud & TypeDB Enterprise
+
+| 2.24.15
+| 2
+| 2.24.17
+| 2.24.17
 
 | 2.18.0 to 2.21.2
 | 1
-| 2.18.0 to 2.22.0
-| 2.18.0 to 2.21.1
+| 2.18.0 to 2.23.0
+| 2.18.0 to 2.23.0
 
 | 2.14.1 to 2.17.0
 | N/A

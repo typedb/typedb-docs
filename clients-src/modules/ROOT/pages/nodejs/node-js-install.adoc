@@ -12,30 +12,46 @@ depending on the TypeDB server version being used.
 
 == Install
 
-To install TypeDB Node.js Driver (or TypeDB Client for Node.js):
+To install TypeDB Node.js Driver:
 
+[,bash]
+----
+npm install typedb-driver
+----
+
+.See command for older versions (<2.24.0)
+[%collapsible]
+====
+[,bash]
 ----
 npm install typedb-client
 ----
+====
 
 == Additional resources
 
 * xref:nodejs/node-js-install.adoc#_version_compatibility[Version compatibility]
-* https://github.com/vaticle/typedb-client-nodejs[Node.js Driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-client-nodejs/releases[Releases,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/nodejs[Node.js Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 * https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^2,^.^1,^.^2,^.^2,^.^2"]
+[cols="^.^2,^.^2,^.^2,^.^2,^.^1"]
 |===
-| Node.js Driver | Protocol version | TypeDB | TypeDB Enterprise & TypeDB Cloud | Node
+| Node.js Driver | Protocol encoding version | TypeDB | TypeDB Cloud & TypeDB Enterprise | Node
+
+| 2.24.15
+| 2
+| 2.24.17
+| 2.24.17
+| >= 14.15
 
 | 2.18.1, 2.18.2
 | 1
-| 2.18.0 to 2.22.0
-| 2.18.0 to 2.21.1
+| 2.18.0 to 2.23.0
+| 2.18.0 to 2.23.0
 | >= 14.15
 
 | 2.17.0

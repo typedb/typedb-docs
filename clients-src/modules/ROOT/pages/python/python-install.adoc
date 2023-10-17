@@ -12,35 +12,47 @@ depending on the TypeDB server version being used.
 
 == Install
 
-To install TypeDB Python Driver (or TypeDB Client for Python):
+To install TypeDB Python Driver:
 
+[,bash]
+----
+pip install typedb-driver
+----
+
+.See command for older versions (<2.24.0)
+[%collapsible]
+====
+[,bash]
 ----
 pip install typedb-client
 ----
-
-[NOTE]
-====
-If there is an error or multiple Python versions are installed, try to replace the `pip` command with the `pip3`.
 ====
 
 == Additional resources
 
 * xref:python/python-install.adoc#_version_compatibility[Version compatibility]
-* https://github.com/vaticle/typedb-client-python[Python Driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-client-python/releases[Releases,window=_blank]
+* https://pypi.org/project/typedb-driver/[Pypi page for the TypeDB Driver,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/python[Python Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 * https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^2,^.^1,^.^2,^.^2,^.^2"]
+[cols="^.^2,^.^2,^.^2,^.^2,^.^1"]
 |===
-| Python Driver | Protocol version | TypeDB | TypeDB Enterprise & TypeDB Cloud | Python
+| Python Driver | Protocol encoding version | TypeDB | TypeDB Cloud & TypeDB Enterprise | Python
+
+| 2.24.15
+| 2
+| 2.24.17
+| 2.24.17
+| 3.9 to 3.11
 
 | 2.18.0 to 2.18.2
 | 1
-| 2.18.0 to 2.22.0
-| 2.18.0 to 2.21.1
+| 2.18.0 to 2.23.0
+| 2.18.0 to 2.23.0
 | >= 3.6
 
 | 2.17.0

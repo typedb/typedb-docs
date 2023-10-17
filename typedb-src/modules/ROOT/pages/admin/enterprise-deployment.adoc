@@ -34,7 +34,7 @@ If TypeDB Enterprise doesn't have a distribution you need, please open an issue
 https://github.com/vaticle/typedb/issues[on GitHub].
 
 Having downloaded TypeDB Enterprise, we can now <<_starting_and_stopping_a_multi_node_cluster,start>> the cluster and
-interact with xref:clients::console.adoc[].
+interact with xref:clients:ROOT:console.adoc[].
 --
 
 macOS::
@@ -46,7 +46,7 @@ Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest rel
 location on your machine that is easily accessible via a terminal.
 
 Having downloaded TypeDB Enterprise, we can now <<_starting_and_stopping_a_multi_node_cluster,start>> the cluster and
-interact with xref:clients::console.adoc[].
+interact with xref:clients:ROOT:console.adoc[].
 --
 
 Windows::
@@ -58,7 +58,7 @@ Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest rel
 location on your machine that is easily accessible via a command prompt.
 
 Having downloaded TypeDB Enterprise, we can now <<_starting_and_stopping_a_multi_node_cluster,start>> the cluster and
-interact with xref:clients::console.adoc[].
+interact with xref:clients:ROOT:console.adoc[].
 --
 
 Docker::
@@ -93,7 +93,7 @@ docker run --name typedb -d -v $(pwd)/db/:/opt/typedb-cluster-all-linux/server/d
 ----
 
 Having started the instance, the TypeDB Enterprise is expected to be running on port `1729` on your machine.
-To interact with xref:clients::console.adoc[], run:
+To interact with xref:clients:ROOT:console.adoc[], run:
 
 [,bash]
 ----

@@ -31,7 +31,7 @@ Be sure to replace the `\{version}` placeholder tag with the version of Client J
 <dependencies>
 <dependency>
     <groupId>com.vaticle.typedb</groupId>
-    <artifactId>typedb-client</artifactId>
+    <artifactId>typedb-driver</artifactId>
     <version>{version}</version>
 </dependency>
 </dependencies>
@@ -80,8 +80,8 @@ use the following steps to set the minimum log level to `ERROR`:
 == Additional resources
 
 * xref:java/java-install.adoc#_version_compatibility[Version compatibility]
-* https://github.com/vaticle/typedb-client-java[Java Driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-client-java/releases[Releases,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/java[Java Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 * https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
 [#_version_compatibility]
@@ -89,12 +89,17 @@ use the following steps to set the minimum log level to `ERROR`:
 
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
-| Java Driver | Protocol version | TypeDB | TypeDB Enterprise & TypeDB Cloud
+| Java Driver | Protocol encoding version | TypeDB Core | TypeDB Cloud & TypeDB Enterprise
+
+| 2.24.15
+| 2
+| 2.24.17
+| 2.24.17
 
 | 2.18.0, 2.18.1
 | 1
-| 2.18.0 to 2.22.0
-| 2.18.0 to 2.21.1
+| 2.18.0 to 2.23.0
+| 2.18.0 to 2.23.0
 
 | 2.17.0 to 2.17.1
 | N/A

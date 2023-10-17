@@ -32,12 +32,16 @@ def get_versions(url):
                        "lin":
                            {
                                "url": "",
+                               "url-arm": "",
+                               "url-x86": "",
                                "hash": "",
                                "check": ""
                            },
                        "mac":
                            {
                                "url": "",
+                               "url-arm": "",
+                               "url-x86": "",
                                "hash": "",
                                "check": ""
                            }
@@ -45,13 +49,33 @@ def get_versions(url):
             for asset in json_element["assets"]:
                 # print(asset)
                 if "typedb-all-linux" in asset["name"]:
-                    # print(asset["browser_download_url"])
-                    if not check_url(asset["browser_download_url"]):
-                        errors.append(asset["browser_download_url"])
-                        release["lin"]["check"] = "Fail"
+                    if "typedb-all-linux-arm64" in asset["name"]:
+                        # print(asset["browser_download_url"])
+                        release["lin"]["url-arm"] = asset["browser_download_url"]
+                        if not check_url(asset["browser_download_url"]):
+                            errors.append(asset["browser_download_url"])
+                            release["lin"]["check"] += "Fail "
+                        else:
+                            release["lin"]["check"] += "PASSED "
+
+                    elif "typedb-all-linux-x86_64" in asset["name"]:
+                        # print(asset["browser_download_url"])
+                        release["lin"]["url-x86"] = asset["browser_download_url"]
+                        if not check_url(asset["browser_download_url"]):
+                            errors.append(asset["browser_download_url"])
+                            release["lin"]["check"] += "Fail "
+                        else:
+                            release["lin"]["check"] += "PASSED "
+
                     else:
-                        release["lin"]["check"] = "PASSED"
-                    release["lin"]["url"] = asset["browser_download_url"]
+                        # print(asset["browser_download_url"])
+                        release["lin"]["url"] = asset["browser_download_url"]
+                        if not check_url(asset["browser_download_url"]):
+                            errors.append(asset["browser_download_url"])
+                            release["lin"]["check"] = "Fail"
+                        else:
+                            release["lin"]["check"] = "PASSED"
+
                 elif "typedb-all-windows" in asset["name"]:
                     # print(asset["browser_download_url"])
                     if not check_url(asset["browser_download_url"]):
@@ -60,14 +84,38 @@ def get_versions(url):
                     else:
                         release["win"]["check"] = "PASSED"
                     release["win"]["url"] = asset["browser_download_url"]
+
                 elif "typedb-all-mac" in asset["name"]:
-                    if not check_url(asset["browser_download_url"]):
-                        errors.append(asset["browser_download_url"])
-                        release["mac"]["check"] = "Fail"
+
+                    if "typedb-all-mac-arm64" in asset["name"]:
+                        # print(asset["browser_download_url"])
+                        release["mac"]["url-arm"] = asset["browser_download_url"]
+                        if not check_url(asset["browser_download_url"]):
+                            errors.append(asset["browser_download_url"])
+                            release["mac"]["check"] += "Fail "
+                        else:
+                            release["mac"]["check"] += "PASSED "
+
+                    elif "typedb-all-mac-x86_64" in asset["name"]:
+                        # print(asset["browser_download_url"])
+                        release["mac"]["url-x86"] = asset["browser_download_url"]
+                        if not check_url(asset["browser_download_url"]):
+                            errors.append(asset["browser_download_url"])
+                            release["mac"]["check"] += "Fail "
+                        else:
+                            release["mac"]["check"] += "PASSED "
+
                     else:
-                        release["mac"]["check"] = "PASSED"
+                        # print(asset["browser_download_url"])
+                        release["mac"]["url"] = asset["browser_download_url"]
+                        if not check_url(asset["browser_download_url"]):
+                            errors.append(asset["browser_download_url"])
+                            release["mac"]["check"] = "Fail"
+                        else:
+                            release["mac"]["check"] = "PASSED"
+
                     # print(asset["browser_download_url"])
-                    release["mac"]["url"] = asset["browser_download_url"]
+                    # release["mac"]["url"] = asset["browser_download_url"]
                 # else:
                 #     errors.append(asset["name"] + ": unrecognized asset.")
             result.append(release)
@@ -92,7 +140,14 @@ def generate_table_contents(versions, hash=False, tags=False):
                 result += '\n' + '// tag::' + os + '[]' + '\n'
             else:
                 result += ' '
-            result += version[os]["url"] + '[Download]' + '\n'
+            if version[os]["url"] != "":
+                result += version[os]["url"] + '[Download]' + '\n'
+            else:
+                if version[os]["url-x86"] != "":
+                    result += 'Download ' + version[os]["url-x86"] + '[x86-64] /'
+                if version[os]["url-arm"] != "":
+                    result += ' ' + version[os]["url-arm"] + '[ARM]' + '\n'
+
             if tags:
                 result += '// end::' + os + '[]' + '\n'
             result += '// Check: ' + version[os]["check"] + '\n'
@@ -106,6 +161,14 @@ def write_file(file_name, content):
         f.write(content)
 
 
+def print_json(url):
+    x = requests.get(url + "?per_page=100")
+    json_data = x.json()
+    for json_element in json_data:
+        print(json_element)
+
+# print_json(repo)
+
 versions = get_versions(repo)
 for error in errors:
     print("Warning! The following error occurred while checking asset urls:", error)
@@ -118,3 +181,4 @@ print("\nFile", filename_all, "write complete!")
 latest_downloads = generate_table_contents([versions[0]], tags=True)
 write_file(filename_latest, latest_downloads)
 print("\nFile", filename_latest, "write complete!")
+
