@@ -23,7 +23,8 @@ see below a short list of example queries designed to give a brief idea of what 
 
 TypeDB uses Polymorphic Entity-Relation-Attribute (or PERA) model for its schemas and data.
 
-Entities, relations, and attributes are all first-class citizens in a data model allowing for expressive modeling without normalization or reification.
+Entities, relations, and attributes are all first-class citizens in a data model allowing for
+expressive modeling without normalization or reification.
 There are three root types: `entity`, `relation`, and `attribute`;
 and they can be subtyped to create user-defined types.
 
@@ -31,50 +32,74 @@ All data stored in a database must be instantiated from types, defined in a sche
 
 Let's use the following schema definition as example.
 
+[NOTE]
+====
+Use our xref:typedb::quickstart-guide.adoc[Quickstart guide]
+to find out how to create a new database and send the query.
+====
+
+[#_pera_schema]
 .Schema
 [,typeql]
 ----
 define
 
-##### Attributes #####
+person sub entity,
+    owns full-name;
+user sub person,
+    owns email @unique,
+    owns name @key,
+    plays permission:subject;
+file sub entity,
+    owns path @key,
+    owns size-kb,
+    plays permission:object;
+
+permission sub relation,
+    owns updated,
+    relates subject,
+    relates object;
+
+full-name sub attribute, value string;
 id sub attribute, abstract, value string;
 email sub id;
 path sub id;
 name sub id;
-
-##### Entities #####
-user sub entity,
-    owns email @unique,
-    plays permission:subject,
-    plays request:requestee;
-file sub entity,
-    owns path,
-    plays permission:object;
-action sub entity,
-    owns name,
-    plays permission:action;
-
-##### Relations #####
-permission sub relation,
-    relates subject,
-    relates object,
-    relates action,
-    plays request:target;
-request sub relation,
-    relates target,
-    relates requestee;
+size-kb sub attribute, value long;
+updated sub attribute, value datetime;
 ----
 
 The above TypeQL fragment is a xref:typeql::schema/define-types.adoc[Define] query that defines a few types:
-four attributes, three entities, and two relations.
+four entity types, two relation types, and six attribute types.
+The Define query above can be used in an empty TypeDB database, because it is self-sufficient.
+But if at any time you decide to extend or modify your schema in an existing database, you can do it easily:
+see the <<_counterquery_extending_the_schema>> section below.
 
-It can be applied to an empty TypeDB database, because the fragment is self-sufficient.
-
-[NOTE]
+.Visualize a schema in TypeDB Studio
 ====
-Use our xref:typedb::quickstart-guide.adoc[Quickstart guide] to find out how to create a new database and send the query.
+To retrieve all types of a schema from a database it is sufficient to query for all subtypes of the root types:
+`entity`, `relation`, and `attribute`.
+The following query works with any TypeDB database and any schema:
+
+.Retrieve schema types
+[,typeql]
+----
+match
+    $t sub $r;
+    {$r sub entity;} or {$r sub relation;} or {$r sub attribute;};
+----
+
+The above query returns all types of a schema defined in a database.
+
+If you send the above query with TypeDB Studio, you can get the following graph visualization.
+
+image:typedb-in-20-queries/era-schema.png[era-schema, width=50%, link=self]
 ====
 
+The above Define query
+
+.Insert sample data
+====
 To insert some sample data into a database with the schema above, you can use the following insert queries:
 
 .Insert sample data
@@ -88,37 +113,11 @@ insert
      $p(subject:$u, object:$f) isa permission;
 ----
 
-The above query insert a single instance of `user` entity type and a single `file` entity,
+The above query inserts a single instance of `user` entity type and a single `file` entity,
 each owning a single attribute, and a relation between the two entities.
 
 Use our xref:typedb::quickstart-guide.adoc[Quickstart guide] to find out how to create a new database
 and send the queries above.
-
-[IMPORTANT]
-====
-All queries on this page are designed to be run on the same database with the below schema and data loaded.
-Make sure to define schema the schema below and load the sample data to proceed.
-====
-
-.Retrieve all types from a schema
-====
-To retrieve types of a schema from a database it is sufficient to query for all subtypes of root types:
-`entity`, `relation`, and `attribute`. The following query works with any TypeDB database and any schema:
-
-.Retrieve schema types
-[,typeql]
-----
-match
-    $t sub $r;
-    {$r sub entity;} or {$r sub relation;} or {$r sub attribute;};
-----
-
-The above query returns all types of a schema defined in a database.
-
-Now let's visualize the above schema by sending the schema types retrieval query via TypeDB Studio,
-that can build a graph visualization of a query result.
-
-image:typedb-in-20-queries/era-schema.png[era-schema, width=50%, link=self]
 ====
 
 .Retrieve some data
@@ -144,247 +143,346 @@ image:typedb-in-20-queries/era-data.png[era-data, width=50%, link=self]
 [#_declarative]
 == #{counter:query}: Composable patterns
 
-TypeQL statements are combined with conjunction making patterns fully-composable.
-You can combine multiple patterns to enrich or filter results of a query.
+TypeQL statements are combined with a conjunction, which makes patterns fully-composable.
+You can combine multiple patterns to extend or filter results of a query.
 
-Let's see
-
-.Step 1
-[,typeql]
-----
-define
-
-user sub entity,
-    owns full-name;
-
-full-name sub attribute, value string;
-----
-
-.Step 2
-[,typeql]
-----
-define
-
-user sub entity,
-    owns full-name,
-    owns email @unique;
-
-full-name sub attribute, value string;
-
-id sub attribute, abstract, value string;
-email sub id;
-----
-
-.Step 3
-[,typeql]
-----
-define
-
-user sub entity,
-    owns full-name,
-    owns email @unique;
-employee sub user,
-    owns employee-id @key;
-
-full-name sub attribute, value string;
-id sub attribute, abstract, value string;
-email sub id;
-employee-id sub id;
-----
-
-Declarative schema means that the result is not influenced by the order of statements.
-And statements are fully composable.
-The following variants are *equal* to the Stage 3 schema above.
-
-[caption=""]
-.Stage 3
-[tabs]
+// tag::preload[]
+[NOTE]
 ====
-Variant 1::
-+
---
-.Attributes first
-[,typeql]
-----
-define
-
-full-name sub attribute, value string;
-id sub attribute, abstract, value string;
-email sub id;
-employee-id sub id;
-
-user sub entity,
-    owns full-name,
-    owns email @unique;
-employee sub user,
-    owns employee-id @key;
-----
---
-
-Variant 2::
-+
---
-.Complex statements simplified
-[,typeql]
-----
-define
-
-user sub entity;
-user owns full-name;
-user owns email @unique;
-
-employee sub user;
-employee owns employee-id @key;
-
-full-name sub attribute, value string;
-id sub attribute, abstract, value string;
-email sub id;
-employee-id sub id;
-----
---
-
-Variant 3::
-+
---
-.Random order of statements
-[,typeql]
-----
-define
-
-employee sub user,
-    owns employee-id @key;
-
-full-name sub attribute, value string;
-
-email sub id;
-
-id sub attribute, abstract, value string;
-
-employee-id sub id;
-
-user sub entity,
-    owns full-name,
-    owns email @unique;
-----
---
-
+To run queries from this section, use a database with the schema and data from the <<_pera>> section.
 ====
+// end::preload[]
 
-For more information on database schemas, see the
-xref:typeql::fundamentals.adoc#_schema[schema] section on the
-xref:typeql::fundamentals.adoc[] page.
+Given the schema and data from previous query (<<_pera>>), let's explore the following queries:
 
-== #{counter:query}: Inserting data with and without matching existing data for context
-
-xref:typeql::data/insert.adoc[Insert] query can be as simple as the following example:
-
-.Simple Insert query
-[,typeql]
-----
-insert $u isa user;
-----
-
-The above query consists of a single simple statement: variable `$u` is an instance of the `user` type.
-Since a single instance of the `user` type without any owned attributes or roles played in relations
-can't be effectively differentiated from other instances of the same type, let's add something specific.
-
-.Insert query
-[,typeql]
-----
-insert
-    $u isa user,
-        has email "random@email.com";
-----
-
-The above query inserts a user that owns an instance of the `email` type with the value of `random@email.com`.
-Let's insert something more interesting.
-
-.Insert query
-[,typeql]
-----
-insert
-    $u isa user,
-        has email "not-random@email.com";
-    $f isa file,
-        has path "README.md";
-     $p(subject:$u, object:$f) isa permission;
-----
-
-The above query inserts a user with email `not-random@email.com`, a file with path `README.md`, and a relation between
-the new user and the new file of the `permission` type.
-
-== #{counter:query}: Deleting data
-
-
-
+.Query 1
 [,typeql]
 ----
 match
     $u isa user,
-        has email "random@email.com";
-delete
-    $u isa user;
+        has email "bob@vaticle.com";
 ----
+
+The above query returns all instances of the `user` type
+that own an instance of the `email` type with exact value of `bob@vaticle.com`.
+
+.Query 2
+[,typeql]
+----
+match
+    $f isa file,
+        has path "docs/README.md";
+----
+
+The above query returns all instances of the `file` type
+that own an instance of the `path` type with exact value of `docs/README.md`.
+
+Now let's combine the previous two queries:
+
+.Query 3
+[,typeql]
+----
+match
+    $u isa user,
+        has email "bob@vaticle.com";
+    $f isa file,
+        has path "docs/README.md";
+    (subject:$u, object:$f) isa permission;
+----
+
+The above query matches all users
+that have the `email` of `bob@vaticle.com` and participate in a `permission` relation with a `file`
+type entity, that has the `path` attribute `docs/README.md`.
+
+As you can see, we combined two patterns: one two find users and another one to find files,
+by using a relation between them.
+
+[#_counterquery_inserting_data_with_or_without_context]
+== #{counter:query}: Inserting data with or without context
+
+An xref:typeql::data/insert.adoc[Insert] query can be used with or without a `match` clause, as it is optional.
+
+include::typedb-in-20-queries.adoc[tag=preload]
+
+Let's insert some data directly:
+
+.Insert query
+[,typeql]
+----
+insert
+    $u isa user,
+        has email "john@email.com";
+    $f isa file,
+        has path "insert.py";
+    (subject:$u, object:$f) isa permission;
+----
+
+The above query inserts a user with email `john@email.com`, a file with path `insert.py`,
+and a relation of the `permission` type between the new user and the new file.
+It doesn't include any pre-existing data from a database.
+
+Now let's do a match insert by adding a new file and a relevant permission for an existing user:
+
+.Match insert
+[,typeql]
+----
+match
+    $u isa user,
+        has email "john@email.com";
+insert
+    $f isa file,
+        has path "match-insert.py";
+    (subject:$u, object:$f) isa permission;
+----
+
+The above query matches all instances of `user` type with the email `john@email.com`.
+Then, for every matched result (there should be only one result),
+it inserts a new file `match-insert.py` and a new permission with the matched user and the inserted file.
+
+To limit the number of inserts to exactly one, make sure the `match` clause has only one result.
+The best way to do it is by matching a xref:typeql::schema/define-types.adoc#_unique_attribute[unique attribute],
+like the `email` for the `user`.
+See the <<_pera_schema,schema definition>> query.
+
+The `insert` clause can be executed multiple times, if there are multiple matched results:
+
+.Match insert with multiple inserts
+[,typeql]
+----
+match
+    $u isa user,
+        has email "john@email.com";
+    $f isa file;
+insert
+    (subject:$u, object:$f) isa permission;
+----
+
+The above query will match the user with the email `john@email.com` and every instance of the `file` type.
+And for every result, consisting of the same user and a different file,
+the `insert` clause is executed by inserting a `permission` relation.
+
+== #{counter:query}: Deleting data
+
+Deleting data from a database requires matching the data to delete.
+
+[NOTE]
+====
+For the following query we use the data from the
+<<_counterquery_inserting_data_with_or_without_context>> section.
+====
+
+.Delete permissions
+[,typeql]
+----
+match
+    $u isa user,
+        has email "john@email.com";
+delete
+    (subject:$u) isa permission;
+----
+
+The above query will delete all permission relations for the user with `john@email.com` email.
 
 == #{counter:query}: Inheritance
 
+xref:typeql::fundamentals.adoc#_inheritance[Inheritance] lets subtypes use roles and attributes,
+defined for their supertype (direct or nested).
 
+include::typedb-in-20-queries.adoc[tag=preload]
 
+.Inheritance
 [,typeql]
 ----
 define
 
+person sub entity,
+    owns full-name;
+user sub person,
+    owns email @unique,
+    owns name @key;
 employee sub user,
     owns employee-id;
 employee-id sub id;
 ----
 
-== #{counter:query}: Polymorphic queries
+Given the schema above, we can use `employee` with inherited attributes and roles:
 
-
-
+.Using inherited attributes
 [,typeql]
 ----
 insert
-    $e isa employee, has email "jim@vaticle.com"
+    $e isa employee,
+        has employee-id "e1234",
+        has email "kate@gmail.com",
+        has full-name "Kate Smith";
 ----
+
+In the query above we can insert an instance of `employee` type with `employee-id` and with some of the attribute types,
+defined for its supertypes (`user` and `person`).
+For example, `full-name` attribute can be owned by an instance of the `employee` type through inheritance.
+
+== #{counter:query}: Polymorphic queries
+
+Querying for a supertype will return all results for its subtypes.
+
+include::typedb-in-20-queries.adoc[tag=preload]
 
 [,typeql]
 ----
 match
-    $u isa user, has email $e;
+    $u isa user, has id $i;
 ----
 
+The above xref:typeql::data/get.adoc[Get] query will return pairs of `$u` and `$i`:
+
+* `$u` can be an instance of either the `user` type or any of its subtypes (e.g., `employee`),
+* `$i` can be an instance of any subtypes of the `id` type.
+  Since the `id` type is abstract, it can't be instantiated directly, only by subtyping.
+
+[#_counterquery_extending_the_schema]
 == #{counter:query}: Extending the schema
 //subtyping
 //adding a role-player
 //adding attributes to entities
 
+A schema of a TypeDB database can be extended at any time without the need to rewrite existing queries.
+The easiest way to extend the schema is to add a new type, add an ownership of an attribute type, add a role, or
+add an ability to play a new role with a xref:typeql::schema/define-types.adoc[Define] query.
 
+include::typedb-in-20-queries.adoc[tag=preload]
+
+.Schema extension variants
+[tabs]
+====
+Add a new type::
++
+--
 [,typeql]
 ----
 define
 
-employee has business-unit;
-business-unit sub attribute, value string;
+blocked sub attribute, value boolean;
+
+action sub entity,
+    owns name @key;
 ----
+--
+
+Add an ownership::
++
+--
+[,typeql]
+----
+define
+
+user owns blocked;
+----
+--
+
+Add a role::
++
+--
+[,typeql]
+----
+define
+
+permission relates permited-action;
+----
+--
+
+Add an ability to play a role::
++
+--
+[,typeql]
+----
+define
+
+action plays permission:permited-action;
+----
+--
+
+All together::
++
+--
+[,typeql]
+----
+define
+
+action sub entity,
+    owns name @key,
+    plays permission:permited-action;
+
+user owns blocked;
+
+permission relates permited-action;
+
+blocked sub attribute, value boolean;
+----
+--
+====
 
 == #{counter:query}: Abstract types and overriding
 
+Abstract types can't be instantiated (no data can be inserted for the abstract type), but can be subtyped.
 
+When inheriting ownership of an abstract attribute by a concrete type,
+you need to override an abstract attribute with a concrete subtype of it.
+
+.Overriding an abstract attribute example
+[tabs]
+=====
+Default example::
++
+--
+To run the following query, use a database with the schema and data from the <<_pera>> section.
+
+.Override example
 [,typeql]
 ----
 define
 
-user has id as user-id;
-----
+user owns id;
+dude sub user,
+    owns dude-id as id;
 
-== #{counter:query}: Relations
+dude-id sub id;
+----
+--
+Self-sufficient example::
++
+--
+To run the following query, use an empty database.
+
+.Override example
+[,typeql]
+----
+define
+
+person sub entity, abstract,
+    owns id;
+
+user sub person,
+    owns user-id as id;
+
+id sub attribute, abstract, value string;
+user-id sub id;
+----
+--
+=====
+//#todo Add inserting data?
+
+== #{counter:query}: Relations with a single role
 //n-ary
 //nested
 //variadic (1 role, many role players?)
 
+A relation type can have one or more roles.
+Every role can be played by zero, one, or many role-players.
 
+.Relation with one role
+====
+A classic example of a relation with one role is a friendship.
+Every role-player in a friendship plays the same role: `friend`.
 
 [,typeql]
 ----
@@ -392,7 +490,69 @@ define
 
 friendship sub relation,
     relates friend;
+
+person plays friendship:friend;
 ----
+====
+
+.Relation with multiple roles
+====
+Consider the following example:
+
+[,typeql]
+----
+define
+
+learning-course sub relation,
+    owns subject-name,
+    relates teacher,
+    relates student,
+    relates location;
+----
+
+In this example, there are, most likely, multiple students, at least one teacher and at least one location.
+There could be multiple teachers or locations for the same course.
+If there is no role-players for the `teacher` or the `location` roles, then it's probably an incomplete data state.
+====
+
+== #{counter:query}: Relations with multiple roles
+
+[,typeql]
+----
+define
+
+starring sub relation,
+    owns estimated-sallary-usd,
+    relates actor,
+    relates role,
+    relates movie;
+
+actor sub person;
+person sub entity,
+    owns full-name;
+
+movie sub entity,
+    owns name,
+    owns year-released;
+
+role sub entity,
+    owns character-name
+----
+
+== #{counter:query}: Transitive relations
+
+[,typeql]
+----
+define
+
+membership sub relation, abstract,
+    relates set,
+    relates member;
+
+group-membership sub membership,
+    relates group as set;
+----
+
 
 == #{counter:query}: Globally unique attributes
 
@@ -433,11 +593,8 @@ club sub entity,
 ----
 
 == #{counter:query}: Regex
-//Key
-//Unique
-//Constraint attribute value
-//variable bounding with contatins? regex?
-
+//define (constraint for the value that can be inserted)
+//match (constraint for the valued matched)
 
 [,typeql]
 ----
@@ -530,7 +687,7 @@ rule collection-transitivity:
 ----
 
 == #{counter:query}: Driver API schema modification
-//based on Studio
+//based on Studio ???
 //rename
 //change a supertype
 //etc.
@@ -546,36 +703,6 @@ rule collection-transitivity:
 ----
 
 ----
-
-== #{counter:query}:
-
-
-
-[,typeql]
-----
-
-----
-
-== #{counter:query}:
-
-
-
-[,typeql]
-----
-
-----
-
-== #{counter:query}:
-
-
-
-[,typeql]
-----
-
-----
-
-
-
 
 
 
