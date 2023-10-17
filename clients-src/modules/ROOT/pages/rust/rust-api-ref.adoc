@@ -1,13 +1,14 @@
-= Python Driver API reference
-:Summary: API Reference of TypeDB Driver for Python.
-:keywords: typedb, driver python
-:longTailKeywords: typedb python driver, typedb client python, python driver, API reference
-:pageTitle: Python Driver API reference
+= Rust Driver API reference
+:Summary: API Reference of TypeDB Driver for Rust.
+:keywords: typedb, driver rust
+:longTailKeywords: typedb rust driver, typedb client rust, rust driver, API reference
+:pageTitle: Rust Driver API reference
+:tabs-sync-option:
 //:toc: macro
 //:toclevels: 4
 
 ////
-Python Driver API reference consists of the following sections:
+Rust Driver API reference consists of the following sections:
 
 * <<_connection_header>>
 * <<_session_header>>
@@ -164,10 +165,10 @@ include::clients::partial$rust/logic/Trait_RuleAPI.adoc[]
 [#_errors_header]
 == Errors
 
+include::clients::partial$rust/errors/SchemaException.adoc[]
+
 include::clients::partial$rust/errors/Error.adoc[]
 
 include::clients::partial$rust/errors/ConnectionError.adoc[]
-
-include::clients::partial$rust/errors/SchemaException.adoc[]
 
 include::clients::partial$rust/errors/InternalError.adoc[]
