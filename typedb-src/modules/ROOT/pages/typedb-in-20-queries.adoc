@@ -321,6 +321,49 @@ In the query above we can insert an instance of `employee` type with `employee-i
 defined for its supertypes (`user` and `person`).
 For example, `full-name` attribute can be owned by an instance of the `employee` type through inheritance.
 
+== #{counter:query}: Overriding inheritance
+
+You can override an inherited ownership or a role with a new name.
+//#todo Add explanation as to why it might be needed
+
+Override uses the keyword `as` with the new type preceding the keyword, and old (inherited) type following the keyword.
+
+The new type should be defined in the schema as a subtype of the overriden (inherited) type.
+
+[NOTE]
+====
+To run the following query, use an empty database.
+====
+
+.Override example
+====
+.Schema
+[,typeql]
+----
+define
+
+person sub entity, abstract,
+    owns id,
+    plays participation:participant;
+
+user sub person,
+    owns user-id as id,
+    plays usage:user;
+
+participation sub relation,
+    relates participant;
+
+usage sub participation,
+    relates user as participant;
+
+id sub attribute, abstract, value string;
+user-id sub id;
+----
+
+In the above example, we override the inherited `id` attribute type with the `user-id` attribute type.
+We also override the `participant` role, inherited by the `usage` relation with the `user` role.
+====
+
 == #{counter:query}: Polymorphic queries
 
 Querying for a supertype will return all results for its subtypes.
@@ -421,7 +464,7 @@ blocked sub attribute, value boolean;
 --
 ====
 
-== #{counter:query}: Abstract types and overriding
+== #{counter:query}: Abstract types
 
 Abstract types can't be instantiated (no data can be inserted for the abstract type), but can be subtyped.
 
@@ -476,14 +519,19 @@ user-id sub id;
 //nested
 //variadic (1 role, many role players?)
 
-A relation type can have one or more roles.
-Every role can be played by zero, one, or many role-players.
+A relation type can have one or multiple roles.
+If there is only one role in a relation type, then all role-players are equal in the role they play in that relation.
 
-.Relation with one role
-====
-A classic example of a relation with one role is a friendship.
+One of the most popular examples of such a relation is friendship.
 Every role-player in a friendship plays the same role: `friend`.
 
+Every role can be played by zero, one, or many role-players.
+An instance of a relation type with a role without any role players usually represents an incomplete data state.
+Like a learning-course without a teacher, or marriage with only one spouse.
+
+include::typedb-in-20-queries.adoc[tag=preload]
+
+.Relation with a single role
 [,typeql]
 ----
 define
@@ -493,12 +541,80 @@ friendship sub relation,
 
 person plays friendship:friend;
 ----
+
+In the above query we define the `friend` role of the `friendship` relation type.
+The last line defines that the `person` type can play the `friend` role in the `friendship` type relations.
+Other types can't play the role, unless it is defined in the schema.
+
+.Example of a friendship relation
+====
+Let's xref:typeql::data/insert.adoc[insert] some friends:
+
+.Inserting friends
+[,typeql]
+----
+insert
+    $p1 isa person, has full-name "Chandler":
+    $p2 isa person, has full-name "Joey";
+    ($p1, $p2) isa friendship;
+----
+
+In the above query we are inserting two entities, each owning one attribute,
+and a relation of the `friendship` type between them.
+Notably, we omitted roles in a relation insertion.
+That is because there is only one role, that the `person` type instances can play in that relation.
+
+Now let's add a third friend to the same `friendship` relation.
+
+.Inserting one more friend
+[,typeql]
+----
+match
+    $p1 isa person, has full-name "Chandler":
+    $p2 isa person, has full-name "Joey";
+    $f($p1, $p2) isa friendship;
+insert
+    $p3 isa person, has full-name "Ross";
+    $f($p3) isa friendship;
+----
+
+In the above query we match existing people from the database and a `friendship` relation between them.
+For every matched result of two such people and a relation between them, the query inserts a third friend.
+
+To retrieve the inserted relation and its role-players, use the following xref:typeql::data/get.adoc[Get] query:
+
+.Retrieve all friends
+[,typeql]
+----
+match
+    $p isa person,
+        has full-name $n;
+    $f($p) isa friendship;
+----
+
+TypeDB Studio can visualize the result of the Get query as it is shown below.
+
+image::typedb-in-20-queries/friendship.png[friendship, width=50%, link=self]
 ====
 
-.Relation with multiple roles
-====
-Consider the following example:
+== #{counter:query}: Relations with multiple roles
 
+A relation can have more than one role.
+Having multiple roles means that role-players can play different roles in a relation.
+
+In an N-ary relation type, every N-1 combination of roles should make sense.
+For example, in a learning course relation type that relates a student, a teacher, and a location,
+the relation between students and teacher also makes sense in the context of learning course.
+As well as teacher/location, or student/location combinations.
+There could be many people, each playing the `student` role in the same `learning-course` relation.
+
+.Examples
+[tabs]
+=====
+Learning course example::
++
+--
+.Schema
 [,typeql]
 ----
 define
@@ -508,89 +624,287 @@ learning-course sub relation,
     relates teacher,
     relates student,
     relates location;
+
+subject-name sub attribute, value string;
+
+person
+    plays learning-course:teacher,
+    plays learning-course:student;
+
+room sub entity,
+    owns number,
+    owns address,
+    plays learning-course:location;
+
+number sub attribute, value long;
+address sub attribute, value string;
 ----
 
+The `person` type instances can play at least two roles in a `learning-course` relation:
+the `teacher` and  the `student`.
 In this example, there are, most likely, multiple students, at least one teacher and at least one location.
 There could be multiple teachers or locations for the same course.
 If there is no role-players for the `teacher` or the `location` roles, then it's probably an incomplete data state.
-====
 
-== #{counter:query}: Relations with multiple roles
+.Inserting relation with multiple roles
+[,typeql]
+----
+insert
+    $t isa person, has full-name "Isabel Roth";
+    $s1 isa person, has full-name "Martin Sloan";
+    $s2 isa person, has full-name "Josie Sears";
+    $s3 isa person, has full-name "Solomon Wallace";
+    $r isa room,
+        has number 304,
+        has address "Wellington Square, Oxford OX1 2JD, UK";
+    (location:$r, teacher:$t, student:$s1, student: $s2, student:$s3) isa learning-course,
+        has subject-name "Computer Science";
+----
 
+The above query inserts three students, one teacher, one room,
+and a learning-course relation with subject name `Computer science`.
+
+With a delicate query adjustment (by changing the `insert` keyword
+to the `match` and replacing all attribute values with variables),
+TypeDB Studio can visualize the result as it is shown below.
+
+image::typedb-in-20-queries/learning-course.png[learning-course, width=50%, link=self]
+--
+Movies example::
++
+--
 [,typeql]
 ----
 define
 
-starring sub relation,
-    owns estimated-sallary-usd,
+cast sub relation,
+    owns estimated-salary-usd,
     relates actor,
-    relates role,
+    relates movie-role,
+    relates studio,
     relates movie;
 
-actor sub person;
+actor sub person,
+    plays cast:actor;
 person sub entity,
-    owns full-name;
+    owns name;
 
 movie sub entity,
     owns name,
-    owns year-released;
+    owns year-released,
+    plays cast:movie;
 
-role sub entity,
-    owns character-name
+movie-role sub entity,
+    owns character-name,
+    plays cast:movie-role;
+
+name sub attribute, value string;
+year-released sub attribute, value long;
+character-name sub attribute, value string;
+estimated-salary-usd sub attribute, value long;
 ----
 
+In this example, usually there is one actor playing one or multiple roles in one movie with one or multiple studios.
+And the relation itself has an attribute of estimated salary in USD.
+--
+=====
+//#todo Add permission relation example
+
+////
 == #{counter:query}: Transitive relations
 
+.Schema
 [,typeql]
 ----
 define
 
-membership sub relation, abstract,
-    relates set,
-    relates member;
+group-membership sub relation,
+    relates group,
+    relates group-member;
 
-group-membership sub membership,
-    relates group as set;
+user plays group-membership:group-member;
+
+user-group sub entity,
+    owns name,
+    plays group-membership:group,
+    plays group-membership:group-member;
+----
+
+[,typeql]
+----
+insert
+
+
+
 ----
 
 
+////
+
 == #{counter:query}: Globally unique attributes
 
+Only an attribute can have a value, and the value type is set by the attributes type definition.
+An instance of an attribute type has a unique value among all instances of the same type.
 
+[IMPORTANT]
+====
+There can be no other instance of the same type with the same value.
+====
 
+For example, if more than one person has the same name, they will all own the same name attribute with the value.
+
+.Example of owning the same instance
+=====
+
+// tag::empty[]
+[NOTE]
+====
+This example is self-sufficient and designed to run in an empty database.
+====
+// end::empty[]
+
+Consider the following schema:
+
+.Schema
 [,typeql]
 ----
 define
 
 name sub attribute, value string;
 
-company sub entity,
-    owns name;
-department sub entity,
-    owns name;
-club sub entity,
-    owns name;
+person sub entity, owns name;
+company sub entity, owns name;
+movie sub entity, owns name;
+
+connection sub relation,
+    owns name,
+    relates connected-to;
+
+person plays connection:connected-to;
+company plays connection:connected-to;
+movie plays connection:connected-to;
 ----
+
+The `name` attribute type can be owned by three different entity types and one relation type.
+
+Let's insert some data.
+
+.Insert data
+[,typeql]
+----
+insert
+
+$p1 isa person, has name "Bob";
+$p2 isa person, has name "Bob";
+$c isa company, has name "Bob";
+$m isa movie, has name "Bob";
+
+$con($p1, $p2, $c, $m) isa connection, has name "Movie production", has name "Bob";
+----
+
+In the above query create a single instance of the `name` attribute type with the value "Bob"
+and insert ownership of it to instances of other types.
+Notice that we didn't specifically create the attribute "Bob" of the `name` type.
+We assigned ownership over it, and the attribute was created implicitly, because it didn't exist previously.
+
+The relation we inserted has ownership over two attributes of the same type.
+One of those attributes is the same "Bob",
+and the second one was also implicitly created upon the first assignment of ownership.
+
+Using TypeDB Studio, we can visualize the resulted data as the image below.
+
+image::typedb-in-20-queries/unique-attributes.png[unique attributes, width=50%, link=self]
+=====
+
+== #{counter:query}: Immutable attributes
+
+Attributes have values and are immutable.
+We can't change the value of an attribute.
+We can replace it with another attribute of the same type but a different value.
+
+[IMPORTANT]
+====
+The value of an attribute can't be changed.
+====
+
+To change a value owned by some instance of a type,
+we delete an ownership of the attribute with the old value form the type
+and insert ownership of the new attribute with the new value.
+
+For example, to change a name of a person,
+we xref:typeql::data/delete.adoc[Delete] an ownership of old name
+and xref:typeql::data/insert.adoc[Insert] ownership of the new one.
+We can delete the old name itself (the attribute), but that would influence all people with that particular name.
+
+.Attribute ownership example
+====
+.Schema
+[,typeql]
+----
+define
+
+name sub attribute, value string;
+person sub entity, owns name;
+----
+
+.Insert data
+[,typeql]
+----
+insert
+    $p isa person, has name "Ken";
+----
+
+.Update name
+[,typeql]
+----
+match
+    $p isa person, has name "Ken";
+delete
+    $p has name "Ken";
+insert
+    $p has name "Kendra";
+----
+
+The above Update query matches the person with the old name,
+then, for all matched results, deletes the name "Ken" and inserts the name "Kendra".
+====
 
 == #{counter:query}: Attribute annotations
 //Key
 //Unique
 
+When defining an ownership of an attribute type, we can add one of possible annotations: `@key` or `@unique`.
 
+The `@unique` annotation makes the ownership constrained by uniqueness.
+That means, that instances of the owner type can't own any instance of owned attribute more than once.
 
+The `@key` annotation makes the owned attribute a key for the owner type.
+That applies the same constraint as uniqueness and a cardinality of exactly one,
+meaning that all instances of the owner type must have exactly one instance of the owned attribute.
+
+.Example
+=====
+
+include::typedb-in-20-queries.adoc[tag=empty]
+
+Consider the following schema:
+
+.Schema
 [,typeql]
 ----
 define
 
-name sub attribute, value string;
-
-company sub entity,
+user sub person,
+    owns email @unique,
     owns name @key;
-department sub entity,
-    owns name @unique;
-club sub entity,
-    owns name;
+
+name sub attribute, value string;
+email sub attribute, value string;
 ----
+
+In the schema xref:typeql::schema/define-types.adoc[Define] query above we define `name`
+
+=====
 
 == #{counter:query}: Regex
 //define (constraint for the value that can be inserted)
@@ -684,6 +998,31 @@ rule collection-transitivity:
     } then {
         $m2($f) isa collection-membership;
     };
+----
+
+.Schema
+[,typeql]
+----
+define
+
+group-membership sub relation,
+    relates group,
+    relates group-member;
+
+user plays group-membership:group-member;
+
+user-group sub entity,
+    owns name,
+    plays group-membership:group,
+    plays group-membership:group-member;
+----
+
+[,typeql]
+----
+insert
+
+
+
 ----
 
 == #{counter:query}: Driver API schema modification
