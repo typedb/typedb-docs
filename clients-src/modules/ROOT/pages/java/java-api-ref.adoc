@@ -3,235 +3,150 @@
 :keywords: typedb, driver java
 :longTailKeywords: typedb java driver, typedb client java, java driver, API reference
 :pageTitle: Java Driver API reference
-//:toc:
-:toclevels: 2
-
-Java Driver API reference consists of two sections:
-
-* <<_query_section,Query>>
-* <<_response_section,Response>>
-
-[#_query_section]
-== Query section
-
-Query section consists of the following methods:
-
-* <<_typedb_driver_methods,TypeDB Driver methods>>
-* <<_client_methods,Client methods>>
-* <<_session_methods,Session methods>>
-* <<_transaction_methods,Transaction methods>>
-* <<_querymanager_methods,QueryManager methods>>
-* <<_options_methods,Options>>
-
-// #todo Double check the Options section - probably missed some content here
-
-[#_typedb_driver_methods]
-=== TypeDB Driver methods
-
-include::partial$java/typedb.adoc[leveloffset=+2]
-
-[#_client_methods]
-=== Client methods
-
-include::partial$java/client.adoc[leveloffset=+2]
-
-[#_session_methods]
-=== Session methods
-
-include::partial$java/session.adoc[leveloffset=+2]
-
-[#_transaction_methods]
-=== Transaction methods
-
-include::partial$java/transaction.adoc[leveloffset=+2]
-
-[#_querymanager_methods]
-=== QueryManager methods
-
-include::partial$java/query_manager.adoc[leveloffset=+2]
-
-[#_options_methods]
-=== Options
-
-include::partial$java/options.adoc[leveloffset=+2]
-
-'''
-////
-
-!!!!!!!!!!!!!!!  RESPONSE SECTION  !!!!!!!!!!!!!!!
+//:toc: macro
+//:toclevels: 4
 
 ////
+Java Driver API reference consists of the following sections:
 
-[#_response_section]
-== Response section
+* <<_connection_header>>
+* <<_session_header>>
+* <<_transaction_header>>
+* <<_answer_header>>
+* <<_concept_header>>
+* <<_schema_header>>
+* <<_data_header>>
+* <<_logic_header>>
+* <<_errors_header>>
+////
 
-Response section consists of the following methods:
+////
+* connection
+* session
+* transaction
+* answer
+* concept
+* schema
+* data
+* logic
+* errors
+////
 
-* <<_answer_methods,Answer methods>>
-* <<_concept_methods,Concept methods>>
-* <<_conceptmanager,ConceptManager methods>>
-* <<_future_methods,Future methods>>
-* <<_type_methods,Type methods>>
-** <<_thingtype_methods,Thing type methods>>
-** <<_entity_type,Entity type methods>>
-** <<_relationtype_methods,Relation type methods>>
-** <<_attribute_type,Attribute type methods>>
-* <<_rule_methods,Rule methods>>
-* <<_data_methods,Data methods>>
-** <<_entity_methods,Entity methods>>
-** <<_relation_methods,Relation methods>>
-** <<_attribute,Attribute methods>>
-* <<_value>>
+////
+.See the full table of contents for this page
+[%collapsible]
+====
+toc::[]
+====
+////
 
-[#_answer_methods]
-=== Answer methods
+[#_connection_header]
+== Connection
 
-include::partial$java/answer.adoc[leveloffset=+2]
+include::clients::partial$java/connection/TypeDBDriver.adoc[]
 
-[#_concept_methods]
-[#_concept]
-=== Concept methods
+include::clients::partial$java/connection/TypeDBCredential.adoc[]
 
-`Concept` is inherited and extended by <<_value,`Value`>>, <<_type_methods,`Type`>> and <<_data_methods,`Data`>>.
+include::clients::partial$java/connection/DatabaseManager.adoc[]
 
-include::partial$java/concepts/concept.adoc[leveloffset=+2]
+include::clients::partial$java/connection/Database.adoc[]
 
-[#_conceptmanager]
-=== ConceptManager methods
+include::clients::partial$java/connection/Database.Replica.adoc[]
 
-include::partial$java/concepts/concept_manager.adoc[leveloffset=+2]
+include::clients::partial$java/connection/UserManager.adoc[]
 
-[#_future_methods]
-=== Future methods
+include::clients::partial$java/connection/User.adoc[]
 
-include::partial$java/query_future.adoc[leveloffset=+2]
+[#_session_header]
+== Session
 
-[#_type_methods]
-[#_type]
-=== Type methods
+include::clients::partial$java/session/TypeDBSession.adoc[]
 
-`Type` has all the <<_concept_methods,`Concept` methods>> plus what follows.
+include::clients::partial$java/session/TypeDBSession.Type.adoc[]
 
-include::partial$java/concepts/type.adoc[leveloffset=+2]
+include::clients::partial$java/session/TypeDBOptions.adoc[]
 
-[#_thingtype_methods]
-==== ThingType methods
+[#_transaction_header]
+== Transaction
 
-// #todo Update the Thing keyword as soon as API implementation update will change it -
+include::clients::partial$java/transaction/TypeDBTransaction.adoc[]
 
-`ThingType` has all the <<_type_methods,`Type` methods>> plus what follows.
+include::clients::partial$java/transaction/TypeDBTransaction.Type.adoc[]
 
-include::partial$java/concepts/thing_type.adoc[leveloffset=+3]
+include::clients::partial$java/transaction/QueryManager.adoc[]
 
-[#_entity_type]
-==== EntityType methods
+[#_answer_header]
+== Answer
 
-`EntityType` has all the <<_thingtype_methods,`ThingType` methods>> plus what follows.
+include::clients::partial$java/answer/ConceptMapGroup.adoc[]
 
-include::partial$java/concepts/entity_type.adoc[leveloffset=+3]
+include::clients::partial$java/answer/ConceptMap.adoc[]
 
-[#_relationtype_methods]
-==== RelationType methods
+include::clients::partial$java/answer/NumericGroup.adoc[]
 
-`RelationType` has all the <<_thingtype_methods,`ThingType` methods>> plus what follows.
+include::clients::partial$java/answer/Numeric.adoc[]
 
-include::partial$java/concepts/relation_type.adoc[leveloffset=+3]
+include::clients::partial$java/answer/ConceptMap.Explainables.adoc[]
 
-[#_roletype_methods]
-===== RoleType methods
+include::clients::partial$java/answer/ConceptMap.Explainable.adoc[]
 
-`RoleType` has all the <<_type_methods,`Type` methods>> plus what follows.
+include::clients::partial$java/answer/Explanation.adoc[]
 
-include::partial$java/concepts/role_type.adoc[leveloffset=+4]
+[#_concept_header]
+== Concept
 
-[#_attributetype_methods]
-[#_attribute_type]
-==== AttributeType methods
+include::clients::partial$java/concept/ConceptManager.adoc[]
 
-`AttributeType` has all the <<_thingtype_methods,`ThingType` methods>> plus what follows.
+include::clients::partial$java/concept/Concept.adoc[]
 
-include::partial$java/concepts/attribute_type.adoc[leveloffset=+3]
+[#_schema_header]
+== Schema
 
-[#_boolean_attribute_type]
-===== BooleanAttributeType methods
+include::clients::partial$java/schema/Type.adoc[]
 
-`BooleanAttributeType` has all the <<_attributetype_methods,`AttributeType` methods>> plus what follows.
+//include::clients::partial$java/schema/Label.adoc[]
 
-include::partial$java/concepts/boolean_attribute_type.adoc[leveloffset=+4]
+include::clients::partial$java/schema/ThingType.adoc[]
 
-[#_long_attribute_type]
-===== LongAttributeType methods
+include::clients::partial$java/schema/EntityType.adoc[]
 
-`LongAttributeType` has all the <<_attributetype_methods,`AttributeType` methods>> plus what follows.
+include::clients::partial$java/schema/RelationType.adoc[]
 
-include::partial$java/concepts/long_attribute_type.adoc[leveloffset=+4]
+include::clients::partial$java/schema/RoleType.adoc[]
 
-[#_double_attribute_type]
-===== DoubleAttributeType methods
+include::clients::partial$java/schema/AttributeType.adoc[]
 
-`DoubleAttributeType` has all the <<_attributetype_methods,`AttributeType` methods>> plus what follows.
+include::clients::partial$java/schema/ThingType.Annotation.adoc[]
 
-include::partial$java/concepts/double_attribute_type.adoc[leveloffset=+4]
+include::clients::partial$java/schema/Concept.Transitivity.adoc[]
 
-[#_string_attribute_type]
-===== StringAttributeType methods
+include::clients::partial$java/schema/Value.Type.adoc[]
 
-`StringAttributeType` has all the <<_attributetype_methods,`AttributeType` methods>> plus what follows.
+[#_data_header]
+== Data
 
-include::partial$java/concepts/string_attribute_type.adoc[leveloffset=+4]
+include::clients::partial$java/data/Thing.adoc[]
 
-[#_date_attribute_type]
-===== DateTimeAttributeType methods
+include::clients::partial$java/data/Entity.adoc[]
 
-`DateTimeAttributeType` has all the <<_attributetype_methods,`AttributeType` methods>> plus what follows.
+include::clients::partial$java/data/Relation.adoc[]
 
-include::partial$java/concepts/datetime_attribute_type.adoc[leveloffset=+4]
+include::clients::partial$java/data/Attribute.adoc[]
 
-[#_rule_methods]
-=== Rule methods
+include::clients::partial$java/data/Value.adoc[]
 
-include::partial$java/concepts/rule.adoc[leveloffset=+2]
+[#_logic_header]
+== Logic
 
-[#_logicmanager]
-==== LogicManager
+include::clients::partial$java/logic/LogicManager.adoc[]
 
-include::partial$java/concepts/logic_manager.adoc[leveloffset=+3]
+include::clients::partial$java/logic/Rule.adoc[]
 
-'''
+////
+[#_errors_header]
+== Errors
 
-[#_data_methods]
-[#_thing]
-=== Data methods
-// #todo This is the Thing in disguise. Update naming when will get rid of the Thing
+include::clients::partial$java/errors/TypeDBDriverExceptionExt.adoc[]
 
-`Data` has all the <<_concept_methods,`Concept` methods>> plus what follows.
-
-include::partial$java/concepts/thing.adoc[leveloffset=+2]
-
-[#_entity_methods]
-==== Entity methods
-
-`Entity` has all the <<_data_methods,`Data` methods>> plus what follows.
-
-include::partial$java/concepts/entity.adoc[leveloffset=+3]
-
-[#_relation_methods]
-==== Relation methods
-
-`Relation` has all the <<_data_methods,`Data` methods>> plus what follows.
-
-include::partial$java/concepts/relation.adoc[leveloffset=+3]
-
-[#_attribute]
-==== Attribute methods
-
-`Attribute` has all the <<_data_methods,`Data` methods>> plus what follows.
-
-include::partial$java/concepts/attribute.adoc[leveloffset=+3]
-
-[#_value]
-=== Value methods
-
-`Value` has all the <<_concept,`concept` methods>> plus what follows.
-
-include::partial$java/concepts/value.adoc[leveloffset=+2]
+include::clients::partial$java/errors/ErrorMessage.adoc[]
+////
