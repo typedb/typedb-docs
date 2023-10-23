@@ -37,7 +37,7 @@ Let's use the following schema definition as example.
 [NOTE]
 ====
 Use our xref:typedb::quickstart-guide.adoc[Quickstart guide]
-to find out how to create a new database and send the query.
+to find out how to create a new database and send a query.
 ====
 
 [#_pera_schema]
@@ -167,7 +167,7 @@ using these formatting elements can enhance the schema's readability for others.
 
 .Define query example (DDL)
 =====
-The Define queries in tabs below might look very different, but they produce the same result for TypeDB.
+The Define queries in the tabs below might look very different, but they produce the same result for TypeDB.
 
 [tabs]
 ====
@@ -372,6 +372,8 @@ Just like adding an equation to a system of equations.
 .Composable patterns examples
 =====
 
+include::typedb-in-20-queries.adoc[tag=preload]
+
 .Query user by email
 [,typeql]
 ----
@@ -453,7 +455,7 @@ add an ability to play a new role with a xref:typeql::schema/define-types.adoc[D
 
 include::typedb-in-20-queries.adoc[tag=preload]
 
-.Schema extension variants
+.Schema extension variants example
 [tabs]
 ====
 Add a new type::
@@ -528,10 +530,10 @@ blocked sub attribute, value boolean;
 Querying for a supertype will return all results for its subtypes.
 We can variablize any concept (type or instance of data) in a query.
 
-include::typedb-in-20-queries.adoc[tag=preload]
-
 .Subtypes example
 =====
+include::typedb-in-20-queries.adoc[tag=preload]
+
 Let's extend our existing database schema with a new type.
 
 .Schema
@@ -686,11 +688,13 @@ user-id sub id;
 
 An xref:typeql::data/insert.adoc[Insert] query can be used with or without a `match` clause, as it is optional.
 
+.Example
+=====
 include::typedb-in-20-queries.adoc[tag=preload]
 
 Let's insert some data directly:
 
-.Insert query
+.Insert query without match clause
 [,typeql]
 ----
 insert
@@ -729,7 +733,7 @@ like the `email` attribute for the `user` in our sample <<_pera_schema,schema de
 
 The `insert` clause can be executed multiple times, if there are multiple matched results:
 
-.Match insert with multiple inserts
+.Match insert with multiple executions of insert clause
 [,typeql]
 ----
 match
@@ -743,11 +747,14 @@ insert
 The above query will match the user with the email `john@email.com` and every instance of the `file` type.
 And for every result, consisting of the same user and a different file,
 the `insert` clause is executed by inserting a `permission` relation.
+=====
 
 == #{counter:query}: Deleting data
 
-Deleting data from a database requires matching the data to delete.
+Unlike inserting, deleting data from a database requires matching the data to delete.
 
+.Example
+=====
 [NOTE]
 ====
 For the following query we use the data from the
@@ -765,15 +772,18 @@ delete
 ----
 
 The above query will delete all permission relations for the user with `john@email.com` email.
+=====
 
 == #{counter:query}: Inheritance
 
 xref:typeql::fundamentals.adoc#_inheritance[Inheritance] lets subtypes use roles and attributes,
 defined for their supertype (direct or nested).
 
+.Example
+=====
 include::typedb-in-20-queries.adoc[tag=preload]
 
-.Inheritance
+.Inheritance schema
 [,typeql]
 ----
 define
@@ -790,7 +800,7 @@ employee-id sub id;
 
 Given the schema above, we can use `employee` with inherited attributes and roles:
 
-.Using inherited attributes
+.Using inherited attributes in a query
 [,typeql]
 ----
 insert
@@ -803,6 +813,7 @@ insert
 In the query above we can insert an instance of `employee` type with `employee-id` and with some of the attribute types,
 defined for its supertypes (`user` and `person`).
 For example, `full-name` attribute can be owned by an instance of the `employee` type through inheritance.
+=====
 
 == #{counter:query}: Overriding inheritance
 
@@ -813,13 +824,13 @@ Override uses the keyword `as` with the new type preceding the keyword, and old 
 
 The new type should be defined in the schema as a subtype of the overriden (inherited) type.
 
+.Example
+=====
 [NOTE]
 ====
 To run the following query, use an empty database.
 ====
 
-.Override example
-====
 .Schema
 [,typeql]
 ----
@@ -845,27 +856,38 @@ user-id sub id;
 
 In the above example, we override the inherited `id` attribute type with the `user-id` attribute type.
 We also override the `participant` role, inherited by the `usage` relation with the `user` role.
-====
+=====
 
 == #{counter:query}: Relations
 //n-ary
 //nested
 //variadic (1 role, many role players?)
 
-A relation type can have one or multiple roles.
+A relation type can relate one or multiple roles.
+Every role can be played by zero, one, or many role players in a relation.
+A role without any role players usually represents an incomplete data state.
+Like a class without a teacher, or a marriage with only one spouse.
 
-Every role can be played by zero, one, or many role-players.
-An instance of a relation type with a role without any role players usually represents an incomplete data state.
-Like a learning-course without a teacher, or marriage with only one spouse.
+Relations in TypeDB work elegantly and naturally, without the need for joins,
+tables, foreign keys, or any other tricks needed to "just make it work".
+
+A database schema defines relation types and their roles, as well as types that can play a role.
+Creating a relation is just instantiating a relation type with the exact role players that you want.
+
+[discrete]
+=== Relations with a single role
+
+If there is only one role in a relation type, then all role-players are equal in the role they play in that relation.
+
+.Example of a relation with a single role
+=====
 
 include::typedb-in-20-queries.adoc[tag=preload]
 
-.Relations with a single role
-====
-If there is only one role in a relation type, then all role-players are equal in the role they play in that relation.
+One of the most popular examples of a relation with just one role is a friendship.
+Every role-player in a friendship plays the same role of `friend`.
 
-One of the most popular examples of such a relation is friendship.
-Every role-player in a friendship plays the same role: `friend`.
+Now let's define a schema for a `friendship` relation type:
 
 .Schema
 [,typeql]
@@ -896,7 +918,7 @@ insert
 In the above query we are inserting two entities, each owning one attribute,
 and a relation of the `friendship` type between them.
 Notably, we omitted roles in a relation insertion.
-That is because there is only one role, that the `person` type instances can play in that relation.
+We can do that because there is only one role, that the `person` type instances can play in that relation.
 
 Now let's add a third friend to the same `friendship` relation.
 
@@ -912,8 +934,9 @@ insert
     $f($p3) isa friendship;
 ----
 
-In the above query we match existing people from the database and a `friendship` relation between them.
-For every matched result of two such people and a relation between them, the query inserts a third friend.
+We just made a ternary relation out of a binary one!
+In the above query we match two existing persons from the database and a `friendship` relation between them.
+For every matched result, the query inserts a third friend.
 
 To retrieve the inserted relation and its role-players, use the following xref:typeql::data/get.adoc[Get] query:
 
@@ -929,31 +952,44 @@ match
 TypeDB Studio can visualize the result of the Get query as it is shown below.
 
 image::typedb-in-20-queries/friendship.png[friendship, width=50%, link=self]
-====
+=====
 
-== #{counter:query}: Relations with multiple roles
+[discrete]
+=== Relations with multiple roles
 
-A relation can have more than one role.
-Having multiple roles means that role-players can play different roles in a relation.
-
+Having multiple roles means that role players can play different roles in a relation.
 In an N-ary relation type, every N-1 combination of roles should make sense.
-For example, in a learning course relation type that relates a student, a teacher, and a location,
-the relation between students and teacher also makes sense in the context of learning course.
-As well as teacher/location, or student/location combinations.
-There could be many people, each playing the `student` role in the same `learning-course` relation.
 
-.Examples
+Here are some popular examples of relations with multiple roles from different domains:
+
+* Learning course -- a `class` relation that owns an attribute of the `subject-name` type and relates the following roles:
+  ** Teacher
+  ** Student
+  ** Location
+* Movie database -- a `cast` relation that can have an attribute of `estimated-salary-usd` and relates the following roles:
+  ** Movie
+  ** Actor
+  ** Role (Character)
+  ** Studio
+* Identity and access management -- a `permission` relation that can have an attribute of `updated` and relates the following roles:
+  ** Subject (e.g., a user)
+  ** Object (a protected resource, e.g., a file)
+  ** Action (e.g., view, edit, delete)
+
+.Examples of a relation with multiple roles
 [tabs]
 =====
 Learning course example::
 +
 --
+include::typedb-in-20-queries.adoc[tag=empty]
+
 .Schema
 [,typeql]
 ----
 define
 
-learning-course sub relation,
+class sub relation,
     owns subject-name,
     relates teacher,
     relates student,
@@ -962,19 +998,19 @@ learning-course sub relation,
 subject-name sub attribute, value string;
 
 person
-    plays learning-course:teacher,
-    plays learning-course:student;
+    plays class:teacher,
+    plays class:student;
 
 room sub entity,
     owns number,
     owns address,
-    plays learning-course:location;
+    plays class:location;
 
 number sub attribute, value long;
 address sub attribute, value string;
 ----
 
-The `person` type instances can play at least two roles in a `learning-course` relation:
+The `person` type instances can play at least two roles in a `class` relation:
 the `teacher` and  the `student`.
 In this example, there are, most likely, multiple students, at least one teacher and at least one location.
 There could be multiple teachers or locations for the same course.
@@ -991,12 +1027,12 @@ insert
     $r isa room,
         has number 304,
         has address "Wellington Square, Oxford OX1 2JD, UK";
-    (location:$r, teacher:$t, student:$s1, student: $s2, student:$s3) isa learning-course,
+    (location:$r, teacher:$t, student:$s1, student: $s2, student:$s3) isa class,
         has subject-name "Computer Science";
 ----
 
 The above query inserts three students, one teacher, one room,
-and a learning-course relation with subject name `Computer science`.
+and a class relation with subject name `Computer science`.
 
 With a delicate query adjustment (by changing the `insert` keyword
 to the `match` and replacing all attribute values with variables),
@@ -1007,6 +1043,9 @@ image::typedb-in-20-queries/learning-course.png[learning-course, width=50%, link
 Movies example::
 +
 --
+include::typedb-in-20-queries.adoc[tag=empty]
+
+.Schema
 [,typeql]
 ----
 define
@@ -1014,7 +1053,7 @@ define
 cast sub relation,
     owns estimated-salary-usd,
     relates actor,
-    relates movie-role,
+    relates role,
     relates studio,
     relates movie;
 
@@ -1030,7 +1069,7 @@ movie sub entity,
 
 movie-role sub entity,
     owns character-name,
-    plays cast:movie-role;
+    plays cast:role;
 
 name sub attribute, value string;
 year-released sub attribute, value long;
@@ -1041,51 +1080,74 @@ estimated-salary-usd sub attribute, value long;
 In this example, usually there is one actor playing one or multiple roles in one movie with one or multiple studios.
 And the relation itself has an attribute of estimated salary in USD.
 --
-=====
-//#todo Add permission relation example
 
-////
-== #{counter:query}: Transitive relations
+Identity and access management::
++
+--
+Let's modify the schema from the <<_pera>> section to add a third role (`action`) to the `permission` relation.
+Having a role for `action` and an entity type `action` (that can play the role) lets us
+expand the set of possible actions by inserting a new instance of the `action` type.
+Thus, the schema is universal for any
 
 .Schema
 [,typeql]
 ----
 define
 
-group-membership sub relation,
-    relates group,
-    relates group-member;
-
-user plays group-membership:group-member;
-
-user-group sub entity,
+person sub entity,
+    owns full-name;
+user sub person,
+    owns email @unique,
+    owns name @key,
+    plays permission:subject;
+file sub entity,
+    owns path @key,
+    owns size-kb,
+    plays permission:object;
+action sub entity,
     owns name,
-    plays group-membership:group,
-    plays group-membership:group-member;
+    plays permission:action;
+
+permission sub relation,
+    owns updated,
+    relates subject,
+    relates object,
+    relates action;
+
+full-name sub attribute, value string;
+id sub attribute, abstract, value string;
+email sub id;
+path sub id;
+name sub id;
+size-kb sub attribute, value long;
+updated sub attribute, value datetime;
 ----
 
-[,typeql]
-----
-insert
+In this example, the `user` type plays the role of `subject` in a permission relation,
+while the `object` role is played by the `file` type, and the `action` type plays the `action` role.
+When we say a type plays a role, we actually mean that an instance of the type can be a role player for the role.
+--
+=====
 
-
-
-----
-
-
-////
+//#todo Add inserts and gets for the last two examples
 
 == #{counter:query}: Globally unique attributes
 
-Only an attribute can have a value, and the value type is set by the attributes type definition.
-An instance of an attribute type has a unique value among all instances of the same type.
+Always optimal storage space and memory requirements as data is naturally deduplicated.
+
+Only an attribute can have a value, and the value type is set by the type definition in a schema.
+An attribute has a unique value among all instances of the same type.
 
 [IMPORTANT]
 ====
 There can be no other instance of the same type with the same value.
 ====
 
-For example, if more than one person has the same name, they will all own the same name attribute with the value.
+For example, if more than one person has the same name,
+they will all own the same attribute of the name type with the value.
+
+You don't have to explicitly create an attribute.
+It will be created implicitly upon the first assignment of ownership.
 
 .Example of owning the same instance
 =====
@@ -1171,7 +1233,9 @@ and xref:typeql::data/insert.adoc[Insert] ownership of the new one.
 We can delete the old name itself (the attribute), but that would influence all people with that particular name.
 
 .Attribute ownership example
-====
+=====
+include::typedb-in-20-queries.adoc[tag=empty]
+
 .Schema
 [,typeql]
 ----
@@ -1201,7 +1265,7 @@ insert
 
 The above Update query matches the person with the old name,
 then, for all matched results, deletes the name "Ken" and inserts the name "Kendra".
-====
+=====
 
 [#_counterquery_attribute_annotations]
 == #{counter:query}: Attribute annotations
@@ -1209,17 +1273,16 @@ then, for all matched results, deletes the name "Ken" and inserts the name "Kend
 //Unique
 
 When defining an ownership of an attribute type, we can add one of possible annotations: `@key` or `@unique`.
+These annotation constraints are limiting what can be inserted into a database.
 
 The `@unique` annotation makes the ownership constrained by uniqueness.
 That means, that instances of the owner type can't own any instance of owned attribute more than once.
 
 The `@key` annotation makes the owned attribute a key for the owner type.
-That applies the same constraint as uniqueness and a cardinality of exactly one,
+That applies the uniqueness constraint and, in addition, imposes a cardinality of exactly one --
 meaning that all instances of the owner type must have exactly one instance of the owned attribute.
 
-The annotation constraints are limiting what can be inserted into a database.
-
-.Example
+.Simple example
 =====
 
 include::typedb-in-20-queries.adoc[tag=empty]
@@ -1310,7 +1373,7 @@ insert
 ----
 
 The above query attempts to insert a user with more than one name.
-Since `named` owned by `user` with the `@key` annotation, this query invokes the following error:
+Since `name` owned by `user` with the `@key` annotation, this query invokes the following error:
 
 .Error message
 ----
@@ -1325,7 +1388,9 @@ Since `named` owned by `user` with the `@key` annotation, this query invokes the
 We can limit possible values that an attribute can take by using a regular expression in the type definition.
 
 .Example
-====
+=====
+include::typedb-in-20-queries.adoc[tag=empty]
+
 .Schema
 [,typeql]
 ----
@@ -1362,7 +1427,7 @@ It violates the regular expression constraint on the `status` value and invokes 
 ----
 Error> [THW11] Invalid Thing Write: Attempted to put an instance of 'status' with value 'Created' that does not satisfy the regular expression '^(STARTED|STOPPED|DELETED)$'.
 ----
-====
+=====
 
 //For more information on how to use regular expressions to limit attribute values,
 //see the xref:typeql::data/advanced.adoc[] section.
@@ -1475,16 +1540,24 @@ The result will contain only files with `size-kb` over `1024`.
 [#_counterquery_rule_based_inference]
 == #{counter:query}: Rule-based inference
 
-TypeDB reasoning engine can perform rule-based inference in `read` transactions.
-To use inference, we need to match the following conditions:
+TypeDB reasoning engine can perform rule-based inference when you read data (use Get queries).
+To use inference, do the following:
 
 1. Define rules in the schema.
-2. Run a `read` transaction with the `infer` option enabled.
+2. Run a `read` transaction with the `infer` option xref:typedb::development/infer.adoc#_how_to_use_inference[enabled].
 3. Send a Get query.
 
-.Simple example
+[IMPORTANT]
 ====
-.Schema
+Inferred data is never persisted in a database,
+but inferred on query time based on present data and rules from a schema.
+====
+
+.Simple example
+=====
+include::typedb-in-20-queries.adoc[tag=empty]
+
+.Schema with a rule
 [,typeql]
 ----
 define
@@ -1525,6 +1598,8 @@ match
 
 The result is a single person with a single name, that we inserted.
 
+image::typedb-in-20-queries/no-inference.png[no-inference, width=30%, link=self]
+
 Now let's
 xref:typedb::development/infer.adoc#_how_to_use_inference[enable] the `infer` transaction option
 to see the results of the same query with inference:
@@ -1536,11 +1611,16 @@ match
     $p isa person, has name $fn;
 ----
 
-The result includes not only the data we inserted, but also inferred data (person having a name `Dude`).
-====
+The result includes not only the data we inserted, but also the inferred data (person having a name `Dude`).
+
+image::typedb-in-20-queries/inference.png[inference, width=30%, link=self]
+=====
 
 .Rule example with arithmetic
-====
+=====
+include::typedb-in-20-queries.adoc[tag=empty]
+
+.Schema
 [,typeql]
 ----
 define
@@ -1604,10 +1684,7 @@ match
 
 The result includes not only the data we inserted,
 but also inferred data (`size-mb` populated with the value of `size-kb` divided by `1024`).
-====
-
-Inferred data is never persisted in a database,
-but inferred on query time based on present data and rules from a schema.
+=====
 
 [#_counterquery_rule_chaining]
 == #{counter:query}: Rule chaining
@@ -1615,7 +1692,9 @@ but inferred on query time based on present data and rules from a schema.
 Rules can be applied one after another in a chain.
 
 .Example
-====
+=====
+include::typedb-in-20-queries.adoc[tag=empty]
+
 .Schema
 [,typeql]
 ----
@@ -1682,18 +1761,21 @@ match
 
 The result includes not only the data we inserted,
 but also data inferred by both rules (`size-mb` and `size-gb`).
-====
+=====
 
-== #{counter:query}: Rule for relation transitivity
+== #{counter:query}: Relation transitivity
 
 Rules can enable transitivity of relations.
 
-Transitivity lets you expand rules when certain conditions are met.
+Transitivity lets you expand relations when certain conditions are met.
 The most general case is: given a relation from A to B,
 and a relation from B to C, we can imply a relation from A to C.
 
-.Example
-====
+Using rules for transitivity can greatly simplify your TypeQL queries.
+
+.Transitivity example
+=====
+include::typedb-in-20-queries.adoc[tag=empty]
 
 .Schema
 [,typeql]
@@ -1744,34 +1826,4 @@ the `transitive-group-memmbership` rule, will make `user` into a member of all g
 
 For more information on rule inference, see the xref:typeql::schema/define-rules.adoc[] page
 in xref:typeql::overview.adoc[TypeQL documentation].
-====
-
-
-
-
-
-
-
-////
-== #{counter:query}: Driver API schema modification
-//based on Studio ???
-//rename
-//change a supertype
-//etc.
-
-//step-by-step guide for Studio
-
-
-== #{counter:query}: Find all permissions for Kevin
-
-
-
-[,typeql]
-----
-
-----
-
-
-
-
-////
+=====
