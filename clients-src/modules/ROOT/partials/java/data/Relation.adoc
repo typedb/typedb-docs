@@ -11,76 +11,7 @@
 Relation is an instance of a relation type and can be uniquely addressed by a combination of its type, owned attributes and role players.
 
 // tag::methods[]
-[#_isRelation_]
-==== isRelation
-
-[source,java]
-----
-@CheckReturnValue
-default boolean isRelation()
-----
-
-Checks if the concept is a ``Relation``. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-relation.isRelation();
-----
-
-[#_asRelation_]
-==== asRelation
-
-[source,java]
-----
-@CheckReturnValue
-default Relation asRelation()
-----
-
-Casts the concept to ``Relation``. 
-
-
-[caption=""]
-.Returns
-`Relation`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-relation.asRelation();
-----
-
-[#_getType_]
-==== getType
-
-[source,java]
-----
-@CheckReturnValue
-RelationType getType()
-----
-
-Retrieves the type which this ``Relation`` belongs to. 
-
-
-[caption=""]
-.Returns
-`RelationType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-relation.getType();
-----
-
-[#_addPlayer_com_vaticle_typedb_driver_api_TypeDBTransaction_com_vaticle_typedb_driver_api_concept_type_RoleType_com_vaticle_typedb_driver_api_concept_thing_Thing]
+[#_Relation_addPlayer_com_vaticle_typedb_driver_api_TypeDBTransaction_com_vaticle_typedb_driver_api_concept_type_RoleType_com_vaticle_typedb_driver_api_concept_thing_Thing]
 ==== addPlayer
 
 [source,java]
@@ -115,17 +46,237 @@ a| `player` a| The thing to play the role a| `Thing`
 relation.addPlayer(transaction, roleType, player);
 ----
 
-[#_removePlayer_com_vaticle_typedb_driver_api_TypeDBTransaction_com_vaticle_typedb_driver_api_concept_type_RoleType_com_vaticle_typedb_driver_api_concept_thing_Thing]
-==== removePlayer
+[#_Relation_asAttribute_]
+==== asAttribute
 
 [source,java]
 ----
-void removePlayer​(TypeDBTransaction transaction,
-                  RoleType roleType,
-                  Thing player)
+default Attribute asAttribute()
 ----
 
-Removes the association of the given instance that plays the given role in this ``Relation``. 
+Casts the concept to ``Attribute``. 
+
+
+[caption=""]
+.Returns
+`Attribute`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asAttribute();
+----
+
+[#_Relation_asAttributeType_]
+==== asAttributeType
+
+[source,java]
+----
+default AttributeType asAttributeType()
+----
+
+Casts the concept to ``AttributeType``. 
+
+
+[caption=""]
+.Returns
+`AttributeType`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asAttributeType();
+----
+
+[#_Relation_asEntity_]
+==== asEntity
+
+[source,java]
+----
+default Entity asEntity()
+----
+
+Casts the concept to ``Entity``. 
+
+
+[caption=""]
+.Returns
+`Entity`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asEntity();
+----
+
+[#_Relation_asEntityType_]
+==== asEntityType
+
+[source,java]
+----
+default EntityType asEntityType()
+----
+
+Casts the concept to ``EntityType``. 
+
+
+[caption=""]
+.Returns
+`EntityType`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asEntityType();
+----
+
+[#_Relation_asRelation_]
+==== asRelation
+
+[source,java]
+----
+@CheckReturnValue
+default Relation asRelation()
+----
+
+Casts the concept to ``Relation``. 
+
+
+[caption=""]
+.Returns
+`Relation`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+relation.asRelation();
+----
+
+[#_Relation_asRelationType_]
+==== asRelationType
+
+[source,java]
+----
+default RelationType asRelationType()
+----
+
+Casts the concept to ``RelationType``. 
+
+
+[caption=""]
+.Returns
+`RelationType`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asRelationType();
+----
+
+[#_Relation_asRoleType_]
+==== asRoleType
+
+[source,java]
+----
+default RoleType asRoleType()
+----
+
+Casts the concept to ``RoleType``. 
+
+
+[caption=""]
+.Returns
+`RoleType`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asRoleType();
+----
+
+[#_Relation_asThingType_]
+==== asThingType
+
+[source,java]
+----
+default ThingType asThingType()
+----
+
+Casts the concept to ``ThingType``. 
+
+
+[caption=""]
+.Returns
+`ThingType`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asThingType();
+----
+
+[#_Relation_asType_]
+==== asType
+
+[source,java]
+----
+default Type asType()
+----
+
+Casts the concept to ``Type``. 
+
+
+[caption=""]
+.Returns
+`Type`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asType();
+----
+
+[#_Relation_asValue_]
+==== asValue
+
+[source,java]
+----
+default Value asValue()
+----
+
+Casts the concept to ``Value``. 
+
+
+[caption=""]
+.Returns
+`Value`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asValue();
+----
+
+[#_Relation_getPlayers_com_vaticle_typedb_driver_api_TypeDBTransaction]
+==== getPlayers
+
+[source,java]
+----
+@CheckReturnValue
+java.util.Map<? extends RoleType,​? extends java.util.List<? extends Thing>> getPlayers​(TypeDBTransaction transaction)
+----
+
+Retrieves a mapping of all instances involved in the ``Relation`` and the role each play. 
 
 
 [caption=""]
@@ -135,22 +286,20 @@ Removes the association of the given instance that plays the given role in this 
 |===
 |Name |Description |Type
 a| `transaction` a| The current transaction a| `TypeDBTransaction`
-a| `roleType` a| The role to no longer be played by the thing in this ``Relation`` a| `RoleType`
-a| `player` a| The instance to no longer play the role in this ``Relation`` a| `Thing`
 |===
 
 [caption=""]
 .Returns
-`void`
+`java.util.Map<? extends RoleType,​? extends java.util.List<? extends Thing>>`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-relation.removePlayer(transaction, roleType, player);
+relation.getPlayers(transaction)
 ----
 
-[#_getPlayersByRoleType_com_vaticle_typedb_driver_api_TypeDBTransaction_com_vaticle_typedb_driver_api_concept_type_RoleType___]
+[#_Relation_getPlayersByRoleType_com_vaticle_typedb_driver_api_TypeDBTransaction_com_vaticle_typedb_driver_api_concept_type_RoleType___]
 ==== getPlayersByRoleType
 
 [source,java]
@@ -184,39 +333,7 @@ a| `roleTypes` a| 0 or more role types a| `RoleType[]`
 relation.getPlayersByRoleType(transaction, roleTypes);
 ----
 
-[#_getPlayers_com_vaticle_typedb_driver_api_TypeDBTransaction]
-==== getPlayers
-
-[source,java]
-----
-@CheckReturnValue
-java.util.Map<? extends RoleType,​? extends java.util.List<? extends Thing>> getPlayers​(TypeDBTransaction transaction)
-----
-
-Retrieves a mapping of all instances involved in the ``Relation`` and the role each play. 
-
-
-[caption=""]
-.Input parameters
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `TypeDBTransaction`
-|===
-
-[caption=""]
-.Returns
-`java.util.Map<? extends RoleType,​? extends java.util.List<? extends Thing>>`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-relation.getPlayers(transaction)
-----
-
-[#_getRelating_com_vaticle_typedb_driver_api_TypeDBTransaction]
+[#_Relation_getRelating_com_vaticle_typedb_driver_api_TypeDBTransaction]
 ==== getRelating
 
 [source,java]
@@ -248,103 +365,16 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction`
 relation.getRelating(transaction);
 ----
 
-[#_asAttribute_]
-==== asAttribute
+[#_Relation_getType_]
+==== getType
 
 [source,java]
 ----
-default Attribute asAttribute()
+@CheckReturnValue
+RelationType getType()
 ----
 
-Casts the concept to ``Attribute``. 
-
-
-[caption=""]
-.Returns
-`Attribute`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asAttribute();
-----
-
-[#_asAttributeType_]
-==== asAttributeType
-
-[source,java]
-----
-default AttributeType asAttributeType()
-----
-
-Casts the concept to ``AttributeType``. 
-
-
-[caption=""]
-.Returns
-`AttributeType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asAttributeType();
-----
-
-[#_asEntity_]
-==== asEntity
-
-[source,java]
-----
-default Entity asEntity()
-----
-
-Casts the concept to ``Entity``. 
-
-
-[caption=""]
-.Returns
-`Entity`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asEntity();
-----
-
-[#_asEntityType_]
-==== asEntityType
-
-[source,java]
-----
-default EntityType asEntityType()
-----
-
-Casts the concept to ``EntityType``. 
-
-
-[caption=""]
-.Returns
-`EntityType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asEntityType();
-----
-
-[#_asRelationType_]
-==== asRelationType
-
-[source,java]
-----
-default RelationType asRelationType()
-----
-
-Casts the concept to ``RelationType``. 
+Retrieves the type which this ``Relation`` belongs to. 
 
 
 [caption=""]
@@ -355,98 +385,10 @@ Casts the concept to ``RelationType``.
 .Code examples
 [source,java]
 ----
-concept.asRelationType();
+relation.getType();
 ----
 
-[#_asRoleType_]
-==== asRoleType
-
-[source,java]
-----
-default RoleType asRoleType()
-----
-
-Casts the concept to ``RoleType``. 
-
-
-[caption=""]
-.Returns
-`RoleType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asRoleType();
-----
-
-[#_asThingType_]
-==== asThingType
-
-[source,java]
-----
-default ThingType asThingType()
-----
-
-Casts the concept to ``ThingType``. 
-
-
-[caption=""]
-.Returns
-`ThingType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asThingType();
-----
-
-[#_asType_]
-==== asType
-
-[source,java]
-----
-default Type asType()
-----
-
-Casts the concept to ``Type``. 
-
-
-[caption=""]
-.Returns
-`Type`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asType();
-----
-
-[#_asValue_]
-==== asValue
-
-[source,java]
-----
-default Value asValue()
-----
-
-Casts the concept to ``Value``. 
-
-
-[caption=""]
-.Returns
-`Value`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asValue();
-----
-
-[#_isAttribute_]
+[#_Relation_isAttribute_]
 ==== isAttribute
 
 [source,java]
@@ -469,7 +411,7 @@ Checks if the concept is an ``Attribute``.
 concept.isAttribute();
 ----
 
-[#_isAttributeType_]
+[#_Relation_isAttributeType_]
 ==== isAttributeType
 
 [source,java]
@@ -492,7 +434,7 @@ Checks if the concept is an ``AttributeType``.
 concept.isAttributeType();
 ----
 
-[#_isEntity_]
+[#_Relation_isEntity_]
 ==== isEntity
 
 [source,java]
@@ -515,7 +457,7 @@ Checks if the concept is an ``Entity``.
 concept.isEntity();
 ----
 
-[#_isEntityType_]
+[#_Relation_isEntityType_]
 ==== isEntityType
 
 [source,java]
@@ -538,7 +480,30 @@ Checks if the concept is an ``EntityType``.
 concept.isEntityType();
 ----
 
-[#_isRelationType_]
+[#_Relation_isRelation_]
+==== isRelation
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isRelation()
+----
+
+Checks if the concept is a ``Relation``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+relation.isRelation();
+----
+
+[#_Relation_isRelationType_]
 ==== isRelationType
 
 [source,java]
@@ -561,7 +526,7 @@ Checks if the concept is a ``RelationType``.
 concept.isRelationType();
 ----
 
-[#_isRoleType_]
+[#_Relation_isRoleType_]
 ==== isRoleType
 
 [source,java]
@@ -584,7 +549,7 @@ Checks if the concept is a ``RoleType``.
 concept.isRoleType();
 ----
 
-[#_isThingType_]
+[#_Relation_isThingType_]
 ==== isThingType
 
 [source,java]
@@ -607,7 +572,7 @@ Checks if the concept is a ``ThingType``.
 concept.isThingType();
 ----
 
-[#_isType_]
+[#_Relation_isType_]
 ==== isType
 
 [source,java]
@@ -630,7 +595,7 @@ Checks if the concept is a ``Type``.
 concept.isType();
 ----
 
-[#_isValue_]
+[#_Relation_isValue_]
 ==== isValue
 
 [source,java]
@@ -651,6 +616,41 @@ Checks if the concept is a ``Value``.
 [source,java]
 ----
 concept.isValue();
+----
+
+[#_Relation_removePlayer_com_vaticle_typedb_driver_api_TypeDBTransaction_com_vaticle_typedb_driver_api_concept_type_RoleType_com_vaticle_typedb_driver_api_concept_thing_Thing]
+==== removePlayer
+
+[source,java]
+----
+void removePlayer​(TypeDBTransaction transaction,
+                  RoleType roleType,
+                  Thing player)
+----
+
+Removes the association of the given instance that plays the given role in this ``Relation``. 
+
+
+[caption=""]
+.Input parameters
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `TypeDBTransaction`
+a| `roleType` a| The role to no longer be played by the thing in this ``Relation`` a| `RoleType`
+a| `player` a| The instance to no longer play the role in this ``Relation`` a| `Thing`
+|===
+
+[caption=""]
+.Returns
+`void`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+relation.removePlayer(transaction, roleType, player);
 ----
 
 // end::methods[]

@@ -7,32 +7,6 @@
 //:toclevels: 4
 
 ////
-Python Driver API reference consists of the following sections:
-
-* <<_connection_header>>
-* <<_session_header>>
-* <<_transaction_header>>
-* <<_answer_header>>
-* <<_concept_header>>
-* <<_schema_header>>
-* <<_data_header>>
-* <<_logic_header>>
-* <<_errors_header>>
-////
-
-////
-* connection
-* session
-* transaction
-* answer
-* concept
-* schema
-* data
-* logic
-* errors
-////
-
-////
 .See the full table of contents for this page
 [%collapsible]
 ====
@@ -42,6 +16,8 @@ toc::[]
 
 [#_connection_header]
 == Connection
+
+include::clients::partial$python/connection/TypeDB.adoc[]
 
 include::clients::partial$python/connection/TypeDBDriver.adoc[]
 
@@ -145,6 +121,6 @@ include::clients::partial$python/logic/Rule.adoc[]
 [#_errors_header]
 == Errors
 
-include::clients::partial$python/errors/TypeDBDriverExceptionExt.adoc[]
+include::clients::partial$python/errors/TypeDBDriverException.adoc[]
 
 //include::clients::partial$python/errors/ErrorMessage.adoc[]
