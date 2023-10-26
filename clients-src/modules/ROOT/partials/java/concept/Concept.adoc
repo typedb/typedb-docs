@@ -4,214 +4,249 @@
 *Package*: `com.vaticle.typedb.driver.api.concept`
 
 // tag::methods[]
-[#_isType_]
-==== isType
+[#_Concept_asAttribute_]
+==== asAttribute
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isType()
+default Attribute asAttribute()
 ----
 
-Checks if the concept is a ``Type``. 
+Casts the concept to ``Attribute``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`Attribute`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isType();
+concept.asAttribute();
 ----
 
-[#_isThingType_]
-==== isThingType
+[#_Concept_asAttributeType_]
+==== asAttributeType
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isThingType()
+default AttributeType asAttributeType()
 ----
 
-Checks if the concept is a ``ThingType``. 
+Casts the concept to ``AttributeType``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`AttributeType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isThingType();
+concept.asAttributeType();
 ----
 
-[#_isEntityType_]
-==== isEntityType
+[#_Concept_asEntity_]
+==== asEntity
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isEntityType()
+default Entity asEntity()
 ----
 
-Checks if the concept is an ``EntityType``. 
+Casts the concept to ``Entity``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`Entity`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isEntityType();
+concept.asEntity();
 ----
 
-[#_isAttributeType_]
-==== isAttributeType
+[#_Concept_asEntityType_]
+==== asEntityType
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isAttributeType()
+default EntityType asEntityType()
 ----
 
-Checks if the concept is an ``AttributeType``. 
+Casts the concept to ``EntityType``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`EntityType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isAttributeType();
+concept.asEntityType();
 ----
 
-[#_isRelationType_]
-==== isRelationType
+[#_Concept_asRelation_]
+==== asRelation
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isRelationType()
+default Relation asRelation()
 ----
 
-Checks if the concept is a ``RelationType``. 
+Casts the concept to ``Relation``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`Relation`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isRelationType();
+concept.asRelation();
 ----
 
-[#_isRoleType_]
-==== isRoleType
+[#_Concept_asRelationType_]
+==== asRelationType
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isRoleType()
+default RelationType asRelationType()
 ----
 
-Checks if the concept is a ``RoleType``. 
+Casts the concept to ``RelationType``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`RelationType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isRoleType();
+concept.asRelationType();
 ----
 
-[#_isThing_]
-==== isThing
+[#_Concept_asRoleType_]
+==== asRoleType
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isThing()
+default RoleType asRoleType()
 ----
 
-Checks if the concept is a ``Thing``. 
+Casts the concept to ``RoleType``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`RoleType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isThing();
+concept.asRoleType();
 ----
 
-[#_isEntity_]
-==== isEntity
+[#_Concept_asThing_]
+==== asThing
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isEntity()
+default Thing asThing()
 ----
 
-Checks if the concept is an ``Entity``. 
+Casts the concept to ``Thing``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`Thing`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isEntity();
+concept.asThing();
 ----
 
-[#_isRelation_]
-==== isRelation
+[#_Concept_asThingType_]
+==== asThingType
 
 [source,java]
 ----
-@CheckReturnValue
-default boolean isRelation()
+default ThingType asThingType()
 ----
 
-Checks if the concept is a ``Relation``. 
+Casts the concept to ``ThingType``. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`ThingType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-concept.isRelation();
+concept.asThingType();
 ----
 
-[#_isAttribute_]
+[#_Concept_asType_]
+==== asType
+
+[source,java]
+----
+default Type asType()
+----
+
+Casts the concept to ``Type``. 
+
+
+[caption=""]
+.Returns
+`Type`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asType();
+----
+
+[#_Concept_asValue_]
+==== asValue
+
+[source,java]
+----
+default Value asValue()
+----
+
+Casts the concept to ``Value``. 
+
+
+[caption=""]
+.Returns
+`Value`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asValue();
+----
+
+[#_Concept_isAttribute_]
 ==== isAttribute
 
 [source,java]
@@ -234,7 +269,214 @@ Checks if the concept is an ``Attribute``.
 concept.isAttribute();
 ----
 
-[#_isValue_]
+[#_Concept_isAttributeType_]
+==== isAttributeType
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isAttributeType()
+----
+
+Checks if the concept is an ``AttributeType``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isAttributeType();
+----
+
+[#_Concept_isEntity_]
+==== isEntity
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isEntity()
+----
+
+Checks if the concept is an ``Entity``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isEntity();
+----
+
+[#_Concept_isEntityType_]
+==== isEntityType
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isEntityType()
+----
+
+Checks if the concept is an ``EntityType``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isEntityType();
+----
+
+[#_Concept_isRelation_]
+==== isRelation
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isRelation()
+----
+
+Checks if the concept is a ``Relation``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isRelation();
+----
+
+[#_Concept_isRelationType_]
+==== isRelationType
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isRelationType()
+----
+
+Checks if the concept is a ``RelationType``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isRelationType();
+----
+
+[#_Concept_isRoleType_]
+==== isRoleType
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isRoleType()
+----
+
+Checks if the concept is a ``RoleType``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isRoleType();
+----
+
+[#_Concept_isThing_]
+==== isThing
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isThing()
+----
+
+Checks if the concept is a ``Thing``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isThing();
+----
+
+[#_Concept_isThingType_]
+==== isThingType
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isThingType()
+----
+
+Checks if the concept is a ``ThingType``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isThingType();
+----
+
+[#_Concept_isType_]
+==== isType
+
+[source,java]
+----
+@CheckReturnValue
+default boolean isType()
+----
+
+Checks if the concept is a ``Type``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isType();
+----
+
+[#_Concept_isValue_]
 ==== isValue
 
 [source,java]
@@ -257,249 +499,7 @@ Checks if the concept is a ``Value``.
 concept.isValue();
 ----
 
-[#_asType_]
-==== asType
-
-[source,java]
-----
-default Type asType()
-----
-
-Casts the concept to ``Type``. 
-
-
-[caption=""]
-.Returns
-`Type`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asType();
-----
-
-[#_asThingType_]
-==== asThingType
-
-[source,java]
-----
-default ThingType asThingType()
-----
-
-Casts the concept to ``ThingType``. 
-
-
-[caption=""]
-.Returns
-`ThingType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asThingType();
-----
-
-[#_asEntityType_]
-==== asEntityType
-
-[source,java]
-----
-default EntityType asEntityType()
-----
-
-Casts the concept to ``EntityType``. 
-
-
-[caption=""]
-.Returns
-`EntityType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asEntityType();
-----
-
-[#_asRelationType_]
-==== asRelationType
-
-[source,java]
-----
-default RelationType asRelationType()
-----
-
-Casts the concept to ``RelationType``. 
-
-
-[caption=""]
-.Returns
-`RelationType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asRelationType();
-----
-
-[#_asAttributeType_]
-==== asAttributeType
-
-[source,java]
-----
-default AttributeType asAttributeType()
-----
-
-Casts the concept to ``AttributeType``. 
-
-
-[caption=""]
-.Returns
-`AttributeType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asAttributeType();
-----
-
-[#_asRoleType_]
-==== asRoleType
-
-[source,java]
-----
-default RoleType asRoleType()
-----
-
-Casts the concept to ``RoleType``. 
-
-
-[caption=""]
-.Returns
-`RoleType`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asRoleType();
-----
-
-[#_asThing_]
-==== asThing
-
-[source,java]
-----
-default Thing asThing()
-----
-
-Casts the concept to ``Thing``. 
-
-
-[caption=""]
-.Returns
-`Thing`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asThing();
-----
-
-[#_asEntity_]
-==== asEntity
-
-[source,java]
-----
-default Entity asEntity()
-----
-
-Casts the concept to ``Entity``. 
-
-
-[caption=""]
-.Returns
-`Entity`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asEntity();
-----
-
-[#_asRelation_]
-==== asRelation
-
-[source,java]
-----
-default Relation asRelation()
-----
-
-Casts the concept to ``Relation``. 
-
-
-[caption=""]
-.Returns
-`Relation`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asRelation();
-----
-
-[#_asAttribute_]
-==== asAttribute
-
-[source,java]
-----
-default Attribute asAttribute()
-----
-
-Casts the concept to ``Attribute``. 
-
-
-[caption=""]
-.Returns
-`Attribute`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asAttribute();
-----
-
-[#_asValue_]
-==== asValue
-
-[source,java]
-----
-default Value asValue()
-----
-
-Casts the concept to ``Value``. 
-
-
-[caption=""]
-.Returns
-`Value`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asValue();
-----
-
-[#_toJSON_]
+[#_Concept_toJSON_]
 ==== toJSON
 
 [source,java]

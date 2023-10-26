@@ -8,45 +8,29 @@
 * `java.lang.AutoCloseable`
 
 // tag::methods[]
-[#_isOpen_]
-==== isOpen
+[#_TypeDBSession_close_]
+==== close
 
 [source,java]
 ----
-@CheckReturnValue
-boolean isOpen()
+void close()
 ----
 
-Checks whether this session is open. 
+Closes the session. Before opening a new session, the session currently open should first be closed. 
 
 
 [caption=""]
 .Returns
-`boolean`
+`void`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-session.isOpen();
+session.close();
 ----
 
-[#_type_]
-==== type
-
-[source,java]
-----
-@CheckReturnValue
-TypeDBSession.Type type()
-----
-
-The current session’s type (SCHEMA or DATA)
-
-[caption=""]
-.Returns
-`TypeDBSession.Type`
-
-[#_database_name_]
+[#_TypeDBSession_database_name_]
 ==== database_name
 
 [source,java]
@@ -69,7 +53,61 @@ Returns the name of the database of the session.
 session.databaseName();
 ----
 
-[#_options_]
+[#_TypeDBSession_isOpen_]
+==== isOpen
+
+[source,java]
+----
+@CheckReturnValue
+boolean isOpen()
+----
+
+Checks whether this session is open. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+session.isOpen();
+----
+
+[#_TypeDBSession_onClose_java_lang_Runnable]
+==== onClose
+
+[source,java]
+----
+void onClose​(java.lang.Runnable function)
+----
+
+Registers a callback function which will be executed when this session is closed. 
+
+
+[caption=""]
+.Input parameters
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `function` a| The callback function. a| `java.lang.Runnable`
+|===
+
+[caption=""]
+.Returns
+`void`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+session.onClose(function)
+----
+
+[#_TypeDBSession_options_]
 ==== options
 
 [source,java]
@@ -84,7 +122,7 @@ Gets the options for the session
 .Returns
 `TypeDBOptions`
 
-[#_transaction_com_vaticle_typedb_driver_api_TypeDBTransaction_Type]
+[#_TypeDBSession_transaction_com_vaticle_typedb_driver_api_TypeDBTransaction_Type]
 ==== transaction
 
 [source,java]
@@ -103,7 +141,7 @@ See also: <<#_transaction_com_vaticle_typedb_driver_api_TypeDBTransaction_Type_c
 .Returns
 `TypeDBTransaction`
 
-[#_transaction_com_vaticle_typedb_driver_api_TypeDBTransaction_Type_com_vaticle_typedb_driver_api_TypeDBOptions]
+[#_TypeDBSession_transaction_com_vaticle_typedb_driver_api_TypeDBTransaction_Type_com_vaticle_typedb_driver_api_TypeDBOptions]
 ==== transaction
 
 [source,java]
@@ -137,58 +175,20 @@ a| `options` a| Options for the session a| `TypeDBOptions`
 session.transaction(transactionType, options);
 ----
 
-[#_onClose_java_lang_Runnable]
-==== onClose
+[#_TypeDBSession_type_]
+==== type
 
 [source,java]
 ----
-void onClose​(java.lang.Runnable function)
+@CheckReturnValue
+TypeDBSession.Type type()
 ----
 
-Registers a callback function which will be executed when this session is closed. 
-
-
-[caption=""]
-.Input parameters
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `function` a| The callback function. a| `java.lang.Runnable`
-|===
+The current session’s type (SCHEMA or DATA)
 
 [caption=""]
 .Returns
-`void`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-session.onClose(function)
-----
-
-[#_close_]
-==== close
-
-[source,java]
-----
-void close()
-----
-
-Closes the session. Before opening a new session, the session currently open should first be closed. 
-
-
-[caption=""]
-.Returns
-`void`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-session.close();
-----
+`TypeDBSession.Type`
 
 // end::methods[]
 

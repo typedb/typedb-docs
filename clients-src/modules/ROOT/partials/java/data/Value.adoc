@@ -19,308 +19,7 @@ a| `ISO_LOCAL_DATE_TIME_MILLIS` a| `static java.time.format.DateTimeFormatter` a
 // end::properties[]
 
 // tag::methods[]
-[#_isValue_]
-==== isValue
-
-[source,java]
-----
-default boolean isValue()
-----
-
-Checks if the concept is a ``Value``. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.isValue();
-----
-
-[#_asValue_]
-==== asValue
-
-[source,java]
-----
-default Value asValue()
-----
-
-Casts the concept to ``Value``. 
-
-
-[caption=""]
-.Returns
-`Value`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-concept.asValue();
-----
-
-[#_getType_]
-==== getType
-
-[source,java]
-----
-Value.Type getType()
-----
-
-Retrieves the ``Value.Type`` of this value concept. 
-
-
-[caption=""]
-.Returns
-`Value.Type`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.getType()
-----
-
-[#_isBoolean_]
-==== isBoolean
-
-[source,java]
-----
-boolean isBoolean()
-----
-
-Returns ``True`` if the value which this value concept holds is of type ``boolean``. Otherwise, returns ``false``. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.isBoolean()
-----
-
-[#_isLong_]
-==== isLong
-
-[source,java]
-----
-boolean isLong()
-----
-
-Returns ``True`` if the value which this value concept holds is of type ``long``. Otherwise, returns ``false``. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.isLong();
-----
-
-[#_isDouble_]
-==== isDouble
-
-[source,java]
-----
-boolean isDouble()
-----
-
-Returns ``True`` if the value which this value concept holds is of type ``double``. Otherwise, returns ``false``. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.isDouble();
-----
-
-[#_isString_]
-==== isString
-
-[source,java]
-----
-boolean isString()
-----
-
-Returns ``True`` if the value which this value concept holds is of type ``string``. Otherwise, returns ``false``. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.isString();
-----
-
-[#_isDateTime_]
-==== isDateTime
-
-[source,java]
-----
-boolean isDateTime()
-----
-
-Returns ``True`` if the value which this value concept holds is of type ``datetime``. Otherwise, returns ``false``. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.isDatetime();
-----
-
-[#_asBoolean_]
-==== asBoolean
-
-[source,java]
-----
-boolean asBoolean()
-----
-
-Returns a ``boolean`` value of this value concept. If the value has another type, raises an exception. 
-
-
-[caption=""]
-.Returns
-`boolean`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.asBoolean();
-----
-
-[#_asLong_]
-==== asLong
-
-[source,java]
-----
-long asLong()
-----
-
-Returns a ``long`` value of this value concept. If the value has another type, raises an exception. 
-
-
-[caption=""]
-.Returns
-`long`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.asLong();
-----
-
-[#_asDouble_]
-==== asDouble
-
-[source,java]
-----
-double asDouble()
-----
-
-Returns a ``double`` value of this value concept. If the value has another type, raises an exception. 
-
-
-[caption=""]
-.Returns
-`double`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.asDouble();
-----
-
-[#_asString_]
-==== asString
-
-[source,java]
-----
-java.lang.String asString()
-----
-
-Returns a ``string`` value of this value concept. If the value has another type, raises an exception. 
-
-
-[caption=""]
-.Returns
-`java.lang.String`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.asString();
-----
-
-[#_asDateTime_]
-==== asDateTime
-
-[source,java]
-----
-java.time.LocalDateTime asDateTime()
-----
-
-Returns a ``datetime`` value of this value concept. If the value has another type, raises an exception. 
-
-
-[caption=""]
-.Returns
-`java.time.LocalDateTime`
-
-[caption=""]
-.Code examples
-[source,java]
-----
-value.asDatetime();
-----
-
-[#_toJSON_]
-==== toJSON
-
-[source,java]
-----
-default com.eclipsesource.json.JsonObject toJSON()
-----
-
-Retrieves the concept as JSON. 
-
-
-[caption=""]
-.Returns
-`com.eclipsesource.json.JsonObject`
-
-[#_asAttribute_]
+[#_Value_asAttribute_]
 ==== asAttribute
 
 [source,java]
@@ -342,7 +41,7 @@ Casts the concept to ``Attribute``.
 concept.asAttribute();
 ----
 
-[#_asAttributeType_]
+[#_Value_asAttributeType_]
 ==== asAttributeType
 
 [source,java]
@@ -364,7 +63,73 @@ Casts the concept to ``AttributeType``.
 concept.asAttributeType();
 ----
 
-[#_asEntity_]
+[#_Value_asBoolean_]
+==== asBoolean
+
+[source,java]
+----
+boolean asBoolean()
+----
+
+Returns a ``boolean`` value of this value concept. If the value has another type, raises an exception. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.asBoolean();
+----
+
+[#_Value_asDateTime_]
+==== asDateTime
+
+[source,java]
+----
+java.time.LocalDateTime asDateTime()
+----
+
+Returns a ``datetime`` value of this value concept. If the value has another type, raises an exception. 
+
+
+[caption=""]
+.Returns
+`java.time.LocalDateTime`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.asDatetime();
+----
+
+[#_Value_asDouble_]
+==== asDouble
+
+[source,java]
+----
+double asDouble()
+----
+
+Returns a ``double`` value of this value concept. If the value has another type, raises an exception. 
+
+
+[caption=""]
+.Returns
+`double`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.asDouble();
+----
+
+[#_Value_asEntity_]
 ==== asEntity
 
 [source,java]
@@ -386,7 +151,7 @@ Casts the concept to ``Entity``.
 concept.asEntity();
 ----
 
-[#_asEntityType_]
+[#_Value_asEntityType_]
 ==== asEntityType
 
 [source,java]
@@ -408,7 +173,29 @@ Casts the concept to ``EntityType``.
 concept.asEntityType();
 ----
 
-[#_asRelation_]
+[#_Value_asLong_]
+==== asLong
+
+[source,java]
+----
+long asLong()
+----
+
+Returns a ``long`` value of this value concept. If the value has another type, raises an exception. 
+
+
+[caption=""]
+.Returns
+`long`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.asLong();
+----
+
+[#_Value_asRelation_]
 ==== asRelation
 
 [source,java]
@@ -430,7 +217,7 @@ Casts the concept to ``Relation``.
 concept.asRelation();
 ----
 
-[#_asRelationType_]
+[#_Value_asRelationType_]
 ==== asRelationType
 
 [source,java]
@@ -452,7 +239,7 @@ Casts the concept to ``RelationType``.
 concept.asRelationType();
 ----
 
-[#_asRoleType_]
+[#_Value_asRoleType_]
 ==== asRoleType
 
 [source,java]
@@ -474,7 +261,29 @@ Casts the concept to ``RoleType``.
 concept.asRoleType();
 ----
 
-[#_asThing_]
+[#_Value_asString_]
+==== asString
+
+[source,java]
+----
+java.lang.String asString()
+----
+
+Returns a ``string`` value of this value concept. If the value has another type, raises an exception. 
+
+
+[caption=""]
+.Returns
+`java.lang.String`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.asString();
+----
+
+[#_Value_asThing_]
 ==== asThing
 
 [source,java]
@@ -496,7 +305,7 @@ Casts the concept to ``Thing``.
 concept.asThing();
 ----
 
-[#_asThingType_]
+[#_Value_asThingType_]
 ==== asThingType
 
 [source,java]
@@ -518,7 +327,7 @@ Casts the concept to ``ThingType``.
 concept.asThingType();
 ----
 
-[#_asType_]
+[#_Value_asType_]
 ==== asType
 
 [source,java]
@@ -540,7 +349,51 @@ Casts the concept to ``Type``.
 concept.asType();
 ----
 
-[#_isAttribute_]
+[#_Value_asValue_]
+==== asValue
+
+[source,java]
+----
+default Value asValue()
+----
+
+Casts the concept to ``Value``. 
+
+
+[caption=""]
+.Returns
+`Value`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.asValue();
+----
+
+[#_Value_getType_]
+==== getType
+
+[source,java]
+----
+Value.Type getType()
+----
+
+Retrieves the ``Value.Type`` of this value concept. 
+
+
+[caption=""]
+.Returns
+`Value.Type`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.getType()
+----
+
+[#_Value_isAttribute_]
 ==== isAttribute
 
 [source,java]
@@ -563,7 +416,7 @@ Checks if the concept is an ``Attribute``.
 concept.isAttribute();
 ----
 
-[#_isAttributeType_]
+[#_Value_isAttributeType_]
 ==== isAttributeType
 
 [source,java]
@@ -586,7 +439,73 @@ Checks if the concept is an ``AttributeType``.
 concept.isAttributeType();
 ----
 
-[#_isEntity_]
+[#_Value_isBoolean_]
+==== isBoolean
+
+[source,java]
+----
+boolean isBoolean()
+----
+
+Returns ``True`` if the value which this value concept holds is of type ``boolean``. Otherwise, returns ``false``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.isBoolean()
+----
+
+[#_Value_isDateTime_]
+==== isDateTime
+
+[source,java]
+----
+boolean isDateTime()
+----
+
+Returns ``True`` if the value which this value concept holds is of type ``datetime``. Otherwise, returns ``false``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.isDatetime();
+----
+
+[#_Value_isDouble_]
+==== isDouble
+
+[source,java]
+----
+boolean isDouble()
+----
+
+Returns ``True`` if the value which this value concept holds is of type ``double``. Otherwise, returns ``false``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.isDouble();
+----
+
+[#_Value_isEntity_]
 ==== isEntity
 
 [source,java]
@@ -609,7 +528,7 @@ Checks if the concept is an ``Entity``.
 concept.isEntity();
 ----
 
-[#_isEntityType_]
+[#_Value_isEntityType_]
 ==== isEntityType
 
 [source,java]
@@ -632,7 +551,29 @@ Checks if the concept is an ``EntityType``.
 concept.isEntityType();
 ----
 
-[#_isRelation_]
+[#_Value_isLong_]
+==== isLong
+
+[source,java]
+----
+boolean isLong()
+----
+
+Returns ``True`` if the value which this value concept holds is of type ``long``. Otherwise, returns ``false``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.isLong();
+----
+
+[#_Value_isRelation_]
 ==== isRelation
 
 [source,java]
@@ -655,7 +596,7 @@ Checks if the concept is a ``Relation``.
 concept.isRelation();
 ----
 
-[#_isRelationType_]
+[#_Value_isRelationType_]
 ==== isRelationType
 
 [source,java]
@@ -678,7 +619,7 @@ Checks if the concept is a ``RelationType``.
 concept.isRelationType();
 ----
 
-[#_isRoleType_]
+[#_Value_isRoleType_]
 ==== isRoleType
 
 [source,java]
@@ -701,7 +642,29 @@ Checks if the concept is a ``RoleType``.
 concept.isRoleType();
 ----
 
-[#_isThing_]
+[#_Value_isString_]
+==== isString
+
+[source,java]
+----
+boolean isString()
+----
+
+Returns ``True`` if the value which this value concept holds is of type ``string``. Otherwise, returns ``false``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+value.isString();
+----
+
+[#_Value_isThing_]
 ==== isThing
 
 [source,java]
@@ -724,7 +687,7 @@ Checks if the concept is a ``Thing``.
 concept.isThing();
 ----
 
-[#_isThingType_]
+[#_Value_isThingType_]
 ==== isThingType
 
 [source,java]
@@ -747,7 +710,7 @@ Checks if the concept is a ``ThingType``.
 concept.isThingType();
 ----
 
-[#_isType_]
+[#_Value_isType_]
 ==== isType
 
 [source,java]
@@ -769,6 +732,43 @@ Checks if the concept is a ``Type``.
 ----
 concept.isType();
 ----
+
+[#_Value_isValue_]
+==== isValue
+
+[source,java]
+----
+default boolean isValue()
+----
+
+Checks if the concept is a ``Value``. 
+
+
+[caption=""]
+.Returns
+`boolean`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.isValue();
+----
+
+[#_Value_toJSON_]
+==== toJSON
+
+[source,java]
+----
+default com.eclipsesource.json.JsonObject toJSON()
+----
+
+Retrieves the concept as JSON. 
+
+
+[caption=""]
+.Returns
+`com.eclipsesource.json.JsonObject`
 
 // end::methods[]
 

@@ -6,39 +6,30 @@
 Provides access to all database management methods.
 
 // tag::methods[]
-[#_get_java_lang_String]
-==== get
+[#_DatabaseManager_all_]
+==== all
 
 [source,java]
 ----
 @CheckReturnValue
-Database get​(java.lang.String name)
+java.util.List<Database> all()
 ----
 
-Retrieve the database with the given name. 
+Retrieves all databases present on the TypeDB server 
 
-
-[caption=""]
-.Input parameters
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `name` a| The name of the database to retrieve a| `java.lang.String`
-|===
 
 [caption=""]
 .Returns
-`Database`
+`java.util.List<Database>`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-driver.databases().get(name)
+driver.databases().all()
 ----
 
-[#_contains_java_lang_String]
+[#_DatabaseManager_contains_java_lang_String]
 ==== contains
 
 [source,java]
@@ -70,7 +61,7 @@ a| `name` a| The database name to be checked a| `java.lang.String`
 driver.databases().contains(name)
 ----
 
-[#_create_java_lang_String]
+[#_DatabaseManager_create_java_lang_String]
 ==== create
 
 [source,java]
@@ -101,27 +92,36 @@ a| `name` a| The name of the database to be created a| `java.lang.String`
 driver.databases().create(name)
 ----
 
-[#_all_]
-==== all
+[#_DatabaseManager_get_java_lang_String]
+==== get
 
 [source,java]
 ----
 @CheckReturnValue
-java.util.List<Database> all()
+Database get​(java.lang.String name)
 ----
 
-Retrieves all databases present on the TypeDB server 
+Retrieve the database with the given name. 
 
 
 [caption=""]
+.Input parameters
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `name` a| The name of the database to retrieve a| `java.lang.String`
+|===
+
+[caption=""]
 .Returns
-`java.util.List<Database>`
+`Database`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-driver.databases().all()
+driver.databases().get(name)
 ----
 
 // end::methods[]
