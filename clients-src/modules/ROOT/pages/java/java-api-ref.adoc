@@ -7,32 +7,6 @@
 //:toclevels: 4
 
 ////
-Java Driver API reference consists of the following sections:
-
-* <<_connection_header>>
-* <<_session_header>>
-* <<_transaction_header>>
-* <<_answer_header>>
-* <<_concept_header>>
-* <<_schema_header>>
-* <<_data_header>>
-* <<_logic_header>>
-* <<_errors_header>>
-////
-
-////
-* connection
-* session
-* transaction
-* answer
-* concept
-* schema
-* data
-* logic
-* errors
-////
-
-////
 .See the full table of contents for this page
 [%collapsible]
 ====
@@ -42,6 +16,8 @@ toc::[]
 
 [#_connection_header]
 == Connection
+
+include::clients::partial$java/connection/TypeDB.adoc[]
 
 include::clients::partial$java/connection/TypeDBDriver.adoc[]
 
@@ -104,7 +80,7 @@ include::clients::partial$java/concept/Concept.adoc[]
 
 include::clients::partial$java/schema/Type.adoc[]
 
-//include::clients::partial$java/schema/Label.adoc[]
+include::clients::partial$java/schema/Label.adoc[]
 
 include::clients::partial$java/schema/ThingType.adoc[]
 
@@ -142,11 +118,9 @@ include::clients::partial$java/logic/LogicManager.adoc[]
 
 include::clients::partial$java/logic/Rule.adoc[]
 
-////
 [#_errors_header]
 == Errors
 
-include::clients::partial$java/errors/TypeDBDriverExceptionExt.adoc[]
+include::clients::partial$java/errors/TypeDBDriverException.adoc[]
 
-include::clients::partial$java/errors/ErrorMessage.adoc[]
-////
+//include::clients::partial$java/errors/ErrorMessage.adoc[]
