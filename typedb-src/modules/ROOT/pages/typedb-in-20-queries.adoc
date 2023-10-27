@@ -4,19 +4,17 @@
 //:toc-title: Top query examples:
 :example-caption!:
 
-To showcase the capabilities of TypeDB and its query language TypeQL,
-see below a short list of 20 queries designed to give a brief idea of what can be done and how easy it is.
+To quickly discover the capabilities of TypeDB and TypeQL, check below the list of top 20 TypeQL queries on TypeDB.
 
 [NOTE]
 ====
-Use our xref:typedb::quickstart-guide.adoc[Quickstart guide]
-to find out how to create a new database and send a query.
+Use our xref:typedb::quickstart-guide.adoc[Quickstart guide] to find out how to create a new database and send a query.
 ====
 
 [#_schema]
-== #{counter:query}: Defining schema
+== #{counter:query}: Define a schema
 
-TypeDB uses Polymorphic Entity-Relation-Attribute (or PERA) Model for its schemas and data.
+TypeDB uses the Polymorphic Entity-Relation-Attribute (or PERA) Model for its schemas and data.
 
 Entities, relations, and attributes are all first-class citizens in a data model allowing for
 expressive modeling without normalization or reification.
@@ -24,8 +22,9 @@ There are three root types: `entity`, `relation`, and `attribute`;
 and they can be subtyped to create user-defined types.
 
 Consider the following schema diagram:
+
 //, with attributes represented as blue ellipses, entities as pink rectangles, and relations as yellow diamonds:
-image:typedb-in-20-queries/era-schema.png[TypeDB Studio GUI, width = 40%, link=self]
+image::typedb-in-20-queries/era-schema.png[TypeDB Studio GUI, role=framed, width = 75%, link=self]
 //#todo Optimize the image
 //Squish vertically by placing relation inline with entities???
 
@@ -65,10 +64,12 @@ permission sub relation,
 The above query xref:typeql::schema/define-types.adoc[defines]
 seven attribute types, three entity types, and a relation type.
 
+Note the `user` type, that owns `email` and `username` attribute types.
+
 To try extending the schema, see the <<_extend_schema>> section.
 
 [#_data]
-== #{counter:query}: Inserting data
+== #{counter:query}: Insert data
 
 _Run this query after <<_schema,query #1>>._
 
@@ -93,7 +94,7 @@ insert
         has path "README.md";
     $f2 isa file,
         has path "docs/quickstart-guide.adoc",
-        has size-kb 345;
+        has size-kb 3458761;
     $p1(subject:$u1, object:$f1) isa permission, has updated 2023-06-30T12:04:36;
     $p2(subject:$u2, object:$f2) isa permission;
 ----
@@ -107,7 +108,7 @@ and some attributes owned by the entities and one of the relations.
 To try matching existing data before inserting, check the <<_match_insert>> section.
 
 [#_get]
-== #{counter:query}: Retrieving data
+== #{counter:query}: Retrieve data
 
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
@@ -132,7 +133,7 @@ Then it finds all users (and their usernames) that participate in a relation of 
 The result is filtered to return only the `$un`, which is the `username`.
 
 [#_extend_schema]
-== #{counter:query}: Extending schema
+== #{counter:query}: Extend a schema
 
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
@@ -161,7 +162,7 @@ The above Define query extends the existing schema
 by adding two new entity types and a role to an existing relation type.
 
 [#_match_insert]
-== #{counter:query}: Matching and then inserting data
+== #{counter:query}: Match and then insert data
 
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
@@ -185,7 +186,7 @@ Then it inserts such a relation for every matched `user` and `file`.
 The xref:typeql::data/insert.adoc[Insert] query type is the only one that can be used without a `match` clause.
 See <<_data,example>>.
 
-== #{counter:query}: Deleting data
+== #{counter:query}: Delete data
 
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and  <<_match_insert,query>> <<_match_insert>>._
 
@@ -205,7 +206,7 @@ delete
 The above query will delete all permission relations for the user with username `al-capucino`.
 
 [#_declarative]
-== #{counter:query}: Fully declarative query language
+== #{counter:query}: Compose patterns
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 TypeQL statements are fully declarative and are combined with a conjunction (logical `AND`)
@@ -246,7 +247,7 @@ including the `user` type.
 Try the same query with the `isa!` keyword instead.
 It is used for an exact type, without subtyping.
 
-== #{counter:query}: Polymorphic queries
+== #{counter:query}: Try polymorphism in queries
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 You can use polymorphism with queries by not binding a variable to any type or even to a supertype.
@@ -283,7 +284,7 @@ we can still get all the data and its types, but also subtypes.
 So, there will be results with the same instances (`$x`), but different types (`$type`).
 This should increase the number of results to about 57.
 
-== #{counter:query}: Abstract types
+== #{counter:query}: Query abstract types
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 xref:typeql::fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated
@@ -303,12 +304,12 @@ match $x has id $id;
 The above query can't retrieve any instances of `id` type because it is an abstract type.
 Instead, it returns instances of all its subtypes, see the visualization below.
 
-image::typedb-in-20-queries/abstract.png[Abstract type, width = 50%, link=self]
+image::typedb-in-20-queries/abstract.png[Abstract type, role=framed, width = 75%, link=self]
 
 //Interface polymorphism
 //When we seek for anything, that owns or plays
 
-== #{counter:query}: Inheritance
+== #{counter:query}: Inherit
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 xref:typeql::fundamentals.adoc#_inheritance[Inheritance] lets subtypes use roles and attributes,
@@ -328,7 +329,7 @@ We match a user with name `Bob`.
 The `user` type inherits the ability to own  the `name` attribute type from its supertype -- the `person` type.
 See the schema from the <<_schema,query #1>>.
 
-== #{counter:query}: Overriding inheritance
+== #{counter:query}: Override inheritance
 _Run this query after <<_schema,query #1>>._
 
 You can override an inherited ownership or a role with a new name.
@@ -351,7 +352,7 @@ In the above example, we override the inherited `name` attribute type with the `
 We also subtype `permission` relation type with the `user-permission`, which overrides the inherited `subject` role
 with the `user` role. The `object` role is inherited without overriding in this case.
 
-== #{counter:query}: Relations
+== #{counter:query}: Modify relations
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_extend_schema,query #4>>._
 //n-ary
 //nested
@@ -387,9 +388,9 @@ The above query adds `action` entity with name `edit` to the `permission` for th
 and the file with the path `README.md`.
 See the visualization of the result below.
 
-image::typedb-in-20-queries/relation.png[Relation, width = 50%, link=self]
+image::typedb-in-20-queries/relation.png[Relation, role=framed, width = 75%, link=self]
 
-== #{counter:query}: Globally unique immutable attributes
+== #{counter:query}: Utilize immutable attributes
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_data,query #4>>._
 
 Always optimal storage space and memory requirements as data is naturally deduplicated.
@@ -424,10 +425,10 @@ and all owners from the query above have ownership of this attribute.
 As well as the original `Bob` inserted in the <<_data,query #2>>.
 The resulted data should look like the image below.
 
-image::typedb-in-20-queries/attribute.png[Relation, width = 50%, link=self]
+image::typedb-in-20-queries/attribute.png[Relation, role=framed, width = 75%, link=self]
 
 [#_counterquery_attribute_annotations]
-== #{counter:query}: Attribute annotations
+== #{counter:query}: Add annotations to attribute ownership
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 When defining an ownership of an attribute type, we can add one of possible annotations: `@key` or `@unique`.
@@ -475,7 +476,7 @@ As a result we have the following error:
 [THW04] Invalid Thing Write: Attempted to assign a key of type 'name' onto a(n) 'user' that already has one.
 ----
 
-== #{counter:query}: Limiting possible values with regex
+== #{counter:query}: Limit possible values with regex
 //define (constraint for the value that can be inserted)
 
 We can limit possible values that an attribute can take by using a regular expression in the type definition.
@@ -504,7 +505,7 @@ Error> [THW11] Invalid Thing Write: Attempted to put an instance of 'status' wit
 //For more information on how to use regular expressions to limit attribute values,
 //see the xref:typeql::data/advanced.adoc[] section.
 
-== #{counter:query}: Matching data with regex
+== #{counter:query}: Match data with regex
 //match (constraint for the valued matched)
 
 Use the `like` keyword with a regular expression to set constraints for an attribute value in a `match` clause.
@@ -519,32 +520,12 @@ match
 
 The query above will find all files with path starting with `docs/`.
 
-== #{counter:query}: Arithmetic expressions
+== #{counter:query}: Use arithmetic expressions
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Arithmetic expressions let you perform basic math operations on any value in a `match` clause.
 
 See the list of available xref:typedb::fundamentals/patterns.adoc#_arithmetic_operations[arithmetic operations].
-
-////
-Here is the list of available operations sorted in the order of execution:
-
-include::typedb::fundamentals/patterns.adoc[tag=arithmetics]
-
-Additionally, the following functions are available:
-
-include::typedb::fundamentals/patterns.adoc[tag=functions]
-////
-
-////
-* `()` -- parentheses
-* `^` -- exponentiation (power)
-* `*` -- multiplication
-* `/` -- division
-* `%` -- modulo. Returns the remainder of the division
-* `+` -- addition
-* `-` -- subtraction
-////
 
 Let's insert a few files with different sizes, that are calculated:
 
@@ -564,10 +545,10 @@ The above query inserts two files with `size-kb` values calculated based on the 
 of the matched existing file.
 See the resulted data visualization on the image below.
 
-image::typedb-in-20-queries/math.png[Arithmetics, width = 50%, link=self]
+image::typedb-in-20-queries/math.png[Arithmetics, role=framed, width = 75%, link=self]
 
-[#_counterquery_rule_based_inference]
-== #{counter:query}: Rule-based inference
+[#_rule_based_inference]
+== #{counter:query}: Discover rule-based inference
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 TypeDB reasoning engine can perform rule-based inference when you read data.
@@ -592,8 +573,32 @@ The above query adds exactly one rule:
 it should add an ownership of the attribute of type `name` and value `Dude` for any person.
 Effectively, all instances of `person` type or its subtypes will have name `Dude`.
 
-[#_counterquery_rule_chaining]
-== #{counter:query}: Rule chaining
+== #{counter:query}: Infer new data with rules
+_Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_rule_based_inference>>._
+
+Let's use the `every-person-is-a-dude` rule from the previous query <<_rule_based_inference>>:
+
+//_Make sure to xref:typedb::development/infer.adoc#_how_to_use_inference[enable the inference]
+//transaction option for the following query._
+
+.Retrieve all names for the person
+[,typeql]
+----
+match
+    $p isa person,
+        has name "Bob",
+        has name $p-name;
+----
+
+The above query produces the following result with inference
+xref:typedb::development/infer.adoc#_how_to_use_inference[enabled]:
+
+image:typedb-in-20-queries/inference.png[Inference, role=framed, width = 75%, link=self]
+
+The infered data is highlighted with green color.
+
+[#_rule_chaining]
+== #{counter:query}: Chain rules
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Rules can be applied one after another in a chain.
@@ -613,7 +618,7 @@ rule compute-mb:
     when {
         $f isa file,
             has size-kb $kb;
-        ?mb = $kb / 1024;
+        ?mb = round($kb / 1024);
     } then {
         $f has size-mb ?mb;
     };
@@ -621,10 +626,10 @@ rule compute-mb:
 rule compute-gb:
     when {
         $f isa file,
-            has size-kb $mb;
-        ?gb = $mb / 1024;
+            has size-mb $mb;
+        ?gb = round($mb / 1024);
     } then {
-        $f has size-mb ?gb;
+        $f has size-gb ?gb;
     };
 ----
 
@@ -632,7 +637,31 @@ The above schema adds two rules and necessary attributes.
 The first rule uses arithmetic to set value for `size-mb` depending on the value of `size-kb`.
 The second rule uses the same approach, but based on the results from first rule to compute `size-gb`.
 
-== #{counter:query}: Relation transitivity
+== #{counter:query}: Infer new data with rule chaining
+_Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_rule_chaining>>._
+
+Let's use the rules from the previous query <<_rule_based_inference>>:
+
+//_Make sure to xref:typedb::development/infer.adoc#_how_to_use_inference[enable the inference]
+//transaction option for the following query._
+
+.Retrieve the result of a rule chain
+[,typeql]
+----
+match
+    $f isa file,
+        has size-gb $g,
+        has path $p;
+----
+
+The above query produces the following result with inference
+xref:typedb::development/infer.adoc#_how_to_use_inference[enabled]:
+
+image:typedb-in-20-queries/rule-chain.png[Inference with rule chaining, role=framed, width = 75%, link=self]
+
+The infered data is highlighted with green color.
+
+== #{counter:query}: Add relation transitivity
 _Run this query on an empty database._
 
 Rules can enable transitivity of relations.
@@ -692,3 +721,5 @@ the `transitive-group-memmbership` rule, will make `user` into a member of all g
 
 For more information on rule inference, see the xref:typeql::schema/define-rules.adoc[] page
 in xref:typeql::overview.adoc[TypeQL documentation].
+
+//== #{counter:query}: Query transitive relations
