@@ -1,10 +1,10 @@
-= TypeDB in 20 queries
+= TypeDB in 25 queries
 //:toc: macro
 //:toclevels: 5
 //:toc-title: Top query examples:
 :example-caption!:
 
-To quickly discover the capabilities of TypeDB and TypeQL, check below the list of top 20 TypeQL queries on TypeDB.
+To explore the capabilities of TypeDB and TypeQL, check below the list of top 25 TypeQL queries on TypeDB.
 
 [NOTE]
 ====
@@ -95,7 +95,7 @@ insert
     $f2 isa file,
         has path "docs/quickstart-guide.adoc",
         has size-kb 3458761;
-    $p1(subject:$u1, object:$f1) isa permission, has updated 2023-06-30T12:04:36;
+    $p1(subject:$u1, object:$f1) isa permission, has updated 2023-10-27T12:04:36;
     $p2(subject:$u2, object:$f2) isa permission;
 ----
 
@@ -162,7 +162,7 @@ The above Define query extends the existing schema
 by adding two new entity types and a role to an existing relation type.
 
 [#_match_insert]
-== #{counter:query}: Match and then insert data
+== #{counter:query}: Match and insert data
 
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
@@ -209,13 +209,15 @@ The above query will delete all permission relations for the user with username 
 == #{counter:query}: Compose patterns
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-TypeQL statements are fully declarative and are combined with a conjunction (logical `AND`)
-which makes patterns fully composable.
+TypeQL statements are fully declarative.
+They can be combined in any order to form a query pattern.
+You can think of these patterns as connecting individual statements with a logical `AND`.
+
 Every statement is a constraint to be satisfied by the query engine.
-You declare constraints for the results and query engine will deal with the implementation,
+You declare constraints for the results, and the query engine will deal with the implementation,
 including planning and optimizing execution.
 
-You can use variables in data queries.
+Variables indicate unknowns that should be retrieved by the query.
 Every matched result is a solution for the `match` clause pattern:
 it includes a single concept (a type or an instance of a type) for every variable.
 
@@ -247,42 +249,72 @@ including the `user` type.
 Try the same query with the `isa!` keyword instead.
 It is used for an exact type, without subtyping.
 
-== #{counter:query}: Try polymorphism in queries
+[#_parametric_polymorphism]
+== #{counter:query}: Try Parametric polymorphism
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-You can use polymorphism with queries by not binding a variable to any type or even to a supertype.
-That makes it possible for the variable to return different types as matches.
-Querying for a supertype can return all results for its subtypes and querying without binding can return any type that matches pattern.
+You can use polymorphic queries, including:
+
+* Parametric polymorphism (see below)
+* <<_inheritance_polymorphism,Inheritance polymorphism>>
+* <<_interface_polymorphism,Interface polymorphism>>
+
+Parametric polymorphism lets us get results of different types for the same variable in a query.
+Querying without constraining a type can return any type that matches a pattern.
+//When we don't bound a variable to a specific type, so it can be solved as multiple different ones.
 
 Let's try one of the most generic patterns in TypeQL:
 
-.Polymorphic query example
+.Parametric polymorphism query example
 [,typeql]
 ----
-match $x isa! $type;
+match $x isa! $t;
 ----
 
-[discrete]
-=== Parametric polymorphjsim
-
-//When we don't bound a variable to a specific type, so it can be solved as multiple different ones.
-
-The above query returns pairs of `$x` and `$type` concepts,
-where `$x` should be an instance of data and `$type` should be its type.
-Effectively it will return all data from a database
-(as `$x`) and all types of the data.
-The number of results should be around 16: that's how many instances the database should have after
+The above query returns pairs of `$x` and `$t` concepts,
+where `$x` should be an instance of data and `$t` should be its type.
+Note how the type in the `isa!` statement is variablized.
+Effectively this query returns all data from a database
+(as `$x`) and all corresponding types of the data (as `$t`).
+The number of results should match the number of instances the database has after
 <<_schema,query #1>> and <<_data,query #2>>.
 
-[discrete]
-=== Inheritance Polymorphism
+[#_inheritance_polymorphism]
+== #{counter:query}: Try Inheritance polymorphism
+_Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
+Inheritance polymorphism lets us get more results using type hierarchy.
+Match a supertype can match its subtypes.
 //When we can solve for type and its subtypes
 
-If we switch `isa!` to the `isa` keyword,
-we can still get all the data and its types, but also subtypes.
-So, there will be results with the same instances (`$x`), but different types (`$type`).
-This should increase the number of results to about 57.
+.Inheritance polymorphism query example
+[,typeql]
+----
+match $x isa entity;
+----
+
+The query above matches `$x` by  its type.
+The type must be the `entity` type or any of its subtypes.
+This query should return all entities in a database.
+
+You can easily avoid inheritance polymorphism
+by restricting subtypes to be used in the query by using `isa!` (with an exclamation mark).
+
+[#_interface_polymorphism]
+== #{counter:query}: Try Interface polymorphism
+_Run this query after <<_schema,query #1>> and <<_data,query #2>>._
+
+Interface polymorphism lets us query for everything with a specific property, for example, owning an attribute.
+
+.Interface polymorphism query example
+[,typeql]
+----
+match $x has name $name;
+----
+
+The above query matches every instance, that has any name.
+It returns pairs of owning instance (`$x`) of any type and the name attribute it owns (`$name`).
+The same approach could be used with playing a role in a relationship.
 
 == #{counter:query}: Query abstract types
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
@@ -393,11 +425,11 @@ image::typedb-in-20-queries/relation.png[Relation, role=framed, width = 75%, lin
 == #{counter:query}: Utilize immutable attributes
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_data,query #4>>._
 
-Always optimal storage space and memory requirements as data is naturally deduplicated.
+Storage space and memory consumption are optimal as data is naturally deduplicated.
 
-Only attributes have values and all attributes are immutable.
-We can't change the value of an attribute,
-but we can delete ownership of one attribute and insert ownership of another.
+Only instances of attribute types have values.
+Those values are immutable.
+We can't change the value of an attribute, but we can delete ownership of one attribute and insert ownership of another.
 
 An attribute has a unique value among all instances of the same type.
 Hence, there can be no other attribute of the same type with the same value.
@@ -428,7 +460,7 @@ The resulted data should look like the image below.
 image::typedb-in-20-queries/attribute.png[Relation, role=framed, width = 75%, link=self]
 
 [#_counterquery_attribute_annotations]
-== #{counter:query}: Add annotations to attribute ownership
+== #{counter:query}: Add ownership annotations
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 When defining an ownership of an attribute type, we can add one of possible annotations: `@key` or `@unique`.
@@ -637,7 +669,7 @@ The above schema adds two rules and necessary attributes.
 The first rule uses arithmetic to set value for `size-mb` depending on the value of `size-kb`.
 The second rule uses the same approach, but based on the results from first rule to compute `size-gb`.
 
-== #{counter:query}: Infer new data with rule chaining
+== #{counter:query}: Infer with rule chaining
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_rule_chaining>>._
 
 Let's use the rules from the previous query <<_rule_based_inference>>:
@@ -661,6 +693,7 @@ image:typedb-in-20-queries/rule-chain.png[Inference with rule chaining, role=fra
 
 The infered data is highlighted with green color.
 
+[#_transitivity]
 == #{counter:query}: Add relation transitivity
 _Run this query on an empty database._
 
@@ -722,4 +755,43 @@ the `transitive-group-memmbership` rule, will make `user` into a member of all g
 For more information on rule inference, see the xref:typeql::schema/define-rules.adoc[] page
 in xref:typeql::overview.adoc[TypeQL documentation].
 
-//== #{counter:query}: Query transitive relations
+== #{counter:query}: Query transitive relations
+_Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_transitivity>>._
+
+To try relation transitivity, insert sample data for the schema in the previous query:
+
+.Insert sample data for relation transitivity
+[,typeql]
+----
+insert
+    $u1 isa user, has name "Alice";
+    $u2 isa user, has name "Bob";
+    $u3 isa user, has name "Charlie";
+    $uga isa user-group, has name "Group A";
+    $ugb isa user-group, has name "Group B";
+    $ugc isa user-group, has name "Group C";
+    (group:$ugb, member:$uga) isa group-membership;
+    (group:$ugc, member:$ugb) isa group-membership;
+    (group:$uga, member:$u1) isa group-membership;
+    (group:$ugb, member:$u2) isa group-membership;
+    (group:$ugc, member:$u3) isa group-membership;
+----
+
+In the query above, we insert three users, three user groups and assign a membership in the following way:
+
+* `Group A` is a member of `Group B`
+* `Group B` is a member of `Group C`
+* User `Alice` is a member of `Group A`
+* User `Bob` is a member of `Group B`
+* User `Charlie` is a member of `Group C`
+
+By the  `transitive-group-memmbership` rule from the query <<_transitivity>>,
+the user `Alice` should be a member of all groups: A, B, and C.
+
+`Alice` -> Group A -> Group B -> Group C
+
+Using inference, we can infer the following data from a database with the inserted data from the query above:
+
+image::typedb-in-20-queries/transitivity.png[Relation transitivity, role=framed, width = 75%, link=self]
+
+Notice the four infered relations in green color.
