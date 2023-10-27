@@ -53,7 +53,7 @@ See the examples below.
 
 [,java]
 ----
-TypeQLMatch.Filtered getQuery = TypeQL.match(
+TypeQLGet getQuery = TypeQL.match(
         cVar("u").isa("user").has("full-name", "Kevin Morrison"),
         cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
         cVar("o").isa("object").has("path", cVar("fp")),
@@ -73,7 +73,7 @@ In version prior to `2.18.0` the `var()` was used instead of `cVar()` as there w
 
 [,java]
 ----
-readTransaction.query().match(getQuery)
+readTransaction.query().get(getQuery)
 ----
 
 The result should be the same as if we set `getQuery` variable as a TypeQL string.
@@ -91,7 +91,7 @@ The following example showcases the usage of sorting, offsetting and limiting a 
 
 [,java]
 ----
-TypeQLMatch.Limited getQuery = TypeQL.match(
+TypeQLGet getQuery = TypeQL.match(
         cVar("u").isa("user").has("full-name", "Kevin Morrison"),
         cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
         cVar("o").isa("object").has("path", cVar("fp")),
@@ -105,7 +105,7 @@ TypeQLMatch.Limited getQuery = TypeQL.match(
 
 [,java]
 ----
-TypeQLMatch query = match(
+TypeQLGet query = match(
         cVar("x").isa("triangle").has("base", cVar("b")).has("height", cVar("h")),
         vVar("area").assign(Expression.constant(0.5).mul(cVar("b").mul(cVar("h"))))))
 );
@@ -121,6 +121,6 @@ The following example showcases the usage of insert query.
 insertQuery = TypeQL.match(
         cVar("f").isa("file").has("path", filepath),
         cVar("vav").isa("action").has("name", "view_file")
-                )
-        .insert(cVar("pa").rel(cVar("vav")).rel(cVar("f")).isa("access"));
+)
+.insert(cVar("pa").rel(cVar("vav")).rel(cVar("f")).isa("access"));
 ----

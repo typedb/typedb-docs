@@ -176,6 +176,7 @@ The following query can be run in a new tab in *Schema* / *Read* mode to see the
 [,typeql]
 ----
 match $s sub thing;
+get;
 ----
 
 As the result of the above query TypeDB Studio should display a graph visualization of the schema defined earlier.

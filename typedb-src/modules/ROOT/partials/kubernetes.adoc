@@ -36,19 +36,19 @@ Please note that an external certificate is always bound to URL address, not IP 
 
 The internal certificate can be generated using the `create-encryption-mq-key.sh` tool bundled with TypeDB Enterprise
 distribution, which can be downloaded from
-https://repo.vaticle.com/#browse/browse:private-artifact:vaticle_typedb_cluster[repo.vaticle.com]:
+https://repo.vaticle.com/#browse/browse:private-artifact:vaticle_typedb_enterprise[repo.vaticle.com]:
 
 [,bash]
 ----
  $ # unpack distribution of TypeDB Enterprise into `dist` folder
- $ ./dist/typedb-cluster-all-<platform>-<version>/tool/create-encryption-mq-key.sh
+ $ ./dist/typedb-enterprise-all-<platform>-<version>/tool/create-encryption-mq-key.sh
 ----
 
 Once the external and internal certificates are all generated, we can proceed to upload it to Kubernetes Secrets:
 
 [,bash]
 ----
- $ kubectl create secret generic typedb-cluster \
+ $ kubectl create secret generic typedb-enterprise \
    --from-file rpc-private-key.pem \
    --from-file rpc-certificate.pem \
    --from-file rpc-root-ca.pem="$(mkcert -CAROOT)/rootCA.pem" \
@@ -56,7 +56,7 @@ Once the external and internal certificates are all generated, we can proceed to
    --from-file mq-public-key
 ----
 
-Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-cluster`)
+Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-enterprise`)
 and contain exactly these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`,
 `mq-public-key`).
 
@@ -75,30 +75,30 @@ In order to select this mode, ensure that the `exposed` flag is set to `false`.
 
 [,bash]
 ----
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=false,encrypted=false"
+helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=false"
 ----
 
 Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes
-network, ie., `typedb-cluster-0.typedb-cluster`, `typedb-cluster-1.typedb-cluster`, and
-`typedb-cluster-2.typedb-cluster`.
+network, ie., `typedb-enterprise-0.typedb-enterprise`, `typedb-enterprise-1.typedb-enterprise`, and
+`typedb-enterprise-2.typedb-enterprise`.
 
 *Deploying with in-flight encryption*
 
 Should you need to enable in-flight encryption for your private cluster, make sure the `encrypted` flag is set to `true`.
 
 Also make sure that the external certificate is bound to `*.<helm-release-name>`. For example, for a Helm release
-named `typedb-cluster`, the certificate needs to be bound to `*.typedb-cluster`.
+named `typedb-enterprise`, the certificate needs to be bound to `*.typedb-enterprise`.
 
 Once done, let's perform the deployment:
 
 [,bash]
 ----
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=false,encrypted=true"
+helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=true"
 ----
 
 Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes
-network, ie., `typedb-cluster-0.typedb-cluster`, `typedb-cluster-1.typedb-cluster`, and
-`typedb-cluster-2.typedb-cluster`.
+network, ie., `typedb-enterprise-0.typedb-enterprise`, `typedb-enterprise-1.typedb-enterprise`, and
+`typedb-enterprise-2.typedb-enterprise`.
 
 === Deploying a Public Cluster
 
@@ -115,7 +115,7 @@ running on.
 
 [,bash]
 ----
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true"
+helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true"
 ----
 
 Once the deployment has completed, the servers would be accessible via public IPs/hostnames assigned to the Kubernetes
@@ -123,7 +123,7 @@ Once the deployment has completed, the servers would be accessible via public IP
 
 [,bash]
 ----
-kubectl get svc -l external-ip-for=typedb-cluster \
+kubectl get svc -l external-ip-for=typedb-enterprise \
 -o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
 ----
 
@@ -137,7 +137,7 @@ Given a "domain name" and "Helm release name", The address structure of the serv
 
 [,bash]
 ----
-typedb-cluster-{0..n}.<helm-release-name>.<domain-name>
+typedb-enterprise-{0..n}.<helm-release-name>.<domain-name>
 ----
 
 The format must be taken into account when generating the external certificate of all servers such that they're properly
@@ -151,7 +151,7 @@ Once done, let's perform the deployment:
 
 [,bash]
 ----
-helm install typedb-cluster vaticle/typedb-cluster --set "exposed=true,encrypted=true,domain=<domain-name>"
+helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true,encrypted=true,domain=<domain-name>"
 ----
 
 After the deployment has been completed, we need to configure these URL addresses to correctly point to the servers.
@@ -160,9 +160,9 @@ trusted DNS provider:
 
 [,bash]
 ----
-typedb-cluster-0.typedb-cluster.example.com => public IP/hostname of typedb-cluster-0 service
-typedb-cluster-1.typedb-cluster.example.com => public IP/hostname of typedb-cluster-1 service
-typedb-cluster-2.typedb-cluster.example.com => public IP/hostname of typedb-cluster-2 service
+typedb-enterprise-0.typedb-enterprise.example.com => public IP/hostname of typedb-enterprise-0 service
+typedb-enterprise-1.typedb-enterprise.example.com => public IP/hostname of typedb-enterprise-1 service
+typedb-enterprise-2.typedb-enterprise.example.com => public IP/hostname of typedb-enterprise-2 service
 ----
 
 === Deploying a Public Cluster (Minikube)
@@ -178,7 +178,7 @@ run on a Minikube instance on your local machine.
 
 [,bash]
 ----
-helm install vaticle/typedb-cluster --generate-name \
+helm install vaticle/typedb-enterprise --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ----
 
@@ -268,7 +268,7 @@ executing `kubectl get secret/private-docker-hub`. Correct state looks like this
 === One or more pods of TypeDB Enterprise are stuck in `Pending` state
 
 This might mean pods requested more resources than available. To check if that's the case, run
-`kubectl describe pod/typedb-cluster-0` on a stuck pod (e.g. `typedb-cluster-0`). Error message similar to
+`kubectl describe pod/typedb-enterprise-0` on a stuck pod (e.g. `typedb-enterprise-0`). Error message similar to
 `0/1 nodes are available: 1 Insufficient cpu.` or
 `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
 indicates that `cpu` or `storage.size` values need to be decreased.
@@ -276,7 +276,7 @@ indicates that `cpu` or `storage.size` values need to be decreased.
 === One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
 
 This might indicate any misconfiguration of TypeDB Enterprise. Please obtain the logs by executing
-`kubectl logs pod/typedb-cluster-0` and share them with TypeDB Enterprise developers.
+`kubectl logs pod/typedb-enterprise-0` and share them with TypeDB Enterprise developers.
 
 == Current Limitations
 

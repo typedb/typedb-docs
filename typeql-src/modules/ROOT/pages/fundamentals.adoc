@@ -805,6 +805,7 @@ Now to read that data, we can use the xref:typeql::data/get.adoc[Get] query:
 [,typeql]
 ----
 match $p isa person;
+get;
 ----
 
 This should return to us all instances of the `person` type. But yet again -- what is the use for entities without their

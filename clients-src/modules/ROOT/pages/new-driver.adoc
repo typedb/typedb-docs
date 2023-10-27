@@ -21,7 +21,7 @@ to be confused by what is what.
 *TypeDB Client* -- any software that can connect to TypeDB and provide us with some kind of interface we
 can use: API, CLI, or GUI.
 
-*TypeDB Driver* -- a library that implements TypeDB Client RPC protocol to connect to TypeDB and provides an API to
+*TypeDB Driver* -- a library that implements TypeDB Driver RPC protocol to connect to TypeDB and provides an API to
 use it. Usually, Drivers are used as a part of other applications to connect to TypeDB.
 
 For convenience, the term TypeDB Clients includes all TypeDB Drivers.
@@ -36,11 +36,11 @@ maintaining them, so we also recommend community contributions to follow the sam
 
 The following diagram shows all the packages (directories) in Java Driver and their dependency graph:
 
-image::package-structure.png[Client Package Structure]
+image::package-structure.png[Driver Package Structure]
 
-The entry point is the root package, in this case named `client-java`.
-`api` is where we declare all the available client methods -- basically all the interfaces.
-`connection` holds core client and cluster client with all the basic building blocks: client, session, transaction.
+The entry point is the root package, in this case named `driver-java`.
+`api` is where we declare all the available driver methods -- basically all the interfaces.
+`connection` holds core driver and enterprise driver with all the basic building blocks: driver, session, transaction.
 Then we have `query` for querying, `logic` for reasoning, and `concept` for the API to be able to process concepts in
 responses.
 
@@ -53,7 +53,7 @@ responses.
 +
 [,bash]
 ----
-bazel query --noimplicit_deps 'allpaths(//:client-java,//common:common)' --output graph > graph.in
+bazel query --noimplicit_deps 'allpaths(//:driver-java,//common:common)' --output graph > graph.in
 ----
 4. Visualize the gathered information:
 +
@@ -63,13 +63,13 @@ dot -Tpng < graph.in > graph.png
 ----
 ====
 
-There are many places we could start building a client. In the
+There are many places we could start building a driver. In the
 xref:typedb::tutorials/new-driver-tutorial.adoc[] tutorial, we start by
 attempting to make a single gRPC call to TypeDB, and create a database.
 
 === Connection and databases
 
-To instantiate a client we need to be able to establish a network connection to a TypeDB Core server or a
+To instantiate a driver we need to be able to establish a network connection to a TypeDB Core server or a
 TypeDB Enterprise cluster.
 
 This connection opens us basic features of xref:typedb::development/connect.adoc#_databases[database] management, user
@@ -78,7 +78,7 @@ management (TypeDB Enterprise & TypeDB Cloud only) and enables us to open a sess
 [#_grpc]
 ==== gRPC
 
-https://grpc.io/[gRPC,window=_blank] is the network call framework that TypeDB uses. A TypeDB Driver needs a gRPC client
+https://grpc.io/[gRPC,window=_blank] is the network call framework that TypeDB uses. A TypeDB Driver needs a gRPC driver
 library to communicate with the server. Most languages have gRPC libraries.
 
 Architecturally, gRPC is an alternative to HTTP (say, REST API or websockets). In TypeDB's client-server architecture,
@@ -123,16 +123,16 @@ a distribution channel for the chosen language's compiled protobuf files. If thi
 To query schema and data, we need to open a Session and Transaction of the appropriate types. For example, we can't
 modify schema in a data session.
 
-A Session is essentially a long-lasting tunnel from a client to a database. However, we implement that with just simple
+A Session is essentially a long-lasting tunnel from a driver to a database. However, we implement that with just simple
 RPC calls -- Open and Close.
 
-Sessions consume server resources, and may hold locks. If a client disconnects (say, by crashing) the server needs a
-way to know. So, we use a pulse mechanism. Every 5 seconds, a TypeDB client sends a Session Pulse to inform the
-server that the client is still alive. If no pulse is received in 30 seconds, the server times out the session,
+Sessions consume server resources, and may hold locks. If a driver disconnects (say, by crashing) the server needs a
+way to know. So, we use a pulse mechanism. Every 5 seconds, a TypeDB driver sends a Session Pulse to inform the
+server that the driver is still alive. If no pulse is received in 30 seconds, the server times out the session,
 freeing up its resources for use elsewhere.
 
 Once a Session is open, we can open a Transaction inside it to read and write to the database. This is implemented
-with a bidirectional streaming RPC. Rather like a websocket, it's a long-lasting tunnel that allows the client and
+with a bidirectional streaming RPC. Rather like a websocket, it's a long-lasting tunnel that allows the driver and
 server to talk to each other.
 
 TypeDB Drivers support multiple layers of concurrency. A Client can have many Sessions, and a Session can have many
@@ -142,7 +142,7 @@ image::concurrency-model.png[Concurrency Model]
 
 === Inside a transaction stream
 
-Inside a transaction stream, the client sends requests, and the server is expected to respond to the client's
+Inside a transaction stream, the driver sends requests, and the server is expected to respond to the driver's
 requests in a timely manner.
 
 Each request must have the same message type. This is `Transaction.Client`, defined in
@@ -192,14 +192,14 @@ types of `ConceptManager.Req`.
 For requests such as TypeQL Match queries, the responses can be very long, so TypeDB breaks them up into parts.
 We issue `Match.Req`, and get back multiple ``Match.ResPart``s, which each contain some answers to the query.
 
-Getting all the answers may be costly in terms of server resources, and it can be wasteful if the client exits early.
+Getting all the answers may be costly in terms of server resources, and it can be wasteful if the driver exits early.
 So we only auto-stream up to a certain limit, called the *prefetch size*, then we send a special message called
 "`Continue`".
-If the client needs more answers, it should respond with a `Stream.Req`.
+If the driver needs more answers, it should respond with a `Stream.Req`.
 That tells the server to continue streaming, and, when there are no answers left, it sends a `Stream.ResPart`
 with `state = DONE`.
 
-In a client, the Match response is typically represented as a Stream or Iterator. Seeing "`DONE`" from the server
+In a driver, the Match response is typically represented as a Stream or Iterator. Seeing "`DONE`" from the server
 signals the end of iteration. The iterator implementation varies a bit by language. In Java, Streams are in-built;
 in Python we use an Iterator, and in NodeJS we use an Async Iterator. Use whatever is most natural in the preferred
 language.
@@ -215,7 +215,7 @@ The queue fills up as answers are received from the server, and it gets emptied 
 ==== Request batching
 
 Loading bulk data may potentially require millions of INSERT queries, and gRPC can only send so many in a given
-timeframe. To mitigate this, we use request batching - see the `RequestTransmitter` class in any official client.
+timeframe. To mitigate this, we use request batching - see the `RequestTransmitter` class in any official driver.
 It collects all requests in a 1ms time window, bundles them into a single gRPC message, and dispatches it.
 
 === Exploring query answers
@@ -240,20 +240,19 @@ Implementing all concept methods for TypeDB API is not complicated, but it is qu
 lot of methods. Concept methods either return single or streamed responses. `ThingType.getInstances` is an example
 of a Streamed Concept method.
 
-== TypeDB cluster client
+== TypeDB Enterprise driver
 
-TypeDB Cloud and TypeDB Enterprise use clusters of TypeDB Enterprise servers that run as a distributed network of
-database servers which communicate internally to form a consensus when querying. If one server has an outage, we can
-recover from the issue by falling back to another server. To enable this, TypeDB Driver constructs 1 Core client per a
-TypeDB server (cluster node):
+TypeDB Cloud and TypeDB Enterprise use groups of TypeDB Enterprise servers which communicate internally to form a
+consensus when querying. If one server has an outage, we can recover from the issue by falling back to another server.
+To enable this, TypeDB Driver constructs 1 Core driver per a TypeDB server (Enterprise server):
 
-image::cluster.png[Cluster client Architecture]
+image::cluster.png[Cluster driver Architecture]
 
 Suppose we open a Transaction to, say, Node 1, but we don't get a response.
 
-In TypeDB, that would be a non-recoverable error. In TypeDB Enterprise & TypeDB Cloud, the Cluster client simply
-reroutes the request to a different Core client, which sends the request to its linked server. In this way, the
-client recovers from the failure and continues running as normal.
+In TypeDB, that would be a non-recoverable error. In TypeDB Enterprise & TypeDB Cloud, the Cluster driver simply
+reroutes the request to a different Core driver, which sends the request to its linked server. In this way, the
+driver recovers from the failure and continues running as normal.
 
 [#_behavioral_testing]
 == Behavioral testing

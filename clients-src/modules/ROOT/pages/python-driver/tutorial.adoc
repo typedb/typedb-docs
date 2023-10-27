@@ -11,18 +11,18 @@ The TypeDB server also needs to be installed and running.
 
 == Importing
 
-In the interpreter or in the source code, import everything from `typedb.client`.
+In the interpreter or in the source code, import everything from `typedb.driver`.
 
-// test-example social_network_python_client_a.py
+// test-example social_network_python_driver_a.py
 
 [,python]
 ----
-from typedb.client import *
+from typedb.driver import *
 ----
 
 == Connecting
 
-Instantiate a TypeDB Core client and open a xref:typedb::development/connect.adoc#_sessions[session] to a
+Instantiate a TypeDB Core driver and open a xref:typedb::development/connect.adoc#_sessions[session] to a
 xref:typedb::development/connect.adoc#_databases[database].
 
 [NOTE]
@@ -37,28 +37,28 @@ The database should have the following data inserted: xref:attachment$data.tql[d
 
 [,python]
 ----
-from typedb.client import *
+from typedb.driver import *
 
-with TypeDB.core_client("localhost:1729") as client:
-    with client.session("social_network", SessionType.DATA) as session:
+with TypeDB.core_driver("localhost:1729") as driver:
+    with driver.session("social_network", SessionType.DATA) as session:
         ## session is open
         pass
     ## session is closed
-## client is closed
+## driver is closed
 ----
 
 == Creating transactions
 
 Create transactions to use for reading and writing data.
 
-// test-example social_network_python_client_c.py
+// test-example social_network_python_driver_c.py
 
 [,python]
 ----
-from typedb.client import *
+from typedb.driver import *
 
-with TypeDB.core_client("localhost:1729") as client:
-    with client.session("social_network", SessionType.DATA) as session:
+with TypeDB.core_driver("localhost:1729") as driver:
+    with driver.session("social_network", SessionType.DATA) as session:
         ## creating a write transaction
         with session.transaction(TransactionType.WRITE) as write_transaction:
             ## write transaction is open
@@ -77,14 +77,14 @@ with TypeDB.core_client("localhost:1729") as client:
 
 Running basic retrieval and insertion queries.
 
-// test-example social_network_python_client_d.py
+// test-example social_network_python_driver_d.py
 
 [,python]
 ----
-from typedb.client import *
+from typedb.driver import *
 
-with TypeDB.core_client("localhost:1729") as client:
-    with client.session("social_network", SessionType.DATA) as session:
+with TypeDB.core_driver("localhost:1729") as driver:
+    with driver.session("social_network", SessionType.DATA) as session:
         ## Insert a Person using a WRITE transaction
         with session.transaction(TransactionType.WRITE) as write_transaction:
             insert_iterator = write_transaction.query().insert('insert $x isa person, has email "x@email.com";')
@@ -95,7 +95,7 @@ with TypeDB.core_client("localhost:1729") as client:
 
         ## Read the person using a READ only transaction
         with session.transaction(TransactionType.READ) as read_transaction:
-            answer_iterator = read_transaction.query().match("match $x isa person; get $x; limit 10;")
+            answer_iterator = read_transaction.query().get("match $x isa person; get $x; limit 10;")
 
             for answer in answer_iterator:
                 person = answer.get("x")
@@ -103,7 +103,7 @@ with TypeDB.core_client("localhost:1729") as client:
 
         ## Or query and consume the iterator immediately collecting all the results
         with session.transaction(TransactionType.READ) as read_transaction:
-            answer_iterator = read_transaction.query().match("match $x isa person; get $x; limit 10;")
+            answer_iterator = read_transaction.query().get("match $x isa person; get $x; limit 10;")
             persons = [ans.get("x") for ans in answer_iterator]
             for person in persons:
                 print("Retrieved person with id " + person.get_iid())
@@ -111,7 +111,7 @@ with TypeDB.core_client("localhost:1729") as client:
         ## if not using a `with` statement, then we must always close the session and the read transaction
         # read_transaction.close()
         # session.close()
-        # client.close()
+        # driver.close()
 ----
 
 [IMPORTANT]

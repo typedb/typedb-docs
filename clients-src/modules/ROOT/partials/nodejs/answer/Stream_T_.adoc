@@ -36,7 +36,7 @@ Collects all the answers from this stream into an array
 .Code examples
 [source,nodejs]
 ----
-results = transaction.query.match(query).collect().await;
+results = transaction.query.get(query).collect().await;
 ----
 
 [#_Stream_T_every]
@@ -80,7 +80,7 @@ Returns a new stream from this stream consisting only of elements which satisfy 
 |Name |Description |Type
 a| `filter` a| The condition to evaluate.
 Examples
-``// For a query "match $p isa person, has age $a;", only retrieve results having $a &gt;= 60.results = transaction.query.match(query).filter(cm =&gt; cm.get("a").value &gt; 60).collect();
+``// For a query "match $p isa person, has age $a; get;", only retrieve results having $a &gt;= 60.results = transaction.query.match(query).filter(cm =&gt; cm.get("a").value &gt; 60).collect();
 ``Copy a| `((value) => boolean)`
 |===
 
