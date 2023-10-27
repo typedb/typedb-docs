@@ -129,10 +129,10 @@ relation `$pe`.
 
 [,python]
 ----
-from typedb.client import TypeDB, SessionType, TransactionType, TypeDBOptions
+from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions
 
-with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
-    with client.session("iam", SessionType.DATA) as session:
+with TypeDB.core_driver("0.0.0.0:1729") as driver:  # Connect to TypeDB server
+    with driver.session("iam", SessionType.DATA) as session:
         print("\nRequest #1: Explain query — Files that Kevin Morrison has view access to (with explanation)")
         typedb_options = TypeDBOptions()  # Initialising a new set of options
         typedb_options.infer = True  # Enabling inference in this new set of options
