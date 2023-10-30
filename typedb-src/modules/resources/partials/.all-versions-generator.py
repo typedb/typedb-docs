@@ -141,12 +141,12 @@ def generate_table_contents(versions, hash=False, tags=False):
             else:
                 result += ' '
             if version[os]["url"] != "":
-                result += version[os]["url"] + '[x86-64]' + '\n'
+                result += version[os]["url"] + '[x86_64]' + '\n'
             else:
                 if version[os]["url-x86"] != "":
-                    result += version[os]["url-x86"] + '[x86-64] /'
+                    result += version[os]["url-x86"] + '[x86_64] /'
                 if version[os]["url-arm"] != "":
-                    result += ' ' + version[os]["url-arm"] + '[ARM]' + '\n'
+                    result += ' ' + version[os]["url-arm"] + '[arm64]' + '\n'
 
             if tags:
                 result += '// end::' + os + '[]' + '\n'
