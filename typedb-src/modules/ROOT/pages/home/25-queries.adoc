@@ -8,7 +8,7 @@ To explore the capabilities of TypeDB and TypeQL, check below the list of top 25
 
 [NOTE]
 ====
-Use our xref:typedb::quickstart-guide.adoc[Quickstart guide] to find out how to create a new database and send a query.
+Use our xref:home/quickstart-guide.adoc[Quickstart guide] to find out how to create a new database and send a query.
 ====
 
 [#_schema]
@@ -61,7 +61,7 @@ permission sub relation,
     relates object;
 ----
 
-The above query xref:typeql::schema/define-types.adoc[defines]
+The above query xref:typeql:ROOT:schema/define-types.adoc[defines]
 seven attribute types, three entity types, and a relation type.
 
 Note the `user` type, that owns `email` and `username` attribute types.
@@ -98,7 +98,7 @@ insert
     $p2(subject:$u2, object:$f2) isa permission;
 ----
 
-The above query xref:typeql::data/insert.adoc[inserts] one instance of the `person` type,
+The above query xref:typeql:ROOT:data/insert.adoc[inserts] one instance of the `person` type,
 two `user` entities,
 two `file` entities,
 two relations of the `permission` type,
@@ -126,7 +126,7 @@ match
 get $un;
 ----
 
-The above xref:typeql::data/get.adoc[Get] query matches the `file` entity by the `path` attribute it has ownership of.
+The above xref:typeql:ROOT:data/get.adoc[Get] query matches the `file` entity by the `path` attribute it has ownership of.
 Then it finds all users (and their usernames) that participate in a relation of a `permission` type with the file.
 The result is filtered to return only the `$un`, which is the `username`.
 
@@ -136,7 +136,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 A schema of a TypeDB database can be extended at any time without the need to rewrite existing queries.
 The easiest way to extend the schema is to add a new type, add an ownership of an attribute type, add a role, or
-add an ability to play a new role with a xref:typeql::schema/define-types.adoc[Define] query.
+add an ability to play a new role with a xref:typeql:ROOT:schema/define-types.adoc[Define] query.
 
 Let's add a new subtype and a new role to our schema:
 
@@ -179,7 +179,7 @@ insert
 The above query matches the file with path `README.md` and all users, that are not in a `permission` relation.
 Then it inserts such a relation for every matched `user` and `file`.
 
-The xref:typeql::data/insert.adoc[Insert] query type is the only one that can be used without a `match` clause.
+The xref:typeql:ROOT:data/insert.adoc[Insert] query type is the only one that can be used without a `match` clause.
 See <<_data,example>>.
 
 == #{counter:query}: Data deletion
@@ -217,7 +217,7 @@ Variables indicate unknowns that should be retrieved by the query.
 Every matched result is a solution for the `match` clause pattern:
 it includes a single concept (a type or an instance of a type) for every variable.
 
-For a xref:typeql::data/get.adoc[Get] query we use a `match` clause to declare a pattern for the data we are looking for
+For a xref:typeql:ROOT:data/get.adoc[Get] query we use a `match` clause to declare a pattern for the data we are looking for
 and an optional `get` clause to filter the results.
 
 .Declarative query and composable patterns
@@ -315,7 +315,7 @@ The same approach could be used with playing a role in a relationship.
 == #{counter:query}: Abstract types
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-xref:typeql::fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated
+xref:typeql:ROOT:fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated
 (no data can be inserted for the abstract type), but can be subtyped.
 
 In schema from <<_schema,query #1>> we defined `id` as an abstract type to subtype it with many different attributes,
@@ -340,7 +340,7 @@ image::typedb-in-20-queries/abstract.png[Abstract type, role=framed, width = 75%
 == #{counter:query}: Inheritance
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-xref:typeql::fundamentals.adoc#_inheritance[Inheritance] lets subtypes use roles and attributes,
+xref:typeql:ROOT:fundamentals.adoc#_inheritance[Inheritance] lets subtypes use roles and attributes,
 defined for their supertype (direct or nested).
 
 Like in the following example:
@@ -472,7 +472,7 @@ all instances of the owner type must have exactly one (no less and no more) inst
 
 Consider the schema from the <<_data,query #2>>.
 
-In the schema we xref:typeql::schema/define-types.adoc[defined]
+In the schema we xref:typeql:ROOT:schema/define-types.adoc[defined]
 the `username` type to be a key for the `user` type,
 and the `email` to be unique, when owned by the `user` type.
 
@@ -553,7 +553,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Arithmetic expressions let you perform basic math operations on any value in a `match` clause.
 
-See the list of available xref:typedb::fundamentals/patterns.adoc#_arithmetic_operations[arithmetic operations].
+See the list of available xref:fundamentals/patterns.adoc#_arithmetic_operations[arithmetic operations].
 
 Let's insert a few files with different sizes, that are calculated:
 
@@ -580,9 +580,9 @@ image::typedb-in-20-queries/math.png[Arithmetics, role=framed, width = 75%, link
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 TypeDB reasoning engine can perform rule-based inference when you read data.
-To use inference, we need to xref:typeql::schema/define-types.adoc[Define] rules in the schema,
-open a `read` transaction with the `infer` option xref:typedb::development/infer.adoc#_how_to_use_inference[enabled],
-and send a xref:typeql::data/get.adoc[Get] query.
+To use inference, we need to xref:typeql:ROOT:schema/define-types.adoc[Define] rules in the schema,
+open a `read` transaction with the `infer` option xref:development/infer.adoc#_how_to_use_inference[enabled],
+and send a xref:typeql:ROOT:data/get.adoc[Get] query.
 
 .Schema with a rule
 [,typeql]
@@ -619,7 +619,7 @@ match
 ----
 
 The above query produces the following result with inference
-xref:typedb::development/infer.adoc#_how_to_use_inference[enabled]:
+xref:development/infer.adoc#_how_to_use_inference[enabled]:
 
 image:typedb-in-20-queries/inference.png[Inference, role=framed, width = 75%, link=self]
 
@@ -683,7 +683,7 @@ match
 ----
 
 The above query produces the following result with inference
-xref:typedb::development/infer.adoc#_how_to_use_inference[enabled]:
+xref:development/infer.adoc#_how_to_use_inference[enabled]:
 
 image:typedb-in-20-queries/rule-chain.png[Inference with rule chaining, role=framed, width = 75%, link=self]
 
@@ -748,8 +748,8 @@ For example, if we insert data of group-membership according to the following:
 Then the transitivity, implemented by
 the `transitive-group-memmbership` rule, will make `user` into a member of all groups: from Group A to Group E.
 
-For more information on rule inference, see the xref:typeql::schema/define-rules.adoc[] page
-in xref:typeql::overview.adoc[TypeQL documentation].
+For more information on rule inference, see the xref:typeql:ROOT:schema/define-rules.adoc[] page
+in xref:typeql:ROOT:overview.adoc[TypeQL documentation].
 
 == #{counter:query}: Inserting transitive relations
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_transitivity>>._
