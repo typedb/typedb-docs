@@ -184,6 +184,7 @@ The following keywords can be used for arithmetic operations between <<_value_va
 values of attributes that are stored in concept variables, or constants:
 
 //#todo reimplement the links to examples
+// tag::arithmetics[]
 1. `()` -- parentheses.
 See an xref:typeql::data/advanced.adoc#_using_parentheses[example].
 2. `^` -- exponentiation (power).
@@ -198,6 +199,7 @@ See an xref:typeql::data/advanced.adoc#_using_modulo[example].
 See an xref:typeql::data/advanced.adoc#_using_addition[example].
 7. `-` -- subtraction.
 See an xref:typeql::data/advanced.adoc#_using_subtraction[example].
+// end::arithmetics[]
 
 [IMPORTANT]
 ====
@@ -225,6 +227,7 @@ Built-in functions are usually invoked with adjacent parentheses that contain ar
 Those arguments are separated by a comma as a separator. The following built-in functions are available in TypeDB:
 
 //#todo Reimplement the links to examples
+// tag::functions[]
 * `min` -- the minimum of the arguments.
 See xref:typeql::data/advanced.adoc#_using_minimum_function[example].
 * `max` -- the maximum of the arguments.
@@ -237,6 +240,7 @@ See xref:typeql::data/advanced.adoc#_using_ceiling_function[example].
 See xref:typeql::data/advanced.adoc#_using_rounding_function[example].
 * `abs` -- the modulus (or absolute value) function.
 See xref:typeql::data/advanced.adoc#_using_absolute_value_function[example].
+// end::functions[]
 
 // tag::combining[]
 [#_combining_statements]
