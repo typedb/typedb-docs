@@ -1,0 +1,130 @@
+= Node.js Driver API reference
+:Summary: API Reference of TypeDB Driver for Node.js.
+:keywords: typedb, driver nodejs
+:longTailKeywords: typedb nodejs driver, typedb client nodejs, nodejs driver, API reference
+:pageTitle: Node.js Driver API reference
+//:toc: macro
+//:toclevels: 4
+
+////
+.See the full table of contents for this page
+[%collapsible]
+====
+toc::[]
+====
+////
+
+[#_connection_header]
+== Connection
+
+include::clients::partial$nodejs/connection/TypeDB.adoc[]
+
+include::clients::partial$nodejs/connection/TypeDBDriver.adoc[]
+
+include::clients::partial$nodejs/connection/TypeDBCredential.adoc[]
+
+include::clients::partial$nodejs/connection/DatabaseManager.adoc[]
+
+include::clients::partial$nodejs/connection/Database.adoc[]
+
+include::clients::partial$nodejs/connection/Replica.adoc[]
+
+include::clients::partial$nodejs/connection/UserManager.adoc[]
+
+include::clients::partial$nodejs/connection/User.adoc[]
+
+[#_session_header]
+== Session
+
+include::clients::partial$nodejs/session/TypeDBSession.adoc[]
+
+include::clients::partial$nodejs/session/SessionType.adoc[]
+
+include::clients::partial$nodejs/session/TypeDBOptions.adoc[]
+
+include::clients::partial$nodejs/session/Opts.adoc[]
+
+[#_transaction_header]
+== Transaction
+
+include::clients::partial$nodejs/transaction/TypeDBTransaction.adoc[]
+
+include::clients::partial$nodejs/transaction/TransactionType.adoc[]
+
+include::clients::partial$nodejs/transaction/QueryManager.adoc[]
+
+[#_answer_header]
+== Answer
+
+include::clients::partial$nodejs/answer/ConceptMapGroup.adoc[]
+
+include::clients::partial$nodejs/answer/ConceptMap.adoc[]
+
+include::clients::partial$nodejs/answer/Stream_T_.adoc[]
+
+include::clients::partial$nodejs/answer/NumericGroup.adoc[]
+
+include::clients::partial$nodejs/answer/Numeric.adoc[]
+
+include::clients::partial$nodejs/answer/Explainables.adoc[]
+
+include::clients::partial$nodejs/answer/Explainable.adoc[]
+
+include::clients::partial$nodejs/answer/Explanation.adoc[]
+
+[#_concept_header]
+== Concept
+
+include::clients::partial$nodejs/concept/ConceptManager.adoc[]
+
+include::clients::partial$nodejs/concept/Concept.adoc[]
+
+[#_schema_header]
+== Schema
+
+include::clients::partial$nodejs/schema/Type.adoc[]
+
+include::clients::partial$nodejs/schema/Label.adoc[]
+
+include::clients::partial$nodejs/schema/ThingType.adoc[]
+
+include::clients::partial$nodejs/schema/EntityType.adoc[]
+
+include::clients::partial$nodejs/schema/RelationType.adoc[]
+
+include::clients::partial$nodejs/schema/RoleType.adoc[]
+
+include::clients::partial$nodejs/schema/AttributeType.adoc[]
+
+include::clients::partial$nodejs/schema/Annotation.adoc[]
+
+include::clients::partial$nodejs/schema/Transitivity.adoc[]
+
+include::clients::partial$nodejs/schema/ValueType.adoc[]
+
+[#_data_header]
+== Data
+
+include::clients::partial$nodejs/data/Thing.adoc[]
+
+include::clients::partial$nodejs/data/Entity.adoc[]
+
+include::clients::partial$nodejs/data/Relation.adoc[]
+
+include::clients::partial$nodejs/data/Attribute.adoc[]
+
+include::clients::partial$nodejs/data/Value.adoc[]
+
+[#_logic_header]
+== Logic
+
+include::clients::partial$nodejs/logic/LogicManager.adoc[]
+
+include::clients::partial$nodejs/logic/Rule.adoc[]
+
+[#_errors_header]
+== Errors
+
+include::clients::partial$nodejs/errors/TypeDBDriverError.adoc[]
+
+include::clients::partial$nodejs/errors/ErrorMessage.adoc[]
