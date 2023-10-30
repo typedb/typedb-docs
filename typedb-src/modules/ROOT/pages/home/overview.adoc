@@ -10,12 +10,13 @@ Welcome to the TypeDB, TypeQL and TypeDB Clients technical documentation.
 //home?
 
 //* xref:typedb::home/what-is-typedb.adoc[]
-* xref:typedb::home/download-center.adoc[]
 * xref:typedb::home/quickstart-guide.adoc[]
 * xref:typedb::home/25-queries.adoc[]
+* xref:typedb::home/download-center.adoc[]
 
 == TypeDB
 
+* xref:typedb::overview.adoc[]
 * xref:installation.adoc[]
 
 [#_fundamentals]
@@ -33,9 +34,9 @@ xref:development/write.adoc[],
 xref:development/read.adoc[],
 xref:development/infer.adoc[],
 xref:development/response.adoc[],
-xref:development/api.adoc[],
+xref:development/best.adoc[],
+xref:development/api.adoc[].
 // #todo Consider moving API to Clients section with tabs
-xref:development/best.adoc[].
 
 [#_operations]
 * Operations:
@@ -43,7 +44,8 @@ xref:admin/configuration.adoc[],
 xref:admin/export-import.adoc[],
 xref:admin/update.adoc[],
 xref:admin/ha.adoc[],
-xref:admin/security.adoc[].
+xref:admin/security.adoc[],
+xref:typedb::admin/enterprise-deployment.adoc[].
 
 [#_tutorials]
 * Tutorials:
