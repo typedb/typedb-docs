@@ -1,0 +1,67 @@
+= Overview
+:keywords: typedb, typeql, documentation, overview, introduction
+:longTailKeywords: documentation overview, learn typedb, learn typeql, typedb schema, typedb data model
+:pageTitle: Documentation overview
+:summary: A birds-eye view of TypeQL and TypeDB
+
+Welcome to the TypeDB, TypeQL and TypeDB Clients technical documentation.
+
+== Home
+//home?
+
+//* xref:typedb::home/what-is-typedb.adoc[]
+* xref:typedb::home/quickstart-guide.adoc[] -- a short guide on how to create up a TypeDB database
+* xref:typedb::home/25-queries.adoc[] -- top 25 queries to explore TypeDB
+* xref:typedb::home/download-center.adoc[] -- download links for TypeDB and TypeDB Clients
+
+== TypeDB
+
+TypeDB is a polymorphic database with a conceptual data model,
+a strong subtyping system,
+a symbolic reasoning engine.
+
+* xref:typedb::overview.adoc[] -- an overview of the TypeDB section
+* xref:installation.adoc[] -- installation guide for TypeDB Core edition
+
+[#_fundamentals]
+* Fundamentals -- essential knowledge to learn before practicing TypeDB
+
+[#_developing]
+* Developing with TypeDB -- learn how to connect and send queries to TypeDB
+
+[#_managing]
+* Managing TypeDB -- learn about configuring and using a production-ready TypeDB installation
+
+[#_tutorials]
+* Tutorials -- basic tutorials for TypeDB
+
+[#_typeql]
+== TypeQL
+
+TypeQL is a modern, beautiful and elegant type-theoretic query language, supporting polymorphic queries.
+
+* xref:typeql::overview.adoc[] -- an overview of the TypeQL section
+* xref:typeql::fundamentals.adoc[] -- essential knowledge about TypeQL
+* xref:typeql::queries.adoc[] -- query types in TypeQL
+* Schema -- defining a database schema
+* Data -- data operations queries
+
+//* xref:typeql::grammar.adoc[].
+
+== TypeDB Clients
+
+Client-side software to connect to TypeDB via gRPC based protocol.
+
+* xref:clients::clients.adoc[] -- an overview of available TypeDB Clients
+** xref:clients::studio.adoc[] -- the IDE for TypeDB
+** xref:clients::console.adoc[] -- the CLI client
+** xref:clients::rust/rust-overview.adoc[Rust Driver] -- Rust Driver documentation
+** xref:clients::python/python-overview.adoc[Python Driver] -- Python Driver documentation
+** xref:clients::java/java-overview.adoc[Java Driver] -- Java Driver documentation
+** xref:clients::nodejs/node-js-overview.adoc[Node.js] -- Node.js Driver documentation
+
+//* xref:clients::other-languages.adoc[].
+//* xref:clients::new-driver.adoc[]
+
+//* xref:clients:resources:downloads.adoc[Downloads]
+//#todo Remove it

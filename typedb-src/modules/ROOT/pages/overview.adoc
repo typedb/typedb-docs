@@ -12,7 +12,6 @@ Check the layout of the TypeDB documentation below.
 
 * xref:introduction.adoc[] -- a brief description of TypeDB and its capabilities
 * xref:installation.adoc[] -- TypeDB server installation manual
-* xref:quickstart-guide.adoc[] -- a guide to quickly set up a TypeDB database
 
 [#_fundamentals]
 == Fundamentals
@@ -22,8 +21,8 @@ Check the layout of the TypeDB documentation below.
 ** xref:fundamentals/patterns.adoc[] -- essential information on pattern matching
 ** xref:fundamentals/inference.adoc[] -- essential information on rules and reasoning (inference)
 
-[#_development]
-== Development
+[#_developing]
+== Developing with TypeDB
 
 ** xref:development/connect.adoc[] -- TypeDB server and database connections
 ** xref:development/schema.adoc[] -- database schema definition
@@ -35,8 +34,8 @@ Check the layout of the TypeDB documentation below.
 // #todo Consider moving API to Clients section with tabs
 ** xref:development/best.adoc[] -- schema and query design tips
 
-[#_operations]
-== Operations
+[#_managing]
+== Managing TypeDB
 
 ** xref:admin/configuration.adoc[] -- TypeDB server configuration parameters and host machine requirements
 ** xref:admin/export-import.adoc[] -- exporting and importing database schema and data
@@ -57,13 +56,13 @@ into a TypeDB database
 
 What is TypeDB? See the xref:introduction.adoc[] page.
 
-Then xref:installation.adoc[install] TypeDB and use xref:quickstart-guide.adoc[] to try it yourself.
+Then xref:installation.adoc[install] TypeDB and use xref:home/quickstart-guide.adoc[] to try it yourself.
 
 To learn more about TypeDB, check the major sections of the documentation:
 
 * the <<_fundamentals,Fundamentals>> for essential knowledge about TypeDB,
-* the <<_development,Development>> for the in-detail documentation of the TypeDB development workflow,
-* the <<_operations,Operations>> for the instructions for setting up a production environment, or
+* the <<_developing,Developing with TypeDB>> for the in-detail documentation of the TypeDB development workflow,
+* the <<_managing,Managing TypeDB>> for the instructions for setting up a production environment, or
 * the <<_tutorials,Tutorials>> for how-to guides and the xref:tutorials/iam-schema.adoc[].
 
 Check our documentation for xref:typeql::overview.adoc[TypeQL] and xref:clients::clients.adoc[TypeDB Clients].

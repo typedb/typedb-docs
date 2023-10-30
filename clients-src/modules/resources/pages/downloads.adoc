@@ -6,6 +6,7 @@
 :tabs-sync-option:
 :repo: https://github.com/vaticle/typedb-studio/releases/
 
+// tag::clients-download[]
 == TypeDB Console
 
 TypeDB Console is distributed with both TypeDB Core and TypeDB Enterprise.
@@ -54,18 +55,19 @@ include::partial$all-versions.adoc[]
 
 [tabs]
 ====
-Java::
+Rust::
 +
 --
-Please follow the xref:clients::java/java-install.adoc[installation guide] to add TypeDB Java Driver to a
+Please follow the xref:clients::rust/rust-install.adoc[installation guide] to add TypeDB Rust Driver to a
 project/application.
 
-Alternatively, we can download TypeDB Java Driver by the following link:
+To download TypeDB Rust Driver, we can use any of the following options:
 
-- https://repo.vaticle.com/service/rest/repository/browse/maven/com/vaticle/typedb/typedb-driver/
+- `cargo add typedb-driver`
+- https://crates.io/crates/typedb-driver/[,window=_blank]
 
 For more information on the Driver versions, check the
-xref:clients::java/java-install.adoc#_version_compatibility[version compatibility] table and
+xref:clients::rust/rust-install.adoc#_version_compatibility[version compatibility] table and
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 
@@ -85,6 +87,21 @@ xref:clients::python/python-install.adoc#_version_compatibility[version compatib
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 
+Java::
++
+--
+Please follow the xref:clients::java/java-install.adoc[installation guide] to add TypeDB Java Driver to a
+project/application.
+
+Alternatively, we can download TypeDB Java Driver by the following link:
+
+- https://repo.vaticle.com/service/rest/repository/browse/maven/com/vaticle/typedb/typedb-driver/
+
+For more information on the Driver versions, check the
+xref:clients::java/java-install.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
+--
+
 Node.js::
 +
 --
@@ -100,3 +117,4 @@ xref:clients::nodejs/node-js-install.adoc#_version_compatibility[version compati
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 ====
+// end::clients-download[]
