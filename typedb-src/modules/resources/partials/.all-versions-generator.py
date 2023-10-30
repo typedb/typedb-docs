@@ -141,10 +141,10 @@ def generate_table_contents(versions, hash=False, tags=False):
             else:
                 result += ' '
             if version[os]["url"] != "":
-                result += version[os]["url"] + '[Download]' + '\n'
+                result += version[os]["url"] + '[x86-64]' + '\n'
             else:
                 if version[os]["url-x86"] != "":
-                    result += 'Download ' + version[os]["url-x86"] + '[x86-64] /'
+                    result += version[os]["url-x86"] + '[x86-64] /'
                 if version[os]["url-arm"] != "":
                     result += ' ' + version[os]["url-arm"] + '[ARM]' + '\n'
 
