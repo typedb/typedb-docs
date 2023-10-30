@@ -111,8 +111,7 @@ To try matching existing data before inserting, check the <<_match_insert>> sect
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Patterns for data queries are based on types defined in a schema.
-All queries are validated both syntactically and semantically.
-To get usernames of all users that have access to the file with path `README.md`:
+To get usernames of all users that have permission for the file with path `README.md`:
 
 .Get query example
 [,typeql]
@@ -122,13 +121,17 @@ match
         has username $un;
     $f isa file,
         has path "README.md";
-     $p(subject:$u, object:$f) isa permission;
+    $p(subject:$u, object:$f) isa permission;
 get $un;
 ----
 
 The above xref:typeql:ROOT:data/get.adoc[Get] query matches the `file` entity by the `path` attribute it has ownership of.
 Then it finds all users (and their usernames) that participate in a relation of a `permission` type with the file.
 The result is filtered to return only the `$un`, which is the `username`.
+
+All queries are validated both syntactically and semantically.
+Try adding to the query above a constraint of user having a `path` or file having a `name`.
+The modified query will not pass validation and will result in an error instead of showing no matched results.
 
 [#_extend_schema]
 == #{counter:query}: Extending a schema
@@ -157,6 +160,11 @@ permission relates permitted-action;
 
 The above Define query extends the existing schema
 by adding two new entity types and a role to an existing relation type.
+//The resulted schema can be visualized as following:
+//
+//image::typedb-in-20-queries/extended-schema.png[TypeDB Studio GUI, role=framed, width = 75%, link=self]
+//
+Note that you can still run <<_data,query #2>> or <<_get,query #3>> with the extended schema.
 
 [#_match_insert]
 == #{counter:query}: Data insertion with matching
@@ -180,7 +188,7 @@ The above query matches the file with path `README.md` and all users, that are n
 Then it inserts such a relation for every matched `user` and `file`.
 
 The xref:typeql:ROOT:data/insert.adoc[Insert] query type is the only one that can be used without a `match` clause.
-See <<_data,example>>.
+See <<_data,query #2>>.
 
 == #{counter:query}: Data deletion
 
@@ -239,7 +247,7 @@ For the data from <<_data,query #2>> it should return username `bob_93` and emai
 For the `match` clause pattern we included five simple statements.
 All five of them must be met for the matching.
 
-Take notice, that while the query uses the `person` type in its pattern, the matched entity is of the `user` type.
+Note that while the query uses the `person` type in its pattern, the matched entity is of the `user` type.
 This is due to the fact, that we used `isa` keyword, that takes into account all subtypes of the `person` type,
 including the `user` type.
 Try the same query with the `isa!` keyword instead.
@@ -358,7 +366,7 @@ The `user` type inherits the ability to own  the `name` attribute type from its 
 See the schema from the <<_schema,query #1>>.
 
 == #{counter:query}: Overriding inheritance
-_Run this query after <<_schema,query #1>>._
+//_Run this query after <<_schema,query #1>>._
 
 You can override an inherited ownership or a role with a new name.
 //#todo Add explanation as to why it might be needed
@@ -370,15 +378,33 @@ The new type should be defined in the schema as a subtype of the overriden (inhe
 ----
 define
 
-user owns full-name as name;
+name sub attribute, abstract, value string;
+full-name sub name;
+path sub attribute, value string;
+
+person sub entity, abstract,
+    owns name;
+user sub person,
+    owns full-name as name,
+    plays permission:subject;
+file sub entity,
+    owns path,
+    plays permission:object;
+
+permission sub relation,
+    relates subject,
+    relates object;
 
 user-permission sub permission,
     relates user as subject;
 ----
 
-In the above example, we override the inherited `name` attribute type with the `full-name` attribute type,
+In the query above we override the inherited `name` attribute type with the `full-name` attribute type.
 We also subtype `permission` relation type with the `user-permission`, which overrides the inherited `subject` role
 with the `user` role. The `object` role is inherited without overriding in this case.
+
+In this particular example we have to make `name` an abstract type as only abstract attribute types can be subtyped.
+And only abstract types can own abstract attribute types, hence, `person` is also an abstract type in this example.
 
 == #{counter:query}: N-ary relations
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_extend_schema,query #4>>._
@@ -534,7 +560,7 @@ Error> [THW11] Invalid Thing Write: Attempted to put an instance of 'status' wit
 //see the xref:typeql::data/advanced.adoc[] section.
 
 == #{counter:query}: Matching values with regex
-//match (constraint for the valued matched)
+_Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Use the `like` keyword with a regular expression to set constraints for an attribute value in a `match` clause.
 
@@ -602,7 +628,7 @@ it should add an ownership of the attribute of type `name` and value `Dude` for 
 Effectively, all instances of `person` type or its subtypes will have name `Dude`.
 
 == #{counter:query}: Inferring new data
-_Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_rule_based_inference>>._
+_Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_rule_based_inference,query>> <<_rule_based_inference>>._
 
 Let's use the `every-person-is-a-dude` rule from the previous query <<_rule_based_inference>>:
 
@@ -621,7 +647,7 @@ match
 The above query produces the following result with inference
 xref:development/infer.adoc#_how_to_use_inference[enabled]:
 
-image:typedb-in-20-queries/inference.png[Inference, role=framed, width = 75%, link=self]
+image::typedb-in-20-queries/inference.png[Inference, role=framed, width = 75%, link=self]
 
 The inferred data is highlighted with green color.
 
@@ -665,8 +691,8 @@ The above schema adds two rules and necessary attributes.
 The first rule uses arithmetic to set value for `size-mb` depending on the value of `size-kb`.
 The second rule uses the same approach, but based on the results from first rule to compute `size-gb`.
 
-== #{counter:query}: Inferring with chain
-_Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_rule_chaining>>._
+== #{counter:query}: Inferring with chaining
+_Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_rule_chaining,query>> <<_rule_chaining>>._
 
 Let's use the rules from the previous query <<_rule_chaining>>:
 
@@ -685,7 +711,7 @@ match
 The above query produces the following result with inference
 xref:development/infer.adoc#_how_to_use_inference[enabled]:
 
-image:typedb-in-20-queries/rule-chain.png[Inference with rule chaining, role=framed, width = 75%, link=self]
+image::typedb-in-20-queries/rule-chain.png[Inference with rule chaining, role=framed, width = 75%, link=self]
 
 The inferred data is highlighted with green color.
 
@@ -737,16 +763,19 @@ Finally, we have a rule `transitive-group-membership` that adds transitivity for
 We can include Group A in Group B,
 so that every member of Group A will become a member of Group B through the transitivity of membership, as follows:
 
-`user` -> Group A -> Group B.
+`user` -> `Group A` -> `Group B`
 
 Transitivity rules work for any number of steps/nested levels.
 
+////
 For example, if we insert data of group-membership according to the following:
 
+[.text-center]
 `user` -> Group A -> Group B -> Group C -> Group D -> Group E
 
 Then the transitivity, implemented by
 the `transitive-group-memmbership` rule, will make `user` into a member of all groups: from Group A to Group E.
+////
 
 For more information on rule inference, see the xref:typeql:ROOT:schema/define-rules.adoc[] page
 in xref:typeql:ROOT:overview.adoc[TypeQL documentation].
@@ -784,7 +813,7 @@ In the query above, we insert three users, three user groups and assign a member
 By the  `transitive-group-memmbership` rule from the query <<_transitivity>>,
 the user `Alice` should be a member of all groups: A, B, and C.
 
-`Alice` -> Group A -> Group B -> Group C
+`Alice` -> `Group A` -> `Group B` -> `Group C`
 
 Using inference, we can infer the following data from a database with the inserted data from the query above:
 
