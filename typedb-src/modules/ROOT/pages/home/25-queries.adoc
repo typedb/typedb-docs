@@ -449,12 +449,20 @@ _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_data,quer
 
 Storage space and memory consumption are optimal as data is naturally deduplicated.
 
-Only instances of attribute types have values.
-Those values are immutable.
-We can't change the value of an attribute, but we can delete ownership of one attribute and insert ownership of another.
+Attribute type is any subtype of the `attribute` root type, including nested subtypes.
+An instance of an attribute type is called attribute.
 
-An attribute has a unique value among all instances of the same type.
+Only an attribute can have a value.
+An attribute can be identified by its type and value.
 Hence, there can be no other attribute of the same type with the same value.
+
+Attribute values are immutable.
+We can't change the value of an attribute, but we can delete ownership of one attribute and insert ownership of another.
+For example,
+a person can change its name by deleting the ownership of the old name attribute
+and adding a new ownership of the attribute of type `name` with the new value.
+
+//An attribute has a unique value among all instances of the same type.
 
 .Insert data
 [,typeql]
