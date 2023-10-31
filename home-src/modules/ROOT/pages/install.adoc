@@ -8,7 +8,7 @@
 == TypeDB Enterprise and Cloud
 
 Contact our mailto:sales@vaticle.com[sales team] to get your license for TypeDB Enterprise
-or deploy your database straight to https://cloud.typedb.com/[TypeDB Cloud] powered by AWS and GCP.
+or deploy your database straight to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] powered by AWS and GCP.
 
 //Use the xref:typedb:ROOT:admin/enterprise-deployment.adoc[] guide
 //to install and deploy a TypeDB Enterprise cluster with Kubernetes.
@@ -17,9 +17,13 @@ or deploy your database straight to https://cloud.typedb.com/[TypeDB Cloud] powe
 
 TypeDB Core is the open-source edition of TypeDB DBMS.
 It supports all features of TypeQL.
-For more information on the difference between editions of TypeDB, see the https://typedb.com/features[Features] page.
+For more information on the difference between editions of TypeDB,
+see the https://typedb.com/features[Features,window=_blank] page.
 
-TypeDB Core also supports all types of clients: <<_console>>, <<_studio>>, and <<_drivers>>.
+TypeDB Core also supports all TypeDB Clients, including:
+<<_console>>,
+<<_studio>>, and
+<<_drivers>>.
 
 [#_install]
 [discrete]
@@ -86,7 +90,10 @@ include::partial$macos.adoc[tag=manual-install]
 --
 ====
 
+[NOTE]
+====
 To learn how to run TypeDB Core, see the xref:home::quickstart.adoc[] guide.
+====
 
 [#_console]
 == TypeDB Console
@@ -140,7 +147,7 @@ Windows::
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 
-. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases] page,
+. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
 select a required version, download the `typedb-console-windows-x86_64.zip` artifact for the selected version.
 
 . Extract the archive with TypeDB Console into a new directory:
@@ -168,7 +175,7 @@ Linux::
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 
-. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases] page,
+. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
 select a required version, download the `typedb-console-linux-x86_64.tar.gz`
 or the `typedb-console-linux-arm64.tar.gz` artifact depending on your architecture.
 
@@ -195,7 +202,7 @@ macOS::
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 
-. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases] page,
+. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
 select a required version, download the `typedb-console-mac-x86_64.zip`
 or the `typedb-console-mac-arm64.zip` artifact depending on your architecture.
 
@@ -216,7 +223,10 @@ ln -s /opt/typedb-console/typedb-console-mac-{latest-version}/typedb /usr/local/
 --
 ====
 
+[NOTE]
+====
 To learn how to run TypeDB Console, see the xref:home::quickstart.adoc#_console_connect[Quickstart] guide.
+====
 
 [#_studio]
 == TypeDB Studio
@@ -269,7 +279,7 @@ brew install --cask vaticle/tap/typedb-studio
 Windows::
 +
 --
-. Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases] page,
+. Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases,window=_blank] page,
 select a required version, download the `typedb-studio-windows-x86_64-2.24.15.exe` file for the selected version.
 
 . Run the downloaded `.exe` file and follow the installation wizard.
@@ -278,7 +288,7 @@ select a required version, download the `typedb-studio-windows-x86_64-2.24.15.ex
 Linux::
 +
 --
-. Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases] page,
+. Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases,window=_blank] page,
 select a required version, download the `typedb-studio-linux-x86_64-2.24.15.tar.gz`
 or the `typedb-studio-linux-arm64-2.24.15.tar.gz` artifact depending on your architecture.
 
@@ -301,7 +311,7 @@ ln -s /opt/typedb-studio/typedb-studio-linux-x86_64-2.24.15/typedb-studio /usr/l
 macOS::
 +
 --
-. Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases] page,
+. Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases,window=_blank] page,
 select a required version, download the `typedb-studio-mac-x86_64.zip`
 or the `typedb-studio-mac-arm64.zip` artifact depending on your architecture.
 
@@ -311,7 +321,10 @@ or the `typedb-studio-mac-arm64.zip` artifact depending on your architecture.
 --
 ====
 
+[NOTE]
+====
 To learn how to run TypeDB Studio, see the xref:home::quickstart.adoc[Quickstart] guide.
+====
 
 [#_drivers]
 == TypeDB Drivers
