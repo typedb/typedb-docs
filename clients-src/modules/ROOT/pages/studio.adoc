@@ -25,45 +25,7 @@ It has unique set of functions and abilities to help with development using Type
 [#_installation]
 == Installation
 
-=== Requirements
-
-TypeDB Studio do not require any additional packages to be installed prior the installation, but it needs a TypeDB
-server to perform most it's functions. We can use either remote or local TypeDB server.
-
-[NOTE]
-====
-The default TypeDB settings are to run server listening for `localhost` connections with port number `1729`.
-====
-
-[IMPORTANT]
-====
-We recommend using the latest version of TypeDB server and a
-xref:clients::studio.adoc#_version_compatibility[compatible] version of TypeDB Studio.
-====
-
-[#_download_install]
-=== Download & install
-
-Download TypeDB distributive/package for any popular OS family from the
-xref:clients:resources:downloads.adoc#_typedb_studio[Download page].
-
-Follow proper installation procedure of the OS in use.
-
-[IMPORTANT]
-====
-Make sure to grant access for installation wizard to install TypeDB Studio in case any security prompts will appear.
-====
-
-[NOTE]
-====
-For **macOS** TypeDB Studio can be installed via homebrew (not recommended for `arm64` architecture):
-
-[,bash]
-----
-brew tap vaticle/tap
-brew install --cask vaticle/tap/typedb-studio
-----
-====
+See the xref:home::install.adoc#_studio[Install] page.
 
 == Prepare for work
 

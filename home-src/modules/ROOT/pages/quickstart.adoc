@@ -10,11 +10,24 @@ This Quickstart guide shows how to set up a TypeDB database and run queries.
 
 == Prerequisites
 
-=== Install and run TypeDB
+. xref:home::install.adoc#_install[Install TypeDB Core].
+. xref:home::install.adoc#_studio[Install TypeDB Studio].
 
-Ensure you have TypeDB Core server
-xref:typedb::installation.adoc#_install[installed,window=_blank] and
-xref:typedb::installation.adoc#_start_the_server[running,window=_blank].
+== Start TypeDB
+
+Run the following command to start a TypeDB Core server:
+
+[,bash]
+----
+typedb server
+----
+
+For Docker, use the following command to run TypeDB Core in a container:
+
+[,bash]
+----
+docker run --name typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+----
 
 [#_typedb_client]
 == Run TypeDB Studio
@@ -22,6 +35,8 @@ xref:typedb::installation.adoc#_start_the_server[running,window=_blank].
 xref:clients:ROOT:studio.adoc[TypeDB Studio,window=_blank] is a standalone TypeDB Client with GUI that needs to be
 xref:clients:ROOT:studio.adoc#_download_install[installed,window=_blank]
 and launched separately from a TypeDB server.
+
+To start TypeDB Studio, find the installed binary file and run it.
 
 image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
@@ -217,7 +232,7 @@ delete $p has $e;
 == Repeat with TypeDB Console
 
 xref:clients:ROOT:console.adoc[TypeDB Console] is usually distributed with TypeDB.
-You can find it with the TypeDB installed.
+You can find it with the TypeDB installed or xref:home::install.adoc#_console[install] it separately.
 
 [#_console_run]
 === Run TypeDB Console
@@ -288,6 +303,14 @@ Press btn:[Enter] twice to send the query.
 ----
 commit
 ----
+
+== Stop TypeDB server
+
+To stop a TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
+
+For a Docker container:
+
+include::home::partial$docker.adoc[tag=stop]
 
 [#_learn_more]
 == Learn more
