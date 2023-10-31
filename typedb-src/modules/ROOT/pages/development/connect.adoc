@@ -274,9 +274,9 @@ For more information on how to do it with different Clients see the documentatio
 * xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
 * xref:clients::console.adoc#_database_management_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients::java/api-reference.adoc#_session_create[Java],
-** xref:clients::python/api-reference.adoc#_session_create[Python],
-** xref:clients::nodejs/api-reference.adoc#_session_create[Node.js].
+** xref:clients::java-driver/api-reference.adoc#_session_create[Java],
+** xref:clients::python-driver/api-reference.adoc#_session_create[Python],
+** xref:clients::nodejs-driver/api-reference.adoc#_session_create[Node.js].
 
 [IMPORTANT]
 ====
@@ -368,9 +368,9 @@ For more information on how to do it with different Clients see the documentatio
 * xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
 * xref:clients::console.adoc#_transaction_querying_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients::java/api-reference.adoc#_create_transaction[Java],
-** xref:clients::python/api-reference.adoc#_create_transaction[Python],
-** xref:clients::nodejs/api-reference.adoc#_create_transaction[Node.js].
+** xref:clients::java-driver/api-reference.adoc#_create_transaction[Java],
+** xref:clients::python-driver/api-reference.adoc#_create_transaction[Python],
+** xref:clients::nodejs-driver/api-reference.adoc#_create_transaction[Node.js].
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free
 read/write transactions. For more information, see the <<_acid_guarantees>> section below.

@@ -12,9 +12,9 @@ To access all features of TypeDB and TypeDB Clients use the default interface pr
 * GUI from xref:clients::studio.adoc[TypeDB Studio],
 * CLI from xref:clients::console.adoc[TypeDB Console],
 * API from TypeDB Drivers:
- ** xref:clients::java/api-reference.adoc[Java Driver API],
- ** xref:clients::python/api-reference.adoc[Python API],
- ** xref:clients::nodejs/api-reference.adoc[Node.js API],
+ ** xref:clients::java-driver/api-reference.adoc[Java Driver API],
+ ** xref:clients::python-driver/api-reference.adoc[Python API],
+ ** xref:clients::nodejs-driver/api-reference.adoc[Node.js API],
  ** or xref:clients::other-languages.adoc[Community TypeDB Clients].
 
 TypeDB Studio and TypeDB Console control sessions, transactions, and queries, as well as process the responses
@@ -63,9 +63,9 @@ native way. Like the TypeQL https://github.com/vaticle/typeql/tree/master/java[l
 
 The exact syntax for these operations might be different in different languages. See the exact TypeDB Driver API
 documentation for more information:
-xref:clients::java/api-reference.adoc[Java],
-xref:clients::python/api-reference.adoc[Python],
-xref:clients::nodejs/api-reference.adoc[Node.js].
+xref:clients::java-driver/api-reference.adoc[Java],
+xref:clients::python-driver/api-reference.adoc[Python],
+xref:clients::nodejs-driver/api-reference.adoc[Node.js].
 
 === Response
 
@@ -85,9 +85,9 @@ TypeDB Driver API methods can be used to get a JSON out of Concept returned in a
 
 The exact syntax differs for every language specific API:
 
-* xref:clients:ROOT:java/api-reference.adoc#_retrieve_a_concept_as_json[Java]
-* xref:clients:ROOT:python/api-reference.adoc#_retrieve_a_concept_as_json[Python]
-* xref:clients:ROOT:nodejs/api-reference.adoc#_retrieve_a_concept_as_json[Node.js]
+* xref:clients:ROOT:java-driver/api-reference.adoc#_retrieve_a_concept_as_json[Java]
+* xref:clients:ROOT:python-driver/api-reference.adoc#_retrieve_a_concept_as_json[Python]
+* xref:clients:ROOT:nodejs-driver/api-reference.adoc#_retrieve_a_concept_as_json[Node.js]
 ====
 
 == Local and remote methods
@@ -146,6 +146,6 @@ see updates made using the Driver API.
 All local concepts have the method `asRemote(tx)`, where the `tx` parameter is a Transaction to use for the remote
 concept version of this local concept, and the returned value is the remote concept. See the `asRemote` method
 documentation for more details:
-xref:clients::java/api-reference.adoc#_concept_methods[Java],
-xref:clients::python/api-reference.adoc#_concept_methods[Python],
-xref:clients::nodejs/api-reference.adoc#_concept_methods[Node.js].
+xref:clients::java-driver/api-reference.adoc#_concept_methods[Java],
+xref:clients::python-driver/api-reference.adoc#_concept_methods[Python],
+xref:clients::nodejs-driver/api-reference.adoc#_concept_methods[Node.js].
