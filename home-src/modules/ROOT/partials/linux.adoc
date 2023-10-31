@@ -64,16 +64,18 @@ specific version for every package.
 
 // end::install-apt[]
 
-// tag::install-manual[]
+// tag::manual-install[]
 
 . Ensure Java 11+ is installed.
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 
-. Get the latest release for Linux:
+. Download the latest version for
 include::typedb:resources:partial$latest-version.adoc[tag=lin]
+, or see
+xref:typedb:resources:releases.adoc[all versions].
 
-. Extract the archive into a new directory:
+. Extract the archive with TypeDB into a new directory:
 +
 [,bash,subs=attributes+]
 ----
@@ -88,7 +90,7 @@ tar -xzf ~/Downloads/typedb-all-linux-{latest-version}.tar.gz -C /opt/typedb
 ln -s /opt/typedb/typedb-all-linux-{latest-version}/typedb /usr/local/bin/typedb
 ----
 
-// end::install-manual[]
+// end::manual-install[]
 
 // tag::start[]
 

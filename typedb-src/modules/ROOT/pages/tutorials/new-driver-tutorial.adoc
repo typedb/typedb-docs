@@ -7,7 +7,7 @@
 
 This tutorial can guide us through the very beginning of creating a new TypeDB Driver. We strongly recommend
 using one of the existing TypeDB Drivers first to gain some experience with the TypeDB. See the list of available
-Drivers on the xref:clients::clients.adoc#_typedb_drivers[Clients overview] page.
+Drivers on the xref:clients::overview.adoc#_typedb_drivers[Clients overview] page.
 
 [NOTE]
 ====
@@ -542,7 +542,7 @@ export class CoreStub extends TypeDBStub {
 == Step 5: Testing
 
 At this point, we have all the necessary components to create a database!
-xref:installation.adoc[Run the TypeDB server locally] and
+xref:home:ROOT:install.adoc[Run the TypeDB server locally] and
 create a test function:
 
 [tabs]

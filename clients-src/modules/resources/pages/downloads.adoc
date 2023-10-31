@@ -52,13 +52,13 @@ include::partial$all-versions.adoc[]
 ====
 
 == TypeDB Drivers
-
+// tag::drivers-download[]
 [tabs]
 ====
 Rust::
 +
 --
-Please follow the xref:clients::rust/rust-install.adoc[installation guide] to add TypeDB Rust Driver to a
+Please follow the xref:clients::rust-driver.adoc#_install[installation guide] to add TypeDB Rust Driver to a
 project/application.
 
 To download TypeDB Rust Driver, we can use any of the following options:
@@ -67,14 +67,14 @@ To download TypeDB Rust Driver, we can use any of the following options:
 - https://crates.io/crates/typedb-driver/[,window=_blank]
 
 For more information on the Driver versions, check the
-xref:clients::rust/rust-install.adoc#_version_compatibility[version compatibility] table and
+xref:clients::rust-driver.adoc#_version_compatibility[version compatibility] table and
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 
 Python::
 +
 --
-Please follow the xref:clients::python/python-install.adoc[installation guide] to add TypeDB Python Driver to a
+Please follow the xref:clients::python-driver.adoc#_install[installation guide] to add TypeDB Python Driver to a
 project/application.
 
 To download TypeDB Python Driver, we can use any of the following options:
@@ -83,14 +83,14 @@ To download TypeDB Python Driver, we can use any of the following options:
 - https://pypi.org/project/typedb-driver#files[,window=_blank]
 
 For more information on the Driver versions, check the
-xref:clients::python/python-install.adoc#_version_compatibility[version compatibility] table and
+xref:clients::python-driver.adoc#_version_compatibility[version compatibility] table and
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 
 Java::
 +
 --
-Please follow the xref:clients::java/java-install.adoc[installation guide] to add TypeDB Java Driver to a
+Please follow the xref:clients::java-driver.adoc#_install[installation guide] to add TypeDB Java Driver to a
 project/application.
 
 Alternatively, we can download TypeDB Java Driver by the following link:
@@ -98,14 +98,14 @@ Alternatively, we can download TypeDB Java Driver by the following link:
 - https://repo.vaticle.com/service/rest/repository/browse/maven/com/vaticle/typedb/typedb-driver/
 
 For more information on the Driver versions, check the
-xref:clients::java/java-install.adoc#_version_compatibility[version compatibility] table and
+xref:clients::java-driver.adoc#_version_compatibility[version compatibility] table and
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 
 Node.js::
 +
 --
-Please follow the xref:clients::nodejs/node-js-install.adoc[installation guide] to add TypeDB Node.js Driver to a
+Please follow the xref:clients::nodejs-driver.adoc#_install[installation guide] to add TypeDB Node.js Driver to a
 project/application.
 
 To download TypeDB Node.js Driver, we can use the following command:
@@ -113,8 +113,9 @@ To download TypeDB Node.js Driver, we can use the following command:
 - `npm install typedb-driver`
 
 For more information on the Driver versions, check the
-xref:clients::nodejs/node-js-install.adoc#_version_compatibility[version compatibility] table and
+xref:clients::nodejs-driver.adoc#_version_compatibility[version compatibility] table and
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 ====
+// end::drivers-download[]
 // end::clients-download[]

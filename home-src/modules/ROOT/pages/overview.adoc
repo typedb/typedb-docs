@@ -10,9 +10,9 @@ Welcome to the TypeDB, TypeQL and TypeDB Clients technical documentation.
 //home?
 
 //* xref:home::what-is-typedb.adoc[]
-* xref:home::quickstart.adoc[] -- a short guide on how to create up a TypeDB database
+* xref:home::install.adoc[] -- download and install TypeDB and TypeDB Clients
+* xref:home::quickstart.adoc[] -- a short guide on how to create and query a TypeDB database
 * xref:home::25-queries.adoc[] -- top 25 queries to explore TypeDB
-* xref:home::download-center.adoc[] -- download links for TypeDB and TypeDB Clients
 
 == TypeDB
 
@@ -21,7 +21,7 @@ a strong subtyping system,
 a symbolic reasoning engine.
 
 * xref:typedb::overview.adoc[] -- an overview of the TypeDB section
-* xref:typedb::installation.adoc[] -- installation guide for TypeDB Core edition
+* xref:install.adoc[] -- installation guide for TypeDB Core edition
 
 [#_fundamentals]
 * Fundamentals -- essential knowledge to learn before practicing TypeDB
@@ -52,13 +52,13 @@ TypeQL is a modern, beautiful and elegant type-theoretic query language, support
 
 Client-side software to connect to TypeDB via gRPC based protocol.
 
-* xref:clients::clients.adoc[] -- an overview of available TypeDB Clients
+* xref:clients::overview.adoc[] -- an overview of available TypeDB Clients
 ** xref:clients::studio.adoc[] -- the IDE for TypeDB
 ** xref:clients::console.adoc[] -- the CLI client
-** xref:clients::rust/rust-overview.adoc[Rust Driver] -- Rust Driver documentation
-** xref:clients::python/python-overview.adoc[Python Driver] -- Python Driver documentation
-** xref:clients::java/java-overview.adoc[Java Driver] -- Java Driver documentation
-** xref:clients::nodejs/node-js-overview.adoc[Node.js] -- Node.js Driver documentation
+** xref:clients:ROOT:rust-driver.adoc[Rust Driver] -- Rust Driver documentation
+** xref:clients:ROOT:python-driver.adoc[Python Driver] -- Python Driver documentation
+** xref:clients:ROOT:java-driver.adoc[Java Driver] -- Java Driver documentation
+** xref:clients:ROOT:nodejs-driver.adoc[Node.js] -- Node.js Driver documentation
 
 //* xref:clients::other-languages.adoc[].
 //* xref:clients::new-driver.adoc[]
