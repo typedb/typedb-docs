@@ -6,8 +6,8 @@
 
 == Prerequisites
 
-Make sure to install the Python Driver as per xref:python/python-install.adoc[Installation] page.
-The TypeDB server is also needs to be installed and running.
+Make sure to install the Python Driver as per the xref:python-driver.adoc#_install[Installation] guide.
+The TypeDB server also needs to be installed and running.
 
 == Importing
 
@@ -122,7 +122,7 @@ at the end of the `with` block. Otherwise, remember to call `transaction.close()
 
 == Where to go next
 
-Check out the xref:python/python-api-ref.adoc#_answer_header[Answer] section of API reference page to learn
+Check out the xref:python-driver/api-reference.adoc#_answer_header[Answer] section of API reference page to learn
 about the available methods on the concepts retrieved as the answers to queries.
 
 To view examples of various TypeQL queries, head over to

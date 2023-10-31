@@ -1,16 +1,19 @@
-= Node.js Driver installation
-:Summary: Installation guide for TypeDB Node.js Driver.
-:keywords: typedb, client, driver, node.js, install, repository
-:longTailKeywords: typedb node.js client, typedb client node.js, client node.js, node.js client
-:pageTitle: Node.js Driver installation
+= Node.js Driver
+:Summary: Overview for TypeDB Node.js Driver.
+:keywords: typedb, client, driver, node.js
+:pageTitle: TypeDB Node.js Driver
 
-== Prerequisites
-
-To use the Node.js Driver, we need a compatible version of TypeDB server running. Please see the
-xref:nodejs/node-js-install.adoc#_version_compatibility[Compatibility Table] to check what version do we need,
-depending on the TypeDB server version being used.
+The Node.js Driver was developed by Vaticle to enable TypeDB support for Node.js software and developers.
 
 == Install
+
+=== Prerequisites
+
+To use the Node.js Driver, we need a compatible version of TypeDB server running. Please see the
+<<_version_compatibility,Compatibility table>> to check what version do we need,
+depending on the TypeDB server version being used.
+
+=== Installation
 
 To install TypeDB Node.js Driver:
 
@@ -30,10 +33,10 @@ npm install typedb-client
 
 == Additional resources
 
-* xref:nodejs/node-js-install.adoc#_version_compatibility[Version compatibility]
+* <<_version_compatibility>>
 * https://github.com/vaticle/typedb-driver/tree/development/nodejs[Node.js Driver on GitHub,window=_blank]
 * https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
 [#_version_compatibility]
 == Version Compatibility
@@ -120,3 +123,14 @@ npm install typedb-client
 | N/A
 | >= 6.5
 |===
+
+== Tutorial
+
+Explore the Node.js Driver xref:nodejs-driver/tutorial.adoc[tutorial] with example of connecting to TypeDB.
+
+== Node.js Driver API
+
+Use the xref:nodejs-driver/api-reference.adoc[API reference] page for documentation of the methods and objects used in
+the Driver.
+
+include::java-driver.adoc[tag=questions]
