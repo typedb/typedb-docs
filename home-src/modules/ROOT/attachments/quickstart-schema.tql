@@ -1,0 +1,13 @@
+define
+
+user sub entity,
+    owns id @key,
+    owns email,
+    abstract;
+
+person sub user,
+    owns full-name;
+
+id sub attribute, value long;
+email sub attribute, value string;
+full-name sub attribute, value string;
