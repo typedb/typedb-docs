@@ -132,14 +132,14 @@ For more information on inference explanation please see the xref:development/in
 xref:clients::studio.adoc[TypeDB Studio] and xref:clients::console.adoc[TypeDB Console] process the
 responses automatically to present the results (in GUI and CLI respectively) to the user.
 
-For xref:clients::clients.adoc#_typedb_drivers[TypeDB Drivers]: the specific methods/calls used to interpret the
+For xref:clients::overview.adoc#_typedb_drivers[TypeDB Drivers]: the specific methods/calls used to interpret the
 response depend on the TypeDB Driver used.
 
 The following is a very basic description of objects used to interpret the results from the TypeDB query response.
 For more information please see the xref:development/api.adoc[API & Drivers] page and documentation for the
-xref:clients::java/java-overview.adoc[Java],
-xref:clients::python/python-overview.adoc[Python], and
-xref:clients::nodejs/node-js-overview.adoc[Node.js] TypeDB Drivers respectively.
+xref:clients:ROOT:java.adoc[Java],
+xref:clients:ROOT:python.adoc[Python], and
+xref:clients:ROOT:nodejs.adoc[Node.js] TypeDB Drivers respectively.
 
 [#_conceptmap]
 === ConceptMap
@@ -168,8 +168,8 @@ TypeDB Driver API methods can be used to get a JSON out of Concept returned in a
 
 The exact syntax differs for every language specific API:
 
-* xref:clients:ROOT:java/java-api-ref.adoc#_retrieve_a_concept_as_json[Java]
-* xref:clients:ROOT:python/python-api-ref.adoc#_retrieve_a_concept_as_json[Python]
+* xref:clients:ROOT:java/api-reference.adoc#_retrieve_a_concept_as_json[Java]
+* xref:clients:ROOT:python/api-reference.adoc#_retrieve_a_concept_as_json[Python]
 * xref:clients:ROOT:nodejs/node-js-api-ref.adoc#_retrieve_a_concept_as_json[Node.js]
 ====
 

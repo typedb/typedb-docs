@@ -1,16 +1,20 @@
-= Java Driver installation
-:Summary: Installation guide for TypeDB Java Driver.
-:keywords: typedb, client, driver, java, install, repository
-:longTailKeywords: typedb java client, typedb client java, client java, java client
-:pageTitle: Java Driver installation
+= Java Driver
+:Summary: Overview for TypeDB Java Driver.
+:keywords: typedb, client, driver, java
+:pageTitle: TypeDB Java Driver
 
-== Prerequisites
+The Java Driver was developed by Vaticle to enable TypeDB support for Java software and developers.
 
-To use the Java Driver, we need a compatible version of TypeDB server running. Please see the
-xref:java/java-install.adoc#_version_compatibility[Compatibility Table] to check what version do we need, depending on
+[#_install]
+== Install
+
+=== Prerequisites
+
+To use the Java Driver, we need a compatible version of TypeDB server running.Please see the
+<<_version_compatibility,Compatibility Table>> to check what version do we need, depending on
 the TypeDB server version being used.
 
-== Add a repository with TypeDB Java Driver to Maven
+=== Add a repository with TypeDB Java Driver to Maven
 
 Add the code below to the `pom.xml` file in the Maven project.
 
@@ -52,7 +56,7 @@ snapshot repository to our list of Maven repositories.
 </repositories>
 ----
 
-== (Optional) Add logging config
+=== (Optional) Add logging config
 
 By default, the Java Driver uses Logback to print errors and debugging info to standard output. As it is quite verbose,
 use the following steps to set the minimum log level to `ERROR`:
@@ -79,10 +83,10 @@ use the following steps to set the minimum log level to `ERROR`:
 
 == Additional resources
 
-* xref:java/java-install.adoc#_version_compatibility[Version compatibility]
+* <<_version_compatibility>>
 * https://github.com/vaticle/typedb-driver/tree/development/java[Java Driver on GitHub,window=_blank]
 * https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
 [#_version_compatibility]
 == Version Compatibility
@@ -171,3 +175,23 @@ use the following steps to set the minimum log level to `ERROR`:
 | 1.8.0
 | N/A
 |===
+
+== Tutorial
+
+Explore the Java Driver xref:java/tutorial.adoc[tutorial] with an example of connecting to TypeDB.
+
+== Java Driver API
+
+Use the xref:java/api-reference.adoc[API reference] page for documentation of the methods and classes used in the Driver.
+
+// tag::questions[]
+[NOTE]
+====
+Any more questions about the Driver after reading the documentation? Feel free to ask on our
+https://vaticle.com/discord[Discord,window=_blank] community server.
+====
+// end::questions[]
+
+== Query builder
+
+Learn to use native Java syntax to build TypeQL queries with xref:java/query-builder.adoc[Java query builder].

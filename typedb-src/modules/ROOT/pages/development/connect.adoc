@@ -8,7 +8,7 @@
 [#_clients]
 == Clients
 
-TypeDB server accepts remote connections from xref:clients::clients.adoc[TypeDB Clients] via
+TypeDB server accepts remote connections from xref:clients::overview.adoc[TypeDB Clients] via
 https://en.wikipedia.org/wiki/GRPC[gRPC,window=_blank].
 
 Once connected, TypeDB Clients can manage <<_databases,databases>>, <<_sessions,sessions>>, and
@@ -274,8 +274,8 @@ For more information on how to do it with different Clients see the documentatio
 * xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
 * xref:clients::console.adoc#_database_management_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients::java/java-api-ref.adoc#_session_create[Java],
-** xref:clients::python/python-api-ref.adoc#_session_create[Python],
+** xref:clients::java/api-reference.adoc#_session_create[Java],
+** xref:clients::python/api-reference.adoc#_session_create[Python],
 ** xref:clients::nodejs/node-js-api-ref.adoc#_session_create[Node.js].
 
 [IMPORTANT]
@@ -368,8 +368,8 @@ For more information on how to do it with different Clients see the documentatio
 * xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
 * xref:clients::console.adoc#_transaction_querying_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients::java/java-api-ref.adoc#_create_transaction[Java],
-** xref:clients::python/python-api-ref.adoc#_create_transaction[Python],
+** xref:clients::java/api-reference.adoc#_create_transaction[Java],
+** xref:clients::python/api-reference.adoc#_create_transaction[Python],
 ** xref:clients::nodejs/node-js-api-ref.adoc#_create_transaction[Node.js].
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free

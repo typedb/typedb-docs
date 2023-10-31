@@ -1,10 +1,8 @@
-= Clients
+= Overview
 :Summary: TypeDB Clients overview.
 :keywords: typedb, console, studio, client, api, drivers
 :longTailKeywords: typedb client api, typedb api, client api, typedb studio, typedb console
-:pageTitle: TypeDB Clients
-
-== Overview
+:pageTitle: TypeDB Clients overview
 
 A TypeDB Client is any software that can connect to a TypeDB.
 
@@ -12,7 +10,7 @@ All TypeDB Clients use https://github.com/vaticle/typedb-protocol[TypeDB Client 
 the xref:clients::new-driver.adoc#_grpc[gRPC,window=_blank] framework under the hood to communicate with a TypeDB
 server and provide more user-friendly interface: API, GUI, or CLI.
 
-To build a custom application capable of connecting to TypeDB via *TypeDB Client RPC* protocol we can use one of the
+To build a custom application capable of connecting to TypeDB via *TypeDB Client RPC* protocol, we can use one of the
 existing libraries implementing it, called <<_typedb_drivers,TypeDB Drivers>>, or we can implement it ourselves as a
 xref:new-driver.adoc[new driver].
 
@@ -33,10 +31,10 @@ Here is a list of existing *TypeDB Clients*:
   ** xref:console.adoc[TypeDB Console]
 * <<_typedb_drivers,TypeDB Drivers>>:
 // tag::driver-list[]
-  ** xref:clients::rust/rust-overview.adoc[Rust]
-  ** xref:clients::python/python-overview.adoc[Python]
-  ** xref:clients::java/java-overview.adoc[Java]
-  ** xref:clients::nodejs/node-js-overview.adoc[Node.js]
+  ** xref:rust.adoc[Rust]
+  ** xref:python.adoc[Python]
+  ** xref:java.adoc[Java]
+  ** xref:nodejs.adoc[Node.js]
 // end::driver-list[]
 
 //For other options, check the xref:other-languages.adoc[Community drivers],
@@ -79,10 +77,10 @@ programming languages, allowing us to build applications that connect to a TypeD
 The following TypeDB Drivers are officially supported and actively maintained by Vaticle. They
 support latest TypeDB features and receive continuous bug fixes and improvements.
 
-* xref:clients::rust/rust-overview.adoc[Rust]
-* xref:java/java-overview.adoc[Java]
-* xref:nodejs/node-js-overview.adoc[Node.js]
-* xref:python/python-overview.adoc[Python]
+* xref:rust.adoc[Rust]
+* xref:java.adoc[Java]
+* xref:nodejs.adoc[Node.js]
+* xref:python.adoc[Python]
 
 //We also have some community projects for xref:other-languages.adoc[other languages].
 //and provide support for creating a xref:new-driver.adoc[new driver].
@@ -118,9 +116,9 @@ on top of the Rust driver.
 
 TypeDB Driver API is language-specific:
 
-* xref:rust/rust-api-ref.adoc[Rust Driver API reference],
-* xref:python/python-api-ref.adoc[Python Driver API reference],
-* xref:java/java-api-ref.adoc[Java Driver API reference],
+* xref:rust/api-reference.adoc[Rust Driver API reference],
+* xref:python/api-reference.adoc[Python Driver API reference],
+* xref:java/api-reference.adoc[Java Driver API reference],
 * xref:nodejs/node-js-api-ref.adoc[Node.js Driver API reference].
 
 == Where to go from here?
