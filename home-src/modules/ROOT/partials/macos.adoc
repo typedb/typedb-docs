@@ -1,4 +1,5 @@
 // tag::install-homebrew[]
+To install TypeDB via `brew`:
 
 [,bash]
 ----
@@ -12,12 +13,7 @@ use the <<_manual,manual>> installation instead.
 
 // end::install-homebrew[]
 
-// tag::install-manual[]
-
-TypeDB runs natively on both `arm64` and `x86_64` architectures.
-For the best performance, make sure both TypeDB and Java SDK match your native architecture and are not using
-https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta].
-
+// tag::manual-install[]
 . Ensure Java 11+ is installed.
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
@@ -28,11 +24,17 @@ To check the Java SDK version:
 ----
 /usr/libexec/java_home -V
 ----
++
+TypeDB runs natively on both `arm64` and `x86_64` architectures.
+For the best performance, make sure both TypeDB and Java SDK match your native architecture and are not using
+https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta].
 
-. Get the latest TypeDB Core release for macOS:
+. Download the latest version for
 include::typedb:resources:partial$latest-version.adoc[tag=mac]
+, or see
+xref:typedb:resources:releases.adoc[all versions].
 
-. Extract the archive into a new directory:
+. Extract the archive with TypeDB into a new directory:
 +
 [,bash,subs=attributes+]
 ----
@@ -47,7 +49,7 @@ unzip ~/Downloads/typedb-all-mac-{latest-version}.zip -d /opt/typedb
 ln -s /opt/typedb/typedb-all-mac-{latest-version}/typedb /usr/local/bin/typedb
 ----
 
-// end::install-manual[]
+// end::manual-install[]
 
 // tag::start[]
 
