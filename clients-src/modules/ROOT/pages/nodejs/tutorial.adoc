@@ -6,8 +6,8 @@
 
 == Prerequisites
 
-Make sure to install the Node.js Driver as per xref:nodejs/node-js-install.adoc[Installation] page.
-The TypeDB server is also needs to be installed and running.
+Make sure to install the Node.js Driver as per the xref:nodejs.adoc#_install[Installation] guide.
+The TypeDB server also needs to be installed and running.
 
 == Importing
 
@@ -144,7 +144,7 @@ Remember that transactions always need to be closed. Committing a write transact
 however, must be explicitly closed by calling the `close()` method on it.
 ====
 
-Check out the xref:nodejs/node-js-api-ref.adoc[API Reference] to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
+Check out the xref:nodejs/api-reference.adoc[API Reference] to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
 
 To view examples of running various queries using TypeQL, head over to their dedicated documentation pages
 as listed below:
@@ -157,7 +157,7 @@ as listed below:
 
 == Where to go next
 
-Check out the xref:nodejs/node-js-api-ref.adoc#_answer_header[Answer] section of API reference page to learn
+Check out the xref:nodejs/api-reference.adoc#_answer_header[Answer] section of API reference page to learn
 about the available methods on the concepts retrieved as the answers to queries.
 
 To view examples of various TypeQL queries, head over to
