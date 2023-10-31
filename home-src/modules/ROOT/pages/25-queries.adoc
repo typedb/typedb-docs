@@ -8,7 +8,7 @@ To explore the capabilities of TypeDB and TypeQL, check below the list of top 25
 
 [NOTE]
 ====
-Use our xref:home/quickstart-guide.adoc[Quickstart guide] to find out how to create a new database and send a query.
+Use our xref:quickstart.adoc[Quickstart guide] to find out how to create a new database and send a query.
 ====
 
 [#_schema]
@@ -24,7 +24,7 @@ and they can be subtyped to create user-defined types.
 Consider the following schema diagram:
 
 //, with attributes represented as blue ellipses, entities as pink rectangles, and relations as yellow diamonds:
-image::typedb-in-20-queries/era-schema.png[TypeDB Studio GUI, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/era-schema.png[TypeDB Studio GUI, role=framed, width = 75%, link=self]
 //#todo Optimize the image
 //Squish vertically by placing relation inline with entities???
 
@@ -162,7 +162,7 @@ The above Define query extends the existing schema
 by adding two new entity types and a role to an existing relation type.
 //The resulted schema can be visualized as following:
 //
-//image::typedb-in-20-queries/extended-schema.png[TypeDB Studio GUI, role=framed, width = 75%, link=self]
+//image::typedb-in-25-queries/extended-schema.png[TypeDB Studio GUI, role=framed, width = 75%, link=self]
 //
 Note that you can still run <<_data,query #2>> or <<_get,query #3>> with the extended schema.
 
@@ -340,7 +340,7 @@ match $x has id $id;
 The above query can't retrieve any instances of `id` type because it is an abstract type.
 Instead, it returns instances of all its subtypes, see the visualization below.
 
-image::typedb-in-20-queries/abstract.png[Abstract type, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/abstract.png[Abstract type, role=framed, width = 75%, link=self]
 
 //Interface polymorphism
 //When we seek for anything, that owns or plays
@@ -442,7 +442,7 @@ The above query adds `action` entity with name `edit` to the `permission` for th
 and the file with the path `README.md`.
 See the visualization of the result below.
 
-image::typedb-in-20-queries/relation.png[Relation, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/relation.png[Relation, role=framed, width = 75%, link=self]
 
 == #{counter:query}: Globally unique immutable attributes
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and <<_data,query #4>>._
@@ -487,7 +487,7 @@ and all owners from the query above have ownership of this attribute.
 As well as the original `Bob` inserted in the <<_data,query #2>>.
 The resulted data should look like the image below.
 
-image::typedb-in-20-queries/attribute.png[Relation, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/attribute.png[Relation, role=framed, width = 75%, link=self]
 
 [#_counterquery_attribute_annotations]
 == #{counter:query}: Attribute annotations
@@ -587,7 +587,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Arithmetic expressions let you perform basic math operations on any value in a `match` clause.
 
-See the list of available xref:fundamentals/patterns.adoc#_arithmetic_operations[arithmetic operations].
+See the list of available xref:typedb::fundamentals/patterns.adoc#_arithmetic_operations[arithmetic operations].
 
 Let's insert a few files with different sizes, that are calculated:
 
@@ -607,7 +607,7 @@ The above query inserts two files with `size-kb` values calculated based on the 
 of the matched existing file.
 See the resulted data visualization on the image below.
 
-image::typedb-in-20-queries/math.png[Arithmetics, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/math.png[Arithmetics, role=framed, width = 75%, link=self]
 
 [#_rule_based_inference]
 == #{counter:query}: Rule-based inference
@@ -615,7 +615,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 TypeDB reasoning engine can perform rule-based inference when you read data.
 To use inference, we need to xref:typeql:ROOT:schema/define-types.adoc[Define] rules in the schema,
-open a `read` transaction with the `infer` option xref:development/infer.adoc#_how_to_use_inference[enabled],
+open a `read` transaction with the `infer` option xref:typedb::development/infer.adoc#_how_to_use_inference[enabled],
 and send a xref:typeql:ROOT:data/get.adoc[Get] query.
 
 .Schema with a rule
@@ -653,9 +653,9 @@ match
 ----
 
 The above query produces the following result with inference
-xref:development/infer.adoc#_how_to_use_inference[enabled]:
+xref:typedb::development/infer.adoc#_how_to_use_inference[enabled]:
 
-image::typedb-in-20-queries/inference.png[Inference, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/inference.png[Inference, role=framed, width = 75%, link=self]
 
 The inferred data is highlighted with green color.
 
@@ -717,9 +717,9 @@ match
 ----
 
 The above query produces the following result with inference
-xref:development/infer.adoc#_how_to_use_inference[enabled]:
+xref:typedb::development/infer.adoc#_how_to_use_inference[enabled]:
 
-image::typedb-in-20-queries/rule-chain.png[Inference with rule chaining, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/rule-chain.png[Inference with rule chaining, role=framed, width = 75%, link=self]
 
 The inferred data is highlighted with green color.
 
@@ -825,6 +825,6 @@ the user `Alice` should be a member of all groups: A, B, and C.
 
 Using inference, we can infer the following data from a database with the inserted data from the query above:
 
-image::typedb-in-20-queries/transitivity.png[Relation transitivity, role=framed, width = 75%, link=self]
+image::typedb-in-25-queries/transitivity.png[Relation transitivity, role=framed, width = 75%, link=self]
 
 Notice the four inferred relations in green color.

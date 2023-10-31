@@ -1,4 +1,4 @@
-= Quickstart guide
+= Quickstart
 :keywords: getting started, typedb, typeql, tutorial, quickstart, console, studio
 :longTailKeywords: get started with typedb, typedb tutorial, typedb quickstart, learn typedb
 :pageTitle: Quickstart guide
@@ -13,8 +13,8 @@ This Quickstart guide shows how to set up a TypeDB database and run queries.
 === Install and run TypeDB
 
 Ensure you have TypeDB Core server
-xref:installation.adoc#_install[installed,window=_blank] and
-xref:installation.adoc#_start_the_server[running,window=_blank].
+xref:typedb::installation.adoc#_install[installed,window=_blank] and
+xref:typedb::installation.adoc#_start_the_server[running,window=_blank].
 
 [#_typedb_client]
 == Run TypeDB Studio
@@ -23,7 +23,7 @@ xref:clients:ROOT:studio.adoc[TypeDB Studio,window=_blank] is a standalone TypeD
 xref:clients:ROOT:studio.adoc#_download_install[installed,window=_blank]
 and launched separately from a TypeDB server.
 
-image::typedb::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
+image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
 == Connect to TypeDB
 
@@ -40,6 +40,7 @@ to store project files by clicking either:
 * btn:[Open Project] in the *Project* panel (upper left); or
 * Folder icon (the first icon on the top toolbar).
 
+[#_create_a_database]
 == Create a new database
 
 Create a database to play with:
@@ -117,7 +118,7 @@ For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL]
 [#_get_query__list_people]
 === Get a list of all people with their emails
 
-To xref:development/read.adoc#_get[get] all instances of a `person` type with their full names and emails:
+To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with their full names and emails:
 
 [,typeql]
 ----
@@ -130,7 +131,7 @@ match
 [#_get_query__all_instances_and_attributes]
 === Get all instances of a type with all attributes owned
 
-To xref:development/read.adoc#_get[get] all instances of a `person` type with all attributes owned:
+To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with all attributes owned:
 
 [,typeql]
 ----
@@ -142,7 +143,7 @@ match
 [#_get_query__get_all_emails_of_kevin]
 === Get all emails of Kevin
 
-To xref:development/read.adoc#_get[get] all emails owned by every person with a full name that contains "Kevin"
+To xref:typedb::development/read.adoc#_get[get] all emails owned by every person with a full name that contains "Kevin"
 (we have only one such person in the example database):
 
 [,typeql]
@@ -158,7 +159,7 @@ get $e;
 [#_insert_query__add_a_new_email_for_kevin]
 === Insert a new email for Kevin
 
-To xref:development/write.adoc#_insert[insert] a new email (`kevin@gmail.com`) for every person with a full name
+To xref:typedb::development/write.adoc#_insert[insert] a new email (`kevin@gmail.com`) for every person with a full name
 that contains "Kevin":
 
 [,typeql]
@@ -175,7 +176,7 @@ Now Kevin has more than one email.
 [#_update_query__change_the_newly_added_email_for_kevin]
 === Update the email for Kevin
 
-To xref:development/write.adoc#_update_query[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
+To xref:typedb::development/write.adoc#_update_query[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -199,7 +200,7 @@ The query above does the following:
 [#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
 === Delete ownership over the email for Kevin
 
-To xref:development/write.adoc#_delete_query[delete] the ownership of the email `kevin2@gmail.com`
+To xref:typedb::development/write.adoc#_delete_query[delete] the ownership of the email `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -295,16 +296,20 @@ After completing this guide, we recommend the following order of topics to conti
 
 //#todo Add another link to the TypeDB in 20 queries page
 
-1. Explore the Fundamentals section for essential information of how TypeDB works: xref:fundamentals/types.adoc[],
-xref:fundamentals/queries.adoc[], xref:fundamentals/patterns.adoc[], and xref:fundamentals/inference.adoc[];
-2. Discover how to xref:development/connect.adoc[connect] to TypeDB, manage transactions, and
-define a xref:development/schema.adoc[schema] of a database;
-3. Find out more about xref:development/write.adoc[writing] and xref:development/read.adoc[reading] data from a TypeDB
-database and how to interpret a xref:development/response.adoc[response] to a query;
+1. Explore the Fundamentals section for essential information of how TypeDB works:
+xref:typedb::fundamentals/types.adoc[],
+xref:typedb::fundamentals/queries.adoc[],
+xref:typedb::fundamentals/patterns.adoc[], and
+xref:typedb::fundamentals/inference.adoc[];
+2. Discover how to xref:typedb::development/connect.adoc[connect] to TypeDB, manage transactions, and
+define a xref:typedb::development/schema.adoc[schema] of a database;
+3. Find out more about xref:typedb::development/write.adoc[writing] and
+xref:typedb::development/read.adoc[reading] data from a TypeDB
+database and how to interpret a xref:typedb::development/response.adoc[response] to a query;
 4. Explore how to create an application with TypeDB, using any of the
    xref:clients:ROOT:clients.adoc#_typedb_drivers[TypeDB Drivers]:
-//  - xref:clients::rust/rust-overview.adoc[Rust Driver]
+    - xref:clients::rust/rust-overview.adoc[Rust Driver]
     - xref:clients:ROOT:python/python-overview.adoc[Python Driver];
     - xref:clients:ROOT:nodejs/node-js-overview.adoc[Node.js Driver];
     - xref:clients:ROOT:java/java-overview.adoc[Java Driver].
-5. (Optional) Explore the xref:tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
+5. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
