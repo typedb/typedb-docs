@@ -8,12 +8,21 @@ it from https://github.com/vaticle/typedb/tags[source code,window=_blank] with B
 // end::manual-install[]
 
 // tag::install[]
-To pull a Docker image:
+To pull the latest TypeDB Docker image:
 
 [,bash]
 ----
 docker pull vaticle/typedb:latest
 ----
+
+To pull a specific version of TypeDB:
+
+[,bash]
+----
+docker pull vaticle/typedb:{version}
+----
+
+To check the list of available versions, see the xref:typedb:resources:releases.adoc[] page.
 
 // end::install[]
 

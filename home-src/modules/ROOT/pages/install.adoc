@@ -63,14 +63,20 @@ include::partial$macos.adoc[tag=install-homebrew]
 [#_manual]
 === Download and install manually
 
+Download the latest version of TypeDB Core:
+
+.Latest version
+[cols="^.^1,^.^1,^.^1,^.^1",caption="",options="header"]
+|===
+|Release notes |Windows |Linux |macOS
+
+include::typedb:resources:partial$latest-version.adoc[]
+|===
+
+For past versions, see the xref:typedb:resources:releases.adoc[] page.
+
 [tabs]
 ====
-Docker::
-+
---
-include::partial$docker.adoc[tag=manual-install]
---
-
 Windows::
 +
 --
@@ -252,7 +258,7 @@ No package manager available for Windows, use the <<_studio_manual>> section bel
 Linux::
 +
 --
-No package manager available for Windows, use the <<_studio_manual>> section below.
+No package manager available for Linux, use the <<_studio_manual>> section below.
 --
 
 macOS::
