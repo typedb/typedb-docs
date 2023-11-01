@@ -1,6 +1,5 @@
 = Quickstart
-:keywords: getting started, typedb, typeql, tutorial, quickstart, console, studio
-:longTailKeywords: get started with typedb, typedb tutorial, typedb quickstart, learn typedb
+:keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query
 :pageTitle: Quickstart guide
 :summary: Learn how to create a TypeDB database, load schema and data, perform queries.
 :tabs-sync-option:
@@ -15,25 +14,25 @@ This Quickstart guide shows how to set up a TypeDB database and run queries.
 
 == Start TypeDB
 
-Run the following command to start a TypeDB Core server:
+To start a TypeDB Core server:
 
 [,bash]
 ----
 typedb server
 ----
 
-For Docker, use the following command to run TypeDB Core in a container:
+To run TypeDB Core in a new Docker container:
 
 [,bash]
 ----
-docker run --name typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ----
 
 [#_typedb_client]
 == Run TypeDB Studio
 
 xref:clients:ROOT:studio.adoc[TypeDB Studio,window=_blank] is a standalone TypeDB Client with GUI that needs to be
-xref:clients:ROOT:studio.adoc#_download_install[installed,window=_blank]
+xref:home::install.adoc#_studio[installed,window=_blank]
 and launched separately from a TypeDB server.
 
 To start TypeDB Studio, find the installed binary file and run it.
