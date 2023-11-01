@@ -117,10 +117,11 @@ undefine rule add-view-permission;
 
 // tag::rename[]
 To rename a type (to change its label), use the xref:clients:ROOT:studio.adoc[TypeDB Studio] or
-xref:typedb:ROOT:development/api.adoc[TypeDB Driver API] rename method for a type class object:
-xref:clients::java-driver/api-reference.adoc#_rename_type_label[Java],
-xref:clients::python-driver/api-reference.adoc#_rename_type_label[Python],
-xref:clients::nodejs-driver/api-reference.adoc#_rename_type_label[Node.js].
+TypeDB Driver API:
+xref:clients::rust-driver/api-reference.adoc#_trait_ThingTypeAPI_method_set_label[Rust],
+xref:clients::python-driver/api-reference.adoc#_Type_set_label[Python],
+xref:clients::java-driver/api-reference.adoc#_Type_setLabel_com_vaticle_typedb_driver_api_TypeDBTransaction_java_lang_String[Java],
+xref:clients::nodejs-driver/api-reference.adoc#_Type_setLabel[Node.js].
 // end::rename[]
 
 == Modify a rule

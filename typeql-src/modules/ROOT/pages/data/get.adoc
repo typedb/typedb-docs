@@ -8,7 +8,7 @@ A get query retrieves data from a TypeDB database.
 
 It is the only type of query to be used in a read transaction.
 Hence, it’s the only query type that can use xref:typeql::schema/define-rules.adoc[rules]-based
-xref:typedb::fundamentals/inference.adoc[inference,window=_blank].
+xref:typedb::fundamentals/inference.adoc[inference].
 
 A Get query triggers a search in a database based on the xref:typeql::data/basic-patterns.adoc[pattern] in the
 `match` clause. It retrieves concepts and values from a database. The result of a get query can vary depending on the
