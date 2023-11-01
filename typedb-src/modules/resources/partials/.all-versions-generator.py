@@ -129,12 +129,12 @@ def generate_table_contents(versions, hash=False, tags=False):
     result = ""
     for version in versions:
         result += '\n| ' + version["release_notes"] + '[' + version["version"] + ']' + '\n'
-        result += 'a|[,bash]' + '\n'
-        result += '----' + '\n'
-        result += 'docker pull vaticle/typedb:' + version["version"] + '\n'
-        result += '----' + '\n'
+        # result += 'a|[,bash]' + '\n'
+        # result += '----' + '\n'
+        # result += 'docker pull vaticle/typedb:' + version["version"] + '\n'
+        # result += '----' + '\n'
 
-        for os in ["win", "lin", "mac"]:
+        for os in ["mac", "lin", "win"]:
             result += '|'
             if tags:
                 result += '\n' + '// tag::' + os + '[]' + '\n'

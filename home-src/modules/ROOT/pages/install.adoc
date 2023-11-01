@@ -8,7 +8,7 @@
 == TypeDB Enterprise and Cloud
 
 Contact our mailto:sales@vaticle.com[sales team] to get your license for TypeDB Enterprise
-or deploy your database straight to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] powered by AWS and GCP.
+or deploy your database through https://cloud.typedb.com/[TypeDB Cloud,window=_blank].
 
 //Use the xref:typedb:ROOT:admin/enterprise-deployment.adoc[] guide
 //to install and deploy a TypeDB Enterprise cluster with Kubernetes.
@@ -25,23 +25,21 @@ TypeDB Core also supports all TypeDB Clients, including:
 <<_studio>>, and
 <<_drivers>>.
 
+=== Via Docker
+
+include::partial$docker.adoc[tag=install]
+
 [#_install]
 [discrete]
 [#_package]
-=== Install with a package manager
+=== Via package manager
 
 [tabs]
 ====
-Docker::
+macOS::
 +
 --
-include::partial$docker.adoc[tag=install]
---
-
-Windows::
-+
---
-No package manager option is available for Windows. See the <<_manual>> section below.
+include::partial$macos.adoc[tag=install-homebrew]
 --
 
 Linux::
@@ -50,10 +48,10 @@ Linux::
 include::partial$linux.adoc[tag=install-apt]
 --
 
-macOS::
+Windows::
 +
 --
-include::partial$macos.adoc[tag=install-homebrew]
+No package manager option is available for Windows. See the <<_manual>> section below.
 --
 ====
 
@@ -61,20 +59,24 @@ include::partial$macos.adoc[tag=install-homebrew]
 
 [discrete]
 [#_manual]
-=== Download and install manually
+=== Manual download and install
+
+Download the latest version of TypeDB Core from the table below
+or go to the xref:typedb:resources:releases.adoc[] page for past versions.
+
+[cols="^.^1,^.^1,^.^1,^.^1",caption="",options="header"]
+|===
+|Release notes |macOS |Linux |Windows
+
+include::typedb:resources:partial$latest-version.adoc[]
+|===
 
 [tabs]
 ====
-Docker::
+macOS::
 +
 --
-include::partial$docker.adoc[tag=manual-install]
---
-
-Windows::
-+
---
-include::partial$win.adoc[tag=manual-install]
+include::partial$macos.adoc[tag=manual-install]
 --
 
 Linux::
@@ -83,10 +85,10 @@ Linux::
 include::partial$linux.adoc[tag=manual-install]
 --
 
-macOS::
+Windows::
 +
 --
-include::partial$macos.adoc[tag=manual-install]
+include::partial$win.adoc[tag=manual-install]
 --
 ====
 
@@ -110,10 +112,10 @@ check the xref:clients::console.adoc#_version_compatibility[compatibility table]
 
 [tabs]
 ====
-Windows::
+macOS::
 +
 --
-No package manager available for Windows, use the <<_console_manual>> section below.
+No package manager available for macOS, use the <<_console_manual>> section below.
 --
 
 Linux::
@@ -127,10 +129,10 @@ sudo apt install typedb-console
 ----
 --
 
-macOS::
+Windows::
 +
 --
-No package manager available for macOS, use the <<_console_manual>> section below.
+No package manager available for Windows, use the <<_console_manual>> section below.
 --
 ====
 
@@ -140,7 +142,7 @@ No package manager available for macOS, use the <<_console_manual>> section belo
 
 [tabs]
 ====
-Windows::
+macOS::
 +
 --
 . Ensure Java 11+ is installed.
@@ -148,24 +150,23 @@ TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 
 . Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-console-windows-x86_64.zip` artifact for the selected version.
+select a required version, download the `typedb-console-mac-x86_64.zip`
+or the `typedb-console-mac-arm64.zip` artifact depending on your architecture.
 
 . Extract the archive with TypeDB Console into a new directory:
 +
-[,shell,subs=attributes+]
+[,bash,subs=attributes+]
 ----
-mkdir "C:\Program Files\TypeDB Console"
-tar xvf "C:\Users\username\Downloads\typedb-console-windows-{latest-version}.zip" -C "C:\Program Files\TypeDB Console"
+sudo mkdir /opt/typedb-console
+unzip ~/Downloads/typedb-console-mac-{latest-version}.zip -d /opt/typedb-console
 ----
 
-. Update the `PATH` environment variable:
+. Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
 +
-[,shell,subs=attributes+]
+[,bash,subs=attributes+]
 ----
-setx /M PATH "%path%;C:\Program Files\TypeDB Console\typedb-console-windows-{latest-version}"
+ln -s /opt/typedb-console/typedb-console-mac-{latest-version}/typedb /usr/local/bin/typedb
 ----
-
-Restart the terminal window for the changes to environment variables to take effect.
 --
 
 Linux::
@@ -195,7 +196,7 @@ ln -s /opt/typedb-console/typedb-console-linux-{latest-version}/typedb /usr/loca
 ----
 --
 
-macOS::
+Windows::
 +
 --
 . Ensure Java 11+ is installed.
@@ -203,23 +204,24 @@ TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/[Oracle JDK,window=_blank].
 
 . Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-console-mac-x86_64.zip`
-or the `typedb-console-mac-arm64.zip` artifact depending on your architecture.
+select a required version, download the `typedb-console-windows-x86_64.zip` artifact for the selected version.
 
 . Extract the archive with TypeDB Console into a new directory:
 +
-[,bash,subs=attributes+]
+[,shell,subs=attributes+]
 ----
-sudo mkdir /opt/typedb-console
-unzip ~/Downloads/typedb-console-mac-{latest-version}.zip -d /opt/typedb-console
+mkdir "C:\Program Files\TypeDB Console"
+tar xvf "C:\Users\username\Downloads\typedb-console-windows-{latest-version}.zip" -C "C:\Program Files\TypeDB Console"
 ----
 
-. Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
+. Update the `PATH` environment variable:
 +
-[,bash,subs=attributes+]
+[,shell,subs=attributes+]
 ----
-ln -s /opt/typedb-console/typedb-console-mac-{latest-version}/typedb /usr/local/bin/typedb
+setx /M PATH "%path%;C:\Program Files\TypeDB Console\typedb-console-windows-{latest-version}"
 ----
+
+Restart the terminal window for the changes to environment variables to take effect.
 --
 ====
 
@@ -243,18 +245,6 @@ check the xref:clients::studio.adoc#_version_compatibility[compatibility table].
 
 [tabs]
 ====
-Windows::
-+
---
-No package manager available for Windows, use the <<_studio_manual>> section below.
---
-
-Linux::
-+
---
-No package manager available for Windows, use the <<_studio_manual>> section below.
---
-
 macOS::
 +
 --
@@ -266,6 +256,18 @@ brew tap vaticle/tap
 brew install --cask vaticle/tap/typedb-studio
 ----
 --
+
+Linux::
++
+--
+No package manager available for Linux, use the <<_studio_manual>> section below.
+--
+
+Windows::
++
+--
+No package manager available for Windows, use the <<_studio_manual>> section below.
+--
 ====
 
 //To learn how to run TypeDB Studio, see the xref:home::quickstart.adoc[Quickstart] guide.
@@ -276,13 +278,15 @@ brew install --cask vaticle/tap/typedb-studio
 
 [tabs]
 ====
-Windows::
+macOS::
 +
 --
 . Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-studio-windows` artifact for the selected version.
+select a required version, download the `typedb-studio-mac` artifact depending on your architecture.
 
-. Run the downloaded `.exe` file and follow the installation wizard.
+. Open the `.dmg` file, agree with the license agreement.
+
+. Drag and drop the TypeDB Studio executable to the Application folder.
 --
 
 Linux::
@@ -307,15 +311,13 @@ ln -s /opt/typedb-studio/typedb-studio-linux-x86_64-2.24.15/typedb-studio /usr/l
 ----
 --
 
-macOS::
+Windows::
 +
 --
 . Navigate to the https://github.com/vaticle/typedb-studio/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-studio-mac` artifact depending on your architecture.
+select a required version, download the `typedb-studio-windows` artifact for the selected version.
 
-. Open the `.dmg` file, agree with the license agreement.
-
-. Drag and drop the TypeDB Studio executable to the Application folder.
+. Run the downloaded `.exe` file and follow the installation wizard.
 --
 ====
 
