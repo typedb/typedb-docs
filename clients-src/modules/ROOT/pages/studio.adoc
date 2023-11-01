@@ -10,7 +10,7 @@
 image::studio/studio.png[TypeDB Studio, width = 70%, link=self]
 
 TypeDB Studio is an IDE specifically designed for TypeDB databases and
-TypeDB's query language -- xref:typeql::fundamentals.adoc[TypeQL,window=_blank].
+TypeDB's query language -- xref:typeql::fundamentals.adoc[TypeQL].
 
 It has unique set of functions and abilities to help with development using TypeDB:
 
@@ -203,8 +203,8 @@ with query to run.
 +
 image::studio/project-schema-pasted.png[Query text, width = 70%, link=self]
 
-. Choose the correct xref:typedb::development/connect.adoc#_sessions[session,window=_blank] (`schema`/`data`) type and
-  xref:typedb::development/connect.adoc#_transactions[transaction,window=_blank] (`read`/`write`) type to run the query
+. Choose the correct xref:typedb::development/connect.adoc#_sessions[session] (`schema`/`data`) type and
+  xref:typedb::development/connect.adoc#_transactions[transaction] (`read`/`write`) type to run the query
   by clicking on those options on the *Toolbar* switches.
 . Run the query by clicking on the btn:[Run Query] (▶) button. +
 *Run* panel will be expanded on the bottom of the query to show the results of the query execution attempt.

@@ -6,8 +6,8 @@
 A TypeDB Client is any software that can connect to a TypeDB.
 
 All TypeDB Clients use https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank] protocol based on
-the xref:clients::new-driver.adoc#_grpc[gRPC,window=_blank] framework under the hood to communicate with a TypeDB
-server and provide more user-friendly interface: API, GUI, or CLI.
+gRPC framework under the hood to communicate with a TypeDB
+server and to provide more user-friendly interface: API, GUI, or CLI.
 
 To build a custom application capable of connecting to TypeDB via *TypeDB Client RPC* protocol, we can use one of the
 existing libraries implementing it, called <<_typedb_drivers,TypeDB Drivers>>, or we can implement it ourselves as a

@@ -31,9 +31,8 @@ docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/a
 [#_typedb_client]
 == Run TypeDB Studio
 
-xref:clients:ROOT:studio.adoc[TypeDB Studio,window=_blank] is a standalone TypeDB Client with GUI that needs to be
-xref:home::install.adoc#_studio[installed,window=_blank]
-and launched separately from a TypeDB server.
+xref:clients:ROOT:studio.adoc[TypeDB Studio] is a standalone TypeDB Client with GUI that needs to be
+installed and launched separately from a TypeDB server.
 
 To start TypeDB Studio, find the installed binary file and run it.
 
@@ -48,7 +47,7 @@ TypeDB Studio needs a network connection to a TypeDB server to manage databases 
 
 == Select a project folder
 
-Select a xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory,window=_blank]
+Select a xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory]
 to store project files by clicking either:
 
 * btn:[Open Project] in the *Project* panel (upper left); or

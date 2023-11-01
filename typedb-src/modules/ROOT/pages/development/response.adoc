@@ -18,16 +18,16 @@ see the table below for mapping of response format to a type of query that has b
 | Stream/Iterator of *ConceptMap*
 
 | 2
-| Get query with xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
+| Get query with xref:typeql::data/get.adoc#_aggregation[aggregation]
 | *Future* of *Numeric*
 
 | 3
-| Get query with xref:typeql::data/get.adoc#_group[grouping,window=_blank]
+| Get query with xref:typeql::data/get.adoc#_group[grouping]
 | Stream/Iterator of *ConceptMapGroup*
 
 | 4
-| Get query with xref:typeql::data/get.adoc#_group[grouping,window=_blank] and
-xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
+| Get query with xref:typeql::data/get.adoc#_group[grouping] and
+xref:typeql::data/get.adoc#_aggregation[aggregation]
 | Stream/Iterator of *NumericGroup*
 
 | 5
@@ -55,7 +55,7 @@ xref:typeql::data/get.adoc#_aggregation[aggregation,window=_blank]
 | Stream/Iterator of *Explanation*
 |===
 
-TypeDB xref:development/api.adoc[Driver API] methods can be used to process the objects returned: get values of attributes,
+TypeDB Driver API methods can be used to process the objects returned: get values of attributes,
 get <<_json,JSON>> representation of data, or even get other concepts from a database.
 
 == Expected results
@@ -136,10 +136,11 @@ For xref:clients::overview.adoc#_typedb_drivers[TypeDB Drivers]: the specific me
 response depend on the TypeDB Driver used.
 
 The following is a very basic description of objects used to interpret the results from the TypeDB query response.
-For more information please see the xref:development/api.adoc[API & Drivers] page and documentation for the
-xref:clients:ROOT:java-driver.adoc[Java],
-xref:clients:ROOT:python-driver.adoc[Python], and
-xref:clients:ROOT:nodejs-driver.adoc[Node.js] TypeDB Drivers respectively.
+For more information, see the TypeDB Driver pages for the
+xref:clients:ROOT:rust-driver/api-reference.adoc[Rust],
+xref:clients:ROOT:python-driver/api-reference.adoc[Python],
+xref:clients:ROOT:java-driver/api-reference.adoc[Java], and
+xref:clients:ROOT:nodejs-driver/api-reference.adoc[Node.js].
 
 [#_conceptmap]
 === ConceptMap

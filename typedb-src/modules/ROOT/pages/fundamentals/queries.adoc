@@ -88,8 +88,8 @@ A Define query is used to define types and rules in the schema.
 A Define query consists of a single `define` clause.
 
 For more information on the Define query, see the
-xref:typeql::schema/define-types.adoc#_define_query[Define types,window=_blank] and
-xref:typeql::schema/define-rules.adoc[window=_blank] pages.
+xref:typeql::schema/define-types.adoc#_define_query[Define types] and
+xref:typeql::schema/define-rules.adoc[] pages.
 
 For examples of how to perform a Define query, see the xref:typedb::development/schema.adoc[] page.
 
@@ -108,8 +108,8 @@ A `define` clause has the following syntax:
 define <pattern>
 ----
 
-A pattern used in the `define` clause is limited to xref:typeql::schema/define-types.adoc[defining types,window=_blank] and
-xref:typeql::schema/define-rules.adoc[rules,window=_blank]: the DDL part of the TypeQL.
+A pattern used in the `define` clause is limited to xref:typeql::schema/define-types.adoc[defining types] and
+xref:typeql::schema/define-rules.adoc[rules]: the DDL part of the TypeQL.
 
 [#_undefine_query]
 == Undefine query
@@ -120,7 +120,7 @@ of the current database.
 An Undefine query consists of a single `undefine` clause.
 
 For more information on the Undefine query, see the
-xref:typeql::schema/modify.adoc#_undefine_a_type[Modify existing schema,window=_blank] page.
+xref:typeql::schema/modify.adoc#_undefine_a_type[Modify existing schema] page.
 
 For examples of how to perform an Undefine query, see the
 xref:typedb::development/schema.adoc#_undefine[Defining schema] page.
@@ -156,8 +156,8 @@ Get queries were previously known as Match queries.
 The old naming can be seen in some Driver API methods for backward compatibility.
 ====
 
-For more information on the Get query, see the xref:typeql::data/get.adoc[window=_blank] page in the
-xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
+For more information on the Get query, see the xref:typeql::data/get.adoc[] page in the
+xref:typeql::overview.adoc[TypeQL] documentation.
 
 For examples of how to perform a Get query, see the xref:typedb::development/read.adoc[] page.
 
@@ -280,8 +280,8 @@ The `insert` clause can have a pattern with multiple statements to insert in one
 - Negation
 - `is` keyword
 
-For more information on the Insert query, see the xref:typeql::data/insert.adoc[window=_blank] page in the
-xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
+For more information on the Insert query, see the xref:typeql::data/insert.adoc[] page in the
+xref:typeql::overview.adoc[TypeQL] documentation.
 
 For examples of how to perform an Insert query, see the xref:typedb::development/write.adoc#_insert[Insert query] section of the
 xref:typedb::development/write.adoc[] page.
@@ -361,8 +361,8 @@ xref:typedb::development/schema.adoc#_undefine_types[undefine] to delete types) 
 - Negation
 - `is` keyword
 
-For more information on the Delete query, see the xref:typeql::data/delete.adoc[Delete,window=_blank] page in the
-xref:typeql::overview.adoc[TypeQL,window=_blank] documentation.
+For more information on the Delete query, see the xref:typeql::data/delete.adoc[Delete] page in the
+xref:typeql::overview.adoc[TypeQL] documentation.
 
 For examples of how to perform a Delete query, see the xref:typedb::development/write.adoc#_delete_query[Delete query] section of the
 xref:typedb::development/write.adoc[] page.
@@ -440,7 +440,7 @@ information of it playing the role.
 In addition, attributes are immutable. Rather than changing the value of an owned attribute,
 the ownership of it is replaced with the ownership of a new/different attribute.
 
-For more information on the Update query, see the xref:typeql::data/update.adoc[window=_blank] page.
+For more information on the Update query, see the xref:typeql::data/update.adoc[] page.
 
 .See the update query example
 [%collapsible]
