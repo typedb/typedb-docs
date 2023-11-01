@@ -15,13 +15,7 @@ To pull the latest TypeDB Docker image:
 docker pull vaticle/typedb:latest
 ----
 
-To pull a specific version of TypeDB:
-
-[,bash]
-----
-docker pull vaticle/typedb:{version}
-----
-
+You can replace `latest` with a version number to get a specific version of TypeDB Core.
 To check the list of available versions, see the xref:typedb:resources:releases.adoc[] page.
 
 // end::install[]

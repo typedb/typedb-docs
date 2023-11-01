@@ -134,7 +134,7 @@ def generate_table_contents(versions, hash=False, tags=False):
         # result += 'docker pull vaticle/typedb:' + version["version"] + '\n'
         # result += '----' + '\n'
 
-        for os in ["win", "lin", "mac"]:
+        for os in ["mac", "lin", "win"]:
             result += '|'
             if tags:
                 result += '\n' + '// tag::' + os + '[]' + '\n'
