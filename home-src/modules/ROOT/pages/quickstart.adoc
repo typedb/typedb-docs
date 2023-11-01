@@ -26,14 +26,14 @@ For Docker, use the following command to run TypeDB Core in a container:
 
 [,bash]
 ----
-docker run --name typedb -d -v try-typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ----
 
 [#_typedb_client]
 == Run TypeDB Studio
 
 xref:clients:ROOT:studio.adoc[TypeDB Studio,window=_blank] is a standalone TypeDB Client with GUI that needs to be
-xref:clients:ROOT:studio.adoc#_download_install[installed,window=_blank]
+xref:home::install.adoc#_studio[installed,window=_blank]
 and launched separately from a TypeDB server.
 
 To start TypeDB Studio, find the installed binary file and run it.

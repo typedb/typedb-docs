@@ -81,6 +81,27 @@ use the following steps to set the minimum log level to `ERROR`:
 </configuration>
 ----
 
+== Tutorial
+
+Explore the Java Driver xref:java-driver/tutorial.adoc[tutorial] with an example of connecting to TypeDB.
+
+== Java Driver API
+
+Use the xref:java-driver/api-reference.adoc[API reference] page for documentation of the methods and classes used in the Driver.
+
+// tag::questions[]
+[NOTE]
+====
+Any questions about the Driver after reading the documentation?
+Feel free to ask on our
+https://vaticle.com/discord[Discord,window=_blank] community server.
+====
+// end::questions[]
+
+== Query builder
+
+Learn to use native Java syntax to build TypeQL queries with xref:java-driver/query-builder.adoc[Java query builder].
+
 == Additional resources
 
 * <<_version_compatibility>>
@@ -90,6 +111,7 @@ use the following steps to set the minimum log level to `ERROR`:
 
 [#_version_compatibility]
 == Version Compatibility
+//#todo Consider showing first 5 entries and the rest is shown in a separate collapsible
 
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
@@ -175,23 +197,3 @@ use the following steps to set the minimum log level to `ERROR`:
 | 1.8.0
 | N/A
 |===
-
-== Tutorial
-
-Explore the Java Driver xref:java-driver/tutorial.adoc[tutorial] with an example of connecting to TypeDB.
-
-== Java Driver API
-
-Use the xref:java-driver/api-reference.adoc[API reference] page for documentation of the methods and classes used in the Driver.
-
-// tag::questions[]
-[NOTE]
-====
-Any more questions about the Driver after reading the documentation? Feel free to ask on our
-https://vaticle.com/discord[Discord,window=_blank] community server.
-====
-// end::questions[]
-
-== Query builder
-
-Learn to use native Java syntax to build TypeQL queries with xref:java-driver/query-builder.adoc[Java query builder].
