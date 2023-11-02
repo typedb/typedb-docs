@@ -37,7 +37,7 @@ match <pattern>
 fetch (
     variable [as <label>] ;
   | variable [as <label>] : [<attribute-type> [as <label>], ...] ;
-  | <label>    : { <query_fetch> | <query_get_aggregate> } ;
+  | <subquery-label>      : { <fetch_query> | <get_aggregate_query> } ;
 )
 [<modifiers>]
 ----
@@ -198,6 +198,7 @@ sort <variable> [asc|desc] [,<variable> [asc|desc]];
 Use the `sort` keyword followed by a variable to sort the answers using a variable mentioned in the first argument. A
 second argument is optional and determines the sorting order: `asc` (ascending, used by default) or `desc` (descending).
 
+.Sort example
 [,typeql]
 ----
 match $p isa person, has full-name $n;
@@ -222,12 +223,13 @@ Use the `offset` keyword followed by the number to offset the answers.
 This is commonly used with the `limit` keyword to return a desired range of answers.
 Don't forget to <<_sort_the_answers,sort>> the results to ensure predictable and deterministic results.
 
+.Offset example
 [,typeql]
 ----
 match $p isa person, has full-name $n;
-get $n;
+fetch $n;
 sort $n asc;
-offset 6; limit 10;
+offset 1;
 ----
 
 This sorts the `full-name` attributes of all `person` entities in ascending order, skips the first six, and returns up
@@ -244,21 +246,26 @@ limit <value>;
 
 Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
 
+.Limit example
 [,typeql]
 ----
-match $p isa person;
-get $p;
+match $p isa person, has full-name $n;
+fetch $n;
+sort $n asc;
+offset 1;
 limit 1;
 ----
 
 This query returns only one single (and random) instance of type `person`. Consider using `limit` with
-<<_sort_the_answers,sorting aggregation>> to receive less random and more predictable results.
+<<_sort_the_answers,sort>> to receive less random and more predictable results.
 
 == Examples
 
+//mention IAM schema and data
+
 === Fetch all owned attributes
 
-.Fetching all attributes of every file
+.Example of fetching all attributes of every file
 [,typeql]
 ----
 match
@@ -268,7 +275,7 @@ $f: attribute;
 ----
 
 .Result example
-[,typeql]
+[,json]
 ----
 {
     "f": {
@@ -283,8 +290,89 @@ $f: attribute;
 
 === Using Get queries as subqueries
 
+.Example of using a Get subquery
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+fetch
+$n;
+$p: attribute;
+try-subquery: {match $p has email $e; $e contains "kevin"; get $e; count;};
+----
+
+.Result example
+[,json]
+----
+{
+    "n": { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
+    "p": {
+        "attribute": [
+            { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
+            { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    },
+    "try-subquery": { "value": 1, "value_type": "long" }
+}
+----
 
 === Using inference
 
+.Example of using inference
+[,typeql]
+----
+match
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+$va isa action, has name 'view_file';
+fetch $fp;
+----
+
+.Result example
+[,json]
+----
+{ "fp": { "value": "README.md", "value_type": "string", "type": { "label": "path", "root": "attribute" } } }
+----
+
 === Complex example
 
+.Complex example
+[,typeql]
+----
+match
+$u isa user;
+$o isa object;
+$va isa action;
+$pa($o, $va) isa access;
+$p($u, $pa) isa permission;
+fetch
+$u as user: attribute as user-info;
+$o as object: attribute as object-info;
+$va as action: name as action-name;
+----
+
+.Result example
+[,json]
+----
+{
+    "action": {
+        "action-name": [ { "value": "view_file", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "operation", "root": "entity" }
+    },
+    "object": {
+        "object-info": [
+            { "value": 758, "value_type": "long", "type": { "label": "size-kb", "root": "attribute" } },
+            { "value": "budget_2022-05-01.xlsx", "value_type": "string", "type": { "label": "path", "root": "attribute" } }
+        ],
+        "type": { "label": "file", "root": "entity" }
+    },
+    "user": {
+        "user-info": [
+            { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
+            { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
