@@ -1,0 +1,290 @@
+= Fetch query
+:Summary: Reading data from a TypeDB database with a Fetch query.
+:keywords: typeql, query, fetch, read, retrieve, json
+:pageTitle: fetch query
+
+A Fetch query retrieves values from a TypeDB database and returns them as JSON strings.
+
+It can and should be used in a read transaction.
+Hence, it can be used with rule-based xref:typedb::fundamentals/inference.adoc[inference].
+
+== Behavior
+
+A Fetch query triggers a search in a database, using a pattern from a `match` clause.
+For every matched result, it executes the `fetch` clause of the query, that
+fetches values (types, attribute values, and aggregated values) from
+specified variables and executes specified subqueries.
+
+A Fetch query returns a stream/iterator of results.
+Every returned result is a valid JSON string.
+The number of query results returned is equal to the number of solutions matched by a `match` clause.
+If there are no matches in the preceding `match` clause,
+there are no JSON strings returned by the `fetch` clause of the same query.
+
+== Syntax
+
+A Fetch query consists of a
+<<_match_clause,match>> and a
+<<_fetch_clause,fetch>> clauses,
+followed by optional <<_modifiers,modifiers>>.
+
+Fetch queries are written in TypeQL with the following syntax:
+
+.Fetch query syntax
+[,typeql]
+----
+match <pattern>
+fetch (
+    variable [as <label>] ;
+  | variable [as <label>] : [<attribute-type> [as <label>], ...] ;
+  | <label>    : { <query_fetch> | <query_get_aggregate> } ;
+)
+[<modifiers>]
+----
+
+The variable or variables mentioned in a `fetch` clause must be bound (set) in the `match` clause of the same query.
+
+[#_match_clause]
+== Match clause
+
+A `match` clause is mandatory in a Fetch query.
+You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
+the pattern.You then specify what to do with the matched data with a `insert`, delete`, `fetch`, or `get` clause.
+
+For more information on `match` clause, see the
+xref:typeql::queries.adoc#_match[Match clause] description on the Queries page.
+//#todo update the link after introducing the Match clause page
+
+For more information on `match` clause patterns, see the
+xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
+
+[#_fetch_clause]
+== Fetch clause
+
+A `fetch` clause is used in a Fetch query
+to specify a projection of values from matched data to an output of JSON strings.
+
+This clause is executed exactly once for every result matched by the `match` clause of the same query.
+A `fetch` clause produces a valid JSON string for every matched result.
+The content of the JSON string is defined by the variables, types, and subqueries used in it.
+
+Following the `fetch` keyword are one or multiple variables or subqueries, separated by semicolons.
+Every variable or subquery mentioned in a `fetch` clause adds a top-level key
+with the same label to the resulted JSON strings.
+
+Variable can optionally be followed by a colon and a list of comma-separated attribute-types.
+Every attribute type mentioned in this way adds a JSON subsection with the same label as a key.
+The value of the subsection is the list of attribute type's instances owned by the matched concept from a variable.
+
+.Fetch query example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+fetch
+$n;
+$p: attribute;
+try-subquery: {match $p has email $e; $e contains "kevin"; fetch $e;};
+----
+
+Every instance in the JSON output has its type, root type, and value (if applicable).
+
+.Fetch query result example
+[,json]
+----
+{
+    "n": { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
+    "p": {
+        "attribute": [
+            { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
+            { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    },
+    "try-subquery": [ { "e": { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } } ]
+}
+----
+
+[#_subqueries]
+=== Subqueries
+
+As it was shown in the example above, a Fetch query can include a subquery with a label.
+Label determines a key that will be used to introduce subquery's results into the JSON output.
+
+The label is followed by a colon, and then, TypeQL string for a subquery, enveloped into curly brackets.
+A subquery can be of two types: a Fetch query or a Get query with
+xref:typeql::data/get.adoc#_aggregation[aggregation] (to return a value).
+
+A subquery shares variables with its parent query.
+The number of nested subqueries is not limited,
+but many nested levels can easily break technical limitations of gRPC messaging.
+
+[#_relabeling]
+=== Relabeling
+
+A `fetch` clause support relabeling of variables and attribute types.
+You can assign alias label which will be used for JSON output.
+
+.Example of relabeling
+[,typeql]
+----
+match
+$p isa person;
+fetch
+$p as person: full-name as name;
+sort $n;
+----
+
+.Example of result with relabeling
+[,json]
+----
+{
+    "person": {
+        "name": [ { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
+
+[#_number_of_answers]
+=== Number of answers
+
+A Fetch query can return fewer results, than it was matched by its `match` clause.
+That is due to natural deduplication of attributes.
+See an example below.
+
+.Example of a fetch clause reducing the number of results
+[,typeql]
+----
+match
+$p isa person, has name $n;
+fetch
+$n;
+----
+
+In the above example `match` clause matches all `person` type instances that own a `name` attribute.
+The `fetch` clause then returns values of those `name` attributes.
+
+What happens if two persons have the same name?
+In TypeDB database that stored, as two entities own the same instance of the `name` attribute type.
+The `match` clause finds all pairs of a person entity and its owned attribute.
+But `fetch` clause returns only the attributes, and since both persons owning the very same attribute,
+it will only be returned once, reducing the total number of results.
+
+For more examples of filtering matched results,
+see the xref:typeql::data/get.adoc#_answers_example_2[Get query] page.
+
+[#_modifiers]
+== Modifiers
+
+In a Fetch query, modifiers can change the number and order of results.
+
+The following modifiers can be used at the end of a Fetch query:
+<<_sort_the_answers,sort>>,
+<<_offset_the_answers,offset>>, and
+<<_limit_the_results,limit>>.
+
+They can be used to add pagination for the query results.
+
+[#_sort_the_answers]
+=== Sort the answers
+
+.Sort modifier syntax
+[,typeql]
+----
+sort <variable> [asc|desc] [,<variable> [asc|desc]];
+----
+
+Use the `sort` keyword followed by a variable to sort the answers using a variable mentioned in the first argument. A
+second argument is optional and determines the sorting order: `asc` (ascending, used by default) or `desc` (descending).
+
+[,typeql]
+----
+match $p isa person, has full-name $n;
+fetch $n;
+sort $n asc;
+----
+
+This query returns sorted values of all `full-name` attributes owned by `person` entities.
+
+To sort by multiple variables, add additional variables with a comma separator.
+
+[#_offset_the_answers]
+=== Offset the answers
+
+.Offset modifier syntax
+[,typeql]
+----
+offset <value>;
+----
+
+Use the `offset` keyword followed by the number to offset the answers.
+This is commonly used with the `limit` keyword to return a desired range of answers.
+Don't forget to <<_sort_the_answers,sort>> the results to ensure predictable and deterministic results.
+
+[,typeql]
+----
+match $p isa person, has full-name $n;
+get $n;
+sort $n asc;
+offset 6; limit 10;
+----
+
+This sorts the `full-name` attributes of all `person` entities in ascending order, skips the first six, and returns up
+to the next ten.
+
+[#_limit_the_results]
+=== Limit the results
+
+.Limit modifier syntax
+[,typeql]
+----
+limit <value>;
+----
+
+Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
+
+[,typeql]
+----
+match $p isa person;
+get $p;
+limit 1;
+----
+
+This query returns only one single (and random) instance of type `person`. Consider using `limit` with
+<<_sort_the_answers,sorting aggregation>> to receive less random and more predictable results.
+
+== Examples
+
+=== Fetch all owned attributes
+
+.Fetching all attributes of every file
+[,typeql]
+----
+match
+$f isa file;
+fetch
+$f: attribute;
+----
+
+.Result example
+[,typeql]
+----
+{
+    "f": {
+        "attribute": [
+            { "value": 55, "value_type": "long", "type": { "label": "size-kb", "root": "attribute" } },
+            { "value": "iopvu.java", "value_type": "string", "type": { "label": "path", "root": "attribute" } }
+        ],
+        "type": { "label": "file", "root": "entity" }
+    }
+}
+----
+
+=== Using Get queries as subqueries
+
+
+=== Using inference
+
+=== Complex example
+

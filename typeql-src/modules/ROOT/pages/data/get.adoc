@@ -4,11 +4,10 @@
 :longTailKeywords: typeql get, match get, typeql read, typedb read
 :pageTitle: Get query
 
-A get query retrieves data from a TypeDB database.
+A get query retrieves concepts from a TypeDB database that you can further process with the Driver API.
 
-It is the only type of query to be used in a read transaction.
-Hence, it’s the only query type that can use xref:typeql::schema/define-rules.adoc[rules]-based
-xref:typedb::fundamentals/inference.adoc[inference].
+It should be used in read transactions,
+and it can be used with rule-based xref:typedb::fundamentals/inference.adoc[inference].
 
 A Get query triggers a search in a database based on the xref:typeql::data/basic-patterns.adoc[pattern] in the
 `match` clause. It retrieves concepts and values from a database. The result of a get query can vary depending on the
@@ -38,11 +37,9 @@ match <pattern>
 [count;] [sum|max|min|mean|median|std <variable>;]
 ----
 
-[NOTE]
-====
-A pattern consists of variables and constraints for concepts. For more information, see the
+For more information on `match` clause patterns, see the
 xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
-====
+//#todo update the link after introducing the Match clause page
 
 [IMPORTANT]
 ====
