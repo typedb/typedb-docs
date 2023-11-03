@@ -3,22 +3,25 @@
 :keywords: typeql, query, fetch, read, retrieve, json
 :pageTitle: fetch query
 
-A Fetch query retrieves values from a TypeDB database and returns them as JSON strings.
+A Fetch query retrieves values from a TypeDB database and returns them as JSON objects.
 
-It can and should be used in a read transaction.
-Hence, it can be used with rule-based xref:typedb::fundamentals/inference.adoc[inference].
+Fetch queries do not modify data, so can be used in Read or Write transactions.
+In read transactions, Fetch queries can use rule-based xref:typedb::fundamentals/inference.adoc[inference].
 
 == Behavior
 
-A Fetch query seeks data in a database, using a pattern from a `match` clause.
-For every matched result, it executes a `fetch` clause of the query, that
-fetches values from attributes, subqueries, and arithmetic operations.
+A Fetch query projects concepts matched from a database to values formatted as JSON objects.
 
-A Fetch query returns a stream/iterator of results.
-Every returned result is a valid JSON string.
+Types, attributes, value-variables, or subqueries with aggregation are projected directly into JSON.
+Entities and relations don't have values to project, so instead of projecting them directly,
+we can extract values of attributes owned by them.
+
+A Fetch query returns a lazy stream/iterator of results.
+Every returned result is a valid JSON object.
 The number of query results returned is equal or
 <<_number_of_answers,less>> than the number of matched results by a `match` clause.
 If there are no matches in the preceding `match` clause, then there are no results returned.
+//#todo Add description of lazy streaming and a link to it
 
 == Syntax
 
@@ -50,7 +53,7 @@ A `match` clause is mandatory in a Fetch query.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 the pattern.
 After a `match` clause goes another clause (`insert`, `delete`, `fetch`, or `get`)
-to specify what to do with the matched data.
+to specify what operation to perform on the matched data.
 
 For more information on a `match` clause, see the
 //#todo update the link after introducing the Match clause page!
@@ -63,103 +66,71 @@ xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 == Fetch clause
 
 A `fetch` clause is used in a Fetch query
-to specify a projection of values from matched data to an output of JSON strings.
+to specify a projection of values from matched database concepts to an output of JSON objects.
 
-This clause is executed exactly once for every result matched by the `match` clause of the same query.
-A `fetch` clause produces a valid JSON string for every matched result.
-The content of the JSON string is defined by the variables, types, and subqueries used in it.
+This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
+A `fetch` clause produces a valid JSON object for every matched result,
+but <<_number_of_answers,deduplicates>> the results.
 
 Following the `fetch` keyword are one or multiple variables or subqueries, separated by semicolons.
-Every variable or subquery mentioned in a `fetch` clause adds a top-level key
-with the same label to the resulted JSON strings.
+Every variable or subquery mentioned in a `fetch` clause adds a top-level key to the resulting JSON objects.
 
-Variable can optionally be followed by a colon and a list of comma-separated attribute-types.
-Every attribute type mentioned in this way adds a JSON subsection with the same label as a key.
-The value of the subsection is the list of attribute type's instances owned by the matched concept from a variable.
+=== Fetching values and types directly
 
-Fetch always needs a value to project into JSON.
-Hence, entities and relations can be used as variables in a `fetch` clause only by specifying valid attribute types
-that they can own, according to a schema.
-
-.Fetch query example
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-fetch
-$n;
-$p: attribute;
-try-subquery: {match $p has email $e; $e contains "kevin"; fetch $e;};
-----
+Types, attributes, and value-variables can be projected directly into JSON
+by using their variable in a `fetch` clause.
 
 Every instance in the JSON output has its type, root type, and value (if applicable).
 
-.Fetch query result example
-[,js]
-----
-{
-    "n": { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
-    "p": {
-        "attribute": [
-            { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
-            { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
-        ],
-        "type": { "label": "person", "root": "entity" }
-    },
-    "try-subquery": [ { "e": { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } } ]
-}
-----
+See the <<_fetch_an_attribute>> and the <<_fetch_a_type_or_a_value_variable>> examples below.
+
+=== Fetching owned attributes
+
+Not every type can have a value to fetch.
+Fetch always needs a value to project into JSON.
+Hence, entities and relations can be used as variables in a `fetch` clause only by
+extracting attributes that they have.
+
+To extract owned attributes, we use a variable followed by a colon and a list of comma-separated attribute-types.
+Every attribute type mentioned in this way adds a JSON subsection with the list of instances of that attribute type
+owned by the matched concept from a variable.
+
+See the <<_fetch_all_attributes_owned>> example below.
+
+[#_relabeling]
+=== Customizing output by relabeling
+
+A `fetch` clause support relabeling of variables and attribute types.
+You can assign a new label which will be used for JSON output.
+
+To relabel a variable or attribute type, add the `as` keyword followed by a new label.
+
+By surrounding a new label in double quotes, you can use whitespaces in it.
+
+See the <<_customize_output>> example below.
 
 [#_subqueries]
 === Subqueries
 
-As it was shown in the example above, a Fetch query can include a subquery with a label.
-Label determines a key that will be used to introduce results of a subquery into the JSON output.
-
-The label is followed by a colon, and then, TypeQL string for a subquery, enveloped into curly brackets.
-A subquery can be of two types: a Fetch query or a Get query with
+A Fetch query can include a subquery in a `fetch` clause: another Fetch query or a Get query with
 xref:typeql::data/get.adoc#_aggregation[aggregation] (to return a value).
+A subquery consists of label, colon, and a TypeQL query string surrounded by curly brackets.
+
+The label determines the key that will be used to introduce results of the subquery into the JSON output.
 
 A subquery shares variables with its parent query.
 At least one variable from a parent query must be used in a subquery.
 
 The number of nested subqueries is not limited,
-but many nested levels can easily break technical limitations of gRPC messaging.
+but many nested levels can break technical limitations of gRPC messaging.
 
 For an example of nested subqueries, see the <<_grouping_results>> section below.
-
-[#_relabeling]
-=== Relabeling
-
-A `fetch` clause support relabeling of variables and attribute types.
-You can assign alias label which will be used for JSON output.
-
-.Example of relabeling
-[,typeql]
-----
-match
-$p isa person;
-fetch
-$p as person: full-name as name;
-sort $n;
-----
-
-.Example of result with relabeling
-[,js]
-----
-{
-    "person": {
-        "name": [ { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
-        "type": { "label": "person", "root": "entity" }
-    }
-}
-----
 
 [#_number_of_answers]
 === Number of answers
 
 A Fetch query can return fewer results, than it was matched by its `match` clause.
-That is due to natural deduplication of attributes.
+That is due to natural deduplication of results.
 See an example below.
 
 .Example of a fetch clause reducing the number of results
@@ -230,7 +201,7 @@ offset <value>;
 
 Use the `offset` keyword followed by the number to offset the answers.
 This is commonly used with the `limit` keyword to return a desired range of answers.
-Don't forget to <<_sort_the_answers,sort>> the results to ensure predictable and deterministic results.
+Don't forget to use <<_sort_the_answers,sort>> to ensure predictable and deterministic results.
 
 .Offset example
 [,typeql]
@@ -275,6 +246,7 @@ The following examples use the
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[IAM schema,window=_blank] and
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[IAM sample data,window=_blank].
 
+[#_fetch_an_attribute]
 === Fetch an attribute
 
 To fetch an attribute, use the following query:
@@ -296,6 +268,40 @@ The above query matches files with their `path` attributes and then fetches the 
 { "p": { "value": "README.md", "value_type": "string", "type": { "label": "path", "root": "attribute" } } }
 ----
 
+[#_fetch_a_type_or_a_value_variable]
+=== Fetch a type or a value variable
+
+You can fetch a value of a value variable or a type from a schema of a database:
+
+.Example of fetching value variable and type
+[,typeql]
+----
+match
+$x has attribute "iopvu.java", has size-kb $s;
+$x isa! $type;
+?size = round( ( $s + 2222 ) / 1024 );
+fetch
+$type;
+?size;
+----
+
+The above query matches any instance of data (`$x`) that has `name` of `iopvu.java` and any `size-kb` (`$s`).
+The variable `$type` is assigned to be equal to the type of `$x`.
+Finally, we bound the value variable `?size` to some value, based on the value of the `$s`.
+
+.Result example
+[,js]
+----
+{
+    "size": { "value": 2, "value_type": "long" },
+    "type": { "label": "file", "root": "entity" }
+}
+----
+
+Note, that the `size` has no type because it is a value from a value variable and
+the `type` has no value because it is a type of a concept.
+
+[#_fetch_all_attributes_owned]
 === Fetch all attributes owned
 
 To fetch all attributes, owned by any type, we can fetch a variable with a colon followed by the `attribute` root type:
@@ -325,6 +331,36 @@ and then fetches all attributes for every file.
     }
 }
 ----
+
+[#_customize_output]
+=== Customize output
+
+.Example of output customization
+[,typeql]
+----
+match
+$f isa file;
+fetch
+$f as file: attribute as "all attributes";
+----
+
+The above query is equal to the previous one, but it uses relabeling to customize keys of the JSON objects.
+
+.Result example
+[,js]
+----
+{
+    "file": {
+        "all attributes": [
+            { "value": 55, "value_type": "long", "type": { "label": "size-kb", "root": "attribute" } },
+            { "value": "iopvu.java", "value_type": "string", "type": { "label": "path", "root": "attribute" } }
+        ],
+        "type": { "label": "file", "root": "entity" }
+    }
+}
+----
+
+Note that instead of `f` we have `file` key and instead of `attribute` -- `all-attributes`.
 
 === Using Get queries as subqueries
 
@@ -500,7 +536,7 @@ The second subquery matches all objects that have `size-kb` attribute and conver
 with arithmetic.
 Then it fetches the converted value as `size-mb`.
 
-The resulting JSON strings have a predictable structure of keys, that was set by the `fetch` clauses, using
+The resulting JSON objects have a predictable structure of keys, that was set by the `fetch` clauses, using
 <<_relabeling,relabeling>>:
 
 * user
