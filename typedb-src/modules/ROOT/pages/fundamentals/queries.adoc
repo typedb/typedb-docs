@@ -409,8 +409,6 @@ Fetch queries consist of a `match` clause and a `fetch` clause, followed by opti
 
 For more information on the Fetch query, see the xref:typeql::data/fetch.adoc[] page.
 
-For examples of how to send a Fetch query, see the xref:typedb::development/read.adoc[] page.
-
 === Match clause
 
 See the <<_match>> section above.
@@ -419,26 +417,20 @@ See the <<_match>> section above.
 === Fetch clause
 
 A `fetch` clause is used in a Fetch query
-to specify a projection of values from matched data to an output of JSON strings.
+to specify a projection of values from matched database concepts to an output of JSON objects.
 
-This clause is executed exactly once for every result matched by the `match` clause of the same query.
+This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
 
-For more information, see the xref:typeql::data/fetch.adoc#_fetch_clause[Fetch query] page.
+For more information on Fetch clause, see the xref:typeql::data/fetch.adoc#_fetch_clause[Fetch query] page.
 
 [#_get_query]
 == Get query
 
-A Get query is used to retrieve data from a TypeDB database.
+A get query is used to retrieve concepts from a TypeDB database that you can further process with the Driver API.
 
 A Get query consists of a `match` clause and a `get` clause.
 
-A Get query returns a stream of results.
-The number of query results returned is equal to the number of solutions matched by a `match` clause.
-Every returned result is a ConceptMap if no aggregation nor grouping is used.
-
 For more information on Get queries, see the xref:typeql::data/get.adoc[] page.
-
-For examples of how to send a Get query, see the xref:typedb::development/read.adoc[] page.
 
 === Match clause
 
@@ -460,7 +452,7 @@ The syntax for a `get` clause is as follows:
 .Get clause syntax
 [,typeql]
 ----
-[get <variable> [(, <variable>)...];]
+get <variable> [(, <variable>)...];
 [modifiers]
 ----
 
