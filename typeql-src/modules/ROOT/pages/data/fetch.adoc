@@ -10,16 +10,15 @@ Hence, it can be used with rule-based xref:typedb::fundamentals/inference.adoc[i
 
 == Behavior
 
-A Fetch query triggers a search in a database, using a pattern from a `match` clause.
-For every matched result, it executes the `fetch` clause of the query, that
-fetches values (types, attribute values, and aggregated values) from
-specified variables and executes specified subqueries.
+A Fetch query seeks data in a database, using a pattern from a `match` clause.
+For every matched result, it executes a `fetch` clause of the query, that
+fetches values from attributes, subqueries, and arithmetic operations.
 
 A Fetch query returns a stream/iterator of results.
 Every returned result is a valid JSON string.
-The number of query results returned is equal to the number of solutions matched by a `match` clause.
-If there are no matches in the preceding `match` clause,
-there are no JSON strings returned by the `fetch` clause of the same query.
+The number of query results returned is equal or
+<<_number_of_answers,less>> than the number of matched results by a `match` clause.
+If there are no matches in the preceding `match` clause, then there are no results returned.
 
 == Syntax
 
@@ -115,13 +114,15 @@ Every instance in the JSON output has its type, root type, and value (if applica
 === Subqueries
 
 As it was shown in the example above, a Fetch query can include a subquery with a label.
-Label determines a key that will be used to introduce subquery's results into the JSON output.
+Label determines a key that will be used to introduce results of a subquery into the JSON output.
 
 The label is followed by a colon, and then, TypeQL string for a subquery, enveloped into curly brackets.
 A subquery can be of two types: a Fetch query or a Get query with
 xref:typeql::data/get.adoc#_aggregation[aggregation] (to return a value).
 
 A subquery shares variables with its parent query.
+At least one variable from a parent query must be used in a subquery.
+
 The number of nested subqueries is not limited,
 but many nested levels can easily break technical limitations of gRPC messaging.
 
