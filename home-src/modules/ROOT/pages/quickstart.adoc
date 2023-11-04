@@ -136,9 +136,9 @@ To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type
 [,typeql]
 ----
 match
-    $p isa person,
-        has full-name $f,
-        has email $e;
+$p isa person,
+    has full-name $f,
+    has email $e;
 get $p, $f, $e;
 ----
 
@@ -150,8 +150,8 @@ To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type
 [,typeql]
 ----
 match
-    $p isa person,
-        has $a;
+$p isa person,
+    has $a;
 get $p, $a;
 ----
 
@@ -164,10 +164,10 @@ To xref:typedb::development/read.adoc#_get[get] all emails owned by every person
 [,typeql]
 ----
 match
-    $p isa person,
-        has full-name $fn;
-    $fn contains "Kevin";
-    $p has email $e;
+$p isa person,
+    has full-name $fn;
+$fn contains "Kevin";
+$p has email $e;
 get $e;
 ----
 
@@ -180,9 +180,9 @@ that contains "Kevin":
 [,typeql]
 ----
 match
-    $p isa person,
-        has full-name $fn;
-    $fn contains "Kevin";
+$p isa person,
+    has full-name $fn;
+$fn contains "Kevin";
 insert $p has email "kevin@gmail.com";
 ----
 
@@ -197,11 +197,11 @@ for every person with a full name that contains "Kevin":
 [,typeql]
 ----
 match
-    $p isa person,
-        has full-name $fn,
-        has email $e;
-    $fn contains "Kevin";
-    $e = "kevin@gmail.com";
+$p isa person,
+    has full-name $fn,
+    has email $e;
+$fn contains "Kevin";
+$e = "kevin@gmail.com";
 delete $p has $e;
 insert $p has email "kevin2@gmail.com";
 ----
@@ -221,11 +221,11 @@ for every person with a full name that contains "Kevin":
 [,typeql]
 ----
 match
-    $p isa person,
-        has full-name $fn,
-        has email $e;
-    $fn contains "Kevin";
-    $e = "kevin2@gmail.com";
+$p isa person,
+    has full-name $fn,
+    has email $e;
+$fn contains "Kevin";
+$e = "kevin2@gmail.com";
 delete $p has $e;
 ----
 
