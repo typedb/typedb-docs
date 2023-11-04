@@ -139,6 +139,7 @@ match
     $p isa person,
         has full-name $f,
         has email $e;
+get $p, $f, $e;
 ----
 
 [#_get_query__all_instances_and_attributes]
@@ -151,6 +152,7 @@ To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type
 match
     $p isa person,
         has $a;
+get $p, $a;
 ----
 
 [#_get_query__get_all_emails_of_kevin]
@@ -301,6 +303,10 @@ Press btn:[Enter] twice to send the query.
 ----
 commit
 ----
+
+=== Try queries
+
+Repeat the <<_query_examples>> from TypeDB Studio in TypeDB Console.
 
 == Stop TypeDB server
 
