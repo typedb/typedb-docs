@@ -139,6 +139,7 @@ match
     $p isa person,
         has full-name $f,
         has email $e;
+get $p, $f, $e;
 ----
 
 [#_get_query__all_instances_and_attributes]
@@ -151,6 +152,7 @@ To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type
 match
     $p isa person,
         has $a;
+get $p, $a;
 ----
 
 [#_get_query__get_all_emails_of_kevin]
@@ -302,6 +304,10 @@ Press btn:[Enter] twice to send the query.
 commit
 ----
 
+=== Try queries
+
+Repeat the <<_query_examples>> from TypeDB Studio in TypeDB Console.
+
 == Stop TypeDB server
 
 To stop a TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
@@ -317,20 +323,21 @@ After completing this guide, we recommend the following order of topics to conti
 
 //#todo Add another link to the TypeDB in 20 queries page
 
-1. Explore the Fundamentals section for essential information of how TypeDB works:
+. Explore more queries with the xref:home::25-queries.adoc[] page.
+. Browse the Fundamentals section for essential information of how TypeDB works:
 xref:typedb::fundamentals/types.adoc[],
 xref:typedb::fundamentals/queries.adoc[],
 xref:typedb::fundamentals/patterns.adoc[], and
 xref:typedb::fundamentals/inference.adoc[];
-2. Discover how to xref:typedb::development/connect.adoc[connect] to TypeDB, manage transactions, and
+. Discover how to xref:typedb::development/connect.adoc[connect] to TypeDB, manage transactions, and
 define a xref:typedb::development/schema.adoc[schema] of a database;
-3. Find out more about xref:typedb::development/write.adoc[writing] and
+. Find out more about xref:typedb::development/write.adoc[writing] and
 xref:typedb::development/read.adoc[reading] data from a TypeDB
 database and how to interpret a xref:typedb::development/response.adoc[response] to a query;
-4. Explore how to create an application with TypeDB, using any of the
+. Learn how to create an application with TypeDB, using any of the
    xref:clients:ROOT:overview.adoc#_typedb_drivers[TypeDB Drivers]:
     - xref:clients:ROOT:rust-driver.adoc[Rust Driver]
     - xref:clients:ROOT:python-driver.adoc[Python Driver];
     - xref:clients:ROOT:nodejs-driver.adoc[Node.js Driver];
     - xref:clients:ROOT:java-driver.adoc[Java Driver].
-5. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
+//. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
