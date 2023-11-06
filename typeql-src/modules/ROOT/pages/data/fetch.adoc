@@ -459,7 +459,7 @@ Then it fetches `full-name` and `email` attributes for users,
 all attributes for objects and `name` attributes for action.
 Finally, for every matched result it runs a subquery to convert `size-kb` to `size-mb`.
 
-The result is a stream/iterator of JSON strings. See example of such JSON string below.
+The result is a stream/iterator of JSON objects. See an example of such JSON object below.
 
 .Result example
 [,js]
