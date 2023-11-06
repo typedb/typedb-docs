@@ -326,7 +326,7 @@ typedb server  \
   --log.logger.traversal.output "[ file, stdout ]"
 ----
 
-== Cluster configuration
+== Enterprise cluster configuration
 
 Every server in a cluster has its own config file that contains a list of known servers in the cluster. A server in a
 cluster will not accept connections from servers that are not on the list.

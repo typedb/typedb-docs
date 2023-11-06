@@ -70,7 +70,7 @@ To pull the TypeDB Docker image, run:
 
 [,bash]
 ----
-docker pull vaticle/typedb-cluster:latest
+docker pull vaticle/typedb-enterprise:latest
 ----
 
 *Without an External Volume*
@@ -78,7 +78,7 @@ docker pull vaticle/typedb-cluster:latest
 For testing purposes, run:
 [,bash]
 ----
-docker run --name typedb -d -p 1729:1729 vaticle/typedb-cluster:latest
+docker run --name typedb -d -p 1729:1729 vaticle/typedb-enterprise:latest
 ----
 
 *NOTE*: Running the instance without specifying a volume does NOT save the data if the instance is killed.
@@ -89,7 +89,7 @@ To ensure that data is preserved even when the instance is killed or restarted, 
 
 [,bash]
 ----
-docker run --name typedb -d -v $(pwd)/db/:/opt/typedb-cluster-all-linux/server/db/ -p 1729:1729 vaticle/typedb-cluster:latest
+docker run --name typedb -d -v $(pwd)/db/:/opt/typedb-enterprise-all-linux/server/db/ -p 1729:1729 vaticle/typedb-enterprise:latest
 ----
 
 Having started the instance, the TypeDB Enterprise is expected to be running on port `1729` on your machine.
@@ -97,7 +97,7 @@ To interact with xref:clients:ROOT:console.adoc[], run:
 
 [,bash]
 ----
-docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux/typedb console'
+docker exec -ti typedb bash -c '/opt/typedb-enterprise-all-linux/typedb console'
 ----
 --
 ====
@@ -107,9 +107,9 @@ docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux/typedb console'
 === Starting
 
 If you have installed TypeDB using a package manager, to start the TypeDB Enterprise, open a terminal and run
-`typedb cluster`.
+`typedb enterprise`.
 
-Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb cluster`.
+Otherwise, if you have manually downloaded TypeDB, `cd` into the unzipped folder and run `./typedb enterprise`.
 
 === Stopping
 
@@ -126,7 +126,7 @@ one of those servers acts as a leader and the others are followers. Increasing t
 cluster's tolerance to failure: to tolerate N nodes failing, cluster needs to consist of `2N + 1` nodes.
 This section describes how you can set up a 3-node cluster (in this case, one node can fail and no data is lost).
 
-Each node binds to three ports: a client port which TypeDB client drivers connect to (`1729`), and two server ports
+Each node binds to three ports: a client port which TypeDB drivers connect to (`1729`), and two server ports
 (`1730` and `1731`) for server-to-server communication.
 
 For this tutorial, it's assumed that all three nodes are on the same virtual network and have the relevant ports open
@@ -143,7 +143,7 @@ This is how 3-node TypeDB Enterprise would be started on three separate machines
 [,bash]
 ----
 # On 10.0.0.1:
-$ ./typedb cluster \
+$ ./typedb enterprise \
     --server.address=10.0.0.1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \
@@ -158,7 +158,7 @@ $ ./typedb cluster \
     --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
 
 # On 10.0.0.2:
-$ ./typedb cluster \
+$ ./typedb enterprise \
     --server.address=10.0.0.2:1729 \
     --server.internal-address.zeromq=10.0.0.2:1730 \
     --server.internal-address.grpc=10.0.0.2:1731 \
@@ -173,7 +173,7 @@ $ ./typedb cluster \
     --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
 
 # On 10.0.0.3:
-$ ./typedb cluster \
+$ ./typedb enterprise \
     --server.address=10.0.0.3:1729 \
     --server.internal-address.zeromq=10.0.0.3:1730 \
     --server.internal-address.grpc=10.0.0.3:1731 \
@@ -198,7 +198,7 @@ In order to do so, the relevant external hostname should be passed as arguments 
 
 [,bash]
 ----
-bash $ ./typedb cluster \
+bash $ ./typedb enterprise \
 --server.address=external-host-1:1729 \
 --server.internal-address.zeromq=10.0.0.1:1730 \
 --server.internal-address.grpc=10.0.0.1:1731 \

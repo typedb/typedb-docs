@@ -35,7 +35,7 @@ Java::
 --
 [,java]
 ----
-TypeDBClient client = TypeDB.coreClient("0.0.0.0:1729");
+TypeDBDriver driver = TypeDB.coreDriver("0.0.0.0:1729");
 ----
 --
 
@@ -44,7 +44,7 @@ Python::
 --
 [,python]
 ----
-client = TypeDB.core_client("0.0.0.0:1729")
+driver = TypeDB.core_driver("0.0.0.0:1729")
 ----
 --
 
@@ -53,14 +53,14 @@ Node.js::
 --
 [,js]
 ----
-client = TypeDB.coreClient("0.0.0.0:1729");
+driver = TypeDB.coreDriver("0.0.0.0:1729");
 ----
 --
 ====
 
 [NOTE]
 ====
-To connect to TypeDB Cloud use `clusterClient`/`cluster_client` instead of `coreClient`/`core_client`.
+To connect to TypeDB Cloud use `enterpriseDriver`/`enterprise_driver` instead of `coreDriver`/`core_driver`.
 It requires a second argument of `TypeDBCredential` type.
 ====
 
@@ -120,15 +120,15 @@ Java::
 [,java]
 ----
 // create database
-client.databases().create("test-db");
+driver.databases().create("test-db");
 // get database schema
-client.databases().get("test-db").schema();
+driver.databases().get("test-db").schema();
 // get all databases
-client.databases().all();
+driver.databases().all();
 // check if database exists
-client.databases().contains("test-db");
+driver.databases().contains("test-db");
 // delete database
-client.databases().get("test-db").delete();
+driver.databases().get("test-db").delete();
 ----
 --
 
@@ -138,15 +138,15 @@ Python::
 [,python]
 ----
 # create database
-client.databases().create("test-db")
+driver.databases().create("test-db")
 # get database schema
-client.databases().get("test-db").schema()
+driver.databases().get("test-db").schema()
 # get all databases
-client.databases().all()
+driver.databases().all()
 # check if database exists
-client.databases().contains("test-db")
+driver.databases().contains("test-db")
 # delete database
-client.databases().get("test-db").delete()
+driver.databases().get("test-db").delete()
 ----
 --
 
@@ -156,15 +156,15 @@ Node.js::
 [,js]
 ----
 // create database
-await client.databases().create("test-db");
+await driver.databases().create("test-db");
 // get database schema
-await client.databases().get("test-db").schema();
+await driver.databases().get("test-db").schema();
 // get all databases
-await client.databases().all();
+await driver.databases().all();
 // check if database exists
-await client.databases().contains("test-db");
+await driver.databases().contains("test-db");
 // delete database
-await (await client.databases().get("test-db")).delete();
+await (await driver.databases().get("test-db")).delete();
 ----
 --
 ====
@@ -244,7 +244,7 @@ Java::
 --
 [,java]
 ----
-TypeDBSession session = client.session("iam", TypeDBSession.Type.DATA);
+TypeDBSession session = driver.session("iam", TypeDBSession.Type.DATA);
 ----
 --
 
@@ -253,7 +253,7 @@ Python::
 --
 [,python]
 ----
-session = client.session("iam", SessionType.DATA)
+session = driver.session("iam", SessionType.DATA)
 ----
 --
 
@@ -262,7 +262,7 @@ Node.js::
 --
 [,js]
 ----
-session = await client.session("iam", SessionType.DATA);
+session = await driver.session("iam", SessionType.DATA);
 ----
 --
 ====
@@ -354,7 +354,7 @@ transaction.query().insert(InsertQuery1);
 transaction.query().insert(InsertQuery2);
 transaction.query().insert(InsertQueryN);
 // commit changes
-transaction.commit();
+await transaction.commit();
 ----
 --
 ====
