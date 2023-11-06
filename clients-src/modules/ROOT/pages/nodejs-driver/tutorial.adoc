@@ -103,7 +103,7 @@ async function runBasicQueries(database) {
 
 	// Insert a person using a WRITE transaction
 	const writeTransaction = await session.transaction(TransactionType.WRITE);
-	const insertStream = await writeTransaction.query.insert('insert $x isa person, has email "x3@email.com";');
+	const insertStream = await writeTransaction.query.insert('insert $x isa person, has email "x@email.com";');
 	const conceptMaps = await insertStream.collect();
 	console.log("Inserted a person with ID: " + conceptMaps[0].get("x").iid);
 	// to persist changes, a write transaction must always be committed (closed)
