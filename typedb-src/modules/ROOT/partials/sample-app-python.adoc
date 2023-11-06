@@ -10,19 +10,19 @@ requests performed in the sample app.
 
 [,python]
 ----
-from typedb.client import TypeDB, SessionType, TransactionType, TypeDBOptions
+from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions
 from datetime import datetime
 
 print("IAM Sample App")
 
 print("Connecting to the server")
-with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
+with TypeDB.core_driver("0.0.0.0:1729") as driver:  # Connect to TypeDB server
     print("Connecting to the `iam` database")
-    with client.session("iam", SessionType.DATA) as session:  # Access data in the `iam` database as Session
+    with driver.session("iam", SessionType.DATA) as session:  # Access data in the `iam` database as Session
         print("Request #1: User listing")
         with session.transaction(TransactionType.READ) as transaction:  # Open transaction to read
-            typeql_read_query = "match $u isa user, has full-name $n, has email $e;"
-            iterator = transaction.query().match(typeql_read_query)  # Executing query
+            typeql_read_query = "match $u isa user, has full-name $n, has email $e; get;"
+            iterator = transaction.query().get(typeql_read_query)  # Executing query
             k = 0  # Reset counter
             for item in iterator:  # Iterating through results
                 k += 1
@@ -33,7 +33,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
         with session.transaction(TransactionType.READ) as transaction:  # Open transaction to read
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
                                 "$o isa object, has path $fp; $pa($o, $va) isa access; get $fp;"
-            iterator = transaction.query().match(typeql_read_query)  # Executing query
+            iterator = transaction.query().get(typeql_read_query)  # Executing query
             k = 0  # Reset counter
             for item in iterator:  # Iterating through results
                 k += 1
@@ -41,11 +41,11 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             print("Files found:", k)  # Print number of results
 
         print("\nRequest #3: Files that Kevin Morrison has view access to (with inference)")
-        with session.transaction(TransactionType.READ, TypeDBOptions.core().set_infer(True)) as transaction:  # Open transaction to read with inference
+        with session.transaction(TransactionType.READ, TypeDBOptions(infer=True)) as transaction:  # Open transaction to read with inference
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
                                 "$o isa object, has path $fp; $pa($o, $va) isa access; " \
                                 "$va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 0; limit 5;"
-            iterator = transaction.query().match(typeql_read_query)  # Executing query
+            iterator = transaction.query().get(typeql_read_query)  # Executing query
             k = 0  # Reset counter
             for item in iterator:  # Iterating through results
                 k += 1
@@ -54,7 +54,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
             typeql_read_query = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " \
                                 "$o isa object, has path $fp; $pa($o, $va) isa access; " \
                                 "$va isa action, has name 'view_file'; get $fp; sort $fp asc; offset 5; limit 5;"
-            iterator = transaction.query().match(typeql_read_query)  # Executing query
+            iterator = transaction.query().get(typeql_read_query)  # Executing query
             for item in iterator:  # Iterating through results
                 k += 1
                 print("File #" + str(k) + ": " + item.get("fp").get_value())

@@ -143,6 +143,7 @@ the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
 [,typeql]
 ----
 match $t sub thing;
+get;
 ----
 
 include::typedb::partial$thing-warning.adoc[]
@@ -155,6 +156,7 @@ Use a `subtype` pattern to find a specific type and all of its subtypes.
 [,typeql]
 ----
 match $o sub object;
+get;
 ----
 
 The above pattern finds the `object` type and all of its nested subtypes: direct (i.e., `resource` and `resource-collection`)
@@ -168,6 +170,7 @@ Use a `subtype` pattern with an exclamation mark (`!`) to find the direct subtyp
 [,typeql]
 ----
 match $o sub! object;
+get;
 ----
 
 The above query finds all direct subtypes of the `object` type (i.e., `resource` and `resource-collection`).
@@ -180,6 +183,7 @@ Use an `attribute subtype` pattern to find all attribute types with a specific v
 [,typeql]
 ----
 match $a sub attribute, value boolean;
+get;
 ----
 
 The above query finds all attribute types that have a `boolean` value type.
@@ -192,6 +196,7 @@ Use a `type` pattern to find a specific type, excluding any nested subtypes (dir
 [,typeql]
 ----
 match $o type object;
+get;
 ----
 
 The above query returns the `object` type, and none of its nested subtypes (direct or indirect).
@@ -204,6 +209,7 @@ Use a "players type in a relation" pattern to find all types that play a specifi
 [,typeql]
 ----
 match $p plays permission:subject;
+get;
 ----
 
 The above query finds all types that can play the `subject` role in the `permission` relation type.
@@ -216,6 +222,7 @@ Use an `owners of attribute type` pattern to find all types that own a specific 
 [,typeql]
 ----
 match $o owns full-name;
+get;
 ----
 
 The above query finds all types that own the `full-name` attribute.
@@ -228,6 +235,7 @@ Use the `role types in a relation` pattern to find all roles in a specific relat
 [,typeql]
 ----
 match permission relates $r;
+get;
 ----
 
 The above query finds all the roles defined in the `permission` relation type (`permission:access` and
@@ -253,6 +261,7 @@ Use an `instance` pattern with type `thing` to find all entities, relations, and
 [,typeql]
 ----
 match $t isa thing;
+get;
 ----
 
 For more information on `thing` type see the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
@@ -269,6 +278,7 @@ Use an `instance` pattern to find all entities of a specific entity type (and of
 [,typeql]
 ----
 match $p isa person;
+get;
 ----
 
 The above query returns all entities of the `person` entity and any of its subtypes.
@@ -289,6 +299,7 @@ Use an `instance` pattern with an exclamation mark (`!`) to find all entities of
 [,typeql]
 ----
 match $u isa! user;
+get;
 ----
 
 The above query finds all `user` entities. It excludes any entities whose type is a subtype of `user`,
@@ -302,6 +313,7 @@ specific type.
 [,typeql]
 ----
 match $p isa person, has full-name $n;
+get;
 ----
 
 The above query finds all `person` entities that own a `full-name` attribute.
@@ -314,6 +326,7 @@ attributes, each of a specific type.
 [,typeql]
 ----
 match $p isa person, has full-name $n, has email $email, has credential $cr;
+get;
 ----
 
 The above query finds all `person` entities that have `full-name`, `email`, and `credential` attributes.
@@ -326,6 +339,7 @@ with a specific value.
 [,typeql]
 ----
 match $p isa person, has full-name “Kevin Morrison”;
+get;
 ----
 
 The above query finds all `person` entities that have a `full-name` attribute with a value of "`Kevin Morrison`".
@@ -338,6 +352,7 @@ have a specific attribute whose value is within a specific range.
 [,typeql]
 ----
 match $f isa file, has size-kb < 100;
+get;
 ----
 
 However, if the attribute value itself is required in the query response, combine a `has-attribute statement`
@@ -379,6 +394,7 @@ specific attribute with a specific value.
 [,typeql]
 ----
 match $pe (subject: $p, access: $ac) isa permission, has validity true;
+get;
 ----
 
 The above query finds all `permission` relations which have a `validity` attribute whose value is `true`.
@@ -390,6 +406,7 @@ The relation variable can be omitted when only the role players are needed.
 [,typeql]
 ----
 match (subject: $p, access: $ac) isa permission;
+get;
 ----
 
 ===== With no role names
@@ -399,6 +416,7 @@ The names of a relation's roles can be omitted.
 [,typeql]
 ----
 match $pe ($p, $ac) isa permission;
+get;
 ----
 
 This will match any valid combination of roles.
@@ -415,6 +433,7 @@ Use a variable and an attribute value to find all attributes with a specific val
 [,typeql]
 ----
 match $x "Masako Holley";
+get;
 ----
 
 The above query finds all attributes with a value of "`Masako Holley`", regardless of their type.
@@ -436,6 +455,7 @@ Or use this compact form:
 [,typeql]
 ----
 match $n "Masako Holley" isa full-name;
+get;
 ----
 
 The above queries finds all `full-name` attributes with a value of `Masako Holley`.
@@ -447,6 +467,7 @@ Use an `attribute` pattern with `contains` keyword to find all attributes whose 
 [,typeql]
 ----
 match $name contains "Masako";
+get;
 ----
 
 The above query finds all attributes whose value contains the text `Masako`, regardless of their type.
@@ -459,6 +480,7 @@ the specified regular expression pattern.
 [,typeql]
 ----
 match $x like "(Masako Holley|Kevin Morrison)";
+get;
 ----
 
 The above query finds all attributes whose value is `Masako Holley` or `Kevin Morrison`, regardless of their type.

@@ -82,36 +82,36 @@ referenced by:
 * query
 * query_update
 
-== query_match
+== query_get
 
-image::diagram/query_match.png[query_match]
-
-referenced by:
-
-* query
-* query_match_aggregate
-* query_match_group
-* query_match_group_agg
-
-== query_match_aggregate
-
-image::diagram/query_match_aggregate.png[query_match_aggregate]
+image::diagram/query_match.png[query_get]
 
 referenced by:
 
 * query
+* query_get_aggregate
+* query_get_group
+* query_get_group_agg
 
-== query_match_group
+== query_get_aggregate
 
-image::diagram/query_match_group.png[query_match_group]
+image::diagram/query_match_aggregate.png[query_get_aggregate]
 
 referenced by:
 
 * query
 
-== query_match_group_agg
+== query_get_group
 
-image::diagram/query_match_group_agg.png[query_match_group_agg]
+image::diagram/query_match_group.png[query_get_group]
+
+referenced by:
+
+* query
+
+== query_get_group_agg
+
+image::diagram/query_match_group_agg.png[query_get_group_agg]
 
 referenced by:
 
@@ -123,7 +123,7 @@ image::diagram/modifiers.png[modifiers]
 
 referenced by:
 
-* query_match
+* query_get
 
 == filter
 
@@ -165,14 +165,14 @@ referenced by:
 
 * modifiers
 
-== match_aggregate
+== get_aggregate
 
-image::diagram/match_aggregate.png[match_aggregate]
+image::diagram/match_aggregate.png[get_aggregate]
 
 referenced by:
 
-* query_match_aggregate
-* query_match_group_agg
+* query_get_aggregate
+* query_get_group_agg
 
 == aggregate_method
 
@@ -180,16 +180,16 @@ image::diagram/aggregate_method.png[aggregate_method]
 
 referenced by:
 
-* match_aggregate
+* get_aggregate
 
-== match_group
+== get_group
 
-image::diagram/match_group.png[match_group]
+image::diagram/match_group.png[get_group]
 
 referenced by:
 
-* query_match_group
-* query_match_group_agg
+* query_get_group
+* query_get_group_agg
 
 == definables
 
@@ -221,7 +221,7 @@ referenced by:
 * pattern_negation
 * query_delete
 * query_insert
-* query_match
+* query_get
 * schema_rule
 
 == pattern
@@ -698,8 +698,8 @@ referenced by:
 * attribute
 * expression_base
 * filter
-* match_aggregate
-* match_group
+* get_aggregate
+* get_group
 * player
 * predicate_value
 * type
@@ -728,8 +728,8 @@ referenced by:
 * attribute
 * expression_base
 * filter
-* match_aggregate
-* match_group
+* get_aggregate
+* get_group
 * predicate_value
 * var_order
 * variable_value

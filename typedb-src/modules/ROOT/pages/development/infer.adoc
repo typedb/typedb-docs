@@ -40,7 +40,7 @@ For example (in Python):
 
 [,python]
 ----
-typedb_options = TypeDBOptions.core()  # Initialising a new set of options
+typedb_options = TypeDBOptions()  # Initialising a new set of options
 typedb_options.infer = True  # Enabling inference in this new set of options
 with session.transaction(TransactionType.READ, typedb_options) as transaction:
 ----
@@ -129,12 +129,12 @@ relation `$pe`.
 
 [,python]
 ----
-from typedb.client import TypeDB, SessionType, TransactionType, TypeDBOptions
+from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions
 
-with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
-    with client.session("iam", SessionType.DATA) as session:
+with TypeDB.core_driver("0.0.0.0:1729") as driver:  # Connect to TypeDB server
+    with driver.session("iam", SessionType.DATA) as session:
         print("\nRequest #1: Explain query — Files that Kevin Morrison has view access to (with explanation)")
-        typedb_options = TypeDBOptions.core()  # Initialising a new set of options
+        typedb_options = TypeDBOptions()  # Initialising a new set of options
         typedb_options.infer = True  # Enabling inference in this new set of options
         typedb_options.explain = True
         with session.transaction(TransactionType.READ, typedb_options) as transaction:
@@ -142,7 +142,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
                                 "$a isa action, has name 'view_file'; $ac(object: $o, action: $a) isa access;" \
                                 "$pe(subject: $p, access: $ac) isa permission; $p-fname = 'Kevin Morrison';" \
                                 "get $o-path; sort $o-path asc;"
-            iterator = transaction.query().match(typeql_read_query)
+            iterator = transaction.query().get(typeql_read_query)
             i = 0
             for item in iterator:  # Iterating through results
                 i += 1
@@ -171,7 +171,7 @@ with TypeDB.core_client("0.0.0.0:1729") as client:  # Connect to TypeDB server
 ////
 Use enumerate() instead of simple counter:
 
-    iterator = transaction.query().match(typeql_read_query)
+    iterator = transaction.query().get(typeql_read_query)
     for i, item in enumerate(iterator):  # Iterating through results
         explainable_relations = item.explainables().relations()
         for e, explainable in enumerate(explainable_relations):

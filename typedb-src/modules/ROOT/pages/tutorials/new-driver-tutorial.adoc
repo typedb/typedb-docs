@@ -17,7 +17,7 @@ to be confused by what is what.
 *TypeDB Client* -- any software that can connect to TypeDB and provide us with some kind of interface we
 can use: API, CLI, or GUI.
 
-*TypeDB Driver* -- a library that implements TypeDB Client RPC protocol to connect to TypeDB and provides an API to
+*TypeDB Driver* -- a library that implements TypeDB Driver RPC protocol to connect to TypeDB and provides an API to
 use it. Usually, Drivers are used as a part of other applications to connect to TypeDB.
 
 For convenience, the term TypeDB Clients includes all TypeDB Drivers.
@@ -54,8 +54,8 @@ Java::
 ----
 // TypeDB.java
 public class TypeDB {
-    public static TypeDBClient coreClient(String address) {
-        return new CoreClient(address);
+    public static TypeDBDriver coreDriver(String address) {
+        return new CoreDriver(address);
     }
 }
 ----
@@ -66,11 +66,11 @@ Python::
 --
 [,python]
 ----
-# typedb/client.py (named to allow importing from typedb.client)
+# typedb/driver.py (named to allow importing from typedb.driver)
 class TypeDB:
     @staticmethod
-    def core_client(address: str, parallelisation: int = 2) -> TypeDBClient:
-        return _CoreClient(address, parallelisation)
+    def core_driver(address: str, parallelisation: int = 2) -> TypeDBDriver:
+        return _CoreDriver(address, parallelisation)
 ----
 --
 
@@ -81,8 +81,8 @@ Node.js::
 ----
 // TypeDB.ts
 export namespace TypeDB {
-    export function coreClient(address: string): TypeDBClient {
-        return new CoreClient(address);
+    export function coreDriver(address: string): TypeDBDriver {
+        return new CoreDriver(address);
     }
 }
 ----
@@ -91,11 +91,11 @@ export namespace TypeDB {
 
 == Step 2: Database manager
 
-`TypeDBClient` is not yet defined. Create a new directory named `api/connection` and create a `TypeDBClient` file there:
+`TypeDBDriver` is not yet defined. Create a new directory named `api/connection` and create a `TypeDBDriver` file there:
 
 [NOTE]
 ====
-If the selected language doesn't have interfaces or abstract classes, make `TypeDB.coreClient` return `CoreClient`
+If the selected language doesn't have interfaces or abstract classes, make `TypeDB.coreDriver` return `CoreDriver`
 instead, and skip this step.
 ====
 
@@ -106,8 +106,8 @@ Java::
 --
 [,java]
 ----
-// api/connection/TypeDBClient.java
-public interface TypeDBClient extends AutoCloseable {
+// api/connection/TypeDBDriver.java
+public interface TypeDBDriver extends AutoCloseable {
     DatabaseManager databases();
     void close();
 }
@@ -119,10 +119,10 @@ Python::
 --
 [,python]
 ----
-# typedb/api/connection/client.py
+# typedb/api/connection/driver.py
 from abc import ABC, abstractmethod
 
-class TypeDBClient(ABC):
+class TypeDBDriver(ABC):
     @abstractmethod
     def databases(self) -> DatabaseManager:
         pass
@@ -146,8 +146,8 @@ Node.js::
 --
 [,js]
 ----
-// api/connection/TypeDBClient.ts
-export interface TypeDBClient {
+// api/connection/TypeDBDriver.ts
+export interface TypeDBDriver {
     readonly databases: DatabaseManager;
     close(): Promise<void>;
 }
@@ -157,11 +157,11 @@ export interface TypeDBClient {
 
 == Step 3: gRPC connection implementation
 
-The next step is to implement `connection/TypeDBClient` and its subclass `connection/core/CoreClient`.
+The next step is to implement `connection/TypeDBDriver` and its subclass `connection/core/CoreDriver`.
 Create the directory structure: `connection/core` in the root of the project.
 
-Name the classes depending on language conventions: in Java/TypeScript, `TypeDBClientImpl` and `CoreClient`; in Python,
-`_TypeDBClient` and `_CoreClient`.
+Name the classes depending on language conventions: in Java/TypeScript, `TypeDBDriverImpl` and `CoreDriver`; in Python,
+`_TypeDBDriver` and `_CoreDriver`.
 
 Ensure that gRPC is imported into the project, and refer to the https://grpc.io/docs/languages/[gRPC docs,window=_blank]
 to learn how to create a Channel -- the code varies by language.
@@ -179,11 +179,11 @@ Java::
 --
 [,java]
 ----
-// connection/TypeDBClientImpl.java
-public abstract class TypeDBClientImpl implements TypeDBClient {
+// connection/TypeDBDriverImpl.java
+public abstract class TypeDBDriverImpl implements TypeDBDriver {
     private final TypeDBDatabaseManagerImpl databaseMgr;
 
-    protected TypeDBClientImpl() {
+    protected TypeDBDriverImpl() {
         databaseMgr = new TypeDBDatabaseManagerImpl(this);
     }
 
@@ -206,12 +206,12 @@ public abstract class TypeDBClientImpl implements TypeDBClient {
     }
 }
 
-// connection/core/CoreClient.java
-public class CoreClient extends TypeDBClientImpl {
+// connection/core/CoreDriver.java
+public class CoreDriver extends TypeDBDriverImpl {
     private final ManagedChannel channel;
     private final TypeDBStub stub;
 
-    public CoreClient(String address) {
+    public CoreDriver(String address) {
         super();
         channel = NettyChannelBuilder.forTarget(address).usePlaintext().build();
         stub = CoreStub.create(channel);
@@ -235,8 +235,8 @@ Python::
 --
 [,python]
 ----
-# typedb/connection/client.py
-class _TypeDBClientImpl(TypeDBClient):
+# typedb/connection/driver.py
+class _TypeDBDriverImpl(TypeDBDriver):
     def __init__(self):
         pass
 
@@ -257,12 +257,12 @@ class _TypeDBClientImpl(TypeDBClient):
     def close(self) -> None:
         pass
 
-# typedb/connection/core/client.py
+# typedb/connection/core/driver.py
 from grpc import Channel, insecure_channel
 
-class _CoreClient(_TypeDBClientImpl):
+class _CoreDriver(_TypeDBDriverImpl):
     def __init__(self, address: str):
-        super(_CoreClient, self).__init__()
+        super(_CoreDriver, self).__init__()
         self._channel = insecure_channel(address)
         self._stub = _CoreStub(self._channel)
         self._databases = _TypeDBDatabaseManagerImpl(self._stub)
@@ -284,8 +284,8 @@ Node.js::
 --
 [,js]
 ----
-// connection/TypeDBClientImpl.ts
-export abstract class TypeDBClientImpl implements TypeDBClient {
+// connection/TypeDBDriverImpl.ts
+export abstract class TypeDBDriverImpl implements TypeDBDriver {
     private _isOpen: boolean;
 
     protected constructor() {
@@ -307,8 +307,8 @@ export abstract class TypeDBClientImpl implements TypeDBClient {
     }
 }
 
-// connection/core/CoreClient.ts
-export class CoreClient extends TypeDBClientImpl {
+// connection/core/CoreDriver.ts
+export class CoreDriver extends TypeDBDriverImpl {
     private readonly _stub: CoreStub;
     private readonly _databases: TypeDBDatabaseManagerImpl;
 
@@ -361,10 +361,10 @@ public interface DatabaseManager {
 import com.vaticle.typedb.protocol.CoreDatabaseProto;
 
 public class TypeDBDatabaseManagerImpl implements DatabaseManager {
-    private final TypeDBClientImpl client;
+    private final TypeDBDriverImpl driver;
 
-    public TypeDBDatabaseManagerImpl(TypeDBClientImpl client) {
-        this.client = client;
+    public TypeDBDatabaseManagerImpl(TypeDBDriverImpl driver) {
+        this.driver = driver;
     }
 
     @Override
@@ -373,7 +373,7 @@ public class TypeDBDatabaseManagerImpl implements DatabaseManager {
     }
 
     TypeDBStub stub() {
-        return client.stub();
+        return driver.stub();
     }
 }
 
@@ -474,7 +474,7 @@ Node.js::
 --
 [,js]
 ----
-// api/connection/database/TypeDBClient.ts
+// api/connection/database/TypeDBDriver.ts
 export interface DatabaseManager {
     create(name: string): Promise<void>;
 }
@@ -485,8 +485,8 @@ import { CoreDatabaseManager } from "typedb-protocol/core/core_database_pb";
 export class TypeDBDatabaseManagerImpl implements DatabaseManager {
     private readonly _stub: TypeDBStub;
 
-    constructor(client: TypeDBStub) {
-        this._stub = client;
+    constructor(driver: TypeDBStub) {
+        this._stub = driver;
     }
 
     public create(name: string): Promise<void> {
@@ -500,7 +500,7 @@ export class TypeDBDatabaseManagerImpl implements DatabaseManager {
 
 // common/rpc/TypeDBStub.ts
 import { CoreDatabaseManager } from "typedb-protocol/core/core_database_pb";
-import { TypeDBClient } from "typedb-protocol/core/core_service_grpc_pb";
+import { TypeDBDriver } from "typedb-protocol/core/core_service_grpc_pb";
 
 export abstract class TypeDBStub {
     databasesCreate(req: CoreDatabaseManager.Create.Req): Promise<void> {
@@ -512,22 +512,22 @@ export abstract class TypeDBStub {
         });
     }
 
-    abstract stub(): TypeDBClient;
+    abstract stub(): TypeDBDriver;
 }
 
 // connection/core/CoreStub.ts
 import { ChannelCredentials } from "@grpc/grpc-js";
-import { TypeDBClient } from "typedb-protocol/core/core_service_grpc_pb";
+import { TypeDBDriver } from "typedb-protocol/core/core_service_grpc_pb";
 
 export class CoreStub extends TypeDBStub {
-    private readonly _stub: TypeDBClient;
+    private readonly _stub: TypeDBDriver;
 
     constructor(address: string) {
         super();
-        this._stub = new TypeDBClient(address, ChannelCredentials.createInsecure());
+        this._stub = new TypeDBDriver(address, ChannelCredentials.createInsecure());
     }
 
-    stub(): TypeDBClient {
+    stub(): TypeDBDriver {
         return this._stub;
     }
 
@@ -552,9 +552,9 @@ Java::
 --
 [,java]
 ----
-public static void typeDBClientTest() {
-    try (TypeDBClient client = TypeDB.coreClient("127.0.0.1:1729")) {
-        client.databases().create("typedb");
+public static void typeDBDriverTest() {
+    try (TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729")) {
+        driver.databases().create("typedb");
     }
 }
 ----
@@ -565,9 +565,9 @@ Python::
 --
 [,python]
 ----
-def typedb_client_test():
-    with TypeDB.core_client("127.0.0.1:1729") as client:
-        client.databases().create("typedb")
+def typedb_driver_test():
+    with TypeDB.core_driver("127.0.0.1:1729") as driver:
+        driver.databases().create("typedb")
 ----
 --
 
@@ -576,12 +576,12 @@ Node.js::
 --
 [,js]
 ----
-async function typeDBClientTest() {
+async function typeDBDriverTest() {
     try {
-        const client = TypeDB.coreClient("127.0.0.1:1729");
-        await client.databases().create("typedb");
+        const driver = TypeDB.coreDriver("127.0.0.1:1729");
+        await driver.databases().create("typedb");
     } finally {
-        client?.close();
+        driver?.close();
     }
 }
 ----

@@ -5,11 +5,11 @@
 
 A TypeDB Client is any software that can connect to a TypeDB.
 
-All TypeDB Clients use https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank] protocol based on
+All TypeDB Clients use https://github.com/vaticle/typedb-protocol[TypeDB Driver RPC,window=_blank] protocol based on
 gRPC framework under the hood to communicate with a TypeDB
 server and to provide more user-friendly interface: API, GUI, or CLI.
 
-To build a custom application capable of connecting to TypeDB via *TypeDB Client RPC* protocol, we can use one of the
+To build a custom application capable of connecting to TypeDB via *TypeDB Driver RPC* protocol, we can use one of the
 existing libraries implementing it, called <<_typedb_drivers,TypeDB Drivers>>, or we can implement it ourselves as a
 xref:new-driver.adoc[new driver].
 
@@ -69,7 +69,7 @@ connections, sessions and transactions, as well as submitting queries and readin
 [#_typedb_drivers]
 == TypeDB Drivers
 
-A TypeDB Driver is a library that implements https://github.com/vaticle/typedb-protocol[TypeDB Client RPC,window=_blank]
+A TypeDB Driver is a library that implements https://github.com/vaticle/typedb-protocol[TypeDB Driver RPC,window=_blank]
 protocol and provides <<_driver_api,TypeDB Driver API>>. TypeDB Drivers are available for some of the most popular
 programming languages, allowing us to build applications that connect to a TypeDB database easily.
 
@@ -91,9 +91,9 @@ or machine interface, opening and managing connections, sessions, and transactio
 submitting queries, processing responses, load-balancing (TypeDB Enterprise & TypeDB Cloud only), and authentication
 (TypeDB Enterprise & TypeDB Cloud only).
 
-The following diagram illustrates the structure of a typical TypeDB Client.
+The following diagram illustrates the structure of a typical TypeDB Driver.
 
-image::client-structure.png[Structure of a TypeDB Client]
+image::client-structure.png[Structure of a TypeDB Dirver]
 
 .See the dependency graph
 [%collapsible]
@@ -101,13 +101,12 @@ image::client-structure.png[Structure of a TypeDB Client]
 image::package-structure.png[]
 ====
 
-Simply put, the main components of any TypeDB Client are the classes and methods to establish a connection to a TypeDB
+Simply put, the main components of any TypeDB Driver are the classes and methods to establish a connection to a TypeDB
 database, execute queries and process responses.
 
 [NOTE]
 ====
-After the release of the Rust Driver we shall see the Java, Python, and Node.js drivers re-implemented as wrappers
-on top of the Rust driver.
+As of version 2.24.x the Java, Python, and C drivers re-implemented as wrappers on top of the Rust driver via an FFI interface.
 ====
 
 [#_driver_api]

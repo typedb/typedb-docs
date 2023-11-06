@@ -60,12 +60,12 @@ Copyright (C) 2022 Vaticle
 
 === TypeDB Cloud / TypeDB Enterprise
 
-There is a slight difference when accessing TypeDB cluster (TypeDB Cloud or TypeDB Enterprise) as it requires
-additional parameters (`cluster`, `username`, `password`, etc.):
+There is a slight difference when accessing TypeDB Enterprise (in TypeDB Cloud or on-premise TypeDB Enterprise) as it requires
+additional parameters (`enterprise`, `username`, `password`, etc.):
 
 [,bash]
 ----
-./typedb console --cluster=127.0.0.1:1729 --username=<username> --password --tls-enabled=<true|false>
+./typedb console --enterprise=127.0.0.1:1729 --username=<username> --password --tls-enabled=<true|false>
 ----
 
 As a result we get a password prompt.
@@ -149,7 +149,7 @@ We can provide several command-line arguments when running Console in the termin
 Default value: `localhost:1729`. +
 (*Not for the TypeDB Enterprise & TypeDB Cloud*)
 
-| `--cluster=<address>`
+| `--enterprise=<address>`
 |
 | Address to which Console will connect to. +
 (*TypeDB Enterprise & TypeDB Cloud only*)
@@ -462,7 +462,7 @@ transaction test data write
     insert $x isa person;
     commit
 transaction test data read
-    match $x isa person;
+    match $x isa person; get;
     close
 database delete test
 ----
@@ -490,7 +490,7 @@ answers: 1, duration: 87 ms
 ++ commit
 Transaction changes committed
 + transaction test data read
-++ match $x isa person;
+++ match $x isa person; get;
 { $x iid 0x966e80018000000000000000 isa person; }
 answers: 1, duration: 25 ms
 ++ close
