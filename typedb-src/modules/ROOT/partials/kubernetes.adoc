@@ -46,6 +46,9 @@ java -jar encryption-gen.jar --ca-common-name=<x500-common-name> --hostname=<ext
 
 _Please note that an external certificate is always bound to URL address, not IP address._
 
+Ensure the external certificate (`<external-hostname>` in the command above) is bound to `\*.<helm-release-name>`.
+For example, for a Helm release named `typedb-enterprise`, the certificate needs to be bound to `*.typedb-enterprise`.
+
 The `encryption-gen.jar` generates three directories:
 
 * `internal-ca` and `external-ca` -- The CA keypairs stored only in case you want to sign more certificates in the future.
@@ -57,23 +60,23 @@ By default, they are stored in `/server/conf/encryption` inside the TypeDB Enter
 For example, `typedb-enterprise-all-mac-x86_64-2.24.17/server/conf/encryption`.
 The path to each file is configured in the `encryption` section of the TypeDB Enterprise config file.
 
-Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets:
+Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets.
+Navigate into the directory with cluster certificates and run:
 
 [,bash]
 ----
-kubectl create secret generic typedb-enterprise \
-   --from-file external-hostname/ext-grpc-certificate.pem \
-   --from-file external-hostname/ext-grpc-private-key.pem \
-   --from-file external-hostname/ext-grpc-root-ca.pem \
-   --from-file external-hostname/int-grpc-certificate.pem \
-   --from-file external-hostname/int-grpc-private-key.pem \
-   --from-file external-hostname/int-grpc-root-ca.pem \
-   --from-file external-hostname/int-zmq-private-key \
-   --from-file external-hostname/int-zmq-public-key
+kubectl create secret generic ext-grpc \
+  --from-file ext-grpc-certificate.pem \
+  --from-file ext-grpc-private-key.pem \
+  --from-file ext-grpc-root-ca.pem
+kubectl create secret generic int-grpc \
+    --from-file int-grpc-certificate.pem \
+    --from-file int-grpc-private-key.pem \
+    --from-file int-grpc-root-ca.pem
+kubectl create secret generic int-zmq \
+  --from-file int-zmq-private-key \
+  --from-file int-zmq-public-key
 ----
-
-Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-enterprise`)
-and contain all the keys from the folder named after external domain.
 
 == K8s deployment
 
@@ -106,14 +109,15 @@ helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,en
 With encryption::
 +
 --
-Ensure the external certificate is bound to `\*.<helm-release-name>`.
-For example, for a Helm release named `typedb-enterprise`, the certificate needs to be bound to `*.typedb-enterprise`.
 
 To enable in-flight encryption for your private cluster, make sure the `encrypted` flag is set to `true`:
 
 [,bash]
 ----
-helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=true"
+helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=true" \
+--set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
+--set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
+--set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
 ----
 --
 ====
@@ -150,8 +154,8 @@ Deploy:
 helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true"
 ----
 
-Once the deployment has completed, the servers would be accessible via public IPs/hostnames assigned to the Kubernetes
-`LoadBalancer` services.
+Once the deployment has been completed,
+the servers can be accessible via public IPs/hostnames assigned to the Kubernetes `LoadBalancer` services.
 The addresses can be obtained with this command:
 
 [,bash]
@@ -165,9 +169,9 @@ With encryption::
 +
 --
 To enable in-flight encryption, the servers must be assigned URL addresses.
-This restriction comes from the fact that external certificates must be bound to a domain name, and not IP address.
+This restriction comes from the fact that external certificates must be bound to a domain name, and not an IP address.
 
-Given a "domain name" and "Helm release name", The address structure of the servers will follow the specified format:
+Given a "domain name" and a "Helm release name", the address structure of the servers will follow the specified format:
 
 [,bash]
 ----
@@ -179,12 +183,16 @@ bound to the address.
 For example, you can generate an external certificate using wildcard, i.e.,
 `*.<helm-release-name>.<domain-name>`, that can be shared by all servers.
 
-Once the domain name and external certificate has been configured accordingly, we can proceed to perform the deployment.
+Once the domain name and external certificate have been configured accordingly,
+we can proceed to perform the deployment.
 Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly.
 
 [,bash]
 ----
-helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true,encrypted=true,domain=<domain-name>"
+helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true,encrypted=true,domain=<domain-name>" \
+--set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
+--set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
+--set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
 ----
 
 After the deployment has been completed, we need to configure these URL addresses to correctly point to the servers.
@@ -203,8 +211,9 @@ typedb-enterprise-2.typedb-enterprise.example.com => <public IP/hostname of type
 [#_deploying_a_public_cluster_minikube]
 === Deploying a Public Cluster with Minikube
 
+_Please note that in-flight encryption cannot be enabled in this configuration._
+
 This deployment mode is primarily intended for development purposes as it runs a K8s cluster locally.
-Please note that in-flight encryption _cannot_ be enabled in this configuration.
 
 ////
 Certain adjustments will be made compared to other deployment modes:
@@ -236,7 +245,7 @@ helm install vaticle/typedb-enterprise --generate-name \
 ----
 ////
 
-Once the deployment has completed, enable tunneling from another terminal:
+Once the deployment has been completed, enable tunneling from another terminal:
 
 [,bash]
 ----
@@ -264,13 +273,14 @@ kubectl exec --stdin --tty typedb-enterprise-0 -- /bin/bash
 
 == K8s cluster removal
 
-To stop and remove K8s cluster from Kubernetes, run:
+To stop and remove a K8s cluster from Kubernetes, use the `helm uninstall` with the helm release name:
 
 [,bash]
 ----
 helm uninstall typedb-enterprise
 ----
 
+[#_helm_configuration_reference]
 == Helm configuration reference
 
 Configurable settings for Helm package include:
@@ -306,6 +316,10 @@ Configurable settings for Helm package include:
 | `exposed`
 | `false`
 | Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network)
+
+| `encrypted`
+| `true`
+| Whether TypeDB Enterprise supports uses an in-flight encryption.
 
 | `javaopts`
 | `null`
@@ -347,18 +361,27 @@ executing `kubectl get secret/private-docker-hub`. Correct state looks like this
 === One or more pods of TypeDB Enterprise are stuck in `Pending` state
 
 This might mean pods requested more resources than available.
-To check if that's the case, run
-`kubectl describe pod/typedb-enterprise-0` on a stuck pod (e.g. `typedb-enterprise-0`).
+To check if that's the case, run on a stuck pod (e.g. `typedb-enterprise-0`):
+
+[,bash]
+----
+`kubectl describe pod/typedb-enterprise-0`
+----
+
 Error message similar to
 `0/1 nodes are available: 1 Insufficient cpu.` or
 `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
-indicates that `cpu` or `storage.size` values need to be decreased.
+indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>> need to be decreased.
 
 === One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
 
 This might indicate any misconfiguration of TypeDB Enterprise.
-Please obtain the logs by executing
-`kubectl logs pod/typedb-enterprise-0` and share them with TypeDB Enterprise developers.
+Please check the logs:
+
+[,bash]
+----
+kubectl logs pod/typedb-enterprise-0
+----
 
 = Current Limitations
 
