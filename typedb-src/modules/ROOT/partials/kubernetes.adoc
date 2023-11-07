@@ -17,6 +17,9 @@ kubectl create secret docker-registry private-docker-hub --docker-server=https:/
 --docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
 ----
 
+You can use an
+https://hub.docker.com/settings/security?generateToken=true[access token,window=_blank] instead of password.
+
 Next, add the Vaticle Helm repo:
 
 [,bash]
@@ -72,7 +75,7 @@ kubectl create secret generic typedb-enterprise \
 Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-enterprise`)
 and contain all the keys from the folder named after external domain.
 
-== Kubernetes deployment
+== K8s deployment
 
 There are three alternative deployment modes that you can choose from:
 
@@ -198,12 +201,12 @@ typedb-enterprise-2.typedb-enterprise.example.com => <public IP/hostname of type
 ====
 
 [#_deploying_a_public_cluster_minikube]
-=== Deploying a Public Cluster (Minikube)
+=== Deploying a Public Cluster with Minikube
 
-Use this deployment mode for setting up a development cluster on your local machine.
-However, please note that in-flight encryption _cannot_ be enabled in this configuration.
+This deployment mode is primarily intended for development purposes as it runs a K8s cluster locally.
+Please note that in-flight encryption _cannot_ be enabled in this configuration.
 
-This deployment mode is primarily intended for development purposes.
+////
 Certain adjustments will be made compared to other deployment modes:
 
 * Minikube only has a single K8s node, so `singlePodPerNode` needs to be set to `false`
@@ -214,16 +217,24 @@ the `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
   as total storage required is `storage.size` multiplied by `replicas`.
   In our example, the total storage requirement is 30Gi.
+////
 
 Ensure to have https://minikube.sigs.k8s.io/[Minikube] installed and running.
 
-Deploy, adjusting the parameters for CPU and storage:
+Deploy, adjusting the parameters for CPU and storage to run on a local machine:
 
+[,bash]
+----
+helm install typedb-enterprise vaticle/typedb-enterprise --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
+----
+
+////
 [,bash]
 ----
 helm install vaticle/typedb-enterprise --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ----
+////
 
 Once the deployment has completed, enable tunneling from another terminal:
 
@@ -231,9 +242,36 @@ Once the deployment has completed, enable tunneling from another terminal:
 ----
 minikube tunnel
 ----
-//#todo Add check
 
-== Configuration Reference
+== K8s cluster status check
+
+To check the status of a cluster:
+
+[,bash]
+----
+kubectl describe sts typedb-enterprise
+----
+
+It should show `Pods Status` field as `Running` for all the nodes after a few minutes
+after deploying a TypeDB Enterprise cluster.
+
+You can connect to a pod:
+
+[,bash]
+----
+kubectl exec --stdin --tty typedb-enterprise-0 -- /bin/bash
+----
+
+== K8s cluster removal
+
+To stop and remove K8s cluster from Kubernetes, run:
+
+[,bash]
+----
+helm uninstall typedb-enterprise
+----
+
+== Helm configuration reference
 
 Configurable settings for Helm package include:
 
@@ -247,15 +285,15 @@ Configurable settings for Helm package include:
 
 | `replicas`
 | `3`
-| Number of TypeDB Enterprise nodes to run
+| Number of TypeDB Enterprise servers to run
 
 | `cpu`
 | `7`
-| How many CPUs should be allocated for each TypeDB Enterprise node
+| How many CPUs should be allocated for each TypeDB Enterprise server
 
 | `storage.size`
 | `100Gi`
-| How much disk space should be allocated for each TypeDB Enterprise node
+| How much disk space should be allocated for each TypeDB Enterprise server
 
 | `storage.persistent`
 | `true`
@@ -282,7 +320,14 @@ Configurable settings for Helm package include:
 | Hostname and port of a Logstash daemon accepting log records
 |===
 
-== Troubleshooting
+== K8s troubleshooting
+
+To see pod details for the `typedb-enterprise-0` pod:
+
+[,bash]
+----
+kubectl describe pod typedb-enterprise-0
+----
 
 The following are the common error scenarios and how to troubleshoot them.
 
@@ -301,19 +346,20 @@ executing `kubectl get secret/private-docker-hub`. Correct state looks like this
 
 === One or more pods of TypeDB Enterprise are stuck in `Pending` state
 
-This might mean pods requested more resources than available. To check if that's the case, run
-`kubectl describe pod/typedb-enterprise-0` on a stuck pod (e.g. `typedb-enterprise-0`). Error message similar to
+This might mean pods requested more resources than available.
+To check if that's the case, run
+`kubectl describe pod/typedb-enterprise-0` on a stuck pod (e.g. `typedb-enterprise-0`).
+Error message similar to
 `0/1 nodes are available: 1 Insufficient cpu.` or
 `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
 indicates that `cpu` or `storage.size` values need to be decreased.
 
 === One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
 
-This might indicate any misconfiguration of TypeDB Enterprise. Please obtain the logs by executing
+This might indicate any misconfiguration of TypeDB Enterprise.
+Please obtain the logs by executing
 `kubectl logs pod/typedb-enterprise-0` and share them with TypeDB Enterprise developers.
 
-== Current Limitations
+= Current Limitations
 
-Deployment has several limitations which shall be resolved in the future:
-
-* TypeDB Enterprise doesn't support dynamic reconfiguration of node count without restarting all the nodes.
+TypeDB Enterprise doesn't support dynamic reconfiguration of server count without restarting all the servers.

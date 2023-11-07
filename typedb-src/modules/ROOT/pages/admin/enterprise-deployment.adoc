@@ -263,8 +263,6 @@ All nodes must be shut down independently in the same way.
 
 == Deploying with Kubernetes
 
-So far, we have learned how to download, install and run TypeDB Enterprise in an ad hoc way.
-
-Next, we'll learn how to deploy a 3-node TypeDB Enterprise onto Kubernetes using https://helm.sh/[Helm] package manager.
+To deploy a TypeDB Enterprise cluster onto Kubernetes, we can use https://helm.sh/[Helm] package manager.
 
 include::partial$kubernetes.adoc[leveloffset=+1]
