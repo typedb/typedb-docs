@@ -1,3 +1,11 @@
+== Requirements
+:!example-caption:
+:tabs-sync-option:
+
+* `kubectl` installed and configured for your Kubernetes deployment.
+  You can use https://minikube.sigs.k8s.io/docs/start/[minikube] for local testing.
+* `helm` installed.
+
 [#_initial_setup]
 == Initial Setup
 
@@ -16,7 +24,8 @@ Next, add the Vaticle Helm repo:
 helm repo add vaticle https://repo.vaticle.com/repository/helm/
 ----
 
-*Create in-flight encryption certificates (optional)*
+== Encryption setup (optional)
+//*Create in-flight encryption certificates (optional)*
 
 This step is necessary if you wish to deploy TypeDB Enterprise with in-flight encryption support.
 There are two certificates that need to be configured: external certificate (TLS) and internal certificate (Curve).
@@ -24,28 +33,19 @@ The certificates need to be generated and then added to Kubernetes Secrets.
 
 An external certificate can either be obtained from trusted third party providers such as
 https://www.cloudflare.com/[CloudFlare] or https://letsencrypt.org/[letsencrypt.org].
-Alternatively, it is also possible to generate it manually with
-https://github.com/FiloSottile/mkcert/releases[`mkcert`]:
+Alternatively, it is also possible to generate it manually with a tool we provide with TypeDB Enterprise
+in the `tool` directory:
 
 [,bash]
 ----
- $ mkcert -cert-file rpc-certificate.pem -key-file rpc-private-key.pem <server-url-address>"
+java -jar encryption-gen.jar --ca-common-name=<x500-common-name> --hostname=<external-hostname>,<internal-hostname>
 ----
 
-Please note that an external certificate is always bound to URL address, not IP address.
-
-The internal certificate can be generated using the `create-encryption-mq-key.sh` tool bundled with TypeDB Enterprise
-distribution, which can be downloaded from
-https://repo.vaticle.com/#browse/browse:private-artifact:vaticle_typedb_enterprise[repo.vaticle.com]:
-
-[,bash]
-----
- $ # unpack distribution of TypeDB Enterprise into `dist` folder
- $ ./dist/typedb-enterprise-all-<platform>-<version>/tool/create-encryption-mq-key.sh
-----
+_Please note that an external certificate is always bound to URL address, not IP address._
 
 Once the external and internal certificates are all generated, we can proceed to upload it to Kubernetes Secrets:
 
+.old
 [,bash]
 ----
  $ kubectl create secret generic typedb-enterprise \
@@ -56,54 +56,79 @@ Once the external and internal certificates are all generated, we can proceed to
    --from-file mq-public-key
 ----
 
+.new
+[,bash]
+----
+kubectl create secret generic typedb-enterprise \
+   --from-file external-ca/external-ca-certificate.pem \
+   --from-file external-ca/external-ca-private-key.pem \
+   --from-file internal-ca/internal-ca-certificate.pem \
+   --from-file internal-ca/internal-ca-private-key.pem \
+----
+//#todo Check - no root CA
+
 Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-enterprise`)
-and contain exactly these keys (`rpc-private-key.pem`, `rpc-certificate.pem`, `rpc-root-ca.pem`, `mq-secret-key`,
-`mq-public-key`).
+and contain exactly these keys (
+`external-ca-certificate.pem`,
+`external-ca-private-key.pem`,
+`internal-ca-certificate.pem`,
+`internal-ca-private-key.pem`).
 
-== Deployment Steps
+== Kubernetes deployment
 
-Once done, there are three alternative deployment modes that you can choose from: "Private Cluster", "Public Cluster",
-and "Public Cluster (Minikube)". Please see the explanation of each mode below in order to decide which one works best
-for your requirements.
+There are three alternative deployment modes that you can choose from:
 
+* <<_deploying_a_private_cluster,Private Cluster>> -- For applications (clients) that are located within the same Kubernetes network as the cluster.
+* <<_deploying_a_public_cluster,Public Cluster>> -- To access the cluster from outside the Kubernetes network.
+* <<_deploying_a_public_cluster_minikube,Public Cluster (Minikube)>> -- To deploy a development cluster on your local machine.
+
+[#_deploying_a_private_cluster]
 === Deploying a Private Cluster
 
 This deployment mode is preferred if your application is located within the same Kubernetes network as the cluster.
-In order to select this mode, ensure that the `exposed` flag is set to `false`.
+In order to deploy in this mode, ensure that the `exposed` flag is set to `false`.
 
-*Deploying without in-flight encryption*
+.In-flight encryption
+[tabs]
+====
+Without encryption::
++
+--
+Deploy:
 
 [,bash]
 ----
 helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=false"
 ----
+--
 
-Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes
-network, ie., `typedb-enterprise-0.typedb-enterprise`, `typedb-enterprise-1.typedb-enterprise`, and
-`typedb-enterprise-2.typedb-enterprise`.
+With encryption::
++
+--
+Ensure the external certificate is bound to `\*.<helm-release-name>`.
+For example, for a Helm release named `typedb-enterprise`, the certificate needs to be bound to `*.typedb-enterprise`.
 
-*Deploying with in-flight encryption*
-
-Should you need to enable in-flight encryption for your private cluster, make sure the `encrypted` flag is set to `true`.
-
-Also make sure that the external certificate is bound to `*.<helm-release-name>`. For example, for a Helm release
-named `typedb-enterprise`, the certificate needs to be bound to `*.typedb-enterprise`.
-
-Once done, let's perform the deployment:
+To enable in-flight encryption for your private cluster, make sure the `encrypted` flag is set to `true`:
 
 [,bash]
 ----
 helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=true"
 ----
+--
+====
 
-Once the deployment has been completed, the servers would be accessible via the internal hostname within the Kubernetes
-network, ie., `typedb-enterprise-0.typedb-enterprise`, `typedb-enterprise-1.typedb-enterprise`, and
+The servers will be accessible via the internal hostname within the Kubernetes network,
+i.e.,
+`typedb-enterprise-0.typedb-enterprise`,
+`typedb-enterprise-1.typedb-enterprise`, and
 `typedb-enterprise-2.typedb-enterprise`.
 
+[#_deploying_a_public_cluster]
 === Deploying a Public Cluster
 
-If you need to access the cluster from outside of Kubernetes, then use this deployment mode. For example, this would be
-the suitable mode if you need to access the cluster from Studio or Console running on your local machine.
+This deployment mode is preferred if you need to access the cluster from outside the Kubernetes network.
+For example,
+if you need to access the cluster from TypeDB Studio or TypeDB Console running on your local machine.
 
 Deploying a public cluster can be done by setting the `exposed` flag to `true`.
 
@@ -111,7 +136,13 @@ Technically, the servers are made public by binding each one to a `LoadBalancer`
 IP/hostname. The IP/hostname assignments are done automatically by the cloud provider that the Kubernetes platform is
 running on.
 
-*Deploying without in-flight encryption*
+.In-flight encryption
+[tabs]
+====
+Without encryption::
++
+--
+Deploy:
 
 [,bash]
 ----
@@ -119,19 +150,21 @@ helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true"
 ----
 
 Once the deployment has completed, the servers would be accessible via public IPs/hostnames assigned to the Kubernetes
-`LoadBalancer` services. The addresses can obtained with this command:
+`LoadBalancer` services.
+The addresses can be obtained with this command:
 
 [,bash]
 ----
 kubectl get svc -l external-ip-for=typedb-enterprise \
 -o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
 ----
+--
 
-*Deploying with in-flight encryption*
-
-If you also want to enable in-flight encryption, there is an important requirement that must be adhered: the servers
-must be assigned URL addresses. This restriction comes from the fact that external certificate must be bound to a
-domain name, and not IP address.
+With encryption::
++
+--
+To enable in-flight encryption, the servers must be assigned URL addresses.
+This restriction comes from the fact that external certificates must be bound to a domain name, and not IP address.
 
 Given a "domain name" and "Helm release name", The address structure of the servers will follow the specified format:
 
@@ -141,13 +174,12 @@ typedb-enterprise-{0..n}.<helm-release-name>.<domain-name>
 ----
 
 The format must be taken into account when generating the external certificate of all servers such that they're properly
-bound to the address. For example, you can generate an external certificate using wildcard, i.e.,
+bound to the address.
+For example, you can generate an external certificate using wildcard, i.e.,
 `*.<helm-release-name>.<domain-name>`, that can be shared by all servers.
 
 Once the domain name and external certificate has been configured accordingly, we can proceed to perform the deployment.
 Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly.
-
-Once done, let's perform the deployment:
 
 [,bash]
 ----
@@ -160,21 +192,34 @@ trusted DNS provider:
 
 [,bash]
 ----
-typedb-enterprise-0.typedb-enterprise.example.com => public IP/hostname of typedb-enterprise-0 service
-typedb-enterprise-1.typedb-enterprise.example.com => public IP/hostname of typedb-enterprise-1 service
-typedb-enterprise-2.typedb-enterprise.example.com => public IP/hostname of typedb-enterprise-2 service
+typedb-enterprise-0.typedb-enterprise.example.com => <public IP/hostname of typedb-enterprise-0 service>
+typedb-enterprise-1.typedb-enterprise.example.com => <public IP/hostname of typedb-enterprise-1 service>
+typedb-enterprise-2.typedb-enterprise.example.com => <public IP/hostname of typedb-enterprise-2 service>
 ----
+--
+====
 
+[#_deploying_a_public_cluster_minikube]
 === Deploying a Public Cluster (Minikube)
 
-Use this deployment mode for setting up a development cluster in your local machine. However, please note that in-flight
-encryption _cannot_ be enabled in this configuration.
+Use this deployment mode for setting up a development cluster on your local machine.
+However, please note that in-flight encryption _cannot_ be enabled in this configuration.
 
-First, please make sure to have https://minikube.sigs.k8s.io/[Minikube] installed and running.
+This deployment mode is primarily intended for development purposes.
+Certain adjustments will be made compared to other deployment modes:
 
-Once done, let's perform the deployment. In this example, we're adjusting various CPU and storage parameters to
-something smaller than the default, taking into account that resources may be more limited given that the cluster will
-run on a Minikube instance on your local machine.
+* Minikube only has a single K8s node, so `singlePodPerNode` needs to be set to `false`
+* Minikube's K8s node only has as much CPUs as the local machine:
+`kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
+Therefore, for deploying a cluster with three servers of TypeDB Enterprise to a node with 8 vCPUs,
+the `cpu` can be set to `2` at maximum.
+* Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
+  as total storage required is `storage.size` multiplied by `replicas`.
+  In our example, the total storage requirement is 30Gi.
+
+Ensure to have https://minikube.sigs.k8s.io/[Minikube] installed and running.
+
+Deploy, adjusting the parameters for CPU and storage:
 
 [,bash]
 ----
@@ -182,30 +227,21 @@ helm install vaticle/typedb-enterprise --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ----
 
-Once deployment is completed, enable tunneling from another terminal:
+Once the deployment has completed, enable tunneling from another terminal:
 
 [,bash]
 ----
 minikube tunnel
 ----
-
-This deployment mode is primarily inteded for development purpose. Certain adjustments will be made compared to other
-deployment modes:
-
-* Minikube only has a single node, so `singlePodPerNode` needs to be set to `false`
-* Minikube's node only has as much CPUs as the local machine:
-  `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-   Therefore, for deploying a 3-node TypeDB Enterprise to a node with 8 vCPUs, `cpu` can be set to `2` at maximum.
-* Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
-as total storage required is `storage.size` multiplied by `replicas`. In our example, total storage requirement is 30Gi.
+//#todo Add check
 
 == Configuration Reference
 
 Configurable settings for Helm package include:
 
-[cols="^,^,^"]
+[cols="^,^,"]
 |===
-| Key | Default value | Description
+| Key | Default value ^| Description
 
 | `name`
 | `null`
@@ -250,7 +286,7 @@ Configurable settings for Helm package include:
 
 == Troubleshooting
 
-These are the common error scenarios and how to troubleshoot them:
+The following are the common error scenarios and how to troubleshoot them.
 
 === All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
 
@@ -282,4 +318,4 @@ This might indicate any misconfiguration of TypeDB Enterprise. Please obtain the
 
 Deployment has several limitations which shall be resolved in the future:
 
-* TypeDB Enterprise doesn't support dynamic reconfiguration of node count without restarting all of the nodes.
+* TypeDB Enterprise doesn't support dynamic reconfiguration of node count without restarting all the nodes.
