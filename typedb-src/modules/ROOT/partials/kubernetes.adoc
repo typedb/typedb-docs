@@ -43,36 +43,34 @@ java -jar encryption-gen.jar --ca-common-name=<x500-common-name> --hostname=<ext
 
 _Please note that an external certificate is always bound to URL address, not IP address._
 
-Once the external and internal certificates are all generated, we can proceed to upload it to Kubernetes Secrets:
+The `encryption-gen.jar` generates three directories:
 
-.old
-[,bash]
-----
- $ kubectl create secret generic typedb-enterprise \
-   --from-file rpc-private-key.pem \
-   --from-file rpc-certificate.pem \
-   --from-file rpc-root-ca.pem="$(mkcert -CAROOT)/rootCA.pem" \
-   --from-file mq-secret-key \
-   --from-file mq-public-key
-----
+* `internal-ca` and `external-ca` -- The CA keypairs stored only in case you want to sign more certificates in the future.
+* *<external-hostname>* -- A directory with certificates to be stored on all servers in the cluster.
 
-.new
+All files from the directory
+named after external domain shall be copied to the proper directory on every server in a cluster.
+By default, they are stored in `/server/conf/encryption` inside the TypeDB Enterprise main directory.
+For example, `typedb-enterprise-all-mac-x86_64-2.24.17/server/conf/encryption`.
+The path to each file is configured in the `encryption` section of the TypeDB Enterprise config file.
+
+Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets:
+
 [,bash]
 ----
 kubectl create secret generic typedb-enterprise \
-   --from-file external-ca/external-ca-certificate.pem \
-   --from-file external-ca/external-ca-private-key.pem \
-   --from-file internal-ca/internal-ca-certificate.pem \
-   --from-file internal-ca/internal-ca-private-key.pem \
+   --from-file external-hostname/ext-grpc-certificate.pem \
+   --from-file external-hostname/ext-grpc-private-key.pem \
+   --from-file external-hostname/ext-grpc-root-ca.pem \
+   --from-file external-hostname/int-grpc-certificate.pem \
+   --from-file external-hostname/int-grpc-private-key.pem \
+   --from-file external-hostname/int-grpc-root-ca.pem \
+   --from-file external-hostname/int-zmq-private-key \
+   --from-file external-hostname/int-zmq-public-key
 ----
-//#todo Check - no root CA
 
 Additionally, the secret name in Kubernetes Secret needs to be identical to the Helm release name (`typedb-enterprise`)
-and contain exactly these keys (
-`external-ca-certificate.pem`,
-`external-ca-private-key.pem`,
-`internal-ca-certificate.pem`,
-`internal-ca-private-key.pem`).
+and contain all the keys from the folder named after external domain.
 
 == Kubernetes deployment
 
