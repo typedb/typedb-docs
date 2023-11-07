@@ -2,7 +2,7 @@
 :!example-caption:
 :tabs-sync-option:
 
-* `kubectl` installed and configured for your Kubernetes deployment.
+* `kubectl` installed and *configured* for your Kubernetes deployment.
   You can use https://minikube.sigs.k8s.io/docs/start/[minikube] for local testing.
 * `helm` installed.
 
@@ -78,7 +78,7 @@ kubectl create secret generic int-zmq \
   --from-file int-zmq-public-key
 ----
 
-== K8s deployment
+== Deploying a cluster via K8s
 
 There are three alternative deployment modes that you can choose from:
 
@@ -280,6 +280,55 @@ To stop and remove a K8s cluster from Kubernetes, use the `helm uninstall` with 
 helm uninstall typedb-enterprise
 ----
 
+== K8s troubleshooting
+
+To see pod details for the `typedb-enterprise-0` pod:
+
+[,bash]
+----
+kubectl describe pod typedb-enterprise-0
+----
+
+The following are the common error scenarios and how to troubleshoot them.
+
+=== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
+
+This means the secret to pull the image from Docker Hub has not been created.
+Make sure you've followed <<_initial_setup,Initial Setup>> instructions and verify that the pull secret is present by
+executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
+
+[,bash]
+----
+ $ kubectl get secret/private-docker-hub
+ NAME                 TYPE                             DATA   AGE
+ private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
+----
+
+=== One or more pods of TypeDB Enterprise are stuck in `Pending` state
+
+This might mean pods requested more resources than available.
+To check if that's the case, run on a stuck pod (e.g. `typedb-enterprise-0`):
+
+[,bash]
+----
+`kubectl describe pod/typedb-enterprise-0`
+----
+
+Error message similar to
+`0/1 nodes are available: 1 Insufficient cpu.` or
+`0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
+indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>> need to be decreased.
+
+=== One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
+
+This might indicate any misconfiguration of TypeDB Enterprise.
+Please check the logs:
+
+[,bash]
+----
+kubectl logs pod/typedb-enterprise-0
+----
+
 [#_helm_configuration_reference]
 == Helm configuration reference
 
@@ -333,55 +382,6 @@ Configurable settings for Helm package include:
 | `localhost:5044`
 | Hostname and port of a Logstash daemon accepting log records
 |===
-
-== K8s troubleshooting
-
-To see pod details for the `typedb-enterprise-0` pod:
-
-[,bash]
-----
-kubectl describe pod typedb-enterprise-0
-----
-
-The following are the common error scenarios and how to troubleshoot them.
-
-=== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
-
-This means the secret to pull the image from Docker Hub has not been created.
-Make sure you've followed <<_initial_setup,Initial Setup>> instructions and verify that the pull secret is present by
-executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
-
-[,bash]
-----
- $ kubectl get secret/private-docker-hub
- NAME                 TYPE                             DATA   AGE
- private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
-----
-
-=== One or more pods of TypeDB Enterprise are stuck in `Pending` state
-
-This might mean pods requested more resources than available.
-To check if that's the case, run on a stuck pod (e.g. `typedb-enterprise-0`):
-
-[,bash]
-----
-`kubectl describe pod/typedb-enterprise-0`
-----
-
-Error message similar to
-`0/1 nodes are available: 1 Insufficient cpu.` or
-`0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
-indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>> need to be decreased.
-
-=== One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
-
-This might indicate any misconfiguration of TypeDB Enterprise.
-Please check the logs:
-
-[,bash]
-----
-kubectl logs pod/typedb-enterprise-0
-----
 
 = Current Limitations
 

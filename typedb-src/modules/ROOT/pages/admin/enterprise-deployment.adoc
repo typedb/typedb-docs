@@ -6,20 +6,26 @@
 :experimental:
 :!example-caption:
 
-== Obtaining Commercial License
-
 TypeDB Enterprise is a commercial offering that provides a production-grade experience -- high-availability, scalability,
 and security. A license can be obtained from our mailto:sales@vaticle.com[sales team].
 
 == System Requirements
 
-TypeDB Enterprise runs on macOS, Linux and Windows.
-The only requirement is Java (version 11 or higher) --
+TypeDB Enterprise runs on macOS, Linux, and Windows.
+The only requirement is Java (*version 11* or higher) --
 http://openjdk.java.net/install/[OpenJDK] or
 https://www.oracle.com/java/technologies/javase-jdk15-downloads.html[Oracle Java].
 
-== Download and Install TypeDB Enterprise
+== Download and Install
 
+TypeDB Enterprise is distributed and installed separately from TypeDB Core.
+
+You can install it as a standalone server with <<_using_docker,Docker>> or manual
+<<_manual_download_and_installation,download and installation>>.
+A cluster of TypeDB Enterprise servers you can deploy either
+<<_deploying_manually,manually>> or via <<_deploying_with_kubernetes,Kubernetes>>.
+
+[#_using_docker]
 === Using Docker
 
 TypeDB Enterprise Docker image is stored in a private repository.
@@ -64,6 +70,7 @@ To stop the Docker container:
 docker stop typedb
 ----
 
+[#_manual_download_and_installation]
 === Manual download and installation
 
 Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest release], unzip it in a
@@ -109,13 +116,13 @@ To run TypeDB Console from a Docker container, run:
 docker exec -ti typedb-enterprise bash -c '/opt/typedb-enterprise-all-linux-x86_64/typedb console --enterprise 127.0.0.1:1729 --username admin --password'
 ----
 
-[#_starting_and_stopping_cluster]
-== Starting and Stopping a cluster with multiple servers
+[#_deploying_manually]
+== Deploying manually
 
 While it's possible to run TypeDB Enterprise in a single-server mode, a truly highly available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster.
-At any given point in time,
-one of those servers acts as a leader and the others are followers.
+At any given point in time, one of those servers acts as a
+xref:typedb::admin/ha.adoc#_primary_replica_failover[leader] and the others are followers.
 Increasing the number of servers increases the
 cluster's tolerance to failure: to tolerate N servers failing, a cluster needs to consist of `2N + 1` servers.
 This section describes how you can set up a 3-server cluster (in this case,
@@ -261,8 +268,9 @@ Stopping TypeDB Enterprise is done the same way as on a single server:
 to stop TypeDB Enterprise, close the terminal or press kbd:[Ctrl+C].
 All nodes must be shut down independently in the same way.
 
-== Deploying with Kubernetes
+[#_deploying_with_kubernetes]
+== Kubernetes
 
-To deploy a TypeDB Enterprise cluster onto Kubernetes, we can use https://helm.sh/[Helm] package manager.
+To deploy a TypeDB Enterprise cluster with Kubernetes, we can use https://helm.sh/[Helm] package manager.
 
 include::partial$kubernetes.adoc[leveloffset=+1]
