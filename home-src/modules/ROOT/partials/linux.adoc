@@ -8,11 +8,6 @@ sudo apt install software-properties-common apt-transport-https gpg
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C
 gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
 echo "deb https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
-----
-. Update the package cache:
-+
-[,bash]
-----
 sudo apt update
 ----
 . Ensure Java 11+ is installed:
@@ -25,6 +20,8 @@ sudo apt install openjdk-11-jre
 +
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
++
+////
 . Check the latest version number for `typedb-server` and its dependencies:
 +
 [,bash]
@@ -52,18 +49,27 @@ Take note of the latest `typedb-server` version in the `Version` field and the c
 package version in the `Depends` field.
 The `typedb-console` version can be seen with the command `apt show typedb-all=2.15.0`, where `2.15.0` is the version
 of `typedb-server` from the output above.
-. Install `typedb-server`, `typedb-console`, and `typedb-bin` packages using the versions from the previous commands:
+////
+. Install `typedb`:
 +
 [,bash]
 ----
-sudo apt install typedb-server=2.15.0 typedb-console=2.15.0 typedb-bin=2.12.0
+sudo apt install typedb
 ----
-
++
+If you had an older version (≤`2.25.5`) of TypeDB installed, it might be needed to uninstall older packages to avoid
+conflicts:
++
+[,bash]
+----
+sudo apt remove typedb-server typedb-bin typedb-console
+----
+////
 The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin`, so their
 version numbers might differ. By default, APT will look for the exact same version of `typedb-bin`,
 resulting in an error. To prevent this, use `apt show`, as shown above, to find a compatible version first, and then
 invoke an `apt install` command with the specific version for every package.
-
+////
 // end::install-apt[]
 
 // tag::manual-install[]
