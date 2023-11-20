@@ -366,9 +366,10 @@ attribute type overriding the inherited `object-type` attribute type.
 
 === Overview
 
-Relation types are defined independently of other types but may subtype other relation types. Their definition can
-include ownership of attribute types, roles other types play within them, and roles they can play in other relation
-types:
+Relation types are defined independently of other types but may subtype other relation types.
+They can be abstract.
+Their definition can include ownership of attribute types,
+roles other types play within them, and roles they can play in other relation types:
 
 * Owned attribute types are added with the `owns` keyword followed by the attribute type label.
 * Its own roles are added with the `relates` keyword followed by the role label. At least one role must be defined for
