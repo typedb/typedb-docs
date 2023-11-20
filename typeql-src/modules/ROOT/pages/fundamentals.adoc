@@ -31,14 +31,16 @@ There are the following types of clauses:
 * `define`
 * `undefine`
 * `match`
+* `fetch`
 * `get`
 * `insert`
 * `delete`
 
-A clause contains a single pattern, or a list of variables:
+All clauses start with the keyword, the same as the clause's name, followed by:
 
-- The `get` clause starts with the `get` keyword, followed by a list of variables and optional modifiers at the end.
-- All other TypeQL clauses consist of the defining keyword (the same as the clause's name) and a pattern.
+* A list of variables and optional modifiers at the end (for a `get` clause);
+* A list of variables or subqueries (for a `fetch` clause);
+* A TypeQL pattern (for all other clauses).
 
 A pattern consists of one or more statements.
 

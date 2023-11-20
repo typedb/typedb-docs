@@ -33,20 +33,16 @@ For more information on `match` clause patterns, see the
 xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 //#todo update the link after introducing the Match clause page
 
-[IMPORTANT]
-====
-A `get` clause works like a filter for variables in matched answers. Get query without a `get` clause will have all
-variables mentioned in the `match` clause pattern returned as concepts in every answer.
-====
+The variables mentioned in a `get` clause must be bound (set) in a `match` clause of the same query.
 
-Modifiers, like aggregation functions and grouping, must be at the end of the query and do not require an explicit
-`get` clause.
+A `get` clause works like a filter for variables in matched answers.
+
+Modifiers (e.g., `sort`, `group`, etc.) are used at the end of a query.
 
 [#_variables]
 == Variables
 
 A `get` clause is used to specify which variables (concept variables and/or value variables) to include in the results.
-If omitted, every variable is included.
 
 [,typeql]
 ----
@@ -398,8 +394,7 @@ get $o, $fp; count;
 [NOTE]
 ====
 The `count` function is applied to every result returned. If more than one variable is mentioned in `get`, then `count`
-will show the number of unique combinations of results. This is also the case when no `get` clause is added,
-which actually means that all matched variables are included.
+will show the number of results, including all possible permutations.
 ====
 
 [,typeql]
