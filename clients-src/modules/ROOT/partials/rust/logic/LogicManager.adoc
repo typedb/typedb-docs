@@ -9,31 +9,13 @@
 Provides methods for manipulating rules in the database.
 
 // tag::methods[]
-[#_struct_LogicManager_method_get_rule]
+[#_struct_LogicManager_get_rule__label_String]
 ==== get_rule
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-pub async fn get_rule(&self, label: String) -> Result<Option<Rule>>
+pub fn get_rule(&self, label: String) -> impl Promise<'tx, Result<Option<Rule>>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-pub fn get_rule(&self, label: String) -> Result<Option<Rule>>
-----
-
---
-====
 
 Retrieves the Rule that has the given label.
 
@@ -50,7 +32,7 @@ a| `label` a| The label of the Rule to create or retrieve a| `String`
 .Returns
 [source,rust]
 ----
-Result<Option<Rule>>
+impl Promise<'tx, Result<Option<Rule>>>
 ----
 
 [caption=""]
@@ -72,18 +54,18 @@ sync::
 --
 [source,rust]
 ----
-transaction.logic().get_rule(label)
+transaction.logic().get_rule(label).resolve()
 ----
 
 --
 ====
 
-[#_struct_LogicManager_method_get_rules]
+[#_struct_LogicManager_get_rules__]
 ==== get_rules
 
 [source,rust]
 ----
-pub fn get_rules(&self) -> Result<impl Stream<Item = Result<Rule>>>
+pub fn get_rules(&self) -> Result<impl Stream<Item = Result<Rule>> + 'tx>
 ----
 
 Retrieves all rules.
@@ -92,7 +74,7 @@ Retrieves all rules.
 .Returns
 [source,rust]
 ----
-Result<impl Stream<Item = Result<Rule>>>
+Result<impl Stream<Item = Result<Rule>> + 'tx>
 ----
 
 [caption=""]
@@ -102,41 +84,18 @@ Result<impl Stream<Item = Result<Rule>>>
 transaction.logic.get_rules()
 ----
 
-[#_struct_LogicManager_method_put_rule]
+[#_struct_LogicManager_put_rule__label_String__when_Conjunction__then_Statement]
 ==== put_rule
 
-[tabs]
-====
-async::
-+
---
-[source,rust]
-----
-pub async fn put_rule(
-    &self,
-    label: String,
-    when: Conjunction,
-    then: Variable
-) -> Result<Rule>
-----
-
---
-
-sync::
-+
---
 [source,rust]
 ----
 pub fn put_rule(
     &self,
     label: String,
     when: Conjunction,
-    then: Variable
-) -> Result<Rule>
+    then: Statement
+) -> impl Promise<'tx, Result<Rule>>
 ----
-
---
-====
 
 Creates a new Rule if none exists with the given label, or replaces the existing one.
 
@@ -148,14 +107,14 @@ Creates a new Rule if none exists with the given label, or replaces the existing
 |Name |Description |Type
 a| `label` a| The label of the Rule to create or replace a| `String`
 a| `when` a| The when body of the rule to create a| `Conjunction`
-a| `then` a| The then body of the rule to create a| `Variable`
+a| `then` a| The then body of the rule to create a| `Statement`
 |===
 
 [caption=""]
 .Returns
 [source,rust]
 ----
-Result<Rule>
+impl Promise<'tx, Result<Rule>>
 ----
 
 [caption=""]
@@ -177,7 +136,7 @@ sync::
 --
 [source,rust]
 ----
-transaction.logic().put_rule(label, when, then)
+transaction.logic().put_rule(label, when, then).resolve()
 ----
 
 --

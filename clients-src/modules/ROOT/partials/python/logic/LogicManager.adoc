@@ -4,12 +4,12 @@
 Provides methods for manipulating rules in the database.
 
 // tag::methods[]
-[#_LogicManager_get_rule]
+[#_LogicManager_get_rule__label_str]
 ==== get_rule
 
 [source,python]
 ----
-get_rule(label: str) -> Rule | None
+get_rule(label: str) -> Promise[Rule | None]
 ----
 
 Retrieves the Rule that has the given label.
@@ -25,16 +25,16 @@ a| `label` a| The label of the Rule to create or retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`Rule | None`
+`Promise[Rule | None]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.logic.get_rule(label)
+transaction.logic.get_rule(label).resolve()
 ----
 
-[#_LogicManager_get_rules]
+[#_LogicManager_get_rules__]
 ==== get_rules
 
 [source,python]
@@ -55,12 +55,12 @@ Retrieves all rules.
 transaction.logic.get_rules()
 ----
 
-[#_LogicManager_put_rule]
+[#_LogicManager_put_rule__label_str__when_str__then_str]
 ==== put_rule
 
 [source,python]
 ----
-put_rule(label: str, when: str, then: str) -> Rule
+put_rule(label: str, when: str, then: str) -> Promise[Rule]
 ----
 
 Creates a new Rule if none exists with the given label, or replaces the existing one.
@@ -78,13 +78,13 @@ a| `then` a| The then body of the rule to create a| `str` a|
 
 [caption=""]
 .Returns
-`Rule`
+`Promise[Rule]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.logic.put_rule(label, when, then)
+transaction.logic.put_rule(label, when, then).resolve()
 ----
 
 // end::methods[]

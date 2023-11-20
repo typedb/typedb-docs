@@ -6,12 +6,12 @@
 * `Concept`
 
 // tag::methods[]
-[#_Type_delete]
+[#_Type_delete__transaction_TypeDBTransaction]
 ==== delete
 
 [source,python]
 ----
-delete(transaction: TypeDBTransaction) -> None
+delete(transaction: TypeDBTransaction) -> Promise[None]
 ----
 
 Deletes this type from the database.
@@ -27,16 +27,16 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction` a|
 
 [caption=""]
 .Returns
-`None`
+`Promise[None]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-type_.delete(transaction)
+type_.delete(transaction).resolve()
 ----
 
-[#_Type_get_label]
+[#_Type_get_label__]
 ==== get_label
 
 [source,python]
@@ -57,7 +57,7 @@ Retrieves the unique label of the type.
 type_.get_label()
 ----
 
-[#_Type_get_subtypes]
+[#_Type_get_subtypes__transaction_TypeDBTransaction__transitivity_Transitivity]
 ==== get_subtypes
 
 [source,python]
@@ -89,12 +89,12 @@ type_.get_subtypes(transaction)
 type_.get_subtypes(transaction, Transitivity.EXPLICIT)
 ----
 
-[#_Type_get_supertype]
+[#_Type_get_supertype__transaction_TypeDBTransaction]
 ==== get_supertype
 
 [source,python]
 ----
-get_supertype(transaction: TypeDBTransaction) -> Type | None
+get_supertype(transaction: TypeDBTransaction) -> Promise[Type | None]
 ----
 
 Retrieves the most immediate supertype of the type.
@@ -110,16 +110,16 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction` a|
 
 [caption=""]
 .Returns
-`Type | None`
+`Promise[Type | None]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-type_.get_supertype(transaction)
+type_.get_supertype(transaction).resolve()
 ----
 
-[#_Type_get_supertypes]
+[#_Type_get_supertypes__transaction_TypeDBTransaction]
 ==== get_supertypes
 
 [source,python]
@@ -149,7 +149,7 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction` a|
 type_.get_supertypes(transaction)
 ----
 
-[#_Type_is_abstract]
+[#_Type_is_abstract__]
 ==== is_abstract
 
 [source,python]
@@ -170,7 +170,7 @@ Checks if the type is prevented from having data instances (i.e., ``abstract``).
 type_.is_abstract()
 ----
 
-[#_Type_is_root]
+[#_Type_is_root__]
 ==== is_root
 
 [source,python]
@@ -191,7 +191,7 @@ Checks if the type is a root type.
 type_.is_root()
 ----
 
-[#_Type_is_type]
+[#_Type_is_type__]
 ==== is_type
 
 [source,python]
@@ -212,12 +212,12 @@ Checks if the concept is a ``Type``.
 type_.is_type()
 ----
 
-[#_Type_set_label]
+[#_Type_set_label__transaction_TypeDBTransaction__new_label_str]
 ==== set_label
 
 [source,python]
 ----
-set_label(transaction: TypeDBTransaction, new_label: Label) -> None
+set_label(transaction: TypeDBTransaction, new_label: str) -> Promise[None]
 ----
 
 Renames the label of the type. The new label must remain unique.
@@ -229,39 +229,18 @@ Renames the label of the type. The new label must remain unique.
 |===
 |Name |Description |Type |Default Value
 a| `transaction` a| The current transaction a| `TypeDBTransaction` a| 
-a| `new_label` a| The new ``Label`` to be given to the type. a| `Label` a| 
+a| `new_label` a| The new name to be given to the type. a| `str` a| 
 |===
 
 [caption=""]
 .Returns
-`None`
+`Promise[None]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-type_.set_label(transaction, new_label)
-----
-
-[#_Type_to_json]
-==== to_json
-
-[source,python]
-----
-to_json() -> Mapping[str, str]
-----
-
-Retrieves the type as JSON.
-
-[caption=""]
-.Returns
-`Mapping[str, str]`
-
-[caption=""]
-.Code examples
-[source,python]
-----
-type_.to_json()
+type_.set_label(transaction, new_label).resolve()
 ----
 
 // end::methods[]
