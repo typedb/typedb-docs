@@ -117,17 +117,17 @@ To get usernames of all users that have permission for the file with path `READM
 [,typeql]
 ----
 match
-$u isa user,
-    has username $un;
+$u isa user;
 $f isa file,
     has path "README.md";
 $p(subject:$u, object:$f) isa permission;
-get $un;
+fetch $u: username;
 ----
 
-The above xref:typeql:ROOT:data/get.adoc[Get] query matches the `file` entity by the `path` attribute it has ownership of.
-Then it finds all users (and their usernames) that participate in a relation of a `permission` type with the file.
-The result is filtered to return only the `$un`, which is the `username`.
+The above xref:typeql:ROOT:data/fetch.adoc[Fetch] query matches the `file` entity by the `path` attribute
+it has ownership of.
+Then it finds all users that participate in a relation of a `permission` type with the file.
+Finally, it fetches `username` instances owned by such users (`$u`).
 
 All queries are validated both syntactically and semantically.
 Try adding to the query above a constraint of user having a `path` or file having a `name`.
@@ -221,14 +221,14 @@ Every statement is a constraint to be satisfied by the query engine.
 You declare constraints for the results, and the query engine will deal with the implementation,
 including planning and optimizing execution.
 
-Variables indicate unknowns that should be retrieved by the query.
+Variables indicate unknowns that should be used somewhere else in the pattern or retrieved by the query.
 Every matched result is a solution for the `match` clause pattern:
 it includes a single concept (a type or an instance of a type) for every variable.
 
-For a xref:typeql:ROOT:data/get.adoc[Get] query we use a `match` clause to declare a pattern for the data we are looking for
-and a `get` clause to filter the results.
+For a xref:typeql:ROOT:data/fetch.adoc[Fetch] query we use a `match` clause
+to declare a pattern for the data we are looking for and a `fetch` clause to retrieve values.
 
-.Declarative query and composable patterns
+.Composable pattern example
 [,typeql]
 ----
 match
@@ -237,11 +237,12 @@ $p has name $p-name;
 $p-name == "Bob";
 $p has $x;
 not {$x == $p-name;};
-get $x;
+fetch $x;
 ----
 
-This query matches only person type entities that own the attribute with type `name` and value `Bob`
-and returns all their owned attributes, excluding the name `Bob`.
+This query matches only the person that owns the attribute with type `name` and value `Bob`
+and all their owned attributes (`$x`), excluding the name `Bob`.
+Then the `fetch` clause retrieves all matched attributes (`$x`).
 For the data from <<_data,query #2>> it should return username `bob_93` and email `bob@vaticle.com`.
 
 For the `match` clause pattern we included five simple statements.
@@ -251,7 +252,9 @@ Note that while the query uses the `person` type in its pattern, the matched ent
 This is due to the fact, that we used `isa` keyword, that takes into account all subtypes of the `person` type,
 including the `user` type.
 Try the same query with the `isa!` keyword instead.
-It is used for an exact type, without subtyping.
+It is used for an exact type without its subtypes.
+
+For more information on using subtypes, see <<_inheritance_polymorphism,query>> <<_inheritance_polymorphism>>.
 
 [#_parametric_polymorphism]
 == #{counter:query}: Parametric polymorphism
@@ -263,7 +266,7 @@ You can use polymorphic queries, including:
 * <<_inheritance_polymorphism,Inheritance polymorphism>>
 * <<_interface_polymorphism,Interface polymorphism>>
 
-Parametric polymorphism lets us get results of different types for the same variable in a query.
+Parametric polymorphism lets us retrieve results of different types for the same variable in a query.
 Querying without constraining a type can return any type that matches a pattern.
 //When we don't bound a variable to a specific type, so it can be solved as multiple different ones.
 
@@ -276,7 +279,7 @@ match $x isa! $t;
 get $x, $t;
 ----
 
-The above query returns pairs of `$x` and `$t` concepts,
+The above xref:typeql::data/get.adoc[Get] query returns pairs of `$x` and `$t` concepts,
 where `$x` should be an instance of data and `$t` should be its type.
 Note how the type in the `isa!` statement is variablized.
 Effectively this query returns all data from a database
@@ -299,9 +302,11 @@ match $x isa entity;
 get $x;
 ----
 
-The query above matches `$x` by  its type.
+The xref:typeql::data/get.adoc[Get] query above matches `$x` by its type.
 The type must be the `entity` type or any of its subtypes.
 This query should return all entities in a database.
+Since `entity` is a root type, it's an <<_abstract,abstract>> type and can't be directly instantiated.
+So the query returns instances of every subtype of the `entity` type.
 
 You can easily avoid inheritance polymorphism
 by restricting subtypes to be used in the query by using `isa!` (with an exclamation mark).
@@ -323,6 +328,7 @@ The above query matches every instance, that has any name.
 It returns pairs of owning instance (`$x`) of any type and the name attribute it owns (`$name`).
 The same approach could be used with playing a role in a relationship.
 
+[#_abstract]
 == #{counter:query}: Abstract types
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
@@ -363,10 +369,28 @@ Like in the following example:
 match
 $u isa user,
     has name "Bob";
-get $u;
+fetch $u as Bob: attribute;
 ----
 
-We match a user with name `Bob`.
+The above query matches the user with name `Bob`.
+And then fetches all attributes owned by the user.
+The result should look like the following JSON:
+
+.Inherited attributes result example
+[,json]
+----
+{
+    "Bob": {
+        "attribute": [
+            { "value": "bob@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
+            { "value": "Bob", "value_type": "string", "type": { "label": "name", "root": "attribute" } },
+            { "value": "bob_93", "value_type": "string", "type": { "label": "username", "root": "attribute" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+
 The `user` type inherits the ability to own the `name` attribute type from its supertype -- the `person` type.
 See the schema from the <<_schema,query #1>>.
 
@@ -584,10 +608,16 @@ Use the `like` keyword with a regular expression to set constraints for an attri
 match
 $f isa file, has path $p;
 $p like "^docs/.*$";
-get $f, $p;
+fetch $p;
 ----
 
-The query above will find all files with path starting with `docs/`.
+The query above matches all files with path starting with `docs/` and fetches their path (`$p`).
+
+.Result example
+[,json]
+----
+{ "p": { "value": "docs/quickstart-guide.adoc", "value_type": "string", "type": { "label": "path", "root": "attribute" } } }
+----
 
 == #{counter:query}: Arithmetic
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
