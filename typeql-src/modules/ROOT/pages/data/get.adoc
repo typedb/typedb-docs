@@ -21,21 +21,28 @@ Get queries are written in TypeQL with the following syntax:
 [,bash]
 ----
 match <pattern>
-[get <variable> [(, <variable>)...];]
+[get <variable> [{, <variable>}...];]
 [sort <variable> [asc|desc];]
 [offset <value>;]
 [limit <value>;]
 [group <variable>;]
-[count;] [sum|max|min|mean|median|std <variable>;]
+[count;] [{sum|max|min|mean|median|std <variable>};]
 ----
 
 For more information on `match` clause patterns, see the
 xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 //#todo update the link after introducing the Match clause page
 
+A `get` clause works like a filter for variables in matched answers.
+
 The variables mentioned in a `get` clause must be bound (set) in a `match` clause of the same query.
 
-A `get` clause works like a filter for variables in matched answers.
+[WARNING]
+====
+Since the `2.25.0` version of TypeDB a `get` clause is mandatory in a Get query.
+====
+
+Use the `get;` to get all matched variables.
 
 Modifiers (e.g., `sort`, `group`, etc.) are used at the end of a query.
 
