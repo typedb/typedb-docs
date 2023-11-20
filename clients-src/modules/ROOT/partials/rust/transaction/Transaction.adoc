@@ -6,31 +6,13 @@
 * `Debug`
 
 // tag::methods[]
-[#_struct_Transaction_method_commit]
+[#_struct_Transaction_commit__]
 ==== commit
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-pub async fn commit(self) -> Result
+pub fn commit(self) -> impl Promise<'static, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-pub fn commit(self) -> Result
-----
-
---
-====
 
 Commits the changes made via this transaction to the TypeDB database. Whether or not the transaction is commited successfully, it gets closed after the commit call.
 
@@ -38,7 +20,7 @@ Commits the changes made via this transaction to the TypeDB database. Whether or
 .Returns
 [source,rust]
 ----
-Result
+impl Promise<'static, Result>
 ----
 
 [caption=""]
@@ -66,12 +48,12 @@ transaction.commit()
 --
 ====
 
-[#_struct_Transaction_method_concept]
+[#_struct_Transaction_concept__]
 ==== concept
 
 [source,rust]
 ----
-pub fn concept(&self) -> &ConceptManager
+pub fn concept(&self) -> ConceptManager<'_>
 ----
 
 The ``ConceptManager`` for this transaction, providing access to all Concept API methods.
@@ -80,10 +62,10 @@ The ``ConceptManager`` for this transaction, providing access to all Concept API
 .Returns
 [source,rust]
 ----
-&ConceptManager
+ConceptManager<'_>
 ----
 
-[#_struct_Transaction_method_force_close]
+[#_struct_Transaction_force_close__]
 ==== force_close
 
 [source,rust]
@@ -107,7 +89,7 @@ null
 transaction.force_close()
 ----
 
-[#_struct_Transaction_method_is_open]
+[#_struct_Transaction_is_open__]
 ==== is_open
 
 [source,rust]
@@ -131,12 +113,12 @@ bool
 transaction.close()
 ----
 
-[#_struct_Transaction_method_logic]
+[#_struct_Transaction_logic__]
 ==== logic
 
 [source,rust]
 ----
-pub fn logic(&self) -> &LogicManager
+pub fn logic(&self) -> LogicManager<'_>
 ----
 
 Retrieves the ``LogicManager`` for this Transaction, providing access to all Concept API - Logic methods.
@@ -145,10 +127,10 @@ Retrieves the ``LogicManager`` for this Transaction, providing access to all Con
 .Returns
 [source,rust]
 ----
-&LogicManager
+LogicManager<'_>
 ----
 
-[#_struct_Transaction_method_on_close]
+[#_struct_Transaction_on_close__function]
 ==== on_close
 
 [source,rust]
@@ -184,12 +166,12 @@ null
 transaction.on_close(function)
 ----
 
-[#_struct_Transaction_method_query]
+[#_struct_Transaction_query__]
 ==== query
 
 [source,rust]
 ----
-pub fn query(&self) -> &QueryManager
+pub fn query(&self) -> QueryManager<'_>
 ----
 
 Retrieves the``QueryManager`` for this Transaction, from which any TypeQL query can be executed.
@@ -198,34 +180,16 @@ Retrieves the``QueryManager`` for this Transaction, from which any TypeQL query 
 .Returns
 [source,rust]
 ----
-&QueryManager
+QueryManager<'_>
 ----
 
-[#_struct_Transaction_method_rollback]
+[#_struct_Transaction_rollback__]
 ==== rollback
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-pub async fn rollback(&self) -> Result
+pub fn rollback(&self) -> impl Promise<'_, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-pub fn rollback(&self) -> Result
-----
-
---
-====
 
 Rolls back the uncommitted changes made via this transaction.
 
@@ -233,7 +197,7 @@ Rolls back the uncommitted changes made via this transaction.
 .Returns
 [source,rust]
 ----
-Result
+impl Promise<'_, Result>
 ----
 
 [caption=""]
@@ -261,7 +225,7 @@ transaction.rollback()
 --
 ====
 
-[#_struct_Transaction_method_type]
+[#_struct_Transaction_type___]
 ==== type_
 
 [source,rust]

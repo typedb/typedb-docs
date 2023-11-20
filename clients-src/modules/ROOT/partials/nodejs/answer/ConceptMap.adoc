@@ -15,7 +15,7 @@ a| `explainables` a| `Explainables` a| The Explainables object for this ConceptM
 // end::properties[]
 
 // tag::methods[]
-[#_ConceptMap_concepts]
+[#_ConceptMap_concepts__]
 ==== concepts
 
 [source,nodejs]
@@ -36,7 +36,7 @@ Produces an iterator over all concepts in this ``ConceptMap``.
 conceptMap.concepts()
 ----
 
-[#_ConceptMap_get]
+[#_ConceptMap_get__variable_string]
 ==== get
 
 [source,nodejs]
@@ -66,28 +66,7 @@ a| `variable` a| The string representation of a variable a| `string`
 conceptMap.get(variable)
 ----
 
-[#_ConceptMap_toJSONRecord]
-==== toJSONRecord
-
-[source,nodejs]
-----
-toJSONRecord(): Record<string, Record<string, string | number | boolean>>
-----
-
-Retrieves this ``ConceptMap`` as JSON.
-
-[caption=""]
-.Returns
-`Record<string, Record<string, string | number | boolean>>`
-
-[caption=""]
-.Code examples
-[source,nodejs]
-----
-conceptMap.toJSONRecord()
-----
-
-[#_ConceptMap_variables]
+[#_ConceptMap_variables__]
 ==== variables
 
 [source,nodejs]
