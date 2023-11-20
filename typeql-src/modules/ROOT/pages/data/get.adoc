@@ -37,6 +37,12 @@ The variables mentioned in a `get` clause must be bound (set) in a `match` claus
 
 A `get` clause works like a filter for variables in matched answers.
 
+[WARNING]
+====
+Since the `2.25.0` version of TypeDB a `get` clause is mandatory in a Get query.
+To get all variables, use an empty `get` clause without any variables, for example: `get;`.
+====
+
 Modifiers (e.g., `sort`, `group`, etc.) are used at the end of a query.
 
 [#_variables]
