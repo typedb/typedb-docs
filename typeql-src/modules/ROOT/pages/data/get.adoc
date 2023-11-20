@@ -21,12 +21,12 @@ Get queries are written in TypeQL with the following syntax:
 [,bash]
 ----
 match <pattern>
-[get <variable> [(, <variable>)...];]
+[get <variable> [{, <variable>}...];]
 [sort <variable> [asc|desc];]
 [offset <value>;]
 [limit <value>;]
 [group <variable>;]
-[count;] [sum|max|min|mean|median|std <variable>;]
+[count;] [{sum|max|min|mean|median|std <variable>};]
 ----
 
 For more information on `match` clause patterns, see the

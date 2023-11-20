@@ -36,11 +36,11 @@ Fetch queries are written in TypeQL with the following syntax:
 [,typeql]
 ----
 match <pattern>
-fetch (
-    variable [as <label>] ;
-  | variable [as <label>] : [<attribute-type> [as <label>], ...] ;
-  | <subquery-label>      : { <fetch_query> | <get_aggregate_query> } ;
-)
+fetch {
+    variable [as <label>]
+  | variable [as <label>] [: <attribute-type> [as <label>], ...]
+  | <subquery-label>      : { <fetch_query> | <get_aggregate_query> }
+  }; ...
 [<modifiers>]
 ----
 
