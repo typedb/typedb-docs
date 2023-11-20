@@ -462,13 +462,14 @@ get <variable> [(, <variable>)...];
 get $p, $f;
 ----
 
-The variable or variables mentioned in a `get` clause must be bound (set) in the `match` clause of the same query.
+The variables mentioned in a `get` clause must be bound (set) in the `match` clause of the same query.
 
-A Get query with a `get` clause returns its results filtered -- only variables mentioned in the `get` clause are
+A Get query returns its results filtered -- only variables mentioned in its `get` clause are
 returned.
 Every result has a concept or a value for every variable mentioned in the `get` clause.
 If no variables mentioned in a `get` clause,
 then all variables from the `match` clause of the same query are used implicitly.
+But the `get` keyword with a semicolon still needs to be present in this case.
 
 [#_modifiers]
 ==== Modifiers

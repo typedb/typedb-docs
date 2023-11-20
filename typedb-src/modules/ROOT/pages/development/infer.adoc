@@ -91,7 +91,7 @@ access with `view_file` action).
 
 === Query explanation
 
-The example is a `get` query with `match` clause and optional `get` clause that does the following:
+The example is a `get` query that does the following:
 
 . Finds `person` entity (`$p`) with an attribute `full-name` equal to the `Kevin Morrison` string value.
 . Finds all `object` entities (`$o`) with a `path` attribute (`$o-path`).
