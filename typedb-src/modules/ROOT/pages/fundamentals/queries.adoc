@@ -462,7 +462,7 @@ get <variable> [(, <variable>)...];
 get $p, $f;
 ----
 
-The variables mentioned in a `get` clause must be bound (set) in the `match` clause of the same query.
+Variables mentioned in a `get` clause must be bound (set) in a `match` clause of the same query.
 
 A Get query returns its results filtered -- only variables mentioned in its `get` clause are
 returned.

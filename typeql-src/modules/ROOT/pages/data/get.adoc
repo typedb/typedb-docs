@@ -26,7 +26,7 @@ match <pattern>
 [offset <value>;]
 [limit <value>;]
 [group <variable>;]
-[count;] [{sum|max|min|mean|median|std <variable>};]
+[count;] [(sum|max|min|mean|median|std) <variable>;]
 ----
 
 For more information on `match` clause patterns, see the
@@ -35,7 +35,7 @@ xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 
 A `get` clause works like a filter for variables in matched answers.
 
-The variables mentioned in a `get` clause must be bound (set) in a `match` clause of the same query.
+Variables mentioned in a `get` clause must be bound (set) in a `match` clause of the same query.
 
 [WARNING]
 ====
