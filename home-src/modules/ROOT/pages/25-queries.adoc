@@ -627,7 +627,7 @@ fetch $p;
 users: {
     match ($u,$f) isa permission;
     fetch $u: username;
-    };
+};
 ----
 
 The query above matches all files with a path fitting the RegEx `^docs/.*$`
