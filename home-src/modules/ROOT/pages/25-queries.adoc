@@ -624,14 +624,32 @@ match
 $f isa file, has path $p;
 $p like "^docs/.*$";
 fetch $p;
+users: {
+    match ($u,$f) isa permission;
+    fetch $u: username;
+    };
 ----
 
-The query above matches all files with path starting with `docs/` and fetches their path (`$p`).
+The query above matches all files with a path fitting the RegEx `^docs/.*$`
+(any string, starting with the `docs/` substring) and fetches their path (`$p`).
+
+It also has `users` xref:typeql::data/fetch.adoc#_subqueries[subquery] that fetches usernames of all users,
+that have a permission to access the matched file.
 
 .Result example
 [,json]
 ----
-{ "p": { "value": "docs/quickstart-guide.adoc", "value_type": "string", "type": { "label": "path", "root": "attribute" } } }
+{
+    "p": { "value": "docs/quickstart-guide.adoc", "value_type": "string", "type": { "label": "path", "root": "attribute" } },
+    "users": [
+        {
+            "u": {
+                "username": [ { "value": "al-capucino", "value_type": "string", "type": { "label": "username", "root": "attribute" } } ],
+                "type": { "label": "user", "root": "entity" }
+            }
+        }
+    ]
+}
 ----
 
 == #{counter:query}: Arithmetic
