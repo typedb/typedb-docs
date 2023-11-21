@@ -27,37 +27,83 @@ a| `value` a| `Value` a| The value which this Attribute instance holds.
 // end::properties[]
 
 // tag::methods[]
-[#_struct_Attribute_delete__]
+[#_struct_Attribute_method_delete]
 ==== delete
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn delete<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>
-) -> BoxPromise<'tx, Result>
+fn delete<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>
+) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn delete(&self, transaction: &Transaction<'_>) -> Result
+----
+
+--
+====
 
 <<#_trait_ThingAPI_method_delete,Read more>>
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result>
+Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
 
-[#_struct_Attribute_get_has__]
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result
+----
+
+--
+====
+
+[#_struct_Attribute_method_get_has]
 ==== get_has
 
 [source,rust]
 ----
-fn get_has<'tx>(
+fn get_has(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     attribute_types: Vec<AttributeType>,
     annotations: Vec<Annotation>
-) -> Result<BoxStream<'tx, Result<Attribute>>>
+) -> Result<BoxStream<'_, Result<Attribute>>>
 ----
 
 <<#_trait_ThingAPI_method_get_has,Read more>>
@@ -66,19 +112,19 @@ fn get_has<'tx>(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<Attribute>>>
+Result<BoxStream<'_, Result<Attribute>>>
 ----
 
-[#_struct_Attribute_get_owners__]
+[#_struct_Attribute_method_get_owners]
 ==== get_owners
 
 [source,rust]
 ----
-fn get_owners<'tx>(
+fn get_owners(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     thing_type: Option<ThingType>
-) -> Result<BoxStream<'tx, Result<Thing>>>
+) -> Result<BoxStream<'_, Result<Thing>>>
 ----
 
 <<#_trait_AttributeAPI_method_get_owners,Read more>>
@@ -87,18 +133,18 @@ fn get_owners<'tx>(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<Thing>>>
+Result<BoxStream<'_, Result<Thing>>>
 ----
 
-[#_struct_Attribute_get_playing__]
+[#_struct_Attribute_method_get_playing]
 ==== get_playing
 
 [source,rust]
 ----
-fn get_playing<'tx>(
+fn get_playing(
     &self,
-    transaction: &'tx Transaction<'_>
-) -> Result<BoxStream<'tx, Result<RoleType>>>
+    transaction: &Transaction<'_>
+) -> Result<BoxStream<'_, Result<RoleType>>>
 ----
 
 <<#_trait_ThingAPI_method_get_playing,Read more>>
@@ -107,19 +153,19 @@ fn get_playing<'tx>(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<RoleType>>>
+Result<BoxStream<'_, Result<RoleType>>>
 ----
 
-[#_struct_Attribute_get_relations__]
+[#_struct_Attribute_method_get_relations]
 ==== get_relations
 
 [source,rust]
 ----
-fn get_relations<'tx>(
+fn get_relations(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     role_types: Vec<RoleType>
-) -> Result<BoxStream<'tx, Result<Relation>>>
+) -> Result<BoxStream<'_, Result<Relation>>>
 ----
 
 <<#_trait_ThingAPI_method_get_relations,Read more>>
@@ -128,10 +174,10 @@ fn get_relations<'tx>(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<Relation>>>
+Result<BoxStream<'_, Result<Relation>>>
 ----
 
-[#_struct_Attribute_iid__]
+[#_struct_Attribute_tymethod_iid]
 ==== iid
 
 [source,rust]
@@ -148,27 +194,73 @@ fn iid(&self) -> &IID
 &IID
 ----
 
-[#_struct_Attribute_is_deleted__]
+[#_struct_Attribute_tymethod_is_deleted]
 ==== is_deleted
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn is_deleted<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>
-) -> BoxPromise<'tx, Result<bool>>
+fn is_deleted<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>
+) -> Pin<Box<dyn Future<Output = Result<bool>> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn is_deleted(&self, transaction: &Transaction<'_>) -> Result<bool>
+----
+
+--
+====
 
 <<#_trait_ThingAPI_tymethod_is_deleted,Read more>>
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result<bool>>
+Pin<Box<dyn Future<Output = Result<bool>> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
 
-[#_struct_Attribute_is_inferred__]
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result<bool>
+----
+
+--
+====
+
+[#_struct_Attribute_tymethod_is_inferred]
 ==== is_inferred
 
 [source,rust]
@@ -185,47 +277,139 @@ fn is_inferred(&self) -> bool
 bool
 ----
 
-[#_struct_Attribute_set_has__]
+[#_struct_Attribute_method_set_has]
 ==== set_has
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn set_has<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>,
+fn set_has<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>,
     attribute: Attribute
-) -> BoxPromise<'tx, Result>
+) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn set_has(&self, transaction: &Transaction<'_>, attribute: Attribute) -> Result
+----
+
+--
+====
 
 <<#_trait_ThingAPI_method_set_has,Read more>>
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result>
+Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
 
-[#_struct_Attribute_unset_has__]
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result
+----
+
+--
+====
+
+[#_struct_Attribute_method_unset_has]
 ==== unset_has
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn unset_has<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>,
+fn unset_has<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>,
     attribute: Attribute
-) -> BoxPromise<'tx, Result>
+) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn unset_has(&self, transaction: &Transaction<'_>, attribute: Attribute) -> Result
+----
+
+--
+====
 
 <<#_trait_ThingAPI_method_unset_has,Read more>>
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result>
+Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result
+----
+
+--
+====
 
 // end::methods[]
 

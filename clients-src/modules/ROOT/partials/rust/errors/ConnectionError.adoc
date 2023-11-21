@@ -9,27 +9,24 @@
 |===
 |Variant
 a| `BrokenPipe()`
-a| `ConnectionFailed()`
 a| `ConnectionIsClosed()`
+a| `ConnectionRefused()`
 a| `DatabaseDoesNotExist(String)`
 a| `EnterpriseAllNodesFailed(String)`
 a| `EnterpriseEndpointEncrypted()`
 a| `EnterpriseReplicaNotPrimary()`
 a| `EnterpriseSSLCertificateNotValidated()`
 a| `EnterpriseTokenCredentialInvalid()`
+a| `EnterpriseUnableToConnect(String)`
 a| `InvalidResponseField(&'static str)`
 a| `MissingResponseField(&'static str)`
 a| `RPCMethodUnavailable(String)`
-a| `ServerConnectionFailed(String)`
-a| `ServerConnectionFailedStatusError(String)`
-a| `ServerConnectionFailedWithError(String)`
 a| `SessionCloseFailed()`
 a| `SessionIsClosed()`
 a| `TransactionIsClosed()`
 a| `TransactionIsClosedWithErrors(String)`
-a| `UnexpectedResponse(String)`
+a| `UnableToConnect()`
 a| `UnknownRequestId(ID)`
-a| `UserManagementEnterpriseOnly()`
 |===
 // end::enum_constants[]
 

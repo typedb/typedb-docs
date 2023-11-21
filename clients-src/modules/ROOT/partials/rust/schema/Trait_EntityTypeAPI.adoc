@@ -6,34 +6,99 @@
 * `EntityType`
 
 // tag::methods[]
-[#_trait_EntityTypeAPI_create__transaction_'tx_Transaction_'__]
+[#_trait_EntityTypeAPI_method_create]
 ==== create
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn create<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>
-) -> BoxPromise<'tx, Result<Entity>>
+fn create<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>
+) -> Pin<Box<dyn Future<Output = Result<Entity>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn create(&self, transaction: &Transaction<'_>) -> Result<Entity>
+----
+
+--
+====
 
 Creates and returns a new instance of this ``EntityType``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result<Entity>>
+Pin<Box<dyn Future<Output = Result<Entity>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result<Entity>
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -54,22 +119,22 @@ sync::
 --
 [source,rust]
 ----
-entity_type.create(transaction).resolve();
+entity_type.create(transaction);
 ----
 
 --
 ====
 
-[#_trait_EntityTypeAPI_get_instances__transaction_'tx_Transaction_'____transitivity_Transitivity]
+[#_trait_EntityTypeAPI_method_get_instances]
 ==== get_instances
 
 [source,rust]
 ----
-fn get_instances<'tx>(
+fn get_instances(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'tx, Result<Entity>>>
+) -> Result<BoxStream<'_, Result<Entity>>>
 ----
 
 Retrieves all direct and indirect (or direct only) ``Entity`` objects that are instances of this ``EntityType``.
@@ -80,7 +145,7 @@ Retrieves all direct and indirect (or direct only) ``Entity`` objects that are i
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect instances, ``Transitivity::Explicit`` for direct instances only a| `Transitivity`
 |===
 
@@ -88,26 +153,44 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect instan
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<Entity>>>
+Result<BoxStream<'_, Result<Entity>>>
 ----
 
 [caption=""]
 .Code examples
+[tabs]
+====
+async::
++
+--
+[source,rust]
+----
+entity_type.get_instances(transaction, Transitivity::Explicit).await;
+----
+
+--
+
+sync::
++
+--
 [source,rust]
 ----
 entity_type.get_instances(transaction, Transitivity::Explicit);
 ----
 
-[#_trait_EntityTypeAPI_get_subtypes__transaction_'tx_Transaction_'____transitivity_Transitivity]
+--
+====
+
+[#_trait_EntityTypeAPI_method_get_subtypes]
 ==== get_subtypes
 
 [source,rust]
 ----
-fn get_subtypes<'tx>(
+fn get_subtypes(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'tx, Result<EntityType>>>
+) -> Result<BoxStream<'_, Result<EntityType>>>
 ----
 
 Retrieves all direct and indirect (or direct only) subtypes of the ``EntityType``.
@@ -118,7 +201,7 @@ Retrieves all direct and indirect (or direct only) subtypes of the ``EntityType`
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtypes, ``Transitivity::Explicit`` for direct subtypes only a| `Transitivity`
 |===
 
@@ -126,44 +209,130 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtyp
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<EntityType>>>
+Result<BoxStream<'_, Result<EntityType>>>
 ----
 
 [caption=""]
 .Code examples
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-entity_type.get_subtypes(transaction, Transitivity::Transitive);
+entity_type.get_subtypes(transaction, transitivity).await;
 ----
 
-[#_trait_EntityTypeAPI_get_supertype__transaction_'tx_Transaction_'__]
+--
+
+sync::
++
+--
+[source,rust]
+----
+entity_type.get_subtypes(transaction, transitivity);
+----
+
+--
+====
+
+[#_trait_EntityTypeAPI_method_get_supertype]
 ==== get_supertype
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn get_supertype<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>
-) -> BoxPromise<'tx, Result<Option<EntityType>>>
+fn get_supertype<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>
+) -> Pin<Box<dyn Future<Output = Result<Option<EntityType>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn get_supertype(
+    &self,
+    transaction: &Transaction<'_>
+) -> Result<Option<EntityType>>
+----
+
+--
+====
 
 Retrieves the most immediate supertype of the ``EntityType``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result<Option<EntityType>>>
+Pin<Box<dyn Future<Output = Result<Option<EntityType>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result<Option<EntityType>>
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -184,21 +353,21 @@ sync::
 --
 [source,rust]
 ----
-entity_type.get_supertype(transaction).resolve();
+entity_type.get_supertype(transaction);
 ----
 
 --
 ====
 
-[#_trait_EntityTypeAPI_get_supertypes__transaction_'tx_Transaction_'__]
+[#_trait_EntityTypeAPI_method_get_supertypes]
 ==== get_supertypes
 
 [source,rust]
 ----
-fn get_supertypes<'tx>(
+fn get_supertypes(
     &self,
-    transaction: &'tx Transaction<'_>
-) -> Result<BoxStream<'tx, Result<EntityType>>>
+    transaction: &Transaction<'_>
+) -> Result<BoxStream<'_, Result<EntityType>>>
 ----
 
 Retrieves all supertypes of the ``EntityType``.
@@ -209,53 +378,141 @@ Retrieves all supertypes of the ``EntityType``.
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 |===
 
 [caption=""]
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<EntityType>>>
+Result<BoxStream<'_, Result<EntityType>>>
 ----
 
 [caption=""]
 .Code examples
+[tabs]
+====
+async::
++
+--
+[source,rust]
+----
+entity_type.get_supertypes(transaction).await;
+----
+
+--
+
+sync::
++
+--
 [source,rust]
 ----
 entity_type.get_supertypes(transaction);
 ----
 
-[#_trait_EntityTypeAPI_set_supertype__transaction_'tx_Transaction_'____supertype_EntityType]
+--
+====
+
+[#_trait_EntityTypeAPI_method_set_supertype]
 ==== set_supertype
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn set_supertype<'tx>(
-    &mut self,
-    transaction: &'tx Transaction<'_>,
+fn set_supertype<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 mut self,
+    transaction: &'life1 Transaction<'life2>,
     supertype: EntityType
-) -> BoxPromise<'tx, Result>
+) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Send + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn set_supertype(
+    &mut self,
+    transaction: &Transaction<'_>,
+    supertype: EntityType
+) -> Result
+----
+
+--
+====
 
 Sets the supplied ``EntityType`` as the supertype of the current ``EntityType``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 a| `supertype` a| The ``EntityType`` to set as the supertype of this ``EntityType`` a| `EntityType`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `supertype` a| The ``EntityType`` to set as the supertype of this ``EntityType`` a| `EntityType`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result>
+Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Send + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -276,7 +533,7 @@ sync::
 --
 [source,rust]
 ----
-entity_type.set_supertype(transaction, super_entity_type).resolve();
+entity_type.set_supertype(transaction, super_entity_type);
 ----
 
 --

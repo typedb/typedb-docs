@@ -6,36 +6,106 @@
 * `AttributeType`
 
 // tag::methods[]
-[#_trait_AttributeTypeAPI_get__transaction_'tx_Transaction_'____value_Value]
+[#_trait_AttributeTypeAPI_method_get]
 ==== get
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn get<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>,
+fn get<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>,
     value: Value
-) -> BoxPromise<'tx, Result<Option<Attribute>>>
+) -> Pin<Box<dyn Future<Output = Result<Option<Attribute>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn get(
+    &self,
+    transaction: &Transaction<'_>,
+    value: Value
+) -> Result<Option<Attribute>>
+----
+
+--
+====
 
 Retrieves an ``Attribute`` of this ``AttributeType`` with the given value if such ``Attribute`` exists. Otherwise, returns ``None``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 a| `value` a| ``Attribute``’s value a| `Value`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `value` a| ``Attribute``’s value a| `Value`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result<Option<Attribute>>>
+Pin<Box<dyn Future<Output = Result<Option<Attribute>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result<Option<Attribute>>
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -56,22 +126,22 @@ sync::
 --
 [source,rust]
 ----
-attribute = attribute_type.get(transaction, value).resolve();
+attribute = attribute_type.get(transaction, value);
 ----
 
 --
 ====
 
-[#_trait_AttributeTypeAPI_get_instances__transaction_'tx_Transaction_'____transitivity_Transitivity]
+[#_trait_AttributeTypeAPI_method_get_instances]
 ==== get_instances
 
 [source,rust]
 ----
-fn get_instances<'tx>(
+fn get_instances(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'tx, Result<Attribute>>>
+) -> Result<BoxStream<'_, Result<Attribute>>>
 ----
 
 Retrieves all direct and indirect (or direct only) ``Attributes`` that are instances of this ``AttributeType``.
@@ -82,7 +152,7 @@ Retrieves all direct and indirect (or direct only) ``Attributes`` that are insta
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtypes, ``Transitivity::Explicit`` for direct subtypes only a| `Transitivity`
 |===
 
@@ -90,7 +160,7 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtyp
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<Attribute>>>
+Result<BoxStream<'_, Result<Attribute>>>
 ----
 
 [caption=""]
@@ -100,17 +170,17 @@ Result<BoxStream<'tx, Result<Attribute>>>
 attribute_type.get_instances(transaction, transitivity)
 ----
 
-[#_trait_AttributeTypeAPI_get_owners__transaction_'tx_Transaction_'____transitivity_Transitivity__annotations_Vec_Annotation_]
+[#_trait_AttributeTypeAPI_method_get_owners]
 ==== get_owners
 
 [source,rust]
 ----
-fn get_owners<'tx>(
+fn get_owners(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     transitivity: Transitivity,
     annotations: Vec<Annotation>
-) -> Result<BoxStream<'tx, Result<ThingType>>>
+) -> Result<BoxStream<'_, Result<ThingType>>>
 ----
 
 Retrieve all ``Things`` that own an attribute of this ``AttributeType`` and have all given ``Annotation``s.
@@ -121,7 +191,7 @@ Retrieve all ``Things`` that own an attribute of this ``AttributeType`` and have
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and inherited ownership, ``Transitivity::Explicit`` for direct ownership only a| `Transitivity`
 a| `annotations` a| Only retrieve ``ThingTypes`` that have an attribute of this ``AttributeType`` with all given ``Annotation``s a| `Vec<Annotation>`
 |===
@@ -130,7 +200,7 @@ a| `annotations` a| Only retrieve ``ThingTypes`` that have an attribute of this 
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<ThingType>>>
+Result<BoxStream<'_, Result<ThingType>>>
 ----
 
 [caption=""]
@@ -140,34 +210,99 @@ Result<BoxStream<'tx, Result<ThingType>>>
 attribute_type.get_owners(transaction, transitivity, annotations)
 ----
 
-[#_trait_AttributeTypeAPI_get_regex__transaction_'tx_Transaction_'__]
+[#_trait_AttributeTypeAPI_method_get_regex]
 ==== get_regex
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn get_regex<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>
-) -> BoxPromise<'tx, Result<Option<String>>>
+fn get_regex<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>
+) -> Pin<Box<dyn Future<Output = Result<Option<String>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn get_regex(&self, transaction: &Transaction<'_>) -> Result<Option<String>>
+----
+
+--
+====
 
 Retrieves the regular expression that is defined for this ``AttributeType``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result<Option<String>>>
+Pin<Box<dyn Future<Output = Result<Option<String>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result<Option<String>>
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -188,22 +323,22 @@ sync::
 --
 [source,rust]
 ----
-attribute_type.get_regex(transaction).resolve();
+attribute_type.get_regex(transaction);
 ----
 
 --
 ====
 
-[#_trait_AttributeTypeAPI_get_subtypes__transaction_'tx_Transaction_'____transitivity_Transitivity]
+[#_trait_AttributeTypeAPI_method_get_subtypes]
 ==== get_subtypes
 
 [source,rust]
 ----
-fn get_subtypes<'tx>(
+fn get_subtypes(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'tx, Result<AttributeType>>>
+) -> Result<BoxStream<'_, Result<AttributeType>>>
 ----
 
 Retrieves all direct and indirect (or direct only) subtypes of this ``AttributeType``.
@@ -214,7 +349,7 @@ Retrieves all direct and indirect (or direct only) subtypes of this ``AttributeT
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtypes, ``Transitivity::Explicit`` for direct subtypes only a| `Transitivity`
 |===
 
@@ -222,7 +357,7 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtyp
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<AttributeType>>>
+Result<BoxStream<'_, Result<AttributeType>>>
 ----
 
 [caption=""]
@@ -232,17 +367,17 @@ Result<BoxStream<'tx, Result<AttributeType>>>
 attribute_type.get_subtypes(transaction, transitivity)
 ----
 
-[#_trait_AttributeTypeAPI_get_subtypes_with_value_type__transaction_'tx_Transaction_'____value_type_ValueType__transitivity_Transitivity]
+[#_trait_AttributeTypeAPI_method_get_subtypes_with_value_type]
 ==== get_subtypes_with_value_type
 
 [source,rust]
 ----
-fn get_subtypes_with_value_type<'tx>(
+fn get_subtypes_with_value_type(
     &self,
-    transaction: &'tx Transaction<'_>,
+    transaction: &Transaction<'_>,
     value_type: ValueType,
     transitivity: Transitivity
-) -> Result<BoxStream<'tx, Result<AttributeType>>>
+) -> Result<BoxStream<'_, Result<AttributeType>>>
 ----
 
 Retrieves all direct and indirect (or direct only) subtypes of this ``AttributeType`` with given ``ValueType``.
@@ -253,7 +388,7 @@ Retrieves all direct and indirect (or direct only) subtypes of this ``AttributeT
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 a| `value_type` a| ``ValueType`` for retrieving subtypes a| `ValueType`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtypes, ``Transitivity::Explicit`` for direct subtypes only a| `Transitivity`
 |===
@@ -262,7 +397,7 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtyp
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<AttributeType>>>
+Result<BoxStream<'_, Result<AttributeType>>>
 ----
 
 [caption=""]
@@ -272,34 +407,102 @@ Result<BoxStream<'tx, Result<AttributeType>>>
 attribute_type.get_subtypes_with_value_type(transaction, value_type, transitivity)
 ----
 
-[#_trait_AttributeTypeAPI_get_supertype__transaction_'tx_Transaction_'__]
+[#_trait_AttributeTypeAPI_method_get_supertype]
 ==== get_supertype
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn get_supertype<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>
-) -> BoxPromise<'tx, Result<Option<AttributeType>>>
+fn get_supertype<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>
+) -> Pin<Box<dyn Future<Output = Result<Option<AttributeType>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn get_supertype(
+    &self,
+    transaction: &Transaction<'_>
+) -> Result<Option<AttributeType>>
+----
+
+--
+====
 
 Retrieves the most immediate supertype of this ``AttributeType``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result<Option<AttributeType>>>
+Pin<Box<dyn Future<Output = Result<Option<AttributeType>>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result<Option<AttributeType>>
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -320,21 +523,21 @@ sync::
 --
 [source,rust]
 ----
-attribute_type.get_supertype(transaction).resolve();
+attribute_type.get_supertype(transaction);
 ----
 
 --
 ====
 
-[#_trait_AttributeTypeAPI_get_supertypes__transaction_'tx_Transaction_'__]
+[#_trait_AttributeTypeAPI_method_get_supertypes]
 ==== get_supertypes
 
 [source,rust]
 ----
-fn get_supertypes<'tx>(
+fn get_supertypes(
     &self,
-    transaction: &'tx Transaction<'_>
-) -> Result<BoxStream<'tx, Result<AttributeType>>>
+    transaction: &Transaction<'_>
+) -> Result<BoxStream<'_, Result<AttributeType>>>
 ----
 
 Retrieves all supertypes of this ``AttributeType``.
@@ -345,14 +548,14 @@ Retrieves all supertypes of this ``AttributeType``.
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
 |===
 
 [caption=""]
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'tx, Result<AttributeType>>>
+Result<BoxStream<'_, Result<AttributeType>>>
 ----
 
 [caption=""]
@@ -362,36 +565,102 @@ Result<BoxStream<'tx, Result<AttributeType>>>
 attribute_type.get_supertypes(transaction)
 ----
 
-[#_trait_AttributeTypeAPI_put__transaction_'tx_Transaction_'____value_Value]
+[#_trait_AttributeTypeAPI_method_put]
 ==== put
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn put<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>,
+fn put<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>,
     value: Value
-) -> BoxPromise<'tx, Result<Attribute>>
+) -> Pin<Box<dyn Future<Output = Result<Attribute>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn put(&self, transaction: &Transaction<'_>, value: Value) -> Result<Attribute>
+----
+
+--
+====
 
 Adds and returns an ``Attribute`` of this ``AttributeType`` with the given value.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 a| `value` a| New ``Attribute``’s value a| `Value`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `value` a| New ``Attribute``’s value a| `Value`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result<Attribute>>
+Pin<Box<dyn Future<Output = Result<Attribute>> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result<Attribute>
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -412,23 +681,46 @@ sync::
 --
 [source,rust]
 ----
-attribute = attribute_type.put(transaction, value).resolve();
+attribute = attribute_type.put(transaction, value);
 ----
 
 --
 ====
 
-[#_trait_AttributeTypeAPI_set_regex__transaction_'tx_Transaction_'____regex_String]
+[#_trait_AttributeTypeAPI_method_set_regex]
 ==== set_regex
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn set_regex<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>,
+fn set_regex<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>,
     regex: String
-) -> BoxPromise<'tx, Result>
+) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn set_regex(&self, transaction: &Transaction<'_>, regex: String) -> Result
+----
+
+--
+====
 
 Sets a regular expression as a constraint for this ``AttributeType``. ``Values`` of all ``Attribute``s of this type (inserted earlier or later) should match this regex.
 
@@ -436,20 +728,63 @@ Can only be applied for ``AttributeType``s with a ``string`` value type.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 a| `regex` a| Regular expression a| `String`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `regex` a| Regular expression a| `String`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result>
+Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -470,42 +805,112 @@ sync::
 --
 [source,rust]
 ----
-attribute_type.set_regex(transaction, regex).resolve();
+attribute_type.set_regex(transaction, regex);
 ----
 
 --
 ====
 
-[#_trait_AttributeTypeAPI_set_supertype__transaction_'tx_Transaction_'____supertype_AttributeType]
+[#_trait_AttributeTypeAPI_method_set_supertype]
 ==== set_supertype
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn set_supertype<'tx>(
-    &mut self,
-    transaction: &'tx Transaction<'_>,
+fn set_supertype<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 mut self,
+    transaction: &'life1 Transaction<'life2>,
     supertype: AttributeType
-) -> BoxPromise<'tx, Result>
+) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Send + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn set_supertype(
+    &mut self,
+    transaction: &Transaction<'_>,
+    supertype: AttributeType
+) -> Result
+----
+
+--
+====
 
 Sets the supplied ``AttributeType`` as the supertype of the current ``AttributeType``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 a| `supertype` a| The ``AttributeType`` to set as the supertype of this ``AttributeType`` a| `AttributeType`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `supertype` a| The ``AttributeType`` to set as the supertype of this ``AttributeType`` a| `AttributeType`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result>
+Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Send + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -526,40 +931,105 @@ sync::
 --
 [source,rust]
 ----
-attribute_type.set_supertype(transaction, supertype).resolve();
+attribute_type.set_supertype(transaction, supertype);
 ----
 
 --
 ====
 
-[#_trait_AttributeTypeAPI_unset_regex__transaction_'tx_Transaction_'__]
+[#_trait_AttributeTypeAPI_method_unset_regex]
 ==== unset_regex
 
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-fn unset_regex<'tx>(
-    &self,
-    transaction: &'tx Transaction<'_>
-) -> BoxPromise<'tx, Result>
+fn unset_regex<'life0, 'life1, 'life2, 'async_trait>(
+    &'life0 self,
+    transaction: &'life1 Transaction<'life2>
+) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+fn unset_regex(&self, transaction: &Transaction<'_>) -> Result
+----
+
+--
+====
 
 Removes the regular expression that is defined for this ``AttributeType``.
 
 [caption=""]
 .Input parameters
+[tabs]
+====
+async::
++
+--
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
 |===
+--
+
+sync::
++
+--
+[cols="~,~,~"]
+[options="header"]
+|===
+|Name |Description |Type
+a| `transaction` a| The current transaction a| `&Transaction<'_>`
+|===
+--
+====
+
 
 [caption=""]
 .Returns
+[tabs]
+====
+async::
++
+--
 [source,rust]
 ----
-BoxPromise<'tx, Result>
+Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
+where
+     Self: Sync + 'async_trait,
+     'life0: 'async_trait,
+     'life1: 'async_trait,
+     'life2: 'async_trait,
 ----
+
+--
+
+sync::
++
+--
+[source,rust]
+----
+Result
+----
+
+--
+====
 
 [caption=""]
 .Code examples
@@ -580,13 +1050,13 @@ sync::
 --
 [source,rust]
 ----
-attribute_type.unset_regex(transaction).resolve();
+attribute_type.unset_regex(transaction);
 ----
 
 --
 ====
 
-[#_trait_AttributeTypeAPI_value_type__]
+[#_trait_AttributeTypeAPI_tymethod_value_type]
 ==== value_type
 
 [source,rust]

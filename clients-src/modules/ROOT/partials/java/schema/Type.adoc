@@ -8,7 +8,7 @@
 * `Concept`
 
 // tag::methods[]
-[#_Type_asAttribute__]
+[#_Type_asAttribute_]
 ==== asAttribute
 
 [source,java]
@@ -30,7 +30,7 @@ Casts the concept to ``Attribute``.
 concept.asAttribute();
 ----
 
-[#_Type_asAttributeType__]
+[#_Type_asAttributeType_]
 ==== asAttributeType
 
 [source,java]
@@ -52,7 +52,7 @@ Casts the concept to ``AttributeType``.
 concept.asAttributeType();
 ----
 
-[#_Type_asEntity__]
+[#_Type_asEntity_]
 ==== asEntity
 
 [source,java]
@@ -74,7 +74,7 @@ Casts the concept to ``Entity``.
 concept.asEntity();
 ----
 
-[#_Type_asEntityType__]
+[#_Type_asEntityType_]
 ==== asEntityType
 
 [source,java]
@@ -96,7 +96,7 @@ Casts the concept to ``EntityType``.
 concept.asEntityType();
 ----
 
-[#_Type_asRelation__]
+[#_Type_asRelation_]
 ==== asRelation
 
 [source,java]
@@ -118,7 +118,7 @@ Casts the concept to ``Relation``.
 concept.asRelation();
 ----
 
-[#_Type_asRelationType__]
+[#_Type_asRelationType_]
 ==== asRelationType
 
 [source,java]
@@ -140,7 +140,7 @@ Casts the concept to ``RelationType``.
 concept.asRelationType();
 ----
 
-[#_Type_asRoleType__]
+[#_Type_asRoleType_]
 ==== asRoleType
 
 [source,java]
@@ -162,7 +162,7 @@ Casts the concept to ``RoleType``.
 concept.asRoleType();
 ----
 
-[#_Type_asThing__]
+[#_Type_asThing_]
 ==== asThing
 
 [source,java]
@@ -184,7 +184,7 @@ Casts the concept to ``Thing``.
 concept.asThing();
 ----
 
-[#_Type_asThingType__]
+[#_Type_asThingType_]
 ==== asThingType
 
 [source,java]
@@ -206,7 +206,7 @@ Casts the concept to ``ThingType``.
 concept.asThingType();
 ----
 
-[#_Type_asType__]
+[#_Type_asType_]
 ==== asType
 
 [source,java]
@@ -229,7 +229,7 @@ Casts the concept to ``Type``.
 concept.asType();
 ----
 
-[#_Type_asValue__]
+[#_Type_asValue_]
 ==== asValue
 
 [source,java]
@@ -251,13 +251,12 @@ Casts the concept to ``Value``.
 concept.asValue();
 ----
 
-[#_Type_delete__TypeDBTransaction]
+[#_Type_delete_com_vaticle_typedb_driver_api_TypeDBTransaction]
 ==== delete
 
 [source,java]
 ----
-@CheckReturnValue
-Promise<java.lang.Void> delete​(TypeDBTransaction transaction)
+void delete​(TypeDBTransaction transaction)
 ----
 
 Deletes this type from the database. 
@@ -274,16 +273,16 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction`
 
 [caption=""]
 .Returns
-`Promise<java.lang.Void>`
+`void`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-type.delete(transaction).resolve();
+type.delete(transaction);
 ----
 
-[#_Type_getLabel__]
+[#_Type_getLabel_]
 ==== getLabel
 
 [source,java]
@@ -306,7 +305,7 @@ Retrieves the unique label of the type.
 type.getLabel();
 ----
 
-[#_Type_getSubtypes__TypeDBTransaction]
+[#_Type_getSubtypes_com_vaticle_typedb_driver_api_TypeDBTransaction]
 ==== getSubtypes
 
 [source,java]
@@ -325,7 +324,7 @@ See also: <<#_getSubtypes_com_vaticle_typedb_driver_api_TypeDBTransaction_com_va
 .Returns
 `java.util.stream.Stream<? extends Type>`
 
-[#_Type_getSubtypes__TypeDBTransaction__Concept_Transitivity]
+[#_Type_getSubtypes_com_vaticle_typedb_driver_api_TypeDBTransaction_com_vaticle_typedb_driver_api_concept_Concept_Transitivity]
 ==== getSubtypes
 
 [source,java]
@@ -360,13 +359,14 @@ type.getSubtypes(transaction);
  type.getSubtypes(transaction, Transitivity.EXPLICIT);
 ----
 
-[#_Type_getSupertype__TypeDBTransaction]
+[#_Type_getSupertype_com_vaticle_typedb_driver_api_TypeDBTransaction]
 ==== getSupertype
 
 [source,java]
 ----
+@Nullable
 @CheckReturnValue
-Promise<? extends Type> getSupertype​(TypeDBTransaction transaction)
+Type getSupertype​(TypeDBTransaction transaction)
 ----
 
 Retrieves the most immediate supertype of the type. 
@@ -383,16 +383,16 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction`
 
 [caption=""]
 .Returns
-`Promise<? extends Type>`
+`Type`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-type.getSupertype(transaction).resolve();
+type.getSupertype(transaction);
 ----
 
-[#_Type_getSupertypes__TypeDBTransaction]
+[#_Type_getSupertypes_com_vaticle_typedb_driver_api_TypeDBTransaction]
 ==== getSupertypes
 
 [source,java]
@@ -424,7 +424,7 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction`
 type.getSupertypes(transaction);
 ----
 
-[#_Type_isAbstract__]
+[#_Type_isAbstract_]
 ==== isAbstract
 
 [source,java]
@@ -447,7 +447,7 @@ Checks if the type is prevented from having data instances (i.e., ``abstract``).
 type.isAbstract();
 ----
 
-[#_Type_isAttribute__]
+[#_Type_isAttribute_]
 ==== isAttribute
 
 [source,java]
@@ -470,7 +470,7 @@ Checks if the concept is an ``Attribute``.
 concept.isAttribute();
 ----
 
-[#_Type_isAttributeType__]
+[#_Type_isAttributeType_]
 ==== isAttributeType
 
 [source,java]
@@ -493,17 +493,16 @@ Checks if the concept is an ``AttributeType``.
 concept.isAttributeType();
 ----
 
-[#_Type_isDeleted__TypeDBTransaction]
+[#_Type_isDeleted_com_vaticle_typedb_driver_api_TypeDBTransaction]
 ==== isDeleted
 
 [source,java]
 ----
 @CheckReturnValue
-Promise<java.lang.Boolean> isDeleted​(TypeDBTransaction transaction)
+boolean isDeleted​(TypeDBTransaction transaction)
 ----
 
-Check if the concept has been deleted 
-
+Check if the concept has been deleted
 
 [caption=""]
 .Input parameters
@@ -516,16 +515,9 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction`
 
 [caption=""]
 .Returns
-`Promise<java.lang.Boolean>`
+`boolean`
 
-[caption=""]
-.Code examples
-[source,java]
-----
-type.isDeleted(transaction).resolve();
-----
-
-[#_Type_isEntity__]
+[#_Type_isEntity_]
 ==== isEntity
 
 [source,java]
@@ -548,7 +540,7 @@ Checks if the concept is an ``Entity``.
 concept.isEntity();
 ----
 
-[#_Type_isEntityType__]
+[#_Type_isEntityType_]
 ==== isEntityType
 
 [source,java]
@@ -571,7 +563,7 @@ Checks if the concept is an ``EntityType``.
 concept.isEntityType();
 ----
 
-[#_Type_isRelation__]
+[#_Type_isRelation_]
 ==== isRelation
 
 [source,java]
@@ -594,7 +586,7 @@ Checks if the concept is a ``Relation``.
 concept.isRelation();
 ----
 
-[#_Type_isRelationType__]
+[#_Type_isRelationType_]
 ==== isRelationType
 
 [source,java]
@@ -617,7 +609,7 @@ Checks if the concept is a ``RelationType``.
 concept.isRelationType();
 ----
 
-[#_Type_isRoleType__]
+[#_Type_isRoleType_]
 ==== isRoleType
 
 [source,java]
@@ -640,7 +632,7 @@ Checks if the concept is a ``RoleType``.
 concept.isRoleType();
 ----
 
-[#_Type_isRoot__]
+[#_Type_isRoot_]
 ==== isRoot
 
 [source,java]
@@ -663,7 +655,7 @@ Checks if the type is a root type.
 type.isRoot();
 ----
 
-[#_Type_isThing__]
+[#_Type_isThing_]
 ==== isThing
 
 [source,java]
@@ -686,7 +678,7 @@ Checks if the concept is a ``Thing``.
 concept.isThing();
 ----
 
-[#_Type_isThingType__]
+[#_Type_isThingType_]
 ==== isThingType
 
 [source,java]
@@ -709,7 +701,7 @@ Checks if the concept is a ``ThingType``.
 concept.isThingType();
 ----
 
-[#_Type_isType__]
+[#_Type_isType_]
 ==== isType
 
 [source,java]
@@ -732,7 +724,7 @@ Checks if the concept is a ``Type``.
 concept.isType();
 ----
 
-[#_Type_isValue__]
+[#_Type_isValue_]
 ==== isValue
 
 [source,java]
@@ -755,14 +747,13 @@ Checks if the concept is a ``Value``.
 concept.isValue();
 ----
 
-[#_Type_setLabel__TypeDBTransaction__java_lang_String]
+[#_Type_setLabel_com_vaticle_typedb_driver_api_TypeDBTransaction_java_lang_String]
 ==== setLabel
 
 [source,java]
 ----
-@CheckReturnValue
-Promise<java.lang.Void> setLabel​(TypeDBTransaction transaction,
-                                 java.lang.String label)
+void setLabel​(TypeDBTransaction transaction,
+              java.lang.String label)
 ----
 
 Renames the label of the type. The new label must remain unique. 
@@ -780,13 +771,35 @@ a| `label` a| The new ``Label`` to be given to the type. a| `java.lang.String`
 
 [caption=""]
 .Returns
-`Promise<java.lang.Void>`
+`void`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-type.setLabel(transaction, newLabel).resolve();
+type.setLabel(transaction, newLabel)
+----
+
+[#_Type_toJSON_]
+==== toJSON
+
+[source,java]
+----
+default com.eclipsesource.json.JsonObject toJSON()
+----
+
+Retrieves the concept as JSON. 
+
+
+[caption=""]
+.Returns
+`com.eclipsesource.json.JsonObject`
+
+[caption=""]
+.Code examples
+[source,java]
+----
+concept.toJSON();
 ----
 
 // end::methods[]

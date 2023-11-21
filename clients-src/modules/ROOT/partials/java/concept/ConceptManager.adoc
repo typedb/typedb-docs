@@ -6,13 +6,14 @@
 Provides access for all Concept API methods.
 
 // tag::methods[]
-[#_ConceptManager_getAttribute__java_lang_String]
+[#_ConceptManager_getAttribute_java_lang_String]
 ==== getAttribute
 
 [source,java]
 ----
+@Nullable
 @CheckReturnValue
-Promise<? extends Attribute> getAttribute​(java.lang.String iid)
+Attribute getAttribute​(java.lang.String iid)
 ----
 
 Retrieves an ``Attribute`` by its iid. 
@@ -29,22 +30,23 @@ a| `iid` a| The iid of the ``Attribute`` to retrieve a| `java.lang.String`
 
 [caption=""]
 .Returns
-`Promise<? extends Attribute>`
+`Attribute`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().getAttribute(iid).resolve();
+transaction.concepts().getAttribute(iid);
 ----
 
-[#_ConceptManager_getAttributeType__java_lang_String]
+[#_ConceptManager_getAttributeType_java_lang_String]
 ==== getAttributeType
 
 [source,java]
 ----
+@Nullable
 @CheckReturnValue
-Promise<? extends AttributeType> getAttributeType​(java.lang.String label)
+AttributeType getAttributeType​(java.lang.String label)
 ----
 
 Retrieves an ``AttributeType`` by its label. 
@@ -61,22 +63,23 @@ a| `label` a| The label of the ``AttributeType`` to retrieve a| `java.lang.Strin
 
 [caption=""]
 .Returns
-`Promise<? extends AttributeType>`
+`AttributeType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().getAttributeType(label).resolve();
+transaction.concepts().getAttributeType(label)
 ----
 
-[#_ConceptManager_getEntity__java_lang_String]
+[#_ConceptManager_getEntity_java_lang_String]
 ==== getEntity
 
 [source,java]
 ----
+@Nullable
 @CheckReturnValue
-Promise<? extends Entity> getEntity​(java.lang.String iid)
+Entity getEntity​(java.lang.String iid)
 ----
 
 Retrieves an ``Entity`` by its iid. 
@@ -93,22 +96,23 @@ a| `iid` a| The iid of the ``Entity`` to retrieve a| `java.lang.String`
 
 [caption=""]
 .Returns
-`Promise<? extends Entity>`
+`Entity`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().getEntity(iid).resolve();
+transaction.concepts().getEntity(iid);
 ----
 
-[#_ConceptManager_getEntityType__java_lang_String]
+[#_ConceptManager_getEntityType_java_lang_String]
 ==== getEntityType
 
 [source,java]
 ----
+@Nullable
 @CheckReturnValue
-Promise<? extends EntityType> getEntityType​(java.lang.String label)
+EntityType getEntityType​(java.lang.String label)
 ----
 
 Retrieves an ``EntityType`` by its label. 
@@ -125,22 +129,23 @@ a| `label` a| The label of the ``EntityType`` to retrieve a| `java.lang.String`
 
 [caption=""]
 .Returns
-`Promise<? extends EntityType>`
+`EntityType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().getEntityType(label).resolve();
+transaction.concepts().getEntityType(label);
 ----
 
-[#_ConceptManager_getRelation__java_lang_String]
+[#_ConceptManager_getRelation_java_lang_String]
 ==== getRelation
 
 [source,java]
 ----
+@Nullable
 @CheckReturnValue
-Promise<? extends Relation> getRelation​(java.lang.String iid)
+Relation getRelation​(java.lang.String iid)
 ----
 
 Retrieves a ``Relation`` by its iid. 
@@ -157,22 +162,23 @@ a| `iid` a| The iid of the ``Relation`` to retrieve a| `java.lang.String`
 
 [caption=""]
 .Returns
-`Promise<? extends Relation>`
+`Relation`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().getRelation(iid).resolve();
+transaction.concepts().getRelation(iid);
 ----
 
-[#_ConceptManager_getRelationType__java_lang_String]
+[#_ConceptManager_getRelationType_java_lang_String]
 ==== getRelationType
 
 [source,java]
 ----
+@Nullable
 @CheckReturnValue
-Promise<? extends RelationType> getRelationType​(java.lang.String label)
+RelationType getRelationType​(java.lang.String label)
 ----
 
 Retrieves a ``RelationType`` by its label. 
@@ -189,16 +195,16 @@ a| `label` a| The label of the ``RelationType`` to retrieve a| `java.lang.String
 
 [caption=""]
 .Returns
-`Promise<? extends RelationType>`
+`RelationType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().getRelationType(label).resolve();
+transaction.concepts().getRelationType(label);
 ----
 
-[#_ConceptManager_getRootAttributeType__]
+[#_ConceptManager_getRootAttributeType_]
 ==== getRootAttributeType
 
 [source,java]
@@ -221,7 +227,7 @@ Retrieve the root ``AttributeType``, “attribute”.
 transaction.concepts().getRootAttributeType();
 ----
 
-[#_ConceptManager_getRootEntityType__]
+[#_ConceptManager_getRootEntityType_]
 ==== getRootEntityType
 
 [source,java]
@@ -244,7 +250,7 @@ Retrieves the root ``EntityType``, “entity”.
 transaction.concepts().getRootEntityType();
 ----
 
-[#_ConceptManager_getRootRelationType__]
+[#_ConceptManager_getRootRelationType_]
 ==== getRootRelationType
 
 [source,java]
@@ -267,7 +273,7 @@ Retrieve the root ``RelationType``, “relation”.
 transaction.concepts().getRootRelationType();
 ----
 
-[#_ConceptManager_getSchemaExceptions__]
+[#_ConceptManager_getSchemaExceptions_]
 ==== getSchemaExceptions
 
 [source,java]
@@ -290,14 +296,13 @@ Retrieves a list of all schema exceptions for the current transaction.
 transaction.concepts().getSchemaException();
 ----
 
-[#_ConceptManager_putAttributeType__java_lang_String__Value_Type]
+[#_ConceptManager_putAttributeType_java_lang_String_com_vaticle_typedb_driver_api_concept_value_Value_Type]
 ==== putAttributeType
 
 [source,java]
 ----
-@CheckReturnValue
-Promise<? extends AttributeType> putAttributeType​(java.lang.String label,
-                                                  Value.Type valueType)
+AttributeType putAttributeType​(java.lang.String label,
+                               Value.Type valueType)
 ----
 
 Creates a new ``AttributeType`` if none exists with the given label, or retrieves the existing one. 
@@ -315,22 +320,21 @@ a| `valueType` a| The value type of the ``AttributeType`` to create a| `Value.Ty
 
 [caption=""]
 .Returns
-`Promise<? extends AttributeType>`
+`AttributeType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-await transaction.concepts().putAttributeType(label, valueType).resolve();
+await transaction.concepts().putAttributeType(label, valueType);
 ----
 
-[#_ConceptManager_putEntityType__java_lang_String]
+[#_ConceptManager_putEntityType_java_lang_String]
 ==== putEntityType
 
 [source,java]
 ----
-@CheckReturnValue
-Promise<? extends EntityType> putEntityType​(java.lang.String label)
+EntityType putEntityType​(java.lang.String label)
 ----
 
 Creates a new ``EntityType`` if none exists with the given label, otherwise retrieves the existing one. 
@@ -347,22 +351,21 @@ a| `label` a| The label of the ``EntityType`` to create or retrieve a| `java.lan
 
 [caption=""]
 .Returns
-`Promise<? extends EntityType>`
+`EntityType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().putEntityType(label).resolve();
+transaction.concepts().putEntityType(label);
 ----
 
-[#_ConceptManager_putRelationType__java_lang_String]
+[#_ConceptManager_putRelationType_java_lang_String]
 ==== putRelationType
 
 [source,java]
 ----
-@CheckReturnValue
-Promise<? extends RelationType> putRelationType​(java.lang.String label)
+RelationType putRelationType​(java.lang.String label)
 ----
 
 Creates a new ``RelationType`` if none exists with the given label, otherwise retrieves the existing one. 
@@ -379,13 +382,13 @@ a| `label` a| The label of the ``RelationType`` to create or retrieve a| `java.l
 
 [caption=""]
 .Returns
-`Promise<? extends RelationType>`
+`RelationType`
 
 [caption=""]
 .Code examples
 [source,java]
 ----
-transaction.concepts().putRelationType(label).resolve();
+transaction.concepts().putRelationType(label);
 ----
 
 // end::methods[]

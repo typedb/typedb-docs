@@ -12,7 +12,7 @@ Other types can play roles in relations if it’s mentioned in their definition.
 A relation type must specify at least one role.
 
 // tag::methods[]
-[#_RelationType_as_relation_type__]
+[#_RelationType_as_relation_type]
 ==== as_relation_type
 
 [source,python]
@@ -33,12 +33,12 @@ Casts the concept to ``RelationType``.
 relation_type.as_relation_type()
 ----
 
-[#_RelationType_create__transaction_TypeDBTransaction]
+[#_RelationType_create]
 ==== create
 
 [source,python]
 ----
-create(transaction: TypeDBTransaction) -> Promise[Relation]
+create(transaction: TypeDBTransaction) -> Relation
 ----
 
 Creates and returns an instance of this ``RelationType``.
@@ -54,16 +54,16 @@ a| `transaction` a| The current transaction a| `TypeDBTransaction` a|
 
 [caption=""]
 .Returns
-`Promise[Relation]`
+`Relation`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-relation_type.create(transaction).resolve()
+relation_type.create(transaction)
 ----
 
-[#_RelationType_get_instances__transaction_TypeDBTransaction__transitivity_Transitivity]
+[#_RelationType_get_instances]
 ==== get_instances
 
 [source,python]
@@ -94,12 +94,12 @@ a| `transitivity` a| ``Transitivity.TRANSITIVE`` for direct and indirect instanc
 relation_type.get_instances(transaction, transitivity)
 ----
 
-[#_RelationType_get_relates__transaction_TypeDBTransaction__role_label_str__None__transitivity_Transitivity]
+[#_RelationType_get_relates]
 ==== get_relates
 
 [source,python]
 ----
-get_relates(transaction: TypeDBTransaction, role_label: str | None = None, transitivity: Transitivity = Transitivity.TRANSITIVE) -> Promise[RoleType | None] | Iterator[RoleType]
+get_relates(transaction: TypeDBTransaction, role_label: str | None = None, transitivity: Transitivity = Transitivity.TRANSITIVE) -> RoleType | None | Iterator[RoleType]
 ----
 
 Retrieves roles that this ``RelationType`` relates to directly or via inheritance. If ``role_label`` is given, returns a corresponding ``RoleType`` or ``None``.
@@ -117,22 +117,21 @@ a| `transitivity` a| ``Transitivity.TRANSITIVE`` for direct and inherited relate
 
 [caption=""]
 .Returns
-`Promise[RoleType | None] | Iterator[RoleType]`
+`RoleType | None | Iterator[RoleType]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-relation_type.get_relates(transaction, role_label, transitivity).resolve()
-relation_type.get_relates(transaction, transitivity)
+relation_type.get_relates(transaction, role_label, transitivity)
 ----
 
-[#_RelationType_get_relates_overridden__transaction_TypeDBTransaction__role_label_str]
+[#_RelationType_get_relates_overridden]
 ==== get_relates_overridden
 
 [source,python]
 ----
-get_relates_overridden(transaction: TypeDBTransaction, role_label: str) -> Promise[RoleType | None]
+get_relates_overridden(transaction: TypeDBTransaction, role_label: str) -> RoleType | None
 ----
 
 Retrieves a ``RoleType`` that is overridden by the role with the ``role_label``.
@@ -149,16 +148,16 @@ a| `role_label` a| Label of the role that overrides an inherited role a| `str` a
 
 [caption=""]
 .Returns
-`Promise[RoleType | None]`
+`RoleType | None`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-relation_type.get_relates_overridden(transaction, role_label).resolve()
+relation_type.get_relates_overridden(transaction, role_label)
 ----
 
-[#_RelationType_get_subtypes__transaction_TypeDBTransaction__transitivity_Transitivity]
+[#_RelationType_get_subtypes]
 ==== get_subtypes
 
 [source,python]
@@ -189,7 +188,7 @@ a| `transitivity` a| ``Transitivity.TRANSITIVE`` for direct and indirect subtype
 relation_type.get_subtypes(transaction, transitivity)
 ----
 
-[#_RelationType_is_relation_type__]
+[#_RelationType_is_relation_type]
 ==== is_relation_type
 
 [source,python]
@@ -210,12 +209,12 @@ Checks if the concept is a ``RelationType``.
 relation_type.is_relation_type()
 ----
 
-[#_RelationType_set_relates__transaction_TypeDBTransaction__role_label_str__overridden_label_str__None]
+[#_RelationType_set_relates]
 ==== set_relates
 
 [source,python]
 ----
-set_relates(transaction: TypeDBTransaction, role_label: str, overridden_label: str | None = None) -> Promise[None]
+set_relates(transaction: TypeDBTransaction, role_label: str, overridden_label: str | None = None) -> None
 ----
 
 Sets the new role that this ``RelationType`` relates to. If we are setting an overriding type this way, we have to also pass the overridden type as a second argument.
@@ -233,22 +232,22 @@ a| `overridden_label` a| The label being overridden, if applicable a| `str \| No
 
 [caption=""]
 .Returns
-`Promise[None]`
+`None`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-relation_type.set_relates(transaction, role_label).resolve()
-relation_type.set_relates(transaction, role_label, overridden_label).resolve()
+relation_type.set_relates(transaction, role_label)
+relation_type.set_relates(transaction, role_label, overridden_label)
 ----
 
-[#_RelationType_set_supertype__transaction_TypeDBTransaction__super_relation_type_RelationType]
+[#_RelationType_set_supertype]
 ==== set_supertype
 
 [source,python]
 ----
-set_supertype(transaction: TypeDBTransaction, super_relation_type: RelationType) -> Promise[None]
+set_supertype(transaction: TypeDBTransaction, super_relation_type: RelationType) -> None
 ----
 
 Sets the supplied ``RelationType`` as the supertype of the current ``RelationType``.
@@ -265,21 +264,21 @@ a| `super_relation_type` a| The ``RelationType`` to set as the supertype of this
 
 [caption=""]
 .Returns
-`Promise[None]`
+`None`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-relation_type.set_supertype(transaction, super_relation_type).resolve()
+relation_type.set_supertype(transaction, super_relation_type)
 ----
 
-[#_RelationType_unset_relates__transaction_TypeDBTransaction__role_label_str]
+[#_RelationType_unset_relates]
 ==== unset_relates
 
 [source,python]
 ----
-unset_relates(transaction: TypeDBTransaction, role_label: str) -> Promise[None]
+unset_relates(transaction: TypeDBTransaction, role_label: str) -> None
 ----
 
 Disallows this ``RelationType`` from relating to the given role.
@@ -296,13 +295,13 @@ a| `role_label` a| The role to not relate to the relation type. a| `str` a|
 
 [caption=""]
 .Returns
-`Promise[None]`
+`None`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-relation_type.unset_relates(transaction, role_label).resolve()
+relation_type.unset_relates(transaction, role_label)
 ----
 
 // end::methods[]
