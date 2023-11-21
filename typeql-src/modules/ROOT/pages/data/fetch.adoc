@@ -32,14 +32,35 @@ followed by optional <<_modifiers,modifiers>>.
 
 Fetch queries are written in TypeQL with the following syntax:
 
+////
+.Fetch query syntax
+[,typeql]
+----
+"match", <pattern>
+"fetch", ( <variable>, ["as", <label>] [ ":", <attribute-type>, ["as", <label>] {"," <attribute-type> ["as", <label>]} ] | <subquery-label>, ":", (<fetch_query> | <get_aggregate_query>), ";")+
+----
+
+//EBNF notation
+.Fetch query syntax
+[,typeql]
+----
+"match", <pattern>
+"fetch", (
+           <attribute-variable>, ["as", <label>], ";"
+         | <variable>          , ["as", <label>], ":", <attribute-type>, ["as", <label>], {"," <attribute-type> ["as", <label>]}, ";"
+         | (<subquery-label>                    , ":", (<fetch_query> | <get_aggregate_query>), ";"
+         )+
+----
+////
+
 .Fetch query syntax
 [,typeql]
 ----
 match <pattern>
 fetch {
-    variable [as <label>]
-  | variable [as <label>] [: <attribute-type> [as <label>], ...]
-  | <subquery-label>      : { <fetch_query> | <get_aggregate_query> }
+    <variable> [as <label>]
+  | <variable> [as <label>] [: (<attribute-type> [as <label>]), ...]
+  | <subquery-label>         : { <fetch_query> | <get_aggregate_query> }
   }; ...
 [<modifiers>]
 ----
