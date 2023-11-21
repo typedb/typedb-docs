@@ -20,7 +20,7 @@ A Fetch query returns a lazy stream/iterator of results.
 Every returned result is a valid JSON object.
 The number of query results returned is equal or
 <<_number_of_answers,less>> than the number of matched results by a `match` clause.
-If there are no matches in the preceding `match` clause, then there are no results returned.
+In particular, if there are no matches in the preceding `match` clause, then there are no results returned.
 //#todo Add description of lazy streaming and a link to it
 
 == Syntax
@@ -59,8 +59,8 @@ Fetch queries are written in TypeQL with the following syntax:
 match <pattern>
 fetch {
     <variable> [as <label>]
-  | <variable> [as <label>] [: (<attribute-type> [as <label>]), ...]
-  | <subquery-label>         : { <fetch_query> | <get_aggregate_query> }
+  | <variable> [as <label>] : (<attribute-type> [as <label>]), ...
+  | <subquery-label>        : {<fetch_query> | <get_aggregate_query>}
   }; ...
 [<modifiers>]
 ----
@@ -101,6 +101,12 @@ Every variable or subquery mentioned in a `fetch` clause adds a top-level key to
 Types, attributes, and value-variables can be projected directly into JSON
 by using their variable in a `fetch` clause.
 
+.Fetching values directly syntax
+[,typeql]
+----
+fetch <variable>; ...
+----
+
 Every instance in the JSON output has its type, root type, and value (if applicable).
 
 See the <<_fetch_an_attribute>> and the <<_fetch_a_type_or_a_value_variable>> examples below.
@@ -116,6 +122,12 @@ To extract owned attributes, we use a variable followed by a colon and a list of
 Every attribute type mentioned in this way adds a JSON subsection with the list of instances of that attribute type
 owned by the matched concept from a variable.
 
+.Fetching values of owned attributes syntax
+[,typeql]
+----
+fetch (<variable> : <attribute-type>, ... ;) ...
+----
+
 See the <<_fetch_all_attributes_owned>> example below.
 
 [#_relabeling]
@@ -124,9 +136,14 @@ See the <<_fetch_all_attributes_owned>> example below.
 A `fetch` clause support relabeling of variables and attribute types.
 You can assign a new label which will be used for JSON output.
 
-To relabel a variable or attribute type, add the `as` keyword followed by a new label.
-
+To relabel a variable or an attribute type, add the `as` keyword followed by a new label.
 By surrounding a new label in double quotes, you can use whitespaces in it.
+
+.Relabeling syntax
+[,typeql]
+----
+fetch (<variable> as <label> : <attribute-type> as <label>, ... ;) ...
+----
 
 See the <<_customize_output>> example below.
 
@@ -138,6 +155,12 @@ xref:typeql::data/get.adoc#_aggregation[aggregation] (to return a value).
 A subquery consists of label, colon, and a TypeQL query string surrounded by curly brackets.
 
 The label determines the key that will be used to introduce results of the subquery into the JSON output.
+
+.Subquery syntax
+[,typeql]
+----
+fetch <subquery-label> : {<fetch_query> | <get_aggregate_query>};
+----
 
 A subquery shares variables with its parent query.
 At least one variable from a parent query must be used in a subquery.
