@@ -159,7 +159,7 @@ The label determines the key that will be used to introduce results of the subqu
 .Subquery syntax
 [,typeql]
 ----
-fetch <subquery-label> : {<fetch_query> | <get_aggregate_query>};
+fetch <subquery-label> : {(<fetch_query> | <get_aggregate_query>)};
 ----
 
 A subquery shares variables with its parent query.
