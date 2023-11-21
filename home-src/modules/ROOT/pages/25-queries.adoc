@@ -106,31 +106,42 @@ and some attributes owned by the entities and one of the relations.
 
 To try matching existing data before inserting, check the <<_match_insert>> section.
 
-[#_get]
+[#_read]
 == #{counter:query}: Data retrieval
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Patterns for data queries are based on types defined in a schema.
-To get usernames of all users that have permission for the file with path `README.md`:
+To retrieve usernames of all users that have permission for the file with the path `README.md`:
 
-.Get query example
+.Fetch query example
 [,typeql]
 ----
 match
-$u isa user;
 $f isa file,
     has path "README.md";
-$p(subject:$u, object:$f) isa permission;
+$u isa user;
+($u, $f) isa permission;
 fetch $u: username;
 ----
 
 The above xref:typeql:ROOT:data/fetch.adoc[Fetch] query matches the `file` entity by the `path` attribute
 it has ownership of.
-Then it finds all users that participate in a relation of a `permission` type with the file.
-Finally, it fetches `username` instances owned by such users (`$u`).
+Then it finds all users (`$u`) that participate in a relation of a `permission` type with the file.
+Finally, it fetches values of `username` type attributes owned by such users.
+
+.Fetch query result example
+[,js]
+----
+{
+    "u": {
+        "username": [ { "value": "bob_93", "value_type": "string", "type": { "label": "username", "root": "attribute" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
 
 All queries are validated both syntactically and semantically.
-Try adding to the query above a constraint of user having a `path` or file having a `name`.
+Try adding to the query above a constraint of user having a `path` or file having a `username`.
 The modified query will not pass validation and will result in an error instead of showing no matched results.
 
 [#_extend_schema]
@@ -164,7 +175,7 @@ by adding two new entity types and a role to an existing relation type.
 //
 //image::typedb-in-25-queries/extended-schema.png[TypeDB Studio GUI, role=framed, width = 75%, link=self]
 //
-Note that you can still run <<_data,query #2>> or <<_get,query #3>> with the extended schema.
+Note that you can still run <<_data,query #2>> or <<_read,query #3>> with the extended schema.
 
 [#_match_insert]
 == #{counter:query}: Data insertion with matching
@@ -254,7 +265,37 @@ including the `user` type.
 Try the same query with the `isa!` keyword instead.
 It is used for an exact type without its subtypes.
 
-For more information on using subtypes, see <<_inheritance_polymorphism,query>> <<_inheritance_polymorphism>>.
+For more information on using subtypes, see <<_inheritance_polymorphism,query>> <<_inheritance_polymorphism>> and
+<<_inheritance,query>> <<_inheritance>>.
+
+[#_abstract]
+== #{counter:query}: Abstract types
+_Run this query after <<_schema,query #1>> and <<_data,query #2>>._
+
+xref:typeql:ROOT:fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated
+(no data can be inserted for the abstract type), but can be subtyped.
+
+In schema from <<_schema,query #1>> we defined `id` as an abstract type to subtype it with many different attributes,
+that have the same value type and can be called an id.
+
+Now we can do the following query:
+
+.Abstract type example
+[,typeql]
+----
+match $x has id $id;
+get $x, $id;
+----
+
+The above xref:typeql::data/get.adoc[Get] query can't retrieve any instances of `id` type
+because it is an abstract type.
+Instead, it returns instances of all its subtypes, see the visualization below.
+
+image::typedb-in-25-queries/abstract.png[Abstract type, role=framed, width = 75%, link=self]
+
+We use the xref:typeql::data/get.adoc[Get] query type, because it returns all concepts from a database as a ConceptMap,
+so that TypeDB Studio can build a graph visualization of the response (see above),
+while xref:typeql::data/fetch.adoc[Fetch] returns only values in a JSON.
 
 [#_parametric_polymorphism]
 == #{counter:query}: Parametric polymorphism
@@ -328,33 +369,7 @@ The above query matches every instance, that has any name.
 It returns pairs of owning instance (`$x`) of any type and the name attribute it owns (`$name`).
 The same approach could be used with playing a role in a relationship.
 
-[#_abstract]
-== #{counter:query}: Abstract types
-_Run this query after <<_schema,query #1>> and <<_data,query #2>>._
-
-xref:typeql:ROOT:fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated
-(no data can be inserted for the abstract type), but can be subtyped.
-
-In schema from <<_schema,query #1>> we defined `id` as an abstract type to subtype it with many different attributes,
-that have the same value type and can be called an id.
-
-Now we can do the following query:
-
-.Abstract type example
-[,typeql]
-----
-match $x has id $id;
-get $x, $id;
-----
-
-The above query can't retrieve any instances of `id` type because it is an abstract type.
-Instead, it returns instances of all its subtypes, see the visualization below.
-
-image::typedb-in-25-queries/abstract.png[Abstract type, role=framed, width = 75%, link=self]
-
-//Interface polymorphism
-//When we seek for anything, that owns or plays
-
+[#_inheritance]
 == #{counter:query}: Inheritance
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
@@ -653,7 +668,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 TypeDB reasoning engine can perform rule-based inference when you read data.
 To use inference, we need to xref:typeql:ROOT:schema/define-types.adoc[Define] rules in the schema,
 open a `read` transaction with the `infer` option xref:typedb::development/infer.adoc#_how_to_use_inference[enabled],
-and send a xref:typeql:ROOT:data/get.adoc[Get] query.
+and send a xref:typeql:ROOT:data/get.adoc[Get] or a xref:typeql::data/fetch.adoc[Fetch] query.
 
 .Schema with a rule
 [,typeql]
