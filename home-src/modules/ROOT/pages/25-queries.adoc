@@ -392,7 +392,7 @@ And then fetches all attributes owned by the user.
 The result should look like the following JSON:
 
 .Inherited attributes result example
-[,json]
+[,js]
 ----
 {
     "Bob": {
@@ -637,7 +637,7 @@ It also has `users` xref:typeql::data/fetch.adoc#_subqueries[subquery] that fetc
 that have a permission to access the matched file.
 
 .Result example
-[,json]
+[,js]
 ----
 {
     "p": { "value": "docs/quickstart-guide.adoc", "value_type": "string", "type": { "label": "path", "root": "attribute" } },
