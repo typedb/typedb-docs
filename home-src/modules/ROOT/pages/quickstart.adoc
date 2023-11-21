@@ -110,42 +110,55 @@ type inference,
 type inheritance,
 rule-based reasoning,
 and n-ary relations, we recommend you check the <<_learn_more>> section.
-//#todo [TypeDB in 20 queries?]
 
 [#_query_examples]
 == Query examples
 
 Try sending the following queries:
 
-* <<#_get_query__list_people>>
-* <<#_get_query__all_instances_and_attributes>>
-* <<#_get_query__get_all_emails_of_kevin>>
-* <<#_insert_query__add_a_new_email_for_kevin>>
-* <<#_update_query__change_the_newly_added_email_for_kevin>>
-* <<#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin>>
+* <<#_list_people>>
+* <<#_get_query_all_instances_and_attributes>>
+* <<#_fetch_all_emails_of_kevin>>
+* <<#_insert_email_for_kevin>>
+* <<#_update_email_for_kevin>>
+* <<#_delete_email_from_kevin>>
 
 //#todo Replace the link below with a more specific one in a TypeQL section. Query types?
-For more TypeQL query examples, check the xref:typeql:ROOT:overview.adoc[TypeQL] documentation.
-//#todo Add the TypeDB in 20 queries page link
+For more TypeQL query examples, check the xref:home::25-queries.adoc[] page or the
+xref:typeql:ROOT:overview.adoc[TypeQL] documentation section.
 
-[#_get_query__list_people]
-=== Get a list of all people with their emails
 
-To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with their full names and emails:
+[#_list_people]
+=== List names and emails
+
+To retrieve full names and emails of all instances of the `person` type you can do:
 
 [,typeql]
 ----
 match
-$p isa person,
-    has full-name $f,
-    has email $e;
-get $p, $f, $e;
+$p isa person;
+fetch $p: full-name, email;
 ----
 
-[#_get_query__all_instances_and_attributes]
-=== Get all instances of a type with all attributes owned
+For every person in a database,
+the above xref:typeql::data/fetch.adoc[Fetch] query returns a JSON object similar to the following example:
 
-To xref:typedb::development/read.adoc#_get[get] all instances of a `person` type with all attributes owned:
+.Result example
+[,js]
+----
+{
+    "p": {
+        "email": [ { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
+        "full-name": [ { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
+
+[#_get_query_all_instances_and_attributes]
+=== Get all instances of a type and their attributes
+
+To xref:typeql::data/get.adoc[get] all instances of a `person` type with all attributes owned:
 
 [,typeql]
 ----
@@ -155,11 +168,17 @@ $p isa person,
 get $p, $a;
 ----
 
-[#_get_query__get_all_emails_of_kevin]
-=== Get all emails of Kevin
+The above xref:typeql::data/get.adoc[Get] query returns concepts from a database as a ConceptMap
+that can be used programmatically with a xref:clients::overview.adoc#_typedb_drivers[Driver API] to process the result.
+The following image is a graph visualization produced by xref:clients::studio.adoc[TypeDB Studio].
 
-To xref:typedb::development/read.adoc#_get[get] all emails owned by every person with a full name that contains "Kevin"
-(we have only one such person in the example database):
+image::quickstart-get-example.png[Quickstart Get query example, role=framed, width = 75%, link=self]
+
+[#_fetch_all_emails_of_kevin]
+=== Fetch all emails of Kevin
+
+To xref:typeql::data/fetch.adoc[fetch] all emails
+owned by every person with a full name that contains substring `Kevin`:
 
 [,typeql]
 ----
@@ -167,11 +186,24 @@ match
 $p isa person,
     has full-name $fn;
 $fn contains "Kevin";
-$p has email $e;
-get $e;
+fetch $p as person: email as "E-mail address";
 ----
 
-[#_insert_query__add_a_new_email_for_kevin]
+The above query returns a single JSON object (we have only one such person in the example database)
+that looks as the following:
+
+.Result example
+[,js]
+----
+{
+    "person": {
+        "E-mail address": [ { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
+
+[#_insert_email_for_kevin]
 === Insert a new email for Kevin
 
 To xref:typedb::development/write.adoc#_insert[insert] a new email (`kevin@gmail.com`) for every person with a full name
@@ -188,7 +220,7 @@ insert $p has email "kevin@gmail.com";
 
 Now Kevin has more than one email.
 
-[#_update_query__change_the_newly_added_email_for_kevin]
+[#_update_email_for_kevin]
 === Update the email for Kevin
 
 To xref:typedb::development/write.adoc#_update_query[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
@@ -212,7 +244,7 @@ The query above does the following:
 - Deletes the ownership by the person of the email.
 - Inserts a new email (`kevin2@gmail.com`) owned by the person.
 
-[#_delete_query__delete_ownership_of_the_newly_updated_email_from_kevin]
+[#_delete_email_from_kevin]
 === Delete ownership over the email for Kevin
 
 To xref:typedb::development/write.adoc#_delete_query[delete] the ownership of the email `kevin2@gmail.com`
