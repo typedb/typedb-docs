@@ -106,39 +106,6 @@ To install TypeDB Console separately, use the guide below.
 If you are not sure which version of TypeDB Console you need,
 check the xref:clients::console.adoc#_version_compatibility[compatibility table].
 
-[discrete]
-=== Install with a package manager
-
-[tabs]
-====
-macOS::
-+
---
-No package manager available for macOS, use the <<_console_manual>> section below.
---
-
-Linux::
-+
---
-To install TypeDB Console via `apt`:
-
-[,bash]
-----
-sudo apt install typedb-console
-----
---
-
-Windows::
-+
---
-No package manager available for Windows, use the <<_console_manual>> section below.
---
-====
-
-[discrete]
-[#_console_manual]
-=== Download and install manually
-
 [tabs]
 ====
 macOS::
@@ -149,8 +116,8 @@ TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 
 . Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-console-mac-x86_64.zip`
-or the `typedb-console-mac-arm64.zip` artifact depending on your architecture.
+select a required version. Depending on your architecture, download the `typedb-console-mac-x86_64`
+or the `typedb-console-mac-arm64` archive.
 
 . Extract the archive with TypeDB Console into a new directory:
 +
@@ -176,8 +143,8 @@ TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 
 . Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-console-linux-x86_64.tar.gz`
-or the `typedb-console-linux-arm64.tar.gz` artifact depending on your architecture.
+select a required version. Depending on your architecture, download the `typedb-console-linux-x86_64`
+or the `typedb-console-linux-arm64` archive.
 
 . Extract the archive with TypeDB Console into a new directory:
 +
@@ -203,7 +170,7 @@ TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 
 . Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-console-windows-x86_64.zip` artifact for the selected version.
+select a required version, download the `typedb-console-windows-x86_64` archive.
 
 . Extract the archive with TypeDB Console into a new directory:
 +
