@@ -96,7 +96,7 @@ See an example below.
 [,typeql]
 ----
 match
-$p isa person, has name $n;
+$p isa person, has full-name $n;
 get $n;
 ----
 
