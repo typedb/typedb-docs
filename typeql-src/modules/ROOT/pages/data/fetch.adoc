@@ -19,7 +19,7 @@ we can extract values of attributes owned by them.
 A Fetch query returns a lazy stream/iterator of results.
 Every returned result is a valid JSON object.
 The number of query results returned is equal or
-<<_number_of_answers,less>> than the number of matched results by a `match` clause.
+<<_number_of_results,less>> than the number of matched results by a `match` clause.
 In particular, if there are no matches in the preceding `match` clause, then there are no results returned.
 //#todo Add description of lazy streaming and a link to it
 
@@ -91,7 +91,7 @@ to specify a projection of values from matched database concepts to an output of
 
 This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
 A `fetch` clause produces a valid JSON object for every matched result,
-but <<_number_of_answers,deduplicates>> the results.
+but <<_number_of_results,deduplicates>> the results.
 
 Following the `fetch` keyword are one or multiple variables or subqueries, separated by semicolons.
 Every variable or subquery mentioned in a `fetch` clause adds a top-level key to the resulting JSON objects.
@@ -170,11 +170,11 @@ but many nested levels can break technical limitations of gRPC messaging.
 
 For an example of nested subqueries, see the <<_grouping_results>> section below.
 
-[#_number_of_answers]
+[#_number_of_results]
 === Number of answers
 
 A Fetch query can return fewer results, than it was matched by its `match` clause.
-That is due to natural deduplication of results.
+Excluding the usage of <<_modifiers,modifiers>>, that can happen due to natural deduplication of results.
 See an example below.
 
 .Example of a fetch clause reducing the number of results
@@ -182,21 +182,21 @@ See an example below.
 ----
 match
 $p isa person, has name $n;
-fetch
-$n;
+fetch $n;
 ----
 
 In the above example `match` clause matches all `person` type instances that own a `name` attribute.
 The `fetch` clause then returns values of those `name` attributes.
 
 What happens if two persons have the same name?
-In TypeDB database that stored, as two entities own the same instance of the `name` attribute type.
+In TypeDB database that is stored, as two entities own the same attribute (instance of the `name` attribute type).
 The `match` clause finds all pairs of a person entity and its owned attribute.
-But `fetch` clause returns only the attributes, and since both persons owning the very same attribute,
-it will only be returned once, reducing the total number of results.
+But `fetch` clause returns only the values of attributes.
+Since both persons own the very same attribute,
+it will be returned only once, reducing the total number of results.
 
 For more examples of filtering matched results,
-see the xref:typeql::data/get.adoc#_answers_example_2[Get query] page.
+see the xref:typeql::data/get.adoc#_results_example_2[Get query] page.
 
 [#_modifiers]
 == Modifiers
@@ -204,14 +204,14 @@ see the xref:typeql::data/get.adoc#_answers_example_2[Get query] page.
 In a Fetch query, modifiers can change the number and order of results.
 
 The following modifiers can be used at the end of a Fetch query:
-<<_sort_the_answers,sort>>,
-<<_offset_the_answers,offset>>, and
+<<_sort_the_results,sort>>,
+<<_offset_the_results,offset>>, and
 <<_limit_the_results,limit>>.
 
 They can be used to add pagination for the query results.
 
-[#_sort_the_answers]
-=== Sort the answers
+[#_sort_the_results]
+=== Sort the results
 
 .Sort modifier syntax
 [,typeql]
@@ -219,13 +219,14 @@ They can be used to add pagination for the query results.
 sort <variable> [asc|desc] [,<variable> [asc|desc]];
 ----
 
-Use the `sort` keyword followed by a variable to sort the answers using a variable mentioned in the first argument. A
-second argument is optional and determines the sorting order: `asc` (ascending, used by default) or `desc` (descending).
+Use the `sort` keyword followed by a variable to sort the results.
+A second argument is optional and determines the sorting order: `asc` (ascending, by default) or `desc` (descending).
 
 .Sort example
 [,typeql]
 ----
-match $p isa person, has full-name $n;
+match
+$p isa person, has full-name $n;
 fetch $n;
 sort $n asc;
 ----
@@ -234,8 +235,8 @@ This query returns sorted values of all `full-name` attributes owned by `person`
 
 To sort by multiple variables, add additional variables with a comma separator.
 
-[#_offset_the_answers]
-=== Offset the answers
+[#_offset_the_results]
+=== Offset the results
 
 .Offset modifier syntax
 [,typeql]
@@ -243,21 +244,22 @@ To sort by multiple variables, add additional variables with a comma separator.
 offset <value>;
 ----
 
-Use the `offset` keyword followed by the number to offset the answers.
-This is commonly used with the `limit` keyword to return a desired range of answers.
-Don't forget to use <<_sort_the_answers,sort>> to ensure predictable and deterministic results.
+Use the `offset` keyword followed by the number to offset the results.
+This is commonly used with the `limit` keyword to return a desired range of results for pagination.
+Don't forget to use <<_sort_the_results,sort>> the results to ensure more deterministic and predictable results.
 
 .Offset example
 [,typeql]
 ----
 match $p isa person, has full-name $n;
 fetch $n;
-sort $n asc;
-offset 1;
+sort $n;
+offset 6;
+limit 10;
 ----
 
-This sorts the `full-name` attributes of all `person` entities in ascending order, skips the first six, and returns up
-to the next ten.
+The above example sorts the `full-name` attributes of all `person` entities in ascending order,
+skips the first six results, and returns up to the next ten.
 
 [#_limit_the_results]
 === Limit the results
@@ -273,15 +275,14 @@ Use the `limit` keyword followed by a positive integer to limit the number of re
 .Limit example
 [,typeql]
 ----
-match $p isa person, has full-name $n;
+match
+$p isa person, has full-name $n;
 fetch $n;
-sort $n asc;
-offset 1;
 limit 1;
 ----
 
-This query returns only one single (and random) instance of type `person`. Consider using `limit` with
-<<_sort_the_answers,sort>> to receive less random and more predictable results.
+We recommend using the `limit` with the <<_sort_the_results,sorting aggregation>>
+to get more deterministic and predictable results.
 
 == Examples
 
