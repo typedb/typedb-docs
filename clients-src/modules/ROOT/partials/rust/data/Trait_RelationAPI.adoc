@@ -6,110 +6,38 @@
 * `Relation`
 
 // tag::methods[]
-[#_trait_RelationAPI_method_add_role_player]
+[#_trait_RelationAPI_add_role_player__transaction_tx_Transaction_____role_type_RoleType__player_Thing]
 ==== add_role_player
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn add_role_player<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    role_type: RoleType,
-    player: Thing
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn add_role_player(
+fn add_role_player<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_type: RoleType,
     player: Thing
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 Adds a new role player to play the given role in this ``Relation``.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `role_type` a| The role to be played by the ``player`` a| `RoleType`
 a| `player` a| The thing to play the role a| `Thing`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-a| `role_type` a| The role to be played by the ``player`` a| `RoleType`
-a| `player` a| The thing to play the role a| `Thing`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -130,22 +58,22 @@ sync::
 --
 [source,rust]
 ----
-relation.add_role_player(transaction, role_type, player);
+relation.add_role_player(transaction, role_type, player).resolve();
 ----
 
 --
 ====
 
-[#_trait_RelationAPI_method_get_players_by_role_type]
+[#_trait_RelationAPI_get_players_by_role_type__transaction_tx_Transaction_____role_types_Vec_RoleType_]
 ==== get_players_by_role_type
 
 [source,rust]
 ----
-fn get_players_by_role_type(
+fn get_players_by_role_type<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_types: Vec<RoleType>
-) -> Result<BoxStream<'_, Result<Thing>>>
+) -> Result<BoxStream<'tx, Result<Thing>>>
 ----
 
 Retrieves all role players of this ``Relation``, optionally filtered by given role types.
@@ -156,7 +84,7 @@ Retrieves all role players of this ``Relation``, optionally filtered by given ro
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `role_types` a| 0 or more role types a| `Vec<RoleType>`
 |===
 
@@ -164,7 +92,7 @@ a| `role_types` a| 0 or more role types a| `Vec<RoleType>`
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<Thing>>>
+Result<BoxStream<'tx, Result<Thing>>>
 ----
 
 [caption=""]
@@ -174,15 +102,15 @@ Result<BoxStream<'_, Result<Thing>>>
 relation.get_players_by_role_type(transaction, role_types);
 ----
 
-[#_trait_RelationAPI_method_get_relating]
+[#_trait_RelationAPI_get_relating__transaction_tx_Transaction___]
 ==== get_relating
 
 [source,rust]
 ----
-fn get_relating(
+fn get_relating<'tx>(
     &self,
-    transaction: &Transaction<'_>
-) -> Result<BoxStream<'_, Result<RoleType>>>
+    transaction: &'tx Transaction<'_>
+) -> Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
 Retrieves all role types currently played in this ``Relation``.
@@ -193,14 +121,14 @@ Retrieves all role types currently played in this ``Relation``.
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 |===
 
 [caption=""]
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RoleType>>>
+Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
 [caption=""]
@@ -210,15 +138,15 @@ Result<BoxStream<'_, Result<RoleType>>>
 relation.get_relating(transaction)
 ----
 
-[#_trait_RelationAPI_method_get_role_players]
+[#_trait_RelationAPI_get_role_players__transaction_tx_Transaction______-__Result_BoxStream_tx]
 ==== get_role_players
 
 [source,rust]
 ----
-fn get_role_players(
+fn get_role_players<'tx>(
     &self,
-    transaction: &Transaction<'_>
-) -> Result<BoxStream<'_, Result<(RoleType, Thing)>>>
+    transaction: &'tx Transaction<'_>
+) -> Result<BoxStream<'tx, Result<(RoleType, Thing)>>>
 ----
 
 Retrieves a mapping of all instances involved in the ``Relation`` and the role each play.
@@ -229,15 +157,15 @@ Retrieves a mapping of all instances involved in the ``Relation`` and the role e
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>
-) -> Result<BoxStream<'_`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>
+) -> Result<BoxStream<'tx`
 |===
 
 [caption=""]
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<(RoleType, Thing)>>>
+Result<BoxStream<'tx, Result<(RoleType, Thing)>>>
 ----
 
 [caption=""]
@@ -247,110 +175,38 @@ Result<BoxStream<'_, Result<(RoleType, Thing)>>>
 relation.get_role_players(transaction)
 ----
 
-[#_trait_RelationAPI_method_remove_role_player]
+[#_trait_RelationAPI_remove_role_player__transaction_tx_Transaction_____role_type_RoleType__player_Thing]
 ==== remove_role_player
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn remove_role_player<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    role_type: RoleType,
-    player: Thing
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn remove_role_player(
+fn remove_role_player<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_type: RoleType,
     player: Thing
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 Removes the association of the given instance that plays the given role in this ``Relation``.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `role_type` a| The role to no longer be played by the thing in this ``Relation`` a| `RoleType`
 a| `player` a| The instance to no longer play the role in this ``Relation`` a| `Thing`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-a| `role_type` a| The role to no longer be played by the thing in this ``Relation`` a| `RoleType`
-a| `player` a| The instance to no longer play the role in this ``Relation`` a| `Thing`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -371,7 +227,7 @@ sync::
 --
 [source,rust]
 ----
-relation.remove_role_player(transaction, role_type, player);
+relation.remove_role_player(transaction, role_type, player).resolve();
 ----
 
 --

@@ -4,12 +4,12 @@
 Provides access for all Concept API methods.
 
 // tag::methods[]
-[#_ConceptManager_get_attribute]
+[#_ConceptManager_get_attribute__iid_str]
 ==== get_attribute
 
 [source,python]
 ----
-get_attribute(iid: str) -> Attribute
+get_attribute(iid: str) -> Promise[Attribute]
 ----
 
 Retrieves an ``Attribute`` by its iid.
@@ -25,21 +25,21 @@ a| `iid` a| The iid of the ``Attribute`` to retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`Attribute`
+`Promise[Attribute]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.get_attribute(iid)
+transaction.concepts.get_attribute(iid).resolve()
 ----
 
-[#_ConceptManager_get_attribute_type]
+[#_ConceptManager_get_attribute_type__label_str]
 ==== get_attribute_type
 
 [source,python]
 ----
-get_attribute_type(label: str) -> AttributeType
+get_attribute_type(label: str) -> Promise[AttributeType]
 ----
 
 Retrieves an ``AttributeType`` by its label.
@@ -55,21 +55,21 @@ a| `label` a| The label of the ``AttributeType`` to retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`AttributeType`
+`Promise[AttributeType]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.get_attribute_type(label)
+transaction.concepts.get_attribute_type(label).resolve()
 ----
 
-[#_ConceptManager_get_entity]
+[#_ConceptManager_get_entity__iid_str]
 ==== get_entity
 
 [source,python]
 ----
-get_entity(iid: str) -> Entity
+get_entity(iid: str) -> Promise[Entity]
 ----
 
 Retrieves an ``Entity`` by its iid.
@@ -85,21 +85,21 @@ a| `iid` a| The iid of the ``Entity`` to retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`Entity`
+`Promise[Entity]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.get_entity(iid)
+transaction.concepts.get_entity(iid).resolve()
 ----
 
-[#_ConceptManager_get_entity_type]
+[#_ConceptManager_get_entity_type__label_str]
 ==== get_entity_type
 
 [source,python]
 ----
-get_entity_type(label: str) -> EntityType
+get_entity_type(label: str) -> Promise[EntityType]
 ----
 
 Retrieves an ``EntityType`` by its label.
@@ -115,21 +115,21 @@ a| `label` a| The label of the ``EntityType`` to retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`EntityType`
+`Promise[EntityType]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.get_entity_type(label)
+transaction.concepts.get_entity_type(label).resolve()
 ----
 
-[#_ConceptManager_get_relation]
+[#_ConceptManager_get_relation__iid_str]
 ==== get_relation
 
 [source,python]
 ----
-get_relation(iid: str) -> Relation
+get_relation(iid: str) -> Promise[Relation]
 ----
 
 Retrieves a ``Relation`` by its iid.
@@ -145,21 +145,21 @@ a| `iid` a| The iid of the ``Relation`` to retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`Relation`
+`Promise[Relation]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.get_relation(iid)
+transaction.concepts.get_relation(iid).resolve()
 ----
 
-[#_ConceptManager_get_relation_type]
+[#_ConceptManager_get_relation_type__label_str]
 ==== get_relation_type
 
 [source,python]
 ----
-get_relation_type(label: str) -> RelationType
+get_relation_type(label: str) -> Promise[RelationType]
 ----
 
 Retrieves a ``RelationType`` by its label.
@@ -175,16 +175,16 @@ a| `label` a| The label of the ``RelationType`` to retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`RelationType`
+`Promise[RelationType]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.get_relation_type(label)
+transaction.concepts.get_relation_type(label).resolve()
 ----
 
-[#_ConceptManager_get_root_attribute_type]
+[#_ConceptManager_get_root_attribute_type__]
 ==== get_root_attribute_type
 
 [source,python]
@@ -205,7 +205,7 @@ Retrieve the root ``AttributeType``, “attribute”.
 transaction.concepts.get_root_attribute_type()
 ----
 
-[#_ConceptManager_get_root_entity_type]
+[#_ConceptManager_get_root_entity_type__]
 ==== get_root_entity_type
 
 [source,python]
@@ -226,7 +226,7 @@ Retrieves the root ``EntityType``, “entity”.
 transaction.concepts.get_root_entity_type()
 ----
 
-[#_ConceptManager_get_root_relation_type]
+[#_ConceptManager_get_root_relation_type__]
 ==== get_root_relation_type
 
 [source,python]
@@ -247,7 +247,7 @@ Retrieve the root ``RelationType``, “relation”.
 transaction.concepts.get_root_relation_type()
 ----
 
-[#_ConceptManager_get_schema_exception]
+[#_ConceptManager_get_schema_exception__]
 ==== get_schema_exception
 
 [source,python]
@@ -268,12 +268,12 @@ Retrieves a list of all schema exceptions for the current transaction.
 transaction.concepts.get_schema_exception()
 ----
 
-[#_ConceptManager_put_attribute_type]
+[#_ConceptManager_put_attribute_type__label_str__value_type_ValueType]
 ==== put_attribute_type
 
 [source,python]
 ----
-put_attribute_type(label: str, value_type: ValueType) -> AttributeType
+put_attribute_type(label: str, value_type: ValueType) -> Promise[AttributeType]
 ----
 
 Creates a new ``AttributeType`` if none exists with the given label, or retrieves the existing one.
@@ -290,21 +290,21 @@ a| `value_type` a| The value type of the ``AttributeType`` to create or retrieve
 
 [caption=""]
 .Returns
-`AttributeType`
+`Promise[AttributeType]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.put_attribute_type(label, value_type)
+transaction.concepts.put_attribute_type(label, value_type).resolve()
 ----
 
-[#_ConceptManager_put_entity_type]
+[#_ConceptManager_put_entity_type__label_str]
 ==== put_entity_type
 
 [source,python]
 ----
-put_entity_type(label: str) -> EntityType
+put_entity_type(label: str) -> Promise[EntityType]
 ----
 
 Creates a new ``EntityType`` if none exists with the given label, otherwise retrieves the existing one.
@@ -320,21 +320,21 @@ a| `label` a| The label of the ``EntityType`` to create or retrieve a| `str` a|
 
 [caption=""]
 .Returns
-`EntityType`
+`Promise[EntityType]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.put_entity_type(label)
+transaction.concepts.put_entity_type(label).resolve()
 ----
 
-[#_ConceptManager_put_relation_type]
+[#_ConceptManager_put_relation_type__label_str]
 ==== put_relation_type
 
 [source,python]
 ----
-put_relation_type(label: str) -> RelationType
+put_relation_type(label: str) -> Promise[RelationType]
 ----
 
 Creates a new ``RelationType`` if none exists with the given label, otherwise retrieves the existing one.
@@ -350,13 +350,13 @@ a| `label` a| The label of the ``RelationType`` to create or retrieve a| `str` a
 
 [caption=""]
 .Returns
-`RelationType`
+`Promise[RelationType]`
 
 [caption=""]
 .Code examples
 [source,python]
 ----
-transaction.concepts.put_relation_type(label)
+transaction.concepts.put_relation_type(label).resolve()
 ----
 
 // end::methods[]

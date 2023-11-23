@@ -6,99 +6,34 @@
 * `RelationType`
 
 // tag::methods[]
-[#_trait_RelationTypeAPI_method_create]
+[#_trait_RelationTypeAPI_create__transaction_tx_Transaction___]
 ==== create
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn create<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result<Relation>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+fn create<'tx>(
+    &self,
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result<Relation>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn create(&self, transaction: &Transaction<'_>) -> Result<Relation>
-----
-
---
-====
 
 Creates and returns an instance of this ``RelationType``.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Relation>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Relation>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Relation>
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -119,22 +54,22 @@ sync::
 --
 [source,rust]
 ----
-relation_type.create(transaction);
+relation_type.create(transaction).resolve();
 ----
 
 --
 ====
 
-[#_trait_RelationTypeAPI_method_get_instances]
+[#_trait_RelationTypeAPI_get_instances__transaction_tx_Transaction_____transitivity_Transitivity]
 ==== get_instances
 
 [source,rust]
 ----
-fn get_instances(
+fn get_instances<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'_, Result<Relation>>>
+) -> Result<BoxStream<'tx, Result<Relation>>>
 ----
 
 Retrieves all direct and indirect (or direct only) ``Relation``s that are instances of this ``RelationType``.
@@ -145,7 +80,7 @@ Retrieves all direct and indirect (or direct only) ``Relation``s that are instan
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect instances, ``Transitivity::Explicit`` for direct relates only a| `Transitivity`
 |===
 
@@ -153,44 +88,26 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect instan
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<Relation>>>
+Result<BoxStream<'tx, Result<Relation>>>
 ----
 
 [caption=""]
 .Code examples
-[tabs]
-====
-async::
-+
---
-[source,rust]
-----
-relation_type.get_instances(transaction, Transitivity::Explicit).await;
-----
-
---
-
-sync::
-+
---
 [source,rust]
 ----
 relation_type.get_instances(transaction, Transitivity::Explicit);
 ----
 
---
-====
-
-[#_trait_RelationTypeAPI_method_get_relates]
+[#_trait_RelationTypeAPI_get_relates__transaction_tx_Transaction_____transitivity_Transitivity]
 ==== get_relates
 
 [source,rust]
 ----
-fn get_relates(
+fn get_relates<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'_, Result<RoleType>>>
+) -> Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
 Retrieves roles that this ``RelationType`` relates to directly or via inheritance.
@@ -201,7 +118,7 @@ Retrieves roles that this ``RelationType`` relates to directly or via inheritanc
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and inherited relates, ``Transitivity::Explicit`` for direct relates only a| `Transitivity`
 |===
 
@@ -209,134 +126,46 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and inherited relat
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RoleType>>>
+Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
 [caption=""]
 .Code examples
-[tabs]
-====
-async::
-+
---
-[source,rust]
-----
-relation_type.get_relates(transaction, Transitivity::Transitive).await;
-----
-
---
-
-sync::
-+
---
 [source,rust]
 ----
 relation_type.get_relates(transaction, Transitivity::Transitive);
 ----
 
---
-====
-
-[#_trait_RelationTypeAPI_method_get_relates_for_role_label]
+[#_trait_RelationTypeAPI_get_relates_for_role_label__transaction_tx_Transaction_____role_label_String]
 ==== get_relates_for_role_label
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_relates_for_role_label<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    role_label: String
-) -> Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_relates_for_role_label(
+fn get_relates_for_role_label<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_label: String
-) -> Result<Option<RoleType>>
+) -> BoxPromise<'tx, Result<Option<RoleType>>>
 ----
-
---
-====
 
 Retrieves role with a given ``role_label`` that this ``RelationType`` relates to.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `role_label` a| Label of the role we wish to retrieve a| `String`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-a| `role_label` a| Label of the role we wish to retrieve a| `String`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<RoleType>>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<RoleType>>
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -357,112 +186,42 @@ sync::
 --
 [source,rust]
 ----
-relation_type.get_relates_for_role_label(transaction, role_label);
+relation_type.get_relates_for_role_label(transaction, role_label).resolve();
 ----
 
 --
 ====
 
-[#_trait_RelationTypeAPI_method_get_relates_overridden]
+[#_trait_RelationTypeAPI_get_relates_overridden__transaction_tx_Transaction_____overridden_role_label_String]
 ==== get_relates_overridden
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_relates_overridden<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    overridden_role_label: String
-) -> Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_relates_overridden(
+fn get_relates_overridden<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     overridden_role_label: String
-) -> Result<Option<RoleType>>
+) -> BoxPromise<'tx, Result<Option<RoleType>>>
 ----
-
---
-====
 
 Retrieves a ``RoleType`` that is overridden by the role with the ``overridden_role_label``.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `overridden_role_label` a| Label of the role that overrides an inherited role a| `String`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-a| `overridden_role_label` a| Label of the role that overrides an inherited role a| `String`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<RoleType>>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<RoleType>>
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -483,22 +242,22 @@ sync::
 --
 [source,rust]
 ----
-relation_type.get_relates_overridden(transaction, overridden_role_label);
+relation_type.get_relates_overridden(transaction, overridden_role_label).resolve();
 ----
 
 --
 ====
 
-[#_trait_RelationTypeAPI_method_get_subtypes]
+[#_trait_RelationTypeAPI_get_subtypes__transaction_tx_Transaction_____transitivity_Transitivity]
 ==== get_subtypes
 
 [source,rust]
 ----
-fn get_subtypes(
+fn get_subtypes<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'_, Result<RelationType>>>
+) -> Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
 Retrieves all direct and indirect (or direct only) subtypes of the ``RelationType``.
@@ -509,7 +268,7 @@ Retrieves all direct and indirect (or direct only) subtypes of the ``RelationTyp
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtypes, ``Transitivity::Explicit`` for direct subtypes only a| `Transitivity`
 |===
 
@@ -517,130 +276,44 @@ a| `transitivity` a| ``Transitivity::Transitive`` for direct and indirect subtyp
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RelationType>>>
+Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
 [caption=""]
 .Code examples
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-relation_type.get_subtypes(transaction, Transivity::Transitive).await;
+relation_type.get_subtypes(transaction, Transitivity::Transitive);
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-relation_type.get_subtypes(transaction, Transivity::Transitive);
-----
-
---
-====
-
-[#_trait_RelationTypeAPI_method_get_supertype]
+[#_trait_RelationTypeAPI_get_supertype__transaction_tx_Transaction___]
 ==== get_supertype
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_supertype<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result<Option<RelationType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_supertype(
+fn get_supertype<'tx>(
     &self,
-    transaction: &Transaction<'_>
-) -> Result<Option<RelationType>>
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result<Option<RelationType>>>
 ----
-
---
-====
 
 Retrieves the most immediate supertype of the ``RelationType``.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<RelationType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<RelationType>>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<RelationType>>
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -661,21 +334,21 @@ sync::
 --
 [source,rust]
 ----
-relation_type.get_supertype(transaction);
+relation_type.get_supertype(transaction).resolve();
 ----
 
 --
 ====
 
-[#_trait_RelationTypeAPI_method_get_supertypes]
+[#_trait_RelationTypeAPI_get_supertypes__transaction_tx_Transaction___]
 ==== get_supertypes
 
 [source,rust]
 ----
-fn get_supertypes(
+fn get_supertypes<'tx>(
     &self,
-    transaction: &Transaction<'_>
-) -> Result<BoxStream<'_, Result<RelationType>>>
+    transaction: &'tx Transaction<'_>
+) -> Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
 Retrieves all supertypes of the ``RelationType``.
@@ -686,145 +359,55 @@ Retrieves all supertypes of the ``RelationType``.
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 |===
 
 [caption=""]
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RelationType>>>
+Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
 [caption=""]
 .Code examples
-[tabs]
-====
-async::
-+
---
-[source,rust]
-----
-relation_type.get_supertypes(transaction).await;
-----
-
---
-
-sync::
-+
---
 [source,rust]
 ----
 relation_type.get_supertypes(transaction);
 ----
 
---
-====
-
-[#_trait_RelationTypeAPI_method_set_relates]
+[#_trait_RelationTypeAPI_set_relates__transaction_tx_Transaction_____role_label_String__overridden_role_label_Option_String_]
 ==== set_relates
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_relates<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    role_label: String,
-    overridden_role_label: Option<String>
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_relates(
+fn set_relates<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_label: String,
     overridden_role_label: Option<String>
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 Sets the new role that this ``RelationType`` relates to. If we are setting an overriding type this way, we have to also pass the overridden type as a second argument.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `role_label` a| The new role for the ``RelationType`` to relate to a| `String`
 a| `overridden_role_label` a| The label being overridden, if applicable a| `Option<String>`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-a| `role_label` a| The new role for the ``RelationType`` to relate to a| `String`
-a| `overridden_role_label` a| The label being overridden, if applicable a| `Option<String>`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -845,112 +428,42 @@ sync::
 --
 [source,rust]
 ----
-relation_type.set_relates(transaction, role_label, None);
+relation_type.set_relates(transaction, role_label, None).resolve();
 ----
 
 --
 ====
 
-[#_trait_RelationTypeAPI_method_set_supertype]
+[#_trait_RelationTypeAPI_set_supertype__transaction_tx_Transaction_____supertype_RelationType]
 ==== set_supertype
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_supertype<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    supertype: RelationType
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_supertype(
+fn set_supertype<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     supertype: RelationType
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 Sets the supplied ``RelationType`` as the supertype of the current ``RelationType``.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `supertype` a| The ``RelationType`` to set as the supertype of this ``RelationType`` a| `RelationType`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-a| `supertype` a| The ``RelationType`` to set as the supertype of this ``RelationType`` a| `RelationType`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -971,112 +484,42 @@ sync::
 --
 [source,rust]
 ----
-relation_type.set_supertype(transaction, super_relation_type);
+relation_type.set_supertype(transaction, super_relation_type).resolve();
 ----
 
 --
 ====
 
-[#_trait_RelationTypeAPI_method_unset_relates]
+[#_trait_RelationTypeAPI_unset_relates__transaction_tx_Transaction_____role_label_String]
 ==== unset_relates
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn unset_relates<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    role_label: String
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn unset_relates(
+fn unset_relates<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_label: String
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 Disallows this ``RelationType`` from relating to the given role.
 
 [caption=""]
 .Input parameters
-[tabs]
-====
-async::
-+
---
 [cols="~,~,~"]
 [options="header"]
 |===
 |Name |Description |Type
-a| `transaction` a| The current transaction a| `&'life1 Transaction<'life2>`
+a| `transaction` a| The current transaction a| `&'tx Transaction<'_>`
 a| `role_label` a| The role to not relate to the relation type. a| `String`
 |===
---
-
-sync::
-+
---
-[cols="~,~,~"]
-[options="header"]
-|===
-|Name |Description |Type
-a| `transaction` a| The current transaction a| `&Transaction<'_>`
-a| `role_label` a| The role to not relate to the relation type. a| `String`
-|===
---
-====
-
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
 
 [caption=""]
 .Code examples
@@ -1097,7 +540,7 @@ sync::
 --
 [source,rust]
 ----
-relation_type.unset_relates(transaction, role_label);
+relation_type.unset_relates(transaction, role_label).resolve();
 ----
 
 --
