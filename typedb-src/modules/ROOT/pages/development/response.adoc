@@ -13,44 +13,48 @@ see the table below for mapping of response format to a type of query that has b
 |===
 | *#* | *Query type* | *Response format*
 
-| 1
+a| {counter:query_types}
+| xref:typeql::data/fetch.adoc[Fetch query]
+| Stream/Iterator of *JSON*
+
+a| {counter:query_types}
 | xref:typedb::development/read.adoc#_get[Get query]
 | Stream/Iterator of *ConceptMap*
 
-| 2
+a| {counter:query_types}
 | Get query with xref:typeql::data/get.adoc#_aggregation[aggregation]
-| *Future* of *Numeric*
+| *Promise* of *Value*
 
-| 3
+a| {counter:query_types}
 | Get query with xref:typeql::data/get.adoc#_group[grouping]
 | Stream/Iterator of *ConceptMapGroup*
 
-| 4
+a| {counter:query_types}
 | Get query with xref:typeql::data/get.adoc#_group[grouping] and
 xref:typeql::data/get.adoc#_aggregation[aggregation]
-| Stream/Iterator of *NumericGroup*
+| Stream/Iterator of *ValueGroup*
 
-| 5
+a| {counter:query_types}
 | xref:typedb::development/write.adoc#_insert[Insert query]
 | Stream/Iterator of *ConceptMap*
 
-| 6
+a| {counter:query_types}
 | xref:typedb::development/write.adoc#_delete_query[Delete query]
-| *Future* (of empty response)
+| *Promise* (of empty response)
 
-| 7
+a| {counter:query_types}
 | xref:typedb::development/write.adoc#_update_query[Update query]
 | Stream/Iterator of *ConceptMap*
 
-| 8
+a| {counter:query_types}
 | xref:typedb::development/schema.adoc#_define_types[Define]
-| *Future* (of empty response)
+| *Promise* (of empty response)
 
-| 9
+a| {counter:query_types}
 | xref:typedb::development/schema.adoc#_undefine[Undefine]
-| *Future* (of empty response)
+| *Promise* (of empty response)
 
-| 10
+a| {counter:query_types}
 | xref:typedb::development/infer.adoc#_explain_query[Explain]
 | Stream/Iterator of *Explanation*
 |===
@@ -65,18 +69,16 @@ section below.
 
 === Get query
 
-The ordinary xref:typedb::development/read.adoc#_get[Get query] (without
-xref:typedb:ROOT:fundamentals/queries.adoc#_modifiers[aggregation] or
-xref:typedb:ROOT:fundamentals/queries.adoc#_modifiers[grouping]) returns a stream/iterator of a ConceptMap objects.
-
-Every iteration returns the result as a <<_conceptmap,ConceptMap>> object.
+The ordinary xref:typeql::data/get.adoc[Get query] (without
+xref:typeql::data/get.adoc#_aggregation[aggregation] or
+xref:typeql::data/get.adoc#_group[grouping]) returns a stream/iterator of a <<_conceptmap,ConceptMap>> objects.
 
 === Get query with aggregation
 
-The get query with *aggregation* can only return a singular value (aggregated result). Hence, it returns a Future
-object of Numeric.
+The get query with *aggregation* can only return a singular value (aggregated result). Hence, it returns a Promise
+object of Value.
 
-Use <<_future,Future>> object's `get()` method to wait and retrieve the <<_numeric,Numeric>> object when it's ready.
+Use <<_promise,Promise>> object's method to wait and retrieve the <<_value,Value>> object when it's ready.
 
 === Get query with grouping
 
@@ -88,11 +90,11 @@ Use ConceptMapGroup object to retrieve <<_conceptmap,ConceptMap>>.
 
 === Get query with grouping and aggregation
 
-The get query with *grouping* and *aggregation* returns a stream/iterator of a NumericGroup objects.
+The get query with *grouping* and *aggregation* returns a stream/iterator of a ValueGroup objects.
 
-Every iteration should return the result as a <<_numericgroup,NumericGroup>> object.
+Every iteration should return the result as a <<_valuegroup,ValueGroup>> object.
 
-Use NumericGroup object to retrieve <<_numeric,Numeric>>.
+Use ValueGroup object to retrieve <<_value,Value>>.
 
 [#_insert_query]
 === Insert query
@@ -104,9 +106,9 @@ Every iteration should return the result as a <<_conceptmap,ConceptMap>> object.
 [#_delete_query]
 === Delete query
 
-Delete query can only return a Future object of a void (empty response).
+Delete query can only return a Promise object of a void (empty response).
 
-We can't retrieve any useful data from the Future object for delete query.
+We can't retrieve any useful data from the Promise object of a delete query.
 
 === Update (match-delete-insert) query
 
@@ -165,29 +167,23 @@ There are separate methods for every built-in type and for instances of every bu
 [#_json]
 [NOTE]
 ====
-TypeDB Driver API methods can be used to get a JSON out of Concept returned in a response.
-
-The exact syntax differs for every language specific API:
-
-* xref:clients:ROOT:java-driver/api-reference.adoc#_retrieve_a_concept_as_json[Java]
-* xref:clients:ROOT:python-driver/api-reference.adoc#_retrieve_a_concept_as_json[Python]
-* xref:clients:ROOT:nodejs-driver/api-reference.adoc#_retrieve_a_concept_as_json[Node.js]
+To get
 ====
 
-[#_numeric]
-=== Numeric
+[#_value]
+=== Value
 
-Numeric object represents a numeric value.
+Value object represents a value.
 
-[#_numericgroup]
-=== NumericGroup
+[#_valuegroup]
+=== ValueGroup
 
-NumericGroup object has not only a Numeric object but also an owner.
+ValueGroup object has not only a Value object but also an owner.
 
-[#_future]
-=== Future
+[#_promise]
+=== Promise
 
-Future object represents an asynchronous query result to be able to get the value later, when query execution completes.
+Promise object represents an asynchronous query result to be able to get the value later when query execution completes.
 
 === Explanation
 
@@ -197,13 +193,13 @@ xref:development/infer.adoc#_explain_query[explain query] use `explainables` and
 
 == Number of answers
 
-If the query type can return *multiple* results (e.g., a get query) then the result of such query type is a
+If the query type can return *multiple* results (e.g., a Get query) then the result of such query type is a
 *stream/iterator* to iterate through all the results. Even if the actual query of such type returns one result or no
 results at all -- it returns a stream/iterator with one or zero iterations respectively.
 
 Query types that can return only a single answer or a void (an empty response) are executed fully asynchronous on the
 server. To wait for a query to finish execution, and return its result if there is one, use the `get()` method of the
-*Future* object returned by the query.
+*Promise* object returned by the query.
 
 == Best practice
 
@@ -211,7 +207,7 @@ server. To wait for a query to finish execution, and return its result if there 
 
 Invoking a TypeQL query sends it to a TypeDB server, where it will be completed in the background. Local processing
 can take place while waiting for responses to be received. Take advantage of these asynchronous queries to mask network
-round-trip costs and increases throughput.
+round-trip costs and increase throughput.
 
 For example, if we are performing 10 get queries in a transaction, it's best to send them all to the server before
 iterating over any of their answers.

@@ -11,16 +11,12 @@ server and to provide more user-friendly interface: API, GUI, or CLI.
 
 To build a custom application capable of connecting to TypeDB via *TypeDB Driver RPC* protocol, we can use one of the
 existing libraries implementing it, called <<_typedb_drivers,TypeDB Drivers>>, or we can implement it ourselves as a
-xref:new-driver.adoc[new driver].
+new driver.
 
 image::client-server-comms.png[Client types and server interaction, role=framed, width = 75%, link=self]
 
-[NOTE]
-====
 Both TypeDB Drivers and applications built with them can be addressed as TypeDB Clients.
-
 For example, TypeDB Studio and TypeDB Console are built with TypeDB Java Driver inside.
-====
 
 Here is a list of existing *TypeDB Clients*:
 
@@ -60,8 +56,8 @@ TypeDB Driver API.
 
 To work with TypeDB databases we can use one of the standalone software tools developed by Vaticle:
 
-. xref:studio.adoc[TypeDB Studio] -- IDE with GUI and TypeQL syntax highlighting.
-. xref:console.adoc[TypeDB Console] -- powerful CLI tool, often used for automation.
+. xref:studio.adoc[TypeDB Studio] -- an IDE with GUI and TypeQL syntax highlighting.
+. xref:console.adoc[TypeDB Console] -- a powerful CLI tool, often used for automation.
 
 Both tools are complete software products that can be used to connect to TypeDB and interact with it. They manage
 connections, sessions and transactions, as well as submitting queries and reading back the responses.
@@ -74,12 +70,12 @@ protocol and provides <<_driver_api,TypeDB Driver API>>. TypeDB Drivers are avai
 programming languages, allowing us to build applications that connect to a TypeDB database easily.
 
 The following TypeDB Drivers are officially supported and actively maintained by Vaticle. They
-support latest TypeDB features and receive continuous bug fixes and improvements.
+support the latest TypeDB features and receive continuous bug fixes and improvements.
 
 * xref:rust-driver/overview.adoc[Rust]
+* xref:python-driver/overview.adoc[Python]
 * xref:java-driver/overview.adoc[Java]
 * xref:nodejs-driver/overview.adoc[Node.js]
-* xref:python-driver/overview.adoc[Python]
 
 //We also have some community projects for xref:other-languages.adoc[other languages].
 //and provide support for creating a xref:new-driver.adoc[new driver].
