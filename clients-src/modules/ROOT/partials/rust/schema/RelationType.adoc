@@ -32,148 +32,56 @@ a| `label` a| `String` a|
 // end::properties[]
 
 // tag::methods[]
-[#_struct_RelationType_method_create]
+[#_struct_RelationType_create__]
 ==== create
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn create<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result<Relation>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+fn create<'tx>(
+    &self,
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result<Relation>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn create(&self, transaction: &Transaction<'_>) -> Result<Relation>
-----
-
---
-====
 
 <<#_trait_RelationTypeAPI_method_create,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Relation>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Relation>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Relation>
-----
-
---
-====
-
-[#_struct_RelationType_method_delete]
+[#_struct_RelationType_delete__]
 ==== delete
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn delete<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+fn delete<'tx>(
+    &mut self,
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn delete(&mut self, transaction: &Transaction<'_>) -> Result
-----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_delete,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_get_instances]
+[#_struct_RelationType_get_instances__]
 ==== get_instances
 
 [source,rust]
 ----
-fn get_instances(
+fn get_instances<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'_, Result<Relation>>>
+) -> Result<BoxStream<'tx, Result<Relation>>>
 ----
 
 <<#_trait_RelationTypeAPI_method_get_instances,Read more>>
@@ -182,21 +90,21 @@ fn get_instances(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<Relation>>>
+Result<BoxStream<'tx, Result<Relation>>>
 ----
 
-[#_struct_RelationType_method_get_owns]
+[#_struct_RelationType_get_owns__]
 ==== get_owns
 
 [source,rust]
 ----
-fn get_owns(
+fn get_owns<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     value_type: Option<ValueType>,
     transitivity: Transitivity,
     annotations: Vec<Annotation>
-) -> Result<BoxStream<'_, Result<AttributeType>>>
+) -> Result<BoxStream<'tx, Result<AttributeType>>>
 ----
 
 <<#_trait_ThingTypeAPI_method_get_owns,Read more>>
@@ -205,90 +113,40 @@ fn get_owns(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<AttributeType>>>
+Result<BoxStream<'tx, Result<AttributeType>>>
 ----
 
-[#_struct_RelationType_method_get_owns_overridden]
+[#_struct_RelationType_get_owns_overridden__]
 ==== get_owns_overridden
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_owns_overridden<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    overridden_attribute_type: AttributeType
-) -> Pin<Box<dyn Future<Output = Result<Option<AttributeType>>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_owns_overridden(
+fn get_owns_overridden<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     overridden_attribute_type: AttributeType
-) -> Result<Option<AttributeType>>
+) -> BoxPromise<'tx, Result<Option<AttributeType>>>
 ----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_get_owns_overridden,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<AttributeType>>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<AttributeType>>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<AttributeType>>
-----
-
---
-====
-
-[#_struct_RelationType_method_get_plays]
+[#_struct_RelationType_get_plays__]
 ==== get_plays
 
 [source,rust]
 ----
-fn get_plays(
+fn get_plays<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'_, Result<RoleType>>>
+) -> Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
 <<#_trait_ThingTypeAPI_method_get_plays,Read more>>
@@ -297,90 +155,40 @@ fn get_plays(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RoleType>>>
+Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
-[#_struct_RelationType_method_get_plays_overridden]
+[#_struct_RelationType_get_plays_overridden__]
 ==== get_plays_overridden
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_plays_overridden<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    overridden_role_type: RoleType
-) -> Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_plays_overridden(
+fn get_plays_overridden<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     overridden_role_type: RoleType
-) -> Result<Option<RoleType>>
+) -> BoxPromise<'tx, Result<Option<RoleType>>>
 ----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_get_plays_overridden,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<RoleType>>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<RoleType>>
-----
-
---
-====
-
-[#_struct_RelationType_method_get_relates]
+[#_struct_RelationType_get_relates__]
 ==== get_relates
 
 [source,rust]
 ----
-fn get_relates(
+fn get_relates<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'_, Result<RoleType>>>
+) -> Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
 <<#_trait_RelationTypeAPI_method_get_relates,Read more>>
@@ -389,161 +197,61 @@ fn get_relates(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RoleType>>>
+Result<BoxStream<'tx, Result<RoleType>>>
 ----
 
-[#_struct_RelationType_method_get_relates_for_role_label]
+[#_struct_RelationType_get_relates_for_role_label__]
 ==== get_relates_for_role_label
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_relates_for_role_label<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    role_label: String
-) -> Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_relates_for_role_label(
+fn get_relates_for_role_label<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_label: String
-) -> Result<Option<RoleType>>
+) -> BoxPromise<'tx, Result<Option<RoleType>>>
 ----
-
---
-====
 
 <<#_trait_RelationTypeAPI_method_get_relates_for_role_label,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<RoleType>>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<RoleType>>
-----
-
---
-====
-
-[#_struct_RelationType_method_get_relates_overridden]
+[#_struct_RelationType_get_relates_overridden__]
 ==== get_relates_overridden
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_relates_overridden<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>,
-    overridden_role_label: String
-) -> Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_relates_overridden(
+fn get_relates_overridden<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     overridden_role_label: String
-) -> Result<Option<RoleType>>
+) -> BoxPromise<'tx, Result<Option<RoleType>>>
 ----
-
---
-====
 
 <<#_trait_RelationTypeAPI_method_get_relates_overridden,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<RoleType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<RoleType>>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<RoleType>>
-----
-
---
-====
-
-[#_struct_RelationType_method_get_subtypes]
+[#_struct_RelationType_get_subtypes__]
 ==== get_subtypes
 
 [source,rust]
 ----
-fn get_subtypes(
+fn get_subtypes<'tx>(
     &self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     transitivity: Transitivity
-) -> Result<BoxStream<'_, Result<RelationType>>>
+) -> Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
 <<#_trait_RelationTypeAPI_method_get_subtypes,Read more>>
@@ -552,87 +260,38 @@ fn get_subtypes(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RelationType>>>
+Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
-[#_struct_RelationType_method_get_supertype]
+[#_struct_RelationType_get_supertype__]
 ==== get_supertype
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_supertype<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result<Option<RelationType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_supertype(
+fn get_supertype<'tx>(
     &self,
-    transaction: &Transaction<'_>
-) -> Result<Option<RelationType>>
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result<Option<RelationType>>>
 ----
-
---
-====
 
 <<#_trait_RelationTypeAPI_method_get_supertype,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<Option<RelationType>>> + Send + 'async_trait>>
-where
-     Self: Sync + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<Option<RelationType>>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<Option<RelationType>>
-----
-
---
-====
-
-[#_struct_RelationType_method_get_supertypes]
+[#_struct_RelationType_get_supertypes__]
 ==== get_supertypes
 
 [source,rust]
 ----
-fn get_supertypes(
+fn get_supertypes<'tx>(
     &self,
-    transaction: &Transaction<'_>
-) -> Result<BoxStream<'_, Result<RelationType>>>
+    transaction: &'tx Transaction<'_>
+) -> Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
 <<#_trait_RelationTypeAPI_method_get_supertypes,Read more>>
@@ -641,76 +300,30 @@ fn get_supertypes(
 .Returns
 [source,rust]
 ----
-Result<BoxStream<'_, Result<RelationType>>>
+Result<BoxStream<'tx, Result<RelationType>>>
 ----
 
-[#_struct_RelationType_method_get_syntax]
+[#_struct_RelationType_get_syntax__]
 ==== get_syntax
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn get_syntax<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result<String>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+fn get_syntax<'tx>(
+    &self,
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result<String>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn get_syntax(&self, transaction: &Transaction<'_>) -> Result<String>
-----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_get_syntax,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<String>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<String>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<String>
-----
-
---
-====
-
-[#_struct_RelationType_tymethod_is_abstract]
+[#_struct_RelationType_is_abstract__]
 ==== is_abstract
 
 [source,rust]
@@ -727,73 +340,27 @@ fn is_abstract(&self) -> bool
 bool
 ----
 
-[#_struct_RelationType_tymethod_is_deleted]
+[#_struct_RelationType_is_deleted__]
 ==== is_deleted
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn is_deleted<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result<bool>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+fn is_deleted<'tx>(
+    &self,
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result<bool>>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn is_deleted(&self, transaction: &Transaction<'_>) -> Result<bool>
-----
-
---
-====
 
 <<#_trait_ThingTypeAPI_tymethod_is_deleted,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result<bool>> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result<bool>>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result<bool>
-----
-
---
-====
-
-[#_struct_RelationType_tymethod_is_root]
+[#_struct_RelationType_is_root__]
 ==== is_root
 
 [source,rust]
@@ -810,7 +377,7 @@ fn is_root(&self) -> bool
 bool
 ----
 
-[#_struct_RelationType_tymethod_label]
+[#_struct_RelationType_label__]
 ==== label
 
 [source,rust]
@@ -827,713 +394,234 @@ fn label(&self) -> &str
 &str
 ----
 
-[#_struct_RelationType_method_set_abstract]
+[#_struct_RelationType_root__]
+==== root
+
+[source,rust]
+----
+pub fn root() -> Self
+----
+
+Returns the root ``RelationType``
+
+[caption=""]
+.Returns
+[source,rust]
+----
+Self
+----
+
+[#_struct_RelationType_set_abstract__]
 ==== set_abstract
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_abstract<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+fn set_abstract<'tx>(
+    &mut self,
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_abstract(&mut self, transaction: &Transaction<'_>) -> Result
-----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_set_abstract,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_set_label]
+[#_struct_RelationType_set_label__]
 ==== set_label
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_label<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    new_label: String
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_label(
+fn set_label<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     new_label: String
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_set_label,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_set_owns]
+[#_struct_RelationType_set_owns__]
 ==== set_owns
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_owns<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    attribute_type: AttributeType,
-    overridden_attribute_type: Option<AttributeType>,
-    annotations: Vec<Annotation>
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_owns(
+fn set_owns<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     attribute_type: AttributeType,
     overridden_attribute_type: Option<AttributeType>,
     annotations: Vec<Annotation>
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_set_owns,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_set_plays]
+[#_struct_RelationType_set_plays__]
 ==== set_plays
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_plays<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    role_type: RoleType,
-    overridden_role_type: Option<RoleType>
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_plays(
+fn set_plays<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_type: RoleType,
     overridden_role_type: Option<RoleType>
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_set_plays,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_set_relates]
+[#_struct_RelationType_set_relates__]
 ==== set_relates
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_relates<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    role_label: String,
-    overridden_role_label: Option<String>
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_relates(
+fn set_relates<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_label: String,
     overridden_role_label: Option<String>
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_RelationTypeAPI_method_set_relates,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_set_supertype]
+[#_struct_RelationType_set_supertype__]
 ==== set_supertype
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn set_supertype<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    supertype: RelationType
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn set_supertype(
+fn set_supertype<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     supertype: RelationType
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_RelationTypeAPI_method_set_supertype,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_unset_abstract]
+[#_struct_RelationType_unset_abstract__]
 ==== unset_abstract
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn unset_abstract<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+fn unset_abstract<'tx>(
+    &mut self,
+    transaction: &'tx Transaction<'_>
+) -> BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn unset_abstract(&mut self, transaction: &Transaction<'_>) -> Result
-----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_unset_abstract,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_unset_owns]
+[#_struct_RelationType_unset_owns__]
 ==== unset_owns
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn unset_owns<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    attribute_type: AttributeType
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn unset_owns(
+fn unset_owns<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     attribute_type: AttributeType
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_unset_owns,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_unset_plays]
+[#_struct_RelationType_unset_plays__]
 ==== unset_plays
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn unset_plays<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    role_type: RoleType
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn unset_plays(
+fn unset_plays<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_type: RoleType
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_ThingTypeAPI_method_unset_plays,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
 
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
-
-[#_struct_RelationType_method_unset_relates]
+[#_struct_RelationType_unset_relates__]
 ==== unset_relates
 
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-fn unset_relates<'life0, 'life1, 'life2, 'async_trait>(
-    &'life0 mut self,
-    transaction: &'life1 Transaction<'life2>,
-    role_label: String
-) -> Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
-----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-fn unset_relates(
+fn unset_relates<'tx>(
     &mut self,
-    transaction: &Transaction<'_>,
+    transaction: &'tx Transaction<'_>,
     role_label: String
-) -> Result
+) -> BoxPromise<'tx, Result>
 ----
-
---
-====
 
 <<#_trait_RelationTypeAPI_method_unset_relates,Read more>>
 
 [caption=""]
 .Returns
-[tabs]
-====
-async::
-+
---
 [source,rust]
 ----
-Pin<Box<dyn Future<Output = Result> + Send + 'async_trait>>
-where
-     Self: Send + 'async_trait,
-     'life0: 'async_trait,
-     'life1: 'async_trait,
-     'life2: 'async_trait,
+BoxPromise<'tx, Result>
 ----
-
---
-
-sync::
-+
---
-[source,rust]
-----
-Result
-----
-
---
-====
 
 // end::methods[]
 
