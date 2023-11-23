@@ -190,10 +190,11 @@ In the above example `match` clause matches all `person` type instances that own
 The `fetch` clause then returns values of those `name` attributes.
 
 What happens if two persons have the same name?
-In TypeDB database that stored, as two entities own the same instance of the `name` attribute type.
+In TypeDB database that is stored, as two entities own the same attribute (instance of the `name` attribute type).
 The `match` clause finds all pairs of a person entity and its owned attribute.
-But `fetch` clause returns only the attributes, and since both persons owning the very same attribute,
-it will only be returned once, reducing the total number of results.
+But `fetch` clause returns only the values of attributes.
+Since both persons own the very same attribute,
+it will be returned only once, reducing the total number of results.
 
 For more examples of filtering matched results,
 see the xref:typeql::data/get.adoc#_answers_example_2[Get query] page.
