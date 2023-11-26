@@ -3,7 +3,9 @@
 :keywords: typeql, typedb, query, insert, write, create
 :pageTitle: Insert query
 
-An insert query adds data (e.g., entities, relations, and attributes) to a database.
+An Insert query adds data to a database.
+You can insert an instance of a type, assign ownership of an attribute,
+or assign a new role player for a relation.
 
 Insert queries can be used only with write transactions.
 
@@ -11,7 +13,7 @@ Insert queries can be used only with write transactions.
 
 An Insert query inserts new data into a TypeDB database using TypeQL patterns.
 
-This is the only type of data query that can omit its `match` clause.
+This is the only type of data query that can be used without a `match` clause.
 A `match` clause in an Insert query matches existing concepts in a database to provide context for inserting new data
 that is connected to existing data through relations, ownerships, values, types, etc.
 
