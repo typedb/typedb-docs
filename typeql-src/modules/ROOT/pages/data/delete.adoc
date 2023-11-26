@@ -1,17 +1,28 @@
 = Delete query
 :Summary: Deleting data from a TypeDB database.
-:keywords: typeql, typedb, query, delete
-:longTailKeywords: typeql delete, typeql write data, typeql delete
+:keywords: typeql, typedb, query, delete, remove
 :pageTitle: Delete query
 
-A delete query removes data from a database.
+A Delete query removes data from a TypeDB database.
+You can delete an instance of a type, ownership of an attribute,
+or a role player reference of a relation.
 
-It can be used to remove entities, relations, and attributes as well as references to them, like attribute ownerships.
+Delete queries can be used only with write transactions.
 
-For example, to remove ownership of an attribute without deleting the attribute itself or to remove the player of a
-role from a relation without deleting either the player or the relation/role.
+== Behavior
+
+A Delete query removes concepts, ownerships, and role player references from a database.
+
+After matching existing data with a `match` clause,
+use a `delete` clause with another TypeQL pattern to specify exact data to delete.
+
+A Delete query doesn't return any useful information.
 
 == Syntax
+
+A Delete query consists of a
+<<_match_clause,match>> clause and a
+<<_delete_clause,delete>> clause.
 
 Delete queries are written in TypeQL with the following syntax:
 
@@ -21,7 +32,48 @@ match <pattern>
 delete <pattern>
 ----
 
-The Delete query is always preceded by a `match` clause.
+A `delete` clause pattern uses variables from a preceding `match` clause pattern.
+
+[#_match_clause]
+== Match clause
+
+A `match` clause is mandatory in a Delete query.
+You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
+specified pattern.
+
+For more information on a `match` clause, see the
+//#todo update the link after introducing the Match clause page!
+xref:typeql::queries.adoc#_match[Match clause] description on the Queries page.
+
+For more information on patterns used in a `match` clause, see the
+xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
+
+[#_delete_clause]
+== Delete clause
+
+A `delete` clause is used in a Delete query to specify exact data to remove from a database.
+deleted data should be matched first in a preceding `match` clause.
+
+This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
+A `delete` clause returns a Promise of an empty response.
+
+[NOTE]
+====
+A `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
+xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
+
+- Conjunction
+- Disjunction
+- Negation
+- `is` keyword
+====
+
+
+
+
+
+
+
 
 The `match` clause uses a pattern to find existing data/references that can be used in the `delete` clause.
 
@@ -48,16 +100,7 @@ Prior to TypeDB v.`2.22.0`, a delete query would fail (throw an error) if its `d
 a previously deleted or non-existent data.
 ====
 
-[NOTE]
-====
-The `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
-xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
 
-- Conjunction
-- Disjunction
-- Negation
-- `is` keyword
-====
 
 == Entities
 
