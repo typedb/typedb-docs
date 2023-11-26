@@ -73,8 +73,6 @@ Variables mentioned in a `fetch` clause must be bound (set) in a `match` clause 
 A `match` clause is mandatory in a Fetch query.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 the pattern.
-After a `match` clause goes another clause (`insert`, `delete`, `fetch`, or `get`)
-to specify what operation to perform on the matched data.
 
 For more information on a `match` clause, see the
 //#todo update the link after introducing the Match clause page!
@@ -171,7 +169,7 @@ but many nested levels can break technical limitations of gRPC messaging.
 For an example of nested subqueries, see the <<_grouping_results>> section below.
 
 [#_number_of_results]
-=== Number of answers
+=== Number of results
 
 A Fetch query can return fewer results, than it was matched by its `match` clause.
 Excluding the usage of <<_modifiers,modifiers>>, that can happen due to natural deduplication of results.
