@@ -133,14 +133,19 @@ but rather the information of that role player is removed from a relation.
 
 == Examples
 
+Use the IAM
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank]
+and
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[sample data,window=_blank]
+for the following insert examples.
+
 [#_simple_example]
 === Simple example
 
 Instances of data (entities, attributes, and relations) can be deleted by matching them first,
 then using a `delete` clause with the `isa` pattern.
-Let's try to match and delete an entity.
 
-.Deleting an entity example
+.Deleting example
 [,typeql]
 ----
 match
