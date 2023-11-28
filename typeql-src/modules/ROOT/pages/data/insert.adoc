@@ -69,14 +69,13 @@ A pattern in an `insert` clause shares variables with a pattern from a preceding
 
 An `insert` clause can have multiple statements in its pattern to insert in one query.
 But it can't insert types
-(use xref:schema/define-types.adoc[define] to insert new types) and can't have the following:
+(use the xref:schema/define-types.adoc[define] to insert new types) and can't have the following:
 
-- Conjunction
 - Disjunction
 - Negation
 - `is` keyword
 
-A single statement of an `insert` clause pattern can insert:
+A single simple statement of an `insert` clause pattern can insert:
 
 * an instance of a type,
 * an ownership of an attribute, or
@@ -84,23 +83,23 @@ A single statement of an `insert` clause pattern can insert:
 
 Inserting an ownership of an attribute that doesn't exist in a database yet, implicitly inserts such an attribute.
 
-For more information on patterns used in an `insert` clause, see the examples section below.
+For more information on patterns used in an `insert` clause, see the <<_examples,examples>> section below.
 
 For more information on patterns in general, see the
 xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 
+[#_examples]
 == Examples
 
 Use the IAM
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank]
 and
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[sample data,window=_blank]
-for the following insert examples.
+for the following examples.
 
 === Inserting data with no matching
 
-To insert a completely new data with no connections to existing data,
-we can use an Insert query without a `match` clause:
+To insert new data with no connection to existing database data, we can use an Insert query without a `match` clause:
 
 .Insert with no match
 [,typeql]
