@@ -104,11 +104,6 @@ include::partial$win.adoc[tag=manual-install]
 --
 ====
 
-[NOTE]
-====
-To learn how to run TypeDB Core, see the xref:home::quickstart.adoc[] guide.
-====
-
 === Run TypeDB Core
 
 ==== Start
@@ -128,6 +123,13 @@ To run TypeDB Core in a new Docker container:
 docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ----
 // end::core-run[]
+
+[NOTE]
+====
+To learn how to use TypeDB, see the xref:home::quickstart.adoc[] guide,
+xref:home::25-queries.adoc[] page, and the xref:typedb::overview.adoc[TypeDB documentation].
+====
+
 ==== Stop
 
 To stop a local TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
@@ -231,9 +233,32 @@ Restart the terminal window for the changes to environment variables to take eff
 --
 ====
 
+=== Run TypeDB Console
+
+To run TypeDB Console:
+
+[,bash]
+----
+typedb console
+----
+
+The above command will try to establish a connection with a TypeDB server on the default address of `localhost:1729`.
+To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port:
+`10.0.0.1:1729`.
+
+If the typedb command is not recognized, it means that the path to TypeDB binary is not set in the system.
+You can find TypeDB binary in the TypeDB distributive.
+To start TypeDB Console from its binary, navigate into the directory with unpacked distributive and run:
+
+[,bash]
+----
+./typedb console
+----
+
 [NOTE]
 ====
-To learn how to run TypeDB Console, see the xref:home::quickstart.adoc#_console_connect[Quickstart] guide.
+To learn how to use TypeDB Console, see the xref:home::quickstart.adoc#_console_connect[Quickstart] guide and the
+xref:typedb::connecting/console.adoc[] page.
 ====
 
 [#_studio]
@@ -327,9 +352,15 @@ select a required version, download the `typedb-studio-windows` artifact for the
 --
 ====
 
+=== Run TypeDB Studio
+
+TypeDB Studio is a standalone TypeDB Client with GUI that needs to be launched separately from a TypeDB server.
+To launch TypeDB Studio, locate its binary file and run it.
+
 [NOTE]
 ====
-To learn how to run TypeDB Studio, see the xref:home::quickstart.adoc[Quickstart] guide.
+To learn more on how to use TypeDB Studio, see the xref:home::quickstart.adoc[] guide and the
+xref:typedb::connecting/studio.adoc[] page.
 ====
 
 [#_drivers]
