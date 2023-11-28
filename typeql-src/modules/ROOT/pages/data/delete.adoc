@@ -7,16 +7,20 @@ A Delete query removes data from a TypeDB database.
 You can delete an instance of a type, ownership of an attribute,
 or a role player reference of a relation.
 
-Delete queries can be used only with write transactions.
+Delete queries can be used only in write transactions.
 
 == Behavior
 
-A Delete query removes concepts, ownerships, and role player references from a database.
+A Delete query deletes concepts, ownerships, and role player references from a database.
 
 After matching existing data with a `match` clause,
 use a `delete` clause with another TypeQL pattern to specify exact data to delete.
 
-A Delete query doesn't return any useful information.
+A `delete` clause is executed once per every result of a preceding `match` clause.
+In particular, if there is no match in a database for a `match` clause of a `delete` query,
+then there will be no deletions.
+
+A Delete query returns a Promise of an empty response.
 
 == Syntax
 
@@ -62,8 +66,7 @@ xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't ha
 - Negation
 - `is` keyword
 
-This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
-If there are no matches for a `match` clause in a `delete` query, then there will be no deletes.
+This clause is executed exactly once for every result matched by a preceding `match` clause of the same query.
 
 A `delete` clause returns a Promise of an empty response.
 
@@ -108,13 +111,13 @@ in a `delete` clause of the same query:
 <owner-variable> has <attribute-variable>;
 ----
 
-With this pattern an attribute itself is not removed,
+With this pattern, an attribute itself is not removed,
 but rather an ownership of that attribute by that owner is removed.
 
 Attributes are immutable. Rather than changing the value of an owned attribute,
 you can delete an ownership of it and replace with an ownership of another attribute with different value.
 
-See an <<_deleting_an_ownership,example>> of deleting ownership of an attribute below.
+See an <<_deleting_ownership,example>> of deleting ownership of an attribute below.
 
 === Deleting role players from a relation
 
@@ -131,8 +134,20 @@ Where `<relation-variable>` -- a query variable of the relation to modify;
 `<role>` -- an optional specification of a role of a role player to remove;
 `<instance-variable>` -- a query variable of a role player instance.
 
-With this pattern, an instance that plays role in a relation is not removed,
+With this pattern, an instance that plays a role in a relation is not removed,
 but rather the information of that role player is removed from a relation.
+
+We can omit the role in a pattern if its unambiguous which role the referenced instance can play in the relation.
+
+[WARNING]
+====
+Existence of a relation often implies the existence of all of its role players.
+Deleting a role player reference from a relation can create an incomplete data state.
+Like a `marriage` relation with only one known spouse.
+====
+
+Since relations must have at least one role player to exist,
+all relations without a role player are implicitly deleted at commit.
 
 See an <<_deleting_a_role_player,example>> of deleting role players from a relation.
 
@@ -204,13 +219,13 @@ The above example matches the attribute by its type (`full-name`) and value (`Bo
 and assigns it a query variable (`$fn`).
 Then it deletes the matched attribute.
 
-[#_deleting_an_ownership]
-==== Deleting an ownership
+[#_deleting_ownership]
+==== Deleting ownership
 
-To delete an ownership of an attribute from any instance, match both the owner and the attribute and then use a `delete`
+To delete ownership of an attribute by any instance, match both the owner and the attribute and then use a `delete`
 clause with a `has` pattern:
 
-.Deleting an ownership
+.Deleting ownership
 [,typeql]
 ----
 match
@@ -238,6 +253,7 @@ We can delete a relation or a role player reference from a relation.
 
 To delete a relation, match it in a database and then use a `delete` clause with an `isa` pattern:
 
+.Deleting a relation
 [,typeql]
 ----
 match
@@ -267,6 +283,7 @@ To delete a role player reference from a relation,
 match it in a database and then use a `delete` clause without an `isa` pattern,
 specifying just the relation variable and the role player reference in parentheses:
 
+.Deleting a role player reference
 [,typeql]
 ----
 match
@@ -280,17 +297,10 @@ The above query does the following:
 
 . Finds the `subject` entity (`$p`), with `full-name` attribute value of `Pearle Goodman`.
 . Finds all `permission` relations (`$pe`) relating the `subject` entity `$p` (as the `subject` role).
-. From all matched relation deletes the reference to the `$p`.
+. From every matched relation `$pe` deletes the reference to the `$p`.
 
 In short, it removes `Pearle Goodman` as the `subject` from all of its `permission` relations.
 However, the relations are not deleted, and any other role player references are left intact.
-
-[WARNING]
-====
-The existence of a relation often implies the existence of all of its role players.
-So, deleting a role player reference from a relation can mean an incomplete data state.
-Like a marriage with only one known spouse.
-====
 
 [NOTE]
 ====
