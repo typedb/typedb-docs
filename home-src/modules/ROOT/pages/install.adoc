@@ -1,23 +1,36 @@
-= Install
-:keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker, arm, arm64, x86, x86_64
-:pageTitle: Install
+= Install and Run
+:keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker, arm, arm64, x86, x86_64, deploy, cloud
+:pageTitle: Install and Run
 :summary: Download and install TypeDB server or client on Linux, macOS or Windows.
 :tabs-sync-option:
 :experimental:
 
-== TypeDB Enterprise and Cloud
+== TypeDB Cloud
 
-To deploy through TypeDB Cloud, proceed to https://cloud.typedb.com/[cloud.typedb.com,window=_blank].
-To deploy TypeDB Enterprise, contact our mailto:sales@vaticle.com[sales team] and see the
-xref:typedb::admin/enterprise-deployment.adoc[Enterprise Deployment] page.
+image::cloud-hero.png[TypeDB Cloud hero image, role=framed, width = 75%, window=_blank, link=https://cloud.typedb.com/]
+
+// tag::cloud-run[]
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
+// end::cloud-run[]
+
+== TypeDB Enterprise
+
+To get your Enterprise license from our sales team,
+contact us via mailto:sales@vaticle.com[E-mail,window=_blank] or
+https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
+
+// tag::enterprise-run[]
+To deploy and run your on-premise cluster of TypeDB Enterprise,
+see the xref:typedb::admin/enterprise-deployment.adoc[Enterprise Deployment] page.
+// end::enterprise-run[]
 
 [#_core]
 == TypeDB Core
 
-TypeDB Core is the open-source edition of TypeDB DBMS.
+TypeDB Core is the open-source edition of TypeDB.
 It supports all features of TypeQL.
-For more information on the difference between editions of TypeDB,
-see the https://typedb.com/features[Features,window=_blank] page.
+For more information on the difference between TypeDB editions,
+see the https://typedb.com/deploy[Deploy,window=_blank] page.
 
 TypeDB Core also supports all TypeDB Clients, including:
 <<_console>>,
@@ -95,6 +108,33 @@ include::partial$win.adoc[tag=manual-install]
 ====
 To learn how to run TypeDB Core, see the xref:home::quickstart.adoc[] guide.
 ====
+
+=== Run TypeDB Core
+
+==== Start
+
+// tag::core-run[]
+To start a local TypeDB Core server:
+
+[,bash]
+----
+typedb server
+----
+
+To run TypeDB Core in a new Docker container:
+
+[,bash]
+----
+docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+----
+// end::core-run[]
+==== Stop
+
+To stop a local TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
+
+For a Docker container:
+
+include::home::partial$docker.adoc[tag=stop]
 
 [#_console]
 == TypeDB Console

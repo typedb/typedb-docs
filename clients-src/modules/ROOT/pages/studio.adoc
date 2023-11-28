@@ -12,7 +12,7 @@ image::studio/studio.png[TypeDB Studio, width = 70%, link=self]
 TypeDB Studio is an IDE specifically designed for TypeDB databases and
 TypeDB's query language -- xref:typeql::fundamentals.adoc[TypeQL].
 
-It has unique set of functions and abilities to help with development using TypeDB:
+It has a unique set of functions and abilities to help with development using TypeDB:
 
 * Friendly GUI to design schemas and queries for TypeDB databases.
 * Syntax highlighting for TypeQL.
@@ -22,14 +22,11 @@ It has unique set of functions and abilities to help with development using Type
 * Local query validation with constraints of an actual database schema before sending the query to server.
 * Graph visualization for query responses.
 
-[#_installation]
-== Installation
-
-See the xref:home::install.adoc#_studio[Install] page.
+For installation guide, see the xref:home::install.adoc#_studio[Install] page.
 
 == Prepare for work
 
-Right after starting TypeDB Studio we can see its main window as it is shown below.
+Right after starting TypeDB Studio, we can see its main window as it is shown below.
 
 image::studio/studio-gui.png[TypeDB Studio GUI, width = 70%, link=self]
 
@@ -40,7 +37,7 @@ The main panels of the GUI are marked with the following numbers on the image ab
 . Text editor tab
 . Toolbar
 
-To use most of TypeDB Studio functions we need to connect to a TypeDB server and choose a project directory.
+To use most of the TypeDB Studio functions, we need to connect to a TypeDB server and choose a project directory.
 
 [#_connect_to_typedb_server]
 === Connect to TypeDB server

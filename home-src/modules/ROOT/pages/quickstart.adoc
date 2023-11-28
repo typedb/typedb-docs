@@ -7,43 +7,92 @@
 
 This Quickstart guide shows how to set up a TypeDB database and run queries.
 
-== Prerequisites
+== Run TypeDB
 
-. xref:home::install.adoc#_install[Install TypeDB Core].
-. xref:home::install.adoc#_studio[Install TypeDB Studio].
+To start TypeDB, select the TypeDB edition below and follow the instructions.
 
-== Start TypeDB
+[tabs]
+====
+Cloud::
++
+--
+include::home::install.adoc[tag=cloud-run]
+--
 
-To start a TypeDB Core server:
+Enterprise::
++
+--
+include::home::install.adoc[tag=enterprise-run]
+--
 
-[,bash]
-----
-typedb server
-----
+Core::
++
+--
+include::home::install.adoc[tag=core-run]
+--
+====
 
-To run TypeDB Core in a new Docker container:
+[#_typedb_studio]
+== Connect with TypeDB Studio
 
-[,bash]
-----
-docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
-----
+TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
+xref:home::install.adoc#_studio[installed] and launched separately from a TypeDB server.
 
-[#_typedb_client]
-== Run TypeDB Studio
+Find the TypeDB Studio binary and run it.
+Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 
-xref:clients:ROOT:studio.adoc[TypeDB Studio] is a standalone TypeDB Client with GUI that needs to be
-installed and launched separately from a TypeDB server.
+//image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
-To start TypeDB Studio, find the installed binary file and run it.
+[tabs]
+====
+Cloud::
++
+--
+image::studio-cloud-connect.png[TypeDB Studio connect window, width = 75%, link=self]
 
-image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
+. Switch the `Server` field drop-down to `TypeDB Enterprise`.
+. Click btn:[Manage Enterprise Addresses] button and add all servers (address and port)
+from your TypeDB Cloud deployment.
+Close the Address management window.
+. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
+. Turn on the `Enable TLS` option and select a TypeDB Cloud certificate in the `CA Certificate` field.
+. Click `Connect`.
 
-== Connect to TypeDB
+[WARNING]
+=====
+Don't forget to change the default username and password.
+You can use xref:clients::console.adoc#_change_password[TypeDB Console] to do that.
+=====
+--
 
-TypeDB Studio needs a network connection to a TypeDB server to manage databases and send queries:
+Enterprise::
++
+--
+image::studio-enterprise-connect.png[TypeDB Studio connect window, width = 75%, link=self]
 
-. Click btn:[Connect to TypeDB] on the right side of the toolbar.
-. Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
+. Switch the `Server` field drop-down to `TypeDB Enterprise`.
+. Click btn:[Manage Enterprise Addresses] button and add all servers (address and port)
+from your TypeDB Cloud deployment.
+Close the Address management window.
+. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
+. Turn on the `Enable TLS` option and select a CA certificate for your on-premise cluster in the `CA Certificate` field.
+. Click `Connect`.
+
+[WARNING]
+=====
+Don't forget to change the default username and password.
+You can use xref:clients::console.adoc#_change_password[TypeDB Console] to do that.
+=====
+--
+
+Core::
++
+--
+image::studio-connect.png[TypeDB Studio connect window, width = 75%, link=self]
+
+Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
+--
+====
 
 == Select a project folder
 
@@ -340,22 +389,12 @@ commit
 
 Repeat the <<_query_examples>> from TypeDB Studio in TypeDB Console.
 
-== Stop TypeDB server
-
-To stop a TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
-
-For a Docker container:
-
-include::home::partial$docker.adoc[tag=stop]
-
 [#_learn_more]
 == Learn more
 
 After completing this guide, we recommend the following order of topics to continue exploring TypeDB:
 
-//#todo Add another link to the TypeDB in 20 queries page
-
-. Explore more queries with the xref:home::25-queries.adoc[] page.
+. Explore more interesting queries with the xref:home::25-queries.adoc[] page.
 . Browse the Fundamentals section for essential information of how TypeDB works:
 xref:typedb::fundamentals/types.adoc[],
 xref:typedb::fundamentals/queries.adoc[],

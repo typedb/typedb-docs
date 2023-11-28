@@ -218,7 +218,8 @@ TypeDB Console provides two levels of interaction
 [#_database_management_commands]
 === Database management commands
 
-Give any of these commands inside a console at the `>` prompt in the first level of interaction (<<_REPL,REPL>>).
+Use any of these commands inside a console at the `>` prompt in the first level of interaction (<<_REPL,REPL>>).
+
 [cols=".^2,3"]
 |===
 ^.^| Command ^.^| Description
@@ -235,12 +236,21 @@ Give any of these commands inside a console at the `>` prompt in the first level
 | `database schema <db>`
 | Print schema of a database with name `<db>` on the server
 
+| `user list`
+| List the users on the server +
+(*TypeDB Enterprise & TypeDB Cloud only*)
+
 | `user create <username>`
 | Create a user with name `<username>` on the server +
 (*TypeDB Enterprise & TypeDB Cloud only*)
 
-| `user list`
-| List the users on the server +
+| `user password-update <password>`
+| Update the password for the current user +
+(*TypeDB Enterprise & TypeDB Cloud only*)
+
+[#_change_password]
+| `user password-set <username>`
+| Set password for the user with name `username` +
 (*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `user delete <username>`
