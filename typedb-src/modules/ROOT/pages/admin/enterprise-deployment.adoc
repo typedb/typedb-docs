@@ -19,10 +19,17 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle Java]).
 
 TypeDB Enterprise is distributed and installed separately from TypeDB Core.
 
-You can install it as a standalone server with <<_using_docker,Docker>> or manual
+Request access to the Enterprise distributive repositories from Vaticle.
+You can do that via technical support, using the contact details from your contract, or through our
+https://typedb.com/discord[Discord,window=_blank] server.
+
+Then you can install it with <<_using_docker,Docker>> or manual
 <<_manual_download_and_installation,download and installation>>.
-A cluster of TypeDB Enterprise servers you can deploy either
+
+You can deploy a cluster of TypeDB Enterprise servers
 <<_deploying_manually,manually>> or via <<_deploying_with_kubernetes,Kubernetes>>.
+
+If you don't have a contract yet, try https://cloud.typedb.com/[TypeDB Cloud].
 
 [#_using_docker]
 === Using Docker
@@ -71,6 +78,8 @@ docker stop typedb
 
 [#_manual_download_and_installation]
 === Manual download and installation
+
+Make sure to have access to the main repository https://repo.vaticle.com.
 
 Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest release], unzip it in a
 location on your machine that is easily accessible via terminal.
