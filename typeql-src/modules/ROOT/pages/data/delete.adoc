@@ -54,10 +54,10 @@ xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
 A `delete` clause is used in a Delete query to specify exact data to remove from a database.
 deleted data should be matched first in a preceding `match` clause.
 
-A `delete` clause can have multiple statements in its pattern to delete in one query. But it can't delete types (use
+A `delete` clause can have multiple statements in its pattern to delete in one query.
+But it can't delete types (use the
 xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
 
-- Conjunction
 - Disjunction
 - Negation
 - `is` keyword
@@ -69,8 +69,9 @@ A `delete` clause returns a Promise of an empty response.
 
 [WARNING]
 ====
-Prior to TypeDB v.`2.22.0`, a Delete query would fail (throw an error) if its `delete` clause would try to delete
-a previously deleted or non-existent data.
+Prior to version `2.22.0` of TypeDB,
+a Delete query would fail (throw an error) if its `delete` clause would try to delete
+previously deleted or non-existent data.
 ====
 
 === Deleting instances
@@ -96,7 +97,7 @@ to no longer play that role in the deleted relation.
 
 See an <<_simple_example,example>> of deleting instances of data below.
 
-=== Deleting ownership
+=== Deleting ownerships
 
 To delete an ownership of an attribute, match both the attribute and its owner and then use the following pattern
 in a `delete` clause of the same query:
@@ -112,6 +113,8 @@ but rather an ownership of that attribute by that owner is removed.
 
 Attributes are immutable. Rather than changing the value of an owned attribute,
 you can delete an ownership of it and replace with an ownership of another attribute with different value.
+
+See an <<_deleting_an_ownership,example>> of deleting ownership of an attribute below.
 
 === Deleting role players from a relation
 
@@ -131,16 +134,18 @@ Where `<relation-variable>` -- a query variable of the relation to modify;
 With this pattern, an instance that plays role in a relation is not removed,
 but rather the information of that role player is removed from a relation.
 
+See an <<_deleting_a_role_player,example>> of deleting role players from a relation.
+
 == Examples
 
 Use the IAM
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank]
 and
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[sample data,window=_blank]
-for the following delete examples.
+for the following examples.
 
 [#_simple_example]
-=== Simple example
+=== Deleting an instance of data
 
 Instances of data (entities, attributes, and relations) can be deleted by matching them first,
 then using a `delete` clause with the `isa` pattern.
@@ -158,7 +163,7 @@ In the above query, `match` clause finds a `person` entity that has the `email` 
 `john.parkson@gmail.com`.
 Then, it removes the matched entity from a database.
 
-=== Deleting without a direct type
+==== Deleting with the use of a supertype
 
 One can delete an instance by using not only its exact type in the `delete` clause pattern,
 but also any of its supertypes.
@@ -199,6 +204,7 @@ The above example matches the attribute by its type (`full-name`) and value (`Bo
 and assigns it a query variable (`$fn`).
 Then it deletes the matched attribute.
 
+[#_deleting_an_ownership]
 ==== Deleting an ownership
 
 To delete an ownership of an attribute from any instance, match both the owner and the attribute and then use a `delete`
@@ -254,7 +260,8 @@ In short, it removes all permissions for `Pearle Goodman`.
 We didn't specify all roles of a `permission` relation, e.g., the `object` role.
 ====
 
-==== Role players
+[#_deleting_a_role_player]
+==== Deleting a role player
 
 To delete a role player reference from a relation,
 match it in a database and then use a `delete` clause without an `isa` pattern,
