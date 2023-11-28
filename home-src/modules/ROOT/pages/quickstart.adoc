@@ -61,7 +61,7 @@ Close the Address management window.
 [WARNING]
 =====
 Don't forget to change the default username and password.
-You can use xref:clients::console.adoc#_change_password[TypeDB Console] to do that.
+You can use xref:typedb:ROOT:connecting/console.adoc#_change_password[TypeDB Console] to do that.
 =====
 --
 
@@ -81,7 +81,7 @@ Close the Address management window.
 [WARNING]
 =====
 Don't forget to change the default username and password.
-You can use xref:clients::console.adoc#_change_password[TypeDB Console] to do that.
+You can use xref:typedb:ROOT:connecting/console.adoc#_change_password[TypeDB Console] to do that.
 =====
 --
 
@@ -96,7 +96,7 @@ Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect
 
 == Select a project folder
 
-Select a xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory]
+Select a xref:typedb:ROOT:connecting/studio.adoc#_open_a_project_directory[project directory]
 to store project files by clicking either:
 
 * btn:[Open Project] in the *Project* panel (upper left); or
@@ -219,7 +219,7 @@ get $p, $a;
 
 The above xref:typeql::data/get.adoc[Get] query returns concepts from a database as a ConceptMap
 that can be used programmatically with a xref:clients::overview.adoc#_typedb_drivers[Driver API] to process the result.
-The following image is a graph visualization produced by xref:clients::studio.adoc[TypeDB Studio].
+The following image is a graph visualization produced by xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio].
 
 image::quickstart-get-example.png[Quickstart Get query example, role=framed, width = 75%, link=self]
 
@@ -312,7 +312,7 @@ delete $p has $e;
 
 == Repeat with TypeDB Console
 
-xref:clients:ROOT:console.adoc[TypeDB Console] is usually distributed with TypeDB.
+xref:typedb:ROOT:connecting/console.adoc[TypeDB Console] is usually distributed with TypeDB.
 You can find it with the TypeDB installed or xref:home::install.adoc#_console[install] it separately.
 
 [#_console_run]

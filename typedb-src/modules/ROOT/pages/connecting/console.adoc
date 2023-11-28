@@ -1,14 +1,14 @@
 = TypeDB Console
-:keywords: typedb, console
-:longTailKeywords: load schema into typedb, create typedb database, typedb console
+:keywords: typedb, console, CLI, terminal, REPL
+:page-aliases: clients::console.adoc
 :pageTitle: TypeDB Console
-:summary: List of options and commands for the TypeDB Console.
+:summary: TypeDB Console documentation.
 :tabs-sync-option:
 :experimental:
 
-image::console.png[]
+image::clients::console.png[]
 
-The TypeDB Console, along with the xref:studio.adoc[Studio], is a software tool that we can use to interact
+The TypeDB Console, along with the xref:connecting/studio.adoc[Studio], is a software tool that we can use to interact
 with TypeDB server. It is a tool of choice for those who prefer command line interfaces over GUI or needs to automate
 some operations with TypeDB.
 
@@ -22,7 +22,7 @@ It has a unique set of functions and abilities to interact with a TypeDB databas
 * Command argument to run commands from command line arguments.
 
 TypeDB Console is distributed with TypeDB.
-For a separate installation, see the xref:home::install.adoc#_console[Install] page.
+For a separate installation, see the xref:home:ROOT:install.adoc#_console[Install] page.
 
 == Connect to TypeDB
 
@@ -38,7 +38,7 @@ The above command will try to establish connection with a TypeDB server on the d
 To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port:
 `10.0.0.1:1729`.
 
-If the typedb command is not recognized it means that the path to TypeDB binary is not set in the system. We can find
+If the typedb command is not recognized, it means that the path to TypeDB binary is not set in the system. We can find
 TypeDB binary in the TypeDB distributive. To start the Console navigate into the directory with unpacked distributive
 and run:
 
@@ -67,7 +67,7 @@ additional parameters (`enterprise`, `username`, `password`, etc.):
 ./typedb console --enterprise=127.0.0.1:1729 --username=<username> --password --tls-enabled=<true|false>
 ----
 
-As a result we get a password prompt.
+As a result, we get a password prompt.
 
 [,bash]
 ----
@@ -133,7 +133,7 @@ terminal (e.g: `chcp 936` for Chinese text).
 
 ====
 
-Most systems also allow us to set the system-wide locale, however this impacts the appearance of other applications.
+Most systems also allow us to set the system-wide locale. However, this impacts the appearance of other applications.
 
 == Non-interactive mode
 

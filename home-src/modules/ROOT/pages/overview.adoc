@@ -25,7 +25,7 @@ a symbolic reasoning engine.
 * Fundamentals -- essential knowledge to learn before practicing TypeDB
 
 [#_connecting]
-* Connecting -- learn how to connect to TypeDB
+* Connecting to TypeDB -- learn how to connect to TypeDB
 
 [#_developing]
 * Developing with TypeDB -- learn how to connect and send queries to TypeDB
@@ -35,6 +35,19 @@ a symbolic reasoning engine.
 
 [#_tutorials]
 * Tutorials -- basic tutorials for TypeDB
+
+== TypeDB Drivers
+
+Client-side libraries with API to connect to TypeDB via gRPC based protocol.
+
+* xref:clients::overview.adoc[] -- an overview of available TypeDB Drivers
+** xref:clients:ROOT:rust-driver/overview.adoc[Rust Driver] -- Rust Driver documentation
+** xref:clients:ROOT:python-driver/overview.adoc[Python Driver] -- Python Driver documentation
+** xref:clients:ROOT:java-driver/overview.adoc[Java Driver] -- Java Driver documentation
+** xref:clients:ROOT:nodejs-driver/overview.adoc[Node.js] -- Node.js Driver documentation
+
+//* xref:clients::other-languages.adoc[].
+//* xref:clients::new-driver.adoc[]
 
 [#_typeql]
 == TypeQL
@@ -48,21 +61,3 @@ TypeQL is a modern, beautiful and elegant type-theoretic query language, support
 * Data -- data operations queries
 
 //* xref:typeql::grammar.adoc[].
-
-== TypeDB Clients
-
-Client-side software to connect to TypeDB via gRPC based protocol.
-
-* xref:clients::overview.adoc[] -- an overview of available TypeDB Clients
-** xref:clients::studio.adoc[] -- the IDE for TypeDB
-** xref:clients::console.adoc[] -- the CLI client
-** xref:clients:ROOT:rust-driver/overview.adoc[Rust Driver] -- Rust Driver documentation
-** xref:clients:ROOT:python-driver/overview.adoc[Python Driver] -- Python Driver documentation
-** xref:clients:ROOT:java-driver/overview.adoc[Java Driver] -- Java Driver documentation
-** xref:clients:ROOT:nodejs-driver/overview.adoc[Node.js] -- Node.js Driver documentation
-
-//* xref:clients::other-languages.adoc[].
-//* xref:clients::new-driver.adoc[]
-
-//* xref:clients:resources:downloads.adoc[Downloads]
-//#todo Remove it

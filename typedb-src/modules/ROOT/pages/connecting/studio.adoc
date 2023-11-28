@@ -1,16 +1,14 @@
 = TypeDB Studio
-:keywords: typedb, client, studio
-:longTailKeywords: typedb studio, typedb studio preferences, typedb studio connection
+:keywords: typedb, client, studio, visualizer, IDE, editor, purple
+:page-aliases: clients::studio.adoc
 :pageTitle: TypeDB Studio
-:summary: Brief intro for TypeDB Studio.
+:summary: TypeDB Studio documentation.
 :experimental:
-// :imagesdir: studio/
-//imagesdir didn't work
 
-image::studio/studio.png[TypeDB Studio, width = 70%, link=self]
+image::clients::studio/studio.png[TypeDB Studio, width = 70%, link=self]
 
 TypeDB Studio is an IDE specifically designed for TypeDB databases and
-TypeDB's query language -- xref:typeql::fundamentals.adoc[TypeQL].
+TypeDB's query language -- xref:typeql:ROOT:fundamentals.adoc[TypeQL].
 
 It has a unique set of functions and abilities to help with development using TypeDB:
 
@@ -22,13 +20,13 @@ It has a unique set of functions and abilities to help with development using Ty
 * Local query validation with constraints of an actual database schema before sending the query to server.
 * Graph visualization for query responses.
 
-For installation guide, see the xref:home::install.adoc#_studio[Install] page.
+For installation guide, see the xref:home:ROOT:install.adoc#_studio[Install] page.
 
 == Prepare for work
 
 Right after starting TypeDB Studio, we can see its main window as it is shown below.
 
-image::studio/studio-gui.png[TypeDB Studio GUI, width = 70%, link=self]
+image::clients::studio/studio-gui.png[TypeDB Studio GUI, width = 70%, link=self]
 
 The main panels of the GUI are marked with the following numbers on the image above:
 
@@ -45,11 +43,11 @@ To use most of the TypeDB Studio functions, we need to connect to a TypeDB serve
 At the top right-hand corner, click the btn:[Connect to TypeDB] button. It will open a windows with the same name and
 the connection settings as shown below.
 
-image::studio/connection-interface-disconnected.png[Connection Manager Disconnected, width = 70%, link=self]
+image::clients::studio/connection-interface-disconnected.png[Connection Manager Disconnected, width = 70%, link=self]
 
 Fill in the address of the TypeDB server. By default, it's: `localhost:1729`. Click the btn:[Connect] button.
 
-image::studio/connection-interface-connected.png[Connection Manager Connected, width = 70%, link=self]
+image::clients::studio/connection-interface-connected.png[Connection Manager Connected, width = 70%, link=self]
 
 Once TypeDB Studio connected to a TypeDB server successfully, the connection manager window should close automatically.
 If we reopen the window we can find the green status field in the bottom left corner, as shown above.
@@ -72,12 +70,12 @@ In the `Connect to TypeDB` window click on the btn:[Disconnect] button.
 To create a new database, make sure TypeDB Studio is connected to a TypeDB server and click on the
 btn:[Manage Databases] button (with a database icon) as shown below.
 
-image::studio/studio-database.png[Database icon]
+image::clients::studio/studio-database.png[Database icon]
 
 Enter the name for the new database at the text field at the bottom of the `Manage Databases` window and hit
 btn:[Create].
 
-image::studio/databases-interface-iam-database.png[Database Manager with IAM database, 300, link=self]
+image::clients::studio/databases-interface-iam-database.png[Database Manager with IAM database, 300, link=self]
 
 Our database appeared at the list of databases. Now we can close the `Manage Databases` window by clicking the
 btn:[Close] button.
@@ -107,7 +105,7 @@ TypeDB Studio stores queries we save on a local machine in a project directory, 
 each time we open Studio. To select a project directory, click on the open folder icon left of the database icon or
 click on the btn:[Open Project] button in the *Projects* panel on the left (under the database icon).
 
-image::studio/project-interface-open.png[Project Interface Prompt to Open]
+image::clients::studio/project-interface-open.png[Project Interface Prompt to Open]
 
 [NOTE]
 ====
@@ -128,7 +126,7 @@ button with plus icon will always stay at the right end of the tabs of the *Text
 Upon clicking on the plus button, a new tab will be opened with the default filename. For new files by default
 filename consists of `Untitled` word, followed by a number, starting from `1` and a file extension of `.tql`.
 
-image::studio/project-new-file.png[Create a New File, width = 70%, link=self]
+image::clients::studio/project-new-file.png[Create a New File, width = 70%, link=self]
 
 This file will be stored at the hidden folder in the current project directory until it is saved with some
 other name and path.
@@ -198,15 +196,15 @@ a database is <<_select_active_database,selected>>, and a project directory is <
 If it's not the case: <<_create_a_new_file,write a new one>> or <<_open_an_existing_file,open an existing>> file
 with query to run.
 +
-image::studio/project-schema-pasted.png[Query text, width = 70%, link=self]
+image::clients::studio/project-schema-pasted.png[Query text, width = 70%, link=self]
 
-. Choose the correct xref:typedb:ROOT:connecting/overview.adoc#_sessions[session] (`schema`/`data`) type and
-  xref:typedb:ROOT:connecting/overview.adoc#_transactions[transaction] (`read`/`write`) type to run the query
+. Choose the correct xref:connecting/overview.adoc#_sessions[session] (`schema`/`data`) type and
+  xref:connecting/overview.adoc#_transactions[transaction] (`read`/`write`) type to run the query
   by clicking on those options on the *Toolbar* switches.
 . Run the query by clicking on the btn:[Run Query] (▶) button. +
 *Run* panel will be expanded on the bottom of the query to show the results of the query execution attempt.
 +
-image::studio/project-schema-query-run.png[Write the Schema, width = 70%, link=self]
+image::clients::studio/project-schema-query-run.png[Write the Schema, width = 70%, link=self]
 
 . If it's the `write` transaction type -- wait for transaction control options to be ready and commit or close the
 transaction (by clicking on the btn:[Commit transaction] (✔) or btn:[Close transaction] (x) buttons respectively).
@@ -220,7 +218,7 @@ the TypeDB Studio window. Additional information about the error is displayed in
 If a `write` transaction committed successfully -- a blue pop-up with a transaction confirmation is displayed.
 See example below.
 
-image::studio/project-schema-committed.png[Commit the Transaction, width = 70%, link=self]
+image::clients::studio/project-schema-committed.png[Commit the Transaction, width = 70%, link=self]
 
 For more information on different control elements for query execution, see the <<_transaction_control>> section below.
 
@@ -253,22 +251,22 @@ Use `Log` tab to see textual output from the query execution (including error an
 To control query execution, we have the top *Toolbar* elements located to the right from the database selection
 drop-down menu. See below.
 
-image::studio/studio-transaction-controls.png[Transaction controls, link=self]
+image::clients::studio/studio-transaction-controls.png[Transaction controls, link=self]
 
 From left to right (numbered respectively to the screenshot numbers):
 
-. xref:typedb:ROOT:connecting/overview.adoc#_sessions[Session] type switch:
+. xref:connecting/overview.adoc#_sessions[Session] type switch:
  ** `schema` -- to use schema session type
  ** `data` -- to use data session type
-. xref:typedb:ROOT:connecting/overview.adoc#_transactions[Transaction] type switch:
+. xref:connecting/overview.adoc#_transactions[Transaction] type switch:
  ** `write` -- to use write transaction
  ** `read` -- to use read transaction
 . btn:[snapshot] button -- enables snapshot feature that encapsulates a transaction in a snapshot of a database's data
 until the transaction is committed or closed. Write transactions are always snapshoted. May be enabled or disabled
 for read transactions.
-. btn:[infer] button -- enable xref:typedb::/development/infer.adoc[inferring data] by rules. Only available for read
+. btn:[infer] button -- enable xref:development/infer.adoc[inferring data] by rules. Only available for read
 transactions.
-. btn:[explain] button -- enable xref:typedb::development/infer.adoc#_explain_query[explanations] mechanics by providing
+. btn:[explain] button -- enable xref:development/infer.adoc#_explain_query[explanations] mechanics by providing
 `explainables` methods for results. Only available for read transactions with *snapshot* and *infer* enabled.
 . btn:[Transaction status] (Circle (●) icon) indicator -- transaction activity indicator. Green if there is a
 transaction opened by TypeDB Studio at this moment. Gray if there is no opened transaction. Rotating animation --
@@ -286,7 +284,7 @@ and execute the TypeQL code against the selected database.
 
 To run a query with inference, simply switch the inference option *on* before executing a query.
 
-The xref:typedb::fundamentals/inference.adoc[inference] transaction option can be switched *on* and *off* with
+The xref:fundamentals/inference.adoc[inference] transaction option can be switched *on* and *off* with
 the btn:[infer] button in the top *Toolbar*.
 
 [NOTE]
@@ -311,7 +309,7 @@ image::clients::studio/inference.png[Inference results example, width = 70%, lin
 To run a query with explanation, simply switch the explanation option *on* before executing a query. To be able to do
  that, the inference and the snapshot options must also be enabled.
 
-The xref:typedb::development/infer.adoc#_explain_query[explanation] transaction option can be switched
+The xref:development/infer.adoc#_explain_query[explanation] transaction option can be switched
 *on* and *off* with the btn:[explain] button in the top *Toolbar*. The inference and snapshot options can be enabled
 by the btn:[infer] and the btn:[snapshot] buttons respectively.
 
@@ -350,7 +348,7 @@ If the *Type Browser* panel is not displayed -- click the *Type Browser* vertica
 TypeDB Studio window.
 ====
 
-All types are divided in three top level xref:typedb::fundamentals/types.adoc#_type[built-in types]:
+All types are divided in three top level xref:fundamentals/types.adoc#_type[built-in types]:
 
 * Attribute
 * Entity
@@ -362,7 +360,7 @@ In a database with a schema, all types displayed in the exact hierarchy they wer
 supertypes). We can easily collapse or expand all the types in the structure tree by clicking the associated buttons
 on the top of the *Type Browser* panel with double chevrons (arrow heads) pointing down or up respectively.
 
-image::studio/type-browser.png[Type browser,width=300, link=self]
+image::clients::studio/type-browser.png[Type browser,width=300, link=self]
 
 Double-clicking on any type will open the <<_type_editor,Type editor>> with information about the selected type
 in a tab of the *Text editor*.
@@ -388,7 +386,7 @@ versions of the TypeDB Studio.
 By double-clicking any type we can open the type editor window that shows all information about the selected type and
 allows us to easily edit the type.
 
-image::studio/type-editor.png[Types editor, width = 70%, link=self]
+image::clients::studio/type-editor.png[Type editor, width = 70%, link=self]
 
 We can rename the type, change its supertype, abstract property, see all the connected types (subtypes, owned
 attributes or owners of this particular attribute, related and played roles).
@@ -436,7 +434,7 @@ the transaction with the green tick at the top of the Studio window.
 In some cases, the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
 from deleting this type.
 
-For example, we can't xref:typedb::development/schema.adoc#_undefine_subtype[delete a type that has a subtype].
+For example, we can't xref:development/schema.adoc#_undefine_subtype[delete a type that has a subtype].
 ====
 
 == Settings
