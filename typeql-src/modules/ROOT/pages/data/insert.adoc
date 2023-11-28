@@ -18,13 +18,12 @@ A `match` clause in an Insert query matches existing concepts in a database to p
 that is connected to existing data through relations, ownerships, values, types, etc.
 
 An `insert` clause is executed once per every result of preceding `match` clause.
-In particular, if there are no match in a database for a `match` clause of an `insert` query,
+In particular, if there is no match in a database for a `match` clause of an `insert` query,
 then there will be no inserts.
 If there is no preceding `match` clause, an `insert` clause is executed once.
 
 An insert query returns a Stream/Iterator of ConceptMap with the inserted data.
 
-Insert queries are validated both at a query time and at transaction's commit.
 Inserted data must not violate a schema of a database.
 
 == Syntax
