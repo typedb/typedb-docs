@@ -42,7 +42,7 @@ To use most of the TypeDB Studio functions, we need to connect to a TypeDB serve
 [#_connect_to_typedb_server]
 === Connect to TypeDB server
 
-At the top right-hand corner click the btn:[Connect to TypeDB] button. It will open a windows with the same name and
+At the top right-hand corner, click the btn:[Connect to TypeDB] button. It will open a windows with the same name and
 the connection settings as shown below.
 
 image::studio/connection-interface-disconnected.png[Connection Manager Disconnected, width = 70%, link=self]
@@ -62,14 +62,14 @@ label of the `Connect to TypeDB` button.
 
 === Disconnect from TypeDB server
 
-At the top right-hand corner click the button with the server address in it.
+At the top right-hand corner, click the button with the server address in it.
 
 In the `Connect to TypeDB` window click on the btn:[Disconnect] button.
 
 [#_create_a_database]
 === Create a database
 
-To create a new database make sure TypeDB Studio is connected to a TypeDB server and click on the
+To create a new database, make sure TypeDB Studio is connected to a TypeDB server and click on the
 btn:[Manage Databases] button (with a database icon) as shown below.
 
 image::studio/studio-database.png[Database icon]
@@ -104,7 +104,7 @@ hierarchy of the selected database in the <<_types_browser_capabilities,Type bro
 === Open a project directory
 
 TypeDB Studio stores queries we save on a local machine in a project directory, so we don't need to rewrite all queries
-each time we open Studio. To select a project directory click on the open folder icon left of the database icon or
+each time we open Studio. To select a project directory, click on the open folder icon left of the database icon or
 click on the btn:[Open Project] button in the *Projects* panel on the left (under the database icon).
 
 image::studio/project-interface-open.png[Project Interface Prompt to Open]
@@ -122,15 +122,15 @@ If the *Projects* panel is not displayed -- click the *Projects* vertical tab on
 ==== Create a new file
 
 To create a new file use the button with the plus (`+`) icon. It is located at the top of the *Text editor* panel
-under the *Toolbar*. It's horizontal position adjusted for the number of tabs opened in the *Text editor* -- the
+under the *Toolbar*. Its horizontal position is adjusted for the number of tabs opened in the *Text editor* -- the
 button with plus icon will always stay at the right end of the tabs of the *Text editor*.
 
-Upon clicking on the plus button a new tab will be opened with the default filename. For new files by default
+Upon clicking on the plus button, a new tab will be opened with the default filename. For new files by default
 filename consists of `Untitled` word, followed by a number, starting from `1` and a file extension of `.tql`.
 
 image::studio/project-new-file.png[Create a New File, width = 70%, link=self]
 
-This file will be stored at the hidden folder in the current project directory until it will be saved with some
+This file will be stored at the hidden folder in the current project directory until it is saved with some
 other name and path.
 
 [#_open_an_existing_file]
@@ -143,9 +143,9 @@ If there is already a tab with the file opened it will become active instead of 
 
 ==== Save a file
 
-Any file edited in the *Text editor* panel is auto saved with a small delay. That includes new files that wasn't
+Any file edited in the *Text editor* panel is auto saved with a small delay. That includes new files that weren't
 assigned a specific name yet. Those are saved into the hidden folder with their default names. That way if we close
-TypeDB Studio the all files will be persisted and upon starting the Studio again all files in the hidden folder will
+TypeDB Studio the all files will be persisted, and upon starting the Studio again, all files in the hidden folder will
 be opened automatically.
 
 Upon manual save those Untitled files will be saved with the specified filename and path and deleted from the hidden
@@ -165,12 +165,12 @@ with transaction controls.
 *Text editor* panel doesn't have a visible title, but it's the biggest area in the middle of the TypeDB Studio +
 that is being used to work with text information. It does have tabs at the top to switch between different opened files.
 
-The currently selected file's content displayed in the main section with line numbers at the left edge of the
+The currently selected file's content is displayed in the main section with line numbers at the left edge of the
 *Text editor* panel.
 
 All text in the *Text editor* panel will be displayed with TypeQL syntax highlighting.
 
-In the bottom right corner of TypeDB Studio window there is an indicator for cursor location that contains the line
+In the bottom right corner of TypeDB Studio window, there is an indicator for cursor location that contains the line
 number and current symbol position in that line.
 
 //#todo rewrite from being descriptive to a proper documenting Studio functions
@@ -192,7 +192,7 @@ use the <<_transaction_control, transaction controls>> in the top *Toolbar*.
 ==== How to run a query
 
 Make sure TypeDB Studio is <<_connect_to_typedb_server,connected>> to a TypeDB server,
-database is <<_select_active_database,selected>> and project directory is <<_open_a_project_directory,opened>>.
+a database is <<_select_active_database,selected>>, and a project directory is <<_open_a_project_directory,opened>>.
 
 . Make sure the query to run is open in the active tab of the text-editor panel. +
 If it's not the case: <<_create_a_new_file,write a new one>> or <<_open_an_existing_file,open an existing>> file
@@ -213,7 +213,7 @@ transaction (by clicking on the btn:[Commit transaction] (✔) or btn:[Close tra
 
 The result of the query is displayed in the *Run* panel under the Text editor.
 
-If any error occurs during the query validation or transaction it is shown as red popup in the bottom right corner of
+If any error occurs during the query validation or transaction, it is shown as a red popup in the bottom right corner of
 the TypeDB Studio window. Additional information about the error is displayed in the results of the query in the
 *Run* panel.
 
@@ -237,8 +237,8 @@ TypeDB Studio window, above the cursor location indicator.
 * Tabs at the top of the *Run* panel are for different query attempts.
 +
 By default, every query sent will overwrite the existing tab, but if we enable the pin icon at the beginning
-of the tab name by clicking it -- the tab will become pinned and stay. A new tab will appear on the right from
-the last pinned one upon next query execution.
+of the tab name by clicking it -- the tab will be pinned and stay. A new tab will appear on the right from
+the last pinned one upon the next query execution.
 
 * Tabs at the bottom of the *Run* panel are for different results for the currently selected query attempt (tab
 at the top of the *Run* panel). These include the `Log` tab with direct textual Studio output and the `Graph`
@@ -250,7 +250,7 @@ Use `Log` tab to see textual output from the query execution (including error an
 [#_transaction_control]
 === Transaction controls
 
-To control query execution we have the top *Toolbar* elements located to the right from the database selection
+To control query execution, we have the top *Toolbar* elements located to the right from the database selection
 drop-down menu. See below.
 
 image::studio/studio-transaction-controls.png[Transaction controls, link=self]
@@ -263,8 +263,8 @@ From left to right (numbered respectively to the screenshot numbers):
 . xref:typedb::development/connect.adoc#_transactions[Transaction] type switch:
  ** `write` -- to use write transaction
  ** `read` -- to use read transaction
-. btn:[snapshot] button -- enables snapshot feature that encapsulates transaction in a snapshot of a database's data
-until the transaction committed or closed. Write transactions are always snapshoted. May be enabled or disabled
+. btn:[snapshot] button -- enables snapshot feature that encapsulates a transaction in a snapshot of a database's data
+until the transaction is committed or closed. Write transactions are always snapshoted. May be enabled or disabled
 for read transactions.
 . btn:[infer] button -- enable xref:typedb::/development/infer.adoc[inferring data] by rules. Only available for read
 transactions.
@@ -298,7 +298,7 @@ If the btn:[infer] button is inactive, double-check the following prerequisites 
 - the transaction type is set to *read*.
 ====
 
-As a result of running a query with inference we can get <<_results,results>> in the *Run* panel. If there are any
+As a result of running a query with inference, we can get <<_results,results>> in the *Run* panel. If there are any
 inferred instances of data they will be shown with green lining in the graph visualization. And inferred connections
 (ownerships or roles played) will be shown as green arrows. See the example below.
 
@@ -309,7 +309,7 @@ image::clients::studio/inference.png[Inference results example, width = 70%, lin
 === Explanation
 
 To run a query with explanation, simply switch the explanation option *on* before executing a query. To be able to do
-that the inference and the snapshot options must also be enabled.
+ that, the inference and the snapshot options must also be enabled.
 
 The xref:typedb::development/infer.adoc#_explain_query[explanation] transaction option can be switched
 *on* and *off* with the btn:[explain] button in the top *Toolbar*. The inference and snapshot options can be enabled
@@ -358,7 +358,7 @@ All types are divided in three top level xref:typedb::fundamentals/types.adoc#_t
 
 In an empty database (without a schema) only these three built-in types shown in the panel.
 
-In a database with a schema all types displayed in the exact hierarchy they were created (subtypes inside their
+In a database with a schema, all types displayed in the exact hierarchy they were created (subtypes inside their
 supertypes). We can easily collapse or expand all the types in the structure tree by clicking the associated buttons
 on the top of the *Type Browser* panel with double chevrons (arrow heads) pointing down or up respectively.
 
@@ -433,7 +433,7 @@ the transaction with the green tick at the top of the Studio window.
 
 [NOTE]
 ====
-In some cases the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
+In some cases, the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
 from deleting this type.
 
 For example, we can't xref:typedb::development/schema.adoc#_undefine_subtype[delete a type that has a subtype].
@@ -441,7 +441,7 @@ For example, we can't xref:typedb::development/schema.adoc#_undefine_subtype[del
 
 == Settings
 
-To configure TypeDB Studio open the *Manage Preferences* window by clicking on the button with the gear (⚙) icon
+To configure TypeDB Studio, open the *Manage Preferences* window by clicking on the button with the gear (⚙) icon
 in the top right corner of the TypeDB Studio window.
 
 TypeDB Studio has the following settings available:

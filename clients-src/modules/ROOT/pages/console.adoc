@@ -12,18 +12,17 @@ The TypeDB Console, along with the xref:studio.adoc[Studio], is a software tool 
 with TypeDB server. It is a tool of choice for those who prefer command line interfaces over GUI or needs to automate
 some operations with TypeDB.
 
-It has unique set of functions and abilities to interact with a TypeDB database:
+It has a unique set of functions and abilities to interact with a TypeDB database:
 
-* Interactive command line interface (CLI) with built-in documentation
+* Interactive command line interface (CLI) with built-in documentation.
 * Connection to TypeDB servers, including database management.
 * Query execution, including schema and data, read and write transactions.
 * Response processing and text output.
 * Script mode to run a set of commands from a file.
 * Command argument to run commands from command line arguments.
 
-== Installation
-
-See the xref:home::install.adoc#_console[Install] page.
+TypeDB Console is distributed with TypeDB.
+For a separate installation, see the xref:home::install.adoc#_console[Install] page.
 
 == Connect to TypeDB
 
@@ -37,7 +36,7 @@ typedb console
 
 The above command will try to establish connection with a TypeDB server on the default address of `localhost:1729`.
 To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port:
-`0.0.0.0:1729`.
+`10.0.0.1:1729`.
 
 If the typedb command is not recognized it means that the path to TypeDB binary is not set in the system. We can find
 TypeDB binary in the TypeDB distributive. To start the Console navigate into the directory with unpacked distributive
@@ -48,7 +47,7 @@ and run:
 ./typedb console
 ----
 
-As a result we should get a welcome message from TypeDB Console followed by a command line prompt.
+As a result, we should get a welcome message from TypeDB Console followed by a command line prompt.
 
 [,bash]
 ----
@@ -89,7 +88,8 @@ Copyright (C) 2022 Vaticle
 === Locale settings
 
 TypeDB can store string attributes that have characters outside the https://ascii.cl/[ASCII,window=_blank] range (for
-example: non-English letters, symbols, and emojis). To manipulate them using Console, the Console's terminal must use a
+example, non-English letters, symbols, and emojis).
+To manipulate them using Console, the Console's terminal must use a
 locale with a compatible code set, such as Unicode.
 
 If it doesn't, these characters will most likely be rendered as `?` symbols in Console. If this issue occurs we can use
@@ -197,8 +197,8 @@ Default value: `localhost:1729`. +
 To invoke TypeDB Console in a non-interactive manner, we can define a script file that contains the list of commands to
 run, then invoke console with `typedb console --script=<script>`.
 
-The indentation in the script file are only for visual guide and will be ignored by the console. Each line in the
-script is interpreted as one command, so multiline query is not available in this mode.
+The indentation in the script files are only for visual guide and will be ignored by the console.
+Each line in the script is interpreted as one command, so multiline queries are not available in this mode.
 
 === Command line arguments
 
