@@ -119,6 +119,21 @@ you can delete an ownership of it and replace with an ownership of another attri
 
 See an <<_deleting_ownership,example>> of deleting ownership of an attribute below.
 
+[#_orphaned_attributes]
+==== Orphaned attributes
+If an attribute is not owned by any other instance, then such an attribute is called orphaned.
+Orphaned attributes are not deleted automatically, but quite often, they are
+You can easily delete all of them from a database with the following query.
+.Deleting orphaned attributes
+[,typeql]
+----
+match
+$a isa attribute;
+not {$x has $a;};
+delete
+$a isa attribute;
+----
+
 === Deleting role players from a relation
 
 To delete a role player from a relation, match both the relation and the instance of data that plays a role
