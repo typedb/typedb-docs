@@ -1,6 +1,6 @@
 = Connecting
-:keywords: typedb, basics, connect, connection, session, database
-:longTailKeywords: basic concepts of typedb, typedb connection, typedb database, typedb session
+:keywords: typedb, studio, console, connect, connection, session, transaction, database
+:page-aliases: typedb::development/connect.adoc
 :pageTitle: Connecting
 :summary: Brief description of connection to TypeDB.
 :tabs-sync-option:
@@ -8,7 +8,7 @@
 [#_clients]
 == Clients
 
-TypeDB server accepts remote connections from xref:clients::overview.adoc[TypeDB Clients] via
+TypeDB server accepts remote connections from xref:clients:ROOT:overview.adoc[TypeDB Clients] via
 https://en.wikipedia.org/wiki/GRPC[gRPC,window=_blank].
 
 Once connected, TypeDB Clients can manage <<_databases,databases>>, <<_sessions,sessions>>, and
@@ -271,12 +271,12 @@ Sessions must be explicitly opened and closed by TypeDB Clients.
 
 For more information on how to do it with different Clients see the documentation:
 
-* xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
-* xref:clients::console.adoc#_database_management_commands[TypeDB Console]
+* xref:clients:ROOT:studio.adoc#_transaction_control[TypeDB Studio]
+* xref:clients:ROOT:console.adoc#_database_management_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients::java-driver/api-reference.adoc#_session_create[Java],
-** xref:clients::python-driver/api-reference.adoc#_session_create[Python],
-** xref:clients::nodejs-driver/api-reference.adoc#_session_create[Node.js].
+** xref:clients:ROOT:java-driver/api-reference.adoc#_session_create[Java],
+** xref:clients:ROOT:python-driver/api-reference.adoc#_session_create[Python],
+** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_session_create[Node.js].
 
 [IMPORTANT]
 ====
@@ -365,12 +365,12 @@ TypeDB Studio lets developers commit/rollback transactions through its GUI.
 
 For more information on how to do it with different Clients see the documentation:
 
-* xref:clients::studio.adoc#_transaction_control[TypeDB Studio]
-* xref:clients::console.adoc#_transaction_querying_commands[TypeDB Console]
+* xref:clients:ROOT:studio.adoc#_transaction_control[TypeDB Studio]
+* xref:clients:ROOT:console.adoc#_transaction_querying_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients::java-driver/api-reference.adoc#_create_transaction[Java],
-** xref:clients::python-driver/api-reference.adoc#_create_transaction[Python],
-** xref:clients::nodejs-driver/api-reference.adoc#_create_transaction[Node.js].
+** xref:clients:ROOT:java-driver/api-reference.adoc#_create_transaction[Java],
+** xref:clients:ROOT:python-driver/api-reference.adoc#_create_transaction[Python],
+** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_create_transaction[Node.js].
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free
 read/write transactions. For more information, see the <<_acid_guarantees>> section below.
@@ -475,7 +475,7 @@ Hence, we can always:
 == Learn more
 
 With the essential knowledge of the *Fundamentals* section and the ability to connect to a TypeDB databases, described
-on this page, let's try defining our own xref:typedb::development/schema.adoc[schema].
+on this page, let's try defining our own xref:development/schema.adoc[schema].
 
-After that we can try xref:typedb::development/write.adoc[writing] and xref:typedb::development/read.adoc[reading] data from
+After that we can try xref:development/write.adoc[writing] and xref:development/read.adoc[reading] data from
 a database.

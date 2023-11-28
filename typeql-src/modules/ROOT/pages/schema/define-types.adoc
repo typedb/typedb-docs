@@ -21,8 +21,8 @@ To use a new TypeDB database, we need to define its schema first. We can do it w
 
 [IMPORTANT]
 ====
-To define a schema, a `schema` xref:typedb:ROOT:development/connect.adoc#_sessions[session] must be opened,
-and a `write` xref:typedb:ROOT:development/connect.adoc#_transactions[transaction] started.
+To define a schema, a `schema` xref:typedb:ROOT:connecting/overview.adoc#_sessions[session] must be opened,
+and a `write` xref:typedb:ROOT:connecting/overview.adoc#_transactions[transaction] started.
 The changes must be *committed*, or they will NOT be permanent.
 ====
 

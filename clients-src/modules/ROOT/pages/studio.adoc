@@ -200,8 +200,8 @@ with query to run.
 +
 image::studio/project-schema-pasted.png[Query text, width = 70%, link=self]
 
-. Choose the correct xref:typedb::development/connect.adoc#_sessions[session] (`schema`/`data`) type and
-  xref:typedb::development/connect.adoc#_transactions[transaction] (`read`/`write`) type to run the query
+. Choose the correct xref:typedb:ROOT:connecting/overview.adoc#_sessions[session] (`schema`/`data`) type and
+  xref:typedb:ROOT:connecting/overview.adoc#_transactions[transaction] (`read`/`write`) type to run the query
   by clicking on those options on the *Toolbar* switches.
 . Run the query by clicking on the btn:[Run Query] (▶) button. +
 *Run* panel will be expanded on the bottom of the query to show the results of the query execution attempt.
@@ -257,10 +257,10 @@ image::studio/studio-transaction-controls.png[Transaction controls, link=self]
 
 From left to right (numbered respectively to the screenshot numbers):
 
-. xref:typedb::development/connect.adoc#_sessions[Session] type switch:
+. xref:typedb:ROOT:connecting/overview.adoc#_sessions[Session] type switch:
  ** `schema` -- to use schema session type
  ** `data` -- to use data session type
-. xref:typedb::development/connect.adoc#_transactions[Transaction] type switch:
+. xref:typedb:ROOT:connecting/overview.adoc#_transactions[Transaction] type switch:
  ** `write` -- to use write transaction
  ** `read` -- to use read transaction
 . btn:[snapshot] button -- enables snapshot feature that encapsulates a transaction in a snapshot of a database's data

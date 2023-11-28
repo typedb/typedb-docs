@@ -17,10 +17,14 @@ Check the layout of the TypeDB documentation below.
 ** xref:fundamentals/patterns.adoc[] -- essential information on pattern matching
 ** xref:fundamentals/inference.adoc[] -- essential information on rules and reasoning (inference)
 
+[#_connecting]
+== Connecting to TypeDB
+
+** xref:connecting/overview.adoc[] -- TypeDB server and database connections
+
 [#_developing]
 == Developing with TypeDB
 
-** xref:development/connect.adoc[] -- TypeDB server and database connections
 ** xref:development/schema.adoc[] -- database schema definition
 ** xref:development/write.adoc[] -- writing data queries
 ** xref:development/read.adoc[] -- reading data queries
@@ -57,6 +61,7 @@ Then xref:home:ROOT:install.adoc[install] TypeDB and use xref:home::quickstart.a
 To learn more about TypeDB, check the major sections of the documentation:
 
 * the <<_fundamentals,Fundamentals>> for essential knowledge about TypeDB,
+* the <<_connecting, Connecting to TypeDB>> for information about how to connect to TypeDB,
 * the <<_developing,Developing with TypeDB>> for the in-detail documentation of the TypeDB development workflow,
 * the <<_managing,Managing TypeDB>> for the instructions for setting up a production environment, or
 * the <<_tutorials,Tutorials>> for how-to guides and the xref:tutorials/iam-schema.adoc[].

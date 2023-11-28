@@ -47,14 +47,14 @@ Driver API is divided into two big sections:
 
 To send a query to a TypeDB server a TypeDB Driver needs to:
 
-* establish a server xref:development/connect.adoc#_clients[connection],
-* open a xref:development/connect.adoc#_sessions[Session],
-* open a xref:development/connect.adoc#_transactions[Transaction],
+* establish a server xref:connecting/overview.adoc#_clients[connection],
+* open a xref:connecting/overview.adoc#_sessions[Session],
+* open a xref:connecting/overview.adoc#_transactions[Transaction],
 * prepare TypeQL query string,
 * send the string as a proper type of query.
 
 These operations are done using the special classes and methods provided by TypeDB Driver. See some examples
-of how to do that with different TypeDB Drivers: xref:development/connect.adoc[Connection],
+of how to do that with different TypeDB Drivers: xref:connecting/overview.adoc[Connection],
 xref:tutorials/sample-app.adoc[Sample application] pages, or in the
 xref:clients::/overview.adoc#_typedb_drivers[TypeDB Drivers] documentation.
 
