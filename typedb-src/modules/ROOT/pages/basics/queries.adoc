@@ -156,12 +156,12 @@ An Insert query is used to add data to the TypeDB database.
 
 An Insert query consists of an *optional* `match` clause and an `insert` clause.
 
-The optional xref:typedb::fundamentals/queries.adoc#_match[`match`] clause uses a
-xref:typedb::fundamentals/patterns.adoc#_patterns_overview[pattern]
+The optional xref:typedb::basics/queries.adoc#_match[`match`] clause uses a
+xref:typedb::basics/patterns.adoc#_patterns_overview[pattern]
 to find existing data which is needed as a context to insert new data. If no context is required (no existing data
 to link with the inserted data) -- there is no need for a `match` clause in this query.
 
-The xref:typedb::fundamentals/queries.adoc#_insert[`insert`] clause uses a pattern to specify the data to be inserted
+The xref:typedb::basics/queries.adoc#_insert[`insert`] clause uses a pattern to specify the data to be inserted
 and may include references to the existing data found by the optional `match` clause.
 
 For example, to insert a new relation instance, we need to match every instance that will play a role in it to be
@@ -223,7 +223,7 @@ $p isa person, has full-name $f;
 ----
 
 A pattern used in a `match` clause can address both types and data instances.
-See the xref:typedb::fundamentals/patterns.adoc[] page for more information.
+See the xref:typedb::basics/patterns.adoc[] page for more information.
 
 [#_insert]
 === Insert clause
@@ -260,7 +260,7 @@ A Delete query is used to remove data from the TypeDB database.
 
 A Delete query consists of a `match` clause and a `delete` clause.
 
-A `match` clause uses a xref:typedb::fundamentals/patterns.adoc#_patterns_overview[pattern] to find existing
+A `match` clause uses a xref:typedb::basics/patterns.adoc#_patterns_overview[pattern] to find existing
 data/references which may be removed. To delete existing data, we need to find it first.
 
 A `delete` clause uses a pattern to specify precisely the data to be removed.
@@ -315,7 +315,7 @@ delete $p has email $e;
 ====
 
 A pattern used in a `delete` clause must use the variables from the preceding `match` clause.
-See the xref:typedb::fundamentals/patterns.adoc[Patterns] page for more information.
+See the xref:typedb::basics/patterns.adoc[Patterns] page for more information.
 
 [#_update_query]
 == Update query
@@ -324,7 +324,7 @@ An Update query removes data from the TypeDB database and then inserts new data 
 
 An Update query consists of a `match` clause, a `delete` clause, and an `insert` clause.
 
-A `match` clause uses xref:typedb::fundamentals/patterns.adoc[patterns] to find existing data/references to be changed.
+A `match` clause uses xref:typedb::basics/patterns.adoc[patterns] to find existing data/references to be changed.
 To delete existing data, we need to find it first.
 
 A `delete` clause is used to precisely select what to delete with a pattern. The deletion pattern is executed exactly
@@ -340,7 +340,7 @@ deletes and no inserts.
 ====
 
 The `delete` clause can have a pattern with multiple statements to delete in one query. But it can't delete types (use
-xref:typedb::fundamentals/queries.adoc#_undefine_query[undefine] to delete types) and can't have the following:
+xref:typedb::basics/queries.adoc#_undefine_query[undefine] to delete types) and can't have the following:
 
 - Conjunction
 - Disjunction
@@ -348,7 +348,7 @@ xref:typedb::fundamentals/queries.adoc#_undefine_query[undefine] to delete types
 - `is` keyword
 
 The `insert` clause can have a pattern with multiple statements to insert in one query. But it can't insert types (use
-xref:typedb::fundamentals/queries.adoc#_define_query[define] to insert new types) and can't have the following:
+xref:typedb::basics/queries.adoc#_define_query[define] to insert new types) and can't have the following:
 
 - Conjunction
 - Disjunction
@@ -491,5 +491,5 @@ This was the second page of the *Fundamentals* section.
 
 We recommend finishing the rest of the section:
 
-    1. xref:typedb::fundamentals/patterns.adoc[]
-    2. xref:typedb::fundamentals/inference.adoc[]
+    1. xref:typedb::basics/patterns.adoc[]
+    2. xref:typedb::basics/inference.adoc[]

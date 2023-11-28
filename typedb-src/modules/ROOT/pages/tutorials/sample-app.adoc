@@ -62,7 +62,7 @@ explicit `get` statement it is assumed that we get all the variables that were a
 Note that users that do not have `full-name` or `email` attributes added to them will not be shown in
 the results of this request. Additionally, users that have multiple full-names or emails will be mentioned more than once.
 
-For more information, see the xref:typedb::fundamentals/patterns.adoc#_solutions[matching patterns] explanation.
+For more information, see the xref:typedb::basics/patterns.adoc#_solutions[matching patterns] explanation.
 ====
 
 === List all the files that Kevin Morrison has access to
@@ -157,7 +157,7 @@ starting from number six.
 [NOTE]
 ====
 Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
-xref:fundamentals/inference.adoc#_rules[rule]. To use inference in this query we modify TypeDB options and send the modified set
+xref:basics/inference.adoc#_rules[rule]. To use inference in this query we modify TypeDB options and send the modified set
 of options to the transaction call.
 ====
 

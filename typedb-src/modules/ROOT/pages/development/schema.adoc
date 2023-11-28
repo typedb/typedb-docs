@@ -9,7 +9,7 @@
 
 A TypeDB schema is like a blueprint of a database.
 
-A schema contains all user-defined xref:fundamentals/types.adoc#_type[types] and xref:fundamentals/inference.adoc#_rules[rules]
+A schema contains all user-defined xref:basics/types.adoc#_type[types] and xref:basics/inference.adoc#_rules[rules]
 that can be used in the database.
 
 The types in a database schema define the data model, its constraints, and the vocabulary used in TypeQL queries to
@@ -26,7 +26,7 @@ To define or undefine anything in a TypeDB database schema we need:
     * See how to <<_undefine_rules,undefine rules>>;
     * See how to <<_modify_types, modify types>>
 2. xref:connecting/overview.adoc#_clients[Connect] to a TypeDB database with a xref:connecting/overview.adoc#_sessions[SCHEMA session].
-3. Run a proper query type (xref:fundamentals/queries.adoc#_define_query[Define]/ xref:fundamentals/queries.adoc#_define_query[Undefine])
+3. Run a proper query type (xref:basics/queries.adoc#_define_query[Define]/ xref:basics/queries.adoc#_define_query[Undefine])
    with a query string we built in a xref:connecting/overview.adoc#_transactions[WRITE transaction].
 4. Commit the transaction to persist the changes.
 
@@ -50,7 +50,7 @@ define
 
 The `define` keyword is used only once per query for any number of statements.
 
-The `abstract` keyword makes the type xref:fundamentals/types.adoc#_abstract_types[abstract].
+The `abstract` keyword makes the type xref:basics/types.adoc#_abstract_types[abstract].
 
 The `owns` keyword defines an attribute ownership.
 
@@ -119,8 +119,8 @@ See the xref:_define_types[] section.
 
 No specific syntax for entities.
 
-For more information about entity types see the xref:fundamentals/types.adoc#_entity_types[Entity types] section in
-xref:fundamentals/types.adoc[] page.
+For more information about entity types see the xref:basics/types.adoc#_entity_types[Entity types] section in
+xref:basics/types.adoc[] page.
 
 [#_define_relation_type]
 === Define relation type
@@ -167,8 +167,8 @@ In the above example we define:
 ** inherited `owner` role.
 ====
 
-For more information about relation types see the xref:fundamentals/types.adoc#_relation_types[Relation types] section in
-xref:fundamentals/types.adoc[] page.
+For more information about relation types see the xref:basics/types.adoc#_relation_types[Relation types] section in
+xref:basics/types.adoc[] page.
 
 [#_define_attribute_type]
 === Define attribute type
@@ -188,8 +188,8 @@ define
 
 The `value` keyword is mandatory and used to define a value type for the attribute.
 
-For more information about attribute types see the xref:fundamentals/types.adoc#_attribute_types[Attribute types] section in
-xref:fundamentals/types.adoc[] page.
+For more information about attribute types see the xref:basics/types.adoc#_attribute_types[Attribute types] section in
+xref:basics/types.adoc[] page.
 
 [#_define_rules]
 == Define rules
