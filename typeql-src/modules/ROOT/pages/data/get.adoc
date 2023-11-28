@@ -50,8 +50,6 @@ Variables mentioned in a `get` clause must be bound (set) in a `match` clause of
 A `match` clause is mandatory in a Get query.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 the pattern.
-After a `match` clause goes another clause (`insert`, `delete`, `fetch`, or `get`)
-to specify what operation to perform on the matched data.
 
 For more information on a `match` clause, see the
 //#todo update the link after introducing the Match clause page!
