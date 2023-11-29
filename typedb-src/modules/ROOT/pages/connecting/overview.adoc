@@ -175,19 +175,13 @@ await (await driver.databases().get("test-db")).delete();
 A session is like a tunnel connection to a database in a TypeDB server. An open session lets us open transactions
 in it.
 
-image::clients::concurrency-model.png[Session-transaction-query,link=self,width=100%]
+image::clients::concurrency-model.png[Session-transaction-query, role=framed, width = 75%, link=self]
 
-[IMPORTANT]
-====
-Any TypeDB Client will automatically exchange internal signals with the server to keep the session alive when it's open.
-If the server doesn't receive this signal for a period of time bigger than timeout (30 secs by default) it will
-forcibly close the session due to inactivity.
-====
+Any TypeDB Client automatically exchanges internal signals with TypeDB server to keep a session alive when it's open.
+If server doesn't receive this signal for a period of time bigger than the timeout (by default, 30 secs) it
+forcibly closes the session due to inactivity.
 
-There are two types of sessions:
-
-* SCHEMA sessions,
-* DATA sessions.
+There are two types of sessions: `schema` and `data`.
 
 [WARNING]
 ====
@@ -275,7 +269,7 @@ For more information on how to do it with different TypeDB Clients, see the docu
 
 [IMPORTANT]
 ====
-It is recommended to avoid long-running sessions, because of possible network failures.
+It is recommended to avoid long-running sessions because of possible network failures.
 ====
 
 A good principle to follow is for logically coherent transactions to be grouped into a session.
@@ -356,7 +350,7 @@ await transaction.commit();
 
 TypeDB Studio manages sessions automatically and lets you control transactions through its GUI.
 
-For more information on how to do it with different Clients see the documentation:
+For more information on how to do it with different Clients, see the documentation:
 
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
 * xref:connecting/console.adoc#_transaction_querying_commands[TypeDB Console]
@@ -424,8 +418,8 @@ one transaction can read data while another is writing it.
 [#_durability]
 === Durability
 
-TypeDB writes transactions to a write-ahead log upon commit, ensuring they can be recovered if an unexpected failure
-(e.g., power outage) occurs before the data is modified.
+TypeDB writes transactions to a write-ahead log upon commit, ensuring they can be recovered if an unexpected failure,
+e.g., power outage, occurs before the data is modified.
 
 [NOTE]
 ====
@@ -451,7 +445,7 @@ of replicas replicated the transaction results. See xref:managing/ha.adoc#_repli
 
 [NOTE]
 ====
-If anything prevents us from opening a session TypeDB will wait for a timeout of about *10 seconds* and, if the problem
+If anything prevents us from opening a session, TypeDB will wait for a timeout of about *10 seconds* and, if the problem
 persists, throw an error:
 
 ----
