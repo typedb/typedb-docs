@@ -99,17 +99,15 @@ Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect
 Select a xref:typedb:ROOT:connecting/studio.adoc#_open_a_project_directory[project directory]
 to store project files by clicking either:
 
-* btn:[Open Project] in the *Project* panel (upper left); or
-* Folder icon (the first icon on the top toolbar).
+* btn:[Open Project] in the *Project* panel; or
+* Folder icon (image:home::studio-icons/project.png[]) in the top toolbar.
 
 [#_create_a_database]
 == Create a new database
 
 Create a database to play with:
 
-. Click the database icon (the third button in the top toolbar).
-+
-image::studio-database.png[Database Manager button,width = 50%,link=self]
+. Click the database icon (image:home::studio-icons/database.png[]) in the top toolbar.
 . Enter `try-studio` and click btn:[Create].
 . Select `try-studio` from the database dropdown (to the right of the database icon).
 
@@ -126,8 +124,8 @@ A new database needs a schema before we can load any data:
 ----
 include::attachment$quickstart-schema.tql[]
 ----
-. Click btn:[Run Query].
-. When the query has completed, click btn:[Commit Transaction].
+. Click btn:[Run Query] (image:home::studio-icons/run.png[]).
+. When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Now that the schema has been defined, data can be inserted into the database.
 
@@ -142,8 +140,8 @@ Now let's insert some sample data into the newly created database to be able to 
 ----
 include::attachment$quickstart-data.tql[]
 ----
-. Execute all queries in the file by clicking btn:[Run Query].
-. When the queries have completed, click btn:[Commit Transaction].
+. Execute all queries in the file by clicking btn:[Run Query] (image:home::studio-icons/run.png[]).
+. When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
