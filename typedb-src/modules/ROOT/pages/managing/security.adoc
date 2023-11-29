@@ -41,66 +41,7 @@ TypeDB Cloud web portal.
 
 === User management
 
-[NOTE]
-====
-User management features are a part of TypeDB Enterprise & TypeDB Cloud.
-====
-
-Use xref:connecting/console.adoc#_database_management_commands[TypeDB Console] or TypeDB Driver API
-(xref:clients::java-driver/api-reference.adoc#_User[Java],
-xref:clients::python-driver/api-reference.adoc#_User[Python],
-xref:clients::nodejs-driver/api-reference.adoc#_User[Node.js])
-to manage users.
-To connect to TypeDB with TypeDB Console provide a username and password (when prompted):
-
-[,bash]
-----
-typedb console --enterprise=<address> --username=<username> --password
-----
-
-After issuing this command we will be prompted to provide a password.
-
-[IMPORTANT]
-====
-Only the administrator account (username `admin`) can perform user management actions.
-====
-
-Use the following TypeDB Console commands to manage users.
-
-Retrieve a list of all users:
-
-[,bash]
-----
-user list
-----
-
-Create a new user:
-
-[,bash]
-----
-user create <username>
-----
-
-Set password for a user:
-
-[,bash]
-----
-user set-password <username>
-----
-
-Update password of the current user:
-
-[,bash]
-----
-user update-password
-----
-
-Delete a user:
-
-[,bash]
-----
-user delete <username>
-----
+See the xref:typedb::managing/user-management.adoc[] page.
 
 [#_encryption]
 == Encryption
