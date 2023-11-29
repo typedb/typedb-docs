@@ -130,7 +130,7 @@ docker exec -ti typedb-enterprise bash -c '/opt/typedb-enterprise-all-linux-x86_
 While it's possible to run TypeDB Enterprise in a single-server mode, a truly highly available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster.
 At any given point in time, one of those servers acts as a
-xref:typedb::admin/ha.adoc#_primary_replica_failover[leader] and the others are followers.
+xref:typedb::managing/ha.adoc#_primary_replica_failover[leader] and the others are followers.
 Increasing the number of servers increases the
 cluster's tolerance to failure: to tolerate N servers failing, a cluster needs to consist of `2N + 1` servers.
 This section describes how you can set up a 3-server cluster (in this case,

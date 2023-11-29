@@ -444,7 +444,7 @@ Successful write transactions are written to the write-ahead log before returnin
 transaction is not successful, all changes are rolled back.
 
 For TypeDB Enterprise and TypeDB Cloud installations, transaction acknowledgment is sent to the client after a majority
-of replicas replicated the transaction results. See xref:admin/ha.adoc#_replication[Replication] for details.
+of replicas replicated the transaction results. See xref:managing/ha.adoc#_replication[Replication] for details.
 
 [#_schema_integrity]
 === Schema integrity enforcement

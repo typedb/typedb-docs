@@ -21,12 +21,12 @@ server installations.
 
 To do this, simply shut down the servers of the old version, and copy the database to migrate from the data
 directory (set by the `storage.data` parameter in the
-xref:admin/configuration.adoc#_the_default_location_of_the_config_file[config]) into the data directory of the new
+xref:managing/configuration.adoc#_the_default_location_of_the_config_file[config]) into the data directory of the new
 TypeDB server installation.
 
 Alternatively, just update the new server's
-xref:admin/configuration.adoc#_the_default_location_of_the_config_file[configuration file] to use the same
-*data directory* path as the old one. That is why we xref:admin/configuration.adoc#_storage_configuration[recommend]
+xref:managing/configuration.adoc#_the_default_location_of_the_config_file[configuration file] to use the same
+*data directory* path as the old one. That is why we xref:managing/configuration.adoc#_storage_configuration[recommend]
 storing data separately from TypeDB server files.
 
 [#_compatibility]
@@ -55,4 +55,4 @@ To migrate data between different database encoding versions use the <<_export_a
 == Export and import
 
 We can use the export/import functionality to migrate our data while switching to a newer version of TypeDB server.
-Please see the xref:admin/export-import.adoc[Export/import] page for information on how to do that.
+Please see the xref:managing/export-import.adoc[Export/import] page for information on how to do that.
