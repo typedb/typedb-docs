@@ -8,16 +8,15 @@
 [#_clients]
 == Clients
 
-TypeDB server accepts remote connections from xref:clients:ROOT:overview.adoc[TypeDB Clients] via
-https://en.wikipedia.org/wiki/GRPC[gRPC,window=_blank].
+A TypeDB Client is any software that can connect to a TypeDB.
+
+TypeDB server accepts remote connections from any TypeDB Clients:
+xref:typedb::connecting/studio.adoc[],
+xref:typedb::connecting/console.adoc[], and
+xref:clients:ROOT:overview.adoc[TypeDB Drivers].
 
 Once connected, TypeDB Clients can manage <<_databases,databases>>, <<_sessions,sessions>>, and
 <<_transactions, transactions>>.
-
-[NOTE]
-====
-It's recommended to instantiate a single client per application.
-====
 
 [tabs]
 ====
@@ -26,7 +25,7 @@ TypeDB Console::
 --
 [,bash]
 ----
-typedb console --server=0.0.0.0:1729
+typedb console --server=127.0.0.1:1729
 ----
 --
 
@@ -35,7 +34,7 @@ Java::
 --
 [,java]
 ----
-TypeDBDriver driver = TypeDB.coreDriver("0.0.0.0:1729");
+TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
 ----
 --
 
@@ -44,7 +43,7 @@ Python::
 --
 [,python]
 ----
-driver = TypeDB.core_driver("0.0.0.0:1729")
+driver = TypeDB.core_driver("127.0.0.1:1729")
 ----
 --
 
@@ -53,35 +52,36 @@ Node.js::
 --
 [,js]
 ----
-driver = TypeDB.coreDriver("0.0.0.0:1729");
+driver = TypeDB.coreDriver("127.0.0.1:1729");
 ----
 --
 ====
 
 [NOTE]
 ====
-To connect to TypeDB Cloud use `enterpriseDriver`/`enterprise_driver` instead of `coreDriver`/`core_driver`.
-It requires a second argument of `TypeDBCredential` type.
+To connect to TypeDB Cloud or TypeDB Enterprise use `enterpriseDriver`/`enterprise_driver` instead of
+`coreDriver`/`core_driver`.
 ====
 
 [#_protocol_version]
 === Protocol version control
 
-There is a server-side check for the TypeDB protocol version. If an incompatible version of a TypeDB
-Client tries to connect to a TypeDB server, the server will send an error instead of initiating the connection.
+There is a server-side check for the TypeDB protocol encoding version.
+This is to prevent any potential errors from using incompatible versions of TypeDB Client and TypeDB.
 
-This is to prevent any potential errors from using incompatible versions of the client and the server.
+See the compatibility tables for protocol encoding versions of:
+xref:typedb::connecting/studio.adoc#_version_compatibility[TypeDB Studio],
+xref:typedb::connecting/console.adoc#_version_compatibility[TypeDB Console], and TypeDB Drivers:
+xref:clients::rust-driver/overview.adoc#_version_compatibility[Rust],
+xref:clients::python-driver/overview.adoc#_version_compatibility[Python],
+xref:clients::java-driver/overview.adoc#_version_compatibility[Java],
+xref:clients::nodejs-driver/overview.adoc#_version_compatibility[Node.js].
 
-In the `2.18.0` version of TypeDB, the TypeDB protocol has version number 1.
+For backward compatibility protocol version control allows TypeDB Clients versions prior to `2.18.0` (i.e., with
+protocol encoding version N/A, or < 1) to connect with a TypeDB server with protocol encoding version 1.
 
-For backward compatibility protocol version control will allow TypeDB Clients versions prior to `2.18.0` (i.e., with
-protocol version N/A, or < 1) to connect with a TypeDB server with protocol version 1.
-
-[NOTE]
-====
-If we try to connect to an older server (prior to version `2.18.0`) with a newer client, we should still get an error
+If we try to connect with a newer client to an older server (prior to version `2.18.0`), we should get an error
 due to the older server lacking the API to check the protocol version.
-====
 
 [#_databases]
 == Databases
@@ -93,7 +93,7 @@ each other. However, TypeDB Clients can connect to multiple databases simultaneo
 [NOTE]
 ====
 TypeDB is optimized for a small number of databases. It's recommended to start with a single database and add more if
-necessary (e.g., to support more applications). The **best practice** is to keep the number of databases **under 10**.
+necessary, e.g., to support more applications. The **best practice** is to keep the number of databases **under 10**.
 ====
 
 [tabs]
@@ -212,21 +212,15 @@ Only one *Schema* session can be open at any time. And any open *Schema* session
 | Yes
 |===
 
-TypeDB Clients should read and write data in DATA sessions.
-
-TypeDB Clients should read and write schema in SCHEMA sessions.
+Write transactions are strict to session types.
+TypeDB Clients can write data only in DATA sessions and can write schema only in SCHEMA sessions (see the table above).
 
 [NOTE]
 ====
 If a client needs to read both schema and data from a database, it can be done in any session type (usually used when
-a data query needs information on types). But it is NOT possible to modify a schema and its data in the same session,
-regardless of the type.
-
-Write transactions are strict to the session types (see the table above for illustration).
+a data query needs information on types).
+But it is NOT possible to modify a schema and data in the same session.
 ====
-
-Once a session has been opened, Clients can open and close transactions in that session to read or write a database's
-schema or data.
 
 [tabs]
 ====
@@ -269,14 +263,15 @@ session = await driver.session("iam", SessionType.DATA);
 
 Sessions must be explicitly opened and closed by TypeDB Clients.
 
-For more information on how to do it with different Clients see the documentation:
+For more information on how to do it with different TypeDB Clients, see the documentation:
 
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
 * xref:connecting/console.adoc#_database_management_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients:ROOT:java-driver/api-reference.adoc#_session_create[Java],
-** xref:clients:ROOT:python-driver/api-reference.adoc#_session_create[Python],
-** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_session_create[Node.js].
+** xref:clients:ROOT:rust-driver/api-reference.adoc#_session_header[Rust],
+** xref:clients:ROOT:python-driver/api-reference.adoc#_session_header[Python],
+** xref:clients:ROOT:java-driver/api-reference.adoc#_session_header[Java],
+** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_session_header[Node.js].
 
 [IMPORTANT]
 ====
@@ -291,10 +286,10 @@ A good principle to follow is for logically coherent transactions to be grouped 
 All queries to a TypeDB database are performed through transactions. TypeDB transactions provide full
 <<_acid_guarantees,ACID guarantees>> up to <<_isolation,snapshot isolation>>.
 
-There are two types of transactions:
+There are two types of transactions: `read` and `write`.
 
-* READ transactions
-* WRITE transactions
+Transactions must be explicitly opened and closed by a TypeDB Client.
+A transaction can be opened only inside an opened session.
 
 [tabs]
 ====
@@ -359,29 +354,26 @@ await transaction.commit();
 --
 ====
 
-Transactions must be explicitly opened and closed by a TypeDB Client.
-
-TypeDB Studio lets developers commit/rollback transactions through its GUI.
+TypeDB Studio manages sessions automatically and lets you control transactions through its GUI.
 
 For more information on how to do it with different Clients see the documentation:
 
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
 * xref:connecting/console.adoc#_transaction_querying_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients:ROOT:java-driver/api-reference.adoc#_create_transaction[Java],
-** xref:clients:ROOT:python-driver/api-reference.adoc#_create_transaction[Python],
-** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_create_transaction[Node.js].
+** xref:clients:ROOT:rust-driver/api-reference.adoc#_transaction_header[Rust],
+** xref:clients:ROOT:python-driver/api-reference.adoc#_transaction_header[Python],
+** xref:clients:ROOT:java-driver/api-reference.adoc#_transaction_header[Java],
+** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_transaction_header[Node.js].
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free
 read/write transactions. For more information, see the <<_acid_guarantees>> section below.
 
 === Transaction time limit
 
-[IMPORTANT]
-====
-TypeDB transactions have a duration limit. By default, it's *5 minutes*.
+TypeDB transactions have a duration limit.
+By default, it's *5 minutes*.
 The default value can be changed with Client options.
-====
 
 The time limit is intended to encourage short-lived transactions, prevent memory leaks
 caused by transactions that will not be completed and terminate unresponsive transactions.
@@ -391,7 +383,7 @@ caused by transactions that will not be completed and terminate unresponsive tra
 * Avoid long-running transactions which can result in conflicts and resource contention.
 * Transactions should group logically coherent queries.
 
-For more advice and *best practices* visit the xref:development/best.adoc[Best practices] page.
+For more advice and *best practices*, visit the xref:development/best.adoc[Best practices] page.
 
 [#_acid_guarantees]
 == ACID guarantees
@@ -474,8 +466,8 @@ Hence, we can always:
 
 == Learn more
 
-With the essential knowledge of the *Fundamentals* section and the ability to connect to a TypeDB databases, described
-on this page, let's try defining our own xref:development/schema.adoc[schema].
+Learn how to develop an application with TypeDB:
 
-After that we can try xref:development/write.adoc[writing] and xref:development/read.adoc[reading] data from
-a database.
+* xref:typedb::development/schema.adoc[]
+* xref:typedb::development/write.adoc[]
+* xref:typedb::development/read.adoc[]
