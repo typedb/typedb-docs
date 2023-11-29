@@ -5,26 +5,49 @@
 
 [NOTE]
 ====
-User management features are a part of TypeDB Enterprise & TypeDB Cloud.
+User management features are a part of TypeDB Cloud & TypeDB Enterprise.
 ====
 
-Use xref:connecting/console.adoc#_database_management_commands[TypeDB Console] or TypeDB Driver API
-(xref:clients::python-driver/api-reference.adoc#_UserManager[Python],
-xref:clients::rust-driver/api-reference.adoc#_struct_UserManager[Rust],
-xref:clients::java-driver/api-reference.adoc#_UserManager[Java],
-xref:clients::nodejs-driver/api-reference.adoc#_UserManager[Node.js])
-to manage users.
+You can use TypeDB Console or TypeDB Driver API for user management.
 
-To connect to TypeDB Cloud/Enterprise with TypeDB Console provide a server address, username,
-and password (when prompted):
+Assuming TypeDB Console is xref:home::install.adoc#_console[installed], to connect to TypeDB Cloud/Enterprise:
 
 [,bash]
 ----
 typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
+For more information on how to use TypeDB Console, see the xref:connecting/console.adoc[] page.
+
+For more information on user management with TypeDB Driver API,
+see the xref:clients::python-driver/api-reference.adoc#_UserManager[Python],
+xref:clients::rust-driver/api-reference.adoc#_struct_UserManager[Rust],
+xref:clients::java-driver/api-reference.adoc#_UserManager[Java],
+xref:clients::nodejs-driver/api-reference.adoc#_UserManager[Node.js] API Reference pages.
+
+[#_default_credentials]
+== Default credentials
+
+By default, all TypeDB Cloud deployments and TypeDB Enterprise installations have only one account:
+
+* Username: `admin`
+* Password: `password`
+
+This is the administrator account with maximum privileges.
+Only this account can use most of the user management features, including creating new users.
+
+In TypeDB Cloud, you must change the administrator's password to something different from the default one,
+otherwise you will not be able to connect to the deployment with TypeDB Studio
+nor perform any operations in other TypeDB Clients, apart from changing the password.
+
+== Operations
+
+The <<_current_user_password>> operation is available for any user.
+All other user management operations are restricted to the built-in <<_default_credentials,administrator>> account only.
+
 [#_list_all_users]
-== List all users
+=== List all users
+_This action is available only for the `admin` account._
 
 To list all users existing on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
 
@@ -34,7 +57,8 @@ user list
 ----
 
 [#_create_a_user]
-== Create a user
+=== Create a user
+_This action is available only for the `admin` account._
 
 To create a new user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
 
@@ -46,7 +70,8 @@ user create <username>
 Type in a password for the new user when prompted.
 
 [#_delete_a_user]
-== Delete a user
+=== Delete a user
+_This action is available only for the `admin` account._
 
 To delete a user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
 
@@ -56,7 +81,8 @@ user delete <username>
 ----
 
 [#_change_password]
-== Change password
+=== Change user's password
+_This action is available only for the `admin` account._
 
 To change a password of a user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
 
@@ -68,7 +94,8 @@ user password-set <username>
 Type in a new password for the user when prompted.
 
 [#_current_user_password]
-=== Current user
+=== Change own password
+_This action is available for any account._
 
 To change the password of the current user, in TypeDB Console CLI run:
 
@@ -80,32 +107,7 @@ user password-set <username>
 Type in the old password, then the new password.
 You'll be disconnected as a result. Reconnect with the new password.
 
-
 ////
-[NOTE]
-====
-User management features are a part of TypeDB Enterprise & TypeDB Cloud.
-====
-
-Use xref:connecting/console.adoc#_database_management_commands[TypeDB Console] or TypeDB Driver API
-(xref:clients::java-driver/api-reference.adoc#_User[Java],
-xref:clients::python-driver/api-reference.adoc#_User[Python],
-xref:clients::nodejs-driver/api-reference.adoc#_User[Node.js])
-to manage users.
-To connect to TypeDB with TypeDB Console provide a username and password (when prompted):
-
-[,bash]
-----
-typedb console --enterprise=<address> --username=<username> --password
-----
-
-After issuing this command, we will be prompted to provide a password.
-
-[IMPORTANT]
-====
-Only the administrator account (username `admin`) can perform user management actions.
-====
-
 Use the following TypeDB Console commands to manage users.
 
 Retrieve a list of all users:
@@ -142,5 +144,4 @@ Delete a user:
 ----
 user delete <username>
 ----
-
 ////
