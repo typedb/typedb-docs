@@ -28,6 +28,8 @@ include::home::install.adoc[tag=enterprise-run]
 Core::
 +
 --
+TypeDB Core needs to be xref:home::install.adoc#_core[installed] first.
+
 include::home::install.adoc[tag=core-run]
 --
 ====
@@ -108,8 +110,8 @@ to store project files by clicking either:
 Create a database to play with:
 
 . Click the database icon (image:home::studio-icons/database.png[]) in the top toolbar.
-. Enter `try-studio` and click btn:[Create].
-. Select `try-studio` from the database dropdown (to the right of the database icon).
+. Enter a name for a new database, for example, `typedb-1`, and click btn:[Create].
+. Select the new database from the dropdown to the right of the database icon.
 
 [#_define_a_schema]
 == Define a schema
@@ -332,7 +334,7 @@ Upon connection, it shows a prompt for a CLI input.
 
 [,bash]
 ----
-database create try-console
+database create typedb-2
 ----
 
 [#_console_define_a_schema]
@@ -342,7 +344,7 @@ database create try-console
 +
 [,bash]
 ----
-transaction try-console schema write
+transaction typedb-2 schema write
 ----
 . Run query:
 +
@@ -366,7 +368,7 @@ commit
 +
 [,bash]
 ----
-transaction try-console data write
+transaction typedb-2 data write
 ----
 . Run queries:
 +
