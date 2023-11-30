@@ -5,7 +5,7 @@
 :summary: TypeDB Studio documentation.
 :experimental:
 
-image::clients::studio/studio.png[TypeDB Studio, width = 70%, link=self]
+image::drivers::studio/studio.png[TypeDB Studio, width = 70%, link=self]
 
 TypeDB Studio is an IDE specifically designed for TypeDB databases and
 TypeDB's query language -- xref:typeql:ROOT:fundamentals.adoc[TypeQL].
@@ -26,7 +26,7 @@ For an installation guide, see the xref:home:ROOT:install.adoc#_studio[Install] 
 
 Right after starting TypeDB Studio, we can see its main window as it is shown below.
 
-image::clients::studio/studio-gui.png[TypeDB Studio GUI, width = 70%, link=self]
+image::drivers::studio/studio-gui.png[TypeDB Studio GUI, width = 70%, link=self]
 
 The main panels of the GUI are marked with the following numbers on the image above:
 
@@ -43,11 +43,11 @@ To use most of the TypeDB Studio functions, we need to connect to a TypeDB serve
 At the top right-hand corner, click the btn:[Connect to TypeDB] button. It will open a windows with the same name and
 the connection settings as shown below.
 
-image::clients::studio/connection-interface-disconnected.png[Connection Manager Disconnected, width = 70%, link=self]
+image::drivers::studio/connection-interface-disconnected.png[Connection Manager Disconnected, width = 70%, link=self]
 
 Fill in the address of the TypeDB server. By default, it's: `localhost:1729`. Click the btn:[Connect] button.
 
-image::clients::studio/connection-interface-connected.png[Connection Manager Connected, width = 70%, link=self]
+image::drivers::studio/connection-interface-connected.png[Connection Manager Connected, width = 70%, link=self]
 
 Once TypeDB Studio connected to a TypeDB server successfully, the connection manager window should close automatically.
 If we reopen the window we can find the green status field in the bottom left corner, as shown above.
@@ -70,12 +70,12 @@ In the `Connect to TypeDB` window click on the btn:[Disconnect] button.
 To create a new database, make sure TypeDB Studio is connected to a TypeDB server and click on the
 btn:[Manage Databases] button (with a database icon) as shown below.
 
-image::clients::studio/studio-database.png[Database icon]
+image::drivers::studio/studio-database.png[Database icon]
 
 Enter the name for the new database at the text field at the bottom of the `Manage Databases` window and hit
 btn:[Create].
 
-image::clients::studio/databases-interface-iam-database.png[Database Manager with IAM database, 300, link=self]
+image::drivers::studio/databases-interface-iam-database.png[Database Manager with IAM database, 300, link=self]
 
 Our database appeared at the list of databases. Now we can close the `Manage Databases` window by clicking the
 btn:[Close] button.
@@ -105,7 +105,7 @@ TypeDB Studio stores queries we save on a local machine in a project directory, 
 each time we open Studio. To select a project directory, click on the open folder icon left of the database icon or
 click on the btn:[Open Project] button in the *Projects* panel on the left (under the database icon).
 
-image::clients::studio/project-interface-open.png[Project Interface Prompt to Open]
+image::drivers::studio/project-interface-open.png[Project Interface Prompt to Open]
 
 [NOTE]
 ====
@@ -126,7 +126,7 @@ button with plus icon will always stay at the right end of the tabs of the *Text
 Upon clicking on the plus button, a new tab will be opened with the default filename. For new files by default
 filename consists of `Untitled` word, followed by a number, starting from `1` and a file extension of `.tql`.
 
-image::clients::studio/project-new-file.png[Create a New File, width = 70%, link=self]
+image::drivers::studio/project-new-file.png[Create a New File, width = 70%, link=self]
 
 This file will be stored at the hidden folder in the current project directory until it is saved with some
 other name and path.
@@ -196,7 +196,7 @@ a database is <<_select_active_database,selected>>, and a project directory is <
 If it's not the case: <<_create_a_new_file,write a new one>> or <<_open_an_existing_file,open an existing>> file
 with query to run.
 +
-image::clients::studio/project-schema-pasted.png[Query text, width = 70%, link=self]
+image::drivers::studio/project-schema-pasted.png[Query text, width = 70%, link=self]
 
 . Choose the correct xref:connecting/overview.adoc#_sessions[session] (`schema`/`data`) type and
   xref:connecting/overview.adoc#_transactions[transaction] (`read`/`write`) type to run the query
@@ -204,7 +204,7 @@ image::clients::studio/project-schema-pasted.png[Query text, width = 70%, link=s
 . Run the query by clicking on the btn:[Run Query] (▶) button. +
 *Run* panel will be expanded on the bottom of the query to show the results of the query execution attempt.
 +
-image::clients::studio/project-schema-query-run.png[Write the Schema, width = 70%, link=self]
+image::drivers::studio/project-schema-query-run.png[Write the Schema, width = 70%, link=self]
 
 . If it's the `write` transaction type -- wait for transaction control options to be ready and commit or close the
 transaction (by clicking on the btn:[Commit transaction] (✔) or btn:[Close transaction] (x) buttons respectively).
@@ -218,7 +218,7 @@ the TypeDB Studio window. Additional information about the error is displayed in
 If a `write` transaction committed successfully -- a blue pop-up with a transaction confirmation is displayed.
 See example below.
 
-image::clients::studio/project-schema-committed.png[Commit the Transaction, width = 70%, link=self]
+image::drivers::studio/project-schema-committed.png[Commit the Transaction, width = 70%, link=self]
 
 For more information on different control elements for query execution, see the <<_transaction_control>> section below.
 
@@ -251,7 +251,7 @@ Use `Log` tab to see textual output from the query execution (including error an
 To control query execution, we have the top *Toolbar* elements located to the right from the database selection
 drop-down menu. See below.
 
-image::clients::studio/studio-transaction-controls.png[Transaction controls, link=self]
+image::drivers::studio/studio-transaction-controls.png[Transaction controls, link=self]
 
 From left to right (numbered respectively to the screenshot numbers):
 
@@ -301,7 +301,7 @@ inferred instances of data they will be shown with green lining in the graph vis
 (ownerships or roles played) will be shown as green arrows. See the example below.
 
 [#_inference_results]
-image::clients::studio/inference.png[Inference results example, width = 70%, link=self]
+image::drivers::studio/inference.png[Inference results example, width = 70%, link=self]
 
 [#_explanation]
 === Explanation
@@ -334,7 +334,7 @@ is a set of additional instances and connections, that provide a direct explanat
 result. See the example below.
 
 [#_explanation_results]
-image::clients::studio/explanation.png[Explanation example, width = 70%, link=self]
+image::drivers::studio/explanation.png[Explanation example, width = 70%, link=self]
 
 [#_types_browser_capabilities]
 == Type browser capabilities
@@ -360,7 +360,7 @@ In a database with a schema, all types displayed in the exact hierarchy they wer
 supertypes). We can easily collapse or expand all the types in the structure tree by clicking the associated buttons
 on the top of the *Type Browser* panel with double chevrons (arrow heads) pointing down or up respectively.
 
-image::clients::studio/type-browser.png[Type browser,width=300, link=self]
+image::drivers::studio/type-browser.png[Type browser,width=300, link=self]
 
 Double-clicking on any type will open the <<_type_editor,Type editor>> with information about the selected type
 in a tab of the *Text editor*.
@@ -386,7 +386,7 @@ versions of the TypeDB Studio.
 By double-clicking any type we can open the type editor window that shows all information about the selected type and
 allows us to easily edit the type.
 
-image::clients::studio/type-editor.png[Type editor, width = 70%, link=self]
+image::drivers::studio/type-editor.png[Type editor, width = 70%, link=self]
 
 We can rename the type, change its supertype, abstract property, see all the connected types (subtypes, owned
 attributes or owners of this particular attribute, related and played roles).

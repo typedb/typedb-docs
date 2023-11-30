@@ -13,7 +13,7 @@ A TypeDB Client is any software that can connect to a TypeDB.
 TypeDB server accepts remote connections from any TypeDB Clients:
 xref:typedb::connecting/studio.adoc[],
 xref:typedb::connecting/console.adoc[], and
-xref:clients:ROOT:overview.adoc[TypeDB Drivers].
+xref:drivers:ROOT:overview.adoc[TypeDB Drivers].
 
 Once connected, TypeDB Clients can manage <<_databases,databases>>, <<_sessions,sessions>>, and
 <<_transactions, transactions>>.
@@ -72,10 +72,10 @@ This is to prevent any potential errors from using incompatible versions of Type
 See the compatibility tables for protocol encoding versions of:
 xref:typedb::connecting/studio.adoc#_version_compatibility[TypeDB Studio],
 xref:typedb::connecting/console.adoc#_version_compatibility[TypeDB Console], and TypeDB Drivers:
-xref:clients::rust-driver/overview.adoc#_version_compatibility[Rust],
-xref:clients::python-driver/overview.adoc#_version_compatibility[Python],
-xref:clients::java-driver/overview.adoc#_version_compatibility[Java],
-xref:clients::nodejs-driver/overview.adoc#_version_compatibility[Node.js].
+xref:drivers::rust/overview.adoc#_version_compatibility[Rust],
+xref:drivers::python/overview.adoc#_version_compatibility[Python],
+xref:drivers::java/overview.adoc#_version_compatibility[Java],
+xref:drivers::nodejs/overview.adoc#_version_compatibility[Node.js].
 
 For backward compatibility protocol version control allows TypeDB Clients versions prior to `2.18.0` (i.e., with
 protocol encoding version N/A, or < 1) to connect with a TypeDB server with protocol encoding version 1.
@@ -175,7 +175,7 @@ await (await driver.databases().get("test-db")).delete();
 A session is like a tunnel connection to a database in a TypeDB server. An open session lets us open transactions
 in it.
 
-image::clients::concurrency-model.png[Session-transaction-query, role=framed, width = 75%, link=self]
+image::drivers::concurrency-model.png[Session-transaction-query, role=framed, width = 75%, link=self]
 
 Any TypeDB Client automatically exchanges internal signals with TypeDB server to keep a session alive when it's open.
 If server doesn't receive this signal for a period of time bigger than the timeout (by default, 30 secs) it
@@ -262,10 +262,10 @@ For more information on how to do it with different TypeDB Clients, see the docu
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
 * xref:connecting/console.adoc#_database_management_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients:ROOT:rust-driver/api-reference.adoc#_session_header[Rust],
-** xref:clients:ROOT:python-driver/api-reference.adoc#_session_header[Python],
-** xref:clients:ROOT:java-driver/api-reference.adoc#_session_header[Java],
-** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_session_header[Node.js].
+** xref:drivers:ROOT:rust/api-reference.adoc#_session_header[Rust],
+** xref:drivers:ROOT:python/api-reference.adoc#_session_header[Python],
+** xref:drivers:ROOT:java/api-reference.adoc#_session_header[Java],
+** xref:drivers:ROOT:nodejs/api-reference.adoc#_session_header[Node.js].
 
 [IMPORTANT]
 ====
@@ -355,10 +355,10 @@ For more information on how to do it with different Clients, see the documentati
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
 * xref:connecting/console.adoc#_transaction_querying_commands[TypeDB Console]
 * TypeDB Drivers:
-** xref:clients:ROOT:rust-driver/api-reference.adoc#_transaction_header[Rust],
-** xref:clients:ROOT:python-driver/api-reference.adoc#_transaction_header[Python],
-** xref:clients:ROOT:java-driver/api-reference.adoc#_transaction_header[Java],
-** xref:clients:ROOT:nodejs-driver/api-reference.adoc#_transaction_header[Node.js].
+** xref:drivers:ROOT:rust/api-reference.adoc#_transaction_header[Rust],
+** xref:drivers:ROOT:python/api-reference.adoc#_transaction_header[Python],
+** xref:drivers:ROOT:java/api-reference.adoc#_transaction_header[Java],
+** xref:drivers:ROOT:nodejs/api-reference.adoc#_transaction_header[Node.js].
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free
 read/write transactions. For more information, see the <<_acid_guarantees>> section below.

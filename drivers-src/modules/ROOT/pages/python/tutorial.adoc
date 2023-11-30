@@ -1,12 +1,13 @@
 = Python Driver tutorial
 :Summary: Tutorial for TypeDB Python Driver.
+:page-aliases: clients::python-driver/tutorial.adoc
 :keywords: typedb, client, python
 :longTailKeywords: typedb python client, typedb client python, client python, python client
 :pageTitle: Python Driver tutorial
 
 == Prerequisites
 
-Make sure to install the Python Driver as per the xref:python-driver/overview.adoc#_install[Installation] guide.
+Make sure to install the Python Driver as per the xref:python/overview.adoc#_install[Installation] guide.
 The TypeDB server also needs to be xref:home::install.adoc#_core[installed] and running.
 
 == Importing
@@ -122,7 +123,7 @@ at the end of the `with` block. Otherwise, remember to call `transaction.close()
 
 == Where to go next
 
-Check out the xref:python-driver/api-reference.adoc#_answer_header[Answer] section of API reference page to learn
+Check out the xref:python/api-reference.adoc#_answer_header[Answer] section of API reference page to learn
 about the available methods on the concepts retrieved as the answers to queries.
 
 To view examples of various TypeQL queries, head over to

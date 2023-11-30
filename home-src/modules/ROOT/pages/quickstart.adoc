@@ -217,7 +217,7 @@ get $p, $a;
 ----
 
 The above xref:typeql::data/get.adoc[Get] query returns concepts from a database as a ConceptMap
-that can be used programmatically with a xref:clients::overview.adoc#_typedb_drivers[Driver API] to process the result.
+that can be used programmatically with a xref:drivers::overview.adoc#_typedb_drivers[Driver API] to process the result.
 The following image is a graph visualization produced by xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio].
 
 image::quickstart-get-example.png[Quickstart Get query example, role=framed, width = 75%, link=self]
@@ -406,9 +406,9 @@ define a xref:typedb::development/schema.adoc[schema] of a database;
 xref:typedb::development/read.adoc[reading] data from a TypeDB
 database and how to interpret a xref:typedb::development/response.adoc[response] to a query;
 . Learn how to create an application with TypeDB, using any of the
-   xref:clients:ROOT:overview.adoc#_typedb_drivers[TypeDB Drivers]:
-    - xref:clients:ROOT:rust-driver/overview.adoc[Rust Driver]
-    - xref:clients:ROOT:python-driver/overview.adoc[Python Driver];
-    - xref:clients:ROOT:nodejs-driver/overview.adoc[Node.js Driver];
-    - xref:clients:ROOT:java-driver/overview.adoc[Java Driver].
+   xref:drivers:ROOT:overview.adoc#_typedb_drivers[TypeDB Drivers]:
+    - xref:drivers:ROOT:rust/overview.adoc[Rust Driver]
+    - xref:drivers:ROOT:python/overview.adoc[Python Driver];
+    - xref:drivers:ROOT:nodejs/overview.adoc[Node.js Driver];
+    - xref:drivers:ROOT:java/overview.adoc[Java Driver].
 //. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.

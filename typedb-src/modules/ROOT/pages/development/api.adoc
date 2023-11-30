@@ -4,7 +4,7 @@
 :longTailKeywords: TypeDB API, TypeDB Driver API, concept api, driver API, client API
 :pageTitle: TypeDB Driver API
 
-TypeDB servers accept gRPC calls from xref:clients::overview.adoc[TypeDB Clients].
+TypeDB servers accept gRPC calls from xref:drivers::overview.adoc[TypeDB Clients].
 TypeDB Clients perform validation of queries, load balancing, and some other operations transparent for users.
 
 To access all features of TypeDB and TypeDB Clients use the default interface provided by the Clients:
@@ -12,10 +12,10 @@ To access all features of TypeDB and TypeDB Clients use the default interface pr
 * GUI from xref:connecting/studio.adoc[TypeDB Studio],
 * CLI from xref:connecting/console.adoc[TypeDB Console],
 * API from TypeDB Drivers:
- ** xref:clients::java-driver/api-reference.adoc[Java Driver API],
- ** xref:clients::python-driver/api-reference.adoc[Python API],
- ** xref:clients::nodejs-driver/api-reference.adoc[Node.js API],
- ** or xref:clients::other-languages.adoc[Community TypeDB Clients].
+ ** xref:drivers::java/api-reference.adoc[Java Driver API],
+ ** xref:drivers::python/api-reference.adoc[Python API],
+ ** xref:drivers::nodejs/api-reference.adoc[Node.js API],
+ ** or xref:drivers::other-languages.adoc[Community TypeDB Clients].
 
 TypeDB Studio and TypeDB Console control sessions, transactions, and queries, as well as process the responses
 automatically to present the results (in GUI and CLI respectively) to user.
@@ -25,7 +25,7 @@ automatically to present the results (in GUI and CLI respectively) to user.
 Both TypeDB Studio and TypeDB Console are built on the base of the Java Driver.
 ====
 
-xref:clients::overview.adoc#_typedb_drivers[TypeDB Drivers] provide greater flexibility and integration with
+xref:drivers::overview.adoc#_typedb_drivers[TypeDB Drivers] provide greater flexibility and integration with
 popular programming languages/frameworks at the cost of the requirement to perform session, transaction, and data
 manipulation manually. To interact with a TypeDB Driver use TypeDB Driver API. There are slight differences between
 Driver APIs of different TypeDB Drivers, including syntax, but they are very similar to each other by design.
@@ -56,16 +56,16 @@ To send a query to a TypeDB server a TypeDB Driver needs to:
 These operations are done using the special classes and methods provided by TypeDB Driver. See some examples
 of how to do that with different TypeDB Drivers: xref:connecting/overview.adoc[Connection],
 xref:tutorials/sample-app.adoc[Sample application] pages, or in the
-xref:clients::/overview.adoc#_typedb_drivers[TypeDB Drivers] documentation.
+xref:drivers::/overview.adoc#_typedb_drivers[TypeDB Drivers] documentation.
 
 All queries are written in TypeQL, but for some languages there are libraries to build the TypeQL queries in a more
 native way. Like the TypeQL https://github.com/vaticle/typeql/tree/master/java[library for Java,window=_blank].
 
 The exact syntax for these operations might be different in different languages. See the exact TypeDB Driver API
 documentation for more information:
-xref:clients::java-driver/api-reference.adoc[Java],
-xref:clients::python-driver/api-reference.adoc[Python],
-xref:clients::nodejs-driver/api-reference.adoc[Node.js].
+xref:drivers::java/api-reference.adoc[Java],
+xref:drivers::python/api-reference.adoc[Python],
+xref:drivers::nodejs/api-reference.adoc[Node.js].
 
 === Response
 
@@ -85,9 +85,9 @@ TypeDB Driver API methods can be used to get a JSON out of Concept returned in a
 
 The exact syntax differs for every language specific API:
 
-* xref:clients:ROOT:java-driver/api-reference.adoc#_retrieve_a_concept_as_json[Java]
-* xref:clients:ROOT:python-driver/api-reference.adoc#_retrieve_a_concept_as_json[Python]
-* xref:clients:ROOT:nodejs-driver/api-reference.adoc#_retrieve_a_concept_as_json[Node.js]
+* xref:drivers:ROOT:java/api-reference.adoc#_retrieve_a_concept_as_json[Java]
+* xref:drivers:ROOT:python/api-reference.adoc#_retrieve_a_concept_as_json[Python]
+* xref:drivers:ROOT:nodejs/api-reference.adoc#_retrieve_a_concept_as_json[Node.js]
 ====
 
 == Local and remote methods
@@ -146,6 +146,6 @@ see updates made using the Driver API.
 All local concepts have the method `asRemote(tx)`, where the `tx` parameter is a Transaction to use for the remote
 concept version of this local concept, and the returned value is the remote concept. See the `asRemote` method
 documentation for more details:
-xref:clients::java-driver/api-reference.adoc#_concept_methods[Java],
-xref:clients::python-driver/api-reference.adoc#_concept_methods[Python],
-xref:clients::nodejs-driver/api-reference.adoc#_concept_methods[Node.js].
+xref:drivers::java/api-reference.adoc#_concept_methods[Java],
+xref:drivers::python/api-reference.adoc#_concept_methods[Python],
+xref:drivers::nodejs/api-reference.adoc#_concept_methods[Node.js].
