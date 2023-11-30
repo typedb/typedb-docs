@@ -1,0 +1,52 @@
+= TypeDB Drivers overview
+:Summary: TypeDB Driver overview.
+:keywords: typedb, driver, api, RPC, library, FFI
+:pageTitle: TypeDB Drivers overview
+
+TypeDB accepts client connections via gRPC based
+https://github.com/vaticle/typedb-protocol[TypeDB Driver RPC,window=_blank] protocol.
+
+To build an application capable of connecting to TypeDB, we can use one of the
+existing libraries implementing it, called TypeDB Drivers, or we can implement it ourselves as a new driver.
+
+[#_typedb_drivers]
+A TypeDB Driver is a library that implements *TypeDB Driver RPC* protocol and provides a language-specific native API.
+TypeDB Drivers are available for some of the most popular programming languages:
+
+[#_driver_api]
+* xref:drivers::rust/overview.adoc[Rust] (xref:rust/api-reference.adoc[API reference])
+* xref:drivers::python/overview.adoc[Python] (xref:python/api-reference.adoc[API reference])
+* xref:drivers::java/overview.adoc[Java] (xref:java/api-reference.adoc[API reference])
+* xref:drivers::nodejs/overview.adoc[Node.js] (xref:nodejs/api-reference.adoc[API reference])
+
+//We also have some community projects for xref:other-languages.adoc[other languages].
+//and provide support for creating a xref:new-driver.adoc[new driver].
+
+We recommend instantiating a single TypeDB Driver per application.
+
+== Architecture of a TypeDB Driver
+
+TypeDB Drivers share a common architecture and capabilities.
+The key components have to do with providing an API, opening and managing connections, sessions, and transactions,
+as well as validating and sending queries, processing responses.
+
+The following diagram illustrates the structure of a typical TypeDB Driver.
+
+image::client-structure.png[Structure of a TypeDB Dirver, role=framed, width = 75%, link=self]
+
+////
+.See the dependency graph
+[%collapsible]
+====
+image::package-structure.png[]
+====
+////
+
+Simply put, the main components of any TypeDB Driver are the classes and methods to establish a connection to a TypeDB
+database, execute queries, and process responses.
+
+[NOTE]
+====
+As of version `2.24.x` the Java, Python,
+and C drivers are re-implemented as wrappers on top of the Rust driver via an FFI interface.
+====

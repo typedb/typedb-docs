@@ -1,23 +1,36 @@
-= Install
-:keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker, arm, arm64, x86, x86_64
-:pageTitle: Install
+= Install and Run
+:keywords: setup, getting started, typedb, download, install, server, linux, mac, windows, docker, arm, arm64, x86, x86_64, deploy, cloud
+:pageTitle: Install and Run
 :summary: Download and install TypeDB server or client on Linux, macOS or Windows.
 :tabs-sync-option:
 :experimental:
 
-== TypeDB Enterprise and Cloud
+== TypeDB Cloud
 
-To deploy through TypeDB Cloud, proceed to https://cloud.typedb.com/[cloud.typedb.com,window=_blank].
-To deploy TypeDB Enterprise, contact our mailto:sales@vaticle.com[sales team] and see the
-xref:typedb::admin/enterprise-deployment.adoc[Enterprise Deployment] page.
+image::cloud-hero.png[TypeDB Cloud hero image, role=framed, width = 75%, window=_blank, link=https://cloud.typedb.com/]
+
+// tag::cloud-run[]
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
+// end::cloud-run[]
+
+== TypeDB Enterprise
+
+To get your Enterprise license from our sales team,
+contact us via mailto:sales@vaticle.com[E-mail,window=_blank] or
+https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
+
+// tag::enterprise-run[]
+To deploy and run your on-premise cluster of TypeDB Enterprise,
+see the xref:typedb::managing/enterprise-deployment.adoc[Enterprise Deployment] page.
+// end::enterprise-run[]
 
 [#_core]
 == TypeDB Core
 
-TypeDB Core is the open-source edition of TypeDB DBMS.
+TypeDB Core is the open-source edition of TypeDB.
 It supports all features of TypeQL.
-For more information on the difference between editions of TypeDB,
-see the https://typedb.com/features[Features,window=_blank] page.
+For more information on the difference between TypeDB editions,
+see the https://typedb.com/deploy[Deploy,window=_blank] page.
 
 TypeDB Core also supports all TypeDB Clients, including:
 <<_console>>,
@@ -91,20 +104,49 @@ include::partial$win.adoc[tag=manual-install]
 --
 ====
 
+=== Run TypeDB Core
+
+==== Start
+
+// tag::core-run[]
+To start a local TypeDB Core server:
+
+[,bash]
+----
+typedb server
+----
+
+To run TypeDB Core in a new Docker container:
+
+[,bash]
+----
+docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+----
+// end::core-run[]
+
 [NOTE]
 ====
-To learn how to run TypeDB Core, see the xref:home::quickstart.adoc[] guide.
+To learn how to use TypeDB, see the xref:home::quickstart.adoc[] guide,
+xref:home::25-queries.adoc[] page, and the xref:typedb::overview.adoc[TypeDB documentation].
 ====
+
+==== Stop
+
+To stop a local TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
+
+For a Docker container:
+
+include::home::partial$docker.adoc[tag=stop]
 
 [#_console]
 == TypeDB Console
 
 TypeDB Console is the default CLI client for TypeDB.
-TypeDB Core is usually distributed with a compatible version of TypeDB Console.
+Both TypeDB Core and TypeDB Enterprise are usually distributed with a compatible version of TypeDB Console.
 
 To install TypeDB Console separately, use the guide below.
 If you are not sure which version of TypeDB Console you need,
-check the xref:clients::console.adoc#_version_compatibility[compatibility table].
+check the xref:typedb:ROOT:connecting/console.adoc#_version_compatibility[compatibility table].
 
 [tabs]
 ====
@@ -191,20 +233,42 @@ Restart the terminal window for the changes to environment variables to take eff
 --
 ====
 
+=== Run TypeDB Console
+
+To run TypeDB Console:
+
+[,bash]
+----
+typedb console
+----
+
+The above command will try to establish a connection with a TypeDB server on the default address of `localhost:1729`.
+To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port:
+`10.0.0.1:1729`.
+
+If the typedb command is not recognized, it means that the path to TypeDB binary is not set in the system.
+You can find TypeDB binary in the TypeDB distributive.
+To start TypeDB Console from its binary, navigate into the directory with unpacked distributive and run:
+
+[,bash]
+----
+./typedb console
+----
+
 [NOTE]
 ====
-To learn how to run TypeDB Console, see the xref:home::quickstart.adoc#_console_connect[Quickstart] guide.
+To learn how to use TypeDB Console, see the xref:home::quickstart.adoc#_console_connect[Quickstart] guide and the
+xref:typedb::connecting/console.adoc[] page.
 ====
 
 [#_studio]
 == TypeDB Studio
 
-TypeDB Studio is the IDE for TypeDB.
-
-TypeDB Studio is installed separately.
+TypeDB Studio is an IDE for TypeDB.
+To install and run TypeDB Studio, use the guide below.
 
 If you are not sure which version of TypeDB Studio you need,
-check the xref:clients::studio.adoc#_version_compatibility[compatibility table].
+check the xref:typedb:ROOT:connecting/studio.adoc#_version_compatibility[compatibility table].
 
 [discrete]
 === Install with a package manager
@@ -287,12 +351,18 @@ select a required version, download the `typedb-studio-windows` artifact for the
 --
 ====
 
+=== Run TypeDB Studio
+
+TypeDB Studio is a standalone TypeDB Client with GUI that needs to be launched separately from a TypeDB server.
+To launch TypeDB Studio, locate its binary file and run it.
+
 [NOTE]
 ====
-To learn how to run TypeDB Studio, see the xref:home::quickstart.adoc[Quickstart] guide.
+To learn more on how to use TypeDB Studio, see the xref:home::quickstart.adoc[] guide and the
+xref:typedb::connecting/studio.adoc[] page.
 ====
 
 [#_drivers]
 == TypeDB Drivers
 
-include::clients:resources:downloads.adoc[tag=drivers-download, leveloffset=+1]
+include::drivers:resources:downloads.adoc[tag=drivers-download, leveloffset=+1]

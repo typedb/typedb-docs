@@ -131,18 +131,18 @@ For more information on inference explanation please see the xref:development/in
 [#_response_formats]
 == Response formats
 
-xref:clients::studio.adoc[TypeDB Studio] and xref:clients::console.adoc[TypeDB Console] process the
+xref:connecting/studio.adoc[TypeDB Studio] and xref:connecting/console.adoc[TypeDB Console] process the
 responses automatically to present the results (in GUI and CLI respectively) to the user.
 
-For xref:clients::overview.adoc#_typedb_drivers[TypeDB Drivers]: the specific methods/calls used to interpret the
+For xref:drivers::overview.adoc#_typedb_drivers[TypeDB Drivers]: the specific methods/calls used to interpret the
 response depend on the TypeDB Driver used.
 
 The following is a very basic description of objects used to interpret the results from the TypeDB query response.
 For more information, see the TypeDB Driver pages for the
-xref:clients:ROOT:rust-driver/api-reference.adoc[Rust],
-xref:clients:ROOT:python-driver/api-reference.adoc[Python],
-xref:clients:ROOT:java-driver/api-reference.adoc[Java], and
-xref:clients:ROOT:nodejs-driver/api-reference.adoc[Node.js].
+xref:drivers:ROOT:rust/api-reference.adoc[Rust],
+xref:drivers:ROOT:python/api-reference.adoc[Python],
+xref:drivers:ROOT:java/api-reference.adoc[Java], and
+xref:drivers:ROOT:nodejs/api-reference.adoc[Node.js].
 
 [#_conceptmap]
 === ConceptMap

@@ -261,7 +261,7 @@ For example, a schema with the following types:
 *** full-name
 *** nickname
 
-can be visualized as following type hierarchy:
+can be visualized as the following type hierarchy:
 
 image::root-types-trees.png[]
 ====
@@ -330,8 +330,7 @@ person sub entity,
     owns name,
     plays marriage:spouse;
 
-marriage sub relation,
-    relates spouse;
+marriage sub relation, relates spouse;
 ----
 
 An instance of the `person` type can be inserted in a database:
@@ -405,11 +404,9 @@ group-membership sub relation,
     relates user-group,
     relates group-member;
 
-user-group sub entity
-    plays group-membership:user-group;
+user-group sub entity, plays group-membership:user-group;
 
-subject sub entity,
-    plays group-membership:group-member;
+subject sub entity, plays group-membership:group-member;
 user sub subject;
 ----
 
@@ -441,11 +438,9 @@ group-membership sub relation,
     relates user-group,
     relates group-member;
 
-user-group sub entity
-    plays group-membership:user-group;
+user-group sub entity, plays group-membership:user-group;
 
-subject sub entity,
-    plays group-membership:group-member;
+subject sub entity, plays group-membership:group-member;
 user sub subject;
 
 file sub entity;
@@ -533,19 +528,19 @@ relation type via the Driver API methods:
 | Method | TypeDB Java Driver | TypeDB Python Driver | TypeDB Node.js Driver
 
 | Is `abstract`
-| xref:clients::java-driver/api-reference.adoc#_check_if_type_is_abstract_local[isAbstract();]
-| xref:clients::python-driver/api-reference.adoc#_check_if_type_is_abstract_local[is_abstract()]
-| xref:clients::nodejs-driver/api-reference.adoc#_check_if_type_is_abstract_local[abstract;]
+| xref:drivers::java/api-reference.adoc#_check_if_type_is_abstract_local[isAbstract();]
+| xref:drivers::python/api-reference.adoc#_check_if_type_is_abstract_local[is_abstract()]
+| xref:drivers::nodejs/api-reference.adoc#_check_if_type_is_abstract_local[abstract;]
 
 | Set `abstract`
-| xref:clients::java-driver/api-reference.adoc#_set_abstract[setAbstract();]
-| xref:clients::python-driver/api-reference.adoc#_set_abstract[set_abstract()]
-| xref:clients::nodejs-driver/api-reference.adoc#_set_abstract[setAbstract();]
+| xref:drivers::java/api-reference.adoc#_set_abstract[setAbstract();]
+| xref:drivers::python/api-reference.adoc#_set_abstract[set_abstract()]
+| xref:drivers::nodejs/api-reference.adoc#_set_abstract[setAbstract();]
 
 | Unset `abstract`
-| xref:clients::java-driver/api-reference.adoc#_unset_abstract[unsetAbstract();]
-| xref:clients::python-driver/api-reference.adoc#_unset_abstract[unset_abstract()]
-| xref:clients::nodejs-driver/api-reference.adoc#_unset_abstract[unsetAbstract();]
+| xref:drivers::java/api-reference.adoc#_unset_abstract[unsetAbstract();]
+| xref:drivers::python/api-reference.adoc#_unset_abstract[unset_abstract()]
+| xref:drivers::nodejs/api-reference.adoc#_unset_abstract[unsetAbstract();]
 |===
 
 .Pseudocode example
@@ -632,8 +627,7 @@ define
 
 name sub attribute, value string;
 
-person sub entity,
-    owns name;
+person sub entity, owns name;
 ----
 
 An instance of an attribute type `name` with a value "Bob" can be owned by:
@@ -661,7 +655,7 @@ xref:typeql::schema/define-types.adoc[] page.
 === Rules
 // tag::rules_basics[]
 
-Rules are a part of schema and define embedded logic.
+Rules are a part of a schema and define embedded logic.
 
 The reasoning engine uses rules as a set of logic to infer new data.
 
@@ -799,10 +793,10 @@ $p isa person,
 
 That creates an entity and assigns an ownership of three attributes of different types to the newly created entity.
 
-If any of attributes with the given value didn't exist prior to this query -- TypeDB will create an instance of an
+If any of the attributes with the given value didn't exist prior to this query -- TypeDB will create an instance of an
 attribute with the required value automatically.
 
-Now to read that data, we can use the xref:typeql::data/get.adoc[Get] query:
+Now, to read that data, we can use the xref:typeql::data/get.adoc[Get] query:
 
 [,typeql]
 ----
@@ -816,8 +810,7 @@ properties? Let's query for all attributes owned by the `person` type instances:
 [,typeql]
 ----
 match
-$p isa person,
-    has $a;
+$p isa person, has $a;
 ----
 
 The response should consist of pairs of the `person` type instance with an instance of an attribute type owned by it,

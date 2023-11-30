@@ -81,16 +81,13 @@ Let's insert two users, two files, and set permissions:
 [,typeql]
 ----
 insert
-$p isa person,
-    has name "Charlie";
+$p isa person, has name "Charlie";
 $u1 isa user,
     has name "Bob",
     has username "bob_93",
     has email "bob@vaticle.com";
-$u2 isa user,
-    has username "al-capucino";
-$f1 isa file,
-    has path "README.md";
+$u2 isa user, has username "al-capucino";
+$f1 isa file, has path "README.md";
 $f2 isa file,
     has path "docs/quickstart-guide.adoc",
     has size-kb 3458761;
@@ -117,11 +114,11 @@ To retrieve usernames of all users that have permission for the file with the pa
 [,typeql]
 ----
 match
-$f isa file,
-    has path "README.md";
+$f isa file, has path "README.md";
 $u isa user;
 ($u, $f) isa permission;
-fetch $u: username;
+fetch
+$u: username;
 ----
 
 The above xref:typeql:ROOT:data/fetch.adoc[Fetch] query matches the `file` entity by the `path` attribute
@@ -188,8 +185,7 @@ Now let's do a match insert by adding a new file and a relevant permission for a
 ----
 match
 $u isa user;
-$f isa file,
-    has path "README.md";
+$f isa file, has path "README.md";
 not { ($u, $f) isa permission; };
 insert
 ($u, $f) isa permission;
@@ -211,8 +207,7 @@ Deleting data requires matching the data to delete first:
 [,typeql]
 ----
 match
-$u isa user,
-    has username "al-capucino";
+$u isa user, has username "al-capucino";
 $p(subject:$u) isa permission;
 delete
 $p isa permission;
@@ -382,9 +377,9 @@ Like in the following example:
 [,typeql]
 ----
 match
-$u isa user,
-    has name "Bob";
-fetch $u as Bob: attribute;
+$u isa user, has name "Bob";
+fetch
+$u as Bob: attribute;
 ----
 
 The above query matches the user with name `Bob`.
@@ -472,14 +467,11 @@ Now let's add a role player for this role for a relation, that was inserted befo
 [,typeql]
 ----
 match
-$u isa user,
-    has name "Bob";
-$f isa file,
-    has path "README.md";
+$u isa user, has name "Bob";
+$f isa file, has path "README.md";
 $p($u, $f) isa permission;
 insert
-$a isa action,
-    has name "edit";
+$a isa action, has name "edit";
 $p(permitted-action:$a);
 ----
 
@@ -560,10 +552,9 @@ Now let's see what will happen, if we'll try to violate these annotations by usi
 [,typeql]
 ----
 insert
-$u isa user;
-$u isa user,
-    has username "Bob";
-$u isa user,
+$u1 isa user;
+$u2 isa user, has username "Bob";
+$u3 isa user,
     has username "Totally-not-Bob",
     has email "bob@vaticle.com";
 ----
@@ -573,9 +564,9 @@ The above query fails as it violates the following annotation constraints:
 * the first inserted `user` doesn't have a `username`, which violates the `@key` constraint from the schema;
 * the second `user` has `username` of the value `Bob`, which happens to be non-unique,
   as there is another `user` owning the same attribute in the database already;
-* the second `user` has correct username, but also has non-unique email, which is forbidden by the `@unique` constraint.
+* the third `user` has correct username, but also has non-unique email, which is forbidden by the `@unique` constraint.
 
-As a result we have the following error:
+As a result, we have the following error:
 
 .Error message
 ----
@@ -657,7 +648,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Arithmetic expressions let you perform basic math operations on any value in a `match` clause.
 
-See the list of available xref:typedb::fundamentals/patterns.adoc#_arithmetic_operations[arithmetic operations].
+See the list of available xref:typedb::basics/patterns.adoc#_arithmetic_operations[arithmetic operations].
 
 Let's insert a few files with different sizes, that are calculated:
 

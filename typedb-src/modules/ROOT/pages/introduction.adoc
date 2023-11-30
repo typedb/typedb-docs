@@ -11,13 +11,13 @@ and a beautiful and elegant type-theoretic language: TypeQL.
 
 == Short summary
 
-TypeDB is an OLTP database with xref:typedb::development/connect.adoc#_acid_guarantees[ACID guarantees]
+TypeDB is an OLTP database with xref:connecting/overview.adoc#_acid_guarantees[ACID guarantees]
 that has the following main features:
 
 * TypeDB uses an enhanced Entity-Relationship model, extended with Attributes as first-class citizens;
-* TypeDB has its own special static xref:typedb::fundamentals/types.adoc[type system], supporting user-defined types
+* TypeDB has its own special static xref:typedb::basics/types.adoc[type system], supporting user-defined types
   with subtyping and inheritance, like OOP languages;
-* TypeDB can use rule-based logic embedded into a database schema to xref:typedb::fundamentals/inference.adoc[infer]
+* TypeDB can use rule-based logic embedded into a database schema to xref:typedb::basics/inference.adoc[infer]
   new data from patterns found in existing data;
 * TypeDB uses its own declarative query language -- xref:typeql::overview.adoc[TypeQL].
 
@@ -108,12 +108,12 @@ xref:home:ROOT:install.adoc[Install] TypeDB and use xref:home::quickstart.adoc[]
 To learn more about TypeDB, check the next major sections of the documentation:
 
 * the *Fundamentals* for essential knowledge about TypeDB:
-xref:fundamentals/types.adoc[],
-xref:fundamentals/queries.adoc[],
-xref:fundamentals/patterns.adoc[], and
-xref:fundamentals/inference.adoc[].
+xref:basics/types.adoc[],
+xref:basics/queries.adoc[],
+xref:basics/patterns.adoc[], and
+xref:basics/inference.adoc[].
 * the *Developing with TypeDB* for the in-detail documentation of the TypeDB development workflow, including:
-xref:development/connect.adoc[],
+xref:connecting/overview.adoc[],
 xref:development/schema.adoc[],
 xref:development/write.adoc[], and
 xref:development/read.adoc[].

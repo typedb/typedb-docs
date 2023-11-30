@@ -28,7 +28,7 @@ The following <<_application,example>> showcases how to load <<_dataset,sample d
 <<_node_js,Node.js>>.
 
 The same approach could be used to load data from other sources (e.g., from REST API, or other DB engines using SQL,
-GraphQL) or using other xref:clients::overview.adoc[TypeDB Clients].
+GraphQL) or using other xref:drivers::overview.adoc[TypeDB Clients].
 
 == Schema & data
 
@@ -80,7 +80,7 @@ The schema in the file above consists of the following types.
 * `duration` of `long` value type
 * `name` of `string` value type
 
-Use TypeDB Studio or any other TypeDB Client to xref:clients::studio.adoc#_create_a_database[create a new database]
+Use TypeDB Studio or any other TypeDB Client to xref:connecting/studio.adoc#_create_a_database[create a new database]
 named `phone_calls` in a TypeDB server and import the schema
 https://github.com/vaticle/typedb-driver-examples/blob/master/telecom/phone_calls/schema.tql[file,window=_blank].
 
