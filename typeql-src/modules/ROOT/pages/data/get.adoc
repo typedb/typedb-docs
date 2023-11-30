@@ -4,10 +4,10 @@
 :pageTitle: Get query
 
 A get query retrieves concepts from a TypeDB database that you can further process with the
-xref:clients::overview.adoc#_driver_api[Driver API].
+xref:drivers::overview.adoc#_driver_api[Driver API].
 
 Get queries do not modify data, so they can be used in both read and write transactions.
-In read transactions, Get queries can use rule-based xref:typedb::fundamentals/inference.adoc[inference].
+In read transactions, Get queries can use rule-based xref:typedb::basics/inference.adoc[inference].
 
 == Behavior
 
@@ -568,7 +568,7 @@ and the rest don't have an ownership of the attribute.
 .See how to load such a dataset in a database
 [%collapsible]
 ====
-In xref:clients::studio.adoc[TypeDB Studio], we can paste the following TypeQL in the text editor
+In xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio], we can paste the following TypeQL in the text editor
 and send all the queries by a single click in a data/write mode.
 Make sure to commit the changes.
 
@@ -597,7 +597,7 @@ insert $p isa person, has name "Alice", has age 31, has certified-fortune-teller
 insert $p isa person;
 ----
 
-To insert this dataset with any xref:clients::overview.adoc[other] client --
+To insert this dataset with any xref:drivers::overview.adoc[other] client --
 make sure to send every line, except from comments, as a separate insert query.
 
 For more information on an Insert query, see the xref:typeql::data/insert.adoc[] page.

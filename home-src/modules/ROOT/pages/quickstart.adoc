@@ -1,5 +1,6 @@
 = Quickstart
 :keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query
+:page-aliases: typedb::quickstart-guide.adoc
 :pageTitle: Quickstart guide
 :summary: Learn how to create a TypeDB database, load schema and data, perform queries.
 :page-aliases: typedb::quickstart.adoc
@@ -8,78 +9,127 @@
 
 This Quickstart guide shows how to set up a TypeDB database and run queries.
 
-== Prerequisites
+== Run TypeDB
 
-. xref:home::install.adoc#_install[Install TypeDB Core].
-. xref:home::install.adoc#_studio[Install TypeDB Studio].
+To start TypeDB, select the TypeDB edition below and follow the instructions.
 
-== Start TypeDB
+[tabs]
+====
+Cloud::
++
+--
+include::home::install.adoc[tag=cloud-run]
+--
 
-To start a TypeDB Core server:
+Enterprise::
++
+--
+include::home::install.adoc[tag=enterprise-run]
+--
 
-[,bash]
-----
-typedb server
-----
+Core::
++
+--
+TypeDB Core needs to be xref:home::install.adoc#_core[installed] first.
 
-To run TypeDB Core in a new Docker container:
+include::home::install.adoc[tag=core-run]
+--
+====
 
-[,bash]
-----
-docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
-----
+[#_typedb_studio]
+== Connect with TypeDB Studio
 
-[#_typedb_client]
-== Run TypeDB Studio
+TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
+xref:home::install.adoc#_studio[installed] and launched separately from a TypeDB server.
 
-xref:clients:ROOT:studio.adoc[TypeDB Studio] is a standalone TypeDB Client with GUI that needs to be
-installed and launched separately from a TypeDB server.
+Find the TypeDB Studio binary and run it.
+Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 
-To start TypeDB Studio, find the installed binary file and run it.
+//image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
-image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
+[tabs]
+====
+Cloud::
++
+--
+image::studio-connect-cloud.png[TypeDB Studio connect window, width = 75%, link=self]
 
-== Connect to TypeDB
+. Switch the `Server` field drop-down to `TypeDB Enterprise`.
+. Click btn:[Manage Enterprise Addresses] button and add all servers (address and port)
+from your TypeDB Cloud deployment.
+Close the Address management window.
+. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
+. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
+. Click `Connect`.
 
-TypeDB Studio needs a network connection to a TypeDB server to manage databases and send queries:
+[IMPORTANT]
+=====
+Don't forget to change the default username and password.
+You can use xref:typedb::managing/user-management.adoc#_current_user_password[TypeDB Console] to do that.
+=====
+--
 
-. Click btn:[Connect to TypeDB] on the right side of the toolbar.
-. Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
+Enterprise::
++
+--
+image::studio-connect-enterprise.png[TypeDB Studio connect window, width = 75%, link=self]
+
+. Switch the `Server` field drop-down to `TypeDB Enterprise`.
+. Click btn:[Manage Enterprise Addresses] button and add all servers (address and port)
+from your TypeDB Cloud deployment.
+Close the Address management window.
+. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
+. Turn on the `Enable TLS` option and select the CA certificate for your on-premise cluster.
+. Click `Connect`.
+
+[IMPORTANT]
+=====
+Don't forget to change the default username and password.
+You can use xref:typedb::managing/user-management.adoc#_current_user_password[TypeDB Console] to do that.
+=====
+--
+
+Core::
++
+--
+image::studio-connect-core.png[TypeDB Studio connect window, width = 75%, link=self]
+
+Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
+--
+====
 
 == Select a project folder
 
-Select a xref:clients:ROOT:studio.adoc#_open_a_project_directory[project directory]
+Select a xref:typedb:ROOT:connecting/studio.adoc#_open_a_project_directory[project directory]
 to store project files by clicking either:
 
-* btn:[Open Project] in the *Project* panel (upper left); or
-* Folder icon (the first icon on the top toolbar).
+* btn:[Open Project] in the *Project* panel; or
+* Folder icon (image:home::studio-icons/project.png[]) in the top toolbar.
 
 [#_create_a_database]
 == Create a new database
 
 Create a database to play with:
 
-. Click the database icon (the third button in the top toolbar).
-+
-image::studio-database.png[Database Manager button,width = 50%,link=self]
-. Enter `try-studio` and click btn:[Create].
-. Select `try-studio` from the database dropdown (to the right of the database icon).
+. Click the database icon (image:home::studio-icons/database.png[]) in the top toolbar.
+. Enter a name for a new database, for example, `typedb-1`, and click btn:[Create].
+. Select the new database from the dropdown to the right of the database icon.
 
 [#_define_a_schema]
 == Define a schema
 
 A new database needs a schema before we can load any data:
 
+. Ensure the Session toggle (`schema` / `data`) is set to `schema` and
+  the Transaction toggle (`write` / `read`) is set to `write`.
 . Open a new tab and copy-paste the following Define query:
 +
 [,typeql]
 ----
 include::attachment$quickstart-schema.tql[]
 ----
-. Ensure the Session toggle (`schema` / `data`) is set to `schema` and
-  the Transaction toggle (`write` / `read`) is set to `write`.
-. Click btn:[Run Query].
-. When the query has completed, click btn:[Commit Transaction].
+. Click btn:[Run Query] (image:home::studio-icons/run.png[]).
+. When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Now that the schema has been defined, data can be inserted into the database.
 
@@ -87,15 +137,15 @@ Now that the schema has been defined, data can be inserted into the database.
 
 Now let's insert some sample data into the newly created database to be able to query in future steps:
 
+. Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
 . Open a new tab and copy-paste the following Insert queries:
 +
 [,typeql]
 ----
 include::attachment$quickstart-data.tql[]
 ----
-. Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
-. Execute all queries in the file by clicking btn:[Run Query].
-. When the queries have completed, click btn:[Commit Transaction].
+. Execute all queries in the file by clicking btn:[Run Query] (image:home::studio-icons/run.png[]).
+. When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
@@ -164,14 +214,13 @@ To xref:typeql::data/get.adoc[get] all instances of a `person` type with all att
 [,typeql]
 ----
 match
-$p isa person,
-    has $a;
+$p isa person, has $a;
 get $p, $a;
 ----
 
 The above xref:typeql::data/get.adoc[Get] query returns concepts from a database as a ConceptMap
-that can be used programmatically with a xref:clients::overview.adoc#_typedb_drivers[Driver API] to process the result.
-The following image is a graph visualization produced by xref:clients::studio.adoc[TypeDB Studio].
+that can be used programmatically with a xref:drivers::overview.adoc#_typedb_drivers[Driver API] to process the result.
+The following image is a graph visualization produced by xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio].
 
 image::quickstart-get-example.png[Quickstart Get query example, role=framed, width = 75%, link=self]
 
@@ -184,8 +233,7 @@ owned by every person with a full name that contains substring `Kevin`:
 [,typeql]
 ----
 match
-$p isa person,
-    has full-name $fn;
+$p isa person, has full-name $fn;
 $fn contains "Kevin";
 fetch $p as person: email as "E-mail address";
 ----
@@ -213,8 +261,7 @@ that contains "Kevin":
 [,typeql]
 ----
 match
-$p isa person,
-    has full-name $fn;
+$p isa person, has full-name $fn;
 $fn contains "Kevin";
 insert $p has email "kevin@gmail.com";
 ----
@@ -235,8 +282,10 @@ $p isa person,
     has email $e;
 $fn contains "Kevin";
 $e = "kevin@gmail.com";
-delete $p has $e;
-insert $p has email "kevin2@gmail.com";
+delete
+$p has $e;
+insert
+$p has email "kevin2@gmail.com";
 ----
 
 The query above does the following:
@@ -259,13 +308,14 @@ $p isa person,
     has email $e;
 $fn contains "Kevin";
 $e = "kevin2@gmail.com";
-delete $p has $e;
+delete
+$p has $e;
 ----
 
 == Repeat with TypeDB Console
 
-xref:clients:ROOT:console.adoc[TypeDB Console] is usually distributed with TypeDB.
-You can find it with the TypeDB installed or xref:home::install.adoc#_console[install] it separately.
+xref:typedb:ROOT:connecting/console.adoc[TypeDB Console] is usually distributed with TypeDB.
+You can find it with the TypeDB or xref:home::install.adoc#_console[install] it separately.
 
 [#_console_run]
 === Run TypeDB Console
@@ -286,7 +336,7 @@ Upon connection, it shows a prompt for a CLI input.
 
 [,bash]
 ----
-database create try-console
+database create typedb-2
 ----
 
 [#_console_define_a_schema]
@@ -296,7 +346,7 @@ database create try-console
 +
 [,bash]
 ----
-transaction try-console schema write
+transaction typedb-2 schema write
 ----
 . Run query:
 +
@@ -320,7 +370,7 @@ commit
 +
 [,bash]
 ----
-transaction try-console data write
+transaction typedb-2 data write
 ----
 . Run queries:
 +
@@ -341,36 +391,26 @@ commit
 
 Repeat the <<_query_examples>> from TypeDB Studio in TypeDB Console.
 
-== Stop TypeDB server
-
-To stop a TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
-
-For a Docker container:
-
-include::home::partial$docker.adoc[tag=stop]
-
 [#_learn_more]
 == Learn more
 
 After completing this guide, we recommend the following order of topics to continue exploring TypeDB:
 
-//#todo Add another link to the TypeDB in 20 queries page
-
-. Explore more queries with the xref:home::25-queries.adoc[] page.
+. Explore more interesting queries with the xref:home::25-queries.adoc[] page.
 . Browse the Fundamentals section for essential information of how TypeDB works:
-xref:typedb::fundamentals/types.adoc[],
-xref:typedb::fundamentals/queries.adoc[],
-xref:typedb::fundamentals/patterns.adoc[], and
-xref:typedb::fundamentals/inference.adoc[];
-. Discover how to xref:typedb::development/connect.adoc[connect] to TypeDB, manage transactions, and
+xref:typedb::basics/types.adoc[],
+xref:typedb::basics/queries.adoc[],
+xref:typedb::basics/patterns.adoc[], and
+xref:typedb::basics/inference.adoc[];
+. Discover how to xref:typedb:ROOT:connecting/overview.adoc[connect] to TypeDB, manage transactions, and
 define a xref:typedb::development/schema.adoc[schema] of a database;
 . Find out more about xref:typedb::development/write.adoc[writing] and
 xref:typedb::development/read.adoc[reading] data from a TypeDB
 database and how to interpret a xref:typedb::development/response.adoc[response] to a query;
 . Learn how to create an application with TypeDB, using any of the
-   xref:clients:ROOT:overview.adoc#_typedb_drivers[TypeDB Drivers]:
-    - xref:clients:ROOT:rust-driver/overview.adoc[Rust Driver]
-    - xref:clients:ROOT:python-driver/overview.adoc[Python Driver];
-    - xref:clients:ROOT:nodejs-driver/overview.adoc[Node.js Driver];
-    - xref:clients:ROOT:java-driver/overview.adoc[Java Driver].
+   xref:drivers:ROOT:overview.adoc#_typedb_drivers[TypeDB Drivers]:
+    - xref:drivers:ROOT:rust/overview.adoc[Rust Driver]
+    - xref:drivers:ROOT:python/overview.adoc[Python Driver];
+    - xref:drivers:ROOT:nodejs/overview.adoc[Node.js Driver];
+    - xref:drivers:ROOT:java/overview.adoc[Java Driver].
 //. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.

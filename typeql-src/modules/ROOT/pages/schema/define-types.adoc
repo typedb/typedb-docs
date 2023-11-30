@@ -21,8 +21,8 @@ To use a new TypeDB database, we need to define its schema first. We can do it w
 
 [IMPORTANT]
 ====
-To define a schema, a `schema` xref:typedb:ROOT:development/connect.adoc#_sessions[session] must be opened,
-and a `write` xref:typedb:ROOT:development/connect.adoc#_transactions[transaction] started.
+To define a schema, a `schema` xref:typedb:ROOT:connecting/overview.adoc#_sessions[session] must be opened,
+and a `write` xref:typedb:ROOT:connecting/overview.adoc#_transactions[transaction] started.
 The changes must be *committed*, or they will NOT be permanent.
 ====
 
@@ -152,7 +152,7 @@ group-membership sub membership,
     relates group-member as member;
 ----
 
-The above example can be run in xref:clients:ROOT:studio.adoc[TypeDB Studio]. See the
+The above example can be run in xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio]. See the
 xref:home::quickstart.adoc[Quickstart guide] for full descriptions of the following steps:
 
 . Make sure a TypeDB server is up.

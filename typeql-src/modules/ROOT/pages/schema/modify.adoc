@@ -116,12 +116,12 @@ undefine rule add-view-permission;
 == Rename a type
 
 // tag::rename[]
-To rename a type (to change its label), use the xref:clients:ROOT:studio.adoc[TypeDB Studio] or
+To rename a type (to change its label), use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or
 TypeDB Driver API:
-xref:clients::rust-driver/api-reference.adoc#_trait_ThingTypeAPI_method_set_label[Rust],
-xref:clients::python-driver/api-reference.adoc#_Type_set_label[Python],
-xref:clients::java-driver/api-reference.adoc#_Type_setLabel_com_vaticle_typedb_driver_api_TypeDBTransaction_java_lang_String[Java],
-xref:clients::nodejs-driver/api-reference.adoc#_Type_setLabel[Node.js].
+xref:drivers::rust/api-reference.adoc#_trait_ThingTypeAPI_method_set_label[Rust],
+xref:drivers::python/api-reference.adoc#_Type_set_label[Python],
+xref:drivers::java/api-reference.adoc#_Type_setLabel_com_vaticle_typedb_driver_api_TypeDBTransaction_java_lang_String[Java],
+xref:drivers::nodejs/api-reference.adoc#_Type_setLabel[Node.js].
 // end::rename[]
 
 == Modify a rule

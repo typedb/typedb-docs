@@ -1,0 +1,149 @@
+= User management
+:keywords: typedb, users, access, username, password
+:pageTitle: User management
+:summary: TypeDB user management.
+
+[NOTE]
+====
+User management features are a part of TypeDB Cloud & TypeDB Enterprise.
+====
+
+You can use TypeDB Console or TypeDB Driver API for user management.
+
+Assuming TypeDB Console is xref:home::install.adoc#_console[installed], to connect to TypeDB Cloud/Enterprise:
+
+[,bash]
+----
+typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
+----
+
+For more information on how to use TypeDB Console, see the xref:connecting/console.adoc[] page.
+
+For more information on user management with TypeDB Driver API,
+see the xref:drivers::python/api-reference.adoc#_UserManager[Python],
+xref:drivers::rust/api-reference.adoc#_struct_UserManager[Rust],
+xref:drivers::java/api-reference.adoc#_UserManager[Java],
+xref:drivers::nodejs/api-reference.adoc#_UserManager[Node.js] API Reference pages.
+
+[#_default_credentials]
+== Default credentials
+
+By default, all TypeDB Cloud deployments and TypeDB Enterprise installations have only one account:
+
+* Username: `admin`
+* Password: `password`
+
+This is the administrator account with maximum privileges.
+Only this account can use most of the user management features, including creating new users.
+
+[NOTE]
+====
+In TypeDB Cloud, you must change the administrator's password to something different from the default value.
+Until you change the password, you cannot perform *any* operations other than changing the password.
+====
+
+== Operations
+
+The <<_current_user_password>> operation is available for any user.
+All other user management operations are restricted to the built-in <<_default_credentials,administrator>> account only.
+
+[#_list_all_users]
+=== List all users
+_This action is available only for the `admin` account._
+
+To list all users existing on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+
+[,bash]
+----
+user list
+----
+
+[#_create_a_user]
+=== Create a user
+_This action is available only for the `admin` account._
+
+To create a new user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+
+[,bash]
+----
+user create <username>
+----
+
+Type in a password for the new user when prompted.
+
+[#_delete_a_user]
+=== Delete a user
+_This action is available only for the `admin` account._
+
+To delete a user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+
+[,bash]
+----
+user delete <username>
+----
+
+[#_change_password]
+=== Change user's password
+_This action is available only for the `admin` account._
+
+To change a password of a user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+
+[,bash]
+----
+user password-set <username>
+----
+
+Type in a new password for the user when prompted.
+
+[#_current_user_password]
+=== Change own password
+_This action is available for any account._
+
+To change the password of the current user, in TypeDB Console CLI run:
+
+[,bash]
+----
+user password-update
+----
+
+Type in the old password, then the new password.
+You'll be disconnected as a result. Reconnect with the new password.
+
+////
+Use the following TypeDB Console commands to manage users.
+
+Retrieve a list of all users:
+
+[,bash]
+----
+user list
+----
+
+Create a new user:
+
+[,bash]
+----
+user create <username>
+----
+
+Set password for a user:
+
+[,bash]
+----
+user set-password <username>
+----
+
+Update password of the current user:
+
+[,bash]
+----
+user update-password
+----
+
+Delete a user:
+
+[,bash]
+----
+user delete <username>
+----
+////
