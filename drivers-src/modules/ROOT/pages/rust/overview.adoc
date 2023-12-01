@@ -19,10 +19,27 @@ Please see the
 
 To install TypeDB Rust Driver:
 
+[tabs]
+====
+async::
++
+--
 [,bash]
 ----
 cargo add typedb-driver
 ----
+--
+
+sync::
++
+--
+[,bash]
+----
+cargo add typedb-driver -F sync
+----
+--
+====
+
 //cargo add typedb-driver@2.24.5
 
 == Rust Driver API

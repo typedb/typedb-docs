@@ -4,70 +4,131 @@
 :pageTitle: Connecting
 :summary: Brief description of connection to TypeDB.
 :tabs-sync-option:
+:!example-caption:
+
+TypeDB accepts client connections via gRPC based
+https://github.com/vaticle/typedb-protocol[TypeDB Driver RPC,window=_blank] protocol.
+
+A library that implements this protocol and provides a native API to access TypeDB is called a TypeDB Driver.
+
+A TypeDB Client is any software that can connect to a TypeDB,
+including TypeDB Drivers and standalone software applications that use TypeDB Drivers.
 
 [#_clients]
 == Clients
 
-A TypeDB Client is any software that can connect to a TypeDB.
+There are multiple open-source TypeDB Clients that you can use to connect to TypeDB:
 
-TypeDB server accepts remote connections from any TypeDB Clients:
-xref:typedb::connecting/studio.adoc[],
-xref:typedb::connecting/console.adoc[], and
-xref:drivers:ROOT:overview.adoc[TypeDB Drivers].
+* xref:typedb::connecting/studio.adoc[] -- a GUI-based IDE for TypeDB;
+* xref:typedb::connecting/console.adoc[] -- a default CLI tool for TypeDB;
+* xref:drivers::overview.adoc[TypeDB Drivers] for the most popular programming languages:
+xref:drivers::rust/overview.adoc[Rust],
+xref:drivers::python/overview.adoc[Python],
+xref:drivers::java/overview.adoc[Java],
+xref:drivers::nodejs/overview.adoc[Node.js].
 
-Once connected, TypeDB Clients can manage <<_databases,databases>>, <<_sessions,sessions>>, and
-<<_transactions, transactions>>.
+For TypeDB Studio connection instructions, see the xref:home::quickstart.adoc#_typedb_studio[Quickstart] guide.
+For all other TypeDB Clients, see below.
 
+.Connecting to TypeDB
 [tabs]
 ====
 TypeDB Console::
 +
 --
+.Connect to TypeDB Core
 [,bash]
 ----
 typedb console --server=127.0.0.1:1729
 ----
+
+.Connect to TypeDB Cloud / Enterprise
+[,bash]
+----
+typedb console --enterprise=127.0.0.1:1729 --username=admin --password --tls-enabled=true
+----
+For more information on CLI commands, see the xref:typedb::connecting/console.adoc[] page.
 --
 
-Java::
+Rust::
 +
 --
-[,java]
+.Connect to TypeDB Core
+[,rust]
 ----
-TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
+let driver = Connection::new_core("127.0.0.1:1729");
 ----
+
+.Connect to TypeDB Cloud / Enterprise
+[,rust]
+----
+let driver = Connection::new_enterprise(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None).unwrap());
+----
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 --
 
 Python::
 +
 --
+.Connect to TypeDB Core
 [,python]
 ----
 driver = TypeDB.core_driver("127.0.0.1:1729")
 ----
+
+.Connect to TypeDB Cloud / Enterprise
+[,python]
+----
+driver = TypeDB.enterprise_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True))
+----
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
+--
+
+Java::
++
+--
+.Connect to TypeDB Core
+[,java]
+----
+TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
+----
+
+.Connect to TypeDB Cloud / Enterprise
+[,java]
+----
+TypeDBDriver driver = TypeDB.enterpriseDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
+----
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 --
 
 Node.js::
 +
 --
+.Connect to TypeDB Core
 [,js]
 ----
-driver = TypeDB.coreDriver("127.0.0.1:1729");
+const driver = await TypeDB.coreDriver("127.0.0.1:1729");
+----
+
+.Connect to TypeDB Cloud / Enterprise
+[,js]
+----
+const driver = await TypeDB.enterpriseDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
 ----
 --
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 ====
 
-[NOTE]
-====
-To connect to TypeDB Cloud or TypeDB Enterprise use `enterpriseDriver`/`enterprise_driver` instead of
-`coreDriver`/`core_driver`.
-====
+To send a query, TypeDB Client must connect to TypeDB, open a session, and open a transaction first.
+Once connected, Clients can manage <<_databases,databases>>,
+xref:typedb::managing/user-management.adoc[users], and
+<<_sessions,sessions>>.
 
 [#_protocol_version]
 === Protocol version control
 
-There is a server-side check for the TypeDB protocol encoding version.
-This is to prevent any potential errors from using incompatible versions of TypeDB Client and TypeDB.
+Since version `2.18.0` there is a server-side check for the TypeDB protocol encoding version.
+This is to prevent any potential errors from using incompatible versions of TypeDB and TypeDB Client.
 
 See the compatibility tables for protocol encoding versions of:
 xref:typedb::connecting/studio.adoc#_version_compatibility[TypeDB Studio],
@@ -77,25 +138,19 @@ xref:drivers::python/overview.adoc#_version_compatibility[Python],
 xref:drivers::java/overview.adoc#_version_compatibility[Java],
 xref:drivers::nodejs/overview.adoc#_version_compatibility[Node.js].
 
-For backward compatibility protocol version control allows TypeDB Clients versions prior to `2.18.0` (i.e., with
-protocol encoding version N/A, or < 1) to connect with a TypeDB server with protocol encoding version 1.
-
-If we try to connect with a newer client to an older server (prior to version `2.18.0`), we should get an error
-due to the older server lacking the API to check the protocol version.
-
 [#_databases]
 == Databases
 
-TypeDB instances can contain multiple databases. A database consists of a xref:development/schema.adoc[schema] and
-xref:development/write.adoc[data]. It is both separate and independent of any other database: two databases can't influence
-each other. However, TypeDB Clients can connect to multiple databases simultaneously.
+TypeDB servers store data in databases.
+A database consists of a xref:development/schema.adoc[schema] and xref:development/write.adoc[data].
+Databases are isolated: two databases can't influence each other.
+However, a TypeDB Client can connect to multiple databases simultaneously.
 
-[NOTE]
-====
-TypeDB is optimized for a small number of databases. It's recommended to start with a single database and add more if
-necessary, e.g., to support more applications. The **best practice** is to keep the number of databases **under 10**.
-====
+TypeDB is optimized for a small number of databases.
+It's recommended to start with a single database and add more if necessary, e.g., to support more applications.
+The **best practice** is to keep the number of databases **under 10**.
 
+.Managing databases
 [tabs]
 ====
 TypeDB Console::
@@ -114,21 +169,21 @@ database delete test-db
 ----
 --
 
-Java::
+Rust::
 +
 --
-[,java]
+[,rust]
 ----
 // create database
-driver.databases().create("test-db");
+databases.create("test-db");
 // get database schema
-driver.databases().get("test-db").schema();
+databases.get("test-db").unwrap().schema().unwrap();
 // get all databases
-driver.databases().all();
+databases.all().unwrap();
 // check if database exists
-driver.databases().contains("test-db");
+databases.contains("test-db").unwrap();
 // delete database
-driver.databases().get("test-db").delete();
+databases.get("test-db").unwrap().delete();
 ----
 --
 
@@ -147,6 +202,24 @@ driver.databases().all()
 driver.databases().contains("test-db")
 # delete database
 driver.databases().get("test-db").delete()
+----
+--
+
+Java::
++
+--
+[,java]
+----
+// create database
+driver.databases().create("test-db");
+// get database schema
+driver.databases().get("test-db").schema();
+// get all databases
+driver.databases().all();
+// check if database exists
+driver.databases().contains("test-db");
+// delete database
+driver.databases().get("test-db").delete();
 ----
 --
 
@@ -172,8 +245,9 @@ await (await driver.databases().get("test-db")).delete();
 [#_sessions]
 == Sessions
 
-A session is like a tunnel connection to a database in a TypeDB server. An open session lets us open transactions
-in it.
+A session is like a tunnel connection to a database on a TypeDB server.
+There are two types of sessions: `schema` and `data`.
+An open session lets us open transactions to a particular database.
 
 image::drivers::concurrency-model.png[Session-transaction-query, role=framed, width = 75%, link=self]
 
@@ -181,12 +255,13 @@ Any TypeDB Client automatically exchanges internal signals with TypeDB server to
 If server doesn't receive this signal for a period of time bigger than the timeout (by default, 30 secs) it
 forcibly closes the session due to inactivity.
 
-There are two types of sessions: `schema` and `data`.
-
 [WARNING]
 ====
-Only one *Schema* session can be open at any time. And any open *Schema* session blocks all attempts to open a
-*Data Write* transaction. For more information on these limits see the <<_schema_integrity>> section.
+Only one *Schema* session can be open at any time.
+And any open *Schema* session blocks all attempts to open a *Data Write* transaction.
+For more information on these limitations,
+see the xref:basics/acid.adoc#_schema_integrity[Schema integrity enforcement] section on the
+xref:basics/acid.adoc[] page.
 ====
 
 [cols="^,^,^,^,^",options="header"]
@@ -209,13 +284,11 @@ Only one *Schema* session can be open at any time. And any open *Schema* session
 Write transactions are strict to session types.
 TypeDB Clients can write data only in DATA sessions and can write schema only in SCHEMA sessions (see the table above).
 
-[NOTE]
-====
 If a client needs to read both schema and data from a database, it can be done in any session type (usually used when
 a data query needs information on types).
 But it is NOT possible to modify a schema and data in the same session.
-====
 
+.Opening a session
 [tabs]
 ====
 TypeDB Console::
@@ -227,12 +300,12 @@ transaction iam data read
 ----
 --
 
-Java::
+Rust::
 +
 --
-[,java]
+[,rust]
 ----
-TypeDBSession session = driver.session("iam", TypeDBSession.Type.DATA);
+session = Session::new(databases.get("iam").unwrap(), SessionType::Data);
 ----
 --
 
@@ -242,6 +315,15 @@ Python::
 [,python]
 ----
 session = driver.session("iam", SessionType.DATA)
+----
+--
+
+Java::
++
+--
+[,java]
+----
+TypeDBSession session = driver.session("iam", TypeDBSession.Type.DATA);
 ----
 --
 
@@ -257,6 +339,9 @@ session = await driver.session("iam", SessionType.DATA);
 
 Sessions must be explicitly opened and closed by TypeDB Clients.
 
+TypeDB Studio manages sessions automatically.
+A type of session to send a query can be selected with a switch of a toggle in the GUI.
+
 For more information on how to do it with different TypeDB Clients, see the documentation:
 
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
@@ -267,7 +352,7 @@ For more information on how to do it with different TypeDB Clients, see the docu
 ** xref:drivers:ROOT:java/api-reference.adoc#_session_header[Java],
 ** xref:drivers:ROOT:nodejs/api-reference.adoc#_session_header[Node.js].
 
-[IMPORTANT]
+[NOTE]
 ====
 It is recommended to avoid long-running sessions because of possible network failures.
 ====
@@ -278,13 +363,12 @@ A good principle to follow is for logically coherent transactions to be grouped 
 == Transactions
 
 All queries to a TypeDB database are performed through transactions. TypeDB transactions provide full
-<<_acid_guarantees,ACID guarantees>> up to <<_isolation,snapshot isolation>>.
+xref:basics/acid.adoc#_acid_guarantees[ACID guarantees] up to xref:basics/acid.adoc#_isolation[snapshot isolation].
 
 There are two types of transactions: `read` and `write`.
+A transaction can be opened only in an open session.
 
-Transactions must be explicitly opened and closed by a TypeDB Client.
-A transaction can be opened only inside an opened session.
-
+.Transaction control
 [tabs]
 ====
 TypeDB Console::
@@ -302,18 +386,18 @@ commit
 ----
 --
 
-Java::
+Rust::
 +
 --
-[,java]
+[,rust]
 ----
 // start transaction
-TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
-transaction.query().insert(insertQuery1);
-transaction.query().insert(insertQuery2);
-transaction.query().insert(insertQueryN);
+let transaction = session.transaction(TransactionType::Write);
+transaction.query().insert(insert_query1);
+transaction.query().insert(insert_query2);
+transaction.query().insert(insert_queryN);
 // commit changes
-transaction.commit();
+transaction.commit().resolve();
 ----
 --
 
@@ -329,6 +413,21 @@ transaction.query().insert(insert_query2)
 transaction.query().insert(insert_queryN)
 # commit changes
 transaction.commit()
+----
+--
+
+Java::
++
+--
+[,java]
+----
+// start transaction
+TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
+transaction.query().insert(insertQuery1);
+transaction.query().insert(insertQuery2);
+transaction.query().insert(insertQueryN);
+// commit changes
+transaction.commit();
 ----
 --
 
@@ -348,7 +447,9 @@ await transaction.commit();
 --
 ====
 
-TypeDB Studio manages sessions automatically and lets you control transactions through its GUI.
+Transactions must be explicitly opened and closed by a TypeDB Client.
+
+TypeDB Studio lets you control the current transaction through its GUI.
 
 For more information on how to do it with different Clients, see the documentation:
 
@@ -361,7 +462,8 @@ For more information on how to do it with different Clients, see the documentati
 ** xref:drivers:ROOT:nodejs/api-reference.adoc#_transaction_header[Node.js].
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent, lock-free
-read/write transactions. For more information, see the <<_acid_guarantees>> section below.
+read/write transactions.
+For more information, see the xref:basics/acid.adoc[] page.
 
 === Transaction time limit
 
@@ -378,85 +480,6 @@ caused by transactions that will not be completed and terminate unresponsive tra
 * Transactions should group logically coherent queries.
 
 For more advice and *best practices*, visit the xref:development/best.adoc[Best practices] page.
-
-[#_acid_guarantees]
-== ACID guarantees
-
-All TypeDB transactions have ACID guarantees.
-
-* <<_atomicity>>
-* <<_consistency>>
-* <<_isolation>>
-* <<_durability>>
-
-Schema operations have additional concurrency restrictions to guarantee schema integrity.
-See the <<_schema_integrity>> section.
-
-[#_atomicity]
-=== Atomicity
-
-TypeDB transactions are all or nothing. If a commit succeeds, all of its changes are persisted. If it fails, all of its
-changes will be rolled back.
-
-[#_consistency]
-=== Consistency
-
-TypeDB validates all changes to data and schemas. If changes to a database violate schema or data constraints, the
-transaction will fail and be rolled back.
-
-[#_isolation]
-=== Isolation
-
-TypeDB transactions use snapshot isolation and optimistic concurrency control to support simultaneous, lock-free
-read/write transactions. Thus, a transaction operates on its snapshot of the data, independent of any other. All
-of its changes are hidden from other transactions. However, they will become visible immediately after a successful
-commit.
-
-If two transactions attempt to modify the same data, one will succeed on commit while the other will fail. However,
-one transaction can read data while another is writing it.
-
-[#_durability]
-=== Durability
-
-TypeDB writes transactions to a write-ahead log upon commit, ensuring they can be recovered if an unexpected failure,
-e.g., power outage, occurs before the data is modified.
-
-[NOTE]
-====
-TypeDB durability guarantees do not apply when storage devices become corrupt or damaged.
-====
-
-Successful write transactions are written to the write-ahead log before returning a response to the client. If a
-transaction is not successful, all changes are rolled back.
-
-For TypeDB Enterprise and TypeDB Cloud installations, transaction acknowledgment is sent to the client after a majority
-of replicas replicated the transaction results. See xref:managing/ha.adoc#_replication[Replication] for details.
-
-[#_schema_integrity]
-=== Schema integrity enforcement
-
-* Only one *Schema* session can be opened.
-
-* Only one *Write* transaction in a *Schema* session can be opened.
-
-* Opening a *Schema* session prevents any *Data Write* transactions.
-
-* Any *Write* transaction opened in a *Data* session prevents us from opening a *Schema* session.
-
-[NOTE]
-====
-If anything prevents us from opening a session, TypeDB will wait for a timeout of about *10 seconds* and, if the problem
-persists, throw an error:
-
-----
-[SSN03] Invalid Session Operation: Could not acquire lock for schema session. Another schema session may have been left open.
-----
-====
-
-Hence, we can always:
-
-* open *Data* session,
-* open a *Read* transaction in an existing session of any type.
 
 == Learn more
 
