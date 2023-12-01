@@ -47,8 +47,8 @@ async function main() {
             let answers = await iterator.collect();
             let result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get("n").value,
-                     answer.map.get("e").value]
+                    [answer.get("n").value,
+                     answer.get("e").value]
                 )
             );
             k = 0; // reset the counter
@@ -70,7 +70,7 @@ async function main() {
             answers = await iterator.collect();
             result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get("fp").value]
+                    [answer.get("fp").value]
                 )
             );
             k = 0; // reset the counter
@@ -85,7 +85,7 @@ async function main() {
 
         console.log("");
         console.log("Request #3: Files that Kevin Morrison has view access to (with inference)");
-        let options = TypeDBOptions();
+        let options = new TypeDBOptions();
         options.infer = true; // set option to enable inference
         try {
             transaction = await session.transaction(TransactionType.READ, options); // READ transaction is open
@@ -94,7 +94,7 @@ async function main() {
             answers = await iterator.collect();
             result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get("fp").value]
+                    [answer.get("fp").value]
                 )
             );
             k = 0; // reset the counter
@@ -107,7 +107,7 @@ async function main() {
             answers = await iterator.collect();
             result = await Promise.all(
                 answers.map(answer =>
-                    [answer.map.get("fp").value]
+                    [answer.get("fp").value]
                 )
             );
             for(let i = 0; i < result.length; i++) {
