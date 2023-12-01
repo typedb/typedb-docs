@@ -27,96 +27,96 @@ xref:drivers::python/overview.adoc[Python],
 xref:drivers::java/overview.adoc[Java],
 xref:drivers::nodejs/overview.adoc[Node.js].
 
-To connect to TypeDB Core:
+For TypeDB Studio connection instructions, see the xref:home::quickstart.adoc#_typedb_studio[Quickstart] guide.
+For all other TypeDB Clients, see below.
 
-.Connecting to TypeDB Core
+.Connecting to TypeDB
 [tabs]
 ====
 TypeDB Console::
 +
 --
+.Connect to TypeDB Core
 [,bash]
 ----
 typedb console --server=127.0.0.1:1729
 ----
---
 
-Java::
-+
---
-[,java]
-----
-TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
-----
---
-
-Python::
-+
---
-[,python]
-----
-driver = TypeDB.core_driver("127.0.0.1:1729")
-----
---
-
-Node.js::
-+
---
-[,js]
-----
-driver = TypeDB.coreDriver("127.0.0.1:1729");
-----
---
-====
-
-////
-To connect to TypeDB Cloud / Enterprise:
-
-.Connecting to TypeDB Cloud / Enterprise
-[tabs]
-====
-TypeDB Console::
-+
---
+.Connect to TypeDB Cloud / Enterprise
 [,bash]
 ----
 typedb console --enterprise=127.0.0.1:1729 --username=admin --password --tls-enabled=true
 ----
+For more information on CLI commands, see the xref:typedb::connecting/console.adoc[] page.
 --
-//#todo Add Rust
-Java::
+
+Rust::
 +
 --
-[,java]
+.Connect to TypeDB Core
+[,rust]
 ----
-TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
+let driver = Connection::new_core("127.0.0.1:1729");
 ----
+
+.Connect to TypeDB Cloud / Enterprise
+[,rust]
+----
+let driver = Connection::new_enterprise(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None).unwrap());
+----
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 --
-//#todo fix
+
 Python::
 +
 --
+.Connect to TypeDB Core
+[,python]
+----
+driver = TypeDB.core_driver("127.0.0.1:1729")
+----
+
+.Connect to TypeDB Cloud / Enterprise
 [,python]
 ----
 driver = TypeDB.enterprise_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True))
 ----
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
+--
+
+Java::
++
+--
+.Connect to TypeDB Core
+[,java]
+----
+TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
+----
+
+.Connect to TypeDB Cloud / Enterprise
+[,java]
+----
+TypeDBDriver driver = TypeDB.enterpriseDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
+----
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 --
 
 Node.js::
 +
 --
+.Connect to TypeDB Core
 [,js]
 ----
-driver = TypeDB.coreDriver("127.0.0.1:1729");
+const driver = await TypeDB.coreDriver("127.0.0.1:1729");
+----
+
+.Connect to TypeDB Cloud / Enterprise
+[,js]
+----
+const driver = await TypeDB.enterpriseDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
 ----
 --
-//#todo fix
-====
-////
-[NOTE]
-====
-To connect to TypeDB Cloud or TypeDB Enterprise use `enterpriseDriver`/`enterprise_driver` instead of
-`coreDriver`/`core_driver`.
+For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 ====
 
 To send a query, TypeDB Client must connect to TypeDB, open a session, and open a transaction first.
@@ -169,21 +169,21 @@ database delete test-db
 ----
 --
 
-Java::
+Rust::
 +
 --
-[,java]
+[,rust]
 ----
-// create database
-driver.databases().create("test-db");
-// get database schema
-driver.databases().get("test-db").schema();
-// get all databases
-driver.databases().all();
-// check if database exists
-driver.databases().contains("test-db");
-// delete database
-driver.databases().get("test-db").delete();
+# create database
+databases.create("test-db");
+# get database schema
+databases.get("test-db").unwrap().schema().unwrap();
+# get all databases
+databases.all().unwrap();
+# check if database exists
+databases.contains("test-db").unwrap();
+# delete database
+databases.get("test-db").unwrap().delete();
 ----
 --
 
@@ -202,6 +202,24 @@ driver.databases().all()
 driver.databases().contains("test-db")
 # delete database
 driver.databases().get("test-db").delete()
+----
+--
+
+Java::
++
+--
+[,java]
+----
+// create database
+driver.databases().create("test-db");
+// get database schema
+driver.databases().get("test-db").schema();
+// get all databases
+driver.databases().all();
+// check if database exists
+driver.databases().contains("test-db");
+// delete database
+driver.databases().get("test-db").delete();
 ----
 --
 
@@ -282,12 +300,12 @@ transaction iam data read
 ----
 --
 
-Java::
+Rust::
 +
 --
-[,java]
+[,rust]
 ----
-TypeDBSession session = driver.session("iam", TypeDBSession.Type.DATA);
+session = Session::new(databases.get("iam").unwrap(), SessionType::Data);
 ----
 --
 
@@ -297,6 +315,15 @@ Python::
 [,python]
 ----
 session = driver.session("iam", SessionType.DATA)
+----
+--
+
+Java::
++
+--
+[,java]
+----
+TypeDBSession session = driver.session("iam", TypeDBSession.Type.DATA);
 ----
 --
 
@@ -359,18 +386,18 @@ commit
 ----
 --
 
-Java::
+Rust::
 +
 --
-[,java]
+[,rust]
 ----
-// start transaction
-TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
-transaction.query().insert(insertQuery1);
-transaction.query().insert(insertQuery2);
-transaction.query().insert(insertQueryN);
-// commit changes
-transaction.commit();
+# start transaction
+let transaction = session.transaction(TransactionType::Write);
+transaction.query().insert(insert_query1);
+transaction.query().insert(insert_query2);
+transaction.query().insert(insert_queryN);
+# commit changes
+transaction.commit().resolve();
 ----
 --
 
@@ -386,6 +413,21 @@ transaction.query().insert(insert_query2)
 transaction.query().insert(insert_queryN)
 # commit changes
 transaction.commit()
+----
+--
+
+Java::
++
+--
+[,java]
+----
+// start transaction
+TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
+transaction.query().insert(insertQuery1);
+transaction.query().insert(insertQuery2);
+transaction.query().insert(insertQueryN);
+// commit changes
+transaction.commit();
 ----
 --
 
