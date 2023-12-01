@@ -174,15 +174,15 @@ Rust::
 --
 [,rust]
 ----
-# create database
+// create database
 databases.create("test-db");
-# get database schema
+// get database schema
 databases.get("test-db").unwrap().schema().unwrap();
-# get all databases
+// get all databases
 databases.all().unwrap();
-# check if database exists
+// check if database exists
 databases.contains("test-db").unwrap();
-# delete database
+// delete database
 databases.get("test-db").unwrap().delete();
 ----
 --
@@ -391,12 +391,12 @@ Rust::
 --
 [,rust]
 ----
-# start transaction
+// start transaction
 let transaction = session.transaction(TransactionType::Write);
 transaction.query().insert(insert_query1);
 transaction.query().insert(insert_query2);
 transaction.query().insert(insert_queryN);
-# commit changes
+// commit changes
 transaction.commit().resolve();
 ----
 --
