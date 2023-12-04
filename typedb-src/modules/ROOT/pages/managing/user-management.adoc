@@ -25,18 +25,29 @@ xref:drivers::rust/api-reference.adoc#_struct_UserManager[Rust],
 xref:drivers::java/api-reference.adoc#_UserManager[Java],
 xref:drivers::nodejs/api-reference.adoc#_UserManager[Node.js] API Reference pages.
 
-[#_default_credentials]
-== Default credentials
+[#_first_login]
+== Change password on first login
 
-By default, all TypeDB Cloud deployments and TypeDB Enterprise installations have only one account:
+The First thing you need to do is to change the default admin password:
 
+[caption="step"]
+1. Connect with TypeDB Console (see above).
+Use the default credentials to do so:
++
 * Username: `admin`
 * Password: `password`
+2. Change the password for the default `admin` user:
++
+[,bash]
+----
+user password-update
+----
 
+By default, all TypeDB Cloud deployments and TypeDB Enterprise installations have only one account: `admin`.
 This is the administrator account with maximum privileges.
 Only this account can use most of the user management features, including creating new users.
 
-[NOTE]
+[WARNING]
 ====
 In TypeDB Cloud, you must change the administrator's password to something different from the default value.
 Until you change the password, you cannot perform *any* operations other than changing the password.
@@ -45,7 +56,7 @@ Until you change the password, you cannot perform *any* operations other than ch
 == Operations
 
 The <<_current_user_password>> operation is available for any user.
-All other user management operations are restricted to the built-in <<_default_credentials,administrator>> account only.
+All other user management operations are restricted to the built-in `admin` account only.
 
 [#_list_all_users]
 === List all users

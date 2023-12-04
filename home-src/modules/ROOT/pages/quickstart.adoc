@@ -8,6 +8,8 @@
 
 This Quickstart guide shows how to set up a TypeDB database and run queries.
 
+include::home::overview.adoc[tag=rust-rewrite]
+
 == Run TypeDB
 
 To start TypeDB, select the TypeDB edition below and follow the instructions.
@@ -46,6 +48,12 @@ Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 
 //image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
 
+[IMPORTANT]
+=====
+If you are using TypeDB Cloud/Enterprise:
+xref:typedb::managing/user-management.adoc#_first_login[change the default password] before going any further.
+=====
+
 [tabs]
 ====
 Cloud::
@@ -60,12 +68,6 @@ Close the Address management window.
 . Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
 . Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
 . Click `Connect`.
-
-[IMPORTANT]
-=====
-Don't forget to change the default username and password.
-You can use xref:typedb::managing/user-management.adoc#_current_user_password[TypeDB Console] to do that.
-=====
 --
 
 Enterprise::
@@ -80,12 +82,6 @@ Close the Address management window.
 . Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
 . Turn on the `Enable TLS` option and select the CA certificate for your on-premise cluster.
 . Click `Connect`.
-
-[IMPORTANT]
-=====
-Don't forget to change the default username and password.
-You can use xref:typedb::managing/user-management.adoc#_current_user_password[TypeDB Console] to do that.
-=====
 --
 
 Core::
