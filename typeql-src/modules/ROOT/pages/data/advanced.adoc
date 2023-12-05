@@ -6,7 +6,7 @@
 :toc: macro
 :toclevels: 5
 
-Explore the xref:typeql::data/basic-patterns.adoc[] page before continue reading this page.
+Explore the xref:typeql::data/match.adoc[] page before continue reading this page.
 
 .See the full table of contents for this page
 [%collapsible]
@@ -17,93 +17,8 @@ toc::[]
 [#_pattern_syntax]
 == Pattern syntax
 
-=== Schema
 
-The statements below can be used as standalone patterns or
-xref:typeql::data/basic-patterns.adoc#_combining_statements[combined] with other statements
-to find types defined in a database's schema.
-Use the xref:schema/define-types.adoc[Define] query to try them.
 
-[cols="^.^1,^.^2,^.^2"]
-|===
-| *What we are looking for in a schema* | *Pattern syntax* | *Example*
-
-| Type
-| `$<var_label> type <type>;`
-| `$t type person;`
-
-| Type or subtype
-| `$<var_label> sub <type>;`
-| `$t sub subject;`
-
-| Direct subtype
-| `$<var_label> sub! <type>;`
-| `$t sub! subject;`
-
-| Role in a relation type
-| `<relation> relates $<var_label>;`
-| `permission relates $r;`
-
-| Role player's type in a relation
-| `$<var_label> plays <relation>:<role>;`
-| `$r plays permission:subject;`
-
-| Owner type of an attribute type
-| `$<var_label> owns <attr-type>;`
-| `$o owns full-name;`
-
-| Attribute subtype
-| `$<var> sub[!] <attribute-type> [, value <value-type>];`
-| `$s sub id, value string;`
-|===
-
-=== Data
-
-The statements below can be used as a standalone patterns or in a
-xref:typeql::data/basic-patterns.adoc#_combining_statements[combination] with other statements
-to find data in a database.
-Use the xref:data/get.adoc[Get] query to try them.
-
-[cols="^.^1,^.^2,^.^2"]
-|===
-| *What we are looking for in data* | *Pattern syntax* | *Examples*
-
-| Instance of a type or a subtype
-| `+$<var_label> isa <type> [, <has-attribute statement>...];+`
-| `$p isa person, has $a;`
-
-| Instance of a type
-| `+$<var_label> isa! <type> [, <has-attribute statement>...];+`
-| `$p isa! person, has $a;`
-
-| Instance of an attribute type
-| `+$<var_label> [isa[!] <attr-type>] (contains "<text>" \| like "<regex>" \| <value>) [, <has-attribute statement>...];+`
-a|
-* `$a "Kevin Morrison";`
-* `$b isa full-name;`
-* `$c contains "Kevin";`
-
-| Instance of a relation
-| `+[$<var_label>] ([<role>:] $<var_label> [, [<role>:] $<var_label>]...) isa <relation-type> [, <has-attribute statement>...];+`
-| `$pe (subject: $p, access: $ac) isa permission, has validity true;`
-
-| has-attribute statement
-| `+has <attr-type> ($<var_label> \| [<comparison-operator>] <value> );+`
-| `$f has size-kb > 300;`
-
-| comparison
-| `$<var_label> [<comparison-operator>] <value>;`
-| `$a > 300; $f has size-kb $a;`
-
-| equal
-| `$<var_label> is $<var_label>;`
-| `$p isa person, has $a; $t isa entity; $t is $p; get $t;`
-|===
-
-For more information on xref:typeql::data/basic-patterns.adoc#_comparison_operators[comparison operators],
-xref:typeql::data/basic-patterns.adoc#_computation[computation], and
-xref:typeql::data/basic-patterns.adoc#_combining_statements[combining statements]
--- see the xref:typeql::data/basic-patterns.adoc[] page.
 
 == Matching patterns examples
 

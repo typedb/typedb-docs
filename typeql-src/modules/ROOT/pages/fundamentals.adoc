@@ -110,7 +110,7 @@ $p3 isa person,
 ----
 ====
 
-For more information on patterns, see the xref:typeql::data/basic-patterns.adoc[]
+For more information on patterns, see the xref:typeql::data/match.adoc[]
 and the xref:typeql::data/advanced.adoc[] pages.
 
 [#_schema]
@@ -717,7 +717,7 @@ rule add-view-permission: when {
 See the xref:typedb::tutorials/iam-schema.adoc#_add_view_permission_rule_explanation[explanation].
 ====
 
-We can use xref:data/basic-patterns.adoc#_computation[computation] operations and functions in the condition pattern.
+We can use xref:data/match.adoc#_computation[computation] operations and functions in the condition pattern.
 And we can use value variables in the conclusion of a rule.
 
 // tag::recursive_logic[]

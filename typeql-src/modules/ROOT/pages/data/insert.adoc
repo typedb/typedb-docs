@@ -51,7 +51,7 @@ For more information on a `match` clause, see the
 xref:typeql::queries.adoc#_match[Match clause] description on the Queries page.
 
 For more information on patterns used in a `match` clause, see the
-xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
+xref:data/match.adoc#_patterns_overview[Pattern syntax] section.
 
 [#_insert_clause]
 == Insert clause
@@ -84,7 +84,7 @@ Inserting an ownership of an attribute that doesn't exist in a database yet, imp
 For more information on patterns used in an `insert` clause, see the <<_examples,examples>> section below.
 
 For more information on patterns in general, see the
-xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
+xref:data/match.adoc#_patterns_overview[Pattern syntax] section.
 
 === Inserting instances
 
@@ -101,7 +101,7 @@ Where `<variable>` (e.g., `$x`) -- a query variable of an instance to insert;
 
 Inserting an attribute requires setting both type and value of a new attribute.
 You can specify the value as a separate statement
-(with an equal xref:typeql::data/basic-patterns.adoc#_comparison_operators[comparator]) or in the same statement
+(with an equal xref:typeql::data/match.adoc#_comparison_operators[comparator]) or in the same statement
 (by providing a value directly after a variable, using a whitespace as a separator).
 Alternatively,
 you can insert an attribute implicitly by assigning an ownership of non-existent attribute of a valid type.
