@@ -28,8 +28,6 @@ then there will be no deletions and no insertions.
 An Update query returns a lazy Stream/Iterator of ConceptMap with the inserted data.
 Inserted data must not violate a schema of a database.
 
-`delete` and `insert` patterns must have at least one concept variable from a `match` clause of the same query.
-
 == Syntax
 
 An Update query consists of a
@@ -46,7 +44,8 @@ delete <pattern>
 insert <pattern>
 ----
 
-Both `delete` and `insert` clause patterns use variables from a preceding `match` clause pattern.
+Both `delete` and `insert` clauses patterns can use variables from a preceding `match` clause pattern and
+must have at least one concept variable from a `match` clause of the same query.
 
 [#_match_clause]
 == Match clause
