@@ -1,6 +1,6 @@
 = Match clause
 :Summary: Matching data with patterns
-:keywords: typeql, typedb, query, match, matching, data, pattern, statement, variable, answer
+:keywords: typeql, typedb, query, match, matching, data, pattern, statement, variable, solution, concept, value
 :pageTitle: Match clause
 :!table-caption:
 
@@ -503,3 +503,14 @@ with a path of `README.md`. The pattern additionally specifies the access to be 
 and neither people to have the `full-name` attribute with the value `Masako Holley`.
 // end::complex_example[]
 // end::patterns_body[]
+
+== Learn more
+
+A `match` query can be used in any data query:
+xref:data/fetch.adoc[Fetch],
+xref:data/get.adoc[Get],
+xref:data/insert.adoc[Insert],
+xref:data/delete.adoc[Delete], or
+xref:data/update.adoc[Update].
+
+For additional examples of using patterns in different queries, see the xref:typeql::data/advanced.adoc[] page.
