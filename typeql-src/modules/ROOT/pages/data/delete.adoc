@@ -12,12 +12,13 @@ Delete queries can be used only in write transactions.
 == Behavior
 
 A Delete query deletes concepts, ownerships, and role player references from a database.
+//#todo Check whether we call ownerships, etc. concepts
 
 After matching existing data with a `match` clause,
 use a `delete` clause with another TypeQL pattern to specify exact data to delete.
 
 A `delete` clause is executed once per every result of a preceding `match` clause.
-In particular, if there is no match in a database for a `match` clause of a `delete` query,
+In particular, if there is no match in a database for a `match` clause of a Delete query,
 then there will be no deletions.
 
 A Delete query returns a Promise of an empty response.
@@ -45,30 +46,26 @@ A `match` clause is mandatory in a Delete query.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 specified pattern.
 
-For more information on a `match` clause, see the
-//#todo update the link after introducing the Match clause page!
-xref:typeql::queries.adoc#_match[Match clause] description on the Queries page.
+For more information on a `match` clause, see the xref:data/match.adoc[] page.
 
 For more information on patterns used in a `match` clause, see the
-xref:data/match.adoc#_patterns_overview[Pattern syntax] section.
+xref:data/match.adoc#_patterns_overview[Patterns overview] section.
 
 [#_delete_clause]
 == Delete clause
 
-A `delete` clause is used in a Delete query to specify exact data to remove from a database.
-deleted data should be matched first in a preceding `match` clause.
+// tag::delete_clause[]
+A `delete` clause is used in a query to specify exact data to remove from a database.
+Deleted data should be matched first in a preceding `match` clause.
 
-A `delete` clause can have multiple statements in its pattern to delete in one query.
-But it can't delete types (use the
-xref:schema/modify.adoc#_undefine_a_type[undefine] to delete types) and can't have the following:
-
-- Disjunction
-- Negation
-- `is` keyword
+A pattern of a `delete` clause can have multiple statements for data manipulation
+(see xref:typeql::data/match.adoc#_data_patterns[Data patterns]),
+can use concepts matched by a preceding `match` clause by their variables,
+and can't have a xref:typeql::data/match.adoc#_disjunction[disjunction],
+xref:typeql::data/match.adoc#_negation[negation], or `is` keyword.
 
 This clause is executed exactly once for every result matched by a preceding `match` clause of the same query.
-
-A `delete` clause returns a Promise of an empty response.
+// end::delete_clause[]
 
 [WARNING]
 ====
