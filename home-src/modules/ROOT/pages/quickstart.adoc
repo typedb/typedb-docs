@@ -65,8 +65,8 @@ Close the Address management window.
 
 [NOTE]
 =====
-Change the password for the `admin` account to be able to use TypeDB Cloud deployment.
-You will be asked to do that in a popup on your first login.
+On your first login you will be asked to change the password for the `admin` account.
+A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
 =====
 --
 
@@ -85,8 +85,8 @@ Close the Address management window.
 
 [NOTE]
 =====
-Change the password for the `admin` account to be able to use TypeDB Enterprise installation.
-You will be asked to do that in a popup on your first login.
+On your first login you will be asked to change the password for the `admin` account.
+A TypeDB Enterprise installation will refuse queries until the password is changed from its default value.
 =====
 --
 
@@ -358,7 +358,7 @@ typedb console
 ----
 
 By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.
-Use the `--server` address to specify a different address.
+Use the `--server` argument to specify a different address if needed.
 --
 ====
 
