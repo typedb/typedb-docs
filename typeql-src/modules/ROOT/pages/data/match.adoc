@@ -476,18 +476,8 @@ See xref:typeql::data/advanced.adoc#_using_absolute_value_function[example].
 //image::pattern-structure.png[Combining statements]
 //#todo Fix the image - Types of patterns
 
-By combining statements together, we can express more complex pattern scenarios and their corresponding data.
-
-* *Statement*: A single basic building block, as <<_patterns_overview,explained above>>.
-* *Conjunction* (logical `AND`): A set of statements, where to satisfy a match, all statements must be true. +
-We use conjunctions *by default* just by separating the partaking statements with semicolons `;`.
-* *Disjunction* (logical `OR`): A set of statements, where to satisfy a match, at least one statement must be matched. +
-We form disjunctions by enclosing the partaking statements within curly braces `{}` and joining them together with the
-keyword `or`.
-* *Negation* (logical negation): A statement that explicitly defines conditions that must *not* to be met. +
-We form negations by defining the conditions *not* to be met in curly brackets of a `not {};` block.
-// end::combining[]
-
+By combining statements from different patterns and using <<_disjunction,disjunction>> and <<_negation,negation>>,
+you can express patterns to match very specific data.
 See the <<_combined_statements_example>> below.
 
 // tag::complex_example[]
@@ -496,7 +486,7 @@ See the <<_combined_statements_example>> below.
 
 image::example-pattern.png[Combined example]
 
-The pattern is a conjunction of five different pattern types:
+The above pattern is a combination (conjunction) of statements from multiple patterns:
 
 . *Conjunction 1* specifies the variables for two `person` instances, their `full-names`, `action` instance,
 and `file` instance that has path `README.md`.
