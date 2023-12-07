@@ -99,9 +99,11 @@ All variables of a query must be bound in a `match` clause of a data query or in
 There are two types of variables:
 
 [#_concept_variable]
-* Concept variable -- references a concept in a database: either an instance of data or a schema type.
+* Concept variable -- references a concept in a database.
+A concept is either an instance of data or a schema type.
 [#_value_variable]
-* Value variable -- references a primitive value. Used in <<_computation,computation>>:
+* <<_value_variables,Value variable>> -- references a primitive value.
+Used in <<_computation,computation>>:
 <<_arithmetic_operations,arithmetic operations>> and other
 <<_built_in_functions,built-in functions>> requiring direct operation on values.
 
