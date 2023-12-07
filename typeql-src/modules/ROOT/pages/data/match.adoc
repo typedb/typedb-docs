@@ -1,0 +1,524 @@
+= Match clause
+:Summary: Matching data with patterns
+:page-aliases: typeql::data/basic-patterns.adoc
+:keywords: typeql, typedb, query, match, matching, data, pattern, statement, variable, solution, concept, value
+:pageTitle: Match clause
+:!table-caption:
+
+A `match` clause seeks data in a TypeDB database.
+It can be used only as a part of a query with another clause to specify how to use matched data.
+
+It's a very important clause as it can be used in all data queries to match existing data from a database
+for a subsequent retrieval or processing.
+
+== Behavior
+
+A `match` clause is used to find all existing concepts in a database that satisfy a pattern.
+//#todo Add a link that explains what a concepts is
+
+Every matched result of a `match` clause contains a concept for every <<_concept_variable,concept variable>>
+and a value for every <<_value_variables,value variable>> used in a given pattern.
+//Every answer makes that pattern a true statement, according to database's data and schema.
+//These answers confirm the truth of the pattern based on the database's data and schema.
+Those concepts and values are used in a subsequent clause of the same query by their variables.
+
+You can't use a
+xref:data/fetch.adoc[Fetch],
+xref:data/get.adoc[Get],
+xref:data/delete.adoc[Delete], or
+xref:data/update.adoc[Update] query without a `match` clause at the beginning.
+To retrieve or delete some data from a database, we need to specify the data first.
+
+The only data query that can be used without a `match` is an xref:data/insert.adoc[Insert],
+as you can insert completely new data without matching something in a database first.
+
+[#_solution]
+You can think of matching a pattern as solving a system of equations,
+where every equation is a single statement in a pattern.
+TypeDB solves the system and returns all its solutions, including permutations.
+
+== Syntax
+
+Match clauses are written in TypeQL with the following syntax:
+
+[,typeql]
+----
+match <pattern>
+----
+
+A `match` clause can use all existing patterns that are valid, according to a schema.
+//#todo Add a link to the Schema page
+A <<_patterns_overview,pattern>> used in a `match` clause can address both schema types and data instances.
+
+[#_match_clause_results]
+== Match clause results
+
+A `match` clause returns a *set of matched results*.
+Every matched result is a <<_solution,solution>> for a given pattern, i.e., it makes that pattern a true statement,
+based on database's data and schema.
+
+The number of results found (and returned) can be zero (no solutions found), one, or multiple.
+There can be no duplicates because results are naturally deduplicated in a set.
+
+Consider the following example:
+
+.Pattern example
+[,typeql]
+----
+match
+$p isa person, has full-name $fn;
+----
+
+The above example contains a pattern for an instance of `person` type having a `full-name` attribute.
+If there is a person with no `full-name` attributes in a database, then such a person will not get into results.
+If there is a person with two `full-name` attributes, then such a person will be mentioned in two results: one for each
+`full-name`.
+
+[IMPORTANT]
+====
+A `match` clause returns all possible <<_solution, solutions>> for a given pattern,
+including all possible permutations.
+====
+
+Data queries use results of a `match` clause to retrieve or process data.
+The second clause a data query is executed once for every matched result.
+If there are no matched results, there will be no data inserted/deleted/retrieved.
+If there are two matched results, the subsequent clause will be executed twice,
+inserting/deleting/retrieving data every time.
+An insert query without a `match` clause is executed exactly once.
+// end::patterns_overview[]
+
+// tag::variables[]
+[#_variables]
+== Variables
+
+Variables can be used in data queries and rules to reference a concept.
+Variables mentioned in a `match` clause are included in its results.
+All variables of a query must be bound in a `match` clause of a data query or in a condition of a rule.
+
+There are two types of variables:
+
+[#_concept_variable]
+* Concept variable -- references a concept in a database.
+A concept is either an instance of data or a schema type.
+[#_value_variable]
+* <<_value_variables,Value variable>> -- references a primitive value.
+Used in <<_computation,computation>>:
+<<_arithmetic_operations,arithmetic operations>> and other
+<<_built_in_functions,built-in functions>> requiring direct operation on values.
+
+A concept variable starts with the dollar sign `$` followed by a variable label (for example, `$x`) and references
+exactly one concept (type or data) per every result (solution) matched for a pattern.
+
+A value variable starts with question mark `?` followed by variable label (for example, `?x`) and references
+exactly one value per every result (solution) matched for a pattern. See <<_value_variables>> below.
+// end::variables[]
+
+// tag::patterns_body[]
+// tag::patterns_overview[]
+[#_patterns_overview]
+== Patterns overview
+
+TypeDB is using TypeQL query language with declarative and composable patterns.
+
+A pattern is a set of statements combined by an implicit conjunction (logical "AND").
+Hence, patterns are composable,
+meaning you can combine two patterns by using their statements together in a new pattern.
+
+Statements declare constraints for types and data.
+They consist of variables, keywords, types, and values.
+All statements must end with a semicolon.
+
+See below an example of a statement that describes a person, that has specified full-name and unspecified email.
+
+[#_statement-structure]
+image::statement-structure.png[Statement structure]
+
+The above pattern contains a single statement that includes a variable (marked as `V`)
+followed by a comma-separated list of constraints (`p1`, `p2`, and `p3`) describing the concepts the variable refers to.
+The same pattern can be translated to a natural language as the following:
+
+`$p`
+is an instance of type `person`,
+that has attribute of type `full-name` and value `Masako Holley`
+and has an attribute of type `email` with unspecified value, that we will further reference as `$email`.
+
+Instead of using a comma-separated list of three constraints in a single statement,
+the same pattern can be represented by three distinct simple statements combined by a conjunction:
+
+.Example of simple statements
+[,typeql]
+----
+$p isa person;
+$p has full-name "Masako Holley";
+$p has email $email;
+----
+
+There are two major subsets of patterns:
+<<_data_patterns>> and
+<<_type_patterns>>.
+Additionally, you can use <<_negation>> and <<_disjunction>> with any pattern in a `match` clause or rule condition.
+See the <<_combined_statements_example>> section at the end of this page.
+
+[#_data_patterns]
+=== Data patterns
+
+Data patterns are used to match data instances.
+They can be used only in data queries and xref:typeql::schema/define-rules.adoc[rules].
+//#todo Add link to the Data queries page
+
+.Data patterns
+[cols="^.^1,^.^2,^.^2"]
+|===
+| *Pattern name* | *Pattern syntax* | *Examples*
+
+| Instance of a type or a subtype
+| `+<var> isa <type>;+`
+| `$p isa person;`
+
+| Instance of a type
+| `+<var> isa! <type>;+`
+| `$p isa! person;`
+
+| Instance of an attribute type
+a|
+* `<var> [<value>] isa[!] <attr-type>;`
+* `<var> contains <value>;`
+* `<var> like <regex>;`
+* `<var> > <value>;`
+
+a|
+* `$a "Kevin Morrison" isa full-name;`
+* `$b contains "Kevin";`
+* `$c like "(Masako Holley\|Kevin Morrison)";`
+* `$d > 4;`
+
+| Instance of a relation
+| `+[<var>] ([<role>:] <var> [, [<role>:] <var>]) isa <relation-type>;+`
+a|
+* `$pe (subject: $p, access: $ac) isa permission;`
+* `($p,$ac) isa permission;`
+
+| Ownership
+| `+has <attr-type> (<var> \| [<comparison-operator>] <value>);+`
+| `$f has size-kb > 300;`
+
+| Comparison
+| `<var> [<comparison-operator>] <value>;`
+| `$a > 300;`
+
+| Equality
+| `<var1> is <var2>;`
+|`$t is $p;`
+
+| Expression computation
+| `<value-var> = <expression>;`
+| `?x = round($s / 10);`
+|===
+
+For more information on
+<<_comparison_operators>> and
+<<_computation>>,
+see the sections below.
+
+[#_type_patterns]
+=== Type patterns
+
+Type patterns are used for schema types.
+They can be used only in a `match` and `define` clauses.
+
+.Type patterns
+[cols="^.^1,^.^2,^.^2,^.^2"]
+|===
+| *Pattern name* | *Pattern syntax* | *A `match` clause example* | *A `define` clause example*
+
+| Type
+| `<label> type <type>;`
+| `$t type person;`
+| *N/A* +
+_Can't define one type as another one_
+
+| Type or subtype
+| `<label> sub <type>;`
+| `$t sub subject;`
+| `person sub user;`
+
+| Direct subtype
+| `<label> sub! <type>;`
+| `$t sub! subject;`
+| `person sub! user;`
+
+| Role in a relation type
+| `<relation> relates <label>;`
+| `permission relates $r;`
+| `permission relates access;`
+
+| Role player type in a relation
+| `<label> plays <relation>:<role>;`
+| `$r plays permission:subject;`
+| `access plays permission:access;`
+
+| Owner type of an attribute type
+| `<label> owns <attr-type>;`
+| `$o owns full-name;`
+| `person owns full-name;`
+
+| Attribute subtype
+| `<label> sub[!] <attribute-type> [, value <value-type>];`
+| `$s sub id, value string;`
+| `email sub id, value string;`
+|===
+//#todo Add examples and links to them
+
+In a `match` clause we can't define new types.
+Hence, use concept variables instead of `<label>` placeholder.
+
+In a `define` clause all variables are prohibited.
+Hence, use type labels instead of `<label>` placeholder.
+
+[#_negation]
+=== Negation
+
+Use negation to exclude some concepts from result.
+
+The intuitive meaning of a negated pattern is that of a complement.
+However, a relation complement is not a clearly defined.
+
+We understand pattern negation in terms of computation of *set differences*.
+The set-difference semantics are different to the perhaps familiar semantics of Negation-as-Failure of Prolog.
+
+To use negation, employ the following syntax:
+
+`not {<negated_pattern>};`
+
+.Negation example
+[,typeql]
+----
+$p isa person, as full-name $fn;
+not {$fn contains "Kevin";};
+----
+
+We can use multiple statements inside a negation block.
+
+For each negation block in a query,
+at least one variable in the negation block must be bound to a statement outside the negation block.
+This ensures that set difference operations are performed on sets that are not disjoint
+variables in negation blocks are local to the block they are defined in
+
+Rules conditions with negation can't contradict themselves (to prevent infinite recursion).
+
+[#_disjunction]
+=== Disjunction
+
+Use disjunction to add some variability to possible solutions.
+To satisfy a match, at least one statement must be matched.
+
+To use disjunction, employ the following syntax:
+
+`{<pattern1>} or {<pattern2>};`
+
+.Disjunction example
+[,typeql]
+----
+$p isa $t;
+{$t type person;} or {$t type file;};
+----
+
+We can use multiple statements inside a disjunction block.
+Variables, that are used only in disjunction block will not be returned in results of a `match` clause.
+See an example below.
+
+.Disjunction example with extra variables
+[,typeql]
+----
+$p isa $t;
+{$t type person; $p has full-name $f;} or {$t type file; $p has path $path;};
+----
+
+[#_computation]
+== Computation
+
+You can use and process primitive numeric values in a query with the help of
+<<_value_variables>>,
+<<_arithmetic_operations>>,
+and other <<_built_in_functions>>.
+
+[#_value_variables]
+=== Value variables
+
+A value variable is used in patterns with computation to represent an exact value in a pattern.
+Value variables are never materialized permanently and
+are only used within the scope of a particular query or rule.
+
+To persist a value of a value variable, you can save it into database by using an attribute type
+with a matching value type.
+Value variables can be one of the following value types (the same as value types for attributes):
+
+include::typeql::schema/define-types.adoc[tag=value_types]
+
+To assign a value for a value variable, use the `=` sign:
+
+.Value variable example
+[,typeql]
+----
+match
+$r isa radius;
+?s = 3.14 * $r^2;
+----
+
+A pattern statement starting with a value variable and an equals sign is called an <<_expression,expression>>.
+
+[#_expression]
+An *expression* describes a computation of a value for a value variable.
+While a value variable can be used in any clause of a data query,
+an expression can be used only in a `match` clause or `condition` of a rule.
+It contains any combination of the following elements:
+
+* an attribute (only attributes of all concepts can have a value),
+* a value variable,
+* constants (e.g., `4`)
+* an <<_arithmetic_operations,arithmetic operation>>,
+* or <<_built_in_functions,built-in function>>.
+
+.Expression example
+[,typeql]
+----
+match
+  $s isa size-kb;
+  ?x = round($s/2) + 1;
+----
+
+The above pattern matches all instances of data for the `size-kb` attribute type
+bounding them to the `$s` concept variable.
+The value variable `?x` is bound to the value of `$s` divided by `2`, rounded, and then added `1`.
+Hence, every matched result for this pattern consists of an attribute in `$s` and its processed value in `?x`.
+
+[#_comparison_operators]
+=== Comparison operators
+
+The following operators are supported for comparing values: `==`, `!=`, `>`, `>=`, `<`, and `+<=+`.
+
+[WARNING]
+====
+In TypeDB version `2.18.0`, the single equals sign (`=`) was *deprecated* as a comparison operator.
+Now it can be used to assign a value to a value variable.
+While in TypeDB `2.x` it is possible to use it as a comparator for backward compatibility,
+we recommend using `==` for equality instead.
+====
+
+[#_arithmetic_operations]
+==== Arithmetic operations
+
+The following keywords can be used for arithmetic operations between <<_value_variables,value variables>>,
+concept variables referencing attributes, and constants:
+
+//#todo reimplement the links to examples
+// tag::arithmetics[]
+1. `()` -- parentheses.
+See an xref:typeql::data/advanced.adoc#_using_parentheses[example].
+2. `^` -- exponentiation (power).
+See an xref:typeql::data/advanced.adoc#_using_exponentiation[example].
+3. `*` -- multiplication.
+See an xref:typeql::data/advanced.adoc#_using_multiplication[example].
+4. `/` -- division.
+See an xref:typeql::data/advanced.adoc#_using_division[example].
+5. `%` -- https://en.wikipedia.org/wiki/Modulo[modulo,window=_blank]. Returns the remainder of a division.
+See an xref:typeql::data/advanced.adoc#_using_modulo[example].
+6. `+` -- addition.
+See an xref:typeql::data/advanced.adoc#_using_addition[example].
+7. `-` -- subtraction.
+See an xref:typeql::data/advanced.adoc#_using_subtraction[example].
+// end::arithmetics[]
+
+[IMPORTANT]
+====
+The above list is sorted by the order in which those operations are applied in an expression.
+====
+
+.Arithmetics example
+[,typeql]
+----
+$f isa file, has size-kb $s;
+?mb = $s/1024;
+?mb > 1;
+----
+
+In the above example, we designed a pattern to match instances of data for `file` type owning `size-kb` attribute
+with a value that, after dividing it by `1024` (to get megabytes out of kilobytes), is bigger than `1`.
+
+[#_built_in_functions]
+==== Built-in functions
+
+Built-in functions are usually invoked with adjacent parentheses that contain arguments to apply the function.
+Those arguments are separated by a comma as a separator.
+The following built-in functions are available in TypeDB:
+
+//#todo Reimplement the links to examples
+// tag::functions[]
+* `min` -- the minimum of the arguments.
+See xref:typeql::data/advanced.adoc#_using_minimum_function[example].
+* `max` -- the maximum of the arguments.
+See xref:typeql::data/advanced.adoc#_using_maximum_function[example].
+* `floor` -- the floor function (rounding down).
+See xref:typeql::data/advanced.adoc#_using_floor_function[example].
+* `ceil` -- the ceiling function (rounding up).
+See xref:typeql::data/advanced.adoc#_using_ceiling_function[example].
+* `round` -- the default (half-way up) rounding function.
+See xref:typeql::data/advanced.adoc#_using_rounding_function[example].
+* `abs` -- the modulus (or absolute value) function.
+See xref:typeql::data/advanced.adoc#_using_absolute_value_function[example].
+// end::functions[]
+
+// tag::combining[]
+[#_combining_statements]
+== Combining statements
+
+//image::pattern-structure.png[Combining statements]
+//#todo Fix the image - Types of patterns
+
+By combining statements together, we can express more complex pattern scenarios and their corresponding data.
+
+* *Statement*: A single basic building block, as <<_patterns_overview,explained above>>.
+* *Conjunction* (logical `AND`): A set of statements, where to satisfy a match, all statements must be true. +
+We use conjunctions *by default* just by separating the partaking statements with semicolons `;`.
+* *Disjunction* (logical `OR`): A set of statements, where to satisfy a match, at least one statement must be matched. +
+We form disjunctions by enclosing the partaking statements within curly braces `{}` and joining them together with the
+keyword `or`.
+* *Negation* (logical negation): A statement that explicitly defines conditions that must *not* to be met. +
+We form negations by defining the conditions *not* to be met in curly brackets of a `not {};` block.
+// end::combining[]
+
+See the <<_combined_statements_example>> below.
+
+// tag::complex_example[]
+[#_combined_statements_example]
+=== Combined example
+
+image::example-pattern.png[Combined example]
+
+The pattern is a conjunction of five different pattern types:
+
+. *Conjunction 1* specifies the variables for two `person` instances, their `full-names`, `action` instance,
+and `file` instance that has path `README.md`.
+. *Disjunction* specifies that the actions of interest are either `modify_file` or `view_file`.
+. *Negation 1* specifies that person `$p1` shall *not* have `full-name` with value of `Masako Holley`.
+. *Negation 2* specifies that person `$p2` shall *not* have `full-name` with value of `Masako Holley`.
+. *Conjunction 2* specifies that the `file` has `access` with the `action` that was specified earlier,
+  and both instances of the `person` to have the `permission` to the specified `access`.
+
+In short, the above example matches pairs of people who both have permission to access the same file
+with a path of `README.md`. The pattern additionally specifies the access to be either `modify_file` or `view_file`,
+and neither people to have the `full-name` attribute with the value `Masako Holley`.
+// end::complex_example[]
+// end::patterns_body[]
+
+== Learn more
+
+A `match` query can be used in any data query:
+xref:data/fetch.adoc[Fetch],
+xref:data/get.adoc[Get],
+xref:data/insert.adoc[Insert],
+xref:data/delete.adoc[Delete], or
+xref:data/update.adoc[Update].
+
+For additional examples of using patterns in different queries, see the xref:typeql::data/advanced.adoc[] page.

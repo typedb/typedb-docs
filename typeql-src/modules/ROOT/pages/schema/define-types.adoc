@@ -606,17 +606,19 @@ Attribute types are defined in TypeQL with the following pattern:
 [#_value_types]
 The following *value types* are supported:
 
-* `long` -- a 64-bit signed integer
+// tag::value_types[]
+* `long` -- a 64-bit signed integer number
 * `double` -- a double-precision floating point number, including a decimal point
-* `string` -- enclosed in double `"` or single `'` quotes
-* `boolean` -- `true` or `false`
-* `datetime` -- a date or date-time in the following formats:
+* `string` -- a string enclosed in double `"` or single `'` quotes
+* `boolean` -- a `true` or `false`
+* `datetime` -- a date or date-time in one of the following formats:
  ** `yyyy-mm-dd`
  ** `yyyy-mm-ddThh:mm`
  ** `yyyy-mm-ddThh:mm:ss`
  ** `yyyy-mm-ddThh:mm:ss.f`
  ** `yyyy-mm-ddThh:mm:ss.ff`
  ** `yyyy-mm-ddThh:mm:ss.fff`
+// end::value_types[]
 
 === Examples
 

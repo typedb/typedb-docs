@@ -10,7 +10,7 @@ For example:
 [,typeql]
 ----
 match
-    $s isa $t;
-    {$t type entity;} or {$t type relation;} or {$t type attribute;};
+$s isa $t;
+{$t type entity;} or {$t type relation;} or {$t type attribute;};
 ----
 ====

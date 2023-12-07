@@ -38,7 +38,7 @@ Use the `rule`, `when`, and `then` keywords for a rule definition.
 ====
 Unlike other `define` statements for schema definitions, the rule syntax uses patterns consisting of
 variables and constraints for **data** instances. For more information, see the
-xref:data/basic-patterns.adoc#_patterns_overview[Pattern syntax] section.
+xref:data/match.adoc#_patterns_overview[Pattern syntax] section.
 ====
 
 [#_rule_validation]
@@ -153,8 +153,8 @@ rule size-covert:
 The above query defines an additional attribute subtype `size-mb`, defines that it can be owned by the `file` entity
 subtype, and creates a rule `size-convert` to create ownership of `size-mb` with the value *1024* times lower than
 `size-kb` to any `file` instance that has `size-kb`. The rule uses a
-xref:typeql::data/basic-patterns.adoc#_value_variables[value variable] for
-xref:data/basic-patterns.adoc#_arithmetic_operations[arithmetics].
+xref:typeql::data/match.adoc#_value_variables[value variable] for
+xref:data/match.adoc#_arithmetic_operations[arithmetics].
 
 With this rule defined and the inference option xref:typedb:ROOT:development/infer.adoc#_how_to_use_inference[enabled],
 we can try the following query:
