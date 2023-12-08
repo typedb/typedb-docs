@@ -17,11 +17,11 @@ A `match` clause in an Insert query matches existing concepts in a database to p
 that is connected to existing data through relations, ownerships, values, types, etc.
 
 An `insert` clause is executed once per every result of preceding `match` clause.
-In particular, if there is no match in a database for a `match` clause of an `insert` query,
+In particular, if there is no match in a database for a `match` clause of an Insert query,
 then there will be no inserts.
 If there is no preceding `match` clause, an `insert` clause is executed once.
 
-An insert query returns a Stream/Iterator of ConceptMap with the inserted data.
+An Insert query returns a lazy Stream/Iterator of ConceptMap with the inserted data.
 
 Inserted data must not violate a schema of a database.
 
@@ -46,45 +46,30 @@ A `match` clause is optional in an Insert query.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 the pattern.
 
-For more information on a `match` clause, see the
-//#todo update the link after introducing the Match clause page!
-xref:typeql::queries.adoc#_match[Match clause] description on the Queries page.
+For more information on a `match` clause, see the xref:data/match.adoc[] page.
 
 For more information on patterns used in a `match` clause, see the
-xref:data/match.adoc#_patterns_overview[Pattern syntax] section.
+xref:data/match.adoc#_patterns_overview[Patterns overview] section.
 
 [#_insert_clause]
 == Insert clause
 
-An `insert` clause is used in an Insert query to specify new data to be inserted into a TypeDB database.
+// tag::insert_clause[]
+An `insert` clause is used in a query to specify new data to be inserted to a TypeDB database.
+
+A pattern of an `insert` clause can have multiple statements for data manipulation
+(see xref:typeql::data/match.adoc#_data_patterns[Data patterns]),
+can use concepts matched by a preceding `match` clause by their variables,
+and can't have a xref:typeql::data/match.adoc#_disjunction[disjunction],
+xref:typeql::data/match.adoc#_negation[negation], or `is` keyword.
 
 This clause is executed exactly once for every result matched by the preceding `match` clause of the same query,
 or just once, if there is no preceding `match` clause.
 An `insert` clause returns inserted data as a stream/iterator of ConceptMap.
 
-Following the `insert` keyword is a TypeQL pattern to define the inserted data.
-A pattern in an `insert` clause shares variables with a pattern from a preceding `match` clause
-
-An `insert` clause can have multiple statements in its pattern to insert in one query.
-But it can't insert types
-(use the xref:schema/define-types.adoc[define] to insert new types) and can't have the following:
-
-- Disjunction
-- Negation
-- `is` keyword
-
-A single simple statement of an `insert` clause pattern can insert:
-
-* an instance of a type,
-* an ownership of an attribute, or
-* a new role player for an existing role of a relationship.
-
-Inserting an ownership of an attribute that doesn't exist in a database yet, implicitly inserts such an attribute.
-
-For more information on patterns used in an `insert` clause, see the <<_examples,examples>> section below.
-
-For more information on patterns in general, see the
-xref:data/match.adoc#_patterns_overview[Pattern syntax] section.
+Inserting an ownership of an attribute that doesn't exist in a database yet (with a new value),
+implicitly inserts such an attribute.
+// end::insert_clause[]
 
 === Inserting instances
 
