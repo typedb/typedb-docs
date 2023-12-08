@@ -142,7 +142,6 @@ user sub subject;
 person sub user;
 ----
 
-[discrete]
 ==== Attributes
 
 To define an attribute type, you need to declare its value type.
@@ -176,7 +175,22 @@ The following *value types* are supported in TypeDB:
  ** `yyyy-mm-ddThh:mm:ss.fff`
 // end::value_types[]
 
-[discrete]
+===== Restrict values with regular expression
+
+A value of an attribute type can be restricted using regular expressions.
+For example, to constrain it to a set of options:
+
+.Regular expression value restriction
+[,typeql]
+----
+define
+
+visibility sub attribute, value string, regex "^(public|private|closed)$";
+----
+
+The above example defines an attribute type: `visibility`.
+It specifies a regex to restrict values to only `public`, `private` and `closed` strings.
+
 ==== Relations
 
 To define a relation type, we need to declare at least one its role.
@@ -314,7 +328,7 @@ object sub entity, plays access:object;
 
 === Inheritance
 
-Subtype inherits its parent's owned attributes and roles.
+A subtype inherits parent's owned attributes and roles.
 
 .Inheritance
 [,typeql]
@@ -335,27 +349,30 @@ file sub resource,
 
 In the above example, the `resource` and `file` entity types are subtypes of the `object` type,
 which itself is a subtype of the `entity` root type.
-They inherit the `object-type` attribute type ownership from it as well as its
-`access:object` role. However, while the `resource` subtype is abstract, the `file` subtype is not. Hence, we
-can create `file` entities, but not `resource` entities.
+They inherit the `object-type` attribute type ownership as well as `access:object` role.
+However, while the `resource` subtype is abstract, the `file` subtype is not.
+Hence, we can create entities of `file` type, but not `resource` entities.
 
-Further, the `path` attribute type will only be owned by the `file` entity type and any other entity types which
-subtype it or directly define ownership.
+Further, the `path` attribute type will be owned by the `file` entity type directly.
 
-==== Override inheritance
+==== Override inherited ownership
 
-To override an inherited ownership use `owns` keyword with the new attribute type label, followed by the `as` keyword
-and the inherited attribute type label. For example:
+To override an inherited ownership, use the `owns` keyword with the new owned attribute type,
+followed by the `as` keyword and the inherited attribute type:
 
+.Override inheritance
 [,typeql]
 ----
 define file sub resource, owns file-type as object-type;
 ----
 
 The new attribute type that overrides inherited type is defined in the schema as subtype of the inherited
-attribute type. Hence, the inherited attribute type is abstract and has the same value type as the new attribute type.
-The example above in a schema would look like this:
+attribute type.
+Hence, the inherited attribute type is an xref:typeql::fundamentals.adoc#_abstract_types[abstract type]
+and has the same value type as the new attribute type.
+The example above in a its complete form in a schema would look like this:
 
+.Override inheritance with attributes definitions
 [,typeql]
 ----
 define
@@ -375,12 +392,36 @@ file sub resource,
     owns file-type as object-type;
 ----
 
-In the above example, the `file` entity type owns the `path` and `file-type` attribute types, with the `file-type`
-attribute type overriding the inherited `object-type` attribute type.
+In the above example, the `file` entity type owns the `path` and `file-type` attribute types.
+The `file-type` attribute type overriding the inherited `object-type` attribute type.
 
+[#_overrides_a_role]
+==== Override a role
+
+The label of an inherited role can be overridden to distinguish between roles inherited by a relation subtype
+versus roles defined by its parent type.
+
+.Overriding roles
+[,typeql]
+----
+define
+
+membership sub relation,
+    relates parent,
+    relates member;
+
+collection-membership sub membership,
+    relates collection as parent;
+----
+
+In the above example, the `collection-membership` relation type subtypes the `membership` relation type and overrides
+the inherited `parent` role as `collection`.
+The inherited `member` role is inherited as it is.
+
+By overriding an inherited role, we prevent subtype from relating the role that would otherwise be inherited.
 
 [#_rules]
-=== Rules
+== Defining rules
 
 
 
@@ -388,7 +429,7 @@ attribute type overriding the inherited `object-type` attribute type.
 
 
 
-
+////
 
 == Example 2
 
