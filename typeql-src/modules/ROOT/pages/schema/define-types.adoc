@@ -1,73 +1,42 @@
 [#_define_types]
-= Define types
-:Summary: Defining types with TypeQL.
-:keywords: typeql, schema, type, inheritance
-:longTailKeywords: typeql schema, typeql type hierarchy, typeql data model
-:pageTitle: Define types
+= Define query
+:Summary: Define schema types and rules with TypeQL.
+:keywords: typeql, schema, model, define, modify, extend, type, rule, annotations
+:pageTitle: Define query
 :toc: macro
 :toclevels: 5
 :experimental:
+:!table-caption:
 
-See the xref:typeql::fundamentals.adoc[] page for more information about xref:typeql::fundamentals.adoc#_schema[schema]
-and xref:typeql::fundamentals.adoc#_types[types].
+A Define query modifies a schema of a database.
 
-.See the full table of contents for this page
-[%collapsible]
-====
-toc::[]
-====
+Define queries can be used only in a schema session and write transaction.
+For more information on the limitations of a schema session, see the
+xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-To use a new TypeDB database, we need to define its schema first. We can do it with a <<#_define_query>>.
+For more information about basics of data modeling with TypeQL, see the
+xref:typeql::fundamentals.adoc[] page, including sections about a database
+xref:typeql::fundamentals.adoc#_schema[schema],
+xref:typeql::fundamentals.adoc#_types[types], and
+xref:typeql::fundamentals.adoc#_rules[rules].
 
-[IMPORTANT]
-====
-To define a schema, a `schema` xref:typedb:ROOT:connecting/overview.adoc#_sessions[session] must be opened,
-and a `write` xref:typedb:ROOT:connecting/overview.adoc#_transactions[transaction] started.
-The changes must be *committed*, or they will NOT be permanent.
-====
+== Behavior
 
-There is no limitation in the order of types to define. We can define schema types in any order if the schema is valid.
-TypeDB Clients validate our schema definition requests before sending them to a TypeDB
-server. We will not be able to commit changes if the resulting schema isn't valid.
+A Define query adds new or updates existing types and rules.
 
-// tag::idempotence[]
-[IMPORTANT]
-====
-Define queries are idempotent.
+Define queries are unambiguous and idempotent
+(can be applied multiple times without changing the result of the initial application).
+A `define` clause uses a schema pattern without variables to declare a complete schema definition or
+changes to an existing schema.
 
-Running the same define query a second time shall not produce any changes to the database schema.
+Define queries are validated with TypeQL syntax.
+A database's schema is also validated after applying a given query to validate its consistency.
 
-Running a modified version of an already executed schema definition query can add concepts to the
-schema but mostly can't modify existing ones. TypeQL schema statements do NOT replace existing type definitions but
-add missing parts.
+Define query returns a Promise of an empty response.
 
-Two notable exceptions are:
+== Syntax
 
-- **rules** (defining a new rule with an existing label/name will replace the existing rule completely), and
-- **annotations**, like the `@key` keyword (which we can remove by redefining attribute ownership without the
-  annotation).
-====
-// end::idempotence[]
-
-[#_define_query]
-== Define query
-
-A define query adds new or modifies existing types and/or rules in the database schema.
-
-A define query consists of a single `define` clause.
-
-TypeQL `define` clause must begin with the `define` keyword.
-
-We can run multiple statements as a single query.
-The `define` keyword must only be included once per query at the beginning.
-
-[IMPORTANT]
-====
-This page only covers how to define types.
-For defining rules, see the xref:typeql::schema/define-rules.adoc[] page.
-====
-
-=== Syntax
+A Define query consists of a single `define` clause and always starts with the `define` keyword.
 
 Define queries are written in TypeQL with the following syntax:
 
@@ -76,48 +45,352 @@ Define queries are written in TypeQL with the following syntax:
 define <pattern>
 ----
 
-The pattern used in the define query is limited to the DDL part of TypeQL as it declares only types (and rules),
-but not instances of data.
+A pattern in a `define` clause uses TypeQL to declare type hierarchy, ownerships, role players, and rules.
 
-=== Type definition syntax
+== Define clause
 
-This is the generic syntax of the define query for a type definition:
+A `define` clause is used in a Define clause to specify a pattern for new or updated types and rules.
+Schema pattern consists of statements combined by a conjunction (logical `AND`).
+Every statement ends with a semicolon.
+Statements in a `define` clause pattern can't use any variables or values.
+Instead, they use type labels and TypeQL to express
+<<_subtyping,subtyping>>,
+<<_abstract,abstract flags>>,
+<<_ownership,ownership>>,
+<<_annotations,annotations>>,
+<<_roleplaying,roleplaying>>,
+and <<_rules,rules>>.
+
+Statements in a `define` clause pattern can use types that already exist in a database (including built-in types)
+and types that are defined anywhere in the same query.
+
+[#_schema_patterns]
+=== Schema definition patterns
+
+See the table below for the most generic patterns that can be used for schema definition in TypeQL.
+
+.Type patterns
+[cols="^.^1,^.^2,^.^2"]
+|===
+| *Pattern name* | *Pattern syntax* | *Example*
+
+| <<_subtyping,Subtyping>>
+| `<label> sub <type>;`
+| `person sub user;`
+
+| Direct subtyping
+| `<label> sub! <type>;`
+| `person sub! user;`
+
+| Adding a role
+| `<relation> relates <label>;`
+| `permission relates access;`
+
+| Assigning a role for a type
+| `<label> plays <relation>:<role>;`
+| `access plays permission:access;`
+
+| Assigning ownership
+| `<label> owns <attr-type>;`
+| `person owns full-name;`
+|===
+
+=== Order of statements and indentation
+//#todo Consider generalizing this recommendations
+
+TypeQL statements in a pattern are combined by a conjunction (logical `AND`),
+which means they can be included in any order of following with the same result.
+
+For readability purposes, by default, we recommend to include them in the following order:
+
+* Attribute types
+* Entity types
+* Relation types
+* Rules
+
+Indentation and line breaks have no effect on the result of a query and needed only for readability.
+
+== Defining types
+
+[#_subtyping]
+=== Subtyping
+
+Subtyping lets you define a new type, by defining its parent type (or supertype).
+You can create subtypes of built-in root types: `attribute`, `entity`, and `relation`.
+
+.Subtyping root types
+[,typeql]
+----
+define
+
+credential sub attribute, value string;
+subject sub entity;
+access sub relation,
+    relates action,
+    relates object;
+----
+
+Alternatively, you can define a subtype of another user-defined type,
+either existing in the current schema or defined in the same query:
+
+.Subtyping user-defined types
+[,typeql]
+----
+define
+
+user sub subject;
+person sub user;
+----
+
+[discrete]
+==== Attributes
+
+To define an attribute type, you need to declare its value type.
+That is done by adding a comma separated `value` keyword.
+
+.Attributes definition
+[,typeql]
+----
+define
+
+credential sub attribute, value string;
+review-date sub attribute, value datetime;
+size-kb sub attribute, value long;
+validity sub attribute, value boolean;
+----
+
+[#_value_types]
+The following *value types* are supported in TypeDB:
+
+// tag::value_types[]
+* `long` -- a 64-bit signed integer number
+* `double` -- a double-precision floating point number, including a decimal point
+* `string` -- a string enclosed in double `"` or single `'` quotes
+* `boolean` -- a `true` or `false`
+* `datetime` -- a date or date-time in one of the following formats:
+ ** `yyyy-mm-dd`
+ ** `yyyy-mm-ddThh:mm`
+ ** `yyyy-mm-ddThh:mm:ss`
+ ** `yyyy-mm-ddThh:mm:ss.f`
+ ** `yyyy-mm-ddThh:mm:ss.ff`
+ ** `yyyy-mm-ddThh:mm:ss.fff`
+// end::value_types[]
+
+[discrete]
+==== Relations
+
+To define a relation type, we need to declare at least one its role.
+
+.Relation with two roles
+[,typeql]
+----
+define
+
+access sub relation,
+    relates object,
+    relates action;
+----
+
+For more information on letting instances to paly a role in a relation, see the <<_roleplaying>> section.
+
+[#_abstract]
+=== Abstract
+
+Optionally, types can be defined as `abstract`.
+xref:typeql::fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated but can be queried,
+as their subtypes can be concrete types.
+
+.Define abstract type example
+[,typeql]
+----
+define
+
+subject sub entity, abstract;
+----
+
+You can declare an existing schema type as abstract to make it abstract if there is no data of this type in a database.
+You can declare an abstract type non-abstract by sending the same type definition without the `abstract` keyword.
+
+[#_ownership]
+=== Ownership
+
+To add ability for a type to own instances of an attribute type,
+use the `owns` keyword followed by the label of the attribute type.
+
+Ownership definitions can be defined as separate statements
+or combined with general owner type definition with a comma separator:
 
 [,typeql]
 ----
 define
 
-<label> sub <supertype labell>
-[(, abstract)]
-[, value <value-type>]
-(, relates <role label>)
-[(, relates <role label>)...]
-[(, owns <attribute type label> [@annotation])...]
-[(, plays <relation type label>:<role>)...];
+full-name sub attribute, value string;
+object-type sub attribute, value string;
+
+person sub user;
+person owns full-name;
+
+object sub entity, owns object-type;
 ----
 
-The line with the `value` keyword is relevant only for attribute types definition.
+The above definition adds an ability for instances of `person` type to own instances of the `full-name` type.
 
-The lines with the `relates` keyword are relevant only for relation types definition.
+[#_annotations]
+=== Annotations
 
-See the specific syntax for
-xref:typeql::schema/define-types.adoc#_define_entity_types[entity types],
-xref:typeql::schema/define-types.adoc#_define_relation_types[relation types], or
-xref:typeql::schema/define-types.adoc#_define_attribute_types[attribute types] below.
+Annotations are added for an ownership of an attribute type in a schema
+to add constraints on what attributes can be owned by an instance of an owner type.
 
-=== Example
+[#_unique_attribute]
+==== Unique attribute annotation
 
-////
-[IMPORTANT]
+Use the `@unique` keyword to add *uniqueness* constraint to the ownership of an attribute.
+This prevents two instances of the same type from owning the same attribute instance (with the same value).
+
+[,typeql]
+----
+define
+
+object sub entity, owns object-type @unique;
+----
+
+Unique annotation can be inherited, even using override of an ownership:
+
+.See example
+[,typeql]
+----
+define
+
+organisation sub entity,
+    abstract,
+    owns organisation-id @unique;
+
+organisation-id sub attribute, abstract, value string;
+
+non-profit sub organisation,
+    owns nonprofit-id as organisation-id;
+
+nonprofit-id sub organisation-id, value string;
+----
+
+In this example `non-profit` owns `nonprofit-id` with unique constraint.
+It's inherited from `organizatrion-id`.
+
+[#_key_attribute]
+==== Key attribute annotation
+
+Use the `@key` keyword to set the owned attribute as key.
+That limits the cardinality to exactly *one* and adds *uniqueness* constraint.
+Hence, the instance of the type with attribute ownership with `@key` annotation will have exactly one
+(no more and no less) key attribute instance, and it will be unique for all instances of the same type.
+
+[,typeql]
+----
+define
+
+object sub entity, owns object-type @key;
+----
+
+[WARNING]
 ====
-The following examples define parts of the xref:typedb:ROOT:tutorials/iam-schema.adoc[IAM schema] that will be used throughout
-the rest of the documentation. However, some queries on this page result in modification of the original IAM schema
-used in the Quickstart guide. These occasional modifications are needed to demonstrate what TypeQL is capable of.
-
-To avoid any errors and/or data loss it is recommended to use a separate database for all examples on this page. For
-more information on creating a new database, see the xref:typedb:ROOT:quickstart.adoc#_create_a_database[Quickstart guide].
+An ownership can't have both `@unique` and `@key` annotations at the same time.
 ====
-////
+
+[#_roleplaying]
+=== Roleplaying
+
+For an instance to be able to play a role in a relation,
+the type of an instance must be defined as a potential roleplayer:
+
+.Roleplayer type
+[,typeql]
+----
+define
+
+access sub relation, relates object;
+
+object sub entity, plays access:object;
+----
+
+=== Inheritance
+
+Subtype inherits its parent's owned attributes and roles.
+
+.Inheritance
+[,typeql]
+----
+define
+
+path sub attribute, value string;
+
+object sub entity,
+    abstract,
+    owns object-type,
+    plays access:object;
+resource sub object,
+    abstract;
+file sub resource,
+    owns path;
+----
+
+In the above example, the `resource` and `file` entity types are subtypes of the `object` type,
+which itself is a subtype of the `entity` root type.
+They inherit the `object-type` attribute type ownership from it as well as its
+`access:object` role. However, while the `resource` subtype is abstract, the `file` subtype is not. Hence, we
+can create `file` entities, but not `resource` entities.
+
+Further, the `path` attribute type will only be owned by the `file` entity type and any other entity types which
+subtype it or directly define ownership.
+
+==== Override inheritance
+
+To override an inherited ownership use `owns` keyword with the new attribute type label, followed by the `as` keyword
+and the inherited attribute type label. For example:
+
+[,typeql]
+----
+define file sub resource, owns file-type as object-type;
+----
+
+The new attribute type that overrides inherited type is defined in the schema as subtype of the inherited
+attribute type. Hence, the inherited attribute type is abstract and has the same value type as the new attribute type.
+The example above in a schema would look like this:
+
+[,typeql]
+----
+define
+
+path sub attribute, value string;
+
+object-type sub attribute, abstract, value string;
+file-type sub object-type, value string;
+
+object sub entity,
+    abstract,
+    owns object-type;
+resource sub object,
+    abstract;
+file sub resource,
+    owns path,
+    owns file-type as object-type;
+----
+
+In the above example, the `file` entity type owns the `path` and `file-type` attribute types, with the `file-type`
+attribute type overriding the inherited `object-type` attribute type.
+
+
+[#_rules]
+=== Rules
+
+
+
+
+
+
+
+
+
+== Example 2
 
 [,typeql]
 ----
@@ -152,34 +425,9 @@ group-membership sub membership,
     relates group-member as member;
 ----
 
-The above example can be run in xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio]. See the
-xref:home::quickstart.adoc[Quickstart guide] for full descriptions of the following steps:
 
-. Make sure a TypeDB server is up.
-. Start TypeDB Studio.
-. Connect TypeDB Studio to the server.
-. Create or select a new database.
-. Open a Project folder.
-. Copy and paste the query code above into a new tab of the *Text editor*.
-. Ensure the btn:[Session type] switch is set to "*Schema*".
-. Ensure the btn:[Transaction type] switch is set to "*Write*".
-. Click the green "play" button to start the transaction.
-. Click the "checkmark" button to commit the changes.
 
-//#todo insert real images of icons above
 
-After a successful commit, all the types can be seen in the Type Browser panel in the bottom left part of the Studio
-window.
-
-The following query can be run in a new tab in *Schema* / *Read* mode to see the schema visualized as a graph.
-
-[,typeql]
-----
-match $s sub thing;
-get;
-----
-
-As the result of the above query TypeDB Studio should display a graph visualization of the schema defined earlier.
 
 image::schema-example-1.png[Schema visualization example]
 
@@ -664,75 +912,7 @@ The above example creates an attribute type, `id`. However, because different en
 information, the `id` type is subtyped by `email`, `name`, `path`, and `number` types -- making it possible to query
 users by `email`, business units by `name`, files by `path` and records by `number`.
 
-[#_unique_attribute]
-==== Unique attribute annotation
 
-Use the `@unique` keyword to add *uniqueness* constraint to the ownership of an attribute.
-This prevents two instances of the same type from owning the same attribute instance (with the same value).
-
-[,typeql]
-----
-define
-
-object-type sub attribute, value string;
-
-object sub entity,
-    abstract,
-    owns object-type @unique;
-----
-
-[IMPORTANT]
-====
-The `@unique` annotation allows us to declare that an attribute instance may not be owned more than once by the
-owner type. But no <<_cardinality,cardinality>> restriction is generated from `@unique` annotation.
-====
-
-Unique annotation can be inherited, even using override of an ownership.
-
-.See example
-[%collapsible]
-====
-[,typeql]
-----
-define
-
-organisation sub entity,
-    abstract,
-    owns organisation-id @unique;
-
-organisation-id sub attribute, abstract, value string;
-
-non-profit sub organisation,
-    owns nonprofit-id as organisation-id;
-
-nonprofit-id sub organisation-id, value string;
-----
-In this example `non-profit` owns `nonprofit-id` with unique constraint. It's inherited from `organizatrion-id`.
-====
-
-[#_key_attribute]
-==== Key attribute annotation
-
-Use the `@key` keyword to set the owned attribute as key.
-That limits the cardinality to exactly *one* and adds *uniqueness* constraint.
-Hence, the instance of the type with attribute ownership with `@key` annotation will have exactly one
-(no more and no less) key attribute instance, and it will be unique for all instances of the same type.
-
-[,typeql]
-----
-define
-
-object-type sub attribute, value string;
-
-object sub entity,
-    abstract,
-    owns object-type @key;
-----
-
-[WARNING]
-====
-An ownership can't have both `@unique` and `@key` at the same time.
-====
 
 ==== Regular expressions
 
@@ -799,4 +979,4 @@ The above example creates the `credential` attribute type, and specifies it can 
 the `change-request` relation type. While `change-requests` were intended to manage access changes, they can now be
 used to manage `credential` changes as well.
 
-
+////

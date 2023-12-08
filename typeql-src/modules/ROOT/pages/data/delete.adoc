@@ -11,7 +11,7 @@ Delete queries can be used only in write transactions.
 
 == Behavior
 
-A Delete query deletes concepts, ownerships, and role player references from a database.
+A Delete query deletes data specified : attributes, entities, relations, ownerships, and roleplayer references.
 //#todo Check whether we call ownerships, etc. concepts
 
 After matching existing data with a `match` clause,
