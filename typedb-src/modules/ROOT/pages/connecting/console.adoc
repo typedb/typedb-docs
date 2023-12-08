@@ -8,11 +8,9 @@
 
 image::drivers::console.png[]
 
-The TypeDB Console, along with the xref:connecting/studio.adoc[Studio], is a software tool that we can use to interact
-with TypeDB server. It is a tool of choice for those who prefer command line interfaces over GUI or needs to automate
-some operations with TypeDB.
+TypeDB Console is a standalone CLI TypeDB Client that we can use to interact with TypeDB.
 
-It has a unique set of functions and abilities to interact with a TypeDB database:
+It has a unique set of functions and abilities to interact with all editions of TypeDB:
 
 * Interactive command line interface (CLI) with built-in documentation.
 * Connection to TypeDB servers, including database management.
@@ -26,56 +24,73 @@ For a separate installation, see the xref:home:ROOT:install.adoc#_console[Instal
 
 == Connect to TypeDB
 
-If TypeDB is installed in the system (which usually means we can launch it with `typedb server` command), then the path
-to the TypeDB Console is all set, so we can launch the Console by issuing the following command:
+If TypeDB Console is xref:home:ROOT:install.adoc#_console[installed] in the system,
+then we can launch it and connect it to a TypeDB by issuing the following command:
 
+[tabs]
+====
+Cloud::
++
+--
+.TypeDB Cloud connection
+[,bash]
+----
+typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
+----
+
+You will be prompted for a password.
+
+// tag::cloud-psw[]
+[NOTE]
+=====
+On your first login,
+xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
+A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
+=====
+// end::cloud-psw[]
+--
+
+Enterprise::
++
+--
+.TypeDB Enterprise connection
+[,bash]
+----
+typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
+----
+
+You will be prompted for a password.
+
+// tag::enterprise-psw[]
+[NOTE]
+=====
+On your first login,
+xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
+A TypeDB Enterprise installation will refuse queries until the password is changed from its default value.
+=====
+// end::enterprise-psw[]
+--
+
+Core::
++
+--
+.TypeDB Core connection
 [,bash]
 ----
 typedb console
 ----
 
-The above command will try to establish connection with a TypeDB server on the default address of `localhost:1729`.
-To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port:
-`10.0.0.1:1729`.
+By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.
+To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port,
+for example, `10.0.0.1:1729`.
+--
+====
 
-If the typedb command is not recognized, it means that the path to TypeDB binary is not set in the system. We can find
-TypeDB binary in the TypeDB distributive. To start the Console navigate into the directory with unpacked distributive
-and run:
-
-[,bash]
-----
-./typedb console
-----
+To start TypeDB Console from its binary without setting up the path to it,
+navigate into the directory with unpacked distributive and use the `./typedb console` command
+with proper arguments (see above).
 
 As a result, we should get a welcome message from TypeDB Console followed by a command line prompt.
-
-[,bash]
-----
-Welcome to TypeDB Console. You are now in TypeDB Wonderland!
-Copyright (C) 2022 Vaticle
-
->
-----
-
-=== TypeDB Cloud / TypeDB Enterprise
-
-There is a slight difference when accessing TypeDB Enterprise (in TypeDB Cloud or on-premise TypeDB Enterprise) as it requires
-additional parameters (`enterprise`, `username`, `password`, etc.):
-
-[,bash]
-----
-./typedb console --enterprise=127.0.0.1:1729 --username=<username> --password --tls-enabled=<true|false>
-----
-
-As a result, you get a password prompt.
-
-[,bash]
-----
-Password:
-----
-
-Type in the correct password for the user selected in the command before and receive a welcome message from TypeDB
-Console followed by a command line prompt.
 
 [,bash]
 ----
@@ -245,12 +260,13 @@ Use any of these commands inside a console at the `>` prompt in the first level 
 (*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `user password-update`
-| Update the password for the current user +
+a| [#_change_own_password]
+Update the password for the current user +
 (*TypeDB Enterprise & TypeDB Cloud only*)
 
-[#_change_password]
 | `user password-set <username>`
-| Set password for the user with name `username` +
+a| [#_change_password]
+Set password for the user with name `username` +
 (*TypeDB Enterprise & TypeDB Cloud only*)
 
 | `user delete <username>`
