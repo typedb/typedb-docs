@@ -8,7 +8,8 @@
 :experimental:
 :!table-caption:
 
-A Define query modifies a schema of a database.
+A Define query modifies a schema of a database by adding new types or rules,
+adding new information to existing type definitions, and replacing existing rules.
 
 Define queries can be used only in a schema session and write transaction.
 For more information on the limitations of a schema session, see the
@@ -57,7 +58,7 @@ For type hierarchy, ownerships, and roleplayers, see below.
 [#_define_clause]
 == Define clause
 
-A `define` clause is used in a Define clause to specify a pattern for new or updated types and rules.
+A `define` clause is used in a Define query to specify a pattern for new or updated types and rules.
 Schema pattern consists of statements combined by a conjunction (logical `AND`).
 Every statement ends with a semicolon.
 Statements in a `define` clause pattern can't use any variables or values.

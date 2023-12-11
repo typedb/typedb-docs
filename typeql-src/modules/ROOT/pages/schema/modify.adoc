@@ -1,92 +1,143 @@
-= Modify existing schema
-:Summary: Introduction to the TypeDB Schema.
-:keywords: typeql, schema, type hierarchy, reserved keywords
-:longTailKeywords: typeql schema, typeql type hierarchy, typeql data model, typeql reserved keyword
-:pageTitle: Modify existing schema
+= Undefine query
+:Summary: Undefining types and rules from a schema.
+:keywords: typeql, schema, type, hierarchy, delete, undefine
+:pageTitle: Undefine query
 
-== Add
+An Undefine query removes type and rule definition from a schema.
 
-We can add types and rules to an existing schema by running new define statements to the same database as usual.
+Undefine queries can be used only in a schema session and write transaction.
+For more information on the limitations of a schema session, see the
+xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-The define statements are idempotent. By sending the same define query twice or more times, the resulting
-schema must be achieved as if we send it only once. So types and/or rules will not be duplicated.
+For more information about basics of data modeling with TypeQL, see the
+xref:typeql::fundamentals.adoc[] page.
 
-A separate define statement for a new type or a rule can be sent as a `define` query. Alternatively, the statement
-can be added to the define statement of the existing schema and sent together. Only new types and/or rules will be
-added in this case. If we change the name (label) of the existing type or rule in the existing schema and then send it
-as a define query, then the changed type or rule will be processed as a new one.
-//#todo Add examples. Step by step adding constraints.
+== Behavior
 
+A Undefine query deletes existing types and rules.
 
-== Delete
+An `undefine` clause uses a schema pattern without variables to declare a piece of schema to delete.
 
-Use the `undefine` keyword to remove the definition of a type or its association with other types from the schema.
+Undefine queries are validated with TypeQL syntax.
+A database's schema is validated after applying a given query to validate its consistency.
+Undefining a type also undefines all ownerships of attribute types and all roles it could play.
 
-[IMPORTANT]
-====
-Don't forget to `commit` after executing an `undefine` statement. Otherwise, any changes are NOT committed to a database.
-====
+A deleted type must exist in a schema and have neither subtypes nor instances of data.
+If any subtypes or instances of that type exist in a database,
+they need to be removed prior to removing the type or in the same query.
+Undefining the same type definition or rule definition twice will result in an error
+because of an attempt to remove a non-existent definition from a schema.
 
-[#_undefine_a_type]
+Undefine query returns a Promise of an empty response.
+
+== Syntax
+
+An Undefine query consists of a single `undefine` clause and always starts with the `undefine` keyword.
+
+Undefine queries are written in TypeQL with the following syntax:
+
+[,typeql]
+----
+undefine <pattern>
+----
+
+A pattern in a `undefine` clause uses TypeQL to declare type hierarchy, ownerships, roleplayers,
+and rules that need to be removed.
+
+== Undefine clause
+
+An `undefine` clause is used in an Undefine query to specify types and rules to be removed from a schema.
+
+Rules are removed by using the `rule` keyword and their label.
+See <<_undefine_a_rule,example>>.
+
+Types can be removed completely by using the `sub` keyword with a supertype.
+It can be a direct supertype, or non-direct, up to a root type.
+
+Alternatively, we can remove some parts of type definition, like an ownership of an attribute type or a role to play.
+
+== Examples
+
+The following examples use a database with the
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[IAM schema]
+for Undefine queries.
+
 === Undefine a type
 
-To delete a user-defined type from a schema use the keyword `undefine` with the label of a type to delete and `sub`
-keyword, followed by the supertype (direct or not) of the deleted type.
-
-[,typeql]
-----
-undefine subject sub entity;
-----
-
-[WARNING]
-====
-Types with existing subtypes or instances can't be undefined. Undefine any subtypes and delete any data instances of
-a type to be able to undefine it.
-====
-
-=== Undefine an attribute's association
-
-We can undefine the association that a type has with an attribute.
-
-[,typeql]
-----
-undefine subject owns credential;
-----
-
-The query above removes ownership of the attribute type `credential` from the entity type `subject`. Therefore,
-instances of the `subject` type will no longer be able to have ownership over instances of the `credential` type.
-
-[IMPORTANT]
-====
-It's important to note that if we add the `sub` keyword to the `label` at the beginning: `undefine [label] sub [type],
-owns [attributes' label];` it undefines the `label` type itself, rather than just its association with the attribute
-type.
-
-For example, `undefine subject sub entity, owns credential;` will delete the `subject` entity type from the
-schema. The ownership of the `credential` attribute type by the `subject` entity type will also be removed, but the
-`credential` attribute type will continue to exist. To undefine it from a schema, use `undefine credential sub
-attribute;`.
-====
-
-=== Undefine a relation
-
-Undefining a relation type undefines all of its roles. Therefore, when a relation type is undefined any types
-that were playing roles in that relation type will no longer play those roles. Given a `change-request` relation type,
-we can undefine it as shown below.
-
+.Undefining a type example
 [,typeql]
 ----
 undefine
 
+validity sub attribute;
 change-request sub relation;
+operation-set sub entity;
+user-role sub user-group;
 ----
 
-[#_undefine_a_supertype]
-=== Undefine a supertype
+The above example undefines four types from the
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[IAM schema].
 
-When a type to be undefined is a supertype to some other types, we must first undefine all its subtypes before
-undefining the supertype itself. We can use the same query to delete both the supertype and all its subtypes.
+Note that `operation-set` is not a direct subtype of the `entity` root type.
 
+=== Undefine ownership
+
+.Undefining ownership
+[,typeql]
+----
+undefine
+
+subject owns credential;
+----
+
+The above query removes an ability for `subject` type (and all its subtypes) to own a `credential` attribute type.
+
+Note that the `credential` type ownership is defined for the `subject` type.
+Subtypes of the `subject` type also inherit the `credential` ownership, but we can't undefine it from them
+because it is not defined for them in a schema.
+
+=== Undefine a role played
+
+.Undefining a role played
+[,typeql]
+----
+undefine
+
+subject plays segregation-violation:subject;
+----
+
+The above query removes the ability for the `subject` type to play the role of `subject` in the `segregation-violation`
+relation type.
+
+=== Undefine relation's role
+
+.Undefining role
+[,typeql]
+----
+undefine
+
+segregation-violation relates subject;
+----
+
+The above query removes the role of `subject` from the `segregation-violation` relation.
+
+[#_undefine_a_rule]
+=== Undefine a rule
+
+.Undefining a rule
+[,typeql]
+----
+undefine
+
+rule add-view-permission;
+----
+
+=== Undefine a type with a subtype
+
+We must first undefine all subtypes of a type, before undefining the type itself.
+We can use the same query to remove both the supertype and all its subtypes from a schema.
+
+.Undefining a type with a subtype
 [,typeql]
 ----
 undefine
@@ -95,35 +146,11 @@ object sub entity;
 resource sub object;
 ----
 
-[IMPORTANT]
+The above query undefines both `object` and its subtype `resource`.
+
+[NOTE]
 ====
-If we are using the same query to undefine supertype and all its subtypes, we need to make sure to use the supertype
-label in the subtypes undefine statements (directly right from the `sub` keyword). Otherwise, query will fail as
-invalid, due to one of the deleted types having subtypes.
+If you are using the same query to undefine supertype and all its subtypes, make sure to use the supertype
+label in the subtype undefine statements (directly right from the `sub` keyword).
+Otherwise, the query might fail validation, due to one of the deleted types having subtypes.
 ====
-
-=== Undefine a rule
-
-Rules, like any other schema members, can be undefined. Hence, to delete a rule, use the `undefine rule` keywords
-and refer to the rule by its label. For example:
-
-[,typeql]
-----
-undefine rule add-view-permission;
-----
-
-== Rename a type
-
-// tag::rename[]
-To rename a type (to change its label), use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or
-TypeDB Driver API:
-xref:drivers::rust/api-reference.adoc#_trait_ThingTypeAPI_method_set_label[Rust],
-xref:drivers::python/api-reference.adoc#_Type_set_label[Python],
-xref:drivers::java/api-reference.adoc#_Type_setLabel_com_vaticle_typedb_driver_api_TypeDBTransaction_java_lang_String[Java],
-xref:drivers::nodejs/api-reference.adoc#_Type_setLabel[Node.js].
-// end::rename[]
-
-== Modify a rule
-
-To modify a rule, xref:typeql::schema/define-rules.adoc[define a new rule] with the same label.
-It will overwrite the existing rule upon commit.
