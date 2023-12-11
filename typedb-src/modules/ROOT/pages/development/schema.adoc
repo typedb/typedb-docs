@@ -341,12 +341,15 @@ item owns size;
 ----
 
 In the query above we define an ownership of `size` attribute by the `item` type.
-For the query to succeed we need both the `item` and the `size` types to exist in the schema already.
+For the query to succeed, we need both the `item` and the `size` types to exist in the schema already.
 ====
 
 === Rename types
 
-include::typeql::schema/modify.adoc[tag=rename]
+// tag::rename[]
+To rename a type (to change its label), use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or
+TypeDB Driver API methods.
+// end::rename[]
 
 === Modify rules
 

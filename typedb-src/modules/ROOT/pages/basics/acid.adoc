@@ -59,12 +59,11 @@ of replicas replicated the transaction results. See xref:managing/ha.adoc#_repli
 [#_schema_integrity]
 == Schema integrity enforcement
 
+The following limitations apply for every database to protect its schema integrity:
+
 * Only one *Schema* session can be opened.
-
 * Only one *Write* transaction in a *Schema* session can be opened.
-
 * Opening a *Schema* session prevents any *Data Write* transactions.
-
 * Any *Write* transaction opened in a *Data* session prevents us from opening a *Schema* session.
 
 [NOTE]

@@ -16,6 +16,19 @@
 #
 define
 
+credential sub attribute, value string;
+full-name sub attribute, value string;
+id sub attribute, abstract, value string;
+email sub id, value string;
+name sub id, value string;
+number sub id, value string;
+path sub id, value string;
+object-type sub attribute, value string;
+ownership-type sub attribute, value string;
+review-date sub attribute, value datetime;
+size-kb sub attribute, value long;
+validity sub attribute, value boolean;
+
 access sub relation,
     relates action,
     relates object,
@@ -143,19 +156,6 @@ user-account sub user-group,
 
 user-role sub user-group,
     owns name;
-
-credential sub attribute, value string;
-full-name sub attribute, value string;
-id sub attribute, abstract, value string;
-email sub id, value string;
-name sub id, value string;
-number sub id, value string;
-path sub id, value string;
-object-type sub attribute, value string;
-ownership-type sub attribute, value string;
-review-date sub attribute, value datetime;
-size-kb sub attribute, value long;
-validity sub attribute, value boolean;
 
 rule add-view-permission: when {
     $modify isa action, has name "modify_file";

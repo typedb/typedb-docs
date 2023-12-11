@@ -39,6 +39,8 @@ Insert queries are written in TypeQL with the following syntax:
 insert <pattern>
 ----
 
+An `insert` clause pattern uses variables from a preceding `match` clause pattern.
+
 [#_match_clause]
 == Match clause
 

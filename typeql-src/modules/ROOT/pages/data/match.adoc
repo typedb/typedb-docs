@@ -226,63 +226,52 @@ see the sections below.
 
 Type patterns are used for schema types.
 They can be used only in a `match` and `define` clauses.
+For `define` clause patterns examples, see the
+xref:typeql::schema/define-types.adoc#_schema_patterns[Define types] page.
 
 .Type patterns
-[cols="^.^1,^.^2,^.^2,^.^2"]
+[cols="^.^1,^.^2,^.^2"]
 |===
-| *Pattern name* | *Pattern syntax* | *A `match` clause example* | *A `define` clause example*
+| *Pattern name* | *Pattern syntax* | *Example*
 
 | Type
-| `<label> type <type>;`
+| `<var> type <type>;`
 | `$t type person;`
-| *N/A* +
-_Can't define one type as another one_
+
 
 | Type or subtype
-| `<label> sub <type>;`
+| `<var> sub <type>\|<var>;`
 | `$t sub subject;`
-| `person sub user;`
 
 | Direct subtype
-| `<label> sub! <type>;`
+| `<var> sub! <type>\|<var>;`
 | `$t sub! subject;`
-| `person sub! user;`
 
 | Role in a relation type
-| `<relation> relates <label>;`
-| `permission relates $r;`
-| `permission relates access;`
+| `<var> relates <role>\|<var>;`
+| `$rel relates subject;`
 
 | Role player type in a relation
-| `<label> plays <relation>:<role>;`
+| `<var> plays <relation>:<role>\|<var>;`
 | `$r plays permission:subject;`
-| `access plays permission:access;`
 
 | Owner type of an attribute type
-| `<label> owns <attr-type>;`
+| `<var> owns <attr-type>\|<var>;`
 | `$o owns full-name;`
-| `person owns full-name;`
 
 | Attribute subtype
-| `<label> sub[!] <attribute-type> [, value <value-type>];`
+| `<var> sub[!] <attribute-type>\|<var> [, value <value-type>];`
 | `$s sub id, value string;`
-| `email sub id, value string;`
 |===
 //#todo Add examples and links to them
-
-In a `match` clause we can't define new types.
-Hence, use concept variables instead of `<label>` placeholder.
-
-In a `define` clause all variables are prohibited.
-Hence, use type labels instead of `<label>` placeholder.
 
 [#_negation]
 === Negation
 
-Use negation to exclude some concepts from result.
+Use negation to exclude some concepts from a result.
 
 The intuitive meaning of a negated pattern is that of a complement.
-However, a relation complement is not a clearly defined.
+However, a relation complement is not clearly defined.
 
 We understand pattern negation in terms of computation of *set differences*.
 The set-difference semantics are different to the perhaps familiar semantics of Negation-as-Failure of Prolog.
@@ -302,8 +291,8 @@ We can use multiple statements inside a negation block.
 
 For each negation block in a query,
 at least one variable in the negation block must be bound to a statement outside the negation block.
-This ensures that set difference operations are performed on sets that are not disjoint
-variables in negation blocks are local to the block they are defined in
+This ensures that set difference operations are performed on sets that are not disjointed.
+Variables in negation blocks are local to the block they are defined in.
 
 Rules conditions with negation can't contradict themselves (to prevent infinite recursion).
 
