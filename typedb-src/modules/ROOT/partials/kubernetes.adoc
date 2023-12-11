@@ -340,46 +340,98 @@ Configurable settings for Helm package include:
 
 | `name`
 | `null`
-| Used for naming deployed objects. When not provided, the Helm release name will be used instead
+| Used for naming deployed objects. When not provided, the Helm release name will be used instead.
 
-| `replicas`
-| `3`
-| Number of TypeDB Enterprise servers to run
+| `image.repository`
+| `vaticle/typedb-enterprise`
+|
 
-| `cpu`
-| `7`
-| How many CPUs should be allocated for each TypeDB Enterprise server
+| `image.tag`
+| `0.0.0`
+|
 
-| `storage.size`
-| `100Gi`
-| How much disk space should be allocated for each TypeDB Enterprise server
+| `image.pullPolicy`
+| `IfNotPresent`
+|
 
-| `storage.persistent`
-| `true`
-| Whether TypeDB Enterprise should use a persistent volume to store data
-
-| `singlePodPerNode`
-| `true`
-| Whether TypeDB Enterprise pods should be scheduled to different Kubernetes nodes
+| `image.pullSecret`
+| -
+|
 
 | `exposed`
 | `false`
-| Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network)
+| Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network).
 
-| `encrypted`
-| `true`
-| Whether TypeDB Enterprise supports uses an in-flight encryption.
-
-| `javaopts`
+| `serviceAnnotations`
 | `null`
-| JVM options that controls various runtime aspects of TypeDB Enterprise (e.g., `-Xmx`, `-Xms`)
+|
+
+| `tolerations`
+| `[]`
+|
+
+| `nodeAffinities`
+| `{}`
+|
+
+| `podAffinities`
+| `{}`
+|
+
+| `podAntiAffinities`
+| `{}`
+|
+
+| `singlePodPerNode`
+| `true`
+|
+
+| `podLabels`
+| `{}`
+|
+
+| `servers`
+| `3`
+| Number of TypeDB Enterprise servers to run.
+
+| `resources`
+| `{}`
+|
+
+| `storage.size`
+| `100Gi`
+| How much disk space should be allocated for each TypeDB Enterprise server.
+
+| `storage.persistent`
+| `true`
+| Whether TypeDB Enterprise should use a persistent volume to store data.
+
+| `encryption.enabled`
+| `false`
+| Whether TypeDB Enterprise uses an in-flight encryption.
+
+| `encryption.externalGRPC`
+|
+| Encryption settings for the client-server communications.
+
+| `encryption.internalGRPC`
+|
+| Encryption settings for the server-server communications.
+
+| `encryption.internalZMQ`
+|
+| Encryption settings for the cluster communication.
+
+| `authentication.password.disallowDefault`
+| `false`
+| Check whether the `admin` account have the default password.
 
 | `logstash.enabled`
 | `false`
 | Whether TypeDB Enterprise pushes logs into Logstash
 
 | `logstash.uri`
-| `localhost:5044`
+| `""`
 | Hostname and port of a Logstash daemon accepting log records
 |===
 
