@@ -70,6 +70,7 @@ rule <label>: when {
 [#_when_clause]
 == When clause
 
+// tag::when[]
 A `when` clause contains a *condition* of a rule.
 A condition is a pattern to seek for and to apply a <<_then_clause,conclusion>> to.
 It works much like a xref:typeql::data/match.adoc[match clause] pattern in an Insert query.
@@ -78,10 +79,12 @@ A rule's condition can be a pattern with multiple statements, including
 xref:typeql::data/match.adoc#_disjunction[disjunctions] and xref:typeql::data/match.adoc#_negation[negations].
 When using a disjunction in a rule, the disjunctive parts must be bound by variables outside the `or` statement.
 These variables are the only ones permitted in the `then` clause.
+// end::when[]
 
 [#_then_clause]
 == Then clause
 
+// tag::then[]
 A `then` clause contains a *conclusion* of a rule.
 A conclusion describes a <<_single_conclusion,single>> relation or ownership of an attribute
 (due to https://en.wikipedia.org/wiki/Horn_clause[Horn-clause logic,window=_blank])
@@ -107,6 +110,7 @@ Hence, there is no need to check if an instance already exists in a database bef
 
 Since version `2.18.0`, we can use <<_abstract,abstract>> types in a rule as long as all the type variables
 that define which instances to create during materialization are concrete (non-abstract).
+// end::then[]
 
 ////
 === Rule processing (inference)
@@ -129,6 +133,8 @@ Infinite recursion and non-termination are prevented with a tabling mechanism.
 
 === Basic rule
 
+A simple schema with a rule to add an attribute ownership to all instances oif a type should look like the following:
+
 [,typeql]
 ----
 define
@@ -150,6 +156,9 @@ In the above example all `person` entities matched by a read query with the infe
 *enabled* will have a `full-name` attribute with the value `Dude`.
 
 === Using arithmetics
+
+We can use xref:typeql::data/match.adoc#_computation[arithmetics] and other built-in functions in rules.
+Be careful not to create an infinite progression with it.
 
 [,typeql]
 ----
@@ -218,7 +227,7 @@ rule all-relation-types-are-transitive: when {
 //#todo Add advanced transitivity page or blog post here
 
 The above rule adds transitivity for any rule with at least two roles.
-Note, that all roles, roleplayers, and relation types are variablized, making this rule non-selective and universal.
+Note that all roles, roleplayers, and relation types are variablized, making this rule non-selective and universal.
 
 === Complex rule
 

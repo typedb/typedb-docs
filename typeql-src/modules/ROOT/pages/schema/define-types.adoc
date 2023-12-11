@@ -456,8 +456,8 @@ The inherited `member` role is inherited as it is.
 
 By overriding an inherited role, we prevent subtype from relating the role that would otherwise be inherited.
 
-== Example
-////
+== Examples
+
 === Simple type hierarchy
 
 Simple type hierarchy schema example:
@@ -466,14 +466,18 @@ Simple type hierarchy schema example:
 ----
 include::home::attachment$quickstart-schema.tql[]
 ----
-////
+
+The above examples defines three attribute types and two entity types.
+The `person` entity types is a subtype of the `user` and inherits its ownership of some attributes.
+Unlike `user` the `person` type is concrete (not abstract) and can be instantiated (inserted to a database as data).
+
 === IAM schema
 
-The following is the default IAM schema used in our documentation:
+For more complete and sophisticated example of a schema, see the following default IAM schema used in our documentation:
 
 [,typeql]
 ----
 include::typedb::attachment$iam-schema.tql[lines=17..]
 ----
 
-For an explanation of the data model used in this schema, see the xref:typedb::tutorials/iam-schema.adoc[] page.
+For an explanation of this schema, see the xref:typedb::tutorials/iam-schema.adoc[] page.
