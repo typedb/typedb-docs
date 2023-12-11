@@ -1,5 +1,5 @@
 [#_define_types]
-= Define query
+= Define types
 :Summary: Define schema types and rules with TypeQL.
 :keywords: typeql, schema, model, define, modify, extend, type, rule, annotations
 :pageTitle: Define query
@@ -22,6 +22,7 @@ xref:typeql::fundamentals.adoc#_rules[rules].
 
 == Behavior
 
+// tag::behavior[]
 A Define query adds new or updates existing types and rules.
 
 Define queries are unambiguous and idempotent
@@ -33,6 +34,13 @@ Define queries are validated with TypeQL syntax.
 A database's schema is also validated after applying a given query to validate its consistency.
 
 Define query returns a Promise of an empty response.
+// end::behavior[]
+
+=== Types behavior
+
+Every type definition in a Define query is applied to an existing schema of a database.
+A Define query should produce a consistent and valid schema in a database,
+otherwise it will not pass validation and will be rejected.
 
 == Syntax
 
@@ -45,8 +53,11 @@ Define queries are written in TypeQL with the following syntax:
 define <pattern>
 ----
 
-A pattern in a `define` clause uses TypeQL to declare type hierarchy, ownerships, role players, and rules.
+A pattern in a `define` clause uses TypeQL to declare type hierarchy, ownerships, roleplayers, and rules.
+For rules, see the xref:schema/define-rules.adoc[] page.
+For type hierarchy, ownerships, and roleplayers, see below.
 
+[#_define_clause]
 == Define clause
 
 A `define` clause is used in a Define clause to specify a pattern for new or updated types and rules.
@@ -57,12 +68,11 @@ Instead, they use type labels and TypeQL to express
 <<_subtyping,subtyping>>,
 <<_abstract,abstract flags>>,
 <<_ownership,ownership>>,
-<<_annotations,annotations>>,
-<<_roleplaying,roleplaying>>,
-and <<_rules,rules>>.
+<<_annotations,annotations>>, and
+<<_roleplaying,roleplaying>>.
 
-Statements in a `define` clause pattern can use types that already exist in a database (including built-in types)
-and types that are defined anywhere in the same query.
+Statements in a `define` clause pattern can define new types, can use types that already exist in a schema
+(including built-in types), and can use types that are defined anywhere in the same query.
 
 [#_schema_patterns]
 === Schema definition patterns
@@ -82,25 +92,24 @@ See the table below for the most generic patterns that can be used for schema de
 | `<label> sub! <type>;`
 | `person sub! user;`
 
-| Adding a role
+| <<_roleplaying,Adding a role>>
 | `<relation> relates <label>;`
 | `permission relates access;`
 
-| Assigning a role for a type
+| <<_roleplaying,Assigning a role>> for a type
 | `<label> plays <relation>:<role>;`
 | `access plays permission:access;`
 
-| Assigning ownership
+| <<_ownership,Adding ownership>> to a type
 | `<label> owns <attr-type>;`
 | `person owns full-name;`
 |===
 
-=== Order of statements and indentation
+//=== Order of statements and indentation
 //#todo Consider generalizing this recommendations
 
 TypeQL statements in a pattern are combined by a conjunction (logical `AND`),
 which means they can be included in any order of following with the same result.
-
 For readability purposes, by default, we recommend to include them in the following order:
 
 * Attribute types
@@ -108,9 +117,7 @@ For readability purposes, by default, we recommend to include them in the follow
 * Relation types
 * Rules
 
-Indentation and line breaks have no effect on the result of a query and needed only for readability.
-
-== Defining types
+Indentation and line breaks have no effect on the result of a query and are needed only for readability.
 
 [#_subtyping]
 === Subtyping
@@ -193,7 +200,12 @@ It specifies a regex to restrict values to only `public`, `private` and `closed`
 
 ==== Relations
 
-To define a relation type, we need to declare at least one its role.
+Relation types are defined by subtyping the `relation` root type or other relation types.
+
+Roles are added with the `relates` keyword followed by the role label.
+At least one role must be defined for any relation.
+
+Relations can play roles in other relations.
 
 .Relation with two roles
 [,typeql]
@@ -205,7 +217,9 @@ access sub relation,
     relates action;
 ----
 
-For more information on letting instances to paly a role in a relation, see the <<_roleplaying>> section.
+For any instance to be able to play a role in a relation,
+the type of the instance must have that role defined as playable by it with the `plays` keyword.
+For more information on letting a type to play a role in a relation type, see the <<_roleplaying>> section.
 
 [#_abstract]
 === Abstract
@@ -248,6 +262,26 @@ object sub entity, owns object-type;
 ----
 
 The above definition adds an ability for instances of `person` type to own instances of the `full-name` type.
+
+[#_cardinality]
+=== Cardinality
+
+By default, an instance of a type can have ownership of multiple attributes of the same attribute type
+with different values.
+
+By having multiple attributes of the same type we're effectively creating a
+xref:typeql::data/insert.adoc#_multivalued_attributes[multivalued attribute]
+(as if having an attribute with multiple values).
+
+Use the <<_key_attribute,Key attribute annotation>>
+to limit the cardinality to exactly *one* and add *uniqueness* constraint.
+Hence, the instance of the type with key annotated ownership will have exactly one (no more and no less)
+key attribute instance.
+
+See the example in the <<_key_attribute,Key attribute>> section.
+
+More flexible cardinality annotation is expected to be available with the release of TypeDB v.3.0.
+//NoteL 3.0 feature
 
 [#_annotations]
 === Annotations
@@ -305,7 +339,7 @@ define
 object sub entity, owns object-type @key;
 ----
 
-[WARNING]
+[NOTE]
 ====
 An ownership can't have both `@unique` and `@key` annotations at the same time.
 ====
@@ -313,8 +347,8 @@ An ownership can't have both `@unique` and `@key` annotations at the same time.
 [#_roleplaying]
 === Roleplaying
 
-For an instance to be able to play a role in a relation,
-the type of an instance must be defined as a potential roleplayer:
+For any instance to be able to play a role in a relation,
+the type of the instance must be defined as a potential roleplayer:
 
 .Roleplayer type
 [,typeql]
@@ -322,9 +356,13 @@ the type of an instance must be defined as a potential roleplayer:
 define
 
 access sub relation, relates object;
-
 object sub entity, plays access:object;
 ----
+
+The above examples define the `object` type being able to play a role `object` in the `access` relation type.
+With this definition in a schema, we can now xref:typeql::data/insert.adoc[insert]
+data in our database about a relation of type `access` with the role `object` played by a given instance
+of an entity type `object`.
 
 === Inheritance
 
@@ -341,10 +379,8 @@ object sub entity,
     abstract,
     owns object-type,
     plays access:object;
-resource sub object,
-    abstract;
-file sub resource,
-    owns path;
+resource sub object, abstract;
+file sub resource, owns path;
 ----
 
 In the above example, the `resource` and `file` entity types are subtypes of the `object` type,
@@ -420,604 +456,24 @@ The inherited `member` role is inherited as it is.
 
 By overriding an inherited role, we prevent subtype from relating the role that would otherwise be inherited.
 
-[#_rules]
-== Defining rules
-
-
-
-
-
-
-
+== Example
 ////
+=== Simple type hierarchy
 
-== Example 2
-
-[,typeql]
-----
-define
-
-credential sub attribute, value string;
-full-name sub attribute, value string;
-id sub attribute,
-    abstract,
-    value string;
-email sub id, value string;
-
-subject sub entity,
-    abstract,
-    owns credential,
-    plays group-membership:group-member;
-
-user sub subject,
-    abstract;
-
-person sub user,
-    owns full-name,
-    owns email;
-
-membership sub relation,
-    abstract,
-    relates parent,
-    relates member;
-
-group-membership sub membership,
-    relates group as parent,
-    relates group-member as member;
-----
-
-
-
-
-
-image::schema-example-1.png[Schema visualization example]
-
-include::typedb::partial$thing-warning.adoc[]
-
-In the following sections, we can find more detailed information on different schema definition queries and
-possibilities.
-
-[#_define_entity_types]
-== Define entity types
-
-=== Overview
-
-Entity types are defined independently of other types, but may subtype other entity types.
-
-Optionally, entity types can:
-
-* Be abstract.
-* Own attribute types.
-* Play roles defined in relation types.
-
-=== Syntax
-
-Entity types are defined in TypeQL with the following pattern:
+Simple type hierarchy schema example:
 
 [,typeql]
 ----
-<label> sub (entity | <entity type label>) [(, abstract)]
-[(, owns <attribute type label> [@annotation])...]
-[(, plays <relation type label>:<role>)...];
+include::home::attachment$quickstart-schema.tql[]
 ----
-
-=== Examples
-
-==== Basic
-
-The following `define` query creates a new entity type, `object`, by subtyping the `entity` built-in type.
-
-[,typeql]
-----
-define
-
-object sub entity;
-----
-
-[#_abstract_types]
-==== Abstract
-
-Optionally, types can be defined as `abstract`. An abstract type can't be instantiated and must be
-subtyped in order to create entities. It exists only so other types can inherit ownerships over attribute types it
-owns and the roles it plays. We can use abstract types in queries, expecting to retrieve instances of its concrete
-subtypes.
-
-[,typeql]
-----
-define
-
-object sub entity,
-    abstract;
-----
-
-==== Owns an attribute
-
-To define a new entity type that owns one or more attribute types, use the `owns` keyword followed by the label of the
-attribute type. The attribute types are appended to the entity type definition with commas. Note, attribute types must
-be defined before or concurrently (in the same query) with its owner(s). We can add owners later, but we can't
-own nonexistent attribute types.
-
-[,typeql]
-----
-define
-
-object-type sub attribute, value string;
-
-object sub entity,
-    abstract,
-    owns object-type;
-----
-
-[#_cardinality]
-===== Cardinality
-
-By default, an entity can have multiple attributes of the same type: zero, one, or many.
-
-By having multiple attributes of the same type we're effectively creating a
-xref:typeql::data/insert.adoc#_multivalued_attributes[multivalued attribute] (as if having an attribute type instantiated
-with multiple values).
-
-Use the `@key` keyword to limit the cardinality to exactly *one* and add *uniqueness* constraint.
-Hence, the instance of the type with key ownership will have exactly one (no more and no less)
-key attribute instance.
-
-See the example in the <<_key_attribute,Key attribute>> section.
-
-==== Plays a role
-
-To add roles that entities of a specific entity type can play, use the `plays` keyword.
-
-[,typeql]
-----
-define
-
-access sub relation,
-    relates object;
-
-object sub entity,
-    abstract,
-    plays access:object;
-----
-
-==== Subtypes another entity
-
-[NOTE]
-====
-All types that are subtyping `entity` built-in type directly or through other subtypes are called entity types.
-Instances of entity types are called entities. A similar terminology is applied to attributes and relations.
-====
-
-An entity type can subtype another entity type by using the same `sub` keyword, but replacing the `entity` keyword
-after it with a label of another entity type to subtype.
-
-[,typeql]
-----
-define
-
-path sub attribute, value string;
-
-object sub entity,
-    abstract,
-    owns object-type,
-    plays access:object;
-resource sub object,
-    abstract;
-file sub resource,
-    owns path;
-----
-
-In the above example, the `resource` and `file` entity types are subtypes of the `object`, which itself is a subtype
-of the `entity` built-in type. They inherit the `object-type` attribute type ownership from it as well as its
-`access:object` role. However, while the `resource` subtype is abstract, the `file` subtype is not. Hence, we
-can create `file` entities, but not `resource` entities.
-
-Further, the `path` attribute type will only be owned by the `file` entity type and any other entity types which
-subtype it or directly define ownership.
-
-==== Overrides inherited attribute ownership
-
-To override an inherited ownership use `owns` keyword with the new attribute type label, followed by the `as` keyword
-and the inherited attribute type label. For example:
-
-[,typeql]
-----
-define file sub resource, owns file-type as object-type;
-----
-
-The new attribute type that overrides inherited type is defined in the schema as subtype of the inherited
-attribute type. Hence, the inherited attribute type is abstract and has the same value type as the new attribute type.
-The example above in a schema would look like this:
-
-[,typeql]
-----
-define
-
-path sub attribute, value string;
-
-object-type sub attribute, abstract, value string;
-file-type sub object-type, value string;
-
-object sub entity,
-    abstract,
-    owns object-type;
-resource sub object,
-    abstract;
-file sub resource,
-    owns path,
-    owns file-type as object-type;
-----
-
-In the above example, the `file` entity type owns the `path` and `file-type` attribute types, with the `file-type`
-attribute type overriding the inherited `object-type` attribute type.
-
-[#_define_relation_types]
-== Define relation types
-
-=== Overview
-
-Relation types are defined independently of other types but may subtype other relation types.
-They can be abstract.
-Their definition can include ownership of attribute types,
-roles other types play within them, and roles they can play in other relation types:
-
-* Owned attribute types are added with the `owns` keyword followed by the attribute type label.
-* Its own roles are added with the `relates` keyword followed by the role label. At least one role must be defined for
-any relation.
-* Roles it can play in other relations are added with the `plays` keyword followed by the relation type label and role.
-
-=== Syntax
-
-Relation types are defined in TypeQL with the following pattern:
-
-[,typeql]
-----
-<label> sub (relation | <relation type label>) [(, abstract)]
-[(, owns <attribute type label> [@annotation])...]
-(, relates <role label>)
-[(, relates <role label>)...]
-[(, plays <relation type label>:<role>)...];
-----
-
-=== Examples
-
-==== Basic
-
-The following statement creates an `access` relation that defines two roles:
-
-* `object` -- played by instances of the `object` entity type or its subtypes (e.g.,`file`).
-* `action` -- played by instances of the `action` entity type.
-
-[,typeql]
-----
-define
-
-access sub relation,
-    relates object,
-    relates action;
-----
-
-==== Plays a role
-
-In addition to defining its own roles played by other types, a relation type can play roles in other relation types.
-
-[,typeql]
-----
-define
-
-access sub relation,
-    relates object,
-    relates action,
-    plays permission:access,
-    plays change-request:change;
-----
-
-In the above example, `access` relation type can play the `access` role in `permission` relation type and
-the `change` role in `change-request` relation type. Besides, an `access` relation type relates an
-`object` role (e.g., file) and a `action` role (e.g., read). Thus, a `permission` relation type relates
-the `access` (i.e., read + file) and a `subject` (e.g., `person` with `full-name` attribute `Kevin Morrison`).
-
-==== Defines multiple roles
-
-A relation can define multiple roles (from one to many).
-
-[,typeql]
-----
-define
-
-change-request sub relation,
-    relates change,
-    relates requestee,
-    relates requester;
-----
-
-==== Owns an attribute
-
-A relation type can own zero, one, or many attribute types.
-
-[,typeql]
-----
-define
-
-segregation-policy sub relation,
-    relates action,
-    plays segregation-violation:policy,
-    owns name;
-----
-
-==== Abstract
-
-Optionally, relation types can be defined as `abstract`, so they must be subtyped in order to create instances. An
-abstract relation type exists only so other relation types can inherit the attribute types it owns and the roles it
-defines and plays.
-
-[,typeql]
-----
-define
-
-violation sub relation,
-    abstract,
-    owns name;
-----
-
-==== Subtypes another relation
-
-A relation type can subtype another relation type by replacing the `relation` keyword with the label of another
-relation type. The subtype will inherit all owned attribute types and all roles related or played by the parent type.
-
-[,typeql]
-----
-define
-
-membership sub relation,
-    relates parent,
-    relates member;
-
-collection-membership sub membership;
-----
-
-In the example above, the `collection-membership` relation type inherits the `parent` and `member` roles defined in
-its parent type: `membership`.
-
-[#_overrides_a_role]
-==== Overrides a role
-
-The labels of the inherited roles can be overridden to distinguish between the roles inherited by a relation subtype
-versus the roles defined by its parent type.
-
-[,typeql]
-----
-define
-
-membership sub relation,
-    relates parent,
-    relates member;
-
-collection-membership sub membership,
-    relates collection as parent;
-----
-
-In the example above, the `collection-membership` relation type subtypes the `membership` relation type and overrides
-the inherited `parent` role as `collection`. The inherited `member` role is inherited as it is.
-
-[NOTE]
-====
-The two examples above can be run one after another. The second one will update the `collection-membership` type to
-override one of its inherited roles.
-====
-
-[IMPORTANT]
-====
-By overriding an inherited role, we implicitly prevent the sub-relation from relating the role that would otherwise be
-inherited.
-====
-
-//#todo add another example on inherited overriden roles:
-
-==== Complex example
-
-[,typeql]
-----
-define
-
-ownership sub relation,
-    relates owned,
-    relates owner;
-
-group-ownership sub ownership,
-    relates group as owned,
-    owns ownership-type;
-
-object-ownership sub ownership,
-    relates object as owned,
-    owns ownership-type;
-
-access sub relation,
-    relates object,
-    relates action,
-    plays change-request:change;
-
-change-request sub relation,
-    relates requester,
-    relates requestee,
-    relates change;
-----
-
-//#todo add illustration for this example
-
-The example above defines one attribute type and five relation types:
-
-* `ownership` -- subtypes the `relation` built-in type, and relates `owned`, and `owner` roles.
-* `group-ownership` -- subtypes `ownership` relation type, relates `group` as `owned`, and `owner` (inherited).
-* `object-ownership` -- subtypes `ownership` relation, relates `object` as `owned`, and `owner` (inherited).
-* `access` -- subtypes the `relation` built-in type, relates `object` (e.g., file) and `action` (e.g.,
-  read), plays the role of `change` in `change-request` relation type.
-* `change-request` -- subtypes the `relation` built-in type, relates `requester`, `requestee` and `change`.
-
-[#_define_attribute_types]
-== Define attribute types
-
-=== Overview
-
-Attribute types are defined independently of other types, but may subtype a user-defined abstract attribute type.
-Any type can have an ownership over any attribute type.
-
-[WARNING]
-====
-Attributes owning an attributes feature will be deprecated in one of the upcoming versions and deleted in TypeDB
-version 3.0.
-====
-
-[WARNING]
-====
-Attributes playing a role in a relation feature will be deprecated in one of the upcoming versions and deleted in
-TypeDB version 3.0.
-====
-
-Optionally, attribute types can:
-
-* Be abstract.
-* Own other attribute types (this will be deprecated).
-* Play roles in relations (this will be deprecated).
-
-=== Syntax
-
-Attribute types are defined in TypeQL with the following pattern:
-
-[,typeql]
-----
-<label> sub (attribute | <abstract attribute type label>) [(, abstract)], value <value type> [, regex "<regex-expression>"]
-
-[(, owns <attribute type label> [@annotation])...]
-
-[(, plays <relation type label>:<role>)...];
-----
-
-[#_value_types]
-The following *value types* are supported:
-
-// tag::value_types[]
-* `long` -- a 64-bit signed integer number
-* `double` -- a double-precision floating point number, including a decimal point
-* `string` -- a string enclosed in double `"` or single `'` quotes
-* `boolean` -- a `true` or `false`
-* `datetime` -- a date or date-time in one of the following formats:
- ** `yyyy-mm-dd`
- ** `yyyy-mm-ddThh:mm`
- ** `yyyy-mm-ddThh:mm:ss`
- ** `yyyy-mm-ddThh:mm:ss.f`
- ** `yyyy-mm-ddThh:mm:ss.ff`
- ** `yyyy-mm-ddThh:mm:ss.fff`
-// end::value_types[]
-
-=== Examples
-
-==== Basic
-
-[,typeql]
-----
-define
-
-name sub attribute, value string;
-email sub attribute, value string;
-ownership-type sub attribute, value string;
-review-date sub attribute, value datetime;
-validity sub attribute, value boolean;
-----
-
-==== Subtypes another attribute type
-
-An attribute type can subtype another attribute type if its *abstract*. This is useful when the possible values of
-an attribute type can be categorized, and applications can benefit from querying entities and relations not only by
-a value of an attribute but also by a label of attribute type.
-
-[IMPORTANT]
-====
-An attribute type can only subtype an abstract attribute type. However, the subtype of an attribute type can itself be
-abstract. Further, an attribute subtype must have the same **value type** as its parent attribute type. Note, the
-**value type** of an attribute subtype can be omitted in its definition. It will be inherited from its parent
-attribute type.
-====
-
-[,typeql]
-----
-define
-
-id sub attribute, abstract, value string;
-email sub id, value string;
-name sub id, value string;
-path sub id, value string;
-number sub id, value string;
-----
-
-The above example creates an attribute type, `id`. However, because different entities can be identified by different
-information, the `id` type is subtyped by `email`, `name`, `path`, and `number` types -- making it possible to query
-users by `email`, business units by `name`, files by `path` and records by `number`.
-
-
-
-==== Regular expressions
-
-The values of an attribute type can be restricted using Java regular expressions. For example, to constrain it to a
-set of options.
-
-[,typeql]
-----
-define
-
-visibility sub attribute, value string, regex "^(public|private|closed)$";
-----
-
-The above example defines an attribute type: `visibility`. It is intended for user groups, and specifies a regex to
-restrict its values to `public`, `private` and `closed`.
-
-==== Owns other attribute types
-
-While it is more common for entity and relation types to own attributes, attribute types can also own (other)
-attribute types.
-
-[WARNING]
-====
-Attributes owning an attributes feature will be deprecated in one of the upcoming versions and deleted in TypeDB
-version 3.0.
-====
-
-[,typeql]
-----
-define
-
-symlink sub attribute, value string;
-
-filepath sub attribute,
-    value string,
-    owns symlink;
-----
-
-The above example creates an attribute type `filepath`, intended for files. It is assumed there can be multiple copies
-of a `file`, each with its own `filepath` -- and symlinks can be created that point to these filepaths. Thus, the
-`filepath` attribute type (and NOT the `file` entity type) owns the `symlink` attribute type.
-
-==== Plays a role
-
-While it is more common for the roles in relations to be played by entities or other relations, they can also be played
-by attributes.
-
-[WARNING]
-====
-Attributes playing a role in a relation feature will be deprecated in one of the upcoming versions and deleted in
-TypeDB version 3.0.
-====
-
-[,typeql]
-----
-define
-
-credential sub attribute,
-    value string,
-    plays change-request:change;
-----
-
-The above example creates the `credential` attribute type, and specifies it can play the role of `change` in
-the `change-request` relation type. While `change-requests` were intended to manage access changes, they can now be
-used to manage `credential` changes as well.
-
 ////
+=== IAM schema
+
+The following is the default IAM schema used in our documentation:
+
+[,typeql]
+----
+include::typedb::attachment$iam-schema.tql[lines=17..]
+----
+
+For an explanation of the data model used in this schema, see the xref:typedb::tutorials/iam-schema.adoc[] page.
