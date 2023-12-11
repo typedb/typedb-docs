@@ -130,7 +130,7 @@ of the current database.
 An Undefine query consists of a single `undefine` clause.
 
 For more information on the Undefine query, see the
-xref:typeql::schema/modify.adoc#_undefine_a_type[Modify existing schema] page.
+xref:typeql::schema/undefine.adoc#_undefine_a_type[Modify existing schema] page.
 
 For examples of how to perform an Undefine query, see the
 xref:typedb::development/schema.adoc#_undefine[Defining schema] page.
@@ -147,7 +147,7 @@ An `undefine` clause has the following syntax:
 undefine <pattern>
 ----
 
-A pattern used in the `undefine` clause is xref:typeql::schema/modify.adoc[limited] to the DDL part of the TypeQL.
+A pattern used in the `undefine` clause is xref:typeql::schema/undefine.adoc[limited] to the DDL part of the TypeQL.
 
 [#_insert_query]
 == Insert query
