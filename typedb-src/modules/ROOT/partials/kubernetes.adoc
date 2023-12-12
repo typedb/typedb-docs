@@ -334,7 +334,7 @@ kubectl logs pod/typedb-enterprise-0
 
 Configurable settings for Helm package include:
 
-[cols="^,^,"]
+[cols="^2,^1,3"]
 |===
 | Key | Default value ^| Description
 
@@ -344,19 +344,22 @@ Configurable settings for Helm package include:
 
 | `image.repository`
 | `vaticle/typedb-enterprise`
-|
+| The docker hub organization and repository from which to pull an appropriate image.
 
 | `image.tag`
-| `0.0.0`
-|
+| `2.25.9`
+| The version of TypeDB Enterprise to use.
 
 | `image.pullPolicy`
 | `IfNotPresent`
-|
+| Image pulling policy. +
+For more information, see the
+https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[image pull policy]
+in Kubernetes documentation.
 
 | `image.pullSecret`
 | -
-|
+| The name of a secret containing a container image registry key used to authenticate against the image repository.
 
 | `exposed`
 | `false`
@@ -364,31 +367,59 @@ Configurable settings for Helm package include:
 
 | `serviceAnnotations`
 | `null`
-|
+| Kubernetes annotations to be added to the Kubernetes services responsible for directing traffic
+to the TypeDB Enterprise pods.
 
 | `tolerations`
 | `[]`
-|
+//#todo Check the default value
+a| Kubernetes tolerations of taints on nodes. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/[tolerations]
+in Kubernetes documentation.
+
+.Example
+[,yaml]
+----
+[key: "typedb-enterprise-only"
+    operator: "Exists"
+    effect: "NoSchedule"]`
+----
 
 | `nodeAffinities`
 | `{}`
-|
+| Kubernetes node affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity[node affinities]
+in Kubernetes documentation.
 
 | `podAffinities`
 | `{}`
-|
+| Kubernetes pod affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity[pod affinities]
+in Kubernetes documentation.
 
 | `podAntiAffinities`
 | `{}`
-|
+| Kubernetes pod anti-affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity[pod affinities]
+in Kubernetes documentation.
 
 | `singlePodPerNode`
 | `true`
-|
+| Whether a pod should share nodes with other TypeDB Enterprise instances from the same Helm installation.
+
+_Warning: changing this to false and making no anti-affinities of your own will allow Kubernetes
+to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Enterprise._
 
 | `podLabels`
 | `{}`
-|
+| Kubernetes pod labels. +
+For more information, see the
+https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set[pod labels]
+in Kubernetes documentation.
 
 | `servers`
 | `3`
@@ -396,7 +427,10 @@ Configurable settings for Helm package include:
 
 | `resources`
 | `{}`
-|
+| Kubernetes resources specification. +
+For more information, see the
+https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container[resource requests and limits]
+in Kubernetes documentation.
 
 | `storage.size`
 | `100Gi`
@@ -422,9 +456,9 @@ Configurable settings for Helm package include:
 |
 | Encryption settings for the cluster communication.
 
-| `authentication.password.disallowDefault`
+| `authentication.password.​disallowDefault`
 | `false`
-| Check whether the `admin` account have the default password.
+| Check whether the `admin` account has the default password.
 
 | `logstash.enabled`
 | `false`
