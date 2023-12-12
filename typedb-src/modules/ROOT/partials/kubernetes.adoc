@@ -446,15 +446,15 @@ in Kubernetes documentation.
 
 | `encryption.externalGRPC`
 |
-| Encryption settings for the client-server communications.
+| Encryption settings for client-server communications.
 
 | `encryption.internalGRPC`
 |
-| Encryption settings for the server-server communications.
+| Encryption settings for cluster management, e.g., creating a database on all replicas.
 
 | `encryption.internalZMQ`
 |
-| Encryption settings for the cluster communication.
+| Encryption settings for data replication.
 
 | `authentication.password.​disallowDefault`
 | `false`
