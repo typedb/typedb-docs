@@ -9,7 +9,7 @@
 [#_initial_setup]
 == Initial Setup
 
-First, create a secret to access TypeDB Enterprise image on Docker Hub:
+First, create a secret to access TypeDB Cloud image on Docker Hub:
 
 [,bash]
 ----
@@ -30,13 +30,13 @@ helm repo add vaticle https://repo.vaticle.com/repository/helm/
 == Encryption setup (optional)
 //*Create in-flight encryption certificates (optional)*
 
-This step is necessary if you wish to deploy TypeDB Enterprise with in-flight encryption support.
+This step is necessary if you wish to deploy TypeDB Cloud with in-flight encryption support.
 There are two certificates that need to be configured: external certificate (TLS) and internal certificate (Curve).
 The certificates need to be generated and then added to Kubernetes Secrets.
 
 An external certificate can either be obtained from trusted third party providers such as
 https://www.cloudflare.com/[CloudFlare] or https://letsencrypt.org/[letsencrypt.org].
-Alternatively, it is also possible to generate it manually with a tool we provide with TypeDB Enterprise
+Alternatively, it is also possible to generate it manually with a tool we provide with TypeDB Cloud
 in the `tool` directory:
 
 [,bash]
@@ -47,7 +47,7 @@ java -jar encryption-gen.jar --ca-common-name=<x500-common-name> --hostname=<ext
 _Please note that an external certificate is always bound to URL address, not IP address._
 
 Ensure the external certificate (`<external-hostname>` in the command above) is bound to `\*.<helm-release-name>`.
-For example, for a Helm release named `typedb-enterprise`, the certificate needs to be bound to `*.typedb-enterprise`.
+For example, for a Helm release named `typedb-cloud`, the certificate needs to be bound to `*.typedb-cloud`.
 
 The `encryption-gen.jar` generates three directories:
 
@@ -56,9 +56,9 @@ The `encryption-gen.jar` generates three directories:
 
 All files from the directory
 named after external domain shall be copied to the proper directory on every server in a cluster.
-By default, they are stored in `/server/conf/encryption` inside the TypeDB Enterprise main directory.
-For example, `typedb-enterprise-all-mac-x86_64-2.24.17/server/conf/encryption`.
-The path to each file is configured in the `encryption` section of the TypeDB Enterprise config file.
+By default, they are stored in `/server/conf/encryption` inside the TypeDB Cloud main directory.
+For example, `typedb-cloud-all-mac-x86_64-2.25.12/server/conf/encryption`.
+The path to each file is configured in the `encryption` section of the TypeDB Cloud config file.
 
 Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets.
 Navigate into the directory with cluster certificates and run:
@@ -102,7 +102,7 @@ Deploy:
 
 [,bash]
 ----
-helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=false"
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=false"
 ----
 --
 
@@ -114,7 +114,7 @@ To enable in-flight encryption for your private cluster, make sure the `encrypte
 
 [,bash]
 ----
-helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,encrypted=true" \
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=true" \
 --set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
 --set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
 --set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
@@ -124,9 +124,9 @@ helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=false,en
 
 The servers will be accessible via the internal hostname within the Kubernetes network,
 i.e.,
-`typedb-enterprise-0.typedb-enterprise`,
-`typedb-enterprise-1.typedb-enterprise`, and
-`typedb-enterprise-2.typedb-enterprise`.
+`typedb-cloud-0.typedb-cloud`,
+`typedb-cloud-1.typedb-cloud`, and
+`typedb-cloud-2.typedb-cloud`.
 
 [#_deploying_a_public_cluster]
 === Deploying a Public Cluster
@@ -151,7 +151,7 @@ Deploy:
 
 [,bash]
 ----
-helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true"
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true"
 ----
 
 Once the deployment has been completed,
@@ -160,7 +160,7 @@ The addresses can be obtained with this command:
 
 [,bash]
 ----
-kubectl get svc -l external-ip-for=typedb-enterprise \
+kubectl get svc -l external-ip-for=typedb-cloud \
 -o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
 ----
 --
@@ -175,7 +175,7 @@ Given a "domain name" and a "Helm release name", the address structure of the se
 
 [,bash]
 ----
-typedb-enterprise-{0..n}.<helm-release-name>.<domain-name>
+<helm-release-name>-{0..n}.<domain-name>
 ----
 
 The format must be taken into account when generating the external certificate of all servers such that they're properly
@@ -189,7 +189,7 @@ Ensure that the `encrypted` flag is set to `true` and the `domain` flag set acco
 
 [,bash]
 ----
-helm install typedb-enterprise vaticle/typedb-enterprise --set "exposed=true,encrypted=true,domain=<domain-name>" \
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true,encrypted=true,domain=<domain-name>" \
 --set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
 --set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
 --set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
@@ -201,9 +201,9 @@ trusted DNS provider:
 
 [,bash]
 ----
-typedb-enterprise-0.typedb-enterprise.example.com => <public IP/hostname of typedb-enterprise-0 service>
-typedb-enterprise-1.typedb-enterprise.example.com => <public IP/hostname of typedb-enterprise-1 service>
-typedb-enterprise-2.typedb-enterprise.example.com => <public IP/hostname of typedb-enterprise-2 service>
+typedb-cloud-0.typedb-cloud.example.com => <public IP/hostname of typedb-cloud-0 service>
+typedb-cloud-1.typedb-cloud.example.com => <public IP/hostname of typedb-cloud-1 service>
+typedb-cloud-2.typedb-cloud.example.com => <public IP/hostname of typedb-cloud-2 service>
 ----
 --
 ====
@@ -221,7 +221,7 @@ Certain adjustments will be made compared to other deployment modes:
 * Minikube only has a single K8s node, so `singlePodPerNode` needs to be set to `false`
 * Minikube's K8s node only has as much CPUs as the local machine:
 `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-Therefore, for deploying a cluster with three servers of TypeDB Enterprise to a node with 8 vCPUs,
+Therefore, for deploying a cluster with three servers of TypeDB Cloud to a node with 8 vCPUs,
 the `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
   as total storage required is `storage.size` multiplied by `replicas`.
@@ -234,13 +234,13 @@ Deploy, adjusting the parameters for CPU and storage to run on a local machine:
 
 [,bash]
 ----
-helm install typedb-enterprise vaticle/typedb-enterprise --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
+helm install typedb-cloud vaticle/typedb-cloud --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
 ----
 
 ////
 [,bash]
 ----
-helm install vaticle/typedb-enterprise --generate-name \
+helm install vaticle/typedb-cloud --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ----
 ////
@@ -258,17 +258,17 @@ To check the status of a cluster:
 
 [,bash]
 ----
-kubectl describe sts typedb-enterprise
+kubectl describe sts typedb-cloud
 ----
 
 It should show `Pods Status` field as `Running` for all the nodes after a few minutes
-after deploying a TypeDB Enterprise cluster.
+after deploying a TypeDB Cloud cluster.
 
 You can connect to a pod:
 
 [,bash]
 ----
-kubectl exec --stdin --tty typedb-enterprise-0 -- /bin/bash
+kubectl exec --stdin --tty typedb-cloud-0 -- /bin/bash
 ----
 
 == K8s cluster removal
@@ -277,16 +277,16 @@ To stop and remove a K8s cluster from Kubernetes, use the `helm uninstall` with 
 
 [,bash]
 ----
-helm uninstall typedb-enterprise
+helm uninstall typedb-cloud
 ----
 
 == K8s troubleshooting
 
-To see pod details for the `typedb-enterprise-0` pod:
+To see pod details for the `typedb-cloud-0` pod:
 
 [,bash]
 ----
-kubectl describe pod typedb-enterprise-0
+kubectl describe pod typedb-cloud-0
 ----
 
 The following are the common error scenarios and how to troubleshoot them.
@@ -304,14 +304,14 @@ executing `kubectl get secret/private-docker-hub`. Correct state looks like this
  private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
 ----
 
-=== One or more pods of TypeDB Enterprise are stuck in `Pending` state
+=== One or more pods of TypeDB Cloud are stuck in `Pending` state
 
 This might mean pods requested more resources than available.
-To check if that's the case, run on a stuck pod (e.g. `typedb-enterprise-0`):
+To check if that's the case, run on a stuck pod (e.g. `typedb-cloud-0`):
 
 [,bash]
 ----
-`kubectl describe pod/typedb-enterprise-0`
+`kubectl describe pod/typedb-cloud-0`
 ----
 
 Error message similar to
@@ -319,14 +319,14 @@ Error message similar to
 `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
 indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>> need to be decreased.
 
-=== One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
+=== One or more pods of TypeDB Cloud are stuck in `CrashLoopBackOff` state
 
-This might indicate any misconfiguration of TypeDB Enterprise.
+This might indicate any misconfiguration of TypeDB Cloud.
 Please check the logs:
 
 [,bash]
 ----
-kubectl logs pod/typedb-enterprise-0
+kubectl logs pod/typedb-cloud-0
 ----
 
 [#_helm_configuration_reference]
@@ -343,12 +343,12 @@ Configurable settings for Helm package include:
 | Used for naming deployed objects. When not provided, the Helm release name will be used instead.
 
 | `image.repository`
-| `vaticle/typedb-enterprise`
+| `vaticle/typedb-cloud`
 | The docker hub organization and repository from which to pull an appropriate image.
 
 | `image.tag`
 | `2.25.9`
-| The version of TypeDB Enterprise to use.
+| The version of TypeDB Cloud to use.
 
 | `image.pullPolicy`
 | `IfNotPresent`
@@ -363,12 +363,12 @@ in Kubernetes documentation.
 
 | `exposed`
 | `false`
-| Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network).
+| Whether TypeDB Cloud supports connections via public IP/hostname (outside of Kubernetes network).
 
 | `serviceAnnotations`
 | `null`
 | Kubernetes annotations to be added to the Kubernetes services responsible for directing traffic
-to the TypeDB Enterprise pods.
+to the TypeDB Cloud pods.
 
 | `tolerations`
 | `[]`
@@ -381,7 +381,7 @@ in Kubernetes documentation.
 .Example
 [,yaml]
 ----
-[key: "typedb-enterprise-only"
+[key: "typedb-cloud-only"
     operator: "Exists"
     effect: "NoSchedule"]`
 ----
@@ -409,10 +409,10 @@ in Kubernetes documentation.
 
 | `singlePodPerNode`
 | `true`
-| Whether a pod should share nodes with other TypeDB Enterprise instances from the same Helm installation.
+| Whether a pod should share nodes with other TypeDB Cloud instances from the same Helm installation.
 
 _Warning: changing this to false and making no anti-affinities of your own will allow Kubernetes
-to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Enterprise._
+to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Cloud._
 
 | `podLabels`
 | `{}`
@@ -423,7 +423,7 @@ in Kubernetes documentation.
 
 | `servers`
 | `3`
-| Number of TypeDB Enterprise servers to run.
+| Number of TypeDB Cloud servers to run.
 
 | `resources`
 | `{}`
@@ -434,15 +434,15 @@ in Kubernetes documentation.
 
 | `storage.size`
 | `100Gi`
-| How much disk space should be allocated for each TypeDB Enterprise server.
+| How much disk space should be allocated for each TypeDB Cloud server.
 
 | `storage.persistent`
 | `true`
-| Whether TypeDB Enterprise should use a persistent volume to store data.
+| Whether TypeDB Cloud should use a persistent volume to store data.
 
 | `encryption.enabled`
 | `false`
-| Whether TypeDB Enterprise uses an in-flight encryption.
+| Whether TypeDB Cloud uses an in-flight encryption.
 
 | `encryption.externalGRPC`
 |
@@ -462,7 +462,7 @@ in Kubernetes documentation.
 
 | `logstash.enabled`
 | `false`
-| Whether TypeDB Enterprise pushes logs into Logstash
+| Whether TypeDB Cloud pushes logs into Logstash
 
 | `logstash.uri`
 | `""`
@@ -471,4 +471,4 @@ in Kubernetes documentation.
 
 = Current Limitations
 
-TypeDB Enterprise doesn't support dynamic reconfiguration of server count without restarting all the servers.
+TypeDB Cloud doesn't support dynamic reconfiguration of server count without restarting all the servers.

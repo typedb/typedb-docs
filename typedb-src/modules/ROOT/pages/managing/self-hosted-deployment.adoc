@@ -1,59 +1,64 @@
-= Enterprise deployment
-:keywords: setup, getting started, typedb, enterprise, deploy, cluster, kubernetes, k8s, download, install, server, linux, mac, windows, docker
-:page-aliases: typedb::admin/enterprise-deployment.adoc
-:pageTitle: Install and Run TypeDB Enterprise
-:summary: Install and run the TypeDB Enterprise on Linux, Mac or Windows.
+= Self-hosted deployment
+:keywords: setup, getting started, enterprise, on-premise, self-hosted, typedb, cloud, deploy, cluster, kubernetes, k8s, download, install, server, linux, mac, windows, docker
+:page-aliases: typedb::admin/enterprise-deployment.adoc, typedb::managing/enterprise-deployment.adoc
+:pageTitle: Self-hosted deployment
+:summary: Install and Run a self-hosted TypeDB Cloud deployment.
 :experimental:
 :!example-caption:
 
-TypeDB Enterprise is a commercial offering that provides a production-grade experience -- high-availability, scalability,
-and security. A license can be obtained from our mailto:sales@vaticle.com[sales team].
+TypeDB Cloud is available as a https://cloud.typedb.com/[service].
+
+This page serves as an installation guide for a self-hosted deployment of TypeDB Cloud.
+You can get a license for it from our sales team: contact us via
+mailto:sales@vaticle.com[e-mail,window=_blank] or
+https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
 
 == System Requirements
 
-TypeDB Enterprise runs on macOS, Linux, and Windows.
+TypeDB Cloud runs on macOS, Linux, and Windows.
 The only requirement is Java v.11+ (http://openjdk.java.net/install/[OpenJDK] or
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle Java]).
 
 == Download and Install
 
-TypeDB Enterprise is distributed and installed separately from TypeDB Core.
+TypeDB Cloud is distributed and installed separately from TypeDB Core.
 
-Request access to the Enterprise distributive repositories from Vaticle.
+Request access to the TypeDB Cloud distributive repositories from Vaticle.
 You can do that via technical support, using the contact details from your contract, or through our
 https://typedb.com/discord[Discord,window=_blank] server.
 
 Then you can install it with <<_using_docker,Docker>> or manual
 <<_manual_download_and_installation,download and installation>>.
 
-You can deploy a cluster of TypeDB Enterprise servers
+You can deploy a cluster of TypeDB Cloud servers
 <<_deploying_manually,manually>> or via <<_deploying_with_kubernetes,Kubernetes>>.
 
-If you don't have a contract yet, try https://cloud.typedb.com/[TypeDB Cloud].
+If you don't have a license yet, you can try our https://cloud.typedb.com/[TypeDB Cloud] service or contact our
+mailto:sales@vaticle.com[sales team].
 
 [#_using_docker]
 === Using Docker
 
-TypeDB Enterprise Docker image is stored in a private repository.
+TypeDB Cloud Docker image is stored in a private repository.
 Make sure to use `docker login` first, to get correct authentication.
 
-To pull the TypeDB Enterprise Docker image, run:
+To pull the TypeDB Cloud Docker image, run:
 
 [,bash]
 ----
-docker pull vaticle/typedb-enterprise:latest
+docker pull vaticle/typedb-cloud:latest
 ----
 
 Use `docker run` to create a new container with the downloaded image.
-By default, a TypeDB Enterprise server is expected to be running on port `1729`.
+By default, a TypeDB Cloud server is expected to be running on port `1729`.
 To ensure that data is preserved even when the container is killed or restarted, use a Docker volume:
 
 [,bash]
 ----
-docker run --name typedb -d -v $(pwd)/db/:/opt/ -p 1729:1729 vaticle/typedb-enterprise:latest
+docker run --name typedb -d -v $(pwd)/db/:/opt/ -p 1729:1729 vaticle/typedb-cloud:latest
 ----
 
-==== Start and Stop TypeDB Enterprise in Docker
+==== Start and Stop TypeDB Cloud in Docker
 
 To start the Docker container:
 
@@ -84,50 +89,50 @@ Make sure to have access to the main repository https://repo.vaticle.com.
 Download the https://repo.vaticle.com/#browse/browse:private-artifact[latest release], unzip it in a
 location on your machine that is easily accessible via terminal.
 
-If TypeDB Enterprise doesn't have a distribution you need, please open an issue
+If TypeDB Cloud doesn't have a distribution you need, please open an issue
 https://github.com/vaticle/typedb/issues[on GitHub].
 
-==== Start and Stop TypeDB Enterprise manually
+==== Start and Stop TypeDB Cloud manually
 
-To start TypeDB Enterprise manually:
+To start TypeDB Cloud manually:
 
-1. Navigate into the directory with unpacked files of TypeDB Enterprise.
+1. Navigate into the directory with unpacked files of TypeDB Cloud.
 2. Run:
 +
 [,bash]
 ----
-./typedb enterprise
+./typedb cloud
 ----
 
-Now TypeDB Enterprise should show a welcome screen with its version, address, and bootup time.
+Now TypeDB Cloud should show a welcome screen with its version, address, and bootup time.
 
-To stop TypeDB Enterprise:
+To stop TypeDB Cloud:
 
 Close the terminal or press kbd:[Ctrl+C].
 
 == Connecting
 
-To check whether TypeDB Enterprise is working and interact with it, you can connect to it with any
+To check whether TypeDB Cloud is working and interact with it, you can connect to it with any
 xref:drivers::overview.adoc[TypeDB Client].
 
-You can use xref:connecting/console.adoc[] from your TypeDB Enterprise directory:
+You can use xref:connecting/console.adoc[] from your TypeDB Cloud directory:
 
 [,bash]
 ----
-./typedb console --enterprise 127.0.0.1:1729 --username admin --password
+./typedb console --cloud 127.0.0.1:1729 --username admin --password
 ----
 
 To run TypeDB Console from a Docker container, run:
 
 [,bash]
 ----
-docker exec -ti typedb-enterprise bash -c '/opt/typedb-enterprise-all-linux-x86_64/typedb console --enterprise 127.0.0.1:1729 --username admin --password'
+docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
 ----
 
 [#_deploying_manually]
 == Deploying manually
 
-While it's possible to run TypeDB Enterprise in a single-server mode, a truly highly available and fault-tolerant
+While it's possible to run TypeDB Cloud in a single-server mode, a highly available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster.
 At any given point in time, one of those servers acts as a
 xref:typedb::managing/ha.adoc#_primary_replica_failover[leader] and the others are followers.
@@ -136,7 +141,7 @@ cluster's tolerance to failure: to tolerate N servers failing, a cluster needs t
 This section describes how you can set up a 3-server cluster (in this case,
 one server can fail with no data loss).
 
-Each TypeDB Enterprise server in a cluster binds to three ports:
+Each TypeDB Cloud server in a cluster binds to three ports:
 a client port which TypeDB Drivers connect to (`1729` by default), and two server ports
 (`1730` and `1731`) for server-to-server communication.
 
@@ -160,7 +165,7 @@ TypeDB servers working in a cluster shall be configured specifically to know all
 This could be done through `peers` key in the server config, or with command-line arguments when starting the server.
 Command-line arguments have priority over config file.
 
-See below an example of how 3-server TypeDB Enterprise would be started on three separate machines to be in a cluster.
+See below an example of how 3-server TypeDB Cloud would be started on three separate machines to be in a cluster.
 
 .Server #1
 ====
@@ -170,7 +175,7 @@ To run TypeDB server #1:
 
 [,bash]
 ----
-./typedb enterprise \
+./typedb cloud \
     --server.address=10.0.0.1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \
@@ -194,7 +199,7 @@ To run TypeDB server #2:
 
 [,bash]
 ----
-./typedb enterprise \
+./typedb cloud \
     --server.address=10.0.0.2:1729 \
     --server.internal-address.zeromq=10.0.0.2:1730 \
     --server.internal-address.grpc=10.0.0.2:1731 \
@@ -218,7 +223,7 @@ To run TypeDB server #3:
 
 [,bash]
 ----
-./typedb enterprise \
+./typedb cloud \
     --server.address=10.0.0.3:1729 \
     --server.internal-address.zeromq=10.0.0.3:1730 \
     --server.internal-address.grpc=10.0.0.3:1731 \
@@ -235,10 +240,10 @@ To run TypeDB server #3:
 ====
 
 The above example assumes
-the application (TypeDB Client) accessing TypeDB Enterprise resides on the same private network as the cluster.
+the application (TypeDB Client) accessing TypeDB Cloud resides on the same private network as the cluster.
 
 If this is *not* the case,
-TypeDB Enterprise also supports using different IP addresses for client and server communication.
+TypeDB Cloud also supports using different IP addresses for client and server communication.
 
 .Example of using separate network for client connection
 ====
@@ -248,7 +253,7 @@ The relevant external hostname should be passed as arguments using the `--server
 
 [,bash]
 ----
-./typedb enterprise \
+./typedb cloud \
     --server.address=external-host-1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \
@@ -266,19 +271,19 @@ The relevant external hostname should be passed as arguments using the `--server
 And so on for servers #2 and #3.
 
 In this case, port `1729` would need to be open to public and clients would use the `external-host-1`, `external-host-2`
-and `external-host-3` hostnames to communicate with TypeDB Enterprise; inter-server communication would be done over a
+and `external-host-3` hostnames to communicate with TypeDB Cloud; inter-server communication would be done over a
 private network using ports `1730` and `1731`.
 ====
 
 === Stopping
 
-Stopping TypeDB Enterprise is done the same way as on a single server:
-to stop TypeDB Enterprise, close the terminal or press kbd:[Ctrl+C].
+Stopping TypeDB Cloud is done the same way as on a single server:
+to stop TypeDB Cloud, close the terminal or press kbd:[Ctrl+C].
 All nodes must be shut down independently in the same way.
 
 [#_deploying_with_kubernetes]
 == Kubernetes
 
-To deploy a TypeDB Enterprise cluster with Kubernetes, we can use https://helm.sh/[Helm] package manager.
+To deploy a TypeDB Cloud cluster with Kubernetes, we can use https://helm.sh/[Helm] package manager.
 
 include::partial$kubernetes.adoc[leveloffset=+1]

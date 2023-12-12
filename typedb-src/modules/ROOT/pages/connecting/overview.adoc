@@ -42,10 +42,10 @@ TypeDB Console::
 typedb console --server=127.0.0.1:1729
 ----
 
-.Connect to TypeDB Cloud / Enterprise
+.Connect to TypeDB Cloud
 [,bash]
 ----
-typedb console --enterprise=127.0.0.1:1729 --username=admin --password --tls-enabled=true
+typedb console --cloud=127.0.0.1:1729 --username=admin --password --tls-enabled=true
 ----
 For more information on CLI commands, see the xref:typedb::connecting/console.adoc[] page.
 --
@@ -59,10 +59,10 @@ Rust::
 let driver = Connection::new_core("127.0.0.1:1729");
 ----
 
-.Connect to TypeDB Cloud / Enterprise
+.Connect to TypeDB Cloud
 [,rust]
 ----
-let driver = Connection::new_enterprise(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None).unwrap());
+let driver = Connection::new_cloud(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None).unwrap());
 ----
 For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 --
@@ -76,10 +76,10 @@ Python::
 driver = TypeDB.core_driver("127.0.0.1:1729")
 ----
 
-.Connect to TypeDB Cloud / Enterprise
+.Connect to TypeDB Cloud
 [,python]
 ----
-driver = TypeDB.enterprise_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True))
+driver = TypeDB.cloud_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True))
 ----
 For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 --
@@ -93,10 +93,10 @@ Java::
 TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
 ----
 
-.Connect to TypeDB Cloud / Enterprise
+.Connect to TypeDB Cloud
 [,java]
 ----
-TypeDBDriver driver = TypeDB.enterpriseDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
+TypeDBDriver driver = TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
 ----
 For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
 --
@@ -110,10 +110,10 @@ Node.js::
 const driver = await TypeDB.coreDriver("127.0.0.1:1729");
 ----
 
-.Connect to TypeDB Cloud / Enterprise
+.Connect to TypeDB Cloud
 [,js]
 ----
-const driver = await TypeDB.enterpriseDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
+const driver = await TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
 ----
 --
 For a more comprehensive code example, see the xref:typedb::tutorials/sample-app.adoc[] page.
