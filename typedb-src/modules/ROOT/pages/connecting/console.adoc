@@ -35,7 +35,7 @@ Cloud::
 .TypeDB Cloud connection
 [,bash]
 ----
-typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
+typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
@@ -48,27 +48,6 @@ xref:typedb::managing/user-management.adoc#_first_login[change the password] for
 A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
 =====
 // end::cloud-psw[]
---
-
-Enterprise::
-+
---
-.TypeDB Enterprise connection
-[,bash]
-----
-typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
-----
-
-You will be prompted for a password.
-
-// tag::enterprise-psw[]
-[NOTE]
-=====
-On your first login,
-xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
-A TypeDB Enterprise installation will refuse queries until the password is changed from its default value.
-=====
-// end::enterprise-psw[]
 --
 
 Core::
@@ -162,33 +141,33 @@ We can provide several command-line arguments when running Console in the termin
 |
 | Address to which Console will connect to: IP address and IP port separated by colon.
 Default value: `localhost:1729`. +
-(*Not for the TypeDB Enterprise & TypeDB Cloud*)
+(*Not for TypeDB Cloud*)
 
-| `--enterprise=<address>`
+| `--cloud=<address>`
 |
 | Address to which Console will connect to. +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 //#todo Add Default value or example
 
 | `--username=<username>`
 |
 | Username +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `--password`
 |
 | Password +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `--tls-enabled`
 |
 | Whether to connect with TLS encryption +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `--tls-root-ca=<path>`
 |
 | Path to the TLS root CA file +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `--help`
 | `-h`
@@ -253,25 +232,25 @@ Use any of these commands inside a console at the `>` prompt in the first level 
 
 | `user list`
 | List the users on the server +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `user create <username>`
 | Create a user with name `<username>` on the server +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `user password-update`
 a| [#_change_own_password]
 Update the password for the current user +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `user password-set <username>`
 a| [#_change_password]
 Set password for the user with name `username` +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `user delete <username>`
 | Delete a user with name `<username>` on the server +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 
 | `transaction <db> schema⎮data read⎮write`
 | Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.
@@ -374,7 +353,7 @@ transaction typedb data read --infer true
 | `--read-any-replica`
 | `true⎮false`
 | Allow or disallow reads from any replica +
-(*TypeDB Enterprise & TypeDB Cloud only*)
+(*TypeDB Cloud only*)
 |===
 
 == Examples
@@ -530,7 +509,7 @@ Database 'test' deleted
 
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
-| TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud & TypeDB Enterprise
+| TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
 | 2.25.7
 | 3

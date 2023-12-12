@@ -20,12 +20,8 @@ Cloud::
 +
 --
 include::home::install.adoc[tag=cloud-run]
---
 
-Enterprise::
-+
---
-include::home::install.adoc[tag=enterprise-run]
+include::home::install.adoc[tag=self-hosted-run]
 --
 
 Core::
@@ -55,38 +51,19 @@ Cloud::
 --
 image::studio-connect-cloud.png[TypeDB Studio connect window, width = 75%, link=self]
 
-. Switch the `Server` field drop-down to `TypeDB Enterprise`.
-. Click btn:[Manage Enterprise Addresses] button and add all servers (address and port)
+. Switch the `Server` field drop-down to `TypeDB Cloud`.
+. Click btn:[Manage Cloud Addresses] button and add address and port for every server
 from your TypeDB Cloud deployment.
 Close the Address management window.
 . Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
 . Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
+_For self-hosted deployments, encryption parameters may vary._
 . Click `Connect`.
 
 [NOTE]
 =====
 On your first login you will be asked to change the password for the `admin` account.
 A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
-=====
---
-
-Enterprise::
-+
---
-image::studio-connect-enterprise.png[TypeDB Studio connect window, width = 75%, link=self]
-
-. Switch the `Server` field drop-down to `TypeDB Enterprise`.
-. Click btn:[Manage Enterprise Addresses] button and add all servers (address and port)
-from your TypeDB Cloud deployment.
-Close the Address management window.
-. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
-. Turn on the `Enable TLS` option and select the CA certificate for your on-premise cluster.
-. Click `Connect`.
-
-[NOTE]
-=====
-On your first login you will be asked to change the password for the `admin` account.
-A TypeDB Enterprise installation will refuse queries until the password is changed from its default value.
 =====
 --
 
@@ -330,26 +307,12 @@ Cloud::
 .TypeDB Cloud connection
 [,bash]
 ----
-typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
+typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
 
 include::typedb::connecting/console.adoc[tags=cloud-psw]
---
-
-Enterprise::
-+
---
-.TypeDB Enterprise connection
-[,bash]
-----
-typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
-----
-
-You will be prompted for a password.
-
-include::typedb::connecting/console.adoc[tags=enterprise-psw]
 --
 
 Core::

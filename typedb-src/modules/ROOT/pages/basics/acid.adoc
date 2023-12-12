@@ -53,7 +53,7 @@ TypeDB durability guarantees do not apply when storage devices become corrupt or
 Successful write transactions are written to the write-ahead log before returning a response to the client. If a
 transaction is not successful, all changes are rolled back.
 
-For TypeDB Enterprise and TypeDB Cloud installations, transaction acknowledgment is sent to the client after a majority
+For TypeDB Cloud and TypeDB Cloud installations, transaction acknowledgment is sent to the client after a majority
 of replicas replicated the transaction results. See xref:managing/ha.adoc#_replication[Replication] for details.
 
 [#_schema_integrity]

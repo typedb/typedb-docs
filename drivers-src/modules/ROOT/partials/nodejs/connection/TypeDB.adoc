@@ -47,7 +47,7 @@ Examples
 enterpriseDriver(addresses, credential): Promise<TypeDBDriver>
 ----
 
-Creates a connection to TypeDB Enterprise, authenticating with the provided credentials.
+Creates a connection to TypeDB Cloud, authenticating with the provided credentials.
 
 [caption=""]
 .Input parameters
@@ -55,7 +55,7 @@ Creates a connection to TypeDB Enterprise, authenticating with the provided cred
 [options="header"]
 |===
 |Name |Description |Type
-a| `addresses` a| List of addresses of the individual TypeDB Enterprise servers. As long one specified address is provided, the driver will discover the other addresses from that server. a| `string \| string[]`
+a| `addresses` a| List of addresses of the individual TypeDB Cloud servers. As long one specified address is provided, the driver will discover the other addresses from that server. a| `string \| string[]`
 a| `credential` a| The credentials to log in, and encryption settings. See ``TypeDBCredential``
 Examples
 ``const driver = TypeDB.enterpriseDriver(["127.0.0.1:11729"], new TypeDBCredential(username, password));

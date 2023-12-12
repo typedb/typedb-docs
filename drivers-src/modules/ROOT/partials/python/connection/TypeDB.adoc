@@ -33,7 +33,7 @@ a| `address` a| Address of the TypeDB server. a| `str` a|
 static enterprise_driver(addresses: Iterable[str] | str, credential: TypeDBCredential) -> TypeDBDriver
 ----
 
-Creates a connection to TypeDB Enterprise, authenticating with the provided credentials.
+Creates a connection to TypeDB Cloud, authenticating with the provided credentials.
 
 [caption=""]
 .Input parameters

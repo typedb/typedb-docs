@@ -6,17 +6,17 @@
 
 [NOTE]
 ====
-Most of the security features are available only in TypeDB Enterprise & TypeDB Cloud.
+Most of the security features are available only in TypeDB Cloud.
 ====
 
 == Access control
 
 [NOTE]
 ====
-Access control features are a part of TypeDB Enterprise & TypeDB Cloud.
+Access control features are specific to TypeDB Cloud.
 ====
 
-TypeDB Enterprise & TypeDB Cloud have the following security features:
+TypeDB Cloud has the following security features:
 
 * https://en.wikipedia.org/wiki/Discretionary_access_control[Discretionary access control],
 * User account management,
@@ -26,7 +26,7 @@ TypeDB Enterprise & TypeDB Cloud have the following security features:
 
 === User authentication
 
-All external connections to a cluster of TypeDB (TypeDB Enterprise or TypeDB Cloud) require user account credentials.
+All external connections to a cluster of TypeDB (TypeDB Cloud) require user account credentials.
 
 Users can use usernames and passwords to identify and authenticate themselves. Passwords are stored only as
 irreversible *password hash + salt*.
@@ -46,14 +46,14 @@ See the xref:typedb::managing/user-management.adoc[] page.
 [#_encryption]
 == Encryption
 
-TypeDB Enterprise & TypeDB Cloud encrypt all network traffic:
+TypeDB Cloud encrypts all network traffic:
 
 * TLS encryption is used for client/server communication.
-* CurveZMQ is used for cluster communication (TypeDB Enterprise & TypeDB Cloud).
+* CurveZMQ is used for cluster communication (TypeDB Cloud).
 
 == Cluster security
 
-TypeDB Enterprise & TypeDB Cloud clusters accept external communications only with valid credentials and internal
+TypeDB Cloud clusters accept external communications only with valid credentials and internal
 cluster communications only from servers that are set to be a part of the cluster.
 
 All external and internal communications are <<_encryption,encrypted>> on the fly.
