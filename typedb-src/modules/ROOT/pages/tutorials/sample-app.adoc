@@ -60,9 +60,10 @@ explicit `get` statement it is assumed that we get all the variables that were a
 [NOTE]
 ====
 Note that users that do not have `full-name` or `email` attributes added to them will not be shown in
-the results of this request. Additionally, users that have multiple full-names or emails will be mentioned more than once.
+the results of this request.
+Additionally, users that have multiple full-names or emails will be mentioned more than once.
 
-For more information, see the xref:typedb::basics/patterns.adoc#_solutions[matching patterns] explanation.
+For more information, see the xref:typeql::data/match.adoc#_patterns_overview[matching patterns] explanation.
 ====
 
 === List all the files that Kevin Morrison has access to
