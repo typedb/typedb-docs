@@ -5,16 +5,16 @@
 
 [NOTE]
 ====
-User management features are a part of TypeDB Cloud & TypeDB Enterprise.
+User management features are a part of TypeDB Cloud.
 ====
 
 You can use TypeDB Console or TypeDB Driver API for user management.
 
-Assuming TypeDB Console is xref:home::install.adoc#_console[installed], to connect to TypeDB Cloud/Enterprise:
+Assuming TypeDB Console is xref:home::install.adoc#_console[installed], to connect to TypeDB Cloud:
 
 [,bash]
 ----
-typedb console --enterprise=<server-address> --username=<username> --password --tls-enabled=true
+typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 For more information on how to use TypeDB Console, see the xref:connecting/console.adoc[] page.
@@ -45,7 +45,7 @@ For example, in TypeDB Console, use the following:
 user password-update
 ----
 
-By default, all TypeDB Cloud deployments and TypeDB Enterprise installations have only one account: `admin`.
+By default, all TypeDB Cloud deployments have only one account: `admin`.
 This is the administrator account with maximum privileges.
 Only this account can use most of the user management features, including creating new users.
 
@@ -64,7 +64,7 @@ All other user management operations are restricted to the built-in `admin` acco
 === List all users
 _This action is available only for the `admin` account._
 
-To list all users existing on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+To list all users existing on a TypeDB Cloud deployment, in TypeDB Console CLI run:
 
 [,bash]
 ----
@@ -75,7 +75,7 @@ user list
 === Create a user
 _This action is available only for the `admin` account._
 
-To create a new user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+To create a new user on a TypeDB Cloud deployment, in TypeDB Console CLI run:
 
 [,bash]
 ----
@@ -88,7 +88,7 @@ Type in a password for the new user when prompted.
 === Delete a user
 _This action is available only for the `admin` account._
 
-To delete a user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+To delete a user on a TypeDB Cloud deployment, in TypeDB Console CLI run:
 
 [,bash]
 ----
@@ -99,7 +99,7 @@ user delete <username>
 === Change user's password
 _This action is available only for the `admin` account._
 
-To change a password of a user on a TypeDB Cloud installation or TypeDB Enterprise cluster, in TypeDB Console CLI run:
+To change a password of a user on a TypeDB Cloud deployment, in TypeDB Console CLI run:
 
 [,bash]
 ----

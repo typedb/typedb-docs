@@ -326,7 +326,7 @@ typedb server  \
   --log.logger.traversal.output "[ file, stdout ]"
 ----
 
-== Enterprise cluster configuration
+== TypeDB Cloud cluster configuration
 
 Every server in a cluster has its own config file that contains a list of known servers in the cluster. A server in a
 cluster will not accept connections from servers that are not on the list.
@@ -359,12 +359,12 @@ adding more CPU cores.
 
 The following is the breakdown of TypeDB memory requirements:
 
-* the JVM memory: is configurable when booting the server with `JAVAOPTS="-Xmx4g"` typedb server. This gives the JVM *4 GB*
+* The JVM memory: is configurable when booting the server with `JAVAOPTS="-Xmx4g"` typedb server. This gives the JVM *4 GB*
 of memory. Defaults to *25%* of system memory on most machines.
-* storage-layer baseline consumption: approximately *2 GB*.
-* storage-layer caches: this is about *2x* cache size per database. If the *data and index caches* sum up to *1 GB*,
+* Storage layer baseline consumption: approximately *2 GB*.
+* Storage layer caches: this is about *2x* cache size per database. If the *data and index caches* sum up to *1 GB*,
 the memory requirement is *2 GB* in working memory.
-* memory per CPU: approximately *0.5 GB* additional per (v)CPU under full load.
+* Memory per CPU: approximately *0.5 GB* additional per (v)CPU under a full load.
 
 We can estimate the amount of memory the server will need to run a single database with the following equation:
 

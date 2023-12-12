@@ -8,10 +8,10 @@
 
 [NOTE]
 ====
-High availability features are available only in TypeDB Enterprise & TypeDB Cloud.
+High availability features are available only in TypeDB Cloud.
 ====
 
-TypeDB Enterprise & TypeDB Cloud support the following high availability features:
+TypeDB Cloud supports the following high availability features:
 
 * Server clustering,
 * https://en.wikipedia.org/wiki/Strong_consistency[Strongly consistent model],
@@ -39,7 +39,7 @@ automatic load balancing. Client will choose a random replica to balance the loa
 
 [NOTE]
 ====
-TypeDB Enterprise & TypeDB Cloud use ZeroMQ for replication and gRPC for replication management.
+TypeDB Cloud uses ZeroMQ for replication and gRPC for replication management.
 ====
 
 [#_primary_replica_failover]
@@ -66,7 +66,7 @@ For more information on Raft consensus algorithm please read the https://raft.gi
 
 === Synchronous replication
 
-To support synchronous replication TypeDB Enterprise & TypeDB Cloud send transaction acknowledgement to a client
+To support synchronous replication TypeDB Cloud sends transaction acknowledgement to a client
 only when consensus is reached -- when the majority of replicas acknowledge receiving the replicated data.
 
 == Data persistence
