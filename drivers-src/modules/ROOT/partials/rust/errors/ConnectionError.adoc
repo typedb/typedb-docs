@@ -12,11 +12,11 @@ a| `BrokenPipe(/* private fields */)`
 a| `ConnectionFailed(/* private fields */)`
 a| `ConnectionIsClosed(/* private fields */)`
 a| `DatabaseDoesNotExist(String)`
-a| `EnterpriseAllNodesFailed(String)`
-a| `EnterpriseEndpointEncrypted(/* private fields */)`
-a| `EnterpriseReplicaNotPrimary(/* private fields */)`
-a| `EnterpriseSSLCertificateNotValidated(/* private fields */)`
-a| `EnterpriseTokenCredentialInvalid(/* private fields */)`
+a| `CloudAllNodesFailed(String)`
+a| `CloudEndpointEncrypted(/* private fields */)`
+a| `CloudReplicaNotPrimary(/* private fields */)`
+a| `CloudSSLCertificateNotValidated(/* private fields */)`
+a| `CloudTokenCredentialInvalid(/* private fields */)`
 a| `InvalidResponseField(&'static str)`
 a| `MissingResponseField(&'static str)`
 a| `RPCMethodUnavailable(String)`
@@ -29,7 +29,7 @@ a| `TransactionIsClosed(/* private fields */)`
 a| `TransactionIsClosedWithErrors(String)`
 a| `UnexpectedResponse(String)`
 a| `UnknownRequestId(ID)`
-a| `UserManagementEnterpriseOnly(/* private fields */)`
+a| `UserManagementCloudOnly(/* private fields */)`
 |===
 // end::enum_constants[]
 

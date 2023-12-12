@@ -57,7 +57,7 @@ The `encryption-gen.jar` generates three directories:
 All files from the directory
 named after external domain shall be copied to the proper directory on every server in a cluster.
 By default, they are stored in `/server/conf/encryption` inside the TypeDB Cloud main directory.
-For example, `typedb-enterprise-all-mac-x86_64-2.24.17/server/conf/encryption`.
+For example, `typedb-cloud-all-mac-x86_64-2.25.12/server/conf/encryption`.
 The path to each file is configured in the `encryption` section of the TypeDB Cloud config file.
 
 Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets.
@@ -240,7 +240,7 @@ helm install typedb-cloud vaticle/typedb-cloud --set image.pullPolicy=Always,ser
 ////
 [,bash]
 ----
-helm install vaticle/typedb-enterprise --generate-name \
+helm install vaticle/typedb-cloud --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ----
 ////
