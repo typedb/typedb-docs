@@ -334,52 +334,138 @@ kubectl logs pod/typedb-enterprise-0
 
 Configurable settings for Helm package include:
 
-[cols="^,^,"]
+[cols="^2,^1,3"]
 |===
 | Key | Default value ^| Description
 
 | `name`
 | `null`
-| Used for naming deployed objects. When not provided, the Helm release name will be used instead
+| Used for naming deployed objects. When not provided, the Helm release name will be used instead.
 
-| `replicas`
-| `3`
-| Number of TypeDB Enterprise servers to run
+| `image.repository`
+| `vaticle/typedb-enterprise`
+| The docker hub organization and repository from which to pull an appropriate image.
 
-| `cpu`
-| `7`
-| How many CPUs should be allocated for each TypeDB Enterprise server
+| `image.tag`
+| `2.25.9`
+| The version of TypeDB Enterprise to use.
 
-| `storage.size`
-| `100Gi`
-| How much disk space should be allocated for each TypeDB Enterprise server
+| `image.pullPolicy`
+| `IfNotPresent`
+| Image pulling policy. +
+For more information, see the
+https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[image pull policy]
+in Kubernetes documentation.
 
-| `storage.persistent`
-| `true`
-| Whether TypeDB Enterprise should use a persistent volume to store data
-
-| `singlePodPerNode`
-| `true`
-| Whether TypeDB Enterprise pods should be scheduled to different Kubernetes nodes
+| `image.pullSecret`
+| -
+| The name of a secret containing a container image registry key used to authenticate against the image repository.
 
 | `exposed`
 | `false`
-| Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network)
+| Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network).
 
-| `encrypted`
-| `true`
-| Whether TypeDB Enterprise supports uses an in-flight encryption.
-
-| `javaopts`
+| `serviceAnnotations`
 | `null`
-| JVM options that controls various runtime aspects of TypeDB Enterprise (e.g., `-Xmx`, `-Xms`)
+| Kubernetes annotations to be added to the Kubernetes services responsible for directing traffic
+to the TypeDB Enterprise pods.
+
+| `tolerations`
+| `[]`
+//#todo Check the default value
+a| Kubernetes tolerations of taints on nodes. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/[tolerations]
+in Kubernetes documentation.
+
+.Example
+[,yaml]
+----
+[key: "typedb-enterprise-only"
+    operator: "Exists"
+    effect: "NoSchedule"]`
+----
+
+| `nodeAffinities`
+| `{}`
+| Kubernetes node affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity[node affinities]
+in Kubernetes documentation.
+
+| `podAffinities`
+| `{}`
+| Kubernetes pod affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity[pod affinities]
+in Kubernetes documentation.
+
+| `podAntiAffinities`
+| `{}`
+| Kubernetes pod anti-affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity[pod affinities]
+in Kubernetes documentation.
+
+| `singlePodPerNode`
+| `true`
+| Whether a pod should share nodes with other TypeDB Enterprise instances from the same Helm installation.
+
+_Warning: changing this to false and making no anti-affinities of your own will allow Kubernetes
+to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Enterprise._
+
+| `podLabels`
+| `{}`
+| Kubernetes pod labels. +
+For more information, see the
+https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set[pod labels]
+in Kubernetes documentation.
+
+| `servers`
+| `3`
+| Number of TypeDB Enterprise servers to run.
+
+| `resources`
+| `{}`
+| Kubernetes resources specification. +
+For more information, see the
+https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container[resource requests and limits]
+in Kubernetes documentation.
+
+| `storage.size`
+| `100Gi`
+| How much disk space should be allocated for each TypeDB Enterprise server.
+
+| `storage.persistent`
+| `true`
+| Whether TypeDB Enterprise should use a persistent volume to store data.
+
+| `encryption.enabled`
+| `false`
+| Whether TypeDB Enterprise uses an in-flight encryption.
+
+| `encryption.externalGRPC`
+|
+| Encryption settings for client-server communications.
+
+| `encryption.internalGRPC`
+|
+| Encryption settings for cluster management, e.g., creating a database on all replicas.
+
+| `encryption.internalZMQ`
+|
+| Encryption settings for data replication.
+
+| `authentication.password.​disallowDefault`
+| `false`
+| Check whether the `admin` account has the default password.
 
 | `logstash.enabled`
 | `false`
 | Whether TypeDB Enterprise pushes logs into Logstash
 
 | `logstash.uri`
-| `localhost:5044`
+| `""`
 | Hostname and port of a Logstash daemon accepting log records
 |===
 
