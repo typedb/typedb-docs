@@ -5,17 +5,17 @@
 
 Welcome to the TypeDB technical documentation.
 
-Check the layout of the TypeDB documentation below.
-
 //* xref:introduction.adoc[] -- a brief description of TypeDB and its capabilities
 
 [#_fundamentals]
 == Basics of TypeDB
 
-** xref:basics/types.adoc[] -- essential information on types and inheritance
-** xref:basics/query-language.adoc[] -- essential information on queries
-** xref:basics/patterns.adoc[] -- essential information on pattern matching
-** xref:basics/inference.adoc[] -- essential information on rules and reasoning (inference)
+** xref:typedb::basics/data-model.adoc[] -- introduction to TypeDB database schema and PERA data model
+** xref:typedb::basics/polymorphic-type-system.adoc[] -- essential information on types and polymorphism
+** xref:basics/query-language.adoc[] -- essential information on query language and syntax
+//** xref:basics/patterns.adoc[] -- essential information on pattern matching
+//** xref:basics/inference.adoc[] -- essential information on rules and reasoning (inference)
+** xref:basics/acid.adoc[] -- transaction safety guarantees and schema integrity restrictions
 
 [#_connecting]
 == Connecting to TypeDB
@@ -64,10 +64,10 @@ Check the xref:home::25-queries.adoc[] page for more interesting queries.
 
 To learn more about TypeDB, check the major sections of the documentation:
 
-* the <<_fundamentals,Fundamentals>> for essential knowledge about TypeDB,
+* the <<_fundamentals,Basics>> for essential knowledge about TypeDB,
 * the <<_connecting,Connecting to TypeDB>> for information about how to connect to TypeDB,
 * the <<_developing,Developing with TypeDB>> for the in-detail documentation of the TypeDB development workflow,
 * the <<_managing,Managing TypeDB>> for the instructions for setting up a production environment, or
 * the <<_tutorials,Tutorials>> for how-to guides and the xref:tutorials/iam-schema.adoc[].
 
-Check our documentation for xref:typeql::overview.adoc[TypeQL] and xref:drivers::overview.adoc[TypeDB Clients].
+Check our documentation for xref:typeql::overview.adoc[TypeQL] and xref:drivers::overview.adoc[TypeDB Drivers].
