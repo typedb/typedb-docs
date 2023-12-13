@@ -43,11 +43,9 @@ To use most of the TypeDB Studio functions, we need to connect to a TypeDB serve
 At the top right-hand corner, click the btn:[Connect to TypeDB] button. It will open a windows with the same name and
 the connection settings as shown below.
 
-image::drivers::studio/connection-interface-disconnected.png[Connection Manager Disconnected, width = 70%, link=self]
+image::home::studio-connect-core.png[Connection Manager Disconnected, width = 70%, link=self]
 
 Fill in the address of the TypeDB server. By default, it's: `localhost:1729`. Click the btn:[Connect] button.
-
-image::drivers::studio/connection-interface-connected.png[Connection Manager Connected, width = 70%, link=self]
 
 Once TypeDB Studio connected to a TypeDB server successfully, the connection manager window should close automatically.
 If we reopen the window we can find the green status field in the bottom left corner, as shown above.
@@ -149,7 +147,8 @@ be opened automatically.
 Upon manual save those Untitled files will be saved with the specified filename and path and deleted from the hidden
 folder.
 
-To save file manually use the btn:[Save Current File] (floppy disk 💾 icon) button at the left end of the *Toolbar*.
+To save file manually use the btn:[Save Current File] (floppy disk image:home::studio-icons/save.png[] icon)
+button at the left end of the *Toolbar*.
 
 === Query design
 
@@ -465,7 +464,7 @@ Default value: *On*.
 |===
 | TypeDB Studio | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
-| 2.25.10
+| 2.25.11
 | 3
 | 2.25.7
 | 2.25.7
