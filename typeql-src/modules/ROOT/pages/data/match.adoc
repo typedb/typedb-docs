@@ -1,3 +1,4 @@
+[#_match_clause]
 = Match clause
 :Summary: Matching data with patterns
 :page-aliases: typeql::data/basic-patterns.adoc
@@ -86,7 +87,6 @@ If there are no matched results, there will be no data inserted/deleted/retrieve
 If there are two matched results, the subsequent clause will be executed twice,
 inserting/deleting/retrieving data every time.
 An insert query without a `match` clause is executed exactly once.
-// end::patterns_overview[]
 
 // tag::variables[]
 [#_variables]
@@ -115,19 +115,20 @@ exactly one value per every result (solution) matched for a pattern. See <<_valu
 // end::variables[]
 
 // tag::patterns_body[]
-// tag::patterns_overview[]
 [#_patterns_overview]
 == Patterns overview
 
+// tag::patterns_overview[]
 TypeDB is using TypeQL query language with declarative and composable patterns.
 
 A pattern is a set of statements combined by an implicit conjunction (logical "AND").
 Hence, patterns are composable,
-meaning you can combine two patterns by using their statements together in a new pattern.
+meaning you can combine two patterns by joining their statements together in a new pattern.
 
 Statements declare constraints for types and data.
 They consist of variables, keywords, types, and values.
 All statements must end with a semicolon.
+// end::patterns_overview[]
 
 See below an example of a statement that describes a person, that has specified full-name and unspecified email.
 
@@ -339,7 +340,7 @@ A value variable is used in patterns with computation to represent an exact valu
 Value variables are never materialized permanently and
 are only used within the scope of a particular query or rule.
 
-To persist a value of a value variable, you can save it into database by using an attribute type
+To persist a value of a value variable, you can save it into a database by using an attribute type
 with a matching value type.
 Value variables can be one of the following value types (the same as value types for attributes):
 

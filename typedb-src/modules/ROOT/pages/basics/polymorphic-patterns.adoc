@@ -1,0 +1,76 @@
+= Polymorphic patterns
+:Summary: Strong and polymorphic type system of TypeDB.
+:keywords: typedb, type, polymorphic, polymorphism, pattern, statement, conjunction, solve, match
+:pageTitle: Polymorphic patterns
+:!example-caption:
+:!table-caption:
+
+Data queries use patterns to match data and types from a database.
+TypeQL patterns utilize a strong and polymorphic type system based on the PERA model.
+
+
+== Patterns
+
+include::typeql::data/match.adoc[tags=patterns_overview]
+
+.Atomic statements example
+[,typeql]
+----
+$p isa person;
+$p has full-name "Bob";
+$p has email "bob@gmail.com";
+----
+
+The above example consists of three simple statements about the same variable `$p`:
+
+* It is an instance of a type `person`;
+* It has attribute of type `full-name` and value `Bob`;
+* It has attribute of type `email` and value `bob@gmail.com`;
+
+The same result can be achieved by a single statement, that combines all information about the same instance `$p`:
+
+.Complex statement example
+[,typeql]
+----
+$p isa person, has full-name "Bob", has email "bob@gmail.com";
+----
+
+Note that the patterns above use the same schema as the xref:home::quickstart.adoc[] guide or the
+xref:typedb::basics/query-language.adoc[] page examples.
+That schema defines types, used in the patterns: `person`, `full-name`, and `email`.
+
+In a data query most instances of data represented by variables we can variablize any type or value.
+
+The exact operation performed by a pattern depends on the type of clause it is used in:
+
+* xref:typeql::data/match.adoc#_match_clause[match clause] matches all variables to concepts in a database,
+finding all combinations that solve a given pattern;
+* xref:typeql::data/insert.adoc#_insert_clause[insert clause] creates instances of data, specified by a given pattern;
+* xref:typeql::data/delete.adoc#_delete_clause[delete clause] deletes instances of data, specified by a given pattern;
+* xref:typeql::data/fetch.adoc#_fetch_clause[fetch clause] projects specified values, types, and results of subqueries to JSON output;
+* xref:typeql::data/get.adoc#_get_clause[get clause] returns concepts from a database for specified variables
+as objects accessible via Driver API.
+
+Schema definitions that are used in xref:typeql::schema/define-rules.adoc[define] and
+xref:typeql::schema/undefine.adoc[undefine] clauses are limited to schema petterns only
+and can't use any variables and values.
+
+== Polymorphism
+
+There are three types of polymorphism that can be used in a query pattern:
+
+- Inheritance polymorphism
+- Interface polymorphism
+- Parametric polymorphism
+
+=== Inheritance polymorphism
+
+
+
+=== Interface polymorphism
+
+
+
+=== Parametric polymorphism
+
+
