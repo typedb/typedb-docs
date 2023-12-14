@@ -59,9 +59,15 @@ and can't use any variables and values.
 
 There are three types of polymorphism that can be used in a query pattern:
 
-- Inheritance polymorphism
-- Interface polymorphism
 - Parametric polymorphism
+- Interface polymorphism
+- Inheritance polymorphism
+
+=== Parametric polymorphism
+
+Parametric polymorphism lets us retrieve results of different types for the same variable in a query.
+Querying without constraining a type can return any type that matches a pattern.
+
 
 === Inheritance polymorphism
 
@@ -69,8 +75,5 @@ There are three types of polymorphism that can be used in a query pattern:
 
 === Interface polymorphism
 
-
-
-=== Parametric polymorphism
 
 
