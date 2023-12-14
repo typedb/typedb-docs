@@ -16,6 +16,8 @@ A clause always starts with a keyword that defines the type of clause, see table
 |===
 |Query type | № of clauses | Clause(s) | Keyword | Mandatory
 
+5.+| Schema queries
+
 |xref:typeql::schema/define-types.adoc[Define]
 |1
 |xref:typeql::schema/define-types.adoc#_define_clause[Define]
@@ -27,6 +29,8 @@ A clause always starts with a keyword that defines the type of clause, see table
 |xref:typeql::schema/undefine.adoc#_undefine_clause[Undefine]
 |`undefine`
 |Yes
+
+5.+| Data queries
 
 .2+|xref:typeql::data/insert.adoc[Insert]
 .2+|1-2
