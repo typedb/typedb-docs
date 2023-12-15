@@ -240,7 +240,7 @@ typedb console
 ----
 
 The above command will try to establish a connection with a TypeDB server on the default address of `localhost:1729`.
-To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port:
+To connect to a different address use the `--core` argument followed by a TypeDB server IP address and port:
 `10.0.0.1:1729`.
 
 If the typedb command is not recognized, it means that the path to TypeDB binary is not set in the system.
