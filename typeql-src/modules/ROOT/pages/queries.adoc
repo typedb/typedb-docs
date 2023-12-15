@@ -5,12 +5,10 @@
 :pageTitle: Queries
 
 // tag::body[]
-All queries to a TypeDB database are written in TypeQL.
-TypeQL is a *declarative* query language.
+TypeQL is a *declarative* query language used by TypeDB.
 
-A top-level TypeQL construct is a query.
-TypeQL query consists of clauses (one, two, or three).
-A clause always starts with a keyword that defines the type of clause, see table below.
+A TypeQL query consists of clauses, that use patterns consisting of statements.
+For all query types and their clauses, see the table below.
 
 //== Query types
 

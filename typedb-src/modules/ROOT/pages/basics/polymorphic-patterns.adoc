@@ -6,8 +6,10 @@
 :!table-caption:
 
 Data queries use patterns to match data and types from a database.
-TypeQL patterns utilize a strong and polymorphic type system based on the PERA model.
+TypeQL patterns utilize a strong and polymorphic type system based on the
+xref:typedb::basics/data-model.adoc[PERA] model.
 
+[#_patterns]
 == Patterns
 
 include::typeql::data/match.adoc[tags=patterns_overview]
@@ -96,12 +98,13 @@ as long as it has an email attribute.
 }
 ----
 
-In the above output example, we see that `$x` is of a type `person`.
+In the above output example, we see that the type of `$x` in one of the results is `person`.
 
+////
 //#todo Double-check this extension for attribute type ownership
 We can adjust the query to get those instances that are allowed to have an email attribute but wasn't assigned one yet.
 To do so, you need to use a new variable for the type of `$x`
-and then set a constraint of having an ownership of the `email `attribute type on the variable.
+and then set a constraint of having an ownership of the `email` attribute type on the variable.
 
 .Type constraint interface polymorphism example
 [,typeql]
@@ -128,6 +131,7 @@ The output of the above query looks similar as the previous one, but it can incl
 
 In the first example we check the instances bound to `$x` variable for having an attribute of the `email` type.
 For the second example we check for the type of `$x` to allow it to potentially own an attribute of the `email` type.
+////
 
 === Parametric polymorphism
 //No type labels in a query

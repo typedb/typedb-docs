@@ -60,7 +60,7 @@ A `delete` clause is used in a query to specify exact data to remove from a data
 Deleted data should be matched first in a preceding `match` clause.
 
 A pattern of a `delete` clause can have multiple statements for data manipulation
-(see xref:typeql::data/match.adoc#_data_patterns[Data patterns]),
+(see xref:typeql::data/match.adoc#_data_statements[Data patterns]),
 can use concepts matched by a preceding `match` clause by their variables,
 and can't have a xref:typeql::data/match.adoc#_disjunction[disjunction],
 xref:typeql::data/match.adoc#_negation[negation], or `is` keyword.
