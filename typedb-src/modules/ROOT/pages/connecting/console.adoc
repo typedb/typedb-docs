@@ -60,7 +60,7 @@ typedb console
 ----
 
 By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.
-To connect to a different address use the `--server` argument followed by a TypeDB server IP address and port,
+To connect to a different address use the `--core` argument followed by a TypeDB server IP address and port,
 for example, `10.0.0.1:1729`.
 --
 ====
@@ -137,7 +137,7 @@ We can provide several command-line arguments when running Console in the termin
 |===
 ^| Option | Alias ^| Description
 
-| `--server=<address>`
+| `--core=<address>`
 |
 | Address to which Console will connect to: IP address and IP port separated by colon.
 Default value: `localhost:1729`. +
