@@ -327,8 +327,8 @@ The number of results should match the number of instances the database has afte
 == #{counter:query}: Inheritance polymorphism
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-Inheritance polymorphism lets us get more results using type hierarchy.
-Match a supertype can match its subtypes.
+Inheritance polymorphism lets us query for subtypes of a type used in a query.
+By querying for a supertype, we can get results for the supertype itself, as well as results for all its subtypes.
 //When we can solve for type and its subtypes
 
 .Inheritance polymorphism query example
@@ -344,8 +344,7 @@ This query should return all entities in a database.
 Since `entity` is a root type, it's an <<_abstract,abstract>> type and can't be directly instantiated.
 So the query returns instances of every subtype of the `entity` type.
 
-You can easily avoid inheritance polymorphism
-by restricting subtypes to be used in the query by using `isa!` (with an exclamation mark).
+You can easily avoid inheritance polymorphism by using the `isa!` keyword instead.
 
 [#_interface_polymorphism]
 == #{counter:query}: Interface polymorphism

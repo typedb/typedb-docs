@@ -128,8 +128,45 @@ meaning you can combine two patterns by joining their statements together in a n
 Statements declare constraints for types and data.
 They consist of variables, keywords, types, and values.
 All statements must end with a semicolon.
+
+Simple atomic statements usually include three elements: subject, predicate, object.
+Some predicates, like `abstract` don't have a subsequent object.
+See below an example of atomic statements that describe a person, that has the specified full-name and specified email.
+
+.Atomic statements example
+[,typeql]
+----
+$p isa person;
+$p has full-name "Bob";
+$p has email "bob@gmail.com";
+----
+
+The above example consists of three simple statements about the same variable `$p`:
+
+* It is an instance of a type `person`;
+* It has attribute of type `full-name` and value `Bob`;
+* It has attribute of type `email` and value `bob@gmail.com`;
+
+Atomic statements with the same subject can be combined to a complex statement.
+A complex statement includes a subject and then a comma separated list of predicates with their objects.
+
+.Complex statement example
+[,typeql]
+----
+$p isa person, has full-name "Bob", has email "bob@gmail.com";
+----
+
+The above example combines atomic statements from the previous example
+and achieves the same result without repeating the subject (`$p` variable).
+
+Note that the patterns above use the same schema that is used in the xref:home::quickstart.adoc[] guide.
+That schema defines types, used in the patterns: `person`, `full-name`, and `email`.
+
+In a data query a subject is usually a xref:typeql::data/match.adoc#_concept_variable[concept variable],
+and we can use xref:typeql::data/match.adoc#_variables[variables] for any type, instance of a type, or value.
 // end::patterns_overview[]
 
+////
 See below an example of a statement that describes a person, that has specified full-name and unspecified email.
 
 [#_statement-structure]
@@ -154,12 +191,12 @@ $p isa person;
 $p has full-name "Masako Holley";
 $p has email $email;
 ----
+////
 
-There are two major subsets of patterns:
+In a `match` clause we can use both
 <<_data_patterns>> and
-<<_type_patterns>>.
-Additionally, you can use <<_negation>> and <<_disjunction>> with any pattern in a `match` clause or rule condition.
-See the <<_combined_statements_example>> section at the end of this page.
+<<_type_patterns>>, as well as <<_negation>> and <<_disjunction>>.
+For example, see the <<_combined_statements_example>> section at the end of this page.
 
 [#_data_patterns]
 === Data patterns
@@ -238,7 +275,6 @@ xref:typeql::schema/define-types.adoc#_schema_patterns[Define types] page.
 | Type
 | `<var> type <type>;`
 | `$t type person;`
-
 
 | Type or subtype
 | `<var> sub <type>\|<var>;`
