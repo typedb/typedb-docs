@@ -8,6 +8,7 @@ You can insert an instance of a type, assign ownership of an attribute, or assig
 
 Insert queries can be used only in write transactions.
 
+[#_behavior]
 == Behavior
 
 An Insert query inserts new data into a TypeDB database using TypeQL patterns.
@@ -60,7 +61,7 @@ xref:data/match.adoc#_patterns_overview[Patterns overview] section.
 An `insert` clause is used in a query to specify new data to be inserted to a TypeDB database.
 
 A pattern of an `insert` clause can have multiple statements for data manipulation
-(see xref:typeql::data/match.adoc#_data_patterns[Data patterns]),
+(see xref:typeql::data/match.adoc#_data_statements[Data patterns]),
 can use concepts matched by a preceding `match` clause by their variables,
 and can't have a xref:typeql::data/match.adoc#_disjunction[disjunction],
 xref:typeql::data/match.adoc#_negation[negation], or `is` keyword.
