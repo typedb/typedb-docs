@@ -1,6 +1,7 @@
+[#_match_clause]
 = Match clause
 :Summary: Matching data with patterns
-:page-aliases: typeql::data/basic-patterns.adoc
+:page-aliases: typeql::data/basic-patterns.adoc, typedb::basics/patterns.adoc
 :keywords: typeql, typedb, query, match, matching, data, pattern, statement, variable, solution, concept, value
 :pageTitle: Match clause
 :!table-caption:
@@ -13,8 +14,7 @@ for a subsequent retrieval or processing.
 
 == Behavior
 
-A `match` clause is used to find all existing concepts in a database that satisfy a pattern.
-//#todo Add a link that explains what a concepts is
+A `match` clause is used to find all existing <<_concept_variable,concepts>> in a database that satisfy a pattern.
 
 Every matched result of a `match` clause contains a concept for every <<_concept_variable,concept variable>>
 and a value for every <<_value_variables,value variable>> used in a given pattern.
@@ -81,12 +81,11 @@ including all possible permutations.
 ====
 
 Data queries use results of a `match` clause to retrieve or process data.
-The second clause a data query is executed once for every matched result.
+The second clause of a data query is executed once for every matched result.
 If there are no matched results, there will be no data inserted/deleted/retrieved.
 If there are two matched results, the subsequent clause will be executed twice,
 inserting/deleting/retrieving data every time.
 An insert query without a `match` clause is executed exactly once.
-// end::patterns_overview[]
 
 // tag::variables[]
 [#_variables]
@@ -115,20 +114,59 @@ exactly one value per every result (solution) matched for a pattern. See <<_valu
 // end::variables[]
 
 // tag::patterns_body[]
-// tag::patterns_overview[]
 [#_patterns_overview]
 == Patterns overview
 
-TypeDB is using TypeQL query language with declarative and composable patterns.
-
+// tag::patterns_overview[]
 A pattern is a set of statements combined by an implicit conjunction (logical "AND").
 Hence, patterns are composable,
-meaning you can combine two patterns by using their statements together in a new pattern.
+meaning you can combine two patterns by joining their statements together in a new pattern.
 
 Statements declare constraints for types and data.
 They consist of variables, keywords, types, and values.
 All statements must end with a semicolon.
 
+Most simple statements consist of a subject, predicate, and an object in that particular order.
+Some predicates, like `abstract` don't have a subsequent object.
+There are predicates for schema types and data instances.
+They are used in schema statements and data statements respectively.
+See below an example of simnple statements that describe a person, that has the specified full-name and specified email.
+
+.Simple statements example
+[,typeql]
+----
+$p isa person;
+$p has full-name "Bob";
+$p has email "bob@gmail.com";
+----
+
+The above example consists of three simple statements about the same subject, represented by the variable `$p`:
+
+* It is an instance of a type `person`;
+* It has attribute of type `full-name` and value `Bob`;
+* It has attribute of type `email` and value `bob@gmail.com`;
+
+Multiple simple statements with the same subject can be combined to a complex statement,
+consisting of a single subject, and multiple comma-separated pairs of predicates and objects.
+
+.Complex statement example
+[,typeql]
+----
+$p isa person, has full-name "Bob", has email "bob@gmail.com";
+----
+
+The above example combines simple statements from the previous example
+and achieves the same result without repeating the subject (`$p`).
+
+Note that the patterns above use the same schema that is used in the xref:home::quickstart.adoc[] guide.
+That schema defines types, used in the patterns: `person`, `full-name`, and `email`.
+
+In a data query, you can use
+xref:typeql::data/match.adoc#_variables[variables] for any type, instance of a type, or value;
+and a subject is usually a xref:typeql::data/match.adoc#_concept_variable[concept variable].
+// end::patterns_overview[]
+
+////
 See below an example of a statement that describes a person, that has specified full-name and unspecified email.
 
 [#_statement-structure]
@@ -153,24 +191,26 @@ $p isa person;
 $p has full-name "Masako Holley";
 $p has email $email;
 ----
+////
 
-There are two major subsets of patterns:
-<<_data_patterns>> and
-<<_type_patterns>>.
-Additionally, you can use <<_negation>> and <<_disjunction>> with any pattern in a `match` clause or rule condition.
-See the <<_combined_statements_example>> section at the end of this page.
+In a `match` clause we can use both
+<<_data_statements>> and
+<<_type_statements>>, as well as <<_negation>> and <<_disjunction>>.
+For example, see the <<_combined_statements_example>> section at the end of this page.
 
-[#_data_patterns]
-=== Data patterns
+[#_data_statements]
+=== Data statements
 
-Data patterns are used to match data instances.
+Data statements are used for manipulating data instances.
 They can be used only in data queries and xref:typeql::schema/define-rules.adoc[rules].
 //#todo Add link to the Data queries page
 
-.Data patterns
+//#todo Add column predicates
+//#todo Add columns for subject and object constraints
+.Data statements
 [cols="^.^1,^.^2,^.^2"]
 |===
-| *Pattern name* | *Pattern syntax* | *Examples*
+| *Statement name* | *Syntax* | *Examples*
 
 | Instance of a type or a subtype
 | `+<var> isa <type>;+`
@@ -221,23 +261,22 @@ For more information on
 <<_computation>>,
 see the sections below.
 
-[#_type_patterns]
-=== Type patterns
+[#_type_statements]
+=== Type statements
 
-Type patterns are used for schema types.
+Type statements are used for schema types.
 They can be used only in a `match` and `define` clauses.
 For `define` clause patterns examples, see the
 xref:typeql::schema/define-types.adoc#_schema_patterns[Define types] page.
 
-.Type patterns
+.Type statements
 [cols="^.^1,^.^2,^.^2"]
 |===
-| *Pattern name* | *Pattern syntax* | *Example*
+| *Statement name* | *Syntax* | *Example*
 
 | Type
 | `<var> type <type>;`
 | `$t type person;`
-
 
 | Type or subtype
 | `<var> sub <type>\|<var>;`
@@ -270,15 +309,16 @@ xref:typeql::schema/define-types.adoc#_schema_patterns[Define types] page.
 
 Use negation to exclude some concepts from a result.
 
-The intuitive meaning of a negated pattern is that of a complement.
+The intuitive meaning of a negated statement is that of a complement.
 However, a relation complement is not clearly defined.
-
-We understand pattern negation in terms of computation of *set differences*.
-The set-difference semantics are different to the perhaps familiar semantics of Negation-as-Failure of Prolog.
+We understand statement negation in terms of computation of *set differences*.
+The set-difference semantics is different to the perhaps familiar semantics of Negation-as-Failure of Prolog.
 
 To use negation, employ the following syntax:
 
 `not {<negated_pattern>};`
+
+See an example below.
 
 .Negation example
 [,typeql]
@@ -289,10 +329,9 @@ not {$fn contains "Kevin";};
 
 We can use multiple statements inside a negation block.
 
-For each negation block in a query,
-at least one variable in the negation block must be bound to a statement outside the negation block.
-This ensures that set difference operations are performed on sets that are not disjointed.
-Variables in negation blocks are local to the block they are defined in.
+At least one variable in a negation block must be bound to a statement outside of negation.
+This ensures that set-difference operations are performed on sets that are not disjointed.
+Variables declared in negation blocks are local to the block they are defined in.
 
 Rules conditions with negation can't contradict themselves (to prevent infinite recursion).
 
@@ -306,6 +345,8 @@ To use disjunction, employ the following syntax:
 
 `{<pattern1>} or {<pattern2>};`
 
+See an example below.
+
 .Disjunction example
 [,typeql]
 ----
@@ -313,8 +354,8 @@ $p isa $t;
 {$t type person;} or {$t type file;};
 ----
 
-We can use multiple statements inside a disjunction block.
-Variables, that are used only in disjunction block will not be returned in results of a `match` clause.
+We can use multiple statements inside a disjunctive branch.
+Variables that are used only in a disjunctive block will not be returned in results of a `match` clause.
 See an example below.
 
 .Disjunction example with extra variables
@@ -335,11 +376,11 @@ and other <<_built_in_functions>>.
 [#_value_variables]
 === Value variables
 
-A value variable is used in patterns with computation to represent an exact value in a pattern.
-Value variables are never materialized permanently and
+Value variables are used in patterns with computation to represent exact values in statements.
+These variables are never materialized permanently and
 are only used within the scope of a particular query or rule.
 
-To persist a value of a value variable, you can save it into database by using an attribute type
+To persist a value of a value variable, you can save it into a database by using an attribute type
 with a matching value type.
 Value variables can be one of the following value types (the same as value types for attributes):
 
@@ -350,12 +391,12 @@ To assign a value for a value variable, use the `=` sign:
 .Value variable example
 [,typeql]
 ----
-match
 $r isa radius;
 ?s = 3.14 * $r^2;
 ----
 
-A pattern statement starting with a value variable and an equals sign is called an <<_expression,expression>>.
+A statement starting with a value variable and an equals sign is called value assignment statement.
+The part to the right from equals sign in a value assignment operator is an <<_expression,expression>>.
 
 [#_expression]
 An *expression* describes a computation of a value for a value variable.
@@ -372,9 +413,8 @@ It contains any combination of the following elements:
 .Expression example
 [,typeql]
 ----
-match
-  $s isa size-kb;
-  ?x = round($s/2) + 1;
+$s isa size-kb;
+?x = round($s/2) + 1;
 ----
 
 The above pattern matches all instances of data for the `size-kb` attribute type
@@ -424,7 +464,7 @@ See an xref:typeql::data/advanced.adoc#_using_subtraction[example].
 The above list is sorted by the order in which those operations are applied in an expression.
 ====
 
-.Arithmetics example
+.Arithmetic example
 [,typeql]
 ----
 $f isa file, has size-kb $s;

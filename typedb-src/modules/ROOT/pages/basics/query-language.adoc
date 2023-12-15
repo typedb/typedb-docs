@@ -1,0 +1,46 @@
+= Query language
+:Summary: TypeQL declarative query language for TypeDB with composbale patterns.
+:keywords: typeql, query, clause, syntax
+:pageTitle: Query language
+:!example-caption:
+:!table-caption:
+
+TypeQL is a *declarative* query language used by TypeDB.
+
+== Query types
+
+There are different types of TypeQL queries:
+xref:typeql::schema/define-types.adoc[Define] and
+xref:typeql::schema/undefine.adoc[Undefine ]
+are called schema queries,
+xref:typeql::data/insert.adoc[Insert],
+xref:typeql::data/delete.adoc[Delete],
+xref:typeql::data/update.adoc[Update],
+xref:typeql::data/fetch.adoc[Fetch], and
+xref:typeql::data/get.adoc[Get]
+are called data queries.
+
+For more information on their clauses, see the links above, ot the full list on the xref:typeql::queries.adoc[] page.
+
+== Syntax
+
+A TypeQL query includes one, two, or three clauses.
+Every clause starts with a keyword specifying a type of clause.
+The rest of the clause is a pattern.
+A pattern consists of one or multiple statements.
+All statements in a pattern are combined with a conjunction (logical "AND").
+There are special blocks for xref:typeql::data/match.adoc#_negation[negation]
+and xref:typeql::data/match.adoc#_disjunction[disjunction].
+
+For more information on patterns, see the xref:typedb::basics/polymorphic-patterns.adoc#_patterns[Patterns] section
+on the Polymorphic patterns page.
+
+include::typeql::queries.adoc[tags="examples"]
+
+////
+== Learn more
+
+Explore capabilities of TypeQL and TypeDB with more interesting query examples at the xref:home::25-queries.adoc[] page.
+
+Learn about polymorphism in the PERA model of TypeDB at the xref:typedb::basics/polymorphic-patterns.adoc[] page.
+////

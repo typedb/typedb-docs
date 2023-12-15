@@ -9,6 +9,7 @@ xref:drivers::overview.adoc#_driver_api[Driver API].
 Get queries do not modify data, so they can be used in both read and write transactions.
 In read transactions, Get queries can use rule-based xref:typedb::basics/inference.adoc[inference].
 
+[#_behavior]
 == Behavior
 
 A Get query projects concepts matched from a database to language-specific programmatic objects
