@@ -302,7 +302,7 @@ You can use polymorphic queries, including:
 * <<_inheritance_polymorphism,Inheritance polymorphism>>
 * <<_interface_polymorphism,Interface polymorphism>>
 
-Parametric polymorphism lets us retrieve results of different types for the same variable in a query.
+Parametric polymorphism lets us look for a value of an attribute regardless of its type.
 Querying without constraining a type can return any type that matches a pattern.
 //When we don't bound a variable to a specific type, so it can be solved as multiple different ones.
 
@@ -328,7 +328,7 @@ The number of results should match the number of instances the database has afte
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Inheritance polymorphism lets us query for subtypes of a type used in a query.
-By querying for a supertype, we can get results for the supertype itself, as well as results for all its subtypes.
+By using a supertype in a pattern, we can get results for the supertype itself, as well as results for all its subtypes.
 //When we can solve for type and its subtypes
 
 .Inheritance polymorphism query example
@@ -350,7 +350,8 @@ You can easily avoid inheritance polymorphism by using the `isa!` keyword instea
 == #{counter:query}: Interface polymorphism
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-Interface polymorphism lets us query for everything with a specific property, for example, owning an attribute.
+Interface polymorphism lets us query for any types that implement a given interface.
+By implementing a given interface, we mean owning an attribute type or playing a role in a relation type.
 
 .Interface polymorphism query example
 [,typeql]
