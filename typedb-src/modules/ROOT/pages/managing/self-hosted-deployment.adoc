@@ -101,7 +101,7 @@ To start TypeDB Cloud manually:
 +
 [,bash]
 ----
-./typedb cloud
+./typedb server
 ----
 
 Now TypeDB Cloud should show a welcome screen with its version, address, and bootup time.
@@ -175,7 +175,7 @@ To run TypeDB server #1:
 
 [,bash]
 ----
-./typedb cloud \
+./typedb server \
     --server.address=10.0.0.1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \
@@ -199,7 +199,7 @@ To run TypeDB server #2:
 
 [,bash]
 ----
-./typedb cloud \
+./typedb server \
     --server.address=10.0.0.2:1729 \
     --server.internal-address.zeromq=10.0.0.2:1730 \
     --server.internal-address.grpc=10.0.0.2:1731 \
@@ -223,7 +223,7 @@ To run TypeDB server #3:
 
 [,bash]
 ----
-./typedb cloud \
+./typedb server \
     --server.address=10.0.0.3:1729 \
     --server.internal-address.zeromq=10.0.0.3:1730 \
     --server.internal-address.grpc=10.0.0.3:1731 \
@@ -253,7 +253,7 @@ The relevant external hostname should be passed as arguments using the `--server
 
 [,bash]
 ----
-./typedb cloud \
+./typedb server \
     --server.address=external-host-1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \

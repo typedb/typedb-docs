@@ -39,14 +39,20 @@ TypeDB Console::
 .Connect to TypeDB Core
 [,bash]
 ----
-typedb console --core=127.0.0.1:1729
+typedb console
 ----
+
+By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.
+To connect to a different address use the `--core` argument followed by a TypeDB server IP address and port,
+for example, `typedb console --core=10.1.2.3:1729`.
 
 .Connect to TypeDB Cloud
 [,bash]
 ----
-typedb console --cloud=127.0.0.1:1729 --username=admin --password --tls-enabled=true
+typedb console --cloud=10.1.2.3:1729 --username=admin --password --tls-enabled=true
 ----
+Use `--cloud` argument to select address and port to connect to a TypeDB Cloud cluster.
+
 For more information on CLI commands, see the xref:typedb::connecting/console.adoc[] page.
 --
 
