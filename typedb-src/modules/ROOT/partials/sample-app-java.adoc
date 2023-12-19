@@ -23,23 +23,23 @@ import java.util.Date;
 public class Main {
     static int k = 0; // Counter
     public static void main(String[] args) {
-        final String dbName = "iam"; // Name of a database to connect to
-        final String serverAddr = "127.0.0.1:1729"; // Address of a TypeDB Core server to connect to
+        final String DB_NAME = "iam"; // Name of a database to connect to
+        final String SERVER_ADDR = "127.0.0.1:1729"; // Address of a TypeDB Core server to connect to
 
         System.out.println("IAM Sample App");
 
-        System.out.println("Attempting to connect to a TypeDB Core server: " + serverAddr);
-        TypeDBDriver driver = TypeDB.coreDriver(serverAddr); // the driver is connected to the server
-        if (driver.databases().contains(dbName)) {
+        System.out.println("Attempting to connect to a TypeDB Core server: " + SERVER_ADDR);
+        TypeDBDriver driver = TypeDB.coreDriver(SERVER_ADDR); // the driver is connected to the server
+        if (driver.databases().contains(DB_NAME)) {
             System.out.println("Found a pre-existing database! Re-creating with the default schema and data...");
-            driver.databases().get(dbName).delete();
+            driver.databases().get(DB_NAME).delete();
         }
-        driver.databases().create(dbName);
-        if (driver.databases().contains(dbName)) {
+        driver.databases().create(DB_NAME);
+        if (driver.databases().contains(DB_NAME)) {
             System.out.println("Empty database created");
         }
         System.out.println("Opening a Schema session to define a schema.");
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.SCHEMA)) {
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
             try (TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String defineQuery = Files.readString(Paths.get("iam-schema.tql"));
                 writeTransaction.query().define(defineQuery);
@@ -50,7 +50,7 @@ public class Main {
             }
         }
         System.out.println("Opening a Data session to insert data.");
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
             try (TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String insertQuery = Files.readString(Paths.get("iam-data-single-query.tql"));
                 writeTransaction.query().insert(insertQuery);
@@ -72,7 +72,7 @@ public class Main {
         }
 
         System.out.println("Commencing sample requests");
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
 
             System.out.println("");
             System.out.println("Request #1: User listing");

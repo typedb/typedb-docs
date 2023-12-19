@@ -9,27 +9,27 @@ const { TypeDBOptions } = require("typedb-driver/api/connection/TypeDBOptions");
 const { readFile } = require('fs/promises')
 
 async function main() {
-    const db_name = "iam";
-    const server_addr = "127.0.0.1:1729";
+    const DB_NAME = "iam";
+    const SERVER_ADDR = "127.0.0.1:1729";
 
     console.log("IAM Sample App");
 
-    console.log("Attempting to connect to a TypeDB Core server: ", server_addr);
-    const driver = await TypeDB.coreDriver(server_addr); // Connect tot TypeDB Core server
-    if (await driver.databases.contains(db_name)) {
+    console.log("Attempting to connect to a TypeDB Core server: ", SERVER_ADDR);
+    const driver = await TypeDB.coreDriver(SERVER_ADDR); // Connect tot TypeDB Core server
+    if (await driver.databases.contains(DB_NAME)) {
         console.log("Found a pre-existing database! Re-creating with the default schema and data...");
-        let x = await driver.databases.get(db_name);
+        let x = await driver.databases.get(DB_NAME);
         await x.delete();
     }
     console.log("Creating a new DB");
-    await driver.databases.create(db_name);
+    await driver.databases.create(DB_NAME);
     console.log("Created a new DB");
-    if (driver.databases.contains(db_name)) {
+    if (driver.databases.contains(DB_NAME)) {
         console.log("Empty database created.");
     }
     console.log("Opening a Schema session to define a schema.");
     try {
-        session = await driver.session(db_name, SessionType.SCHEMA);
+        session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
             transaction = await session.transaction(TransactionType.WRITE);
             try {
@@ -51,7 +51,7 @@ async function main() {
 
     console.log("Opening a Data session to insert data.");
     try {
-        session = await driver.session(db_name, SessionType.DATA);
+        session = await driver.session(DB_NAME, SessionType.DATA);
         try {
             transaction = await session.transaction(TransactionType.WRITE);
             const insert_query = await readFile("iam-data-single-query.tql", 'utf8');
@@ -85,7 +85,7 @@ async function main() {
     console.log("Commencing sample requests.");
     let k; // counter
     try {
-        session = await driver.session(db_name, SessionType.DATA);
+        session = await driver.session(DB_NAME, SessionType.DATA);
 
         console.log("");
         console.log("Request #1: User listing");
