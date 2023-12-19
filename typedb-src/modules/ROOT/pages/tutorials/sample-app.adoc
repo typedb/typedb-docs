@@ -470,6 +470,7 @@ insertQuery = TypeQL.match(
 ==== Query explanation
 
 The first query inserts a file entity that owns a `path` attribute with the value of a generated filename.
+
 With the second query, we look for a `file` entity that has the attribute `path` with the value we generated before.
 And we find an `action`, that has a `name` attribute with the value of `view_file`.
 Finally, we insert an `access` relation between the `file` and the `action`.
@@ -479,6 +480,6 @@ After both requests are done, we commit the write transaction to persist new inf
 [NOTE]
 ====
 Note that we create the `file` first.
-If we try to set an `access` to a nonexistent `file` our request will run but will not insert any new data (relation)
-because `match` clause will find no matches in a database.
+If we try to insert an `access` to a nonexistent `file` our query will run but will not insert any new data (relation)
+because its `match` clause will find no matches in a database.
 ====
