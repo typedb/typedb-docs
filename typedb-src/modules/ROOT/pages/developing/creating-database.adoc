@@ -112,7 +112,7 @@ Rust::
 .Deleting a database named db1
 [,rust]
 ----
-let _ = databases.get("db1").expect("Failed to get the database for deletion.").delete();
+let _ = databases.get("db1").unwrap().delete();
 ----
 --
 
