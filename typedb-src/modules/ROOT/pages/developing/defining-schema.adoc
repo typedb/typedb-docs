@@ -27,15 +27,19 @@ the database.
 To define or undefine anything in a TypeDB database schema, we need:
 
 1. Build the TypeQL query string (see below on this page):
-    * See how to <<_define_types,define types>>;
-    * See how to <<_define_rules,define rules>>;
-    * See how to <<_undefine_types,undefine types>>;
-    * See how to <<_undefine_rules,undefine rules>>;
-    * See how to <<_modify_types, modify types>>
+* See how to <<_define_types,define types>>;
+* See how to <<_define_rules,define rules>>;
+* See how to <<_undefine_types,undefine types>>;
+* See how to <<_undefine_rules,undefine rules>>;
+* See how to <<_modify_types, modify types>>
 2. xref:connecting/overview.adoc#_clients[Connect] to a TypeDB database with a xref:connecting/overview.adoc#_sessions[SCHEMA session].
 3. Run a proper query type (xref:typeql::schema/define-types.adoc[Define]/ xref:typeql::schema/undefine.adoc[Undefine])
 in a xref:connecting/overview.adoc#_transactions[write transaction].
 4. Commit the transaction to persist the changes.
+
+[#_default_schema]
+== Default schema
+
 
 [#_define_types]
 == Define types
