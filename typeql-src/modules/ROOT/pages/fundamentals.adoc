@@ -661,7 +661,7 @@ Rules are a part of a schema and define embedded logic.
 
 The reasoning engine uses rules as a set of logic to infer new data.
 
-Rules can dramatically shorten complex queries, perform xref:typedb::development/infer.adoc#_explain_query[explainable]
+Rules can dramatically shorten complex queries, perform xref:typedb::developing/infer.adoc#_explain_query[explainable]
 knowledge discovery, and implement business logic at the database level.
 
 A rule consists of a *condition* and a *conclusion*.
@@ -695,7 +695,7 @@ when {
 
 The conclusion can be used to create a single virtual instance of data: a relation or ownership of an attribute.
 
-Queries use rules for xref:typedb:ROOT:development/infer.adoc[Inferring new data] only in read transactions and only if
+Queries use rules for xref:typedb:ROOT:developing/infer.adoc[Inferring new data] only in read transactions and only if
 the inference option is *enabled*.
 
 // end::rules_basics[]

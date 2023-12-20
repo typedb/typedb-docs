@@ -1,8 +1,8 @@
-= Defining schema
+= Defining schemas
 :Summary: How to define a TypeDB database schema.
-:keywords: typedb, typeql, schema, define, undefine, types, rules
-:longTailKeywords: typedb schema, database schema, define a type, define a rule
-:pageTitle: Defining schema
+:page-aliases: typedb::development/schema.adoc
+:keywords: typedb, typeql, schema, define, undefine, type, rule
+:pageTitle: Defining schemas
 
 [#_schema]
 == Schema
@@ -18,7 +18,7 @@ the database.
 
 == How to define a schema
 
-To define or undefine anything in a TypeDB database schema we need:
+To define or undefine anything in a TypeDB database schema, we need:
 
 1. Build the TypeQL query string (see below on this page):
     * See how to <<_define_types,define types>>;
@@ -360,8 +360,8 @@ commit.
 
 == Learn more
 
-After we define the schema of our database we can try xref:typedb::development/write.adoc[writing] and
-xref:typedb::development/read.adoc[reading] data from the database.
+After we define the schema of our database we can try xref:typedb::developing/write.adoc[writing] and
+xref:typedb::developing/read.adoc[reading] data from the database.
 
 In case there is no database schema ready yet, we can use the xref:attachment$iam-schema.tql[IAM schema,window=_blank]
 to try all the queries.

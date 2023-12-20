@@ -263,9 +263,9 @@ From left to right (numbered respectively to the screenshot numbers):
 . btn:[snapshot] button -- enables snapshot feature that encapsulates a transaction in a snapshot of a database's data
 until the transaction is committed or closed. Write transactions are always snapshoted. May be enabled or disabled
 for read transactions.
-. btn:[infer] button -- enable xref:development/infer.adoc[inferring data] by rules. Only available for read
+. btn:[infer] button -- enable xref:developing/infer.adoc[inferring data] by rules. Only available for read
 transactions.
-. btn:[explain] button -- enable xref:development/infer.adoc#_explain_query[explanations] mechanics by providing
+. btn:[explain] button -- enable xref:developing/infer.adoc#_explain_query[explanations] mechanics by providing
 `explainables` methods for results. Only available for read transactions with *snapshot* and *infer* enabled.
 . btn:[Transaction status] (Circle (●) icon) indicator -- transaction activity indicator. Green if there is a
 transaction opened by TypeDB Studio at this moment. Gray if there is no opened transaction. Rotating animation --
@@ -308,7 +308,7 @@ image::drivers::studio/inference.png[Inference results example, width = 70%, lin
 To run a query with explanation, simply switch the explanation option *on* before executing a query. To be able to do
  that, the inference and the snapshot options must also be enabled.
 
-The xref:development/infer.adoc#_explain_query[explanation] transaction option can be switched
+The xref:developing/infer.adoc#_explain_query[explanation] transaction option can be switched
 *on* and *off* with the btn:[explain] button in the top *Toolbar*. The inference and snapshot options can be enabled
 by the btn:[infer] and the btn:[snapshot] buttons respectively.
 
@@ -433,7 +433,7 @@ the transaction with the green tick at the top of the Studio window.
 In some cases, the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
 from deleting this type.
 
-For example, we can't xref:development/schema.adoc#_undefine_subtype[delete a type that has a subtype].
+For example, we can't xref:developing/schema.adoc#_undefine_subtype[delete a type that has a subtype].
 ====
 
 == Settings
