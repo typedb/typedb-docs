@@ -1,28 +1,83 @@
 = Defining a schema
-:Summary: How to define a TypeDB database schema.
+:Summary: How to define a schema for a TypeDB database.
 :page-aliases: typedb::development/schema.adoc
 :keywords: typedb, typeql, schema, define, undefine, type, rule
-:pageTitle: Defining schemas
+:pageTitle: Defining a schema
 
-A schema consists of definitions for all types and rules used in a database.
-
-
-
-that describes a data model being used in that database and rules for its inference.
+Before inserting any data into a database, we need to declare its data model.
+In TypeDB that is done by defining a schema.
 
 [#_schema]
 == Schema
 
 A TypeDB schema is like a blueprint of a database.
+It consists of definitions for all types and rules used in a database.
+Types follow the xref:typedb::basics/data-model.adoc[PERA model] to represent a business domain of a database.
+Rules are defined with a special xref:typeql::schema/define-rules.adoc#_syntax[syntax]
+that lets them use data statements to xref:typedb::developing/infer.adoc[infer] new data.
 
-A schema contains all user-defined xref:typeql::fundamentals.adoc#_types[types] and
-xref:typeql::schema/define-rules.adoc#_rules_behavior[rules]
-that can be used in the database.
+All queries are written with xref:typedb::basics/query-language.adoc[TypeQL]
+and validated not only for their syntax, but also for type violations.
+New types can be created by subtyping existing types.
+Every subtype has a single parent (or supertype).
+Subtypes inherit properties of their supertypes.
+A definition of a type declares its supertype, as well as its own properties and constraints.
+Query patterns can use xref:typedb::basics/polymorphic-patterns.adoc[polymorphism]
+to retrieve data of different types, even those not mentioned in the patterns.
 
-The types in a database schema define the data model, its constraints, and the vocabulary used in TypeQL queries to
-the database.
+A newly created database has no data and the <<_default_schema,default schema>>
+that has no rules and only built-in types including the root types.
+
+[#_default_schema]
+== Default schema
+
+A database is created with a default schema, that contains the default set of built-in types that are abstract and
+cannot be deleted.
+These built-in types include the root types: `entity`, `relation`, and `attribute`,
+that can be subtyped to create a full hierarchy of types for a data model.
+//#todo Consider adding information on the Thing type. As well as the deprecation warning
+
+There are no rules in the default schema.
 
 == How to define a schema
+
+There is no way we can create a new schema for a database, but we can create a new database with the default schema.
+To modify a schema, we can use:
+
+* xref:typeql::schema/define-rules.adoc[Define] and xref:typeql::schema/undefine.adoc[Undefine] queries
+* xref:drivers::overview.adoc[Driver] API methods
+(see
+xref:drivers::rust/overview.adoc[Rust],
+xref:drivers::python/overview.adoc[Python],
+xref:drivers::java/overview.adoc[Java], or
+xref:drivers::nodejs/overview.adoc[Node.js]
+)
+* xref:typedb::connecting/studio.adoc#_type_editor[Type Editor] window in xref:typedb::connecting/studio.adoc[TypeDB Studio]
+
+The following information on this page only covers TypeQL queries as the default way of interacting with a database.
+For more information on other ways to modify a schema, see the links above.
+
+TypeQL queries can be used with any TypeDB Client, including Drivers.
+
+=== Extending a schema
+
+=== Creating a new schema
+
+There is no way of creating a new schema or deleting an existing one.
+You can modify an existing schema, for example, delete all user-defined types.
+It is usually easier to delete the whole database and create a new one with the same name and the default schema.
+
+=== Renaming types
+
+=== Replacing rules
+
+=== How to undefine a schema
+
+
+To extend or modify any schema
+
+
+
 
 To define or undefine anything in a TypeDB database schema, we need:
 
@@ -36,9 +91,6 @@ To define or undefine anything in a TypeDB database schema, we need:
 3. Run a proper query type (xref:typeql::schema/define-types.adoc[Define]/ xref:typeql::schema/undefine.adoc[Undefine])
 in a xref:connecting/overview.adoc#_transactions[write transaction].
 4. Commit the transaction to persist the changes.
-
-[#_default_schema]
-== Default schema
 
 
 [#_define_types]
