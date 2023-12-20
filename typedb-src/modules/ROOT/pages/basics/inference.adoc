@@ -5,7 +5,7 @@
 :pageTitle: Inference
 
 [#_inference]
-TypeDB is capable of reasoning over data via rules xref:developing/schema.adoc#_define_rules[defined] in the schema.
+TypeDB is capable of reasoning over data via rules xref:developing/defining-schema.adoc#_define_rules[defined] in the schema.
 
 The reasoning engine uses <<_rules,rules>> as a set of logic to infer new data, based on the existence of patterns in
 data of a TypeDB database.
@@ -44,8 +44,8 @@ include::typeql::fundamentals.adoc[tag=rules_basics]
 
 include::typeql::fundamentals.adoc[tag=recursive_logic]
 
-Read more on how to create rules in a schema in the xref:typedb::developing/schema.adoc#_define_rules[Define rules]
-section of the xref:typedb::developing/schema.adoc[] page.
+Read more on how to create rules in a schema in the xref:typedb::developing/defining-schema.adoc#_define_rules[Define rules]
+section of the xref:typedb::developing/defining-schema.adoc[] page.
 
 We can use xref:typeql::data/match.adoc#_computation[computation] operations and functions in the condition pattern.
 And we can use value variables in the conclusion of a rule.
@@ -68,7 +68,7 @@ This was the last page of the *Fundamentals* section.
 We recommend continuing exploration of TypeDB by going through the *Developing with TypeDB* section:
 
 * xref:connecting/overview.adoc[]
-* xref:developing/schema.adoc[]
+* xref:developing/defining-schema.adoc[]
 * xref:developing/write.adoc[]
 * xref:developing/read.adoc[]
 * xref:developing/infer.adoc[]

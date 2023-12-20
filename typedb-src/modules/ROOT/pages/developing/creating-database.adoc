@@ -1,0 +1,67 @@
+= Creating a database
+:Summary: How to create and delete a database.
+:keywords: typedb, database, create, delete, drop
+:pageTitle: Creating a database
+
+TypeDB stores data in databases.
+Every TypeDB database has a unique name, a schema, and can store data.
+
+== Create
+
+To create a new database, prepare a unique database name, for example, `db1`
+and select your TypeDB Client below to see the relevant instructions.
+
+[tabs]
+====
+Console::
++
+--
+From TypeDB Console's xref:typedb::connecting/console.adoc#_REPL[REPL], run:
+
+[,bash]
+----
+database create db1
+----
+--
+
+Studio::
++
+--
+
+--
+
+Rust::
++
+--
+
+--
+
+Python::
++
+--
+
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+====
+
+
+== Delete
+
+
+== List databases
+
+
+== Check if exists
+
+
