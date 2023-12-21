@@ -5,7 +5,7 @@
 :pageTitle: Inference
 
 [#_inference]
-TypeDB is capable of reasoning over data via rules xref:development/schema.adoc#_define_rules[defined] in the schema.
+TypeDB is capable of reasoning over data via rules xref:developing/defining-schema.adoc#_define_rules[defined] in the schema.
 
 The reasoning engine uses <<_rules,rules>> as a set of logic to infer new data, based on the existence of patterns in
 data of a TypeDB database.
@@ -20,7 +20,7 @@ The results are transaction-bound and are not persisted. As soon as transaction 
 perish.
 ====
 
-When executing a `get` query with the `infer` transaction option xref:development/infer.adoc#_how_to_use_inference[enabled]
+When executing a `get` query with the `infer` transaction option xref:developing/infer.adoc#_how_to_use_inference[enabled]
 (`True`), TypeDB inspects and triggers rules that may lead to new answers to the query.
 
 It returns data that answers the query taking into account inference results. Reasoning can proceed from one rule
@@ -44,8 +44,8 @@ include::typeql::fundamentals.adoc[tag=rules_basics]
 
 include::typeql::fundamentals.adoc[tag=recursive_logic]
 
-Read more on how to create rules in a schema in the xref:typedb::development/schema.adoc#_define_rules[Define rules]
-section of the xref:typedb::development/schema.adoc[] page.
+Read more on how to create rules in a schema in the xref:typedb::developing/defining-schema.adoc#_define_rules[Define rules]
+section of the xref:typedb::developing/defining-schema.adoc[] page.
 
 We can use xref:typeql::data/match.adoc#_computation[computation] operations and functions in the condition pattern.
 And we can use value variables in the conclusion of a rule.
@@ -68,10 +68,10 @@ This was the last page of the *Fundamentals* section.
 We recommend continuing exploration of TypeDB by going through the *Developing with TypeDB* section:
 
 * xref:connecting/overview.adoc[]
-* xref:development/schema.adoc[]
-* xref:development/write.adoc[]
-* xref:development/read.adoc[]
-* xref:development/infer.adoc[]
-* xref:development/response.adoc[]
+* xref:developing/defining-schema.adoc[]
+* xref:developing/write.adoc[]
+* xref:developing/read.adoc[]
+* xref:developing/infer.adoc[]
+* xref:developing/response.adoc[]
 //* xref:development/api.adoc[]
-* xref:development/best.adoc[]
+* xref:developing/best.adoc[]

@@ -1,5 +1,6 @@
 = Best practices
 :Summary: Best practices for schema and query design.
+:page-aliases: typedb::development/best.adoc
 :keywords: api, typedb, typeql, optimization, query, design, tips
 :longTailKeywords: TypeDB best practice, query design, schema design
 :pageTitle: Best practices
@@ -126,7 +127,7 @@ When a transaction is committed or closed, all of its asynchronous queries are c
 === API
 
 Data retrieved from a TypeDB database consists of concepts and is delivered in the form of
-xref:development/response.adoc#_conceptmap[ConceptMaps]. Use the methods introduced by the TypeDB Driver API to obtain more
+xref:developing/response.adoc#_conceptmap[ConceptMaps]. Use the methods introduced by the TypeDB Driver API to obtain more
 information about the retrieved concept. To explore the concept's surroundings, the API has methods to traverse the
 neighbors of a specific concept instance to obtain more insights.
 
@@ -141,7 +142,7 @@ The following are some of the most common mistakes and misunderstandings that co
 
 ==== Get clause alters results
 
-A xref:typedb::development/read.adoc#_get[get] clause can alter the set of returned results. For example:
+A xref:typedb::developing/read.adoc#_get[get] clause can alter the set of returned results. For example:
 
 [,typeql]
 ----

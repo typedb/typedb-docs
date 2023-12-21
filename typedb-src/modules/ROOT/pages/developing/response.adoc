@@ -18,7 +18,7 @@ a| {counter:query_types}
 | Stream/Iterator of *JSON*
 
 a| {counter:query_types}
-| xref:typedb::development/read.adoc#_get[Get query]
+| xref:typedb::developing/read.adoc#_get[Get query]
 | Stream/Iterator of *ConceptMap*
 
 a| {counter:query_types}
@@ -35,27 +35,27 @@ xref:typeql::data/get.adoc#_aggregation[aggregation]
 | Stream/Iterator of *ValueGroup*
 
 a| {counter:query_types}
-| xref:typedb::development/write.adoc#_insert[Insert query]
+| xref:typedb::developing/write.adoc#_insert[Insert query]
 | Stream/Iterator of *ConceptMap*
 
 a| {counter:query_types}
-| xref:typedb::development/write.adoc#_delete_query[Delete query]
+| xref:typedb::developing/write.adoc#_delete_query[Delete query]
 | *Promise* (of empty response)
 
 a| {counter:query_types}
-| xref:typedb::development/write.adoc#_update_query[Update query]
+| xref:typedb::developing/write.adoc#_update_query[Update query]
 | Stream/Iterator of *ConceptMap*
 
 a| {counter:query_types}
-| xref:typedb::development/schema.adoc#_define_types[Define]
+| xref:typedb::developing/defining-schema.adoc#_define_types[Define]
 | *Promise* (of empty response)
 
 a| {counter:query_types}
-| xref:typedb::development/schema.adoc#_undefine[Undefine]
+| xref:typedb::developing/defining-schema.adoc#_undefine[Undefine]
 | *Promise* (of empty response)
 
 a| {counter:query_types}
-| xref:typedb::development/infer.adoc#_explain_query[Explain]
+| xref:typedb::developing/infer.adoc#_explain_query[Explain]
 | Stream/Iterator of *Explanation*
 |===
 
@@ -126,7 +126,7 @@ Similar to a <<_delete_query,delete>> query.
 
 Explain query returns a stream/iterator of an Explanation objects.
 
-For more information on inference explanation please see the xref:development/infer.adoc[Inferring data] page.
+For more information on inference explanation please see the xref:developing/infer.adoc[Inferring data] page.
 
 [#_response_formats]
 == Response formats
@@ -188,8 +188,8 @@ Promise object represents an asynchronous query result to be able to get the val
 === Explanation
 
 Explanation is a special object returned as a response to an explain query.
-These are used to explain xref:development/infer.adoc[data inference]. To perform an
-xref:development/infer.adoc#_explain_query[explain query] use `explainables` and `explainable` objects.
+These are used to explain xref:developing/infer.adoc[data inference]. To perform an
+xref:developing/infer.adoc#_explain_query[explain query] use `explainables` and `explainable` objects.
 
 == Number of answers
 

@@ -1,0 +1,169 @@
+= Creating a database
+:Summary: How to create and delete a database.
+:keywords: typedb, database, create, delete, drop
+:pageTitle: Creating a database
+:experimental:
+:tabs-sync-option:
+
+TypeDB stores data in databases.
+Every TypeDB database has a unique name, a schema, and can store data.
+You can create or delete databases with any TypeDB Client as long as it is connected to a TypeDB.
+
+== Create
+
+To create a new database, prepare a unique database name, for example, `db1`
+and select your TypeDB Client below to see the relevant instructions.
+
+[tabs]
+====
+Console::
++
+--
+From TypeDB Console's xref:typedb::connecting/console.adoc#_REPL[REPL], run:
+
+[,bash]
+----
+database create db1
+----
+--
+
+Studio::
++
+--
+. Open the Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+. Type in `db1` in the text field and click btn:[Create].
+--
+
+Rust::
++
+--
+.Creating a database named db1
+[,rust]
+----
+let _ = databases.create("db1");
+----
+--
+
+Python::
++
+--
+.Creating a database named db1
+[,python]
+----
+driver.databases.create("db1")
+----
+--
+
+Java::
++
+--
+.Creating a database named db1
+[,java]
+----
+driver.databases().create("db1");
+----
+--
+
+Node.js::
++
+--
+.Creating a database named db1
+[,js]
+----
+await driver.databases.create("db1");
+----
+--
+====
+
+A new database has no data and only a xref:typedb::developing/defining-schema.adoc#_default_schema[default schema]
+with some built-in types.
+
+== Delete
+
+Deleting a database will remove all its data and schema.
+To delete a database, make sure to use its exact name, for example, `db1`
+and select your TypeDB Client below to see the relevant instructions.
+
+[tabs]
+====
+Console::
++
+--
+From TypeDB Console's xref:typedb::connecting/console.adoc#_REPL[REPL], run:
+
+[,bash]
+----
+database delete db1
+----
+--
+
+Studio::
++
+--
+. Open the Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+. Locate the `db1` in the list of databases and click on the Trash can icon in its line.
+. To confirm its deletion, type in `db1` in the text field of confirmation dialog and click btn:[Delete].
+//#todo Add the icon's image
+--
+
+Rust::
++
+--
+.Deleting a database named db1
+[,rust]
+----
+let _ = databases.get("db1").unwrap().delete();
+----
+--
+
+Python::
++
+--
+.Deleting a database named db1
+[,python]
+----
+driver.databases.get("db1").delete()
+----
+--
+
+Java::
++
+--
+.Deleting a database named db1
+[,java]
+----
+driver.databases().get("db1").delete();
+----
+--
+
+Node.js::
++
+--
+.Deleting a database named db1
+[,js]
+----
+let db = await driver.databases.get("db1");
+await db.delete();
+----
+--
+====
+
+////
+== List databases
+
+Listing all databases on a server:
+
+== Check if exists
+////
+
+== Learn more
+
+Learn what to do next after creating a database by reading the rest of the *Developing with TypeDB section*,
+namely the xref:typedb::developing/defining-schema.adoc[] page.
+
+For more information on database management functions,
+e.g., list all databases, check if a database with a given name exists,
+see the relevant TypeDB Client's documentation:
+xref:typedb::connecting/console.adoc[],
+xref:typedb::connecting/studio.adoc[],
+xref:drivers::overview.adoc[].
