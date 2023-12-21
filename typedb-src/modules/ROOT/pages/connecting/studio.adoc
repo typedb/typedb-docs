@@ -57,9 +57,10 @@ include::home::quickstart.adoc[tags=connect_studio]
 [#_select_database]
 === Select a database
 
-TypeDB Studio lets us query one database at a time.
 If there are no databases yet, <<_create_a_database,create>> a new one.
-Choose a database with the dropdown menu direct right from the database icon (image:home::studio-icons/database.png[]) in the top toolbar.
+Select a database to work with the dropdown menu on the right from the database icon
+(image:home::studio-icons/database.png[])
+in the top toolbar.
 
 [NOTE]
 ====
@@ -68,7 +69,7 @@ If the dropdown menu is greyed out and unresponsive, then check your <<_connect_
 
 == Basic operations
 
-=== Connection management
+=== Connection
 
 Connection management is performed from the Connect to TypeDB window.
 To open the window, click the btn:[Connect to TypeDB] on the right side of the top toolbar.
@@ -79,10 +80,17 @@ Pay attention to the first line with a drop-down, as selecting TypeDB Cloud show
 
 To disconnect from TypeDB, click the btn:[Disconnect] button in the Connect to TypeDB window.
 
-=== Database management
+=== Databases
+
+==== Select
+
+TypeDB Studio lets us query one database at a time.
+To select a database to work with, use the dropdown menu on the right from the database icon
+(image:home::studio-icons/database.png[])
+in the top toolbar.
 
 [#_create_a_database]
-=== Create a new database
+==== Create
 
 To create a new database, make sure TypeDB Studio is connected to TypeDB and follow the steps:
 
@@ -91,7 +99,7 @@ To create a new database, make sure TypeDB Studio is connected to TypeDB and fol
 
 image::drivers::studio/databases-interface-iam-database.png[Database Manager with IAM database, 300, link=self]
 
-=== Delete a database
+==== Delete
 
 To delete a database:
 
@@ -99,7 +107,7 @@ To delete a database:
 . Select a database to delete from a list of databases and click the Delete button on the right.
 . Confirm deletion by typing in the name of the databsae to delete and then clicking the btn:[Delete] button.
 
-=== File management
+=== Files
 
 All file management is done via the Project panel that shows files in a given project directory.
 You can perform file operations within the Project panel with a context menu opened by a right click of a mouse.
