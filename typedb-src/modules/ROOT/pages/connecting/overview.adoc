@@ -148,7 +148,7 @@ xref:drivers::nodejs/overview.adoc#_version_compatibility[Node.js].
 == Databases
 
 TypeDB servers store data in databases.
-A database consists of a xref:development/schema.adoc[schema] and xref:development/write.adoc[data].
+A database consists of a xref:developing/defining-schema.adoc[schema] and xref:developing/write.adoc[data].
 Databases are isolated: two databases can't influence each other.
 However, a TypeDB Client can connect to multiple databases simultaneously.
 
@@ -485,12 +485,12 @@ caused by transactions that will not be completed and terminate unresponsive tra
 * Avoid long-running transactions which can result in conflicts and resource contention.
 * Transactions should group logically coherent queries.
 
-For more advice and *best practices*, visit the xref:development/best.adoc[Best practices] page.
+For more advice and *best practices*, visit the xref:developing/best.adoc[Best practices] page.
 
 == Learn more
 
 Learn how to develop an application with TypeDB:
 
-* xref:typedb::development/schema.adoc[]
-* xref:typedb::development/write.adoc[]
-* xref:typedb::development/read.adoc[]
+* xref:typedb::developing/defining-schema.adoc[]
+* xref:typedb::developing/write.adoc[]
+* xref:typedb::developing/read.adoc[]

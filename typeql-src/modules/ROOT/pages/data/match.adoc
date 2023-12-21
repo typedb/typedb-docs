@@ -143,9 +143,10 @@ $p has email "bob@gmail.com";
 The above example consists of three simple statements about the same subject, represented by the variable `$p`:
 
 * It is an instance of a type `person`;
-* It has attribute of type `full-name` and value `Bob`;
-* It has attribute of type `email` and value `bob@gmail.com`;
+* It has an attribute of type `full-name` and value `Bob`;
+* It has an attribute of type `email` and value `bob@gmail.com`;
 
+[#_complex_statement]
 Multiple simple statements with the same subject can be combined to a complex statement,
 consisting of a single subject, and multiple comma-separated pairs of predicates and objects.
 

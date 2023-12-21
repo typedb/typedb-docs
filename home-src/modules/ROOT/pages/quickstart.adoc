@@ -35,21 +35,21 @@ include::home::install.adoc[tag=core-run]
 
 [#_typedb_studio]
 == Connect with TypeDB Studio
-
+// tag::run_studio[]
 TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
 xref:home::install.adoc#_studio[installed] and launched separately from a TypeDB server.
 
 Find the TypeDB Studio binary and run it.
 Click btn:[Connect to TypeDB] on the right side of the top toolbar.
-
+// end::run_studio[]
 //image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
-
+// tag::connect_studio[]
 [tabs]
 ====
 Cloud::
 +
 --
-image::studio-connect-cloud.png[TypeDB Studio connect window, width = 75%, link=self]
+image::home::studio-connect-cloud.png[TypeDB Studio connect window, width = 75%, link=self]
 
 . Switch the `Server` field drop-down to `TypeDB Cloud`.
 . Click btn:[Manage Cloud Addresses] button and add address and port for every server
@@ -70,15 +70,16 @@ A TypeDB Cloud deployment will refuse queries until the password is changed from
 Core::
 +
 --
-image::studio-connect-core.png[TypeDB Studio connect window, width = 75%, link=self]
+image::home::studio-connect-core.png[TypeDB Studio connect window, width = 75%, link=self]
 
 Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
 --
 ====
+// end::connect_studio[]
 
 == Select a project folder
 
-Select a xref:typedb:ROOT:connecting/studio.adoc#_open_a_project_directory[project directory]
+Select a xref:typedb:ROOT:connecting/studio.adoc#_select_a_project_directory[project directory]
 to store project files by clicking either:
 
 * btn:[Open Project] in the *Project* panel; or
@@ -233,7 +234,7 @@ that looks as the following:
 [#_insert_email_for_kevin]
 === Insert a new email for Kevin
 
-To xref:typedb::development/write.adoc#_insert[insert] a new email (`kevin@gmail.com`) for every person with a full name
+To xref:typedb::developing/write.adoc#_insert[insert] a new email (`kevin@gmail.com`) for every person with a full name
 that contains "Kevin":
 
 [,typeql]
@@ -249,7 +250,7 @@ Now Kevin has more than one email.
 [#_update_email_for_kevin]
 === Update the email for Kevin
 
-To xref:typedb::development/write.adoc#_update_query[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
+To xref:typedb::developing/write.adoc#_update_query[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -275,7 +276,7 @@ The query above does the following:
 [#_delete_email_from_kevin]
 === Delete ownership over the email for Kevin
 
-To xref:typedb::development/write.adoc#_delete_query[delete] the ownership of the email `kevin2@gmail.com`
+To xref:typedb::developing/write.adoc#_delete_query[delete] the ownership of the email `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -402,10 +403,10 @@ xref:typedb::basics/data-model.adoc[],
 xref:typedb::basics/query-language.adoc[], and
 xref:typedb::basics/polymorphic-patterns.adoc[];
 . Discover how to xref:typedb:ROOT:connecting/overview.adoc[connect] to TypeDB, manage transactions, and
-define a xref:typedb::development/schema.adoc[schema] of a database;
-. Find out more about xref:typedb::development/write.adoc[writing] and
-xref:typedb::development/read.adoc[reading] data from a TypeDB
-database and how to interpret a xref:typedb::development/response.adoc[response] to a query;
+define a xref:typedb::developing/defining-schema.adoc[schema] of a database;
+. Find out more about xref:typedb::developing/write.adoc[writing] and
+xref:typedb::developing/read.adoc[reading] data from a TypeDB
+database and how to interpret a xref:typedb::developing/response.adoc[response] to a query;
 . Learn how to create an application with TypeDB, using any of the
    xref:drivers:ROOT:overview.adoc#_typedb_drivers[TypeDB Drivers]:
     - xref:drivers:ROOT:rust/overview.adoc[Rust Driver]

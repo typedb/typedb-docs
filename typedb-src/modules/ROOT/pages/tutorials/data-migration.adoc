@@ -6,7 +6,7 @@
 :tabs-sync-option:
 
 Migrating data from other sources into TypeDB is an important step. It is considered that we have already
-developed a xref:development/schema.adoc[schema] for the TypeDB database according to the data model. Accurate and
+developed a xref:developing/defining-schema.adoc[schema] for the TypeDB database according to the data model. Accurate and
 comprehensive schema design will simplify not only data migration but also the design of data queries later on.
 
 [NOTE]
@@ -20,7 +20,7 @@ https://github.com/vaticle/typedb-driver-examples/tree/master/telecom/phone_call
 versions directly.
 ====
 
-To load data into a TypeDB database we need to perform xref:typedb::development/write.adoc#_insert[insert] queries.
+To load data into a TypeDB database we need to perform xref:typedb::developing/write.adoc#_insert[insert] queries.
 The following <<_application,example>> showcases how to load <<_dataset,sample data>> from
 `CSV`, `JSON`, and `XML` formats using TypeDB Drivers for
 <<_java,Java>>,
