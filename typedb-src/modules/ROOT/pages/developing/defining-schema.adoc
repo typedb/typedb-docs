@@ -25,47 +25,152 @@ A definition of a type declares its supertype, as well as its own properties and
 Query patterns can use xref:typedb::basics/polymorphic-patterns.adoc[polymorphism]
 to retrieve data of different types, even those not mentioned in the patterns.
 
-A newly created database has no data and the <<_default_schema,default schema>>
-that has no rules and only built-in types including the root types.
+A newly created database has the <<_default_schema,default schema>> that can be extended by user-defined types.
 
 [#_default_schema]
 == Default schema
 
-A database is created with a default schema, that contains the default set of built-in types that are abstract and
-cannot be deleted.
+A database is created with the default schema,
+that contains built-in xref:typeql::schema/define-types.adoc#_abstract[abstract]
+types and cannot be deleted, but can be extended.
 These built-in types include the root types: `entity`, `relation`, and `attribute`,
 that can be subtyped to create a full hierarchy of types for a data model.
-//#todo Consider adding information on the Thing type. As well as the deprecation warning
 
 There are no rules in the default schema.
 
+Built-in types are not shown in schema export results, as they are internal and similar for all TypeDB databases.
+
+=== Thing type
+
+Root types have a common supertype -- the `thing` type.
+It is also an abstract type, but it can't be subtyped directly.
+Instead, as all abstract types, the `thing` can be used in a xref:typedb::basics/polymorphic-patterns.adoc[polymorphic]
+pattern as a part of a query.
+See an example below.
+
+.The thing type example
+[,typeql]
+----
+match
+$x isa thing;
+get $x;
+----
+
+The `thing` is a common supertype for all types in a database, so the above query returns every `$x`
+that is an instance of any root type: `entity`, `relation`, or `attribute`.
+
+include::typedb::partial$thing-warning.adoc[]
+
 == How to define a schema
 
-There is no way we can create a new schema for a database, but we can create a new database with the default schema.
-To modify a schema, we can use:
+There are multiple ways we can modify an existing schema of a TypeDB database:
 
-* xref:typeql::schema/define-rules.adoc[Define] and xref:typeql::schema/undefine.adoc[Undefine] queries
-* xref:drivers::overview.adoc[Driver] API methods
+* A xref:typeql::schema/define-rules.adoc[Define] query -- extend a schema by defining new types and rules.
+* An xref:typeql::schema/undefine.adoc[Undefine] query -- truncated a schema by removing types and rules.
+* xref:drivers::overview.adoc[TypeDB Drivers]
 (see
 xref:drivers::rust/overview.adoc[Rust],
 xref:drivers::python/overview.adoc[Python],
 xref:drivers::java/overview.adoc[Java], or
 xref:drivers::nodejs/overview.adoc[Node.js]
-)
-* xref:typedb::connecting/studio.adoc#_type_editor[Type Editor] window in xref:typedb::connecting/studio.adoc[TypeDB Studio]
+) --
+perform schema modifications via API methods, including renaming a type, changing type's supertype, etc.
+* xref:typedb::connecting/studio.adoc[TypeDB Studio] --
+perform schema modifications via GUI with Type Browser and Type Editor.
 
-The following information on this page only covers TypeQL queries as the default way of interacting with a database.
+This page only covers TypeQL queries as the default way of interacting with a database.
 For more information on other ways to modify a schema, see the links above.
-
-TypeQL queries can be used with any TypeDB Client, including Drivers.
+TypeQL queries can be used with any TypeDB Client, including TypeDB Drivers.
 
 === Extending a schema
+
+Any schema can be extended by adding new types, new properties to existing types,
+as well as adding new rules or replacing existing rules.
+
+We can do that with a Define query: for xref:typeql::schema/define-types.adoc[types]
+and xref:typeql::schema/define-rules.adoc[rules] in a schema.
+
+Let's define a simple hierarchy of entity types:
+
+.Entity types hierarchy example
+[,typeql]
+----
+define
+
+subject sub entity;
+user sub subject;
+person sub user;
+----
+
+The above `Define` query uses one pre-existing type -- `entity` root type from the default schema.
+So this query can be run with a new empty database.
+
+We can extend the resulted schema by defining a new type and a new property:
+
+.Adding new types and properties
+[,typeql]
+----
+define
+
+full-name sub attribute, value string;
+person owns full-name;
+----
+
+The above query adds an attribute type and an ability to own it for the `person` type.
+In doing so the query relies on the pre-existing type `person` and the root type `attribute`.
+This query can be run only with a schema that already has a `person` type.
+
+For more information on using complex statements with a comma,
+see the xref:typedb::basics/polymorphic-patterns.adoc[] page.
+
+We can further extend our schema by adding even more types and properties,
+but this time, let's duplicate some of the existing definitions to make the query easier to read.
+
+.Extending a schema
+[,typeql]
+----
+define
+
+credential sub attribute, value string;
+id sub attribute, abstract, value string;
+email sub id, value string;
+full-name sub attribute, value string;
+
+subject sub entity,
+    abstract,
+    owns credential;
+
+person sub user,
+    owns email,
+    owns full-name;
+----
+
+The above query contains some of the definitions that already exist in our database, for example,
+`subject sub entity`.
+
+
+
+
+Now, let's extend our schema by adding some more types and properties to the entity types
+
+
+=== Truncating a schema
+
+=== Deleting a schema
+
+There is no way of deleting a schema of a database, other than manually deleting user-defined types and all rules with
+an Undefine query.
+You can also delete the whole database.
 
 === Creating a new schema
 
 There is no way of creating a new schema or deleting an existing one.
-You can modify an existing schema, for example, delete all user-defined types.
-It is usually easier to delete the whole database and create a new one with the same name and the default schema.
+You can delete all user-defined types and all rules to revert the schema back to the default schema state.
+It is usually easier to just delete the whole database and create a new one with the same name and the default schema.
+
+
+
+
 
 === Renaming types
 
