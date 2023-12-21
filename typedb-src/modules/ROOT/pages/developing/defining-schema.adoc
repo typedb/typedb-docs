@@ -122,8 +122,10 @@ The above query adds an attribute type and an ability to own it for the `person`
 In doing so the query relies on the pre-existing type `person` and the root type `attribute`.
 This query can be run only with a schema that already has a `person` type.
 
-For more information on using complex statements with a comma,
-see the xref:typedb::basics/polymorphic-patterns.adoc[] page.
+For more information on combining statements with a comma,
+see the
+xref:typedb::basics/polymorphic-patterns.adoc#_complex_statement[complex statement] section on the
+xref:typedb::basics/polymorphic-patterns.adoc[] page.
 
 We can further extend our schema by adding even more types and properties,
 but this time, let's duplicate some of the existing definitions to make the query easier to read.
@@ -153,10 +155,11 @@ friendship sub relation,
 
 The above query contains some of the definitions that already exist in our database, for example,
 `subject sub entity`.
-TypeDB ignores redundant (repeated) definitions and only applies additions to the schema.
+TypeDB ignores redundant (repeated) definitions and only applies new statements to the schema.
+
 By adding the `owns email` part to the definition of the `person` type,
 we are effectively adding an ability to own attribute type `email` for the `person` type.
-The `owns full-name` statement has no effect in the above query,
+But the `owns full-name` statement has no effect in the above query,
 as the statement `person owns full-name;` was defined before.
 If we change the `full-name` attribute type to something new, like `full-name2`, in the same query,
 then it will be treated as a new attribute type, co-existing with existing `full-name` type.
@@ -164,8 +167,7 @@ then it will be treated as a new attribute type, co-existing with existing `full
 [IMPORTANT]
 ====
 Define statements are idempotent.
-By sending the same Define query two or more times, the very same resulting
-schema must be achieved as if we send it only once.
+Sending the same Define query two or more times achieves the same result as sending it only once.
 Neither types nor rules can be duplicated.
 ====
 
@@ -278,10 +280,8 @@ It is usually easier to just delete the whole database and create a new one with
 
 == Rename a type
 
-// tag::rename[]
 To rename a type (to change its label), use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or
 TypeDB Driver API methods.
-// end::rename[]
 
 == Modify a rule
 
@@ -289,8 +289,7 @@ You can replace a rule with a new one by <<_define_rules,defining a new rule>> w
 
 == Learn more
 
-After we define the schema of our database we can try xref:typedb::developing/write.adoc[writing] and
-xref:typedb::developing/read.adoc[reading] data from the database.
+After you defined a schema, you can xref:typedb::developing/write.adoc[write] some data to the database.
 
-In case there is no database schema ready yet, we can use the xref:attachment$iam-schema.tql[IAM schema,window=_blank]
-to try all the queries.
+If you don't have your own schema ready yet, feel free to continue using the
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[IAM schema,window=_blank].
