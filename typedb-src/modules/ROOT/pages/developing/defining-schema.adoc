@@ -268,9 +268,9 @@ Undefining a rule does not require repeating its condition or conclusion.
 
 == Delete a schema
 
-There is no way of deleting a schema of a database, other than manually deleting user-defined types and all rules with
-an Undefine query.
-You can also delete the whole database.
+There is no way of deleting a schema of a database.
+You can remove all user-defined types and all rules to revert a schema to the default schema state.
+It is usually easier to just delete the whole database.
 
 == Create a new schema
 
@@ -280,8 +280,7 @@ It is usually easier to just delete the whole database and create a new one with
 
 == Rename a type
 
-To rename a type (to change its label), use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or
-TypeDB Driver API methods.
+To rename a type, use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or TypeDB Driver API methods.
 
 == Modify a rule
 
