@@ -65,15 +65,14 @@ include::typedb::partial$thing-warning.adoc[]
 
 There are multiple ways we can modify an existing schema of a TypeDB database:
 
-* A xref:typeql::schema/define-rules.adoc[Define] query -- extend a schema by defining new types and rules.
-* An xref:typeql::schema/undefine.adoc[Undefine] query -- truncated a schema by removing types and rules.
+* A xref:typeql::schema/define-rules.adoc[Define] query -- <<_extend_a_schema,extend>> a schema by defining new types and rules.
+* An xref:typeql::schema/undefine.adoc[Undefine] query -- <<_truncate_a_schema,truncate>> a schema by removing types and rules.
 * xref:drivers::overview.adoc[TypeDB Drivers]
 (see
 xref:drivers::rust/overview.adoc[Rust],
 xref:drivers::python/overview.adoc[Python],
 xref:drivers::java/overview.adoc[Java], or
-xref:drivers::nodejs/overview.adoc[Node.js]
-) --
+xref:drivers::nodejs/overview.adoc[Node.js]) --
 perform schema modifications via API methods, including renaming a type, changing type's supertype, etc.
 * xref:typedb::connecting/studio.adoc[TypeDB Studio] --
 perform schema modifications via GUI with Type Browser and Type Editor.
@@ -82,7 +81,8 @@ This page only covers TypeQL queries as the default way of interacting with a da
 For more information on other ways to modify a schema, see the links above.
 TypeQL queries can be used with any TypeDB Client, including TypeDB Drivers.
 
-=== Extending a schema
+[#_extend_a_schema]
+== Extend a schema
 
 Any schema can be extended by adding new types, new properties to existing types,
 as well as adding new rules or replacing existing rules.
@@ -90,9 +90,11 @@ as well as adding new rules or replacing existing rules.
 We can do that with a Define query: for xref:typeql::schema/define-types.adoc[types]
 and xref:typeql::schema/define-rules.adoc[rules] in a schema.
 
-Let's define a simple hierarchy of entity types:
+=== Define types
 
-.Entity types hierarchy example
+To define a new type in a schema, use one of the existing types to create a subtype:
+
+.Types hierarchy example
 [,typeql]
 ----
 define
@@ -142,343 +144,116 @@ subject sub entity,
 
 person sub user,
     owns email,
-    owns full-name;
+    owns full-name,
+    plays friendship:friend;
+
+friendship sub relation,
+    relates friend;
 ----
 
 The above query contains some of the definitions that already exist in our database, for example,
 `subject sub entity`.
+TypeDB ignores redundant (repeated) definitions and only applies additions to the schema.
+By adding the `owns email` part to the definition of the `person` type,
+we are effectively adding an ability to own attribute type `email` for the `person` type.
+The `owns full-name` statement has no effect in the above query,
+as the statement `person owns full-name;` was defined before.
+If we change the `full-name` attribute type to something new, like `full-name2`, in the same query,
+then it will be treated as a new attribute type, co-existing with existing `full-name` type.
 
-
-
-
-Now, let's extend our schema by adding some more types and properties to the entity types
-
-
-=== Truncating a schema
-
-=== Deleting a schema
-
-There is no way of deleting a schema of a database, other than manually deleting user-defined types and all rules with
-an Undefine query.
-You can also delete the whole database.
-
-=== Creating a new schema
-
-There is no way of creating a new schema or deleting an existing one.
-You can delete all user-defined types and all rules to revert the schema back to the default schema state.
-It is usually easier to just delete the whole database and create a new one with the same name and the default schema.
-
-
-
-
-
-=== Renaming types
-
-=== Replacing rules
-
-=== How to undefine a schema
-
-
-To extend or modify any schema
-
-
-
-
-To define or undefine anything in a TypeDB database schema, we need:
-
-1. Build the TypeQL query string (see below on this page):
-* See how to <<_define_types,define types>>;
-* See how to <<_define_rules,define rules>>;
-* See how to <<_undefine_types,undefine types>>;
-* See how to <<_undefine_rules,undefine rules>>;
-* See how to <<_modify_types, modify types>>
-2. xref:connecting/overview.adoc#_clients[Connect] to a TypeDB database with a xref:connecting/overview.adoc#_sessions[SCHEMA session].
-3. Run a proper query type (xref:typeql::schema/define-types.adoc[Define]/ xref:typeql::schema/undefine.adoc[Undefine])
-in a xref:connecting/overview.adoc#_transactions[write transaction].
-4. Commit the transaction to persist the changes.
-
-
-[#_define_types]
-== Define types
-
-Any number of define statements can be combined in a single Define query, requiring only one `define` clause with only
-one `define` keyword at the very beginning.
-
-To define a type use the following syntax:
-
-[,typeql]
-----
-define
-
-<label> sub <parent type label>
-    [(, abstract)]
-    [(, owns <attribute type label> [@annotation])...]
-    [(, plays <relation type label>:<role>)...];
-----
-
-The `define` keyword is used only once per query for any number of statements.
-
-The `abstract` keyword makes the type xref:typeql::schema/define-types.adoc#_abstract[abstract].
-
-The `owns` keyword defines an attribute ownership.
-
-The `plays` keyword defines a role that this type can play.
-
-.See examples
-[%collapsible]
+[IMPORTANT]
 ====
-[,typeql]
-----
-define object sub entity;
-----
-
-In the above example we define the `object` type as a subtype of the `entity` type, which is a built-in root type.
-
-Here is more complex example:
-
-[,typeql]
-----
-define
-
-object sub entity;
-resource sub object;
-file sub resource,
-   owns path,
-   owns size-kb,
-   plays object-ownership:object;
-----
-
-If we try to run this example in an empty database it will throw an error, because the `path` and `size-kb` attribute
-types we mentioned as owned by the `file` entity type actually need to exist in the schema.
-
-They can be defined in the schema prior to our query (e.g., if we run this query on the database from the
-xref:home::quickstart.adoc[Quickstart] page), or we can define them in the same query. To do that, use the following query
-instead:
-
-[,typeql]
-----
-define
-
-object sub entity;
-resource sub object;
-file sub resource,
-   owns path,
-   owns size-kb,
-   plays object-ownership:object;
-
-path sub attribute, value string;
-size-kb sub attribute, value long;
-
-object-ownership sub relation,
-   relates object;
-----
+Define statements are idempotent.
+By sending the same Define query two or more times, the very same resulting
+schema must be achieved as if we send it only once.
+Neither types nor rules can be duplicated.
 ====
 
-[NOTE]
-====
-All types, mentioned in a type definition (owned attributes or relation that the type can play a role in) must exist
-in the schema or be defined in the same query.
-====
-
-[#_define_entity_type]
-=== Define an entity type
-
-See the xref:_define_types[] section.
-
-No specific syntax for entities.
-
-For more information about entity types see the xref:typeql::fundamentals.adoc#_entity_types[Entity types] section in
-xref:typeql::fundamentals.adoc[] page.
-
-[#_define_relation_type]
-=== Define a relation type
-
-To define a relation type use the following syntax:
-
-[,typeql]
-----
-define
-
-<label> sub (<relation type label>)
-   [(, abstract)]
-   [(, owns <attribute type label> [@annotation])...]
-   (, relates <role label>) [(, relates <role label>)...]
-   [(, plays <relation type label>:<role>)...];
-----
-
-The `relates` keyword defines a role of the relation type. There must be at least one role for any relation type.
-
-.See example
-[%collapsible]
-====
-[,typeql]
-----
-define
-
-ownership sub relation,
-    relates owned,
-    relates owner;
-
-group-ownership sub ownership,
-    owns ownership-type,
-    relates group as owned;
-----
-
-In the above example we define:
-
-* the `ownership` type as a subtype of the `relation` root type, with:
-** `owned` role,
-** `owner` role;
-* and the `group-ownership` type as a subtype of the `ownership` type, with:
-** `ownership-type` role,
-** `group` role, overriding inherited `owned` role,
-** inherited `owner` role.
-====
-
-For more information about relation types see the xref:typeql::fundamentals.adoc#_relation_types[Relation types] section in
-xref:typeql::fundamentals.adoc[] page.
-
-[#_define_attribute_type]
-=== Define an attribute type
-
-To define an attribute type use the following syntax:
-
-[,typeql]
-----
-define
-
-<label> sub (<abstract attribute type label>)
-[(, abstract)]
-, value <value type> [, regex "<regex-expression>"]
-[(, owns <attribute type label> [@annotation])...]
-[(, plays <relation type label>:<role>)...];
-----
-
-The `value` keyword is mandatory and used to define a value type for the attribute.
-
-For more information about attribute types see the
-xref:typeql::fundamentals.adoc#_attribute_types[Attribute types] section in
-xref:typeql::fundamentals.adoc[] page.
+For more information of how to define types with TypeQL Define query, see the
+xref:typeql::schema/define-types.adoc[] page in the TypeQL documentation.
 
 [#_define_rules]
-== Define rules
+=== Define rules
 
-To define a rule use the following syntax:
+To define a rule use the keyword `rule`, a rule's label, followed by a `when` and a `then` clauses in a Define query:
 
 [,typeql]
 ----
 define
 
-rule <rule-label>:
-when {
-    ## the conditions
+rule <rule-label>: when {
+    ## condition
 } then {
-    ## the conclusion
+    ## conclusion
 };
 ----
 
-Rule label must be unique. Defining a rule with existing label will rewrite the old rule with the new one.
+Rule label must be unique in a schema.
+Defining a rule with an existing label rewrites the old rule with the new one.
+A condition definition in a `when` clause uses a pattern similar to a xref:typeql::data/match.adoc[match clause].
+A conclusion definition in a `then` clause uses a single statement inserting ownership of an attribute or a relation.
+A condition and a conclusion of a rule must include valid patterns,
+including the requirement of using the types from the same schema where the rule is defined.
 
-The condition definition goes inside the `when` clause.
+See an example below for the schema defined earlier on this page:
 
-The conclusion definition goes inside the `then` clause.
+.Rule example
+[,typeql]
+----
+define
 
-For more information about rules, see the xref:typeql::schema/define-rules.adoc[] page.
+rule all-friends: when {
+    $p1 isa person;
+    $p2 isa person;
+    not {$p1 is $p2;};
+} then {
+    (friend: $p1, friend: $p2) isa friendship;
+};
+----
 
-[#_undefine]
-== Undefine
+For more information on rule definitions and validation, see the
+xref:typeql::schema/define-rules.adoc[] page in the TypeQL documentation.
 
-Undefine query is used to remove a type or a rule definition form a schema.
+For more information on using rules to infer new data, see the xref:typedb::developing/infer.adoc[] page.
 
-Any number of undefine statements can be combined in a single Undefine query, requiring only one `undefine` clause
-with only one `undefine` keyword at the very beginning.
+[#_truncate_a_schema]
+== Truncate a schema
+
+Any schema can be truncated by removing existing types, their properties, and existing rules.
+
+We can do that with an xref:typeql::schema/undefine.adoc[Undefine query].
 
 [#_undefine_types]
 === Undefine types
 
-To undefine a type use the following syntax:
+To remove a statement about a type from a schema, use it in an Undefine query.
 
+.Undefine example
 [,typeql]
 ----
 undefine
 
-<label> sub <parent type label>
-    [(, owns <attribute type label> [@annotation])...]
-    [(, plays <relation type label>:<role>)...];
+full-name sub attribute;
 ----
 
-The undefine `keyword` is used only once per query for any number of statements.
+The above example removes the `full-name` attribute type from a schema.
+To be able to remove a type from a schema, that type must have neither a subtype defined in a schema,
+nor data of that type inserted to a database.
+Undefining a type also removes all references of the type in a schema in regard to ownerships and roles.
+In the above example, statement `person owns full-name` also get removed from a schema.
 
-The `sub` keyword is used only to remove the type mentioned left from the keyword from a schema.
-The parent type label must be a direct or indirect supertype.
-
-The `owns` keyword undefines an attribute ownership.
-
-The `plays` keyword undefines a role that this type can play.
-
-.See examples
-[%collapsible]
-====
-Let's define a few new types to undefine them later.
-
-[,typeql]
-----
-define
-
-tag sub attribute, value string;
-
-connection sub relation,
-   relates item;
-
-item sub entity,
-   owns tag,
-   plays connection:item;
-----
-
-In the above example we define the `tag` attribute type, `connection` relation type with the `item` role,
-and `item` entity type, that can owns `tag` attribute type and plays `connection:item` role.
-
-To undefine an attribute ownership use the following query:
-
-[,typeql]
-----
-undefine
-
-item owns tag;
-----
-
-To undefine the ability to play the role `connection:item` use the following query:
-
-[,typeql]
-----
-undefine
-
-item plays connection:item;
-----
-
-To undefine the `item` entity type (remove it from the schema) use the following query:
-
-[,typeql]
-----
-undefine
-
-item sub entity;
-----
-====
+For more information on undefining types, see the xref:typeql::schema/undefine.adoc[] page.
 
 [#_undefine_subtype]
 [IMPORTANT]
 ====
-To be able to remove a type we need to delete all instances of data and all subtypes of this type first.
-
-The usage of `sub` keyword in the undefine query statement will remove the type on the left from the `sub` completely
-from the schema regardless of any ownerships or roles mentioned for this type.
+To be able to remove a type, it needs to have no subtypes in a schema and no data in a database.
 ====
 
 [#_undefine_rules]
 === Undefine rules
 
-To undefine a type use the following syntax:
+To undefine a type, use the following syntax:
 
 [,typeql]
 ----
@@ -487,43 +262,30 @@ undefine
 rule <rule-label>;
 ----
 
-== Modification
+Undefining a rule does not require repeating its condition or conclusion.
 
-[#_modify_types]
-=== Modify types
+== Delete a schema
 
-The define statements are idempotent. By sending the same define query twice or more times the very same resulting
-schema must be achieved as if we send it only once. So types and/or rules will not be duplicated.
+There is no way of deleting a schema of a database, other than manually deleting user-defined types and all rules with
+an Undefine query.
+You can also delete the whole database.
 
-We can add ownership of an attribute, annotation to an ownership, or a role to play by just defining the add-on.
+== Create a new schema
 
-.See example
-[%collapsible]
-====
-Let's define a new ownership for the `item` entity.
+There is no way of creating a new schema or deleting an existing one.
+You can remove all user-defined types and all rules to revert a schema to the default schema state.
+It is usually easier to just delete the whole database and create a new one with the same name and the default schema.
 
-[,typeql]
-----
-define
-
-item owns size;
-----
-
-In the query above we define an ownership of `size` attribute by the `item` type.
-For the query to succeed, we need both the `item` and the `size` types to exist in the schema already.
-====
-
-=== Rename types
+== Rename a type
 
 // tag::rename[]
 To rename a type (to change its label), use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or
 TypeDB Driver API methods.
 // end::rename[]
 
-=== Modify rules
+== Modify a rule
 
-To modify a rule xref:_define_rules[define a new rule] with the same label. It will overwrite the existing rule upon
-commit.
+You can replace a rule with a new one by <<_define_rules,defining a new rule>> with the same label as the old one.
 
 == Learn more
 
