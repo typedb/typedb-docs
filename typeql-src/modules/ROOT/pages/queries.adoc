@@ -261,7 +261,7 @@ Get::
 +
 --
 You can retrieve concepts from a database in a programmatically accessible format with a Get query.
-xref:drivers::overview.adoc[TypeDB Driver] API lets you further process these concepts
+xref:drivers::overview.adoc[TypeDB driver] API lets you further process these concepts
 to retrieve values or to explore relevant data.
 
 .Get query example
@@ -277,7 +277,7 @@ The above query returns a Stream/Iterator of ConceptMaps of `$p`, `$fn` and thei
 Concepts have methods to process them according to their root type.
 
 For more information on Get queries, see the xref:typeql::data/get.adoc[] page.
-For information on Driver API, see the relevant language for Driver API reference:
+For information on the driver API, see the relevant language for driver API reference:
 xref:drivers::rust/api-reference.adoc[Rust],
 xref:drivers::python/api-reference.adoc[Python],
 xref:drivers::java/api-reference.adoc[Java], and
@@ -440,7 +440,7 @@ For more information on Fetch queries, see the xref:typeql::data/fetch.adoc[] pa
 === Get query
 
 You can retrieve concepts from a database in a programmatically accessible format with a Get query.
-xref:drivers::overview.adoc[TypeDB Driver] API lets you further process these concepts
+xref:drivers::overview.adoc[TypeDB driver] API lets you further process these concepts
 to retrieve values or to explore relevant data.
 
 .Get query example
@@ -456,7 +456,7 @@ The above query returns a Stream/Iterator of ConceptMaps of `$p`, `$fn` and thei
 Concepts have methods to process them according to their root type.
 
 For more information on Get queries, see the xref:typeql::data/get.adoc[] page.
-For information on Driver API, see the releavant language for Driver API reference:
+For information on driver API, see the releavant language for driver API reference:
 xref:drivers::rust/api-reference.adoc[Rust],
 xref:drivers::python/api-reference.adoc[Python],
 xref:drivers::java/api-reference.adoc[Java], and

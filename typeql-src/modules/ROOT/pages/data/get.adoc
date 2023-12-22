@@ -4,7 +4,7 @@
 :pageTitle: Get query
 
 A get query retrieves concepts from a TypeDB database that you can further process with the
-xref:drivers::overview.adoc#_driver_api[Driver API].
+xref:drivers::overview.adoc#_driver_api[driver API].
 
 Get queries do not modify data, so they can be used in both read and write transactions.
 In read transactions, Get queries can use rule-based xref:typedb::basics/inference.adoc[inference].
@@ -13,7 +13,7 @@ In read transactions, Get queries can use rule-based xref:typedb::basics/inferen
 == Behavior
 
 A Get query projects concepts matched from a database to language-specific programmatic objects
-that can be used via Driver API methods.
+that can be used via the driver API methods.
 
 A simple Get query returns a lazy stream/iterator of ConceptMap objects.
 For every matched result, ConceptMap maps every query variable, mentioned in a `get` clause,
@@ -77,9 +77,9 @@ The `get;` clause is used to get all variables mentioned in a `match` clause pat
 
 To get q ConceptMap simply iterate on lazy stream or iterator returned in a response to a Get query.
 
-To retrieve a database concept from a ConceptMap, use Driver API `ConceptMap.get(variable)` method,
+To retrieve a database concept from a ConceptMap, use the driver API `ConceptMap.get(variable)` method,
 that takes input of variable label and returns a Concept.
-Further processing of a Concept is done via Driver API methods
+Further processing of a Concept is done via methods of the driver API.
 //#todo Add an example in all 4 languages (with tabs) - from sending a query to getting a value out of an attribute
 
 [#_number_of_results]

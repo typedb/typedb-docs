@@ -60,10 +60,10 @@ A `delete` clause is used in a query to specify exact data to remove from a data
 Deleted data should be matched first in a preceding `match` clause.
 
 A pattern of a `delete` clause can have multiple statements for data manipulation
-(see xref:typeql::data/match.adoc#_data_statements[Data patterns]),
+(see xref:typeql::data/match.adoc#_data_statements[Data statements]),
 can use concepts matched by a preceding `match` clause by their variables,
 and can't have a xref:typeql::data/match.adoc#_disjunction[disjunction],
-xref:typeql::data/match.adoc#_negation[negation], or `is` keyword.
+xref:typeql::data/match.adoc#_negation[negation], or the `is` keyword.
 
 This clause is executed exactly once for every result matched by a preceding `match` clause of the same query.
 // end::delete_clause[]
@@ -80,7 +80,7 @@ previously deleted or non-existent data.
 To delete an entity, attribute, or relation, you need to match them with a `match` clause and then
 use the following pattern in a `delete` clause of the same query:
 
-.Deleting an instance of data pattern syntax
+.Deleting an instance of a type syntax
 [,typeql]
 ----
 <variable> isa <type>;
@@ -103,7 +103,7 @@ See an <<_simple_example,example>> of deleting instances of data below.
 To delete an ownership of an attribute, match both the attribute and its owner and then use the following pattern
 in a `delete` clause of the same query:
 
-.Deleting an ownership pattern syntax
+.Deleting ownership syntax
 [,typeql]
 ----
 <owner-variable> has <attribute-variable>;
@@ -122,6 +122,7 @@ See an <<_deleting_ownership,example>> of deleting ownership of an attribute bel
 If an attribute is not owned by any other instance, then such an attribute is called orphaned.
 Orphaned attributes are not deleted automatically, but quite often, they are
 You can easily delete all of them from a database with the following query.
+
 .Deleting orphaned attributes
 [,typeql]
 ----
@@ -137,7 +138,7 @@ $a isa attribute;
 To delete a role player from a relation, match both the relation and the instance of data that plays a role
 and then use the following pattern in a `delete` clause of the same query:
 
-.Deleting a role player from a relation pattern syntax
+.Deleting a role player from a relation syntax
 [,typeql]
 ----
 <relation-variable> (<role>:<instance-variable>);
@@ -150,7 +151,7 @@ Where `<relation-variable>` -- a query variable of the relation to modify;
 With this pattern, an instance that plays a role in a relation is not removed,
 but rather the information of that role player is removed from a relation.
 
-We can omit the role in a pattern if its unambiguous which role the referenced instance can play in the relation.
+We can omit the role in a pattern if its unambiguous, which role the referenced instance can play in the relation.
 
 [NOTE]
 ====

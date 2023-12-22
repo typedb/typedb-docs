@@ -1,23 +1,23 @@
-= Python Driver
+= Python driver
 :page-aliases: clients::python-driver.adoc, clients::python-driver/overview.adoc
-:Summary: Overview for TypeDB Python Driver.
+:Summary: Overview for TypeDB Python driver.
 :keywords: typedb, client, driver, python
-:pageTitle: TypeDB Python Driver
+:pageTitle: TypeDB Python driver
 
-The Python Driver was developed by Vaticle to enable TypeDB support for Python software and developers.
+The Python driver was developed by Vaticle to enable TypeDB support for Python software and developers.
 
 [#_install_python]
 == Install
 
 === Prerequisites
 
-To use the Python Driver, we need a compatible version of TypeDB server running. Please see the
+To use the Python driver, we need a compatible version of TypeDB server running. Please see the
 <<_version_compatibility,Version compatibility table>> to check what version do we need,
 depending on the TypeDB server version being used.
 
 === Installation
 
-To install TypeDB Python Driver:
+To install TypeDB Python driver:
 
 [,bash]
 ----
@@ -35,20 +35,20 @@ pip install typedb-client
 
 == Tutorial
 
-Explore the Python Driver xref:python/tutorial.adoc[tutorial] with example of connecting to TypeDB.
+Explore the Python driver xref:python/tutorial.adoc[tutorial] with example of connecting to TypeDB.
 
-== Python Driver API
+== Python driver API
 
 Use the xref:python/api-reference.adoc[API reference] page for documentation of the methods and objects used in
-the Driver.
+the driver.
 
 include::../java/overview.adoc[tag=questions]
 
 == Additional resources
 
 * <<_version_compatibility>>
-* https://pypi.org/project/typedb-driver/[PyPI page for the TypeDB Driver,window=_blank]
-* https://github.com/vaticle/typedb-driver/tree/development/python[Python Driver on GitHub,window=_blank]
+* https://pypi.org/project/typedb-driver/[PyPI page for the TypeDB driver,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/python[Python driver on GitHub,window=_blank]
 * https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 //* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
@@ -57,7 +57,7 @@ include::../java/overview.adoc[tag=questions]
 
 [cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
 |===
-| Python Driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Python
+| Python driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Python
 
 | 2.26.1
 | 3

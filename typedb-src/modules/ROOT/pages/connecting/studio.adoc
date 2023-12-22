@@ -17,7 +17,7 @@ For information on how to install and run TypeDB Studio, see the xref:home::inst
 
 TypeDB Studio has a unique set of functions and abilities to help with development using TypeDB:
 
-* Graphical user interface for connecting to TypeDB without the use of command line tools, libraries, or Driver API.
+* Graphical user interface for connecting to TypeDB without the use of command line tools, libraries, or the driver API.
 * Database manager to create and delete databases.
 * Type browser for exploring type hierarchy of a database's schema.
 * Type editor for adjusting existing types in a database.
@@ -382,7 +382,7 @@ Default value: *On*.
 ** Set Ignored Paths -- All paths mentioned here will be invisible in any Project directory opened in Studio. +
 Default value: `.git`.
 * Query Runner
-** Default Get Query Limit -- Limits the maximum number of results to be returned from a get query to a database
+** Default Get query Limit -- Limits the maximum number of results to be returned from a get query to a database
 if no limit explicitly stated in the query. +
 Default value: *1000*.
 * Text Editor

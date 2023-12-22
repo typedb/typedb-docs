@@ -38,10 +38,10 @@ designing relations in the most meaningful way.
 testing schema on a small dataset first. The sooner the schema will be adapted to all use cases and tested for edge
 cases -- the smaller amount of work will be required to adapt all other code for changes in the schema.
 * Implementing drastic changes to a database schema is possible by undefining old types/rules (after undefining
-all subtypes and deleting all instances of data of these types) and defining new ones. We can even use Driver API
+all subtypes and deleting all instances of data of these types) and defining new ones. We can even use driver API
 or TypeDB Studio to rename types without deleting them. However, it might be easier to create a new database and
 upload new schema and data from scratch.
-* It's easier to debug queries using TypeDB Studio, than with any TypeDB Driver, because Studio manages sessions
+* It's easier to debug queries using TypeDB Studio, than with any TypeDB driver, because Studio manages sessions
 and transactions for us, and can visualize query results.
 
 === Advanced tips
@@ -127,7 +127,7 @@ When a transaction is committed or closed, all of its asynchronous queries are c
 === API
 
 Data retrieved from a TypeDB database consists of concepts and is delivered in the form of
-xref:developing/response.adoc#_conceptmap[ConceptMaps]. Use the methods introduced by the TypeDB Driver API to obtain more
+xref:developing/response.adoc#_conceptmap[ConceptMaps]. Use the methods introduced by the TypeDB driver API to obtain more
 information about the retrieved concept. To explore the concept's surroundings, the API has methods to traverse the
 neighbors of a specific concept instance to obtain more insights.
 

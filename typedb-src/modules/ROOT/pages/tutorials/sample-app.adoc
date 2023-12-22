@@ -21,25 +21,25 @@ Select one of the available languages below and proceed:
 Rust::
 +
 --
-Follow the Rust Driver xref:drivers::rust/overview.adoc#_install_rust[installation guide].
+Follow the Rust driver xref:drivers::rust/overview.adoc#_install_rust[installation guide].
 --
 
 Python::
 +
 --
-Follow the Python Driver xref:drivers::python/overview.adoc#_install_python[installation guide].
+Follow the Python driver xref:drivers::python/overview.adoc#_install_python[installation guide].
 --
 
 Java::
 +
 --
-Follow the Java Driver xref:drivers::java/overview.adoc#_install_java[installation guide].
+Follow the Java driver xref:drivers::java/overview.adoc#_install_java[installation guide].
 --
 
 Node.js::
 +
 --
-Follow the Node.js Driver xref:drivers::nodejs/overview.adoc#_install_nodejs[installation guide].
+Follow the Node.js driver xref:drivers::nodejs/overview.adoc#_install_nodejs[installation guide].
 --
 ====
 
@@ -240,8 +240,6 @@ side by side with the `package.json` file.
 
 This section is for comments and explanation of the sample application implementation details.
 
-Rust implementation starts with auxiliary functions for easy access to response values.
-
 === Database setup
 
 First of all, we connect to a TypeDB Core server by initializing a driver instance.
@@ -304,10 +302,10 @@ $pa($o, $va) isa access;
 get $fp;
 ----
 
-For Java implementation, we use xref:drivers::java/query-builder.adoc[Java Query builder]
+For Java implementation, we use xref:drivers::java/query-builder.adoc[Java query builder]
 syntax to programmatically build a TypeQL query string.
 
-.Java Query builder syntax
+.Java query builder syntax
 [,java]
 ----
 TypeQLGet getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
@@ -383,10 +381,10 @@ offset 5;
 limit 5;
 ----
 
-For Java implementation, we use xref:drivers::java/query-builder.adoc[Java Query builder]
+For Java implementation, we use xref:drivers::java/query-builder.adoc[Java query builder]
 syntax to programmatically build a TypeQL query string.
 
-.Java Query builder syntax for Query 1
+.Java query builder syntax for the Query 1
 [,java]
 ----
 TypeQLGet getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
@@ -398,7 +396,7 @@ TypeQLGet getQuery = TypeQL.match( // Java query builder to prepare TypeQL query
                             ).get(cVar("fp")).sort(cVar("fp")).offset(0).limit(5);
 ----
 
-.Java Query builder syntax for Query 2
+.Java query builder syntax for the Query 2
 [,java]
 ----
 getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
@@ -446,16 +444,16 @@ insert
 ($vav, $f) isa access;
 ----
 
-For Java implementation, we use xref:drivers::java/query-builder.adoc[Java Query builder]
+For Java implementation, we use xref:drivers::java/query-builder.adoc[Java query builder]
 syntax to programmatically build a TypeQL query string.
 
-.Java Query builder syntax for Query 1
+.Java query builder syntax for the Query 1
 [,java]
 ----
 TypeQLInsert insertQuery = TypeQL.insert(cVar("f").isa("file").has("path", filepath));
 ----
 
-.Java Query builder syntax for Query 2
+.Java query builder syntax for the Query 2
 [,java]
 ----
 insertQuery = TypeQL.match(

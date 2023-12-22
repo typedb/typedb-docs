@@ -25,7 +25,7 @@ A Define query adds new or updates existing types and rules.
 
 Define queries are unambiguous and idempotent
 (can be applied multiple times without changing the result of the initial application).
-A `define` clause uses a schema pattern without variables to declare a complete schema definition or
+A `define` clause uses a pattern without variables to declare a complete schema definition or
 changes to an existing schema.
 
 Define queries are validated with TypeQL syntax.
@@ -59,18 +59,18 @@ For type hierarchy, ownerships, and roleplayers, see below.
 == Define clause
 
 A `define` clause is used in a Define query to specify a pattern for new or updated types and rules.
-Schema pattern consists of statements combined by a conjunction (logical `AND`).
-Every statement ends with a semicolon.
-Statements in a `define` clause pattern can't use any variables or values.
-Instead, they use type labels and TypeQL to express
+A pattern in a define `clause` consists of schema statements combined by an implicit conjunction (logical `AND`).
+These statements can't use any variables or values.
+Instead, they use type labels and TypeQL keywords to express
 <<_subtyping,subtyping>>,
 <<_abstract,abstract flags>>,
 <<_ownership,ownership>>,
 <<_annotations,annotations>>, and
 <<_roleplaying,roleplaying>>.
 
-Statements in a `define` clause pattern can define new types, can use types that already exist in a schema
+Statements in a `define` clause pattern can use types that already exist in a schema
 (including built-in types), and can use types that are defined anywhere in the same query.
+Every statement ends with a semicolon.
 
 [#_schema_patterns]
 === Schema definition patterns
@@ -147,6 +147,7 @@ user sub subject;
 person sub user;
 ----
 
+[#_attributes]
 ==== Attributes
 
 To define an attribute type, you need to declare its value type.
@@ -196,6 +197,7 @@ visibility sub attribute, value string, regex "^(public|private|closed)$";
 The above example defines an attribute type: `visibility`.
 It specifies a regex to restrict values to only `public`, `private` and `closed` strings.
 
+[#_relations]
 ==== Relations
 
 Relation types are defined by subtyping the `relation` root type or other relation types.

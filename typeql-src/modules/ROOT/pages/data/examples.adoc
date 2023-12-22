@@ -4,11 +4,13 @@
 :pageTitle: Advanced patterns & queries
 :toc: macro
 :toclevels: 5
-//:page-aliases: typeql::data/advanced.adoc
+:page-aliases: typeql::data/advanced.adoc
 
-On this page, you can find many examples of patterns and queries that can be used in TypeDB.
-Use examples from this page and the xref:home::25-queries.adoc[] to explore TypeQL capabilities.
-For more information on matching patterns see the xref:typeql::data/match.adoc[] page.
+On this page, you can find many examples of TypeQL statements and queries that can be used in TypeDB.
+Use these examples and the examples from the xref:home::25-queries.adoc[]
+page for an inspiration with your own queries.
+For more information on how to combine statements in a complex statement or in a pattern,
+see the xref:typeql::data/match.adoc[] page.
 
 ////
 .See the full table of contents for this page
@@ -18,18 +20,22 @@ toc::[]
 ====
 ////
 
-== Matching patterns examples
+== Statements examples
+
+
 
 [NOTE]
 ====
-The patterns below are designed for the IAM
+The statements below are designed for the IAM
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank] and
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[dataset,window=_blank],
 but they can return any number of results: zero, one, or multiple.
 ====
 
-=== Data patterns
-//#todo Remove gets? Leave only match clause
+=== Data statements
+
+The following data statements examples can be used in data queries.
+Since usage of a statement in different clauses can provide different results, all examples are for match clauses.
 
 * <<_all_data>>
 * <<_entity_matching>>
@@ -49,10 +55,11 @@ Use an `instance` pattern with type `thing` to match all entities, relations, an
 [,typeql]
 ----
 match
-$t isa thing;
+$x isa thing;
 ----
 
-For more information on `thing` type see the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
+For more information on `thing` type,
+see the xref:typedb::developing/defining-schema.adoc#_thing_type[Thing type] section.
 
 include::typedb::partial$thing-warning.adoc[]
 
@@ -531,10 +538,13 @@ In short, the above example matches pairs of people who both have permission to 
 with a path of `README.md`. The pattern additionally specifies both of them to not have name `Masako Holley` and
 the access to be either `modify_file` or `view_file`.
 
-=== Schema patterns
+=== Schema statements
 
-The following schema patterns examples can be used in data queries.
-For examples of Define and Undefine queries, see the
+The following schema statements examples can be used in data queries.
+Since usage of a statement in different clauses can provide different results, all examples are for match clauses.
+
+Schema definition statements are similar to schema statements, but can't use variables, nor values.
+For examples of Define and Undefine queries with schema definition statements, see the
 xref:typeql::schema/define-types.adoc[],
 xref:typeql::schema/define-rules.adoc[], and
 xref:typeql::schema/undefine.adoc[] pages.
@@ -678,7 +688,6 @@ The above example retrieves all instances of the `person` type, that have owners
 `full-name` attribute type and at least one instance of `email` attribute.
 We then filter the response to contain only the `$p` and the `$e` in every result.
 We further add modifiers to group results by the `$p` variable and count the number of results in every group.
-
 
 === Get query
 

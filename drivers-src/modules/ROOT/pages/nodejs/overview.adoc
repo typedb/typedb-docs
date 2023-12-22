@@ -1,23 +1,23 @@
-= Node.js Driver
+= Node.js driver
 :page-aliases: clients::nodejs-driver.adoc, clients::nodejs-driver/overview.adoc
-:Summary: Overview for TypeDB Node.js Driver.
+:Summary: Overview for TypeDB Node.js driver.
 :keywords: typedb, driver, node.js
-:pageTitle: TypeDB Node.js Driver
+:pageTitle: TypeDB Node.js driver
 
-The Node.js Driver was developed by Vaticle to enable TypeDB support for Node.js software and developers.
+The Node.js driver was developed by Vaticle to enable TypeDB support for Node.js software and developers.
 
 [#_install_nodejs]
 == Install
 
 === Prerequisites
 
-To use the Node.js Driver, we need a compatible version of TypeDB server running. Please see the
+To use the Node.js driver, we need a compatible version of TypeDB server running. Please see the
 <<_version_compatibility,Compatibility table>> to check what version do we need,
 depending on the TypeDB server version being used.
 
 === Installation
 
-To install TypeDB Node.js Driver:
+To install TypeDB Node.js driver:
 
 [,bash]
 ----
@@ -35,19 +35,19 @@ npm install typedb-client
 
 == Tutorial
 
-Explore the Node.js Driver xref:nodejs/tutorial.adoc[tutorial] with example of connecting to TypeDB.
+Explore the Node.js driver xref:nodejs/tutorial.adoc[tutorial] with example of connecting to TypeDB.
 
-== Node.js Driver API
+== Node.js driver API
 
 Use the xref:nodejs/api-reference.adoc[API reference] page for documentation of the methods and objects used in
-the Driver.
+the driver.
 
 include::../java/overview.adoc[tag=questions]
 
 == Additional resources
 
 * <<_version_compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/nodejs[Node.js Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/nodejs[Node.js driver on GitHub,window=_blank]
 * https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 //* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
@@ -56,7 +56,7 @@ include::../java/overview.adoc[tag=questions]
 
 [cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
 |===
-| Node.js Driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Node
+| Node.js driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Node
 
 | 2.26.1
 | 3
