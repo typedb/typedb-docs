@@ -61,10 +61,10 @@ xref:data/match.adoc#_patterns_overview[Patterns overview] section.
 An `insert` clause is used in a query to specify new data to be inserted to a TypeDB database.
 
 A pattern of an `insert` clause can have multiple statements for data manipulation
-(see xref:typeql::data/match.adoc#_data_statements[Data patterns]),
+(see xref:typeql::data/match.adoc#_data_statements[Data statements]),
 can use concepts matched by a preceding `match` clause by their variables,
 and can't have a xref:typeql::data/match.adoc#_disjunction[disjunction],
-xref:typeql::data/match.adoc#_negation[negation], or `is` keyword.
+xref:typeql::data/match.adoc#_negation[negation], or the `is` keyword.
 
 This clause is executed exactly once for every result matched by the preceding `match` clause of the same query,
 or just once, if there is no preceding `match` clause.
@@ -78,14 +78,14 @@ implicitly inserts such an attribute.
 
 To insert an entity, attribute, or relation, you need to use the following `isa` pattern in an `insert` clause:
 
-.Inserting an instance of data pattern syntax
+.Inserting an instance of a type syntax
 [,typeql]
 ----
 <variable> isa <type>;
 ----
 
-Where `<variable>` (e.g., `$x`) -- a query variable of an instance to insert;
-`<type>` (e.g., `person`) -- type of the inserted instance.
+Where `<variable>` (e.g., `$x`) -- the query variable that represents the instance to insert;
+`<type>` (e.g., `person`) -- the type of the inserted instance.
 
 Inserting an attribute requires setting both type and value of a new attribute.
 You can specify the value as a separate statement
@@ -110,7 +110,7 @@ See an <<_inserting_data_with_no_matching,example>> of inserting instances of da
 To insert an ownership of an attribute, you need to match or insert both the attribute and its future owner
 and then use the following pattern in a `insert` clause of the same query:
 
-.Inserting an ownership pattern syntax
+.Inserting ownership syntax
 [,typeql]
 ----
 <owner-variable> has <attribute-variable>;
@@ -131,7 +131,7 @@ See an <<_inserting_attributes,example>> of inserting ownership of an attribute 
 To add a role player reference to a relation, match or insert both the relation and the instance of data that
 will play a role in it and then use the following pattern in a `insert` clause of the same query:
 
-.Inserting a role player from a relation pattern syntax
+.Inserting a role player for a relation syntax
 [,typeql]
 ----
 <relation-variable> (<role>:<instance-variable>);
