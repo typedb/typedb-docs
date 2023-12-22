@@ -112,7 +112,7 @@ $p3 isa person,
 ====
 
 For more information on patterns, see the xref:typeql::data/match.adoc[]
-and the xref:typeql::data/advanced.adoc[] pages.
+and the xref:typeql::data/examples.adoc[] pages.
 
 [#_schema]
 == Schema
@@ -365,13 +365,13 @@ image::instances-example.png[]
 
 On the above image two instances of `company` type are called `Company #1` and `Company #2`, while in real life
 scenario in a TypeDB database there is almost no way to differentiate between those two instances if they have no
-attributes and do not participate in any relations.The only information we can get from existence of two instances
-is that there are two distinct objects.But its really hard to tell which one is which without any additional
-related data inserted.
+attributes and do not participate in any relations.
+The only information we can get from the existence of two instances is that there are two distinct objects.
+But it's really hard to tell them apart without any additional relevant data inserted.
 ====
 
 For more information on how to define an `entity` type, see the
-xref:typeql::schema/define-types.adoc#_define_entity_types[Define entity types] section on the
+xref:typeql::schema/define-types.adoc#_subtyping[Subtyping] section on the
 xref:typeql::schema/define-types.adoc[] page.
 
 [#_relation_types]
@@ -518,31 +518,31 @@ defined in schema prior to update for version `2.22.0` or newer.
 The best way to switch to the new behavior is to install the TypeDB v.`2.22.0+`, create a new database,
 define the same schema, and load the same data into it.
 
-.See the alternative way to manually upgrade database schema
+.See an alternative way to manually upgrade database schema
 [%collapsible]
 =====
 The alternative way to migrate to the new behavior is to reset (unset and set) the abstractness of each abstract
-relation type via the Driver API methods:
+relation type via the driver API methods:
 
 .Abstract methods
 [cols="^.^1,^.^2,^.^2,^.^2",caption="",options="header"]
 |===
-| Method | TypeDB Java Driver | TypeDB Python Driver | TypeDB Node.js Driver
+| Method | TypeDB Java driver | TypeDB Python driver | TypeDB Node.js driver
 
 | Is `abstract`
-| xref:drivers::java/api-reference.adoc#_check_if_type_is_abstract_local[isAbstract();]
-| xref:drivers::python/api-reference.adoc#_check_if_type_is_abstract_local[is_abstract()]
-| xref:drivers::nodejs/api-reference.adoc#_check_if_type_is_abstract_local[abstract;]
+| xref:drivers::java/api-reference.adoc#_Type_isAbstract__[isAbstract();]
+| xref:drivers::python/api-reference.adoc#_Type_is_abstract__[is_abstract()]
+| xref:drivers::nodejs/api-reference.adoc#_Type[abstract;]
 
 | Set `abstract`
-| xref:drivers::java/api-reference.adoc#_set_abstract[setAbstract();]
-| xref:drivers::python/api-reference.adoc#_set_abstract[set_abstract()]
-| xref:drivers::nodejs/api-reference.adoc#_set_abstract[setAbstract();]
+| xref:drivers::java/api-reference.adoc#_ThingType_setAbstract__TypeDBTransaction[setAbstract();]
+| xref:drivers::python/api-reference.adoc#_ThingType_set_abstract__transaction_TypeDBTransaction[set_abstract()]
+| xref:drivers::nodejs/api-reference.adoc#_ThingType_setAbstract__transaction_TypeDBTransaction[setAbstract();]
 
 | Unset `abstract`
-| xref:drivers::java/api-reference.adoc#_unset_abstract[unsetAbstract();]
-| xref:drivers::python/api-reference.adoc#_unset_abstract[unset_abstract()]
-| xref:drivers::nodejs/api-reference.adoc#_unset_abstract[unsetAbstract();]
+| xref:drivers::java/api-reference.adoc#_ThingType_unsetAbstract__TypeDBTransaction[unsetAbstract();]
+| xref:drivers::python/api-reference.adoc#_ThingType_unset_abstract__transaction_TypeDBTransaction[unset_abstract()]
+| xref:drivers::nodejs/api-reference.adoc#_ThingType_unsetAbstract__transaction_TypeDBTransaction[unsetAbstract();]
 |===
 
 .Pseudocode example
@@ -587,7 +587,7 @@ It is impossible to imagine a marriage without considering its spouses.
 
 For more
 information on how to define a `relation` subtype, see the
-xref:typeql::schema/define-types.adoc#_define_relation_types[Define relation types] section on the
+xref:typeql::schema/define-types.adoc#_relations[Relations] section on the
 xref:typeql::schema/define-types.adoc[] page.
 
 [#_attribute_types]
@@ -650,7 +650,7 @@ deleted in TypeDB version 3.0.
 // end::attribute_type_own_depr[]
 
 For more information on how to define an `attribute` subtype, see the
-xref:typeql::schema/define-types.adoc#_define_attribute_types[Define attribute types] section on the
+xref:typeql::schema/define-types.adoc#_attributes[attributes] section on the
 xref:typeql::schema/define-types.adoc[] page.
 
 [#_rules]

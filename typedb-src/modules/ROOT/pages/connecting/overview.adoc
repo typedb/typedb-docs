@@ -7,12 +7,12 @@
 :!example-caption:
 
 TypeDB accepts client connections via gRPC based
-https://github.com/vaticle/typedb-protocol[TypeDB Driver RPC,window=_blank] protocol.
+https://github.com/vaticle/typedb-protocol[TypeDB driver RPC,window=_blank] protocol.
 
-A library that implements this protocol and provides a native API to access TypeDB is called a TypeDB Driver.
+A library that implements this protocol and provides a native API to access TypeDB is called a TypeDB driver.
 
 A TypeDB Client is any software that can connect to a TypeDB,
-including TypeDB Drivers and standalone software applications that use TypeDB Drivers.
+including TypeDB drivers and standalone software applications that use TypeDB drivers.
 
 [#_clients]
 == Clients
@@ -21,7 +21,7 @@ There are multiple open-source TypeDB Clients that you can use to connect to Typ
 
 * xref:typedb::connecting/studio.adoc[] -- a GUI-based IDE for TypeDB;
 * xref:typedb::connecting/console.adoc[] -- the default CLI tool for TypeDB;
-* xref:drivers::overview.adoc[TypeDB Drivers] for the most popular programming languages:
+* xref:drivers::overview.adoc[TypeDB drivers] for the most popular programming languages:
 xref:drivers::rust/overview.adoc[Rust],
 xref:drivers::python/overview.adoc[Python],
 xref:drivers::java/overview.adoc[Java],
@@ -138,7 +138,7 @@ This is to prevent any potential errors from using incompatible versions of Type
 
 See the compatibility tables for protocol encoding versions of:
 xref:typedb::connecting/studio.adoc#_version_compatibility[TypeDB Studio],
-xref:typedb::connecting/console.adoc#_version_compatibility[TypeDB Console], and TypeDB Drivers:
+xref:typedb::connecting/console.adoc#_version_compatibility[TypeDB Console], and TypeDB drivers:
 xref:drivers::rust/overview.adoc#_version_compatibility[Rust],
 xref:drivers::python/overview.adoc#_version_compatibility[Python],
 xref:drivers::java/overview.adoc#_version_compatibility[Java],
@@ -352,7 +352,7 @@ For more information on how to do it with different TypeDB Clients, see the docu
 
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
 * xref:connecting/console.adoc#_database_management_commands[TypeDB Console]
-* TypeDB Drivers:
+* TypeDB drivers:
 ** xref:drivers:ROOT:rust/api-reference.adoc#_session_header[Rust],
 ** xref:drivers:ROOT:python/api-reference.adoc#_session_header[Python],
 ** xref:drivers:ROOT:java/api-reference.adoc#_session_header[Java],
@@ -461,7 +461,7 @@ For more information on how to do it with different Clients, see the documentati
 
 * xref:connecting/studio.adoc#_transaction_control[TypeDB Studio]
 * xref:connecting/console.adoc#_transaction_querying_commands[TypeDB Console]
-* TypeDB Drivers:
+* TypeDB drivers:
 ** xref:drivers:ROOT:rust/api-reference.adoc#_transaction_header[Rust],
 ** xref:drivers:ROOT:python/api-reference.adoc#_transaction_header[Python],
 ** xref:drivers:ROOT:java/api-reference.adoc#_transaction_header[Java],

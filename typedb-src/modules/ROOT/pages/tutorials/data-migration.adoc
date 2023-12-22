@@ -22,7 +22,7 @@ versions directly.
 
 To load data into a TypeDB database we need to perform xref:typedb::developing/write.adoc#_insert[insert] queries.
 The following <<_application,example>> showcases how to load <<_dataset,sample data>> from
-`CSV`, `JSON`, and `XML` formats using TypeDB Drivers for
+`CSV`, `JSON`, and `XML` formats using TypeDB drivers for
 <<_java,Java>>,
 <<_python,Python>>, and
 <<_node_js,Node.js>>.
@@ -217,7 +217,7 @@ The `Input` subclass contains details required for reading data from dataset fil
 file. Thus, for every file, there is a separate template for forming a TypeQL insert query using the data from the
 file.
 
-The `connectAndMigrate` initializes TypeDB Java Driver, opens a session to the TypeDB database, and calls
+The `connectAndMigrate` initializes TypeDB Java driver, opens a session to the TypeDB database, and calls
 `loadDataIntoTypeDB` for every element in `inputs`.
 
 The `loadDataIntoTypeDB` parses the data from a file using a path from the `inputs` element, and for every item
@@ -440,7 +440,7 @@ python migrate_xml.py
 
 Data migration code is located inside `+migrate_{format}.py+` file, where \{format} is `csv`, `json`, or `xml`.
 
-The `build_phone_call_graph()` function initializes TypeDB Python Driver, opens a session to the TypeDB database, and
+The `build_phone_call_graph()` function initializes TypeDB Python driver, opens a session to the TypeDB database, and
 for every element of `inputs` calls `load_data_into_typedb()` function.
 
 The `load_data_into_typedb()` function calls for `parse_data_to_dictionaries()` to parse through the dataset file and
@@ -674,7 +674,7 @@ npm run migrateXml
 
 Data migration code is located inside `+migrate{format}.js+` file, where \{format} is `Csv`, `Json`, or `Xml`.
 
-The `buildPhoneCallGraph()` function initializes TypeDB Node.js Driver, opens a session to the TypeDB database, and
+The `buildPhoneCallGraph()` function initializes TypeDB Node.js driver, opens a session to the TypeDB database, and
 for every element of `inputs` calls `loadDataIntoTypeDB()` function.
 
 The `loadDataIntoTypeDB()` function calls for ` parseDataToObjects()` to parse through the dataset file and then

@@ -1,27 +1,27 @@
-= Java Driver
+= Java driver
 :page-aliases: clients::java-driver.adoc, clients::java-driver/overview.adoc
-:Summary: Overview for TypeDB Java Driver.
+:Summary: Overview for TypeDB Java driver.
 :keywords: typedb, driver, java
-:pageTitle: TypeDB Java Driver
+:pageTitle: TypeDB Java driver
 
-The Java Driver was developed by Vaticle to enable TypeDB support for Java software and developers.
+The Java driver was developed by Vaticle to enable TypeDB support for Java software and developers.
 
 [#_install_java]
 == Install
 
 === Prerequisites
 
-To use the Java Driver, we need a compatible version of TypeDB server running.Please see the
+To use the Java driver, we need a compatible version of TypeDB server running.Please see the
 <<_version_compatibility,Compatibility Table>> to check what version do we need, depending on
 the TypeDB server version being used.
 
-=== Add a repository with TypeDB Java Driver to Maven
+=== Add a repository with TypeDB Java driver to Maven
 
 Add the code below to the `pom.xml` file in the Maven project.
 
 [IMPORTANT]
 ====
-Be sure to replace the `\{version}` placeholder tag with the version of Driver Java we want to install.
+Be sure to replace the `\{version}` placeholder tag with the version of the Java driver we want to install.
 ====
 
 [,xml]
@@ -59,7 +59,7 @@ snapshot repository to our list of Maven repositories.
 
 === (Optional) Add logging config
 
-By default, the Java Driver uses Logback to print errors and debugging info to standard output. As it is quite verbose,
+By default, the Java driver uses Logback to print errors and debugging info to standard output. As it is quite verbose,
 use the following steps to set the minimum log level to `ERROR`:
 
 . Create a file in the `resources` path (`src/main/resources` by default in a Maven project) named `logback.xml`.
@@ -84,16 +84,16 @@ use the following steps to set the minimum log level to `ERROR`:
 
 == Tutorial
 
-Explore the Java Driver xref:java/tutorial.adoc[tutorial] with an example of connecting to TypeDB.
+Explore the Java driver xref:java/tutorial.adoc[tutorial] with an example of connecting to TypeDB.
 
-== Java Driver API
+== Java driver API
 
-Use the xref:java/api-reference.adoc[API reference] page for documentation of the methods and classes used in the Driver.
+Use the xref:java/api-reference.adoc[API reference] page for a documentation of the methods and classes used in the driver.
 
 // tag::questions[]
 [NOTE]
 ====
-Any questions about the Driver after reading the documentation?
+Any questions about the driver after reading the documentation?
 Feel free to ask on our
 https://typedb.com/discord[Discord,window=_blank] community server.
 ====
@@ -106,7 +106,7 @@ Learn to use native Java syntax to build TypeQL queries with xref:java/query-bui
 == Additional resources
 
 * <<_version_compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/java[Java Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/java[Java driver on GitHub,window=_blank]
 * https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 //* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
 
@@ -116,7 +116,7 @@ Learn to use native Java syntax to build TypeQL queries with xref:java/query-bui
 
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
-| Java Driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
+| Java driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
 | 2.26.1
 | 3

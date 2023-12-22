@@ -1,23 +1,23 @@
-= Rust Driver
+= Rust driver
 :page-aliases: clients::rust-driver.adoc, clients::rust-driver/overview.adoc
-:Summary: Overview for TypeDB Rust Driver.
+:Summary: Overview for TypeDB Rust driver.
 :keywords: typedb, client, driver, rust
-:pageTitle: TypeDB Rust Driver
+:pageTitle: TypeDB Rust driver
 
-The TypeDB Rust Driver was developed by Vaticle to enable TypeDB support for Rust software and developers.
+The TypeDB Rust driver was developed by Vaticle to enable TypeDB support for Rust software and developers.
 
 [#_install_rust]
 == Install
 
 === Prerequisites
 
-To use the TypeDB Rust Driver, you need a compatible version of TypeDB running.
+To use the TypeDB Rust driver, you need a compatible version of TypeDB running.
 Please see the
 <<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
 
 === Installation
 
-To install TypeDB Rust Driver:
+To install TypeDB Rust driver:
 
 [tabs]
 ====
@@ -42,22 +42,22 @@ cargo add typedb-driver -F sync
 
 //cargo add typedb-driver@2.24.5
 
-== Rust Driver API
+== Rust driver API
 
 Use the xref:rust/api-reference.adoc[API reference] page for documentation of the methods and objects used in
-the Driver.
+the driver.
 
-//Explore the Rust Driver xref:rust/rust-tutorial.adoc[tutorial] with example of connecting to TypeDB.
+//Explore the Rust driver xref:rust/rust-tutorial.adoc[tutorial] with example of connecting to TypeDB.
 
 //Use the xref:rust/api-reference.adoc[API reference] page for documentation of the methods and objects used in
-//the Driver.
+//the driver.
 
 include::../java/overview.adoc[tag=questions]
 
 == Additional resources
 
 * <<_version_compatibility,Version compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/rust[Rust Driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/tree/development/rust[Rust driver on GitHub,window=_blank]
 * https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
 * https://crates.io/crates/typedb-driver[Crates.io]
 //* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
@@ -67,7 +67,7 @@ include::../java/overview.adoc[tag=questions]
 
 [cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
 |===
-| Rust Driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Rust
+| Rust driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Rust
 
 | 2.26.1
 | 3

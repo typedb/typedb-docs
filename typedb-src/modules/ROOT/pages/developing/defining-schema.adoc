@@ -40,6 +40,7 @@ There are no rules in the default schema.
 
 Built-in types are not shown in schema export results, as they are internal and similar for all TypeDB databases.
 
+[#_thing_type]
 === Thing type
 
 Root types have a common supertype -- the `thing` type.
@@ -67,7 +68,7 @@ There are multiple ways we can modify an existing schema of a TypeDB database:
 
 * A xref:typeql::schema/define-rules.adoc[Define] query -- <<_extend_a_schema,extend>> a schema by defining new types and rules.
 * An xref:typeql::schema/undefine.adoc[Undefine] query -- <<_truncate_a_schema,truncate>> a schema by removing types and rules.
-* xref:drivers::overview.adoc[TypeDB Drivers]
+* xref:drivers::overview.adoc[TypeDB drivers]
 (see
 xref:drivers::rust/overview.adoc[Rust],
 xref:drivers::python/overview.adoc[Python],
@@ -79,7 +80,7 @@ perform schema modifications via GUI with Type Browser and Type Editor.
 
 This page only covers TypeQL queries as the default way of interacting with a database.
 For more information on other ways to modify a schema, see the links above.
-TypeQL queries can be used with any TypeDB Client, including TypeDB Drivers.
+TypeQL queries can be used with any TypeDB Client, including TypeDB drivers.
 
 [#_extend_a_schema]
 == Extend a schema
@@ -280,7 +281,7 @@ It is usually easier to just delete the whole database and create a new one with
 
 == Rename a type
 
-To rename a type, use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or TypeDB Driver API methods.
+To rename a type, use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or TypeDB driver API methods.
 //#todo Add tabs with code snippets and links to API ref?
 
 == Modify a rule

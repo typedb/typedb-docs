@@ -147,6 +147,7 @@ user sub subject;
 person sub user;
 ----
 
+[#_attributes]
 ==== Attributes
 
 To define an attribute type, you need to declare its value type.
@@ -196,6 +197,7 @@ visibility sub attribute, value string, regex "^(public|private|closed)$";
 The above example defines an attribute type: `visibility`.
 It specifies a regex to restrict values to only `public`, `private` and `closed` strings.
 
+[#_relations]
 ==== Relations
 
 Relation types are defined by subtyping the `relation` root type or other relation types.

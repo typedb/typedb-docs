@@ -22,6 +22,8 @@ toc::[]
 
 == Statements examples
 
+
+
 [NOTE]
 ====
 The statements below are designed for the IAM
@@ -31,7 +33,9 @@ but they can return any number of results: zero, one, or multiple.
 ====
 
 === Data statements
-//#todo Remove gets? Leave only match clause
+
+The following data statements examples can be used in data queries.
+Since usage of a statement in different clauses can provide different results, all examples are for match clauses.
 
 * <<_all_data>>
 * <<_entity_matching>>
@@ -50,10 +54,12 @@ Use an `instance` pattern with type `thing` to match all entities, relations, an
 
 [,typeql]
 ----
+match
 $x isa thing;
 ----
 
-For more information on `thing` type see the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
+For more information on `thing` type,
+see the xref:typedb::developing/defining-schema.adoc#_thing_type[Thing type] section.
 
 include::typedb::partial$thing-warning.adoc[]
 
@@ -66,6 +72,7 @@ Use an `instance` pattern with any type to match all instances of a given type a
 
 [,typeql]
 ----
+match
 $p isa person;
 ----
 
@@ -81,6 +88,7 @@ Use an `instance` pattern with an exclamation mark (`!`) to match all instances 
 
 [,typeql]
 ----
+match
 $u isa! user;
 ----
 
@@ -94,6 +102,7 @@ specific type.
 
 [,typeql]
 ----
+match
 $p isa person, has full-name $n;
 ----
 
@@ -106,6 +115,7 @@ attributes, each of a specific type.
 
 [,typeql]
 ----
+match
 $p isa person,
     has full-name $n,
     has email $email,
@@ -122,6 +132,7 @@ with a specific value.
 
 [,typeql]
 ----
+match
 $p isa person, has full-name “Kevin Morrison”;
 ----
 
@@ -135,6 +146,7 @@ have a specific attribute whose value is within a specific range.
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb < 100;
 ----
 
@@ -143,6 +155,7 @@ combine a `has-attribute statement` (with no comparison operation) with a separa
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 $s < 100;
 ----
@@ -160,6 +173,7 @@ specified instance.
 
 [,typeql]
 ----
+match
 $p isa person, has full-name "Kevin Morrison";
 $pe (subject: $p) isa permission;
 ----
@@ -175,6 +189,7 @@ specific attribute with a specific value.
 
 [,typeql]
 ----
+match
 $pe (subject: $p, access: $ac) isa permission, has validity true;
 ----
 
@@ -186,6 +201,7 @@ The relation variable can be omitted when only the role players are needed.
 
 [,typeql]
 ----
+match
 (subject: $p, access: $ac) isa permission;
 ----
 
@@ -195,6 +211,7 @@ The names of a relation's roles can be omitted.
 
 [,typeql]
 ----
+match
 $pe ($p, $ac) isa permission;
 ----
 
@@ -211,6 +228,7 @@ Use a variable and an attribute value to find all attributes with a specific val
 
 [,typeql]
 ----
+match
 $x "Masako Holley";
 ----
 
@@ -224,6 +242,7 @@ specific value.
 
 [,typeql]
 ----
+match
 $n isa full-name;
 $n "Masako Holley";
 ----
@@ -232,6 +251,7 @@ Alternatively, use a single statement:
 
 [,typeql]
 ----
+match
 $n "Masako Holley" isa full-name;
 ----
 
@@ -243,6 +263,7 @@ Use an `attribute` pattern with `contains` keyword to find all attributes whose 
 
 [,typeql]
 ----
+match
 $name contains "Masako";
 ----
 
@@ -256,6 +277,7 @@ the specified regular expression pattern.
 
 [,typeql]
 ----
+match
 $x like "(Masako Holley|Kevin Morrison)";
 ----
 
@@ -271,6 +293,7 @@ It is often helpful in negation.
 
 [,typeql]
 ----
+match
 $x isa person;
 $y isa person;
 not { $x is $y; };
@@ -286,6 +309,7 @@ The above xref:typeql::data/match.adoc[] returns pairs of users that are not the
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = ($s + 5) * 2;
 ----
@@ -298,6 +322,7 @@ before the multiplication.
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s ^ 2;
 ----
@@ -310,6 +335,7 @@ value of `$s` raised to the power of 2.
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s * 3;
 ----
@@ -321,6 +347,7 @@ In the above example we multiply the value of `$s` by 3 and set the value variab
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s / 3;
 ----
@@ -332,6 +359,7 @@ In the above example we divide the value of `$s` by 3 and set the value variable
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s % 3;
 ----
@@ -344,6 +372,7 @@ Or `$s` mod 3.
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s + 1250;
 ----
@@ -355,6 +384,7 @@ In the above example we add the value of `$s` to 1250 and set the value variable
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s - 300;
 ----
@@ -366,6 +396,7 @@ In the above example we subtract 300 from the value of `$s` and set the value va
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s - 300;
 ?a = min($s, ?x);
@@ -378,6 +409,7 @@ In the above example we set the value variable `?x` to be equal to either `$s` o
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = $s - 300;
 ?a = max($s, ?x);
@@ -390,6 +422,7 @@ In the above example we set the value variable `?x` to be equal to either `$s` o
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = floor($s / 3);
 ----
@@ -402,6 +435,7 @@ less than or equal to the argument).
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = ceil($s / 3);
 ----
@@ -414,6 +448,7 @@ greater than or equal to the argument).
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = round($s / 3);
 ----
@@ -426,6 +461,7 @@ nearest integer, half up).
 
 [,typeql]
 ----
+match
 $f isa file, has size-kb $s;
 ?x = abs($s - 1000);
 ----
@@ -441,6 +477,7 @@ statements.
 
 [,typeql]
 ----
+match
 $p isa person, has full-name "Kevin Morrison";
 $o isa object, has path $o-path;
 $ac(object: $o) isa access;
@@ -466,6 +503,7 @@ in between them.
 
 [,typeql]
 ----
+match
 $p isa person, has full-name $n;
 { $n contains "Masako"; } or { $n contains "Kevin"; };
 ----
@@ -503,7 +541,10 @@ the access to be either `modify_file` or `view_file`.
 === Schema statements
 
 The following schema statements examples can be used in data queries.
-For examples of Define and Undefine queries, see the
+Since usage of a statement in different clauses can provide different results, all examples are for match clauses.
+
+Schema definition statements are similar to schema statements, but can't use variables, nor values.
+For examples of Define and Undefine queries with schema definition statements, see the
 xref:typeql::schema/define-types.adoc[],
 xref:typeql::schema/define-rules.adoc[], and
 xref:typeql::schema/undefine.adoc[] pages.
@@ -525,6 +566,7 @@ the xref:typeql::fundamentals.adoc#_thing_type[Thing type] section.
 
 [,typeql]
 ----
+match
 $t sub thing;
 ----
 
@@ -537,6 +579,7 @@ Use a `subtype` pattern to find a specific type and all of its subtypes.
 
 [,typeql]
 ----
+match
 $o sub object;
 ----
 
@@ -551,6 +594,7 @@ Use a `subtype` pattern with an exclamation mark (`!`) to find the direct subtyp
 
 [,typeql]
 ----
+match
 $o sub! object;
 ----
 
@@ -564,6 +608,7 @@ Use an `attribute subtype` pattern to find all attribute types with a specific v
 
 [,typeql]
 ----
+match
 $a sub attribute, value boolean;
 ----
 
@@ -576,6 +621,7 @@ Use a `type` pattern to find a specific type, excluding any nested subtypes (dir
 
 [,typeql]
 ----
+match
 $o type object;
 ----
 
@@ -589,6 +635,7 @@ Use a "players type in a relation" pattern to find all types that play a specifi
 
 [,typeql]
 ----
+match
 $p plays permission:subject;
 ----
 
@@ -602,6 +649,7 @@ Use an `owners of attribute type` pattern to find all types that own a specific 
 
 [,typeql]
 ----
+match
 $o owns full-name;
 ----
 
@@ -614,6 +662,7 @@ Use the `role types in a relation` pattern to find all roles in a specific relat
 
 [,typeql]
 ----
+match
 permission relates $r;
 ----
 
@@ -639,7 +688,6 @@ The above example retrieves all instances of the `person` type, that have owners
 `full-name` attribute type and at least one instance of `email` attribute.
 We then filter the response to contain only the `$p` and the `$e` in every result.
 We further add modifiers to group results by the `$p` variable and count the number of results in every group.
-
 
 === Get query
 
