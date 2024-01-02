@@ -28,13 +28,13 @@ Setup and run TypeDB environment and tools.
 .xref:home::quickstart.adoc[]
 [.clickable]
 ****
-Create and query databases.
+Create a sample database to run some queries.
 ****
 
 .xref:home::25-queries.adoc[]
 [.clickable]
 ****
-Top query examples to explore TypeDB.
+Try the features of TypeDB with these top queries.
 ****
 --
 
@@ -55,15 +55,14 @@ An overview of the TypeDB documentation.
 .xref:typedb::basics/data-model.adoc[Basics]
 [.clickable]
 ****
-Essential knowledge to learn before practicing TypeDB.
+Essentials to learn before practicing TypeDB.
 ****
 
 [#_basics]
 .xref:typedb::connecting/overview.adoc[]
 [.clickable]
 ****
-An overview on how to connect to TypeDB and use xref:typedb::connecting/studio.adoc[TypeDB Studio]
-and xref:typedb::connecting/console.adoc[TypeDB Console].
+How to connect to TypeDB with different clients.
 ****
 
 [#_developing]
@@ -77,58 +76,57 @@ How to develop an application with TypeDB.
 .xref:typedb::managing/configuration.adoc[Managing TypeDB]
 [.clickable]
 ****
-Configuration and management of TypeDB installations.
+Configuration and management of deployments.
 ****
 
 [#_tutorials]
 .xref:typedb::tutorials/iam-schema.adoc[Tutorials]
 [.clickable]
 ****
-Tutorials for TypeDB.
+Tutorials to learn TypeDB and migrate data.
 ****
 --
 
 == TypeDB drivers
 
-Client-side libraries with native API to connect to TypeDB via a gRPC based protocol.
-
+Client-side libraries with native API to connect to TypeDB.
 
 [cols-3]
 --
 .xref:drivers::overview.adoc[Overview]
 [.clickable]
 ****
-xref:drivers::overview.adoc[TypeDB drivers overview]
+Overview of TypeDB drivers and driver architecture.
 ****
 
 .xref:drivers::rust/overview.adoc[Rust]
 [.clickable]
 ****
-image:home::rust.png[width=30%,role=framed] xref:drivers::rust/overview.adoc[Rust driver]
+image::home::rust.png[width=30%,role=framed]
 ****
 
 .xref:drivers::python/overview.adoc[Python]
 [.clickable]
 ****
-image:python.png[width=30%,role=framed] xref:drivers::python/overview.adoc[Python driver]
+image::python.png[width=30%,role=framed]
 ****
 
 .xref:drivers::java/overview.adoc[Java]
 [.clickable]
 ****
-image:java.png[width=30%,role=framed] xref:drivers::java/overview.adoc[Java driver]
+image::java.png[width=30%,role=framed]
 ****
 
 .xref:drivers::nodejs/overview.adoc[Node.js]
 [.clickable]
 ****
-image:nodejs.png[width=30%,role=framed] xref:drivers::nodejs/overview.adoc[Node.js driver]
+image::nodejs.png[width=30%,role=framed]
 ****
 
 [.clickable]
 .C/C++
 ****
-image:cpp.png[width=30%,role=framed] Coming soon.
+image::cpp.png[width=30%,role=framed]
 ****
 --
 
@@ -157,7 +155,7 @@ Essential knowledge about TypeQL.
 .xref:typeql::schema/define-types.adoc[Schema]
 [.clickable]
 ****
-TypeQL as a Data definition language to define a schema.
+TypeQL as a Data definition language to define a database schema.
 ****
 
 .xref:typeql::data/match.adoc[Data]
