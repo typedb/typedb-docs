@@ -17,12 +17,26 @@ released as TypeDB 3.0, along with preliminary benchmarks of TypeDB.
 ====
 // end::rust-rewrite[]
 
-== Home
+[cols-3]
+--
+.xref:home::install.adoc[]
+[.clickable]
+****
+Setup and run TypeDB environment and tools.
+****
 
-//* xref:home::what-is-typedb.adoc[]
-* xref:home::install.adoc[] -- download and install TypeDB and TypeDB Clients
-* xref:home::quickstart.adoc[] -- a short guide on how to create and query a TypeDB database
-* xref:home::25-queries.adoc[] -- top 25 queries to explore TypeDB
+.xref:home::quickstart.adoc[]
+[.clickable]
+****
+Create and query databases.
+****
+
+.xref:home::25-queries.adoc[]
+[.clickable]
+****
+Top query examples to explore TypeDB.
+****
+--
 
 == TypeDB
 
@@ -30,32 +44,93 @@ TypeDB is a polymorphic database with a conceptual data model,
 a strong subtyping system,
 a symbolic reasoning engine.
 
-* xref:typedb::overview.adoc[] -- an overview of the TypeDB section
+[cols-3]
+--
+.xref:typedb::overview.adoc[]
+[.clickable]
+****
+An overview of the TypeDB documentation.
+****
+
+.xref:typedb::basics/data-model.adoc[Basics]
+[.clickable]
+****
+Essential knowledge to learn before practicing TypeDB.
+****
 
 [#_basics]
-* Basics of TypeDB -- essential knowledge to learn before practicing TypeDB
-
-[#_connecting]
-* Connecting to TypeDB -- learn how to connect to TypeDB
+.xref:typedb::connecting/overview.adoc[]
+[.clickable]
+****
+An overview on how to connect to TypeDB and use xref:typedb::connecting/studio.adoc[TypeDB Studio]
+and xref:typedb::connecting/console.adoc[TypeDB Console].
+****
 
 [#_developing]
-* Developing with TypeDB -- learn how to connect and send queries to TypeDB
+.xref:typedb::developing/creating-database.adoc[Developing with TypeDB]
+[.clickable]
+****
+How to develop an application with TypeDB.
+****
 
 [#_managing]
-* Managing TypeDB -- learn about configuring and using a production-ready TypeDB installation
+.xref:typedb::managing/configuration.adoc[Managing TypeDB]
+[.clickable]
+****
+Configuration and management of TypeDB installations.
+****
 
 [#_tutorials]
-* Tutorials -- basic tutorials for TypeDB
+.xref:typedb::tutorials/iam-schema.adoc[Tutorials]
+[.clickable]
+****
+Tutorials for TypeDB.
+****
+--
 
-== TypeDB Drivers
+== TypeDB drivers
 
 Client-side libraries with native API to connect to TypeDB via a gRPC based protocol.
 
-* xref:drivers::overview.adoc[] -- an overview of available TypeDB Drivers
-** xref:drivers:ROOT:rust/overview.adoc[Rust Driver] -- Rust Driver documentation
-** xref:drivers:ROOT:python/overview.adoc[Python driver] -- Python driver documentation
-** xref:drivers:ROOT:java/overview.adoc[Java driver] -- Java driver documentation
-** xref:drivers:ROOT:nodejs/overview.adoc[Node.js] -- Node.js driver documentation
+
+[cols-3]
+--
+.xref:drivers::overview.adoc[]
+[.clickable]
+****
+An overview of the available TypeDB Drivers.
+****
+
+.xref:drivers::rust/overview.adoc[]
+[.clickable]
+****
+image:home::rust_300.png[width=30%,role=framed]
+****
+
+.xref:drivers::python/overview.adoc[]
+[.clickable]
+****
+image:python_no_text_300.png[width=30%,role=framed]
+****
+
+.xref:drivers::java/overview.adoc[]
+[.clickable]
+****
+image:java_no_text_300.png[width=30%,role=framed]
+****
+
+.xref:drivers::nodejs/overview.adoc[]
+[.clickable]
+****
+image:nodejs_300.png[width=30%,role=framed]
+****
+
+[.clickable]
+.C/C++ driver
+****
+Coming soon.
+****
+--
 
 //* xref:drivers::other-languages.adoc[].
 //* xref:drivers::new-driver.adoc[]
@@ -65,10 +140,31 @@ Client-side libraries with native API to connect to TypeDB via a gRPC based prot
 
 TypeQL is a modern, beautiful and elegant type-theoretic query language, supporting polymorphic queries.
 
-* xref:typeql::overview.adoc[] -- an overview of the TypeQL section
-* xref:typeql::fundamentals.adoc[] -- essential knowledge about TypeQL
-* xref:typeql::queries.adoc[] -- query types in TypeQL
-* Schema -- defining a database schema
-* Data -- data operations queries
+[cols-2]
+--
+.xref:typeql::overview.adoc[]
+[.clickable]
+****
+An overview of the TypeQL documentation.
+****
 
+.xref:typeql::fundamentals.adoc[]
+[.clickable]
+****
+Essential knowledge about TypeQL.
+****
+
+.xref:typeql::schema/define-types.adoc[Schema]
+[.clickable]
+****
+TypeQL as a Data definition language to define a schema.
+****
+
+.xref:typeql::data/match.adoc[Data]
+[.clickable]
+****
+Data queries to read and modify data in a TypeDB database.
+****
+--
 //* xref:typeql::grammar.adoc[].
+//Keywords
