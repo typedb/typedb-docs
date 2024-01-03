@@ -17,25 +17,25 @@ Learn essential knowledge needed to work with TypeDB:
 .xref:typedb::basics/data-model.adoc[]
 [.clickable]
 ****
-Learn about the Polymorphic ERA model used in all TypeDB databases.
+Polymorphic ERA model.
 ****
 
 .xref:typedb::basics/query-language.adoc[]
 [.clickable]
 ****
-Read an introduction to TypeQL's query types and syntax.
+TypeQL query types and basic syntax.
 ****
 
 .xref:typedb::basics/polymorphic-patterns.adoc[]
 [.clickable]
 ****
-Discover pattern matching and different types of polymorphism.
+Pattern matching and polymorphism.
 ****
 
 .xref:typedb::basics/acid.adoc[]
 [.clickable]
 ****
-See the transaction safety guarantees and schema integrity restrictions.
+Transaction safety and schema integrity.
 ****
 --
 
@@ -50,63 +50,63 @@ management or see documentation for:
 .xref:typedb::connecting/studio.adoc[]
 [.clickable]
 ****
-The special IDE for TypeDB with TypeQL syntax highlighting and query response visualisation.
+An IDE for TypeDB.
 ****
 
 .xref:typedb::connecting/console.adoc[]
 [.clickable]
 ****
-A powerful CLI tool for TypeDB for management and queries.
+A powerful CLI tool for TypeDB.
 ****
 --
 
 [#_developing]
 == Developing with TypeDB
 
-Using TypeDB to its full potential in your own application:
+Developing TypeDB-empowered applications:
 
-[cols-3]
+[cols-2]
 --
 .xref:typedb::developing/creating-database.adoc[]
 [.clickable]
 ****
-Start with basic database management: how to create or delete a database in TypeDB.
+Create or delete a database in TypeDB.
 ****
 
 .xref:typedb::developing/defining-schema.adoc[]
 [.clickable]
 ****
-Learn about a schema, what is the default schema, how to define new types and rules in a schema.
+Define new types and rules.
 ****
 
 .xref:typedb::developing/write.adoc[]
 [.clickable]
 ****
-Insert, Delete, or Update data in a database with a write query.
+Insert, Delete, or Update data in a database.
 ****
 
 .xref:typedb::developing/read.adoc[]
 [.clickable]
 ****
-Fetch or Get data from a TypeDB database with a read query.
+Fetch or Get data from a TypeDB database.
 ****
 
 .xref:typedb::developing/infer.adoc[]
 [.clickable]
 ****
-Utilise rule-based reasoning engine to infer new data in a read query.
+Utilise reasoning engine to infer new data.
 ****
 
 .xref:typedb::developing/response.adoc[]
 [.clickable]
 ****
-Find out how to convert and interpret results of a query.
+Convert and interpret results of a query.
 ****
 
 .xref:typedb::developing/best.adoc[]
 [.clickable]
 ****
-Learn about best practices in schema and query design.
+Design better schemas and queries.
 ****
 --
 
@@ -115,36 +115,48 @@ Learn about best practices in schema and query design.
 
 TypeDB deployment configuration and management.
 
-[cols-3]
+[cols-2]
 --
 .xref:typedb::managing/configuration.adoc[]
 [.clickable]
 ****
-TypeDB server configuration parameters and host machine requirements.
+Config parameters and host requirements.
 ****
 
 .xref:typedb::managing/export-import.adoc[]
 [.clickable]
 ****
-Exporting and importing database schema and data.
+Export/Import schema and data as files.
 ****
 
 .xref:typedb::managing/upgrading.adoc[]
 [.clickable]
 ****
-How to migrate to a newer version of TypeDB.
+Upgrading to a newer version of TypeDB.
+****
+
+.xref:typedb::managing/self-hosted-deployment.adoc[]
+[.clickable]
+****
+Deploying an on-premise TypeDB Cloud.
+****
+
+.xref:typedb::managing/user-management.adoc[]
+[.clickable]
+****
+User accounts and passwords.
 ****
 
 .xref:typedb::managing/ha.adoc[]
 [.clickable]
 ****
-Description of TypeDB high availability features.
+Storage, replication, and load balancing.
 ****
 
 .xref:typedb::managing/security.adoc[]
 [.clickable]
 ****
-Description of TypeDB security features.
+Access control, authentication, and encryption.
 ****
 --
 
@@ -158,19 +170,19 @@ General tutorials for TypeDB:
 .xref:typedb::tutorials/iam-schema.adoc[]
 [.clickable]
 ****
-A brief description of IAM schema that is widely used throughout the documentation.
+An explanation of the IAM schema example.
 ****
 
 .xref:typedb::tutorials/sample-app.adoc[]
 [.clickable]
 ****
-A simple example of how to use TypeDB with Java, Python, and Node.js.
+A sample App in Rust, Python, Java, and Node.js.
 ****
 
 .xref:typedb::tutorials/data-migration.adoc[]
 [.clickable]
 ****
-How to load a dataset from an intermediate input format into a TypeDB database.
+Loading a dataset from a CSV/XML/JSON file.
 ****
 --
 
