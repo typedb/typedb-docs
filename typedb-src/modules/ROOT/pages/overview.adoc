@@ -10,48 +10,187 @@ Welcome to the TypeDB technical documentation.
 [#_fundamentals]
 == Basics of TypeDB
 
-** xref:typedb::basics/data-model.adoc[] -- introduction to TypeDB database schema and PERA data model
-** xref:typedb::basics/polymorphic-patterns.adoc[] -- essential information on types and polymorphism
-** xref:basics/query-language.adoc[] -- essential information on query language and syntax
-//** xref:basics/inference.adoc[] -- essential information on rules and reasoning (inference)
-** xref:basics/acid.adoc[] -- transaction safety guarantees and schema integrity restrictions
+Learn essential knowledge needed to work with TypeDB:
+
+[cols-2]
+--
+.xref:typedb::basics/data-model.adoc[]
+[.clickable]
+****
+Polymorphic ERA model.
+****
+
+.xref:typedb::basics/query-language.adoc[]
+[.clickable]
+****
+TypeQL query types and basic syntax.
+****
+
+.xref:typedb::basics/polymorphic-patterns.adoc[]
+[.clickable]
+****
+Pattern matching and polymorphism.
+****
+
+.xref:typedb::basics/acid.adoc[]
+[.clickable]
+****
+Transaction safety and schema integrity.
+****
+--
 
 [#_connecting]
 == Connecting to TypeDB
 
-** xref:typedb:ROOT:connecting/overview.adoc[] -- TypeDB server and database connections
-** xref:typedb:ROOT:connecting/studio.adoc[] -- IDE for TypeDB
-** xref:typedb:ROOT:connecting/console.adoc[] -- CLI tool for TypeDB
+See how to connect to TypeDB using one of the TypeDB clients:
+
+[cols-3]
+--
+.xref:typedb::connecting/overview.adoc[]
+[.clickable]
+****
+How to connect to TypeDB.
+****
+
+.xref:typedb::connecting/studio.adoc[]
+[.clickable]
+****
+An IDE for TypeDB.
+****
+
+.xref:typedb::connecting/console.adoc[]
+[.clickable]
+****
+A CLI client for TypeDB.
+****
+--
 
 [#_developing]
 == Developing with TypeDB
 
-** xref:typedb::developing/creating-database.adoc[] -- database management
-** xref:developing/defining-schema.adoc[] -- database schema definition
-** xref:developing/write.adoc[] -- writing data queries
-** xref:developing/read.adoc[] -- reading data queries
-** xref:developing/infer.adoc[] -- data inference queries
-** xref:developing/response.adoc[] -- query response formats
-//** xref:development/api.adoc[] -- brief description of TypeDB driver API and TypeDB drivers
-// #todo Consider moving API to Clients section with tabs
-** xref:developing/best.adoc[] -- schema and query design tips
+Follow a series of guides on how to develop a TypeDB-empowered application:
+
+[cols-2]
+--
+.xref:typedb::developing/creating-database.adoc[]
+[.clickable]
+****
+Create or delete a database in TypeDB.
+****
+
+.xref:typedb::developing/defining-schema.adoc[]
+[.clickable]
+****
+Define new types and rules.
+****
+
+.xref:typedb::developing/write.adoc[]
+[.clickable]
+****
+Insert, Delete, or Update data in a database.
+****
+
+.xref:typedb::developing/read.adoc[]
+[.clickable]
+****
+Fetch or Get data from a TypeDB database.
+****
+
+.xref:typedb::developing/infer.adoc[]
+[.clickable]
+****
+Utilise reasoning engine to infer new data.
+****
+
+.xref:typedb::developing/response.adoc[]
+[.clickable]
+****
+Convert and interpret results of a query.
+****
+
+.xref:typedb::developing/best.adoc[]
+[.clickable]
+****
+Design better schemas and queries.
+****
+--
 
 [#_managing]
 == Managing TypeDB
 
-** xref:managing/configuration.adoc[] -- TypeDB server configuration parameters and host machine requirements
-** xref:managing/export-import.adoc[] -- exporting and importing database schema and data
-** xref:managing/upgrading.adoc[] -- how to migrate to a newer version of TypeDB
-** xref:managing/ha.adoc[] -- description of TypeDB high availability features
-** xref:managing/security.adoc[] -- description of TypeDB security features
+TypeDB deployment configuration and management.
+
+[cols-2]
+--
+.xref:typedb::managing/configuration.adoc[]
+[.clickable]
+****
+Config parameters and host requirements.
+****
+
+.xref:typedb::managing/export-import.adoc[]
+[.clickable]
+****
+Export/Import schema and data as files.
+****
+
+.xref:typedb::managing/upgrading.adoc[]
+[.clickable]
+****
+Upgrading to a newer version of TypeDB.
+****
+
+.xref:typedb::managing/self-hosted-deployment.adoc[]
+[.clickable]
+****
+Deploying an on-premise TypeDB Cloud.
+****
+
+.xref:typedb::managing/user-management.adoc[]
+[.clickable]
+****
+User accounts and passwords.
+****
+
+.xref:typedb::managing/ha.adoc[]
+[.clickable]
+****
+Storage, replication, and load balancing.
+****
+
+.xref:typedb::managing/security.adoc[]
+[.clickable]
+****
+Access control, authentication, and encryption.
+****
+--
 
 [#_tutorials]
 == Tutorials
 
-** xref:tutorials/iam-schema.adoc[] -- a brief description of IAM schema that is widely used throughout the documentation
-** xref:tutorials/sample-app.adoc[] -- a simple example of how to use TypeDB with Java, Python, and Node.js
-** xref:tutorials/data-migration.adoc[] -- how to load a dataset from an intermediate input format
-into a TypeDB database
+General tutorials for TypeDB:
+
+[cols-3]
+--
+.xref:typedb::tutorials/iam-schema.adoc[]
+[.clickable]
+****
+An explanation of the IAM schema example.
+****
+
+.xref:typedb::tutorials/sample-app.adoc[]
+[.clickable]
+****
+A sample App in Rust, Python, Java, and Node.js.
+****
+
+.xref:typedb::tutorials/data-migration.adoc[]
+[.clickable]
+****
+Loading a dataset from a CSV/XML/JSON file.
+****
+--
+
 // ** xref:tutorials/new-driver-tutorial.adoc[New client] -- how to create a new client
 
 == Where to go from here?

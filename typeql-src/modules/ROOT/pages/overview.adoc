@@ -5,25 +5,119 @@
 
 This is the TypeQL documentation portal. It has the following pages:
 
-* xref:fundamentals.adoc[] -- essential knowledge and terminology
-* xref:queries.adoc[] -- querying with TypeQL
+[cols-2]
+--
+.xref:typeql::fundamentals.adoc[]
+[.clickable]
+****
+Essential knowledge and terminology.
+****
+
+.xref:typeql::queries.adoc[]
+[.clickable]
+****
+Query types and examples.
+****
+--
 
 [#_schema]
-* Schema -- How to define a schema with TypeQL:
-** xref:schema/define-types.adoc[]
-** xref:schema/define-rules.adoc[]
-** xref:schema/undefine.adoc[]
+== Schema
+
+[cols-2]
+--
+.xref:typeql::schema/define-types.adoc[Schema]
+[.clickable]
+****
+Default schema, type system, rules.
+****
+
+.xref:typeql::schema/define-types.adoc[]
+[.clickable]
+****
+Define query syntax, type definitions.
+****
+
+.xref:typeql::schema/define-rules.adoc[]
+[.clickable]
+****
+Rule syntax and validation.
+****
+
+.xref:typeql::schema/undefine.adoc[]
+[.clickable]
+****
+Deleting types and rules from a schema.
+****
+--
 
 [#_data]
-* Data -- How to read & write Data with TypeQL:
-** xref:data/match.adoc[]
-** xref:data/insert.adoc[]
-** xref:data/delete.adoc[]
-** xref:data/update.adoc[]
-** xref:data/fetch.adoc[]
-** xref:data/get.adoc[]
-** xref:data/examples.adoc[]
+== Data
 
+[cols-2]
+--
+.xref:typeql::data/match.adoc[Data queries]
+[.clickable]
+****
+Overview of data query types and validation.
+****
+
+.xref:typeql::data/match.adoc[]
+[.clickable]
+****
+Pattern matching in different queries.
+****
+--
+
+=== Write queries
+
+[cols-3]
+--
+.xref:typeql::data/insert.adoc[Insert]
+[.clickable]
+****
+Adding new data.
+****
+
+.xref:typeql::data/delete.adoc[Delete]
+[.clickable]
+****
+Removing data.
+****
+
+.xref:typeql::data/update.adoc[Update]
+[.clickable]
+****
+Replacing data.
+****
+--
+
+=== Read queries
+
+[cols-2]
+--
+.xref:typeql::data/fetch.adoc[Fetch]
+[.clickable]
+****
+Retrieving types and values as JSON objects.
+****
+
+.xref:typeql::data/get.adoc[Get]
+[.clickable]
+****
+Getting types and data as Driver API objects.
+****
+--
+
+=== Miscellaneous
+
+[col-1]
+--
+.xref:typeql::data/examples.adoc[]
+[.clickable]
+****
+Practical example of patterns and how to use them in queries.
+****
+--
 //* xref:grammar.adoc[]
 
 == Where to go from here?

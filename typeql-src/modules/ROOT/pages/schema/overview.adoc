@@ -1,0 +1,42 @@
+= Schema
+:Summary: TypeQL schema queries section overview.
+:keywords: typeql, typedb, schema, types, rules, overview
+:pageTitle: Schema
+
+TypeQL has only two types of schema manipulation queries: Define and Undefine.
+Both Define and Undefine queries can be used only in a
+xref:typedb::connecting/overview.adoc#_sessions[schema session] and
+xref:typedb::connecting/overview.adoc#_transactions[write transaction].
+For more information on the limitations of a schema session, see the
+xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
+
+For more information about data modeling with TypeQL and xref:typedb::basics/data-model.adoc[PERA] model, see the
+xref:typeql::fundamentals.adoc[] page.
+
+== Define query
+
+[cols-2]
+--
+.xref:typeql::schema/define-types.adoc[Define types]
+[.clickable]
+****
+Use a Define query to add new or modify existing types.
+****
+
+.xref:typeql::schema/define-rules.adoc[Define rules]
+[.clickable]
+****
+Use a Define query to add new or replace existing rules.
+****
+--
+
+== Undefine query
+
+[cols-1]
+--
+.xref:typeql::schema/undefine.adoc[Undefine]
+[.clickable]
+****
+This query type can be used to delete types and rules definitions from a schema.
+****
+--
