@@ -1,0 +1,82 @@
+= Data
+:Summary: TypeQL data queries section overview.
+:keywords: typeql, typedb, data, concepts, patterns, overview
+:pageTitle: Data
+
+TypeQL data queries can be divided to two groups: read and write queries.
+Write queries can only manipulate data to a database.
+For schema manipulations, use xref:typeql::schema/overview.adoc[schema] queries.
+Read queries can retrieve both data from a database and types from its schema.
+
+Write data queries can be used only in a
+xref:typedb::connecting/overview.adoc#_sessions[data session] and
+xref:typedb::connecting/overview.adoc#_transactions[write transaction].
+Read data queries can be used with any session and transaction.
+For more information on the limitations of a schema session, see the
+xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
+
+For more information about data manipulation with TypeQL, see the
+xref:typeql::fundamentals.adoc[] page.
+
+[#_data]
+== Data
+
+[cols-1]
+--
+.xref:typeql::data/match.adoc[]
+[.clickable]
+****
+Matching concepts with a pattern to use in data queries.
+****
+--
+
+=== Write queries
+
+[cols-3]
+--
+.xref:typeql::data/insert.adoc[Insert]
+[.clickable]
+****
+Adding new data.
+****
+
+.xref:typeql::data/delete.adoc[Delete]
+[.clickable]
+****
+Removing data.
+****
+
+.xref:typeql::data/update.adoc[Update]
+[.clickable]
+****
+Replacing data.
+****
+--
+
+=== Read queries
+
+[cols-2]
+--
+.xref:typeql::data/fetch.adoc[Fetch]
+[.clickable]
+****
+Retrieving types and values as JSON objects.
+****
+
+.xref:typeql::data/get.adoc[Get]
+[.clickable]
+****
+Getting types and data as Driver API objects.
+****
+--
+
+=== Miscellaneous
+
+[col-1]
+--
+.xref:typeql::data/examples.adoc[]
+[.clickable]
+****
+Practical example of patterns and how to use them in queries.
+****
+--
