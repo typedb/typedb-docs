@@ -8,7 +8,7 @@
 The metadata and state of an individual raft replica of a database.
 
 // tag::methods[]
-[#_stdstring_TypeDBReplicaInfoaddress___]
+[#_stdstring_TypeDBReplicaInfoaddress]
 ==== address
 
 [source,cpp]
@@ -24,7 +24,7 @@ Retrieves the address of the server hosting this replica
 .Returns
 `std::string`
 
-[#_bool_TypeDBReplicaInfoisPreferred___]
+[#_bool_TypeDBReplicaInfoisPreferred]
 ==== isPreferred
 
 [source,cpp]
@@ -40,7 +40,7 @@ Checks whether this is the preferred replica of the raft cluster. If true, Opera
 .Returns
 `bool`
 
-[#_bool_TypeDBReplicaInfoisPrimary___]
+[#_bool_TypeDBReplicaInfoisPrimary]
 ==== isPrimary
 
 [source,cpp]
@@ -56,7 +56,7 @@ Checks whether this is the primary replica of the raft cluster.
 .Returns
 `bool`
 
-[#_int64_t_TypeDBReplicaInfoterm___]
+[#_int64_t_TypeDBReplicaInfoterm]
 ==== term
 
 [source,cpp]
