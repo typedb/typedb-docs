@@ -1,0 +1,76 @@
+= C++ driver
+:Summary: Overview for TypeDB C++ driver.
+:keywords: typedb, client, driver, c++, cpp, clang
+:pageTitle: TypeDB C++ driver
+
+The TypeDB C++ driver was developed by Vaticle to enable TypeDB support for C++ software and developers.
+
+[#_install_cpp]
+== Install
+
+=== Prerequisites
+
+To use the TypeDB C++ driver, you need a compatible version of TypeDB running.
+Please see the
+<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+
+=== Installation
+
+To install TypeDB C++ driver:
+
+1. https://github.com/vaticle/typedb-driver/releases[Download] the latest release for you architecture (`x86_64`/`arm64`)
+and OS (Linux/macOS/Win).
+2. Include the header file `typedb.hpp` from the `include` directory. See an example of `CMakeLists.txt` below.
+
+.CMakeLists.txt example
+[,source]
+----
+cmake_minimum_required(VERSION 3.27)
+project(cpp_driver_test)
+
+set(CMAKE_CXX_STANDARD 17)
+link_directories(${PROJECT_SOURCE_DIR}/lib)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+add_executable(cpp_driver_test typedb_test.cpp)
+IF (WIN32)
+    target_link_libraries(cpp_driver_test ${PROJECT_SOURCE_DIR}/lib/typedb-driver-cpp.if.lib)
+ELSE()
+    target_link_libraries(cpp_driver_test typedb-driver-cpp)
+ENDIF()
+----
+
+//cargo add typedb-driver@2.24.5
+
+// == C++ driver API
+
+//Use the xref:cpp/api-reference.adoc[API reference] page for documentation of the methods and objects used in
+//the driver.
+
+//Explore the C++ driver xref:cpp/cpp-tutorial.adoc[tutorial] with example of connecting to TypeDB.
+
+//Use the xref:cpp/api-reference.adoc[API reference] page for documentation of the methods and objects used in
+//the driver.
+
+include::../java/overview.adoc[tag=questions]
+
+== Additional resources
+
+* <<_version_compatibility,Version compatibility>>
+* https://github.com/vaticle/typedb-driver/tree/development/cpp[C++ driver on GitHub,window=_blank]
+* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
+|===
+| C++ driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | C++
+
+| 2.26.1
+| 3
+| 2.26.0
+| 2.26.0
+| https://www.iso.org/standard/68564.html[17]
+|===
