@@ -14,13 +14,15 @@ To use the TypeDB C++ driver, you need a compatible version of TypeDB running.
 Please see the
 <<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
 
+For Linux OS: the minimum version of `glibc` is `2.27.0`.
+
 === Installation
 
 To install TypeDB C++ driver:
 
 1. https://github.com/vaticle/typedb-driver/releases[Download] the latest release for you architecture (`x86_64`/`arm64`)
 and OS (Linux/macOS/Win).
-2. Include the header file `typedb.hpp` from the `include` directory. See an example of `CMakeLists.txt` below.
+2. Include the header file `typedb_driver.hpp` from the `include` directory. See an example of `CMakeLists.txt` below.
 
 .CMakeLists.txt example
 [,source]
