@@ -305,19 +305,13 @@ log:
 
 === Diagnostics
 
-We implement completely anonymous diagnostics reporting in TypeDB Core using https://sentry.io/[Sentry].
-This includes sending unexpected errors and occasional (daily) system status updates for number and size of databases
-to the backend reporting system.
-////
-We also submit occasional system status updates for number of databases/database size (daily)
-and periodically profile a transaction.
-This instrumentation should help get real-world usage and error analysis to help guide the development
-and efforts in TypeDB.
-////
+TypeDB optionally reports anonymous diagnostics to guide the development and optimisation of TypeDB.
+This data includes unexpected errors and occasional system status updates for number and size of databases,
+and number of transactions executed per hour.
 
-To disable error and diagnostic reporting set the `diagnostics.reporting.enabled` to false in the config file:
+To disable error and diagnostic reporting set the `diagnostics.reporting.enabled` to `false` in the config file:
 
-[,yml]
+[,yaml]
 ----
 diagnostics:
   reporting:
