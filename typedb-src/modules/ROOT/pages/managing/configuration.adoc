@@ -63,7 +63,7 @@ For any change in the configuration file to take effect, restart the TypeDB serv
 ====
 
 [#_the_default_location_of_the_config_file]
-=== The default location of the config file
+=== Config file location
 
 TypeDB ships with a default configuration file. The location of this file varies based on how TypeDB has been installed.
 
@@ -91,41 +91,52 @@ Here is a sample configuration file for TypeDB:
 ----
 server:
   address: 0.0.0.0:1729
+
 storage:
   data: server/data
   database-cache:
     # configure storage-layer data and index cache per database
-    # it is recommended to keep these at equal sizes
+    # for large datasets, it is more important to have a large index cache than a large data cache
     data: 500mb
     index: 500mb
+
 log:
   output:
-    stdout:   # note: this is a user-defined name
+    stdout:
       type: stdout
-    file:     # note: this is a user-defined name
+    file:
       type: file
       base-dir: server/logs
       file-size-limit: 50mb
       archive-grouping: month
       archive-age-limit: 1 year
       archives-size-limit: 1gb
+
   logger:
-    default:  # note: the default logger must be defined
+    default:
       level: warn
       output: [ stdout, file ]
-    typedb:   # note: this is a user-defined name
+    typedb:
       filter: com.vaticle.typedb.core
       level: info
       output: [ stdout, file ]
     storage:
       filter: com.vaticle.typedb.core.database
-      level: info
+      level: info # on 'debug' the server will periodically log database storage properties
       output: [ stdout, file ]
   debugger:
-    reasoner: # note: this is a user-defined name
+    reasoner-tracer:
       enable: false
       type: reasoner-tracer
       output: file
+    reasoner-perf-counters:
+      enable: false
+      type: reasoner-perf-counters
+
+diagnostics:
+  reporting:
+    enable: true
+
 vaticle-factory:
   enable: false
 ----
@@ -292,8 +303,29 @@ log:
 ====
 ////
 
+=== Diagnostics
+
+We implement completely anonymous diagnostics reporting in TypeDB Core using Sentry.
+This includes sending unexpected errors and occasional (daily) system status updates for number and size of databases
+to the backend reporting system.
+////
+We also submit occasional system status updates for number of databases/database size (daily)
+and periodically profile a transaction.
+This instrumentation should help get real-world usage and error analysis to help guide the development
+and efforts in TypeDB.
+////
+
+To disable error and diagnostic reporting set the `diagnostics.reporting.enabled` to false in the config file:
+
+[,yml]
+----
+diagnostics:
+  reporting:
+    enable: false
+----
+
 [#_configuration_file_options_via_command_line_arguments]
-== Configuration file options via command line arguments
+== Command line arguments
 
 Use command line arguments to override any option in the configuration file.
 
