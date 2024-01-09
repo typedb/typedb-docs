@@ -305,7 +305,7 @@ log:
 
 === Diagnostics
 
-We implement completely anonymous diagnostics reporting in TypeDB Core using Sentry.
+We implement completely anonymous diagnostics reporting in TypeDB Core using https://sentry.io/[Sentry].
 This includes sending unexpected errors and occasional (daily) system status updates for number and size of databases
 to the backend reporting system.
 ////
