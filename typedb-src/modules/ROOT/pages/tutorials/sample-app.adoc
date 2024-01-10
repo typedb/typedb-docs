@@ -89,8 +89,8 @@ include::partial$sample-app-node.adoc[]
 For running the sample application, use the following
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[define query,window=_blank]
 for a schema definition and an
-https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[insert query,window=_blank]
-for a sample dataset insertion.
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data-single-query.tql[insert query,window=_blank]
+for a sample dataset insertion (as a single insert query, for simplicity).
 
 === Auxiliary files
 
@@ -99,7 +99,7 @@ for a sample dataset insertion.
 Rust::
 +
 --
-You can specify dependencies in a `Cargo.tonl` file. See an example below.
+You can specify dependencies in a `Cargo.toml` file. See an example below.
 
 .Cargo.toml
 [,toml]
@@ -115,6 +115,10 @@ edition = "2021"
 chrono = "0.4.23"
 typedb-driver = { version = "2.26.1", features = ["sync"] }
 ----
+
+[NOTE]
+For this sample app we are using synchronous Rust implementation,
+that requires `sync` feature of typedb-driver to be enabled (see above).
 --
 
 Python::
