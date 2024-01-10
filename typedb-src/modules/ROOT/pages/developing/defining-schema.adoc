@@ -9,7 +9,7 @@ Before inserting any data into a database, we need to define its schema.
 Schema consists of types and rules definitions.
 For more information on types, see the xref:typedb::basics/data-model.adoc[data model] page.
 
-== New schema
+== Define query
 
 To define a schema for a new database, you can use a Define query, for example:
 
@@ -28,8 +28,11 @@ user sub subject;
 person sub user, owns full-name;
 ----
 
+[#_how_to_run_a_define_query]
+=== How to run a Define query
+
 A Define query can be sent with any TypeDB client: TypeDB Studio, TypeDB Console, or language-specific drivers.
-Select a TypeDB client below, and send the query example above, using the instructions provided below.
+Select a TypeDB client below, and send the above query example, using the instructions provided below.
 
 For more information on how to connect to TypeDB, open a session, and open a transaction, see the
 xref:typedb::connecting/overview.adoc[] page.
@@ -153,7 +156,8 @@ await transaction.commit();
 
 Any existing schema can be extended by adding new types, new properties to existing types,
 as well as adding new rules or replacing existing rules.
-To extend an existing schema, just run a new Define query containing new schema statements.
+To extend an existing schema, just <<_how_to_run_a_define_query,run>>
+a new Define query with new schema statements.
 
 Since extending schema can't change existing types,
 you can extend a schema of a database that already has data inserted.
@@ -219,8 +223,8 @@ To be able to undefine a type, it needs to have no subtypes in a schema and no d
 
 For more information on how to undefine types, see the xref:typeql::schema/undefine.adoc[] page.
 
-[#_undefine_rules]
-=== Undefine rules
+[#_undefine_rule]
+=== Undefine a rule
 
 To undefine a rule, use the following syntax:
 
