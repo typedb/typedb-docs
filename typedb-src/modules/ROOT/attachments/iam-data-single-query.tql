@@ -1,0 +1,76 @@
+insert
+$p1 isa person,
+    has full-name "Masako Holley",
+    has email "masako.holley@vaticle.com";
+$p2 isa person,
+    has full-name "Pearle Goodman",
+    has email "pearle.goodman@vaticle.com";
+$p3 isa person,
+    has full-name "Kevin Morrison",
+    has email "kevin.morrison@vaticle.com";
+$f1 isa file,
+    has path "iopvu.java",
+    has size-kb 55;
+
+$modify isa operation, has name "modify_file";
+$view isa operation, has name "view_file";
+
+$a1 (object: $f1, action: $modify) isa access;
+$a11 (object: $f1, action: $view) isa access;
+$permission1 (subject: $p3, access: $a1) isa permission;
+$f2 isa file,
+    has path "zlckt.ts",
+    has size-kb 143;
+$a2 (object: $f2, action: $modify) isa access;
+$a22 (object: $f2, action: $view) isa access;
+$permission2 (subject: $p3, access: $a2) isa permission;
+$f3 isa file,
+    has path "psukg.java",
+    has size-kb 171;
+$a3 (object: $f3, action: $modify) isa access;
+$a33 (object: $f3, action: $view) isa access;
+$permission3 (subject: $p3, access: $a3) isa permission;
+$f4 isa file,
+    has path "axidw.java",
+    has size-kb 212;
+$a4 (object: $f4, action: $modify) isa access;
+$a44 (object: $f4, action: $view) isa access;
+$permission4 (subject: $p3, access: $a4) isa permission;
+$f5 isa file,
+    has path "lzfkn.java",
+    has size-kb 70;
+$a5 (object: $f5, action: $modify) isa access;
+$a55 (object: $f5, action: $view) isa access;
+$permission5 (subject: $p3, access: $a5) isa permission;
+$f6 isa file,
+    has path "budget_2022-05-01.xlsx",
+    has size-kb 758;
+$a6 (object: $f6, action: $modify) isa access;
+$a66 (object: $f6, action: $view) isa access;
+$permission6 (subject: $p3, access: $a6) isa permission;
+$permission66 (subject: $p2, access: $a66) isa permission;
+$f7 isa file,
+    has path "zewhb.java";
+$a7 (object: $f7, action: $modify) isa access;
+$a77 (object: $f7, action: $view) isa access;
+$permission7 (subject: $p3, access: $a7) isa permission;
+$permission77 (subject: $p2, access: $a77) isa permission;
+$f8 isa file,
+    has path "budget_2021-08-01.xlsx",
+    has size-kb 1705;
+$a8 (object: $f8, action: $modify) isa access;
+$a88 (object: $f8, action: $view) isa access;
+$permission8 (subject: $p3, access: $a8) isa permission;
+$permission88 (subject: $p2, access: $a88) isa permission;
+$f9 isa file,
+    has path "LICENSE";
+$a9 (object: $f9, action: $modify) isa access;
+$a99 (object: $f9, action: $view) isa access;
+$permission9 (subject: $p3, access: $a9) isa permission;
+$permission99 (subject: $p2, access: $a99) isa permission;
+$f10 isa file,
+    has path "README.md";
+$a10 (object: $f10, action: $modify) isa access;
+$a100 (object: $f10, action: $view) isa access;
+$permission10 (subject: $p3, access: $a10) isa permission;
+$permission100 (subject: $p2, access: $a100) isa permission;

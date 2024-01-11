@@ -11,11 +11,11 @@ The Java driver was developed by Vaticle to enable TypeDB support for Java softw
 
 === Prerequisites
 
-To use the Java driver, we need a compatible version of TypeDB server running.Please see the
-<<_version_compatibility,Compatibility Table>> to check what version do we need, depending on
-the TypeDB server version being used.
+To use the Java driver, we need a compatible version of TypeDB server running.
+See the
+<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
 
-For Linux OS: the minimum version of `glibc` is `2.27.0`.
+For Linux OS: the minimum version of `glibc` is `2.25.0`.
 
 === Add a repository with TypeDB Java driver to Maven
 
@@ -90,7 +90,7 @@ Explore the Java driver xref:java/tutorial.adoc[tutorial] with an example of con
 
 == Java driver API
 
-Use the xref:java/api-reference.adoc[API reference] page for a documentation of the methods and classes used in the driver.
+Use the xref:java/api-reference.adoc[API reference] page for the documentation of the methods and classes used in the driver.
 
 // tag::questions[]
 [NOTE]
@@ -120,7 +120,7 @@ Learn to use native Java syntax to build TypeQL queries with xref:java/query-bui
 |===
 | Java driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
-| 2.26.3
+| 2.26.5
 | 3
 | 2.26.3
 | 2.26.0

@@ -11,11 +11,11 @@ The Python driver was developed by Vaticle to enable TypeDB support for Python s
 
 === Prerequisites
 
-To use the Python driver, we need a compatible version of TypeDB server running. Please see the
-<<_version_compatibility,Version compatibility table>> to check what version do we need,
-depending on the TypeDB server version being used.
+To use the Python driver, we need a compatible version of TypeDB server running.
+See the
+<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
 
-For Linux OS: the minimum version of `glibc` is `2.27.0`.
+For Linux OS: the minimum version of `glibc` is `2.25.0`.
 
 === Installation
 
@@ -41,7 +41,7 @@ Explore the Python driver xref:python/tutorial.adoc[tutorial] with example of co
 
 == Python driver API
 
-Use the xref:python/api-reference.adoc[API reference] page for documentation of the methods and objects used in
+Use the xref:python/api-reference.adoc[API reference] page for the documentation of the methods and objects used in
 the driver.
 
 include::../java/overview.adoc[tag=questions]
@@ -61,7 +61,7 @@ include::../java/overview.adoc[tag=questions]
 |===
 | Python driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Python
 
-| 2.26.3
+| 2.26.5
 | 3
 | 2.26.3
 | 2.26.0

@@ -3,260 +3,287 @@
 :page-aliases: typedb::development/schema.adoc
 :keywords: typedb, typeql, schema, define, undefine, type, rule
 :pageTitle: Defining a schema
+:experimental:
 
-Before inserting any data into a database, we need to declare its data model.
-In TypeDB that is done by defining a schema.
+This page provides a guidance on how to define a schema of a database.
+Instructions on this page are written in anticipation that you've read and followed the instructions from the
+xref:typedb::connecting/overview.adoc[] and
+xref:typedb::developing/creating-database.adoc[] pages.
 
-[#_schema]
-== Schema
+== Define query
 
-A TypeDB schema is like a blueprint of a database.
-It consists of definitions for all types and rules used in a database.
-Types follow the xref:typedb::basics/data-model.adoc[PERA model] to represent a business domain of a database.
-Rules are defined with a special xref:typeql::schema/define-rules.adoc#_syntax[syntax]
-that lets them use data statements to xref:typedb::developing/infer.adoc[infer] new data.
+To define a schema of a database, use a Define query written in TypeQL.
 
-All queries are written with xref:typedb::basics/query-language.adoc[TypeQL]
-and validated not only for their syntax, but also for type violations.
-New types can be created by subtyping existing types.
-Every subtype has a single parent (or supertype).
-Subtypes inherit properties of their supertypes.
-A definition of a type declares its supertype, as well as its own properties and constraints.
-Query patterns can use xref:typedb::basics/polymorphic-patterns.adoc[polymorphism]
-to retrieve data of different types, even those not mentioned in the patterns.
-
-A newly created database has the <<_default_schema,default schema>> that can be extended by user-defined types.
-
-[#_default_schema]
-== Default schema
-
-A database is created with the default schema,
-that contains built-in xref:typeql::schema/define-types.adoc#_abstract[abstract]
-types and cannot be deleted, but can be extended.
-These built-in types include the root types: `entity`, `relation`, and `attribute`,
-that can be subtyped to create a full hierarchy of types for a data model.
-
-There are no rules in the default schema.
-
-Built-in types are not shown in schema export results, as they are internal and similar for all TypeDB databases.
-
-[#_thing_type]
-=== Thing type
-
-Root types have a common supertype -- the `thing` type.
-It is also an abstract type, but it can't be subtyped directly.
-Instead, as all abstract types, the `thing` can be used in a xref:typedb::basics/polymorphic-patterns.adoc[polymorphic]
-pattern as a part of a query.
-See an example below.
-
-.The thing type example
-[,typeql]
-----
-match
-$x isa thing;
-get $x;
-----
-
-The `thing` is a common supertype for all types in a database, so the above query returns every `$x`
-that is an instance of any root type: `entity`, `relation`, or `attribute`.
-
-include::typedb::partial$thing-warning.adoc[]
-
-== How to define a schema
-
-There are multiple ways we can modify an existing schema of a TypeDB database:
-
-* A xref:typeql::schema/define-rules.adoc[Define] query -- <<_extend_a_schema,extend>> a schema by defining new types and rules.
-* An xref:typeql::schema/undefine.adoc[Undefine] query -- <<_truncate_a_schema,truncate>> a schema by removing types and rules.
-* xref:drivers::overview.adoc[TypeDB drivers]
-(see
-xref:drivers::rust/overview.adoc[Rust],
-xref:drivers::python/overview.adoc[Python],
-xref:drivers::java/overview.adoc[Java], or
-xref:drivers::nodejs/overview.adoc[Node.js]) --
-perform schema modifications via API methods, including renaming a type, changing type's supertype, etc.
-* xref:typedb::connecting/studio.adoc[TypeDB Studio] --
-perform schema modifications via GUI with Type Browser and Type Editor.
-
-This page only covers TypeQL queries as the default way of interacting with a database.
-For more information on other ways to modify a schema, see the links above.
-TypeQL queries can be used with any TypeDB Client, including TypeDB drivers.
-
-[#_extend_a_schema]
-== Extend a schema
-
-Any schema can be extended by adding new types, new properties to existing types,
-as well as adding new rules or replacing existing rules.
-
-We can do that with a Define query: for xref:typeql::schema/define-types.adoc[types]
-and xref:typeql::schema/define-rules.adoc[rules] in a schema.
-
-=== Define types
-
-To define a new type in a schema, use one of the existing types to create a subtype:
-
-.Types hierarchy example
-[,typeql]
-----
-define
-
-subject sub entity;
-user sub subject;
-person sub user;
-----
-
-The above `Define` query uses one pre-existing type -- `entity` root type from the default schema.
-So this query can be run with a new empty database.
-
-We can extend the resulted schema by defining a new type and a new property:
-
-.Adding new types and properties
-[,typeql]
-----
-define
-
-full-name sub attribute, value string;
-person owns full-name;
-----
-
-The above query adds an attribute type and an ability to own it for the `person` type.
-In doing so the query relies on the pre-existing type `person` and the root type `attribute`.
-This query can be run only with a schema that already has a `person` type.
-
-For more information on combining statements with a comma,
-see the
-xref:typedb::basics/polymorphic-patterns.adoc#_complex_statement[complex statement] section on the
-xref:typedb::basics/polymorphic-patterns.adoc[] page.
-
-We can further extend our schema by adding even more types and properties,
-but this time, let's duplicate some of the existing definitions to make the query easier to read.
-
-.Extending a schema
+[#_example]
+.Define query example
 [,typeql]
 ----
 define
 
 credential sub attribute, value string;
-id sub attribute, abstract, value string;
-email sub id, value string;
 full-name sub attribute, value string;
 
 subject sub entity,
     abstract,
     owns credential;
-
-person sub user,
-    owns email,
-    owns full-name,
-    plays friendship:friend;
-
-friendship sub relation,
-    relates friend;
+user sub subject;
+person sub user, owns full-name;
 ----
 
-The above query contains some of the definitions that already exist in our database, for example,
-`subject sub entity`.
-TypeDB ignores redundant (repeated) definitions and only applies new statements to the schema.
+The above example creates two attribute types and three entity types.
+To be able to insert data with these types in mind,
+you need to send this Define query to TypeDB and commit the transaction.
+A Define query is validated for syntax, and the resulted schema is validated for consistency.
 
-By adding the `owns email` part to the definition of the `person` type,
-we are effectively adding an ability to own attribute type `email` for the `person` type.
-But the `owns full-name` statement has no effect in the above query,
-as the statement `person owns full-name;` was defined before.
-If we change the `full-name` attribute type to something new, like `full-name2`, in the same query,
-then it will be treated as a new attribute type, co-existing with existing `full-name` type.
+=== Send a Define query
+[#_send_define_query]
+To send a query to TypeDB, use any TypeDB client: TypeDB Studio, TypeDB Console, or language-specific drivers.
+Select a TypeDB client below, and send the above query example, using the instructions provided below.
 
-[IMPORTANT]
+For more information on how to connect to TypeDB, open a session, and open a transaction, see the
+xref:typedb::connecting/overview.adoc[] page.
+
+[tabs]
 ====
-Define statements are idempotent.
-Sending the same Define query two or more times achieves the same result as sending it only once.
-Neither types nor rules can be duplicated.
+Console::
++
+--
+. xref:typedb::connecting/console.adoc#_connect_to_typedb[Connect to TypeDB].
+. Open a `schema` session and `write` transaction to a new/empty database, for example:
++
+[,bash]
+----
+transaction db1 schema write
+----
+. Copy-paste the <<_example,query example>> above and push btn:[Enter] *twice*.
+. Commit the changes made in the transaction:
++
+[,bash]
+----
+commit
+----
+--
+
+Studio::
++
+--
+. xref:typedb::connecting/studio.adoc#_connect_to_typedb[Connect to TypeDB] and
+xref:typedb::connecting/studio.adoc#_select_a_project_directory[select a project directory].
+. Select a new/empty database from a drop-down list in the top toolbar next to the database icon
+image:home::studio-icons/database.png[].
+. Switch to the `schema` and `write` in the top toolbar's session and transaction type selectors.
+. Create a new tab in TypeDB Studio text editor, copy-paste the <<_example,query example>> above.
+. Execute the query by clicking on the btn:[Run Query] (image:home::studio-icons/run.png[]) button.
+. Commit the changes with the btn:[Commit transaction] (image:home::studio-icons/commit.png[]) button.
+--
+
+Rust::
++
+--
+.Define schema query
+[,rust]
+----
+let typeql_define_query = "define
+                        credential sub attribute, value string;
+                        full-name sub attribute, value string;
+                        subject sub entity,
+                            abstract,
+                            owns credential;
+                        user sub subject;
+                        person sub user, owns full-name;";
+tx.query().define(&typeql_define_query).resolve()?;
+tx.commit().resolve()?;
+----
+--
+
+Python::
++
+--
+.Define schema query
+[,python]
+----
+typeql_define_query = "define" \
+                    "credential sub attribute, value string; " \
+                    "full-name sub attribute, value string; " \
+                    "subject sub entity," \
+                    "    abstract," \
+                    "    owns credential;" \
+                    "user sub subject;" \
+                    "person sub user, owns full-name;"
+transaction.query.define(typeql_define_query)
+transaction.commit()
+----
+--
+
+Java::
++
+--
+.Define schema query
+[,java]
+----
+String typeqlDefineQuery = """
+                        define
+                        credential sub attribute, value string;
+                        full-name sub attribute, value string;
+                        subject sub entity,
+                            abstract,
+                            owns credential;
+                        user sub subject;
+                        person sub user, owns full-name;
+                        """;
+writeTransaction.query().define(typeqlDefineQuery);
+writeTransaction.commit();
+----
+--
+
+Node.js::
++
+--
+.Define schema query
+[,js]
+----
+const typeql_define_query = `define
+                            credential sub attribute, value string;
+                            full-name sub attribute, value string;
+                            subject sub entity,
+                                abstract,
+                                owns credential;
+                            user sub subject;
+                            person sub user, owns full-name;
+                            `;
+await transaction.query.define(typeql_define_query);
+await transaction.commit();
+----
+--
 ====
 
-For more information of how to define types with TypeQL Define query, see the
-xref:typeql::schema/define-types.adoc[] page in the TypeQL documentation.
+[#_extend_a_schema]
+== Extend a schema
 
-[#_define_rules]
-=== Define rules
+A Define query sent to a TypeDB database that already has a schema wouldn't overwrite it,
+but rather add its statements to the existing schema.
+That way an existing schema can be extended by adding new types, new properties to existing types,
+new rules, or replacing existing rules.
+For example, <<_send_define_query,send>>
+the following Define query to extend the previously defined schema.
 
-To define a rule use the keyword `rule`, a rule's label, followed by a `when` and a `then` clauses in a Define query:
+.Extending schema example
+[,typeql]
+----
+define
+
+id sub attribute, abstract, value string;
+path sub id, value string;
+email sub id, value string;
+size-kb sub attribute, value long;
+
+user owns email;
+
+object sub entity,
+    abstract;
+
+file sub object,
+    owns path,
+    owns size-kb;
+----
+
+The above example creates some new types,
+as well as adds ownership of the new `email` attribute type to the existing `user` type.
+
+A Define query can't change existing schema statements except for annotations and rules.
+
+=== Idempotency
+
+Define queries are idempotent: sending the same Define query more than once produces the same result,
+as sending it only once.
+On top of that, schema statements can't be duplicated in a schema.
+Hence, if the exact schema definition from a Define query exists in the schema already, this statement is ignored.
+
+For example, send the following query.
 
 [,typeql]
 ----
 define
 
-rule <rule-label>: when {
-    ## condition
-} then {
-    ## conclusion
-};
+id sub attribute, abstract, value string;
+path sub id, value string;
+email sub id, value string;
+size-kb sub attribute, value long;
+
+user owns email;
+
+object sub entity,
+    abstract;
+
+file sub object,
+    owns path,
+    owns size-kb;
+
+name sub id, value string;
+action sub entity, owns name;
+operation sub action;
 ----
 
-Rule label must be unique in a schema.
-Defining a rule with an existing label rewrites the old rule with the new one.
-A condition definition in a `when` clause uses a pattern similar to a xref:typeql::data/match.adoc[match clause].
-A conclusion definition in a `then` clause uses a single statement inserting ownership of an attribute or a relation.
-A condition and a conclusion of a rule must include valid patterns,
-including the requirement of using the types from the same schema where the rule is defined.
+It contains all the statements from the previous one and three new types at the end.
+As a result of this query, only three new types are added to the schema.
+Sending it multiple times to the same database will produce the same result as sending it only once.
 
-See an example below for the schema defined earlier on this page:
-
-.Rule example
-[,typeql]
-----
-define
-
-rule all-friends: when {
-    $p1 isa person;
-    $p2 isa person;
-    not {$p1 is $p2;};
-} then {
-    (friend: $p1, friend: $p2) isa friendship;
-};
-----
-
-For more information on rule definitions and validation, see the
-xref:typeql::schema/define-rules.adoc[] page in the TypeQL documentation.
-
-For more information on using rules to infer new data, see the xref:typedb::developing/infer.adoc[] page.
+For more information on defining types and rules in a schema, see the
+xref:typeql::schema/define-types.adoc[]
+and xref:typeql::schema/define-rules.adoc[] pages.
 
 [#_truncate_a_schema]
 == Truncate a schema
 
-Any schema can be truncated by removing existing types, their properties, and existing rules.
+A schema can be truncated by removing existing schema statements with an
+xref:typeql::schema/undefine.adoc[Undefine query].
 
-We can do that with an xref:typeql::schema/undefine.adoc[Undefine query].
-
-[#_undefine_types]
-=== Undefine types
-
-To remove a statement about a type from a schema, use it in an Undefine query.
+To delete a part of a type definition from a schema, use it in an Undefine query.
 
 .Undefine example
 [,typeql]
 ----
 undefine
 
-full-name sub attribute;
+action owns name;
 ----
 
-The above example removes the `full-name` attribute type from a schema.
-To be able to remove a type from a schema, that type must have neither a subtype defined in a schema,
-nor data of that type inserted to a database.
-Undefining a type also removes all references of the type in a schema in regard to ownerships and roles.
-In the above example, statement `person owns full-name` also get removed from a schema.
+The above example deletes the ability to own the `name` type attributes by the `action` type entities.
+Both `name` and `action` types are not deleted from a schema by this query.
 
-For more information on undefining types, see the xref:typeql::schema/undefine.adoc[] page.
+=== Delete a type
+
+To delete a type from a schema completely, use the `sub` keyword in the same statement as used for its creation.
+For example, to delete the `action` type, that is a subtype of the `entity` type, use the following query:
+
+.Undefine type example
+[,typeql]
+----
+undefine
+
+action sub entity;
+----
+
+The above query deletes the `action` type from a schema as long as the following conditions are met:
+
+* The `action` type is a subtype of the `entity` type.
+* The `action` type has no subtypes.
+* There is no data in a database inserted with the `action` type.
+
+Deleting a type also removes all references of the type in a schema, e.g., owned attribute types and roles played.
 
 [#_undefine_subtype]
 [IMPORTANT]
 ====
-To be able to remove a type, it needs to have no subtypes in a schema and no data in a database.
+To be able to undefine a type, it needs to have no subtypes in a schema and no data in a database.
 ====
 
-[#_undefine_rules]
-=== Undefine rules
+For more information on how to undefine types, see the xref:typeql::schema/undefine.adoc[] page.
 
-To undefine a type, use the following syntax:
+[#_delete_rule]
+=== Delete a rule
+
+To undefine a rule, use the following syntax:
 
 [,typeql]
 ----
@@ -267,26 +294,24 @@ rule <rule-label>;
 
 Undefining a rule does not require repeating its condition or conclusion.
 
-== Delete a schema
+=== Delete a schema
 
-There is no way of deleting a schema of a database.
-You can remove all user-defined types and all rules to revert a schema to the default schema state.
-It is usually easier to just delete the whole database.
+You can manually delete all user-defined types and all rules.
+But that also requires deleting all data from a database.
+It is usually easier to just delete the whole database and create a new one with the same name.
 
-== Create a new schema
+== Other modifications
 
-There is no way of creating a new schema or deleting an existing one.
-You can remove all user-defined types and all rules to revert a schema to the default schema state.
-It is usually easier to just delete the whole database and create a new one with the same name and the default schema.
+=== Rename a type
 
-== Rename a type
-
-To rename a type, use the xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio] or TypeDB driver API methods.
+To rename a type, use the TypeDB Studio's xref:typedb:ROOT:connecting/studio.adoc#_type_editor[type editor]
+or TypeDB driver API methods.
 //#todo Add tabs with code snippets and links to API ref?
 
-== Modify a rule
+=== Modify a rule
 
-You can replace a rule with a new one by <<_define_rules,defining a new rule>> with the same label as the old one.
+You can replace a rule with a new one by xref:typeql::schema/define-rules.adoc[defining a new rule]
+with the same label as the old one.
 
 == Learn more
 
