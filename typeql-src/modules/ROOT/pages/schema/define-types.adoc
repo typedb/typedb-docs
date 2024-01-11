@@ -25,8 +25,8 @@ A Define query adds new or updates existing types and rules.
 
 Define queries are unambiguous and idempotent
 (can be applied multiple times without changing the result of the initial application).
-A `define` clause uses a pattern without variables to declare a complete schema definition or
-changes to an existing schema.
+A `define` clause uses statements without variables to declare a complete schema definition or
+extension to an existing schema.
 
 Define queries are validated with TypeQL syntax.
 A database's schema is also validated after applying a given query to validate its consistency.
@@ -42,24 +42,27 @@ otherwise it will not pass validation and will be rejected.
 
 == Syntax
 
+// tag::syntax[]
 A Define query consists of a single `define` clause and always starts with the `define` keyword.
 
 Define queries are written in TypeQL with the following syntax:
 
 [,typeql]
 ----
-define <pattern>
+define <schema statements>
 ----
 
-A pattern in a `define` clause uses TypeQL to declare type hierarchy, ownerships, roleplayers, and rules.
-For rules, see the xref:schema/define-rules.adoc[] page.
-For type hierarchy, ownerships, and roleplayers, see below.
+Schema statements in a `define` clause uses TypeQL to declare type definitions and rules.
+For more information on defining rules, see the xref:schema/define-rules.adoc[] page.
+For more information on defining types, ownerships, and roleplayers, see below.
+// end::syntax[]
 
 [#_define_clause]
 == Define clause
 
-A `define` clause is used in a Define query to specify a pattern for new or updated types and rules.
-A pattern in a define `clause` consists of schema statements combined by an implicit conjunction (logical `AND`).
+A `define` clause is used in a Define query to specify statements for new or updated types and rules.
+Schema statements in a `define` clause are combined by an implicit conjunction (logical `AND`).
+TypeQL statements can be included in any order with the same result.
 These statements can't use any variables or values.
 Instead, they use type labels and TypeQL keywords to express
 <<_subtyping,subtyping>>,
@@ -68,27 +71,27 @@ Instead, they use type labels and TypeQL keywords to express
 <<_annotations,annotations>>, and
 <<_roleplaying,roleplaying>>.
 
-Statements in a `define` clause pattern can use types that already exist in a schema
+Statements in a `define` clause can use types that already exist in a schema
 (including built-in types), and can use types that are defined anywhere in the same query.
 Every statement ends with a semicolon.
 
-[#_schema_patterns]
-=== Schema definition patterns
+[#_schema_statements]
+=== Schema definition statements
 
-See the table below for the most generic patterns that can be used for schema definition in TypeQL.
+See the table below for the most simple statements that can be used for type definition in TypeQL.
 
-.Type patterns
+.Type statements
 [cols="^.^1,^.^2,^.^2"]
 |===
-| *Pattern name* | *Pattern syntax* | *Example*
+| *Name* | *Syntax* | *Example*
 
 | <<_subtyping,Subtyping>>
 | `<label> sub <type>;`
 | `person sub user;`
 
-| Direct subtyping
-| `<label> sub! <type>;`
-| `person sub! user;`
+//| Direct subtyping
+//| `<label> sub! <type>;`
+//| `person sub! user;`
 
 | <<_roleplaying,Adding a role>>
 | `<relation> relates <label>;`
@@ -106,8 +109,6 @@ See the table below for the most generic patterns that can be used for schema de
 //=== Order of statements and indentation
 //#todo Consider generalizing this recommendations
 
-TypeQL statements in a pattern are combined by a conjunction (logical `AND`),
-which means they can be included in any order of following with the same result.
 For readability purposes, by default, we recommend to include them in the following order:
 
 * Attribute types
