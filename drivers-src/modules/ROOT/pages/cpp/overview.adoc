@@ -11,10 +11,10 @@ The TypeDB C\++ driver was developed by Vaticle to enable TypeDB support for C++
 === Prerequisites
 
 To use the TypeDB C++ driver, you need a compatible version of TypeDB running.
-Please see the
+See the
 <<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
 
-For Linux OS: the minimum version of `glibc` is `2.27.0`.
+For Linux OS: the minimum version of `glibc` is `2.25.0`.
 
 === Installation
 
@@ -42,17 +42,12 @@ ELSE()
 ENDIF()
 ----
 
-//cargo add typedb-driver@2.24.5
-
 // == C++ driver API
 
-//Use the xref:cpp/api-reference.adoc[API reference] page for documentation of the methods and objects used in
+//Use the xref:cpp/api-reference.adoc[API reference] page for the documentation of the methods and objects used in
 //the driver.
 
 //Explore the C++ driver xref:cpp/cpp-tutorial.adoc[tutorial] with example of connecting to TypeDB.
-
-//Use the xref:cpp/api-reference.adoc[API reference] page for documentation of the methods and objects used in
-//the driver.
 
 include::../java/overview.adoc[tag=questions]
 
@@ -70,7 +65,7 @@ include::../java/overview.adoc[tag=questions]
 |===
 | C++ driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | C++
 
-| 2.26.3
+| 2.26.5
 | 3
 | 2.26.3
 | 2.26.0
