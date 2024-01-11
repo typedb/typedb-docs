@@ -16,39 +16,26 @@
 #
 define
 
-credential sub attribute, value string;
 full-name sub attribute, value string;
-id sub attribute, abstract, value string;
-email sub id, value string;
-name sub id, value string;
-path sub id, value string;
+email sub attribute, value string;
+path sub attribute, value string;
 size-kb sub attribute, value long;
 
 subject sub entity,
-    abstract,
-    owns credential,
     plays permission:subject;
 
-user sub subject,
+person sub subject,
     owns email @key,
-    abstract;
-
-person sub user,
     owns full-name;
 
-object sub entity,
-    abstract,
-    plays access:object;
-
-file sub object,
+file sub entity,
     owns path,
-    owns size-kb;
+    owns size-kb,
+    plays access:object;
 
 action sub entity,
     owns name,
     plays access:action;
-
-operation sub action;
 
 access sub relation,
     relates action,
@@ -58,6 +45,10 @@ access sub relation,
 permission sub relation,
     relates access,
     relates subject;
+
+membership sub relation,
+    relates member,
+    relates parent;
 
 rule add-view-permission: when {
     $modify isa action, has name "modify_file";
