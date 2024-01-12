@@ -5,24 +5,7 @@
 :pageTitle: Fundamentals
 :summary: TypeQL essentials
 
-All queries to a TypeDB database are written in TypeQL.
 
-TypeQL is a *declarative* query language.
-Rather than writing an algorithm of how the data should be retrieved, we declare requirements, and the TypeDB query
-processor will take care of finding an optimal way to retrieve and process the data.
-
-[NOTE]
-====
-TypeQL is both a https://en.wikipedia.org/wiki/Data_definition_language[Data Definition Language,window=_blank] (DDL)
-and https://en.wikipedia.org/wiki/Data_manipulation_language[Data Manipulation Language,window=_blank] (DML).
-====
-
-As a DDL, it lets us define a <<_schema,schema>> of a database.
-
-As a DML, it lets us query (read&write) <<_data,data>> of a database.
-
-The complete set of the TypeQL grammar can be seen in the *ANTLR v.4* specification file:
-https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
 
 
 
