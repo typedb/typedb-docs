@@ -253,7 +253,7 @@ We delete such a database if it exists to prevent any possible schema or data co
 Then we create a new database with the name `iam`.
 
 We open a schema session to this database, open a write transaction, read the `iam-schema.tql` file,
-and send its contents as a xref:typeql::schema/define-types.adoc[Define query].
+and send its contents as a xref:typeql::schema/type-definitions.adoc[Define query].
 Next, we commit the transaction to persist the resulted schema.
 
 After that we open a data session, a write transaction, read the `iam-data-single-query.tql` file,

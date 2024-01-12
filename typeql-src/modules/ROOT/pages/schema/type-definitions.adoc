@@ -1,91 +1,38 @@
 [#_define_types]
-= Type design
-:Summary: Define schema types and rules with TypeQL.
+= Type definitions
+:Summary: Type definitions in TypeQL.
 :keywords: typeql, schema, model, define, modify, extend, type, rule, annotations
 :pageTitle: Define query
-:toc: macro
-:toclevels: 5
 :experimental:
-:!table-caption:
 
-A Define query modifies a schema of a database by adding new types or rules,
-adding new information to existing type definitions, and replacing existing rules.
+Types are defined in a schema of a database.
 
-Define queries can be used only in a schema session and write transaction.
-For more information on the limitations of a schema session, see the
-xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-For more information about basics of data modeling with TypeQL, see the
-xref:typeql::fundamentals.adoc[] page.
 
-== Behavior
 
-// tag::behavior[]
-A Define query adds new or updates existing types and rules.
 
-Define queries are unambiguous and idempotent
-(can be applied multiple times without changing the result of the initial application).
-A `define` clause uses statements without variables to declare a complete schema definition or
-extension to an existing schema.
+A type definition can be written as a single complex statement or as multiple simpler statements to the same effect.
+A full type definition consists of a single subtype statement and any number of comma-separated properties.
 
-Define queries are validated with TypeQL syntax.
-A database's schema is also validated after applying a given query to validate its consistency.
-
-Define query returns a Promise of an empty response.
-// end::behavior[]
-
-=== Types behavior
-
-Every type definition in a Define query is applied to an existing schema of a database.
-A Define query should produce a consistent and valid schema in a database,
-otherwise it will not pass validation and will be rejected.
-
-== Syntax
-
-// tag::syntax[]
-A Define query consists of a single `define` clause and always starts with the `define` keyword.
-
-Define queries are written in TypeQL with the following syntax:
-
-[,typeql]
-----
-define <schema statements>
-----
-
-Schema statements in a `define` clause uses TypeQL to declare type definitions and rules.
-For more information on defining rules, see the xref:schema/define-rules.adoc[] page.
-For more information on defining types, ownerships, and roleplayers, see below.
-// end::syntax[]
-
-[#_define_clause]
-== Define clause
-
-A `define` clause is used in a Define query to specify statements for new or updated types and rules.
-Schema statements in a `define` clause are combined by an implicit conjunction (logical `AND`).
-TypeQL statements can be included in any order with the same result.
-These statements can't use any variables or values.
-Instead, they use type labels and TypeQL keywords to express
-<<_subtyping,subtyping>>,
-<<_abstract,abstract flags>>,
-<<_ownership,ownership>>,
-<<_annotations,annotations>>, and
-<<_roleplaying,roleplaying>>.
-
-Statements in a `define` clause can use types that already exist in a schema
-(including built-in types), and can use types that are defined anywhere in the same query.
-Every statement ends with a semicolon.
-
-[#_schema_statements]
-=== Schema definition statements
+<type_label> sub <supertype_label> [,property] ... ;
 
 See the table below for the most simple statements that can be used for type definition in TypeQL.
 
-.Type statements
+[#_schema_statements]
+.Type definitions
 [cols="^.^1,^.^2,^.^2"]
 |===
 | *Name* | *Syntax* | *Example*
 
-| <<_subtyping,Subtyping>>
+| <<_subtyping,Subtyping>> entity type
+| `<label> sub <type>;`
+| `person sub user;`
+
+| <<_subtyping,Subtyping>> relation type
+| `<label> sub <type>;`
+| `person sub user;`
+
+| <<_subtyping,Subtyping>> attribute type
 | `<label> sub <type>;`
 | `person sub user;`
 

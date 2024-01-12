@@ -15,15 +15,14 @@ xref:typeql::fundamentals.adoc[] page.
 == Behavior
 
 // tag::behavior[]
-A Define query adds new or updates existing types and rules.
+A Define query adds schema statements to an existing schema.
+These statements can add new types and rules,
+or they can add new properties to existing types and replace existing rules.
 It can't change schema statements already existing in a schema, except for annotations and rules.
 //#todo Add links to annotations and rules section to clarify
 
 Define queries are idempotent, as in they can be applied multiple times
 without changing the result of the initial application.
-A Define query adds schema statements to an existing schema.
-These statements can add new types and rules,
-or they can add new properties to existing types and replace existing rules.
 
 A Define query should produce a consistent and valid schema in a database,
 otherwise it will not pass validation and will be rejected.
@@ -44,9 +43,11 @@ define <schema statements>
 ----
 
 Schema statements in a `define` clause uses TypeQL to declare type definitions and rules.
-For more information on defining rules, see the xref:schema/define-rules.adoc[] page.
-For more information on defining types, ownerships, and roleplayers, see below.
 // end::syntax[]
+
+For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
+For more information on defining types, ownerships, and roleplayers,
+see below and the xref:typeql::schema/type-definitions.adoc[].
 
 [#_define_clause]
 == Define clause
@@ -62,13 +63,14 @@ Schema statements can use types that already exist in a schema
 Every statement ends with a semicolon.
 
 Schema statements can be divided to type statements and rule statements.
-For more information on type statements, see the xref:typeql::schema/define-types.adoc[] page.
+For more information on type statements, see the xref:typeql::schema/type-definitions.adoc[] page.
+For more information on rule statements, see the xref:schema/rule-definitions.adoc[] page.
 
 == Examples
 
 The following examples illustrate the basic syntax of Define queries.
 For more advanced examples, see the
-xref:typeql::schema/define-types.adoc[] and xref:typeql::schema/define-rules.adoc[] pages.
+xref:typeql::schema/type-definitions.adoc[] and xref:typeql::schema/rule-definitions.adoc[] pages.
 
 === Define a new type
 

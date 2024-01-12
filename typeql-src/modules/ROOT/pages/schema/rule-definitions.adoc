@@ -1,7 +1,7 @@
-= Rule design
+= Rule definitions
 :Summary: Defining rules with TypeQL.
 :keywords: typeql, schema, rule, when, then, condition, conclusion, logic, inference
-:pageTitle: Define rules
+:pageTitle: Rule definitions
 
 [#_rules]
 Rules are used to infer new data at query time for read queries.
@@ -10,7 +10,7 @@ They are defined in a schema and represent a logic embedded in a data model.
 
 == Behavior
 
-include::typeql::schema/define-types.adoc[tags=behavior]
+//include::typeql::schema/type-definitions.adoc[tags=behavior]
 
 [#_rules_behavior]
 === Rules behavior
@@ -45,7 +45,7 @@ define <pattern>
 ----
 
 A pattern in a `define` clause uses TypeQL to declare type hierarchy, ownerships, roleplayers, and rules.
-For type hierarchy, ownerships, and roleplayers, see the xref:typeql::schema/define-types.adoc[] page.
+For type hierarchy, ownerships, and roleplayers, see the xref:typeql::schema/type-definitions.adoc[] page.
 For rules, see below.
 
 === Rule syntax

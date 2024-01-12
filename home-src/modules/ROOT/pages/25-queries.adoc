@@ -61,7 +61,7 @@ permission sub relation,
     relates object;
 ----
 
-The above query xref:typeql:ROOT:schema/define-types.adoc[defines]
+The above query xref:typeql:ROOT:schema/type-definitions.adoc[defines]
 seven attribute types, three entity types, and a relation type.
 
 Note the `user` type, that owns `email` and `username` attribute types.
@@ -147,7 +147,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 A schema of a TypeDB database can be extended at any time without the need to rewrite existing queries.
 The easiest way to extend the schema is to add a new type, add an ownership of an attribute type, add a role, or
-add an ability to play a new role with a xref:typeql:ROOT:schema/define-types.adoc[Define] query.
+add an ability to play a new role with a xref:typeql:ROOT:schema/type-definitions.adoc[Define] query.
 
 Let's add a new subtype and a new role to our schema:
 
@@ -542,7 +542,7 @@ all instances of the owner type must have exactly one (no less and no more) inst
 
 Consider the schema from the <<_data,query #2>>.
 
-In the schema we xref:typeql:ROOT:schema/define-types.adoc[defined]
+In the schema we xref:typeql:ROOT:schema/type-definitions.adoc[defined]
 the `username` type to be a key for the `user` type,
 and the `email` to be unique, when owned by the `user` type.
 
@@ -675,7 +675,7 @@ image::typedb-in-25-queries/math.png[Arithmetics, role=framed, width = 75%, link
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 TypeDB reasoning engine can perform rule-based inference when you read data.
-To use inference, we need to xref:typeql:ROOT:schema/define-types.adoc[Define] rules in the schema,
+To use inference, we need to xref:typeql:ROOT:schema/type-definitions.adoc[Define] rules in the schema,
 open a `read` transaction with the `infer` option xref:typedb::developing/infer.adoc#_how_to_use_inference[enabled],
 and send a xref:typeql:ROOT:data/get.adoc[Get] or a xref:typeql::data/fetch.adoc[Fetch] query.
 
@@ -844,7 +844,7 @@ Then the transitivity, implemented by
 the `transitive-group-memmbership` rule, will make `user` into a member of all groups: from Group A to Group E.
 ////
 
-For more information on rule inference, see the xref:typeql:ROOT:schema/define-rules.adoc[] page
+For more information on rule inference, see the xref:typeql:ROOT:schema/rule-definitions.adoc[] page
 in xref:typeql:ROOT:overview.adoc[TypeQL documentation].
 
 == #{counter:query}: Inserting transitive relations
