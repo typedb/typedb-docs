@@ -6,15 +6,10 @@
 The source of truth for the TypeQL keywords and grammar is the *ANTLR v.4* specification file:
 https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
 
-A TypeQL query consists of 1–3 clauses.
-Each clause starts with a similar named <<_clause_keywords,clause keyword>>.
-Inside a clause, we can use data patterns or schema definitions,
-consisting of statements that use <<_statement_keywords>>.
-
 [#_clause_keywords]
-== Clause keywords
+== Clauses
 
-Clause keywords declare a start of a query's clause.
+Clause keywords declare a start of a query's clause:
 
 `define`::
 Starts a `define` clause of a xref:typeql::schema/define.adoc[].
@@ -44,13 +39,9 @@ Starts a `fetch` clause of a xref:typeql::data/fetch.adoc[].
 `get`::
 Starts a `get` clause of a xref:typeql::data/get.adoc[].
 
-[#_statement_keywords]
-== Statement keywords
+== Schema statements
 
-Statement keywords can be used only inside a clause of a query as a part of a data pattern or a schema definition.
-
-=== Schema statements
-
+Schema statement keywords used inside a clause of a query as a part of a data pattern or a schema definition:
 //Schema statements are used to specify types in both data queries and schema queries.
 
 `sub`::
@@ -109,8 +100,9 @@ Specify a condition of a xref:typeql::schema/rule-definitions.adoc#_when_clause[
 `then`::
 Specify a conclusion of a xref:typeql::schema/rule-definitions.adoc#_then_clause[rule].
 
-=== Data statements
+== Data statements
 
+Data statement keywords used inside a clause of a data query as a part of a data pattern:
 //Data statements are only used in data query patterns.
 
 `isa`::
@@ -131,7 +123,7 @@ See an xref:typeql::data/examples.adoc#_equality[example].
 Specify an ownership of a given attribute by a given instance.
 See an xref:typeql::data/examples.adoc#_owners_of_a_specific_attribute_by_type_and_value[example].
 
-==== Modifiers
+=== Modifiers
 
 `offset`::
 Offset the result of a query by the specified number of results.
@@ -145,7 +137,7 @@ See an xref:typeql::data/get.adoc#_limit_the_results[example].
 Sort the results of a query.
 See an xref:typeql::data/get.adoc#_sort_the_results[example].
 
-==== Logic
+=== Logic
 
 `or`::
 Specify a disjunction between two sets of statements surrounded by curly brackets.
@@ -155,7 +147,7 @@ See an xref:typeql::data/examples.adoc#_disjunctions[example].
 Specify a negation of a set of statements surrounded by curly brackets.
 See an xref:typeql::data/examples.adoc#_complex_example[example].
 
-==== Value comparators
+=== Value comparators
 
 `==`::
 Specify that values are equal.
@@ -183,7 +175,7 @@ See an xref:typeql::data/examples.adoc#_value_matching_regex[example].
 Specify that value contains a given substring.
 See an xref:typeql::data/examples.adoc#_value_containing[example].
 
-==== Aggregation
+=== Aggregation
 
 `group`::
 Group results by a given variable.
