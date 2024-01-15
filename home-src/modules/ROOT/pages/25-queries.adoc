@@ -563,7 +563,7 @@ The above query fails as it violates the following annotation constraints:
 
 * the first inserted `user` doesn't have a `username`, which violates the `@key` constraint from the schema;
 * the second `user` has `username` of the value `Bob`, which happens to be non-unique,
-  as there is another `user` owning the same attribute in the database already;
+as there is another `user` owning the same attribute in the database already;
 * the third `user` has correct username, but also has non-unique email, which is forbidden by the `@unique` constraint.
 
 As a result, we have the following error:
@@ -573,6 +573,7 @@ As a result, we have the following error:
 [THW04] Invalid Thing Write: Attempted to assign a key of type 'name' onto a(n) 'user' that already has one.
 ----
 
+[#_counterquery_limiting_values_with_regex]
 == #{counter:query}: Limiting values with regex
 //define (constraint for the value that can be inserted)
 

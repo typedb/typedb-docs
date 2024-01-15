@@ -1,0 +1,218 @@
+= Keywords
+:Summary: Keyword glossary for TypeQL.
+:keywords: typeql, keywords, glossary, isa, sub, has, owns, plays, relates
+:pageTitle: Keywords
+
+The source of truth for the TypeQL keywords and grammar is the *ANTLR v.4* specification file:
+https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
+
+A TypeQL query consists of 1–3 clauses.
+Each clause starts with a similar named <<_clause_keywords,clause keyword>>.
+Inside a clause, we can use data patterns or schema definitions,
+consisting of statements that use <<_statement_keywords>>.
+
+[#_clause_keywords]
+== Clause keywords
+
+Clause keywords declare a start of a query's clause.
+
+`define`::
+Starts a `define` clause of a xref:typeql::schema/define.adoc[].
+
+`undefine`::
+Starts an `undefine` clause of a xref:typeql::schema/undefine.adoc[]
+
+`match`::
+Starts a `match` clause that can be used by an xref:typeql::data/insert.adoc[Insert],
+xref:typeql::data/delete.adoc[Delete],
+xref:typeql::data/update.adoc[Update],
+xref:typeql::data/fetch.adoc[Fetch], or
+xref:typeql::data/get.adoc[Get] query.
+
+`insert`::
+Starts an `insert` clause of an xref:typeql::data/insert.adoc[].
+
+`delete`::
+Starts a `delete` clause of a xref:typeql::data/delete.adoc[].
+
+`update`::
+Starts an `update` clause of a xref:typeql::data/update.adoc[].
+
+`fetch`::
+Starts a `fetch` clause of a xref:typeql::data/fetch.adoc[].
+
+`get`::
+Starts a `get` clause of a xref:typeql::data/get.adoc[].
+
+[#_statement_keywords]
+== Statement keywords
+
+Statement keywords can be used only inside a clause of a query as a part of a data pattern or a schema definition.
+
+=== Schema statements
+
+//Schema statements are used to specify types in both data queries and schema queries.
+
+`sub`::
+Specify a type as a subtype of a given type.
+Takes into account all subtypes of a given type.
+See an xref:typeql::data/examples.adoc#_specific_type_or_nested_subtype[example].
+
+`sub!`::
+Specify a type as a direct subtype of a given type.
+See an xref:typeql::data/examples.adoc#_direct_subtypes[example].
+
+`type`::
+Specify an exact type by its label.
+See an xref:typeql::data/examples.adoc#_specific_type[example].
+
+`abstract`::
+Specify that a given type is an abstract type.
+
+`owns`::
+Specify that a given type can own attributes of a given attribute type.
+See an xref:typeql::data/examples.adoc#_owners_spec_type[example].
+
+`value`::
+Specify a value type for an attribute type.
+See an xref:typeql::data/examples.adoc#_attribute_types_by_value_type[example].
+
+`relates`::
+Add a new role for a relation.
+See an xref:typeql::data/examples.adoc#_role_matching[example].
+
+`plays`::
+Specify that a given type can play a given role (in a given relation).
+See an xref:typeql::data/examples.adoc#_players_of_a_specific_role[example].
+
+`@key`::
+Add a key constraint to ownership of a given attribute type by a given type.
+//See [key annotation].
+//#todo Add link to annotations
+
+`@unique`::
+Add a uniqueness constraint to ownership of a given attribute type by a given type.
+//See [unique annotation].
+//#todo Add link to annotations
+
+`regex`::
+Specify a regular expression that limits values of a given attribute type.
+See an xref:home::25-queries.adoc#_counterquery_limiting_values_with_regex[example].
+
+`as`::
+Override an inherited attribute type ownership or role.
+See an xref:typeql::schema/type-definitions.adoc#_override_inherited_ownership[example].
+
+`when`::
+Specify a condition of a xref:typeql::schema/rule-definitions.adoc#_when_clause[rule].
+
+`then`::
+Specify a conclusion of a xref:typeql::schema/rule-definitions.adoc#_then_clause[rule].
+
+=== Data statements
+
+//Data statements are only used in data query patterns.
+
+`isa`::
+Specify a type for a data instance.
+Takes into account all subtypes of a given type.
+//Can be used in data statements only.
+See an xref:typeql::data/examples.adoc#_instances_of_a_type_including_subtypes[example].
+
+`isa!`::
+Specify a type for a data instance without taking into account its subtypes.
+See an xref:typeql::data/examples.adoc#_specific_types_instances[example].
+
+`is`::
+Specify an equality between two concepts.
+See an xref:typeql::data/examples.adoc#_equality[example].
+
+`has`::
+Specify an ownership of a given attribute by a given instance.
+See an xref:typeql::data/examples.adoc#_owners_of_a_specific_attribute_by_type_and_value[example].
+
+==== Modifiers
+
+`offset`::
+Offset the result of a query by the specified number of results.
+See an xref:typeql::data/get.adoc#_offset_the_results[example].
+
+`limit`::
+Limit the result of a query by the specified number of results.
+See an xref:typeql::data/get.adoc#_limit_the_results[example].
+
+`sort`::
+Sort the results of a query.
+See an xref:typeql::data/get.adoc#_sort_the_results[example].
+
+==== Logic
+
+`or`::
+Specify a disjunction between two sets of statements surrounded by curly brackets.
+See an xref:typeql::data/examples.adoc#_disjunctions[example].
+
+`not`::
+Specify a negation of a set of statements surrounded by curly brackets.
+See an xref:typeql::data/examples.adoc#_complex_example[example].
+
+==== Value comparators
+
+`==`::
+Specify that values are equal.
+
+`!=`::
+Specify that values are not equal.
+
+`>`::
+Specify that the first value is bigger than the second one.
+
+`<`::
+Specify that the first value is smaller than the second one.
+
+`>=`::
+Specify that the first value is bigger or equal than the second one.
+
+`+<=+`::
+Specify that the first value is smaller or equal than the second one.
+
+`like`::
+Specify that value matches a given regular expression.
+See an xref:typeql::data/examples.adoc#_value_matching_regex[example].
+
+`contains`::
+Specify that value contains a given substring.
+See an xref:typeql::data/examples.adoc#_value_containing[example].
+
+==== Aggregation
+
+`group`::
+Group results by a given variable.
+See an xref:typeql::data/get.adoc#_grouping[example].
+
+`count`::
+Count the number of results.
+See an xref:typeql::data/get.adoc#_count[example].
+
+`max`::
+Find maximum value of a given variable.
+See an xref:typeql::data/get.adoc#_maximum[example].
+
+`min`::
+Find minimum value a given variable.
+See an xref:typeql::data/get.adoc#_minimum[example].
+
+`mean`::
+Find average value a given variable.
+See an xref:typeql::data/get.adoc#_mean[example].
+
+`median`::
+Find median value a given variable.
+See an xref:typeql::data/get.adoc#_median[example].
+
+`std`::
+Find standard deviation a given variable.
+See an xref:typeql::data/get.adoc#_standard_deviation[example].
+
+`sum`::
+Find sum of values for a given variable.
+See an xref:typeql::data/get.adoc#_sum[example].
