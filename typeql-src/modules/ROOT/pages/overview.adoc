@@ -1,137 +1,47 @@
 = TypeQL overview
-:keywords: typeql, documentation, overview, query, queries, examples, DDL, DML, language, learn, reference
-:pageTitle: Documentation overview
-:summary: A birds-eye view of TypeQL and TypeDB
+:keywords: typeql, overview
+:pageTitle: TypeQL overview
+:summary: A birds-eye view of TypeQL documentation.
 
-This is the TypeQL documentation portal. It has the following pages:
+[cols-1]
+--
+.xref:typeql::introduction.adoc[]
+[.clickable]
+****
+Introduction for the near-natural fully declarative query language of TypeDB.
+****
+--
+
+== Queries
 
 [cols-2]
 --
-.xref:typeql::fundamentals.adoc[]
+.xref:typeql::schema/overview.adoc[Schema queries]
 [.clickable]
 ****
-Essential knowledge and terminology.
+* xref:typeql::schema/define.adoc[]
+** xref:typeql::schema/type-definitions.adoc[]
+** xref:typeql::schema/rule-definitions.adoc[]
+* xref:typeql::schema/undefine.adoc[]
 ****
 
-.xref:typeql::queries.adoc[]
+.xref:typeql::data/overview.adoc[Data queries]
 [.clickable]
 ****
-Query types and examples.
+* xref:typeql::data/insert.adoc[]
+* xref:typeql::data/delete.adoc[]
+* xref:typeql::data/update.adoc[]
+* xref:typeql::data/fetch.adoc[]
+* xref:typeql::data/get.adoc[]
+* xref:typeql::data/examples.adoc[]
 ****
 --
 
-[#_schema]
-== Schema
-
-[cols-2]
+[cols-1]
 --
-.xref:typeql::schema/define-types.adoc[Schema]
+.xref:typeql::keywords.adoc[]
 [.clickable]
 ****
-Default schema, type system, rules.
-****
-
-.xref:typeql::schema/define-types.adoc[]
-[.clickable]
-****
-Define query syntax, type definitions.
-****
-
-.xref:typeql::schema/define-rules.adoc[]
-[.clickable]
-****
-Rule syntax and validation.
-****
-
-.xref:typeql::schema/undefine.adoc[]
-[.clickable]
-****
-Deleting types and rules from a schema.
+A glossary of TypeQL keywords used in clauses, schema statements, and data statements.
 ****
 --
-
-[#_data]
-== Data
-
-[cols-2]
---
-.xref:typeql::data/match.adoc[Data queries]
-[.clickable]
-****
-Overview of data query types and validation.
-****
-
-.xref:typeql::data/match.adoc[]
-[.clickable]
-****
-Pattern matching in different queries.
-****
---
-
-=== Write queries
-
-[cols-3]
---
-.xref:typeql::data/insert.adoc[Insert]
-[.clickable]
-****
-Adding new data.
-****
-
-.xref:typeql::data/delete.adoc[Delete]
-[.clickable]
-****
-Removing data.
-****
-
-.xref:typeql::data/update.adoc[Update]
-[.clickable]
-****
-Replacing data.
-****
---
-
-=== Read queries
-
-[cols-2]
---
-.xref:typeql::data/fetch.adoc[Fetch]
-[.clickable]
-****
-Retrieving types and values as JSON objects.
-****
-
-.xref:typeql::data/get.adoc[Get]
-[.clickable]
-****
-Getting types and data as Driver API objects.
-****
---
-
-=== Miscellaneous
-
-[col-1]
---
-.xref:typeql::data/examples.adoc[]
-[.clickable]
-****
-Practical example of patterns and how to use them in queries.
-****
---
-//* xref:grammar.adoc[]
-
-== Where to go from here?
-
-See the xref:typeql::fundamentals.adoc[] page for essential knowledge about TypeQL and the xref:typeql::queries.adoc[]
-page for an overview of all query types.
-
-Explore the <<_schema,Schema>> section for the in-detail documentation of the TypeQL as a Data definition language
-(DDL) -- how to define a TypeDB database schema.
-
-Check the <<_data,Data>> section for the documentation of TypeQL as a Data manipulation language (DML) --
-how to build queries to a TypeDB database.
-
-There are also separate documentation portal sections for:
-
-* xref:typedb::overview.adoc[TypeDB]
-* xref:drivers::overview.adoc[TypeDB Clients]

@@ -28,7 +28,8 @@ Inserted data must not violate a schema of a database.
 
 == Syntax
 
-A Fetch query consists of an optional
+// tag::syntax[]
+An Insert query consists of an optional
 <<_match_clause,match>> clause and an
 <<_insert_clause,insert>> clause.
 
@@ -41,6 +42,7 @@ insert <pattern>
 ----
 
 An `insert` clause pattern uses variables from a preceding `match` clause pattern.
+// end::syntax[]
 
 [#_match_clause]
 == Match clause

@@ -29,6 +29,7 @@ Inserted data must not violate a schema of a database.
 
 == Syntax
 
+// tag::syntax[]
 An Update query consists of a
 <<_match_clause,match>>,
 <<_delete_clause,delete>>, and
@@ -45,6 +46,7 @@ insert <pattern>
 
 Both `delete` and `insert` clauses patterns can use variables from a preceding `match` clause pattern and
 must have at least one concept variable from a `match` clause of the same query.
+// end::syntax[]
 
 [#_match_clause]
 == Match clause
@@ -134,7 +136,7 @@ but it will no longer be owned by the `Masako Holley` person.
 ====
 
 If you want to narrow down the matched results to a single unique entity,
-consider specifying xref:typeql::schema/define-types.adoc#_unique_attribute[uniqueness annotation]
+consider specifying xref:typeql::schema/type-definitions.adoc#_unique_attribute[uniqueness annotation]
 for some of its attribute ownerships.
 
 [#_delete_attribute]

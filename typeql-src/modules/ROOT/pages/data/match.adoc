@@ -203,7 +203,7 @@ For example, see the <<_combined_statements_example>> section at the end of this
 === Data statements
 
 Data statements are used for manipulating data instances.
-They can be used only in data queries and xref:typeql::schema/define-rules.adoc[rules].
+They can be used only in data queries and xref:typeql::schema/rule-definitions.adoc[rules].
 //#todo Add link to the Data queries page
 
 //#todo Add column predicates
@@ -268,7 +268,7 @@ see the sections below.
 Type statements are used for schema types.
 They can be used only in a `match` and `define` clauses.
 For `define` clause patterns examples, see the
-xref:typeql::schema/define-types.adoc#_schema_patterns[Define types] page.
+xref:typeql::schema/type-definitions.adoc[] page.
 
 .Type statements
 [cols="^.^1,^.^2,^.^2"]
@@ -385,7 +385,7 @@ To persist a value of a value variable, you can save it into a database by using
 with a matching value type.
 Value variables can be one of the following value types (the same as value types for attributes):
 
-include::typeql::schema/define-types.adoc[tag=value_types]
+include::typeql::schema/type-definitions.adoc[tag=value_types]
 
 To assign a value for a value variable, use the `=` sign:
 

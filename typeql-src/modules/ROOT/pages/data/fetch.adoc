@@ -25,13 +25,13 @@ In particular, if there are no matches in the preceding `match` clause, then the
 
 == Syntax
 
+// tag::syntax[]
 A Fetch query consists of a
 <<_match_clause,match>> and a
 <<_fetch_clause,fetch>> clauses,
 followed by optional <<_modifiers,modifiers>>.
 
 Fetch queries are written in TypeQL with the following syntax:
-
 ////
 .Fetch query syntax
 [,typeql]
@@ -66,6 +66,7 @@ fetch {
 ----
 
 Variables mentioned in a `fetch` clause must be bound (set) in a `match` clause of the same query.
+// end::syntax[]
 
 [#_match_clause]
 == Match clause

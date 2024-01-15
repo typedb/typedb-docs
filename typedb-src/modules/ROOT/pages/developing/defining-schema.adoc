@@ -229,8 +229,8 @@ As a result of this query, only three new types are added to the schema.
 Sending it multiple times to the same database will produce the same result as sending it only once.
 
 For more information on defining types and rules in a schema, see the
-xref:typeql::schema/define-types.adoc[]
-and xref:typeql::schema/define-rules.adoc[] pages.
+xref:typeql::schema/type-definitions.adoc[]
+and xref:typeql::schema/rule-definitions.adoc[] pages.
 
 [#_truncate_a_schema]
 == Truncate a schema
@@ -310,7 +310,7 @@ or TypeDB driver API methods.
 
 === Modify a rule
 
-You can replace a rule with a new one by xref:typeql::schema/define-rules.adoc[defining a new rule]
+You can replace a rule with a new one by xref:typeql::schema/rule-definitions.adoc[defining a new rule]
 with the same label as the old one.
 
 == Learn more
