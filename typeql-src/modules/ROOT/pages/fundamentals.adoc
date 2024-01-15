@@ -5,195 +5,14 @@
 :pageTitle: Fundamentals
 :summary: TypeQL essentials
 
-All queries to a TypeDB database are written in TypeQL.
 
-TypeQL is a *declarative* query language.
-Rather than writing an algorithm of how the data should be retrieved, we declare requirements, and the TypeDB query
-processor will take care of finding an optimal way to retrieve and process the data.
 
-[NOTE]
-====
-TypeQL is both a https://en.wikipedia.org/wiki/Data_definition_language[Data Definition Language,window=_blank] (DDL)
-and https://en.wikipedia.org/wiki/Data_manipulation_language[Data Manipulation Language,window=_blank] (DML).
-====
 
-As a DDL, it lets us define a <<_schema,schema>> of a database.
 
-As a DML, it lets us query (read&write) <<_data,data>> of a database.
 
-The complete set of the TypeQL grammar can be seen in the *ANTLR v.4* specification file:
-https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
-
-== Query structure
-
-A TypeQL xref:typeql::queries.adoc[query] consists of clauses (one, two or three).
-There are the following types of clauses:
-
-* `define`
-* `undefine`
-* `match`
-* `fetch`
-* `get`
-* `insert`
-* `delete`
-
-All clauses start with the keyword, the same as the clause's name, followed by:
-
-* A list of variables and optional modifiers at the end (for a `get` clause);
-* A list of variables or subqueries (for a `fetch` clause);
-* A TypeQL pattern (for all other clauses).
-
-A pattern consists of one or more statements.
-
-.TypeQL query structure
-* Query
-** Clause
-*** Pattern
-**** Statement
-
-.See a simple query example
-[%collapsible]
-====
-[,typeql]
-----
-match $p isa person;
-get $p;
-limit 1;
-----
-
-In the example above we can see a single xref:typeql::data/get.adoc[Get] query with two clauses: `match` and `get`.
-The query also has a modifier to xref:typeql::data/get.adoc#_limit_the_results[limit] the number of results returned
-to exactly one.
-====
-
-A string or a file with multiple TypeQL queries is a script.
-
-.See a TypeQL script example
-[%collapsible]
-====
-[,typeql]
-----
-insert
-$p isa person,
-    has full-name "Masako Holley",
-    has email "masako.holley@vaticle.com";
-
-insert
-$p isa person,
-    has full-name "Pearle Goodman",
-    has email "pearle.goodman@vaticle.com";
-
-insert
-$p isa person,
-    has full-name "Kevin Morrison",
-    has email "kevin.morrison@vaticle.com";
-----
-
-The above example contains three xref:typeql::data/insert.adoc[insert] queries without a match clause.
-
-To rewrite it as a single query we need to remove the second and third `insert` keyword and change variables, so that
-they are not overlapping (otherwise, we will insert a single person entity with three full-names and three emails):
-
-[,typeql]
-----
-insert
-$p1 isa person,
-    has full-name "Masako Holley",
-    has email "masako.holley@vaticle.com";
-
-$p2 isa person,
-    has full-name "Pearle Goodman",
-    has email "pearle.goodman@vaticle.com";
-
-$p3 isa person,
-    has full-name "Kevin Morrison",
-    has email "kevin.morrison@vaticle.com";
-----
-====
-
-For more information on patterns, see the xref:typeql::data/match.adoc[]
-and the xref:typeql::data/examples.adoc[] pages.
-
-[#_schema]
-== Schema
-
-TypeDB schema is like a blueprint of a database.
-
-A database schema contains all user-defined <<_types,types>> and <<_rules,rules>> used in a database.
-
-Every instance of data inserted in a TypeDB database must be assigned a type and be validated against constraints.
-
-[NOTE]
-====
-Database schemas written in TypeQL resemble logical data models of relational databases.
-TypeDB removes the need to create a separate physical data model and allows developers to create schemas that mirror
-their object model, simplifying design and development.
-
-As a result, TypeDB schemas look like entity-relationship (ER) diagrams with entities, relations, and attributes
-connected by roles of relations and ownerships of attributes, but also subtyping (see <<_inheritance,inheritance>>
-below).
-====
-
-[#_types]
-=== Types
-// tag::types_basics[]
-A type represents a set of constraints on the interpretation of data.
-
-A type for a data instance is like a class for an object in OOP.
-
-A definition of a type in a schema of a database sets:
-
-* type hierarchy -- every user-defined type has only one parent or supertype.
-* constraints -- what a type can do: what role to play, what attributes it can own, what value type it has
-(attribute types only), and what roles it relates (relation types only).
-
-A type can be addressed by its label (name). A type label is unique in a schema of a database.
-
-We can define a new type only as a subtype of an existing one.
-
-A new empty database has a set of built-in types. These built-in types are called root types because all user-defined
-types will be subtypes (direct or non-direct) of those root types.
-
-.Root (built-in) types
-[cols="^.^1, ^.^3, ^.^4",options="header"]
-|===
-| Root type label | A subtype of the root type | An instance of data of a subtype
-
-| `entity`
-| Entity type
-| Instance of entity type
-
-| `relation`
-| Relation type
-| Instance of relation type
-
-| `attribute`
-| Attribute type
-| Instance of attribute type
-|===
-
-[IMPORTANT]
-====
-All root types are <<_abstract_types,abstract>> types.
-
-That's why when we say *entity type*, we usually mean a subtype of the `entity` root type.
-In the same way, we can address *relation type* or *attribute type* instead of mentioning
-subtypes of the root types.
-====
-// end::types_basics[]
-
-[NOTE]
-====
-To avoid ambiguity when using type labels, we should try to provide context or specify what exactly
-we mean:
-
-- the type and all its subtypes (the default variant),
-- the exact type, without any of its subtypes,
-- or instances of data of this particular type and instances of data of all its subtypes.
-====
 
 [#_inheritance]
-=== Inheritance
+== Inheritance
 // tag::inheritance_basics[]
 
 A type can subtype another type. As a result, the subtype inherits all the attributes owned and roles played by its
@@ -269,7 +88,7 @@ image::root-types-trees.png[]
 // end::inheritance_basics[]
 
 [#_abstract_types]
-=== Abstract types
+== Abstract types
 // tag::abstract_basics[]
 
 An abstract type can't be instantiated (we can't insert an instance of data of this type). All we can do with an
@@ -283,7 +102,7 @@ All user-defined types are concrete types by default.
 // end::abstract_basics[]
 
 [#_thing_type]
-=== Thing type
+== Thing type
 // tag::thing_type_basics[]
 
 An internal type called `thing` can be used to address all types (both built-in and user-defined) or instances of all
@@ -299,7 +118,7 @@ include::typedb::partial$thing-warning.adoc[]
 // end::thing_type_basics[]
 
 [#_entity_types]
-=== Entity types
+== Entity types
 // tag::entity_type_basics[]
 
 *Entity types* (or subtypes of the `entity` root type) represent the classification of independent objects in the
@@ -371,11 +190,11 @@ But it's really hard to tell them apart without any additional relevant data ins
 ====
 
 For more information on how to define an `entity` type, see the
-xref:typeql::schema/define-types.adoc#_subtyping[Subtyping] section on the
-xref:typeql::schema/define-types.adoc[] page.
+xref:typeql::schema/type-definitions.adoc#_subtyping[Subtyping] section on the
+xref:typeql::schema/type-definitions.adoc[] page.
 
 [#_relation_types]
-=== Relation types
+== Relation types
 // tag::relation_type_basics[]
 
 Relation types (or subtypes of the `relation` root type) represent relationships between types.
@@ -418,7 +237,7 @@ a `subject` type and all its subtypes entities.
 ====
 // end::relation_type_examples[]
 
-==== Roles
+=== Roles
 
 Roles are special internal types used by relations. We can't create an instance of a role in a database.
 But we can set an instance of another type (role player) to play a role in a particular instance of a relation type.
@@ -449,7 +268,7 @@ file sub entity;
 ----
 ====
 
-==== Abstract roles
+=== Abstract roles
 
 [IMPORTANT]
 ====
@@ -479,7 +298,7 @@ Before version `2.22.0` of TypeDB, roles of abstract relations are also abstract
 It would make the role `member` abstract.
 //Even if it is inherited by a concrete relation, an abstract role continues to be abstract.
 //We can't use an abstract role to insert an instance of a relation type.
-We have to xref:typeql::schema/define-types.adoc#_overrides_a_role[override]
+We have to xref:typeql::schema/type-definitions.adoc#_overrides_a_role[override]
 an abstract role with a new concrete role to use it for data.
 
 ////
@@ -587,11 +406,11 @@ It is impossible to imagine a marriage without considering its spouses.
 
 For more
 information on how to define a `relation` subtype, see the
-xref:typeql::schema/define-types.adoc#_relations[Relations] section on the
-xref:typeql::schema/define-types.adoc[] page.
+xref:typeql::schema/type-definitions.adoc#_relations[Relations] section on the
+xref:typeql::schema/type-definitions.adoc[] page.
 
 [#_attribute_types]
-=== Attribute types
+== Attribute types
 // tag::attribute_type_basics[]
 
 Attribute types (or subtypes of the `attribute` root type) represent properties that other types can own.
@@ -613,8 +432,8 @@ share ownership of the same attribute instance.
 // end::attribute_type_basics[]
 
 For more information on the types of values, attributes can have: see the
-xref:typeql::schema/define-types.adoc#_value_types[list of value types] on the
-xref:typeql::schema/define-types.adoc[] page.
+xref:typeql::schema/type-definitions.adoc#_value_types[list of value types] on the
+xref:typeql::schema/type-definitions.adoc[] page.
 
 // tag::attribute_type_example[]
 
@@ -650,11 +469,11 @@ deleted in TypeDB version 3.0.
 // end::attribute_type_own_depr[]
 
 For more information on how to define an `attribute` subtype, see the
-xref:typeql::schema/define-types.adoc#_attributes[attributes] section on the
-xref:typeql::schema/define-types.adoc[] page.
+xref:typeql::schema/type-definitions.adoc#_attributes[attributes] section on the
+xref:typeql::schema/type-definitions.adoc[] page.
 
 [#_rules]
-=== Rules
+== Rules
 // tag::rules_basics[]
 
 Rules are a part of a schema and define embedded logic.
@@ -731,13 +550,13 @@ out-of-memory error.
 ====
 // end::recursive_logic[]
 
-For more information on how to create rules in a schema, see the xref:typeql::schema/define-rules.adoc[] page.
+For more information on how to create rules in a schema, see the xref:typeql::schema/rule-definitions.adoc[] page.
 
 [#_data]
 == Data
 
 Every piece of data stored in a TypeDB database must be an instance of a <<_types,type>>
-xref:typeql::schema/define-types.adoc[defined] in the schema of the database.
+xref:typeql::schema/type-definitions.adoc[defined] in the schema of the database.
 
 In other words, to insert data into a TypeDB database, we must use the types defined in the schema of the database.
 

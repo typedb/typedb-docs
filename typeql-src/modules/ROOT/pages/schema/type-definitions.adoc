@@ -1,94 +1,35 @@
 [#_define_types]
-= Define types
-:Summary: Define schema types and rules with TypeQL.
+= Type definitions
+:Summary: Type definitions in TypeQL.
 :keywords: typeql, schema, model, define, modify, extend, type, rule, annotations
 :pageTitle: Define query
-:toc: macro
-:toclevels: 5
 :experimental:
-:!table-caption:
 
-A Define query modifies a schema of a database by adding new types or rules,
-adding new information to existing type definitions, and replacing existing rules.
+Types are defined in a schema of a database.
+A type definition can be written as a single complex statement or as multiple simpler statements to the same effect.
+See the table below for the most simple statements that can be used for type definition in TypeQL.
 
-Define queries can be used only in a schema session and write transaction.
-For more information on the limitations of a schema session, see the
-xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
-
-For more information about basics of data modeling with TypeQL, see the
-xref:typeql::fundamentals.adoc[] page.
-
-== Behavior
-
-// tag::behavior[]
-A Define query adds new or updates existing types and rules.
-
-Define queries are unambiguous and idempotent
-(can be applied multiple times without changing the result of the initial application).
-A `define` clause uses a pattern without variables to declare a complete schema definition or
-changes to an existing schema.
-
-Define queries are validated with TypeQL syntax.
-A database's schema is also validated after applying a given query to validate its consistency.
-
-Define query returns a Promise of an empty response.
-// end::behavior[]
-
-=== Types behavior
-
-Every type definition in a Define query is applied to an existing schema of a database.
-A Define query should produce a consistent and valid schema in a database,
-otherwise it will not pass validation and will be rejected.
-
-== Syntax
-
-A Define query consists of a single `define` clause and always starts with the `define` keyword.
-
-Define queries are written in TypeQL with the following syntax:
-
-[,typeql]
-----
-define <pattern>
-----
-
-A pattern in a `define` clause uses TypeQL to declare type hierarchy, ownerships, roleplayers, and rules.
-For rules, see the xref:schema/define-rules.adoc[] page.
-For type hierarchy, ownerships, and roleplayers, see below.
-
-[#_define_clause]
-== Define clause
-
-A `define` clause is used in a Define query to specify a pattern for new or updated types and rules.
-A pattern in a define `clause` consists of schema statements combined by an implicit conjunction (logical `AND`).
-These statements can't use any variables or values.
-Instead, they use type labels and TypeQL keywords to express
-<<_subtyping,subtyping>>,
-<<_abstract,abstract flags>>,
-<<_ownership,ownership>>,
-<<_annotations,annotations>>, and
-<<_roleplaying,roleplaying>>.
-
-Statements in a `define` clause pattern can use types that already exist in a schema
-(including built-in types), and can use types that are defined anywhere in the same query.
-Every statement ends with a semicolon.
-
-[#_schema_patterns]
-=== Schema definition patterns
-
-See the table below for the most generic patterns that can be used for schema definition in TypeQL.
-
-.Type patterns
+[#_schema_statements]
+.Type definitions
 [cols="^.^1,^.^2,^.^2"]
 |===
-| *Pattern name* | *Pattern syntax* | *Example*
+| *Name* | *Syntax* | *Example*
 
-| <<_subtyping,Subtyping>>
+| <<_subtyping,Subtyping>> entity type
 | `<label> sub <type>;`
 | `person sub user;`
 
-| Direct subtyping
-| `<label> sub! <type>;`
-| `person sub! user;`
+| <<_subtyping,Subtyping>> relation type
+| `<label> sub <type>;`
+| `person sub user;`
+
+| <<_subtyping,Subtyping>> attribute type
+| `<label> sub <type>;`
+| `person sub user;`
+
+//| Direct subtyping
+//| `<label> sub! <type>;`
+//| `person sub! user;`
 
 | <<_roleplaying,Adding a role>>
 | `<relation> relates <label>;`
@@ -106,8 +47,6 @@ See the table below for the most generic patterns that can be used for schema de
 //=== Order of statements and indentation
 //#todo Consider generalizing this recommendations
 
-TypeQL statements in a pattern are combined by a conjunction (logical `AND`),
-which means they can be included in any order of following with the same result.
 For readability purposes, by default, we recommend to include them in the following order:
 
 * Attribute types
@@ -118,7 +57,7 @@ For readability purposes, by default, we recommend to include them in the follow
 Indentation and line breaks have no effect on the result of a query and are needed only for readability.
 
 [#_subtyping]
-=== Subtyping
+== Subtyping
 
 Subtyping lets you define a new type, by defining its parent type (or supertype).
 You can create subtypes of built-in root types: `attribute`, `entity`, and `relation`.
@@ -148,7 +87,7 @@ person sub user;
 ----
 
 [#_attributes]
-==== Attributes
+=== Attributes
 
 To define an attribute type, you need to declare its value type.
 That is done by adding a comma separated `value` keyword.
@@ -181,7 +120,7 @@ The following *value types* are supported in TypeDB:
  ** `yyyy-mm-ddThh:mm:ss.fff`
 // end::value_types[]
 
-===== Restrict values with regular expression
+==== Restrict values with regular expression
 
 A value of an attribute type can be restricted using regular expressions.
 For example, to constrain it to a set of options:
@@ -198,7 +137,7 @@ The above example defines an attribute type: `visibility`.
 It specifies a regex to restrict values to only `public`, `private` and `closed` strings.
 
 [#_relations]
-==== Relations
+=== Relations
 
 Relation types are defined by subtyping the `relation` root type or other relation types.
 
@@ -222,7 +161,7 @@ the type of the instance must have that role defined as playable by it with the 
 For more information on letting a type to play a role in a relation type, see the <<_roleplaying>> section.
 
 [#_abstract]
-=== Abstract
+== Abstract
 
 Optionally, types can be defined as `abstract`.
 xref:typeql::fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated but can be queried,
@@ -240,7 +179,7 @@ You can declare an existing schema type as abstract to make it abstract if there
 You can declare an abstract type non-abstract by sending the same type definition without the `abstract` keyword.
 
 [#_ownership]
-=== Ownership
+== Ownership
 
 To add ability for a type to own instances of an attribute type,
 use the `owns` keyword followed by the label of the attribute type.
@@ -264,7 +203,7 @@ object sub entity, owns object-type;
 The above definition adds an ability for instances of `person` type to own instances of the `full-name` type.
 
 [#_cardinality]
-=== Cardinality
+== Cardinality
 
 By default, an instance of a type can have ownership of multiple attributes of the same attribute type
 with different values.
@@ -284,13 +223,13 @@ More flexible cardinality annotation is expected to be available with the releas
 //NoteL 3.0 feature
 
 [#_annotations]
-=== Annotations
+== Annotations
 
 Annotations are added for an ownership of an attribute type in a schema
 to add constraints on what attributes can be owned by an instance of an owner type.
 
 [#_unique_attribute]
-==== Unique attribute annotation
+=== Unique attribute annotation
 
 Use the `@unique` keyword to add *uniqueness* constraint to the ownership of an attribute.
 This prevents two instances of the same type from owning the same attribute instance (with the same value).
@@ -325,7 +264,7 @@ In this example `non-profit` owns `nonprofit-id` with unique constraint.
 It's inherited from `organizatrion-id`.
 
 [#_key_attribute]
-==== Key attribute annotation
+=== Key attribute annotation
 
 Use the `@key` keyword to set the owned attribute as key.
 That limits the cardinality to exactly *one* and adds *uniqueness* constraint.
@@ -345,7 +284,7 @@ An ownership can't have both `@unique` and `@key` annotations at the same time.
 ====
 
 [#_roleplaying]
-=== Roleplaying
+== Roleplaying
 
 For any instance to be able to play a role in a relation,
 the type of the instance must be defined as a potential roleplayer:
@@ -364,7 +303,7 @@ With this definition in a schema, we can now xref:typeql::data/insert.adoc[inser
 data in our database about a relation of type `access` with the role `object` played by a given instance
 of an entity type `object`.
 
-=== Inheritance
+== Inheritance
 
 A subtype inherits parent's owned attributes and roles.
 
@@ -391,7 +330,8 @@ Hence, we can create entities of `file` type, but not `resource` entities.
 
 Further, the `path` attribute type will be owned by the `file` entity type directly.
 
-==== Override inherited ownership
+[#_override_inherited_ownership]
+=== Override inherited ownership
 
 To override an inherited ownership, use the `owns` keyword with the new owned attribute type,
 followed by the `as` keyword and the inherited attribute type:
@@ -432,7 +372,7 @@ In the above example, the `file` entity type owns the `path` and `file-type` att
 The `file-type` attribute type overriding the inherited `object-type` attribute type.
 
 [#_overrides_a_role]
-==== Override a role
+=== Override a role
 
 The label of an inherited role can be overridden to distinguish between roles inherited by a relation subtype
 versus roles defined by its parent type.
@@ -473,11 +413,5 @@ Unlike `user` the `person` type is concrete (not abstract) and can be instantiat
 
 === IAM schema
 
-For more complete and sophisticated example of a schema, see the following default IAM schema used in our documentation:
-
-[,typeql]
-----
-include::typedb::attachment$iam-schema.tql[lines=17..]
-----
-
-For an explanation of this schema, see the xref:typedb::tutorials/iam-schema.adoc[] page.
+For more complete and sophisticated example of a schema,
+see the following xref:typedb::tutorials/iam-schema.adoc[IAM schema].

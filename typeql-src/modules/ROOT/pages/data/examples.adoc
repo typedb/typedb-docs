@@ -22,8 +22,6 @@ toc::[]
 
 == Statements examples
 
-
-
 [NOTE]
 ====
 The statements below are designed for the IAM
@@ -66,6 +64,7 @@ include::typedb::partial$thing-warning.adoc[]
 [#_entity_matching]
 ==== Entity matching
 
+[#_instances_of_a_type_including_subtypes]
 ===== Instances of a type, including subtypes
 
 Use an `instance` pattern with any type to match all instances of a given type and of all its subtypes.
@@ -125,6 +124,7 @@ $p isa person,
 The above xref:typeql::data/match.adoc[] matches all `person` entities that have `full-name`,
 `email`, and `credential` attributes.
 
+[#_owners_of_a_specific_attribute_by_type_and_value]
 ===== Owners of a specific attribute (by type and value)
 
 Use an `instance` pattern with `has-attribute statement` pattern to find all entities that own a specific attribute
@@ -257,6 +257,7 @@ $n "Masako Holley" isa full-name;
 
 The above xref:typeql::data/match.adoc[] (as well as the one before) matches all `full-name` attributes with a value of `Masako Holley`.
 
+[#_value_containing]
 ===== Value containing
 
 Use an `attribute` pattern with `contains` keyword to find all attributes whose value contains specific string.
@@ -270,6 +271,7 @@ $name contains "Masako";
 The above xref:typeql::data/match.adoc[] matches all attributes whose value contains the text `Masako`,
 regardless of their type.
 
+[#_value_matching_regex]
 ===== Value matching regex
 
 Use an `attribute` pattern with `like` keyword and a regular expression to find all attributes whose value matches
@@ -545,8 +547,8 @@ Since usage of a statement in different clauses can provide different results, a
 
 Schema definition statements are similar to schema statements, but can't use variables, nor values.
 For examples of Define and Undefine queries with schema definition statements, see the
-xref:typeql::schema/define-types.adoc[],
-xref:typeql::schema/define-rules.adoc[], and
+xref:typeql::schema/type-definitions.adoc[],
+xref:typeql::schema/rule-definitions.adoc[], and
 xref:typeql::schema/undefine.adoc[] pages.
 
 * <<_all_types>>

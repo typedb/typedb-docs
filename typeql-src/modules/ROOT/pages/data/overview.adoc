@@ -3,80 +3,83 @@
 :keywords: typeql, typedb, data, concepts, patterns, overview
 :pageTitle: Data
 
+Data queries are fully-declarative and use composable polymorphic patterns to match data in a database
+and to further process it.
+
+== Queries
+
 TypeQL data queries can be divided to two groups: read and write queries.
-Write queries can only manipulate data to a database.
-For schema manipulations, use xref:typeql::schema/overview.adoc[schema] queries.
+Write queries can modify data in a database, but can't use reasoning.
 Read queries can retrieve both data from a database and types from its schema.
+For schema manipulations, use xref:typeql::schema/overview.adoc[schema] queries.
 
-Write data queries can be used only in a
-xref:typedb::connecting/overview.adoc#_sessions[data session] and
-xref:typedb::connecting/overview.adoc#_transactions[write transaction].
-Read data queries can be used with any session and transaction.
-For more information on the limitations of a schema session, see the
-xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
+.Data queries
+[cols="^.^2,^.^1,^.^2,^.^2,^.^1"]
+|===
+|Query type | № of clauses | Clause(s) | Keyword | Mandatory
 
-For more information about data manipulation with TypeQL, see the
-xref:typeql::fundamentals.adoc[] page.
+5.+| Write queries
 
-[#_data]
-== Data
+.2+|xref:typeql::data/insert.adoc[Insert]
+.2+|1-2
 
-[cols-1]
---
-.xref:typeql::data/match.adoc[]
-[.clickable]
-****
-Matching concepts with a pattern to use in data queries.
-****
---
+|xref:typeql::data/match.adoc[Match]
+|`match`
+|*No*
+|xref:typeql::data/insert.adoc#_insert_clause[Insert]
+|`insert`
+|Yes
 
-=== Write queries
+.2+|xref:typeql::data/delete.adoc[Delete]
+.2+|2
 
-[cols-3]
---
-.xref:typeql::data/insert.adoc[Insert]
-[.clickable]
-****
-Adding new data.
-****
+|xref:typeql::data/match.adoc[Match]
+|`match`
+|Yes
+|xref:typeql::data/delete.adoc#_delete_clause[Delete]
+|`delete`
+|Yes
 
-.xref:typeql::data/delete.adoc[Delete]
-[.clickable]
-****
-Removing data.
-****
+.3+|xref:typeql::data/update.adoc[Update]
+.3+|3
 
-.xref:typeql::data/update.adoc[Update]
-[.clickable]
-****
-Replacing data.
-****
---
+|xref:typeql::data/match.adoc[Match]
+|`match`
+|Yes
+|xref:typeql::data/delete.adoc#_delete_clause[Delete]
+|`delete`
+|Yes
+|xref:typeql::data/insert.adoc#_insert_clause[Insert]
+|`insert`
+|Yes
 
-=== Read queries
+5.+| Read queries
 
-[cols-2]
---
-.xref:typeql::data/fetch.adoc[Fetch]
-[.clickable]
-****
-Retrieving types and values as JSON objects.
-****
+.2+|xref:typeql::data/fetch.adoc[Fetch]
+.2+|2
 
-.xref:typeql::data/get.adoc[Get]
-[.clickable]
-****
-Getting types and data as Driver API objects.
-****
---
+|xref:typeql::data/match.adoc[Match]
+|`match`
+|Yes
+|xref:typeql::data/fetch.adoc#_fetch_clause[Fetch]
+|`fetch`
+|Yes
 
-=== Miscellaneous
+.2+|xref:typeql::data/get.adoc#_get_clause[Get]
+.2+|2
 
-[col-1]
---
-.xref:typeql::data/examples.adoc[]
-[.clickable]
-****
-Practical example of patterns and how to use them in queries.
-****
---
+|xref:typeql::data/match.adoc[Match]
+|`match`
+|Yes
+|xref:typeql::data/get.adoc#_get_clause[Get]
+|`get`
+|Yes
+|===
+
+== Patterns
+
+All Data queries use a `match` clause to select data from a database to work with
+and subsequent one or two clauses to specify what to do with it.
+For more information on pattern-based matching, see the xref:typeql::data/match.adoc[] page.
+
+//#todo Add common aggregation

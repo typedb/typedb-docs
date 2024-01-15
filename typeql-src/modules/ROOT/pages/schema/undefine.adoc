@@ -32,17 +32,19 @@ Undefine query returns a Promise of an empty response.
 
 == Syntax
 
+// tag::syntax[]
 An Undefine query consists of a single `undefine` clause and always starts with the `undefine` keyword.
 
 Undefine queries are written in TypeQL with the following syntax:
 
 [,typeql]
 ----
-undefine <pattern>
+undefine <schema statements>
 ----
 
-A pattern in a `undefine` clause uses TypeQL to declare type hierarchy, ownerships, roleplayers,
-and rules that need to be removed.
+Schema statements in an `undefine` clause use TypeQL to declare types,
+type definitions, and rules that need to be removed.
+// end::syntax[]
 
 [#_undefine_clause]
 == Undefine clause

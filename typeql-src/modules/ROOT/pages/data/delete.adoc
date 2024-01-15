@@ -26,6 +26,7 @@ A Delete query returns a Promise of an empty response.
 
 == Syntax
 
+// tag::syntax[]
 A Delete query consists of a
 <<_match_clause,match>> clause and a
 <<_delete_clause,delete>> clause.
@@ -39,6 +40,7 @@ delete <pattern>
 ----
 
 A `delete` clause pattern uses variables from a preceding `match` clause pattern.
+// end::syntax[]
 
 [#_match_clause]
 == Match clause

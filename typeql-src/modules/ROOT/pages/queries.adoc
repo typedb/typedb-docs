@@ -1,26 +1,27 @@
 = Queries
 :Summary: Querying with TypeQL.
-:keywords: typeql, typedb, query, match, get, insert, delete, update
-:longTailKeywords: typeql match, typeql query, typedb query, match clause
+:keywords: typeql, typedb, query, match, clause, fetch, get, insert, delete, update
 :pageTitle: Queries
+:tabs-sync-option:
 
 // tag::body[]
-TypeQL is a *declarative* query language used by TypeDB.
-
 A TypeQL query consists of clauses, that use patterns consisting of statements.
 For all query types and their clauses, see the table below.
 
-//== Query types
+For more information on statements, see the
+xref:typeql::data/match.adoc#_patterns_overview[patterns and statements] sections on the
+xref:typeql::data/match.adoc[] page.
 
+.Query types
 [cols="^.^2,^.^1,^.^2,^.^2,^.^1"]
 |===
 |Query type | № of clauses | Clause(s) | Keyword | Mandatory
 
 5.+| Schema queries
 
-|xref:typeql::schema/define-types.adoc[Define]
+|xref:typeql::schema/type-definitions.adoc[Define]
 |1
-|xref:typeql::schema/define-types.adoc#_define_clause[Define]
+|xref:typeql::schema/type-definitions.adoc#_define_clause[Define]
 |`define`
 |Yes
 
@@ -88,6 +89,130 @@ For all query types and their clauses, see the table below.
 |===
 // end::body[]
 
+== Query syntax
+
+TypeQL queries use
+
+
+[tabs]
+====
+Define::
++
+--
+include::typeql::schema/define.adoc[tag=syntax]
+--
+
+Undefine::
++
+--
+include::typeql::schema/undefine.adoc[tag=syntax]
+--
+
+Insert::
++
+--
+include::typeql::data/insert.adoc[tag=syntax]
+--
+
+Delete::
++
+--
+include::typeql::data/delete.adoc[tag=syntax]
+--
+
+Update::
++
+--
+include::typeql::data/update.adoc[tag=syntax]
+--
+
+Fetch::
++
+--
+include::typeql::data/fetch.adoc[tag=syntax]
+--
+
+Get::
++
+--
+include::typeql::data/get.adoc[tag=syntax]
+--
+====
+
+
+////
+A pattern consists of one or more statements.
+
+.TypeQL query structure
+* Query
+** Clause
+*** Pattern
+**** Statement
+
+.See a simple query example
+[%collapsible]
+====
+[,typeql]
+----
+match $p isa person;
+get $p;
+limit 1;
+----
+
+In the example above we can see a single xref:typeql::data/get.adoc[Get] query with two clauses: `match` and `get`.
+The query also has a modifier to xref:typeql::data/get.adoc#_limit_the_results[limit] the number of results returned
+to exactly one.
+====
+
+A string or a file with multiple TypeQL queries is a script.
+
+.See a TypeQL script example
+[%collapsible]
+====
+[,typeql]
+----
+insert
+$p isa person,
+    has full-name "Masako Holley",
+    has email "masako.holley@vaticle.com";
+
+insert
+$p isa person,
+    has full-name "Pearle Goodman",
+    has email "pearle.goodman@vaticle.com";
+
+insert
+$p isa person,
+    has full-name "Kevin Morrison",
+    has email "kevin.morrison@vaticle.com";
+----
+
+The above example contains three xref:typeql::data/insert.adoc[insert] queries without a match clause.
+
+To rewrite it as a single query we need to remove the second and third `insert` keyword and change variables, so that
+they are not overlapping (otherwise, we will insert a single person entity with three full-names and three emails):
+
+[,typeql]
+----
+insert
+$p1 isa person,
+    has full-name "Masako Holley",
+    has email "masako.holley@vaticle.com";
+
+$p2 isa person,
+    has full-name "Pearle Goodman",
+    has email "pearle.goodman@vaticle.com";
+
+$p3 isa person,
+    has full-name "Kevin Morrison",
+    has email "kevin.morrison@vaticle.com";
+----
+====
+
+For more information on patterns, see the xref:typeql::data/match.adoc[]
+and the xref:typeql::data/examples.adoc[] pages.
+////
+
 // tag::examples[]
 == Examples
 
@@ -132,8 +257,8 @@ The above query defines two attribute types, one entity type,
 and an ability to own one of the new attribute types to a pre-existing `user` type.
 Unlike the first example, this one requires a `user` type to be present in the current database,
 so it can't be applied to an empty database, as type `user` will be missing.
-For more information about defining types in a schema, see the xref:typeql::schema/define-types.adoc[] page.
-For information about defining rules in a schema, see the xref:typeql::schema/define-rules.adoc[] page.
+For more information about defining types in a schema, see the xref:typeql::schema/type-definitions.adoc[] page.
+For information about defining rules in a schema, see the xref:typeql::schema/rule-definitions.adoc[] page.
 --
 
 Undefine::
@@ -317,8 +442,8 @@ file sub entity, owns path;
 The above query defines two attribute types, one entity type,
 and an ability to own one of the new attribute types to a pre-existing `user` type.
 This query requires a `user` type to be present in the current database.
-For more information about defining types in a schema, see the xref:typeql::schema/define-types.adoc[] page.
-For information about defining rules in a schema, see the xref:typeql::schema/define-rules.adoc[] page.
+For more information about defining types in a schema, see the xref:typeql::schema/type-definitions.adoc[] page.
+For information about defining rules in a schema, see the xref:typeql::schema/rule-definitions.adoc[] page.
 
 [#_undefine_query]
 === Undefine query
@@ -466,7 +591,7 @@ xref:drivers::nodejs/api-reference.adoc[Node.js].
 == Learn more
 
 To find out more about the queries, see the
-xref:typeql::schema/define-types.adoc[Define query],
+xref:typeql::schema/type-definitions.adoc[Define query],
 xref:typeql::schema/undefine.adoc[Undefine query],
 xref:typeql::data/insert.adoc[],
 xref:typeql::data/delete.adoc[],

@@ -3,40 +3,67 @@
 :keywords: typeql, typedb, schema, types, rules, overview
 :pageTitle: Schema
 
-TypeQL has only two types of schema manipulation queries: Define and Undefine.
+A schema is like a blueprint of a database that contains all user-defined <<_types,types>> and rules used in a database.
+All queries are validated with the TypeQL syntax and a type system of a schema.
+Every piece of data inserted in a TypeDB database as an instance of a type.
+Rules are used for reasoning.
+
+== Queries
+
+.Schema queries
+[cols="^.^2,^.^1,^.^2,^.^2,^.^1"]
+|===
+|Query type | № of clauses | Clause(s) | Keyword | Mandatory
+
+|xref:typeql::schema/define.adoc[Define]
+|1
+|xref:typeql::schema/define.adoc#_define_clause[Define]
+|`define`
+|Yes
+
+|xref:typeql::schema/undefine.adoc[Undefine]
+|1
+|xref:typeql::schema/undefine.adoc#_undefine_clause[Undefine]
+|`undefine`
+|Yes
+|===
+
 Both Define and Undefine queries can be used only in a
 xref:typedb::connecting/overview.adoc#_sessions[schema session] and
 xref:typedb::connecting/overview.adoc#_transactions[write transaction].
 For more information on the limitations of a schema session, see the
 xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-For more information about data modeling with TypeQL and xref:typedb::basics/data-model.adoc[PERA] model, see the
-xref:typeql::fundamentals.adoc[] page.
+[#_types]
+== Type system
+// tag::types_basics[]
+Types in a schema are modeled with the use of the xref:typedb::basics/data-model.adoc[PERA model].
 
-== Define query
+To create new types in a schema, subtype one of the existing types.
+A subtype inherits all definitions of its supertype.
 
-[cols-2]
---
-.xref:typeql::schema/define-types.adoc[Define types]
-[.clickable]
-****
-Use a Define query to add new or modify existing types.
-****
+By default, a schema has three built-in root types that can by subtyped, but can't be instantiated (used to insert data).
 
-.xref:typeql::schema/define-rules.adoc[Define rules]
-[.clickable]
-****
-Use a Define query to add new or replace existing rules.
-****
---
+.Root (built-in) types
+[cols="^.^1, ^.^3, ^.^4",options="header"]
+|===
+| Root type label | A subtype of the root type | An instance of data of a subtype
 
-== Undefine query
+| `entity`
+| Entity type
+| Instance of entity type
 
-[cols-1]
---
-.xref:typeql::schema/undefine.adoc[Undefine]
-[.clickable]
-****
-This query type can be used to delete types and rules definitions from a schema.
-****
---
+| `relation`
+| Relation type
+| Instance of relation type
+
+| `attribute`
+| Attribute type
+| Instance of attribute type
+|===
+
+//All root types are <<_abstract_types,abstract>> types.
+
+For more information on type definitions, see the xref:typeql::schema/type-definitions.adoc[] page.
+
+To learn about rules, see the xref:typeql::schema/rule-definitions.adoc[] page.

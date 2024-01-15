@@ -25,6 +25,7 @@ See the table in the <<_modifiers, Modifiers>> section.
 
 == Syntax
 
+// tag::syntax[]
 A Get query consists of a
 <<_match_clause,match>> and a
 <<_get_clause,get>> clauses,
@@ -44,6 +45,7 @@ get <variable> [, <variable>];
 ----
 
 Variables mentioned in a `get` clause must be bound (set) in a `match` clause of the same query.
+// end::syntax[]
 
 [#_match_clause]
 == Match clause
