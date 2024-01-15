@@ -3,14 +3,12 @@
 :pageTitle: Documentation overview
 :summary: A birds-eye view of TypeQL and TypeDB
 
-This is the TypeQL documentation portal. It has the following pages:
-
 [cols-1]
 --
 .xref:typeql::introduction.adoc[]
 [.clickable]
 ****
-TypeQL high-level description.
+Introduction for the near-natural fully declarative query language of the TypeDB.
 ****
 --
 
@@ -18,22 +16,18 @@ TypeQL high-level description.
 
 [cols-2]
 --
-.xref:typeql::schema/overview.adoc[]
+.xref:typeql::schema/overview.adoc[Schema queries]
 [.clickable]
 ****
-Schema queries:
-
 * xref:typeql::schema/define.adoc[]
 ** xref:typeql::schema/type-definitions.adoc[]
 ** xref:typeql::schema/rule-definitions.adoc[]
 * xref:typeql::schema/undefine.adoc[]
 ****
 
-.xref:typeql::data/overview.adoc[]
+.xref:typeql::data/overview.adoc[Data queries]
 [.clickable]
 ****
-Data queries:
-
 * xref:typeql::data/insert.adoc[]
 * xref:typeql::data/delete.adoc[]
 * xref:typeql::data/update.adoc[]

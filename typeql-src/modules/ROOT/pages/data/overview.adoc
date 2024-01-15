@@ -3,6 +3,11 @@
 :keywords: typeql, typedb, data, concepts, patterns, overview
 :pageTitle: Data
 
+Data queries are fully-declarative and use composable polymorphic patterns to match data in a database
+and to further process it.
+
+== Queries
+
 TypeQL data queries can be divided to two groups: read and write queries.
 Write queries can modify data in a database, but can't use reasoning.
 Read queries can retrieve both data from a database and types from its schema.
@@ -70,3 +75,11 @@ For schema manipulations, use xref:typeql::schema/overview.adoc[schema] queries.
 |`get`
 |Yes
 |===
+
+== Patterns
+
+All Data queries use a `match` clause to select data from a database to work with
+and subsequent one or two clauses to specify what to do with it.
+For more information on pattern-based matching, see the xref:typeql::data/match.adoc[] page.
+
+//#todo Add common aggregation

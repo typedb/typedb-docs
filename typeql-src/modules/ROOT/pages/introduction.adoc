@@ -3,16 +3,28 @@
 :keywords: typeql, intro, introduction, query, language, declarative, composable
 :pageTitle: Introduction
 
-TypeQL is a declarative query language used by TypeDB.
+TypeQL is the query language of TypeDB.
 
-== Strongly typed
+== Conceptual and intuitive
 
-All queries are validated with type hierarchy, defined in a schema.
+TypeQL is based directly on the conceptual xref:typedb::basics/data-model.adoc[PERA] data model of TypeDB.
+Its queries comprise sequences of statements that assemble into patterns.
+This mirrors natural language and makes it easy and intuitive to express even highly complex queries.
 
-== Fully-declarative
+== Fully declarative and composable
 
-Rather than writing an algorithm of how the data should be retrieved, we declare requirements, and the TypeDB query
-processor will take care of finding an optimal way to retrieve and process the data.
+TypeQL is fully declarative, allowing us to define query patterns without considering execution strategy.
+The user only composes sets of requirements, and TypeDB finds all matching data to process.
+
+== A fully variablizable language
+
+Any concept in TypeQL can be variablized in a query – even types!
+This enables TypeQL to express powerful parametric database operations.
+
+== Built for consistency
+
+TypeQL patterns are underpinned by a powerful strong type system
+that ensures safety and consistency of database applications.
 
 == Schema and data manipulation
 
@@ -24,3 +36,5 @@ As a DML, TypeQL lets us query (read&write) xref:typeql::data/overview.adoc[data
 
 The complete set of the TypeQL grammar can be seen in the *ANTLR v.4* specification file:
 https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
+
+For query examples, see the xref:home::25-queries.adoc[] page.
