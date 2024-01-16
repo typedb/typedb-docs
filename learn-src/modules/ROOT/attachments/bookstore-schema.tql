@@ -19,7 +19,7 @@ define
 
 book sub entity, abstract,
     owns title,
-    owns pages,
+    owns page-count,
     owns isbn-10,
     owns isbn-13,
     plays contribution:work,
@@ -102,7 +102,7 @@ location sub relation,
     relates located;
 
 title sub attribute, value string;
-pages sub attribute, value long;
+page-count sub attribute, value long;
 isbn sub attribute, abstract, value string;
 isbn-10 sub isbn;
 isbn-13 sub isbn;
