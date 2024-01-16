@@ -18,10 +18,10 @@
 define
 
 book sub entity, abstract,
-    owns isbn-13 @key,
-    owns isbn-10 @unique,
     owns title,
-    owns page-count,
+    owns pages,
+    owns isbn-10,
+    owns isbn-13,
     plays contribution:work,
     plays publishing:published,
     plays order:product,
@@ -33,14 +33,14 @@ paperback sub book;
 
 ebook sub book;
 
-contributor sub entity,
+person sub entity,
     owns name,
-    plays contribution:contributor,
     plays authorship:author,
     plays editing:editor,
-    plays illustration:illustrator;
+    plays illustration:illustrator,
+    plays publishing:published;
 
-contribution sub relation,
+contribution sub relation, abstract,
     relates work,
     relates contributor;
 
@@ -64,22 +64,22 @@ publishing sub relation,
     plays location:located;
 
 user sub entity,
-    owns id @key,
+    owns user-id,
     owns age,
     plays order:buyer,
-    plays rating:rater,
+    plays rating:user,
     plays location:located,
     plays login:subject;
 
 order sub relation,
     relates buyer,
     relates product,
-    owns id @key,
+    owns order-id,
     owns timestamp,
     owns status;
 
 rating sub relation,
-    relates rater,
+    relates user,
     relates rated,
     owns score;
 
@@ -102,14 +102,15 @@ location sub relation,
     relates located;
 
 title sub attribute, value string;
-page-count sub attribute, value long;
+pages sub attribute, value long;
 isbn sub attribute, abstract, value string;
-isbn-13 sub isbn;
 isbn-10 sub isbn;
+isbn-13 sub isbn;
 name sub attribute, value string;
 year sub attribute, value long;
-id sub attribute, value long;
+user-id sub attribute, value long;
 age sub attribute, value long;
+order-id sub attribute, value long;
 timestamp sub attribute, value datetime;
 status sub attribute, value string, regex "^(paid|dispatched|delivered|returned|canceled)$";
 score sub attribute, value long;
