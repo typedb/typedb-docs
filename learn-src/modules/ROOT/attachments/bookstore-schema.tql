@@ -37,8 +37,7 @@ person sub entity,
     owns name,
     plays authorship:author,
     plays editing:editor,
-    plays illustration:illustrator,
-    plays publishing:published;
+    plays illustration:illustrator;
 
 contribution sub relation, abstract,
     relates work,
