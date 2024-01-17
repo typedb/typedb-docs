@@ -1,1 +1,104 @@
-= 3.3 - Retrieving types of data instances
+= 3.3 - Variables and types
+
+== Query validation
+
+TypeQL's composable nature provides a natural syntax for building queries, but not all queries are valid. Try *running* image:learn::studio-icons/run.png[] the following queries. Only the first one will be successfully executed.
+
+[,typeql]
+----
+match
+$user isa user;
+$state isa state;
+$location (place: $state, located: $user) isa location;
+fetch
+$user: id;
+$state: name;
+----
+
+[,typeql]
+----
+match
+$user isa user;
+$state isa state;
+$location (place: $state, located: $user) isa location;
+fetch
+$user: isbn-13;
+$state: name;
+----
+
+[,typeql]
+----
+match
+$book isa book;
+$state isa state;
+$location (place: $state, located: $book) isa location;
+fetch
+$book: isbn-13;
+$state: name;
+----
+
+The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. These facts seem obvious to us, but a database needs a source of truth in order to identify if queries are valid or not.
+
+In TypeDB, this takes the form of a *schema*, which sets out which types are able to own certain attributes and play certain roles in relations. TypeDB resolves every query against the schema to determine which reads and writes are semantically sound. This extends to queries of arbitrary complexity, for instance the following query.
+
+[,typeql]
+----
+match
+$rating (user: $user, rated: $book) isa rating;
+$publish (publisher: $publisher, $published: $book) isa publishing;
+$user-loc (place: $state, located: $user) isa location;
+$pub-loc (place: $state, located: $publish) isa location;
+$state isa state;
+fetch
+$rating: score;
+----
+
+It queries for ratings, where the user that made the rating is located in the same state that the book was published. Notice that we haven't specified the types of `$user`, `$book`, or `$publisher`, but TypeDB is able to correctly infer their types! Try *running* image:learn::studio-icons/run.png[] this query, and you will see that it executes successfully.
+
+== Retrieving types
+
+So far, we've seen that the output of Fetch queries includes a type field for every retrieved entity and relation, and every returned attribute of those entities and relations. However, there are also types involved in the query that are not returned.
+
+TypeDB resolves every variable in a query to a set of valid types to search for, and every query result includes an instance of a specific one of those types for every variable, even if it is not returned. By adding a few new lines to the previous query, we can uncover the types associated with each result.
+
+[,typeql]
+----
+match
+$rating (user: $user, rated: $book) isa rating;
+$publish (publisher: $publisher, $published: $book) isa publishing;
+$user-loc (place: $state, located: $user) isa location;
+$pub-loc (place: $state, located: $publish) isa location;
+$state isa state;
+$user isa $user-type;            # new line
+$book isa $book-type;            # new line
+$publisher isa $publisher-type;  # new line
+fetch
+$rating: score;
+$user-type;                      # new line
+$book-type;                      # new line
+$publisher-type;                 # new line
+----
+
+Now if we *run* image:learn::studio-icons/run.png[] this query, we can see that each result now includes the types of `$user`, `$book`, and `$publisher` that TypeDB has inferred for that particular result.
+
+[,json]
+----
+result placeholder
+----
+
+We can see that the types of the variables `$user` and `$publisher` are always `user` and `publisher` respectively, while the type of `$book` can be `paperback`, `hardback`, or `ebook`. It is possible that there might be more valid return types for these variables, but that there are no current data instances of those types that satisfy the query.
+
+By extending this query, we have introduced three new variables: `$user-type`, `$book-type`, and `$publisher-type`. Unlike the variables we've dealt with until now, which have represented entities or relations (i.e. data instances), these variables represent types. Here we've made use of *type variablization*, one of TypeQL's most powerful features.
+
+The ability to variablize types in queries arises from TypeQL's core philosophy:
+
+
+[quote]
+____
+https://typedb.com/fundamentals/type-theory[_Everything has a type, and so everything can be a variable._]
+____
+
+Even queries themselves have types, specifically their return signatures! This capability of TypeQL allows us to easily incorporate inheritance polymorphism, interface polymorphism, and parametric polymorphism into our queries, as we'll see in
+xref:learn::5-pattern-based-querying/5-pattern-based-querying.adoc[Lesson 5].
+
+In the next lesson, we'll be looking at schema design, see how this affects type inference and query validation, and learn how we can incorporate polymorphism into our data models.
