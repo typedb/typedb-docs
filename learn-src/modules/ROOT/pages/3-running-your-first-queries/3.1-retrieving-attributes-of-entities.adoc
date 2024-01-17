@@ -22,7 +22,7 @@ FROM paperback;
 
 This TypeQL query comprises two *clauses*: a `match` clause and a `fetch` clause.
 
-The `match` clause is equivalent to a *selection* in SQL. It identifies what entity types (tables) we wish to retrieve data from. It can also specify further conditions for the retrieved data to meet, as we'll see shortly. The `fetch` clause is equivalent to a *projection* in SQL. It specifies what attributes (columns) we would like to retrieve for the entities (rows) identified. In this case, we've chosen to retrieve _all_ attributes.
+The `match` clause is equivalent to a *selection* in SQL. It identifies what entity types (tables) we wish to retrieve data from. It can also specify further constraints that the retrieved data must meet, as we'll see shortly. The `fetch` clause is equivalent to a *projection* in SQL. It specifies what attributes (columns) we would like to retrieve for the entities (rows) identified. In this case, we've chosen to retrieve _all_ attributes.
 
 Using a *data* session and *read* transaction, *run* image:learn::studio-icons/run.png[] this query. You should see the following result.
 
@@ -64,7 +64,7 @@ FROM paperback;
 
 == Selections
 
-In the next query, we'll add a *condition* to the `match` clause, specifying that we want the details for a specific book with ISBN-13 `isbn placeholder`.
+In the next query, we'll add a *constraint* to the `match` clause, specifying that we want the details for a specific book with ISBN-13 `"isbn placeholder"`.
 
 [,typeql]
 ----
@@ -98,7 +98,7 @@ fetch
 $book: title, page-count;
 ----
 
-Try *running* image:learn::studio-icons/run.png[] these two queries. You should get the same result.
+Try *running* image:learn::studio-icons/run.png[] these two queries. You should get the same results.
 
 In the first version, we used a single compound *statement* in the `match` clause, whereas in the second version, we instead used two atomic statements. If atomic statements concern the same variable, we can always concatenate them using commas, and vice versa.
 
@@ -143,4 +143,4 @@ SELECT title, page_count
 FROM ebook;
 ----
 
-We'll be exploring the ways in which we can compose polymorphic queries in xref:learn::5-pattern-based-querying/5.3-polymorphic-data-patterns.adoc[Lesson 5.3].
+We'll be exploring the ways in which we can compose polymorphic queries in xref:learn::5-pattern-based-querying/5-pattern-based-querying.adoc[Lesson 5].
