@@ -153,8 +153,8 @@ You can specify dependencies in a `pom.xml` file. See an example below.
 
     <repositories>
         <repository>
-            <id>repo.vaticle.com</id>
-            <url>https://repo.vaticle.com/repository/maven/</url>
+            <id>repo.typedb.com</id>
+                <url>https://repo.typedb.com/public/public-release/maven</url>
         </repository>
     </repositories>
 
@@ -162,7 +162,7 @@ You can specify dependencies in a `pom.xml` file. See an example below.
         <dependency>
             <groupId>com.vaticle.typedb</groupId>
             <artifactId>typedb-driver</artifactId>
-            <version>2.25.2</version>
+            <version>2.26.5</version>
         </dependency>
     </dependencies>
 
