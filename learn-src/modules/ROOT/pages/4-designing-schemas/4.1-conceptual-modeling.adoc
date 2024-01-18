@@ -77,7 +77,7 @@ In PERA diagrams, subtyping is represented by a dotted line, and abstract types 
 
 image::pera-diagrams/example-diagram-3.png[role=framed, width = 75%, link=self]
 
-Entity, relation, and attribute types can all be subtyped or made abstract. This will be explored further in Lessons xref:learn::4-designing-schemas/4.2-defining-entity-types.adoc[4.2], xref:learn::4-designing-schemas/4.3-defining-relation-types.adoc[4.3], and xref:learn::4-designing-schemas/4.4-defining-attribute-types.adoc[4.4] respectively. There are certain caveats related to inheritance of interfaces that will also be discussed. One important distinction to be made is that only an abstract attribute type can have subtypes. This is not the case for object types, which can be subtyped or made abstract independently.
+Entity, relation, and attribute types can all be subtyped or made abstract. This will be explored further in Lessons xref:learn::4-designing-schemas/4.3-defining-entity-types.adoc[4.3], xref:learn::4-designing-schemas/4.4-defining-relation-types.adoc[4.4], and xref:learn::4-designing-schemas/4.5-defining-attribute-types.adoc[4.5] respectively. There are certain caveats related to inheritance of interfaces that will also be discussed. One important distinction to be made is that only an abstract attribute type can have subtypes. This is not the case for object types, which can be subtyped or made abstract independently.
 
 image::pera-diagrams/subtyping-attributes.png[role=framed, width = 75%, link=self]
 
