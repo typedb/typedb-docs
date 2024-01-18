@@ -35,11 +35,12 @@ ebook sub book;
 
 person sub entity,
     owns name,
+    plays contribution:contributor,
     plays authorship:author,
     plays editing:editor,
     plays illustration:illustrator;
 
-contribution sub relation, abstract,
+contribution sub relation,
     relates work,
     relates contributor;
 
@@ -63,7 +64,7 @@ publishing sub relation,
     plays location:located;
 
 user sub entity,
-    owns user-id,
+    owns id,
     owns age,
     plays order:buyer,
     plays rating:user,
@@ -73,7 +74,7 @@ user sub entity,
 order sub relation,
     relates buyer,
     relates product,
-    owns order-id,
+    owns id,
     owns timestamp,
     owns status;
 
@@ -107,9 +108,8 @@ isbn-10 sub isbn;
 isbn-13 sub isbn;
 name sub attribute, value string;
 year sub attribute, value long;
-user-id sub attribute, value long;
+id sub attribute, value long;
 age sub attribute, value long;
-order-id sub attribute, value long;
 timestamp sub attribute, value datetime;
 status sub attribute, value string, regex "^(paid|dispatched|delivered|returned|canceled)$";
 score sub attribute, value long;
