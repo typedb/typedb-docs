@@ -39,7 +39,15 @@ image::pera-diagrams/example-diagram-1.png[role=framed, width = 75%, link=self]
 
 In TypeDB documentation, colour coding is also used to improve clarity. Entity types are shown in pink, relation types in yellow, and attribute types in blue. Interfaces are shown in the same colour as the types that depend on them: yellow for roles and blue for ownerships.
 
-https://en.wikipedia.org/wiki/Cardinality_(data_modeling)[Cardinality] can be indicated by adding a number in brackets to the start or end of an interface arrow. Two numbers separated by a comma represent a lower and upper bound. An asterisk is used to represent "many" cardinality. Cardinality annotations may be omitted in PERA diagrams, especially in more complex ones, but should always be considered when designing a model.
+https://en.wikipedia.org/wiki/Cardinality_(data_modeling)[Cardinality] can be indicated by adding a number in brackets to the start or end of an interface arrow. Two numbers separated by a comma represent a lower and upper bound. An asterisk is used to represent "many" cardinality. In the example above, the cardinality annotations denote the following:
+
+* A car has exactly one license plate.
+* A marriage has exactly two spouses.
+* A marriage has exactly one date.
+* A person can be unmarried or married once (at a time).
+* A person has at least one name, possibly more.
+
+Cardinality annotations may be omitted in PERA diagrams, especially in more complex ones, but should always be considered when designing a [#_footnote_2]#model#^<<_footnotes,2>>^.
 
 The PERA model is strictly more expressive than the ER model, so any ER diagram is automatically also a PERA diagram (though notation may differ slightly) and could be immediately implemented as a TypeDB schema. This is not best practice as such a schema would not leverage features exclusive to the PERA model, such as subtyping.
 
@@ -63,7 +71,7 @@ The above examples of cars and marriages were chosen because they would almost a
 
 image::pera-diagrams/role-vs-relation.png[role=framed, width = 75%, link=self]
 
-The difference between these two cases is that, if teams are relations, then they cannot be instantiated without at least one member, whereas if teams are entities, then they can be instantiated independently. This can be seen by the change in cardinality notation, as it is not possible to instantiate a relation without at least one roleplayer. If it is ever unclear if a concept should be modeled as an entity type or relation type, then the best practice is to consider if it should be independently [#_footnote_2]#instantiable#^<<_footnotes,2>>^.
+The difference between these two cases is that, if teams are relations, then they cannot be instantiated without at least one member, whereas if teams are entities, then they can be instantiated independently. This can be seen by the change in cardinality notation, as it is not possible to instantiate a relation without at least one roleplayer. If it is ever unclear if a concept should be modeled as an entity type or relation type, then the best practice is to consider if it should be independently [#_footnote_3]#instantiable#^<<_footnotes,3>>^.
 
 == Inheritance and abstraction
 
@@ -91,6 +99,6 @@ image::pera-diagrams/diagram-template.png[role=framed, width = 75%, link=self]
 [#_footnotes]
 == Footnotes
 
-1. <<_footnote_1,^>> The astute reader may notice that we have accounted for independent objects (entities), dependent objects (relations), and dependent values (attributes), but not independent values. In a data domain, such independent values might be considered *global constants*. Practically, global constants can be represented by attributes without owners, and are not specifically distinguished.
-
-2. <<_footnote_2,^>> It is also worth noting there is an additional practical consideration, in that it is possible for relations to own attributes but not for roles to do so. In the example of team memberships, this means that if we wanted to record information about the membership, for instance the date that the person joined the team, then we cannot do this if the membership is a role. In such a situation, we would want to make the membership a relation.
+1. <<_footnote_1,^>> The astute reader may notice that we have accounted for independent objects (entities), dependent objects (relations), and dependent values (attributes), but not independent values. In a data domain, such independent values might be considered *global constants*. Practically, global constants can be represented by attributes without owners, and are not specially distinguished.
+2. <<_footnote_2,^>> In this instance, we have opted to omit the cardinality restrictions at the attribute end of each ownership interface for simplicity, but these also have cardinalities, conceptually speaking. If we were to include them in the diagram, then names (of people) would have `+(1,*)+` cardinality, because they can be shared by any number of people. Likewise, dates (of marriages) would also have `+(1,*)+` cardinality as they can be shared by any number of marriages. In contrast, license plates (of cars) would have `(1)` cardinality because they must be unique among cars. Practically, almost all ownership interfaces have cardinality `+(1,*)+` or `(1)` at the attribute end, representing unlimited attributes and unique or key attributes. Uniqueness and keys will be discussed in xref:learn::4-designing-schemas/4.6-defining-owners-and-roleplayers.adoc[Lesson 4.6]. N.b. here we have taken the view of attributes as being strictly dependent, but the lower bound of each of these cardinalities would be zero if we also allowed for global constants (i.e. `+(0,*)+` and `(0,1)`).
+3. <<_footnote_3,^>> It is also worth noting there is an additional practical consideration, in that it is possible for relations to own attributes but not for roles to do so. In the example of team memberships, this means that if we wanted to record information about the membership, for instance the date that the person joined the team, then we cannot do this if the membership is a role. In such a situation, we would want to make the membership a relation.
