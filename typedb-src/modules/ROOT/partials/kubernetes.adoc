@@ -24,7 +24,7 @@ Next, add the Vaticle Helm repo:
 
 [,bash]
 ----
-helm repo add vaticle https://repo.vaticle.com/repository/helm/
+helm repo add vaticle https://repo.typedb.com/basic/private-release/helm/charts/
 ----
 
 == Encryption setup (optional)
@@ -56,8 +56,8 @@ The `encryption-gen.jar` generates three directories:
 
 All files from the directory
 named after external domain shall be copied to the proper directory on every server in a cluster.
-By default, they are stored in `/server/conf/encryption` inside the TypeDB Cloud main directory.
-For example, `typedb-cloud-all-mac-x86_64-2.25.12/server/conf/encryption`.
+By default, they are stored inside the TypeDB Cloud's main directory in `/server/conf/encryption`.
+For example, `typedb-cloud-all-mac-{latest-version}/server/conf/encryption`.
 The path to each file is configured in the `encryption` section of the TypeDB Cloud config file.
 
 Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets.
