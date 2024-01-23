@@ -31,8 +31,8 @@ Be sure to replace the `\{version}` placeholder tag with the version of the Java
 
 <repositories>
     <repository>
-        <id>repo.vaticle.com</id>
-        <url>https://repo.vaticle.com/repository/maven/</url>
+        <id>repo.typedb.com</id>
+        <url>https://repo.typedb.com/public/public-release/maven/</url>
     </repository>
 </repositories>
 <dependencies>
@@ -42,21 +42,6 @@ Be sure to replace the `\{version}` placeholder tag with the version of the Java
     <version>{version}</version>
 </dependency>
 </dependencies>
-----
-
-If we want to depend on snapshot versions of Client Java, by referring to the GitHub commit `sha`, we can add our
-snapshot repository to our list of Maven repositories.
-
-[,xml]
-----
-
-<repositories>
-    <repository>
-        <id>repo.vaticle.com.snapshot</id>
-        <name>repo.vaticle.comai</name>
-        <url>https://repo.vaticle.com/repository/maven-snapshot/</url>
-    </repository>
-</repositories>
 ----
 
 === (Optional) Add logging config

@@ -5,9 +5,9 @@
 [,bash]
 ----
 sudo apt install software-properties-common apt-transport-https gpg
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C
-gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
-echo "deb https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
 sudo apt update
 ----
 . Ensure Java 11+ is installed:
@@ -19,36 +19,6 @@ sudo apt install default-jre
 +
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
-+
-////
-. Check the latest version number for `typedb-server` and its dependencies:
-+
-[,bash]
-----
-apt show typedb-server
-----
-+
-The above command's output:
-+
-[,bash]
-----
-Package: typedb-server
-Version: 2.15.0
-Priority: optional
-Section: contrib/devel
-Maintainer: Vaticle <community@vaticle.com>
-Installed-Size: unknown
-Depends: openjdk-11-jre, typedb-bin (=2.12.0)
-Download-Size: 71.8 MB
-APT-Sources: https://repo.vaticle.com/repository/apt trusty/main all Packages
-Description: TypeDB (server)
-----
-+
-Take note of the latest `typedb-server` version in the `Version` field and the corresponding `typedb-bin`
-package version in the `Depends` field.
-The `typedb-console` version can be seen with the command `apt show typedb-all=2.15.0`, where `2.15.0` is the version
-of `typedb-server` from the output above.
-////
 . Install `typedb`:
 +
 [,bash]
