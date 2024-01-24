@@ -1,1 +1,164 @@
 = 4.2 - The bookstore model
+
+== Outline
+
+Having gone through all the basic elements of the PERA model in xref:learn::4-designing-schemas/4.1-conceptual-modeling.adoc[Lesson 4.1], we will now look at a practical approach to modeling data, namely a data model for a bookstore's website. The model captures two intersecting subdomains. One is the subdomain of the books themselves: their https://en.wikipedia.org/wiki/ISBN[ISBNs], their titles, their authors, and their publishers. The other is the subdomain of the website's users: their orders, their book ratings, and the recommendations they are shown.
+
+== Examining the datasets
+
+We'll begin by looking at the data we have available and then begin to think about how we will build a model that captures it. When learning to build PERA models, starting from existing datasets is a good way to practice modeling. Let's assume we have the following data in several CSV files:
+
+* A list of books, with columns:
+** ISBN-13, a string
+** ISBN-10, a string
+** Title, a string
+** Format, an enum
+** Page count, an integer
+** Author names, a list of strings
+** Editor names, a list of strings
+** Illustrator names, a list of strings
+** Other contributor names, a list of strings
+** Publisher name, a string
+** Publisher city, a string
+** Publisher state, a string
+** Publish year, an integer
+* A list of users, with columns:
+** User ID, a string
+** Age, an integer
+** User's city, a string
+** User's state, a string
+* A list of book ratings, with columns:
+** User ID, a string
+** ISBN-13, a string
+** Score assigned by the user, an integer
+* A list of login attempts, with columns:
+** User ID, a string
+** Timestamp, a datetime
+** Success indicator, a boolean
+* A list of book orders, with columns:
+** Order ID, a string
+** User ID, a string
+** ISBN-13s, a list of strings
+** Timestamp, a datetime
+** Status, an enum
+
+== Identifying object types
+
+The first goal is to identify a list of potential *object types*. A good starting point is to consider each data file to represent an object type, and each of their columns to represent an attribute type. Alongside their associated attribute types, we have:
+
+* Book: _ISBN-13, ISBN-10, title, format, page count, author name, editor name, illustrator name, contributor name, publisher name, publisher city, publisher state, publish year_
+* User: _user ID, age, city, state_
+* Book rating: _user ID, ISBN-13, score_
+* Login attempt: _user ID, timestamp, success indicator_
+* Book order: _order ID, user ID, ISBN-13, timestamp, status_
+
+Next, we should try to identify any *object dependencies* in the model. To do so, we can look at the lists of each potential object type's properties. If one of the properties actually belongs to another object type, then we know that that property represents a dependency. For instance, book ratings have user IDs as a property, despite the fact that they are properties of users, indicating a dependency between book ratings and users. Examining all the properties, we identify the ones that reference other object types:
+
+* Book rating: _user ID, ISBN-13_
+* Login attempt: _user ID_
+* Book order: _user ID, ISBN-13_
+
+The structure of the data files does not tell us the direction of the dependencies, so we might not be able to tell which is the dependent type and which is the dependency. In order to establish the nature of dependencies, we need to work out which objects should be instantiated with reference to other objects. For each pair of potentially dependent object types, we should decide either that one must be instantiated with reference to the other, or that both can be instantiated independently.
+
+* Book ratings must be instantiated with reference to users and with reference to books, but both books and users can be instantiated without reference to book ratings.
+* Login attempts must be instantiated with reference to users, but users can be instantiated without reference to login attempts.
+* Book orders must be instantiated with reference to users and with reference to books, but both books and users can be instantiated without reference to book orders.
+
+This allows us to establish the dependencies in our data:
+
+* Books are independent.
+* Users are independent.
+* Book ratings depend on users and books.
+* Login events depend on users.
+* Book orders depend on users and books.
+
+Recalling the fundamentals of the PERA model, objects that depend on other objects are relations, whereas objects that have no dependencies are entities. This tells us that `rating`, `login`, and `order` are *relation types*, while `book` and `user` are *entity types*. The next step is to identify the *roles* that each relation types relates.
+
+We know that `rating` needs two roles, one played by the user that does the rating and one played by the book that is rated. We will choose to call these roles `rater` and `rated` respectively. In general, role names should be chosen based on the name of the parent relation type, not the names of any roleplayers. This is because we could later use the relation type to model a relationship between other objects if the data domain is extended, for instance a critic that rates a movie. Naming the roles independently of the roleplayers allows us to reuse existing relation types, maximising the polymorphic features of the model.
+
+Moving onto `login`, we find that it only needs one role played by the user logging in. This is absolutely fine in the PERA model, and means that `login` is a *unary relation type*, in contrast to `rating` which is a *binary relation type*. Unary relations are an excellent way to model events concerning a single object, such as a login of a user, a promotion of an employee, or a ticket raised by a customer. We will choose to call the role `subject`, which allows us to extend the model in the future to describe login events for objects other than users.
+
+Finally, we turn to `order`. Like `rating`, it is a binary relation type with one role played by the user placing the order and one played by the book(s) being ordered. We will call them `buyer` and `product` respectively. It may seem strange to use a binary relation type when an order could be for multiple books, however, when designing a PERA model, we care primarily about the number of roles rather than the number of roleplayers. When we instantiate `order`, it will be easy to have the `product` role be played by _multiple_ books. As a result, `order` is a *variadic relation type*. In the PERA diagram, we express this with a cardinality annotation to indicate that the role can be played more than once.
+
+This is a great start to our model. Let's see what the diagram looks like.
+
+image::pera-diagrams/bookstore-diagram-version-1.png[role=framed, width = 75%, link=self]
+
+We've only included cardinality notation where necessary for clarity, indicating that a book can have multiple author names, editor names, illustrator names, and contributor names, and that orders can have multiple books playing the role of `product`. Notice that we have used the same `id` attribute type to represent user IDs and order IDs, and the same `timestamp` attribute type to represent order timestamps and login timestamps! This is thanks to the PERA models dependently typed attributes, which allows us to have multiple object types implement the ownership interface of the same attribute type independently. As with reusing roles, reusing attribute ownerships maximises the polymorphic features of the model. We should do this wherever possible (and sensible) to give the model greater polymorphic querying capabilities when we implement the model in TypeDB, as will be seen in xref:learn::5-pattern-based-querying/5.3-polymorphic-data-patterns.adoc[Lesson 5.3].
+
+== Iterating on the  model
+
+The model is functional, and we could go ahead and implement it immediately, but there is still a lot of room for improvement. If we want to be able to take advantage of TypeDB's polymorphic querying, we're going to need to build more polymorphism into our model. Currently, for instance, if we wanted to query a contributor's involvement in a book, we'd have to explicitly query the `author name`, `editor name`, `illustrator name`, and `contributor name` attributes of `book`, and if we added a new type of contributor, we'd need to modify all of our queries.
+
+When working on the first iteration, we crudely mapped the data files onto object types, but there may be more object types in the model. Once again, we should examine the attribute types owned by each object type and try to find those that are actually properties of other objects, thus indicating a dependency. The attributes of `book` are a good place to start, as there seem to be an abnormally high number of them compared to the other object types. Doing so, we find that author names, editor names, illustrator names, and contributor names are not in fact properties of books, but properties of authors, editors, illustrators, and contributors! Likewise, publisher names, publisher cities, and publisher states are properties of publishers rather than books! Let's consider five new object types:
+
+* Author: _name_
+* Editor: _name_
+* Illustrator: _name_
+* Contributor: _name_
+* Publisher: _name_, _city name_, _state name_
+
+We know that each of these object types must be involved in a dependency with `book`, but we do not yet know the nature of those dependencies. If we consider these object types in isolation of the bookstore domain, then it makes sense that a book should depend on these things. After all, a book cannot exist without at least one person to write it and someone to publish it. Perhaps we should change `book` to be a relation type. But if we take this approach, we will not be able to instantiate books without at least one contributor and publisher. In the domain of our bookstore, this would present a difficulty. What if we had a book with anonymous authors? Or a self-published book? What if we simply didn't have this information available but still wanted to list a book in the database? Really, we want to be able to instantiate books without reference to these things, meaning that they should remain entity types. This is unlike the cases of `rating`, `login`, and `order`, where we really do want to prevent these types from being instantiated without the necessary roleplayers to prevent corrupt or meaningless data.
+
+If books are independent, then does that mean that these new object types should depend on `book`? That also doesn't work in the bookstore domain. We could easily envision a situation where we'd want to instantiate any one of these object types without reference to a book, so these new types must also be *entity types*. If this is the case, then in order to model the dependencies between them and `book`, which are both entity types, we will need to create new *relation types* to describe the dependencies. We will call them `contribution` and `publishing`. Let's look at the updated diagram.
+
+image::pera-diagrams/bookstore-diagram-version-2.png[role=framed, width = 75%, link=self]
+
+Here we have reused the attribute types `city name` and `state name` to good effect. We also have multiple types implementing the `contributor` role of `contribution`, in the same way that `user` and `order` both implement ownership of `id`. Recall that we care about the number of roles rather than roleplayers, so this is still a binary relation type as it has two roles. A given instance of `contribution` will relate a book to only one of an author, an editor, an illustrator, or a contributor. It is also worth noting that the entity type `publisher` plays a role of the same name: `publisher`. While role names should be always chosen based on the name of the relation rather than the those of the roleplayers, it may sometimes be the case that the role and roleplayer end up having the same name anyway, especially if only one type can play the role. If the name of the role and roleplayer both feel correct, special efforts should not be made to ensure they have different names, as suboptimal naming choices will lead to a more confusing model.
+
+This iteration of the model is looking better, but there's a serious problem with it. What would we do if we had someone who was both an author _and_ an editor? Such a thing is quite common in publishing. Really the terms "contributor", "author", "editor", and "illustrator" do not inherently describe a person, but rather _roles_ they fulfill, which suggests that these terms should in fact be roles in relations! So, we will instead have a single *entity type* `person` that owns `name` and plays the *roles* `contributor`, `author`, `editor`, and `illustrator` in relation types `contribution`, `authorship`, `editing`, and `illustration` respectively. This will allow us to have people who can contribute to different books (or the same book) in different ways.
+
+[IMPORTANT]
+====
+A data instance can only have a single type. If a concept displays multiple simultaneous capabilities, for example a person being an author and an editor, then this indicates that the concept should be modeled as a single type implementing multiple interfaces, rather than as multiple types. This is in line with the OOP principle of https://en.wikipedia.org/wiki/Composition_over_inheritance[composition over inheritance].
+====
+
+image::pera-diagrams/bookstore-diagram-version-3.png[role=framed, width = 75%, link=self]
+
+We've almost finished correctly allocating our attribute types. There are now only three that are misplaced: `city name`, `state name`, and `publish year`. The names of cities and states are properties of those cities and states, rather than of users and publishers as our model currently indicates. To solve this, we will create two new object types `city` and `state`, which are in some kind of dependency with `user` and `publisher`. Once again considering the dependencies in isolation of the domain, it seems that every user and publisher would need to be located in a city and a state, but this does not apply within the bookstore domain, in which we could feasibly have users and publishers with unknown locations. As cities and states do not depend on users and publishers, they will be *entity types*, and we will again need to create a new *relation type* to capture the dependency between them. We will call it `location` and give it two roles: `located` played by users and publishers, and `place` played by `city` and `state`.
+
+Turning to `publish year`, we have now introduced a `publishing` relation type, but `publish year` was previously made a property of `book`. Naturally, the year a book was published is more accurately a property of the publishing rather than the book itself. To resolve this, we will simply replace the `publish year` attribute type owned by `book` with a `year` attribute type owned by `publishing`.
+
+We can take this approach further. Recall that publisher name, city, and state are listed in the data file for books on a per-book basis, so it is possible for two books to have the same publisher name but different cities and states. If we examine the data, we will find this is indeed the case. This is quite common in the publishing industry, as publishers often have multiple offices around the world, and books will list the specific offices that published them. As such, the city and state name are dependent on both the book and publisher rather than just the publisher. To account for this, we will have the `publishing` relation type, which has those exact dependencies, play the role of `located` rather than `publisher` itself. This will still allow us to query the locations of publishers, but also gives us the ability to query the specific locations that published particular books.
+
+image::pera-diagrams/bookstore-diagram-version-4.png[role=framed, width = 75%, link=self]
+
+== Building type hierarchies
+
+So far, we haven't made use of subtyping at all, but there are some parts of the model that could be significantly improved by doing so. When iterating on a data model, it is good practice to go through and consider if any types should have a common supertype, as this will optimise the model's polymorphic querying capabilities. To begin with, we will look at ISBN-13s and ISBN-10s. Both are obviously kinds of ISBN, so it makes sense to create a *supertype* `isbn` of `isbn-13` and `isbn-10`. This supertype must be *abstract*, as explained in xref:learn::4-designing-schemas/4.1-conceptual-modeling.adoc[Lesson 4.1]. This does make sense, as any ISBN is necessarily either an ISBN-13 or an ISBN-10. We cannot have an ISBN that is neither of those two kinds.
+
+Next, we will consider cities and states. Both are kinds of places! Not only that, but they have exactly the same capabilities, specifically owning `name` and playing `place` in `location`. If two types are conceptually alike and also have similar capabilities, it is a good sign that they should be in a type hierarchy. We will create a new entity type `place` and make `city` and `state` its *subtypes*. Then, we will reassign ownership of `name` and playing of `place` (the role) to the new entity type `place`. Unlike with attribute supertypes, object supertypes do not need to be abstract, but we will make `place` *abstract* too. This is because every place must be either a city or a state, or perhaps some other specific kind of place that we haven't yet modeled (maybe a continent or a street). It is not possible to have something that is _just_ a place, so the idea of a place is an abstract concept.
+
+[IMPORTANT]
+=====
+A type should only be considered a subtype of another type if every instance of the subtype is _necessarily_ an instance of the supertype. For instance, every city is necessarily a place, and every ISBN-13 is necessarily an ISBN. If this is not the case, then subtyping is likely a poor modeling choice for that part of the model.
+=====
+
+This is also a good opportunity to make a slight modification to the model. If we have `place` also play the role of `located` in `location`, then we will be able to use the `location` relation type to model places being located in other places, for example a city being located in a state! This will give us enormous expressive power later on, as we will be able to make use of reasoning to determine locations transitively in xref:learn::8-reasoning-over-data/8.4-rule-recursion.adoc[Lesson 8.4].
+
+image::pera-diagrams/bookstore-diagram-version-5.png[role=framed, width = 75%, link=self]
+
+Now looking at the properties of books, there is one property that is different from the others: the format. ISBNs, titles, and page counts have fairly arbitrary values over large ranges, but formats have only a small range of enumerated values: "paperback", "hardback", and "ebook". In this model, we are using ISBNs as unique identifiers for books, and different editions of the same work will have different ISBNs, so each book will only have a single format. Really, when we use the term "book" in this domain, we mean "[edition of a] book". Paperbacks, hardbacks, and ebooks are all kinds of books, so it makes sense that these should be subtypes!
+
+Because of the lack of subtyping in other data modeling paradigms, types are often stored as properties. In this case, the book format has been stored as a column of values in the data file for books and is _structurally_ indistinguishable from the other columns. When a property of an object must have exactly one value, and the permitted values are in a small enumerated range, this is often a strong sign of a type being stored as a property. This is not always the case, and it is still essential to assess the possibility critically in the context of the data domain.
+
+With this in mind, every paperback, hardback, and ebook is necessarily a book, and no book can be more than one of these types, so subtyping is an appropriate choice in this case. We will make several new *subtypes* of `book`: `paperback`, `hardback`, and `ebook`. We will also make `book` abstract, because we cannot have a book without a specific format. There is a subtle difference in the approach we have taken here. With ISBNs and places, we created a supertype to group the existing subtypes, whereas with books we have created subtypes based on an existing supertype. Either approach is valid, and sometimes one is easier to adopt than the other. We should look for both kinds of opportunity to introduce type hierarchies into our models.
+
+Finally, we will consider the relation types `contribution`, `authorship`, `editing`, and `illustration`. Like `city` and `state`, they have very similar capabilities in the model: all serve to link a book to a person that contributed to it. In fact, in an earlier iteration of the model, we did this with a single `contribution` relation type. Clearly, we might consider authorships, editings, and illustrations, to be specific kinds of contribution, and so we could model them with a type hierarchy. We will make `authorship`, `editing`, and `illustration` subtypes of `contribution`.
+
+When building relation type hierarchies, there are additional considerations regarding the way roles will work. By default, the subtypes of a relation type inherit all of its roles. A subtype can also extend the set of roles by introducing new roles that the supertype does not have. We can also specialize roles inherited from the parent relation by overriding them. We will not go into great detail now on the mechanics of role inheritance now, as it is one of the more complex features of the PERA model. We will explore this topic more thoroughly in xref:learn::4-designing-schemas/4.4-defining-relation-types.adoc[Lesson 4.4]. For now, we will make use of both *role inheritance* and *role overriding*. The subtypes `authorship`, `editing`, and `illustration` each inherit the roles `work` and `contributor` from `contribution`. We will allow `work` to be inherited, but override `contributor` with the more specialized role names `author`, `editor`, and `illustrator`. This allows us to instantiate four types of contribution relation:
+
+* `contribution`, depending on `work` and `contributor`
+* `authorship`, depending on `work` and `author`
+* `editing`, depending on `work` and `editor`
+* `illustration`, depending on `work` and `illustrator`
+
+We have chosen to make `contribution` concrete rather than abstract. This is because our data includes references to miscellaneous contributions that aren't more specifically described, so we need a relation type to serve as a catch-all.
+
+== The final model
+
+Our data model for the bookstore website is now complete.
+
+image::pera-diagrams/bookstore-diagram-final.png[role=framed, width = 75%, link=self]
+
+All the attribute types seem to be correctly placed, and there are no obvious opportunities to introduce more type hierarchies. We can always return to the model in the future and iterate further on it, for instance if more data becomes available that we would like to integrate into the model. TypeDB allows for schemas to be easily mutated with data in place, and only extending the schema is particularly trivial. This will be explored in a future guide.
