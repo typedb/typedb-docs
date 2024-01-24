@@ -67,7 +67,7 @@ user sub entity,
     owns id,
     owns age,
     plays order:buyer,
-    plays rating:user,
+    plays rating:rater,
     plays location:located,
     plays login:subject;
 
@@ -79,7 +79,7 @@ order sub relation,
     owns status;
 
 rating sub relation,
-    relates user,
+    relates rater,
     relates rated,
     owns score;
 
