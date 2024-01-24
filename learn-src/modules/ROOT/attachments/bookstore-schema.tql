@@ -33,7 +33,7 @@ paperback sub book;
 
 ebook sub book;
 
-person sub entity,
+contributor sub entity,
     owns name,
     plays contribution:contributor,
     plays authorship:author,
