@@ -6,24 +6,34 @@
 
 The Java driver was developed by Vaticle to enable TypeDB support for Java software and developers.
 
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/java[Source code,window=_blank]
+[.clickable]
+****
+
+****
+
+.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+[.clickable]
+****
+
+****
+--
+
 [#_install_java]
 == Install
 
-=== Prerequisites
-
-To use the Java driver, we need a compatible version of TypeDB server running.
 See the
-<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+<<_version_compatibility>> table to check what versions of TypeDB and Java driver are compatible.
 
-For Linux OS: the minimum version of `glibc` is `2.25.0`.
-
-=== Add a repository with TypeDB Java driver to Maven
+For Linux: the minimum version of `glibc` is `2.25.0`.
 
 Add the code below to the `pom.xml` file in the Maven project.
 
 [IMPORTANT]
 ====
-Be sure to replace the `\{version}` placeholder tag with the version of the Java driver we want to install.
+Be sure to replace the `\{version}` placeholder tag with the version of the Java driver you want to install.
 ====
 
 [,xml]
@@ -36,11 +46,11 @@ Be sure to replace the `\{version}` placeholder tag with the version of the Java
     </repository>
 </repositories>
 <dependencies>
-<dependency>
-    <groupId>com.vaticle.typedb</groupId>
-    <artifactId>typedb-driver</artifactId>
-    <version>{version}</version>
-</dependency>
+    <dependency>
+        <groupId>com.vaticle.typedb</groupId>
+        <artifactId>typedb-driver</artifactId>
+        <version>{version}</version>
+    </dependency>
 </dependencies>
 ----
 
@@ -69,33 +79,66 @@ use the following steps to set the minimum log level to `ERROR`:
 </configuration>
 ----
 
-== Tutorial
+== Quickstart
 
-Explore the Java driver xref:java/tutorial.adoc[tutorial] with an example of connecting to TypeDB.
+See below a short example of Java code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
 
-== Java driver API
+[,java]
+----
+try (TypeDBDriver driver = TypeDB.coreDriver("localhost:1729")) {
+    driver.databases().create("access-management-db");
 
-Use the xref:java/api-reference.adoc[API reference] page for the documentation of the methods and classes used in the driver.
+    try (TypeDBSession session = client.session("access-management-db", SessionType.SCHEMA)) {
+        try (TypeDBTransaction tx = session.transaction(TransactionType.WRITE)) {
+            tx.query().define(accessManagementSchema);
+            tx.commit();
+        }
+    }
+    try (TypeDBSession session = client.session("access-management-db", SessonType.DATA)) {
+        for (var batch of accessManagementDataBatches) {
+            try (TypeDBTransaction tx = session.transaction(TransactionType.WRITE)) {
+                for (var query of batch) {
+                    tx.query().insert(query);
+                }
+                tx.commit();
+            }
+        }
+        try (TypeDBTransaction tx = session.transaction(TransactionType.READ)) {
+            Stream<ConceptMap> results = tx.query().get(TypeQL.match(var("u").isa("user")).get());
+        }
+    }
+}
+----
 
-// tag::questions[]
-[NOTE]
-====
-Any questions about the driver after reading the documentation?
-Feel free to ask on our
-https://typedb.com/discord[Discord,window=_blank] community server.
-====
-// end::questions[]
+For more code examples, see the Tutorial and Driver API links below.
 
-== Query builder
+== Learn more
 
-Learn to use native Java syntax to build TypeQL queries with xref:java/query-builder.adoc[Java query builder].
+[cols-3]
+--
+.xref:drivers::java/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the Java driver.
+****
 
-== Additional resources
+.xref:java/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the Java language.
+****
 
-* <<_version_compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/java[Java driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+.xref:java/query-builder.adoc[Query builder]
+[.clickable]
+****
+Learn to use native Java syntax to build TypeQL queries.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
+
+//Use the xref:java/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
 
 [#_version_compatibility]
 == Version Compatibility
