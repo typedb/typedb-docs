@@ -4,20 +4,36 @@
 :keywords: typedb, client, driver, python
 :pageTitle: TypeDB Python driver
 
-The Python driver was developed by Vaticle to enable TypeDB support for Python software and developers.
+The TypeDB Python driver was developed by Vaticle to enable TypeDB support for Python software and developers.
+
+[cols-3]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/python[Source code,window=_blank]
+[.clickable]
+****
+
+****
+
+.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+[.clickable]
+****
+
+****
+
+.link:https://pypi.org/project/typedb-driver/[PyPI page]
+[.clickable]
+****
+
+****
+--
 
 [#_install_python]
 == Install
 
-=== Prerequisites
-
-To use the Python driver, we need a compatible version of TypeDB server running.
 See the
-<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+<<_version_compatibility>> table to check what versions of TypeDB and Python driver are compatible.
 
-For Linux OS: the minimum version of `glibc` is `2.25.0`.
-
-=== Installation
+For Linux: the minimum version of `glibc` is `2.25.0`.
 
 To install TypeDB Python driver:
 
@@ -26,7 +42,7 @@ To install TypeDB Python driver:
 pip install typedb-driver
 ----
 
-.See command for older versions (<2.24.0)
+.See the command for older versions (<2.24.0)
 [%collapsible]
 ====
 [,bash]
@@ -35,24 +51,56 @@ pip install typedb-client
 ----
 ====
 
-== Tutorial
+== Quickstart
 
-Explore the Python driver xref:python/tutorial.adoc[tutorial] with example of connecting to TypeDB.
+See below a short example of Python code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
 
-== Python driver API
+[,python]
+----
+with TypeDB.core_driver("localhost:1729") as driver:
+    driver.databases.create("access-management-db")
 
-Use the xref:python/api-reference.adoc[API reference] page for the documentation of the methods and objects used in
-the driver.
+    with client.session("access-management-db", SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as tx:
+            tx.query.define(access_management_schema)
+            tx.commit()
+
+    with client.session("access-management-db", SessionType.DATA) as session:
+        for batch in access_management_data_batches:
+            with session.transaction(TransactionType.WRITE) as tx:
+                for query in batch:
+                    tx.query.insert(query)
+
+                tx.commit()
+
+                with session.transaction(TransactionType.READ) as tx:
+                    results = tx.query.get("match $u isa user; get;")
+----
+//#todo Check the code above
+
+For more code examples, see the Tutorial and Driver API links below.
+
+== Learn more
+
+[cols-2]
+--
+.xref:drivers::python/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the Python driver.
+****
+
+.xref:python/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the Python language.
+****
+--
 
 include::../java/overview.adoc[tag=questions]
 
-== Additional resources
-
-* <<_version_compatibility>>
-* https://pypi.org/project/typedb-driver/[PyPI page for the TypeDB driver,window=_blank]
-* https://github.com/vaticle/typedb-driver/tree/development/python[Python driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+//Use the xref:python/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
 
 [#_version_compatibility]
 == Version Compatibility
@@ -65,7 +113,7 @@ include::../java/overview.adoc[tag=questions]
 | 3
 | 2.26.3
 | 2.26.0
-| 3.9 to 3.11
+| 3.8 to 3.11
 
 | 2.25.8
 | 3

@@ -1,8 +1,7 @@
 = Rust driver tutorial
-
-:keywords: typedb, typeql, tutorial, quickstart, start, sample, example, application, app
+:keywords: typedb, typeql, tutorial, rust, quickstart, start, sample, example, application, app
 :pageTitle: Rust driver tutorial
-:summary: A simple example with a prototype application to run against a TypeDB database.
+:summary: A simple example with an application using TypeDB Rust driver.
 :tabs-sync-option:
 
 In this tutorial, we'll use a sample application to showcase how to define a schema, insert initial data,
@@ -73,7 +72,7 @@ that requires `sync` feature of `typedb-driver` to be enabled (see above).
 
 == Building and running
 
-To run the sample app follow the instructions below:
+To run the sample app, follow the instructions below:
 
 Run the Rust application with `cargo`:
 
@@ -82,7 +81,7 @@ Run the Rust application with `cargo`:
 cargo run
 ----
 
-The TypeQL files with [Define] and Insert queries (see <<_additional_files,above>>)
+The TypeQL files with Define and Insert queries (see <<_additional_files,above>>)
 should be placed at the top level of the project directory,
 side by side with the `Cargo.toml` file.
 
