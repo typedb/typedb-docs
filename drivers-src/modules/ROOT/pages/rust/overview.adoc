@@ -66,33 +66,44 @@ creates a database named `access-management-db`, defines a schema, inserts some 
 [,rust]
 ----
 use typedb_driver::{
-    concept::{Attribute, Concept, Value},
-    Connection, DatabaseManager, Error, Options, Promise, Session, SessionType, TransactionType
+    Connection, DatabaseManager, Error, Promise, Session, SessionType, TransactionType,
 };
 
-let connection = Connection::new_core("localhost:1729")?;
-let databases = DatabaseManager::new(connection);
-
-databases.create("access-management-db").await?;
-
-let session = Session::new(databases.get("access-management-db").await?, SessionType::Schema).await?;
-let tx = session.transaction(TransactionType::Write).await?;
-tx.query().define("define subject sub entity;").await?;
-tx.commit().await?;
-drop(session);
-
-let session = Arc::new(Session::new(databases.get("access-management-db").await?, SessionType::Data).await?);
-futures::future::try_join_all(access_management_data_batches.into_iter().map(|batch| {
-    let session = session.clone();
-    async move {
-        let tx = session.transaction(TransactionType::Write).await?;
-        batch.iter().try_for_each(|query| tx.query().insert(query).map(|_| ()))?;
-        tx.commit().await
+fn main() -> Result<(), Error> {
+    const DB_NAME: &str = "access-management-db";
+    const SERVER_ADDR: &str = "127.0.0.1:1729";
+    let driver = Connection::new_core(SERVER_ADDR)?;
+    let databases = DatabaseManager::new(driver);
+    if databases.contains(DB_NAME)? {
+        databases.get(DB_NAME)?.delete()?;
     }
-})).await?;
+    databases.create(DB_NAME)?;
+    {
+        let session = Session::new(databases.get(DB_NAME)?, SessionType::Schema)?;
+        let tx = session.transaction(TransactionType::Write)?;
+        tx.query().define("define person sub entity;").resolve()?;
+        tx.query().define("define name sub attribute, value string; person owns name;").resolve()?;
+        tx.commit().resolve()?;
+    }
+    {
+        let session = Session::new(databases.get(DB_NAME)?, SessionType::Data)?;
+        {
+            let tx = session.transaction(TransactionType::Write)?;
+            let _ = tx.query().insert("insert $p isa person, has name 'Alice';")?;
+            let _ = tx.query().insert("insert $p isa person, has name 'Bob';")?;
+            tx.commit().resolve()?;
+        }
+        {
+            let tx = session.transaction(TransactionType::Read)?;
+            let res = tx.query().fetch("match $p isa person; fetch $p: name;").unwrap();
+            for item in res {
+                println!("{}", &item.unwrap().to_string());
+            }
+            Ok(())
+        }
+    }
 
-let tx = session.transaction(TransactionType::Read).await?;
-let mut stream = tx.query().get("match $x isa thing; get;")?;
+}
 ----
 //#todo Fix the code above to make it working after copy-pasting it. Add async note??
 
