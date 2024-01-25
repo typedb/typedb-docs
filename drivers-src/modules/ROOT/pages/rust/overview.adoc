@@ -60,8 +60,8 @@ cargo add typedb-driver -F sync
 
 == Quickstart
 
-See below an example in Rust that creates a database named `access-management-db`,
-defines a schema, inserts some data and then reads it.
+See below a short example of Rust code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
 
 [,rust]
 ----
@@ -94,6 +94,7 @@ futures::future::try_join_all(access_management_data_batches.into_iter().map(|ba
 let tx = session.transaction(TransactionType::Read).await?;
 let mut stream = tx.query().get("match $x isa thing; get;")?;
 ----
+//#todo Fix the code above to make it working after copy-pasting it. Add async note??
 
 For more code examples, see the Tutorial and Driver API links below.
 
