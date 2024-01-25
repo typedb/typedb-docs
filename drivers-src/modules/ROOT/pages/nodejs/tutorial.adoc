@@ -1,169 +1,240 @@
-= Node.js driver tutorial
-:Summary: Tutorial for TypeDB Node.js driver.
-:page-aliases: clients::nodejs-driver/tutorial.adoc
-:keywords: typedb, driver, node.js, javascript, tutorial
-:pageTitle: Node.js driver tutorial
+= Node.Js driver tutorial
+:keywords: typedb, typeql, tutorial, node.js, quickstart, start, sample, example, application, app
+:pageTitle: Node.Js driver tutorial
+:summary: A simple example with an application using TypeDB Node.Js driver.
+:tabs-sync-option:
+
+In this tutorial, we'll use a sample application to showcase how to define a schema, insert initial data,
+read data, apply pagination and inference, and add additional data.
 
 == Prerequisites
 
-Make sure to install the Node.js driver as per the xref:nodejs/overview.adoc#_install_nodejs[Installation] guide.
-The TypeDB server also needs to be installed and running.
+Deploy https://cloud.typedb.com/[TypeDB Cloud], or xref:home::install.adoc#_core[install] and
+xref:home::install.adoc#_run_typedb_core[run] TypeDB Core.
 
-== Importing
+xref:drivers::nodejs/overview.adoc#_install_nodejs[Install] the Node.Js driver.
 
-Use the `require` keyword with the `typedb-driver`.
+[WARNING]
+====
+Running the sample app will result in a deletion of a database named `iam` if it exists already on the server.
 
-// test-example socialNetworkNodejsDriverA.js
+////
+Make sure to create a backup copy of all your data from such a database,
+or change the default database name in the source code if necessary.
+////
 
-[,javascript]
+====
+
+== Source code
+
+See the full source code of the sample app below:
+
+include::typedb::partial$sample-app-node.adoc[]
+
+[#_additional_files]
+== Additional files
+
+[#_schema_and_initial_data]
+=== Schema and initial data
+
+For running the sample application, use the following
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank]
+and
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data-single-query.tql[insert query,window=_blank]
+for the sample dataset insertion.
+
+== Building and running
+
+Run the Node.js application:
+
+[,bash]
 ----
-const { TypeDB } = require("typedb-driver");
+node sample.js
 ----
 
-== Connecting
+The TypeQL files with define and insert queries should be placed at the top level of the project directory,
+side by side with the `package.json` file.
 
-Instantiate a TypeDB Core driver and open a xref:typedb:ROOT:connecting/overview.adoc#_sessions[session] to a
-xref:typedb:ROOT:connecting/overview.adoc#_databases[database].
+[#_explanation]
+== Explanation
+
+This section is for comments and explanation of the sample application implementation details.
+
+=== Database setup
+
+First of all, we connect to a TypeDB Core server by initializing a driver instance.
+
+We proceed to check whether a database named `iam` exists on the server already.
+We delete such a database if it exists to prevent any possible schema or data conflicts.
+Then we create a new database with the name `iam`.
+
+We open a `schema` session to this database, open a `write` transaction, read the `iam-schema.tql` file,
+and send its contents as a xref:typeql::schema/type-definitions.adoc[Define query].
+Next, we commit the transaction to persist the resulted schema.
+
+After that we open a `data` session, a `write` transaction, read the `iam-data-single-query.tql` file,
+and send its contents as an xref:typeql::data/insert.adoc[Insert query].
+We commit the transaction again and re-using the same data session to open a `read` transaction.
+
+With the new read transaction, we test the resulted database by retrieving the number of users in it.
+
+For more information on server connections, sessions, and transactions, see the xref:typedb::connecting/overview.adoc[]
+page.
+
+=== Request #1: User listing
+
+We open a `data` session that will be re-used for multiple requests, open a `read` transaction,
+and send a simple TypeQL query to get all users with `full-name` and `email` attributes.
+
+[,typeql]
+----
+match
+$u isa user,
+    has full-name $n,
+    has email $e;
+get;
+----
+
+We iterate through results to print every user and the total count of users.
+
+[discrete]
+==== Query explanation
+
+This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
+
+We go through all entities of the `user` type that have a `full-name` attribute and `email` attribute.
+
+A `get` clause with no variables and just a semicolon means,
+that we are retrieving concepts for all variables from the preceding `match` clause pattern in every result.
+
+=== Request #2: Files
+
+We open a new read transaction in the same data session and send a TypeQL query to get paths of all filenames that
+user with the `full-name` of `Kevin Morrison` has access to.
+
+[,typeql]
+----
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+get $fp;
+----
+
+[discrete]
+==== Query explanation
+
+This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
+//#todo Replace with Fetch!
+
+A `match` clause pattern looks for a `user` (variable `$u`) with attribute `full-name` of value `Kevin Morrison` assigned,
+a `permission` relation (`$p`) in between this user `$u` and potential access `$pa`.
+Additionally, we state that an `object` (`$o`) with a path `$fp` should be a part of `$pa` `access` relation, without
+having to specify what kind of action `$va` it should be.
+
+A `get` clause filters response to only contain the matched `path` attributes (`$fp`).
 
 [NOTE]
 ====
-Find out how to create a database in TypeDB on the
-xref:home::quickstart.adoc#_create_a_database[Quickstart guide] page.
-
-The name for the database should be `social_network`. +
-The database should have the following schema loaded: xref:attachment$schema.tql[schema.tql]. +
-The database should have the following data inserted: xref:attachment$data.tql[data.tql].
+According to the xref:typedb::tutorials/iam-schema.adoc[IAM schema],
+we need two relations to connect users to files: `permission` and `access`.
 ====
 
-Instantiate a driver and open a session.
+=== Request #3: Inference
 
-// test-example socialNetworkNodejsDriverB.js
+We start with opening a new transaction with the xref:typedb::developing/infer.adoc[inference] option enabled.
 
-[,javascript]
+Then we send a query to get Kevin's files, but this time we specify the access action to be `view_file`,
+since the permission for this access wasn't inserted in the <<_schema_and_initial_data,sample dataset>>
+and must be inferred by the `add-view-permission` rule.
+We also add xref:typeql::data/get.adoc#_sort_the_results[sort],
+xref:typeql::data/get.adoc#_offset_the_results[offset] and
+xref:typeql::data/get.adoc#_limit_the_results[limit] modifiers to the query to manage pagination.
+This request consists of two queries splitting the results between queries.
+
+.Query 1
+[,typeql]
 ----
-const { TypeDB, SessionType } = require("typedb-driver");
-
-async function openSession (database) {
-	const driver = await TypeDB.coreDriver("localhost:1729");
-	const session = await driver.session(database, SessionType.DATA);
-	// session is open
-	await session.close();
-	//session is closed
-	driver.close();
-};
-
-openSession("social_network");
-----
-
-== Creating transactions
-
-Create transactions to use for reading and writing data.
-
-// test-example socialNetworkNodejsDriverC.js
-
-[,javascript]
-----
-const { TypeDB, SessionType, TransactionType } = require("typedb-driver");
-
-async function createTransactions (database) {
-	const driver = await TypeDB.coreDriver("localhost:1729");
-	const session = await driver.session(database, SessionType.DATA);
-
-	// creating a write transaction
-	const writeTransaction = await session.transaction(TransactionType.WRITE); // write transaction is open
-	// to persist changes, write transaction must always be committed/closed
-	await writeTransaction.commit();
-
-	// creating a read transaction
-	const readTransaction = await session.transaction(TransactionType.READ); // read transaction is open
-	// read transaction must always be closed
-	await readTransaction.close();
-	// a session must always be closed
-	await session.close();
-	// a driver must always be closed
-	driver.close();
-}
-
-createTransactions("social_network");
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+$va isa action, has name 'view_file';
+get $fp;
+sort $fp asc;
+offset 0;
+limit 5;
 ----
 
-== Querying
+And then, we repeat the query with different offset to get the rest of results.
 
-Running basic retrieval and insertion queries.
-
-// test-example socialNetworkNodejsDriverD.js
-
-[,javascript]
+.Query 2
+[,typeql]
 ----
-const { TypeDB, SessionType, TransactionType } = require("typedb-driver");
-
-async function runBasicQueries(database) {
-	const driver = await TypeDB.coreDriver("localhost:1729");
-	const session = await driver.session(database, SessionType.DATA);
-
-	// Insert a person using a WRITE transaction
-	const writeTransaction = await session.transaction(TransactionType.WRITE);
-	const insertStream = await writeTransaction.query.insert('insert $x isa person, has email "x@email.com";');
-	const conceptMaps = await insertStream.collect();
-	console.log("Inserted a person with ID: " + conceptMaps[0].get("x").iid);
-	// to persist changes, a write transaction must always be committed (closed)
-	await writeTransaction.commit();
-
-	// Retrieve persons using a READ only transaction
-	const readTransaction = await session.transaction(TransactionType.READ);
-
-	// We can either query and consume the iterator lazily
-	let answerStream = await readTransaction.query.get("match $x isa person; get $x; limit 10;");
-	for await (const aConceptMapAnswer of answerStream) {
-		const person = aConceptMapAnswer.get("x");
-		console.log("Retrieved person with id " + person.iid);
-	}
-
-	// Or query and consume the iterator immediately collecting all the results
-	answerStream = await readTransaction.query.get("match $x isa person; get $x; limit 10;");
-	const persons = await answerStream.collect();
-	persons.forEach(conceptMap => {
-        person = conceptMap.get("x");
-        console.log("Retrieved person with id " + person.iid);
-    });
-
-	// a read transaction must always be closed
-	await readTransaction.close();
-	// a session must always be closed
-	await session.close();
-	// a driver must always be closed
-	driver.close();
-}
-
-runBasicQueries("social_network");
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+$va isa action, has name 'view_file';
+get $fp;
+sort $fp asc;
+offset 5;
+limit 5;
 ----
 
-[IMPORTANT]
+[discrete]
+==== Query explanation
+
+We update the previous query to set the type of action (`$va`) to the `view_file` value.
+We still get only `path` (`$fp`), but now we add sorting and pagination: we set offset and limit for the results.
+
+[NOTE]
 ====
-Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction,
-however, must be explicitly closed by calling the `close()` method on it.
+Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
+xref:typedb::basics/inference.adoc#_rules[rule].
+To use xref:typedb::developing/infer.adoc[inference] in this query,
+we modify TypeDB options and send the modified set of options to the transaction call.
 ====
 
-Check out the xref:nodejs/api-reference.adoc[API Reference] to learn about the available methods on the concepts retrieved as the answers to TypeQL queries.
+=== Request #4: Add a new file
 
-To view examples of running various queries using TypeQL, head over to their dedicated documentation pages
-as listed below:
+To be able to insert new data, we open a write transaction this time.
+Then we generate a filename from current time and date and insert an instance of the `file` type that owns the
+attribute of type `path` and value of the generated filename.
 
-* xref:typedb::developing/write.adoc#_insert[Insert]
-* xref:typedb::developing/write.adoc#_delete_query[Delete]
-* xref:typedb::developing/write.adoc#_update_query[Update]
-* xref:typedb::developing/read.adoc#_get[Get]
-//#todo update to TypeQL full examples
+[,typeql]
+----
+insert $f isa file, has path 'logs/2023-12-19-19-11-36.log';
+----
 
-== Where to go next
+After that we do another query to match the new file we just inserted and add a relation of the `access` type with it:
 
-Check out the xref:nodejs/api-reference.adoc#_answer_header[Answer] section of API reference page to learn
-about the available methods on the concepts retrieved as the answers to queries.
+[,typeql]
+----
+match
+$f isa file, has path 'logs/2023-12-19-19-11-36.log';
+$vav isa action, has name 'view_file';
+insert
+($vav, $f) isa access;
+----
 
-To view examples of various TypeQL queries, head over to
-xref:typedb::developing/write.adoc[Writing data] and
-xref:typedb::developing/read.adoc[Reading data] pages.
+[discrete]
+==== Query explanation
 
-For some more Python driver examples -- see the
-xref:typedb:ROOT:tutorials/sample-app.adoc#_node_js_implementation[Python implementation] on the Sample application
-page.
+The first query inserts a file entity that owns a `path` attribute with the value of a generated filename.
+
+With the second query, we look for a `file` entity that has the attribute `path` with the value we generated before.
+And we find an `action`, that has a `name` attribute with the value of `view_file`.
+Finally, we insert an `access` relation between the `file` and the `action`.
+
+After both requests are done, we commit the write transaction to persist new information.
+
+[NOTE]
+====
+Note that we create the `file` first.
+If we try to insert an `access` to a nonexistent `file` our query will run but will not insert any new data (relation)
+because its `match` clause will find no matches in a database.
+====
