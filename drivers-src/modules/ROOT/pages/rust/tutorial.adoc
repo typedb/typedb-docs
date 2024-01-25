@@ -1,0 +1,271 @@
+= Rust driver tutorial
+
+:keywords: typedb, typeql, tutorial, quickstart, start, sample, example, application, app
+:pageTitle: Rust driver tutorial
+:summary: A simple example with a prototype application to run against a TypeDB database.
+:tabs-sync-option:
+
+In this tutorial, we'll use a sample application to showcase how to define a schema, insert initial data,
+read data, apply pagination and inference, and add additional data.
+
+== Prerequisites
+
+Deploy https://cloud.typedb.com/[TypeDB Cloud], or xref:home::install.adoc#_core[install] and
+xref:home::install.adoc#_run_typedb_core[run] TypeDB Core.
+
+xref:drivers::rust/overview.adoc#_install_rust[Install] the Rust driver.
+
+[WARNING]
+====
+Running the sample app will result in a deletion of a database named `iam` if it exists already on the server.
+
+////
+Make sure to create a backup copy of all your data from such a database,
+or change the default database name in the source code if necessary.
+////
+
+====
+
+== Source code
+
+See the full source code of the sample app below:
+
+include::typedb::partial$sample-app-rust.adoc[]
+
+[#_additional_files]
+== Additional files
+
+[#_schema_and_initial_data]
+=== Schema and initial data
+
+For running the sample application, use the following
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank]
+and
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data-single-query.tql[insert query,window=_blank]
+for the sample dataset insertion.
+
+////
+=== Auxiliary files
+
+You can specify dependencies in a `Cargo.toml` file. See an example below.
+
+.Cargo.toml
+[,toml]
+----
+[package]
+name = "sample-app"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.23"
+typedb-driver = { version = "2.26.1", features = ["sync"] }
+----
+
+[NOTE]
+====
+For this sample app we are using synchronous Rust implementation,
+that requires `sync` feature of `typedb-driver` to be enabled (see above).
+====
+////
+
+== Building and running
+
+To run the sample app follow the instructions below:
+
+Run the Rust application with `cargo`:
+
+[,bash]
+----
+cargo run
+----
+
+The TypeQL files with [Define] and Insert queries (see <<_additional_files,above>>)
+should be placed at the top level of the project directory,
+side by side with the `Cargo.toml` file.
+
+[#_explanation]
+== Explanation
+
+This section is for comments and explanation of the sample application implementation details.
+
+=== Database setup
+
+First of all, we connect to a TypeDB Core server by initializing a driver instance.
+
+We proceed to check whether a database named `iam` exists on the server already.
+We delete such a database if it exists to prevent any possible schema or data conflicts.
+Then we create a new database with the name `iam`.
+
+We open a `schema` session to this database, open a `write` transaction, read the `iam-schema.tql` file,
+and send its contents as a xref:typeql::schema/type-definitions.adoc[Define query].
+Next, we commit the transaction to persist the resulted schema.
+
+After that we open a `data` session, a `write` transaction, read the `iam-data-single-query.tql` file,
+and send its contents as an xref:typeql::data/insert.adoc[Insert query].
+We commit the transaction again and re-using the same data session to open a `read` transaction.
+
+With the new read transaction, we test the resulted database by retrieving the number of users in it.
+
+For more information on server connections, sessions, and transactions, see the xref:typedb::connecting/overview.adoc[]
+page.
+
+=== Request #1: User listing
+
+We open a `data` session that will be re-used for multiple requests, open a `read` transaction,
+and send a simple TypeQL query to get all users with `full-name` and `email` attributes.
+
+[,typeql]
+----
+match
+$u isa user,
+    has full-name $n,
+    has email $e;
+get;
+----
+
+We iterate through results to print every user and the total count of users.
+
+[discrete]
+==== Query explanation
+
+This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
+
+We go through all entities of the `user` type that have a `full-name` attribute and `email` attribute.
+
+A `get` clause with no variables and just a semicolon means,
+that we are retrieving concepts for all variables from the preceding `match` clause pattern in every result.
+
+=== Request #2: Files
+
+We open a new read transaction in the same data session and send a TypeQL query to get paths of all filenames that
+user with the `full-name` of `Kevin Morrison` has access to.
+
+[,typeql]
+----
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+get $fp;
+----
+
+[discrete]
+==== Query explanation
+
+This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
+//#todo Replace with Fetch!
+
+A `match` clause pattern looks for a `user` (variable `$u`) with attribute `full-name` of value `Kevin Morrison` assigned,
+a `permission` relation (`$p`) in between this user `$u` and potential access `$pa`.
+Additionally, we state that an `object` (`$o`) with a path `$fp` should be a part of `$pa` `access` relation, without
+having to specify what kind of action `$va` it should be.
+
+A `get` clause filters response to only contain the matched `path` attributes (`$fp`).
+
+[NOTE]
+====
+According to the xref:typedb::tutorials/iam-schema.adoc[IAM schema],
+we need two relations to connect users to files: `permission` and `access`.
+====
+
+=== Request #3: Inference
+
+We start with opening a new transaction with the xref:typedb::developing/infer.adoc[inference] option enabled.
+
+Then we send a query to get Kevin's files, but this time we specify the access action to be `view_file`,
+since the permission for this access wasn't inserted in the <<_schema_and_initial_data,sample dataset>>
+and must be inferred by the `add-view-permission` rule.
+We also add xref:typeql::data/get.adoc#_sort_the_results[sort],
+xref:typeql::data/get.adoc#_offset_the_results[offset] and
+xref:typeql::data/get.adoc#_limit_the_results[limit] modifiers to the query to manage pagination.
+This request consists of two queries splitting the results between queries.
+
+.Query 1
+[,typeql]
+----
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+$va isa action, has name 'view_file';
+get $fp;
+sort $fp asc;
+offset 0;
+limit 5;
+----
+
+And then, we repeat the query with different offset to get the rest of results.
+
+.Query 2
+[,typeql]
+----
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+$va isa action, has name 'view_file';
+get $fp;
+sort $fp asc;
+offset 5;
+limit 5;
+----
+
+[discrete]
+==== Query explanation
+
+We update the previous query to set the type of action (`$va`) to the `view_file` value.
+We still get only `path` (`$fp`), but now we add sorting and pagination: we set offset and limit for the results.
+
+[NOTE]
+====
+Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
+xref:typedb::basics/inference.adoc#_rules[rule].
+To use xref:typedb::developing/infer.adoc[inference] in this query,
+we modify TypeDB options and send the modified set of options to the transaction call.
+====
+
+=== Request #4: Add a new file
+
+To be able to insert new data, we open a write transaction this time.
+Then we generate a filename from current time and date and insert an instance of the `file` type that owns the
+attribute of type `path` and value of the generated filename.
+
+[,typeql]
+----
+insert $f isa file, has path 'logs/2023-12-19-19-11-36.log';
+----
+
+After that we do another query to match the new file we just inserted and add a relation of the `access` type with it:
+
+[,typeql]
+----
+match
+$f isa file, has path 'logs/2023-12-19-19-11-36.log';
+$vav isa action, has name 'view_file';
+insert
+($vav, $f) isa access;
+----
+
+[discrete]
+==== Query explanation
+
+The first query inserts a file entity that owns a `path` attribute with the value of a generated filename.
+
+With the second query, we look for a `file` entity that has the attribute `path` with the value we generated before.
+And we find an `action`, that has a `name` attribute with the value of `view_file`.
+Finally, we insert an `access` relation between the `file` and the `action`.
+
+After both requests are done, we commit the write transaction to persist new information.
+
+[NOTE]
+====
+Note that we create the `file` first.
+If we try to insert an `access` to a nonexistent `file` our query will run but will not insert any new data (relation)
+because its `match` clause will find no matches in a database.
+====
