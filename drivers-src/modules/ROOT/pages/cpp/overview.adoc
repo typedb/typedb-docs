@@ -66,7 +66,7 @@ creates a database named `access-management-db`, defines a schema, inserts some 
 #include <typedb_driver.hpp>
 
 int main() {
-    const std::string dbName = "people5";
+    const std::string dbName = "access-management-db";
     const std::string ServerAddr = "127.0.0.1:1729";
     try {
         TypeDB::Driver driver = TypeDB::Driver::coreDriver(ServerAddr);

@@ -62,7 +62,7 @@ const { SessionType } = require("typedb-driver/api/connection/TypeDBSession");
 const { TransactionType } = require("typedb-driver/api/connection/TypeDBTransaction");
 
 async function main() {
-    const DB_NAME = "people4";
+    const DB_NAME = "access-management-db";
     const SERVER_ADDR = "127.0.0.1:1729";
     const driver = await TypeDB.coreDriver(SERVER_ADDR);
     if (driver.databases.contains(DB_NAME)) {
