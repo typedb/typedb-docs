@@ -58,10 +58,10 @@ For other build systems: see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/latest/a=noarch;xg=com.vaticle.typedb/#install[setup]
 page.
 
-=== (Optional) Add logging config
+=== Add logging config
 
-By default, the Java driver uses Logback to print errors and debugging info to standard output. As it is quite verbose,
-use the following steps to set the minimum log level to `ERROR`:
+By default, the Java driver uses Logback to print errors and debugging info to standard output.
+As it is quite verbose, you can use the following steps to set the minimum log level to `ERROR`:
 
 . Create a file in the `resources` path (`src/main/resources` by default in a Maven project) named `logback.xml`.
 . Copy the following document into the `logback.xml`:
@@ -103,21 +103,25 @@ import com.vaticle.typeql.lang.query.TypeQLInsert;
 import com.vaticle.typeql.lang.query.TypeQLFetch;
 
 public class Main {
+
     public static void main(String[] args) {
         final String DB_NAME = "access-management-db";
         final String SERVER_ADDR = "127.0.0.1:1729";
+
         try (TypeDBDriver driver = TypeDB.coreDriver(SERVER_ADDR)) {
+
             if (driver.databases().contains(DB_NAME)) {
                 driver.databases().get(DB_NAME).delete();
             }
             driver.databases().create(DB_NAME);
+
             try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
                 try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                     TypeQLDefine defineQuery = TypeQL.define(
                                     TypeQL.type("person").sub(TypeQLToken.Type.ENTITY).owns("name"),
                                     TypeQL.type("name").sub(TypeQLToken.Type.ATTRIBUTE).value(TypeQLArg.ValueType.STRING)
                     );
-                    tx.query().define(defineQuery).resolve();
+                    tx.query().define(defineQuery);
                     tx.commit();
                 }
             }
@@ -134,11 +138,7 @@ public class Main {
                     TypeQLFetch fetchQuery = TypeQL.match(
                             TypeQL.cVar("p").isa("person")
                     ).fetch(TypeQL.cVar("p").map("name"));
-                    tx.query().fetch(fetchQuery).forEach(
-                            result -> {
-                                System.out.println(result.toString());
-                            }
-                    );
+                    tx.query().fetch(fetchQuery).forEach(result -> System.out.println(result.toString()));
                 }
             }
         }
