@@ -1,0 +1,237 @@
+= Databases management guide
+:tabs-sync-option:
+
+This guide covers database management operations, like creating, listing,
+and deleting databases with Studio, Console, or driver.
+Make sure to xref:guides::installation/studio.adoc[install]
+and xref:guides::connection/studio.adoc[connect] Studio to TypeDB before proceeding.
+
+Database management operations require a xref:guides::connection.adoc[network connection] to TypeDB.
+
+== Create
+
+To create a database, follow the steps below:
+
+[tabs]
+====
+Studio::
++
+--
+. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+. Type in a name for a new database (for example, `db1`) in the text field of the window and click btn:[Create].
+
+The newly created database should appear in the drop-down selector of the top toolbar.
+--
+
+Console::
++
+--
+[,bash]
+----
+database create db1
+----
+
+Where `db1` is the name of the database.
+--
+
+Rust::
++
+--
+[,rust]
+----
+let databases = DatabaseManager::new(driver);
+databases.create("db1");
+----
+--
+
+Python::
++
+--
+[,python]
+----
+driver.databases().create("db1")
+----
+--
+
+Java::
++
+--
+[,java]
+----
+driver.databases().create("db1");
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+await driver.databases().create("db1");
+----
+--
+
+C++::
++
+--
+[,cpp]
+----
+driver.databases.create("db1");
+----
+--
+====
+
+== Delete
+
+To delete a database with all its data and schema, follow the steps below:
+
+[tabs]
+====
+Studio::
++
+--
+. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+. In the list of databases, locate the database you want to delete and click on the Trashcan icon in its row.
+. To confirm its deletion, type in the name of the database in the text field of the confirmation dialog and click btn:[Delete].
+//#todo Add the icon's image
+--
+
+Console::
++
+--
+[,bash]
+----
+database delete db1
+----
+
+Where `db1` is the name of the database.
+--
+
+Rust::
++
+--
+[,rust]
+----
+let databases = DatabaseManager::new(driver);
+databases.get("db1").unwrap().delete();
+----
+--
+
+Python::
++
+--
+[,python]
+----
+driver.databases().get("db1").delete()
+----
+--
+
+Java::
++
+--
+[,java]
+----
+driver.databases().get("db1").delete();
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+await (await driver.databases().get("db1")).delete();
+----
+--
+
+C++::
++
+--
+[,cpp]
+----
+driver.databases.get("db1").deleteDatabase();
+----
+--
+====
+
+== List databases
+
+To see a full list of databases on a server, follow the steps below:
+
+[tabs]
+====
+Studio::
++
+--
+. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+. Open the drop-down list in the top toolbar next to the database icon image:home::studio-icons/database.png[].
+--
+
+Console::
++
+--
+[,bash]
+----
+database list
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+for db in databases.all().unwrap(){
+    println!("{}", db.name().to_string());
+}
+----
+--
+
+Python::
++
+--
+[,python]
+----
+for db in driver.databases.all():
+    print(db.name)
+----
+--
+
+Java::
++
+--
+[,java]
+----
+driver.databases().all().forEach(db -> System.out.println(db.name()));
+----
+--
+
+Node.js::
++
+--
+[,js]
+----
+let dbs = await driver.databases.all();
+for (db of dbs) {
+    console.log(db.name);
+}
+----
+--
+
+C++::
++
+--
+[,cpp]
+----
+for (auto& db: driver.databases.all()) {
+    std::cout << db.name() << std::endl;
+}
+----
+//std::vector<TypeDB::Database> databases;
+//for (auto& database: driver.databases.all()) {
+//     std::cout << database.name() << std::endl;
+//}
+
+--
+====
+
