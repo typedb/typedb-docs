@@ -1,0 +1,72 @@
+= TypeDB Console connection guide
+
+This guide covers connecting to a TypeDB deployment with TypeDB Console.
+
+== Run
+
+To run TypeDB Console, use the following command:
+
+.Run TypeDB Console
+[,bash]
+----
+typedb console
+----
+
+By default, TypeDB Console tries to connect to a TypeDB Core server located at `localhost:1729`.
+
+To run a specific TypeDB Console binary or without installing it into your system,
+navigate to a directory with extracted TypeDB Console files and run:
+
+.Run TypeDB Console from current directory
+[,bash]
+----
+./typedb console
+----
+
+== Connect to TypeDB
+
+Use command line arguments to provide TypeDB address to connect to and other required connection parameters.
+
+[tabs]
+====
+Cloud::
++
+--
+.TypeDB Cloud connection
+[,bash]
+----
+typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+----
+
+You will be prompted for a password.
+
+// tag::cloud-psw[]
+[NOTE]
+=====
+On your first login,
+xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
+A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
+=====
+// end::cloud-psw[]
+--
+
+Core::
++
+--
+.TypeDB Core connection
+[,bash]
+----
+typedb console --core=<server-address>
+----
+--
+====
+
+As a result, we should get a welcome message from TypeDB Console followed by a command line prompt.
+
+[,bash]
+----
+Welcome to TypeDB Console. You are now in TypeDB Wonderland!
+Copyright (C) 2022 Vaticle
+
+>
+----
