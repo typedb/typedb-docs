@@ -1,0 +1,122 @@
+= TypeDB Studio installation guide
+
+TypeDB Studio is a standalone IDE for TypeDB.
+If you are unsure of the exact version you need,
+check the <<_version_compatibility,compatibility table>> below.
+
+There are two ways of installing TypeDB Studio
+
+* <<_package_manager>> (macOS only)
+* <<_studio_manual>>
+
+[#_package_manager]
+== Package manager
+
+For macOS, use Brew to install TypeDB Studio:
+
+[,bash]
+----
+brew tap vaticle/tap
+brew install --cask vaticle/tap/typedb-studio
+----
+
+For other OS, see <<_studio_manual>> below.
+
+//To learn how to run TypeDB Studio, see the xref:home::quickstart.adoc[Quickstart] guide.
+
+[#_studio_manual]
+== Manual install
+
+Download the latest/compatible version of TypeDB Studio for your architecture and OS from the
+xref:typedb:resources:releases.adoc[] page and follow instructions below.
+//#todo Add auto-generated download links
+
+[tabs]
+====
+macOS::
++
+--
+. Open the downloaded `.dmg` file and accept the license agreement.
+. Drag and drop TypeDB Studio executable to the Application folder.
+--
+
+Linux::
++
+--
+. Extract the archive with TypeDB Studio into a new directory, for example:
++
+[,bash,subs=attributes+]
+----
+mkdir /opt/typedb-studio
+tar -xzf ~/Downloads/typedb-studio-linux-x86_64-{latest-version}.tar.gz -C /opt/typedb-studio
+----
+
+. Add a symlink to the TypeDB Studio executable in the `/usr/local/bin` directory, for example:
++
+[,bash,subs=attributes+]
+----
+ln -s /opt/typedb-studio/typedb-studio-linux-x86_64-{latest-version}/typedb-studio /usr/local/bin/typedb-studio
+----
+--
+
+Windows::
++
+--
+Run the downloaded `.exe` file and follow the installation wizard.
+--
+====
+
+== Run TypeDB Studio
+
+To launch TypeDB Studio, locate its binary file and run it.
+
+For more information on how to use TypeDB Studio, see the xref:home::quickstart.adoc[] guide.
+// and the xref:typedb::connecting/studio.adoc[] page
+//#todo Insert the Studio page link
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^2,^.^1,^.^2,^.^2"]
+|===
+| TypeDB Studio | Protocol encoding version | TypeDB Core | TypeDB Cloud
+
+| 2.26.0
+| 3
+| 2.26.3
+| 2.26.0
+
+| 2.25.11
+| 3
+| 2.25.7
+| 2.25.7
+
+| 2.24.15
+| 2
+| 2.24.17
+| 2.24.17
+
+| 2.18.0 to 2.21.2
+| 1
+| 2.18.0 to 2.23.0
+| 2.18.0 to 2.23.0
+
+| 2.14.1 to 2.17.0
+| N/A
+| 2.14.1 to 2.17.0
+| 2.14.1 to 2.17.0
+|===
+
+.See older versions
+[%collapsible]
+====
+[cols="^.^2,^.^1,^.^2,^.^2"]
+|===
+| TypeDB Studio | Protocol encoding version | TypeDB Core | TypeDB Cloud
+
+| 2.11.0
+| N/A
+| 2.11.1
+| 2.11.1 to 2.11.2
+|===
+====

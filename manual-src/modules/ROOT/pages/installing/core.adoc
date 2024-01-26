@@ -1,0 +1,73 @@
+= TypeDB Core installation guide
+:tabs-sync-option:
+// Goal - Install TypeDB Core
+
+This page is an installation guide for TypeDB Core.
+TypeDB Core can be installed in multiple ways: using <<_docker,Docker>>, via <<_package,package manager>>, or by
+<<_manual,manual installation>>.
+
+[#_docker]
+== Docker
+
+include::home::partial$docker.adoc[tag=install]
+
+[#_package]
+== Package manager
+
+[tabs]
+====
+macOS::
++
+--
+include::home::partial$macos.adoc[tag=install-homebrew]
+--
+
+Linux::
++
+--
+include::home::partial$linux.adoc[tag=install-apt]
+--
+
+Windows::
++
+--
+No package manager option is available for Windows. See the <<_manual>> section below.
+--
+====
+
+//To learn how to run TypeDB Core, see the xref:home::quickstart.adoc[] guide.
+
+[#_manual]
+== Manual install
+
+Download the latest version of TypeDB Core from the table below.
+
+[cols="^.^1,^.^1,^.^1,^.^1",caption="",options="header"]
+|===
+|Release notes |macOS |Linux |Windows
+
+include::typedb:resources:partial$latest-version.adoc[]
+|===
+
+For all versions, see the xref:typedb:resources:releases.adoc[] page.
+
+[tabs]
+====
+macOS::
++
+--
+include::home::partial$macos.adoc[tag=manual-install]
+--
+
+Linux::
++
+--
+include::home::partial$linux.adoc[tag=manual-install]
+--
+
+Windows::
++
+--
+include::home::partial$win.adoc[tag=manual-install]
+--
+====
