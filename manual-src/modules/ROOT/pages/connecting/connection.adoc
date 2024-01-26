@@ -1,4 +1,4 @@
-= Connection guide
+= Connect to server
 :tabs-sync-option:
 :experimental:
 
@@ -20,6 +20,7 @@ and see below a practical guide on how to connect to TypeDB Core and TypeDB Clou
 
 A network connection to TypeDB Core requires the address and port of the server to connect to.
 
+.Clients
 [tabs]
 ====
 Studio::
@@ -42,7 +43,13 @@ Console::
 typedb console --core=<server-address>
 ----
 --
+====
 
+For programmatic access, use one of the TypeDB drivers:
+
+.Drivers
+[tabs]
+====
 Rust::
 +
 --
@@ -112,6 +119,7 @@ for the `admin` account on your first login.
 A TypeDB Cloud deployment will deny all other operations until the password is changed from its default value.
 =====
 
+.Clients
 [tabs]
 ====
 Studio::
@@ -145,7 +153,13 @@ You will be prompted for a password.
 On your first login,
 xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
 --
+====
 
+For programmatic access, use one of the TypeDB drivers:
+
+.Drivers
+[tabs]
+====
 Rust::
 +
 --
