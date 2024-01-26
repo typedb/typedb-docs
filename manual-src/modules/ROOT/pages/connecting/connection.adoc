@@ -1,14 +1,8 @@
-= Connect to server
+= Connection guide
 :tabs-sync-option:
 :experimental:
 
-TypeDB uses a gRPC-based protocol for external communications, including queries.
-Various TypeDB clients, such as Studio with a GUI, Console with a CLI,
-and language-specific drivers with native APIs, have been developed to implement this protocol.
-
-This guide covers connecting to
-<<_connect_to_typedb_cloud,TypeDB Cloud>> or
-<<_connect_to_typedb_core,TypeDB Core>> servers with Studio, Console, or one of the drivers.
+This guide covers connecting to a TypeDB Cloud or Core deployment with Studio, Console, or driver.
 
 ////
 TypeDB accepts connections via gRPC based
@@ -19,10 +13,9 @@ All released clients and drivers support connection to both TypeDB Cloud and Typ
 ////
 
 //To connect to TypeDB, you can use any TypeDB client or driver.
-//Select a client/driver, make sure it's installed,
-//and see below a practical guide on how to connect to TypeDB Core and TypeDB Cloud.
+Select a client/driver, make sure it's installed,
+and see below a practical guide on how to connect to TypeDB Core and TypeDB Cloud.
 
-[#_connect_to_typedb_core]
 == Connect to TypeDB Core
 
 A network connection to TypeDB Core requires the address and port of the server to connect to.
@@ -32,32 +25,24 @@ A network connection to TypeDB Core requires the address and port of the server 
 Studio::
 +
 --
-Run Studio and follow instructions below:
+Click btn:[Connect to TypeDB] on the right side of the top toolbar,
+select TypeDB edition below, and follow the instructions:
 
-. Click btn:[Connect to TypeDB] on the right side of the top toolbar.
-. Make sure the `TypeDB Core` option is selected in the `Server` field.
-. Enter the address and port of the server to connect to (e.g., `localhost:1729`).
+. Make sure the `TypeDB Core` option is selected in the `Server` field drop-down.
+. Enter the address and port for the server to connect to (e.g., `localhost:1729`).
 . Click btn:[Connect].
 --
 
 Console::
 +
 --
-Run Console using the `--core` argument to set the address and port to connect to:
-
 .Connect to TypeDB Core
 [,bash]
 ----
 typedb console --core=<server-address>
 ----
 --
-====
 
-For programmatic access, use one of the TypeDB xref:manual::installing/drivers.adoc[drivers] via native API:
-
-.Drivers
-[tabs]
-====
 Rust::
 +
 --
@@ -66,8 +51,6 @@ Rust::
 ----
 let driver = Connection::new_core("127.0.0.1:1729");
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 Python::
@@ -78,8 +61,6 @@ Python::
 ----
 driver = TypeDB.core_driver("127.0.0.1:1729")
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 Java::
@@ -90,8 +71,6 @@ Java::
 ----
 TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 Node.js::
@@ -102,8 +81,6 @@ Node.js::
 ----
 const driver = await TypeDB.coreDriver("127.0.0.1:1729");
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 C++::
@@ -114,20 +91,14 @@ C++::
 ----
 TypeDB::Driver driver = TypeDB::Driver::coreDriver("127.0.0.1:1729");
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 ====
 
-After connecting to TypeDB Core, see how to xref:connecting/database.adoc[create a database] and manage
-xref:connecting/session.adoc[sessions] and
-xref:connecting/transaction.adoc[transactions].
-
-[#_connect_to_typedb_cloud]
 == Connect to TypeDB Cloud
 
-A network connection to a TypeDB Cloud cluster requires address and port of at least one server in the cluster,
+A network connection to TypeDB Cloud cluster requires address and port of at least one server in the cluster,
 as well as username and password of a user.
+Encryption parameters are optional.
 
 For your first connection, use the following default user credentials:
 
@@ -146,13 +117,14 @@ A TypeDB Cloud deployment will deny all other operations until the password is c
 Studio::
 +
 --
-Run Studio and follow instructions below:
+Click btn:[Connect to TypeDB] on the right side of the top toolbar,
+select TypeDB edition below, and follow the instructions:
 
-. Click btn:[Connect to TypeDB] on the right side of the top toolbar.
+. Switch the `Server` field drop-down to `TypeDB Cloud`.
 . Click btn:[Manage Cloud Addresses] button.
-. Add address and port for at least one server from your TypeDB Cloud deployment. Close the Address management window.
-. Fill in the `Username` and `Password` fields with valid user credentials.
-. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. +
+. Add address and port for every server from your TypeDB Cloud deployment. Close the Address management window.
+. Fill in the `Username` and `Password` fields.
+. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
 _For self-hosted deployments, encryption parameters may vary._
 . Click `Connect`.
 
@@ -162,8 +134,6 @@ On your first login you will be asked to change the password for the `admin` acc
 Console::
 +
 --
-Run Console using the `--cloud` argument to set a list of addresses and ports to connect to:
-
 .TypeDB Cloud connection
 [,bash]
 ----
@@ -175,13 +145,7 @@ You will be prompted for a password.
 On your first login,
 xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
 --
-====
 
-For programmatic access, use one of the TypeDB xref:manual::installing/drivers.adoc[drivers] via native API:
-
-.Drivers
-[tabs]
-====
 Rust::
 +
 --
@@ -190,8 +154,6 @@ Rust::
 ----
 let driver = Connection::new_cloud(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None).unwrap());
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 Python::
@@ -202,8 +164,6 @@ Python::
 ----
 driver = TypeDB.cloud_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True))
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 Java::
@@ -214,8 +174,6 @@ Java::
 ----
 TypeDBDriver driver = TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 Node.js::
@@ -226,8 +184,6 @@ Node.js::
 ----
 const driver = await TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
 C++::
@@ -238,13 +194,5 @@ C++::
 ----
 TypeDB::Driver driver = TypeDB::Driver::cloudDriver({"127.0.0.1:1729"}, TypeDB::Credential("admin", "password", true));
 ----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
 --
 ====
-
-After connecting to TypeDB Cloud and
-xref:typedb::managing/user-management.adoc#_first_login[changing the default password] for the `admin` account,
-see how to xref:connecting/database.adoc[create a database] and manage
-xref:connecting/session.adoc[sessions] and
-xref:connecting/transaction.adoc[transactions].
