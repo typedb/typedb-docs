@@ -6,7 +6,7 @@
 
 The Node.js driver was developed by Vaticle to enable TypeDB support for Node.js software and developers.
 
-[cols-3]
+[cols-2]
 --
 .link:https://github.com/vaticle/typedb-driver/tree/development/nodejs[GitHub,window=_blank]
 [.clickable]
@@ -57,32 +57,44 @@ creates a database named `access-management-db`, defines a schema, inserts some 
 
 [,js]
 ----
-let driver, session, tx;
-try {
-    driver = await TypeDB.coreDriver("localhost:1729");
-    await driver.databases().create("access-management-db");
+const { TypeDB } = require("typedb-driver/TypeDB");
+const { SessionType } = require("typedb-driver/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-driver/api/connection/TypeDBTransaction");
 
-    session = await client.session("access-management-db", SessionType.SCHEMA);
-    tx = await session.transaction(TransactionType.WRITE);
-    tx.query().define(accessManagementSchema);
-    await tx.commit();
-    await session.close();
-
-    session = await client.session("access-management-db", SessionType.DATA);
-    for (const batch of accessManagementDataBatches) {
-        tx = await session.transaction(TransactionType.WRITE);
-        for (const query of batch) {
-            tx.query().insert(query);
-        }
-        await tx.commit();
+async function main() {
+    const DB_NAME = "people4";
+    const SERVER_ADDR = "127.0.0.1:1729";
+    const driver = await TypeDB.coreDriver(SERVER_ADDR);
+    if (driver.databases.contains(DB_NAME)) {
+        await driver.databases.get(DB_NAME).then(db => db.delete());
     }
-    tx = await session.transaction(TransactionType.READ);
-    const results = tx.query().get("match $u isa user; get;");
-} finally {
-    if (tx) await tx.close();
-    if (session) await session.close();
-    if (driver) await driver.close();
+    await driver.databases.create(DB_NAME);
+    try {
+        session = await driver.session(DB_NAME, SessionType.SCHEMA);
+        try {
+            transaction = await session.transaction(TransactionType.WRITE);
+            await transaction.query.define("define person sub entity;");
+            await transaction.query.define("define name sub attribute, value string; person owns name;");
+            await transaction.commit();
+        } finally {if (transaction.isOpen()) {await transaction.close()};}
+    } finally {await session?.close();}
+    try {
+        session = await driver.session(DB_NAME, SessionType.DATA);
+        try {
+            transaction = await session.transaction(TransactionType.WRITE);
+            await transaction.query.insert("insert $p isa person, has name 'Alice';");
+            await transaction.query.insert("insert $p isa person, has name 'Bob';");
+            await transaction.commit();
+        } finally {if (transaction.isOpen()) {await transaction.close()};}
+        try {
+            transaction = await session.transaction(TransactionType.READ);
+            await transaction.query.fetch("match $p isa person; fetch $p: name;").forEach(element => {
+                console.log(JSON.stringify(element));
+            });
+        } finally {if (transaction.isOpen()) {await transaction.close()};}
+    } finally {await session?.close();}
 }
+main();
 ----
 
 For more code examples, see the Tutorial and Driver API links below.
@@ -111,7 +123,7 @@ include::drivers::partial$drivers2discord.adoc[]
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
+[cols="^.^3,^.^2,^.^3,^.^3,^.^1",options="header"]
 |===
 | Node.js driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Node
 
@@ -132,7 +144,14 @@ include::drivers::partial$drivers2discord.adoc[]
 | 2.24.17
 | 2.24.17
 | >= 14.15
+|===
 
+.See older versions
+[%collapsible]
+====
+[cols="^.^3,^.^2,^.^3,^.^3,^.^1",options="header"]
+|===
+| Node.js driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Node
 | 2.18.1, 2.18.2
 | 1
 | 2.18.0 to 2.23.0
@@ -205,3 +224,4 @@ include::drivers::partial$drivers2discord.adoc[]
 | N/A
 | >= 6.5
 |===
+====

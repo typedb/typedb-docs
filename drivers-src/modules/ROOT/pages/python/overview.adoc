@@ -134,7 +134,7 @@ include::drivers::partial$drivers2discord.adoc[]
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
+[cols="^.^3,^.^2,^.^3,^.^3,^.^1",options="header"]
 |===
 | Python driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Python
 
@@ -155,7 +155,14 @@ include::drivers::partial$drivers2discord.adoc[]
 | 2.24.17
 | 2.24.17
 | 3.9 to 3.11
+|===
 
+.See older versions
+[%collapsible]
+====
+[cols="^.^3,^.^2,^.^3,^.^3,^.^1",options="header"]
+|===
+| Python driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Python
 | 2.18.0 to 2.18.2
 | 1
 | 2.18.0 to 2.23.0
@@ -240,3 +247,4 @@ include::drivers::partial$drivers2discord.adoc[]
 | N/A
 | >= 3.5, < 3.8
 |===
+====
