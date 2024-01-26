@@ -78,7 +78,6 @@ int main() {
         {
             auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
             auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
-            //std::string
             tx.query.define("define person sub entity;", options).get();
             tx.query.define("define name sub attribute, value string; person owns name;", options).get();
             tx.commit();
