@@ -1,0 +1,198 @@
+= Connection guide
+:tabs-sync-option:
+:experimental:
+
+This guide covers connecting to a TypeDB Cloud or Core deployment with Studio, Console, or driver.
+
+////
+TypeDB accepts connections via gRPC based
+https://github.com/vaticle/typedb-protocol[TypeDB RPC protocol,window=_blank].
+It is implemented by TypeDB drivers and TypeDB clients.
+
+All released clients and drivers support connection to both TypeDB Cloud and TypeDB Core.
+////
+
+//To connect to TypeDB, you can use any TypeDB client or driver.
+Select a client/driver, make sure it's installed,
+and see below a practical guide on how to connect to TypeDB Core and TypeDB Cloud.
+
+== Connect to TypeDB Core
+
+A network connection to TypeDB Core requires the address and port of the server to connect to.
+
+[tabs]
+====
+Studio::
++
+--
+Click btn:[Connect to TypeDB] on the right side of the top toolbar,
+select TypeDB edition below, and follow the instructions:
+
+. Make sure the `TypeDB Core` option is selected in the `Server` field drop-down.
+. Enter the address and port for the server to connect to (e.g., `localhost:1729`).
+. Click btn:[Connect].
+--
+
+Console::
++
+--
+.Connect to TypeDB Core
+[,bash]
+----
+typedb console --core=<server-address>
+----
+--
+
+Rust::
++
+--
+.Connect to TypeDB Core
+[,rust]
+----
+let driver = Connection::new_core("127.0.0.1:1729");
+----
+--
+
+Python::
++
+--
+.Connect to TypeDB Core
+[,python]
+----
+driver = TypeDB.core_driver("127.0.0.1:1729")
+----
+--
+
+Java::
++
+--
+.Connect to TypeDB Core
+[,java]
+----
+TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
+----
+--
+
+Node.js::
++
+--
+.Connect to TypeDB Core
+[,js]
+----
+const driver = await TypeDB.coreDriver("127.0.0.1:1729");
+----
+--
+
+C++::
++
+--
+.Connect to TypeDB Core
+[,cpp]
+----
+TypeDB::Driver driver = TypeDB::Driver::coreDriver("127.0.0.1:1729");
+----
+--
+====
+
+== Connect to TypeDB Cloud
+
+A network connection to TypeDB Cloud cluster requires address and port of at least one server in the cluster,
+as well as username and password of a user.
+Encryption parameters are optional.
+
+For your first connection, use the following default user credentials:
+
+* Username: `admin`
+* Password: `password`
+
+[IMPORTANT]
+=====
+Make sure to xref:typedb::managing/user-management.adoc#_first_login[change the password]
+for the `admin` account on your first login.
+A TypeDB Cloud deployment will deny all other operations until the password is changed from its default value.
+=====
+
+[tabs]
+====
+Studio::
++
+--
+Click btn:[Connect to TypeDB] on the right side of the top toolbar,
+select TypeDB edition below, and follow the instructions:
+
+. Switch the `Server` field drop-down to `TypeDB Cloud`.
+. Click btn:[Manage Cloud Addresses] button.
+. Add address and port for every server from your TypeDB Cloud deployment. Close the Address management window.
+. Fill in the `Username` and `Password` fields.
+. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
+_For self-hosted deployments, encryption parameters may vary._
+. Click `Connect`.
+
+On your first login you will be asked to change the password for the `admin` account.
+--
+
+Console::
++
+--
+.TypeDB Cloud connection
+[,bash]
+----
+typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+----
+
+You will be prompted for a password.
+
+On your first login,
+xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
+--
+
+Rust::
++
+--
+.Connect to TypeDB Cloud
+[,rust]
+----
+let driver = Connection::new_cloud(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None).unwrap());
+----
+--
+
+Python::
++
+--
+.Connect to TypeDB Cloud
+[,python]
+----
+driver = TypeDB.cloud_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True))
+----
+--
+
+Java::
++
+--
+.Connect to TypeDB Cloud
+[,java]
+----
+TypeDBDriver driver = TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
+----
+--
+
+Node.js::
++
+--
+.Connect to TypeDB Cloud
+[,js]
+----
+const driver = await TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
+----
+--
+
+C++::
++
+--
+.Connect to TypeDB Cloud
+[,cpp]
+----
+TypeDB::Driver driver = TypeDB::Driver::cloudDriver({"127.0.0.1:1729"}, TypeDB::Credential("admin", "password", true));
+----
+--
+====
