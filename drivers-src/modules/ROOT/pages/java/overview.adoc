@@ -90,31 +90,63 @@ creates a database named `access-management-db`, defines a schema, inserts some 
 
 [,java]
 ----
-try (TypeDBDriver driver = TypeDB.coreDriver("localhost:1729")) {
-    driver.databases().create("access-management-db");
+package org.example;
+import com.vaticle.typedb.driver.TypeDB;
+import com.vaticle.typedb.driver.api.TypeDBDriver;
+import com.vaticle.typedb.driver.api.TypeDBSession;
+import com.vaticle.typedb.driver.api.TypeDBTransaction;
+import com.vaticle.typeql.lang.TypeQL;
+import com.vaticle.typeql.lang.common.TypeQLArg;
+import com.vaticle.typeql.lang.common.TypeQLToken;
+import com.vaticle.typeql.lang.query.TypeQLDefine;
+import com.vaticle.typeql.lang.query.TypeQLInsert;
+import com.vaticle.typeql.lang.query.TypeQLFetch;
 
-    try (TypeDBSession session = client.session("access-management-db", SessionType.SCHEMA)) {
-        try (TypeDBTransaction tx = session.transaction(TransactionType.WRITE)) {
-            tx.query().define(accessManagementSchema);
-            tx.commit();
-        }
-    }
-    try (TypeDBSession session = client.session("access-management-db", SessonType.DATA)) {
-        for (var batch of accessManagementDataBatches) {
-            try (TypeDBTransaction tx = session.transaction(TransactionType.WRITE)) {
-                for (var query of batch) {
-                    tx.query().insert(query);
-                }
-                tx.commit();
+public class Main {
+    public static void main(String[] args) {
+        final String DB_NAME = "access-management-db";
+        final String SERVER_ADDR = "127.0.0.1:1729";
+        try (TypeDBDriver driver = TypeDB.coreDriver(SERVER_ADDR)) {
+            if (driver.databases().contains(DB_NAME)) {
+                driver.databases().get(DB_NAME).delete();
             }
-        }
-        try (TypeDBTransaction tx = session.transaction(TransactionType.READ)) {
-            Stream<ConceptMap> results = tx.query().get(TypeQL.match(var("u").isa("user")).get());
+            driver.databases().create(DB_NAME);
+            try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
+                try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                    TypeQLDefine defineQuery = TypeQL.define(
+                                    TypeQL.type("person").sub(TypeQLToken.Type.ENTITY).owns("name"),
+                                    TypeQL.type("name").sub(TypeQLToken.Type.ATTRIBUTE).value(TypeQLArg.ValueType.STRING)
+                    );
+                    tx.query().define(defineQuery).resolve();
+                    tx.commit();
+                }
+            }
+            try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
+                try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                    TypeQLInsert insertQuery = TypeQL.insert(
+                            TypeQL.cVar("p1").isa("person").has("name", "Alice"),
+                            TypeQL.cVar("p2").isa("person").has("name","Bob")
+                    );
+                    tx.query().insert(insertQuery);
+                    tx.commit();
+                    }
+                try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ)) {
+                    TypeQLFetch fetchQuery = TypeQL.match(
+                            TypeQL.cVar("p").isa("person")
+                    ).fetch(TypeQL.cVar("p").map("name"));
+                    tx.query().fetch(fetchQuery).forEach(
+                            result -> {
+                                System.out.println(result.toString());
+                            }
+                    );
+                }
+            }
         }
     }
 }
 ----
 
+The above example uses xref:drivers::java/query-builder.adoc[Java query builder] syntax to construct TypeQL queries.
 For more code examples, see the Tutorial and Driver API links below.
 
 == Learn more
@@ -148,7 +180,7 @@ include::drivers::partial$drivers2discord.adoc[]
 == Version Compatibility
 //#todo Consider showing first 5 entries and the rest is shown in a separate collapsible
 
-[cols="^.^2,^.^1,^.^2,^.^2"]
+[cols="^.^2,^.^1,^.^2,^.^2",options="header"]
 |===
 | Java driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
@@ -166,7 +198,14 @@ include::drivers::partial$drivers2discord.adoc[]
 | 2
 | 2.24.17
 | 2.24.17
+|===
 
+.See older versions
+[%collapsible]
+====
+[cols="^.^2,^.^1,^.^2,^.^2",options="header"]
+|===
+| Java driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
 | 2.18.0, 2.18.1
 | 1
 | 2.18.0 to 2.23.0
@@ -242,3 +281,4 @@ include::drivers::partial$drivers2discord.adoc[]
 | 1.8.0
 | N/A
 |===
+====
