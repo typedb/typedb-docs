@@ -1,165 +1,348 @@
 = Java driver tutorial
-:Summary: Tutorial for TypeDB Java driver.
-:page-aliases: clients::java-driver/tutorial.adoc
-:keywords: typedb, driver, java, tutorial
+:keywords: typedb, typeql, tutorial, java, quickstart, start, sample, example, application, app
 :pageTitle: Java driver tutorial
+:summary: A simple example with an application using TypeDB Java driver.
+:tabs-sync-option:
+
+In this tutorial, we'll use a sample application to showcase how to define a schema, insert initial data,
+read data, apply pagination and inference, and add additional data.
 
 == Prerequisites
 
-Make sure to install the Java driver as per the xref:java/overview.adoc#_install_java[Installation] guide.
-The TypeDB server also needs to be installed and running.
+Deploy https://cloud.typedb.com/[TypeDB Cloud], or xref:home::install.adoc#_core[install] and
+xref:home::install.adoc#_run_typedb_core[run] TypeDB Core.
 
-== Importing Java driver and connecting to a server
+xref:drivers::java/overview.adoc#_install_java[Install] the Java driver.
 
-Import the following modules:
+[WARNING]
+====
+Running the sample app will result in a deletion of a database named `iam` if it exists already on the server.
+////
+Make sure to create a backup copy of all your data from such a database,
+or change the default database name in the source code if necessary.
+////
+====
 
-* `com.vaticle.typedb.driver.TypeDB`
-* `com.vaticle.typedb.driver.api.TypeDBDriver`
-* `com.vaticle.typedb.driver.api.TypeDBSession`
+== Source code
 
-== Connecting
+See the full source code of the sample app below:
 
-Instantiate a TypeDB Core driver and open a xref:typedb:ROOT:connecting/overview.adoc#_sessions[session] to a
-xref:typedb:ROOT:connecting/overview.adoc#_databases[database].
+include::typedb::partial$sample-app-java.adoc[]
+
+[#_additional_files]
+== Additional files
+
+[#_schema_and_initial_data]
+=== Schema and initial data
+
+For running the sample application, use the following
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank]
+and
+https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data-single-query.tql[insert query,window=_blank]
+for the sample dataset insertion.
+
+////
+=== Project configuration example
+
+You can specify dependencies in a `pom.xml` file. See an example below.
+
+.pom.xml
+[,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example2</groupId>
+    <artifactId>java-app2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>repo.typedb.com</id>
+                <url>https://repo.typedb.com/public/public-release/maven</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.vaticle.typedb</groupId>
+            <artifactId>typedb-driver</artifactId>
+            <version>2.26.5</version>
+        </dependency>
+    </dependencies>
+
+</project>
+----
+////
+
+== Building and running
+
+Build and run a maven project from within your IDE. +
+Alternatively, to build a `.jar` file, run:
+
+[,bash]
+----
+mvn clean install
+----
+
+The TypeQL files with Define and Insert queries should be placed at the top level of the project directory,
+side by side with the `pom.xml` file.
+
+[#_explanation]
+== Explanation
+
+This section is for comments and explanation of the sample application implementation details.
+
+=== Database setup
+
+First of all, we connect to a TypeDB Core server by initializing a driver instance.
+
+We proceed to check whether a database named `iam` exists on the server already.
+We delete such a database if it exists to prevent any possible schema or data conflicts.
+Then we create a new database with the name `iam`.
+
+We open a `schema` session to this database, open a `write` transaction, read the `iam-schema.tql` file,
+and send its contents as a xref:typeql::schema/type-definitions.adoc[Define query].
+Next, we commit the transaction to persist the resulted schema.
+
+After that we open a `data` session, a `write` transaction, read the `iam-data-single-query.tql` file,
+and send its contents as an xref:typeql::data/insert.adoc[Insert query].
+We commit the transaction again and re-using the same data session to open a `read` transaction.
+
+With the new read transaction, we test the resulted database by retrieving the number of users in it.
+
+For more information on server connections, sessions, and transactions, see the xref:typedb::connecting/overview.adoc[]
+page.
+
+=== Request #1: User listing
+
+We open a `data` session that will be re-used for multiple requests, open a `read` transaction,
+and send a simple TypeQL query to get all users with `full-name` and `email` attributes.
+
+[,typeql]
+----
+match
+$u isa user,
+    has full-name $n,
+    has email $e;
+get;
+----
+
+We iterate through results to print every user and the total count of users.
+
+[discrete]
+==== Query explanation
+
+This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
+
+We go through all entities of the `user` type that have a `full-name` attribute and `email` attribute.
+
+A `get` clause with no variables and just a semicolon means,
+that we are retrieving concepts for all variables from the preceding `match` clause pattern in every result.
+
+=== Request #2: Files
+
+We open a new read transaction in the same data session and send a TypeQL query to get paths of all filenames that
+user with the `full-name` of `Kevin Morrison` has access to.
+
+
+[,typeql]
+----
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+get $fp;
+----
+
+For Java implementation, we use xref:drivers::java/query-builder.adoc[Java query builder]
+syntax to programmatically build a TypeQL query string.
+
+.Java query builder syntax
+[,java]
+----
+TypeQLGet getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
+                                    cVar("u").isa("user").has("full-name", "Kevin Morrison"),
+                                    cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
+                                    cVar("o").isa("object").has("path", cVar("fp")),
+                                    cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access")
+                            ).get(cVar("fp"));
+----
+
+We iterate through results to print every file and the total count of files.
+
+[discrete]
+==== Query explanation
+
+This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
+//#todo Replace with Fetch!
+
+A `match` clause pattern looks for a `user` (variable `$u`) with attribute `full-name` of value `Kevin Morrison` assigned,
+a `permission` relation (`$p`) in between this user `$u` and potential access `$pa`.
+Additionally, we state that an `object` (`$o`) with a path `$fp` should be a part of `$pa` `access` relation, without
+having to specify what kind of action `$va` it should be.
+
+A `get` clause filters response to only contain the matched `path` attributes (`$fp`).
 
 [NOTE]
 ====
-Find out how to create a database in TypeDB on the
-xref:home:ROOT:quickstart.adoc#_create_a_database[Quickstart guide] page.
-
-The name for the database should be `social_network`. +
-The database should have the following schema loaded: xref:attachment$schema.tql[schema.tql]. +
-The database should have the following data inserted: xref:attachment$data.tql[data.tql].
+According to the xref:typedb::tutorials/iam-schema.adoc[IAM schema],
+we need two relations to connect users to files: `permission` and `access`.
 ====
 
-// test-example TypeDBQuickstartA.java
+=== Request #3: Inference
 
+We start with opening a new transaction with the xref:typedb::developing/infer.adoc[inference] option enabled.
+
+Then we send a query to get Kevin's files, but this time we specify the access action to be `view_file`,
+since the permission for this access wasn't inserted in the <<_schema_and_initial_data,sample dataset>>
+and must be inferred by the `add-view-permission` rule.
+We also add xref:typeql::data/get.adoc#_sort_the_results[sort],
+xref:typeql::data/get.adoc#_offset_the_results[offset] and
+xref:typeql::data/get.adoc#_limit_the_results[limit] modifiers to the query to manage pagination.
+This request consists of two queries splitting the results between queries.
+
+.Query 1
+[,typeql]
+----
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+$va isa action, has name 'view_file';
+get $fp;
+sort $fp asc;
+offset 0;
+limit 5;
+----
+
+And then, we repeat the query with different offset to get the rest of results.
+
+.Query 2
+[,typeql]
+----
+match
+$u isa user, has full-name 'Kevin Morrison';
+$p($u, $pa) isa permission;
+$o isa object, has path $fp;
+$pa($o, $va) isa access;
+$va isa action, has name 'view_file';
+get $fp;
+sort $fp asc;
+offset 5;
+limit 5;
+----
+
+For Java implementation, we use xref:drivers::java/query-builder.adoc[Java query builder]
+syntax to programmatically build a TypeQL query string.
+
+.Java query builder syntax for the Query 1
 [,java]
 ----
-package com.vaticle.doc.examples;
-
-import com.vaticle.typedb.driver.TypeDB;
-import com.vaticle.typedb.driver.api.TypeDBDriver;
-import com.vaticle.typedb.driver.api.TypeDBSession;
-
-public class TypeDBQuickstartA {
-    public static void main(String[] args) {
-        TypeDBDriver driver = TypeDB.coreDriver("localhost:1729");
-        // driver is open
-        TypeDBSession session = driver.session("social_network", TypeDBSession.Type.DATA);
-        // session is open
-        session.close();
-        // session is closed
-        driver.close();
-        // driver is closed
-    }
-}
+TypeQLGet getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
+                                    cVar("u").isa("user").has("full-name", "Kevin Morrison"),
+                                    cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
+                                    cVar("o").isa("object").has("path", cVar("fp")),
+                                    cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access"),
+                                    cVar("va").isa("action").has("name", "view_file")
+                            ).get(cVar("fp")).sort(cVar("fp")).offset(0).limit(5);
 ----
 
-== Creating transactions
-
-Create transactions to use for reading and writing data.
-
-// test-example TypeDBQuickstartB.java
-
+.Java query builder syntax for the Query 2
 [,java]
 ----
-package com.vaticle.doc.examples;
-
-import com.vaticle.typedb.driver.api.TypeDBDriver;
-import com.vaticle.typedb.driver.api.TypeDBSession;
-import com.vaticle.typedb.driver.api.TypeDBTransaction;
-import com.vaticle.typedb.driver.TypeDB;
-
-public class TypeDBQuickstartB {
-    public static void main(String[] args) {
-        TypeDBDriver driver = TypeDB.coreDriver("localhost:1729");
-
-        try (TypeDBSession session = driver.session("social_network", TypeDBSession.Type.DATA)) {
-            // creating a write transaction
-            TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE);
-            // write transaction is open
-            // write transaction must always be committed (closed)
-            writeTransaction.commit();
-
-            // creating a read transaction
-            TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ);
-            // read transaction is open
-            // read transaction must always be closed
-            readTransaction.close();
-        }
-
-        driver.close();
-    }
-}
+getQuery = TypeQL.match( // Java query builder to prepare TypeQL query string
+                        cVar("u").isa("user").has("full-name", "Kevin Morrison"),
+                        cVar("p").rel(cVar("u")).rel(cVar("pa")).isa("permission"),
+                        cVar("o").isa("object").has("path", cVar("fp")),
+                        cVar("pa").rel(cVar("o")).rel(cVar("va")).isa("access"),
+                        cVar("va").isa("action").has("name", "view_file")
+                 ).get(cVar("fp")).sort(cVar("fp")).offset(5).limit(5);
 ----
 
-== Querying
+[discrete]
+==== Query explanation
 
-Running basic retrieval and insertion queries.
+We update the previous query to set the type of action (`$va`) to the `view_file` value.
+We still get only `path` (`$fp`), but now we add sorting and pagination: we set offset and limit for the results.
 
-// test-example TypeDBQuickstartC.java
-
-[,java]
-----
-package com.vaticle.doc.examples;
-
-import com.vaticle.typedb.driver.TypeDB;
-import com.vaticle.typedb.driver.api.TypeDBDriver;
-import com.vaticle.typedb.driver.api.TypeDBSession;
-import com.vaticle.typedb.driver.api.TypeDBTransaction;
-import com.vaticle.typeql.lang.TypeQL;
-import static com.vaticle.typeql.lang.TypeQL.*;
-import com.vaticle.typeql.lang.query.TypeQLGet;
-import com.vaticle.typeql.lang.query.TypeQLInsert;
-import com.vaticle.typedb.driver.api.answer.ConceptMap;
-
-import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
-
-public class TypeDBQuickstartC {
-    public static void main(String[] args) {
-        TypeDBDriver driver = TypeDB.coreDriver("localhost:1729");
-
-        try (TypeDBSession session = driver.session("social_network", TypeDBSession.Type.DATA)) {
-
-            try (TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                // Insert a person using a WRITE transaction
-                TypeQLInsert insertQuery = TypeQL.insert(cVar("x").isa("person").has("email", "x@email.com"));
-                List<ConceptMap> insertedId = writeTransaction.query().insert(insertQuery).collect(Collectors.toList());
-                System.out.println("Inserted a person with ID: " + insertedId.get(0).get("x").asThing().getIID());
-                // to persist changes, a write transaction must always be committed (closed)
-                writeTransaction.commit();
-            }
-
-            try (TypeDBTransaction readTransaction = session.transaction(TypeDBTransaction.Type.READ)) {
-                // Read the person using a READ only transaction
-                TypeQLGet.Limited getQuery = TypeQL.match(cVar("p").isa("person")).get(cVar("p")).limit(10);
-                Stream<ConceptMap> answers = readTransaction.query().get(getQuery);
-                answers.forEach(answer -> System.out.println(answer.get("p").asThing().getIID()));
-            }
-        }
-
-        driver.close();
-    }
-}
-----
-
-[IMPORTANT]
+[NOTE]
 ====
-Remember that transactions always need to be closed. Committing a write transaction closes it. A read transaction,
-however, must be explicitly closed by calling the `close()` method on it.
+Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
+xref:typedb::basics/inference.adoc#_rules[rule].
+To use xref:typedb::developing/infer.adoc[inference] in this query,
+we modify TypeDB options and send the modified set of options to the transaction call.
 ====
 
-== Where to go next
+=== Request #4: Add a new file
 
-Check out the xref:java/api-reference.adoc#_answer_header[Answer] section of API reference page to learn about the
-available methods on the concepts retrieved as the answers to queries.
+To be able to insert new data, we open a write transaction this time.
+Then we generate a filename from current time and date and insert an instance of the `file` type that owns the
+attribute of type `path` and value of the generated filename.
 
-To view examples of various TypeQL queries, head over to
-xref:typedb::developing/write.adoc[Writing data] and
-xref:typedb::developing/read.adoc[Reading data] pages.
+.Query 1
+[,typeql]
+----
+insert $f isa file, has path 'logs/2023-12-19-19-11-36.log';
+----
 
-For some more Java driver examples -- see the
-xref:typedb:ROOT:tutorials/sample-app.adoc#_java_implementation[Java implementation] on the Sample application page.
+After that we do another query to match the new file we just inserted and add a relation of the `access` type with it:
+
+.Query 2
+[,typeql]
+----
+match
+$f isa file, has path 'logs/2023-12-19-19-11-36.log';
+$vav isa action, has name 'view_file';
+insert
+($vav, $f) isa access;
+----
+
+For Java implementation, we use xref:drivers::java/query-builder.adoc[Java query builder]
+syntax to programmatically build a TypeQL query string.
+
+.Java query builder syntax for the Query 1
+[,java]
+----
+TypeQLInsert insertQuery = TypeQL.insert(cVar("f").isa("file").has("path", filepath));
+----
+
+.Java query builder syntax for the Query 2
+[,java]
+----
+insertQuery = TypeQL.match(
+                            cVar("f").isa("file").has("path", filepath),
+                            cVar("vav").isa("action").has("name", "view_file")
+                    ).insert(
+                            cVar("pa").rel(cVar("vav")).rel(cVar("f")).isa("access")
+);
+----
+
+[discrete]
+==== Query explanation
+
+The first query inserts a file entity that owns a `path` attribute with the value of a generated filename.
+
+With the second query, we look for a `file` entity that has the attribute `path` with the value we generated before.
+And we find an `action`, that has a `name` attribute with the value of `view_file`.
+Finally, we insert an `access` relation between the `file` and the `action`.
+
+After both requests are done, we commit the write transaction to persist new information.
+
+[NOTE]
+====
+Note that we create the `file` first.
+If we try to insert an `access` to a nonexistent `file` our query will run but will not insert any new data (relation)
+because its `match` clause will find no matches in a database.
+====

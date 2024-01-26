@@ -6,25 +6,42 @@
 
 The Node.js driver was developed by Vaticle to enable TypeDB support for Node.js software and developers.
 
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/nodejs[GitHub,window=_blank]
+[.clickable]
+****
+
+****
+
+//.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+//[.clickable]
+//****
+
+//****
+
+.link:https://www.npmjs.com/package/typedb-driver/[npm page,window=_blank]
+[.clickable]
+****
+
+****
+--
+
 [#_install_nodejs]
 == Install
 
-=== Prerequisites
-
-To use the Node.js driver, we need a compatible version of TypeDB server running.
 See the
-<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+<<_version_compatibility>> table to check what versions of TypeDB and Python driver are compatible.
 
-=== Installation
 
-To install TypeDB Node.js driver:
+To install TypeDB Python driver:
 
 [,bash]
 ----
 npm install typedb-driver
 ----
 
-.See command for older versions (<2.24.0)
+.See the command for older versions (<2.24.0)
 [%collapsible]
 ====
 [,bash]
@@ -33,28 +50,80 @@ npm install typedb-client
 ----
 ====
 
-== Tutorial
+== Quickstart
 
-Explore the Node.js driver xref:nodejs/tutorial.adoc[tutorial] with example of connecting to TypeDB.
+See below a short example of Node.Js code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
 
-== Node.js driver API
+[,js]
+----
+const { TypeDB } = require("typedb-driver/TypeDB");
+const { SessionType } = require("typedb-driver/api/connection/TypeDBSession");
+const { TransactionType } = require("typedb-driver/api/connection/TypeDBTransaction");
 
-Use the xref:nodejs/api-reference.adoc[API reference] page for the documentation of the methods and objects used in
-the driver.
+async function main() {
+    const DB_NAME = "access-management-db";
+    const SERVER_ADDR = "127.0.0.1:1729";
+    const driver = await TypeDB.coreDriver(SERVER_ADDR);
+    if (driver.databases.contains(DB_NAME)) {
+        await driver.databases.get(DB_NAME).then(db => db.delete());
+    }
+    await driver.databases.create(DB_NAME);
+    try {
+        session = await driver.session(DB_NAME, SessionType.SCHEMA);
+        try {
+            transaction = await session.transaction(TransactionType.WRITE);
+            await transaction.query.define("define person sub entity;");
+            await transaction.query.define("define name sub attribute, value string; person owns name;");
+            await transaction.commit();
+        } finally {if (transaction.isOpen()) {await transaction.close()};}
+    } finally {await session?.close();}
+    try {
+        session = await driver.session(DB_NAME, SessionType.DATA);
+        try {
+            transaction = await session.transaction(TransactionType.WRITE);
+            await transaction.query.insert("insert $p isa person, has name 'Alice';");
+            await transaction.query.insert("insert $p isa person, has name 'Bob';");
+            await transaction.commit();
+        } finally {if (transaction.isOpen()) {await transaction.close()};}
+        try {
+            transaction = await session.transaction(TransactionType.READ);
+            await transaction.query.fetch("match $p isa person; fetch $p: name;").forEach(element => {
+                console.log(JSON.stringify(element));
+            });
+        } finally {if (transaction.isOpen()) {await transaction.close()};}
+    } finally {await session?.close();}
+}
+main();
+----
 
-include::../java/overview.adoc[tag=questions]
+For more code examples, see the Tutorial and API reference links below.
 
-== Additional resources
+== Learn more
 
-* <<_version_compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/nodejs[Node.js driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+[cols-2]
+--
+.xref:drivers::nodejs/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the Node.Js driver.
+****
+
+.xref:nodejs/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the Node.Js language.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
+
+//Use the xref:nodejs/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
 
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
+[cols="^.^3,^.^2,^.^3,^.^3,^.^2",options="header"]
 |===
 | Node.js driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Node
 
@@ -75,7 +144,14 @@ include::../java/overview.adoc[tag=questions]
 | 2.24.17
 | 2.24.17
 | >= 14.15
+|===
 
+.See older versions
+[%collapsible]
+====
+[cols="^.^3,^.^2,^.^3,^.^3,^.^2",options="header"]
+|===
+| Node.js driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Node
 | 2.18.1, 2.18.2
 | 1
 | 2.18.0 to 2.23.0
@@ -148,3 +224,4 @@ include::../java/overview.adoc[tag=questions]
 | N/A
 | >= 6.5
 |===
+====

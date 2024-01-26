@@ -1,7 +1,7 @@
-= Node.Js driver tutorial
-:keywords: typedb, typeql, tutorial, node.js, quickstart, start, sample, example, application, app
-:pageTitle: Node.Js driver tutorial
-:summary: A simple example with an application using TypeDB Node.Js driver.
+= Rust driver tutorial
+:keywords: typedb, typeql, tutorial, rust, quickstart, start, sample, example, application, app
+:pageTitle: Rust driver tutorial
+:summary: A simple example with an application using TypeDB Rust driver.
 :tabs-sync-option:
 
 In this tutorial, we'll use a sample application to showcase how to define a schema, insert initial data,
@@ -12,7 +12,7 @@ read data, apply pagination and inference, and add additional data.
 Deploy https://cloud.typedb.com/[TypeDB Cloud], or xref:home::install.adoc#_core[install] and
 xref:home::install.adoc#_run_typedb_core[run] TypeDB Core.
 
-xref:drivers::nodejs/overview.adoc#_install_nodejs[Install] the Node.Js driver.
+xref:drivers::rust/overview.adoc#_install_rust[Install] the Rust driver.
 
 [WARNING]
 ====
@@ -29,7 +29,7 @@ or change the default database name in the source code if necessary.
 
 See the full source code of the sample app below:
 
-include::typedb::partial$sample-app-node.adoc[]
+include::typedb::partial$sample-app-rust.adoc[]
 
 [#_additional_files]
 == Additional files
@@ -43,17 +43,45 @@ and
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data-single-query.tql[insert query,window=_blank]
 for the sample dataset insertion.
 
+////
+=== Auxiliary files
+
+You can specify dependencies in a `Cargo.toml` file. See an example below.
+
+.Cargo.toml
+[,toml]
+----
+[package]
+name = "sample-app"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.23"
+typedb-driver = { version = "2.26.1", features = ["sync"] }
+----
+
+[NOTE]
+====
+For this sample app we are using synchronous Rust implementation,
+that requires `sync` feature of `typedb-driver` to be enabled (see above).
+====
+////
+
 == Building and running
 
-Run the Node.js application:
+Run the Rust application with `cargo`:
 
 [,bash]
 ----
-node sample.js
+cargo run
 ----
 
-The TypeQL files with define and insert queries should be placed at the top level of the project directory,
-side by side with the `package.json` file.
+The TypeQL files with Define and Insert queries (see <<_additional_files,above>>)
+should be placed at the top level of the project directory,
+side by side with the `Cargo.toml` file.
 
 [#_explanation]
 == Explanation

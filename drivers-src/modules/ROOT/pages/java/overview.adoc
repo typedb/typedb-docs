@@ -6,24 +6,34 @@
 
 The Java driver was developed by Vaticle to enable TypeDB support for Java software and developers.
 
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/java[GitHub,window=_blank]
+[.clickable]
+****
+
+****
+
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/latest/a=noarch;xg=com.vaticle.typedb/#versions[Maven,window=_blank]
+[.clickable]
+****
+
+****
+--
+
 [#_install_java]
 == Install
 
-=== Prerequisites
-
-To use the Java driver, we need a compatible version of TypeDB server running.
 See the
-<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+<<_version_compatibility>> table to check what versions of TypeDB and Java driver are compatible.
 
-For Linux OS: the minimum version of `glibc` is `2.25.0`.
-
-=== Add a repository with TypeDB Java driver to Maven
+For Linux: the minimum version of `glibc` is `2.25.0`.
 
 Add the code below to the `pom.xml` file in the Maven project.
 
 [IMPORTANT]
 ====
-Be sure to replace the `\{version}` placeholder tag with the version of the Java driver we want to install.
+Be sure to replace the `\{version}` placeholder tag with the version of the Java driver you want to install.
 ====
 
 [,xml]
@@ -36,18 +46,22 @@ Be sure to replace the `\{version}` placeholder tag with the version of the Java
     </repository>
 </repositories>
 <dependencies>
-<dependency>
-    <groupId>com.vaticle.typedb</groupId>
-    <artifactId>typedb-driver</artifactId>
-    <version>{version}</version>
-</dependency>
+    <dependency>
+        <groupId>com.vaticle.typedb</groupId>
+        <artifactId>typedb-driver</artifactId>
+        <version>{version}</version>
+    </dependency>
 </dependencies>
 ----
 
-=== (Optional) Add logging config
+For other build systems: see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/latest/a=noarch;xg=com.vaticle.typedb/#install[setup]
+page.
 
-By default, the Java driver uses Logback to print errors and debugging info to standard output. As it is quite verbose,
-use the following steps to set the minimum log level to `ERROR`:
+=== Add logging config
+
+By default, the Java driver uses Logback to print errors and debugging info to standard output.
+As it is quite verbose, you can use the following steps to set the minimum log level to `ERROR`:
 
 . Create a file in the `resources` path (`src/main/resources` by default in a Maven project) named `logback.xml`.
 . Copy the following document into the `logback.xml`:
@@ -69,39 +83,103 @@ use the following steps to set the minimum log level to `ERROR`:
 </configuration>
 ----
 
-== Tutorial
+== Quickstart
 
-Explore the Java driver xref:java/tutorial.adoc[tutorial] with an example of connecting to TypeDB.
+See below a short example of Java code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
 
-== Java driver API
+[,java]
+----
+package org.example;
+import com.vaticle.typedb.driver.TypeDB;
+import com.vaticle.typedb.driver.api.TypeDBDriver;
+import com.vaticle.typedb.driver.api.TypeDBSession;
+import com.vaticle.typedb.driver.api.TypeDBTransaction;
+import com.vaticle.typeql.lang.TypeQL;
+import com.vaticle.typeql.lang.common.TypeQLArg;
+import com.vaticle.typeql.lang.common.TypeQLToken;
+import com.vaticle.typeql.lang.query.TypeQLDefine;
+import com.vaticle.typeql.lang.query.TypeQLInsert;
+import com.vaticle.typeql.lang.query.TypeQLFetch;
 
-Use the xref:java/api-reference.adoc[API reference] page for the documentation of the methods and classes used in the driver.
+public class Main {
 
-// tag::questions[]
-[NOTE]
-====
-Any questions about the driver after reading the documentation?
-Feel free to ask on our
-https://typedb.com/discord[Discord,window=_blank] community server.
-====
-// end::questions[]
+    public static void main(String[] args) {
+        final String DB_NAME = "access-management-db";
+        final String SERVER_ADDR = "127.0.0.1:1729";
 
-== Query builder
+        try (TypeDBDriver driver = TypeDB.coreDriver(SERVER_ADDR)) {
 
-Learn to use native Java syntax to build TypeQL queries with xref:java/query-builder.adoc[Java query builder].
+            if (driver.databases().contains(DB_NAME)) {
+                driver.databases().get(DB_NAME).delete();
+            }
+            driver.databases().create(DB_NAME);
 
-== Additional resources
+            try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
+                try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                    TypeQLDefine defineQuery = TypeQL.define(
+                                    TypeQL.type("person").sub(TypeQLToken.Type.ENTITY).owns("name"),
+                                    TypeQL.type("name").sub(TypeQLToken.Type.ATTRIBUTE).value(TypeQLArg.ValueType.STRING)
+                    );
+                    tx.query().define(defineQuery);
+                    tx.commit();
+                }
+            }
+            try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
+                try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                    TypeQLInsert insertQuery = TypeQL.insert(
+                            TypeQL.cVar("p1").isa("person").has("name", "Alice"),
+                            TypeQL.cVar("p2").isa("person").has("name","Bob")
+                    );
+                    tx.query().insert(insertQuery);
+                    tx.commit();
+                    }
+                try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ)) {
+                    TypeQLFetch fetchQuery = TypeQL.match(
+                            TypeQL.cVar("p").isa("person")
+                    ).fetch(TypeQL.cVar("p").map("name"));
+                    tx.query().fetch(fetchQuery).forEach(result -> System.out.println(result.toString()));
+                }
+            }
+        }
+    }
+}
+----
 
-* <<_version_compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/java[Java driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+The above example uses xref:drivers::java/query-builder.adoc[Java query builder] syntax to construct TypeQL queries.
+For more code examples, see the Tutorial and API reference links below.
+
+== Learn more
+
+[cols-3]
+--
+.xref:drivers::java/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the Java driver.
+****
+
+.xref:java/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the Java language.
+****
+
+.xref:java/query-builder.adoc[Query builder]
+[.clickable]
+****
+Learn to use native Java syntax to build TypeQL queries.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
+
+//Use the xref:java/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
 
 [#_version_compatibility]
 == Version Compatibility
-//#todo Consider showing first 5 entries and the rest is shown in a separate collapsible
 
-[cols="^.^2,^.^1,^.^2,^.^2"]
+[cols="^.^2,^.^1,^.^2,^.^2",options="header"]
 |===
 | Java driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
@@ -119,7 +197,14 @@ Learn to use native Java syntax to build TypeQL queries with xref:java/query-bui
 | 2
 | 2.24.17
 | 2.24.17
+|===
 
+.See older versions
+[%collapsible]
+====
+[cols="^.^2,^.^1,^.^2,^.^2",options="header"]
+|===
+| Java driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
 | 2.18.0, 2.18.1
 | 1
 | 2.18.0 to 2.23.0
@@ -195,3 +280,4 @@ Learn to use native Java syntax to build TypeQL queries with xref:java/query-bui
 | 1.8.0
 | N/A
 |===
+====
