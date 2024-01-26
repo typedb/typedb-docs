@@ -19,24 +19,29 @@ All TypeDB clients are able to connect to TypeDB, use encryption and authenticat
 use high availability and load-balancing features, send any valid TypeQL queries, and stream responses.
 ////
 
-[cols-3]
+[cols-2]
 --
-.xref:manual::connecting/studio.adoc[TypeDB Studio]
+.xref:manual::connecting/connection.adoc[]
 [.clickable]
 ****
-A step-by-step guide on how to run and connect TypeDB Studio to TypeDB Cloud or Core.
-****
-//Integrated developer environment (IDE) with database manager, type browser, type editor, text editor, and file browser.
-
-.xref:connecting/console.adoc[TypeDB Console]
-[.clickable]
-****
-A step-by-step guide on how to run and connect TypeDB Console to TypeDB Cloud or Core.
+Establishing a network connection to TypeDB Cloud or Core.
 ****
 
-.xref:manual::connecting/drivers.adoc[Drivers]
+.xref:connecting/database.adoc[]
 [.clickable]
 ****
-A step-by-step guide on how to use TypeDB drivers to connect to TypeDB Core.
+Creating a new database in TypeDB.
+****
+
+.xref:manual::connecting/session.adoc[]
+[.clickable]
+****
+Managing sessions in TypeDB.
+****
+
+.xref:manual::connecting/transaction.adoc[]
+[.clickable]
+****
+Managing transactions in TypeDB.
 ****
 --
