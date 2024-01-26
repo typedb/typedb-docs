@@ -1,4 +1,4 @@
-= Connection guides
+= Connecting to TypeDB
 
 TypeDB accepts connections via gRPC based
 https://github.com/vaticle/typedb-protocol[TypeDB RPC protocol,window=_blank].
@@ -21,20 +21,20 @@ use high availability and load-balancing features, send any valid TypeQL queries
 
 [cols-3]
 --
-.xref:guides::connection/studio.adoc[TypeDB Studio]
+.xref:manual::connecting/studio.adoc[TypeDB Studio]
 [.clickable]
 ****
 A step-by-step guide on how to run and connect TypeDB Studio to TypeDB Cloud or Core.
 ****
 //Integrated developer environment (IDE) with database manager, type browser, type editor, text editor, and file browser.
 
-.xref:connection/console.adoc[TypeDB Console]
+.xref:connecting/console.adoc[TypeDB Console]
 [.clickable]
 ****
 A step-by-step guide on how to run and connect TypeDB Console to TypeDB Cloud or Core.
 ****
 
-.xref:guides::connection/drivers.adoc[Drivers]
+.xref:manual::connecting/drivers.adoc[Drivers]
 [.clickable]
 ****
 A step-by-step guide on how to use TypeDB drivers to connect to TypeDB Core.
