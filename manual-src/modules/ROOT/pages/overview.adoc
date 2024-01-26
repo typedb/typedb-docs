@@ -1,4 +1,4 @@
-= Guides overview
+= Manuals overview
 :keywords: typedb, guides, how, installation, tutorial
 :pageTitle: Guides overview
 :summary: How to guides and tutorials
@@ -12,23 +12,40 @@ TypeDB is available in two editions: Cloud and Core.
 
 [cols-2]
 --
-.xref:guides::installing/cloud.adoc[TypeDB Cloud]
+.xref:manual::installing/cloud.adoc[TypeDB Cloud]
 [.clickable]
 ****
 Production-ready and scalable version of TypeDB with advanced security and high-availability features.
 
 * https://cloud.typedb.com/[Deploy in a managed cloud]
-* xref:guides::installing/cloud.adoc[Self-hosted installation]
+* xref:manual::installing/cloud.adoc[Self-hosted installation]
 ****
 
-.xref:guides::installing/core.adoc[TypeDB Core]
+.xref:manual::installing/core.adoc[TypeDB Core]
 [.clickable]
 ****
 100% open source version of TypeDB with everything developers need to start building on TypeDB.
 
-* xref:guides::installing/core.adoc#_docker[Use with Docker]
-* xref:guides::installing/core.adoc#_package[Install via package manager]
-* xref:guides::installing/core.adoc#_manual[Manual installation]
+* xref:manual::installing/core.adoc#_docker[Use with Docker]
+* xref:manual::installing/core.adoc#_package[Install via package manager]
+* xref:manual::installing/core.adoc#_manual[Manual installation]
+****
+--
+
+== Client manuals
+
+[cols-2]
+--
+.xref:manual::studio.adoc[]
+[.clickable]
+****
+An IDE that facilitates the development process for TypeDB databases.
+****
+
+.xref:manual::console.adoc[]
+[.clickable]
+****
+A powerful CLI client for TypeDB.
 ****
 --
 
@@ -36,340 +53,115 @@ Production-ready and scalable version of TypeDB with advanced security and high-
 
 [cols-3]
 --
-.xref:guides::installing/studio.adoc[TypeDB Studio]
+.xref:manual::connecting/overview.adoc[]
 [.clickable]
 ****
-An IDE that facilitates the development process for TypeDB databases.
-
-* xref:guides::installing/studio.adoc[Installation]
-* xref:guides::connection/studio.adoc[Connection]
-* xref:guides::database/studio.adoc[DB management]
-* xref:guides::queries/studio.adoc[Running queries]
+* xref:manual::connecting/overview.adoc[Connect to server]
+* xref:manual::connecting/overview.adoc[Create database]
+* xref:manual::connecting/overview.adoc[Open session]
+* xref:manual::connecting/overview.adoc[Open transaction]
 ****
 
-.xref:guides::installing/console.adoc[TypeDB Console]
+.xref:manual::defining/overview.adoc[]
 [.clickable]
 ****
-A powerful CLI client for TypeDB.
-
-* xref:guides::installing/console.adoc[Installation]
-* xref:guides::connection/console.adoc[Connection]
-* xref:guides::database/console.adoc[DB management]
-* xref:guides::queries/console.adoc[Running queries]
+* xref:manual::defining/overview.adoc[Defining types]
+* xref:manual::defining/overview.adoc[Defining rules]
+* xref:manual::defining/overview.adoc[Undefining schema]
+* xref:manual::defining/overview.adoc[Updating schema]
 ****
 
-.xref:guides::installing/drivers.adoc[TypeDB drivers]
+.xref:manual::defining/overview.adoc[Writing data]
 [.clickable]
 ****
-Libraries with a native API for programmatic access to TypeDB.
+* xref:manual::defining/overview.adoc[Inserting data]
+* xref:manual::defining/overview.adoc[Deleting data]
+* xref:manual::defining/overview.adoc[Updating data]
+****
 
-* xref:guides::installing/drivers.adoc[Installation]
-* xref:guides::connection/drivers.adoc[Connection]
-* xref:guides::database/drivers.adoc[DB management]
-* xref:guides::queries/drivers.adoc[Running queries]
+.xref:manual::defining/overview.adoc[Reading data]
+[.clickable]
+****
+* xref:manual::defining/overview.adoc[Fetching data]
+* xref:manual::defining/overview.adoc[Getting concepts]
+* xref:manual::defining/overview.adoc[Inferring data]
+****
+
+.xref:manual::defining/overview.adoc[Programming concepts]
+[.clickable]
+****
+* xref:manual::defining/overview.adoc[Types]
+* xref:manual::defining/overview.adoc[Things]
+* xref:manual::defining/overview.adoc[Explanations]
 ****
 --
 
-== Server configuration guides
+== Configuring server
 
 [cols-3]
 --
-.xref:guides::configuration/config.adoc[Config file]
+.xref:manual::configuring/config.adoc[Config file]
 [.clickable]
 ****
 TypeDB configuration via config file parameters.
 ****
 
-.xref:guides::configuration/arguments.adoc[CLI arguments]
+.xref:manual::configuring/arguments.adoc[CLI arguments]
 [.clickable]
 ****
 TypeDB configuration via CLI arguments.
 ****
 
-.xref:guides::configuration/logs.adoc[Logs]
+.xref:manual::configuring/logs.adoc[Logs]
 [.clickable]
 ****
 Logs configuration and storage.
 ****
 
-.xref:guides::configuration/export.adoc[Export and Import]
+.xref:manual::configuring/export.adoc[Export and Import]
 [.clickable]
 ****
 Exporting and importing databases in TypeDB.
 ****
 
-.xref:guides::configuration/upgrades.adoc[Upgrades]
+.xref:manual::configuring/upgrades.adoc[Upgrades]
 [.clickable]
 ****
 Upgrading TypeDB version.
 ****
 
-.xref:guides::configuration/users.adoc[Users]
+.xref:manual::configuring/users.adoc[Users]
 [.clickable]
 ****
 User management operations.
 ****
 --
 
-////
-== Tutorials
-
-[cols-3]
---
-.xref:guides::installing/studio.adoc[Defining schema]
-[.clickable]
-****
-* xref:guides::installing/studio.adoc[Basic schema tutorial]
-* xref:guides::connection/studio.adoc[Extending schema]
-* xref:guides::database/studio.adoc[Truncating schema]
-* xref:guides::queries/studio.adoc[Advanced schema tutorial]
-****
-
-.xref:guides::installing/console.adoc[Manipulating data]
-[.clickable]
-****
-* xref:guides::installing/console.adoc[Inserting data]
-* xref:guides::connection/console.adoc[Deleting data]
-* xref:guides::database/console.adoc[Updating data]
-* xref:guides::queries/console.adoc[Fetching values]
-* xref:guides::queries/console.adoc[Retrieving data]
-* xref:guides::queries/console.adoc[Advanced patterns]
-****
-
-.xref:guides::installing/drivers.adoc[Inferring data]
-[.clickable]
-****
-* xref:guides::installing/drivers.adoc[Rules]
-* xref:guides::connection/drivers.adoc[Rule-based inference]
-* xref:guides::database/drivers.adoc[Transitivity]
-* xref:guides::queries/drivers.adoc[Advanced rules]
-****
-
-.xref:guides::installing/drivers.adoc[Migration]
-[.clickable]
-****
-* xref:guides::installing/drivers.adoc[From SQL]
-* xref:guides::connection/drivers.adoc[From Graph]
-* xref:guides::database/drivers.adoc[From document]
-* xref:guides::queries/drivers.adoc[From CSV/XML/JSON]
-****
---
-////
-
-////
-== Installation guides
-
-[cols-3]
---
-.xref:guides::installing/cloud2.adoc[TypeDB Cloud (DBaaS)]
-[.clickable]
-****
-
-****
-
-.xref:guides::installing/cloud.adoc[TypeDB Cloud (on premise)]
-[.clickable]
-****
-
-****
-
-.xref:guides::installing/core.adoc[TypeDB Core]
-[.clickable]
-****
-
-****
-
-.xref:guides::installing/studio.adoc[TypeDB Studio]
-[.clickable]
-****
-
-****
-
-.xref:guides::installing/console.adoc[TypeDB Console]
-[.clickable]
-****
-
-****
-
-.xref:guides::installing/drivers.adoc[TypeDB drivers]
-[.clickable]
-****
-
-****
---
-
-== Connection guides
-
-[cols-3]
---
-.xref:guides::connection/studio.adoc[TypeDB Studio]
-[.clickable]
-****
-
-****
-
-.xref:guides::connection/console.adoc[TypeDB Console]
-[.clickable]
-****
-
-****
-
-.xref:guides::connection/drivers.adoc[Drivers]
-[.clickable]
-****
-
-****
---
-
-== Database management
-
-[cols-3]
---
-.xref:guides::database/studio.adoc[TypeDB Studio]
-[.clickable]
-****
-
-****
-
-.xref:guides::database/console.adoc[TypeDB Console]
-[.clickable]
-****
-
-****
-
-.xref:guides::database/drivers.adoc[Drivers]
-[.clickable]
-****
-
-****
---
-
-== Running queries
-
-[cols-3]
---
-.xref:guides::queries/studio.adoc[TypeDB Studio]
-[.clickable]
-****
-
-****
-
-.xref:guides::queries/console.adoc[TypeDB Console]
-[.clickable]
-****
-
-****
-
-.xref:guides::queries/drivers.adoc[Drivers]
-[.clickable]
-****
-
-****
---
-
-== Configuration
-
-[cols-3]
---
-.xref:guides::configuration/config.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:guides::configuration/arguments.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:guides::configuration/logs.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:guides::configuration/export.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:guides::configuration/upgrades.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:guides::configuration/users.adoc[]
-[.clickable]
-****
-
-****
---
-
-////
-
-////
+== Migrating to TypeDB
 
 [cols-2]
 --
-.xref:guides::installing/overview.adoc[]
+.xref:manual::studio.adoc[From CSV/XML/JSON]
 [.clickable]
-****
-* xref:guides::installing/cloud2.adoc[TypeDB Cloud (DBaaS)]
-* xref:guides::installing/cloud.adoc[TypeDB Cloud (on premise)]
-* xref:guides::installing/core.adoc[TypeDB Core]
-* xref:guides::installing/studio.adoc[TypeDB Studio]
-* xref:guides::installing/console.adoc[TypeDB Console]
-* xref:guides::installing/drivers.adoc[TypeDB drivers]
 ****
 
-.xref:guides::connection/overview.adoc[]
-[.clickable]
-****
-* xref:guides::connection/studio.adoc[TypeDB Studio]
-* xref:guides::connection/console.adoc[TypeDB Console]
-* xref:guides::connection/drivers.adoc[Drivers]
 ****
 
-.xref:guides::schema/overview.adoc[]
+.xref:manual::console.adoc[From SQL]
 [.clickable]
-****
-* xref:guides::schema/define.adoc[]
-* xref:guides::schema/undefine.adoc[]
-* xref:guides::schema/modify-studio.adoc[]
-* xref:guides::schema/modify-drivers.adoc[]
 ****
 
-.xref:guides::data/overview.adoc[]
-[.clickable]
-****
-* xref:guides::data/insert.adoc[]
-* xref:guides::data/delete.adoc[]
-* xref:guides::data/update.adoc[]
-* xref:guides::data/fetch.adoc[]
-* xref:guides::data/get.adoc[]
-* xref:guides::data/api.adoc[]
 ****
 
-.xref:guides::reasoning/overview.adoc[]
+.xref:manual::studio.adoc[From Neo4J]
 [.clickable]
-****
-* xref:guides::reasoning/rules.adoc[]
-* xref:guides::reasoning/reasoning.adoc[]
 ****
 
-.xref:guides::configuration/overview.adoc[]
+****
+
+.xref:manual::console.adoc[From MongoDB]
 [.clickable]
 ****
-* xref:guides::configuration/config.adoc[]
-* xref:guides::configuration/arguments.adoc[]
-* xref:guides::configuration/logs.adoc[]
-* xref:guides::configuration/export.adoc[]
-* xref:guides::configuration/upgrades.adoc[]
-* xref:guides::configuration/users.adoc[]
+
 ****
 --
-
-////
