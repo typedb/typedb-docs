@@ -26,8 +26,9 @@ The C\++ driver was developed by Vaticle to enable TypeDB support for C++ softwa
 === Prerequisites
 
 See the
-<<_version_compatibility>> table to check what versions of TypeDB and Python driver are compatible.
+<<_version_compatibility>> table to check what versions of TypeDB and C++ driver are compatible.
 
+The driver is built against the C++ 17 standard.
 For Linux: the minimum version of `glibc` is `2.25.0`.
 
 To install TypeDB C++ driver:
@@ -56,7 +57,7 @@ ENDIF()
 
 == Quickstart
 
-See below a short example of Python code that connects to a local TypeDB Core,
+See below a short example of C++ code that connects to a local TypeDB Core,
 creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
 
 [,cpp]
@@ -115,16 +116,16 @@ For more information on methods used above and other capabilities, see the API r
 [cols-2]
 --
 ////
-.xref:drivers::python/tutorial.adoc[Tutorial]
+.xref:drivers::cpp/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-This tutorial will help you learn how to use the Python driver.
+This tutorial will help you learn how to use the C++ driver.
 ****
 ////
-.xref:python/api-reference.adoc[API reference]
+.xref:cpp/api-reference.adoc[API reference]
 [.clickable]
 ****
-Driver API reference for the Python language.
+Driver API reference for the C++ language.
 ****
 --
 
