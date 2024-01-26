@@ -1,0 +1,281 @@
+= Console installation guide
+
+TypeDB Console is the default CLI client for TypeDB.
+Both TypeDB Core and TypeDB Cloud are usually distributed with a compatible version of TypeDB Console.
+To install TypeDB Console separately, use the guide below.
+
+== Install
+
+If you are unsure of the exact version you need,
+check the <<_version_compatibility,compatibility table>> below.
+
+[tabs]
+====
+macOS::
++
+--
+. Ensure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+
+. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
+select a required version. Depending on your architecture, download the `typedb-console-mac-x86_64`
+or the `typedb-console-mac-arm64` archive.
+
+. Extract the archive with TypeDB Console into a new directory:
++
+[,bash,subs=attributes+]
+----
+sudo mkdir /opt/typedb-console
+unzip ~/Downloads/typedb-console-mac-{latest-version}.zip -d /opt/typedb-console
+----
+
+. Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
++
+[,bash,subs=attributes+]
+----
+ln -s /opt/typedb-console/typedb-console-mac-{latest-version}/typedb /usr/local/bin/typedb
+----
+--
+
+Linux::
++
+--
+. Ensure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+
+. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
+select a required version. Depending on your architecture, download the `typedb-console-linux-x86_64`
+or the `typedb-console-linux-arm64` archive.
+
+. Extract the archive with TypeDB Console into a new directory:
++
+[,bash,subs=attributes+]
+----
+mkdir /opt/typedb-console
+tar -xzf ~/Downloads/typedb-console-linux-{latest-version}.tar.gz -C /opt/typedb-console
+----
+
+. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
++
+[,bash,subs=attributes+]
+----
+ln -s /opt/typedb-console/typedb-console-linux-{latest-version}/typedb /usr/local/bin/typedb
+----
+--
+
+Windows::
++
+--
+. Ensure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+
+. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
+select a required version, download the `typedb-console-windows-x86_64` archive.
+
+. Extract the archive with TypeDB Console into a new directory:
++
+[,shell,subs=attributes+]
+----
+mkdir "C:\Program Files\TypeDB Console"
+tar xvf "C:\Users\username\Downloads\typedb-console-windows-{latest-version}.zip" -C "C:\Program Files\TypeDB Console"
+----
+
+. Update the `PATH` environment variable:
++
+[,shell,subs=attributes+]
+----
+setx /M PATH "%path%;C:\Program Files\TypeDB Console\typedb-console-windows-{latest-version}"
+----
+
+Restart the terminal window for the changes to environment variables to take effect.
+--
+====
+
+== Run
+
+To run TypeDB Console:
+
+[,bash]
+----
+typedb console
+----
+
+The above command will try to establish a connection with a TypeDB server on the default address of `localhost:1729`.
+To connect to a different address use the `--core` argument followed by a TypeDB server IP address and port:
+`10.0.0.1:1729`.
+
+If the typedb command is not recognized, it means that the path to TypeDB binary is not set in the system.
+You can find TypeDB binary in the TypeDB distributive.
+To start TypeDB Console from its binary, navigate into the directory with unpacked distributive and run:
+
+[,bash]
+----
+./typedb console
+----
+
+[NOTE]
+====
+To learn how to use TypeDB Console, see the xref:home::quickstart.adoc#_console_connect[Quickstart] guide and the
+xref:guides::connection/console.adoc[] page.
+====
+
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^2,^.^1,^.^2,^.^2"]
+|===
+| TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
+
+| 2.26.5
+| 3
+| 2.26.3
+| 2.26.0
+
+| 2.25.7
+| 3
+| 2.25.7
+| 2.25.7
+
+| 2.24.15
+| 2
+| 2.24.17
+| 2.24.17
+
+| 2.18.0
+| 1
+| 2.18.0 to 2.23.0
+| 2.18.0 to 2.23.0
+
+| 2.17.0
+| N/A
+| 2.17.0
+| 2.17.0
+|===
+
+.See older versions
+[%collapsible]
+====
+[cols="^.^2,^.^1,^.^2,^.^2"]
+|===
+| TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
+
+| 2.16.1
+| N/A
+| 2.16.1
+| 2.16.1 to 2.16.2
+
+| 2.15.0
+| N/A
+| 2.15.0
+| 2.15.0
+
+| 2.14.2
+| N/A
+| 2.14.2 to 2.14.3
+| 2.14.1
+
+| 2.14.0
+| N/A
+| 2.14.0 to 2.14.1
+| 2.14.1
+
+| 2.12.0
+| N/A
+| 2.12.0 to 2.13.0
+| 2.12.0 to 2.13.0
+
+| 2.11.0
+| N/A
+| 2.11.0 to 2.11.1
+| 2.11.1 to 2.11.2
+
+| 2.10.0
+| N/A
+| 2.10.0
+| 2.10.0
+
+| 2.9.0
+| N/A
+| 2.9.0
+| 2.9.0
+
+| 2.8.0
+| N/A
+| 2.8.0 to 2.8.1
+| 2.5.0
+
+| 2.6.1
+| N/A
+| 2.6.1 to 2.7.1
+| 2.5.0
+
+| 2.6.0
+| N/A
+| 2.6.0
+| 2.5.0
+
+| 2.5.0
+| N/A
+| 2.5.0
+| 2.3.0
+
+| 2.4.0
+| N/A
+| 2.4.0
+| 2.3.0
+
+| 2.3.2
+| N/A
+| 2.3.2 to 2.3.3
+| 2.3.0
+
+| 2.3.1
+| N/A
+| 2.3.1
+| 2.3.0
+
+| 2.3.0
+| N/A
+| 2.3.0
+| 2.3.0
+
+| 2.1.3
+| N/A
+| 2.1.3 to 2.2.0
+| 2.1.2
+
+| 2.1.2
+| N/A
+| 2.1.2
+| 2.0.3
+
+| 2.1.1
+| N/A
+| 2.1.1
+| 2.0.3
+
+| 2.1.0
+| N/A
+| 2.1.0
+| 2.0.3
+
+| 2.0.1
+| N/A
+| 2.0.1 to 2.0.2
+| 2.0.1 to 2.0.2
+
+| 2.0.0
+| N/A
+| 2.0.0
+| 2.0.0
+
+| 1.0.8
+| N/A
+| 1.1.0 to 1.8.4
+| -
+|===
+====

@@ -1,0 +1,42 @@
+= Connection guides
+
+TypeDB accepts connections via gRPC based
+https://github.com/vaticle/typedb-protocol[TypeDB RPC protocol,window=_blank].
+It is implemented by TypeDB drivers and TypeDB clients.
+
+All released clients and drivers support connection to both TypeDB Cloud and TypeDB Core.
+A connection to TypeDB Core doesn't require a username nor password and does not support encryption.
+
+//To connect to TypeDB, you can use any TypeDB client or driver.
+See below practical guides on how to connect to TypeDB CLoud and TypeDB Core with different clients and drivers.
+
+////
+TypeDB clients are able to connect to TypeDB via gRPC based TypeDB protocol and provide an interface for using them.
+Among TypeDB clients, there are libraries called TypeDB drivers,
+that provide driver API for native programmatic access to TypeDB.
+
+All TypeDB clients are able to connect to TypeDB, use encryption and authentication, manage sessions and transactions,
+use high availability and load-balancing features, send any valid TypeQL queries, and stream responses.
+////
+
+[cols-3]
+--
+.xref:guides::connection/studio.adoc[TypeDB Studio]
+[.clickable]
+****
+A step-by-step guide on how to run and connect TypeDB Studio to TypeDB Cloud or Core.
+****
+//Integrated developer environment (IDE) with database manager, type browser, type editor, text editor, and file browser.
+
+.xref:connection/console.adoc[TypeDB Console]
+[.clickable]
+****
+A step-by-step guide on how to run and connect TypeDB Console to TypeDB Cloud or Core.
+****
+
+.xref:guides::connection/drivers.adoc[Drivers]
+[.clickable]
+****
+A step-by-step guide on how to use TypeDB drivers to connect to TypeDB Core.
+****
+--

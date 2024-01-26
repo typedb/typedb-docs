@@ -1,0 +1,63 @@
+= TypeDB Studio connection guide
+:experimental:
+
+This guide covers connecting to a TypeDB deployment with TypeDB Studio.
+Make sure TypeDB Studio is xref:guides::installing/studio.adoc[installed].
+
+== Run
+
+TypeDB Studio is an IDE and a standalone TypeDB client with GUI that needs to be launched separately from a TypeDB server.
+To launch TypeDB Studio, locate its binary file and run it.
+
+[#_connect_to_typedb]
+== Connect to TypeDB
+
+Click btn:[Connect to TypeDB] on the right side of the top toolbar,
+select TypeDB edition below, and follow the instructions:
+
+[tabs]
+====
+Cloud::
++
+--
+image::home::studio-connect-cloud.png[TypeDB Studio connect window, width = 75%, link=self]
+
+. Switch the `Server` field drop-down to `TypeDB Cloud`.
+. Click btn:[Manage Cloud Addresses] button.
+. Add address and port for every server from your TypeDB Cloud deployment. Close the Address management window.
+. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
+. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
+_For self-hosted deployments, encryption parameters may vary._
+. Click `Connect`.
+
+[NOTE]
+=====
+On your first login you will be asked to change the password for the `admin` account.
+A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
+=====
+--
+
+Core::
++
+--
+image::home::studio-connect-core.png[TypeDB Studio connect window, width = 75%, link=self]
+
+. Make sure the `TypeDB Core` option is selected in the `Server` field drop-down.
+. Enter address and port for server to connect to (e.g., `localhost:1729`).
+. Click btn:[Connect].
+--
+====
+
+[#_select_database]
+== Select a database
+
+To select a database to work with, use the dropdown menu on the right from the database icon
+(image:home::studio-icons/database.png[]) in the top toolbar.
+
+If the dropdown menu is greyed out and unresponsive, then check your <<_connect_to_typedb,connection>> to TypeDB.
+
+[#_select_a_project_directory]
+== Select a project directory
+
+To select a project directory,
+click on the open folder icon (image:home::studio-icons/project.png[]) in the top toolbar.
