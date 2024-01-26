@@ -6,19 +6,19 @@
 
 The Rust driver was developed by Vaticle to enable TypeDB support for Rust software and developers.
 
-[cols-3]
+[cols-2]
 --
-.link:https://github.com/vaticle/typedb-driver/tree/development/rust[Source code,window=_blank]
+.link:https://github.com/vaticle/typedb-driver/tree/development/rust[GitHub,window=_blank]
 [.clickable]
 ****
 
 ****
 
-.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-[.clickable]
-****
+//.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+//[.clickable]
+//****
 
-****
+//****
 
 .link:https://crates.io/crates/typedb-driver[Crates.io,window=_blank]
 [.clickable]
@@ -33,6 +33,7 @@ The Rust driver was developed by Vaticle to enable TypeDB support for Rust softw
 See the
 <<_version_compatibility>> table to check what versions of TypeDB and Rust driver are compatible.
 
+The minimum version of Rust is `1.68.0`.
 For Linux: the minimum version of `glibc` is `2.25.0`.
 
 To install TypeDB Rust driver, select `sync` or `async` and follow the instructions below:
@@ -60,8 +61,8 @@ cargo add typedb-driver -F sync
 
 == Quickstart
 
-See below a short example of Rust code that connects to a local TypeDB Core,
-creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
+See below a short example of Rust code that connects to a local TypeDB Core server,
+creates a database named `access-management-db`, defines a simple schema, inserts some data, and then reads it.
 
 [,rust]
 ----
@@ -102,7 +103,6 @@ fn main() -> Result<(), Error> {
             Ok(())
         }
     }
-
 }
 ----
 //#todo Fix the code above to make it working after copy-pasting it. Add async note??

@@ -7,13 +7,13 @@ The C\++ driver was developed by Vaticle to enable TypeDB support for C++ softwa
 
 [cols-2]
 --
-.link:https://github.com/vaticle/typedb-driver/tree/development/cpp[Source code,window=_blank]
+.link:https://github.com/vaticle/typedb-driver/tree/development/cpp[GitHub,window=_blank]
 [.clickable]
 ****
 
 ****
 
-.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%27%5Etypedb-driver-cpp%27&sort=-version[Downloads,window=_blank]
 [.clickable]
 ****
 
@@ -61,7 +61,30 @@ creates a database named `access-management-db`, defines a schema, inserts some 
 
 [,cpp]
 ----
+TypeDB::Driver driver = TypeDB::Driver::coreDriver("localhost:1729");
+    TypeDB::Options options;
+    driver.databases.create("access-management-db");
+    {
+        TypeDB::Session sess = driver.session("access-management-db", TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Transaction tx = sess.transaction(TypeDB::TransactionType::WRITE, options);
+        tx.query.define(accessManagementSchema, options).wait();
+        tx.commit();
+    }
+    {
+        TypeDB::Session sess = driver.session("access-management-db", TypeDB::SessionType::DATA, options);
 
+        for (auto& batch: accessManagementDataBatches) {
+            TypeDB::Transaction tx = sess.transaction(TypeDB::TransactionType::WRITE, options);
+            for (auto& query: batch) {
+                tx.query.insert(query, options);
+            }
+            tx.commit();
+        }
+        {
+            TypeDB::Transaction tx = sess.transaction(TypeDB::TransactionType::READ, options);
+            ConceptMapIterable results = tx.query.get("match $o1 has $o2; get;", options);
+        }
+    }
 ----
 //#todo Add the code above
 
