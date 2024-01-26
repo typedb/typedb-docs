@@ -114,7 +114,7 @@ Close the terminal or press kbd:[Ctrl+C].
 To check whether TypeDB Cloud is working and interact with it, you can connect to it with any
 xref:drivers::overview.adoc[TypeDB Client].
 
-You can use xref:manual::console.adoc[TypeDB Console] from your TypeDB Cloud directory:
+You can use xref:guides::connection/console.adoc[TypeDB Console] from your TypeDB Cloud directory:
 
 [,bash]
 ----
@@ -285,4 +285,4 @@ All nodes must be shut down independently in the same way.
 
 To deploy a TypeDB Cloud cluster with Kubernetes, we can use https://helm.sh/[Helm] package manager.
 
-include::manual::partial$kubernetes.adoc[leveloffset=+1]
+include::guides::partial$kubernetes.adoc[leveloffset=+1]

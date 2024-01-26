@@ -13,26 +13,31 @@
 * xref:manual::studio.adoc[]
 
 * xref:manual::connecting/overview.adoc[]
-** xref:manual::connecting/connection.adoc[]
-** xref:manual::connecting/database.adoc[]
-** xref:manual::connecting/session.adoc[]
-** xref:manual::connecting/transaction.adoc[]
+** Connect to server
+** Create database
+** Open session
+** Open transaction
 
 * xref:manual::defining/overview.adoc[]
-** xref:manual::defining/defining-types.adoc[]
-** xref:manual::defining/defining-rules.adoc[]
-** xref:manual::defining/undefining-schema.adoc[]
-** xref:manual::defining/updating-schema.adoc[]
+** Defining types
+** Defining rules
+** Undefining schema
+** Updating schema
 
-* xref:manual::writing/overview.adoc[]
+* Writing data
 ** Inserting data
 ** Deleting data
 ** Updating data
 
-* xref:manual::reading/overview.adoc[]
+* Reading data
 ** Fetching data
 ** Getting concepts
 ** Inferring patterns
+
+* Programming concepts
+** Types
+** Things
+** Explanations
 
 * xref:manual::configuring/overview.adoc[]
 ** xref:manual::configuring/config.adoc[]
@@ -42,17 +47,8 @@
 ** xref:manual::configuring/upgrades.adoc[]
 ** xref:manual::configuring/users.adoc[]
 
-////
-* Programming concepts
-** Types
-** Things
-** Explanations
-////
-
-////
 * Migrating to TypeDB
 ** From CSV/XML/JSON
 ** From SQL
 ** From Neo4J
 ** From MongoDB
-////
