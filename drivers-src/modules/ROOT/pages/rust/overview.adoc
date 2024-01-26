@@ -4,22 +4,39 @@
 :keywords: typedb, client, driver, rust
 :pageTitle: TypeDB Rust driver
 
-The TypeDB Rust driver was developed by Vaticle to enable TypeDB support for Rust software and developers.
+The Rust driver was developed by Vaticle to enable TypeDB support for Rust software and developers.
+
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/rust[GitHub,window=_blank]
+[.clickable]
+****
+
+****
+
+//.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+//[.clickable]
+//****
+
+//****
+
+.link:https://crates.io/crates/typedb-driver[Crates.io,window=_blank]
+[.clickable]
+****
+
+****
+--
 
 [#_install_rust]
 == Install
 
-=== Prerequisites
-
-To use the TypeDB Rust driver, you need a compatible version of TypeDB running.
 See the
-<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+<<_version_compatibility>> table to check what versions of TypeDB and Rust driver are compatible.
 
-For Linux OS: the minimum version of `glibc` is `2.25.0`.
+The minimum version of Rust is `1.68.0`.
+For Linux: the minimum version of `glibc` is `2.25.0`.
 
-=== Installation
-
-To install TypeDB Rust driver:
+To install TypeDB Rust driver, select `sync` or `async` and follow the instructions below:
 
 [tabs]
 ====
@@ -42,27 +59,76 @@ cargo add typedb-driver -F sync
 --
 ====
 
-//cargo add typedb-driver@2.24.5
+== Quickstart
 
-== Rust driver API
+See below a short example of Rust code that connects to a local TypeDB Core server,
+creates a database named `access-management-db`, defines a simple schema, inserts some data, and then reads it.
 
-Use the xref:rust/api-reference.adoc[API reference] page for the documentation of the methods and objects used in
-the driver.
+[,rust]
+----
+use typedb_driver::{
+    Connection, DatabaseManager, Error, Promise, Session, SessionType, TransactionType,
+};
 
-//Explore the Rust driver xref:rust/rust-tutorial.adoc[tutorial] with example of connecting to TypeDB.
+fn main() -> Result<(), Error> {
+    const DB_NAME: &str = "access-management-db";
+    const SERVER_ADDR: &str = "127.0.0.1:1729";
+    let driver = Connection::new_core(SERVER_ADDR)?;
+    let databases = DatabaseManager::new(driver);
+    if databases.contains(DB_NAME)? {
+        databases.get(DB_NAME)?.delete()?;
+    }
+    databases.create(DB_NAME)?;
+    {
+        let session = Session::new(databases.get(DB_NAME)?, SessionType::Schema)?;
+        let tx = session.transaction(TransactionType::Write)?;
+        tx.query().define("define person sub entity;").resolve()?;
+        tx.query().define("define name sub attribute, value string; person owns name;").resolve()?;
+        tx.commit().resolve()?;
+    }
+    {
+        let session = Session::new(databases.get(DB_NAME)?, SessionType::Data)?;
+        {
+            let tx = session.transaction(TransactionType::Write)?;
+            let _ = tx.query().insert("insert $p isa person, has name 'Alice';")?;
+            let _ = tx.query().insert("insert $p isa person, has name 'Bob';")?;
+            tx.commit().resolve()?;
+        }
+        {
+            let tx = session.transaction(TransactionType::Read)?;
+            let res = tx.query().fetch("match $p isa person; fetch $p: name;").unwrap();
+            for item in res {
+                println!("{}", &item.unwrap().to_string());
+            }
+            Ok(())
+        }
+    }
+}
+----
 
-//Use the xref:rust/api-reference.adoc[API reference] page for documentation of the methods and objects used in
-//the driver.
+The above example is written for the `sync` Rust.
+For more code examples, see the Tutorial and API reference links below.
 
-include::../java/overview.adoc[tag=questions]
+== Learn more
 
-== Additional resources
+[cols-2]
+--
+.xref:drivers::rust/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the Rust driver.
+****
 
-* <<_version_compatibility,Version compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/rust[Rust driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-* https://crates.io/crates/typedb-driver[Crates.io]
-//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+.xref:rust/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the Rust language.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
+
+//Use the xref:rust/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
 
 [#_version_compatibility]
 == Version Compatibility

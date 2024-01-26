@@ -3,27 +3,40 @@
 :keywords: typedb, client, driver, c++, cpp, clang
 :pageTitle: TypeDB C++ driver
 
-The TypeDB C\++ driver was developed by Vaticle to enable TypeDB support for C++ software and developers.
+The C\++ driver was developed by Vaticle to enable TypeDB support for C++ software and developers.
+
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/cpp[GitHub,window=_blank]
+[.clickable]
+****
+
+****
+
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%27%5Etypedb-driver-cpp%27&sort=-version[Downloads,window=_blank]
+[.clickable]
+****
+
+****
+--
 
 [#_install_cpp]
 == Install
 
 === Prerequisites
 
-To use the TypeDB C++ driver, you need a compatible version of TypeDB running.
 See the
-<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+<<_version_compatibility>> table to check what versions of TypeDB and C++ driver are compatible.
 
-For Linux OS: the minimum version of `glibc` is `2.25.0`.
-
-=== Installation
+The driver is built against the C++ 17 standard.
+For Linux: the minimum version of `glibc` is `2.25.0`.
 
 To install TypeDB C++ driver:
 
 1. https://github.com/vaticle/typedb-driver/releases[Download] the latest release for you architecture (`x86_64`/`arm64`)
 and OS (Linux/macOS/Win).
 2. Include the header file `typedb_driver.hpp` from the `include` directory. See an example of `CMakeLists.txt` below.
-
++
 .CMakeLists.txt example
 [,source]
 ----
@@ -42,21 +55,81 @@ ELSE()
 ENDIF()
 ----
 
-// == C++ driver API
+== Quickstart
 
-//Use the xref:cpp/api-reference.adoc[API reference] page for the documentation of the methods and objects used in
-//the driver.
+See below a short example of C++ code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
 
-//Explore the C++ driver xref:cpp/cpp-tutorial.adoc[tutorial] with example of connecting to TypeDB.
+[,cpp]
+----
+#include <iostream>
+#include <typedb_driver.hpp>
 
-include::../java/overview.adoc[tag=questions]
+int main() {
+    const std::string dbName = "access-management-db";
+    const std::string ServerAddr = "127.0.0.1:1729";
+    try {
+        TypeDB::Driver driver = TypeDB::Driver::coreDriver(ServerAddr);
+        if (driver.databases.contains(dbName)) {
+            driver.databases.get(dbName).deleteDatabase();
+        }
+        driver.databases.create(dbName);
+        TypeDB::Options options;
+        {
+            auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+            auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            //std::string
+            tx.query.define("define person sub entity;", options).get();
+            tx.query.define("define name sub attribute, value string; person owns name;", options).get();
+            tx.commit();
+        }
+        {
+            auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+            {
+                auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+                (void) tx.query.insert("insert $p isa person, has name 'Alice';", options);
+                (void) tx.query.insert("insert $p isa person, has name 'Bob';", options);
+                tx.commit();
+            }
+            {
+                auto tx = session.transaction(TypeDB::TransactionType::READ, options);
+                TypeDB::ConceptMapIterable result = tx.query.get("match $p isa person, has name $n; get $n;", options);
+                for (TypeDB::ConceptMap& cm : result) {
+                    std::unique_ptr<TypeDB::Concept> t = cm.get("n");
+                    std::cout << t->asAttribute()->getType()->getLabel() << " : " << (t->asAttribute()->getValue()->asString()) << std::endl;
+                }
+                tx.close();
+            }
+        }
+    } catch (TypeDB::DriverException e ) {
+        std::cout << "Caught TypeDB::DriverException: " << e.code() << "\n" << e.message()  << std::endl;
+        return 2;
+    }
+    return 0;
+}
+----
 
-== Additional resources
+For more information on methods used above and other capabilities, see the API reference link below.
 
-* <<_version_compatibility,Version compatibility>>
-* https://github.com/vaticle/typedb-driver/tree/development/cpp[C++ driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+== Learn more
+
+[cols-2]
+--
+////
+.xref:drivers::cpp/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the C++ driver.
+****
+////
+.xref:cpp/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the C++ language.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
 
 [#_version_compatibility]
 == Version Compatibility
@@ -69,5 +142,5 @@ include::../java/overview.adoc[tag=questions]
 | 3
 | 2.26.3
 | 2.26.0
-| https://www.iso.org/standard/68564.html[17]
+| 17
 |===

@@ -6,18 +6,35 @@
 
 The Python driver was developed by Vaticle to enable TypeDB support for Python software and developers.
 
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/python[GitHub,window=_blank]
+[.clickable]
+****
+
+****
+
+//.link:https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
+//[.clickable]
+//****
+
+//****
+
+.link:https://pypi.org/project/typedb-driver/[PyPI page,window=_blank]
+[.clickable]
+****
+
+****
+--
+
 [#_install_python]
 == Install
 
-=== Prerequisites
-
-To use the Python driver, we need a compatible version of TypeDB server running.
 See the
-<<_version_compatibility>> table to check what version you need, depending on the TypeDB version being used.
+<<_version_compatibility>> table to check what versions of TypeDB and Python driver are compatible.
 
-For Linux OS: the minimum version of `glibc` is `2.25.0`.
-
-=== Installation
+Supported Python versions: from `3.8` to `3.11`.
+For Linux: the minimum version of `glibc` is `2.25.0`.
 
 To install TypeDB Python driver:
 
@@ -26,7 +43,7 @@ To install TypeDB Python driver:
 pip install typedb-driver
 ----
 
-.See command for older versions (<2.24.0)
+.See the command for older versions (<2.24.0)
 [%collapsible]
 ====
 [,bash]
@@ -35,29 +52,89 @@ pip install typedb-client
 ----
 ====
 
-== Tutorial
+== Quickstart
 
-Explore the Python driver xref:python/tutorial.adoc[tutorial] with example of connecting to TypeDB.
+See below a short example of Python code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
+////
+[,python]
+----
+with TypeDB.core_driver("localhost:1729") as driver:
+    driver.databases.create("access-management-db")
 
-== Python driver API
+    with client.session("access-management-db", SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as tx:
+            tx.query.define(access_management_schema)
+            tx.commit()
 
-Use the xref:python/api-reference.adoc[API reference] page for the documentation of the methods and objects used in
-the driver.
+    with client.session("access-management-db", SessionType.DATA) as session:
+        for batch in access_management_data_batches:
+            with session.transaction(TransactionType.WRITE) as tx:
+                for query in batch:
+                    tx.query.insert(query)
 
-include::../java/overview.adoc[tag=questions]
+                tx.commit()
 
-== Additional resources
+                with session.transaction(TransactionType.READ) as tx:
+                    results = tx.query.get("match $u isa user; get;")
+----
+////
+[,python]
+----
+from typedb.driver import TypeDB, SessionType, TransactionType
 
-* <<_version_compatibility>>
-* https://pypi.org/project/typedb-driver/[PyPI page for the TypeDB driver,window=_blank]
-* https://github.com/vaticle/typedb-driver/tree/development/python[Python driver on GitHub,window=_blank]
-* https://github.com/vaticle/typedb-driver/releases[Releases,window=_blank]
-//* https://github.com/vaticle/typedb-driver-examples[Examples,window=_blank]
+DB_NAME = "access-management-db"
+SERVER_ADDR = "127.0.0.1:1729"
+
+with TypeDB.core_driver(SERVER_ADDR) as driver:
+    if driver.databases.contains(DB_NAME):
+        driver.databases.get(DB_NAME).delete()
+    driver.databases.create(DB_NAME)
+
+    with driver.session(DB_NAME, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as tx:
+            tx.query.define("define person sub entity;")
+            tx.query.define("define name sub attribute, value string; person owns name;")
+            tx.commit()
+
+    with driver.session(DB_NAME, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as tx:
+            tx.query.insert("insert $p isa person, has name 'Alice';")
+            tx.query.insert("insert $p isa person, has name 'Bob';")
+            tx.commit()
+        with session.transaction(TransactionType.READ) as tx:
+            results = tx.query.fetch("match $p isa person; fetch $p: name;")
+            for json in results:
+                print(json)
+----
+
+For more code examples, see the Tutorial and API reference links below.
+
+== Learn more
+
+[cols-2]
+--
+.xref:drivers::python/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the Python driver.
+****
+
+.xref:python/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the Python language.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
+
+//Use the xref:python/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
 
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
+[cols="^.^3,^.^2,^.^3,^.^3,^.^2",options="header"]
 |===
 | Python driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Python
 
@@ -65,7 +142,7 @@ include::../java/overview.adoc[tag=questions]
 | 3
 | 2.26.3
 | 2.26.0
-| 3.9 to 3.11
+| 3.8 to 3.11
 
 | 2.25.8
 | 3
@@ -78,7 +155,14 @@ include::../java/overview.adoc[tag=questions]
 | 2.24.17
 | 2.24.17
 | 3.9 to 3.11
+|===
 
+.See older versions
+[%collapsible]
+====
+[cols="^.^3,^.^2,^.^3,^.^3,^.^2",options="header"]
+|===
+| Python driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Python
 | 2.18.0 to 2.18.2
 | 1
 | 2.18.0 to 2.23.0
@@ -163,3 +247,4 @@ include::../java/overview.adoc[tag=questions]
 | N/A
 | >= 3.5, < 3.8
 |===
+====
