@@ -1,16 +1,19 @@
 = Create database
 :tabs-sync-option:
 
-This guide covers database management operations, like creating, listing,
+TypeDB stores data in isolated databases, each comprising a schema and data.
+//xref:typeql::schema/overview.adoc[schema] and xref:typeql::data/overview.adoc[data].
+These databases operate independently, ensuring that one database cannot affect another.
+Nevertheless, a TypeDB client can connect to and interact with multiple databases concurrently.
+
+This guide covers creating a database, as well as other database management operations, like listing
 and deleting databases with Studio, Console, or driver.
-Make sure to xref:manual::installing/studio.adoc[install]
-and xref:manual::connecting/connection.adoc[connect] to TypeDB before proceeding.
+Make sure to xref:manual::installing/overview.adoc[install] and
+xref:manual::connecting/connection.adoc[connect] with your chosen client/driver first.
 
-Database management operations require a xref:manual::connecting/overview.adoc[network connection] to TypeDB.
+== Create a new database
 
-== Create
-
-To create a database, follow the steps below:
+To create a new database, select a unique name (e.g., `db1`) and follow the steps below:
 
 [tabs]
 ====
@@ -18,7 +21,7 @@ Studio::
 +
 --
 . Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
-. Type in a name for a new database (for example, `db1`) in the text field of the window and click btn:[Create].
+. Type in a name for a new database (e.g., `db1`) in the text field of the window and click btn:[Create].
 
 The newly created database should appear in the drop-down selector of the top toolbar.
 --
@@ -26,6 +29,8 @@ The newly created database should appear in the drop-down selector of the top to
 Console::
 +
 --
+Connect with Console and run the following command:
+
 [,bash]
 ----
 database create db1
@@ -33,7 +38,12 @@ database create db1
 
 Where `db1` is the name of the database.
 --
+====
 
+To create a new database programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+[tabs]
+====
 Rust::
 +
 --
@@ -106,7 +116,12 @@ database delete db1
 
 Where `db1` is the name of the database.
 --
+====
 
+To delete a database programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+[tabs]
+====
 Rust::
 +
 --
@@ -156,7 +171,7 @@ driver.databases.get("db1").deleteDatabase();
 
 == List databases
 
-To see a full list of databases on a server, follow the steps below:
+To retrieve a full list of databases on a server, follow the steps below:
 
 [tabs]
 ====
@@ -175,7 +190,12 @@ Console::
 database list
 ----
 --
+====
 
+To get a list of databases programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+[tabs]
+====
 Rust::
 +
 --
@@ -235,3 +255,7 @@ for (auto& db: driver.databases.all()) {
 --
 ====
 
+After connecting to server and creating a database,
+see how to manage
+xref:connecting/session.adoc[sessions] and
+xref:connecting/transaction.adoc[transactions].
