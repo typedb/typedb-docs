@@ -1,1 +1,204 @@
 = Open session
+:tabs-sync-option:
+:experimental:
+
+A session represents an active connection to a specific database on a server,
+and it comes in two types: `schema` and `data`.
+The schema session type is specifically employed for xref:typeql::schema/define.adoc[Define] and
+xref:typeql::schema/undefine.adoc[Undefine] queries.
+
+This guide covers opening a session and other session management operations with Studio, Console, or one of the drivers.
+Both Studio and Console provide automated session control, so you don't need to open and close sessions manually.
+You still need to choose a session type and a database to open a session to.
+
+For more information on how to create a database, see the xref:manual::connecting/database.adoc[] page.
+
+== Open a new session
+
+To open a session to a database, you need to have a connection to the server and know the name of the database.
+
+.Open a session with Studio or Console
+[tabs]
+====
+Studio::
++
+--
+Studio controls sessions automatically.
+
+You can select a session type for queries with a `schema`/`data` selector in the top toolbar:
+image:manual::icons/session-schema.png[session type selector].
+For the session type selector to be active, you need to connect Studio to TypeDB
+and select a database from a drop-down list in the top toolbar.
+--
+
+Console::
++
+--
+Console controls sessions automatically.
+
+You choose a session type when you open a xref:manual::connecting/transaction.adoc[transaction].
+--
+====
+
+xref:manual::installing/drivers.adoc[TypeDB drivers]
+provide the most flexible approach to managing sessions via native API by manually opening them:
+
+.Open a session with a driver
+[tabs]
+====
+Rust::
++
+--
+.Open a session
+[,rust]
+----
+let session = Session::new(databases.get("db1")?, SessionType::Schema)?;
+----
+--
+
+Python::
++
+--
+.Open a session
+[,python]
+----
+session = driver.session("db1", SessionType.SCHEMA)
+----
+--
+
+Java::
++
+--
+.Open a session
+[,java]
+----
+TypeDBSession session = driver.session("db1", TypeDBSession.Type.SCHEMA);
+----
+--
+
+Node.js::
++
+--
+.Open a session
+[,js]
+----
+let session = await driver.session("db1", SessionType.SCHEMA);
+----
+--
+
+C++::
++
+--
+.Open a session
+[,cpp]
+----
+auto session = driver.session("db1", TypeDB::SessionType::SCHEMA, options);
+----
+--
+====
+
+After connecting to a server and opening a
+xref:connecting/session.adoc[session], see how to xref:connecting/transaction.adoc[open a transaction] or
+<<_close_a_session,close a session>>.
+
+[#_close_a_session]
+== Close a session
+
+Both Studio and Console manage sessions automatically.
+
+For manual session control, use xref:manual::installing/drivers.adoc[TypeDB drivers]:
+
+////
+.Close a session with Studio or Console
+[tabs]
+====
+Studio::
++
+--
+Studio controls sessions automatically.
+
+You can't close a session manually.
+--
+
+Console::
++
+--
+Console controls sessions automatically.
+
+You can't close a session manually.
+--
+====
+////
+
+.Close a session with a driver
+[tabs]
+====
+Rust::
++
+--
+A session is automatically closed when the variable containing it is dropped from memory.
+
+To explicitly close a session,
+use the xref:drivers::rust/api-reference.adoc#_struct_Session_force_close__[force_close] method:
+
+.Close a session
+[,rust]
+----
+session.force_close();
+----
+--
+
+Python::
++
+--
+Use a https://peps.python.org/pep-0343/[context manager] to close a session when it's longer needed,
+or use the xref:drivers::python/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+
+.Close a session
+[,python]
+----
+session.close()
+----
+--
+
+Java::
++
+--
+Use the https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html[Try with resources] statement
+to close a session when it's longer needed, or use the
+xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+
+.Close a session
+[,java]
+----
+session.close();
+----
+--
+
+Node.js::
++
+--
+Use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+
+.Close a session
+[,js]
+----
+session.close();
+----
+--
+
+C++::
++
+--
+A session is automatically closed when the variable containing it is dropped from memory.
+
+To explicitly close a session,
+use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method:
+
+.Close a session
+[,cpp]
+----
+session.close();
+----
+--
+====

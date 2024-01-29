@@ -7,7 +7,7 @@ These databases operate independently, ensuring that one database cannot affect 
 Nevertheless, a TypeDB client can connect to and interact with multiple databases concurrently.
 
 This guide covers creating a database, as well as other database management operations, like listing
-and deleting databases with Studio, Console, or driver.
+and deleting databases with Studio, Console, or one of the drivers.
 Make sure to xref:manual::installing/overview.adoc[install] and
 xref:manual::connecting/connection.adoc[connect] with your chosen client/driver first.
 
@@ -52,6 +52,9 @@ Rust::
 let databases = DatabaseManager::new(driver);
 databases.create("db1");
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB.
+For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
 --
 
 Python::
@@ -61,6 +64,9 @@ Python::
 ----
 driver.databases().create("db1")
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB.
+For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
 --
 
 Java::
@@ -70,6 +76,9 @@ Java::
 ----
 driver.databases().create("db1");
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB.
+For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
 --
 
 Node.js::
@@ -79,6 +88,9 @@ Node.js::
 ----
 await driver.databases().create("db1");
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB.
+For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
 --
 
 C++::
@@ -88,6 +100,9 @@ C++::
 ----
 driver.databases.create("db1");
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB.
+For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
 --
 ====
 
