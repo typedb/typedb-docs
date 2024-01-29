@@ -3,10 +3,12 @@
 :keywords: typeql, typedb, schema, types, rules, overview
 :pageTitle: Schema
 
+// tag::schema-intro[]
 A schema is like a blueprint of a database that contains all user-defined <<_types,types>> and rules used in a database.
 All queries are validated with the TypeQL syntax and a type system of a schema.
 Every piece of data inserted in a TypeDB database as an instance of a type.
 Rules are used for reasoning.
+// end::schema-intro[]
 
 == Queries
 
