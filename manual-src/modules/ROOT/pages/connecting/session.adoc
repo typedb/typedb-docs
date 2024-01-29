@@ -17,13 +17,12 @@ For more information on how to create a database, see the xref:manual::connectin
 
 To open a session to a database, you need to have a connection to the server and know the name of the database.
 
-.Open a session with Studio or Console
 [tabs]
 ====
 Studio::
 +
 --
-Studio controls sessions automatically.
+Studio controls transactions automatically when you run a query.
 
 You can select a session type for queries with a `schema`/`data` selector in the top toolbar:
 image:manual::icons/session-schema.png[session type selector].
@@ -43,7 +42,6 @@ You choose a session type when you open a xref:manual::connecting/transaction.ad
 xref:manual::installing/drivers.adoc[TypeDB drivers]
 provide the most flexible approach to managing sessions via native API by manually opening them:
 
-.Open a session with a driver
 [tabs]
 ====
 Rust::
@@ -97,9 +95,10 @@ auto session = driver.session("db1", TypeDB::SessionType::SCHEMA, options);
 --
 ====
 
+To see how to close a session, see <<_close_a_session,below>>.
+
 After connecting to a server and opening a
-xref:connecting/session.adoc[session], see how to xref:connecting/transaction.adoc[open a transaction] or
-<<_close_a_session,close a session>>.
+xref:connecting/session.adoc[session], see how to xref:connecting/transaction.adoc[open a transaction].
 
 [#_close_a_session]
 == Close a session
@@ -130,7 +129,6 @@ You can't close a session manually.
 ====
 ////
 
-.Close a session with a driver
 [tabs]
 ====
 Rust::
