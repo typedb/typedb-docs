@@ -2,9 +2,13 @@
 :tabs-sync-option:
 :experimental:
 
-This guide covers establishing a network connection to a
+TypeDB uses a gRPC-based protocol for external communications, including queries.
+Various TypeDB clients, such as Studio with a GUI, Console with a CLI,
+and language-specific drivers with native APIs, have been developed to implement this protocol.
+
+This guide covers connecting to
 <<_connect_to_typedb_cloud,TypeDB Cloud>> or
-<<_connect_to_typedb_core,TypeDB Core>> deployment with Studio, Console, or driver.
+<<_connect_to_typedb_core,TypeDB Core>> servers with Studio, Console, or one of the drivers.
 
 ////
 TypeDB accepts connections via gRPC based
