@@ -2,7 +2,7 @@
 
 == Defining new relation types
 
-The syntax for defining new relation types is the same as that used to define entity types, but each relation type must be defined alongside at least one *role*. The following query defines two new relation types along with their roles.
+The syntax for defining new relation types is the same as that used to define entity types, but each relation type must be defined alongside at least one *role*. The following query defines three new relation types along with their roles.
 
 [,typeql]
 ----
@@ -10,13 +10,16 @@ define
 order sub relation,
     relates buyer,
     relates product;
+location sub relation,
+    relates place,
+    relates located;
 login sub relation,
     relates subject;
 ----
 
-When used in a Define query, the `relates` keyword defines a new role for a relation. This query defines a relation type `order` along with its roles `buyer` and `product`, and a relation type `login` with its role `subject`. Both are subtypes of the root type `relation`. So far, we have not defined any roleplayers of these roles. This will be covered in xref:learn::4-designing-schemas/4.6-defining-owners-and-roleplayers.adoc[Lesson 4.6].
+When used in a Define query, the `relates` keyword defines a new role for a relation. This query defines a relation type `order` along with its roles `buyer` and `product`, a relation type `location` with its roles `place` and `located`, and a relation type `login` with its role `subject`. All are subtypes of the root type `relation`. So far, we have not defined any roleplayers of these roles. This will be covered in xref:learn::4-designing-schemas/4.6-defining-owners-and-roleplayers.adoc[Lesson 4.6].
 
-There is no limit to the number of roles that can be defined for a relation type using the `relates` keyword, allowing trivial creation of unary relation types (like `login`), binary relation types (like `order`), ternary relation types, and n-ary relation types. Nullary relation types (those without roles) are not permitted, as they are functionally identical to entity types. If a relation type does not have any defined roles when a transaction is committed, then it will fail and be rolled back automatically.
+There is no limit to the number of roles that can be defined for a relation type using the `relates` keyword, allowing trivial creation of unary relation types (like `login`), binary relation types (like `order` or `location`), ternary relation types, and n-ary relation types. Nullary relation types (those without roles) are not permitted, as they are functionally identical to entity types. If a relation type does not have any defined roles when a transaction is committed, then it will fail and be rolled back automatically.
 
 [NOTE]
 ====
