@@ -31,10 +31,10 @@ The default package manager's page about the driver's package.
 == Install
 
 See the
-<<_version_compatibility>> table to check what versions of TypeDB and Python driver are compatible.
+<<_version_compatibility>> table to check what versions of TypeDB and Node.js driver are compatible.
 
 
-To install TypeDB Python driver:
+To install TypeDB Node.js driver:
 
 [,bash]
 ----
@@ -65,7 +65,7 @@ async function main() {
     const DB_NAME = "access-management-db";
     const SERVER_ADDR = "127.0.0.1:1729";
     const driver = await TypeDB.coreDriver(SERVER_ADDR);
-    if (driver.databases.contains(DB_NAME)) {
+    if (await driver.databases.contains(DB_NAME)) {
         await driver.databases.get(DB_NAME).then(db => db.delete());
     }
     await driver.databases.create(DB_NAME);
