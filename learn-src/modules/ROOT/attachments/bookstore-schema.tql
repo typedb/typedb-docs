@@ -18,10 +18,10 @@
 define
 
 book sub entity, abstract,
+    owns isbn-13 @key,
+    owns isbn-10 @unique,
     owns title,
     owns page-count,
-    owns isbn-10,
-    owns isbn-13,
     plays contribution:work,
     plays publishing:published,
     plays order:product,
@@ -64,7 +64,7 @@ publishing sub relation,
     plays location:located;
 
 user sub entity,
-    owns id,
+    owns id @key,
     owns age,
     plays order:buyer,
     plays rating:rater,
@@ -74,7 +74,7 @@ user sub entity,
 order sub relation,
     relates buyer,
     relates product,
-    owns id,
+    owns id @key,
     owns timestamp,
     owns status;
 
@@ -104,8 +104,8 @@ location sub relation,
 title sub attribute, value string;
 page-count sub attribute, value long;
 isbn sub attribute, abstract, value string;
-isbn-10 sub isbn;
 isbn-13 sub isbn;
+isbn-10 sub isbn;
 name sub attribute, value string;
 year sub attribute, value long;
 id sub attribute, value long;

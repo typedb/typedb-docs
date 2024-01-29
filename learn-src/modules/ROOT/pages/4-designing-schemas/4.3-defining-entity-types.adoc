@@ -1,10 +1,9 @@
 = 4.3 - Defining entity types
 
-With the data model for the bookstore complete, we can now go about implementing it as a TypeQL schema. We'll start with the syntax for defining entity types, then look at relation types in xref:learn::4-designing-schemas/4.4-defining-relation-types.adoc[Lesson 4.4], and at attribute types in xref:learn::4-designing-schemas/4.5-defining-attribute-types.adoc[Lesson 4.5].
-
 == The Define query
 
-In TypeDB, all databases have a schema that provides semantic integrity guarantees for inserted data and enables the resolution of polymorphic queries. A schema is created using *Define queries*, which are each composed of a single `define` clause. The following is an example of a Define query that defines three new entity types.
+With the data model for the bookstore complete, we can now go about implementing it as a TypeQL schema. In TypeDB, all databases have a schema that provides semantic integrity guarantees for inserted data and enables the resolution of polymorphic queries. A schema is created using *Define queries*, which are each composed of a single `define` clause.
+We'll start with the syntax for defining entity types, then look at relation types in xref:learn::4-designing-schemas/4.4-defining-relation-types.adoc[Lesson 4.4], and at attribute types in xref:learn::4-designing-schemas/4.5-defining-attribute-types.adoc[Lesson 4.5]. The following is an example of a Define query that defines three new entity types.
 
 [,typeql]
 ----
