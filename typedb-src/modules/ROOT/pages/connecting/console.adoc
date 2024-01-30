@@ -134,16 +134,19 @@ Most systems also allow us to set the system-wide locale. However, this impacts 
 
 The following arguments can be used when you invoke TypeDB Console:
 
+.Command line arguments
 [cols=".^3,^.^1,5"]
 |===
 ^| Argument ^| Alias ^| Description
 
+3+^| TypeDB Core specific commands
 | `--core=<address>`
 |
 | Address to which Console will connect to: IP address and IP port separated by colon.
 Default value: `localhost:1729`. +
-(*Not for TypeDB Cloud*)
+(*TypeDB Core only*)
 
+3+^| TypeDB Cloud specific commands
 | `--cloud=<address>`
 |
 | Address to which Console will connect to. +
@@ -157,7 +160,7 @@ Default value: `localhost:1729`. +
 
 | `--password`
 |
-| Password +
+| Enable a password prompt +
 (*TypeDB Cloud only*)
 
 | `--tls-enabled`
@@ -170,6 +173,7 @@ Default value: `localhost:1729`. +
 | Path to the TLS root CA file +
 (*TypeDB Cloud only*)
 
+3+^| Common commands
 | `--help`
 | `-h`
 | Show help message.
