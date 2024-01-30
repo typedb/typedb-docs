@@ -1,33 +1,46 @@
 = TypeDB Console manual
 :keywords: typedb, console, CLI, terminal, REPL
+//:page-aliases: clients::console.adoc
 :pageTitle: TypeDB Console manual
 :summary: TypeDB Console documentation.
 :tabs-sync-option:
 :experimental:
 
 // tag::body[]
-image::drivers::console.png[width=75%]
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-console[GitHub,window=_blank]
+[.clickable]
+****
+The GitHub repository with the source code and release notes.
+****
+
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%27%5Etypedb-console%27&sort=-version[Downloads,window=_blank]
+[.clickable]
+****
+See the Console's downloadable packages.
+****
+--
+
+[.float-group]
+--
+//image::home::cloud-hero.png[TypeDB Cloud hero image, role="framed right", width = 75%, window=_blank, link=https://cloud.typedb.com/]
+image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%, window=_blank, link=self]
 //#todo Add floating right for the image -- role="framed right"]
+  +
+TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
 
-TypeDB Console is a standalone CLI TypeDB Client that we can use to interact with TypeDB.
-
-It has a unique set of functions and abilities to interact with all editions of TypeDB:
-
-* Interactive command line interface (CLI) with built-in documentation.
-* Connection to TypeDB servers, including database management.
-* Running queries with `schema` and `data` sessions, `read` and `write` transactions.
-* Response processing and text output.
-* Script mode to run a set of commands from a file.
-* Command argument to run pre-set commands from command line arguments.
-
-TypeDB Console is distributed with TypeDB.
-For a separate installation, see the xref:home:ROOT:install.adoc#_console[Install] page.
+It is the default client distributed with TypeDB, but it can also be installed separately.
+For a standalone installation, see the xref:manual::installing/console.adoc[Install] page.
+--
 
 [#_connect_to_typedb]
 == Connect to TypeDB
 
-If TypeDB Console is xref:home:ROOT:install.adoc#_console[installed] in the system,
-then we can launch it and connect it to a TypeDB by issuing the following command:
+TypeDB can connect to both TypeDB Cloud and TypeDB Core.
+Running TypeDB Console initiates a network connection to a TypeDB server.
+//By default, it tries to connect to a TypeDB Core server at the address `localhost:1729`.
+Use command line arguments to set connection parameters:
 
 [tabs]
 ====
@@ -58,20 +71,16 @@ Core::
 .TypeDB Core connection
 [,bash]
 ----
-typedb console
+typedb console --core=<server-address>
 ----
 
-By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.
-To connect to a different address use the `--core` argument followed by a TypeDB server IP address and port,
-for example, `10.0.0.1:1729`.
+By default, TypeDB Console connects to a local TypeDB Core server with the `localhost:1729` address.
+To connect to a different address use the `--core` argument followed by server IP address and port,
+for example, `10.0.0.5:1729`.
 --
 ====
 
-To start TypeDB Console from its binary without setting up the path to it,
-navigate into the directory with unpacked distributive and use the `./typedb console` command
-with proper arguments (see above).
-
-As a result, we should get a welcome message from TypeDB Console followed by a command line prompt.
+As a result, you should get a welcome message from TypeDB Console followed by a command line prompt.
 
 [,bash]
 ----
@@ -81,15 +90,254 @@ Copyright (C) 2022 Vaticle
 >
 ----
 
-=== Locale settings
+See full list of available CLI arguments in the <<_command_line_arguments>> section below.
 
-TypeDB can store string attributes that have characters outside the https://ascii.cl/[ASCII,window=_blank] range (for
-example, non-English letters, symbols, and emojis).
+[#_REPL]
+== Interactive mode
+
+TypeDB Console provides two levels of interaction via Read–eval–print loop
+(https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank]):
+Server level and Transaction level.
+
+At any level you can use common commands: `help`, `clear`, `exit`.
+
+[#_server_level]
+//=== Management level
+//Renamed as per feedback from Joshua. WIP
+=== Server level
+
+Server level is the first level of interaction, i.e., *first-level REPL*.
+From this level, you can use commands for managing databases and users on the server.
+You also can open a transaction to a database, which gets you to the <<_transaction_level,second level of REPL>>.
+
+For a full list of commands on the Server level, see the <<_server_level_commands>> section.
+
+////
+==== Database management examples
+
+.Creating a database
+[,bash]
+----
+database create typedb
+----
+
+.List all databases
+[,bash]
+----
+database list
+----
+
+==== User management examples
+
+.Creating a user
+[,bash]
+----
+user create bob
+----
+
+.List all users
+[,bash]
+----
+user list
+----
+
+==== Transaction example
+
+.Opening a transaction
+[,bash]
+----
+transaction typedb schema write
+----
+////
+
+[#_transaction_level]
+=== Transaction level
+
+Transaction level is the second level of interaction, i.e., *second-level REPL*.
+You can control a transaction and send queries in the transaction.
+
+For a full list of commands on the Transaction level, see the <<_transaction_level>> section.
+
+When opening a transaction, you can specify transaction options.
+For a full list of transaction options, see the <<_transaction_options>>.
+
+[#_interactive_mode_example]
+=== Example
+
+The following example illustrates how to create a database, define a schema, and insert some data into the database.
+
+[NOTE]
+====
+The following code block shows multiple types of input and output at the same time.
+To be able to easily recognize inputs, they have one of the following prompts at the beginning of each input line:
+
+- `$` -- for bash input
+- `>` -- for 1st level of REPL in TypeDB Console input
+- `typedb::schema::write>` -- for 2nd level of REPL (schema session, write transaction) inputs
+- `typedb::data::write>` -- for 2nd level of REPL (data session, write transaction) inputs
+
+The asterisk (`*`) is used to notify that current transaction has uncommitted changes.
+====
+
+[,typeql]
+----
+$ typedb console
+
+Welcome to TypeDB Console. You are now in TypeDB Wonderland!
+Copyright (C) 2022 TypeDB Labs
+
+> database create typedb
+Database 'typedb' created
+
+> database list
+typedb
+
+> transaction typedb schema write
+typedb::schema::write> define person sub entity;
+
+Concepts have been defined
+typedb::schema::write*> commit
+Transaction changes committed
+
+> transaction typedb data write
+typedb::data::write> insert $p isa person;
+
+{ $p iid 0x826e80017fffffffffffffff isa person; }
+answers: 1, total (with concept details) duration: 160 ms
+typedb::data::write*> commit
+Transaction changes committed
+
+> exit
+----
+
+The above example creates a database with the name `typedb`, lists all databases on the server, defines a schema for the
+database created earlier, then inserts an instance of `person` type into the database.
+
+== Non-interactive mode
+
+You can run Console commands from the command line arguments using the `--command` argument:
+
+[,bash]
+----
+typedb console --command=<command1> --command=<command2> ...
+----
+
+[#_command_argument_example]
+=== Example
+
+The following example achieves the same results as the <<_interactive_mode_example,one in the interactive mode>>
+via command line arguments.
+Run the following command in a terminal to start TypeDB and execute queries:
+
+[,bash]
+----
+typedb console --command="database create typedb" \
+--command="database list" \
+--command="transaction typedb schema write" \
+--command="define person sub entity;" \
+--command="commit" \
+--command="transaction typedb data write" \
+--command='insert $p isa person;' \
+--command="commit"
+----
+
+The resulting output should look like this:
+
+----
++ database create typedb
+Database 'typedb' created
++ database list
+typedb
++ transaction typedb schema write
+++ define person sub entity;
+Concepts have been defined
+++ commit
+Transaction changes committed
++ transaction typedb data write
+++ insert $p isa person;
+{ $p iid 0x826e80017fffffffffffffff isa person; }
+answers: 1, total (with concept details) duration: 56 ms
+++ commit
+Transaction changes committed
+----
+
+== Scripting
+
+You can create a script file that contains the list of commands to run,
+then invoke Console with the `--script` argument, specifying a path to the script file:
+
+[,bash]
+----
+typedb console --script=<script-file-path>
+----
+
+Each line in the script is interpreted as one command, so multiline queries are not available in this mode.
+For example, see the <<_script_example>> section below.
+
+[#_script_example]
+=== Example
+
+Prepare the following script file and save it to a local file:
+
+----
+database create test
+transaction test schema write
+    define person sub entity;
+    commit
+transaction test data write
+    insert $x isa person;
+    commit
+transaction test data read
+    match $x isa person; get;
+    close
+database delete test
+----
+
+Use the following command to execute the script:
+
+----
+typedb console --script=script.txt
+----
+
+Where `script.txt` is the path to the file.
+
+You will see the following output:
+
+----
++ database create test
+Database 'test' created
++ transaction test schema write
+++ define person sub entity;
+Concepts have been defined
+++ commit
+Transaction changes committed
++ transaction test data write
+++ insert $x isa person;
+{ $x iid 0x966e80017fffffffffffffff isa person; }
+answers: 1, duration: 87 ms
+++ commit
+Transaction changes committed
++ transaction test data read
+++ match $x isa person; get;
+{ $x iid 0x966e80018000000000000000 isa person; }
+answers: 1, duration: 25 ms
+++ close
+Transaction closed without committing changes
++ database delete test
+Database 'test' deleted
+----
+
+== Troubleshooting
+
+=== Non-ASCII characters
+
+TypeDB can store string value attributes that have characters outside the https://ascii.cl/[ASCII,window=_blank] range
+(for example, non-English letters, symbols, and emojis).
 To manipulate them using Console, the Console's terminal must use a
 locale with a compatible code set, such as Unicode.
 
-If it doesn't, these characters will most likely be rendered as `?` symbols in Console. If this issue occurs we can use
-the following fix:
+If it doesn't, these characters will most likely be rendered as `?` symbols in Console.
+If this issue occurs, you can use the following fix:
 
 [tab:Linux]
 
@@ -124,14 +372,17 @@ Windows::
 --
 Use https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-gb&gl=GB[Windows Terminal,window=_blank]
 or run https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/chcp[chcp,window=_blank] in the
-terminal (e.g: `chcp 936` for Chinese text).
+terminal (e.g., `chcp 936` for Chinese text).
 --
-
 ====
 
-Most systems also allow us to set the system-wide locale. However, this impacts the appearance of other applications.
+Most systems also allow us to set the system-wide locale.
+However, this impacts the appearance of other applications.
 
-== Command line arguments
+== References
+
+[#_command_line_arguments]
+=== Console CLI arguments
 
 The following arguments can be used when you invoke TypeDB Console:
 
@@ -196,48 +447,36 @@ Default value: `localhost:1729`. +
 | Disable anonymous error reporting.
 |===
 
-[#_REPL]
-== Interactive mode
+[#_server_level_commands]
+=== Server level commands
 
-TypeDB Console provides two levels of interaction via Read–eval–print loop
-(https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank]):
+Use these commands at the <<_server_level,Server level>> of TypeDB's <<_REPL,REPL>>:
 
-. *Management level* is the first level of interaction, i.e., *first-level REPL*.
-From this level you can use commands for database management and user management.
-You also can open a transaction to a database, which gets you to the second level of REPL.
-. *Transaction level* is the second level of interaction, i.e., *second-level REPL*.
-You can control a transaction and send queries in the transaction.
-
-[#_database_management_commands]
-=== Management level
-
-Use any of these commands in Console's CLI at the `>` prompt in the first level of <<_REPL,REPL>>:
-
-.Management level commands (first level of REPL)
+.Server level commands (first level of REPL)
 [cols=".^2,3"]
 |===
 ^.^| Command ^.^| Description
 
 2+^| Database management
 | `database create <db>`
-| Create a database with name `<db>` on the server.
+| Create a database with the name `<db>` on the server.
 
 | `database list`
-| List the databases on the server
+| List all databases on the server
 
 | `database delete <db>`
-| Delete a database with name `<db>` on the server
+| Delete a database with the name `<db>` from the server
 
 | `database schema <db>`
-| Print schema of a database with name `<db>` on the server
+| Print the schema of the database with the name `<db>` on the server
 
 2+^| User management
 | `user list`
-| List the users on the server +
+| List all users on the server +
 (*TypeDB Cloud only*)
 
 | `user create <username>`
-| Create a user with name `<username>` on the server +
+| Create a user with the name `<username>` on the server +
 (*TypeDB Cloud only*)
 
 | `user password-update`
@@ -247,11 +486,11 @@ Update the password for the current user +
 
 | `user password-set <username>`
 a| [#_change_password]
-Set password for the user with name `username` +
+Set password for the user with the name `username` +
 (*TypeDB Cloud only*)
 
 | `user delete <username>`
-| Delete a user with name `<username>` on the server +
+| Delete a user with the name `<username>` on the server +
 (*TypeDB Cloud only*)
 
 2+^| Open a transaction
@@ -270,10 +509,9 @@ You can set <<_transaction_options,transaction options>>.
 | Exit console
 |===
 
-[#_transaction_commands]
-=== Transaction level
+=== Transaction level commands
 
-Use any of these commands in Console's CLI at the prompt in the second level of <<_REPL,REPL>>.
+Use these commands in the Transaction level of TypeDB Console's <<_REPL,REPL>>.
 The prompt at the Transaction level contains the database name, as well as session and transaction types, for example,
 `iam::schema::read>`.
 
@@ -315,7 +553,7 @@ Push btn:[Enter] twice (once more on a new line) to send a query.
 [#_transaction_options]
 === Transaction options
 
-The following flags can be passed to the `transaction` command, for example:
+The following flags can be passed in the `transaction` command as transaction options, for example:
 
 [,bash]
 ----
@@ -368,175 +606,6 @@ transaction db1 data read --infer true
 | Allow or disallow reads from any replica +
 (*TypeDB Cloud only*).
 |===
-
-== Non-interactive mode
-
-You can run Console commands from the command line arguments using the `--command` argument:
-
-[,bash]
-----
-typedb console --command=<command1> --command=<command2> ...
-----
-
-See an example in the <<_command_argument_example>> section below.
-
-== Scripting
-
-You can create a script file that contains the list of commands to run,
-then invoke Console with the `--script` argument, specifying a path to the script file:
-
-[,bash]
-----
-typedb console --script=<script-file-path>
-----
-
-Each line in the script is interpreted as one command, so multiline queries are not available in this mode.
-For example, see the <<_script_example>> section below.
-
-== Examples
-
-=== Interactive mode
-
-The following example illustrates how to create a database, define a schema, and insert some data into TypeDB.
-
-[NOTE]
-====
-The following code block shows multiple types of input and output at the same time.
-To be able to easily recognize inputs, they have one of the following prompts at the beginning of each input line:
-
-- `$` -- for bash input
-- `>` -- for 1st level of REPL in TypeDB Console input
-- `typedb::schema::write>` -- for 2nd level of REPL (schema session, write transaction) inputs
-- `typedb::data::write>` -- for 2nd level of REPL (data session, write transaction) inputs
-
-The asterisk (`*`) is used to notify that current transaction has uncommitted changes.
-====
-
-[,typeql]
-----
-$ typedb console
-
-Welcome to TypeDB Console. You are now in TypeDB Wonderland!
-Copyright (C) 2020 TypeDB Labs
-
-> database create typedb
-Database 'typedb' created
-
-> database list
-typedb
-
-> transaction typedb schema write
-typedb::schema::write> define person sub entity;
-
-Concepts have been defined
-typedb::schema::write*> commit
-Transaction changes committed
-
-> transaction typedb data write
-typedb::data::write> insert $p isa person;
-
-{ $p iid 0x826e80017fffffffffffffff isa person; }
-answers: 1, total (with concept details) duration: 160 ms
-typedb::data::write*> commit
-Transaction changes committed
-
-> exit
-----
-
-The above example creates a database with name `typedb`, lists all databases on the server, defines a schema for the
-database created earlier, then inserts an instance of `person` type into the database.
-
-=== Non-interactive mode
-
-[#_command_argument_example]
-==== Command argument example
-
-The following example achieves the same results as the previous one but with the `typedb2` database name and via
-command line arguments.
-
-[,bash]
-----
-typedb console --command="database create typedb2" \
---command="database list" \
---command="transaction typedb2 schema write" \
---command="define person sub entity;" \
---command="commit" \
---command="transaction typedb2 data write" \
---command='insert $p isa person;' \
---command="commit"
-----
-
-The resulting output should look like this:
-
-----
-+ database create typedb2
-Database 'typedb2' created
-+ database list
-typedb
-typedb2
-+ transaction typedb2 schema write
-++ define person sub entity;
-Concepts have been defined
-++ commit
-Transaction changes committed
-+ transaction typedb2 data write
-++ insert $p isa person;
-{ $p iid 0x826e80017fffffffffffffff isa person; }
-answers: 1, total (with concept details) duration: 56 ms
-++ commit
-Transaction changes committed
-----
-
-[#_script_example]
-=== Scripting
-
-Prepare the following script file:
-
-----
-database create test
-transaction test schema write
-    define person sub entity;
-    commit
-transaction test data write
-    insert $x isa person;
-    commit
-transaction test data read
-    match $x isa person; get;
-    close
-database delete test
-----
-
-Use the following command to execute the script:
-
-----
-typedb console --script=script
-----
-
-We will see the following output:
-
-----
-+ database create test
-Database 'test' created
-+ transaction test schema write
-++ define person sub entity;
-Concepts have been defined
-++ commit
-Transaction changes committed
-+ transaction test data write
-++ insert $x isa person;
-{ $x iid 0x966e80017fffffffffffffff isa person; }
-answers: 1, duration: 87 ms
-++ commit
-Transaction changes committed
-+ transaction test data read
-++ match $x isa person; get;
-{ $x iid 0x966e80018000000000000000 isa person; }
-answers: 1, duration: 25 ms
-++ close
-Transaction closed without committing changes
-+ database delete test
-Database 'test' deleted
-----
 
 [#_version_compatibility]
 == Version Compatibility
