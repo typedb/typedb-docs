@@ -130,13 +130,13 @@ terminal (e.g: `chcp 936` for Chinese text).
 
 Most systems also allow us to set the system-wide locale. However, this impacts the appearance of other applications.
 
-== Non-interactive mode
+== Command line arguments
 
-We can provide several command-line arguments when running Console in the terminal.
+The following arguments can be used when you invoke TypeDB Console:
 
-[cols=".^2,^.^1,6"]
+[cols=".^3,^.^1,5"]
 |===
-^| Option | Alias ^| Description
+^| Argument ^| Alias ^| Description
 
 | `--core=<address>`
 |
@@ -191,38 +191,29 @@ Default value: `localhost:1729`. +
 | Disable anonymous error reporting.
 |===
 
-=== Scripting
-
-To invoke TypeDB Console in a non-interactive manner, we can define a script file that contains the list of commands to
-run, then invoke console with `typedb console --script=<script>`.
-
-The indentation in the script files are only for visual guide and will be ignored by the console.
-Each line in the script is interpreted as one command, so multiline queries are not available in this mode.
-
-=== Command line arguments
-
-We can also specify the commands to run directly
-from the command line using `+typedb console --command=<command1> --command=<command2> ...+`.
-
 [#_REPL]
 == Interactive mode
 
-TypeDB Console provides two levels of interaction
+TypeDB Console provides two levels of interaction via Read–eval–print loop
 (https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank]):
 
-1. *Database-level commands* is the first level of interaction, i.e., *first-level REPL*.
-   From one of the database-level commands, we can open a transaction to the database.
-2. *Transaction-level commands* is the second level of interaction, i.e., *second-level REPL*.
+. *Management level* is the first level of interaction, i.e., *first-level REPL*.
+From this level you can use commands for database management and user management.
+You also can open a transaction to a database, which gets you to the second level of REPL.
+. *Transaction level* is the second level of interaction, i.e., *second-level REPL*.
+You can control a transaction and send queries in the transaction.
 
 [#_database_management_commands]
-=== Database management commands
+=== Management level
 
-Use any of these commands inside a console at the `>` prompt in the first level of interaction (<<_REPL,REPL>>).
+Use any of these commands in Console's CLI at the `>` prompt in the first level of <<_REPL,REPL>>:
 
+.Management level commands (1st level of REPL)
 [cols=".^2,3"]
 |===
 ^.^| Command ^.^| Description
 
+2+^| Database management
 | `database create <db>`
 | Create a database with name `<db>` on the server.
 
@@ -235,6 +226,7 @@ Use any of these commands inside a console at the `>` prompt in the first level 
 | `database schema <db>`
 | Print schema of a database with name `<db>` on the server
 
+2+^| User management
 | `user list`
 | List the users on the server +
 (*TypeDB Cloud only*)
@@ -257,9 +249,12 @@ Set password for the user with name `username` +
 | Delete a user with name `<username>` on the server +
 (*TypeDB Cloud only*)
 
-| `transaction <db> schema⎮data read⎮write`
-| Start a transaction to database `<db>` with session type `schema` or `data`, and transaction type `write` or `read`.
+2+^| Open a transaction
+| `transaction <db> schema⎮data read⎮writ [options]`
+| Start a transaction to the database with the name `<db>` with chosen session and transaction types.
+You can set <<_transaction_options,transaction options>>.
 
+2+^| Common commands
 | `help`
 | Print help menu
 
@@ -270,37 +265,38 @@ Set password for the user with name `username` +
 | Exit console
 |===
 
-[#_transaction_querying_commands]
-=== Transaction querying commands
+[#_transaction_commands]
+=== Transaction level
 
-Give any of these commands inside a console at the `>` prompt in the second level of interaction (<<_REPL,REPL>>).
+Use any of these commands in Console's CLI at the prompt in the second level of <<_REPL,REPL>>.
+The prompt at the Transaction level contains the database name, as well as session and transaction types, for example,
+`iam::schema::read>`.
 
-[NOTE]
-====
-Usually the `>` sign preceded by the database name and session/transaction types.
-====
-
-[cols=".^1,4"]
+.Transaction level commands
+[cols=".^1,3"]
 |===
 ^| Command ^.^| Description
 
+2+^| Querying
 | `<query>`
-| Once we're in the transaction <<_REPL,REPL>>, the terminal immediately accepts a multi-line TypeQL query, and will
-execute it when we hit kbd:[Enter] twice.
+| Type in TypeQL query directly.
+Push btn:[Enter] once for a line break in a query.
+Push btn:[Enter] twice (once more on a new line) to send a query.
 
 | `source <file>`
-| Run TypeQL queries in a file, which we can refer to using relative or absolute path. On Windows escape `\` by writing `\\`.
+| Run TypeQL queries from a file. You can use a relative or absolute path. On Windows escape `\` by writing `\\`.
 
+2+^| Transaction control
 | `commit`
-| Commit the transaction changes and close transaction.
+| Commit the changes and close the transaction.
 
 | `rollback`
-| Will remove any uncommitted changes we've made in the transaction, while leaving transaction open.
+| Rollback the transaction -- remove any uncommitted changes, while leaving the transaction open.
 
 | `close`
-| Close the transaction without committing changes, and takes us back to the database-level interface, i.e.,
-first-level <<_REPL,REPL>>.
+| Close the transaction without committing changes.
 
+2+^| Common commands
 | `help`
 | Print help menu.
 
@@ -311,55 +307,86 @@ first-level <<_REPL,REPL>>.
 | Exit console.
 |===
 
+[#_transaction_options]
 === Transaction options
 
-The following flags can be passed to the `transaction <db> schema⎮data read⎮write` command, for example:
+The following flags can be passed to the `transaction` command, for example:
 
+[,bash]
 ----
-transaction typedb data read --infer true
+transaction db1 data read --infer true
 ----
 
-[cols=".^2,^.^1,.^3"]
+.Transaction options
+[cols=".^3,^.^1,.^3"]
 |===
 ^| Option | Allowed values ^.^| Description
 
 | `--infer`
 | `true⎮false`
-| Enable or disable inference
+| Enable or disable inference.
 
 | `--trace-inference`
 | `true⎮false`
-| Enable or disable inference tracing
+| Enable or disable inference tracing.
 
 | `--explain`
 | `true⎮false`
-| Enable or disable inference explanations
+| Enable or disable inference explanations.
 
 | `--parallel`
 | `true⎮false`
-| Enable or disable parallel query execution
+| Enable or disable parallel query execution.
 
 | `--batch-size`
 | `1..[max int]`
-| Set RPC answer batch size
+| Set RPC answer batch size.
 
 | `--prefetch`
 | `true⎮false`
-| Enable or disable RPC answer prefetch
+| Enable or disable RPC answer prefetch.
 
 | `--session-idle-timeout`
 | `1..[max int]`
-| Kill idle session timeout (ms)
+| Kill idle session timeout (ms).
+
+| `--transaction-timeout`
+| `1..[max int]`
+| Kill transaction timeout (ms).
 
 | `--schema-lock-acquire-timeout`
 | `1..[max int]`
-| Acquire exclusive schema session timeout (ms)
+| Acquire exclusive schema session timeout (ms).
 
 | `--read-any-replica`
 | `true⎮false`
 | Allow or disallow reads from any replica +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud only*).
 |===
+
+== Non-interactive mode
+
+You can run Console commands from the command line arguments using the `--command` argument:
+
+[,bash]
+----
+typedb console --command=<command1> --command=<command2> ...
+----
+
+See an example in the <<_command_argument_example>> section below.
+
+== Scripting
+
+You can create a script file that contains the list of commands to run,
+then invoke Console with the `--script` argument, specifying a path to the script file:
+
+[,bash]
+----
+typedb console --script=<script-file-path>
+----
+
+Each line in the script is interpreted as one command, so multiline queries are not available in this mode.
+For example, see the <<_script_example>> section below.
 
 == Examples
 
@@ -367,25 +394,20 @@ transaction typedb data read --infer true
 
 The following example illustrates how to create a database, define a schema, and insert some data into TypeDB.
 
-[WARNING]
-====
-When using interactive mode (<<_REPL,REPL>>) of the TypeDB Console, use kbd:[Enter] to start a new line of query,
-double kbd:[Enter] (or kbd:[Enter] on an empty line) to send a query.
-====
-
 [NOTE]
 ====
-The following code block shows terminal input and output at the same time. To be able to easily recognize inputs,
-they have one of the following prompts at the beginning of the line:
+The following code block shows multiple types of input and output at the same time.
+To be able to easily recognize inputs, they have one of the following prompts at the beginning of each input line:
 
 - `$` -- for bash input
-- `>` -- for typedb console inputs
-- `typedb::schema::write>` -- for schema write transaction inputs
-- `typedb::data::write>` -- for data write transaction inputs
+- `>` -- for 1st level of REPL in TypeDB Console input
+- `typedb::schema::write>` -- for 2nd level of REPL (schema session, write transaction) inputs
+- `typedb::data::write>` -- for 2nd level of REPL (data session, write transaction) inputs
 
 The asterisk (`*`) is used to notify that current transaction has uncommitted changes.
 ====
 
+[,typeql]
 ----
 $ typedb console
 
@@ -421,7 +443,8 @@ database created earlier, then inserts an instance of `person` type into the dat
 
 === Non-interactive mode
 
-==== Command line arguments example
+[#_command_argument_example]
+==== Command argument example
 
 The following example achieves the same results as the previous one but with the `typedb2` database name and via
 command line arguments.
@@ -459,6 +482,7 @@ answers: 1, total (with concept details) duration: 56 ms
 Transaction changes committed
 ----
 
+[#_script_example]
 ==== Script example
 
 Prepare the following script file:
