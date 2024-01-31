@@ -146,6 +146,7 @@ A TypeDB Cloud deployment will deny all other operations until the password is c
 Studio::
 +
 --
+// tag::studio-cloud[]
 Run Studio and follow instructions below:
 
 . Click btn:[Connect to TypeDB] on the right side of the top toolbar.
@@ -155,7 +156,7 @@ Run Studio and follow instructions below:
 . Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. +
 _For self-hosted deployments, encryption parameters may vary._
 . Click `Connect`.
-
+// end::studio-cloud[]
 On your first login you will be asked to change the password for the `admin` account.
 --
 
