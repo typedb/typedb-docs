@@ -1,1 +1,27 @@
 = 5 - Pattern-based querying
+
+In this lesson, we'll learn how to construct the *patterns* that serve as the basis for all TypeQL data queries. To begin with, we'll explore what a pattern is and how we can represent it a set of *constraints*. Next, we'll see how to construct a full range of patterns, varying in complexity, including *polymorphic* patterns for declarative polymorphic queries. Finally, we'll explore how pattern semantics affects the number of results returned or writes performed.
+
+== Lesson contents
+
+* xref:learn::5-pattern-based-querying/5.1-patterns-as-constraints.adoc[]
+* xref:learn::5-pattern-based-querying/5.2-basic-data-patterns.adoc[]
+* xref:learn::5-pattern-based-querying/5.3-polymorphic-data-patterns.adoc[]
+* xref:learn::5-pattern-based-querying/5.4-value-comparisons.adoc[]
+* xref:learn::5-pattern-based-querying/5.5-pattern-logic.adoc[]
+* xref:learn::5-pattern-based-querying/5.6-arithmetic-expressions.adoc[]
+* xref:learn::5-pattern-based-querying/5.7-type-patterns.adoc[]
+* xref:learn::5-pattern-based-querying/5.8-semantics-of-solution-spaces.adoc[]
+
+== TypeQL keywords introduced
+
+* `insert`
+* `delete`
+* `is`
+* `isa!`
+* `like`
+* `contains`
+* `or`
+* `not`
+* `type`
+* `sub!`
