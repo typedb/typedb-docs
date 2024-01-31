@@ -1,2 +1,216 @@
 = Defining rules
+:tabs-sync-option:
+:experimental:
 
+This page covers defining rules in a schema of a database with Studio, Console, or one of the drivers.
+Make sure to xref:manual::installing/overview.adoc[install] and
+xref:manual::connecting/connection.adoc[connect] with your chosen client/driver first and to
+xref:manual::connecting/database.adoc[create a database] after that.
+
+//#todo Add a link about inference
+Rules are used for rule-based inference in TypeDB.
+Schema types are used in rules,
+make sure to define your database's xref:manual::defining/defining-types.adoc[types] before defining rules.
+
+A rule consists of a label, condition, and conclusion.
+Both conditions and conclusions use data patterns and schema types.
+Conditions can include any pattern with any number of statements,
+but conclusions are quite limited as they can be only one of the following:
+
+* A new relation.
+* Ownership of an attribute.
+//#todo Add a link to rule theory
+
+== Sending a Define query
+
+The best way to define a rule is to send a Define query.
+
+See below an example of how to send a simple Define query to a database with the name `db2`:
+
+[tabs]
+====
+Studio::
++
+--
+. Use a drop-down list in the top toolbar to select a database with the name `db2`.
+. Switch to `schema` session and `write` transaction types.
+. Open a new tab and insert or type in a Define query, for example:
++
+.TypeQL Define query
+[,typeql]
+----
+define
+
+rule friends: when {
+    $u1 isa user;
+    $u2 isa user;
+    not {$u1 is $u2;};
+} then {
+    (friend:$u1, friend:$u2) isa friendship;
+};
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a session and transaction:
++
+[,bash]
+----
+transaction db2 schema write
+----
+. Send the Define query:
++
+[,bash]
+----
+define
+rule friends:
+when { $u1 isa user; $u2 isa user; not {$u1 is $u2;}; }
+then { (friend:$u1, friend:$u2) isa friendship; };
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send a Define query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let query = "define
+rule friends: when {
+    $u1 isa user;
+    $u2 isa user;
+    not {$u1 is $u2;};
+} then {
+    (friend:$u1, friend:$u2) isa friendship;
+};";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("db2")?;
+let session = Session::new(db, SessionType::Schema)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().define(&query).resolve()?;
+tx.commit().resolve()?;
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Python::
++
+--
+[,python]
+----
+query = "define" \
+"rule friends: when {" \
+"    $u1 isa user;" \
+"    $u2 isa user;" \
+"    not {$u1 is $u2;};" \
+"} then {" \
+"    (friend:$u1, friend:$u2) isa friendship;" \
+"};"
+with driver.session("db2", SessionType.SCHEMA) as session:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        transaction.query.define(query)
+        transaction.commit()
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Java::
++
+--
+[,java]
+----
+String query = """
+                define
+                rule friends: when {
+                    $u1 isa user;
+                    $u2 isa user;
+                    not {$u1 is $u2;};
+                } then {
+                    (friend:$u1, friend:$u2) isa friendship;
+                };
+                """;
+try (TypeDBSession session = driver.session("db2", TypeDBSession.Type.SCHEMA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().define(query);
+        Transaction.commit();
+    }
+}
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Node.js::
++
+--
+[,js]
+----
+const query =  `define
+                rule friends: when {
+                    $u1 isa user;
+                    $u2 isa user;
+                    not {$u1 is $u2;};
+                } then {
+                    (friend:$u1, friend:$u2) isa friendship;
+                };
+                `;
+session = await driver.session("db2", SessionType.SCHEMA);
+transaction = await session.transaction(TransactionType.WRITE);
+await transaction.query.define(query);
+await transaction.commit();
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+C++::
++
+--
+[,cpp]
+----
+std::string query ="define\n"
+                   "rule friends: when {\n"
+                   "    $u1 isa user;\n"
+                   "    $u2 isa user;\n"
+                   "    not {$u1 is $u2;};\n"
+                   "} then {\n"
+                   "    (friend:$u1, friend:$u2) isa friendship;\n"
+                   "};";
+TypeDB::Options options;
+    {
+        auto session = driver.session("db2", TypeDB::SessionType::SCHEMA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        tx.query.define(query, options).get();
+        tx.commit();
+    }
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+====
+
+== Rules with different conclusions
+
+== Rule chains
+
+== Transitivity
+
+== Arithmetic and recursion
