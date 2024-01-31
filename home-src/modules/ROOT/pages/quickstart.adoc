@@ -52,9 +52,8 @@ Cloud::
 image::home::studio-connect-cloud.png[TypeDB Studio connect window, width = 75%, link=self]
 
 . Switch the `Server` field drop-down to `TypeDB Cloud`.
-. Click btn:[Manage Cloud Addresses] button and add address and port for every server
-from your TypeDB Cloud deployment.
-Close the Address management window.
+. Click btn:[Manage Cloud Addresses] button.
+. Add address and port for at least one server from your TypeDB Cloud deployment. Close the Address management window.
 . Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
 . Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
 _For self-hosted deployments, encryption parameters may vary._
