@@ -110,8 +110,6 @@ Server level and Transaction level.
 At any level you can use common commands: `help`, `clear`, `exit`.
 
 [#_server_level]
-//=== Management level
-//Renamed as per feedback from Joshua. WIP
 === Server level
 
 Server level is the first level of interaction, i.e., *first-level REPL*.
@@ -120,44 +118,6 @@ You also can open a transaction to a database, which gets you to the <<_transact
 
 For a full list of commands on the Server level, see the <<_server_level_commands>> section.
 
-////
-==== Database management examples
-
-.Creating a database
-[,bash]
-----
-database create typedb
-----
-
-.List all databases
-[,bash]
-----
-database list
-----
-
-==== User management examples
-
-.Creating a user
-[,bash]
-----
-user create bob
-----
-
-.List all users
-[,bash]
-----
-user list
-----
-
-==== Transaction example
-
-.Opening a transaction
-[,bash]
-----
-transaction typedb schema write
-----
-////
-
 [#_transaction_level]
 === Transaction level
 
@@ -165,6 +125,11 @@ Transaction level is the second level of interaction, i.e., *second-level REPL*.
 You can control a transaction and send queries in the transaction.
 
 For a full list of commands on the Transaction level, see the <<_transaction_level>> section.
+
+[NOTE]
+====
+To send a query, while in Transaction level, type in or insert a TypeQL query and push btn:[Enter] twice.
+====
 
 When opening a transaction, you can specify transaction options.
 For a full list of transaction options, see the <<_transaction_options>>.
@@ -195,55 +160,41 @@ The asterisk (`*`) is used to notify that the current transaction has uncommitte
 ----
 typedb console
 ----
+
 . Create a database:
 +
 [,bash]
 ----
 database create typedb
 ----
-. Open a `schema` session and `write` transaction to the new database:
+
+. Define a schema by opening a `schema` session and `write` transaction to the `typedb` database, sending a query,
+and committing changes.
+You can do that by sending the following three commands one at a time:
 +
 [,bash]
 ----
-transaction typedb schema write
+> transaction typedb schema write
+typedb::schema::write> define person sub entity;
+typedb::schema::write*> commit
 ----
 +
-As the result of this command the CLI prompt changes to `typedb::schema::write>`.
-. Send the Define query:
+In <<_transaction_level,Transaction level>> of REPL, the CLI prompt changes to include database name, session type,
+and transaction type.
 +
-[,typeql]
-----
-define person sub entity;
-----
-. Commit the changes:
+To send the query in the second command, you need to push btn:[Enter] *twice*.
+
+. Insert data with `data` session and `write` transaction:
 +
-[,typeql]
+[,bash]
 ----
-commit
-----
-. Open a `data` session and `write` transaction to the database:
-+
-[,typeql]
-----
-transaction typedb data write
-----
-+
-As the result of this command the CLI prompt changes to `typedb::data::write>`.
-. Send the Insert query:
-+
-[,typeql]
-----
-insert $p isa person;
-----
-. Commit the changes:
-+
-[,typeql]
-----
-commit
+> transaction typedb data write
+typedb::data::write> insert $p isa person;
+typedb::data::write*> commit
 ----
 
 The above example creates a database with the name `typedb`,
-defines a schema, then inserts an instance of the `person` type into the database.
+defines a schema with the `person` type, then inserts an instance of the `person` type into the database.
 
 == Non-interactive mode
 
@@ -275,6 +226,7 @@ typedb console --command="database create typedb" \
 
 The resulting output should look like this:
 
+.Output
 ----
 + database create typedb
 Database 'typedb' created
@@ -311,6 +263,7 @@ For example, see the <<_script_example>> section below.
 
 Prepare the following script file and save it to a local file:
 
+.script.txt
 ----
 database create test
 transaction test schema write
@@ -327,6 +280,7 @@ database delete test
 
 Use the following command to execute the script:
 
+.Run script.txt
 ----
 typedb console --script=script.txt
 ----
@@ -335,6 +289,7 @@ Where `script.txt` is the path to the file.
 
 You will see the following output:
 
+.Output
 ----
 + database create test
 Database 'test' created
@@ -423,14 +378,14 @@ The following arguments can be used when you invoke TypeDB Console:
 |===
 ^| Argument ^| Alias ^| Description
 
-3+^| TypeDB Core specific commands
+3+^| TypeDB Core specific
 | `--core=<address>`
 |
 | Address to which Console will connect to: IP address and IP port separated by colon.
 Default value: `localhost:1729`. +
 (*TypeDB Core only*)
 
-3+^| TypeDB Cloud specific commands
+3+^| TypeDB Cloud specific
 | `--cloud=<address>`
 |
 | Address to which Console will connect to. +
@@ -457,7 +412,7 @@ Default value: `localhost:1729`. +
 | Path to the TLS root CA file +
 (*TypeDB Cloud only*)
 
-3+^| Common commands
+3+^| Common
 | `--help`
 | `-h`
 | Show help message.
@@ -530,7 +485,7 @@ Set password for the user with the name `username` +
 | Start a transaction to the database with the name `<db>` with chosen session and transaction types.
 You can set <<_transaction_options,transaction options>>.
 
-2+^| Common commands
+2+^| Common
 | `help`
 | Print help menu
 
@@ -545,7 +500,7 @@ You can set <<_transaction_options,transaction options>>.
 
 Use these commands in the Transaction level of TypeDB Console's <<_REPL,REPL>>.
 The prompt at the Transaction level contains the database name, as well as session and transaction types, for example,
-`iam::schema::read>`.
+`iam::data::read>`.
 
 .Transaction level commands (second level of REPL)
 [cols=".^1,3"]
@@ -571,7 +526,7 @@ Push btn:[Enter] twice (once more on a new line) to send a query.
 | `close`
 | Close the transaction without committing changes.
 
-2+^| Common commands
+2+^| Common
 | `help`
 | Print help menu.
 
