@@ -7,21 +7,6 @@
 :experimental:
 
 // tag::body[]
-[cols-2]
---
-.link:https://github.com/vaticle/typedb-console[GitHub,window=_blank]
-[.clickable]
-****
-The GitHub repository with the source code and release notes.
-****
-
-.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%27%5Etypedb-console%27&sort=-version[Downloads,window=_blank]
-[.clickable]
-****
-See the Console's downloadable packages.
-****
---
-
 [.float-group]
 --
 //image::home::cloud-hero.png[TypeDB Cloud hero image, role="framed right", width = 75%, window=_blank, link=https://cloud.typedb.com/]
@@ -32,6 +17,29 @@ TypeDB Console is a standalone TypeDB client with a command line interface (CLI)
 
 It is the default client distributed with TypeDB, but it can also be installed separately.
 For a standalone installation, see the xref:manual::installing/console.adoc[Install] page.
+--
+
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-console[GitHub,window=_blank]
+[.clickable]
+****
+The GitHub repository with the source code and release notes.
+****
+
+.xref:manual::installing/console.adoc[Install]
+[.clickable]
+****
+See Console's standalone installation guide.
+****
+
+////
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%27%5Etypedb-console%27&sort=-version[Downloads,window=_blank]
+[.clickable]
+****
+See the Console's downloadable packages.
+****
+////
 --
 
 [#_connect_to_typedb]
@@ -166,6 +174,7 @@ For a full list of transaction options, see the <<_transaction_options>>.
 
 The following example illustrates how to create a database, define a schema, and insert some data into the database.
 
+////
 [NOTE]
 ====
 The following code block shows multiple types of input and output at the same time.
@@ -176,57 +185,80 @@ To be able to easily recognize inputs, they have one of the following prompts at
 - `typedb::schema::write>` -- for 2nd level of REPL (schema session, write transaction) inputs
 - `typedb::data::write>` -- for 2nd level of REPL (data session, write transaction) inputs
 
-The asterisk (`*`) is used to notify that current transaction has uncommitted changes.
+The asterisk (`*`) is used to notify that the current transaction has uncommitted changes.
 ====
+////
 
+. Run Console in the interactive mode and <<_connect_to_typedb,connect>> it to TypeDB:
++
+[,bash]
+----
+typedb console
+----
+. Create a database:
++
+[,bash]
+----
+database create typedb
+----
+. Open a `schema` session and `write` transaction to the new database:
++
+[,bash]
+----
+transaction typedb schema write
+----
++
+As the result of this command the CLI prompt changes to `typedb::schema::write>`.
+. Send the Define query:
++
 [,typeql]
 ----
-$ typedb console
-
-Welcome to TypeDB Console. You are now in TypeDB Wonderland!
-Copyright (C) 2022 TypeDB Labs
-
-> database create typedb
-Database 'typedb' created
-
-> database list
-typedb
-
-> transaction typedb schema write
-typedb::schema::write> define person sub entity;
-
-Concepts have been defined
-typedb::schema::write*> commit
-Transaction changes committed
-
-> transaction typedb data write
-typedb::data::write> insert $p isa person;
-
-{ $p iid 0x826e80017fffffffffffffff isa person; }
-answers: 1, total (with concept details) duration: 160 ms
-typedb::data::write*> commit
-Transaction changes committed
-
-> exit
+define person sub entity;
+----
+. Commit the changes:
++
+[,typeql]
+----
+commit
+----
+. Open a `data` session and `write` transaction to the database:
++
+[,typeql]
+----
+transaction typedb data write
+----
++
+As the result of this command the CLI prompt changes to `typedb::data::write>`.
+. Send the Insert query:
++
+[,typeql]
+----
+insert $p isa person;
+----
+. Commit the changes:
++
+[,typeql]
+----
+commit
 ----
 
-The above example creates a database with the name `typedb`, lists all databases on the server, defines a schema for the
-database created earlier, then inserts an instance of `person` type into the database.
+The above example creates a database with the name `typedb`,
+defines a schema, then inserts an instance of the `person` type into the database.
 
 == Non-interactive mode
 
-You can run Console commands from the command line arguments using the `--command` argument:
+You can run Console commands using the `--command` argument:
 
 [,bash]
 ----
-typedb console --command=<command1> --command=<command2> ...
+typedb console --command=<command1> --command=<command2>
 ----
 
 [#_command_argument_example]
 === Example
 
 The following example achieves the same results as the <<_interactive_mode_example,one in the interactive mode>>
-via command line arguments.
+via the command line arguments.
 Run the following command in a terminal to start TypeDB and execute queries:
 
 [,bash]
@@ -331,8 +363,8 @@ Database 'test' deleted
 
 === Non-ASCII characters
 
-TypeDB can store string value attributes that have characters outside the https://ascii.cl/[ASCII,window=_blank] range
-(for example, non-English letters, symbols, and emojis).
+TypeDB can use type and variable labels and store string value attributes that have characters outside the
+https://ascii.cl/[ASCII,window=_blank] range, for example, non-English letters, symbols, and emojis.
 To manipulate them using Console, the Console's terminal must use a
 locale with a compatible code set, such as Unicode.
 
