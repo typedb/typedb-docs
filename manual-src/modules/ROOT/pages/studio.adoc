@@ -71,7 +71,19 @@ If there are no databases yet, see how to <<_create_a_database,create>> a new on
 
 If the dropdown menu is greyed out and unresponsive, then check your <<_connect_to_typedb,connection>> to TypeDB.
 
-== Prepare a query
+== Querying
+
+To send a query from TypeDB Studio to TypeDB:
+
+1. <<_prepare_a_query>> in a tab
+2. <<_run_a_query>> from a tab
+3. See the <<_results,results>> of your query in all available output formats
+
+For more information on switching session/transaction types and controls over queries and transactions,
+see the <<_transaction_control>> section.
+
+[#_prepare_a_query]
+=== Prepare a query
 
 TypeDB has a Text editor that can edit most text files and has a built-in syntax highlighting for TypeQL.
 It can also run TypeQL queries from `.tql` and `.typeql` files.
@@ -80,17 +92,18 @@ Each file can have one or more queries.
 To create a new file, open a new tab in the Text editor panel.
 The file will be created and saved with temporary name in a hidden folder `./typedb-studio`
 inside the selected project directory.
-There is an autosave feature that persists all the changes made to a file to disk.
+There is an autosave feature that persists all the changes made in a file to disk.
 It can be disabled in settings.
 By manually saving (image:home::studio-icons/save.png[]) a temporary file you can rename
 and move it from the hidden folder.
 
-== Run a query
+[#_run_a_query]
+=== Run a query
 
-image::drivers::studio/project-schema-committed.png[Commit the Transaction, role="right", width = 50%, link=self]
+image::drivers::studio/project-schema-committed.png[Commit the Transaction,role="right",width = 50%,link=self]
 
-Select a session type (image:home::studio-icons/session-data.png[])
-and a transaction type (image:home::studio-icons/transaction-write.png[]) in the top Toolbar.
+Select a session type (image:manual::icons/session-data.png[])
+and a transaction type (image:manual::icons/transaction-write.png[]) in the top Toolbar.
 
 To run a query file, open it in a tab of the Text editor panel and
 click the btn:[Run Query] button (image:home::studio-icons/run.png[]) from the top Toolbar.
@@ -123,7 +136,7 @@ Graph tab is available for Get queries only.
 It uses Studio's Graph Visualizer to build a graphical representation of query results.
 
 [#_transaction_control]
-== Transaction controls
+=== Transaction controls
 
 To control query execution, we have the top *Toolbar* elements located to the right from the database selection
 drop-down menu.
@@ -132,8 +145,10 @@ image::drivers::studio/studio-transaction-controls.png[Transaction controls, lin
 
 //From left to right (numbered respectively to the numbers on the above screenshot):
 
-. xref:manual::connecting/session.adoc[Session] type switch (image:manual::icons/session-data.png[])
-. xref:manual::connecting/transaction.adoc[Transaction] type switch (image:manual::icons/transaction-read.png[])
+. xref:manual::connecting/session.adoc[Session] type (image:manual::icons/session-data.png[]) switch --
+selects a session type to use for queries.
+. xref:manual::connecting/transaction.adoc[Transaction] type (image:manual::icons/transaction-read.png[]) switch --
+selects a transaction type to use for queries.
 . btn:[snapshot] button -- enables snapshot feature that encapsulates a transaction in a snapshot of a database's data
 until the transaction is committed or closed.
 Write transactions are always snapshoted.
@@ -157,61 +172,38 @@ and execute the TypeQL code against the selected database.
 [#_inference]
 == Inference
 
-To run a query with inference, enable the btn:[infer] button before executing a query.
-
-The xref:typedb::basics/inference.adoc[inference] transaction option can be switched *on* and *off* with
-the btn:[infer] button in the top *Toolbar*.
-
-[NOTE]
-====
-If the btn:[infer] button is inactive, double-check the following prerequisites are met:
-
-- there is an active database <<_connect_to_typedb,connection>>;
-- there is a database <<_select_database,selected>>;
-- the transaction type is set to *read*.
-====
-
-As a result of running a query with inference, we can get <<_results,results>> in the *Run* panel. If there are any
-inferred instances of data they will be shown with green lining in the graph visualization. And inferred connections
-(ownerships or roles played) will be shown as green arrows. See the example below.
-
+//#todo Add a link explaining what an inference is
 [#_inference_results]
-image::drivers::studio/inference.png[Inference results example, width = 70%, link=self]
+image::drivers::studio/inference.png[Inference results example, role=right, width = 50%, link=self]
+
+To run a query with inference, enable the btn:[infer] button before executing a query.
+If the button is unavailable, double-check <<_connect_to_typedb,TypeDB connection>>,
+<<_select_database,database selection>>,
+and transaction type being set to `read`.
+
+As a result of running a query with inference, you can get additional results via inference.
+If there are any inferred instances of data returned from a Get query,
+they will be highlighted with green lining in the Graph Visualizer.
+See an example on the image to the right.
 
 [#_explanation]
 === Explanation
 
-To run a query with explanation, simply switch the explanation option *on* before executing a query. To be able to do
- that, the inference and the snapshot options must also be enabled.
-
-The xref:typedb::developing/infer.adoc#_explain_query[explanation] transaction option can be switched
-*on* and *off* with the btn:[explain] button in the top *Toolbar*. The inference and snapshot options can be enabled
-by the btn:[infer] and the btn:[snapshot] buttons respectively.
-
-[NOTE]
-====
-If the btn:[explain] button is inactive, double-check the following:
-
-- the btn:[infer] button is *on*;
-- the btn:[snapshot] button is *on*;
-- there is an active database <<_connect_to_typedb,connection>>;
-- there is a database <<_select_database,selected>>;
-- the transaction type is set to *read*.
-====
-
-As a result of running a query with inference and explanation options we can get <<_results,results>> in the
-*Run* panel. If there are any inferred instances of data they will be shown with green lining in the graph
-visualization. And inferred connections (ownerships or roles played) will be shown as green arrows. As it was shown
-in the <<_inference_results,inference example>> above.
-
-The only difference is -- double-clicking on any explainable inferred results will spawn an explanation. An explanation
-is a set of additional instances and connections, that provide a direct explanation of the selected explainable inferred
-result. See the example below.
-
 [#_explanation_results]
-image::drivers::studio/explanation.png[Explanation example, width = 70%, link=self]
+image::drivers::studio/explanation.png[Explanation example, role=right, width = 50%, link=self]
 
+To run a query with explanation, turn the btn:[explain] button *on* before executing a query.
+To be able to do that, the btn:[infer] and btn:[snapshot] buttons must be enabled.
 
+If the btn:[explain] button is inactive, double-check that Studio is connected to TypeDB,
+a database is selected with a drop-down list in the toolbar,
+and the btn:[infer] and btn:[snapshot] buttons are *on*.
+
+To see an explanation of an inferred result, find it in Graph Visualizer (should be highlighted in green) and
+double-click on it.
+If there is an explanation for the inferred result, it spawns in visualization as new concepts.
+If there is no additional explanation available for the selected result,
+or all explanations have already been spawned, a pop-up notification appears.
 
 == Connection management
 
@@ -226,10 +218,14 @@ While connected to TypeDB, the button changes its label to server's address.
 --
 image::drivers::studio/databases-interface-iam-database.png[Database Manager with IAM database, role=right, width=50%, link=self]
 
-To create a new database, make sure TypeDB Studio is connected to TypeDB and follow the steps:
+Creating and deleting databases can be done via the Manage Database window.
+To open this window, make sure TypeDB Studio is connected to TypeDB and click on the database button
+(image:home::studio-icons/database.png[]) in the top toolbar.
 
-. Open the btn:[Manage Databases] window by clicking on the database button (image:home::studio-icons/database.png[]) in the top toolbar.
-. Enter the name for the new database and hit btn:[Create].
+To create a new database:
+
+. Enter the name for the new database
+. Push btn:[Create].
 
 To delete a database:
 
@@ -239,111 +235,92 @@ To delete a database:
 --
 
 [#_types_browser_capabilities]
-== Type browser capabilities
+== Type Browser
 
-Under the *Projects* panel that shows the project directory TypeDB has *Type Browser* panel that shows all types of
-the schema of the current database.
+image::drivers::studio/type-browser.png[Type browser, role=right framed, width=50%, link=self]
 
-[NOTE]
-====
-If the *Type Browser* panel is not displayed -- click the *Type Browser* vertical tab on the left edge of the
-TypeDB Studio window.
-====
+Type Browser panel gives you a full overview of the type hierarchy for the currently selected database.
 
-All types are divided in three top level xref:typedb::basics/data-model.adoc#_pera[built-in types]:
+In an empty database, there are only three root types shown in the panel.
 
-* Attribute
-* Entity
-* Relation
+In a database with a schema,
+all types displayed in the exact hierarchy they were created (subtypes inside their supertypes).
 
-In an empty database (without a schema) only these three built-in types shown in the panel.
-
-In a database with a schema, all types displayed in the exact hierarchy they were created (subtypes inside their
-supertypes). We can easily collapse or expand all the types in the structure tree by clicking the associated buttons
-on the top of the *Type Browser* panel with double chevrons (arrow heads) pointing down or up respectively.
-
-image::drivers::studio/type-browser.png[Type browser,width=300, link=self]
-
-Double-clicking on any type will open the <<_type_editor,Type editor>> with information about the selected type
-in a tab of the *Text editor*.
-
-*Type Browser* panel can be closed by clicking the *X* icon in the top right corner of the panel. To reopen the panel
-click the *Type Browser* tab on the left edge of the TypeDB Studio window.
+Double-clicking on any type opens the <<_type_editor,Type Editor>> window with information about the selected type.
 
 === Export schema
 
-We can export schema of the database by clicking the btn:[Export Schema Types] button (second in row from left to
-right) on the top of the *Type Browser* panel. It creates a new tab with inserted TypeQL code that creates the exact
-schema that is in the current database.
+You can export all type definitions of a schema by clicking the btn:[Export Schema Types]
+button on the top of the *Type Browser* panel.
+Exporting rules is not supported by this button yet.
 
-[WARNING]
-====
-The btn:[Export Schema Types] button doesn't include rules into its output. That will be fixed in some of the next
-versions of the TypeDB Studio.
-====
+It creates a new tab with inserted TypeQL code that creates the exact schema that is in the current database.
 
 [#_type_editor]
-=== Type editor
+== Type Editor
 
-By double-clicking any type, we can open the type editor window that shows all information about the selected type and
-use the GUI to edit the type.
+[.float-group]
+--
+image::drivers::studio/type-editor.png[Type editor, role=right framed, width = 50%, link=self]
 
-image::drivers::studio/type-editor.png[Type editor, width = 70%, link=self]
+Type Editor window gives you a full overview of the selected type: its label, parent, owned attributes, played roles,
+owners (for attributes), related roles (for relations), subtypes, and whether it's an abstract type.
 
-We can rename the type, change its supertype, abstract property, see all the connected types (subtypes, owned
-attributes or owners of this particular attribute, related and played roles).
+Given a `schema` session and `write` transaction selected in the top toolbar,
+Type Editor can be used to modify most of these parameters.
+You can rename a type, change its supertype, change whether it's an abstract type, add or remove owned attributes,
+related roles, played roles, as well as just delete a type or export its full definition.
 
-By clicking on one of the connected types we can see all information about it as well.
+Type Editor is a powerful instrument that combines easy to use GUI with API calls that can modify schema directly,
+without TypeQL queries.
+With Type Editor, it's much easier to rename a type or change type hierarchy by changing a supertype of a type.
+And it works even for types that already have data inserted for them.
+--
 
 === Rename a type
 
-[WARNING]
-====
-For the renaming functions to be active set the session type switch to the `schema` and transaction type switch to the
-`write` options first.
-====
+For the Type Editor be able to modify a schema,
+make sure to switch to the `schema` session and `write` transaction in the top toolbar.
 
-In TypeDB Studio we can rename a type in two ways:
+To rename a type, open the Type Editor window by double-clicking on the selected type in the Type Browser.
+At the very top, click on the pencil icon immediately right from the type name.
+Edit the name in the Label field and press the btn:[Rename] button to save the changes.
+//#todo Add the pencil icon
 
-* Open the type editor window by double-clicking on the type. At the very top click on the pencil icon immediately
-right from the type name. Edit the name in the Label field and press btn:[Rename] button to finalize.
-* Right-click on the type in the *Type browser* list. Click on the *Rename Type* option. Edit the name in the Label
-field and press btn:[Rename] button to finalize.
+You can also do the same by right-clicking on the type in the Type browser panel and choosing the Rename Type option.
 
-[NOTE]
-====
-Renaming a type in any of this two ways will update the relevant type references in the schema and will not lead
-to loosing existing data. All existing instances of the type will be available under the new types name.
-====
+Both ways require you to commit the changes by the btn:[Commit] (image:home::studio-icons/commit.png[])
+button at the top toolbar.
+
+Renaming a type in any of these two ways updates the relevant type references in the schema and does not lead
+to loosing existing data.
+All existing instances of the type will be available under the new type label.
 
 === Delete a type
 
-[WARNING]
-====
-For the deleting functions to be active set the session type switch to the `schema` and transaction type switch to
-the `write` options first.
-====
+For the Type Editor be able to modify a schema,
+make sure to switch to the `schema` session and `write` transaction in the top toolbar.
 
-In TypeDB Studio we can delete a type in two ways:
+To delete a type, open the Type Editor window by double-clicking on the selected type in the Type Browser.
+At the very bottom, click the btn:[Delete] button and then the btn:[Confirm] button.
+//Commit the transaction with the btn:[Commit] button (image:home::studio-icons/commit.png[]) at the top toolbar.
 
-* Open the type editor window by double-clicking on the type. At the very bottom click on the btn:[Delete] button and
-press btn:[Confirm] button. Commit the transaction with the green tick at the top of the Studio window.
-* Right-click on the type in the *Type browser* list. Click on the Delete option and press btn:[Confirm] button. Commit
-the transaction with the green tick at the top of the Studio window.
+You can also do the same by right-clicking on the type in the Type browser panel and choosing the Delete option,
+then clicking the btn:[Confirm] button.
 
-[NOTE]
-====
-In some cases, the btn:[Delete] option and button can be disabled. That means there are some conditions that prevent us
-from deleting this type.
+Both ways require you to commit the changes by the btn:[Commit] (image:home::studio-icons/commit.png[])
+button at the top toolbar.
 
+In some cases, the btn:[Delete] option and button can be unavailable.
+That means there are some conditions that prevent you from deleting this type.
 For example, we can't xref:typedb::developing/defining-schema.adoc#_undefine_subtype[delete a type that has a subtype].
-====
 
 == Settings
 
-To configure TypeDB Studio, open the *Manage Preferences* window by clicking on the button with the gear (⚙) icon
-in the top right corner of the TypeDB Studio window.
+To see TypeDB Studio settings, open the *Manage Preferences* window by clicking on the button with the gear (⚙) icon
+in the top right corner of the window.
 
+////
 TypeDB Studio has the following settings available:
 
 * Graph Visualiser
@@ -359,6 +336,7 @@ Default value: *1000*.
 * Text Editor
 ** Enable Autosave -- Enables autosave function for files opened in TypeDB Studio. +
 Default value: *On*.
+////
 
 [#_version_compatibility]
 == Version Compatibility
