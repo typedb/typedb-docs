@@ -213,7 +213,7 @@ xref:typeql::data/insert.adoc#_multivalued_attributes[multivalued attribute]
 (as if having an attribute with multiple values).
 
 Use the <<_key_attribute,Key attribute annotation>>
-to limit the cardinality to exactly *one* and add *uniqueness* constraint.
+to limit the cardinality to exactly *one* and add a *uniqueness* constraint.
 Hence, the instance of the type with key annotated ownership will have exactly one (no more and no less)
 key attribute instance.
 
