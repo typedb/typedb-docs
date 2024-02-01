@@ -12,13 +12,13 @@ TypeDB is available in two editions: Cloud and Core.
 
 [cols-2]
 --
-.xref:manual::installing/cloud.adoc[TypeDB Cloud]
+.xref:manual::installing/cloud-self-hosted.adoc[TypeDB Cloud]
 [.clickable]
 ****
 Production-ready and scalable version of TypeDB with advanced security and high-availability features.
 
 * https://cloud.typedb.com/[Deploy in a managed cloud]
-* xref:manual::installing/cloud.adoc[Self-hosted installation]
+* xref:manual::installing/cloud-self-hosted.adoc[Self-hosted installation]
 ****
 
 .xref:manual::installing/core.adoc[TypeDB Core]
@@ -51,42 +51,42 @@ A powerful CLI client for TypeDB.
 
 == Basic guides
 
-[cols-3]
+[cols-2]
 --
 .xref:manual::connecting/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::connecting/overview.adoc[Connect to server]
-* xref:manual::connecting/overview.adoc[Create database]
-* xref:manual::connecting/overview.adoc[Open session]
-* xref:manual::connecting/overview.adoc[Open transaction]
+* xref:manual::connecting/connection.adoc[]
+* xref:manual::connecting/database.adoc[]
+* xref:manual::connecting/session.adoc[]
+* xref:manual::connecting/transaction.adoc[]
 ****
 
 .xref:manual::defining/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::defining/overview.adoc[Defining types]
-* xref:manual::defining/overview.adoc[Defining rules]
-* xref:manual::defining/overview.adoc[Undefining schema]
-* xref:manual::defining/overview.adoc[Updating schema]
+* xref:manual::defining/defining-types.adoc[]
+* xref:manual::defining/defining-rules.adoc[]
+* xref:manual::defining/undefining-schema.adoc[]
+* xref:manual::defining/updating-schema.adoc[]
 ****
 
-.xref:manual::defining/overview.adoc[Writing data]
+.xref:manual::writing/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::defining/overview.adoc[Inserting data]
-* xref:manual::defining/overview.adoc[Deleting data]
-* xref:manual::defining/overview.adoc[Updating data]
+* xref:manual::writing/insert.adoc[]
+* xref:manual::writing/delete.adoc[]
+* xref:manual::writing/update.adoc[]
 ****
 
-.xref:manual::defining/overview.adoc[Reading data]
+.xref:manual::reading/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::defining/overview.adoc[Fetching data]
-* xref:manual::defining/overview.adoc[Getting concepts]
-* xref:manual::defining/overview.adoc[Inferring data]
+* xref:manual::reading/fetch.adoc[]
+* xref:manual::reading/get.adoc[]
+* xref:manual::reading/infer.adoc[]
 ****
-
+////
 .xref:manual::defining/overview.adoc[Programming concepts]
 [.clickable]
 ****
@@ -94,6 +94,7 @@ A powerful CLI client for TypeDB.
 * xref:manual::defining/overview.adoc[Things]
 * xref:manual::defining/overview.adoc[Explanations]
 ****
+////
 --
 
 == Configuring server
@@ -137,6 +138,7 @@ User management operations.
 ****
 --
 
+////
 == Migrating to TypeDB
 
 [cols-2]
@@ -165,3 +167,4 @@ User management operations.
 
 ****
 --
+////
