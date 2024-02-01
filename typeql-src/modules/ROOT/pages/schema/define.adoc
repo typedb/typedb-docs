@@ -21,7 +21,7 @@ or they can add new properties to existing types and replace existing rules.
 It can't change schema statements already existing in a schema, except for annotations and rules.
 //#todo Add links to annotations and rules section to clarify
 
-Define queries are idempotent, as in they can be applied multiple times
+Define queries are idempotent, meaning they can be applied multiple times
 without changing the result of the initial application.
 
 A Define query should produce a consistent and valid schema in a database,
