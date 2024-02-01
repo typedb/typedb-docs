@@ -1,2 +1,367 @@
 = Inserting data
+:experimental:
+:tabs-sync-option:
 
+This page covers inserting data in a database with Studio, Console, or one of the drivers.
+Make sure to xref:defining/overview.adoc[define the schema] of your database first,
+as inserting data requires using types from the schema.
+
+== Sending an Insert query
+
+The best way to insert data is to send an Insert query.
+//Alternatively, you can use driver API
+To send an Insert query, use a `data` session and a `write` transaction.
+
+See below an example of how to send a simple Insert query to a database with the name `db2`:
+
+[tabs]
+====
+Studio::
++
+--
+. Use a drop-down list in the top toolbar to select a database with the name `db2`.
+. Switch to `data` session and `write` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL Insert query
+[,typeql]
+----
+insert $u isa user, has email "alice@vaticle.com";
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a session and transaction:
++
+[,bash]
+----
+transaction db2 schema write
+----
+. Send the Define query:
++
+[,bash]
+----
+insert $u isa user, has email "alice@vaticle.com";
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+////
+[,bash]
+----
+typedb console --command="database create db2" \
+--command="transaction db2 schema write" \
+--command="define user sub entity;" \
+--command="commit"
+----
+////
+--
+====
+
+To send a Define query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let query = "insert $u isa user, has email 'alice@vaticle.com';";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("db2")?;
+let session = Session::new(db, SessionType::Data)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().insert(&query)?;
+tx.commit().resolve()?;
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Python::
++
+--
+[,python]
+----
+with driver.session("db2", SessionType.DATA) as session:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        transaction.query.insert("insert $u isa user, has email 'alice@vaticle.com';")
+        transaction.commit()
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Java::
++
+--
+[,java]
+----
+try (TypeDBSession session = driver.session("db2", TypeDBSession.Type.DATA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().insert("insert $u isa user, has email 'alice@vaticle.com';");
+        Transaction.commit();
+    }
+}
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Node.js::
++
+--
+[,js]
+----
+session = await driver.session("db2", SessionType.DATA);
+transaction = await session.transaction(TransactionType.WRITE);
+await transaction.query.insert("insert $u isa user, has email 'alice@vaticle.com';");
+await transaction.commit();
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+C++::
++
+--
+[,cpp]
+----
+TypeDB::Options options;
+    {
+        auto session = driver.session("db2", TypeDB::SessionType::DATA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        (void) tx.query.define("insert $u isa user, has email 'alice@vaticle.com';", options);
+        tx.commit();
+    }
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+====
+
+== Inserting an entity
+
+To insert an entity, send an Insert query with the `isa` keyword followed by the entity's type in the `insert` clause.
+Additionally, you can insert some data about the entity, like attributes owned,
+to help with finding it in the database later on.
+
+.Inserting an entity query example
+[,typeql]
+----
+insert $u isa user, has email "bob@vaticle.com";
+----
+
+The above example inserts an entity of the `user` type that owns an attribute of the `email` type with the value of
+`bob@vaticle.com`.
+If you run the same query twice, you end up with two absolutely identical entities.
+To prevent that, you can use the `@unique` annotation for the ownership of the `email` type
+by the `user` type in the schema.
+That would prevent you from inserting any user owning the same email as any other user.
+
+[#_inserting_a_relation]
+== Inserting a relation
+
+To insert a relation, send an Insert query with the isa keyword followed by the relation's type in the `insert` clause.
+You might need to use optional `match` clause in the query to match existing instances of data
+in case you want to make them a part of your new relation.
+
+.Inserting a relation query example
+[,typeql]
+----
+match
+$alice isa user, has email "alice@vaticle.com";
+$bob isa user, has email "bob@vaticle.com";
+insert
+$f (friend: $alice, friend: $bob) isa friendship;
+----
+
+The above example inserts a relation between two users that are matched by their emails.
+
+== Inserting an attribute
+
+To insert an attribute, assign an ownership of it to any instance.
+That implicitly creates an attribute if it doesn't exist yet.
+
+If you want to explicitly insert an attribute, you can do that as in the following example.
+
+.Explicitly inserting an attribute example
+[,typeql]
+----
+insert $e "spam@vaticle.com" isa email;
+----
+
+=== Inserting ownership
+
+To insert an ownership of an attribute without inserting any other instances
+(except for the attribute, if it doesn't exist yet),
+use the `has` keyword without the `isa` keyword in the `insert` clause.
+
+.Inserting an ownership of an attribute example
+[,typeql]
+----
+match $bob isa user, has email "bob@vaticle.com";
+insert $bob has email "bob2@vaticle.com";
+----
+
+== Checking the result of an insert
+
+The `insert` clause of an Insert query is executed once per every result matched by the `match` clause.
+To estimate the number of inserts,
+you can run a dedicated `fetch` or `get` query right before inserting with the same `match` clause,
+or check the response of the Insert query, either in Studio/Console or programmatically.
+
+.Checking the number of matched results
+[,typeql]
+----
+match $bob isa user, has email "bob@vaticle.com";
+get; count;
+----
+
+=== Studio and Console output examples
+
+For the <<_inserting_a_relation>> query, in case of a singular match,
+the resulted output looks like this:
+
+.Insert query response example
+[tabs]
+====
+Studio::
++
+--
+.Log output
+[,typeql]
+----
+## Result> Insert query successfully inserted new things to the database:
+{
+    $bob iid 0x826e80018000000000000004 isa user;
+    $f iid 0x847080017fffffffffffffff (friend: iid 0x826e80018000000000000002, friend: iid 0x826e80018000000000000004) isa friendship;
+    $alice iid 0x826e80018000000000000002 isa user;
+}
+----
+--
+
+Console::
++
+--
+.CLI output
+[,typeql]
+----
+{
+    $f iid 0x847080017fffffffffffffff (friend: iid 0x826e80018000000000000002, friend: iid 0x826e80018000000000000004) isa friendship;
+    $alice iid 0x826e80018000000000000002 isa user;
+    $bob iid 0x826e80018000000000000004 isa user;
+}
+
+answers: 1, total duration: 24 ms
+----
+--
+====
+
+=== Checking the response programmatically
+
+For the <<_inserting_a_relation>> query the code to send the query and check the response looks like this:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let query = "match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+            insert $f (friend: $alice, friend: $bob) isa friendship;";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("db2")?;
+let session = Session::new(db, SessionType::Data)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().insert(&query)?;
+tx.commit().resolve()?;
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Python::
++
+--
+[,python]
+----
+query = "match $alice isa user, has email 'alice@vaticle.com';" \
+        $bob isa user, has email 'bob@vaticle.com';" \
+        insert $f (friend: $alice, friend: $bob) isa friendship;"
+with driver.session("db2", SessionType.DATA) as session:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        transaction.query.insert(query)
+        transaction.commit()
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Java::
++
+--
+[,java]
+----
+String query = """
+                match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+                insert $f (friend: $alice, friend: $bob) isa friendship;
+                """;
+try (TypeDBSession session = driver.session("db2", TypeDBSession.Type.DATA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().insert(query);
+        Transaction.commit();
+    }
+}
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Node.js::
++
+--
+[,js]
+----
+const query =  `match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+                insert $f (friend: $alice, friend: $bob) isa friendship;
+                `;
+session = await driver.session("db2", SessionType.DATA);
+transaction = await session.transaction(TransactionType.WRITE);
+await transaction.query.insert(query);
+await transaction.commit();
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+C++::
++
+--
+[,cpp]
+----
+std::string query = "match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+                    insert $f (friend: $alice, friend: $bob) isa friendship;";
+TypeDB::Options options;
+    {
+        auto session = driver.session("db2", TypeDB::SessionType::DATA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        (void) tx.query.define(query, options);
+        tx.commit();
+    }
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+====
