@@ -409,7 +409,7 @@ Simple type hierarchy schema example:
 include::home::attachment$quickstart-schema.tql[]
 ----
 
-The above examples defines three attribute types and two entity types.
+The above example defines three attribute types and two entity types.
 The `person` entity types is a subtype of the `user` and inherits its ownership of some attributes.
 Unlike `user` the `person` type is concrete (not abstract) and can be instantiated (inserted to a database as data).
 
