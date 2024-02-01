@@ -231,7 +231,7 @@ to add constraints on what attributes can be owned by an instance of an owner ty
 [#_unique_attribute]
 === Unique attribute annotation
 
-Use the `@unique` keyword to add *uniqueness* constraint to the ownership of an attribute.
+Use the `@unique` keyword to add *uniqueness* as a constraint to the ownership of an attribute.
 This prevents two instances of the same type from owning the same attribute instance (with the same value).
 
 [,typeql]
