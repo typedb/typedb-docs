@@ -268,8 +268,10 @@ It's inherited from `organizatrion-id`.
 
 Use the `@key` keyword to set the owned attribute as a key.
 That limits the cardinality to exactly *one* and adds the *uniqueness* constraint.
-Hence, the instance of the type with attribute ownership with `@key` annotation will have exactly one
-(no more and no less) key attribute instance, and it will be unique for all instances of the same type.
+Thus, any instance of a type whose ownership of an attribute is
+defined using the `@key` annotation will have exactly one (neither
+more nor fewer) key attribute instance, and that attribute instance
+will be unique for all instances of that same owning type.
 
 [,typeql]
 ----
