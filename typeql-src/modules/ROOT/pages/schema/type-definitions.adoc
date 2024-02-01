@@ -266,7 +266,7 @@ It's inherited from `organizatrion-id`.
 [#_key_attribute]
 === Key attribute annotation
 
-Use the `@key` keyword to set the owned attribute as key.
+Use the `@key` keyword to set the owned attribute as a key.
 That limits the cardinality to exactly *one* and adds the *uniqueness* constraint.
 Hence, the instance of the type with attribute ownership with `@key` annotation will have exactly one
 (no more and no less) key attribute instance, and it will be unique for all instances of the same type.
