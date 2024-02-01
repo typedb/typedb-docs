@@ -302,7 +302,7 @@ object sub entity, plays access:object;
 
 The above examples define the `object` type as being able to play the role `object` in the `access` relation type.
 With this definition in a schema, we can now xref:typeql::data/insert.adoc[insert]
-data in our database about a relation of type `access` with the role `object` played by a given instance
+data into our database about a relation of type `access` with the role `object` played by a given instance
 of an entity type `object`.
 
 == Inheritance
