@@ -17,15 +17,15 @@ See the table below for the most simple statements that can be used for type def
 
 | <<_subtyping,Subtyping>> entity type
 | `<label> sub <type>;`
-| `person sub user;`
+| `employee sub person;`
 
 | <<_subtyping,Subtyping>> relation type
 | `<label> sub <type>;`
-| `person sub user;`
+| `hetero_marriage sub marriage;`
 
 | <<_subtyping,Subtyping>> attribute type
 | `<label> sub <type>;`
-| `person sub user;`
+| `full_name sub name;`
 
 //| Direct subtyping
 //| `<label> sub! <type>;`
