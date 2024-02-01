@@ -7,7 +7,7 @@ An insert query is used to insert data into a TypeDB database.
 This page assumes you've already followed instructions from the xref:manual::defining/define.adoc[] page.
 Here, you'll see how to insert data in a database using Studio, Console, or one of the drivers.
 
-== Sending an Insert query
+== How to send an Insert query
 
 The easiest way to send an Insert query is to use one of the TypeDB clients:
 xref:manual::studio.adoc[Studio] or xref:manual::console.adoc[Console]:
@@ -168,9 +168,6 @@ get; count;
 
 === Studio and Console output examples
 
-For the <<_inserting_a_relation>> query, in case of a singular match,
-the resulted output looks like this:
-
 .Insert query response example
 [tabs]
 ====
@@ -208,7 +205,7 @@ answers: 1, total duration: 24 ms
 
 === Checking the response programmatically
 
-For the <<_inserting_a_relation>> query the code to send the query and check the response looks like this:
+For an Insert query the code to send the query and check the response looks like this:
 
 [tabs]
 ====
