@@ -83,7 +83,8 @@ For example, a marriage can't exist without spouses.
 == Attributes
 
 Attributes represent properties with value that other types can own.
-Values of attributes are limited to the value type set in a definition of their type.
+Each attribute represents a single value.
+The value of an attribute is limited to the value type set in the definition of its type.
 //An attribute type's definition includes a value type that constraints possible values for attributes of that attribute type.
 
 An attribute is immutable: its value is fixed and can't be altered.
