@@ -344,7 +344,7 @@ followed by the `as` keyword and the inherited attribute type:
 define file sub resource, owns file-type as object-type;
 ----
 
-The new attribute type that overrides inherited type is defined in the schema as subtype of the inherited
+The new attribute type that overrides the inherited type is defined in the schema as a subtype of the inherited
 attribute type.
 Hence, the inherited attribute type is an xref:typeql::fundamentals.adoc#_abstract_types[abstract type]
 and has the same value type as the new attribute type.
