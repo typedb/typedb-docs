@@ -24,7 +24,7 @@ It can't change schema statements already existing in a schema, except for annot
 Define queries are idempotent, meaning they can be applied multiple times
 without changing the result of the initial application.
 
-A Define query should produce a consistent and valid schema in a database,
+A Define query must produce a consistent and valid schema in a database,
 otherwise it will not pass validation and will be rejected.
 
 Define query returns a Promise of an empty response.
