@@ -23,7 +23,7 @@ but conclusions are quite limited as they can be only one of the following:
 
 == Sending a Define query
 
-The best way to define a rule is to send a Define query.
+The best way to define a rule in a schema is to send a Define query.
 
 See below an example of how to send a simple Define query to a database with the name `db2`:
 
@@ -207,10 +207,140 @@ Where `driver` is an instance of a driver, xref:manual::connecting/connection.ad
 --
 ====
 
-== Rules with different conclusions
+== Rule conclusion
+
+A rule can have one of the two possible conclusion types:
+
+* Creating a new virtual relation.
+* Assigning ownership of an attribute.
+
+Since inference works with `read` transactions only, no changes are persisted to a database.
+All inferred data exists only virtually, while the transaction is open.
+
+.Rule creating new relation example
+[,typeql]
+----
+rule friends: when {
+    $u1 isa user;
+    $u2 isa user;
+    not {$u1 is $u2;};
+} then {
+    (friend:$u1, friend:$u2) isa friendship;
+};
+----
+
+.Rule assigning ownership example
+[,typeql]
+----
+rule default-name: when {
+    $u isa user;
+} then {
+    $u has name "User";
+};
+----
+
+The above examples show how both types of conclusions.
+The first one creates the `friendship` relation between any pair of users.
+The second one assigns ownership of attribute with type `name` and value `User`
+to any instance of the `user` entity type.
+
+All rules are validated against existing schema for type violations.
+
+== Recursion
+
+Rules can be applied multiple times, including recursively.
+The easiest way to show a recursive rule is through arithmetic.
+
+.Schema with a recursive rule
+[,typeql]
+----
+define
+
+file sub entity,
+    owns size-kb;
+
+size sub attribute, value long, abstract;
+size-kb sub size;
+
+rule recursive-growth: when {
+    $f isa file,
+        has size-kb $kb;
+    $kb < 100;
+    ?new-kb = $kb + 1;
+} then {
+    $f has size-kb ?new-kb;
+};
+----
+
+The above rule applies to any file that has size in kilobytes less than `100`.
+It assigns ownership of a slightly bigger size attribute.
+But then it runs again to assign even bigger attribute,
+because its condition is met by the attribute assigned in the previous cycle.
+
+[WARNING]
+====
+Be careful with recursive rules using arithmetic operations.
+It is possible to get an infinite recursion.
+For example, remove the `$kb < 100;` line from the above example.
+====
 
 == Rule chains
 
+Rules can use results from other rules in their conditions.
+
+.Schema with chained rules
+[,typeql]
+----
+define
+
+file sub entity,
+    owns size-kb,
+    owns size-mb,
+    owns size-gb;
+
+size sub attribute, value long, abstract;
+size-kb sub size;
+size-mb sub size;
+size-gb sub size;
+
+rule compute-mb: when {
+    $f isa file,
+        has size-kb $kb;
+    ?mb = round($kb / 1024);
+} then {
+    $f has size-mb ?mb;
+};
+
+rule compute-gb: when {
+    $f isa file,
+        has size-mb $mb;
+    ?gb = round($mb / 1024);
+} then {
+    $f has size-gb ?gb;
+};
+----
+
 == Transitivity
 
-== Arithmetic and recursion
+Rules can help add transitivity to relations.
+If some user is a member of group B, and group B is included in the group A,
+then by transitivity, user is a member of group A.
+The same is true for any number of nested groups.
+
+.Transitivity example
+[,typeql]
+----
+define
+
+inherited-group-membership sub group-membership;
+
+rule transitive-group-membership:
+   when {
+      (group: $g1, member: $g2) isa! group-membership;
+      (group: $g2, member: $u) isa group-membership;
+   } then {
+      (group: $g1, member: $u) isa inherited-group-membership;
+   };
+----
+
+In the example above, we add a new subtype to the relation we add transitivity to for optimization purposes.
