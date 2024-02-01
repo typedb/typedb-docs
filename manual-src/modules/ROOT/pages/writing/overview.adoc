@@ -1,2 +1,27 @@
 = Writing data
 
+To modify any data in a TypeDB database, you need to use `data` session and `write` transaction.
+All data queries are validated against the schema of a database.
+
+There are only three types of operations that can modify data in a database:
+
+[cols-3]
+--
+.xref:manual::writing/insert.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:manual::writing/delete.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:manual::writing/update.adoc[]
+[.clickable]
+****
+
+****
+--
