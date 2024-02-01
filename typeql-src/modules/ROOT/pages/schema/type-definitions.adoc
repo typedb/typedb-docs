@@ -410,7 +410,8 @@ include::home::attachment$quickstart-schema.tql[]
 ----
 
 The above example defines three attribute types and two entity types.
-The `person` entity types is a subtype of the `user` and inherits its ownership of some attributes.
+The `person` entity type is a subtype of the `user` entity type and
+inherits ownership of all the attributes owned by `user`.
 Unlike `user` the `person` type is concrete (not abstract) and can be instantiated (inserted to a database as data).
 
 === IAM schema
