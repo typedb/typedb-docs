@@ -66,7 +66,7 @@ commit
 --
 ====
 
-The resulted JSON should look this:
+The resulted JSONs should look like this:
 
 [,json]
 ----
@@ -211,3 +211,30 @@ A Fetch query returns all fetched values projected in JSON.
 The response is a Stream/Iterator with a JSON object for every solution of a `match` clause pattern.
 A concept can't be returned directly, but a value or a type can be projected into the resulting JSON.
 To return full concepts, see the xref:manual::reading/get.adoc[] page.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::data/fetch.adoc[]
+[.clickable]
+****
+Learn more about Fetch queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+Learn how to write some new data to a database to read.
+****
+
+.xref:typedb::developing/read.adoc[Reading data curriculum]
+[.clickable]
+****
+* xref:typedb::developing/read.adoc[Fetch queries]
+* xref:typedb::developing/read.adoc[Subqueries]
+* xref:typedb::developing/read.adoc[Aggregations]
+* xref:typedb::developing/read.adoc[Match clause semantics]
+* xref:typedb::developing/read.adoc[Organizing results]
+****
+--

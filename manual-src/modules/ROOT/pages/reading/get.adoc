@@ -29,9 +29,9 @@ Then use the steps below:
 [,typeql]
 ----
 match
-$u isa user;
-fetch
-$u: name, email;
+$u isa user, has email $e;
+get
+$u, $e;
 ----
 . Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
 . Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
@@ -51,9 +51,9 @@ transaction sample_db schema write
 [,bash]
 ----
 match
-$u isa user;
-fetch
-$u: name, email;
+$u isa user, has email $e;
+get
+$u, $e;
 ----
 +
 Push btn:[Enter] twice to send the query.
@@ -66,34 +66,25 @@ commit
 --
 ====
 
-The resulted JSON should look this:
+The resulted Log output should look like this:
 
-[,json]
+[,js]
 ----
 {
-    "u": {
-        "email": [ { "value": "alice@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
-        "name": [ { "value": "Alice", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
-        "type": { "label": "user", "root": "entity" }
-    }
+    $e alice@vaticle.com isa email;
+    $u iid 0x826e80018000000000000000 isa user;
 }
 {
-    "u": {
-        "email": [ { "value": "the-bob@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
-        "name": [ { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
-        "type": { "label": "user", "root": "entity" }
-    }
+    $e the-bob@vaticle.com isa email;
+    $u iid 0x826e80018000000000000001 isa user;
 }
 {
-    "u": {
-        "email": [ { "value": "charlie@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
-        "name": [ { "value": "Charlie", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
-        "type": { "label": "user", "root": "entity" }
-    }
+    $e charlie@vaticle.com isa email;
+    $u iid 0x826e80018000000000000002 isa user;
 }
 ----
 
-To send a Fetch query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+To send a Get query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
 
 //#todo Check the code
 //#todo Add the response processing
@@ -108,14 +99,14 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
 [,rust]
 ----
 let query = "match
-            $u isa user;
-            fetch
-            $u: name, email;";
+            $u isa user, has email $e;
+            get
+            $u, $e;";
 let databases = DatabaseManager::new(driver);
 let db = databases.get("sample_db")?;
 let session = Session::new(db, SessionType::Data)?;
 let tx = session.transaction(TransactionType::Write)?;
-tx.query().insert(&query)?;
+tx.query().get(&query)?;
 tx.commit().resolve()?;
 ----
 --
@@ -130,13 +121,13 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
 ----
 query = """
         match
-        $u isa user;
-        fetch
-        $u: name, email;
+        $u isa user, has email $e;
+        get
+        $u, $e;
         """
 with driver.session("sample_db", SessionType.DATA) as session:
     with session.transaction(TransactionType.WRITE) as transaction:
-        transaction.query.insert(query)
+        transaction.query.get(query)
         transaction.commit()
 ----
 --
@@ -151,7 +142,7 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
 ----
 try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
     try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-        Transaction.query().insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
+        Transaction.query().get("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
         Transaction.commit();
     }
 }
@@ -168,14 +159,14 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
 ----
 let query = `
             match
-            $u isa user;
-            fetch
-            $u: name, email;
+            $u isa user, has email $e;
+            get
+            $u, $e;
             `;
 
 session = await driver.session("sample_db", SessionType.DATA);
 transaction = await session.transaction(TransactionType.READ);
-let iterator = transaction.query.fetch(query);
+let iterator = transaction.query.get(query);
 let answers = await iterator.collect();
 k = 0;
 for (let i = 0; i < answers.length; i++) {
@@ -206,8 +197,76 @@ TypeDB::Options options;
 
 == Response interpretation
 
-A Fetch query returns all fetched values projected in JSON.
+A Get query returns all concept that were matched by the `match` clause and filtered by the `get` clause.
 
-The response is a Stream/Iterator with a JSON object for every solution of a `match` clause pattern.
-A concept can't be returned directly, but a value or a type can be projected into the resulting JSON.
-To return full concepts, see the xref:manual::reading/get.adoc[] page.
+The response is a Stream/Iterator with a ConceptMap object for every solution of a `match` clause pattern.
+A concept is returned as a special object with methods relevant to its type.
+
+There are modifiers that can be applied to a Get query that can change its output format:
+
+* Grouping returns a Stream/Iterator of ConceptMapGroup objects.
+* Aggregation returns Promise of a Value.
+* Grouping and aggregation return a Stream/Iterator of ValueGroup object.
+
+See respective drivers API reference for relevant methods to work with these objects.
+
+.Driver API reference
+[cols-3]
+--
+.xref:drivers::rust/api-reference.adoc[Rust]
+[.clickable]
+****
+
+****
+
+.xref:drivers::python/api-reference.adoc[Python]
+[.clickable]
+****
+
+****
+
+.xref:drivers::java/api-reference.adoc[Java]
+[.clickable]
+****
+
+****
+
+.xref:drivers::nodejs/api-reference.adoc[Node.js]
+[.clickable]
+****
+
+****
+
+.xref:drivers::cpp/api-reference.adoc[C++]
+[.clickable]
+****
+
+****
+--
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::data/get.adoc[]
+[.clickable]
+****
+Learn more about Get queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+Learn how to write some new data to a database to read.
+****
+
+.xref:typedb::developing/read.adoc[Reading data curriculum]
+[.clickable]
+****
+* xref:typedb::developing/read.adoc[Fetch queries]
+* xref:typedb::developing/read.adoc[Subqueries]
+* xref:typedb::developing/read.adoc[Aggregations]
+* xref:typedb::developing/read.adoc[Match clause semantics]
+* xref:typedb::developing/read.adoc[Organizing results]
+****
+--
