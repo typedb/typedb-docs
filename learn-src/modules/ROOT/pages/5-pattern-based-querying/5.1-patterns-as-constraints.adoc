@@ -117,7 +117,14 @@ This is more than enough information to work out the type of `$user` because the
 * Only `user` plays `rater` in `rating`.
 * `user`, `publishing`, `place`, `state`, and `city` all play `located` in `location`.
 
-Because the pattern's constraints must be satisfied simultaneously, `$user` can only possibly be of type `user`! This is roughly how the type inference process works. As an exercise, try identifying the types of the terms `$book` and `$publisher` in this way, which also don't have their types explicitly stated.
+Because the pattern's constraints must be satisfied simultaneously, `$user` can only possibly be of type `user`! This is roughly how the type inference process works. As an exercise, try identifying the instantiable types of the terms `$book` and `$publisher` in this way, which also don't have their types explicitly stated.
+
+.Answers
+[%collapsible]
+====
+* Possible types of `$book`: `paperback`, `hardback`, `ebook`
+* Possible types of `$publisher`: `publisher`
+====
 
 == Pattern validation
 

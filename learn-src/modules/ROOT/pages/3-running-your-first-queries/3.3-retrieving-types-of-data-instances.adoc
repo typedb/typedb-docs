@@ -44,8 +44,8 @@ In TypeDB, this takes the form of a *schema*, which sets out which types are abl
 [,typeql]
 ----
 match
-$rating (user: $user, rated: $book) isa rating;
-$publish (publisher: $publisher, $published: $book) isa publishing;
+$rating (rater: $user, rated: $book) isa rating;
+$publish (publisher: $publisher, published: $book) isa publishing;
 $user-loc (place: $state, located: $user) isa location;
 $pub-loc (place: $state, located: $publish) isa location;
 $state isa state;
@@ -64,8 +64,8 @@ TypeDB resolves every variable in a query to a set of valid types to search for,
 [,typeql]
 ----
 match
-$rating (user: $user, rated: $book) isa rating;
-$publish (publisher: $publisher, $published: $book) isa publishing;
+$rating (rater: $user, rated: $book) isa rating;
+$publish (publisher: $publisher, published: $book) isa publishing;
 $user-loc (place: $state, located: $user) isa location;
 $pub-loc (place: $state, located: $publish) isa location;
 $state isa state;
