@@ -1,0 +1,123 @@
+= 4.4 - Defining relation types
+
+== Defining new relation types
+
+The syntax for defining new relation types is the same as that used to define entity types, but each relation type must be defined alongside at least one *role*. The following query defines three new relation types along with their roles.
+
+[,typeql]
+----
+define
+order sub relation,
+    relates buyer,
+    relates product;
+location sub relation,
+    relates place,
+    relates located;
+login sub relation,
+    relates subject;
+----
+
+When used in a Define query, the `relates` keyword defines a new role for a relation. This query defines a relation type `order` along with its roles `buyer` and `product`, a relation type `location` with its roles `place` and `located`, and a relation type `login` with its role `subject`. All are subtypes of the root type `relation`. So far, we have not defined any roleplayers of these roles. This will be covered in xref:learn::4-designing-schemas/4.6-defining-owners-and-roleplayers.adoc[Lesson 4.6].
+
+There is no limit to the number of roles that can be defined for a relation type using the `relates` keyword, allowing trivial creation of unary relation types (like `login`), binary relation types (like `order` or `location`), ternary relation types, and n-ary relation types. Nullary relation types (those without roles) are not permitted, as they are functionally identical to entity types. If a relation type does not have any defined roles when a transaction is committed, then it will fail and be rolled back automatically.
+
+[NOTE]
+====
+TypeDB 2.x does not include syntax for specifying the cardinality of roles. When instantiating a relation, all roles can be played any number of times. Syntax for restricting role cardinalities will be included in TypeDB 3.0.
+====
+
+== Defining new roles
+
+Roles do not have to be defined at the same time as their parent relation types, and new roles can always be defined for existing relation types. As long as the two following queries are run in order, the second could be run any time after the first: in the same transaction, in a different transaction, or even after instances of `publishing` have been inserted.
+
+[,typeql]
+----
+define
+publishing sub relation,
+    relates published;
+----
+
+
+[,typeql]
+----
+define
+publishing relates publisher;
+----
+
+== Role inheritance
+
+By default, the roles of a relation type are inherited by its subtypes. The following query defines a new relation type and several subtypes.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates work,
+    relates contributor;
+authorship sub contribution;
+editing sub contribution;
+illustration sub contribution;
+----
+
+Here, `authorship`, `editing`, and `illustration` inherit the roles `work` and `contributor` from `contribution`. This would allow instantiation of the following relation types:
+
+* `contribution` with roles `work` and `contributor`
+* `authorship` with roles `work` and `contributor`
+* `editing` with roles `work` and `contributor`
+* `illustration` with roles `work` and `contributor`
+
+== Role extension
+
+New roles can be defined for specific subtypes of a relation type, in which case they will only be usable for those subtypes (and their respective subtypes that inherit them). In the following query, we define additional roles for the subtypes of `contribution`.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates work,
+    relates contributor;
+authorship sub contribution,
+    relates author;
+editing sub contribution,
+    relates editor;
+illustration sub contribution,
+    relates illustrator;
+----
+
+This would instead allow instantiation of the following relation types:
+
+* `contribution` with roles `work` and `contributor`
+* `authorship` with roles `work`, `contributor`, and `author`
+* `editing` with roles `work`, `contributor`, and `editor`
+* `illustration` with roles `work`, `contributor`, and `illustrator`
+
+== Role overriding
+
+A new role can be made to override an existing role of a parent relation using the `as` keyword. In the following query, the roles `author`, `editor`, and `illustrator` replace the inherited `contributor` role.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates work,
+    relates contributor;
+authorship sub contribution,
+    relates author as contributor;
+editing sub contribution,
+    relates editor as contributor;
+illustration sub contribution,
+    relates illustrator as contributor;
+----
+
+This would instead allow instantiation of the following relation types:
+
+* `contribution` with roles `work` and `contributor`
+* `authorship` with roles `work` and `author`
+* `editing` with roles `work` and `editor`
+* `illustration` with roles `work` and `illustrator`
+
+With this design, it is no longer possible to instantiate `authorship`, `editing`, and `illustration` with the `contributor` role. However, it is still possible to query them via the `contributor` role, as the roles `author`, `editor`, and `illustrator` are considered to be *subtypes* of `contributor`. We will explore this in more detail in xref:learn::5-pattern-based-querying/5.3-polymorphic-data-patterns.adoc[Lesson 5.3].
+
+== Scope of role names
+
+Type names must be unique within the scope of the entire schema. This is unlike role names, which need only be unique within the scope of a relation type hierarchy. This means that two relation types could be defined to relate roles of the same name, so long as neither relation type is a subtype of the other, directly or indirectly. To use a role with the same name on both a relation type and one of its subtypes, the role must be inherited.

@@ -1,0 +1,34 @@
+= Course overview
+
+Welcome to the TypeDB learning course. This course is designed as an end-to-end learning experience for TypeDB and TypeQL. Through the lens of a sample bookstore database, you'll learn how to build a database schema, manage data, and interpret query results.
+
+== Required knowledge
+
+This course is intended for:
+
+* Users who are completely new to TypeDB.
+* Users who have used TypeDB a bit and want to solidify their understanding.
+* Users who have used TypeDB a lot and want to recap the fundamentals.
+
+You will not need any prior knowledge of TypeDB in order to complete this course.
+
+Some knowledge of databases and object-oriented programming is assumed. You do not need to be an expert on the following topics, but they should be familiar terms:
+
+* Database basics: queries, transactions, CRUD operations, etc.
+* OOP basics: types, objects, interfaces, etc.
+* Architecture basics: server, client, API, etc.
+
+== Course content
+
+This course is arranged into several lessons covering key topics:
+
+1. xref:learn::1-why-typedb/1-why-typedb.adoc[Why TypeDB]: Introduction to the data engineering challenges that served as the motivation for TypeDB, and how TypeDB solves them.
+2. xref:learn::2-learning-environment-setup/2-learning-environment-setup.adoc[Learning environment setup]: Guide to setting up the environment for this learning course quickly and easily, complete with a sample database for a bookstore.
+3. xref:learn::3-running-your-first-queries/3-running-your-first-queries.adoc[Running your first queries]: Some simple read queries to introduce TypeQL's basic syntax and the structure of query responses.
+4. xref:learn::4-designing-schemas/4-designing-schemas.adoc[Designing schemas]: The schema design process broken down and explained, from conceptual PERA modeling to the TypeQL implementation.
+5. xref:learn::5-pattern-based-querying/5-pattern-based-querying.adoc[Pattern-based querying]: Introduction to pattern matching, which forms the basis of all TypeQL queries for reading and writing data.
+6. Reading data (coming soon): Complete guide to read queries, covering basic query structure, subqueries, aggregations, sorting, and pagination.
+7. Writing data (coming soon): Complete guide to write queries, covering insert, delete, and update operations. Examines effects of schema constraints on inserted data.
+8. Reasoning over data (coming soon): Introduction to using TypeDB's built-in symbolic reasoning engine to derive new data using rules defined in first-order logic.
+
+The lessons are mostly self-contained but intended to be followed in order. If you already have experience with TypeDB, you may want to try skipping topics you feel confident on.

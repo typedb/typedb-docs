@@ -1,0 +1,218 @@
+= 5.3 - Polymorphic data patterns
+
+== Polymorphism in TypeDB
+
+The basic data patterns we've seen so far haven't leveraged any of the polymorphic features in the schema. To begin constructing polymorphic patterns, we'll first need to review how polymorphism works in TypeDB.
+
+There are three types of polymorphism that TypeDB implements:
+
+Inheritance polymorphism:: Allows us to define type hierarchies in the schema and then query those hierarchies declaratively.
+Interface polymorphism:: Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
+Parametric polymorphism:: Allows us to write declarative queries that are completely independent of the schema.
+
+We've seen in xref:learn::4-designing-schemas/4-designing-schemas.adoc[Lesson 4] how we can define type hierarchies along with interfaces and their implementations, so in this section we will see how we can leverage each type of polymorphism in our data patterns.
+
+== Inheritance polymorphism
+
+We have already seen an example of a query leveraging inheritance polymorphism in xref:learn::3-running-your-first-queries/3.1-retrieving-attributes-of-entities.adoc[Lesson 3.1].
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title, page-count;
+----
+
+Here, the variable `$book` will match instances of `paperback`, `hardback`, and `ebook` because they are all subtypes of `book`. In fact, it is not possible to return a direct instance of `book` because it is an abstract type. The pattern in this query is quite a simple one.
+
+[,typeql]
+----
+$book isa book;
+----
+
+We could also construct more complex ones, for instance the following.
+
+[,typeql]
+----
+$book isa book, has isbn $isbn;
+----
+
+In this case, both `book` and `isbn` have subtypes (and are abstract), so there are a total of six possible pairs of return types for these variables, and a match could comprise any one of these pairs.
+
+[%header,cols="^.^1,^.^1"]
+|===
+| Type of `book`
+| Type of `isbn`
+| `paperback`
+| `isbn-13`
+| `paperback`
+| `isbn-10`
+| `hardback`
+| `isbn-13`
+| `hardback`
+| `isbn-10`
+| `ebook`
+| `isbn-13`
+| `ebook`
+| `isbn-10`
+|===
+
+Combining polymorphism over multiple variables within a single pattern will result in a *combinatorial* number of possible return types for that [#_footnote_1]#pattern#^<<_footnotes,1>>^. The following pattern involves the `book`, `isbn`, and `contribution` supertypes, which resolve to three, two, and four instantiable types respectively, so there are 24 possible sets of return types for the whole pattern!
+
+[,typeql]
+----
+$book isa book, has isbn $isbn;
+$contributor isa contributor;
+$contribution (work: $book, contributor: $contributor) isa contribution;
+----
+
+== Role inheritance
+
+Let's recall what roles each subtype of `contribution` can be instantiated with:
+
+* `contribution` with roles `work` and `contributor`
+* `authorship` with roles `work` and `author`
+* `editing` with roles `work` and `editor`
+* `illustration` with roles `work` and `illustrator`
+
+Despite the fact that we specified that `$contribution` has the role `contributor` in the previous pattern, we can still return instances of `authorship`, `editor`, and `illustrator`, even though those relation types do not have the `contributor` role. This is because we *overrode* `contributor` with the `as` keyword when we defined the relation subtypes, so `author`, `editor`, and `illustrator` are the role's subtypes and can be returned by inheritance polymorphism!
+
+[,typeql]
+----
+contribution relates work, relates contributor;
+authorship relates author as contributor;
+editing relates editor as contributor;
+illustration relates illustrator as contributor;
+----
+
+If we want to match only a specific subtype of `contribution`, we can just modify the pattern to refer to the subtype we are interested in, for example `authorship`.
+
+[,typeql]
+----
+$contribution (work: $book, contributor: $contributor) isa authorship;
+----
+
+The same would work for `editing` and `illustration`, but what if we want to match only instances of `contribution` without its subtypes? Unlike `book` and `isbn`, `contribution` is not abstract, so we might want to query for other contributors that do not have a specific kind of contribution listed. In this case, we can use the `isa!` keyword.
+
+[,typeql]
+----
+$contribution (work: $book, contributor: $contributor) isa! contribution;
+----
+
+While the `isa` keyword specifies the type of a variable in a polymorphic manner, the `isa!` keyword is used to specify the _exact_ type of a variable, without leveraging inheritance polymorphism. In this pattern, `$contribution` can only be of type `contribution`, and not any of its subtypes.
+
+== Interface polymorphism
+
+We have also already seen an example of interface polymorphism in xref:learn::3-running-your-first-queries/3.3-retrieving-types-of-data-instances.adoc[Lesson 3.3].
+
+[,typeql]
+----
+match
+$rating (rater: $user, rated: $book) isa rating;
+$publish (publisher: $publisher, published: $book) isa publishing;
+$user-loc (place: $state, located: $user) isa location;
+$pub-loc (place: $state, located: $publish) isa location;
+$state isa state;
+fetch
+$rating: score;
+----
+
+The pattern in this query is more complex, so we will focus on the specific parts of it that constrain the `$user` variable.
+
+[,typeql]
+----
+$rating (rater: $user, rated: $book) isa rating;
+$user-loc (place: $state, located: $user) isa location;
+----
+
+We have seen in xref:learn::5-pattern-based-querying/5.1-patterns-as-constraints.adoc[Lesson 5.1] that `$user` must be of type `user`, because only `user` plays both `rater` in `rating` and `located` in `location`. While `$user` only resolves to a single type, interface polymorphism is still being leveraged here to infer its return type from the implemented interfaces. Consider instead the following pattern.
+
+[,typeql]
+----
+$location (place: $uk, located: $x) isa location;
+$uk isa state, has name "United Kingdom";
+----
+
+In this case, `$x` can be resolved to any type that plays `located` in `location`, which could be any of `user`, `publishing`, or `place`. This pattern will match anything located in the UK regardless of what it is. We can even match entities (like instances of `user`) and relations (like instances of `publishing`) for the same variable! In particular, we have leveraged a *role interface* here, but we could also leverage an *ownership interface* in the same way, as in the following query.
+
+[,typeql]
+----
+$x has name "Austin";
+----
+
+This time, `$x` could match an instance of any type that owns `name`: `publisher`, `contributor`, or `place`.
+
+== Parametric polymorphism
+
+Parametric patterns are unique in that they are valid over any schema. They match particular data by _structure_ rather than by semantics. Let's see some examples.
+
+[,typeql]
+----
+$object has $attribute;
+----
+
+This pattern will match any object that owns an attribute. Meanwhile, the following pattern matches any two objects that are roleplayers in the same relation;
+
+[,typeql]
+----
+$relation ($roleplayer-1, $roleplayer-2);
+----
+
+In this pattern we have omitted the roles that the two objects play! In general, we can omit roles in a relation tuple if we do not care what they are. If we instead wanted to variablize the roles (for example, to retrieve them in a Fetch query), we could use the following pattern instead.
+
+[,typeql]
+----
+$relation ($role-1: $roleplayer-1, $role-2: $roleplayer-2);
+----
+
+The defining feature of parametric statements is that they do not include any type names, except possibly the root types `entity`, `relation`, and `attribute`, which allows them to be run against any schema. Much like using https://en.wikipedia.org/wiki/Generic_programming[generics] in application code, using parametric patterns can be a challenging aspect of TypeQL, but allows for extremely powerful queries that cannot be expressed in non-polymorphic query languages. For example, the following pattern matches pairs of *multivalued attributes*, attributes of the same object that have the same type but different values.
+
+[,typeql]
+----
+$object has $attribute-1, has $attribute-2;
+$attribute-1 isa! $attribute-type;
+$attribute-2 isa! $attribute-type;
+not { $attribute-1 is $attribute-2; };
+----
+
+Here we have used two TypeQL keywords not introduced yet, `not` and `is`. We will cover them properly in xref:learn::5-pattern-based-querying/5.5-pattern-logic.adoc[Lesson 5.5].
+
+== Combining types of polymorphism
+
+Many useful polymorphic patterns combine multiple forms of polymorphism. This pattern that we encountered earlier actually combines inheritance and interface polymorphism.
+
+[,typeql]
+----
+$location (place: $uk, located: $x) isa location;
+$uk isa state, has name "United Kingdom";
+----
+
+While `$x` can be resolved to `user`, `publishing`, or `place` by interface polymorphism, `place` could then be resolved to `city` or `state` by inheritance polymorphism. This next pattern, while not particularly practical, has elements of all three types of polymorphism.
+
+[,typeql]
+----
+$x has name $name;
+$r ($x, $y);
+----
+
+As an exercise, try determining the possible instantiable return types of `$x`, `$r`, and `$y`. Examining the xref:image$pera-diagrams/bookstore-diagram-final.png[model] again may be helpful.
+
+.Answers
+[%collapsible]
+====
+* Possible types of `$x`: `contributor`, `publisher`, `city`, `state`
+* Possible types of `$r`: `contribution`, `authorship`, `editing`, `illustration`, `publishing`, `location`
+* Possible types of `$y`: `paperback`, `hardback`, `ebook`, `user`, `publishing`, `city`, `state`
+====
+
+[#_footnotes]
+== Footnotes
+
+1. <<_footnote_1,^>> This is not strictly true in the general case, as some of the combinations might be forbidden by the schema. This will occur when the return types of one variable depend on the return type of another. For example, in the last query shown on this page (utilising all three forms of polymorphism), only 23 of the 168 possible combinations of return types are valid.
++
+[,typeql]
+----
+$x has name $name;
+$r ($x, $y);
+----

@@ -1,0 +1,151 @@
+= 4.6 - Defining owners and roleplayers
+
+== Defining owners
+
+With all our types and interfaces defined, we can now begin defining the interface implementations. We'll begin with ownership interfaces, and the following Define query creates seven new ownership implementations.
+
+[,typeql]
+----
+define
+book owns title,
+    owns page-count;
+publishing owns year;
+user owns age;
+order owns status;
+rating owns score;
+login owns success;
+----
+
+When used in a Define query, the `owns` keyword defines a new ownership implementation. Here, for example, we have specified that the entity type `book` owns the attribute types `title` and `page-count` (i.e. implements the ownership interfaces of those attribute types). The syntax is the same for entity and relation types, as can be seen in the way we have defined the relation type `publishing` to own `year`. Recall from xref:learn::4-designing-schemas/4.1-conceptual-modeling.adoc[Lesson 4.1] that only object types (entity and relation types) can implement interfaces.
+
+Implementation of interfaces is *independent* of other implementations. In the following query, we have independently given three different object types ownership of `name`, and two object types ownership of `timestamp`.
+
+[,typeql]
+----
+define
+contributor owns name;
+publisher owns name;
+place owns name;
+order owns timestamp;
+login owns timestamp,
+----
+
+This will allow us to perform polymorphic queries over these attribute types and their owners, as we will see in xref:learn::5-pattern-based-querying/5.3-polymorphic-data-patterns.adoc[Lesson 5.3].
+
+== Defining roleplayers
+
+The syntax for defining roleplayers is analogous to that for defining owners. In the following query, we define seven new role implementations.
+
+[,typeql]
+----
+book plays publishing:published,
+    plays order:product,
+    plays rating:rated;
+publisher plays publishing:publisher;
+user plays order:buyer,
+    plays rating:rater,
+    plays login:subject;
+----
+
+When used in a Define query, the `plays` keyword defines a new role implementation. While attribute types only have a single default ownership interface, relation types have multiple named role interfaces. As a result, role implementations must be described using the name of both the relation and the role, separated by a `:` character. For example, we have defined above that the entity type `book` plays the role `published` in the relation type `publishing` (i.e. implements the `published` interface of `publishing`). As with ownerships, the syntax for defining a relation type as a roleplayer is the same as that for an entity type. Roleplayer definitions are likewise independent of each other, as exemplified in the following query.
+
+[,typeql]
+----
+user plays location:located;
+publishing plays location:located;
+place plays location:place,
+    plays location:located;
+----
+
+Here `user`, `publisher`, and `place` play `located` in `location`, and `place` plays both `place` (the role) and `located` in `location`.
+
+== Constraining ownerships
+
+TypeQL provides syntax for defining key and unique constraints on attribute ownerships via *annotations*. An annotation is an additional constraint applied to a statement, denoted by an `@` prefix. The following query defines four such constraints.
+
+[,typeql]
+----
+book owns isbn-13 @key,
+    owns isbn-10 @unique;
+user owns id @key;
+order owns id @key;
+----
+
+When applied to an ownership statement in a Define query, the `@key` and `@unique` annotations apply a key or unique constraint respectively to that ownership.
+
+A *key constraint* requires that instances of the owner type own exactly one instance of the attribute type, and that it must be uniquely owned by the owner type. In the example above, every instance of `book` must own exactly one instance of `isbn-13`, and no two instances of `book` can own the same instance of `isbn-13`.
+
+A *unique constraint* requires only that instances of the attribute type are uniquely owned by the owner type. In the example above, no two instances of `book` can own the same instance of `isbn-10`, but an instance of `book` can own any number of instances of `isbn-10` (including none).
+
+If a data write query violates an ownership constraint, then the query will fail on commit and the transaction will be rolled back. We will see examples of this in Lesson 7.4 (coming soon).
+
+It is important to note that ownership constraints apply to the _specific ownership_ they are defined on rather than to the attribute in general. In the example above, key constraints are applied to the ownership of `id` by both `user` and `order`. This means that, while two instances of `user` (or two instances of `order`) could not own the same instance of `id`, it is perfectly permissible for an instance of `user` and an instance of `order` to own the same instance of `id`. Exactly the same applies to unique constraints.
+
+== Inheritance behaviour
+
+The way that interface implementations are inherited is described by their https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)[variance].
+Definitions of interface implementations (i.e. `owns` and `plays` statements) are *covariant* in the implementing type (the owner or roleplayer), and *invariant* in the implemented [#_footnote_1]#interface#^<<_footnotes,1>>^ (the ownership or role). Let's see some examples of this.
+
+The following query defines that `book` plays the role `work` in `contribution`.
+
+[,typeql]
+----
+define
+book plays contribution:work;
+----
+
+The entity type `book` has three subtypes: `paperback`, `hardback`, and `ebook`. Because the implementation is covariant in the roleplayer (`book`), its subtypes `paperback`, `hardback`, and `ebook` also play the role `work`. The next query defines that `contributor` plays the role `contributor` in `contribution`.
+
+[,typeql]
+----
+define
+contributor plays contribution:contributor;
+----
+
+The role `contributor` has three subtypes: `author`, `editor`, and `illustrator`, as defined using the role-overriding keyword `as` in xref:learn::4-designing-schemas/4.4-defining-relation-types.adoc[Lesson 4.4]. Because the implementation is invariant in the role (`contributor`), the entity type `contributor` _cannot_ play the role subtypes `author`, `editor`, and `illustrator`. In order to allow these capabilities, we would need to explicitly define them as follows.
+
+[,typeql]
+----
+define
+contributor plays authorship:author,
+    plays editing:editor,
+    plays illustration:illustrator;
+----
+
+The same variance rules also apply to attribute ownerships. If we declared that an object type owned an attribute type, subtypes of the object type could also own the attribute type, but the object type could not own subtypes of the attribute type.
+
+
+[#_footnotes]
+== Footnotes
+
+1. <<_footnote_1,^>> The difference in variance between an implemented interface and the implementing type is essential to prevent logical fallacies in the data model. Consider the following set of facts:
++
+--
+* All humans are animals.
+* All geese are animals.
+* All animals can join animal groups.
+* All flocks are animal groups.
+* All geese can join flocks.
+
+Now consider the following deduction:
+
+* All animals can join animal groups, and all flocks are animal groups, therefore all animals can join flocks.
+
+If this deduction is correct, it would allow humans to join flocks, despite the fact that only geese should be able to join flocks! The deduction is obviously fallacious, specifically by https://en.wikipedia.org/wiki/Affirming_the_consequent[affirming the consequent]. Now consider if we translated our list of facts into TypeQL. It might look something like this:
+
+[,typeql]
+----
+define
+animal sub entity, abstract;
+human sub animal;
+goose sub animal;
+animal-group sub relation,
+    relates group-member;
+flock sub animal-group,
+    relates flock-member as group-member;
+animal plays animal-group:group-member;
+goose plays flock:flock-member;
+----
+
+If definitions of interface implementations were covariant in the implemented interface (instead of invariant), then `animal`, and all of its subtypes including `human`, would inherit the ability to play `flock-member`!
+--
