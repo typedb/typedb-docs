@@ -8,7 +8,7 @@ This page assumes you've already followed instructions from the xref:manual::wri
 Here, you'll see how to retrieve data from a database and project it as a JSON using Studio,
 Console, or one of the drivers.
 
-== How to send an Insert query
+== How to send a Fetch query
 
 The easiest way to send a Fetch query is to use one of the TypeDB clients:
 xref:manual::studio.adoc[Studio] or xref:manual::console.adoc[Console]:
@@ -167,10 +167,22 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
 
 [,js]
 ----
+let query = `
+            match
+            $u isa user;
+            fetch
+            $u: name, email;
+            `;
+
 session = await driver.session("sample_db", SessionType.DATA);
-transaction = await session.transaction(TransactionType.WRITE);
-await transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
-await transaction.commit();
+transaction = await session.transaction(TransactionType.READ);
+let iterator = transaction.query.fetch(query);
+let answers = await iterator.collect();
+k = 0;
+for (let i = 0; i < answers.length; i++) {
+    k++;
+    console.log("JSON #" + k + ": " + JSON.stringify(answers[i], null, 4));
+}
 ----
 --
 
