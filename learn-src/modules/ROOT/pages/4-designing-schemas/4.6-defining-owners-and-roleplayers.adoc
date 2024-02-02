@@ -77,7 +77,7 @@ A *key constraint* requires that instances of the owner type own exactly one ins
 
 A *unique constraint* requires only that instances of the attribute type are uniquely owned by the owner type. In the example above, no two instances of `book` can own the same instance of `isbn-10`, but an instance of `book` can own any number of instances of `isbn-10` (including none).
 
-If a data write query violates an ownership constraint, then the query will fail on commit and the transaction will be rolled back. We will see examples of this in xref:learn::7-writing-data/7.4-write-constraints.adoc[Lesson 7.4].
+If a data write query violates an ownership constraint, then the query will fail on commit and the transaction will be rolled back. We will see examples of this in Lesson 7.4 (coming soon).
 
 It is important to note that ownership constraints apply to the _specific ownership_ they are defined on rather than to the attribute in general. In the example above, key constraints are applied to the ownership of `id` by both `user` and `order`. This means that, while two instances of `user` (or two instances of `order`) could not own the same instance of `id`, it is perfectly permissible for an instance of `user` and an instance of `order` to own the same instance of `id`. Exactly the same applies to unique constraints.
 
