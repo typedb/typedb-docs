@@ -1,2 +1,213 @@
 = Get query
+:experimental:
+:tabs-sync-option:
 
+A Get query is used to retrieve concepts from a TypeDB database.
+//#todo Add a link to the Concept term definition
+
+This page assumes you've already followed instructions from the xref:manual::writing/overview.adoc[] section.
+Here, you'll see how to retrieve data from a database using Studio, Console, or one of the drivers.
+
+== How to send a Get query
+
+The easiest way to send a Get query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Switch to `data` session and `write` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL Insert query
+[,typeql]
+----
+match
+$u isa user;
+fetch
+$u: name, email;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a session and transaction:
++
+[,bash]
+----
+transaction sample_db schema write
+----
+. Send the Define query:
++
+[,bash]
+----
+match
+$u isa user;
+fetch
+$u: name, email;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+The resulted JSON should look this:
+
+[,json]
+----
+{
+    "u": {
+        "email": [ { "value": "alice@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Alice", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "email": [ { "value": "the-bob@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "email": [ { "value": "charlie@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Charlie", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+
+To send a Fetch query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+//#todo Check the code
+//#todo Add the response processing
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,rust]
+----
+let query = "match
+            $u isa user;
+            fetch
+            $u: name, email;";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("sample_db")?;
+let session = Session::new(db, SessionType::Data)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().insert(&query)?;
+tx.commit().resolve()?;
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,python]
+----
+query = """
+        match
+        $u isa user;
+        fetch
+        $u: name, email;
+        """
+with driver.session("sample_db", SessionType.DATA) as session:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        transaction.query.insert(query)
+        transaction.commit()
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,java]
+----
+try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
+        Transaction.commit();
+    }
+}
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,js]
+----
+let query = `
+            match
+            $u isa user;
+            fetch
+            $u: name, email;
+            `;
+
+session = await driver.session("sample_db", SessionType.DATA);
+transaction = await session.transaction(TransactionType.READ);
+let iterator = transaction.query.fetch(query);
+let answers = await iterator.collect();
+k = 0;
+for (let i = 0; i < answers.length; i++) {
+    k++;
+    console.log("JSON #" + k + ": " + JSON.stringify(answers[i], null, 4));
+}
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,cpp]
+----
+TypeDB::Options options;
+    {
+        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
+        tx.commit();
+    }
+----
+--
+====
+
+== Response interpretation
+
+A Fetch query returns all fetched values projected in JSON.
+
+The response is a Stream/Iterator with a JSON object for every solution of a `match` clause pattern.
+A concept can't be returned directly, but a value or a type can be projected into the resulting JSON.
+To return full concepts, see the xref:manual::reading/get.adoc[] page.
