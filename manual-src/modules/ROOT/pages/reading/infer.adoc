@@ -1,2 +1,258 @@
 = Inference
+:experimental:
+:tabs-sync-option:
+
+Rule-based inference can derive new facts from matching patterns in the existing data.
+It can be used in read transactions only, so no new facts get to be persisted in the database.
+
+This page assumes you've already followed instructions from the xref:manual::reading/get.adoc[] page.
+Here, you'll see how to retrieve inferred data from a database using Studio, Console, or one of the drivers.
+
+== Rule definition
+
+Inference uses rules defined in the schema of a database.
+Since our xref:manual::defining/define.adoc#_schema_example[schema example] from the
+xref:manual::defining/define.adoc[] page has no rules in it, let's add a new rule:
+
+.Simple rule example
+[,typeql]
+----
+rule users:
+when {
+    $u isa user;
+} then {
+    $u has name "User";
+};
+----
+
+Add the `define` keyword at the beginning and send it as a Define query.
+See xref:manual::defining/define.adoc#_how_to_send_a_define_query[How to send a define query] for exact instructions.
+
+== How to send a query with inference
+
+The easiest way to send a read query with inference is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Switch to `data` session and `read` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL Insert query
+[,typeql]
+----
+match
+$u isa user;
+fetch
+$u: name;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a session and transaction:
++
+[,bash]
+----
+transaction sample_db schema read
+----
+. Send the Define query:
++
+[,bash]
+----
+match
+$u isa user;
+fetch
+$u: name;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+The resulted Log output should look like this:
+
+[,js]
+----
+{
+    "u": {
+        "name": [
+            { "value": "Alice", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "User", "type": { "label": "name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "name": [
+            { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "User", "type": { "label": "name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "name": [
+            { "value": "Charlie", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "User", "type": { "label": "name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+
+To send a query with inference programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+//#todo Check the code
+//#todo Add the response processing
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,rust]
+----
+let query = "match
+            $u isa user;
+            fetch
+            $u: name;";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("sample_db")?;
+let session = Session::new(db, SessionType::Data)?;
+let tx = session.transaction(TransactionType::Read)?;
+tx.query().get(&query)?;
+tx.commit().resolve()?;
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,python]
+----
+query = """
+        match
+        $u isa user;
+        fetch
+        $u: name;
+        """
+with driver.session("sample_db", SessionType.DATA) as session:
+    with session.transaction(TransactionType.READ) as transaction:
+        transaction.query.get(query)
+        transaction.commit()
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,java]
+----
+try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.READ)) {
+        Transaction.query().get("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
+        Transaction.commit();
+    }
+}
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,js]
+----
+let query = `
+            match
+            $u isa user, has email $e;
+            get
+            $u, $e;
+            `;
+
+session = await driver.session("sample_db", SessionType.DATA);
+transaction = await session.transaction(TransactionType.READ);
+let iterator = transaction.query.get(query);
+let answers = await iterator.collect();
+k = 0;
+for (let i = 0; i < answers.length; i++) {
+    k++;
+    console.log("JSON #" + k + ": " + JSON.stringify(answers[i], null, 4));
+}
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,cpp]
+----
+TypeDB::Options options;
+    {
+        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::READ, options);
+        (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
+        tx.commit();
+    }
+----
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::data/get.adoc[]
+[.clickable]
+****
+Learn more about Get queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:typeql::data/fetch.adoc[]
+[.clickable]
+****
+Learn more about Fetch queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:typedb::developing/infer.adoc[Reasoning over data]
+[.clickable]
+****
+* xref:typedb::developing/read.adoc[Defining rules]
+* xref:typedb::developing/read.adoc[Querying derived data]
+* xref:typedb::developing/read.adoc[Rule branching and chaining]
+* xref:typedb::developing/read.adoc[Rule recursion]
+****
+--
 
