@@ -28,7 +28,10 @@ Then use the steps below:
 .TypeQL Insert query
 [,typeql]
 ----
-insert $u isa user, has name "Alice", has email "alice@vaticle.com";
+insert
+$user1 isa user, has name "Alice", has email "alice@vaticle.com";
+$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$friendship (friend:$user1, friend: $user2) isa friendship;
 ----
 . Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
 . Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
@@ -47,7 +50,10 @@ transaction sample_db schema write
 +
 [,bash]
 ----
-insert $u isa user, has name "Alice", has email "alice@vaticle.com";
+insert
+$user1 isa user, has name "Alice", has email "alice@vaticle.com";
+$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$friendship (friend:$user1, friend: $user2) isa friendship;
 ----
 +
 Push btn:[Enter] twice to send the query.
@@ -57,15 +63,6 @@ Push btn:[Enter] twice to send the query.
 ----
 commit
 ----
-////
-[,bash]
-----
-typedb console --command="database create sample_db" \
---command="transaction sample_db schema write" \
---command="define user sub entity;" \
---command="commit"
-----
-////
 --
 ====
 
@@ -152,28 +149,44 @@ Where `driver` is an instance of a driver, xref:manual::connecting/connection.ad
 --
 ====
 
-== Checking the result of an insert
+== Response interpretation
 
-The `insert` clause of an Insert query is executed once per every result matched by the `match` clause.
-To estimate the number of inserts,
-you can run a dedicated `fetch` or `get` query right before inserting with the same `match` clause,
-or check the response of the Insert query, either in Studio/Console or programmatically.
+An Insert query returns all concepts that got inserted into the database.
 
-.Checking the number of matched results
-[,typeql]
+An `insert` clause is executed once per every result matched by the `match` clause of the same Insert query.
+If the `match` clause is omitted, then the `insert` clause is executed exactly once.
+
+You can check the response of an Insert query to see how many concepts got inserted.
+
+Alternatively, you can estimate the number of inserts in an Insert query with a `match` clause
+by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
+preventing data changes from other transactions from influencing the results.
+
+=== Check the response
+
+Let's say we send the following Insert query with a `match` clause:
+
+.Match-insert query example
+[.typeql]
 ----
-match $bob isa user, has email "bob@vaticle.com";
-get; count;
+match
+$u isa user, has name "Bob";
+insert
+$new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+$f($u,$new-u) isa friendship;
 ----
 
-=== Studio and Console output examples
+The easiest way to check the response for the query is to use a TypeDB client: Studio or Console.
 
-.Insert query response example
+.Match-insert query response example
 [tabs]
 ====
 Studio::
 +
 --
+See the Log tab output at the bottom:
+
 .Log output
 [,typeql]
 ----
@@ -189,6 +202,8 @@ Studio::
 Console::
 +
 --
+See the terminal output:
+
 .CLI output
 [,typeql]
 ----
@@ -203,10 +218,11 @@ answers: 1, total duration: 24 ms
 --
 ====
 
-=== Checking the response programmatically
+To process the response of an Insert query programmatically,
+we need to collect the response and iterate through it.
+The number of iterations is equal to the number of the `insert` clause executions:
 
-For an Insert query the code to send the query and check the response looks like this:
-
+.Process Insert query response
 [tabs]
 ====
 Rust::
@@ -232,13 +248,25 @@ Python::
 --
 [,python]
 ----
-query = "match $alice isa user, has email 'alice@vaticle.com';" \
-        $bob isa user, has email 'bob@vaticle.com';" \
-        insert $f (friend: $alice, friend: $bob) isa friendship;"
-with driver.session("sample_db", SessionType.DATA) as session:
-    with session.transaction(TransactionType.WRITE) as transaction:
-        transaction.query.insert(query)
-        transaction.commit()
+QUERY = """match
+            $u isa user, has name "Bob";
+            insert
+            $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+            $f($u,$new-u) isa friendship;"""
+
+with TypeDB.core_driver("127.0.0.1") as driver:
+    with driver.session("sample_db", SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            response = transaction.query.insert(QUERY)
+            i = 0
+            for concept in response:
+                i += 1
+            if i == 1:
+                transaction.commit()
+                print("Inserted one new user and one relation")
+            else:
+                print(f"Unexpected number of inserts attempted: {i}")
+                transaction.close()
 ----
 
 Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
@@ -300,3 +328,20 @@ TypeDB::Options options;
 Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 ====
+
+The example above checks the response of an insert query and commits the changes only if the number of
+inserts is equal to one.
+Otherwise, it closes the transaction without committing the changes.
+
+=== Estimate the number of inserts with a read query
+
+The most direct approach is to send an aggregated Get query to count the number of matches.
+
+.Checking the number of matched results
+[,typeql]
+----
+match $bob isa user, has email "bob@vaticle.com";
+get; count;
+----
+
+The response should be a single number.
