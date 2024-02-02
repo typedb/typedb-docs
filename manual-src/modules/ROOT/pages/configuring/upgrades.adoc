@@ -1,6 +1,6 @@
 = Upgrades
 :keywords: typedb, upgrade, version, update, migration, compatibility
-:page-aliases: typedb::admin/upgrading.adoc
+//:page-aliases: typedb::admin/upgrading.adoc
 :pageTitle: Upgrading
 :summary: TypeDB version upgrading.
 
@@ -21,12 +21,12 @@ server installations.
 
 To do this, simply shut down the servers of the old version, and copy the database to migrate from the data
 directory (set by the `storage.data` parameter in the
-xref:managing/configuration.adoc#_the_default_location_of_the_config_file[config]) into the data directory of the new
+xref:manual::configuring/config.adoc[config]) into the data directory of the new
 TypeDB server installation.
 
-Alternatively, just update the new server's
-xref:managing/configuration.adoc#_the_default_location_of_the_config_file[configuration file] to use the same
-*data directory* path as the old one. That is why we xref:managing/configuration.adoc#_storage_configuration[recommend]
+Alternatively, just update the new server's xref:manual::configuring/config.adoc[configuration file] to use the same
+*data directory* path as the old one.
+That is why we xref:manual::configuring/config.adoc[recommend]
 storing data separately from TypeDB server files.
 
 [#_compatibility]
@@ -49,10 +49,10 @@ information on TypeDB server database compatibility see the table below.
 | 2.8.0 to latest
 |===
 
-To migrate data between different database encoding versions use the <<_export_and_import,Export and import>> features.
+To migrate data between different database encoding versions, use the <<_export_and_import,Export and import>> features.
 
 [#_export_and_import]
 == Export and import
 
 We can use the export/import functionality to migrate our data while switching to a newer version of TypeDB server.
-Please see the xref:managing/export-import.adoc[Export/import] page for information on how to do that.
+Please see the xref:manual::configuring/export.adoc[] page for information on how to do that.

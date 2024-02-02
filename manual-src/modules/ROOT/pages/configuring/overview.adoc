@@ -23,6 +23,36 @@ TypeDB command line arguments documentation: overriding config parameters and sp
 ****
 --
 
+== Maintenance
+
+[cols-2]
+--
+.xref:manual::configuring/logs.adoc[Logs]
+[.clickable]
+****
+Gathering and storing logs configuration.
+****
+
+.xref:manual::configuring/export.adoc[Export and Import]
+[.clickable]
+****
+Exporting and importing schema and data of a database in TypeDB.
+****
+
+.xref:manual::configuring/upgrades.adoc[Upgrades]
+[.clickable]
+****
+Upgrading TypeDB server's version.
+****
+
+.xref:manual::configuring/users.adoc[Users]
+[.clickable]
+****
+User management operations.
+****
+--
+
+
 == Host machine requirements
 
 The minimum host machine configuration for running a single TypeDB database is 4 (v)CPUs, 10 GB memory, with SSD.
@@ -68,4 +98,17 @@ ulimit -n
 
 We recommend this is increased to at least `50 000`.
 
+== Diagnostics
 
+TypeDB optionally reports anonymous diagnostics to guide the development and optimisation of TypeDB.
+This data includes unexpected errors and occasional system status updates for number and size of databases,
+and number of transactions executed per hour.
+
+To disable error and diagnostic reporting set the `diagnostics.reporting.enabled` to `false` in the config file:
+
+[,yaml]
+----
+diagnostics:
+  reporting:
+    enable: false
+----
