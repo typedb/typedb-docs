@@ -1,0 +1,33 @@
+= 4.7 - The bookstore schema
+
+== Review
+
+In this lesson, we learned the principles of conceptual PERA modeling and explored how they can be applied to an example data model for a bookstore website. We then saw how the different elements of the model can be translated into TypeQL, allowing us to directly encode the model into a schema without having to translate it into a logical model. Particularly, we saw how we define new entity, relation, and attribute types, and implementations of ownership and role interfaces.
+
+== The final schema
+
+The following Define query defines the entire bookstore schema in one go, combining the individual statements introduced so far. Try comparing it to the xref:image$pera-diagrams/bookstore-diagram-final.png[model] to see how each model element maps onto a TypeQL statement.
+
+[,typeql]
+----
+include::attachment$bookstore-schema.tql[lines=18..]
+----
+
+== Visualizing the schema
+
+If you are using *TypeDB Studio*, you can view a database's schema as a PERA diagram. To do so, use a *data* session and *read* transaction to *run* image:studio-icons/run.png[] the following query.
+
+[,typeql]
+----
+match
+$t sub $u;
+get $t;
+----
+
+Here is the visualization we get for the bookstore schema.
+
+image::schema-visualization.png[role=framed, width = 75%, link=self]
+
+Along with the type browser, this feature is especially useful when working on designing a schema, and TypeDB Studio is the recommended client for schema design.
+
+The query used to generate this visualization is an example of a Get query. When run via Studio, Get queries return visualizations in the format of PERA diagrams. When run via a Driver API, Get queries return *stateful data objects*. Get queries and stateful object retrieval are advanced topics not covered in this course, aside from this one example. If you would like to make use of these features, it is recommended to complete this course and then read the corresponding guide.

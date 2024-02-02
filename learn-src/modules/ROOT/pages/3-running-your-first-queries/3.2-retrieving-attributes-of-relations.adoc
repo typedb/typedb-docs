@@ -1,0 +1,86 @@
+= 3.2 - Retrieving attributes of relations
+
+== Representing relations
+
+In xref:learn::3-running-your-first-queries/3.1-retrieving-attributes-of-entities.adoc[Lesson 3.1], we retrieved the attributes of entities. In this lesson, we'll retrieve the attributes of relations and their *roleplayers*. Unlike entities, which can be created independently, relations must be instantiated with reference to one or more roleplayers. These dependencies come in the form of *roles*.
+
+In order to represent a relation in TypeQL, we use tuple syntax of the following form.
+
+[,typeql]
+----
+$rating (rater: $user, rated: $book) isa rating;
+----
+
+This statement signifies that:
+
+* `$rating` is of type `rating`.
+* `$user` plays the role of `rater` in `$rating`.
+* `$book` plays the role of `rated` in `$rating`.
+
+In this case, `$rating` is a binary relation between the two roleplayers `$user` and `$book`, but there is nothing in principle that stops us from using a tuple with a different number of elements to represent a relation with one, three, or any number of roleplayers. We will explore such relations in xref:learn::5-pattern-based-querying/5.2-basic-data-patterns.adoc[Lesson 5.2].
+
+== Projections
+
+In the following query, we retrieve all the book ratings for paperbacks in the database. For each rating, we return the user's ID, the book's title, and the score that the user gave the book. The syntax in the `fetch` clause for retrieving a relation's attributes is identical to that used for an entity's attributes.
+
+[,typeql]
+----
+match
+$user isa user;
+$book isa paperback;
+$rating (rater: $user, rated: $book) isa rating;
+fetch
+$user: id;
+$book: title;
+$rating: score;
+----
+[,json]
+----
+result placeholder
+----
+
+In a relational database, the type `rating` would be represented by an https://en.wikipedia.org/wiki/Associative_entity[associative table] with foreign keys to the `user` and `paperback` tables^1^. The above TypeQL query would be equivalent to the following SQL query:
+
+[,sql]
+----
+SELECT user.id, paperback.title, rating.score
+FROM rating
+INNER JOIN user ON user.id = rating.user_id
+INNER JOIN paperback ON paperback.isbn_13 = rating.book_isbn_13;
+----
+
+A key difference here is that the TypeQL query uses roles to connect the `$rating` relation and its roleplayers `$user` and `$book`, whereas the SQL query connects different rows based on literal value equalities. Simply sharing a variable between multiple statements is sufficient to describe the connections between data instances, without having to identify attribute values to join on (like the user ID and book ISBN). This will be explored further in xref:learn::5-pattern-based-querying/5-pattern-based-querying.adoc[Lesson 5.1].
+
+== Selections
+
+Like projections, the syntax for performing selections on relations is the same as that for entities. In the following query, we retrieve the IDs of users who gave `"placeholder title"` a perfect score.
+
+[,typeql]
+----
+match
+$user isa user;
+$book isa paperback, has title "placeholder title";
+$rating (rater: $user, rated: $book) isa rating, has score 10;
+fetch
+$user: id;
+----
+[,json]
+----
+result placeholder
+----
+
+This is because entities and relations are both *objects*, and so have similar behaviours and can be queried in similar ways. Functionally, a relation can do everything that an entity can, but also has role dependencies. In SQL, this query would be written as follows.
+
+[,sql]
+----
+SELECT user.id
+FROM rating
+INNER JOIN user ON user.id = rating.user_id
+INNER JOIN paperback ON paperback.isbn_13 = rating.book_isbn_13
+WHERE paperback.title = 'placeholder title'
+AND rating.score = 10;
+----
+
+== Footnotes
+
+1. The seasoned SQL engineer will notice that, given that we have multiple subtypes of book (paperbacks, hardbacks, ebooks), it would be a poor design choice to reference the `paperback` table in the `rating` table as this doesn't allow for other types of book to be referenced. We'd need a proper strategy for modeling the inheritance polymorphism in the model, likely one of Martin Fowler's https://search.worldcat.org/title/1381298808[ inheritance design patterns]. If we go with the https://typedb.com/fundamentals/why-polymorphic-database#pattern-3:-class-table-inheritance-17[class-table inheritance] pattern, then the foreign key would instead be to the `book` table. Conveniently, using this pattern means the `isbn_13` column of the `paperback` table would reference the `isbn_13` column of the book table, so the SQL query shown would remain the same.

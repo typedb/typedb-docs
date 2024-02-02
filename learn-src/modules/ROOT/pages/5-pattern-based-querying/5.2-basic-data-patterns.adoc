@@ -1,0 +1,197 @@
+= 5.2 - Basic data patterns
+
+== Constructing valid patterns
+
+Every DDL statement in the schema can be mapped onto equivalent DML statements in query patterns. This allows us to construct valid patterns by studying the schema. Consider the following line.
+
+[,typeql]
+----
+book owns title;
+----
+
+This tells us that the following pattern is valid.
+
+[,typeql]
+----
+$book isa book;
+$title isa title;
+$book has $title;
+----
+
+The `owns` and `has` keywords are directly analogous. Wherever an `owns` statement occurs between two types in the schema, we can construct a valid `has` statement between two instances of those types in a query pattern. The case for roles is similar to that for ownerships, though in this case the analogy is not as direct. Consider the following lines in the schema.
+
+[,typeql]
+----
+book plays authorship:work;
+contributor plays authorship:author;
+----
+
+This tells us that the following pattern is valid.
+
+[,typeql]
+----
+$book isa book;
+$contributor isa contributor;
+$authorship (work: $book, author: $contributor) isa authorship;
+----
+
+== Representing n-ary relations
+
+The tuple syntax of relations is extremely flexible, and we have only be using it in limited ways so far. We've seen how we can represent binary and unary relation types in the schema, as exemplified here.
+
+[,typeql]
+----
+rating relates rater, relates rated;
+login relates subject;
+----
+
+In order to represent an instance of `rater`, we have previously used a tuple with two elements.
+
+[,typeql]
+----
+$rating (rater: $user, rated: $book) isa rating;
+----
+
+To represent an instance of `login`, we simply use a tuple with only one element.
+
+[,typeql]
+----
+$login (subject: $user) isa login;
+----
+
+Likewise, for an n-ary relation, we can use a tuple with n elements!
+
+[,typeql]
+----
+n-ary-relation relates role-1,
+    relates role-2,
+    relates role-3,
+    relates role-4,
+    ...
+----
+
+[,typeql]
+----
+$relation (role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...) isa n-ary-relation;
+----
+
+This way, we can represent relations with any number of roles.
+
+== Representing variadic relations
+
+In the schema, we also encountered an example of a *variadic relation type*.
+
+[,typeql]
+----
+order relates buyer, relates product;
+----
+
+This is a binary relation type as it has two roles, but it is also variadic because one (or more) of the roles can be played multiple times, in this case the `product` role. If we wanted to represent an order in which a user has bought three books, we simply use a tuple in which there are three `product` elements.
+
+[,typeql]
+----
+$order (buyer: $user, product: $book-1, product: $book-2, product: $book-3) isa order;
+----
+
+Similarly, if we wanted to represent an order in which a user has bought two copies of the same book, we can have the same roleplayer play the role twice.
+
+[,typeql]
+----
+$order (buyer: $user, product: $book-1, product: $book-1) isa order;
+----
+
+By combining these two techniques, we can represent an order of arbitrary complexity using the tuple syntax.
+
+== Partial relation representations
+
+The tuple syntax can also be used to match relations with only a partial number of roleplayers specified. By default, the tuple representation of a relation represents a relation with _at least_ the roleplayers described. Let's consider the previous examples again.
+
+[,typeql]
+----
+$order (buyer: $user, product: $book-1, product: $book-2, product: $book-3) isa order;
+----
+
+This pattern will match any order in which a user has bought three books, but will also match orders in which a user has bought more than three books.
+
+[,typeql]
+----
+$order (buyer: $user, product: $book-1, product: $book-1) isa order;
+----
+
+Meanwhile, this pattern will match any order in which a user has bought two of the same book, even if they also bought other books in the same order. Remember, patterns function as lists of constraints, and anything that is not constrained is open to interpretation by the database. We will see in xref:learn::5-pattern-based-querying/5.5-pattern-logic.adoc[Lesson 5.5] how we can restrict patterns further, for example to match only orders containing exactly two books.
+
+This feature of TypeQL allows us to leave out any roleplayers we're not interested in when describing relations using the tuple syntax. For instance, if we want to match pairs of books that have been ordered together, we can use the following pattern.
+
+[,typeql]
+----
+$order (product: $book-1, product: $book-2) isa order;
+----
+
+We do not need to know about the buyer in this query pattern, so we can omit them from the tuple. Similarly, if we wanted to match all users who have placed an order, but do not care about what they ordered, we can use the following pattern.
+
+[,typeql]
+----
+$order (buyer: $user) isa order;
+----
+
+Finally, if we only wanted to match orders, but did not care about any of the roleplayers, we could skip out the tuple entirely!
+
+[,typeql]
+----
+$order isa order;
+----
+
+== Representing attributes
+
+As relation types contain objects, we need the specialized tuple syntax to represent them in patterns. As attribute types instead contain values, we can simply represent them with literals.
+
+[,typeql]
+----
+$success true isa success;
+$score 10 isa score;
+$title "placeholder title" isa title;
+$timestamp 2024-02-01T12:11:41 isa timestamp;
+----
+
+Boolean literals are represented with the TypeQL keywords `true` and `false`. String literals are represented by enclosing text in `"` or `'` delimiters. Datetime literals can be represented in any of the following formats:
+
+* `yyyy-mm-dd`
+* `yyyy-mm-ddThh:mm`
+* `yyyy-mm-ddThh:mm:ss`
+* `yyyy-mm-ddThh:mm:ss.fff`
+
+All datetimes are stored at millisecond precision, with missing digits filled by zeroes.
+
+If we do not want to specify the value of an attribute, we can omit its value. This works in a similar way to omitting the tuple representation of a relation.
+
+[,typeql]
+----
+$success isa success;
+$score isa score;
+$title isa title;
+$timestamp isa timestamp;
+----
+
+Whereas before we specified the type and value of each attribute, here we have specified only the types. This means that attributes of any value will be matched.
+
+== Representing ownerships
+
+So far, we have represented attributes independently of their owners, but we are normally interested in describe them along with an owner. As before, if we want to represent owned variables by type and value, we can do so by using a literal.
+
+[,typeql]
+----
+$login has success true;
+$rating has score 10;
+$book has title "placeholder title";
+$order has timestamp 2024-02-01T12:11:41;
+----
+
+If instead we want to represent variables only by type, then we can do so by using a variable instead of a literal.
+
+[,typeql]
+----
+$login has success $success;
+$rating has score $score;
+$book has title $title;
+$order has timestamp $timestamp;
+----
