@@ -8,13 +8,13 @@ In order to represent a relation in TypeQL, we use tuple syntax of the following
 
 [,typeql]
 ----
-$rating (user: $user, rated: $book) isa rating;
+$rating (rater: $user, rated: $book) isa rating;
 ----
 
 This statement signifies that:
 
 * `$rating` is of type `rating`.
-* `$user` plays the role of `user` in `$rating`.
+* `$user` plays the role of `rater` in `$rating`.
 * `$book` plays the role of `rated` in `$rating`.
 
 In this case, `$rating` is a binary relation between the two roleplayers `$user` and `$book`, but there is nothing in principle that stops us from using a tuple with a different number of elements to represent a relation with one, three, or any number of roleplayers. We will explore such relations in xref:learn::5-pattern-based-querying/5.2-basic-data-patterns.adoc[Lesson 5.2].
@@ -28,7 +28,7 @@ In the following query, we retrieve all the book ratings for paperbacks in the d
 match
 $user isa user;
 $book isa paperback;
-$rating (user: $user, rated: $book) isa rating;
+$rating (rater: $user, rated: $book) isa rating;
 fetch
 $user: id;
 $book: title;
@@ -60,7 +60,7 @@ Like projections, the syntax for performing selections on relations is the same 
 match
 $user isa user;
 $book isa paperback, has title "placeholder title";
-$rating (user: $user, rated: $book) isa rating, has score 10;
+$rating (rater: $user, rated: $book) isa rating, has score 10;
 fetch
 $user: id;
 ----
