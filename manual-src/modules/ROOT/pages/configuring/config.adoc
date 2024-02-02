@@ -1,1 +1,48 @@
 = Config file
+
+[#_configuration_file]
+TypeDB uses a config file with a specific YAML format.
+See the xref:manual::configuring/config.adoc[] for examples.
+
+TypeDB config file usually has the following top level sections:
+
+* `server`
+* `storage`
+* `log`
+* `vaticle-factory`
+
+[IMPORTANT]
+====
+For any change in TypeDB config file to take effect, restart the TypeDB server.
+====
+
+[#_the_default_location_of_the_config_file]
+== Config file location
+
+TypeDB ships with a default configuration file.
+The location of this file varies based on how TypeDB has been installed.
+
+For a manual download, find the configuration file in the `server/conf` directory inside the unzipped folder.
+
+For Homebrew, check the following directory (replace the `+{version-number}+` placeholder with the exact
+version installed):
+
+----
+/usr/local/Cellar/typedb/{version-number}/libexec/server/conf/config.yml
+----
+
+For APT, check the following directory:
+
+----
+/opt/typedb/core/server/conf/config.yml
+----
+
+== TypeDB Cloud cluster configuration
+
+Every server in a cluster has its own config file that contains a list of known servers in the cluster.
+A server in a cluster will not accept connections from servers that are not on the list.
+
+[NOTE]
+====
+Changes to the server configuration require a server restart to take effect.
+====
