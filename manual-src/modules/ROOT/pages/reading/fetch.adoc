@@ -22,7 +22,7 @@ to connect to TypeDB and select a project folder.
 Then use the steps below:
 
 . Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
-. Switch to `data` session and `write` transaction types.
+. Switch to `data` session and `read` transaction types.
 . Open a new tab and insert or type in an Insert query, for example:
 +
 .TypeQL Insert query
@@ -44,7 +44,7 @@ Console::
 +
 [,bash]
 ----
-transaction sample_db schema write
+transaction sample_db data read
 ----
 . Send the Define query:
 +
@@ -114,7 +114,7 @@ let query = "match
 let databases = DatabaseManager::new(driver);
 let db = databases.get("sample_db")?;
 let session = Session::new(db, SessionType::Data)?;
-let tx = session.transaction(TransactionType::Write)?;
+let tx = session.transaction(TransactionType::Read)?;
 tx.query().insert(&query)?;
 tx.commit().resolve()?;
 ----
@@ -135,7 +135,7 @@ query = """
         $u: name, email;
         """
 with driver.session("sample_db", SessionType.DATA) as session:
-    with session.transaction(TransactionType.WRITE) as transaction:
+    with session.transaction(TransactionType.READ) as transaction:
         transaction.query.insert(query)
         transaction.commit()
 ----
@@ -150,7 +150,7 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
 [,java]
 ----
 try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
-    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.READ)) {
         Transaction.query().insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
         Transaction.commit();
     }
@@ -196,7 +196,7 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
 TypeDB::Options options;
     {
         auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
-        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        auto tx = session.transaction(TypeDB::TransactionType::READ, options);
         (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
         tx.commit();
     }
