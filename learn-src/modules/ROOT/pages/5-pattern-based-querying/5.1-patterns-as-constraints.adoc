@@ -87,7 +87,7 @@ This pattern represents several constraints about the *terms* involved, where a 
 4. The variable `$count` is of type `page-count`.
 5. The variable `$book` owns the variable `$count`.
 
-Because these constraints must be satisfied simultaneously, it is especially important to note that constraint (5) specifies that the book has a page count. This means that books without page counts _cannot_ be matched by this pattern and _will not_ be returned. There are ways to perform optional attribute matches that will be explored fully in xref:learn::6-reading-data/6-reading-data.adoc[Lesson 6].
+Because these constraints must be satisfied simultaneously, it is especially important to note that constraint (5) specifies that the book has a page count. This means that books without page counts _cannot_ be matched by this pattern and _will not_ be returned. There are ways to perform optional attribute matches that will be explored fully in Lesson 6 (coming soon).
 
 [NOTE]
 ====
