@@ -73,6 +73,9 @@ To send a Define query programmatically, use xref:manual::installing/drivers.ado
 Rust::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,rust]
 ----
 let query = "insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';";
@@ -83,13 +86,14 @@ let tx = session.transaction(TransactionType::Write)?;
 tx.query().insert(&query)?;
 tx.commit().resolve()?;
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Python::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,python]
 ----
 with driver.session("sample_db", SessionType.DATA) as session:
@@ -97,13 +101,14 @@ with driver.session("sample_db", SessionType.DATA) as session:
         transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';")
         transaction.commit()
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Java::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,java]
 ----
 try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
@@ -113,13 +118,14 @@ try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA
     }
 }
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Node.js::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,js]
 ----
 session = await driver.session("sample_db", SessionType.DATA);
@@ -127,13 +133,14 @@ transaction = await session.transaction(TransactionType.WRITE);
 await transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
 await transaction.commit();
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 C++::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,cpp]
 ----
 TypeDB::Options options;
@@ -144,8 +151,6 @@ TypeDB::Options options;
         tx.commit();
     }
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 ====
 
@@ -230,6 +235,9 @@ The number of iterations is equal to the number of the `insert` clause execution
 Rust::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,rust]
 ----
 let query = "match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
@@ -241,13 +249,14 @@ let tx = session.transaction(TransactionType::Write)?;
 tx.query().insert(&query)?;
 tx.commit().resolve()?;
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Python::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,python]
 ----
 QUERY = """match
@@ -270,13 +279,14 @@ with TypeDB.core_driver("127.0.0.1") as driver:
                 print(f"Unexpected number of inserts attempted: {i}")
                 transaction.close()
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Java::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,java]
 ----
 String query = """
@@ -290,13 +300,14 @@ try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA
     }
 }
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Node.js::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,js]
 ----
 const query =  `match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
@@ -307,13 +318,14 @@ transaction = await session.transaction(TransactionType.WRITE);
 await transaction.query.insert(query);
 await transaction.commit();
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 C++::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,cpp]
 ----
 std::string query = "match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
@@ -326,8 +338,6 @@ TypeDB::Options options;
         tx.commit();
     }
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 ====
 
