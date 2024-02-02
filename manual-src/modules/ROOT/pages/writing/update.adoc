@@ -2,9 +2,10 @@
 :experimental:
 :tabs-sync-option:
 
-An Update query is used to update data in a TypeDB database.
+An Update query is used to update data in a TypeDB database by matching existing data, deleting some of it,
+and then inserting some other data instead.
 
-This page assumes you've already followed instructions from the xref:manual::defining/define.adoc[] page.
+This page assumes you've already followed instructions from the xref:manual::writing/delete.adoc[] page.
 Here, you'll see how to update data in a database using Studio, Console, or one of the drivers.
 
 == How to send an Update query
@@ -29,13 +30,11 @@ Then use the steps below:
 [,typeql]
 ----
 match
-
+$u isa user, has name "Bob", has email $e;
 delete
-
+$u has $e;
 insert
-$user1 isa user, has name "Alice", has email "alice@vaticle.com";
-$user2 isa user, has name "Bob", has email "bob@vaticle.com";
-$friendship (friend:$user1, friend: $user2) isa friendship;
+$u has email "the-bob@vaticle.com";
 ----
 . Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
 . Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
@@ -55,13 +54,11 @@ transaction sample_db schema write
 [,bash]
 ----
 match
-
+$u isa user, has name "Bob", has email $e;
 delete
-
+$u has $e;
 insert
-$user1 isa user, has name "Alice", has email "alice@vaticle.com";
-$user2 isa user, has name "Bob", has email "bob@vaticle.com";
-$friendship (friend:$user1, friend: $user2) isa friendship;
+$u has email "the-bob@vaticle.com";
 ----
 +
 Push btn:[Enter] twice to send the query.
@@ -76,6 +73,7 @@ commit
 
 To send a Define query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
 
+//#todo Check all the codes
 [tabs]
 ====
 Rust::
@@ -83,7 +81,12 @@ Rust::
 --
 [,rust]
 ----
-let query = "insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';";
+let query = "match
+$u isa user, has name 'Bob', has email $e;
+delete
+$u has $e;
+insert
+$u has email 'the-bob@vaticle.com';";
 let databases = DatabaseManager::new(driver);
 let db = databases.get("sample_db")?;
 let session = Session::new(db, SessionType::Data)?;
@@ -100,6 +103,14 @@ Python::
 --
 [,python]
 ----
+query = """
+match
+$u isa user, has name "Bob", has email $e;
+delete
+$u has $e;
+insert
+$u has email "the-bob@vaticle.com";
+"""
 with driver.session("sample_db", SessionType.DATA) as session:
     with session.transaction(TransactionType.WRITE) as transaction:
         transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';")
@@ -159,10 +170,15 @@ Where `driver` is an instance of a driver, xref:manual::connecting/connection.ad
 
 == Response interpretation
 
-An Update query returns all concepts that got updated into the database.
+An Update query returns all concepts that got inserted into the database.
 
-An `insert` clause is executed once per every result matched by the `match` clause of the same Update query.
-If the `match` clause is omitted, then the `insert` clause is executed exactly once.
+Both `delete` and `insert` clauses are executed once per every result
+matched by the `match` clause of the same Update query.
+
+The `delete` clause of an Update query is executed the same number of times as the `insert` clause,
+but if the concept specified for deletion is no longer present in a database for any reason,
+that would not produce an error.
+The query will continue its execution without deleting the missing concept.
 
 You can check the response of an Update query to see what was inserted.
 The response is a Stream/Iterator with a ConceptMap object for every execution of the `insert` clause.
@@ -171,7 +187,7 @@ A ConceptMap object maps every variable from a query to a particular concept in 
 Alternatively, you can estimate the number of inserts in an Update query with a `match` clause
 by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
 Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
-preventing data changes from other transactions from influencing the results.
+preventing data changes committed in other transactions from influencing the results.
 
 === Check the response
 
@@ -181,12 +197,11 @@ Let's say we send the following Update query with a `match` clause:
 [.typeql]
 ----
 match
-$u isa user, has name "Bob";
+$u isa user, has name "Bob", has email $e;
 delete
-
+$u has $e;
 insert
-$new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
-$f($u,$new-u) isa friendship;
+$u has email "the-bob@vaticle.com";
 ----
 
 The easiest way to check the response for the query is to use a TypeDB client: Studio or Console.
@@ -202,7 +217,13 @@ See the Log tab output at the bottom:
 .Log output
 [,typeql]
 ----
-
+## Result> Update query successfully updated things in the databases:
+{
+    $u iid 0x826e80018000000000000001 isa user;
+    $e bob@vaticle.com isa email;
+    $_0 the-bob@vaticle.com isa email;
+}
+## Completed
 ----
 --
 
@@ -214,12 +235,18 @@ See the terminal output:
 .CLI output
 [,typeql]
 ----
+{
+    $e the-bob@vaticle.com isa email;
+    $u iid 0x826e80018000000000000001 isa user;
+    $_0 the-bob@vaticle.com isa email;
+}
 
+answers: 1, total duration: 23 ms
 ----
 --
 ====
 
-To process the response of an Insert query programmatically,
+To process the response of an Update query programmatically,
 we need to collect the response and iterate through it.
 The number of iterations is equal to the number of the `insert` clause executions:
 
@@ -330,18 +357,21 @@ Where `driver` is an instance of a driver, xref:manual::connecting/connection.ad
 --
 ====
 
-The example above checks the response of an insert query and commits the changes only if the number of
+The example above checks the response of an Update query and commits the changes only if the number of
 inserts is equal to one.
 Otherwise, it closes the transaction without committing the changes.
 
 === Estimate the number of inserts with a read query
 
-The most direct approach is to send an aggregated Get query to count the number of matches.
+You can send any type of read query,
+but the most direct approach is to send an aggregated Get query to count the number of matches.
+The `match` clause should be exactly the same as in the Update query we are trying to estimate.
 
 .Checking the number of matched results
 [,typeql]
 ----
-match $bob isa user, has email "bob@vaticle.com";
+match
+$u isa user, has name "Bob", has email $e;
 get; count;
 ----
 
