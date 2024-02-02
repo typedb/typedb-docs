@@ -178,7 +178,7 @@ A `delete` clause is executed once per every result matched by the `match` claus
 You can estimate the number of deletes in a Delete query
 by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
 Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
-preventing data changes from other transactions from influencing the results.
+preventing data changes committed in other transactions from influencing the results.
 
 === Estimate the number of deletes with a read query
 

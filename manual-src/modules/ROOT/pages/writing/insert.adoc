@@ -163,7 +163,7 @@ A ConceptMap object maps every variable from a query to a particular concept in 
 Alternatively, you can estimate the number of inserts in an Insert query with a `match` clause
 by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
 Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
-preventing data changes from other transactions from influencing the results.
+preventing data changes committed in other transactions from influencing the results.
 
 === Check the response
 
