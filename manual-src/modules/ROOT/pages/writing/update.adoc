@@ -1,2 +1,348 @@
 = Update query
+:experimental:
+:tabs-sync-option:
 
+An Update query is used to update data in a TypeDB database.
+
+This page assumes you've already followed instructions from the xref:manual::defining/define.adoc[] page.
+Here, you'll see how to update data in a database using Studio, Console, or one of the drivers.
+
+== How to send an Update query
+
+The easiest way to send an Update query is to use one of the TypeDB clients:
+xref:manual::studio.adoc[Studio] or xref:manual::console.adoc[Console]:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Switch to `data` session and `write` transaction types.
+. Open a new tab and insert or type in an Update query, for example:
++
+.TypeQL Update query
+[,typeql]
+----
+match
+
+delete
+
+insert
+$user1 isa user, has name "Alice", has email "alice@vaticle.com";
+$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$friendship (friend:$user1, friend: $user2) isa friendship;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a session and transaction:
++
+[,bash]
+----
+transaction sample_db schema write
+----
+. Send the Define query:
++
+[,bash]
+----
+match
+
+delete
+
+insert
+$user1 isa user, has name "Alice", has email "alice@vaticle.com";
+$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$friendship (friend:$user1, friend: $user2) isa friendship;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send a Define query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let query = "insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("sample_db")?;
+let session = Session::new(db, SessionType::Data)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().insert(&query)?;
+tx.commit().resolve()?;
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Python::
++
+--
+[,python]
+----
+with driver.session("sample_db", SessionType.DATA) as session:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';")
+        transaction.commit()
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Java::
++
+--
+[,java]
+----
+try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
+        Transaction.commit();
+    }
+}
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Node.js::
++
+--
+[,js]
+----
+session = await driver.session("sample_db", SessionType.DATA);
+transaction = await session.transaction(TransactionType.WRITE);
+await transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
+await transaction.commit();
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+C++::
++
+--
+[,cpp]
+----
+TypeDB::Options options;
+    {
+        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
+        tx.commit();
+    }
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+====
+
+== Response interpretation
+
+An Update query returns all concepts that got updated into the database.
+
+An `insert` clause is executed once per every result matched by the `match` clause of the same Update query.
+If the `match` clause is omitted, then the `insert` clause is executed exactly once.
+
+You can check the response of an Update query to see what was inserted.
+The response is a Stream/Iterator with a ConceptMap object for every execution of the `insert` clause.
+A ConceptMap object maps every variable from a query to a particular concept in a database.
+
+Alternatively, you can estimate the number of inserts in an Update query with a `match` clause
+by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
+preventing data changes from other transactions from influencing the results.
+
+=== Check the response
+
+Let's say we send the following Update query with a `match` clause:
+
+.Update query example
+[.typeql]
+----
+match
+$u isa user, has name "Bob";
+delete
+
+insert
+$new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+$f($u,$new-u) isa friendship;
+----
+
+The easiest way to check the response for the query is to use a TypeDB client: Studio or Console.
+
+.Update query response example
+[tabs]
+====
+Studio::
++
+--
+See the Log tab output at the bottom:
+
+.Log output
+[,typeql]
+----
+
+----
+--
+
+Console::
++
+--
+See the terminal output:
+
+.CLI output
+[,typeql]
+----
+
+----
+--
+====
+
+To process the response of an Insert query programmatically,
+we need to collect the response and iterate through it.
+The number of iterations is equal to the number of the `insert` clause executions:
+
+.Process Insert query response
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let query = "match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+            insert $f (friend: $alice, friend: $bob) isa friendship;";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("sample_db")?;
+let session = Session::new(db, SessionType::Data)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().insert(&query)?;
+tx.commit().resolve()?;
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Python::
++
+--
+[,python]
+----
+QUERY = """match
+            $u isa user, has name "Bob";
+            insert
+            $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+            $f($u,$new-u) isa friendship;"""
+
+with TypeDB.core_driver("127.0.0.1") as driver:
+    with driver.session("sample_db", SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            response = transaction.query.insert(QUERY)
+            i = 0
+            for concept in response:
+                i += 1
+            if i == 1:
+                transaction.commit()
+                print("Inserted one new user and one relation")
+            else:
+                print(f"Unexpected number of inserts attempted: {i}")
+                transaction.close()
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Java::
++
+--
+[,java]
+----
+String query = """
+                match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+                insert $f (friend: $alice, friend: $bob) isa friendship;
+                """;
+try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().insert(query);
+        Transaction.commit();
+    }
+}
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Node.js::
++
+--
+[,js]
+----
+const query =  `match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+                insert $f (friend: $alice, friend: $bob) isa friendship;
+                `;
+session = await driver.session("sample_db", SessionType.DATA);
+transaction = await session.transaction(TransactionType.WRITE);
+await transaction.query.insert(query);
+await transaction.commit();
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+C++::
++
+--
+[,cpp]
+----
+std::string query = "match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
+                    insert $f (friend: $alice, friend: $bob) isa friendship;";
+TypeDB::Options options;
+    {
+        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        (void) tx.query.define(query, options);
+        tx.commit();
+    }
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+====
+
+The example above checks the response of an insert query and commits the changes only if the number of
+inserts is equal to one.
+Otherwise, it closes the transaction without committing the changes.
+
+=== Estimate the number of inserts with a read query
+
+The most direct approach is to send an aggregated Get query to count the number of matches.
+
+.Checking the number of matched results
+[,typeql]
+----
+match $bob isa user, has email "bob@vaticle.com";
+get; count;
+----
+
+The response should be a single number.
