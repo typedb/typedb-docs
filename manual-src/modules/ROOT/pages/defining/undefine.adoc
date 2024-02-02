@@ -1,4 +1,184 @@
 = Undefine query
+:tabs-sync-option:
+:experimental:
 
+An Undefine query is used to delete type and rule definitions from a schema.
 
+This page assumes you've already followed instructions from the xref:defining/define.adoc[] page.
+Here, you'll see how to use an Undefine query to undefine types and rules in a database schema using Studio,
+Console, or one of the drivers.
+For an alternative way of changing your schema, see the xref:manual::defining/schema-editing.adoc[] page.
 
+== How to send an Undefine query
+
+The easiest way to send an Undefine query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+//Follow the instructions from the xref:connecting/connection.adoc[] page to connect to TypeDB:
+//page to connect Studio to TypeDB and select a project folder, then:
+
+. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Switch to `schema` session and `write` transaction types.
+. Open a new tab and insert or type in a Undefine query, for example:
++
+.TypeQL Undefine query
+[,typeql]
+----
+undefine admin sub user;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+Follow the xref:manual::connecting/connection.adoc[] guide to connect to TypeDB.
+Then use the steps below:
+
+. Open a session and transaction:
++
+[,bash]
+----
+transaction sample_db schema write
+----
+. Send the Undefine query:
++
+[,bash]
+----
+undefine admin sub user;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send a Undefine query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,rust]
+----
+let query = "undefine admin sub user;";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("sample_db")?;
+let session = Session::new(db, SessionType::Schema)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().undefine(&query).resolve()?;
+tx.commit().resolve()?;
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,python]
+----
+with driver.session("sample_db", SessionType.SCHEMA) as session:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        transaction.query.undefine("undefine admin sub user;")
+        transaction.commit()
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,java]
+----
+try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHEMA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().undefine("undefine admin sub user;");
+        Transaction.commit();
+    }
+}
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,js]
+----
+session = await driver.session("sample_db", SessionType.SCHEMA);
+transaction = await session.transaction(TransactionType.WRITE);
+await transaction.query.undefine("undefine admin sub user;");
+await transaction.commit();
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
+[,cpp]
+----
+TypeDB::Options options;
+    {
+        auto session = driver.session("sample_db", TypeDB::SessionType::SCHEMA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        tx.query.undefine("undefine admin sub user;", options).get();
+        tx.commit();
+    }
+----
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::schema/undefine.adoc[]
+[.clickable]
+****
+Learn more about Undefine queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+Learn how to write some data to a database with the schema you just truncated.
+****
+
+.xref:typedb::developing/defining-schema.adoc[Designing schema curriculum]
+[.clickable]
+****
+* xref:typedb::developing/defining-schema.adoc[Conceptual modelling]
+* xref:typedb::developing/defining-schema.adoc[Defining entities]
+* xref:typedb::developing/defining-schema.adoc[Defining relations]
+* xref:typedb::developing/defining-schema.adoc[Defining attributes]
+* xref:typedb::developing/defining-schema.adoc[Defining owners and roleplayers]
+* xref:typedb::developing/defining-schema.adoc[The bookstore example]
+****
+--

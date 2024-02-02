@@ -9,6 +9,7 @@ Here, you'll see how to use a Define query to define types and rules in a databa
 Console, or one of the drivers.
 For an alternative way of changing your schema, see the xref:manual::defining/schema-editing.adoc[] page.
 
+[#_how_to_send_a_define_query]
 == How to send a Define query
 
 The easiest way to send a Define query is to use Studio or Console:
@@ -74,6 +75,9 @@ To send a Define query programmatically, use xref:manual::installing/drivers.ado
 Rust::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,rust]
 ----
 let query = "define user sub entity;";
@@ -84,13 +88,14 @@ let tx = session.transaction(TransactionType::Write)?;
 tx.query().define(&query).resolve()?;
 tx.commit().resolve()?;
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Python::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,python]
 ----
 with driver.session("sample_db", SessionType.SCHEMA) as session:
@@ -98,13 +103,14 @@ with driver.session("sample_db", SessionType.SCHEMA) as session:
         transaction.query.define("define user sub entity;")
         transaction.commit()
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Java::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,java]
 ----
 try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHEMA)) {
@@ -114,13 +120,14 @@ try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHE
     }
 }
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 Node.js::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,js]
 ----
 session = await driver.session("sample_db", SessionType.SCHEMA);
@@ -128,13 +135,14 @@ transaction = await session.transaction(TransactionType.WRITE);
 await transaction.query.define("define user sub entity;");
 await transaction.commit();
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 
 C++::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,cpp]
 ----
 TypeDB::Options options;
@@ -145,14 +153,18 @@ TypeDB::Options options;
         tx.commit();
     }
 ----
-
-Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
 --
 ====
+
+== Response interpretation
+
+A Delete query returns a Promise of an empty response.
+This promise can be resolved when the query is finished executing, but it doesn't contain any useful information.
 
 == Schema example
 
 See below an example of a schema with five types defined.
+Send it in a Define query to the same database, using the <<_how_to_send_a_define_query>> section above.
 
 .Schema example
 [,typeql]

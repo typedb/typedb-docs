@@ -174,8 +174,7 @@ TypeDB::Options options;
 == Response interpretation
 
 A Delete query returns a Promise of an empty response.
-This promise can be resolved when the query is finished executing,
-but it doesn't contain any useful information.
+This promise can be resolved when the query is finished executing, but it doesn't contain any useful information.
 
 A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query.
 
