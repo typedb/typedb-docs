@@ -1,4 +1,197 @@
 = Delete query
+:experimental:
+:tabs-sync-option:
 
+A Delete query is used to delete data from a TypeDB database.
 
+This page assumes you've already followed instructions from the xref:manual::writing/insert.adoc[] page.
+Here, you'll see how to delete data from a database using Studio, Console, or one of the drivers.
 
+== How to send a Delete query
+
+The easiest way to send a Delete query is to use one of the TypeDB clients:
+xref:manual::studio.adoc[Studio] or xref:manual::console.adoc[Console]:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Switch to `data` session and `write` transaction types.
+. Open a new tab and insert or type in a Delete query, for example:
++
+.TypeQL Delete query
+[,typeql]
+----
+match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+delete
+$f isa friendship;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a session and transaction:
++
+[,bash]
+----
+transaction sample_db schema write
+----
+. Send the Define query:
++
+[,bash]
+----
+match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+delete
+$f isa friendship;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send a Define query programmatically, use xref:manual::installing/drivers.adoc[drivers]:
+
+//#todo Check all the code
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let query = "match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+delete
+$f isa friendship;";
+let databases = DatabaseManager::new(driver);
+let db = databases.get("sample_db")?;
+let session = Session::new(db, SessionType::Data)?;
+let tx = session.transaction(TransactionType::Write)?;
+tx.query().insert(&query)?;
+tx.commit().resolve()?;
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Python::
++
+--
+[,python]
+----
+query = """
+match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+delete
+$f isa friendship;
+"""
+with driver.session("sample_db", SessionType.DATA) as session:
+    with session.transaction(TransactionType.WRITE) as transaction:
+        transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';")
+        transaction.commit()
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Java::
++
+--
+[,java]
+----
+try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
+    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+        Transaction.query().insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
+        Transaction.commit();
+    }
+}
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+Node.js::
++
+--
+[,js]
+----
+session = await driver.session("sample_db", SessionType.DATA);
+transaction = await session.transaction(TransactionType.WRITE);
+await transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
+await transaction.commit();
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+
+C++::
++
+--
+[,cpp]
+----
+TypeDB::Options options;
+    {
+        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
+        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+        (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
+        tx.commit();
+    }
+----
+
+Where `driver` is an instance of a driver, xref:manual::connecting/connection.adoc[connected] to TypeDB.
+--
+====
+
+== Response interpretation
+
+A Delete query returns a Promise of an empty response.
+This promise can be resolved when the query is finished executing,
+but it doesn't contain any useful information.
+
+A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query.
+
+You can estimate the number of deletes in a Delete query
+by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
+preventing data changes from other transactions from influencing the results.
+
+=== Estimate the number of deletes with a read query
+
+The most direct approach is to send an aggregated Get query to count the number of matches.
+
+.Checking the number of matched results
+[,typeql]
+----
+match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+get; count;
+----
+
+The response should be a single number.
