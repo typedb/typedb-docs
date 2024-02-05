@@ -47,39 +47,7 @@ xref:home::install/studio.adoc[installed] and launched separately from a TypeDB 
 Find the TypeDB Studio binary and run it.
 Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 // end::run_studio[]
-//image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
-// tag::connect_studio[]
-[tabs]
-====
-Cloud::
-+
---
-image::home::studio-connect-cloud.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
-
-. Switch the `Server` field drop-down to `TypeDB Cloud`.
-. Click btn:[Manage Cloud Addresses] button.
-. Add address and port for at least one server from your TypeDB Cloud deployment. Close the Address management window.
-. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
-. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
-_For self-hosted deployments, encryption parameters may vary._
-. Click `Connect`.
-
-[NOTE]
-=====
-On your first login you will be asked to change the password for the `admin` account.
-A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
-=====
---
-
-Core::
-+
---
-image::home::studio-connect-core.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
-
-Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
---
-====
-// end::connect_studio[]
+include::manual::studio.adoc[tag=connect_studio]
 
 == Select a project folder
 
