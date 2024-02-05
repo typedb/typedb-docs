@@ -7,9 +7,8 @@
 
 [.float-group]
 --
-//image::home::cloud-hero.png[TypeDB Cloud hero image, role="framed right", width = 75%, window=_blank, link=https://cloud.typedb.com/]
 image::drivers::studio/studio.png[TypeDB Studio hero image, role="right", width = 50%, window=_blank, link=self]
-//#todo Add floating right for the image -- role="framed right"]
+
   +
 TypeDB Studio is an IDE that facilitates the development process for TypeDB databases.
 
@@ -56,8 +55,6 @@ Click btn:[Connect to TypeDB] on the right side of the top toolbar,
 select TypeDB edition below, and follow the instructions:
 
 include::home::quickstart.adoc[tags=connect_studio]
-
-//include::manual::connecting/connection.adoc[tag=studio-cloud]
 
 [#_select_database]
 === Select a database
@@ -153,10 +150,11 @@ selects a transaction type to use for queries.
 until the transaction is committed or closed.
 Write transactions are always snapshoted.
 May be enabled or disabled for read transactions.
-. btn:[infer] button -- enable xref:typedb::developing/infer.adoc[inferring data] by rules.
-Only available for read transactions.
-. btn:[explain] button -- enable xref:typedb::developing/infer.adoc#_explain_query[explanations] mechanics.
-Only available for read transactions with *snapshot* and *infer* enabled.
+. btn:[infer] button -- enable xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[inferring data] by rules.
+Only available for `read` transactions.
+. btn:[explain] button -- enable xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[explanations] mechanics.
+Only available for `read` transactions with *snapshot* and *infer* enabled.
+//#todo Adjust link to explanations
 . btn:[Transaction status] (image:home::studio-icons/activity.png[]) indicator -- transaction activity indicator.
 Green if there is a transaction opened by TypeDB Studio at this moment.
 Gray if there is no opened transaction.
@@ -313,7 +311,8 @@ button at the top toolbar.
 
 In some cases, the btn:[Delete] option and button can be unavailable.
 That means there are some conditions that prevent you from deleting this type.
-For example, we can't xref:typedb::developing/defining-schema.adoc#_undefine_subtype[delete a type that has a subtype].
+For example,
+we can't xref:typeql::schema/undefine.adoc#_undefine_a_type_with_a_subtype[delete a type that has a subtype].
 
 == Settings
 

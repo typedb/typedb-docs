@@ -2,7 +2,7 @@
 :tabs-sync-option:
 :experimental:
 
-TypeDB uses transactions for all database queries to provide xref:typedb::basics/acid.adoc[ACID guarantees].
+TypeDB uses transactions for all database queries to provide xref:home::acid.adoc[ACID guarantees].
 Two transaction types exist: `read` and `write`.
 Read transactions, while faster and supporting inference, do not permit alterations to the database.
 

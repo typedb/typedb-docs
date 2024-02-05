@@ -136,7 +136,7 @@ For your first connection, use the following default user credentials:
 
 [IMPORTANT]
 =====
-Make sure to xref:typedb::managing/user-management.adoc#_first_login[change the password]
+Make sure to xref:manual::configuring/users.adoc#_first_login[change the password]
 for the `admin` account on your first login.
 A TypeDB Cloud deployment will deny all other operations until the password is changed from its default value.
 =====
@@ -174,7 +174,7 @@ typedb console --cloud=<server-address> --username=<username> --password --tls-e
 You will be prompted for a password.
 
 On your first login,
-xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
+xref:manual::configuring/users.adoc#_first_login[change the password] for the `admin` account.
 --
 ====
 
@@ -245,7 +245,7 @@ Where `127.0.0.1:1729` is the address and port to connect to.
 ====
 
 After connecting to TypeDB Cloud and
-xref:typedb::managing/user-management.adoc#_first_login[changing the default password] for the `admin` account,
+xref:manual::configuring/users.adoc#_first_login[changing the default password] for the `admin` account,
 see how to xref:connecting/database.adoc[create a database] and manage
 xref:connecting/session.adoc[sessions] and
 xref:connecting/transaction.adoc[transactions].

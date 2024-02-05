@@ -11,7 +11,7 @@
 --
 //image::home::cloud-hero.png[TypeDB Cloud hero image, role="framed right", width = 75%, window=_blank, link=https://cloud.typedb.com/]
 image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%, window=_blank, link=self]
-//#todo Add floating right for the image -- role="framed right"]
+
   +
 TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
 
@@ -67,7 +67,7 @@ You will be prompted for a password.
 [NOTE]
 =====
 On your first login,
-xref:typedb::managing/user-management.adoc#_first_login[change the password] for the `admin` account.
+xref:manual::configuring/users.adoc#_first_login[change the password] for the `admin` account.
 A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
 =====
 // end::cloud-psw[]
