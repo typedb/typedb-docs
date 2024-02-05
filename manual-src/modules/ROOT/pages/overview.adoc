@@ -6,32 +6,6 @@
 Welcome to the Guides category of the TypeDB documentation.
 See the full selection of our how-to guides below.
 
-== TypeDB installation guides
-
-TypeDB is available in two editions: Cloud and Core.
-
-[cols-2]
---
-.xref:manual::installing/cloud-self-hosted.adoc[TypeDB Cloud]
-[.clickable]
-****
-Production-ready and scalable version of TypeDB with advanced security and high-availability features.
-
-* https://cloud.typedb.com/[Deploy in a managed cloud]
-* xref:manual::installing/cloud-self-hosted.adoc[Self-hosted installation]
-****
-
-.xref:manual::installing/core.adoc[TypeDB Core]
-[.clickable]
-****
-100% open source version of TypeDB with everything developers need to start building on TypeDB.
-
-* xref:manual::installing/core.adoc#_docker[Use with Docker]
-* xref:manual::installing/core.adoc#_package[Install via package manager]
-* xref:manual::installing/core.adoc#_manual[Manual installation]
-****
---
-
 == Client manuals
 
 [cols-2]
@@ -46,6 +20,19 @@ An IDE that facilitates the development process for TypeDB databases.
 [.clickable]
 ****
 A powerful CLI client for TypeDB.
+****
+--
+
+[cols-1]
+--
+.xref:drivers::overview.adoc[Drivers]
+[.clickable]
+****
+xref:drivers::rust/overview.adoc[Rust] |
+xref:drivers::python/overview.adoc[Python] |
+xref:drivers::java/overview.adoc[Java] |
+xref:drivers::nodejs/overview.adoc[Node.js] |
+xref:drivers::cpp/overview.adoc[C++]
 ****
 --
 
