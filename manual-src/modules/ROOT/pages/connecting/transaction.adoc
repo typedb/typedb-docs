@@ -11,7 +11,7 @@ Console, or one of the drivers.
 Studio provides automated transaction control, so you don't need to open transactions manually.
 
 To open a transaction, you need an open session.
-For more information on how to open a session, see the xref:manual::connecting/session.adoc[] page.
+Make sure to follow instructions on the xref:manual::connecting/session.adoc[] page.
 
 == Open a new transaction
 
@@ -40,7 +40,7 @@ and transaction type, for example:
 .Open a transaction
 [,bash]
 ----
-transaction db1 schema write
+transaction sample_db schema write
 ----
 --
 ====
@@ -318,3 +318,20 @@ tx.commit();
 ----
 --
 ====
+
+== Learn more
+
+[cols-2]
+--
+.xref:manual::defining/overview.adoc[]
+[.clickable]
+****
+See how to define a schema for your database.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+See how to write data into TypeDB database.
+****
+--
