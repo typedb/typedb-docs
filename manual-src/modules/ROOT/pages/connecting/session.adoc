@@ -11,7 +11,8 @@ This guide covers opening a session and other session management operations with
 Both Studio and Console provide automated session control, so you don't need to open and close sessions manually.
 You still need to choose a session type and a database to open a session to.
 
-For more information on how to create a database, see the xref:manual::connecting/database.adoc[] page.
+Make sure to create a new database
+using instructions on the xref:manual::connecting/database.adoc[] page.
 
 == Open a new session
 
@@ -50,7 +51,7 @@ Rust::
 .Open a session
 [,rust]
 ----
-let session = Session::new(databases.get("db1")?, SessionType::Schema)?;
+let session = Session::new(databases.get("sample_db")?, SessionType::Schema)?;
 ----
 --
 
@@ -60,7 +61,7 @@ Python::
 .Open a session
 [,python]
 ----
-session = driver.session("db1", SessionType.SCHEMA)
+session = driver.session("sample_db", SessionType.SCHEMA)
 ----
 --
 
@@ -70,7 +71,7 @@ Java::
 .Open a session
 [,java]
 ----
-TypeDBSession session = driver.session("db1", TypeDBSession.Type.SCHEMA);
+TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHEMA);
 ----
 --
 
@@ -80,7 +81,7 @@ Node.js::
 .Open a session
 [,js]
 ----
-let session = await driver.session("db1", SessionType.SCHEMA);
+let session = await driver.session("sample_db", SessionType.SCHEMA);
 ----
 --
 
@@ -90,7 +91,7 @@ C++::
 .Open a session
 [,cpp]
 ----
-auto session = driver.session("db1", TypeDB::SessionType::SCHEMA, options);
+auto session = driver.session("sample_db", TypeDB::SessionType::SCHEMA, options);
 ----
 --
 ====
@@ -200,3 +201,20 @@ session.close();
 ----
 --
 ====
+
+== Learn more
+
+[cols-2]
+--
+.xref:manual::connecting/transaction.adoc[]
+[.clickable]
+****
+See how to manage transactions in TypeDB.
+****
+
+.xref:manual::defining/overview.adoc[]
+[.clickable]
+****
+See how to define a schema for your database.
+****
+--

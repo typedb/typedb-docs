@@ -1,14 +1,18 @@
 = Connecting to TypeDB
 
+////
 TypeDB accepts connections via gRPC based
 https://github.com/vaticle/typedb-protocol[TypeDB RPC protocol,window=_blank].
 It is implemented by TypeDB drivers and TypeDB clients.
+////
 
 All released clients and drivers support connection to both TypeDB Cloud and TypeDB Core.
 A connection to TypeDB Core doesn't require a username nor password and does not support encryption.
 
 //To connect to TypeDB, you can use any TypeDB client or driver.
 See below practical guides on how to connect to TypeDB CLoud and TypeDB Core with different clients and drivers.
+
+Make sure to xref:home::install/overview.adoc[install] a client/driver to work with before proceeding.
 
 ////
 TypeDB clients are able to connect to TypeDB via gRPC based TypeDB protocol and provide an interface for using them.

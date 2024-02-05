@@ -3,8 +3,8 @@
 :experimental:
 
 TypeDB uses a gRPC-based protocol for external communications, including queries.
-Various TypeDB clients, such as Studio with a GUI, Console with a CLI,
-and language-specific drivers with native APIs, have been developed to implement this protocol.
+TypeDB clients, like Studio and Console, as well as language-specific drivers with native APIs,
+have been developed to implement this protocol.
 
 This guide covers connecting to
 <<_connect_to_typedb_cloud,TypeDB Cloud>> or
@@ -244,8 +244,20 @@ Where `127.0.0.1:1729` is the address and port to connect to.
 --
 ====
 
-After connecting to TypeDB Cloud and
-xref:manual::configuring/users.adoc#_first_login[changing the default password] for the `admin` account,
-see how to xref:connecting/database.adoc[create a database] and manage
-xref:connecting/session.adoc[sessions] and
-xref:connecting/transaction.adoc[transactions].
+== Learn more
+
+[cols-2]
+--
+.xref:manual::connecting/database.adoc[]
+[.clickable]
+****
+See how to create a new database in TypeDB.
+
+****
+
+.xref:manual::connecting/session.adoc[]
+[.clickable]
+****
+See how to manage sessions in TypeDB.
+****
+--

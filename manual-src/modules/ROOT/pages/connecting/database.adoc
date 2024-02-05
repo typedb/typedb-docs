@@ -8,12 +8,12 @@ Nevertheless, a TypeDB client can connect to and interact with multiple database
 
 This guide covers creating a database, as well as other database management operations, like listing
 and deleting databases with Studio, Console, or one of the drivers.
-Make sure to xref:home:ROOT:install/overview.adoc[install] and
-xref:manual::connecting/connection.adoc[connect] with your chosen client/driver first.
+Make sure to follow the instructions on the xref:manual::connecting/connection.adoc[]
+page to connect to TypeDB before proceeding.
 
 == Create a new database
 
-To create a new database, select a unique name (e.g., `db1`) and follow the steps below:
+To create a new database, select a unique name (e.g., `sample_db`) and follow the steps below:
 
 [tabs]
 ====
@@ -21,7 +21,7 @@ Studio::
 +
 --
 . Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
-. Type in a name for a new database (e.g., `db1`) in the text field of the window and click btn:[Create].
+. Type in a name for a new database (e.g., `sample_db`) in the text field of the window and click btn:[Create].
 
 The newly created database should appear in the drop-down selector of the top toolbar.
 --
@@ -33,10 +33,10 @@ Connect with Console and run the following command:
 
 [,bash]
 ----
-database create db1
+database create sample_db
 ----
 
-Where `db1` is the name of the database.
+Where `sample_db` is the name of the database.
 --
 ====
 
@@ -50,7 +50,7 @@ Rust::
 [,rust]
 ----
 let databases = DatabaseManager::new(driver);
-databases.create("db1");
+databases.create("sample_db");
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB.
@@ -62,7 +62,7 @@ Python::
 --
 [,python]
 ----
-driver.databases().create("db1")
+driver.databases().create("sample_db")
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB.
@@ -74,7 +74,7 @@ Java::
 --
 [,java]
 ----
-driver.databases().create("db1");
+driver.databases().create("sample_db");
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB.
@@ -86,7 +86,7 @@ Node.js::
 --
 [,js]
 ----
-await driver.databases().create("db1");
+await driver.databases().create("sample_db");
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB.
@@ -98,7 +98,7 @@ C++::
 --
 [,cpp]
 ----
-driver.databases.create("db1");
+driver.databases.create("sample_db");
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB.
@@ -126,10 +126,10 @@ Console::
 --
 [,bash]
 ----
-database delete db1
+database delete sample_db
 ----
 
-Where `db1` is the name of the database.
+Where `sample_db` is the name of the database.
 --
 ====
 
@@ -143,7 +143,7 @@ Rust::
 [,rust]
 ----
 let databases = DatabaseManager::new(driver);
-databases.get("db1").unwrap().delete();
+databases.get("sample_db").unwrap().delete();
 ----
 --
 
@@ -152,7 +152,7 @@ Python::
 --
 [,python]
 ----
-driver.databases().get("db1").delete()
+driver.databases().get("sample_db").delete()
 ----
 --
 
@@ -161,7 +161,7 @@ Java::
 --
 [,java]
 ----
-driver.databases().get("db1").delete();
+driver.databases().get("sample_db").delete();
 ----
 --
 
@@ -170,7 +170,7 @@ Node.js::
 --
 [,js]
 ----
-await (await driver.databases().get("db1")).delete();
+await (await driver.databases().get("sample_db")).delete();
 ----
 --
 
@@ -179,7 +179,7 @@ C++::
 --
 [,cpp]
 ----
-driver.databases.get("db1").deleteDatabase();
+driver.databases.get("sample_db").deleteDatabase();
 ----
 --
 ====
@@ -270,7 +270,19 @@ for (auto& db: driver.databases.all()) {
 --
 ====
 
-After connecting to server and creating a database,
-see how to manage
-xref:connecting/session.adoc[sessions] and
-xref:connecting/transaction.adoc[transactions].
+== Learn more
+
+[cols-2]
+--
+.xref:manual::connecting/session.adoc[]
+[.clickable]
+****
+See how to manage sessions in TypeDB.
+****
+
+.xref:manual::connecting/transaction.adoc[]
+[.clickable]
+****
+See how to manage transactions in TypeDB.
+****
+--
