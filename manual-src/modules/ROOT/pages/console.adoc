@@ -9,7 +9,6 @@
 // tag::body[]
 [.float-group]
 --
-//image::home::cloud-hero.png[TypeDB Cloud hero image, role="framed right", width = 75%, window=_blank, link=https://cloud.typedb.com/]
 image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%, window=_blank, link=self]
 
   +
@@ -47,7 +46,7 @@ See the Console's downloadable packages.
 
 TypeDB can connect to both TypeDB Cloud and TypeDB Core.
 Running TypeDB Console initiates a network connection to a TypeDB server.
-//By default, it tries to connect to a TypeDB Core server at the address `localhost:1729`.
+By default, it tries to connect to a TypeDB Core server at the address `localhost:1729`.
 Use command line arguments to set connection parameters:
 
 [tabs]
@@ -83,12 +82,12 @@ typedb console --core=<server-address>
 ----
 
 By default, TypeDB Console connects to a local TypeDB Core server with the `localhost:1729` address.
-To connect to a different address use the `--core` argument followed by server IP address and port,
+The `--core` argument is used to set the TypeDB Core server IP address and port to connect to,
 for example, `10.0.0.5:1729`.
 --
 ====
 
-As a result, you should get a welcome message from TypeDB Console followed by a command line prompt.
+As a result, you get a welcome message from TypeDB Console followed by a command line prompt.
 
 [,bash]
 ----
