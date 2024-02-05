@@ -50,6 +50,69 @@ include::partial$all-versions.adoc[]
 
 == TypeDB drivers
 
-include::home::install.adoc[tag=drivers-install]
+[tabs]
+====
+Rust::
++
+--
+Use the xref:drivers:ROOT:rust/overview.adoc#_install_rust[installation guide] to add TypeDB Rust driver to a
+project/application.
+
+To download TypeDB Rust driver, you can use any of the following options:
+
+- `cargo add typedb-driver` or `cargo add typedb-driver -F sync`
+- https://crates.io/crates/typedb-driver/[,window=_blank]
+
+For more information on the driver versions, check the
+xref:drivers:ROOT:rust/overview.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
+--
+
+Python::
++
+--
+Use the xref:drivers:ROOT:python/overview.adoc#_install_python[installation guide] to add TypeDB Python driver to a
+project/application.
+
+To download TypeDB Python driver, you can use any of the following options:
+
+- `pip install typedb-driver`
+- https://pypi.org/project/typedb-driver#files[,window=_blank]
+
+For more information on the driver versions, check the
+xref:drivers:ROOT:python/overview.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
+--
+
+Java::
++
+--
+Use the xref:drivers:ROOT:java/overview.adoc#_install_java[installation guide] to add TypeDB Java driver to a
+project/application.
+
+Alternatively, you can download TypeDB Java driver by the following link:
+
+- https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/latest/a=noarch;xg=com.vaticle.typedb/#versions[cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver]
+
+For more information on the driver versions, check the
+xref:drivers:ROOT:java/overview.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
+--
+
+Node.js::
++
+--
+Use the xref:drivers:ROOT:nodejs/overview.adoc#_install_nodejs[installation guide] to add TypeDB Node.js driver to a
+project/application.
+
+To download TypeDB Node.js driver, you can use the following command:
+
+- `npm install typedb-driver`
+
+For more information on the driver versions, check the
+xref:drivers:ROOT:nodejs/overview.adoc#_version_compatibility[version compatibility] table and
+https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
+--
+====
 
 // end::clients-download[]

@@ -19,17 +19,22 @@ To start TypeDB, select the TypeDB edition below and follow the instructions.
 Cloud::
 +
 --
-include::home::install.adoc[tag=cloud-run]
+// tag::cloud-run[]
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
+// end::cloud-run[]
 
-include::home::install.adoc[tag=self-hosted-run]
+// tag::self-hosted-run[]
+For self-hosted TypeDB Cloud installation and setup,
+see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
+// end::self-hosted-run[]
 --
 
 Core::
 +
 --
-TypeDB Core needs to be xref:home::install.adoc#_core[installed] first.
+TypeDB Core needs to be xref:home::install/core.adoc[installed] first.
 
-include::home::install.adoc[tag=core-run]
+include::home::install/core.adoc[tag=core-run]
 --
 ====
 
@@ -37,7 +42,7 @@ include::home::install.adoc[tag=core-run]
 == Connect with TypeDB Studio
 // tag::run_studio[]
 TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
-xref:home::install.adoc#_studio[installed] and launched separately from a TypeDB server.
+xref:home::install/studio.adoc[installed] and launched separately from a TypeDB server.
 
 Find the TypeDB Studio binary and run it.
 Click btn:[Connect to TypeDB] on the right side of the top toolbar.
@@ -292,8 +297,8 @@ $p has $e;
 
 == Repeat with TypeDB Console
 
-xref:typedb:ROOT:connecting/console.adoc[TypeDB Console] is usually distributed with TypeDB.
-You can find it with the TypeDB or xref:home::install.adoc#_console[install] it separately.
+xref:manual::console.adoc[TypeDB Console] is usually distributed with TypeDB.
+You can find it with the TypeDB or xref:home::install/console.adoc[install] it separately.
 
 [#_console_run]
 [#_console_connect]
