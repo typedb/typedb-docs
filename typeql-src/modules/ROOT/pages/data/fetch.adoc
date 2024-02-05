@@ -6,7 +6,7 @@
 A Fetch query retrieves values from a TypeDB database and returns them as JSON objects.
 
 Fetch queries do not modify data, so can be used in Read or Write transactions.
-In read transactions, Fetch queries can use rule-based xref:typedb::basics/inference.adoc[inference].
+In read transactions, Fetch queries can use rule-based xref:manual::reading/infer.adoc[inference].
 
 == Behavior
 
@@ -460,7 +460,7 @@ fetch $fp;
 Using the
 https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data.tql[IAM sample data,window=_blank]
 the above query shows any results only if inference is
-xref:typedb::developing/infer.adoc#_how_to_use_inference[enabled].
+xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[enabled].
 
 .Result example with inference enabled
 [,js]
@@ -533,7 +533,7 @@ any of such attribute type.
 
 For example: `$u isa user, has full-name $fn;` would exclude all users that do not have any
 `full-name`.
-At the same time, mathing `$u usa user;` and then fetching `$u: full-name;` will return even those users
+At the same time, matching `$u usa user;` and then fetching `$u: full-name;` will return even those users
 that do not own any `full-name` attributes.
 The corresponding value would contain an empty list of values in this case.
 

@@ -38,54 +38,72 @@ Try the features of TypeDB with these top queries.
 ****
 --
 
-== TypeDB
+== Learn
 
-TypeDB is a polymorphic database with a conceptual data model,
-a strong subtyping system,
-a symbolic reasoning engine.
+An end-to-end learning experience for TypeDB and TypeQL.
+Through the lens of a sample bookstore database, you'll learn how to build a database schema,
+manage data, and interpret query results.
 
 [cols-3]
 --
-.xref:typedb::overview.adoc[]
+.xref:learn::overview.adoc[]
 [.clickable]
-****
-An overview of the TypeDB documentation.
 ****
 
-.xref:typedb::basics/data-model.adoc[Basics]
-[.clickable]
-****
-Essentials to learn before practicing TypeDB.
+
 ****
 
-[#_basics]
-.xref:typedb::connecting/overview.adoc[]
+.xref:learn::1-why-typedb/1-why-typedb.adoc[]
 [.clickable]
-****
-How to connect to TypeDB with different clients.
 ****
 
-[#_developing]
-.xref:typedb::developing/creating-database.adoc[Developing with TypeDB]
-[.clickable]
-****
-How to develop an application with TypeDB.
 ****
 
-[#_managing]
-.xref:typedb::managing/configuration.adoc[Managing TypeDB]
+.xref:learn::2-learning-environment-setup/2-learning-environment-setup.adoc[]
 [.clickable]
 ****
-Configuration and management of deployments.
+xref:learn::2-learning-environment-setup/2.1-deploy-sample-database.adoc[] +
+xref:learn::2-learning-environment-setup/2.2-get-started-with-typedb-studio.adoc[]
 ****
 
-[#_tutorials]
-.xref:typedb::tutorials/iam-schema.adoc[Tutorials]
+.xref:learn::3-running-your-first-queries/3-running-your-first-queries.adoc[]
 [.clickable]
 ****
-Tutorials to learn TypeDB and migrate data.
+xref:learn::3-running-your-first-queries/3.1-retrieving-attributes-of-entities.adoc[] +
+xref:learn::3-running-your-first-queries/3.2-retrieving-attributes-of-relations.adoc[] +
+xref:learn::3-running-your-first-queries/3.3-retrieving-types-of-data-instances.adoc[]
+****
+
+.xref:learn::4-designing-schemas/4-designing-schemas.adoc[]
+[.clickable]
+****
+xref:learn::4-designing-schemas/4.1-conceptual-modeling.adoc[] +
+xref:learn::4-designing-schemas/4.2-the-bookstore-model.adoc[] +
+xref:learn::4-designing-schemas/4.3-defining-entity-types.adoc[] +
+xref:learn::4-designing-schemas/4.4-defining-relation-types.adoc[] +
+xref:learn::4-designing-schemas/4.5-defining-attribute-types.adoc[] +
+xref:learn::4-designing-schemas/4.6-defining-owners-and-roleplayers.adoc[] +
+xref:learn::4-designing-schemas/4.7-the-bookstore-schema.adoc[]
+****
+
+.xref:learn::5-pattern-based-querying/5-pattern-based-querying.adoc[]
+[.clickable]
+****
+xref:learn::5-pattern-based-querying/5.1-patterns-as-constraints.adoc[] +
+xref:learn::5-pattern-based-querying/5.2-basic-data-patterns.adoc[] +
+xref:learn::5-pattern-based-querying/5.3-polymorphic-data-patterns.adoc[] +
+xref:learn::5-pattern-based-querying/5.4-value-comparisons.adoc[] +
+xref:learn::5-pattern-based-querying/5.5-pattern-logic.adoc[] +
+xref:learn::5-pattern-based-querying/5.6-arithmetic-expressions.adoc[] +
+xref:learn::5-pattern-based-querying/5.7-type-patterns.adoc[] +
+xref:learn::5-pattern-based-querying/5.8-semantics-of-solution-spaces.adoc[]
 ****
 --
+
+== Manual
+
+TypeDB manual category
+
 
 == TypeDB drivers
 

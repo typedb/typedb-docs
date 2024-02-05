@@ -108,8 +108,8 @@ Attempting to define such a rule will throw an error to prevent an infinite rule
 Rules will not create duplicates of instances that are already in a database or have already been inferred.
 Hence, there is no need to check if an instance already exists in a database before inserting it.
 
-Since version `2.18.0`, we can use <<_abstract,abstract>> types in a rule as long as all the type variables
-that define which instances to create during materialization are concrete (non-abstract).
+Since version `2.18.0`, we can use xref:typeql::schema/type-definitions.adoc#_abstract[] types in a rule as long as
+all the type variables that define which instances to create during materialization are concrete (non-abstract).
 // end::then[]
 
 ////
@@ -255,7 +255,7 @@ rule add-view-permission: when {
 The above rule make that the permission to access any file with the action that has `name` of `view_file`
 can be inferred by the rule from the permission to use `modify_file` action on the same file.
 
-For the full explanation of the above complex rule example, see the
-xref:typedb:ROOT:developing/infer.adoc#_example[Inferring data] page.
+//For the full explanation of the above complex rule example, see the
+//xref:typedb:ROOT:developing/infer.adoc#_example[Inferring data] page.
 
-For more information on the IAM schema, see the xref:typedb::tutorials/iam-schema.adoc[] page.
+//For more information on the IAM schema, see the xref:typedb::tutorials/iam-schema.adoc[] page.
