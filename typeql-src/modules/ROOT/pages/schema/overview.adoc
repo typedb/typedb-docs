@@ -31,15 +31,15 @@ Rules are used for reasoning.
 |===
 
 Both Define and Undefine queries can be used only in a
-xref:typedb::connecting/overview.adoc#_sessions[schema session] and
-xref:typedb::connecting/overview.adoc#_transactions[write transaction].
+xref:manual::connecting/session.adoc[schema session] and
+xref:manual::connecting/transaction.adoc[write transaction].
 For more information on the limitations of a schema session, see the
-xref:typedb::basics/acid.adoc#_schema_integrity[Schema integrity enforcement].
+xref:learn::[Schema integrity enforcement].
 
 [#_types]
 == Type system
 // tag::types_basics[]
-Types in a schema are modeled with the use of the xref:typedb::basics/data-model.adoc[PERA model].
+Types in a schema are modeled with the use of the xref:learn::4-designing-schemas/4.1-conceptual-modeling.adoc[PERA model].
 
 To create new types in a schema, subtype one of the existing types.
 A subtype inherits all definitions of its supertype.

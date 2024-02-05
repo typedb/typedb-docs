@@ -30,6 +30,8 @@ See xref:manual::defining/define.adoc#_how_to_send_a_define_query[How to send a 
 
 == How to send a query with inference
 
+Inference can be enabled as a transaction option for any `read` transaction.
+
 The easiest way to send a read query with inference is to use Studio or Console:
 
 [tabs]
@@ -246,13 +248,13 @@ Learn more about Get queries in TypeQL: syntax, behaviour, and query examples.
 Learn more about Fetch queries in TypeQL: syntax, behaviour, and query examples.
 ****
 
-.xref:typedb::developing/infer.adoc[Reasoning over data]
+.xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[]
 [.clickable]
 ****
-* xref:typedb::developing/read.adoc[Defining rules]
-* xref:typedb::developing/read.adoc[Querying derived data]
-* xref:typedb::developing/read.adoc[Rule branching and chaining]
-* xref:typedb::developing/read.adoc[Rule recursion]
+* xref:learn::8-reasoning-over-data/8.1-defining-rules.adoc[]
+* xref:learn::8-reasoning-over-data/8.2-querying-derived-data.adoc[]
+* xref:learn::8-reasoning-over-data/8.3-rule-branching-and-chaining.adoc[]
+* xref:learn::8-reasoning-over-data/8.4-rule-recursion.adoc[]
 ****
 --
 

@@ -677,8 +677,8 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 TypeDB reasoning engine can perform rule-based inference when you read data.
 To use inference, we need to xref:typeql:ROOT:schema/type-definitions.adoc[Define] rules in the schema,
-open a `read` transaction with the `infer` option xref:typedb::developing/infer.adoc#_how_to_use_inference[enabled],
-and send a xref:typeql:ROOT:data/get.adoc[Get] or a xref:typeql::data/fetch.adoc[Fetch] query.
+open a `read` transaction with the `infer` option xref:manual::reading/infer.adoc[enabled],
+and send a xref:typeql:ROOT:data/get.adoc[Get] or xref:typeql::data/fetch.adoc[Fetch] query.
 
 .Schema with a rule
 [,typeql]
@@ -715,7 +715,7 @@ get $p, $p-name;
 ----
 
 The above query produces the following result with inference
-xref:typedb::developing/infer.adoc#_how_to_use_inference[enabled]:
+xref:manual::reading/infer.adoc[enabled]:
 
 image::typedb-in-25-queries/inference.png[Inference, role=framed, width = 75%, link=self]
 
@@ -778,7 +778,7 @@ get $f, $g, $p;
 ----
 
 The above query produces the following result with inference
-xref:typedb::developing/infer.adoc#_how_to_use_inference[enabled]:
+xref:manual::reading/infer.adoc[enabled]:
 
 image::typedb-in-25-queries/rule-chain.png[Inference with rule chaining, role=framed, width = 75%, link=self]
 
