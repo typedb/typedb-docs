@@ -50,7 +50,6 @@ manage data, and interpret query results.
 [.clickable]
 ****
 
-
 ****
 
 .xref:learn::1-why-typedb/1-why-typedb.adoc[]
@@ -102,7 +101,47 @@ xref:learn::5-pattern-based-querying/5.8-semantics-of-solution-spaces.adoc[]
 
 == Manual
 
-TypeDB manual category
+TypeDB Manual consists of practice-oriented guides for configuring environment and developing with TypeDB.
+
+[cols-2]
+--
+.xref:manual::studio.adoc[]
+[.clickable]
+****
+
+****
+.xref:manual::console.adoc[]
+[.clickable]
+****
+
+****
+.xref:manual::connecting/overview.adoc[]
+[.clickable]
+****
+
+****
+.xref:manual::defining/overview.adoc[]
+[.clickable]
+****
+
+****
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+
+****
+.xref:manual::reading/overview.adoc[]
+[.clickable]
+****
+
+****
+.xref:manual::configuring/overview.adoc[]
+[.clickable]
+****
+
+****
+--
+
 
 
 == TypeDB drivers
@@ -112,35 +151,35 @@ See the xref:drivers::overview.adoc[] page or select an environment below:
 
 [cols-3]
 --
-.xref:drivers::rust/overview.adoc[Rust]
+.image:home::rust.png[width=30] xref:drivers::rust/overview.adoc[Rust]
 [.clickable]
 ****
 Add via cargo to use the Rust driver API.
 //image::home::rust.png[width=30%,role=framed]
 ****
 
-.xref:drivers::python/overview.adoc[Python]
+.image:home::python.png[width=30] xref:drivers::python/overview.adoc[Python]
 [.clickable]
 ****
 Install via pip to use the Python driver API.
 //image::python.png[width=30%,role=framed]
 ****
 
-.xref:drivers::java/overview.adoc[Java]
+.image:home::java.png[width=30] xref:drivers::java/overview.adoc[Java]
 [.clickable]
 ****
 Add to a Maven project to use the Java driver API.
 //image::java.png[width=30%,role=framed]
 ****
 
-.xref:drivers::nodejs/overview.adoc[Node.js]
+.image:home::nodejs.png[width=30] xref:drivers::nodejs/overview.adoc[Node.js]
 [.clickable]
 ****
 Install via NPM to use the Node.js driver API.
 //image::nodejs.png[width=30%,role=framed]
 ****
 
-.xref:drivers::cpp/overview.adoc[C++]
+.image:home::cpp.png[width=30] xref:drivers::cpp/overview.adoc[C++]
 [.clickable]
 ****
 Import as a library with a header file.
