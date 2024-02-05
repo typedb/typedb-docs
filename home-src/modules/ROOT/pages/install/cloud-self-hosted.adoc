@@ -133,8 +133,7 @@ docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb 
 
 While it's possible to run TypeDB Cloud in a single-server mode, a highly available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster.
-At any given point in time, one of those servers acts as a
-xref:typedb::managing/ha.adoc#_primary_replica_failover[leader,] and the others are followers.
+At any given point in time, one of those servers acts as a leader, and the others are followers.
 Increasing the number of servers increases the
 cluster's tolerance to failure: to tolerate N servers failing, a cluster needs to consist of `2N + 1` servers.
 This section describes how you can set up a 3-server cluster (in this case,
