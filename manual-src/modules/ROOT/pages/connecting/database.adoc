@@ -62,7 +62,7 @@ Python::
 --
 [,python]
 ----
-driver.databases().create("sample_db")
+include::manual::partial$python-manual-code.py[lines=10]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB.
@@ -152,7 +152,7 @@ Python::
 --
 [,python]
 ----
-driver.databases().get("sample_db").delete()
+include::manual::partial$python-manual-code.py[lines=9]
 ----
 --
 
@@ -227,8 +227,7 @@ Python::
 --
 [,python]
 ----
-for db in driver.databases.all():
-    print(db.name)
+include::manual::partial$python-manual-code.py[lines=6..7]
 ----
 --
 
