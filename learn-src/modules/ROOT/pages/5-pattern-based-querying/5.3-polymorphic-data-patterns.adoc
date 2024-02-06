@@ -111,9 +111,9 @@ We have also already seen an example of interface polymorphism in xref:learn::3-
 match
 $rating (rater: $user, rated: $book) isa rating;
 $publish (publisher: $publisher, published: $book) isa publishing;
-$user-loc (place: $state, located: $user) isa location;
-$pub-loc (place: $state, located: $publish) isa location;
-$state isa state;
+$user-loc (place: $country, located: $user) isa location;
+$pub-loc (place: $country, located: $publish) isa location;
+$country isa country;
 fetch
 $rating: score;
 ----
@@ -123,7 +123,7 @@ The pattern in this query is more complex, so we will focus on the specific part
 [,typeql]
 ----
 $rating (rater: $user, rated: $book) isa rating;
-$user-loc (place: $state, located: $user) isa location;
+$user-loc (place: $country, located: $user) isa location;
 ----
 
 We have seen in xref:learn::5-pattern-based-querying/5.1-patterns-as-constraints.adoc[Lesson 5.1] that `$user` must be of type `user`, because only `user` plays both `rater` in `rating` and `located` in `location`. While `$user` only resolves to a single type, interface polymorphism is still being leveraged here to infer its return type from the implemented interfaces. Consider instead the following pattern.
@@ -131,7 +131,7 @@ We have seen in xref:learn::5-pattern-based-querying/5.1-patterns-as-constraints
 [,typeql]
 ----
 $location (place: $uk, located: $x) isa location;
-$uk isa state, has name "United Kingdom";
+$uk isa country, has name "United Kingdom";
 ----
 
 In this case, `$x` can be resolved to any type that plays `located` in `location`, which could be any of `user`, `publishing`, or `place`. This pattern will match anything located in the UK regardless of what it is. We can even match entities (like instances of `user`) and relations (like instances of `publishing`) for the same variable! In particular, we have leveraged a *role interface* here, but we could also leverage an *ownership interface* in the same way, as in the following query.
@@ -185,10 +185,10 @@ Many useful polymorphic patterns combine multiple forms of polymorphism. This pa
 [,typeql]
 ----
 $location (place: $uk, located: $x) isa location;
-$uk isa state, has name "United Kingdom";
+$uk isa country, has name "United Kingdom";
 ----
 
-While `$x` can be resolved to `user`, `publishing`, or `place` by interface polymorphism, `place` could then be resolved to `city` or `state` by inheritance polymorphism. This next pattern, while not particularly practical, has elements of all three types of polymorphism.
+While `$x` can be resolved to `user`, `publishing`, or `place` by interface polymorphism, `place` could then be resolved to `city`, `state` or `country` by inheritance polymorphism. This next pattern, while not particularly practical, has elements of all three types of polymorphism.
 
 [,typeql]
 ----
@@ -201,9 +201,9 @@ As an exercise, try determining the possible instantiable return types of `$x`, 
 .Answers
 [%collapsible]
 ====
-* Possible types of `$x`: `contributor`, `publisher`, `city`, `state`
+* Possible types of `$x`: `contributor`, `publisher`, `city`, `state`, `country`
 * Possible types of `$r`: `contribution`, `authorship`, `editing`, `illustration`, `publishing`, `location`
-* Possible types of `$y`: `paperback`, `hardback`, `ebook`, `user`, `publishing`, `city`, `state`
+* Possible types of `$y`: `paperback`, `hardback`, `ebook`, `user`, `publishing`, `city`, `state`, `country`
 ====
 
 In the remainder of this course, we will now be applying polymorphism liberally to our patterns and queries. After all, TypeDB is the polymorphic database!
@@ -211,7 +211,7 @@ In the remainder of this course, we will now be applying polymorphism liberally 
 [#_footnotes]
 == Footnotes
 
-1. <<_footnote_1,^>> This is not strictly true in the general case, as some of the combinations might be forbidden by the schema. This will occur when the return types of one variable depend on the return type of another. For example, in the last query shown on this page (utilising all three forms of polymorphism), only 23 of the 168 possible combinations of return types are valid.
+1. <<_footnote_1,^>> This is not strictly true in the general case, as some of the combinations might be forbidden by the schema. This will occur when the return types of one variable depend on the return type of another. For example, in the last query shown on this page (utilising all three forms of polymorphism), only 30 of the 240 possible combinations of return types are valid.
 +
 [,typeql]
 ----
