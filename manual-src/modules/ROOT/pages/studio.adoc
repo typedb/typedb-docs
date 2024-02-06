@@ -288,6 +288,7 @@ It creates a new tab with inserted TypeQL code that creates the exact schema tha
 [#_type_editor]
 == Type Editor
 
+// tag::type-editor[]
 [.float-group]
 --
 image::drivers::studio/type-editor.png[Type editor, role=right framed, width = 50%, link=self]
@@ -344,6 +345,7 @@ In some cases, the btn:[Delete] option and button can be unavailable.
 That means there are some conditions that prevent you from deleting this type.
 For example,
 we can't xref:typeql::schema/undefine.adoc#_undefine_a_type_with_a_subtype[delete a type that has a subtype].
+// end::type-editor[]
 
 == Settings
 
