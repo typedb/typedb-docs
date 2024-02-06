@@ -54,8 +54,9 @@ As with all TypeQL queries, Define queries are composable. If atomic data defini
 ----
 define
 place sub entity, abstract;
-state sub place;
 city sub place;
+state sub place;
+country sub place;
 ----
 
 [,typeql]
@@ -63,8 +64,9 @@ city sub place;
 define
 place sub entity,
     abstract;
-state sub place;
 city sub place;
+state sub place;
+country sub place;
 ----
 
 [,typeql]
@@ -72,13 +74,15 @@ city sub place;
 define
 place sub entity;
 place abstract;
-state sub place;
 city sub place;
+state sub place;
+country sub place;
 ----
 
 [,typeql]
 ----
 define
+country sub place;
 place abstract;
 state sub place;
 place sub entity;

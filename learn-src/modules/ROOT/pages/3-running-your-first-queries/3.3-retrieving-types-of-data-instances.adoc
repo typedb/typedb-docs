@@ -8,33 +8,33 @@ TypeQL's composable nature provides a natural syntax for building queries, but n
 ----
 match
 $user isa user;
-$state isa state;
-$location (place: $state, located: $user) isa location;
+$country isa country;
+$location (place: $country, located: $user) isa location;
 fetch
 $user: id;
-$state: name;
+$country: name;
 ----
 
 [,typeql]
 ----
 match
 $user isa user;
-$state isa state;
-$location (place: $state, located: $user) isa location;
+$country isa country;
+$location (place: $country, located: $user) isa location;
 fetch
 $user: isbn-13;
-$state: name;
+$country: name;
 ----
 
 [,typeql]
 ----
 match
 $book isa book;
-$state isa state;
-$location (place: $state, located: $book) isa location;
+$country isa country;
+$location (place: $country, located: $book) isa location;
 fetch
 $book: isbn-13;
-$state: name;
+$country: name;
 ----
 
 The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. These facts seem obvious to us, but a database needs a source of truth in order to identify if queries are valid or not.
@@ -46,14 +46,14 @@ In TypeDB, this takes the form of a *schema*, which sets out which types are abl
 match
 $rating (rater: $user, rated: $book) isa rating;
 $publish (publisher: $publisher, published: $book) isa publishing;
-$user-loc (place: $state, located: $user) isa location;
-$pub-loc (place: $state, located: $publish) isa location;
-$state isa state;
+$user-loc (place: $country, located: $user) isa location;
+$pub-loc (place: $country, located: $publish) isa location;
+$country isa country;
 fetch
 $rating: score;
 ----
 
-It queries for ratings, where the user that made the rating is located in the same state that the book was published. Notice that we haven't specified the types of `$user`, `$book`, or `$publisher`, but TypeDB is able to correctly infer their types! Try *running* image:learn::studio-icons/run.png[] this query, and you will see that it executes successfully.
+It queries for ratings, where the user that made the rating is located in the same country that the book was published. Notice that we haven't specified the types of `$user`, `$book`, or `$publisher`, but TypeDB is able to correctly infer their types! Try *running* image:learn::studio-icons/run.png[] this query, and you will see that it executes successfully.
 
 == Retrieving types
 
@@ -66,9 +66,9 @@ TypeDB resolves every variable in a query to a set of valid types to search for,
 match
 $rating (rater: $user, rated: $book) isa rating;
 $publish (publisher: $publisher, published: $book) isa publishing;
-$user-loc (place: $state, located: $user) isa location;
-$pub-loc (place: $state, located: $publish) isa location;
-$state isa state;
+$user-loc (place: $country, located: $user) isa location;
+$pub-loc (place: $country, located: $publish) isa location;
+$country isa country;
 $user isa $user-type;            # new line
 $book isa $book-type;            # new line
 $publisher isa $publisher-type;  # new line

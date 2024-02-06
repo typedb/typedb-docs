@@ -102,9 +102,9 @@ In the previous pattern, we could very easily tell the type of each term, as des
 ----
 $rating (rater: $user, rated: $book) isa rating;
 $publish (publisher: $publisher, published: $book) isa publishing;
-$user-loc (place: $state, located: $user) isa location;
-$pub-loc (place: $state, located: $publish) isa location;
-$state isa state;
+$user-loc (place: $country, located: $user) isa location;
+$pub-loc (place: $country, located: $publish) isa location;
+$country isa country;
 ----
 
 We cannot actually tell just by reading the query! So how is it that TypeDB resolves this pattern? TypeDB is able to *infer* the correct types for `$user` from the information the pattern provides. Let's consider what we _can_ tell about `$user` from this query:
@@ -115,7 +115,7 @@ We cannot actually tell just by reading the query! So how is it that TypeDB reso
 This is more than enough information to work out the type of `$user` because the schema provides the context we need:
 
 * Only `user` plays `rater` in `rating`.
-* `user`, `publishing`, `place`, `state`, and `city` all play `located` in `location`.
+* `user`, `publishing`, `place`, `city`, `state`, and `country` all play `located` in `location`.
 
 Because the pattern's constraints must be satisfied simultaneously, `$user` can only possibly be of type `user`! This is roughly how the type inference process works. As an exercise, try identifying the instantiable types of the terms `$book` and `$publisher` in this way, which also don't have their types explicitly stated.
 
@@ -143,7 +143,7 @@ We haven't explicitly specified the type of `$person` here, so we will have to i
 
 If we then examine the schema, we can see the following:
 
-* `contributor`, `publisher`, `place`, `state` and `city` all own `name`.
+* `contributor`, `publisher`, `place`, `city`, `state`, and `country` all own `name`.
 * Only `user` plays `buyer` in `order`.
 
 Once again, all the constraints must be satisfied simultaneously, but here we run into a problem: there is no type that both owns `name` and plays `buyer` in `order`! This means that there are no possible types for the term `$person`, and so the pattern cannot possibly generate any matches. Despite the fact the pattern appears to be well-constructed at face value, it fails validation by type inference. As a result, TypeDB recognises that the pattern must be malformed, and running a query containing this pattern would cause an error to be thrown. This will also occur for patterns that are trivially unsatisfiable, for example the following.
