@@ -76,7 +76,7 @@ Python::
 .Connect to TypeDB Core
 [,python]
 ----
-driver = TypeDB.core_driver("127.0.0.1:1729")
+include::manual::partial$python-manual-code.py[lines=5]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
