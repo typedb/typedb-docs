@@ -185,7 +185,9 @@ preventing data changes committed in other transactions from influencing the res
 
 === Estimate the number of deletes with a read query
 
-The most direct approach is to send an aggregated Get query to count the number of matches.
+You can send any type of read query,
+but the most direct approach is to send an aggregated Get query to count the number of matches.
+The `match` clause should be exactly the same as in the Delete query you are trying to estimate.
 
 .Checking the number of matched results
 [,typeql]
@@ -198,3 +200,31 @@ get; count;
 ----
 
 The response should be a single number.
+The number of matched results is equal to the number of times the `delete` clause of a delete query with the same
+`match` clause in the same `write` transaction will be executed.
+Every execution of a `delete` clause tries to delete the data specified by a pattern.
+If the data is deleted already by previous execution of the `delete` clause in the same query,
+no additional data is deleted and no error is produced.
+
+== Learn more
+
+[cols-2]
+--
+.More about a xref:typeql::data/delete.adoc[]
+[.clickable]
+****
+Learn more about Delete queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/update.adoc[]
+[.clickable]
+****
+Learn how to update or replace data from a database with a single query.
+****
+
+.xref:learn::7-writing-data/7-writing-data.adoc[Writing data curriculum]
+[.clickable]
+****
+Check out the Writing data section of our TypeDB Learning course.
+****
+--
