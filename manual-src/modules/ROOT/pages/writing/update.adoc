@@ -378,7 +378,7 @@ Otherwise, it closes the transaction without committing the changes.
 
 You can send any type of read query,
 but the most direct approach is to send an aggregated Get query to count the number of matches.
-The `match` clause should be exactly the same as in the Update query we are trying to estimate.
+The `match` clause should be exactly the same as in the Update query you are trying to estimate.
 
 .Checking the number of matched results
 [,typeql]
@@ -389,3 +389,26 @@ get; count;
 ----
 
 The response should be a single number.
+
+== Learn more
+
+[cols-2]
+--
+.More about an xref:typeql::data/update.adoc[]
+[.clickable]
+****
+Learn more about Update queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::reading/overview.adoc[]
+[.clickable]
+****
+Learn how to read data from a TypeDB database.
+****
+
+.xref:learn::7-writing-data/7-writing-data.adoc[Writing data curriculum]
+[.clickable]
+****
+Check out the Writing data section of our TypeDB Learning course.
+****
+--
