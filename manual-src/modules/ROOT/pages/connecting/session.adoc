@@ -2,14 +2,14 @@
 :tabs-sync-option:
 :experimental:
 
-A session represents an active connection to a specific database on a server,
-and it comes in two types: `schema` and `data`.
-The schema session type is specifically employed for xref:typeql::schema/define.adoc[Define] and
+A session represents an active connection to a specific database on a TypeDB server,
+and it can be of two types: `schema` and `data`.
+The `schema` session type is specifically employed for xref:typeql::schema/define.adoc[Define] and
 xref:typeql::schema/undefine.adoc[Undefine] queries.
 
-This guide covers opening a session and other session management operations with Studio, Console, or one of the drivers.
+This guide covers session control and best practices with Studio, Console, or one of the drivers.
 Both Studio and Console provide automated session control, so you don't need to open and close sessions manually.
-You still need to choose a session type and a database to open a session to.
+To open a session, you need to choose a session type and an existing database.
 
 Make sure to create a new database
 using instructions on the xref:manual::connecting/database.adoc[] page.
@@ -108,28 +108,6 @@ Both Studio and Console manage sessions automatically.
 
 For manual session control, use xref:drivers::overview.adoc[TypeDB drivers]:
 
-////
-.Close a session with Studio or Console
-[tabs]
-====
-Studio::
-+
---
-Studio controls sessions automatically.
-
-You can't close a session manually.
---
-
-Console::
-+
---
-Console controls sessions automatically.
-
-You can't close a session manually.
---
-====
-////
-
 [tabs]
 ====
 Rust::
@@ -201,6 +179,21 @@ session.close();
 ----
 --
 ====
+
+== Session management
+//best practices?
+
+Any TypeDB Client automatically exchanges internal signals with TypeDB server to keep a session alive when it’s open.
+If server doesn't receive this signal for a period of time bigger than the timeout (by default, 30 secs)
+it forcibly closes the session due to inactivity.
+
+Only one Schema session can be open at any time.
+An open Schema session blocks all attempt to open a `write` transaction in any `data` session.
+For more information on these limitations, see the
+xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement] section on the xref:home::acid.adoc[] page.
+
+It is recommended to avoid long-running sessions because of possible network failures.
+A good principle to follow is for logically coherent transactions to be grouped into a session.
 
 == Learn more
 
