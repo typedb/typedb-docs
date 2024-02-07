@@ -8,7 +8,7 @@
 Provides access to all user management methods.
 
 // tag::methods[]
-[#_UserIterable_TypeDBUserManagerall_const]
+[#_UserIterable_TypeDBUserManagerall_____const]
 ==== all
 
 [source,cpp]
@@ -25,7 +25,7 @@ Retrieves all users which exist on the TypeDB server.
 .Returns
 `UserIterable`
 
-[#_bool_TypeDBUserManagercontains_const_stdstring_username_const]
+[#_bool_TypeDBUserManagercontains___const_stdstring__username___const]
 ==== contains
 
 [source,cpp]
@@ -51,7 +51,7 @@ a| `username` a| The user name to be checked a|
 .Returns
 `bool`
 
-[#_void_TypeDBUserManagercreate_const_stdstring_username_const_stdstring_password_const]
+[#_void_TypeDBUserManagercreate___const_stdstring__username__const_stdstring__password___const]
 ==== create
 
 [source,cpp]
@@ -78,7 +78,7 @@ a| `password` a| The password of the user to be created a|
 .Returns
 `void`
 
-[#_void_TypeDBUserManagerdeleteUser_const_stdstring_username_const]
+[#_void_TypeDBUserManagerdeleteUser___const_stdstring__username___const]
 ==== deleteUser
 
 [source,cpp]
@@ -104,7 +104,7 @@ a| `username` a| The name of the user to be deleted a|
 .Returns
 `void`
 
-[#_stdunique_ptr_User_TypeDBUserManagerget_const_stdstring_username_const]
+[#_stdunique_ptr__User___TypeDBUserManagerget___const_stdstring__username___const]
 ==== get
 
 [source,cpp]
@@ -130,7 +130,7 @@ a| `username` a| The name of the user to retrieve a|
 .Returns
 `std::unique_ptr< User >`
 
-[#_void_TypeDBUserManagerpasswordSet_const_stdstring_username_const_stdstring_password_const]
+[#_void_TypeDBUserManagerpasswordSet___const_stdstring__username__const_stdstring__password___const]
 ==== passwordSet
 
 [source,cpp]

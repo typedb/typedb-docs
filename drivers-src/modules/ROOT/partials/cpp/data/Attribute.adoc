@@ -15,7 +15,7 @@ Attribute is an instance of the attribute type and has a value.
 This value is fixed and unique for every given instance of the attribute type. Attributes can be uniquely addressed by their type and value.
 
 // tag::methods[]
-[#_ConceptIterable_Thing_TypeDBAttributegetOwners_Transaction_transaction]
+[#_ConceptIterable__Thing___TypeDBAttributegetOwners___Transaction__transaction_]
 ==== getOwners
 
 [source,cpp]
@@ -41,7 +41,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< Thing >`
 
-[#_ConceptIterable_Thing_TypeDBAttributegetOwners_Transaction_transaction_const_ThingType_PTR_ownerType]
+[#_ConceptIterable__Thing___TypeDBAttributegetOwners___Transaction__transaction__const_ThingType__ptr__ownerType_]
 ==== getOwners
 
 [source,cpp]
@@ -68,7 +68,7 @@ a| `ownerType` a| Filter results for only owners of the given type a|
 .Returns
 `ConceptIterable< Thing >`
 
-[#_stdunique_ptr_AttributeType_TypeDBAttributegetType]
+[#_stdunique_ptr__AttributeType___TypeDBAttributegetType___]
 ==== getType
 
 [source,cpp]
@@ -85,7 +85,7 @@ Retrieves the type which this ``Attribute`` belongs to.
 .Returns
 `std::unique_ptr< AttributeType >`
 
-[#_stdunique_ptr_Value_TypeDBAttributegetValue]
+[#_stdunique_ptr__Value___TypeDBAttributegetValue___]
 ==== getValue
 
 [source,cpp]

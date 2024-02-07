@@ -8,7 +8,7 @@
 Provides access for all Concept API methods.
 
 // tag::methods[]
-[#_ConceptPtrFuture_Attribute_TypeDBConceptManagergetAttribute_const_stdstring_iid_const]
+[#_ConceptPtrFuture__Attribute___TypeDBConceptManagergetAttribute___const_stdstring__iid___const]
 ==== getAttribute
 
 [source,cpp]
@@ -34,7 +34,7 @@ a| `iid` a| The iid of the ``Attribute`` to retrieve a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_AttributeType_TypeDBConceptManagergetAttributeType_const_stdstring_label_const]
+[#_ConceptPtrFuture__AttributeType___TypeDBConceptManagergetAttributeType___const_stdstring__label___const]
 ==== getAttributeType
 
 [source,cpp]
@@ -60,7 +60,7 @@ a| `label` a| The label of the ``AttributeType`` to retrieve a|
 .Returns
 `ConceptPtrFuture< AttributeType >`
 
-[#_ConceptPtrFuture_Entity_TypeDBConceptManagergetEntity_const_stdstring_iid_const]
+[#_ConceptPtrFuture__Entity___TypeDBConceptManagergetEntity___const_stdstring__iid___const]
 ==== getEntity
 
 [source,cpp]
@@ -86,7 +86,7 @@ a| `iid` a| The iid of the ``Entity`` to retrieve a|
 .Returns
 `ConceptPtrFuture< Entity >`
 
-[#_ConceptPtrFuture_EntityType_TypeDBConceptManagergetEntityType_const_stdstring_label_const]
+[#_ConceptPtrFuture__EntityType___TypeDBConceptManagergetEntityType___const_stdstring__label___const]
 ==== getEntityType
 
 [source,cpp]
@@ -112,7 +112,7 @@ a| `label` a| The label of the ``EntityType`` to retrieve a|
 .Returns
 `ConceptPtrFuture< EntityType >`
 
-[#_ConceptPtrFuture_Relation_TypeDBConceptManagergetRelation_const_stdstring_iid_const]
+[#_ConceptPtrFuture__Relation___TypeDBConceptManagergetRelation___const_stdstring__iid___const]
 ==== getRelation
 
 [source,cpp]
@@ -138,7 +138,7 @@ a| `iid` a| The iid of the ``Relation`` to retrieve a|
 .Returns
 `ConceptPtrFuture< Relation >`
 
-[#_ConceptPtrFuture_RelationType_TypeDBConceptManagergetRelationType_const_stdstring_label_const]
+[#_ConceptPtrFuture__RelationType___TypeDBConceptManagergetRelationType___const_stdstring__label___const]
 ==== getRelationType
 
 [source,cpp]
@@ -164,7 +164,7 @@ a| `label` a| The label of the ``RelationType`` to retrieve a|
 .Returns
 `ConceptPtrFuture< RelationType >`
 
-[#_stdunique_ptr_AttributeType_TypeDBConceptManagergetRootAttributeType_const]
+[#_stdunique_ptr__AttributeType___TypeDBConceptManagergetRootAttributeType_____const]
 ==== getRootAttributeType
 
 [source,cpp]
@@ -181,7 +181,7 @@ Retrieve the root ``AttributeType``, “attribute”.
 .Returns
 `std::unique_ptr< AttributeType >`
 
-[#_stdunique_ptr_EntityType_TypeDBConceptManagergetRootEntityType_const]
+[#_stdunique_ptr__EntityType___TypeDBConceptManagergetRootEntityType_____const]
 ==== getRootEntityType
 
 [source,cpp]
@@ -198,7 +198,7 @@ Retrieves the root ``EntityType``, “entity”.
 .Returns
 `std::unique_ptr< EntityType >`
 
-[#_stdunique_ptr_RelationType_TypeDBConceptManagergetRootRelationType_const]
+[#_stdunique_ptr__RelationType___TypeDBConceptManagergetRootRelationType_____const]
 ==== getRootRelationType
 
 [source,cpp]
@@ -215,7 +215,7 @@ Retrieve the root ``RelationType``, “relation”.
 .Returns
 `std::unique_ptr< RelationType >`
 
-[#_stdvector_DriverException_TypeDBConceptManagergetSchemaExceptions]
+[#_stdvector__DriverException___TypeDBConceptManagergetSchemaExceptions___]
 ==== getSchemaExceptions
 
 [source,cpp]
@@ -232,7 +232,7 @@ Retrieves a list of all schema exceptions for the current transaction.
 .Returns
 `std::vector< DriverException >`
 
-[#_ConceptPtrFuture_AttributeType_TypeDBConceptManagerputAttributeType_const_stdstring_label_ValueType_valueType_const]
+[#_ConceptPtrFuture__AttributeType___TypeDBConceptManagerputAttributeType___const_stdstring__label__ValueType_valueType___const]
 ==== putAttributeType
 
 [source,cpp]
@@ -259,7 +259,7 @@ a| `valueType` a| The value type of the ``AttributeType`` to create a|
 .Returns
 `ConceptPtrFuture< AttributeType >`
 
-[#_ConceptPtrFuture_EntityType_TypeDBConceptManagerputEntityType_const_stdstring_label_const]
+[#_ConceptPtrFuture__EntityType___TypeDBConceptManagerputEntityType___const_stdstring__label___const]
 ==== putEntityType
 
 [source,cpp]
@@ -285,7 +285,7 @@ a| `label` a| The label of the ``EntityType`` to create or retrieve a|
 .Returns
 `ConceptPtrFuture< EntityType >`
 
-[#_ConceptPtrFuture_RelationType_TypeDBConceptManagerputRelationType_const_stdstring_label_const]
+[#_ConceptPtrFuture__RelationType___TypeDBConceptManagerputRelationType___const_stdstring__label___const]
 ==== putRelationType
 
 [source,cpp]

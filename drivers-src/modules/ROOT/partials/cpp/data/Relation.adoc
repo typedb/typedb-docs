@@ -15,7 +15,7 @@ Relation is an instance of a relation type.
 Relation is an instance of a relation type and can be uniquely addressed by a combination of its type, owned attributes and role players.
 
 // tag::methods[]
-[#_VoidFuture_TypeDBRelationaddPlayer_Transaction_transaction_RoleType_PTR_roleType_Thing_PTR_player]
+[#_VoidFuture_TypeDBRelationaddPlayer___Transaction__transaction__RoleType__ptr__roleType__Thing__ptr__player_]
 ==== addPlayer
 
 [source,cpp]
@@ -43,7 +43,7 @@ a| `player` a| The thing to play the role a|
 .Returns
 `VoidFuture`
 
-[#_stdmap_stdunique_ptr_RoleType_stdunique_ptr_Thing_TypeDBRelationgetPlayers_Transaction_transaction]
+[#_stdmap__stdunique_ptr__RoleType____stdunique_ptr__Thing_____TypeDBRelationgetPlayers___Transaction__transaction_]
 ==== getPlayers
 
 [source,cpp]
@@ -69,7 +69,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `std::map< std::unique_ptr< RoleType >, std::unique_ptr< Thing > >`
 
-[#_ConceptIterable_Thing_TypeDBRelationgetPlayersByRoleType_Transaction_transaction_const_stdvector_stdunique_ptr_RoleType_roleTypes]
+[#_ConceptIterable__Thing___TypeDBRelationgetPlayersByRoleType___Transaction__transaction__const_stdvector__stdunique_ptr__RoleType______roleTypes_]
 ==== getPlayersByRoleType
 
 [source,cpp]
@@ -96,7 +96,7 @@ a| `roleTypes` a| 0 or more role types a|
 .Returns
 `ConceptIterable< Thing >`
 
-[#_ConceptIterable_Thing_TypeDBRelationgetPlayersByRoleType_Transaction_transaction_const_stdvector_RoleType_PTR_roleTypes]
+[#_ConceptIterable__Thing___TypeDBRelationgetPlayersByRoleType___Transaction__transaction__const_stdvector__RoleType__ptr_____roleTypes_]
 ==== getPlayersByRoleType
 
 [source,cpp]
@@ -106,13 +106,13 @@ ConceptIterable< Thing > TypeDB::Relation::getPlayersByRoleType(Transaction& tra
 
 
 
-See <<#_ConceptIterable_Thing_TypeDBRelationgetPlayersByRoleType_Transaction_transaction_const_stdvector_stdunique_ptr_RoleType_roleTypes,getPlayersByRoleType>>
+See <<#_ConceptIterable__Thing___TypeDBRelationgetPlayersByRoleType___Transaction__transaction__const_stdvector__stdunique_ptr__RoleType______roleTypes_,getPlayersByRoleType>>
 
 [caption=""]
 .Returns
 `ConceptIterable< Thing >`
 
-[#_ConceptIterable_RoleType_TypeDBRelationgetRelating_Transaction_transaction]
+[#_ConceptIterable__RoleType___TypeDBRelationgetRelating___Transaction__transaction_]
 ==== getRelating
 
 [source,cpp]
@@ -138,7 +138,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< RoleType >`
 
-[#_stdunique_ptr_RelationType_TypeDBRelationgetType]
+[#_stdunique_ptr__RelationType___TypeDBRelationgetType___]
 ==== getType
 
 [source,cpp]
@@ -155,7 +155,7 @@ Retrieves the type which this ``Relation`` belongs to.
 .Returns
 `std::unique_ptr< RelationType >`
 
-[#_VoidFuture_TypeDBRelationremovePlayer_Transaction_transaction_RoleType_PTR_roleType_Thing_PTR_player]
+[#_VoidFuture_TypeDBRelationremovePlayer___Transaction__transaction__RoleType__ptr__roleType__Thing__ptr__player_]
 ==== removePlayer
 
 [source,cpp]

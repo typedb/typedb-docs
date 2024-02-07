@@ -8,7 +8,7 @@
 Provides methods for manipulating ``Rule``s in the database.
 
 // tag::methods[]
-[#_OptionalRuleFuture_TypeDBLogicManagergetRule_const_stdstring_label_const]
+[#_OptionalRuleFuture_TypeDBLogicManagergetRule___const_stdstring__label___const]
 ==== getRule
 
 [source,cpp]
@@ -34,7 +34,7 @@ a| `label` a| The label of the Rule to create or retrieve a|
 .Returns
 `OptionalRuleFuture`
 
-[#_RuleIterable_TypeDBLogicManagergetRules_const]
+[#_RuleIterable_TypeDBLogicManagergetRules_____const]
 ==== getRules
 
 [source,cpp]
@@ -51,7 +51,7 @@ Retrieves all rules.
 .Returns
 `RuleIterable`
 
-[#_RuleFuture_TypeDBLogicManagerputRule_const_stdstring_label_const_stdstring_when_const_stdstring_then_const]
+[#_RuleFuture_TypeDBLogicManagerputRule___const_stdstring__label__const_stdstring__when__const_stdstring__then___const]
 ==== putRule
 
 [source,cpp]

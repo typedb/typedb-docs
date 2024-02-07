@@ -12,7 +12,7 @@
 Common super-type of RoleType &amp; ThingType.
 
 // tag::methods[]
-[#_virtual_VoidFuture_TypeDBTypedeleteType_Transaction_transaction]
+[#_virtual_VoidFuture_TypeDBTypedeleteType___Transaction__transaction_]
 ==== deleteType
 
 [source,cpp]
@@ -40,7 +40,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `virtual VoidFuture`
 
-[#_virtual_stdstring_TypeDBTypegetLabel]
+[#_virtual_stdstring_TypeDBTypegetLabel___]
 ==== getLabel
 
 [source,cpp]
@@ -59,7 +59,7 @@ Implemented in TypeDB::RoleType, and TypeDB::ThingType.
 .Returns
 `virtual std::string`
 
-[#_ConceptIterable_Type_TypeDBTypegetSubtypes_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__Type___TypeDBTypegetSubtypes___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getSubtypes
 
 [source,cpp]
@@ -86,7 +86,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect subtyp
 .Returns
 `ConceptIterable< Type >`
 
-[#_ConceptPtrFuture_Type_TypeDBTypegetSupertype_Transaction_transaction]
+[#_ConceptPtrFuture__Type___TypeDBTypegetSupertype___Transaction__transaction_]
 ==== getSupertype
 
 [source,cpp]
@@ -112,7 +112,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptPtrFuture< Type >`
 
-[#_ConceptIterable_Type_TypeDBTypegetSupertypes_Transaction_transaction]
+[#_ConceptIterable__Type___TypeDBTypegetSupertypes___Transaction__transaction_]
 ==== getSupertypes
 
 [source,cpp]
@@ -138,7 +138,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< Type >`
 
-[#_virtual_bool_TypeDBTypeisAbstract]
+[#_virtual_bool_TypeDBTypeisAbstract___]
 ==== isAbstract
 
 [source,cpp]
@@ -157,7 +157,7 @@ Implemented in TypeDB::RoleType, and TypeDB::ThingType.
 .Returns
 `virtual bool`
 
-[#_virtual_BoolFuture_TypeDBTypeisDeleted_Transaction_transaction]
+[#_virtual_BoolFuture_TypeDBTypeisDeleted___Transaction__transaction_]
 ==== isDeleted
 
 [source,cpp]
@@ -185,7 +185,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `virtual BoolFuture`
 
-[#_virtual_VoidFuture_TypeDBTypesetLabel_Transaction_transaction_const_stdstring_newLabel]
+[#_virtual_VoidFuture_TypeDBTypesetLabel___Transaction__transaction__const_stdstring__newLabel_]
 ==== setLabel
 
 [source,cpp]
