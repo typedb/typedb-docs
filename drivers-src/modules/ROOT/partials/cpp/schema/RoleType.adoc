@@ -15,7 +15,7 @@ Defines a role an instance can play in a Relation.
 Roles are special internal types used by relations. We can not create an instance of a role in a database. But we can set an instance of another type (role player) to play a role in a particular instance of a relation type. Roles allow a schema to enforce logical constraints on types of role players.
 
 // tag::methods[]
-[#_virtual_VoidFuture_TypeDBRoleTypedeleteType_Transaction_transaction]
+[#_virtual_VoidFuture_TypeDBRoleTypedeleteType___Transaction__transaction_]
 ==== deleteType
 
 [source,cpp]
@@ -45,7 +45,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `virtual VoidFuture`
 
-[#_virtual_stdstring_TypeDBRoleTypegetLabel]
+[#_virtual_stdstring_TypeDBRoleTypegetLabel___]
 ==== getLabel
 
 [source,cpp]
@@ -66,7 +66,7 @@ Implements TypeDB::Type.
 .Returns
 `virtual std::string`
 
-[#_stdstring_TypeDBRoleTypegetName]
+[#_stdstring_TypeDBRoleTypegetName___]
 ==== getName
 
 [source,cpp]
@@ -83,7 +83,7 @@ Returns the name of this role type's label.
 .Returns
 `std::string`
 
-[#_ConceptIterable_Thing_TypeDBRoleTypegetPlayerInstances_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__Thing___TypeDBRoleTypegetPlayerInstances___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getPlayerInstances
 
 [source,cpp]
@@ -110,7 +110,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect playin
 .Returns
 `ConceptIterable< Thing >`
 
-[#_ConceptIterable_ThingType_TypeDBRoleTypegetPlayerTypes_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__ThingType___TypeDBRoleTypegetPlayerTypes___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getPlayerTypes
 
 [source,cpp]
@@ -137,7 +137,7 @@ a| `transitivity` a| ``Transitivity.TRANSITIVE`` for direct and indirect playing
 .Returns
 `ConceptIterable< ThingType >`
 
-[#_ConceptIterable_Relation_TypeDBRoleTypegetRelationInstances_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__Relation___TypeDBRoleTypegetRelationInstances___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getRelationInstances
 
 [source,cpp]
@@ -164,7 +164,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect relati
 .Returns
 `ConceptIterable< Relation >`
 
-[#_ConceptPtrFuture_RelationType_TypeDBRoleTypegetRelationType_Transaction_transaction]
+[#_ConceptPtrFuture__RelationType___TypeDBRoleTypegetRelationType___Transaction__transaction_]
 ==== getRelationType
 
 [source,cpp]
@@ -190,7 +190,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptPtrFuture< RelationType >`
 
-[#_ConceptIterable_RelationType_TypeDBRoleTypegetRelationTypes_Transaction_transaction]
+[#_ConceptIterable__RelationType___TypeDBRoleTypegetRelationTypes___Transaction__transaction_]
 ==== getRelationTypes
 
 [source,cpp]
@@ -216,7 +216,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< RelationType >`
 
-[#_stdstring_TypeDBRoleTypegetScope]
+[#_stdstring_TypeDBRoleTypegetScope___]
 ==== getScope
 
 [source,cpp]
@@ -233,7 +233,7 @@ Returns the scope part of this role type's label.
 .Returns
 `std::string`
 
-[#_ConceptIterable_RoleType_TypeDBRoleTypegetSubtypes_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__RoleType___TypeDBRoleTypegetSubtypes___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getSubtypes
 
 [source,cpp]
@@ -260,7 +260,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect subtyp
 .Returns
 `ConceptIterable< RoleType >`
 
-[#_ConceptPtrFuture_RoleType_TypeDBRoleTypegetSupertype_Transaction_transaction]
+[#_ConceptPtrFuture__RoleType___TypeDBRoleTypegetSupertype___Transaction__transaction_]
 ==== getSupertype
 
 [source,cpp]
@@ -286,7 +286,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptPtrFuture< RoleType >`
 
-[#_ConceptIterable_RoleType_TypeDBRoleTypegetSupertypes_Transaction_transaction]
+[#_ConceptIterable__RoleType___TypeDBRoleTypegetSupertypes___Transaction__transaction_]
 ==== getSupertypes
 
 [source,cpp]
@@ -312,7 +312,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< RoleType >`
 
-[#_virtual_bool_TypeDBRoleTypeisAbstract]
+[#_virtual_bool_TypeDBRoleTypeisAbstract___]
 ==== isAbstract
 
 [source,cpp]
@@ -333,7 +333,7 @@ Implements TypeDB::Type.
 .Returns
 `virtual bool`
 
-[#_virtual_BoolFuture_TypeDBRoleTypeisDeleted_Transaction_transaction]
+[#_virtual_BoolFuture_TypeDBRoleTypeisDeleted___Transaction__transaction_]
 ==== isDeleted
 
 [source,cpp]
@@ -363,7 +363,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `virtual BoolFuture`
 
-[#_bool_TypeDBRoleTypeisRoot]
+[#_bool_TypeDBRoleTypeisRoot___]
 ==== isRoot
 
 [source,cpp]
@@ -380,7 +380,7 @@ Checks if the type is a root type.
 .Returns
 `bool`
 
-[#_virtual_VoidFuture_TypeDBRoleTypesetLabel_Transaction_transaction_const_stdstring_newLabel]
+[#_virtual_VoidFuture_TypeDBRoleTypesetLabel___Transaction__transaction__const_stdstring__newLabel_]
 ==== setLabel
 
 [source,cpp]

@@ -8,7 +8,7 @@
 The fundamental TypeQL object. A Concept is either a Type, Thing, or Value.
 
 // tag::methods[]
-[#_Attribute_PTR_TypeDBConceptasAttribute]
+[#_Attribute__ptr__TypeDBConceptasAttribute___]
 ==== asAttribute
 
 [source,cpp]
@@ -25,7 +25,7 @@ Casts the concept to ``Attribute``.
 .Returns
 `Attribute*`
 
-[#_AttributeType_PTR_TypeDBConceptasAttributeType]
+[#_AttributeType__ptr__TypeDBConceptasAttributeType___]
 ==== asAttributeType
 
 [source,cpp]
@@ -42,7 +42,7 @@ Casts the concept to ``EntityType``.
 .Returns
 `AttributeType*`
 
-[#_Entity_PTR_TypeDBConceptasEntity]
+[#_Entity__ptr__TypeDBConceptasEntity___]
 ==== asEntity
 
 [source,cpp]
@@ -59,7 +59,7 @@ Casts the concept to ``Entity``.
 .Returns
 `Entity*`
 
-[#_EntityType_PTR_TypeDBConceptasEntityType]
+[#_EntityType__ptr__TypeDBConceptasEntityType___]
 ==== asEntityType
 
 [source,cpp]
@@ -76,7 +76,7 @@ Casts the concept to ``EntityType``.
 .Returns
 `EntityType*`
 
-[#_Relation_PTR_TypeDBConceptasRelation]
+[#_Relation__ptr__TypeDBConceptasRelation___]
 ==== asRelation
 
 [source,cpp]
@@ -93,7 +93,7 @@ Casts the concept to ``Relation``.
 .Returns
 `Relation*`
 
-[#_RelationType_PTR_TypeDBConceptasRelationType]
+[#_RelationType__ptr__TypeDBConceptasRelationType___]
 ==== asRelationType
 
 [source,cpp]
@@ -110,7 +110,7 @@ Casts the concept to ``RelationType``.
 .Returns
 `RelationType*`
 
-[#_RoleType_PTR_TypeDBConceptasRoleType]
+[#_RoleType__ptr__TypeDBConceptasRoleType___]
 ==== asRoleType
 
 [source,cpp]
@@ -127,7 +127,7 @@ Casts the concept to ``RoleType``.
 .Returns
 `RoleType*`
 
-[#_Thing_PTR_TypeDBConceptasThing]
+[#_Thing__ptr__TypeDBConceptasThing___]
 ==== asThing
 
 [source,cpp]
@@ -144,7 +144,7 @@ Casts the concept to ``Thing``.
 .Returns
 `Thing*`
 
-[#_ThingType_PTR_TypeDBConceptasThingType]
+[#_ThingType__ptr__TypeDBConceptasThingType___]
 ==== asThingType
 
 [source,cpp]
@@ -161,7 +161,7 @@ Casts the concept to ``ThingType``.
 .Returns
 `ThingType*`
 
-[#_Value_PTR_TypeDBConceptasValue]
+[#_Value__ptr__TypeDBConceptasValue___]
 ==== asValue
 
 [source,cpp]
@@ -178,7 +178,7 @@ Casts the concept to ``Value``.
 .Returns
 `Value*`
 
-[#_static_bool_TypeDBConceptequals_Concept_PTR_first_Concept_PTR_second]
+[#_static_bool_TypeDBConceptequals___Concept__ptr__first__Concept__ptr__second_]
 ==== equals
 
 [source,cpp]
@@ -194,7 +194,7 @@ Checks equality of two concepts.
 .Returns
 `static bool`
 
-[#_ConceptType_TypeDBConceptgetConceptType]
+[#_ConceptType_TypeDBConceptgetConceptType___]
 ==== getConceptType
 
 [source,cpp]
@@ -211,7 +211,7 @@ Returns the ConceptType of this concept.
 .Returns
 `ConceptType`
 
-[#_bool_TypeDBConceptisAttribute]
+[#_bool_TypeDBConceptisAttribute___]
 ==== isAttribute
 
 [source,cpp]
@@ -228,7 +228,7 @@ Checks if the concept is a ``Relation``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisAttributeType]
+[#_bool_TypeDBConceptisAttributeType___]
 ==== isAttributeType
 
 [source,cpp]
@@ -245,7 +245,7 @@ Checks if the concept is an ``AttributeType``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisEntity]
+[#_bool_TypeDBConceptisEntity___]
 ==== isEntity
 
 [source,cpp]
@@ -262,7 +262,7 @@ Checks if the concept is an ``Entity``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisEntityType]
+[#_bool_TypeDBConceptisEntityType___]
 ==== isEntityType
 
 [source,cpp]
@@ -279,7 +279,7 @@ Checks if the concept is an ``EntityType``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisRelation]
+[#_bool_TypeDBConceptisRelation___]
 ==== isRelation
 
 [source,cpp]
@@ -296,7 +296,7 @@ Checks if the concept is a ``Value``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisRelationType]
+[#_bool_TypeDBConceptisRelationType___]
 ==== isRelationType
 
 [source,cpp]
@@ -313,7 +313,7 @@ Checks if the concept is a ``RelationType``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisRoleType]
+[#_bool_TypeDBConceptisRoleType___]
 ==== isRoleType
 
 [source,cpp]
@@ -330,7 +330,7 @@ Checks if the concept is a ``RoleType``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisThing]
+[#_bool_TypeDBConceptisThing___]
 ==== isThing
 
 [source,cpp]
@@ -347,7 +347,7 @@ Checks if the concept is a ``Thing``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisThingType]
+[#_bool_TypeDBConceptisThingType___]
 ==== isThingType
 
 [source,cpp]
@@ -364,7 +364,7 @@ Checks if the concept is a ``ThingType``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptisValue]
+[#_bool_TypeDBConceptisValue___]
 ==== isValue
 
 [source,cpp]
@@ -381,7 +381,7 @@ Checks if the concept is a ``Value``.
 .Returns
 `bool`
 
-[#_bool_TypeDBConceptoperator_const_Concept_other]
+[#_bool_TypeDBConceptoperator___const_Concept__other_]
 ==== operator==
 
 [source,cpp]
@@ -397,7 +397,7 @@ Checks equality with the ``other`` concept.
 .Returns
 `bool`
 
-[#_stdstring_TypeDBConcepttoString]
+[#_stdstring_TypeDBConcepttoString___]
 ==== toString
 
 [source,cpp]

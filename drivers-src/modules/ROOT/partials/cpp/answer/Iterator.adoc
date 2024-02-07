@@ -1,13 +1,14 @@
-[#_Iterator_NATIVE_ITER_NATIVE_T_T_HELPER]
-=== Iterator< NATIVE_ITER, NATIVE_T, T, HELPER >
+[#_Iterator]
+=== Iterator
 
 *Package*: `TypeDB`
 
-
- template&lt;typename NATIVE_ITER, typename NATIVE_T, typename T, typename HELPER = IteratorHelper&lt;NATIVE_ITER, NATIVE_T, T&gt;&gt;
- 
-  class TypeDB::Iterator&lt; NATIVE_ITER, NATIVE_T, T, HELPER &gt;
-
+----
+template<typename NATIVE_ITER, typename NATIVE_T, typename T, typename HELPER = IteratorHelper<NATIVE_ITER, NATIVE_T, T>>
+----
+----
+class TypeDB::Iterator< NATIVE_ITER, NATIVE_T, T, HELPER >
+----
 
 A structure emulating std::iterator, used for streaming of query results from the server.
 

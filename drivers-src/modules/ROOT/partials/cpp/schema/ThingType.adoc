@@ -13,7 +13,7 @@
 Common super-type of EntityType, RelationType, and AttributeType.
 
 // tag::methods[]
-[#_virtual_VoidFuture_TypeDBThingTypedeleteType_Transaction_transaction]
+[#_virtual_VoidFuture_TypeDBThingTypedeleteType___Transaction__transaction_]
 ==== deleteType
 
 [source,cpp]
@@ -43,7 +43,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `virtual VoidFuture`
 
-[#_virtual_stdstring_TypeDBThingTypegetLabel]
+[#_virtual_stdstring_TypeDBThingTypegetLabel___]
 ==== getLabel
 
 [source,cpp]
@@ -64,7 +64,7 @@ Implements TypeDB::Type.
 .Returns
 `virtual std::string`
 
-[#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwns
 
 [source,cpp]
@@ -74,13 +74,13 @@ ConceptIterable< AttributeType > TypeDB::ThingType::getOwns(Transaction& transac
 
 
 
-Variant of <<#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``ValueType`` or ``Annotation``s
+Variant of <<#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``ValueType`` or ``Annotation``s
 
 [caption=""]
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_const_stdinitializer_list_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__const_stdinitializer_list__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwns
 
 [source,cpp]
@@ -92,13 +92,13 @@ ConceptIterable< AttributeType > TypeDB::ThingType::getOwns(Transaction& transac
 
 
 
-Variant of <<#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``ValueType``
+Variant of <<#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``ValueType``
 
 [caption=""]
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwns
 
 [source,cpp]
@@ -108,13 +108,13 @@ ConceptIterable< AttributeType > TypeDB::ThingType::getOwns(Transaction& transac
 
 
 
-Variant of <<#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``ValueType``
+Variant of <<#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``ValueType``
 
 [caption=""]
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwns
 
 [source,cpp]
@@ -124,13 +124,13 @@ ConceptIterable< AttributeType > TypeDB::ThingType::getOwns(Transaction& transac
 
 
 
-Variant of <<#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``Annotation``s
+Variant of <<#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>> without filtering on ``Annotation``s
 
 [caption=""]
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_const_stdinitializer_list_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__const_stdinitializer_list__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwns
 
 [source,cpp]
@@ -140,13 +140,13 @@ ConceptIterable< AttributeType > TypeDB::ThingType::getOwns(Transaction& transac
 
 
 
-See <<#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>>
+See <<#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_,getOwns(Transaction&amp;, ValueType, const std::vector&lt;Annotation&gt;&amp;, Transitivity)>>
 
 [caption=""]
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ConceptIterable_AttributeType_TypeDBThingTypegetOwns_Transaction_transaction_ValueType_valueType_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBThingTypegetOwns___Transaction__transaction__ValueType_valueType__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwns
 
 [source,cpp]
@@ -175,7 +175,7 @@ a| `annotations` a| Only retrieve attribute types owned with annotations. a|
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ConceptPtrFuture_AttributeType_TypeDBThingTypegetOwnsOverridden_Transaction_transaction_AttributeType_PTR_attributeType]
+[#_ConceptPtrFuture__AttributeType___TypeDBThingTypegetOwnsOverridden___Transaction__transaction__AttributeType__ptr__attributeType_]
 ==== getOwnsOverridden
 
 [source,cpp]
@@ -202,7 +202,7 @@ a| `attributeType` a| The ``AttributeType`` that overrides requested ``Attribute
 .Returns
 `ConceptPtrFuture< AttributeType >`
 
-[#_ConceptIterable_RoleType_TypeDBThingTypegetPlays_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__RoleType___TypeDBThingTypegetPlays___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getPlays
 
 [source,cpp]
@@ -229,7 +229,7 @@ a| `transitivity` a| transitivity: ``Transitivity::TRANSITIVE`` for direct and i
 .Returns
 `ConceptIterable< RoleType >`
 
-[#_ConceptPtrFuture_RoleType_TypeDBThingTypegetPlaysOverridden_Transaction_transaction_RoleType_PTR_roleType]
+[#_ConceptPtrFuture__RoleType___TypeDBThingTypegetPlaysOverridden___Transaction__transaction__RoleType__ptr__roleType_]
 ==== getPlaysOverridden
 
 [source,cpp]
@@ -256,7 +256,7 @@ a| `roleType` a| The ``RoleType`` that overrides an inherited role a|
 .Returns
 `ConceptPtrFuture< RoleType >`
 
-[#_ConceptIterable_ThingType_TypeDBThingTypegetSubtypes_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__ThingType___TypeDBThingTypegetSubtypes___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getSubtypes
 
 [source,cpp]
@@ -285,7 +285,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect subtyp
 .Returns
 `ConceptIterable< ThingType >`
 
-[#_ConceptPtrFuture_ThingType_TypeDBThingTypegetSupertype_Transaction_transaction]
+[#_ConceptPtrFuture__ThingType___TypeDBThingTypegetSupertype___Transaction__transaction_]
 ==== getSupertype
 
 [source,cpp]
@@ -313,7 +313,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptPtrFuture< ThingType >`
 
-[#_ConceptIterable_ThingType_TypeDBThingTypegetSupertypes_Transaction_transaction]
+[#_ConceptIterable__ThingType___TypeDBThingTypegetSupertypes___Transaction__transaction_]
 ==== getSupertypes
 
 [source,cpp]
@@ -341,7 +341,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< ThingType >`
 
-[#_StringFuture_TypeDBThingTypegetSyntax_Transaction_transaction]
+[#_StringFuture_TypeDBThingTypegetSyntax___Transaction__transaction_]
 ==== getSyntax
 
 [source,cpp]
@@ -367,7 +367,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `StringFuture`
 
-[#_virtual_bool_TypeDBThingTypeisAbstract]
+[#_virtual_bool_TypeDBThingTypeisAbstract___]
 ==== isAbstract
 
 [source,cpp]
@@ -388,7 +388,7 @@ Implements TypeDB::Type.
 .Returns
 `virtual bool`
 
-[#_virtual_BoolFuture_TypeDBThingTypeisDeleted_Transaction_transaction]
+[#_virtual_BoolFuture_TypeDBThingTypeisDeleted___Transaction__transaction_]
 ==== isDeleted
 
 [source,cpp]
@@ -418,7 +418,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `virtual BoolFuture`
 
-[#_bool_TypeDBThingTypeisRoot]
+[#_bool_TypeDBThingTypeisRoot___]
 ==== isRoot
 
 [source,cpp]
@@ -435,7 +435,7 @@ Checks if the type is a root type.
 .Returns
 `bool`
 
-[#_VoidFuture_TypeDBThingTypesetAbstract_Transaction_transaction]
+[#_VoidFuture_TypeDBThingTypesetAbstract___Transaction__transaction_]
 ==== setAbstract
 
 [source,cpp]
@@ -461,7 +461,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `VoidFuture`
 
-[#_virtual_VoidFuture_TypeDBThingTypesetLabel_Transaction_transaction_const_stdstring_newLabel]
+[#_virtual_VoidFuture_TypeDBThingTypesetLabel___Transaction__transaction__const_stdstring__newLabel_]
 ==== setLabel
 
 [source,cpp]
@@ -492,7 +492,7 @@ a| `label` a| The new ``Label`` to be given to the type. a|
 .Returns
 `virtual VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypesetOwns_Transaction_transaction_AttributeType_PTR_attributeType_const_stdinitializer_list_Annotation_annotations]
+[#_VoidFuture_TypeDBThingTypesetOwns___Transaction__transaction__AttributeType__ptr__attributeType__const_stdinitializer_list__Annotation____annotations___]
 ==== setOwns
 
 [source,cpp]
@@ -504,13 +504,13 @@ VoidFuture TypeDB::ThingType::setOwns(Transaction& transaction, AttributeType* a
 
 
 
-Variant of <<#_VoidFuture_TypeDBThingTypesetOwns_Transaction_transaction_AttributeType_PTR_attributeType_AttributeType_PTR_overriddenType_const_stdvector_Annotation_annotations,setOwns(Transaction&amp;, AttributeType*, AttributeType*, const std::vector&lt;Annotation&gt;&amp;)>> with no overridden attribute type
+Variant of <<#_VoidFuture_TypeDBThingTypesetOwns___Transaction__transaction__AttributeType__ptr__attributeType__AttributeType__ptr__overriddenType__const_stdvector__Annotation____annotations_,setOwns(Transaction&amp;, AttributeType*, AttributeType*, const std::vector&lt;Annotation&gt;&amp;)>> with no overridden attribute type
 
 [caption=""]
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypesetOwns_Transaction_transaction_AttributeType_PTR_attributeType_const_stdvector_Annotation_annotations]
+[#_VoidFuture_TypeDBThingTypesetOwns___Transaction__transaction__AttributeType__ptr__attributeType__const_stdvector__Annotation____annotations_]
 ==== setOwns
 
 [source,cpp]
@@ -520,13 +520,13 @@ VoidFuture TypeDB::ThingType::setOwns(Transaction& transaction, AttributeType* a
 
 
 
-Variant of <<#_VoidFuture_TypeDBThingTypesetOwns_Transaction_transaction_AttributeType_PTR_attributeType_AttributeType_PTR_overriddenType_const_stdvector_Annotation_annotations,setOwns(Transaction&amp;, AttributeType*, AttributeType*, const std::vector&lt;Annotation&gt;&amp;)>> with no overridden attribute type
+Variant of <<#_VoidFuture_TypeDBThingTypesetOwns___Transaction__transaction__AttributeType__ptr__attributeType__AttributeType__ptr__overriddenType__const_stdvector__Annotation____annotations_,setOwns(Transaction&amp;, AttributeType*, AttributeType*, const std::vector&lt;Annotation&gt;&amp;)>> with no overridden attribute type
 
 [caption=""]
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypesetOwns_Transaction_transaction_AttributeType_PTR_attributeType_AttributeType_PTR_overriddenType_const_stdinitializer_list_Annotation_annotations]
+[#_VoidFuture_TypeDBThingTypesetOwns___Transaction__transaction__AttributeType__ptr__attributeType__AttributeType__ptr__overriddenType__const_stdinitializer_list__Annotation____annotations___]
 ==== setOwns
 
 [source,cpp]
@@ -536,13 +536,13 @@ VoidFuture TypeDB::ThingType::setOwns(Transaction& transaction, AttributeType* a
 
 
 
-See <<#_VoidFuture_TypeDBThingTypesetOwns_Transaction_transaction_AttributeType_PTR_attributeType_AttributeType_PTR_overriddenType_const_stdvector_Annotation_annotations,setOwns(Transaction&amp;, AttributeType*, AttributeType*, const std::vector&lt;Annotation&gt;&amp;)>>
+See <<#_VoidFuture_TypeDBThingTypesetOwns___Transaction__transaction__AttributeType__ptr__attributeType__AttributeType__ptr__overriddenType__const_stdvector__Annotation____annotations_,setOwns(Transaction&amp;, AttributeType*, AttributeType*, const std::vector&lt;Annotation&gt;&amp;)>>
 
 [caption=""]
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypesetOwns_Transaction_transaction_AttributeType_PTR_attributeType_AttributeType_PTR_overriddenType_const_stdvector_Annotation_annotations]
+[#_VoidFuture_TypeDBThingTypesetOwns___Transaction__transaction__AttributeType__ptr__attributeType__AttributeType__ptr__overriddenType__const_stdvector__Annotation____annotations_]
 ==== setOwns
 
 [source,cpp]
@@ -571,7 +571,7 @@ a| `annotations` a| Adds annotations to the ownership. a|
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypesetPlays_Transaction_transaction_RoleType_PTR_roleType]
+[#_VoidFuture_TypeDBThingTypesetPlays___Transaction__transaction__RoleType__ptr__roleType_]
 ==== setPlays
 
 [source,cpp]
@@ -581,13 +581,13 @@ VoidFuture TypeDB::ThingType::setPlays(Transaction& transaction, RoleType* roleT
 
 
 
-Variant of <<#_VoidFuture_TypeDBThingTypesetPlays_Transaction_transaction_RoleType_PTR_roleType_RoleType_PTR_overriddenRoleType,setPlays(Transaction&amp;, RoleType*, RoleType*)>> with no overridden role type.
+Variant of <<#_VoidFuture_TypeDBThingTypesetPlays___Transaction__transaction__RoleType__ptr__roleType__RoleType__ptr__overriddenRoleType_,setPlays(Transaction&amp;, RoleType*, RoleType*)>> with no overridden role type.
 
 [caption=""]
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypesetPlays_Transaction_transaction_RoleType_PTR_roleType_RoleType_PTR_overriddenRoleType]
+[#_VoidFuture_TypeDBThingTypesetPlays___Transaction__transaction__RoleType__ptr__roleType__RoleType__ptr__overriddenRoleType_]
 ==== setPlays
 
 [source,cpp]
@@ -615,7 +615,7 @@ a| `overriddenType` a| The role type that this role overrides, if applicable a|
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypeunsetAbstract_Transaction_transaction]
+[#_VoidFuture_TypeDBThingTypeunsetAbstract___Transaction__transaction_]
 ==== unsetAbstract
 
 [source,cpp]
@@ -641,7 +641,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypeunsetOwns_Transaction_transaction_AttributeType_PTR_attributeType]
+[#_VoidFuture_TypeDBThingTypeunsetOwns___Transaction__transaction__AttributeType__ptr__attributeType_]
 ==== unsetOwns
 
 [source,cpp]
@@ -668,7 +668,7 @@ a| `attributeType` a| The ``AttributeType`` to not be owned by the type. a|
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingTypeunsetPlays_Transaction_transaction_RoleType_PTR_roleType]
+[#_VoidFuture_TypeDBThingTypeunsetPlays___Transaction__transaction__RoleType__ptr__roleType_]
 ==== unsetPlays
 
 [source,cpp]

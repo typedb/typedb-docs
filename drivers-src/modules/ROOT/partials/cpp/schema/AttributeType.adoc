@@ -20,7 +20,7 @@ Other types can own an attribute type. That means that instances of these other 
 Multiple types can own the same attribute type, and different instances of the same type or different types can share ownership of the same attribute instance.
 
 // tag::methods[]
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeget_Transaction_transaction_Value_PTR_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeget___Transaction__transaction__Value__ptr__value_]
 ==== get
 
 [source,cpp]
@@ -47,7 +47,7 @@ a| `value` a| ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeget_Transaction_transaction_const_stdstring_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeget___Transaction__transaction__const_stdstring__value_]
 ==== get
 
 [source,cpp]
@@ -74,7 +74,7 @@ a| `value` a| ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeget_Transaction_transaction_int64_t_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeget___Transaction__transaction__int64_t_value_]
 ==== get
 
 [source,cpp]
@@ -101,7 +101,7 @@ a| `value` a| ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeget_Transaction_transaction_double_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeget___Transaction__transaction__double_value_]
 ==== get
 
 [source,cpp]
@@ -128,7 +128,7 @@ a| `value` a| ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeget_Transaction_transaction_bool_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeget___Transaction__transaction__bool_value_]
 ==== get
 
 [source,cpp]
@@ -155,7 +155,7 @@ a| `value` a| ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeget_Transaction_transaction_DateTime_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeget___Transaction__transaction__DateTime_value_]
 ==== get
 
 [source,cpp]
@@ -182,7 +182,7 @@ a| `value` a| ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptIterable_Attribute_TypeDBAttributeTypegetInstances_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__Attribute___TypeDBAttributeTypegetInstances___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getInstances
 
 [source,cpp]
@@ -209,7 +209,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< Attribute >`
 
-[#_ConceptIterable_ThingType_TypeDBAttributeTypegetOwners_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__ThingType___TypeDBAttributeTypegetOwners___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwners
 
 [source,cpp]
@@ -236,7 +236,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect subtyp
 .Returns
 `ConceptIterable< ThingType >`
 
-[#_ConceptIterable_ThingType_TypeDBAttributeTypegetOwners_Transaction_transaction_const_stdvector_Annotation_annotations_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__ThingType___TypeDBAttributeTypegetOwners___Transaction__transaction__const_stdvector__Annotation____annotations__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getOwners
 
 [source,cpp]
@@ -246,7 +246,7 @@ ConceptIterable< ThingType > TypeDB::AttributeType::getOwners(Transaction& trans
 
 
 
-Variant of <<#_ConceptIterable_ThingType_TypeDBAttributeTypegetOwners_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE,getOwners>>(Transaction&amp; transaction, const std::vector&lt;Annotation&gt;&amp; annotations, Transitivity transitivity = Transitivity::TRANSITIVE) for convenience
+Variant of <<#_ConceptIterable__ThingType___TypeDBAttributeTypegetOwners___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_,getOwners>>(Transaction&amp; transaction, const std::vector&lt;Annotation&gt;&amp; annotations, Transitivity transitivity = Transitivity::TRANSITIVE) for convenience
 
 
 [caption=""]
@@ -264,7 +264,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect subtyp
 .Returns
 `ConceptIterable< ThingType >`
 
-[#_OptionalStringFuture_TypeDBAttributeTypegetRegex_Transaction_transaction]
+[#_OptionalStringFuture_TypeDBAttributeTypegetRegex___Transaction__transaction_]
 ==== getRegex
 
 [source,cpp]
@@ -290,7 +290,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `OptionalStringFuture`
 
-[#_ConceptIterable_AttributeType_TypeDBAttributeTypegetSubtypes_Transaction_transaction_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBAttributeTypegetSubtypes___Transaction__transaction__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getSubtypes
 
 [source,cpp]
@@ -317,7 +317,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect subtyp
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ConceptIterable_AttributeType_TypeDBAttributeTypegetSubtypes_Transaction_transaction_ValueType_valueType_Transitivity_transitivity_TransitivityTRANSITIVE]
+[#_ConceptIterable__AttributeType___TypeDBAttributeTypegetSubtypes___Transaction__transaction__ValueType_valueType__Transitivity_transitivity__TransitivityTRANSITIVE_]
 ==== getSubtypes
 
 [source,cpp]
@@ -345,7 +345,7 @@ a| `transitivity` a| ``Transitivity::TRANSITIVE`` for direct and indirect subtyp
 .Returns
 `ConceptIterable< AttributeType >`
 
-[#_ValueType_TypeDBAttributeTypegetValueType]
+[#_ValueType_TypeDBAttributeTypegetValueType___]
 ==== getValueType
 
 [source,cpp]
@@ -362,7 +362,7 @@ Retrieves the ``Value.Type`` of this ``AttributeType``.
 .Returns
 `ValueType`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeput_Transaction_transaction_Value_PTR_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeput___Transaction__transaction__Value__ptr__value_]
 ==== put
 
 [source,cpp]
@@ -389,7 +389,7 @@ a| `value` a| New ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeput_Transaction_transaction_const_stdstring_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeput___Transaction__transaction__const_stdstring__value_]
 ==== put
 
 [source,cpp]
@@ -416,7 +416,7 @@ a| `value` a| New ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeput_Transaction_transaction_int64_t_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeput___Transaction__transaction__int64_t_value_]
 ==== put
 
 [source,cpp]
@@ -443,7 +443,7 @@ a| `value` a| New ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeput_Transaction_transaction_double_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeput___Transaction__transaction__double_value_]
 ==== put
 
 [source,cpp]
@@ -470,7 +470,7 @@ a| `value` a| New ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeput_Transaction_transaction_bool_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeput___Transaction__transaction__bool_value_]
 ==== put
 
 [source,cpp]
@@ -497,7 +497,7 @@ a| `value` a| New ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_ConceptPtrFuture_Attribute_TypeDBAttributeTypeput_Transaction_transaction_DateTime_value]
+[#_ConceptPtrFuture__Attribute___TypeDBAttributeTypeput___Transaction__transaction__DateTime_value_]
 ==== put
 
 [source,cpp]
@@ -524,7 +524,7 @@ a| `value` a| New ``Attribute``’s value a|
 .Returns
 `ConceptPtrFuture< Attribute >`
 
-[#_VoidFuture_TypeDBAttributeTypesetRegex_Transaction_transaction_const_stdstring_regex]
+[#_VoidFuture_TypeDBAttributeTypesetRegex___Transaction__transaction__const_stdstring__regex_]
 ==== setRegex
 
 [source,cpp]
@@ -553,7 +553,7 @@ a| `regex` a| Regular expression a|
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBAttributeTypesetSupertype_Transaction_transaction_AttributeType_PTR_attributeType]
+[#_VoidFuture_TypeDBAttributeTypesetSupertype___Transaction__transaction__AttributeType__ptr__attributeType_]
 ==== setSupertype
 
 [source,cpp]
@@ -580,7 +580,7 @@ a| `attributeType` a| The ``AttributeType`` to set as the supertype of this ``At
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBAttributeTypeunsetRegex_Transaction_transaction]
+[#_VoidFuture_TypeDBAttributeTypeunsetRegex___Transaction__transaction_]
 ==== unsetRegex
 
 [source,cpp]

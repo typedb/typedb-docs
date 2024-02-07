@@ -12,7 +12,7 @@
 Common super-type of Entity, Relation, and Attribute.
 
 // tag::methods[]
-[#_VoidFuture_TypeDBThingdeleteThing_Transaction_transaction]
+[#_VoidFuture_TypeDBThingdeleteThing___Transaction__transaction_]
 ==== deleteThing
 
 [source,cpp]
@@ -38,7 +38,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `VoidFuture`
 
-[#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_stdinitializer_list_Annotation_annotations]
+[#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_stdinitializer_list__Annotation____annotations___]
 ==== getHas
 
 [source,cpp]
@@ -65,7 +65,7 @@ a| `annotations` a| Only retrieve attributes with all given ``Annotation``s a|
 .Returns
 `ConceptIterable< Attribute >`
 
-[#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_AttributeType_PTR_attribute]
+[#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_AttributeType__ptr__attribute_]
 ==== getHas
 
 [source,cpp]
@@ -75,13 +75,13 @@ ConceptIterable< Attribute > TypeDB::Thing::getHas(Transaction& transaction, con
 
 
 
-See <<#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_stdvector_stdunique_ptr_AttributeType_attributeTypes,getHas(Transaction&amp;, const std::vector&lt;std::unique_ptr&lt;AttributeType&gt;&gt;&amp;)>>
+See <<#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_stdvector__stdunique_ptr__AttributeType______attributeTypes_,getHas(Transaction&amp;, const std::vector&lt;std::unique_ptr&lt;AttributeType&gt;&gt;&amp;)>>
 
 [caption=""]
 .Returns
 `ConceptIterable< Attribute >`
 
-[#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_stdvector_stdunique_ptr_AttributeType_attributeTypes]
+[#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_stdvector__stdunique_ptr__AttributeType______attributeTypes_]
 ==== getHas
 
 [source,cpp]
@@ -108,7 +108,7 @@ a| `attributeTypes` a| The ``AttributeType``s to filter the attributes by a|
 .Returns
 `ConceptIterable< Attribute >`
 
-[#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_stdvector_const_AttributeType_PTR_attributeTypes]
+[#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_stdvector__const_AttributeType__ptr_____attributeTypes_]
 ==== getHas
 
 [source,cpp]
@@ -118,13 +118,13 @@ ConceptIterable< Attribute > TypeDB::Thing::getHas(Transaction& transaction, con
 
 
 
-See <<#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_stdvector_stdunique_ptr_AttributeType_attributeTypes,getHas(Transaction&amp; transaction, const std::vector&lt;std::unique_ptr&lt;AttributeType&gt;&gt;&amp; attributeTypes)>>
+See <<#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_stdvector__stdunique_ptr__AttributeType______attributeTypes_,getHas(Transaction&amp; transaction, const std::vector&lt;std::unique_ptr&lt;AttributeType&gt;&gt;&amp; attributeTypes)>>
 
 [caption=""]
 .Returns
 `ConceptIterable< Attribute >`
 
-[#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_stdvector_Annotation_annotations]
+[#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_stdvector__Annotation____annotations_]
 ==== getHas
 
 [source,cpp]
@@ -134,13 +134,13 @@ ConceptIterable< Attribute > TypeDB::Thing::getHas(Transaction& transaction, con
 
 
 
-See <<#_ConceptIterable_Attribute_TypeDBThinggetHas_Transaction_transaction_const_stdinitializer_list_Annotation_annotations,getHas(Transaction&amp;, const std::initializer_list&lt;Annotation&gt;&amp;)>>
+See <<#_ConceptIterable__Attribute___TypeDBThinggetHas___Transaction__transaction__const_stdinitializer_list__Annotation____annotations___,getHas(Transaction&amp;, const std::initializer_list&lt;Annotation&gt;&amp;)>>
 
 [caption=""]
 .Returns
 `ConceptIterable< Attribute >`
 
-[#_stdstring_TypeDBThinggetIID]
+[#_stdstring_TypeDBThinggetIID___]
 ==== getIID
 
 [source,cpp]
@@ -157,7 +157,7 @@ Retrieves the unique id of the ``Thing``.
 .Returns
 `std::string`
 
-[#_ConceptIterable_RoleType_TypeDBThinggetPlaying_Transaction_transaction]
+[#_ConceptIterable__RoleType___TypeDBThinggetPlaying___Transaction__transaction_]
 ==== getPlaying
 
 [source,cpp]
@@ -183,7 +183,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `ConceptIterable< RoleType >`
 
-[#_ConceptIterable_Relation_TypeDBThinggetRelations_Transaction_transaction_const_stdvector_stdunique_ptr_RoleType_roleTypes]
+[#_ConceptIterable__Relation___TypeDBThinggetRelations___Transaction__transaction__const_stdvector__stdunique_ptr__RoleType______roleTypes___]
 ==== getRelations
 
 [source,cpp]
@@ -210,7 +210,7 @@ a| `roleTypes` a| The array of roles to filter the relations by. a|
 .Returns
 `ConceptIterable< Relation >`
 
-[#_ConceptIterable_Relation_TypeDBThinggetRelations_Transaction_transaction_const_stdvector_RoleType_PTR_roleTypes]
+[#_ConceptIterable__Relation___TypeDBThinggetRelations___Transaction__transaction__const_stdvector__RoleType__ptr_____roleTypes_]
 ==== getRelations
 
 [source,cpp]
@@ -220,13 +220,13 @@ ConceptIterable< Relation > TypeDB::Thing::getRelations(Transaction& transaction
 
 
 
-See <<#_ConceptIterable_Relation_TypeDBThinggetRelations_Transaction_transaction_const_stdvector_stdunique_ptr_RoleType_roleTypes,getRelations(Transaction&amp; transaction, const std::vector&lt;std::unique_ptr&lt;RoleType&gt;&gt;&amp; roleTypes)>>
+See <<#_ConceptIterable__Relation___TypeDBThinggetRelations___Transaction__transaction__const_stdvector__stdunique_ptr__RoleType______roleTypes___,getRelations(Transaction&amp; transaction, const std::vector&lt;std::unique_ptr&lt;RoleType&gt;&gt;&amp; roleTypes)>>
 
 [caption=""]
 .Returns
 `ConceptIterable< Relation >`
 
-[#_stdunique_ptr_ThingType_TypeDBThinggetType]
+[#_stdunique_ptr__ThingType___TypeDBThinggetType___]
 ==== getType
 
 [source,cpp]
@@ -243,7 +243,7 @@ Retrieves the type which this ``Thing`` belongs to.
 .Returns
 `std::unique_ptr< ThingType >`
 
-[#_BoolFuture_TypeDBThingisDeleted_Transaction_transaction]
+[#_BoolFuture_TypeDBThingisDeleted___Transaction__transaction_]
 ==== isDeleted
 
 [source,cpp]
@@ -269,7 +269,7 @@ a| `transaction` a| The current transaction a|
 .Returns
 `BoolFuture`
 
-[#_bool_TypeDBThingisInferred]
+[#_bool_TypeDBThingisInferred___]
 ==== isInferred
 
 [source,cpp]
@@ -286,7 +286,7 @@ Checks if this ``Thing`` is inferred by a [Reasoning Rule].
 .Returns
 `bool`
 
-[#_VoidFuture_TypeDBThingsetHas_Transaction_transaction_Attribute_PTR_attribute]
+[#_VoidFuture_TypeDBThingsetHas___Transaction__transaction__Attribute__ptr__attribute_]
 ==== setHas
 
 [source,cpp]
@@ -313,7 +313,7 @@ a| `attribute` a| The ``Attribute`` to be owned by this ``Thing``. a|
 .Returns
 `VoidFuture`
 
-[#_VoidFuture_TypeDBThingunsetHas_Transaction_transaction_Attribute_PTR_attribute]
+[#_VoidFuture_TypeDBThingunsetHas___Transaction__transaction__Attribute__ptr__attribute_]
 ==== unsetHas
 
 [source,cpp]
