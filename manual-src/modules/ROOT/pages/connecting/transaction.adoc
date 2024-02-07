@@ -2,16 +2,16 @@
 :tabs-sync-option:
 :experimental:
 
-TypeDB uses transactions for all database queries to provide xref:home::acid.adoc[ACID guarantees].
-Two transaction types exist: `read` and `write`.
-Read transactions, while faster and supporting inference, do not permit alterations to the database.
+All queries to a TypeDB database are performed through transactions.
+TypeDB transactions provide full xref:home::acid.adoc[ACID guarantees] up to snapshot isolation.
+There are two types of transactions: `read` and `write`.
+Read transactions are read-only, faster, and support inference.
 
-This guide covers opening a transaction and other transaction management operations with Studio,
-Console, or one of the drivers.
+This guide covers transaction control and best practices with Studio, Console, or one of the drivers.
 Studio provides automated transaction control, so you don't need to open transactions manually.
 
 To open a transaction, you need an open session.
-Make sure to follow instructions on the xref:manual::connecting/session.adoc[] page.
+Make sure to open a transaction using instructions from the xref:manual::connecting/session.adoc[] page.
 
 == Open a new transaction
 
@@ -101,19 +101,10 @@ auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
 --
 ====
 
-To see how to control transaction further, see <<_transaction_control,below>>.
-
-After connecting to a server, opening a
-xref:connecting/session.adoc[session] and a xref:manual::connecting/transaction.adoc[transaction],
-see how to xref:manual::defining/overview.adoc[Define a schema] of a database.
-
-[#_transaction_control]
-== Transaction control
-
 An open transaction can be <<_close_a_transaction,closed>>, <<_commit_a_transaction,committed>>, or even rolled back.
 
 [#_close_a_transaction]
-=== Close a transaction
+== Close a transaction
 
 Closing transaction doesn't save any changes made within the transaction.
 
@@ -220,7 +211,7 @@ tx.close();
 ====
 
 [#_commit_a_transaction]
-=== Commit a transaction
+== Commit a transaction
 
 Committing a transaction validates and applies changes to the database.
 A successful commit persists all changes made within a transaction and then closes the transaction.
@@ -318,6 +309,21 @@ tx.commit();
 ----
 --
 ====
+
+== Transaction management
+
+TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent,
+lock-free read/write transactions.
+For more information, see the xref:home::acid.adoc[ACID guarantees] page.
+
+TypeDB transactions have a duration limit.
+By default, it’s 5 minutes.
+The default value can be changed with Client options.
+//Transaction time limit is intended to encourage short-lived transactions,
+//prevent memory leaks caused by transactions that will not be completed and terminate unresponsive transactions.
+
+Avoid long-running transactions, which can result in conflicts and resource contention.
+A good principle to follow is for logically coherent queries to be grouped into a transaction.
 
 == Learn more
 

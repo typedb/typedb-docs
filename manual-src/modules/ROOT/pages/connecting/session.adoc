@@ -12,7 +12,7 @@ Both Studio and Console provide automated session control, so you don't need to 
 To open a session, you need to choose a session type and an existing database.
 
 Make sure to create a new database
-using instructions on the xref:manual::connecting/database.adoc[] page.
+using instructions from the xref:manual::connecting/database.adoc[] page.
 
 == Open a new session
 
@@ -192,7 +192,7 @@ An open Schema session blocks all attempt to open a `write` transaction in any `
 For more information on these limitations, see the
 xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement] section on the xref:home::acid.adoc[] page.
 
-It is recommended to avoid long-running sessions because of possible network failures.
+Avoid long-running sessions because of possible network failures.
 A good principle to follow is for logically coherent transactions to be grouped into a session.
 
 == Learn more
