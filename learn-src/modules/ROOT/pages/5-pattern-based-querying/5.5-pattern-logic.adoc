@@ -1,1 +1,65 @@
 = 5.5 - Pattern logic
+
+== Disjunction blocks
+
+By default, all statements in a pattern are joined in a *conjunction* (i.e. a logical "and"), meaning they must all be simultaneously true. To create a *disjunction* (i.e. a logical "or"), we must use a disjunction block. The following pattern matches pairs of books with the same author, where the user has ordered one of the books or rated it with a score of 7 or higher.
+
+[,typeql]
+----
+$user isa user;
+(author: $author, work: $book-1) isa authorship;
+(author: $author, work: $book-2) isa authorship;
+{
+    (product: $book-1, buyer: $user) isa order;
+} or {
+    $rating (rated: $book-1, rater: $user) isa rating;
+    $rating has score >= 7;
+};
+----
+
+This disjunction block has two branches enclosed separated by the `or` keyword, but a disjunction block can contain any number of branches. Each branch contains a list of statements which are joined in a conjunction. Essentially, the contents of a branch can be considered a *sub-pattern*, allowing any pattern syntax to be employed within. The disjunction block itself is terminated with the `;` character, and is itself a single compound statement combined with the other statements in the top-level pattern in a conjunction. As with all TypeQL syntax, whitespace and indentation does not affect the fuctionality of the block.
+
+== Negation blocks
+
+Like we can represent a disjunction of statements using a disjunction block, we can represent the *negation* of statements with a negation block. The following pattern matches pairs of different books that have been ordered together.
+
+[,typeql]
+----
+$order (product: $book-1, product: $book-2) isa order;
+not { $book-1 is $book-2; };
+----
+
+Negation blocks have only a single branch, preceded by the `not` keyword and terminated with the `;` character. Like disjunction blocks, they can contain a sub-pattern of any form and comprising any number of statements.
+
+== Combining blocks
+
+Disjunction and negation blocks can be combined in series (i.e. nested) or in parallel (i.e. combined conjunctively), as exemplified by the following patterns. The first matches books that a particular user has no recorded interactions with (ratings or orders). The second matches pairs of different orders by the same user where the orders have been paid but not yet dispatched and the user is located in the US or Canada.
+
+[,typeql]
+----
+$user isa user, has id "placeholder id";
+$book isa book;
+not { {
+    ($user, $book) isa rating;
+} or {
+    ($user, $book) isa order;
+}; };
+----
+
+[,typeql]
+----
+$order-1 (buyer: $user) isa order, has status "paid";
+$order-2 (buyer: $user) isa order, has status "paid";
+not { $order-1 is $order-2; };
+(located: $user, place: $country) isa location;
+{
+    $country has name "United States";
+} or {
+    $country has name "Canada";
+};
+----
+
+[IMPORTANT]
+====
+All disjunction and negation blocks must have at least one variable that is shared with the pattern outside the block. Additionally, variables within a disjunction or negation block cannot be accessed in other clauses of a query, unless they also appear outside the block.
+====
