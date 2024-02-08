@@ -11,8 +11,8 @@ Here, you'll see how to retrieve inferred data from a database using Studio, Con
 == Rule definition
 
 Inference uses rules defined in the schema of a database.
-Since our xref:manual::defining/define.adoc#_schema_example[schema example] from the
-xref:manual::defining/define.adoc[] page has no rules in it, let's add a new rule:
+Since our schema from the
+xref:manual::defining/define.adoc[] page has no rules in it, let's add a new rule to the schema first:
 
 .Simple rule example
 [,typeql]
@@ -43,11 +43,27 @@ Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
-. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `schema` session and `write` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL define query with a rule
+[,typeql]
+----
+define
+
+rule users:
+when {
+    $u isa user;
+} then {
+    $u has name "User";
+};
+----
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
 . Switch to `data` session and `read` transaction types.
 . Open a new tab and insert or type in an Insert query, for example:
 +
-.TypeQL Insert query
+.TypeQL fetch query
 [,typeql]
 ----
 match
@@ -62,13 +78,40 @@ $u: name;
 Console::
 +
 --
-. Open a session and transaction:
+. Open a `schema` session and `write` transaction to the selected database (e.g., `sample_db`):
 +
 [,bash]
 ----
-transaction sample_db schema read
+transaction sample_db schema write
 ----
 . Send the Define query:
++
+[,bash]
+----
+define
+
+rule users:
+when {
+    $u isa user;
+} then {
+    $u has name "User";
+};
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+. Open a `data` session and `read` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db data read
+----
+. Send the Fetch query:
 +
 [,bash]
 ----
@@ -121,30 +164,30 @@ The resulted Log output should look like this:
 }
 ----
 
-To send a query with inference programmatically, use xref:drivers::overview.adoc[drivers]:
+To define a rule and send a fetch query with inference programmatically, use xref:drivers::overview.adoc[drivers]:
 
-//#todo Check the code
-//#todo Add the response processing
 [tabs]
 ====
 Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[`transaction.query().define()`]
+method to define a new rule.
 
-[,rust]
+Then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[`transaction.query().fetch()`] or
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[`transaction.query().get()`]
+method to retrieve data with inference:
+
+[,rust,indent=0]
 ----
-let query = "match
-            $u isa user;
-            fetch
-            $u: name;";
-let databases = DatabaseManager::new(driver);
-let db = databases.get("sample_db")?;
-let session = Session::new(db, SessionType::Data)?;
-let tx = session.transaction(TransactionType::Read)?;
-tx.query().get(&query)?;
-tx.commit().resolve()?;
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=infer]
 ----
 --
 
@@ -152,20 +195,21 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_define{scores}query_str__options_TypeDBOptions[`transaction.query.define()`]
+method to define a new rule.
 
-[,python]
+Then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_fetch{scores}query_str__options_TypeDBOptions__None[`transaction.query.fetch()`] or
+xref:drivers::python/api-reference.adoc#_QueryManager_get{scores}query_str__options_TypeDBOptions__None[`transaction.query.get()`]
+method to retrieve data with inference:
+
+[,python,indent=0]
 ----
-query = """
-        match
-        $u isa user;
-        fetch
-        $u: name;
-        """
-with driver.session("sample_db", SessionType.DATA) as session:
-    with session.transaction(TransactionType.READ) as transaction:
-        transaction.query.get(query)
-        transaction.commit()
+include::manual::partial$python-manual-code.py[tags=infer]
 ----
 --
 
@@ -173,16 +217,21 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_define__com_vaticle_typeql_lang_query_TypeQLDefine[`transaction.query.define()`]
+method to define a new rule.
 
-[,java]
+Then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[`transaction.query().fetch()`] or
+xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[`transaction.query().get()`]
+method to retrieve data with inference:
+
+[,java,indent=0]
 ----
-try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
-    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.READ)) {
-        Transaction.query().get("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
-        Transaction.commit();
-    }
-}
+include::manual::partial$java-manual-code.java[tags=infer]
 ----
 --
 
@@ -190,26 +239,21 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_define__query_string__options_TypeDBOptions[`transaction.query.define()`]
+method to define a new rule.
 
-[,js]
+Then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_fetch__query_string__options_TypeDBOptions[`transaction.query.fetch()`] or
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[`transaction.query.get()`]
+method to retrieve data with inference:
+
+[,js,indent=0]
 ----
-let query = `
-            match
-            $u isa user, has email $e;
-            get
-            $u, $e;
-            `;
-
-session = await driver.session("sample_db", SessionType.DATA);
-transaction = await session.transaction(TransactionType.READ);
-let iterator = transaction.query.get(query);
-let answers = await iterator.collect();
-k = 0;
-for (let i = 0; i < answers.length; i++) {
-    k++;
-    console.log("JSON #" + k + ": " + JSON.stringify(answers[i], null, 4));
-}
+include::manual::partial$nodejs-manual-code.js[tags=infer]
 ----
 --
 
@@ -217,17 +261,22 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerdefine_const_stdstring_query_const_Options_options_Options_const[`transaction.query.define()`]
+method to define a new rule.
 
-[,cpp]
+Then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_JSONIterable_TypeDBQueryManagerfetch_const_stdstring_query_const_Options_options_Options_const[`transaction.query.fetch()`] or
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget_const_stdstring_query_const_Options_options_Options_const[`transaction.query.get()`]
+method to retrieve data with inference:
+
+[,cpp,indent=0]
 ----
-TypeDB::Options options;
-    {
-        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
-        auto tx = session.transaction(TypeDB::TransactionType::READ, options);
-        (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
-        tx.commit();
-    }
+include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::manual::partial$cpp-manual-code.cpp[tags=infer]
 ----
 --
 ====
