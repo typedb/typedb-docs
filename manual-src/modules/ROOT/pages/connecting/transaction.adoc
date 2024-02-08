@@ -56,7 +56,7 @@ Rust::
 .Open a transaction
 [,rust]
 ----
-let tx = session.transaction(TransactionType::Write)?;
+let transaction = session.transaction(TransactionType::Write)?;
 ----
 --
 
@@ -66,7 +66,7 @@ Python::
 .Open a transaction
 [,python]
 ----
-tx = session.transaction(TransactionType.WRITE)
+with (session.transaction(TransactionType.WRITE) as transaction):
 ----
 --
 
@@ -76,7 +76,7 @@ Java::
 .Open a transaction
 [,java]
 ----
-TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE);
+TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
 ----
 --
 
@@ -86,7 +86,7 @@ Node.js::
 .Open a transaction
 [,js]
 ----
-tx = await session.transaction(TransactionType.WRITE);
+transaction = await session.transaction(TransactionType.WRITE);
 ----
 --
 
@@ -96,7 +96,7 @@ C++::
 .Open a transaction
 [,cpp]
 ----
-auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
 ----
 --
 ====
@@ -149,7 +149,7 @@ use the xref:drivers::rust/api-reference.adoc#_struct_Transaction_force_close__[
 .Close a transaction
 [,rust]
 ----
-tx.force_close()
+transaction.force_close()
 ----
 --
 
@@ -163,7 +163,7 @@ to explicitly close a transaction:
 .Close a transaction
 [,python]
 ----
-tx.close()
+transaction.close()
 ----
 --
 
@@ -177,7 +177,7 @@ xref:drivers::java/api-reference.adoc#_TypeDBTransaction_close__[close] method t
 .Close a transaction
 [,java]
 ----
-tx.close()
+transaction.close()
 ----
 --
 
@@ -190,7 +190,7 @@ to explicitly close a transaction:
 .Close a transaction
 [,js]
 ----
-tx.close();
+transaction.close();
 ----
 --
 
@@ -205,7 +205,7 @@ use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactionclose[close]
 .Close a transaction
 [,cpp]
 ----
-tx.close();
+transaction.close();
 ----
 --
 ====
@@ -257,7 +257,7 @@ use the xref:drivers::rust/api-reference.adoc#_struct_Transaction_commit__[commi
 .Commit a transaction
 [,rust]
 ----
-tx.commit();
+transaction.commit();
 ----
 --
 
@@ -269,7 +269,7 @@ To commit a transaction, use the xref:drivers::python/api-reference.adoc#_TypeDB
 .Commit a transaction
 [,python]
 ----
-tx.commit()
+transaction.commit()
 ----
 --
 
@@ -281,7 +281,7 @@ To commit a transaction, use the xref:drivers::java/api-reference.adoc#_TypeDBTr
 .Commit a transaction
 [,java]
 ----
-tx.commit();
+transaction.commit();
 ----
 --
 
@@ -293,7 +293,7 @@ To commit a transaction, use the xref:drivers::nodejs/api-reference.adoc#_TypeDB
 .Commit a transaction
 [,js]
 ----
-tx.commit();
+transaction.commit();
 ----
 --
 
@@ -305,7 +305,7 @@ To commit a transaction, use the xref:drivers::cpp/api-reference.adoc#_void_Type
 .Commit a transaction
 [,cpp]
 ----
-tx.commit();
+transaction.commit();
 ----
 --
 ====
@@ -324,6 +324,39 @@ The default value can be changed with Client options.
 
 Avoid long-running transactions, which can result in conflicts and resource contention.
 A good principle to follow is for logically coherent queries to be grouped into a transaction.
+
+== Query types and sessions/transactions
+
+All types of sessions and transactions allow for Get and Fetch queries.
+Other query types are bound to `write` transactions and a proper session type.
+See the table below:
+
+.Session and transaction types
+[cols="^.^2,^.^2,^.^2"]
+[options="header"]
+|===
+|Transaction types
+|Possible query types +
+for a `schema` session
+|Possible query types +
+for a `data` session
+
+| `write` transaction
+| xref:manual::defining/define.adoc[Define] +
+xref:manual::defining/undefine.adoc[Undefine] +
+xref:manual::reading/fetch.adoc[Fetch] +
+xref:manual::reading/get.adoc[Get]
+| xref:manual::writing/insert.adoc[Insert] +
+xref:manual::writing/delete.adoc[Delete] +
+xref:manual::writing/update.adoc[Update] +
+xref:manual::reading/fetch.adoc[Fetch] +
+xref:manual::reading/get.adoc[Get]
+| `read` transaction
+| xref:manual::reading/fetch.adoc[Fetch] +
+xref:manual::reading/get.adoc[Get]
+| xref:manual::reading/fetch.adoc[Fetch] +
+xref:manual::reading/get.adoc[Get]
+|===
 
 == Learn more
 
