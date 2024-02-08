@@ -86,28 +86,20 @@ The resulted Log output should look like this:
 
 To send a Get query programmatically, use xref:drivers::overview.adoc[drivers]:
 
-//#todo Check the code
-//#todo Add the response processing
 [tabs]
 ====
 Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[`transaction.query().get()`]
+method:
 
-[,rust]
+[,rust,indent=0]
 ----
-let query = "match
-            $u isa user, has email $e;
-            get
-            $u, $e;";
-let databases = DatabaseManager::new(driver);
-let db = databases.get("sample_db")?;
-let session = Session::new(db, SessionType::Data)?;
-let tx = session.transaction(TransactionType::Read)?;
-tx.query().get(&query)?;
-tx.commit().resolve()?;
+include::manual::partial$rust-manual-code.rs[tags=get]
 ----
 --
 
@@ -115,20 +107,14 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_get{scores}query_str__options_TypeDBOptions__None[`transaction.query.get()`]
+method:
 
-[,python]
+[,python,indent=0]
 ----
-query = """
-        match
-        $u isa user, has email $e;
-        get
-        $u, $e;
-        """
-with driver.session("sample_db", SessionType.DATA) as session:
-    with session.transaction(TransactionType.READ) as transaction:
-        transaction.query.get(query)
-        transaction.commit()
+include::manual::partial$python-manual-code.py[tags=get]
 ----
 --
 
@@ -136,16 +122,14 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet[`transaction.query().get()`]
+method:
 
-[,java]
+[,java,indent=0]
 ----
-try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
-    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.READ)) {
-        Transaction.query().get("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
-        Transaction.commit();
-    }
-}
+include::manual::partial$java-manual-code.java[tags=get]
 ----
 --
 
@@ -153,26 +137,14 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_get{scores}query_string__options_TypeDBOptions[`transaction.query.get()`]
+method:
 
-[,js]
+[,js,indent=0]
 ----
-let query = `
-            match
-            $u isa user, has email $e;
-            get
-            $u, $e;
-            `;
-
-session = await driver.session("sample_db", SessionType.DATA);
-transaction = await session.transaction(TransactionType.READ);
-let iterator = transaction.query.get(query);
-let answers = await iterator.collect();
-k = 0;
-for (let i = 0; i < answers.length; i++) {
-    k++;
-    console.log("JSON #" + k + ": " + JSON.stringify(answers[i], null, 4));
-}
+include::manual::partial$nodejs-manual-code.js[tags=get]
 ----
 --
 
@@ -180,17 +152,15 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget_const_stdstring_query_const_Options_options_Options_const[`transaction.query.get()`]
+method:
 
-[,cpp]
+[,cpp,indent=0]
 ----
-TypeDB::Options options;
-    {
-        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
-        auto tx = session.transaction(TypeDB::TransactionType::READ, options);
-        (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
-        tx.commit();
-    }
+include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::manual::partial$cpp-manual-code.cpp[tags=get]
 ----
 --
 ====
