@@ -7,6 +7,7 @@ An Insert query is used to insert data into a TypeDB database.
 This page assumes you've already followed instructions from the xref:manual::defining/overview.adoc[] section.
 Here, you'll see how to insert data in a database using Studio, Console, or one of the drivers.
 
+[#_how_to_send_an_insert_query]
 == How to send an Insert query
 
 The easiest way to send an Insert query is to use Studio or Console:
@@ -20,7 +21,7 @@ Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
-. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Use a drop-down list in the top toolbar to select a database.
 . Switch to `data` session and `write` transaction types.
 . Open a new tab and insert or type in an Insert query, for example:
 +
@@ -39,13 +40,13 @@ $friendship (friend:$user1, friend: $user2) isa friendship;
 Console::
 +
 --
-. Open a session and transaction:
+. Open a session and transaction to the selected database (e.g., `sample_db`):
 +
 [,bash]
 ----
-transaction sample_db schema write
+transaction sample_db data write
 ----
-. Send the Define query:
+. Send the Insert query:
 +
 [,bash]
 ----
@@ -73,20 +74,15 @@ Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[`transaction.query().insert()`]
+method:
 
-[,rust]
+[,rust,indent=0]
 ----
-let query = "insert
-            $user1 isa user, has name 'Alice', has email 'alice@vaticle.com';
-            $user2 isa user, has name 'Bob', has email 'bob@vaticle.com';
-            $friendship (friend:$user1, friend: $user2) isa friendship;";
-let databases = DatabaseManager::new(driver);
-let db = databases.get("sample_db")?;
-let session = Session::new(db, SessionType::Data)?;
-let tx = session.transaction(TransactionType::Write)?;
-tx.query().insert(&query)?;
-tx.commit().resolve()?;
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=insert]
 ----
 --
 
@@ -94,20 +90,14 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_insert{scores}query_str__options_TypeDBOptions__None[`transaction.query.insert()`]
+method:
 
-[,python]
+[,python,indent=0]
 ----
-query = """
-        insert
-        $user1 isa user, has name "Alice", has email "alice@vaticle.com";
-        $user2 isa user, has name "Bob", has email "bob@vaticle.com";
-        $friendship (friend:$user1, friend: $user2) isa friendship;
-        """
-with driver.session("sample_db", SessionType.DATA) as session:
-    with session.transaction(TransactionType.WRITE) as transaction:
-        transaction.query.insert("query")
-        transaction.commit()
+include::manual::partial$python-manual-code.py[tags=insert]
 ----
 --
 
@@ -115,16 +105,14 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[`transaction.query().insert()`]
+method:
 
-[,java]
+[,java,indent=0]
 ----
-try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
-    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-        Transaction.query().insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
-        Transaction.commit();
-    }
-}
+include::manual::partial$java-manual-code.java[tags=insert]
 ----
 --
 
@@ -132,14 +120,14 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_insert{scores}query_string__options_TypeDBOptions[`transaction.query.insert()`]
+method:
 
-[,js]
+[,js,indent=0]
 ----
-session = await driver.session("sample_db", SessionType.DATA);
-transaction = await session.transaction(TransactionType.WRITE);
-await transaction.query.insert("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';");
-await transaction.commit();
+include::manual::partial$nodejs-manual-code.js[tags=insert]
 ----
 --
 
@@ -147,17 +135,15 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert_const_stdstring_query_const_Options_options_Options_const[`transaction.query.insert()`]
+method:
 
-[,cpp]
+[,cpp,indent=0]
 ----
-TypeDB::Options options;
-    {
-        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
-        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
-        (void) tx.query.define("insert $u isa user, has name 'Alice', has email 'alice@vaticle.com';", options);
-        tx.commit();
-    }
+include::manual::partial$cpp-manual-code.cpp[tags=options]
+include::manual::partial$cpp-manual-code.cpp[tags=insert]
 ----
 --
 ====
@@ -193,49 +179,22 @@ $f($u,$new-u) isa friendship;
 ----
 
 The easiest way to check the response for the query is to use a TypeDB client: Studio or Console.
+Send the above match-insert query the same way as the <<_how_to_send_an_insert_query,previous query>>.
 
-.Match-insert query response example
-[tabs]
-====
-Studio::
-+
---
-See the Log tab output at the bottom:
+Both Studio and Console should produce similar results:
 
-.Log output
 [,typeql]
 ----
-## Result> Insert query successfully inserted new things to the database:
 {
     $bob iid 0x826e80018000000000000004 isa user;
     $f iid 0x847080017fffffffffffffff (friend: iid 0x826e80018000000000000002, friend: iid 0x826e80018000000000000004) isa friendship;
     $alice iid 0x826e80018000000000000002 isa user;
 }
 ----
---
-
-Console::
-+
---
-See the terminal output:
-
-.CLI output
-[,typeql]
-----
-{
-    $f iid 0x847080017fffffffffffffff (friend: iid 0x826e80018000000000000002, friend: iid 0x826e80018000000000000004) isa friendship;
-    $alice iid 0x826e80018000000000000002 isa user;
-    $bob iid 0x826e80018000000000000004 isa user;
-}
-
-answers: 1, total duration: 24 ms
-----
---
-====
 
 To process the response of an Insert query programmatically,
-we need to collect the response and iterate through it.
-The number of iterations is equal to the number of the `insert` clause executions:
+we need to collect the response and iterate through it with a xref:drivers::overview.adoc[TypeDB driver].
+The number of iterations is equal to the number of the `insert` clause executions.
 
 .Process Insert query response
 [tabs]
@@ -244,21 +203,15 @@ Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[`transaction.query().insert()`]
+method:
 
-[,rust]
+[,rust,indent=0]
 ----
-let query = "match
-            $u isa user, has name 'Bob';
-            insert
-            $new-u isa user, has name 'Charlie', has email 'charlie@vaticle.com';
-            $f($u,$new-u) isa friendship;"
-let databases = DatabaseManager::new(driver);
-let db = databases.get("sample_db")?;
-let session = Session::new(db, SessionType::Data)?;
-let tx = session.transaction(TransactionType::Write)?;
-tx.query().insert(&query)?;
-tx.commit().resolve()?;
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=match-insert]
 ----
 --
 
@@ -266,29 +219,14 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_insert{scores}query_str__options_TypeDBOptions__None[`transaction.query.insert()`]
+method:
 
-[,python]
+[,python,indent=0]
 ----
-query = """match
-            $u isa user, has name "Bob";
-            insert
-            $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
-            $f($u,$new-u) isa friendship;"""
-
-with TypeDB.core_driver("127.0.0.1") as driver:
-    with driver.session("sample_db", SessionType.DATA) as session:
-        with session.transaction(TransactionType.WRITE) as transaction:
-            response = transaction.query.insert(query)
-            i = 0
-            for concept in response:
-                i += 1
-            if i == 1:
-                transaction.commit()
-                print("Inserted one new user and one relation")
-            else:
-                print(f"Unexpected number of inserts attempted: {i}")
-                transaction.close()
+include::manual::partial$python-manual-code.py[tags=match-insert]
 ----
 --
 
@@ -296,20 +234,14 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[`transaction.query().insert()`]
+method:
 
-[,java]
+[,java,indent=0]
 ----
-String query = """
-                match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
-                insert $f (friend: $alice, friend: $bob) isa friendship;
-                """;
-try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.DATA)) {
-    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-        Transaction.query().insert(query);
-        Transaction.commit();
-    }
-}
+include::manual::partial$java-manual-code.java[tags=match-insert]
 ----
 --
 
@@ -317,17 +249,14 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_insert{scores}query_string__options_TypeDBOptions[`transaction.query.insert()`]
+method:
 
-[,js]
+[,js,indent=0]
 ----
-const query =  `match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
-                insert $f (friend: $alice, friend: $bob) isa friendship;
-                `;
-session = await driver.session("sample_db", SessionType.DATA);
-transaction = await session.transaction(TransactionType.WRITE);
-await transaction.query.insert(query);
-await transaction.commit();
+include::manual::partial$nodejs-manual-code.js[tags=match-insert]
 ----
 --
 
@@ -335,25 +264,21 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert_const_stdstring_query_const_Options_options_Options_const[`transaction.query.insert()`]
+method:
 
-[,cpp]
+[,cpp,indent=0]
 ----
-std::string query = "match $alice isa user, has email 'alice@vaticle.com'; $bob isa user, has email 'bob@vaticle.com';
-                    insert $f (friend: $alice, friend: $bob) isa friendship;";
-TypeDB::Options options;
-    {
-        auto session = driver.session("sample_db", TypeDB::SessionType::DATA, options);
-        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
-        (void) tx.query.define(query, options);
-        tx.commit();
-    }
+include::manual::partial$cpp-manual-code.cpp[tags=options]
+include::manual::partial$cpp-manual-code.cpp[tags=match-insert]
 ----
 --
 ====
 
 The example above checks the response of an insert query and commits the changes only if the number of
-inserts is equal to one.
+inserts is equal to the expected number (`1`).
 Otherwise, it closes the transaction without committing the changes.
 
 === Estimate the number of inserts with a read query
