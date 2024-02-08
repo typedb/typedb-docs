@@ -92,13 +92,14 @@ Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
-open a `write` transaction, and use the
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
 xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[`transaction.query().get()`]
 method:
 
 [,rust,indent=0]
 ----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
 include::manual::partial$rust-manual-code.rs[tags=get]
 ----
 --
@@ -107,8 +108,8 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
-open a `write` transaction, and use the
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
 xref:drivers::python/api-reference.adoc#_QueryManager_get{scores}query_str__options_TypeDBOptions__None[`transaction.query.get()`]
 method:
 
@@ -122,8 +123,8 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
-open a `write` transaction, and use the
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
 xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet[`transaction.query().get()`]
 method:
 
@@ -137,8 +138,8 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
-open a `write` transaction, and use the
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
 xref:drivers::nodejs/api-reference.adoc#_QueryManager_get{scores}query_string__options_TypeDBOptions[`transaction.query.get()`]
 method:
 
