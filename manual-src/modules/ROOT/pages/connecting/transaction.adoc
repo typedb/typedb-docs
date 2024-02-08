@@ -16,7 +16,7 @@ Make sure to open a transaction using instructions from the xref:manual::connect
 == Open a new transaction
 
 To open a transaction, you need to select a transaction type and use an open session.
-Optionally, you can set transaction options to alter values by default.
+Optionally, you can set transaction options.
 
 [tabs]
 ====
@@ -26,7 +26,7 @@ Studio::
 Studio controls transactions automatically when you run a query.
 
 You can select a transaction type for queries with a `write`/`read` selector in the top toolbar:
-image:manual::icons/transaction-write.png[session type selector].
+image:manual::icons/transaction-write.png[transaction type selector].
 For the transaction type selector to be active, you need to connect Studio to TypeDB
 and select a database from a drop-down list in the top toolbar.
 --
@@ -34,7 +34,7 @@ and select a database from a drop-down list in the top toolbar.
 Console::
 +
 --
-Use the `transaction` keyword with the database name, xref:manual::connecting/session.adoc[session] type,
+Use the `transaction` keyword with a database name, xref:manual::connecting/session.adoc[session] type,
 and transaction type, for example:
 
 .Open a transaction
@@ -42,6 +42,8 @@ and transaction type, for example:
 ----
 transaction sample_db schema write
 ----
+
+Where `sample_db` is the name of the database.
 --
 ====
 
@@ -66,7 +68,7 @@ Python::
 .Open a transaction
 [,python]
 ----
-with (session.transaction(TransactionType.WRITE) as transaction):
+transaction = session.transaction(TransactionType.WRITE)
 ----
 --
 
