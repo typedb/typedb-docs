@@ -1,22 +1,30 @@
+// tag::import[]
 #include <iostream>
 #include <typedb_driver.hpp>
-
+// end::import[]
 int main() {
     std::string dbName = "test_cpp";
     std::string serverAddress = "127.0.0.1:1729";
     TypeDB::Options options;
 
+    // tag::driver[]
     TypeDB::Driver driver = TypeDB::Driver::coreDriver("127.0.0.1:1729");
-
+    // end::driver[]
     try {
+        // tag::list-db[]
         auto dbs = driver.databases.all();
         for (TypeDB::Database& db : dbs) {
             std::cout << db.name() << std::endl;
         };
+        // end::list-db[]
+        // tag::delete-db[]
         if (driver.databases.contains(dbName)) {
             driver.databases.get(dbName).deleteDatabase();
         }
+        // end::delete-db[]
+        // tag::create-db[]
         driver.databases.create(dbName);
+        // end::create-db[]
         if (driver.databases.contains(dbName)) {
             std::cout << "Database setup complete." << std::endl;
         }
@@ -26,7 +34,7 @@ int main() {
         return 2;
     }
 
-    {
+    {   // tag::define[]
         auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string defineQuery = R"(
@@ -42,17 +50,19 @@ int main() {
                             )";
         auto result = transaction.query.define(defineQuery);
         transaction.commit();
+        // end::define[]
     }
 
-    {
+    {   // tag::undefine[]
         auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string undefineQuery = "undefine admin sub user;";
         auto result = transaction.query.undefine(undefineQuery);
         transaction.commit();
+        // end::undefine[]
     }
 
-    {
+    {   // tag::insert[]
         auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string insertQuery = R"(
@@ -63,9 +73,10 @@ int main() {
                                 )";
         auto result = transaction.query.insert(insertQuery);
         transaction.commit();
+        // end::insert[]
     }
 
-    {
+    {   // tag::match-insert[]
         auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string matchInsertQuery = R"(
@@ -83,9 +94,10 @@ int main() {
         } else {
             transaction.close();
         }
+        // end::match-insert[]
     }
 
-    {
+    {   // tag::delete[]
         auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string deleteQuery = R"(
@@ -97,9 +109,10 @@ int main() {
                                     )";
         auto result = transaction.query.matchDelete(deleteQuery);
         transaction.commit();
+        // end::delete[]
     }
 
-    {
+    {   // tag::update[]
         auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string updateQuery = R"(
@@ -118,9 +131,10 @@ int main() {
         } else {
             transaction.close();
         }
+        // end::update[]
     }
 
-    {
+    {   // tag::fetch[]
         auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::READ, options);
         std::string fetchQuery = R"(
@@ -134,9 +148,10 @@ int main() {
         for (TypeDB::JSON& result : results) {
             fetchResult.push_back(result);
         }
+        // end::fetch[]
     }
 
-    {
+    {   // tag::get[]
         auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::READ, options);
         std::string getQuery = R"(
@@ -151,9 +166,10 @@ int main() {
             i+=1;
             std::cout << "Email #" << std::to_string(i) << ": " << cm.get("e")->asAttribute()->getValue()->asString() << std::endl;
         }
+        // end::get[]
     }
 
-    {
+    {   // tag::infer[]
         auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string defineQuery = R"(
@@ -183,6 +199,7 @@ int main() {
         for (TypeDB::JSON& result : results) {
             fetchResult.push_back(result);
         }
+        // end::infer[]
     }
     return 0;
 }
