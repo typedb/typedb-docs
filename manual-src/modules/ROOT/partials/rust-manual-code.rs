@@ -1,9 +1,11 @@
+// tag::import[]
 use typedb_driver::{
     concept::{Attribute, Concept, Value}, Connection, DatabaseManager, Error, Options, Promise, Session, SessionType, TransactionType
 };
+// end::import[]
 
 fn main() -> Result<(), Error> {
-    const DB_NAME: &str = "sample_db3";
+    const DB_NAME: &str = "sample_db";
     const SERVER_ADDR: &str = "127.0.0.1:1729";
 
     println!("TypeDB Manual sample code");
@@ -12,23 +14,30 @@ fn main() -> Result<(), Error> {
         "Attempting to connect to a TypeDB Core server: {}",
         SERVER_ADDR
     );
+    // tag::driver[]
     let driver = Connection::new_core(SERVER_ADDR)?;
+    // end::driver[]
+    // tag::databases[]
     let databases = DatabaseManager::new(driver);
-
+    // end::databases[]
+    // tag::list-db[]
     for db in databases.all()? {
         println!("{}", db.name());
     }
-
+    // end::list-db[]
+    // tag::delete-db[]
     if databases.contains(DB_NAME)? {
         let _ = databases.get(DB_NAME)?.delete();
     }
+    // end::delete-db[]
+    // tag::create-db[]
     let _ = databases.create(DB_NAME);
-
+    // end::create-db[]
     if databases.contains(DB_NAME)? {
         println!("Database setup complete");
     }
 
-    {
+    {   // tag::define[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Schema)?;
         let tx = session.transaction(TransactionType::Write)?;
@@ -45,18 +54,20 @@ fn main() -> Result<(), Error> {
                                 ";
         tx.query().define(define_query).resolve()?;
         tx.commit().resolve()?;
+        // end::define[]
     }
 
-    {
+    {   // tag::undefine[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Schema)?;
         let tx = session.transaction(TransactionType::Write)?;
         let undefine_query = "undefine admin sub user;";
         tx.query().undefine(undefine_query).resolve()?;
         tx.commit().resolve()?;
+        // end::undefine[]
     }
 
-    {
+    {   // tag::insert[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Write)?;
@@ -68,9 +79,10 @@ fn main() -> Result<(), Error> {
                                 ";
         let _ = tx.query().insert(insert_query)?;
         tx.commit().resolve()?;
+        // end::insert[]
     }
 
-    {
+    {   // tag::match-insert[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Write)?;
@@ -87,10 +99,10 @@ fn main() -> Result<(), Error> {
         } else {
             tx.force_close();
         }
-
+        // end::match-insert[]
     }
 
-    {
+    {   // tag::delete[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Write)?;
@@ -103,9 +115,10 @@ fn main() -> Result<(), Error> {
                                 ";
         let _ = tx.query().delete(delete_query).resolve();
         tx.commit().resolve()?;
+        // end::delete[]
     }
 
-    {
+    {   // tag::update[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Write)?;
@@ -123,9 +136,10 @@ fn main() -> Result<(), Error> {
         } else {
             tx.force_close();
         }
+        // end::update[]
     }
 
-    {
+    {   // tag::fetch[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Read)?;
@@ -139,9 +153,10 @@ fn main() -> Result<(), Error> {
         for (i, json) in response.enumerate() {
             println!("User #{}: {}", (i + 1).to_string(), json.unwrap().to_string())
         }
+        // end::fetch[]
     }
 
-    {
+    {   // tag::get[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Read)?;
@@ -163,9 +178,10 @@ fn main() -> Result<(), Error> {
             };
             println!("Email #{}: {}", (i + 1).to_string(), email)
         }
+        // end::get[]
     }
 
-    {
+    {   // tag::infer[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Schema)?;
         let tx = session.transaction(TransactionType::Write)?;
@@ -195,7 +211,7 @@ fn main() -> Result<(), Error> {
         for (i, json) in response.enumerate() {
             println!("User #{}: {}", (i + 1).to_string(), json.unwrap().to_string())
         }
+        // end::infer[]
     }
-
     Ok({})
 }

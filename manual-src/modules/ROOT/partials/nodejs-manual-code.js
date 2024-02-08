@@ -1,31 +1,36 @@
+// tag::import[]
 const { TypeDB } = require("typedb-driver/TypeDB");
 const { SessionType } = require("typedb-driver/api/connection/TypeDBSession");
 const { TransactionType } = require("typedb-driver/api/connection/TypeDBTransaction");
 const { TypeDBOptions } = require("typedb-driver/api/connection/TypeDBOptions");
-
+// end::import[]
 async function main() {
     const DB_NAME = "iam";
     const SERVER_ADDR = "127.0.0.1:1729";
 
     console.log("TypeDB Manual sample code");
-
+    // tag::driver[]
     const driver = await TypeDB.coreDriver(SERVER_ADDR);
-
+    // end::driver[]
+    // tag::list-db[]
     let dbs = await driver.databases.all();
     for(let i = 0; i < dbs.length; i++) {
         console.log("DB " + dbs[i]);
     }
-
+    // end::list-db[]
+    // tag::delete-db[]
     if (await driver.databases.contains(DB_NAME)) {
         let x = await driver.databases.get(DB_NAME);
         await x.delete();
     }
+    // end::delete-db[]
+    // tag::create-db[]
     await driver.databases.create(DB_NAME);
-
+    // end::create-db[]
     if (driver.databases.contains(DB_NAME)) {
         console.log("Database setup complete.");
     }
-
+    // tag::define[]
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
@@ -47,7 +52,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::define[]
+    // tag::undefine[]
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
@@ -59,7 +65,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // tag::undefine[]
+    // tag::insert[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
@@ -76,7 +83,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::insert[]
+    // tag::match-insert[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
@@ -97,7 +105,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::match-insert[]
+    // tag::delete[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
@@ -115,7 +124,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::delete[]
+    // tag::update[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
@@ -137,7 +147,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::update[]
+    // tag::fetch[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
@@ -158,7 +169,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::fetch[]
+    // tag::get[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
@@ -179,7 +191,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::get[]
+    // tag::infer[]
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
@@ -222,6 +235,7 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
+    // end::infer[]
 };
 
 main();
