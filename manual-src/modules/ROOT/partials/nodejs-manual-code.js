@@ -64,7 +64,7 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-    // tag::undefine[]
+    // end::undefine[]
     // tag::insert[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
