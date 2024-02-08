@@ -5,7 +5,7 @@ from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions
 DB_NAME = "sample_db"
 
 # tag::driver[]
-with (TypeDB.core_driver("localhost:1729") as driver):
+with TypeDB.core_driver("localhost:1729") as driver:
 # end::driver[]
 
     # tag::list-db[]
@@ -20,8 +20,8 @@ with (TypeDB.core_driver("localhost:1729") as driver):
     driver.databases.create(DB_NAME)
     # end::create-db[]
 
-    if driver.databases.contains(DB_NAME):
-        print("Database setup complete.")
+    assert driver.databases.contains(DB_NAME), "Database creation error."
+    print("Database setup complete.")
 
     # tag::define[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
@@ -116,25 +116,23 @@ with (TypeDB.core_driver("localhost:1729") as driver):
                             $u: name, email;
                             """
             response = transaction.query.fetch(fetch_query)
-            i = 0
             for i, JSON in enumerate(response):
                 print(f"User #{i + 1}: {JSON}")
     # end::fetch[]
     # tag::get[]
     with driver.session(DB_NAME, SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
-            typeql_read_query = """
-                                match
-                                $u isa user, has email $e;
-                                get
-                                $u, $e;
-                                """
-            response = transaction.query.get(typeql_read_query)
+            get_query = """
+                        match
+                        $u isa user, has email $e;
+                        get
+                        $e;
+                        """
+            response = transaction.query.get(get_query)
             for i, concept_map in enumerate(response):
                 email = concept_map.get("e").as_attribute().get_value()
-                print(f"User #{i + 1}: {email}")
+                print(f"Email #{i + 1}: {email}")
     # end::get[]
-
     # tag::infer[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
         with session.transaction(TransactionType.WRITE) as transaction:
