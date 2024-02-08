@@ -76,9 +76,9 @@ Python::
 .Connect to TypeDB Core
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=driver]
+driver = TypeDB.core_driver("127.0.0.1:1729")
 ----
-
+//include::manual::partial$python-manual-code.py[tags=driver]
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
@@ -201,7 +201,7 @@ Python::
 .Connect to TypeDB Cloud
 [,python]
 ----
-with (TypeDB.cloud_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True)) as driver):
+driver = TypeDB.cloud_driver("127.0.0.1:1729", TypeDBCredential("admin", "password", tls_enabled=True))
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.

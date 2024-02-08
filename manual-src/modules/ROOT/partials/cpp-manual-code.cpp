@@ -5,17 +5,17 @@
 int main() {
     std::string dbName = "test_cpp";
     std::string serverAddress = "127.0.0.1:1729";
+    // tag::options[]
     TypeDB::Options options;
-
+    // end::options[]
     // tag::driver[]
     TypeDB::Driver driver = TypeDB::Driver::coreDriver("127.0.0.1:1729");
     // end::driver[]
     try {
         // tag::list-db[]
-        auto dbs = driver.databases.all();
-        for (TypeDB::Database& db : dbs) {
+        for (auto& db: driver.databases.all()) {
             std::cout << db.name() << std::endl;
-        };
+        }
         // end::list-db[]
         // tag::delete-db[]
         if (driver.databases.contains(dbName)) {
