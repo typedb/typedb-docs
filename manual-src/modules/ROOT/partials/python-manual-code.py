@@ -37,7 +37,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
                                 plays friendship:friend;
                             admin sub user;
                             """
-            transaction.query.define(define_query)
+            response = transaction.query.define(define_query).resolve()
             transaction.commit()
     # end::define[]
 
@@ -45,7 +45,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
         with session.transaction(TransactionType.WRITE) as transaction:
             undefine_query = "undefine admin sub user;"
-            transaction.query.undefine(undefine_query)
+            response = transaction.query.undefine(undefine_query).resolve()
             transaction.commit()
     # end::undefine[]
     # tag::insert[]
@@ -57,7 +57,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
                             $user2 isa user, has name "Bob", has email "bob@vaticle.com";
                             $friendship (friend:$user1, friend: $user2) isa friendship;
                             """
-            transaction.query.insert(insert_query)
+            response = list(transaction.query.insert(insert_query))
             transaction.commit()
     # end::insert[]
     # tag::match-insert[]
@@ -86,7 +86,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
                             delete
                             $f isa friendship;
                             """
-            transaction.query.delete(delete_query)
+            response = transaction.query.delete(delete_query).resolve()
             transaction.commit()
     # end::delete[]
     # tag::update[]
