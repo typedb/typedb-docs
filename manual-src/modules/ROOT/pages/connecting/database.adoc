@@ -46,7 +46,7 @@ To create a new database programmatically, use xref:drivers::overview.adoc[drive
 Rust::
 +
 --
-[,rust]
+[,rust,indent=0]
 ----
 let databases = DatabaseManager::new(driver);
 databases.create("sample_db");
@@ -59,9 +59,9 @@ For more details on how to connect to TypeDB, see the xref:manual::connecting/co
 Python::
 +
 --
-[,python]
+[,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[lines=10]
+include::manual::partial$python-manual-code.py[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB.
@@ -71,7 +71,7 @@ For more details on how to connect to TypeDB, see the xref:manual::connecting/co
 Java::
 +
 --
-[,java]
+[,java,indent=0]
 ----
 driver.databases().create("sample_db");
 ----
@@ -83,7 +83,7 @@ For more details on how to connect to TypeDB, see the xref:manual::connecting/co
 Node.js::
 +
 --
-[,js]
+[,js,indent=0]
 ----
 await driver.databases().create("sample_db");
 ----
@@ -95,7 +95,7 @@ For more details on how to connect to TypeDB, see the xref:manual::connecting/co
 C++::
 +
 --
-[,cpp]
+[,cpp,indent=0]
 ----
 driver.databases.create("sample_db");
 ----
@@ -139,7 +139,7 @@ To delete a database programmatically, use xref:drivers::overview.adoc[drivers]:
 Rust::
 +
 --
-[,rust]
+[,rust,indent=0]
 ----
 let databases = DatabaseManager::new(driver);
 databases.get("sample_db").unwrap().delete();
@@ -151,14 +151,14 @@ Python::
 --
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[lines=9]
+include::manual::partial$python-manual-code.py[tags=delete-db]
 ----
 --
 
 Java::
 +
 --
-[,java]
+[,java,indent=0]
 ----
 driver.databases().get("sample_db").delete();
 ----
@@ -167,7 +167,7 @@ driver.databases().get("sample_db").delete();
 Node.js::
 +
 --
-[,js]
+[,js,indent=0]
 ----
 await (await driver.databases().get("sample_db")).delete();
 ----
@@ -176,7 +176,7 @@ await (await driver.databases().get("sample_db")).delete();
 C++::
 +
 --
-[,cpp]
+[,cpp,indent=0]
 ----
 driver.databases.get("sample_db").deleteDatabase();
 ----
@@ -213,7 +213,7 @@ To get a list of databases programmatically, use xref:drivers::overview.adoc[dri
 Rust::
 +
 --
-[,rust]
+[,rust,indent=0]
 ----
 for db in databases.all().unwrap(){
     println!("{}", db.name().to_string());
@@ -224,16 +224,16 @@ for db in databases.all().unwrap(){
 Python::
 +
 --
-[,python]
+[,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[lines=6..7]
+include::manual::partial$python-manual-code.py[tags=list-db]
 ----
 --
 
 Java::
 +
 --
-[,java]
+[,java,indent=0]
 ----
 driver.databases().all().forEach(db -> System.out.println(db.name()));
 ----
@@ -242,7 +242,7 @@ driver.databases().all().forEach(db -> System.out.println(db.name()));
 Node.js::
 +
 --
-[,js]
+[,js,indent=0]
 ----
 let dbs = await driver.databases.all();
 for (db of dbs) {
@@ -254,7 +254,7 @@ for (db of dbs) {
 C++::
 +
 --
-[,cpp]
+[,cpp,indent=0]
 ----
 for (auto& db: driver.databases.all()) {
     std::cout << db.name() << std::endl;

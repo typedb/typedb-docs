@@ -59,9 +59,9 @@ Python::
 +
 --
 .Open a session
-[,python]
+[,python,indent=0]
 ----
-session = driver.session("sample_db", SessionType.SCHEMA)
+with (driver.session(DB_NAME, SessionType.SCHEMA) as session):
 ----
 --
 
