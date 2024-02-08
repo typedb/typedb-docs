@@ -39,21 +39,25 @@ fn main() -> Result<(), Error> {
 
     {   // tag::define[]
         let db = databases.get(DB_NAME)?;
-        let session = Session::new(db, SessionType::Schema)?;
-        let tx = session.transaction(TransactionType::Write)?;
-        let define_query = "
-                                define
-                                email sub attribute, value string;
-                                name sub attribute, value string;
-                                friendship sub relation, relates friend;
-                                user sub entity,
-                                    owns email @key,
-                                    owns name,
-                                    plays friendship:friend;
-                                admin sub user;
-                                ";
-        tx.query().define(define_query).resolve()?;
-        tx.commit().resolve()?;
+        {
+            let session = Session::new(db, SessionType::Schema)?;
+            {
+                let tx = session.transaction(TransactionType::Write)?;
+                let define_query = "
+                                    define
+                                    email sub attribute, value string;
+                                    name sub attribute, value string;
+                                    friendship sub relation, relates friend;
+                                    user sub entity,
+                                        owns email @key,
+                                        owns name,
+                                        plays friendship:friend;
+                                    admin sub user;
+                                    ";
+                tx.query().define(define_query).resolve()?;
+                tx.commit().resolve()?;
+            }
+        }
         // end::define[]
     }
 
@@ -72,11 +76,11 @@ fn main() -> Result<(), Error> {
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Write)?;
         let insert_query = "
-                                insert
-                                $user1 isa user, has name 'Alice', has email 'alice@vaticle.com';
-                                $user2 isa user, has name 'Bob', has email 'bob@vaticle.com';
-                                $friendship (friend:$user1, friend: $user2) isa friendship;
-                                ";
+                            insert
+                            $user1 isa user, has name 'Alice', has email 'alice@vaticle.com';
+                            $user2 isa user, has name 'Bob', has email 'bob@vaticle.com';
+                            $friendship (friend:$user1, friend: $user2) isa friendship;
+                            ";
         let _ = tx.query().insert(insert_query)?;
         tx.commit().resolve()?;
         // end::insert[]
@@ -107,12 +111,12 @@ fn main() -> Result<(), Error> {
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Write)?;
         let delete_query = "
-                                match
-                                $u isa user, has name 'Charlie';
-                                $f ($u) isa friendship;
-                                delete
-                                $f isa friendship;
-                                ";
+                            match
+                            $u isa user, has name 'Charlie';
+                            $f ($u) isa friendship;
+                            delete
+                            $f isa friendship;
+                            ";
         let _ = tx.query().delete(delete_query).resolve();
         tx.commit().resolve()?;
         // end::delete[]
@@ -123,13 +127,13 @@ fn main() -> Result<(), Error> {
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Write)?;
         let update_query = "
-                                match
-                                $u isa user, has name 'Charlie', has email $e;
-                                delete
-                                $u has $e;
-                                insert
-                                $u has email 'charles@vaticle.com';
-                                ";
+                            match
+                            $u isa user, has name 'Charlie', has email $e;
+                            delete
+                            $u has $e;
+                            insert
+                            $u has email 'charles@vaticle.com';
+                            ";
         let response_count = tx.query().update(update_query)?.count();
         if response_count == 1 {
             tx.commit().resolve()?;
@@ -144,11 +148,11 @@ fn main() -> Result<(), Error> {
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Read)?;
         let fetch_query = "
-                                match
-                                $u isa user;
-                                fetch
-                                $u: name, email;
-                                ";
+                            match
+                            $u isa user;
+                            fetch
+                            $u: name, email;
+                            ";
         let response = tx.query().fetch(fetch_query)?;
         for (i, json) in response.enumerate() {
             println!("User #{}: {}", (i + 1).to_string(), json.unwrap().to_string())
@@ -161,11 +165,11 @@ fn main() -> Result<(), Error> {
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction(TransactionType::Read)?;
         let get_query = "
-                                match
-                                $u isa user, has email $e;
-                                get
-                                $e;
-                                ";
+                        match
+                        $u isa user, has email $e;
+                        get
+                        $e;
+                        ";
         let response = tx.query().get(get_query)?;
         for (i, cm) in response.enumerate() {
             let email_concept = cm.unwrap().get("e").unwrap().clone();
@@ -186,14 +190,14 @@ fn main() -> Result<(), Error> {
         let session = Session::new(db, SessionType::Schema)?;
         let tx = session.transaction(TransactionType::Write)?;
         let define_query = "
-                                define
-                                rule users:
-                                when {
-                                    $u isa user;
-                                } then {
-                                    $u has name 'User';
-                                };
-                                ";
+                            define
+                            rule users:
+                            when {
+                                $u isa user;
+                            } then {
+                                $u has name 'User';
+                            };
+                            ";
         tx.query().define(define_query).resolve()?;
         tx.commit().resolve()?;
 
@@ -202,11 +206,11 @@ fn main() -> Result<(), Error> {
         let session = Session::new(db, SessionType::Data)?;
         let tx = session.transaction_with_options(TransactionType::Read, options)?;
         let fetch_query = "
-                                match
-                                $u isa user;
-                                fetch
-                                $u: name, email;
-                                ";
+                            match
+                            $u isa user;
+                            fetch
+                            $u: name, email;
+                            ";
         let response = tx.query().fetch(fetch_query)?;
         for (i, json) in response.enumerate() {
             println!("User #{}: {}", (i + 1).to_string(), json.unwrap().to_string())

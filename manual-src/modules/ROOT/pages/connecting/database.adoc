@@ -12,7 +12,7 @@ page to connect to TypeDB before proceeding.
 
 == Create a new database
 
-To create a new database, select a unique name (e.g., `sample_db`) and follow the steps below:
+To create a new database, follow the steps below:
 
 [tabs]
 ====
@@ -20,7 +20,7 @@ Studio::
 +
 --
 . Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
-. Type in a name for a new database (e.g., `sample_db`) in the text field of the window and click btn:[Create].
+. Type in a name for a new database in the text field at the bottom of the window and click btn:[Create].
 
 The newly created database should appear in the drop-down selector of the top toolbar.
 --
@@ -48,12 +48,11 @@ Rust::
 --
 [,rust,indent=0]
 ----
-let databases = DatabaseManager::new(driver);
-databases.create("sample_db");
+include::manual::partial$rust-manual-code.rs[tags=databases]
+include::manual::partial$rust-manual-code.rs[tags=create-db]
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB.
-For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 Python::
@@ -64,20 +63,21 @@ Python::
 include::manual::partial$python-manual-code.py[tags=create-db]
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB.
-For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 Java::
 +
 --
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+
 [,java,indent=0]
 ----
-driver.databases().create("sample_db");
+include::manual::partial$java-manual-code.java[tags=create-db]
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB.
-For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 Node.js::
@@ -85,11 +85,10 @@ Node.js::
 --
 [,js,indent=0]
 ----
-await driver.databases().create("sample_db");
+include::manual::partial$nodejs-manual-code.js[tags=create-db]
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB.
-For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 C++::
@@ -97,11 +96,10 @@ C++::
 --
 [,cpp,indent=0]
 ----
-driver.databases.create("sample_db");
+include::manual::partial$cpp-manual-code.cpp[tags=create-db]
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB.
-For more details on how to connect to TypeDB, see the xref:manual::connecting/connection.adoc[] page.
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 ====
 
@@ -141,8 +139,8 @@ Rust::
 --
 [,rust,indent=0]
 ----
-let databases = DatabaseManager::new(driver);
-databases.get("sample_db").unwrap().delete();
+include::manual::partial$rust-manual-code.rs[tags=databases]
+include::manual::partial$rust-manual-code.rs[tags=delete-db]
 ----
 --
 
@@ -160,7 +158,7 @@ Java::
 --
 [,java,indent=0]
 ----
-driver.databases().get("sample_db").delete();
+include::manual::partial$java-manual-code.java[tags=delete-db]
 ----
 --
 
@@ -169,7 +167,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-await (await driver.databases().get("sample_db")).delete();
+include::manual::partial$nodejs-manual-code.js[tags=delete-db]
 ----
 --
 
@@ -178,7 +176,7 @@ C++::
 --
 [,cpp,indent=0]
 ----
-driver.databases.get("sample_db").deleteDatabase();
+include::manual::partial$cpp-manual-code.cpp[tags=delete-db]
 ----
 --
 ====
@@ -215,9 +213,7 @@ Rust::
 --
 [,rust,indent=0]
 ----
-for db in databases.all().unwrap(){
-    println!("{}", db.name().to_string());
-}
+include::manual::partial$rust-manual-code.rs[tags=list-db]
 ----
 --
 
@@ -235,7 +231,7 @@ Java::
 --
 [,java,indent=0]
 ----
-driver.databases().all().forEach(db -> System.out.println(db.name()));
+include::manual::partial$java-manual-code.java[tags=list-db]
 ----
 --
 
@@ -244,10 +240,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-let dbs = await driver.databases.all();
-for (db of dbs) {
-    console.log(db.name);
-}
+include::manual::partial$nodejs-manual-code.js[tags=list-db]
 ----
 --
 
@@ -256,15 +249,8 @@ C++::
 --
 [,cpp,indent=0]
 ----
-for (auto& db: driver.databases.all()) {
-    std::cout << db.name() << std::endl;
-}
+include::manual::partial$cpp-manual-code.cpp[tags=list-db]
 ----
-//std::vector<TypeDB::Database> databases;
-//for (auto& database: driver.databases.all()) {
-//     std::cout << database.name() << std::endl;
-//}
-
 --
 ====
 

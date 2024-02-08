@@ -14,14 +14,13 @@ async function main() {
     // end::driver[]
     // tag::list-db[]
     let dbs = await driver.databases.all();
-    for(let i = 0; i < dbs.length; i++) {
-        console.log("DB " + dbs[i]);
+    for (db of dbs) {
+        console.log(db.name);
     }
     // end::list-db[]
     // tag::delete-db[]
     if (await driver.databases.contains(DB_NAME)) {
-        let x = await driver.databases.get(DB_NAME);
-        await x.delete();
+        await (await driver.databases.get(DB_NAME)).delete();
     }
     // end::delete-db[]
     // tag::create-db[]
