@@ -41,7 +41,7 @@ You choose a session type when you open a xref:manual::connecting/transaction.ad
 ====
 
 xref:drivers::overview.adoc[TypeDB drivers]
-provide the most flexible approach to managing sessions via native API by manually opening them:
+provide the most flexible approach to managing sessions via native API:
 
 [tabs]
 ====
@@ -51,8 +51,10 @@ Rust::
 .Open a session
 [,rust]
 ----
-let session = Session::new(databases.get("sample_db")?, SessionType::Schema)?;
+let session = Session::new(databases.get(DB_NAME)?, SessionType::Schema)?;
 ----
+
+Where `DB_NAME` is the name of the database.
 --
 
 Python::
@@ -61,8 +63,10 @@ Python::
 .Open a session
 [,python,indent=0]
 ----
-with (driver.session(DB_NAME, SessionType.SCHEMA) as session):
+session = driver.session(DB_NAME, SessionType.SCHEMA)
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 Java::
@@ -73,6 +77,8 @@ Java::
 ----
 TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHEMA);
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 Node.js::
@@ -83,6 +89,8 @@ Node.js::
 ----
 let session = await driver.session("sample_db", SessionType.SCHEMA);
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 C++::
@@ -93,13 +101,15 @@ C++::
 ----
 auto session = driver.session("sample_db", TypeDB::SessionType::SCHEMA, options);
 ----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 ====
 
-To see how to close a session, see <<_close_a_session,below>>.
-
 After connecting to a server and opening a
-xref:connecting/session.adoc[session], see how to xref:connecting/transaction.adoc[open a transaction].
+session, see how to xref:connecting/transaction.adoc[open a transaction].
+
+To see how to close an open session, see <<_close_a_session,below>>.
 
 [#_close_a_session]
 == Close a session
