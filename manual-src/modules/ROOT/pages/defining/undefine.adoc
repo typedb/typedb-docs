@@ -1,6 +1,7 @@
 = Undefine query
 :tabs-sync-option:
 :experimental:
+:scores: __
 
 An Undefine query is used to delete type and rule definitions from a schema.
 
@@ -25,7 +26,7 @@ Then use the steps below:
 //Follow the instructions from the xref:connecting/connection.adoc[] page to connect to TypeDB:
 //page to connect Studio to TypeDB and select a project folder, then:
 
-. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Use a drop-down list in the top toolbar to select a database.
 . Switch to `schema` session and `write` transaction types.
 . Open a new tab and insert or type in a Undefine query, for example:
 +
@@ -44,7 +45,7 @@ Console::
 Follow the xref:manual::connecting/connection.adoc[] guide to connect to TypeDB.
 Then use the steps below:
 
-. Open a session and transaction:
+. Open a `schema` session and `write` transaction to the selected database (e.g., `sample_db`):
 +
 [,bash]
 ----
@@ -75,17 +76,15 @@ Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_undefine__[`transaction.query.undefine()`]
+method:
 
-[,rust]
+[,rust,indent=0]
 ----
-let query = "undefine admin sub user;";
-let databases = DatabaseManager::new(driver);
-let db = databases.get("sample_db")?;
-let session = Session::new(db, SessionType::Schema)?;
-let tx = session.transaction(TransactionType::Write)?;
-tx.query().undefine(&query).resolve()?;
-tx.commit().resolve()?;
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=undefine]
 ----
 --
 
@@ -93,14 +92,14 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_undefine{scores}query_str__options_TypeDBOptions[`transaction.query.undefine()`]
+method:
 
-[,python]
+[,python,indent=0]
 ----
-with driver.session("sample_db", SessionType.SCHEMA) as session:
-    with session.transaction(TransactionType.WRITE) as transaction:
-        transaction.query.undefine("undefine admin sub user;")
-        transaction.commit()
+include::manual::partial$python-manual-code.py[tags=undefine]
 ----
 --
 
@@ -108,16 +107,14 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_undefine__com_vaticle_typeql_lang_query_TypeQLUndefine[`transaction.query().undefine()`]
+method:
 
-[,java]
+[,java,indent=0]
 ----
-try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHEMA)) {
-    try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-        Transaction.query().undefine("undefine admin sub user;");
-        Transaction.commit();
-    }
-}
+include::manual::partial$java-manual-code.java[tags=undefine]
 ----
 --
 
@@ -125,14 +122,14 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_undefine__query_string__options_TypeDBOptions[`transaction.query.undefine()`]
+method:
 
-[,js]
+[,js,indent=0]
 ----
-session = await driver.session("sample_db", SessionType.SCHEMA);
-transaction = await session.transaction(TransactionType.WRITE);
-await transaction.query.undefine("undefine admin sub user;");
-await transaction.commit();
+include::manual::partial$nodejs-manual-code.js[tags=undefine]
 ----
 --
 
@@ -140,17 +137,15 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerundefine_const_stdstring_query_const_Options_options_Options_const[`transaction.query.undefine()`]
+method:
 
-[,cpp]
+[,cpp,indent=0]
 ----
-TypeDB::Options options;
-    {
-        auto session = driver.session("sample_db", TypeDB::SessionType::SCHEMA, options);
-        auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
-        tx.query.undefine("undefine admin sub user;", options).get();
-        tx.commit();
-    }
+include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::manual::partial$cpp-manual-code.cpp[tags=undefine]
 ----
 --
 ====
