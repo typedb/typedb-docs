@@ -1,1 +1,318 @@
 = Lesson 3.2: Fetching polymorphic data
+
+== Type inference
+
+In the previous lesson, we retrieved the titles and page counts of paperback books with the following query.
+
+[,typeql]
+----
+match
+$book isa paperback;
+fetch
+$book: title, page-count;
+----
+
+But what if we wanted these attributes for all books, regardless of format? In a SQL query, we would need to use a union of tables.
+
+[,sql]
+----
+SELECT title, page_count
+FROM paperback
+UNION
+SELECT title, page_count
+FROM hardback
+UNION
+SELECT title, page_count
+FROM ebook;
+----
+
+This approach has several disadvantages. Not only is the query long and verbose, but if we add a new book format to our database, then this query (and all others like it) would need to be updated. With TypeDB, we can leverage *declarative polymorphism* in our queries to retrieve data of multiple types without enumerating them. In the following query, we adjust the previous query to retrieve the titles and page counts of all books.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title, page-count;
+----
+
+We have just changed the type of `$book` from `paperback` to `book`. Now if we *run* image:learn::studio-icons/run.png[] this query, the results include paperbacks, hardbacks, and ebooks!
+
+[,json]
+----
+result placeholder
+----
+
+This is because TypeDB applies *type inference* to queries in order to automatically resolve the possible return types of variables in a query based on the type definitions in the *schema*. This means that, if we add new types of books to the schema, the query will also return them without needing to be updated!
+
+[IMPORTANT]
+====
+To determine the actual return types of query results, we can look at the `type` fields in the JSON output. For the above query, each result includes such a field for the book, plus an additional one for each of the book's attributes. All `type` fields have two subfields: a `label` field indicating the name of the type, and a `root` field indicating the type's *root type*: `entity`, `relation`, or `attribute`.
+====
+
+== Polymorphism in TypeDB
+
+To begin leveraging declarative polymorphism in our queries, we'll first need to review the three fundamental types of polymorphism that TypeDB implements:
+
+Inheritance polymorphism:: Allows us to define type hierarchies in the schema and then query those hierarchies declaratively.
+Interface polymorphism:: Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
+Parametric polymorphism:: Allows us to write declarative queries that are completely independent of the schema.
+
+// Alternative, but it didn't look great:
+// [cols-3]
+// --
+// .Inheritance polymorphism
+// [.clickable]
+// ****
+// Allows us to define type hierarchies in the schema and then query those hierarchies declaratively.
+// ****
+//
+// .Interface polymorphism
+// [.clickable]
+// ****
+// Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
+// ****
+//
+// .Parametric polymorphism
+// [.clickable]
+// ****
+// Allows us to write declarative queries that are completely independent of the schema.
+// ****
+// --
+
+In this lesson, we'll be focusing on how we can use each type of polymorphism in our queries. We'll see in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5] how we can define type hierarchies and interfaces in the schema.
+
+== Inheritance polymorphism
+
+In the last query, we used inheritance polymorphism to retrieve the titles and page counts of all types of books. The results contained instances of `paperback`, `hardback`, and `ebook` for the `$book` variable. This is because all three of these types are *subtypes* of `book`, which was the type we specified for `$book`. In fact, it is not possible to return a direct instance of `book` because it is an *abstract* type. We will explore abstract types further in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5].
+
+Entity, relation, and attribute types can all be defined in *type hierarchies*, which allows us to retrieve their instances together by querying their *supertypes*, as we did with the entity type `book`. In the following query, we retrieve the ISBNs of all paperbacks using the `isbn` attribute type.
+
+[,typeql]
+----
+match
+$book isa paperback;
+fetch
+$book: isbn;
+----
+
+[,json]
+----
+result placeholder
+----
+
+As we can see from the results, we have returned instances of both `isbn-13` and `isbn-10`, the two subtypes of `isbn`. Once again, the supertype is abstract in this case and so cannot be directly returned.
+
+.Exercise
+[caption=""]
+====
+Write a query to retrieve _all_ ISBNs of _all_ books in the database.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: isbn;
+----
+=====
+====
+
+We can also make use of inheritance polymorphism when constraining the values of attributes. In the next query, we retrieve the title and remaining stock of a book by ISBN, but we do not specify the type of ISBN we are providing.
+
+[,typeql]
+----
+match
+$book isa book, has isbn "isbn placeholder";
+fetch
+$book: title, stock;
+----
+
+[,json]
+----
+result placeholder
+----
+
+== Interface polymorphism
+
+When querying with inheritance polymorphism, we constrain the types of data instances by the supertypes of those types. In contrast, when querying with interface polymorphism, we specify the types of data instances by the *interfaces* that those types *implement*. There are two kinds of interfaces between types in TypeDB: *ownerships* of attributes and *roles* in relations.
+
+We have already seen an example of interface polymorphism in xref:learn::3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1].
+
+[,typeql]
+----
+match
+$book isa paperback, has isbn-13 "isbn placeholder";
+$line (order: $order, item: $book) isa order-line;
+fetch
+$order: id;
+$line: quantity;
+----
+
+In this query, we specify the type of `$book` to be `paperback` and the type of `$line` to be `order-line` using the `isa` keyword, but nowhere in the query do we explicitly specify the type of `$order`! Instead, we constrain its type according to two facts:
+
+* The type of `$order` must play the role of `order` in `order-line`.
+* The type of `$order` must own the attribute `id`.
+
+This is more than enough information for TypeDB to infer the type of `$order`, which we can see by *running* image:learn::studio-icons/run.png[] this query.
+
+[,json]
+----
+result placeholder
+----
+
+In this case, only a single return type is possible: `order`, as it is the only type in the schema that fulfils the above constraints. But if multiple types can fulfil the interface constraints, then they will all be valid return types for the variable in the query. Consider instead the following pattern.
+
+[,typeql]
+----
+match
+$uk isa country, has name "United Kingdom";
+(location: $uk, located: $x) isa locating;
+fetch
+$x: name;
+----
+
+In this case, `$x` can be resolved to any type that both plays `located` in `locating` and owns `name`. Essentially, this query will return the name of anything located in the UK regardless of what it is (as long as it has a name). If we *run* image:learn::studio-icons/run.png[] this query, we see that we return instances of `user` and `city`!
+
+[,json]
+----
+result placeholder
+----
+
+.Exercise
+[caption=""]
+====
+Write a query to retrieve _all_ attributes of _any_ system actions taken by the user with name "placeholder name". The `action-execution` relation type is a _binary_ relation type with _roles_ `executor` and `action`, used to represent the references between users and the actions they have taken, such as login events or orders placed.
+
+.Hint
+[%collapsible]
+=====
+The following statement can be used to represent `action-execution` relations.
+[,typeql]
+----
+(executor: $user, action: $action) isa action-execution;
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$user isa user, has name "placeholder name";
+(executor: $user, action: $action) isa action-execution;
+fetch
+$action: attribute;
+----
+=====
+
+Based on the results of *running* image:learn::studio-icons/run.png[] this query, what types of system actions exist in the schema?
+
+.Answer
+[%collapsible]
+=====
+The types `login`, `order`, and `review`, as they play the role of `action` in `action-execution`.
+=====
+
+====
+
+
+== Parametric polymorphism
+
+Parametric queries are unique in that they are valid over any schema. They match particular data by _structure_ rather than by semantics. Parametric queries do not represent questions in the business domain, and are typically used to perform administrative procedures or database analytics. Let's see some examples.
+
+[,typeql]
+----
+match
+$entity isa entity;
+fetch
+$entity: attribute;
+----
+
+This query will retrieve all attributes of all entities. Meanwhile, the following query retrieves the attributes of any two entities that are roleplayers in the same relation.
+
+[,typeql]
+----
+match
+$entity-1 isa entity;
+$entity-2 isa entity;
+($entity-1, $entity-2) isa relation;
+fetch
+$entity-1: attribute;
+$entity-2: attribute;
+----
+
+In this pattern we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, but has some other powerful use cases that we will explore in Lesson 7.2 (coming soon).
+
+[NOTE]
+====
+This particular query would return every pair of entities in a binary relation twice: each of the two entities would be returned in one result as `$entity-1` and in another as `$entity-2`. In fact, it would also return pairs of entities in ternary or higher order relations, returning each possible pair of roleplayers twice. This would result in a large number of redundant results, and we will see how we can return the results of this query in a more useful structure in Lesson 8.3.
+====
+
+While these queries are purely parametric, it is also possible to write non-parametric queries that include parametric statements, as we will see shortly. The defining feature of parametric statements is that they do not include any type names, except for the *root type* keywords `entity`, `relation`, and `attribute`, which allows them to be run against any schema. Much like using https://en.wikipedia.org/wiki/Generic_programming[generics] in application code, using parametric statements in queries can be a challenging aspect of TypeQL, but allows for extremely powerful queries that cannot be expressed in non-polymorphic query languages. We will see several more examples in future lessons.
+
+.Exercise
+[caption=""]
+====
+Write a query to retrieve the attributes of any three entities in a ternary (or higher order) relation.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$entity-1 isa entity;
+$entity-2 isa entity;
+$entity-3 isa entity;
+($entity-1, $entity-2, $entity-3) isa relation;
+fetch
+$entity-1: attribute;
+$entity-2: attribute;
+$entity-3: attribute;
+----
+=====
+====
+
+== Combining types of polymorphism
+
+Many useful polymorphic patterns combine more than one form of polymorphism. For example, the next query involves all three types of polymorphism.
+
+[,typeql]
+----
+match
+$user isa user, has id "placeholder id";
+$book isa book;
+(executor: $user, action: $action) isa action-execution;
+($book, $action) isa relation;
+fetch
+$book: isbn, title;
+----
+
+[,json]
+----
+result placeholder
+----
+
+This query retrieves the ISBNs and title of any book that this particular user with ID "placeholder id" has interacted with via any kind of system action they performed, and is very useful for building a customer profile. If we extend our schema to introduce new ways that users can interact with books, then this query will return books interacted with in those ways too, without having to modify it! This is an example of a way in which we can declaratively encode high-level business questions as straightforward queries, and avoid having to modify queries when the data model is extended.
+
+.Exercise
+[caption=""]
+====
+Examine the query above line-by-line and identify how it utilises each type of polymorphism.
+
+.Answer
+[%collapsible]
+=====
+* The variable `$book` can resolve to any subtype of `book` via inheritance polymorphism.
+* The variable `$action` can resolve to any player of the `action` role of `action-execution` via interface polymorphism.
+* The relation between `$book` and `$action` can resolve to any relation type via parametric polymorphism.
+* The returned ISBNs can be any subtypes of `isbn` via inheritance polymorphism.
+=====
+====
+
+In the remainder of this course, we will be applying polymorphism liberally to our queries. After all, TypeDB is the polymorphic database!
