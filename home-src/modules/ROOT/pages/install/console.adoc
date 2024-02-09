@@ -1,93 +1,111 @@
-= Console installation guide
+= TypeDB Console installation guide
 
 TypeDB Console is the default CLI client for TypeDB.
 Both TypeDB Core and TypeDB Cloud are usually distributed with a compatible version of TypeDB Console.
 To install TypeDB Console separately, use the guide below.
 
-== Install
-
 If you are unsure of the exact version you need,
 check the <<_version_compatibility,compatibility table>> below.
+
+[cols-3]
+--
+.link:https://github.com/vaticle/typedb-console[GitHub,window=_blank]
+[.clickable]
+****
+See source code and release notes.
+****
+
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console&sort=-version[Downloads]
+[.clickable]
+****
+See downloadable packages.
+****
+
+.xref:manual::console.adoc[TypeDB Console Manual]
+[.clickable]
+****
+See documentation.
+****
+--
+
+== Install
+
+Make sure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+
+For installation instructions, follow the steps below for your OS:
 
 [tabs]
 ====
 macOS::
 +
 --
-. Ensure Java 11+ is installed.
-TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
-https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
-
-. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version. Depending on your architecture, download the `typedb-console-mac-x86_64`
-or the `typedb-console-mac-arm64` archive.
-
-. Extract the archive with TypeDB Console into a new directory:
+. Download the latest package for your systems architecture:
+https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-mac-x86_64.zip[x86/x64] |
+https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-mac-arm64.zip[arm64]. +
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-mac&sort=-version[Downloads repository] page.
+. Extract the archive into a new directory:
 +
 [,bash,subs=attributes+]
 ----
 sudo mkdir /opt/typedb-console
-unzip ~/Downloads/typedb-console-mac-{latest-version}.zip -d /opt/typedb-console
+unzip ~/Downloads/typedb-console-mac-x86_64.zip -d /opt/typedb-console
 ----
-
 . Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
 +
 [,bash,subs=attributes+]
 ----
-ln -s /opt/typedb-console/typedb-console-mac-{latest-version}/typedb /usr/local/bin/typedb
+ln -s /opt/typedb-console/typedb-console-mac-x86_64/typedb /usr/local/bin/typedb
 ----
 --
 
 Linux::
 +
 --
-. Ensure Java 11+ is installed.
-TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
-https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
-
-. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version. Depending on your architecture, download the `typedb-console-linux-x86_64`
-or the `typedb-console-linux-arm64` archive.
-
-. Extract the archive with TypeDB Console into a new directory:
+. Download the latest package for your systems architecture:
+https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-linux-x86_64.tar.gz[x86/x64] |
+https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-linux-arm64.tar.gz[arm64]. +
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-linux&sort=-version[Downloads repository] page.
+. Extract the archive into a new directory:
 +
 [,bash,subs=attributes+]
 ----
 mkdir /opt/typedb-console
-tar -xzf ~/Downloads/typedb-console-linux-{latest-version}.tar.gz -C /opt/typedb-console
+tar -xzf ~/Downloads/typedb-console-linux-x86_64.tar.gz -C /opt/typedb-console
 ----
 
 . Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
 [,bash,subs=attributes+]
 ----
-ln -s /opt/typedb-console/typedb-console-linux-{latest-version}/typedb /usr/local/bin/typedb
+ln -s /opt/typedb-console/typedb-console-linux-x86_64/typedb /usr/local/bin/typedb
 ----
 --
 
 Windows::
 +
 --
-. Ensure Java 11+ is installed.
-TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
-https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+. Download the latest package for your systems architecture:
+https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-windows-x86_64.zip[x86/x64]. +
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-win&sort=-version[Downloads repository] page.
 
-. Navigate to the https://github.com/vaticle/typedb-console/releases[Releases,window=_blank] page,
-select a required version, download the `typedb-console-windows-x86_64` archive.
-
-. Extract the archive with TypeDB Console into a new directory:
+. Extract the archive into a new directory:
 +
 [,shell,subs=attributes+]
 ----
 mkdir "C:\Program Files\TypeDB Console"
-tar xvf "C:\Users\username\Downloads\typedb-console-windows-{latest-version}.zip" -C "C:\Program Files\TypeDB Console"
+tar xvf "C:\Users\username\Downloads\typedb-console-windows-x86_64.zip" -C "C:\Program Files\TypeDB Console"
 ----
 
 . Update the `PATH` environment variable:
 +
 [,shell,subs=attributes+]
 ----
-setx /M PATH "%path%;C:\Program Files\TypeDB Console\typedb-console-windows-{latest-version}"
+setx /M PATH "%path%;C:\Program Files\TypeDB Console\typedb-console-windows-x86_64"
 ----
 
 Restart the terminal window for the changes to environment variables to take effect.
@@ -103,24 +121,7 @@ To run TypeDB Console:
 typedb console
 ----
 
-The above command will try to establish a connection with a TypeDB server on the default address of `localhost:1729`.
-To connect to a different address use the `--core` argument followed by a TypeDB server IP address and port:
-`10.0.0.1:1729`.
-
-If the typedb command is not recognized, it means that the path to TypeDB binary is not set in the system.
-You can find TypeDB binary in the TypeDB distributive.
-To start TypeDB Console from its binary, navigate into the directory with unpacked distributive and run:
-
-[,bash]
-----
-./typedb console
-----
-
-[NOTE]
-====
-To learn how to use TypeDB Console, see the xref:manual:ROOT:console.adoc[] page.
-====
-
+To learn how to use TypeDB Console, see the xref:manual::console.adoc[] page.
 
 [#_version_compatibility]
 == Version Compatibility
