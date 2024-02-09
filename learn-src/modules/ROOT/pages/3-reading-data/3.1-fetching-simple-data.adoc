@@ -35,6 +35,32 @@ All Fetch queries return results in JSON format.
 
 In the `match` clause of the query, we declared a single *variable*: `$book`. In TypeQL, variables are declared using the `$` prefix. We also specified the *type* of `$book` to be `paperback` using the `isa` keyword. We can see that each JSON object returned represents an instance of `paperback` and contains a list of all that book's attributes.
 
+.Exercise
+[caption=""]
+====
+Write a query to retrieve all the attributes of `user` entities. It should be equivalent to the following SQL query.
+
+[,sql]
+----
+SELECT *
+FROM users;
+----
+
+N.b. in the SQL query we need to use `users` rather than `user` as the latter is a reserved keyword in SQL. In general, _singular_ nouns are preferred for entity type names.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$user isa user;
+fetch
+$user: attribute;
+----
+=====
+====
+
 == Projections
 
 Looking at the list of each book's attributes in the previous result, we can see that we've retrieved attributes of six types: `isbn-13`, `isbn-10`, `title`, `page-count`, `price`, and `stock`. By modifying the `fetch` clause, we can choose to retrieve only specific attributes.
@@ -62,6 +88,24 @@ SELECT title, page_count
 FROM paperback;
 ----
 
+.Exercise
+[caption=""]
+====
+Write a query to instead retrieve the `isbn-13`, `price`, and `stock` attributes of paperbacks.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa paperback;
+fetch
+$book: isbn-13, price, stock;
+----
+=====
+====
+
 == Selections
 
 In the next query, we'll add a *constraint* to the `match` clause, specifying that we want the details for a specific book with ISBN-13 `"isbn placeholder"`.
@@ -73,6 +117,7 @@ $book isa paperback, has isbn-13 "isbn placeholder";
 fetch
 $book: title, page-count;
 ----
+
 [,json]
 ----
 result placeholder
@@ -100,7 +145,38 @@ $book: title, page-count;
 
 Try *running* image:learn::studio-icons/run.png[] these two queries. You should get the same results.
 
-In the first version, we used a single compound *statement* in the `match` clause, whereas in the second version, we instead used two atomic statements. If atomic statements concern the same variable, we can always concatenate them using commas, and vice versa.
+In the first version, we used a single compound *statement* in the `match` clause, whereas in the second version, we instead used two atomic statements. If atomic statements concern the same variable (in this case `$book`), we can always concatenate them using commas, and vice versa.
+
+.Exercise
+[caption=""]
+====
+Write a query to retrieve the `page-count` and `price` attributes of the paperback with title `"placeholder title"`. Write the query once using a compound statement, and again using atomic statements.
+
+.Sample solution
+[%collapsible]
+=====
+With a compound statement:
+
+[,typeql]
+----
+match
+$book isa paperback, has title "placeholder title";
+fetch
+$book: page-count, price;
+----
+
+With atomic statements:
+
+[,typeql]
+----
+match
+$book isa paperback;
+$book has title "placeholder title";
+fetch
+$book: page-count, price;
+----
+=====
+====
 
 == Entities and relations
 
@@ -115,7 +191,7 @@ $line (order: $order, item: $book) isa order-line;
 
 This statement signifies that:
 
-* `$line` is of type `order-line`.
+* `$line` is a relation of type `order-line`.
 * `$order` plays the role of `order` in `$line`.
 * `$book` plays the role of `item` in `$line`.
 
@@ -130,6 +206,7 @@ fetch
 $order: id;
 $line: quantity;
 ----
+
 [,json]
 ----
 result placeholder
@@ -149,6 +226,27 @@ WHERE paperback.isbn_13 = 'isbn_placeholder';
 In a relational database, the relation type `order-line` would be represented by an https://en.wikipedia.org/wiki/Associative_entity[associative table] with foreign keys to the tables representing the entity types `order` and [#_footnote_1]#`paperback`#^<<_footnotes,1>>^. As a general rule, associative tables in relational databases can be mapped onto relation types in TypeDB.
 
 A key difference here is that the TypeQL query uses roles to connect the `order-line` relation and its roleplayers `$order` and `$book`, whereas the SQL query connects different rows based on literal value equalities. Simply sharing a variable between multiple statements is sufficient to describe the connections between data instances in TypeQL, without having to identify attribute values to join on (like the order ID and book ISBN).
+
+.Exercise
+[caption=""]
+====
+Modify the above query to also retrieve the `status` attribute of the order and the `price` attribute of the book.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa paperback, has isbn-13 "isbn placeholder";
+$line (order: $order, item: $book) isa order-line;
+fetch
+$order: id, status;
+$line: quantity;
+$book: price;
+----
+=====
+====
 
 == Ternary relations
 
@@ -172,11 +270,18 @@ $address: street;
 result placeholder
 ----
 
-Here the delivery is a *ternary relation* between three roleplayers: `$courier`, `$order`, and `$address`. Higher order relations are used to represent rich references between multiple classes. In a relational database, a ternary relation would be represented by an associative table between three foreign key columns. As an exercise, try writing a SQL query that is equivalent to this TypeQL query.
+Here the delivery is a *ternary relation* between three roleplayers: `$courier`, `$order`, and `$address`. Higher order relations are used to represent rich references between multiple classes.
 
-.Answer
-[%collapsible]
+We have also not given the delivery a variable name. Compare this to the order line, which has the variable name `$line`. In this case, the delivery relation is represented by an *anonymous variable*. In many cases where we do not need to refer to a relation anywhere else in the query, we can omit a variable name. As we need to refer to the order line in the `fetch` clause to retrieve the associated quantity, we must give it the variable name `$line`, but this is not the case for the delivery.
+
+.Exercise
+[caption=""]
 ====
+In a relational database, a ternary relation would be represented by an associative table between three foreign key columns. Write a SQL query that is equivalent to the above TypeQL query.
+
+.Sample solution
+[%collapsible]
+=====
 [,sql]
 ----
 SELECT orders.id, order_line.quantity, courier.name, address.street
@@ -188,11 +293,8 @@ INNER JOIN courier ON courier.id = delivery.courier_id
 INNER JOIN address ON address.id = delivery.address_id
 WHERE paperback.isbn_13 = 'isbn_placeholder';
 ----
-There are other correct answers!
+=====
 ====
-
-
-We have also not given the delivery a variable name. Compare this to the order line, which has the variable name `$line`. In this case, the delivery relation is represented by an *anonymous variable*. In many cases where we do not need to refer to a relation anywhere else in the query, we can omit a variable name. As we need to refer to the order line in the `fetch` clause to retrieve the associated quantity, we must give it the variable name `$line`, but this is not the case for the delivery.
 
 [NOTE]
 ====
