@@ -1,5 +1,5 @@
 # tag::import[]
-from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions
+from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions, ValueType, Transitivity
 # end::import[]
 
 DB_NAME = "sample_db"
@@ -161,3 +161,26 @@ with TypeDB.core_driver("localhost:1729") as driver:
             for i, JSON in enumerate(response):
                 print(f"User #{i + 1}: {JSON}")
     # end::infer-fetch[]
+    # tag::schema-editing[]
+    with driver.session(DB_NAME, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            tag = transaction.concepts.put_attribute_type("tag", ValueType.STRING).resolve()
+            entities = transaction.concepts.get_root_entity_type().get_subtypes(transaction, Transitivity.EXPLICIT)
+            for entity in entities:
+                print(entity.get_label())
+                if not entity.is_abstract():
+                    entity.set_owns(transaction, tag).resolve()
+            transaction.commit()
+    # end::schema-editing[]
+    # tag::schema-api[]
+    with driver.session(DB_NAME, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            user = transaction.concepts.get_entity_type("user").resolve()
+            admin = transaction.concepts.put_entity_type("admin").resolve()
+            admin.set_supertype(transaction, user)
+            root_entity = transaction.concepts.get_root_entity_type()
+            subtypes = list(root_entity.get_subtypes(transaction, Transitivity.TRANSITIVE))
+            for subtype in subtypes:
+                print(subtype.get_label().name)
+
+    # end::schema-api[]
