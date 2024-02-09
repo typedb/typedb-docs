@@ -40,7 +40,7 @@ $friendship (friend:$user1, friend: $user2) isa friendship;
 Console::
 +
 --
-. Open a session and transaction to the selected database (e.g., `sample_db`):
+. Open a `data` session and `write` transaction to the selected database (e.g., `sample_db`):
 +
 [,bash]
 ----

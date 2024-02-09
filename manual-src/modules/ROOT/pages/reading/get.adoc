@@ -21,11 +21,11 @@ Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
-. Use a drop-down list in the top toolbar to select a database with the name `sample_db`.
+. Use a drop-down list in the top toolbar to select a database.
 . Switch to `data` session and `read` transaction types.
 . Open a new tab and insert or type in an Insert query, for example:
 +
-.TypeQL Insert query
+.TypeQL Get query
 [,typeql]
 ----
 match
@@ -40,13 +40,13 @@ $u, $e;
 Console::
 +
 --
-. Open a session and transaction:
+. Open a `data` session and `read` transaction to the selected database (e.g., `sample_db`):
 +
 [,bash]
 ----
 transaction sample_db data read
 ----
-. Send the Define query:
+. Send the Get query:
 +
 [,bash]
 ----

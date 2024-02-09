@@ -191,7 +191,7 @@ async function main() {
     }
     finally {await session?.close();}
     // end::get[]
-    // tag::infer[]
+    // tag::infer-rule[]
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
@@ -211,7 +211,8 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-
+    // end::infer-rule[]
+    // tag::infer-fetch[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
@@ -234,7 +235,7 @@ async function main() {
         finally {if (transaction.isOpen()) {await transaction.close()};}
     }
     finally {await session?.close();}
-    // end::infer[]
+    // end::infer-fetch[]
 };
 
 main();

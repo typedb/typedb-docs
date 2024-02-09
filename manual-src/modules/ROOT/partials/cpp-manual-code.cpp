@@ -169,7 +169,7 @@ int main() {
         // end::get[]
     }
 
-    {   // tag::infer[]
+    {   // tag::infer-rule[]
         auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
         std::string defineQuery = R"(
@@ -183,7 +183,8 @@ int main() {
                                     )";
         auto result = transaction.query.define(defineQuery);
         transaction.commit();
-
+        // end::infer-rule[]
+        // tag::infer-fetch[]
         TypeDB::Options inferOptions;
         inferOptions.infer(true);
         auto session2 = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
@@ -199,7 +200,7 @@ int main() {
         for (TypeDB::JSON& result : results) {
             fetchResult.push_back(result);
         }
-        // end::infer[]
+        // end::infer-fetch[]
     }
     return 0;
 }
