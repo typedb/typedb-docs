@@ -64,7 +64,7 @@ user sub entity,
     owns id,
     owns name,
     owns birth-date,
-    plays user-action:user,
+    plays action-execution:executor,
     plays locating:located,
     plays recommendation:recipient;
 
@@ -72,7 +72,7 @@ order sub entity,
     owns id @key,
     owns status,
     plays order-line:order,
-    plays user-action:action,
+    plays action-execution:action,
     plays delivery:delivered;
 
 promotion sub entity,
@@ -85,11 +85,11 @@ review sub entity,
     owns score,
     owns verified,
     plays rating:review,
-    plays user-action:action;
+    plays action-execution:action;
 
 login sub entity,
     owns success,
-    plays user-action:action;
+    plays action-execution:action;
 
 address sub entity,
     owns street,
@@ -140,9 +140,9 @@ rating sub relation,
     relates review,
     relates rated;
 
-user-action sub relation,
-    relates user,
+action-execution sub relation,
     relates action,
+    relates executor,
     owns timestamp;
 
 delivery sub relation,
@@ -184,8 +184,8 @@ rule review-verified-by-purchase:
     when {
         ($order, $product) isa order-line;
         ($review, $product) isa rating;
-        ($user, $order) isa user-action, has timestamp $order-time;
-        ($user, $review) isa user-action, has timestamp $review-time;
+        ($user, $order) isa action-execution, has timestamp $order-time;
+        ($user, $review) isa action-execution, has timestamp $review-time;
         $review-time > $order-time;
     } then {
         $review has verified true;
@@ -204,10 +204,10 @@ rule book-recommendation-by-author:
         $user isa user;
         $liked-book isa book;
         {
-            ($user, $order) isa user-action;
+            ($user, $order) isa action-execution;
             ($order, $liked-book) isa order-line;
         } or {
-            ($user, $review) isa user-action;
+            ($user, $review) isa action-execution;
             ($review, $liked-book) isa rating;
             $review has score >= 7;
         };
@@ -220,7 +220,7 @@ rule book-recommendation-by-author:
 
 rule order-line-total-retail-price:
     when {
-        ($order) isa user-action, has timestamp $order-time;
+        ($order) isa action-execution, has timestamp $order-time;
         $line ($order, $item) isa order-line;
         not {
             ($promotion, $item) isa promotion-inclusion;
@@ -236,7 +236,7 @@ rule order-line-total-retail-price:
 
 rule order-line-total-discounted-price:
     when {
-        ($order) isa user-action, has timestamp $order-time;
+        ($order) isa action-execution, has timestamp $order-time;
         $line ($order, $item) isa order-line;
         ($best-promotion, $iem) isa promotion-inclusion;
         $best-promotion has discount $best-discount,
