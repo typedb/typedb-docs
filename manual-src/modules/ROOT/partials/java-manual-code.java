@@ -154,7 +154,7 @@ public class Main {
             }
         }
         // end::get[]
-        // tag::infer[]
+        // tag::infer-rule[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
             try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String defineQuery = """
@@ -170,7 +170,8 @@ public class Main {
                 transaction.commit();
             }
         }
-
+        // end::infer-rule[]
+        // tag::infer-fetch[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
             TypeDBOptions options = new TypeDBOptions().infer(true);
             try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ, options)) {
@@ -184,7 +185,7 @@ public class Main {
                 transaction.query().fetch(fetchQuery).forEach(result -> System.out.println("Email #" + (++ctr[0]) + ": " + result.toString()));
             }
         }
-        // end::infer[]
+        // end::infer-fetch[]
         driver.close();
     }
 }

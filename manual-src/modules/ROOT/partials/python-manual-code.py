@@ -133,7 +133,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
                 email = concept_map.get("e").as_attribute().get_value()
                 print(f"Email #{i + 1}: {email}")
     # end::get[]
-    # tag::infer[]
+    # tag::infer-rule[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
         with session.transaction(TransactionType.WRITE) as transaction:
             define_query = """
@@ -147,7 +147,8 @@ with TypeDB.core_driver("localhost:1729") as driver:
                             """
             transaction.query.define(define_query)
             transaction.commit()
-
+    # end::infer-rule[]
+    # tag::infer-fetch[]
     with driver.session(DB_NAME, SessionType.DATA) as session:
         with session.transaction(TransactionType.READ, TypeDBOptions(infer=True)) as transaction:
             fetch_query = """
@@ -159,4 +160,4 @@ with TypeDB.core_driver("localhost:1729") as driver:
             response = transaction.query.fetch(fetch_query)
             for i, JSON in enumerate(response):
                 print(f"User #{i + 1}: {JSON}")
-    # end::infer[]
+    # end::infer-fetch[]

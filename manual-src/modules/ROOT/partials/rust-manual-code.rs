@@ -185,7 +185,7 @@ fn main() -> Result<(), Error> {
         // end::get[]
     }
 
-    {   // tag::infer[]
+    {   // tag::infer-rule[]
         let db = databases.get(DB_NAME)?;
         let session = Session::new(db, SessionType::Schema)?;
         let tx = session.transaction(TransactionType::Write)?;
@@ -200,7 +200,8 @@ fn main() -> Result<(), Error> {
                             ";
         tx.query().define(define_query).resolve()?;
         tx.commit().resolve()?;
-
+        // end::infer-rule[]
+        // tag::infer-fetch[]
         let db = databases.get(DB_NAME)?;
         let options = Options::new().infer(true);
         let session = Session::new(db, SessionType::Data)?;
@@ -215,7 +216,7 @@ fn main() -> Result<(), Error> {
         for (i, json) in response.enumerate() {
             println!("User #{}: {}", (i + 1).to_string(), json.unwrap().to_string())
         }
-        // end::infer[]
+        // end::infer-fetch[]
     }
     Ok({})
 }
