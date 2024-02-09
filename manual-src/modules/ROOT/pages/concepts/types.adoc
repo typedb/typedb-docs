@@ -1,0 +1,164 @@
+= Schema objects
+
+Driver APIs provide a set of methods to programmatically retrieve and manipulate types in a TypeDB database.
+There are two ways to get a stateful object representing a type in a TypeDB database: a Get query and an API call.
+
+For manipulating rules in a schema, see the <<_get_a_rule_object>> section below.
+
+== Get a type object with a Get query
+
+To get a type from a Get query, you need to match a type from a database with a schema pattern.
+
+.Get query example for matching types
+[,typeql]
+----
+match
+$x sub entity;
+get $x;
+----
+
+The above example matches all entity types in a database (as subtypes of the `entity` root type).
+
+Get query response includes ConceptMap stream/Iterable.
+To get a type object, you need to collect stream/iterable items and retrieve concept from a concept map.
+For instructions on how to send a get query, see the
+xref:manual::reading/get.adoc#_how_to_send_a_get_query[Get query] page.
+
+== Get a type object with an API methods
+
+Concept class of any driver provides methods to work with all kinds of concepts from a TypeDB database, including types.
+
+== Example of type manipulation
+
+[,python]
+----
+
+
+----
+
+
+=== Root types
+
+Use the following methods of the Concept class to get stateful objects for root types:
+`entity`, `relation`, and `attribute`.
+
+[tabs]
+====
+Rust::
++
+--
+
+--
+
+Python::
++
+--
+
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_entity_type__[`get_root_entity_type()`] +
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_relation_type__[`get_root_relation_type()`] +
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_attribute_type__[`get_root_attribute_type()`]
+
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+== Get label of a type
+
+Every type in a schema has its unique label (like name, for example, `user`).
+To get a label of a type, use the Name method of a Type object.
+
+
+== Traversing between subtypes
+
+Type class has the Get subtypes method to retrieve types of all subtypes for the selected type.
+
+[tabs]
+====
+Rust::
++
+--
+
+--
+
+Python::
++
+--
+
+xref:drivers::python/api-reference.adoc#_Type_get_subtypes__transaction_TypeDBTransaction__transitivity_Transitivity[`get_subtypes()`]
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+[#_get_a_rule_object]
+== Get a rule object
+
+[tabs]
+====
+Rust::
++
+--
+
+--
+
+Python::
++
+--
+
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_entity_type__[`get_root_entity_type()`] +
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_relation_type__[`get_root_relation_type()`] +
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_attribute_type__[`get_root_attribute_type()`]
+
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
