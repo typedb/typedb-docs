@@ -3,7 +3,7 @@
 :keywords: typeql, schema, model, define, modify, extend, type, rule, annotations
 :pageTitle: Define query
 
-A Define query extends a schema of a database with new schema statements.
+A Define query extends the schema of a database with new schema statements.
 
 Define queries can be used only in a schema session and write transaction.
 For more information on the limitations of a schema session, see the
@@ -21,10 +21,10 @@ or they can add new properties to existing types and replace existing rules.
 It can't change schema statements already existing in a schema, except for annotations and rules.
 //#todo Add links to annotations and rules section to clarify
 
-Define queries are idempotent, as in they can be applied multiple times
+Define queries are idempotent, meaning they can be applied multiple times
 without changing the result of the initial application.
 
-A Define query should produce a consistent and valid schema in a database,
+A Define query must produce a consistent and valid schema in a database,
 otherwise it will not pass validation and will be rejected.
 
 Define query returns a Promise of an empty response.
@@ -42,7 +42,7 @@ Define queries are written in TypeQL with the following syntax:
 define <schema statements>
 ----
 
-Schema statements in a `define` clause uses TypeQL to declare type definitions and rules.
+Schema statements in a `define` clause use TypeQL to declare type definitions and rules.
 // end::syntax[]
 
 For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
@@ -90,7 +90,7 @@ The above example adds three new types:
 
 * `credential` -- attribute type with `string` value type.
 * `subject` -- entity type that can own `credential` attributes.
-* `user` -- entity type that subtypes the `subject` type and by doing os, inherits the ability to own `credential`.
+* `user` -- entity type that subtypes the `subject` type and by doing so, inherits the ability to own `credential`.
 
 === Define a new property
 
@@ -133,8 +133,8 @@ user plays membership:member;
 ----
 
 The above query adds the `membership` relation type with two roles: `member` and `parent`.
-The new `user-group` type then made able to play the `parent` role.
-The pre-existing `user` role is able to play the `member` role in the relation now.
+Then the new `user-group` type is defined as being able to play the `parent` role.
+Finally, the pre-existing `user` type is modified to be able to play the `member` role in the `membership` relation.
 
 ////
 Instead, they use type labels and TypeQL keywords to express

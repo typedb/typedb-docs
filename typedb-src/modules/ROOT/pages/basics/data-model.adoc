@@ -44,9 +44,9 @@ That divides all types into three categories with different capabilities.
 TypeDB employs a strong and polymorphic type system.
 
 All queries are validated not only for syntax errors, but also for type violations.
-Schema definitions include constraints on what types (and their instances) can do.
+Schema definitions include constraints on types and their instances.
 For example, for an entity to be able to have ownership of an attribute,
-entity's type definition must have ownership of attribute's type declared in a schema.
+that entity's type definition must have ownership of the attribute's type declared in a schema.
 
 For more information about queries, see the xref:typedb::basics/query-language.adoc[] page. +
 For more information about polymorphism, see the xref:typedb::basics/polymorphic-patterns.adoc[] page.
@@ -76,14 +76,15 @@ A relation can't exist without its roleplayers.
 Roles of a relation are set in its type definition.
 To play a role in a relation, a data instance must have this ability defined in a schema for its type.
 
-Relations are mutable: you can change relation by adding or removing roleplayers for its roles.
+Relations are mutable: you can change a relation by adding or removing roleplayers for its roles.
 A relation without a single roleplayer for one of its roles usually represents an incomplete data state.
-For example, marriage can't exist without spouses.
+For example, a marriage can't exist without its spouses.
 
 == Attributes
 
-Attributes represent properties with value that other types can own.
-Values of attributes are limited to the value type set in a definition of their type.
+Attributes represent properties that other types can own.
+Each attribute represents a single value.
+The value of an attribute is limited to the value type set in the definition of its type.
 //An attribute type's definition includes a value type that constraints possible values for attributes of that attribute type.
 
 An attribute is immutable: its value is fixed and can't be altered.
