@@ -44,7 +44,7 @@ That divides all types into three categories with different capabilities.
 TypeDB employs a strong and polymorphic type system.
 
 All queries are validated not only for syntax errors, but also for type violations.
-Schema definitions include constraints on the things that types (and their instances) can do.
+Schema definitions include constraints on types and their instances.
 For example, for an entity to be able to have ownership of an attribute,
 that entity's type definition must have ownership of the attribute's type declared in a schema.
 
