@@ -134,7 +134,7 @@ user plays membership:member;
 
 The above query adds the `membership` relation type with two roles: `member` and `parent`.
 Then the new `user-group` type is defined as being able to play the `parent` role.
-Finally, the pre-existing `user` role is modified to be able to play the `member` role in the `membership` relation.
+Finally, the pre-existing `user` type is modified to be able to play the `member` role in the `membership` relation.
 
 ////
 Instead, they use type labels and TypeQL keywords to express

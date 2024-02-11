@@ -78,11 +78,11 @@ To play a role in a relation, a data instance must have this ability defined in 
 
 Relations are mutable: you can change a relation by adding or removing roleplayers for its roles.
 A relation without a single roleplayer for one of its roles usually represents an incomplete data state.
-For example, a marriage can't exist without spouses.
+For example, a marriage can't exist without its spouses.
 
 == Attributes
 
-Attributes represent properties with value that other types can own.
+Attributes represent properties that other types can own.
 Each attribute represents a single value.
 The value of an attribute is limited to the value type set in the definition of its type.
 //An attribute type's definition includes a value type that constraints possible values for attributes of that attribute type.
