@@ -5,12 +5,11 @@ const { TransactionType } = require("typedb-driver/api/connection/TypeDBTransact
 const { TypeDBOptions } = require("typedb-driver/api/connection/TypeDBOptions");
 // end::import[]
 async function main() {
-    const DB_NAME = "iam";
-    const SERVER_ADDR = "127.0.0.1:1729";
+    const DB_NAME = "sample_db";
 
     console.log("TypeDB Manual sample code");
     // tag::driver[]
-    const driver = await TypeDB.coreDriver(SERVER_ADDR);
+    const driver = await TypeDB.coreDriver("127.0.0.1:1729");
     // end::driver[]
     // tag::list-db[]
     let dbs = await driver.databases.all();
@@ -159,10 +158,8 @@ async function main() {
                                 $u: name, email;
                                 `;
             let response = await transaction.query.fetch(fetch_query).collect();
-            k = 0;
             for(let i = 0; i < response.length; i++) {
-                k++;
-                console.log("User #" + k + ": " + JSON.stringify(response[i], null, 4));
+                console.log("User #" + (i + 1) + ": " + JSON.stringify(response[i], null, 4));
             }
         }
         finally {if (transaction.isOpen()) {await transaction.close()};}
@@ -181,10 +178,8 @@ async function main() {
                                 $e;
                                 `;
             let response = await transaction.query.get(get_query).collect();
-            k = 0;
             for(let i = 0; i < response.length; i++) {
-                k++;
-                console.log("Email #" + k + ": " + response[i].get("e").value);
+                console.log("Email #" + (i + 1) + ": " + response[i].get("e").value);
             }
         }
         finally {if (transaction.isOpen()) {await transaction.close()};}
@@ -226,10 +221,8 @@ async function main() {
                                 $u: name, email;
                                 `;
             let response = await transaction.query.fetch(fetch_query).collect();
-            k = 0;
             for(let i = 0; i < response.length; i++) {
-                k++;
-                console.log("User #" + k + ": " + JSON.stringify(response[i], null, 4));
+                console.log("User #" + (i + 1) + ": " + JSON.stringify(response[i], null, 4));
             }
         }
         finally {if (transaction.isOpen()) {await transaction.close()};}
