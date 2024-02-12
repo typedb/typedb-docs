@@ -1,12 +1,13 @@
 # tag::import[]
 from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions, ValueType, Transitivity
+
 # end::import[]
 
 DB_NAME = "sample_db"
 
 # tag::driver[]
 with TypeDB.core_driver("localhost:1729") as driver:
-# end::driver[]
+    # end::driver[]
 
     # tag::list-db[]
     for db in driver.databases.all():
@@ -161,7 +162,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
             for i, JSON in enumerate(response):
                 print(f"User #{i + 1}: {JSON}")
     # end::infer-fetch[]
-    # tag::schema-editing[]
+    # tag::types-editing[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
         with session.transaction(TransactionType.WRITE) as transaction:
             tag = transaction.concepts.put_attribute_type("tag", ValueType.STRING).resolve()
@@ -171,8 +172,8 @@ with TypeDB.core_driver("localhost:1729") as driver:
                 if not entity.is_abstract():
                     entity.set_owns(transaction, tag).resolve()
             transaction.commit()
-    # end::schema-editing[]
-    # tag::schema-api[]
+    # end::types-editing[]
+    # tag::types-api[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
         with session.transaction(TransactionType.WRITE) as transaction:
             user = transaction.concepts.get_entity_type("user").resolve()
@@ -182,5 +183,32 @@ with TypeDB.core_driver("localhost:1729") as driver:
             subtypes = list(root_entity.get_subtypes(transaction, Transitivity.TRANSITIVE))
             for subtype in subtypes:
                 print(subtype.get_label().name)
+            transaction.commit()
 
-    # end::schema-api[]
+    # end::types-api[]
+    # tag::rules-api[]
+    with driver.session(DB_NAME, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            rules = transaction.logic.get_rules()
+            for rule in rules:
+                print("Rule label:", rule.label)
+                print("  Condition:", rule.when)
+                print("  Conclusion:", rule.then)
+            new_rule = transaction.logic.put_rule("Employee",
+                                                  "{$u isa user, has email $e; $e contains '@vaticle.com';}",
+                                                  "$u has name 'Employee'").resolve()
+            print("Rules (before deletion):")
+            rules = transaction.logic.get_rules()
+            for rule in rules:
+                print("Rule label:", rule.label)
+
+            new_rule.delete(transaction).resolve()
+
+            print("Rules (after deletion):")
+            rules = transaction.logic.get_rules()
+            for rule in rules:
+                print("Rule label:", rule.label)
+
+            transaction.commit()
+
+    # end::rules-api[]

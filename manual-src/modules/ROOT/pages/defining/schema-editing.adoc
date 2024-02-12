@@ -30,29 +30,9 @@ Rust::
 +
 --
 .{code-caption}
-[,rust]
+[,rust, indent=0]
 ----
-use typedb_driver::{
-    concept::{Transitivity, ValueType}, transaction::concept::api::{EntityTypeAPI, ThingTypeAPI}, Connection, DatabaseManager, Error, Promise, Session, SessionType, TransactionType
-};
-
-fn main() -> Result<(), Error> {
-    let driver = Connection::new_core("127.0.0.1:1729")?;
-    let databases = DatabaseManager::new(driver);
-    Ok({
-        let session = Session::new(databases.get("schema-api-db")?, SessionType::Schema)?;
-        let tx = session.transaction(TransactionType::Write)?;
-        let tag = tx.concept().put_attribute_type("tag".to_owned(),ValueType::String).resolve()?;
-        let entities = tx.concept().get_entity_type("entity".to_owned()).resolve().unwrap().unwrap().get_subtypes(&tx, Transitivity::Explicit).unwrap();
-        for res in entities {
-            let mut entity = res.unwrap();
-            if !{entity.is_abstract()} {
-                _ = entity.set_owns(&tx, tag.clone(),None,vec![]).resolve();
-            }
-        }
-        tx.commit().resolve()?;
-    })
-}
+include::manual::partial$rust-manual-code.rs[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::rust/api-reference.adoc[API reference].
@@ -62,20 +42,9 @@ Python::
 +
 --
 .{code-caption}
-[,python]
+[,python, indent=0]
 ----
-from typedb.driver import TypeDB, SessionType, TransactionType, ValueType, Transitivity
-
-with TypeDB.core_driver("127.0.0.1:1729") as driver:
-    with driver.session("sample_db", SessionType.SCHEMA) as session:
-        with session.transaction(TransactionType.WRITE) as transaction:
-            tag = transaction.concepts.put_attribute_type("tag", ValueType.STRING).resolve()
-            entities = transaction.concepts.get_root_entity_type().get_subtypes(transaction, Transitivity.EXPLICIT)
-            for entity in entities:
-                print(entity.get_label())
-                if not entity.is_abstract():
-                    entity.set_owns(transaction, tag).resolve()
-            transaction.commit()
+include::manual::partial$python-manual-code.py[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::python/api-reference.adoc[API reference].

@@ -1,15 +1,26 @@
 = Schema objects
 
-Driver APIs provide a set of methods to programmatically retrieve and manipulate types in a TypeDB database.
-There are two ways to get a stateful object representing a type in a TypeDB database: a Get query and an API call.
+Driver APIs provide a set of methods to programmatically manipulate <<_types,types>> and
+<<_rules,rules>> in the schema of a TypeDB database.
 
-For manipulating rules in a schema, see the <<_get_a_rule_object>> section below.
+[#_types]
+== Types
 
-== Get a type object with a Get query
+There are two ways to get a stateful object representing a type in a TypeDB database:
+<<_get_a_type_object_with_a_get_query,TypeQL Get queries>> and
+<<_get_a_type_object_with_an_api_methods,driver API methods>>.
 
-To get a type from a Get query, you need to match a type from a database with a schema pattern.
+A type object has many useful methods to traverse the type hierarchy, find related types,
+and manipulate types and their relations.
+See an <<_example_of_type_manipulation,example>> below.
 
-.Get query example for matching types
+[#_get_a_type_object_with_a_get_query]
+=== Get a type object with a Get query
+
+To get a type from via TypeQL xref:typeql::data/get.adoc[Get query],
+you need to match a type from a database with a schema pattern.
+
+.Get query for entity types
 [,typeql]
 ----
 match
@@ -24,32 +35,37 @@ To get a type object, you need to collect stream/iterable items and retrieve con
 For instructions on how to send a get query, see the
 xref:manual::reading/get.adoc#_how_to_send_a_get_query[Get query] page.
 
-== Get a type object with an API methods
+[#_get_a_type_object_with_an_api_methods]
+=== Get a type object with an API methods
 
 The Concepts class (or ConceptManager) of any driver provides methods to work with concepts in a TypeDB database,
 including types.
 
-=== Get a type by its label and root type
-
 Retrieve a stateful object of any type with one of the root-type specific methods
-by using the types label (name) as an argument.
+by using the types label (name) as an argument:
 
 [tabs]
 ====
 Rust::
 +
 --
-
+xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_get_entity_type__label_String[`get_entity_type()`]
+-- get an entity type object by its label. +
+xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_get_relation_type__label_String[`get_relation_type()`]
+-- get a relation type object by its label. +
+xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_get_attribute_type__label_String[`get_attribute_type()`]
+-- get an attribute type object by its label.
 --
 
 Python::
 +
 --
-
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_entity_type__label_str[`get_entity_type()`] +
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_relation_type__label_str[`get_relation_type()`] +
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_entity_type__label_str[`get_entity_type()`]
+-- get an entity type object by its label. +
+xref:drivers::python/api-reference.adoc#_ConceptManager_get_relation_type__label_str[`get_relation_type()`]
+-- get a relation type object by its label. +
 xref:drivers::python/api-reference.adoc#_ConceptManager_get_attribute_type__label_str[`get_attribute_type()`]
-
+-- get an attribute type object by its label.
 --
 
 Java::
@@ -71,26 +87,33 @@ C++::
 --
 ====
 
-=== Get root type and traverse type hierarchy
+=== Put a type object into a schema
 
-Retrieve stateful objects for root types with the following methods.
+To insert a new type into a database,
+use a TypeQL xref:typeql::data/insert.adoc[Insert query] or the following driver API methods:
 
 [tabs]
 ====
 Rust::
 +
 --
-
+xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_put_entity_type__label_String[`put_entity_type()`]
+-- add a new entity type or return an existing one with the same label. +
+xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_put_relation_type__label_String[`put_relation_type()`]
+-- add a new relation type or return an existing one with the same label. +
+xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_put_attribute_type__label_String__value_type_ValueType[`put_attribute_type()`]
+-- add a new attribute type or return an existing one with the same label.
 --
 
 Python::
 +
 --
-
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_entity_type__[`get_root_entity_type()`] +
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_relation_type__[`get_root_relation_type()`] +
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_attribute_type__[`get_root_attribute_type()`]
-
+xref:drivers::python/api-reference.adoc#_ConceptManager_put_entity_type__label_str[`put_entity_type()`]
+-- add a new entity type or return an existing one with the same label. +
+xref:drivers::python/api-reference.adoc#_ConceptManager_put_relation_type__label_str[`put_relation_type()`]
+-- add a new relation type or return an existing one with the same label. +
+xref:drivers::python/api-reference.adoc#_ConceptManager_put_attribute_type__label_str__value_type_ValueType[`put_attribute_type()`]
+-- add a new attribute type or return an existing one with the same label.
 --
 
 Java::
@@ -112,24 +135,45 @@ C++::
 --
 ====
 
-Then you can retrieve all subtypes and find the required type.
+=== Type object methods
+
+A stateful type object has many useful methods to manipulate the type or traverse the type hierarchy of a schema.
+Here are some of them:
 
 [tabs]
 ====
 Rust::
 +
 --
-
+xref:drivers::rust/api-reference.adoc#_enum_ThingType_label__[`label()`]
+-- retrieve the type's proper name as a string. +
+xref:drivers::rust/api-reference.adoc#_trait_ThingTypeAPI_set_label__transaction_tx_Transaction{scores}_{scores}new_label_String[`set_label()`]
+-- rename the type. +
+xref:drivers::rust/api-reference.adoc#_trait_EntityTypeAPI_get_subtypes__transaction_tx_Transaction{scores}_{scores}transitivity_Transitivity[`entity_type.get_subtypes()`]
+-- retrieve all subtypes (direct or nested) of the entity type. +
+xref:drivers::rust/api-reference.adoc#_trait_RelationTypeAPI_get_subtypes__transaction_tx_Transaction{scores}_{scores}transitivity_Transitivity[`relation_type.get_subtypes()`]
+-- retrieve all subtypes (direct or nested) of the relation type. +
+xref:drivers::rust/api-reference.adoc#_trait_AttributeTypeAPI_get_subtypes__transaction_tx_Transaction{scores}_{scores}transitivity_Transitivity[`attribute_type.get_subtypes()`]
+-- retrieve all subtypes (direct or nested) of the attribute type. +
+xref:drivers::rust/api-reference.adoc#_trait_EntityTypeAPI_get_subtypes__transaction_tx_Transaction{scores}_{scores}transitivity_Transitivity[`entity_type.get_supertype()`]
+-- retrieve immediate supertype of the entity type. +
+xref:drivers::rust/api-reference.adoc#_trait_RelationTypeAPI_get_subtypes__transaction_tx_Transaction{scores}_{scores}transitivity_Transitivity[`relation_type.get_supertype()`]
+-- retrieve immediate supertype of the relation type. +
+xref:drivers::rust/api-reference.adoc#_trait_AttributeTypeAPI_get_subtypes__transaction_tx_Transaction{scores}_{scores}transitivity_Transitivity[`attribute_type.get_supertype()`]
+-- retrieve immediate supertype of the attribute type. +
 --
 
 Python::
 +
 --
-
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_entity_type__[`get_root_entity_type()`] +
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_relation_type__[`get_root_relation_type()`] +
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_root_attribute_type__[`get_root_attribute_type()`]
-
+xref:drivers::python/api-reference.adoc#_Type_get_label__[`get_label()`]
+-- retrieve the label object with the `name` property, that contains the type's proper name. +
+xref:drivers::python/api-reference.adoc#_Type_set_label__transaction_TypeDBTransaction__new_label_str[`set_label()`]
+-- rename the type. +
+xref:drivers::python/api-reference.adoc#_Type_get_subtypes__transaction_TypeDBTransaction__transitivity_Transitivity[`get_subtypes()`]
+-- retrieve all subtypes (direct or nested) of the type. +
+xref:drivers::python/api-reference.adoc#_Type_get_supertype__transaction_TypeDBTransaction[`get_supertype()`]
+-- retrieve immediate supertype of the type.
 --
 
 Java::
@@ -151,58 +195,252 @@ C++::
 --
 ====
 
+[#_example_of_type_manipulation]
+=== Example of types manipulation
 
-== Example of type manipulation
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=types-api]
+----
+--
 
+Python::
++
+--
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=schema-api]
+include::manual::partial$python-manual-code.py[tags=types-api]
 ----
+--
+
+Java::
++
+--
+[,java,indent=0]
+----
+
+----
+--
+
+Node.js::
++
+--
+[,nodejs,indent=0]
+----
+
+----
+--
+
+C++::
++
+--
+[,cpp,indent=0]
+----
+
+----
+--
+====
+
+
+[#_rules]
+== Rules
+
+Rules can be defined with a TypeQL query (see xref:typeql::schema/define.adoc[]), but they can't be retrieved with one.
+
+To get rules from a schema, you need to either retrieve rule definitions from the schema of a database or
+retrieve rules separately.
+Both can be done programmatically.
+
+=== Get the full schema
+
+[tabs]
+====
+Rust::
++
+--
+xref:drivers::rust/api-reference.adoc#_struct_Database_schema__[`schema()`] -- retrieve the full schema. +
+xref:drivers::rust/api-reference.adoc#_struct_Database_rule_schema__[`rule_schema()`] -- retrieve all rules from the schema.
+--
+
+Python::
++
+--
+xref:drivers::python/api-reference.adoc#_Database_schema__[`schema()`] -- retrieve the full schema. +
+xref:drivers::python/api-reference.adoc#_Database_rule_schema__[`rule_schema()`] -- retrieve all rules from the schema.
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+
+[#_get_a_rule_object]
+=== Get/put a rule object
+
+Use the following methods to retrieve and manipulate rule objects:
+
+[tabs]
+====
+Rust::
++
+--
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_get_rules__[`get_rules()`] -- retrieve all rules from the schema. +
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_get_rule__label_String[`get_rule()`] -- retrieve a rule by its label. +
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_put_rule__label_String__when_Conjunction__then_Statement[`put_rule()`] -- create a new or update existing rule with the label.
+--
+
+Python::
++
+--
+xref:drivers::python/api-reference.adoc#_LogicManager_get_rules__[`get_rules()`] -- retrieve all rules from the schema. +
+xref:drivers::python/api-reference.adoc#_LogicManager_get_rule__label_str[`get_rule()`] -- retrieve a rule by its label. +
+xref:drivers::python/api-reference.adoc#_LogicManager_put_rule__label_str__when_str__then_str[`put_rule()`] -- create a new or update existing rule with the label.
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+=== Rule object methods
+
+Rule object represents a rule from the schema of a database.
+
+
+[tabs]
+====
+Rust::
++
+--
+Read more about rule object properties and methods in the
+xref:drivers::rust/api-reference.adoc#_struct_Rule[driver API reference]:
+
+`label` -- the unique label of the rule. +
+`when` -- the condition pattern of the rule. +
+`then` -- the single statement that constitutes the conclusion of the rule. +
+xref:drivers::rust/api-reference.adoc#_struct_Rule_delete__[`delete()`] -- delete the rule.
+--
+
+Python::
++
+--
+Read more about rule object properties and methods in the
+xref:drivers::python/api-reference.adoc#_Rule[driver API reference]:
+
+`label` -- the unique label of the rule. +
+`when` -- the condition pattern of the rule. +
+`then` -- the single statement that constitutes the conclusion of the rule. +
+xref:drivers::python/api-reference.adoc#_Rule_delete__transaction_TypeDBTransaction[`delete()`] -- delete the rule.
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+=== Example of rules manipulation
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=rules-api]
+----
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=rules-api]
+----
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+== Learn more
+
+[cols-1]
+--
+.xref:drivers::overview.adoc[]
+[.clickable]
+****
+Learn more about TypeDB drivers: list of available drivers, installation guides, API reference.
+****
+--
 
 For more information about driver API methods, see the API reference of the relevant driver:
 
 include::manual::reading/get.adoc[tags=drivers-api]
 
-[#_get_a_rule_object]
-== Get a rule object
 
-Use the following methods to retrieve and manipulate rile objects:
-
-[tabs]
-====
-Rust::
-+
---
-
---
-
-Python::
-+
---
-
-xref:drivers::python/api-reference.adoc#_LogicManager_get_rules__[`get_rules()`] -- retrieve all rules from the schema. +
-xref:drivers::python/api-reference.adoc#_LogicManager_get_rule__label_str[`get_rule()`] -- retrieve a stateful object of a rule by its label. +
-xref:drivers::python/api-reference.adoc#_LogicManager_put_rule__label_str__when_str__then_str[`put_rule()`] -- Create new or update existing rule with the label.
-
-For more information on properties of a rule object,
-see the xref:drivers::python/api-reference.adoc#_Rule[Rule object] section of API reference.
---
-
-Java::
-+
---
-
---
-
-Node.js::
-+
---
-
---
-
-C++::
-+
---
-
---
-====
