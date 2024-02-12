@@ -17,15 +17,15 @@ See the table below for the most simple statements that can be used for type def
 
 | <<_subtyping,Subtyping>> entity type
 | `<label> sub <type>;`
-| `person sub user;`
+| `employee sub person;`
 
 | <<_subtyping,Subtyping>> relation type
 | `<label> sub <type>;`
-| `person sub user;`
+| `car-ownership sub ownership;`
 
 | <<_subtyping,Subtyping>> attribute type
 | `<label> sub <type>;`
-| `person sub user;`
+| `full-name sub name;`
 
 //| Direct subtyping
 //| `<label> sub! <type>;`
@@ -59,7 +59,7 @@ Indentation and line breaks have no effect on the result of a query and are need
 [#_subtyping]
 == Subtyping
 
-Subtyping lets you define a new type, by defining its parent type (or supertype).
+Subtyping lets you define a new type, by specifying its parent type (also called its supertype).
 You can create subtypes of built-in root types: `attribute`, `entity`, and `relation`.
 
 .Subtyping root types
@@ -134,7 +134,7 @@ visibility sub attribute, value string, regex "^(public|private|closed)$";
 ----
 
 The above example defines an attribute type: `visibility`.
-It specifies a regex to restrict values to only `public`, `private` and `closed` strings.
+It specifies a regex to restrict values to only `public`, `private`, and `closed` strings.
 
 [#_relations]
 === Relations
@@ -181,7 +181,7 @@ You can declare an abstract type non-abstract by sending the same type definitio
 [#_ownership]
 == Ownership
 
-To add ability for a type to own instances of an attribute type,
+To add the ability for a type to own instances of an attribute type,
 use the `owns` keyword followed by the label of the attribute type.
 
 Ownership definitions can be defined as separate statements
@@ -213,7 +213,7 @@ xref:typeql::data/insert.adoc#_multivalued_attributes[multivalued attribute]
 (as if having an attribute with multiple values).
 
 Use the <<_key_attribute,Key attribute annotation>>
-to limit the cardinality to exactly *one* and add *uniqueness* constraint.
+to limit the cardinality to exactly *one* and add a *uniqueness* constraint.
 Hence, the instance of the type with key annotated ownership will have exactly one (no more and no less)
 key attribute instance.
 
@@ -231,7 +231,7 @@ to add constraints on what attributes can be owned by an instance of an owner ty
 [#_unique_attribute]
 === Unique attribute annotation
 
-Use the `@unique` keyword to add *uniqueness* constraint to the ownership of an attribute.
+Use the `@unique` keyword to add *uniqueness* as a constraint to the ownership of an attribute.
 This prevents two instances of the same type from owning the same attribute instance (with the same value).
 
 [,typeql]
@@ -241,7 +241,7 @@ define
 object sub entity, owns object-type @unique;
 ----
 
-Unique annotation can be inherited, even using override of an ownership:
+The uniqueness constraint can be inherited, even using override of an ownership:
 
 .See example
 [,typeql]
@@ -266,10 +266,12 @@ It's inherited from `organizatrion-id`.
 [#_key_attribute]
 === Key attribute annotation
 
-Use the `@key` keyword to set the owned attribute as key.
-That limits the cardinality to exactly *one* and adds *uniqueness* constraint.
-Hence, the instance of the type with attribute ownership with `@key` annotation will have exactly one
-(no more and no less) key attribute instance, and it will be unique for all instances of the same type.
+Use the `@key` keyword to set the owned attribute as a key.
+That limits the cardinality to exactly *one* and adds the *uniqueness* constraint.
+Thus, any instance of a type whose ownership of an attribute is
+defined using the `@key` annotation will have exactly one (neither
+more nor fewer) key attribute instance, and that attribute instance
+will be unique for all instances of that same owning type.
 
 [,typeql]
 ----
@@ -298,14 +300,14 @@ access sub relation, relates object;
 object sub entity, plays access:object;
 ----
 
-The above examples define the `object` type being able to play a role `object` in the `access` relation type.
+The above examples define the `object` type as being able to play the role `object` in the `access` relation type.
 With this definition in a schema, we can now xref:typeql::data/insert.adoc[insert]
-data in our database about a relation of type `access` with the role `object` played by a given instance
+data into our database about a relation of type `access` with the role `object` played by a given instance
 of an entity type `object`.
 
 == Inheritance
 
-A subtype inherits parent's owned attributes and roles.
+A subtype inherits its parent's owned attributes and roles.
 
 .Inheritance
 [,typeql]
@@ -342,11 +344,11 @@ followed by the `as` keyword and the inherited attribute type:
 define file sub resource, owns file-type as object-type;
 ----
 
-The new attribute type that overrides inherited type is defined in the schema as subtype of the inherited
+The new attribute type that overrides the inherited type is defined in the schema as a subtype of the inherited
 attribute type.
 Hence, the inherited attribute type is an xref:typeql::fundamentals.adoc#_abstract_types[abstract type]
 and has the same value type as the new attribute type.
-The example above in a its complete form in a schema would look like this:
+The example above in its complete schema form would look like this:
 
 .Override inheritance with attributes definitions
 [,typeql]
@@ -369,7 +371,7 @@ file sub resource,
 ----
 
 In the above example, the `file` entity type owns the `path` and `file-type` attribute types.
-The `file-type` attribute type overriding the inherited `object-type` attribute type.
+The `file-type` attribute type overrides the inherited `object-type` attribute type.
 
 [#_overrides_a_role]
 === Override a role
@@ -394,7 +396,7 @@ In the above example, the `collection-membership` relation type subtypes the `me
 the inherited `parent` role as `collection`.
 The inherited `member` role is inherited as it is.
 
-By overriding an inherited role, we prevent subtype from relating the role that would otherwise be inherited.
+By overriding an inherited role, we prevent the subtype from relating the role that would otherwise be inherited.
 
 == Examples
 
@@ -407,8 +409,9 @@ Simple type hierarchy schema example:
 include::home::attachment$quickstart-schema.tql[]
 ----
 
-The above examples defines three attribute types and two entity types.
-The `person` entity types is a subtype of the `user` and inherits its ownership of some attributes.
+The above example defines three attribute types and two entity types.
+The `person` entity type is a subtype of the `user` entity type and
+inherits ownership of all the attributes owned by `user`.
 Unlike `user` the `person` type is concrete (not abstract) and can be instantiated (inserted to a database as data).
 
 === IAM schema
