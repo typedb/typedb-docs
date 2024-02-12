@@ -1,1 +1,120 @@
 = Lesson 3.3: Fetching inferred data
+
+== Rule inference
+
+Try *running* image:learn::studio-icons/run.png[] the following query, which retrieves a particular user's location.
+
+[,typeql]
+----
+match
+$user isa user, has id "placeholder id";
+($located: $user, location: $place) isa locating;
+fetch
+$place: name;
+----
+
+[,json]
+----
+result placeholder
+----
+
+As we can see from the results, the user is located in !city placeholder!. Now, toggle on the *infer* option and *run* image:learn::studio-icons/run.png[] the query again.
+
+[NOTE]
+====
+If you are using TypeDB Studio, you can find out how to toggle the *infer* option on and off in xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2]. If you are using a different client, then you can find out how to provide this flag for queries in the xref:manual::reading/infer.adoc[rule inference page] in the TypeDB Manual.
+====
+
+You should see the following results.
+
+[,json]
+----
+result placeholder
+----
+
+We haven't inserted any new data or changed our query, but TypeDB is now generating additional results! This is due to TypeDB's built-in *rule inference* engine, which allows it to generate new data based on *rules* defined in the schema. We'll learn how to define rules in xref:learn::5-defining-schemas/5.3-defining-rules.adoc[Lesson 5.3], but for now let's take a quick look at the one we've made use of for the previous query.
+
+[,typeql]
+----
+rule transitive-location:
+    when {
+        (location: $parent-place, located: $child-place) isa locating;
+        (location: $child-place, located: $x) isa locating;
+    } then {
+        (location: $parent-place, located: $x) isa locating;
+    };
+----
+
+The structure of this rule tells us that `locating` relations are *transitive*. Our data contains the following information encoded in `locating` relations:
+
+* The user with ID "placeholder id" is located in !city placeholder!.
+* !city placeholder! is located in !state placeholder!.
+* !state placeholder! is located in the United States.
+
+Examining these facts, it is obvious to us that the user is located in the US, as we are able to deduce this fact. With the above rule, TypeDB is able to make the same deduction!
+
+== Using inferred data
+
+
+Once a rule is defined and rule inference is switched on, we can use the inferred data as part of larger queries. In the following query, we retrieve the list of books ordered by users located in the US.
+
+[,typeql]
+----
+match
+$us isa country, has name "United States";
+(location: $us, located: $user) isa locating;
+(executor: $user, action: $order) isa action-exection;
+(order: $order, item: $book) isa order-line;
+fetch
+$book: title;
+----
+
+[,json]
+----
+result placeholder
+----
+
+Try *running* image:learn::studio-icons/run.png[] this query, once with the *infer* option toggled on and once with it off. If rule inference is switched off, we retrieve no results whatsoever! That is because we don't have any users recorded as being located in the US in our data. Instead, they are recorded as being located in cities, with the cities recorded as being located in states, and the states recorded as being located in the US. The means the above query will only work with rule inference switched on.
+
+.Exercise
+[caption=""]
+====
+Write a query to retrieve the names of cities located in the United States. *Run* image:learn::studio-icons/run.png[] it once with rule inference switched off, and again with it switched on.
+
+.Hint
+[%collapsible]
+=====
+You will need to use the following types in your query: `country`, `name`, `locating`, `city`.
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$city isa city;
+$us isa country, has name "United States";
+(located: $city, location: $us) isa locating;
+fetch
+$city: name;
+----
+=====
+
+====
+
+== Benefits of rule inference
+
+Rule inference is a powerful tool that allows us to avoid redundancy in our data. Imagine if we stored the states and countries that users were located in on disk instead of generating them by rule inference. What would then happen if a user's location changed? We would need to individually update their city, state, and country, despite the fact that both state and country depend only on the city. It would also be possible for data to be only partially updated, potentially leading to inconsistent data states. By using rule inference, we can ensure that we only have to update our data in one place, and data inconsistencies are prevented. Rule inference also provides us with a number of additional benefits:
+
+* Rule inference functions on deductive reasoning, so results are always well-defined and certain.
+* Rules are resolved at query time, so inference always uses the most up-to-date data.
+* Inferred data is only generated once, so results returned are never redundant.
+* Rules can be activated sequentially, leading to complex emergent behaviour.
+
+We will explore these benefits in more detail in Lesson 10 (coming soon). In the meantime, we will continue to make use of rule inference in our queries throughout this course.
+
+[IMPORTANT]
+====
+Throughout the remainder of this course, many queries will make use of rule inference. Ensure that the *infer* option is toggled on from this point onwards, or some queries may not generate expected results.
+====
