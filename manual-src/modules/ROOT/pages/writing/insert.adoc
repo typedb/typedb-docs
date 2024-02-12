@@ -48,7 +48,7 @@ transaction sample_db data write
 ----
 . Send the Insert query:
 +
-[,bash]
+[,typeql]
 ----
 insert
 $user1 isa user, has name "Alice", has email "alice@vaticle.com";
@@ -169,7 +169,7 @@ preventing data changes committed in other transactions from influencing the res
 Let's say we send the following Insert query with a `match` clause:
 
 .Match-insert query example
-[.typeql]
+[,typeql]
 ----
 match
 $u isa user, has name "Bob";
