@@ -1,1 +1,67 @@
 = Lesson 3.5: Query validation
+
+== Valid and invalid queries
+
+TypeQL's composability provides a natural syntax for building queries, but not all queries are valid. Try *running* image:learn::studio-icons/run.png[] the following queries. Only the first one will be successfully executed.
+
+[,typeql]
+----
+match
+$user isa user;
+$country isa country;
+(location: $country, located: $user) isa locating;
+fetch
+$user: name;
+$country: name;
+----
+
+[,typeql]
+----
+match
+$user isa user;
+$country isa country;
+(location: $country, located: $user) isa locating;
+fetch
+$user: isbn-13;
+$country: name;
+----
+
+[,typeql]
+----
+match
+$book isa book;
+$country isa country;
+(location: $country, located: $book) isa locating;
+fetch
+$book: isbn-13;
+$country: name;
+----
+
+The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. TypeDB validates queries against the *schema*, which sets out which types are able to own each attribute and play each role in relations. This enables the database to determine which queries are semantically sound, and extends to queries of arbitrary complexity, for instance the following query. Try *running* image:learn::studio-icons/run.png[] it to see if it is valid.
+
+[,typeql]
+----
+match
+(located: $user, location: $user-location) isa locating;
+(action: $order, executor: $user) isa action-execution;
+(delivered: $order, destination: $destination) isa delivery;
+(located: $destination, location: $destination-location) isa locating;
+not { $destination-location is $user-location; };
+fetch
+$order: id;
+----
+
+We will explore exactly how TypeDB validates queries in Lesson 7.1 (coming soon).
+
+.Exercise
+[caption=""]
+====
+Determine what the above query is asking for.
+
+.Answer
+[%collapsible]
+=====
+It retrieves the IDs of orders that have a destination other than the location of the user that placed the order. Perhaps these orders are gifts! This query uses two keywords we haven't introduced yet: `not` and `is`. We will learn about these keywords in Lesson 7.3 (coming soon).
+=====
+
+====
