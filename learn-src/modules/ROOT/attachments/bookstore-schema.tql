@@ -212,6 +212,13 @@ rule book-recommendation-by-author:
             $review has score >= 7;
         };
         $new-book isa book;
+        not { {
+            ($user, $order) isa action-execution;
+            ($order, $new-book) isa order-line;
+        } or {
+            ($user, $review) isa action-execution;
+            ($review, $new-book) isa rating;
+        }; };
         ($liked-book, $shared-author) isa authoring;
         ($new-book, $shared-author) isa authoring;
     } then {
