@@ -5,7 +5,13 @@ import com.vaticle.typedb.driver.api.TypeDBDriver;
 import com.vaticle.typedb.driver.api.TypeDBOptions;
 import com.vaticle.typedb.driver.api.TypeDBSession;
 import com.vaticle.typedb.driver.api.TypeDBTransaction;
-
+import com.vaticle.typedb.driver.api.concept.Concept;
+import com.vaticle.typedb.driver.api.concept.type.AttributeType;
+import com.vaticle.typedb.driver.api.concept.type.EntityType;
+import com.vaticle.typedb.driver.api.concept.value.Value;
+import com.vaticle.typedb.driver.api.logic.Rule;
+import com.vaticle.typeql.lang.TypeQL;
+import com.vaticle.typeql.lang.pattern.Pattern;
 // end::import[]
 public class Main {
     public static void main(String[] args) {
@@ -186,6 +192,50 @@ public class Main {
             }
         }
         // end::infer-fetch[]
+        // tag::types-editing[]
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
+            try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                AttributeType tag = Transaction.concepts().putAttributeType("tag", Value.Type.STRING).resolve();
+                Transaction.concepts().getRootEntityType().getSubtypes(Transaction, Concept.Transitivity.EXPLICIT).forEach(result -> {
+                    System.out.println(result.getLabel().toString());
+                    if (! result.isAbstract()) {
+                        result.setOwns(Transaction,tag).resolve();
+                    }
+                });
+                Transaction.commit();
+            }
+        }
+        // end::types-editing[]
+        // tag::types-api[]
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
+            try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                EntityType user = Transaction.concepts().getEntityType("user").resolve();
+                EntityType admin = Transaction.concepts().putEntityType("admin").resolve();
+                admin.setSupertype(Transaction, user).resolve();
+                EntityType root_entity = Transaction.concepts().getRootEntityType();
+                root_entity.getSubtypes(Transaction, Concept.Transitivity.TRANSITIVE).forEach(result -> System.out.println(result.getLabel().name()));
+                Transaction.commit();
+            }
+        }
+        // end::types-api[]
+        // tag::rules-api[]
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
+            try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                Rule oldRule = Transaction.logic().getRule("users").resolve();
+                System.out.println("Rule label: " + oldRule.getLabel());
+                Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
+                Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
+                Rule newRule = Transaction.logic().putRule("Employee", condition, conclusion).resolve();
+                Transaction.logic().getRules().forEach(result -> {
+                    System.out.println("Rule: " + result.getLabel());
+                    System.out.println("  Condition: " + result.getWhen().toString());
+                    System.out.println("  Conclusion: " + result.getThen().toString());
+                });
+                newRule.delete(Transaction).resolve();
+                Transaction.commit();
+            }
+        }
+        // end::rules-api[]
         driver.close();
     }
 }

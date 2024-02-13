@@ -73,7 +73,6 @@ C++::
 --
 ====
 
-
 ==== Query for types
 
 Send a xref:typeql::data/get.adoc[Get query] that returns type concept(s).
@@ -227,7 +226,7 @@ Java::
 --
 [,java,indent=0]
 ----
-
+include::manual::partial$java-manual-code.java[tags=types-api]
 ----
 --
 
@@ -546,7 +545,10 @@ include::manual::partial$python-manual-code.py[tags=rules-api]
 Java::
 +
 --
-
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=rules-api]
+----
 --
 
 Node.js::
