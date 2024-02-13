@@ -54,35 +54,10 @@ Java::
 +
 --
 .{code-caption}
-[,java]
+[,java, indent=0]
 ----
-package org.example;
+include::manual::partial$java-manual-code.java[tags=types-editing]
 
-import com.vaticle.typedb.driver.api.TypeDBDriver;
-import com.vaticle.typedb.driver.api.TypeDBSession;
-import com.vaticle.typedb.driver.api.TypeDBTransaction;
-import com.vaticle.typedb.driver.TypeDB;
-import com.vaticle.typedb.driver.api.concept.Concept;
-import com.vaticle.typedb.driver.api.concept.type.AttributeType;
-import com.vaticle.typedb.driver.api.concept.value.Value;
-
-public class Main {
-    public static void main(String[] args) {
-        TypeDBDriver driver = TypeDB.coreDriver("0.0.0.0:1729");
-        try (TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction writeTransaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                AttributeType tag = writeTransaction.concepts().putAttributeType("tag", Value.Type.STRING).resolve();
-                writeTransaction.concepts().getRootEntityType().getSubtypes(writeTransaction, Concept.Transitivity.EXPLICIT).forEach(result -> {
-                    if (! result.isAbstract()) {
-                        result.setOwns(writeTransaction,tag).resolve();
-                    }
-                });
-                writeTransaction.commit();
-            }
-        }
-        driver.close();
-    }
-}
 ----
 
 For more details about these and other API methods, see the xref:drivers::java/api-reference.adoc[API reference].
