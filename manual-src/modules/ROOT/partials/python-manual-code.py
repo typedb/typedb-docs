@@ -197,18 +197,9 @@ with TypeDB.core_driver("localhost:1729") as driver:
             new_rule = transaction.logic.put_rule("Employee",
                                                   "{$u isa user, has email $e; $e contains '@vaticle.com';}",
                                                   "$u has name 'Employee'").resolve()
-            print("Rules (before deletion):")
-            rules = transaction.logic.get_rules()
-            for rule in rules:
-                print("Rule label:", rule.label)
-
+            if new_rule == transaction.logic.get_rule("Employee").resolve():
+                print("New rule has been found.")
             new_rule.delete(transaction).resolve()
-
-            print("Rules (after deletion):")
-            rules = transaction.logic.get_rules()
-            for rule in rules:
-                print("Rule label:", rule.label)
-
             transaction.commit()
 
     # end::rules-api[]

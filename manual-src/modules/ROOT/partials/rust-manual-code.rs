@@ -308,35 +308,16 @@ fn main() -> Result<(), Error> {
                 for rule in rules {
                     let r = rule?;
                     println!("Rule label: {}", r.label);
-                    println!("Condition: {}", r.when.to_string());
-                    println!("Conclusion: {}", r.then.to_string());
+                    println!("  Condition: {}", r.when.to_string());
+                    println!("  Conclusion: {}", r.then.to_string());
                 }
                 let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?.into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
                 let mut new_rule = transaction.logic().put_rule("Employee".to_string(), condition, conclusion ).resolve()?;
-
                 if new_rule == transaction.logic().get_rule("Employee".to_owned()).resolve()?.ok_or("Not OK").unwrap() {
                     println!("New rule has been found.");
                 };
-
-                println!("Rule {}
-                   Condition: {}
-                   Conclusion: {} ", new_rule.label.as_str(), new_rule.when.to_string(), new_rule.then.to_string());
-
-                let rules = transaction.logic().get_rules()?;
-                println!("Rules (before deletion):");
-                for rule in rules {
-                    println!("{}", rule?.label);
-                }
-
                 let _ = new_rule.delete(&transaction).resolve();
-
-                let rules = transaction.logic().get_rules()?;
-                println!("Rules (after deletion):");
-                for rule in rules {
-                    println!("{}", rule?.label);
-                };
-
                 let _ = transaction.commit().resolve();
             }
         }

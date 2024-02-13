@@ -10,23 +10,75 @@ in a database schema using one of the TypeDB drivers.
 [#_types]
 == Types
 
-To manipulate a type with driver API methods, you need to get a stateful object that represents the type you want.
-
-There are two ways to get a stateful object representing a type in a TypeDB database:
-<<_get_query,TypeQL Get queries>> and
-<<_get_type_methods,driver API methods>>.
-
 A type object has many useful methods to traverse the type hierarchy, find related types,
-and manipulate types and their relations.
-See an <<_example_of_type_manipulation,example>> below.
+and manipulate types definitions/properties.
+
+To manipulate a type with driver API methods,
+you need to get a stateful object that represents the type in the database.
 
 [#_get_query]
-=== Get types via query
+=== Get a type object
 
-To get a type from via TypeQL xref:typeql::data/get.adoc[Get query],
-you need to match a type from a database with a schema pattern.
+To get a type object from a TypeDB database,
+you can use a TypeQL Get query or one of the driver API methods.
 
-.Get query for entity types
+==== Get the type by its label
+
+Use type's label to retrieve the type object.
+For example, to get a stateful object of the `user` entity type, use:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust]
+----
+let user = transaction.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No user type.").unwrap();
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_ConceptManager[ConceptManager class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python]
+----
+user = transaction.concepts.get_entity_type("user").resolve()
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+
+==== Query for types
+
+Send a xref:typeql::data/get.adoc[Get query] that returns type concept(s).
+
+.Example of a Get query for entity types
 [,typeql]
 ----
 match
@@ -34,136 +86,39 @@ $x sub entity;
 get $x;
 ----
 
-The above example matches all entity types in a database (as subtypes of the `entity` root type).
-
-Get query response includes ConceptMap stream/Iterable.
-To get a type object, you need to collect stream/iterable items and retrieve concept from a concept map.
-For instructions on how to send a get query, see the
+The above example retrieves all entity types in a database (as subtypes of the `entity` root type).
+For instructions on how to send a Get query and process the response, see the
 xref:manual::reading/get.adoc#_how_to_send_a_get_query[Get query] page.
 
-[#_get_type_methods]
-=== Get types via API
+=== Add a type
 
-The Concepts class (or ConceptManager) of any driver provides methods to work with concepts in a TypeDB database,
-including types.
-
-Retrieve a stateful object of any type with one of the root-type specific methods
-by using the types label (name) as an argument:
+To add a new type into the schema of a database,
+use a TypeQL xref:typeql::schema/define.adoc[Define query] or one of the put type methods:
 
 [tabs]
 ====
 Rust::
 +
 --
-The most relevant methods:
-
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_get_entity_type__label_String[get_entity_type()]
--- get an entity type object by its label. +
-xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_get_relation_type__label_String[get_relation_type()]
--- get a relation type object by its label. +
-xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_get_attribute_type__label_String[get_attribute_type()]
--- get an attribute type object by its label.
-++++
-
-.Example
-[,rust]
-----
-let user = transaction.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity").unwrap();
-----
---
-
-Python::
-+
---
-The most relevant methods:
-
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_entity_type__label_str[get_entity_type()]
--- get an entity type object by its label. +
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_relation_type__label_str[get_relation_type()]
--- get a relation type object by its label. +
-xref:drivers::python/api-reference.adoc#_ConceptManager_get_attribute_type__label_str[get_attribute_type()]
--- get an attribute type object by its label.
-++++
-
-.Example
-[,python]
-----
-user = transaction.concepts.get_entity_type("user").resolve()
-----
---
-
-Java::
-+
---
-
---
-
-Node.js::
-+
---
-
---
-
-C++::
-+
---
-
---
-====
-
-=== Add a type via API
-
-To add a new type into a database,
-use a TypeQL xref:typeql::data/insert.adoc[Insert query] or the following driver API methods:
-
-[tabs]
-====
-Rust::
-+
---
-The most relevant methods:
-
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_put_entity_type__label_String[put_entity_type()]
--- add a new entity type or return an existing one with the same label. +
-xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_put_relation_type__label_String[put_relation_type()]
--- add a new relation type or return an existing one with the same label. +
-xref:drivers::rust/api-reference.adoc#_struct_ConceptManager_put_attribute_type__label_String__value_type_ValueType[put_attribute_type()]
--- add a new attribute type or return an existing one with the same label.
-++++
-
 .Example
 [,rust]
 ----
 let mut admin = transaction.concept().put_entity_type("admin".to_owned()).resolve()?;
 ----
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_ConceptManager[ConceptManager class] methods.
 --
 
 Python::
 +
 --
-The most relevant methods:
-
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::python/api-reference.adoc#_ConceptManager_put_entity_type__label_str[put_entity_type()]
--- add a new entity type or return an existing one with the same label. +
-xref:drivers::python/api-reference.adoc#_ConceptManager_put_relation_type__label_str[put_relation_type()]
--- add a new relation type or return an existing one with the same label. +
-xref:drivers::python/api-reference.adoc#_ConceptManager_put_attribute_type__label_str__value_type_ValueType[put_attribute_type()]
--- add a new attribute type or return an existing one with the same label.
-++++
-
 .Example
 [,python]
 ----
 admin = transaction.concepts.put_entity_type("admin").resolve()
 ----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
 --
 
 Java::
@@ -185,100 +140,40 @@ C++::
 --
 ====
 
-To learn more how to manipulate properties of a type, see the <<_type_object_methods>> section below.
-
 [#_type_object_methods]
-=== Type object methods
+=== Type object manipulation
 
-A stateful type object has many useful methods to manipulate the type or traverse the type hierarchy of a schema.
+A stateful type object has many useful methods to manipulate the type or traverse the type hierarchy of a schema:
+get/set label, get/set supertype, get subtypes, get ownerships, get roles played, etc.
 
 [tabs]
 ====
 Rust::
 +
 --
-The most relevant methods:
-
-Type label:
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_enum_ThingType_label__[label()]
--- retrieve the type's proper name as a string. +
-xref:drivers::rust/api-reference.adoc#_trait_ThingTypeAPI_set_label__transaction_tx_Transaction_____new_label_String[set_label()]
--- rename the type.
-++++
-
-Subtypes:
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_trait_EntityTypeAPI_get_subtypes__transaction_tx_Transaction_____transitivity_Transitivity[entity_type.get_subtypes()]
--- retrieve all subtypes (direct or nested) of the entity type. +
-xref:drivers::rust/api-reference.adoc#_trait_RelationTypeAPI_get_subtypes__transaction_tx_Transaction_____transitivity_Transitivity[relation_type.get_subtypes()]
--- retrieve all subtypes (direct or nested) of the relation type. +
-xref:drivers::rust/api-reference.adoc#_trait_AttributeTypeAPI_get_subtypes__transaction_tx_Transaction_____transitivity_Transitivity[attribute_type.get_subtypes()]
--- retrieve all subtypes (direct or nested) of the attribute type.
-++++
-
-Supertype:
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_trait_EntityTypeAPI_get_supertype__transaction_tx_Transaction___[entity_type.get_supertype()]
--- retrieve immediate supertype of the entity type. +
-xref:drivers::rust/api-reference.adoc#_trait_RelationTypeAPI_get_supertype__transaction_tx_Transaction___[relation_type.get_supertype()]
--- retrieve immediate supertype of the relation type. +
-xref:drivers::rust/api-reference.adoc#_trait_AttributeTypeAPI_get_supertype__transaction_tx_Transaction___[attribute_type.get_supertype()]
--- retrieve immediate supertype of the attribute type.
-++++
-
-Change supertype:
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_trait_EntityTypeAPI_set_supertype__transaction_tx_Transaction_____supertype_EntityType[entity_type.set_supertype()]
--- set a new supertype for the entity type. +
-xref:drivers::rust/api-reference.adoc#_trait_RelationTypeAPI_set_supertype__transaction_tx_Transaction_____supertype_RelationType[relation_type.set_supertype()]
--- set a new supertype for the relation type. +
-xref:drivers::rust/api-reference.adoc#_trait_AttributeTypeAPI_set_supertype__transaction_tx_Transaction_____supertype_AttributeType[attribute_type.set_supertype()]
--- set a new supertype for the attribute type.
-++++
-
-Owning attributes
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_struct_RootThingType_get_owns__[get_owns()]
--- retrieve all owned attribute types. +
-xref:drivers::rust/api-reference.adoc#_struct_RootThingType_get_plays__[get_plays()]
--- retrieve all roles played by the type.
-++++
-
 .Example
 [,rust]
 ----
 drop(admin.set_supertype(&transaction, user).resolve());
 ----
+The above example set the `user` type as the supertype to the `admin` type, making `admin` a subtype of `user`.
+
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::rust/api-reference.adoc#_schema_header[Schema class] methods.
 --
 
 Python::
 +
 --
-The most relevant methods:
-
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::python/api-reference.adoc#_Type_get_label__[get_label()]
--- retrieve the label object with the `name` property, that contains the type's proper name. +
-xref:drivers::python/api-reference.adoc#_Type_set_label__transaction_TypeDBTransaction__new_label_str[set_label()]
--- rename the type. +
-xref:drivers::python/api-reference.adoc#_Type_get_subtypes__transaction_TypeDBTransaction__transitivity_Transitivity[get_subtypes()]
--- retrieve all subtypes (direct or nested) of the type. +
-xref:drivers::python/api-reference.adoc#_Type_get_supertype__transaction_TypeDBTransaction[get_supertype()]
--- retrieve immediate supertype of the type.
-++++
-
 .Example
 [,python]
 ----
 admin.set_supertype(transaction, user)
 ----
+The above example set the `user` type as the supertype to the `admin` type, making `admin` a subtype of `user`.
+
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
 --
 
 Java::
@@ -301,7 +196,10 @@ C++::
 ====
 
 [#_example_of_type_manipulation]
-=== Example of types manipulation
+=== Full example
+
+See below a comprehensive example of types manipulation:
+retrieving a type by its label, adding type, changing supertype, and retrieving all subtypes of a type.
 
 [tabs]
 ====
@@ -352,31 +250,91 @@ C++::
 --
 ====
 
+For an additional example of programmatic type manipulations,
+see the xref:manual::defining/schema-editing.adoc#_modify_with_driver_api[Schema editing] page.
+
 [#_rules]
 == Rules
 
-Rules can be defined with a TypeQL query (see xref:typeql::schema/define.adoc[]), but they can't be retrieved with one.
+A rule object has `label`, `when`, and `then` properties and just a few methods.
 
-To get a rule object from a TypeDB database, you need to use the logic class methods of a driver API in a transaction.
+To manipulate a rule with driver API methods,
+you need to get a stateful object that represents the rule in the database.
 
 [#_get_a_rule_object]
 === Get a rule object
 
-Use the following methods to retrieve rule objects:
+Rules can be defined with a TypeQL query (see xref:typeql::schema/define.adoc[]), but they can't be retrieved with one.
+To get a rule object from a TypeDB database, you need to use the Logic class methods of a driver API.
+
+==== Get rule by label
+
+Retrieve a rule by its label:
 
 [tabs]
 ====
 Rust::
 +
 --
+.Example
+[,rust]
+----
+let new_rule = transaction.logic().get_rule("Employee".to_owned()).resolve()?.ok_or("Rule not found.").unwrap()
+----
+
 [subs="macros, post_replacements, replacements"]
 ++++
-xref:drivers::rust/api-reference.adoc#_struct_LogicManager_get_rules__[get_rules()]
--- retrieve all rules from the schema. +
+For more information, see the
 xref:drivers::rust/api-reference.adoc#_struct_LogicManager_get_rule__label_String[get_rule()]
--- retrieve a rule by its label.
+method in driver API reference.
 ++++
+--
 
+Python::
++
+--
+.Example
+[,python]
+----
+new_rule == transaction.logic.get_rule("Employee").resolve():
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::python/api-reference.adoc#_LogicManager_get_rule__label_str[get_rule()]
+method in driver API reference.
+++++
+--
+
+Java::
++
+--
+
+--
+
+Node.js::
++
+--
+
+--
+
+C++::
++
+--
+
+--
+====
+
+==== Get all rules
+
+Retrieve all rules in a schema:
+
+[tabs]
+====
+Rust::
++
+--
 .Example
 [,rust]
 ----
@@ -388,19 +346,18 @@ let rules = transaction.logic().get_rules()?;
         println!("Conclusion: {}", r.then.to_string());
     }
 ----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_get_rules__[get_rules()]
+method in driver API reference.
+++++
 --
 
 Python::
 +
 --
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::python/api-reference.adoc#_LogicManager_get_rules__[get_rules()]
--- retrieve all rules from the schema. +
-xref:drivers::python/api-reference.adoc#_LogicManager_get_rule__label_str[get_rule()]
--- retrieve a rule by its label.
-++++
-
 .Example
 [,python]
 ----
@@ -409,6 +366,13 @@ for rule in rules:
     print("  Condition:", rule.when)
     print("  Conclusion:", rule.then)
 ----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::python/api-reference.adoc#_LogicManager_get_rules__[get_rules()]
+method in driver API reference.
+++++
 --
 
 Java::
@@ -439,12 +403,6 @@ Use the following methods to add a rule to the schema of a database:
 Rust::
 +
 --
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_struct_LogicManager_put_rule__label_String__when_Conjunction__then_Statement[put_rule()]
--- create a new or update existing rule with the label.
-++++
-
 .Example
 [,rust]
 ----
@@ -452,21 +410,30 @@ let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '
 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
 let mut new_rule = transaction.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
 ----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_put_rule__label_String__when_Conjunction__then_Statement[put_rule()]
+method in driver API reference.
+++++
 --
 
 Python::
 +
 --
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::python/api-reference.adoc#_LogicManager_put_rule__label_str__when_str__then_str[put_rule()]
--- create a new or update existing rule with the label.
-++++
 .Example
 [,python]
 ----
 new_rule = transaction.logic.put_rule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}", "$u has name 'Employee'").resolve()
 ----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::python/api-reference.adoc#_LogicManager_put_rule__label_str__when_str__then_str[put_rule()]
+method in driver API reference.
+++++
 --
 
 Java::
@@ -488,58 +455,47 @@ C++::
 --
 ====
 
-=== Rule object methods
+=== Rule object manipulation
 
-A stateful rule object has many useful methods to manipulate the rule in a schema.
-Here are some of them:
+A stateful rule object has just a few methods: get/set label, delete, and is_deleted.
 
 [tabs]
 ====
 Rust::
 +
 --
-[subs="macros, post_replacements, replacements"]
-++++
-Read more about rule object properties and methods in the
-xref:drivers::rust/api-reference.adoc#_struct_Rule[driver API reference]:
-++++
-`label` -- the unique label of the rule. +
-`when` -- the condition pattern of the rule. +
-`then` -- the single statement that constitutes the conclusion of the rule. +
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::rust/api-reference.adoc#_struct_Rule_delete__[delete()] -- delete the rule.
-++++
-
 .Example
 [,rust]
 ----
 let _ = new_rule.delete(&transaction).resolve();
 ----
+The above example deletes the type stored in the `new_rule` variable from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::rust/api-reference.adoc#_struct_Rule[Rule class] methods.
+++++
 --
 
 Python::
 +
 --
-[subs="macros, post_replacements, replacements"]
-++++
-Read more about rule object properties and methods in the
-xref:drivers::python/api-reference.adoc#_Rule[driver API reference]:
-++++
-
-`label` -- the unique label of the rule. +
-`when` -- the condition pattern of the rule. +
-`then` -- the single statement that constitutes the conclusion of the rule. +
-[subs="macros, post_replacements, replacements"]
-++++
-xref:drivers::python/api-reference.adoc#_Rule_delete__transaction_TypeDBTransaction[delete()] -- delete the rule.
-++++
-
 .Example
 [,python]
 ----
 new_rule.delete(transaction).resolve()
 ----
+
+The above example deletes the type stored in the `new_rule` variable from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::python/api-reference.adoc#_Rule[Rule class] methods.
+++++
 --
 
 Java::
@@ -561,7 +517,11 @@ C++::
 --
 ====
 
-=== Example of rules manipulation
+=== Full example
+
+See below a comprehensive example of rules manipulation:
+retrieving all rules, printing label, condition (when) and conclusion(then), adding a new rule,
+retrieving a rule by its label, and deleting a rule.
 
 [tabs]
 ====
