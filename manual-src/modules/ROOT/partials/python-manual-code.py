@@ -184,7 +184,6 @@ with TypeDB.core_driver("localhost:1729") as driver:
             for subtype in subtypes:
                 print(subtype.get_label().name)
             transaction.commit()
-
     # end::types-api[]
     # tag::rules-api[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
@@ -197,9 +196,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
             new_rule = transaction.logic.put_rule("Employee",
                                                   "{$u isa user, has email $e; $e contains '@vaticle.com';}",
                                                   "$u has name 'Employee'").resolve()
-            if new_rule == transaction.logic.get_rule("Employee").resolve():
-                print("New rule has been found.")
+            print(transaction.logic.get_rule("Employee").resolve().label)
             new_rule.delete(transaction).resolve()
             transaction.commit()
-
     # end::rules-api[]
