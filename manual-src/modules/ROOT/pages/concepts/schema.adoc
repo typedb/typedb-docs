@@ -16,7 +16,7 @@ To manipulate a type with driver API methods,
 you need to get a stateful object that represents the type in the database.
 
 [#_get_query]
-=== Get a type object
+=== Get a type
 
 To get a type object from a TypeDB database,
 you can use a TypeQL Get query or one of the driver API methods.
@@ -175,7 +175,7 @@ see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager clas
 ====
 
 [#_type_object_methods]
-=== Type object manipulation
+=== Type manipulation
 
 A stateful type object has many useful methods to manipulate the type or traverse the type hierarchy of a schema:
 get/set label, get/set supertype, get subtypes, get ownerships, get roles played, etc.
@@ -312,7 +312,7 @@ To manipulate a rule with driver API methods,
 you need to get a stateful object that represents the rule in the database.
 
 [#_get_a_rule_object]
-=== Get a rule object
+=== Get a rule
 
 Rules can be defined with a TypeQL query (see xref:typeql::schema/define.adoc[]), but they can't be retrieved with one.
 To get a rule object from a TypeDB database, you need to use the Logic class methods of a driver API.
@@ -619,7 +619,7 @@ method in driver API reference.
 --
 ====
 
-=== Rule object manipulation
+=== Rule manipulation
 
 A stateful rule object has just a few methods: get/set label, delete, and is_deleted.
 
@@ -758,13 +758,19 @@ include::manual::partial$java-manual-code.java[tags=rules-api]
 Node.js::
 +
 --
+[,nodejs,indent=0]
+----
 include::manual::partial$nodejs-manual-code.js[tags=rules-api]
+----
 --
 
 C++::
 +
 --
+[,cpp,indent=0]
+----
 include::manual::partial$cpp-manual-code.cpp[tags=rules-api]
+----
 --
 ====
 
