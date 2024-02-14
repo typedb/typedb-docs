@@ -200,3 +200,16 @@ with TypeDB.core_driver("localhost:1729") as driver:
             new_rule.delete(transaction).resolve()
             transaction.commit()
     # end::rules-api[]
+    # tag::data-api[]
+    with driver.session(DB_NAME, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            users = transaction.concepts.get_entity_type("user").resolve().get_instances(transaction)
+            for user in users:
+                attributes = user.get_has(transaction)
+                print("User:")
+                for attribute in attributes:
+                    print(f"  {attribute.get_type().get_label().name} : {attribute.get_value()}")
+            new_user = transaction.concepts.get_entity_type("user").resolve().create(transaction).resolve()
+            new_user.delete(transaction)
+            transaction.commit()
+    # end::data-api[]
