@@ -262,13 +262,13 @@ fn main() -> Result<(), Error> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                //let tag = &transaction.concept().put_attribute_type("tag".to_owned(), ValueType::String).resolve()?;
+                let tag = &transaction.concept().put_attribute_type("tag".to_owned(), ValueType::String).resolve()?;
                 let entities = transaction.concept().get_entity_type("entity".to_owned()).resolve()?.ok_or("No root entity").unwrap().get_subtypes(&transaction, Transitivity::Explicit)?;
                 for entity in entities {
                     let mut e = entity?;
                     println!("{}", e.label);
                     if !(e.is_abstract()) {
-                        let _ = e.set_owns(&transaction, transaction.concept().put_attribute_type("tag".to_owned(), ValueType::String).resolve()?, None, vec![]);
+                        let _ = e.set_owns(&transaction, tag.clone(), None, vec![]);
                     }
                 }
                 let _ = transaction.commit().resolve();
@@ -284,7 +284,6 @@ fn main() -> Result<(), Error> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                //let tag = &transaction.concept().put_attribute_type("tag".to_owned(), ValueType::String).resolve()?;
                 let user = transaction.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity").unwrap();
                 let mut admin = transaction.concept().put_entity_type("admin".to_owned()).resolve()?;
                 drop(admin.set_supertype(&transaction, user).resolve());
@@ -304,17 +303,17 @@ fn main() -> Result<(), Error> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                let rules = transaction.logic().get_rules()?;
-                for rule in rules {
-                    let r = rule?;
-                    println!("Rule label: {}", r.label);
-                    println!("  Condition: {}", r.when.to_string());
-                    println!("  Conclusion: {}", r.then.to_string());
-                }
+                let r = transaction.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.").unwrap();
+                println!("Rule label: {}", r.label);
+                println!("  Condition: {}", r.when.to_string());
+                println!("  Conclusion: {}", r.then.to_string());
                 let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?.into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
                 let mut new_rule = transaction.logic().put_rule("Employee".to_string(), condition, conclusion ).resolve()?;
-                println!("{}", transaction.logic().get_rule("Employee".to_owned()).resolve()?.ok_or("Rule not found.").unwrap().label);
+                let rules = transaction.logic().get_rules()?;
+                for rule in rules {
+                    println!("{}", rule?.label);
+                }
                 let _ = new_rule.delete(&transaction).resolve();
                 let _ = transaction.commit().resolve();
             }
