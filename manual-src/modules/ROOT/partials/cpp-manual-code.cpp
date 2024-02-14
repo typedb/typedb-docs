@@ -221,5 +221,59 @@ int main() {
         }
         // end::infer-fetch[]
     }
+
+    {
+        // tag::types-editing[]
+        auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        {
+            auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
+            auto tag = transaction.concepts.putAttributeType("tag", TypeDB::ValueType::STRING).get();
+            auto entities = transaction.concepts.getRootEntityType().get()->getSubtypes(transaction);
+            for (auto& entity : entities) {
+                std::cout << entity.get()->getLabel() << std::endl;
+                if (!(entity.get()->isAbstract())) {
+                    (void) entity.get()->setOwns(transaction, tag.get());
+                };
+            }
+            transaction.commit();
+        }
+        // end::types-editing[]
+    }
+
+    {
+        // tag::types-api[]
+        auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        {
+            auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
+            auto user = transaction.concepts.getEntityType("user").get();
+            auto admin = transaction.concepts.putEntityType("admin").get();
+            (void) admin.get()->setSupertype(transaction, user.get());
+            auto entities = transaction.concepts.getRootEntityType().get()->getSubtypes(transaction, TypeDB::Transitivity::TRANSITIVE);
+            for (auto& entity : entities) {
+                std::cout << entity.get()->getLabel() << std::endl;
+            }
+            transaction.commit();
+        }
+        // end::types-api[]
+    }
+
+    {
+        // tag::rules-api[]
+        auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        {
+            auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
+            auto rules = transaction.logic.getRules();
+            for (auto& rule : rules) {
+                std::cout << rule.label() << std::endl;
+                std::cout << rule.when() << std::endl;
+                std::cout << rule.then() << std::endl;
+            }
+            auto new_rule = transaction.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+            std::cout << transaction.logic.getRule("Employee").get().value().label() << std::endl;
+            (void) new_rule.get().deleteRule(transaction).get();
+            transaction.commit();
+        }
+        // end::rules-api[]
+    }
     return 0;
 }

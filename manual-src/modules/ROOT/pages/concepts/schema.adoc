@@ -12,7 +12,6 @@ in a database schema using one of the TypeDB drivers.
 
 A type object has many useful methods to traverse the type hierarchy, find related types,
 and manipulate types definitions/properties.
-
 To manipulate a type with driver API methods,
 you need to get a stateful object that represents the type in the database.
 
@@ -57,19 +56,37 @@ see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager c
 Java::
 +
 --
-
+.Example
+[,java]
+----
+EntityType user = Transaction.concepts().getEntityType("user").resolve();
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
 --
 
 Node.js::
 +
 --
-
+.Example
+[,js]
+----
+let user = await transaction.concepts.getEntityType("user");
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
 --
 
 C++::
 +
 --
-
+.Example
+[,cpp]
+----
+auto user = transaction.concepts.getEntityType("user").get();
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
 --
 ====
 
@@ -123,19 +140,37 @@ see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager c
 Java::
 +
 --
-
+.Example
+[,java]
+----
+EntityType admin = Transaction.concepts().putEntityType("admin").resolve();
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
 --
 
 Node.js::
 +
 --
-
+.Example
+[,js]
+----
+let admin = await transaction.concepts.putEntityType("admin");
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
 --
 
 C++::
 +
 --
-
+.Example
+[,cpp]
+----
+auto admin = transaction.concepts.putEntityType("admin").get();
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
 --
 ====
 
@@ -155,8 +190,6 @@ Rust::
 ----
 drop(admin.set_supertype(&transaction, user).resolve());
 ----
-The above example set the `user` type as the supertype to the `admin` type, making `admin` a subtype of `user`.
-
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::rust/api-reference.adoc#_schema_header[Schema class] methods.
 --
@@ -169,8 +202,6 @@ Python::
 ----
 admin.set_supertype(transaction, user)
 ----
-The above example set the `user` type as the supertype to the `admin` type, making `admin` a subtype of `user`.
-
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
 --
@@ -178,19 +209,37 @@ see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] met
 Java::
 +
 --
-
+.Example
+[,java]
+----
+admin.set_supertype(transaction, user)
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::java/api-reference.adoc#_schema_header[Schema class] methods.
 --
 
 Node.js::
 +
 --
-
+.Example
+[,python]
+----
+admin.set_supertype(transaction, user)
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
 --
 
 C++::
 +
 --
-
+.Example
+[,python]
+----
+admin.set_supertype(transaction, user)
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
 --
 ====
 
@@ -235,7 +284,7 @@ Node.js::
 --
 [,nodejs,indent=0]
 ----
-
+include::manual::partial$nodejs-manual-code.js[tags=types-api]
 ----
 --
 
@@ -244,10 +293,12 @@ C++::
 --
 [,cpp,indent=0]
 ----
-
+include::manual::partial$cpp-manual-code.cpp[tags=types-api]
 ----
 --
 ====
+
+The above example set the `user` type as the supertype to the `admin` type, making `admin` a subtype of `user`.
 
 For an additional example of programmatic type manipulations,
 see the xref:manual::defining/schema-editing.adoc#_modify_with_driver_api[Schema editing] page.
@@ -295,7 +346,7 @@ Python::
 .Example
 [,python]
 ----
-new_rule == transaction.logic.get_rule("Employee").resolve():
+new_rule = transaction.logic.get_rule("Employee").resolve():
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -309,19 +360,52 @@ method in driver API reference.
 Java::
 +
 --
+.Example
+[,java]
+----
+Rule oldRule = Transaction.logic().getRule("Employee").resolve();
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::java/api-reference.adoc#_LogicManager_getRule__java_lang_String[getRule()]
+method in driver API reference.
+++++
 --
 
 Node.js::
 +
 --
+.Example
+[,python]
+----
+let new_rule = await transaction.logic.getRule("Employee")
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::nodejs/api-reference.adoc#_LogicManager_getRule__label_string[get_rule()]
+method in driver API reference.
+++++
 --
 
 C++::
 +
 --
+.Example
+[,python]
+----
+auto new_rule = transaction.logic.getRule("Employee").get().value()
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::cpp/api-reference.adoc#_OptionalRuleFuture_TypeDBLogicManagergetRule_const_stdstring_label_const[getRule()]
+method in driver API reference.
+++++
 --
 ====
 
@@ -338,12 +422,11 @@ Rust::
 [,rust]
 ----
 let rules = transaction.logic().get_rules()?;
-    for rule in rules {
-        let r = rule?;
-        println!("Rule label: {}", r.label);
-        println!("Condition: {}", r.when.to_string());
-        println!("Conclusion: {}", r.then.to_string());
-    }
+for rule in rules {
+    println!("Rule label: {}", rule?.label);
+    println!("  Condition: {}", rule?.when.to_string());
+    println!("  Conclusion: {}", rule?.then.to_string());
+}
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -360,6 +443,7 @@ Python::
 .Example
 [,python]
 ----
+rules = transaction.logic.get_rules()
 for rule in rules:
     print("Rule label:", rule.label)
     print("  Condition:", rule.when)
@@ -377,19 +461,65 @@ method in driver API reference.
 Java::
 +
 --
+.Example
+[,java]
+----
+Transaction.logic().getRules().forEach(result -> {
+    System.out.println("Rule label: " + result.getLabel());
+    System.out.println("  Condition: " + result.getWhen().toString());
+    System.out.println("  Conclusion: " + result.getThen().toString());
+});
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::java/api-reference.adoc#_LogicManager_getRules__[getRules()]
+method in driver API reference.
+++++
 --
 
 Node.js::
 +
 --
+.Example
+[,js]
+----
+await transaction.logic.getRules().forEach(rule => {
+    console.log("Rule label: " + rule.label);
+    console.log("  Condition: " + rule.when);
+    console.log("  Conclusion: " + rule.then);
+});
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::nodejs/api-reference.adoc#_LogicManager_getRules__[getRules()]
+method in driver API reference.
+++++
 --
 
 C++::
 +
 --
+.Example
+[,cpp]
+----
+auto rules = transaction.logic.getRules();
+for (auto& rule : rules) {
+    std::cout << rule.label() << std::endl;
+    std::cout << rule.when() << std::endl;
+    std::cout << rule.then() << std::endl;
+}
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::cpp/api-reference.adoc#_RuleIterable_TypeDBLogicManagergetRules_const[getRules()]
+method in driver API reference.
+++++
 --
 ====
 
@@ -438,19 +568,54 @@ method in driver API reference.
 Java::
 +
 --
+.Example
+[,java]
+----
+Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
+Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
+Rule newRule = Transaction.logic().putRule("Employee", condition, conclusion).resolve();
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::java/api-reference.adoc#_LogicManager_putRule__java_lang_String__com_vaticle_typeql_lang_pattern_Pattern__com_vaticle_typeql_lang_pattern_Pattern[putRule()]
+method in driver API reference.
+++++
 --
 
 Node.js::
 +
 --
+.Example
+[,js]
+----
+let new_rule = await transaction.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::nodejs/api-reference.adoc#_LogicManager_putRule__label_string__when_string__then_string[putRule()]
+method in driver API reference.
+++++
 --
 
 C++::
 +
 --
+.Example
+[,cpp]
+----
+new_rule = transaction.logic.put_rule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}", "$u has name 'Employee'").resolve()
+----
 
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::cpp/api-reference.adoc#_RuleFuture_TypeDBLogicManagerputRule_const_stdstring_label_const_stdstring_when_const_stdstring_then_const[putRule()]
+method in driver API reference.
+++++
 --
 ====
 
@@ -468,7 +633,7 @@ Rust::
 ----
 let _ = new_rule.delete(&transaction).resolve();
 ----
-The above example deletes the type stored in the `new_rule` variable from the schema of a database.
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
 You need to commit transaction to persist the changes.
 
 [subs="macros, post_replacements, replacements"]
@@ -487,7 +652,7 @@ Python::
 new_rule.delete(transaction).resolve()
 ----
 
-The above example deletes the type stored in the `new_rule` variable from the schema of a database.
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
 You need to commit transaction to persist the changes.
 
 [subs="macros, post_replacements, replacements"]
@@ -500,19 +665,58 @@ xref:drivers::python/api-reference.adoc#_Rule[Rule class] methods.
 Java::
 +
 --
+.Example
+[,java]
+----
+newRule.delete(Transaction).resolve();
+----
 
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::java/api-reference.adoc#_Rule[Rule class] methods.
+++++
 --
 
 Node.js::
 +
 --
+.Example
+[,js]
+----
+await new_rule.delete(transaction);
+----
 
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::nodejs/api-reference.adoc#_Rule[Rule class] methods.
+++++
 --
 
 C++::
 +
 --
+.Example
+[,cpp]
+----
+(void) new_rule.get().deleteRule(transaction).get();
+----
 
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::cpp/api-reference.adoc#_Rule[Rule class] methods.
+++++
 --
 ====
 
@@ -554,13 +758,13 @@ include::manual::partial$java-manual-code.java[tags=rules-api]
 Node.js::
 +
 --
-
+include::manual::partial$nodejs-manual-code.js[tags=rules-api]
 --
 
 C++::
 +
 --
-
+include::manual::partial$cpp-manual-code.cpp[tags=rules-api]
 --
 ====
 
