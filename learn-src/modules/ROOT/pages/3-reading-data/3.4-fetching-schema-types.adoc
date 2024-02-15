@@ -49,7 +49,7 @@ We have been able to retrieve this information by introducing a new `$action-typ
 $action isa $action-type;
 ----
 
-Previous `isa` statements we've used have used a variable as the *subject* of the statement and a *type label* as the *object*, but in this `isa` statement we've also used a variable, `$action-type`, as the object. The `isa` keyword must always take a data instance as the subject and a type as the object, which means that the variable `$action-type` represents a type rather than a data instance! Here we've made use of *type variablization*, one of TypeQL's most powerful features.
+Previous `isa` statements we've used have used a variable as the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[subject] of the statement and a *type label* as the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[object], but in this `isa` statement we've also used a variable, `$action-type`, as the object. The `isa` keyword must always take a data instance as the subject and a type as the object, which means that the variable `$action-type` represents a type rather than a data instance! Here we've made use of *type variablization*, one of TypeQL's most powerful features.
 
 
 [#_exercise_3_4_1]
@@ -165,7 +165,7 @@ fetch
 $book-type;
 ----
 
-Switch to a *schema* session and *read* transaction, then *run* image:learn::studio-icons/run.png[] this query. You should see the following result.
+Try *running* image:learn::studio-icons/run.png[] this query. You should see the following result.
 
 [,json]
 ----
