@@ -29,10 +29,10 @@ $user isa user, has id "placeholder id";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
-$action isa $action-type;   # new line
+$action isa! $action-type;   # new line
 fetch
 $book: isbn, title;
-$action-type;               # new line
+$action-type;                # new line
 ----
 
 If we *run* image:learn::studio-icons/run.png[] this new query, we now also retrieve the type of `$action`!
@@ -46,11 +46,12 @@ We have been able to retrieve this information by introducing a new `$action-typ
 
 [,typeql]
 ----
-$action isa $action-type;
+$action isa! $action-type;
 ----
 
-Previous `isa` statements we've used have used a variable as the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[subject] of the statement and a *type label* as the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[object], but in this `isa` statement we've also used a variable, `$action-type`, as the object. The `isa` keyword must always take a data instance as the subject and a type as the object, which means that the variable `$action-type` represents a type rather than a data instance! Here we've made use of *type variablization*, one of TypeQL's most powerful features.
+Here we've used the `isa!` keyword which, like the `isa` keyword, is used to specify the type of a variable. However, while the `isa` keyword simultaneously matches a type and all of its subtypes, the `isa!` keyword matches a type _exactly_, without using inheritance polymorphism. We will see more examples of this throughout this lesson and later in the course.
 
+Previous `isa` statements we've used have used a variable as the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[subject] of the statement and a *type label* as the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[object], but in this `isa!` statement we've also used a variable, `$action-type`, as the object. The `isa` and `isa!` keywords must always take a data instance as the subject and a type as the object, which means that the variable `$action-type` represents a type rather than a data instance! Here we've made use of *type variablization*, one of TypeQL's most powerful features.
 
 [#_exercise_3_4_1]
 .Exercise
@@ -67,8 +68,8 @@ match
 $user isa user, has id "placeholder id";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
-($book, $action) isa $relation-type;
-$action isa $action-type;
+($book, $action) isa! $relation-type;
+$action isa! $action-type;
 fetch
 $book: isbn, title;
 $action-type;
@@ -140,8 +141,8 @@ match
 $user isa user, has id "placeholder id";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
-($book-role: $book, $action-role: $action) isa $relation-type;
-$action isa $action-type;
+($book-role: $book, $action-role: $action) isa! $relation-type;
+$action isa! $action-type;
 fetch
 $book: isbn, title;
 $action-type;
@@ -194,10 +195,25 @@ In addition to `company` (which is the direct supertype of `publisher`) and `pub
 The `thing` type is deprecated and will be removed in TypeDB 3.0.
 ====
 
+If we would like to retrieve only _direct_ subtypes or supertypes of a type, we can instead use the `sub!` keyword, similar to the `isa!` keyword!
+
+[,typeql]
+----
+match
+publisher sub! $supertype;
+fetch
+$supertype;
+----
+
+[,json]
+----
+result placeholder
+----
+
 .Exercise
 [caption=""]
 ====
-Determine the direct supertype of `city` by writing a query to retrieve its supertypes.
+Write a query to retrieve the direct supertype of `city`.
 
 .Sample solution
 [%collapsible]
@@ -205,18 +221,18 @@ Determine the direct supertype of `city` by writing a query to retrieve its supe
 [,typeql]
 ----
 match
-city sub $supertype;
+city sub! $supertype;
 fetch
 $supertype;
 ----
 =====
 
-Now write a query to determine the other types that share the direct supertype of `city`.
+Now write a query to determine the other types that share that direct supertype.
 
 .Hint
 [%collapsible]
 =====
-The query should retrieve the subtypes of `place`.
+The query should retrieve the direct subtypes of `place`.
 =====
 
 .Sample solution
@@ -225,7 +241,7 @@ The query should retrieve the subtypes of `place`.
 [,typeql]
 ----
 match
-$place-type sub place;
+$place-type sub! place;
 fetch
 $place-type;
 ----
@@ -236,7 +252,7 @@ Finally, write a query to retrieve all entity types in the schema.
 .Hint
 [%collapsible]
 =====
-The query should retrieve the subtypes of the root type `entity`.
+The query should retrieve the subtypes of the root type `entity`, directly and indirectly.
 =====
 
 .Sample solution
