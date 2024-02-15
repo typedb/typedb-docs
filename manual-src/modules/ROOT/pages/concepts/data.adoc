@@ -65,7 +65,7 @@ Java::
 .Example
 [,java]
 ----
-
+List<? extends Entity> users = Transaction.concepts().getEntityType("user").resolve().getInstances(Transaction).toList();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -134,7 +134,7 @@ Java::
 .Example
 [,java]
 ----
-
+List<? extends Attribute> attributes = user.getHas(Transaction, annotations).toList();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_data_header[Data class] methods.
@@ -202,7 +202,7 @@ Java::
 .Example
 [,java]
 ----
-
+Entity new_user = Transaction.concepts().getEntityType("user").resolve().create(Transaction).resolve();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -271,7 +271,7 @@ Java::
 .Example
 [,java]
 ----
-
+new_user.delete(Transaction).resolve();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -336,9 +336,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-
+include::manual::partial$java-manual-code.java[tags=data-api]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_data_header[Data class] methods.
