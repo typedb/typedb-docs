@@ -105,7 +105,9 @@ $city: name;
 
 == Benefits of rule inference
 
-Rule inference is a powerful tool that allows us to avoid redundancy in our data. Imagine if we stored the states and countries that users were located in on disk instead of generating them by rule inference. What would then happen if a user's location changed? We would need to individually update their city, state, and country, despite the fact that both state and country depend only on the city. It would also be possible for data to be only partially updated, potentially leading to inconsistent data states. By using rule inference, we can ensure that we only have to update our data in one place, and data inconsistencies are prevented. Rule inference also provides us with a number of additional benefits:
+Rule inference is a powerful tool that allows us to avoid redundancy in our data. Imagine if we stored the states and countries that users were located in on disk instead of generating them by rule inference. What would then happen if a user's location changed? We would need to individually update their city, state, and country, despite the fact that both state and country depend only on the city. It would also be possible for data to be only partially updated, potentially leading to inconsistent data states. By using rule inference, we can ensure that we only have to update our data in one place, and data inconsistencies are prevented.
+
+Rule inference also provides us with a number of additional benefits:
 
 * Rule inference functions on deductive reasoning, so results are always well-defined and certain.
 * Rules are resolved at query time, so inference always uses the most up-to-date data.
