@@ -1,6 +1,6 @@
 // tag::import[]
 use typedb_driver::{
-    concept::{Attribute, Concept, Transitivity, Value, ValueType}, transaction::{concept::api::{EntityTypeAPI, ThingTypeAPI}, logic::api::RuleAPI}, Connection, DatabaseManager, Error, Options, Promise, Session, SessionType, TransactionType
+    concept::{Attribute, Concept, Transitivity, Value, ValueType}, transaction::{concept::api::{EntityTypeAPI, ThingAPI, ThingTypeAPI}, logic::api::RuleAPI}, Connection, DatabaseManager, Error, Options, Promise, Session, SessionType, TransactionType
 };
 //use typeql::pattern::{Conjunction, Pattern};
 // end::import[]
@@ -319,6 +319,86 @@ fn main() -> Result<(), Error> {
             }
         }
       // end::rules-api[]
+    }
+
+    { // tag::data-api[]
+        let db = databases.get(DB_NAME)?;
+        {
+            let session = Session::new(db, SessionType::Data)?;
+            {
+                let transaction = session.transaction(TransactionType::Write)?;
+                let users = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().get_instances(&transaction,Transitivity::Transitive)?;
+                for user in users {
+                    let user = user?;
+                    println!("User:");
+                    let attributes = user.get_has(&transaction, vec![], vec![])?;
+                    for attribute in attributes {
+                        let attribute = attribute?;
+                        let value = match attribute.value {
+                            Value::String(value) => value,
+                            Value::Long(value) => value.to_string(),
+                            Value::Double(value) => value.to_string(),
+                            Value::DateTime(value) => value.to_string(),
+                            Value::Boolean(value) => value.to_string(),
+                        };
+                        println!("  {}: {}", attribute.type_.label, value)
+                    }
+                }
+            }
+        }
+      // end::data-api[]
+    }
+
+    {
+        // tag::explain-get[]
+        let db = databases.get(DB_NAME)?;
+        let options = Options::new().infer(true).explain(true);
+        {
+            let session = Session::new(db, SessionType::Data)?;
+            {
+                let transaction = session.transaction_with_options(TransactionType::Read, options)?;
+                let get_query = "
+                                        match
+                                        $u isa user, has email $e, has name $n;
+                                        $e contains 'Alice';
+                                        get
+                                        $u, $n;
+                                        ";
+                let response = transaction.query().get(get_query)?;
+                for (i, cmap) in response.enumerate() {
+                    let ncmap = cmap.clone();
+                    let name_concept = ncmap?.get("n").unwrap().clone();
+                    let name = match name_concept {
+                        Concept::Attribute(Attribute {
+                            value: Value::String(value),
+                            ..
+                        }) => value,
+                        _ => unreachable!(),
+                    };
+                    println!("Name #{}: {}", (i + 1).to_string(), name);
+                    let explainable_relations = cmap?.explainables.relations;
+                    for (var, explainable) in explainable_relations {
+                        println!("{}",var);
+                        println!("{}",explainable.conjunction);
+
+                        let explain_ierator = transaction.query().explain(&explainable)?;
+                        for explanation in explain_ierator{
+                            let exp = explanation?;
+                            println!("Rule: {}",exp.rule.label);
+                            println!("Condition: {}",exp.rule.when.to_string());
+                            println!("Conclusion: {}",exp.rule.then.to_string());
+                            println!("Variable mapping:");
+                            for qvar in exp.variable_mapping.keys() {
+                                println!("Query variable {} maps to the rule variable {}", *qvar, exp.variable_mapping.get(qvar).unwrap().concat().to_string());
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+        // end::explain-get[]
     }
     Ok({})
 }

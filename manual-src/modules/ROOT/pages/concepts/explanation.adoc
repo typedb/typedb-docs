@@ -1,0 +1,349 @@
+= Explanation objects
+
+TypeDB has explainable rule-based data inference feature.
+This page covers programmatic usage of explanations.
+To learn how to use explanations in TypeDB Studio, see the xref:manual::studio.adoc#_explanation[explanation]
+section of the TypeDB Studio Manual.
+
+This page assumes you've already followed instructions from the xref:manual::reading/infer.adoc[] page.
+
+== Explainables
+
+To get an explanation on infered data, you need to infer some data with a Get query.
+If the `explain` transaction option is enabled,
+the response to the query includes an Explainables object as a part of every ConceptMap.
+We will use the Explainables object <<_explain_query_,later>> to get explanations.
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust]
+----
+let response = transaction.query().get(get_query)?;
+for (i, cmap) in response.enumerate() {
+    let explainable_relations = cmap?.explainables.relations;
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_Explainables[Explainables] and
+xref:drivers::rust/api-reference.adoc#_struct_Explainable[Explainable] classes.
+--
+
+Python::
++
+--
+.Example
+[,python]
+----
+response = transaction.query.get(get_query)
+for ConceptMap in response:
+    explainable_relations = ConceptMap.explainables().relations()
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_Explainables[Explainables] and
+xref:drivers::python/api-reference.adoc#_Explainable[Explainable] classes.
+--
+
+Java::
++
+--
+.Example
+[,java]
+----
+
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables class] and
+xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable] classes.
+--
+
+Node.js::
++
+--
+.Example
+[,js]
+----
+
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_Explainables[Explainables class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp]
+----
+
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_Explainables[Explainables class] methods.
+--
+====
+
+[#_explain_query_]
+== Explain query
+
+To get explanation(s), use an explain query, that takes an explainable object as an argument:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust]
+----
+for (var, explainable) in explainable_relations {
+    let explain_ierator = transaction.query().explain(&explainable)?;
+----
+For more information, see the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_explain__[explain query]
+and
+xref:drivers::rust/api-reference.adoc#_struct_Explainable[Explainable class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python]
+----
+for explainable in explainable_relations:
+    explain_iterator = transaction.query.explain(explainable_relations[explainable])
+----
+For more information, see the
+xref:drivers::python/api-reference.adoc#_QueryManager_explain__explainable_ConceptMap_Explainable__options_TypeDBOptions__None[explain query]
+and
+xref:drivers::python/api-reference.adoc#_Explainable[Explainable class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java]
+----
+
+----
+For more information, see the
+see the
+xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[explain query]
+and
+xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js]
+----
+
+----
+For more information, see the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_explain__explainable_Explainable__options_TypeDBOptions[explain query]
+and
+xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp]
+----
+
+----
+For more information, see the
+xref:drivers::cpp/api-reference.adoc#_ExplanationIterable_TypeDBQueryManagerexplain_const_Explainable_explainable_const_Options_Options_const[explain query]
+and
+xref:drivers::cpp/api-reference.adoc#_Explainable[Explainable class] methods.
+--
+====
+
+== Explanation
+
+An explanation object has information on which rule was used for inferring the explained concept,
+the condition of the rule, the conclusion of the rule,
+and the mapping of variables between the query and the rule’s conclusion.
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust]
+----
+for explanation in explain_ierator {
+    let exp = explanation?;
+    println!("Rule: {}",exp.rule.label);
+    println!("Condition: {}",exp.rule.when.to_string());
+    println!("Conclusion: {}",exp.rule.then.to_string());
+    println!("Variable mapping:");
+    for qvar in exp.variable_mapping.keys() {
+        println!("  Query variable {} maps to the rule variable {}", *qvar, exp.variable_mapping.get(qvar).unwrap().concat().to_string());
+    }
+}
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_Explanation[Explanation class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python]
+----
+for explanation in explain_iterator:
+    print("Rule: ", explanation.rule().label)
+    print("Condition: ", explanation.condition())
+    print("Conclusion: ", explanation.conclusion())
+    print("Variable mapping: ")
+    for var in explanation.query_variables():
+        print(f"  Query variable {var} maps to the rule variable {explanation.query_variable_mapping(var)}")
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java]
+----
+
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js]
+----
+
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp]
+----
+
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+====
+
+== Full example
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=explain-get]
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_Explanation[Explanation class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=explain-get]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java]
+----
+
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js]
+----
+
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp]
+----
+
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:manual::reading/infer.adoc[]
+[.clickable]
+****
+Learn more about how to use inference in TypeDB.
+****
+
+.xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[]
+[.clickable]
+****
+Check out the Reasoning over data section of our TypeDB Learning course.
+****
+--
+
+[cols-1]
+--
+.xref:drivers::overview.adoc[]
+[.clickable]
+****
+Learn more about TypeDB drivers: list of available drivers, installation guides, API reference.
+****
+--
+
+For more information about driver API methods, see the API reference of the relevant driver:
+
+include::manual::reading/get.adoc[tags=drivers-api]

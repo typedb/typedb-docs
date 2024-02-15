@@ -213,3 +213,48 @@ with TypeDB.core_driver("localhost:1729") as driver:
             new_user.delete(transaction)
             transaction.commit()
     # end::data-api[]
+    # tag::explain-get[]
+    with driver.session(DB_NAME, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ, TypeDBOptions(infer=True, explain=True)) as transaction:
+            get_query = """
+                            match
+                            $u isa user, has email $e, has name $n;
+                            $e contains 'Alice';
+                            get
+                            $u, $n;
+                            """
+            response = transaction.query.get(get_query)
+            for i, ConceptMap in enumerate(response):
+                name = ConceptMap.get("n").as_attribute().get_value()
+                print(f"Name #{i + 1}: {name}")
+                explainable_relations = ConceptMap.explainables().relations()
+                for explainable in explainable_relations:
+                    print("Explained variable:", explainable)
+                    print("Explainable object:", explainable_relations[explainable])
+                    print("Explainable part of query:", explainable_relations[explainable].conjunction())
+                    explain_iterator = transaction.query.explain(explainable_relations[explainable])
+                    for explanation in explain_iterator:
+                        print("\nRule: ", explanation.rule().label)
+                        print("Condition: ", explanation.condition())
+                        print("Conclusion: ", explanation.conclusion())
+                        print("Variable mapping: ")
+                        for var in explanation.query_variables():
+                            print(f"  Query variable {var} maps to the rule variable {explanation.query_variable_mapping(var)}")
+    # end::explain-get[]
+                # explainable_ownerships = ConceptMap.explainables().ownerships()
+                # for explainable in explainable_ownerships:
+                #     iterator = transaction.query.explain(explainable_ownerships[explainable])
+                #     for explanation in iterator:
+                #         print("Explainable part of query:" + explainable_ownerships[explainable].conjunction())
+                #         print("Rule:" + explanation.rule().label + explanation.rule().when + explanation.rule().then)
+                #         for a, b in explanation.condition().map():
+                #             print(a + b)
+
+                # for var, explainable in ConceptMap.explainables().attributes():
+                #     print("Explainable:" + var + ":" + explainable.conjunction())
+                # for var, v, explainable in ConceptMap.explainables().ownerships():
+                #     print("Explainable ownerships:" + var + ":" + explainable.conjunction())
+                # print(ConceptMap.explainables().ownership("n", "u").conjunction())
+
+
+
