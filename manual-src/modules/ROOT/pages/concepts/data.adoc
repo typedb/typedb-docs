@@ -40,7 +40,7 @@ Rust::
 .Example
 [,rust]
 ----
-
+let users = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().get_instances(&transaction,Transitivity::Transitive)?;
 ----
 
 For more information,
@@ -109,7 +109,7 @@ Rust::
 .Example
 [,rust]
 ----
-
+let attributes = user.get_has(&transaction, vec![], vec![])?;
 ----
 
 For more information,
@@ -177,7 +177,7 @@ Rust::
 .Example
 [,rust]
 ----
-
+let new_user = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().create(&transaction).resolve()?;
 ----
 
 For more information,
@@ -246,7 +246,7 @@ Rust::
 .Example
 [,rust]
 ----
-
+let _ = new_user.delete(&transaction).resolve();
 ----
 
 For more information,
@@ -310,9 +310,10 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=data-api]
 ----
 
 For more information,
