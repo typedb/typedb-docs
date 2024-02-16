@@ -7,7 +7,7 @@ So far, we've seen that the output of Fetch queries includes a `type` field for 
 [,typeql]
 ----
 match
-$user isa user, has id "placeholder id";
+$user isa user, has id "U0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
@@ -17,7 +17,56 @@ $book: isbn, title;
 
 [,json]
 ----
-result placeholder
+{
+    "book": {
+        "isbn": [
+            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "isbn": [
+            { "value": "9780008627843", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0008627843", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "isbn": [
+            { "value": "9780387881355", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0387881352", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "isbn": [
+            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "isbn": [
+            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
 ----
 
 While the results list the books, they do not tell us anything about the nature of the user's interaction with them. We can easily retrieve this information by adding a couple of additional lines to the query.
@@ -25,7 +74,7 @@ While the results list the books, they do not tell us anything about the nature 
 [,typeql]
 ----
 match
-$user isa user, has id "placeholder id";
+$user isa user, has id "U0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
@@ -39,7 +88,72 @@ If we *run* image:learn::studio-icons/run.png[] this new query, we now also retr
 
 [,json]
 ----
-result placeholder
+{
+    "action-type": { "label": "order", "root": "entity" },
+    "book": {
+        "isbn": [
+            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "action-type": { "label": "order", "root": "entity" },
+    "book": {
+        "isbn": [
+            { "value": "9780008627843", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0008627843", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "action-type": { "label": "order", "root": "entity" },
+    "book": {
+        "isbn": [
+            { "value": "9780387881355", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0387881352", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "action-type": { "label": "review", "root": "entity" },
+    "book": {
+        "isbn": [
+            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "action-type": { "label": "review", "root": "entity" },
+    "book": {
+        "isbn": [
+            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "action-type": { "label": "review", "root": "entity" },
+    "book": {
+        "isbn": [
+            { "value": "9780008627843", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0008627843", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
+        ],
+        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
 ----
 
 We have been able to retrieve this information by introducing a new `$action-type` variable in an additional statement.
@@ -65,7 +179,7 @@ Modify the above query to also retrieve the type of the relation between `$book`
 [,typeql]
 ----
 match
-$user isa user, has id "placeholder id";
+$user isa user, has id "U0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa! $relation-type;
@@ -79,8 +193,6 @@ $relation-type;
 
 ====
 
-== Variablizing roles
-
 The ability to variablize types in queries arises from TypeQL's core philosophy:
 
 [quote]
@@ -88,71 +200,93 @@ ____
 https://typedb.com/fundamentals/type-theory[_Everything has a type, and so everything can be a variable._]
 ____
 
-In fact, every element of `match` clauses in TypeQL queries can be variablized except for the keywords. This means that we can also take advantage of *role variablization*. In the following query, we retrieve a list of contributors to a particular book.
-
-[,typeql]
-----
-match
-$book isa book, has isbn "isbn placeholder";
-$contributor isa contributor;
-$contribution (work: $book, contributor: $contributor) isa contribution;
-fetch
-$contributor: name;
-----
-
-[,json]
-----
-result placeholder
-----
-
-However, the results do not tell us how each person contributed to the book. To retrieve this information, we can replace the role name `contributor` with a variable.
-
-[,typeql]
-----
-match
-$book isa book, has isbn "isbn placeholder";
-$contributor isa contributor;
-$contribution (work: $book, $contributor-role: $contributor) isa contribution;
-fetch
-$contributor: name;
-$contributor-role;
-----
-
-[,json]
-----
-result placeholder
-----
-
-Now we can see each contributor's role in the results! When not part of a relation tuple, roles are described by *role labels*, comprising two terms specified by a `:` delimiter. The first term is the name of the relation that the role is part of, and the second is the name of the role in the scope of the relation. This is because multiple relations are permitted to use the same role names. So, for instance, the label `authoring:author` represents the `author` role of the `authoring` relation type.
-
-This tells us something important about the results we have been retrieving: the `contribution` relations the query has matched are not all of the same type. The `contribution` relation type actually has three subtypes: `authoring`, `editing`, and `illustrating`, and we have been matching all of them using inheritance polymorphism!
-
-.Exercise
-[caption=""]
-====
-Modify the solution to the <<#_exercise_3_4_1,last exercise>> to also retrieve the roles that `$book` and `$action` play in the variablized relation.
-
-.Sample solution
-[%collapsible]
-=====
-[,typeql]
-----
-match
-$user isa user, has id "placeholder id";
-$book isa book;
-(executor: $user, action: $action) isa action-execution;
-($book-role: $book, $action-role: $action) isa! $relation-type;
-$action isa! $action-type;
-fetch
-$book: isbn, title;
-$action-type;
-$relation-type;
-$book-role;
-$action-role;
-----
-=====
-
-====
+// This section is omitted due to the difficulty of retrieving exact roles.
+// See: https://github.com/vaticle/typedb/issues/6986#issuecomment-1948116205
+// == Variablizing roles
+//
+// The ability to variablize types in queries arises from TypeQL's core philosophy:
+//
+// [quote]
+// ____
+// https://typedb.com/fundamentals/type-theory[_Everything has a type, and so everything can be a variable._]
+// ____
+//
+// In fact, every element of `match` clauses in TypeQL queries can be variablized except for the keywords. This means that we can also take advantage of *role variablization*. In the following query, we retrieve a list of contributors to a particular book.
+//
+// [,typeql]
+// ----
+// match
+// $book isa book, has isbn "9780500026557";
+// $contributor isa contributor;
+// $contribution (work: $book, contributor: $contributor) isa contribution;
+// fetch
+// $contributor: name;
+// ----
+//
+// [,json]
+// ----
+// {
+//     "contributor": {
+//         "name": [ { "value": "Wada, Kyoko", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+//         "type": { "label": "contributor", "root": "entity" }
+//     }
+// }
+// {
+//     "contributor": {
+//         "name": [ { "value": "Katsushika, Hokusai", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+//         "type": { "label": "contributor", "root": "entity" }
+//     }
+// }
+// ----
+//
+// However, the results do not tell us how each person contributed to the book. To retrieve this information, we can replace the role name `contributor` with a variable.
+//
+// [,typeql]
+// ----
+// match
+// $book isa book, has isbn "9780500026557";
+// $contributor isa contributor;
+// $contribution (work: $book, $contributor-role: $contributor) isa contribution;
+// fetch
+// $contributor: name;
+// $contributor-role;
+// ----
+//
+// [,json]
+// ----
+// result placeholder
+// ----
+//
+// Now we can see each contributor's role in the results! When not part of a relation tuple, roles are described by *role labels*, comprising two terms specified by a `:` delimiter. The first term is the name of the relation that the role is part of, and the second is the name of the role in the scope of the relation. This is because multiple relations are permitted to use the same role names. So, for instance, the label `authoring:author` represents the `author` role of the `authoring` relation type.
+//
+// This tells us something important about the results we have been retrieving: the `contribution` relations the query has matched are not all of the same type. The `contribution` relation type actually has three subtypes: `authoring`, `editing`, and `illustrating`, and we have been matching all of them using inheritance polymorphism!
+//
+// .Exercise
+// [caption=""]
+// ====
+// Modify the solution to the <<#_exercise_3_4_1,last exercise>> to also retrieve the roles that `$book` and `$action` play in the variablized relation.
+//
+// .Sample solution
+// [%collapsible]
+// =====
+// [,typeql]
+// ----
+// match
+// $user isa user, has id "9780500026557";
+// $book isa book;
+// (executor: $user, action: $action) isa action-execution;
+// ($book-role: $book, $action-role: $action) isa! $relation-type;
+// $action isa! $action-type;
+// fetch
+// $book: isbn, title;
+// $action-type;
+// $relation-type;
+// $book-role;
+// $action-role;
+// ----
+// =====
+//
+// ====
 
 == Querying type hierarchies
 
@@ -170,7 +304,10 @@ Try *running* image:learn::studio-icons/run.png[] this query. You should see the
 
 [,json]
 ----
-result placeholder
+{ "book-type": { "label": "ebook", "root": "entity" } }
+{ "book-type": { "label": "hardback", "root": "entity" } }
+{ "book-type": { "label": "book", "root": "entity" } }
+{ "book-type": { "label": "paperback", "root": "entity" } }
 ----
 
 These are indeed the subtypes of `book`. We also retrieve the type `book` itself because it is trivially its own subtype. For this query, we've used the `sub` keyword, which matches subtypes of a given supertype. Unlike the `isa` keyword, both the subject and the object of `sub` statements must be *types*. In this case, we've variablized the subject of the `sub` statement to query subtypes, but we could also variablize the object to query supertypes. In the following example, we query the supertypes of `publisher`.
@@ -185,7 +322,10 @@ $supertype;
 
 [,json]
 ----
-result placeholder
+{ "supertype": { "label": "thing", "root": "thing" } }
+{ "supertype": { "label": "entity", "root": "entity" } }
+{ "supertype": { "label": "publisher", "root": "entity" } }
+{ "supertype": { "label": "company", "root": "entity" } }
 ----
 
 In addition to `company` (which is the direct supertype of `publisher`) and `publisher` (which is trivially its own supertype) we also retrieve the *root types* `entity` (the supertype of all entities) and `thing` (the supertype of _all_ types).
@@ -207,7 +347,7 @@ $supertype;
 
 [,json]
 ----
-result placeholder
+{ "supertype": { "label": "company", "root": "entity" } }
 ----
 
 .Exercise
@@ -283,7 +423,9 @@ $attribute;
 
 [,json]
 ----
-result placeholder
+{ "attribute": { "label": "discount", "root": "attribute" } }
+{ "attribute": { "label": "start-timestamp", "root": "attribute" } }
+{ "attribute": { "label": "end-timestamp", "root": "attribute" } }
 ----
 
 To query ownerships, we use the `owns` keyword. As with the `sub` keyword, we can invert the intent of the statement by variablizing the object instead of the subject. We do this in the next query to retrieve the list of types that own the attribute type `isbn-13`.
@@ -298,7 +440,10 @@ $type;
 
 [,json]
 ----
-result placeholder
+{ "type": { "label": "ebook", "root": "entity" } }
+{ "type": { "label": "hardback", "root": "entity" } }
+{ "type": { "label": "book", "root": "entity" } }
+{ "type": { "label": "paperback", "root": "entity" } }
 ----
 
 .Exercise
@@ -334,10 +479,16 @@ $role;
 
 [,json]
 ----
-result placeholder
+{ "role": { "label": "locating:located", "root": "relation:role" } }
+{ "role": { "label": "locating:location", "root": "relation:role" } }
 ----
 
-As we saw previously, role labels are denoted using both the name of the parent relation and the scoped name of the role. To query for types that play a role using the `plays` keyword, we must use the same notation.
+
+// Temporarily changed to reflect above redaction of role variablization section.
+When not part of a relation tuple, roles are described by *role labels*, comprising two terms specified by a `:` delimiter. The first term is the name of the relation that the role is part of, and the second is the name of the role in the scope of the relation. This is because multiple relations are permitted to use the same role names. So, for instance, the label `locating:located` represents the `located` role of the `locating` relation type.
+// As we saw previously, role labels are denoted using both the name of the parent relation and the scoped name of the role.
+
+To query for types that play a role using the `plays` keyword, we must use the same notation.
 
 [,typeql]
 ----
@@ -349,7 +500,13 @@ $type;
 
 [,json]
 ----
-result placeholder
+{ "type": { "label": "place", "root": "entity" } }
+{ "type": { "label": "publication", "root": "entity" } }
+{ "type": { "label": "user", "root": "entity" } }
+{ "type": { "label": "city", "root": "entity" } }
+{ "type": { "label": "state", "root": "entity" } }
+{ "type": { "label": "country", "root": "entity" } }
+{ "type": { "label": "address", "root": "entity" } }
 ----
 
 Here we have queried the types that play the `located` role in `locating`. As with the `sub` and `owns` keywords, we can also invert the intent of `plays` [#_footnote_1]#statements#^<<_footnotes,1>>^. In the next query, we do so in order to retrieve the list of roles that `book` plays.
@@ -364,7 +521,12 @@ $role;
 
 [,json]
 ----
-result placeholder
+{ "role": { "label": "rating:rated", "root": "relation:role" } }
+{ "role": { "label": "publishing:published", "root": "relation:role" } }
+{ "role": { "label": "recommendation:recommended", "root": "relation:role" } }
+{ "role": { "label": "order-line:item", "root": "relation:role" } }
+{ "role": { "label": "contribution:work", "root": "relation:role" } }
+{ "role": { "label": "promotion-inclusion:included", "root": "relation:role" } }
 ----
 
 

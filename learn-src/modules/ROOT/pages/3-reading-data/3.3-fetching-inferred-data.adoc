@@ -7,7 +7,7 @@ Try *running* image:learn::studio-icons/run.png[] the following query, which ret
 [,typeql]
 ----
 match
-$user isa user, has id "placeholder id";
+$user isa user, has id "U0003";
 ($located: $user, location: $place) isa locating;
 fetch
 $place: name;
@@ -15,10 +15,15 @@ $place: name;
 
 [,json]
 ----
-result placeholder
+{
+    "place": {
+        "name": [ { "value": "Newark", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "city", "root": "entity" }
+    }
+}
 ----
 
-As we can see from the results, the user is located in !city placeholder!. Now, toggle on the *infer* option and *run* image:learn::studio-icons/run.png[] the query again.
+As we can see from the results, the user is located in Newark. Now, toggle on the *infer* option and *run* image:learn::studio-icons/run.png[] the query again.
 
 [NOTE]
 ====
@@ -29,7 +34,24 @@ You should see the following results.
 
 [,json]
 ----
-result placeholder
+{
+    "place": {
+        "name": [ { "value": "Newark", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "city", "root": "entity" }
+    }
+}
+{
+    "place": {
+        "name": [ { "value": "New Jersey", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "state", "root": "entity" }
+    }
+}
+{
+    "place": {
+        "name": [ { "value": "United States", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "country", "root": "entity" }
+    }
+}
 ----
 
 We haven't inserted any new data or changed our query, but TypeDB is now generating additional results! This is due to TypeDB's built-in *rule inference* engine, which allows it to generate new data based on *rules* defined in the schema. We'll learn how to define rules in xref:learn::5-defining-schemas/5.3-defining-rules.adoc[Lesson 5.3], but for now let's take a quick look at the one we've made use of for the previous query.
@@ -47,9 +69,9 @@ rule transitive-location:
 
 The structure of this rule tells us that `locating` relations are *transitive*. Our data contains the following information encoded in `locating` relations:
 
-* The user with ID "placeholder id" is located in !city placeholder!.
-* !city placeholder! is located in !state placeholder!.
-* !state placeholder! is located in the United States.
+* The user with ID "U0003" is located in Newark.
+* Newark is located in New Jersey.
+* New Jersey is located in the United States.
 
 Examining these facts, it is obvious to us that the user is located in the US, as we are able to deduce this fact. With the above rule, TypeDB is able to make the same deduction!
 
@@ -63,7 +85,7 @@ Once a rule is defined and rule inference is switched on, we can use the inferre
 match
 $us isa country, has name "United States";
 (location: $us, located: $user) isa locating;
-(executor: $user, action: $order) isa action-exection;
+(executor: $user, action: $order) isa action-execution;
 (order: $order, item: $book) isa order-line;
 fetch
 $book: title;
@@ -71,7 +93,108 @@ $book: title;
 
 [,json]
 ----
-result placeholder
+{
+    "book": {
+        "title": [ { "value": "The Iron Giant", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Pride and Prejudice", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Business Secrets of The Pharoahs", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Complete Calvin and Hobbes", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Odyssey", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Dune", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Great Discoveries in Medicine", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
 ----
 
 Try *running* image:learn::studio-icons/run.png[] this query, once with the *infer* option toggled on and once with it off. If rule inference is switched off, we retrieve no results whatsoever! That is because we don't have any users recorded as being located in the US in our data. Instead, they are recorded as being located in cities, with the cities recorded as being located in states, and the states recorded as being located in the US. The means the above query will only work with rule inference switched on.
