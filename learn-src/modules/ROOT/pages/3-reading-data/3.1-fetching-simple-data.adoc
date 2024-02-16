@@ -28,7 +28,148 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 
 [,json]
 ----
-result placeholder
+{
+    "book": {
+        "attribute": [
+            { "value": "Great Discoveries in Medicine", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 18, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0500291225", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 12.050000190734863, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 352, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 11, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 24.469999313354492, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 416, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 15, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9781489962287", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "148996228X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 47.16999816894531, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 199, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "Pride and Prejudice", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 15, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780553212150", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "055321215X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 17.989999771118164, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 295, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 16, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780446310789", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0446310786", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 21.639999389648438, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 281, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "Business Secrets of The Pharoahs", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 8, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9798691153570", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 11.989999771118164, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 260, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 1, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780393045215", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0393045218", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 21.600000381469727, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 240, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 12, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 34.97999954223633, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 820, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 4, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 6.119999885559082, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 458, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "The Hitchhiker's Guide to the Galaxy", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 9, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9780671461492", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "0671461494", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 91.47000122070312, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 215, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 4, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": "9781859840665", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": "1859840663", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": 14.520000457763672, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": 160, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
 ----
 
 All Fetch queries return results in JSON format.
@@ -77,7 +218,83 @@ If we *run* image:learn::studio-icons/run.png[] this query, we see the following
 
 [,json]
 ----
-result placeholder
+{
+    "book": {
+        "page-count": [ { "value": 352, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "Great Discoveries in Medicine", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 416, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 199, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 295, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "Pride and Prejudice", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 281, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 260, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "Business Secrets of The Pharoahs", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 240, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 820, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 458, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 215, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "The Hitchhiker's Guide to the Galaxy", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 160, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
 ----
 
 This time, only the titles and page counts of each book have been retrieved. Now this TypeQL query is equivalent to the following SQL query.
@@ -108,19 +325,25 @@ $book: isbn-13, price, stock;
 
 == Selections
 
-In the next query, we'll add a *constraint* to the `match` clause, specifying that we want the details for a specific book with ISBN-13 `"isbn placeholder"`.
+In the next query, we'll add a *constraint* to the `match` clause, specifying that we want the details for a specific book with ISBN-13 `"9780446310789"`.
 
 [,typeql]
 ----
 match
-$book isa paperback, has isbn-13 "isbn placeholder";
+$book isa paperback, has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
 
 [,json]
 ----
-result placeholder
+{
+    "book": {
+        "page-count": [ { "value": 281, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
 ----
 
 We can see from the result that we now only retrieve the data for the specific book we're interested in. To do so we've used the `has` keyword, which is used to specify the value of an entity's attribute, in this case the `$book` entity. In SQL, this query would be expressed in the following way.
@@ -129,7 +352,7 @@ We can see from the result that we now only retrieve the data for the specific b
 ----
 SELECT title, page_count
 FROM paperback
-WHERE isbn_13 = 'isbn placeholder';
+WHERE isbn_13 = '9780446310789';
 ----
 
 Because TypeQL is *composable*, we could alternatively construct this query in the following equivalent way.
@@ -138,7 +361,7 @@ Because TypeQL is *composable*, we could alternatively construct this query in t
 ----
 match
 $book isa paperback;
-$book has isbn-13 "isbn placeholder";
+$book has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
@@ -150,7 +373,7 @@ In the first version, we used a single compound *statement* in the `match` claus
 .Exercise
 [caption=""]
 ====
-Write a query to retrieve the `page-count` and `price` attributes of the paperback with title `"placeholder title"`. Write the query once using a compound statement, and again using atomic statements.
+Write a query to retrieve the `page-count` and `price` attributes of the paperback with title `"Great Discoveries in Medicine"`. Write the query once using a compound statement, and again using atomic statements.
 
 .Sample solution
 [%collapsible]
@@ -160,7 +383,7 @@ With a compound statement:
 [,typeql]
 ----
 match
-$book isa paperback, has title "placeholder title";
+$book isa paperback, has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
@@ -171,7 +394,7 @@ With atomic statements:
 ----
 match
 $book isa paperback;
-$book has title "placeholder title";
+$book has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
@@ -195,12 +418,12 @@ This statement signifies that:
 * `$order` plays the role of `order` in `$line`.
 * `$book` plays the role of `item` in `$line`.
 
-Here we are using `order-line` relations to represent the references that `order` entities make to `book` entities. In the following Fetch query, we retrieve the IDs of orders that include the book "title placeholder" and the quantity ordered.
+Here we are using `order-line` relations to represent the references that `order` entities make to `book` entities. In the following Fetch query, we retrieve the IDs of orders that include _To Kill a Mockingbird_ and the quantity ordered.
 
 [,typeql]
 ----
 match
-$book isa paperback, has isbn-13 "isbn placeholder";
+$book isa paperback, has isbn-13 "9780446310789";
 $line (order: $order, item: $book) isa order-line;
 fetch
 $order: id;
@@ -209,7 +432,36 @@ $line: quantity;
 
 [,json]
 ----
-result placeholder
+{
+    "line": {
+        "quantity": [ { "value": 1, "value_type": "long", "type": { "label": "quantity", "root": "attribute" } } ],
+        "type": { "label": "order-line", "root": "relation" }
+    },
+    "order": {
+        "id": [ { "value": "O0016", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "type": { "label": "order", "root": "entity" }
+    }
+}
+{
+    "line": {
+        "quantity": [ { "value": 1, "value_type": "long", "type": { "label": "quantity", "root": "attribute" } } ],
+        "type": { "label": "order-line", "root": "relation" }
+    },
+    "order": {
+        "id": [ { "value": "O0032", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "type": { "label": "order", "root": "entity" }
+    }
+}
+{
+    "line": {
+        "quantity": [ { "value": 2, "value_type": "long", "type": { "label": "quantity", "root": "attribute" } } ],
+        "type": { "label": "order-line", "root": "relation" }
+    },
+    "order": {
+        "id": [ { "value": "O0036", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "type": { "label": "order", "root": "entity" }
+    }
+}
 ----
 
 This is equivalent to the following SQL query.
@@ -220,7 +472,7 @@ SELECT orders.id, order_line.quantity
 FROM orders
 INNER JOIN order_line ON order_line.order_id = orders.id
 INNER JOIN paperback ON paperback.isbn_13 = order_line.item_id
-WHERE paperback.isbn_13 = 'isbn_placeholder';
+WHERE paperback.isbn_13 = '9780446310789';
 ----
 
 In a relational database, the relation type `order-line` would be represented by an https://en.wikipedia.org/wiki/Associative_entity[associative table] with foreign keys to the tables representing the entity types `order` and [#_footnote_1]#`paperback`#^<<_footnotes,1>>^. As a general rule, associative tables in relational databases can be mapped onto relation types in TypeDB.
@@ -238,7 +490,7 @@ Modify the above query to also retrieve the `status` attribute of the order and 
 [,typeql]
 ----
 match
-$book isa paperback, has isbn-13 "isbn placeholder";
+$book isa paperback, has isbn-13 "9780446310789";
 $line (order: $order, item: $book) isa order-line;
 fetch
 $order: id, status;
@@ -255,7 +507,7 @@ In the previous query, `$line` was a binary relation between the two roleplayers
 [,typeql]
 ----
 match
-$book isa paperback, has isbn-13 "isbn placeholder";
+$book isa paperback, has isbn-13 "9780446310789";
 $line (order: $order, item: $book) isa order-line;
 (deliverer: $courier, delivered: $order, destination: $address) isa delivery;
 fetch
@@ -267,7 +519,60 @@ $address: street;
 
 [,json]
 ----
-result placeholder
+{
+    "address": {
+        "street": [ { "value": "464 Pilgrim Lane", "value_type": "string", "type": { "label": "street", "root": "attribute" } } ],
+        "type": { "label": "address", "root": "entity" }
+    },
+    "courier": {
+        "name": [ { "value": "FedEx", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "courier", "root": "entity" }
+    },
+    "line": {
+        "quantity": [ { "value": 1, "value_type": "long", "type": { "label": "quantity", "root": "attribute" } } ],
+        "type": { "label": "order-line", "root": "relation" }
+    },
+    "order": {
+        "id": [ { "value": "O0016", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "type": { "label": "order", "root": "entity" }
+    }
+}
+{
+    "address": {
+        "street": [ { "value": "984 Williams Street", "value_type": "string", "type": { "label": "street", "root": "attribute" } } ],
+        "type": { "label": "address", "root": "entity" }
+    },
+    "courier": {
+        "name": [ { "value": "FedEx", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "courier", "root": "entity" }
+    },
+    "line": {
+        "quantity": [ { "value": 1, "value_type": "long", "type": { "label": "quantity", "root": "attribute" } } ],
+        "type": { "label": "order-line", "root": "relation" }
+    },
+    "order": {
+        "id": [ { "value": "O0032", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "type": { "label": "order", "root": "entity" }
+    }
+}
+{
+    "address": {
+        "street": [ { "value": "20 Ridge Lane", "value_type": "string", "type": { "label": "street", "root": "attribute" } } ],
+        "type": { "label": "address", "root": "entity" }
+    },
+    "courier": {
+        "name": [ { "value": "DHL", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
+        "type": { "label": "courier", "root": "entity" }
+    },
+    "line": {
+        "quantity": [ { "value": 2, "value_type": "long", "type": { "label": "quantity", "root": "attribute" } } ],
+        "type": { "label": "order-line", "root": "relation" }
+    },
+    "order": {
+        "id": [ { "value": "O0036", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "type": { "label": "order", "root": "entity" }
+    }
+}
 ----
 
 Here the delivery is a *ternary relation* between three roleplayers: `$courier`, `$order`, and `$address`. Higher order relations are used to represent rich references between multiple classes.
@@ -291,7 +596,7 @@ INNER JOIN paperback ON paperback.isbn_13 = order_line.item_id
 INNER JOIN delivery ON delivery.delivered_id = orders.id
 INNER JOIN courier ON courier.id = delivery.courier_id
 INNER JOIN address ON address.id = delivery.address_id
-WHERE paperback.isbn_13 = 'isbn_placeholder';
+WHERE paperback.isbn_13 = '9780446310789';
 ----
 =====
 ====
