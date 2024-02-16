@@ -202,10 +202,10 @@ int main() {
         }
         // end::infer-rule[]
         // tag::infer-fetch[]
+        TypeDB::Options inferOptions;
+        inferOptions.infer(true);
+        auto session2 = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
         {
-            TypeDB::Options inferOptions;
-            inferOptions.infer(true);
-            auto session2 = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
             auto transaction2 = session.transaction(TypeDB::TransactionType::READ, inferOptions);
             std::string fetchQuery = R"(
                                         match
@@ -274,6 +274,66 @@ int main() {
             transaction.commit();
         }
         // end::rules-api[]
+    }
+
+    {
+        // tag::data-api[]
+        auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        {
+            auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
+            auto users = transaction.concepts.getEntityType("user").get().get()->getInstances(transaction);
+            for (auto& user : users) {
+                auto attributes = user.get()->getHas(transaction);
+                std::cout << "User: " << std::endl;
+                for (auto& attribute : attributes) {
+                    std::cout << "  " << attribute.get()->getType().get()->getLabel() << ": " << attribute.get()->getValue().get()->asString() << std::endl;
+                }
+            }
+            auto newUser = transaction.concepts.getEntityType("user").get().get()->create(transaction).get();
+            newUser.get()->deleteThing(transaction).get();
+            transaction.commit();
+        }
+        // end::data-api[]
+    }
+
+    {
+        // tag::explain-get[]
+        TypeDB::Options inferOptions;
+        inferOptions.infer(true);
+        inferOptions.explain(true);
+        auto session = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
+        {
+            auto transaction = session.transaction(TypeDB::TransactionType::READ, inferOptions);
+            std::string getQuery = R"(
+                                    match
+                                    $u isa user, has email $e, has name $n;
+                                    $e contains 'Alice';
+                                    get
+                                    $u, $n;
+                                    )";
+            auto results = transaction.query.get(getQuery);
+            auto i = 0;
+            for (auto& cm : results) {
+                i+=1;
+                std::cout << "Name #" << std::to_string(i) << ": " << cm.get("n")->asAttribute()->getValue()->asString() << std::endl;
+                auto explainable_relations = cm.explainables().relations();
+                for (auto& explainable : explainable_relations) {
+                    std::cout << "Explained variable " << explainable << std::endl;
+                    std::cout << "Explainable part of the query " << cm.explainables().relation(explainable).conjunction() << std::endl;
+                    auto explainIterator = transaction.query.explain(cm.explainables().relation(explainable));
+                    for (auto& explanation : explainIterator) {
+                        std::cout << "Rule: " << explanation.rule().label() << std::endl;
+                        std::cout << "Condition: " << explanation.rule().when() << std::endl;
+                        std::cout << "Conclusion: " << explanation.rule().then() << std::endl;
+                        std::cout << "Variable mapping: " << std::endl;
+                        for (auto& var : explanation.queryVariables()) {
+                            std::cout << "Query variable " << var << " maps to the rule variable " << explanation.queryVariableMapping(var)[1] << std::endl;
+                        }
+                    }
+                }
+            }
+        }
+        // end::explain-get[]
     }
     return 0;
 }
