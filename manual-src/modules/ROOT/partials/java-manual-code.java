@@ -1,21 +1,27 @@
 package org.example;
 // tag::import[]
+import com.vaticle.typedb.common.collection.Pair;
 import com.vaticle.typedb.driver.TypeDB;
 import com.vaticle.typedb.driver.api.TypeDBDriver;
 import com.vaticle.typedb.driver.api.TypeDBOptions;
 import com.vaticle.typedb.driver.api.TypeDBSession;
 import com.vaticle.typedb.driver.api.TypeDBTransaction;
+import com.vaticle.typedb.driver.api.answer.ConceptMap;
 import com.vaticle.typedb.driver.api.concept.Concept;
 import com.vaticle.typedb.driver.api.concept.thing.Entity;
 import com.vaticle.typedb.driver.api.concept.type.AttributeType;
 import com.vaticle.typedb.driver.api.concept.type.EntityType;
 import com.vaticle.typedb.driver.api.concept.type.ThingType;
 import com.vaticle.typedb.driver.api.concept.value.Value;
+import com.vaticle.typedb.driver.api.logic.Explanation;
 import com.vaticle.typedb.driver.api.logic.Rule;
+import com.vaticle.typedb.driver.jni.Transaction;
 import com.vaticle.typeql.lang.TypeQL;
 import com.vaticle.typeql.lang.pattern.Pattern;
 import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Stream;
+
 // end::import[]
 public class Main {
     public static void main(String[] args) {
@@ -198,61 +204,93 @@ public class Main {
         // end::infer-fetch[]
         // tag::types-editing[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                AttributeType tag = Transaction.concepts().putAttributeType("tag", Value.Type.STRING).resolve();
-                Transaction.concepts().getRootEntityType().getSubtypes(Transaction, Concept.Transitivity.EXPLICIT).forEach(result -> {
+            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                AttributeType tag = transaction.concepts().putAttributeType("tag", Value.Type.STRING).resolve();
+                transaction.concepts().getRootEntityType().getSubtypes(transaction, Concept.Transitivity.EXPLICIT).forEach(result -> {
                     System.out.println(result.getLabel().toString());
                     if (! result.isAbstract()) {
-                        result.setOwns(Transaction,tag).resolve();
+                        result.setOwns(transaction,tag).resolve();
                     }
                 });
-                Transaction.commit();
+                transaction.commit();
             }
         }
         // end::types-editing[]
         // tag::types-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                EntityType user = Transaction.concepts().getEntityType("user").resolve();
-                EntityType admin = Transaction.concepts().putEntityType("admin").resolve();
-                admin.setSupertype(Transaction, user).resolve();
-                EntityType root_entity = Transaction.concepts().getRootEntityType();
-                root_entity.getSubtypes(Transaction, Concept.Transitivity.TRANSITIVE).forEach(result -> System.out.println(result.getLabel().name()));
-                Transaction.commit();
+            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                EntityType user = transaction.concepts().getEntityType("user").resolve();
+                EntityType admin = transaction.concepts().putEntityType("admin").resolve();
+                admin.setSupertype(transaction, user).resolve();
+                EntityType root_entity = transaction.concepts().getRootEntityType();
+                root_entity.getSubtypes(transaction, Concept.Transitivity.TRANSITIVE).forEach(result -> System.out.println(result.getLabel().name()));
+                transaction.commit();
             }
         }
         // end::types-api[]
         // tag::rules-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                Rule oldRule = Transaction.logic().getRule("users").resolve();
+            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                Rule oldRule = transaction.logic().getRule("users").resolve();
                 System.out.println("Rule label: " + oldRule.getLabel());
                 System.out.println("  Condition: " + oldRule.getWhen().toString());
                 System.out.println("  Conclusion: " + oldRule.getThen().toString());
                 Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
                 Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
-                Rule newRule = Transaction.logic().putRule("Employee", condition, conclusion).resolve();
-                Transaction.logic().getRules().forEach(result -> System.out.println(result.getLabel()));
-                newRule.delete(Transaction).resolve();
-                Transaction.commit();
+                Rule newRule = transaction.logic().putRule("Employee", condition, conclusion).resolve();
+                transaction.logic().getRules().forEach(result -> System.out.println(result.getLabel()));
+                newRule.delete(transaction).resolve();
+                transaction.commit();
             }
         }
         // end::rules-api[]
         // tag::data-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction Transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 Set<ThingType.Annotation> annotations = Collections.emptySet();
-                Transaction.concepts().getEntityType("user").resolve().getInstances(Transaction).forEach(user -> {
+                transaction.concepts().getEntityType("user").resolve().getInstances(transaction).forEach(user -> {
                     System.out.println("User");
-                    user.getHas(Transaction, annotations).forEach(attribute ->
+                    user.getHas(transaction, annotations).forEach(attribute ->
                         System.out.println(attribute.getType().getLabel().toString()+ ": " + attribute.getValue().toString()));
                 });
-                Entity new_user = Transaction.concepts().getEntityType("user").resolve().create(Transaction).resolve();
-                new_user.delete(Transaction).resolve();
-                Transaction.commit();
+                Entity new_user = transaction.concepts().getEntityType("user").resolve().create(transaction).resolve();
+                new_user.delete(transaction).resolve();
+                transaction.commit();
             }
         }
         // end::data-api[]
+        // tag::explain-get[]
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
+            TypeDBOptions options = new TypeDBOptions().infer(true).explain(true);
+            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ, options)) {
+                String getQuery = """
+                                    match
+                                    $u isa user, has email $e, has name $n;
+                                    $e contains 'Alice';
+                                    get
+                                    $u, $n;
+                                    """;
+                int[] ctr = new int[1];
+                transaction.query().get(getQuery).forEach(result -> {
+                    String name = result.get("n").asAttribute().getValue().toString();
+                    System.out.println("Email #" + (++ctr[0]) + ": " + name);
+                    Stream<Pair<String, ConceptMap.Explainable>> explainable_relations = result.explainables().relations();
+                    explainable_relations.forEach(explainable -> {
+                        System.out.println("Explainable variable:" + explainable.first());
+                        System.out.println("Explainable part of the query:" + explainable.second().conjunction());
+                        Stream<Explanation> explain_iterator = transaction.query().explain(explainable.second());
+                        explain_iterator.forEach(explanation -> {
+                            System.out.println("Rule: " + explanation.rule().getLabel());
+                            System.out.println("  Condition: " + explanation.rule().getWhen().toString());
+                            System.out.println("  Conclusion: " + explanation.rule().getThen().toString());
+                            explanation.queryVariables().forEach(var ->
+                                System.out.println("Query variable " + var + "maps to the rule variable " + explanation.queryVariableMapping(var)));
+                        });
+                    });
+                });
+            }
+        }
+        // end::explain-get[]
         driver.close();
     }
 }
