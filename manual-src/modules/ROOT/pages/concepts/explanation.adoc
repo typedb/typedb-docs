@@ -58,7 +58,7 @@ transaction.query().get(getQuery).forEach(result -> {
 });
 ----
 For more information,
-see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables class] and
+see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables] and
 xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable] classes.
 --
 
@@ -74,7 +74,8 @@ let response = await transaction.query.get(get_query).collect();
     }
 ----
 For more information,
-see the xref:drivers::nodejs/api-reference.adoc#_Explainables[Explainables class] methods.
+see the xref:drivers::nodejs/api-reference.adoc#_Explainables[Explainables] and
+xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable] classes.
 --
 
 C++::
@@ -89,7 +90,8 @@ for (auto& cm : results) {
 }
 ----
 For more information,
-see the xref:drivers::cpp/api-reference.adoc#_Explainables[Explainables class] methods.
+see the xref:drivers::cpp/api-reference.adoc#_Explainables[Explainables] and
+xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable] classes.
 --
 ====
 
@@ -110,7 +112,7 @@ for (var, explainable) in explainable_relations {
     let explain_ierator = transaction.query().explain(&explainable)?;
 ----
 For more information, see the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_explain__[explain query]
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_explain__[Explain query]
 and
 xref:drivers::rust/api-reference.adoc#_struct_Explainable[Explainable class] methods.
 --
@@ -125,7 +127,7 @@ for explainable in explainable_relations:
     explain_iterator = transaction.query.explain(explainable_relations[explainable])
 ----
 For more information, see the
-xref:drivers::python/api-reference.adoc#_QueryManager_explain__explainable_ConceptMap_Explainable__options_TypeDBOptions__None[explain query]
+xref:drivers::python/api-reference.adoc#_QueryManager_explain__explainable_ConceptMap_Explainable__options_TypeDBOptions__None[Explain query]
 and
 xref:drivers::python/api-reference.adoc#_Explainable[Explainable class] methods.
 --
@@ -141,7 +143,7 @@ explainable_relations.forEach(explainable -> {
 });
 ----
 For more information, see the
-xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[explain query]
+xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[Explain query]
 and
 xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable class] methods.
 --
@@ -157,7 +159,7 @@ explainable_relations.forEach(explainable => {
 });
 ----
 For more information, see the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_explain__explainable_Explainable__options_TypeDBOptions[explain query]
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_explain__explainable_Explainable__options_TypeDBOptions[Explain query]
 and
 xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable class] methods.
 --
@@ -173,7 +175,7 @@ for (auto& explainable : explainable_relations) {
 }
 ----
 For more information, see the
-xref:drivers::cpp/api-reference.adoc#_ExplanationIterable_TypeDBQueryManagerexplain_const_Explainable_explainable_const_Options_Options_const[explain query]
+xref:drivers::cpp/api-reference.adoc#_ExplanationIterable_TypeDBQueryManagerexplain_const_Explainable_explainable_const_Options_Options_const[Explain query]
 and
 xref:drivers::cpp/api-reference.adoc#_Explainable[Explainable class] methods.
 --
