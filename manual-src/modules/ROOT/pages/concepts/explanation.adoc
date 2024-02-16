@@ -83,7 +83,10 @@ C++::
 .Example
 [,cpp]
 ----
-
+auto results = transaction.query.get(getQuery);
+for (auto& cm : results) {
+    auto explainable_relations = cm.explainables().relations();
+}
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_Explainables[Explainables class] methods.
@@ -165,7 +168,9 @@ C++::
 .Example
 [,cpp]
 ----
-
+for (auto& explainable : explainable_relations) {
+    auto explainIterator = transaction.query.explain(cm.explainables().relation(explainable));
+}
 ----
 For more information, see the
 xref:drivers::cpp/api-reference.adoc#_ExplanationIterable_TypeDBQueryManagerexplain_const_Explainable_explainable_const_Options_Options_const[explain query]
@@ -265,7 +270,15 @@ C++::
 .Example
 [,cpp]
 ----
-
+for (auto& explanation : explainIterator) {
+    std::cout << "Rule: " << explanation.rule().label() << std::endl;
+    std::cout << "Condition: " << explanation.rule().when() << std::endl;
+    std::cout << "Conclusion: " << explanation.rule().then() << std::endl;
+    std::cout << "Variable mapping: " << std::endl;
+    for (auto& var : explanation.queryVariables()) {
+        std::cout << "Query variable " << var << " maps to the rule variable " << explanation.queryVariableMapping(var)[1] << std::endl;
+    }
+}
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
@@ -330,9 +343,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-
+include::manual::partial$cpp-manual-code.cpp[tags=explain-get]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
