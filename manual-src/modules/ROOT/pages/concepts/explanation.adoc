@@ -53,7 +53,9 @@ Java::
 .Example
 [,java]
 ----
-
+transaction.query().get(getQuery).forEach(result -> {
+    Stream<Pair<String, ConceptMap.Explainable>> explainable_relations = result.explainables().relations();
+});
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables class] and
@@ -66,7 +68,10 @@ Node.js::
 .Example
 [,js]
 ----
-
+let response = await transaction.query.get(get_query).collect();
+    for(let i = 0; i < response.length; i++) {
+        let explainable_relations = await response[i].explainables.relations;
+    }
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_Explainables[Explainables class] methods.
@@ -128,10 +133,11 @@ Java::
 .Example
 [,java]
 ----
-
+explainable_relations.forEach(explainable -> {
+    Stream<Explanation> explain_iterator = transaction.query().explain(explainable.second());
+});
 ----
 For more information, see the
-see the
 xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[explain query]
 and
 xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable class] methods.
@@ -143,7 +149,9 @@ Node.js::
 .Example
 [,js]
 ----
-
+explainable_relations.forEach(explainable => {
+    explain_iterator = transaction.query.explain(explainable);
+});
 ----
 For more information, see the
 xref:drivers::nodejs/api-reference.adoc#_QueryManager_explain__explainable_Explainable__options_TypeDBOptions[explain query]
@@ -220,7 +228,13 @@ Java::
 .Example
 [,java]
 ----
-
+explain_iterator.forEach(explanation -> {
+    System.out.println("Rule: " + explanation.rule().getLabel());
+    System.out.println("  Condition: " + explanation.rule().getWhen().toString());
+    System.out.println("  Conclusion: " + explanation.rule().getThen().toString());
+    explanation.queryVariables().forEach(var ->
+        System.out.println("Query variable " + var + "maps to the rule variable " + explanation.queryVariableMapping(var)));
+});
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
@@ -232,7 +246,14 @@ Node.js::
 .Example
 [,js]
 ----
-
+for (explanation of explain_iterator) {
+    console.log("Rule: " + explanation.rule.label)
+    console.log("Condition: " + explanation.condition.toString())
+    console.log("Conclusion " + explanation.conclusion.toString())
+    for (qvar of explanation.variableMapping.keys()) {
+        console.log("Query variable " + qvar + " maps to the rule variable " + explanation.variableMapping.get(qvar))
+    }
+}
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
@@ -285,9 +306,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-
+include::manual::partial$java-manual-code.java[tags=explain-get]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
@@ -297,9 +318,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-
+include::manual::partial$nodejs-manual-code.js[tags=explain-get]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
