@@ -281,6 +281,63 @@ async function main() {
     }
     finally {await session?.close();}
     // end::rules-api[]
+    // tag::data-api[]
+    try {
+        session = await driver.session(DB_NAME, SessionType.DATA);
+        try {
+            transaction = await session.transaction(TransactionType.WRITE);
+            let users = await (await transaction.concepts.getEntityType("user")).getInstances(transaction).collect();
+            users.forEach(user =>{
+                let attributes = user.getHas(transaction);
+                attributes.forEach(attribute => {
+                    console.log(" " + attribute.type.label.toString() + ": " + attribute.value.toString());
+                });
+            });
+            let newUser = await (await transaction.concepts.getEntityType("user")).create(transaction);
+            await newUser.delete(transaction);
+            await transaction.commit();
+        }
+        finally {if (transaction.isOpen()) {await transaction.close()};}
+    }
+    finally {await session?.close();}
+    // end::data-api[]
+    // tag::explain-get[]
+    try {
+        session = await driver.session(DB_NAME, SessionType.DATA);
+        try {
+            let options = new TypeDBOptions();
+            options.infer = true;
+            options.explain = true;
+            transaction = await session.transaction(TransactionType.READ, options);
+            const get_query = `
+                                match
+                                $u isa user, has email $e, has name $n;
+                                $e contains 'Alice';
+                                get
+                                $u, $n;
+                                `;
+            let response = await transaction.query.get(get_query).collect();
+            for(let i = 0; i < response.length; i++) {
+                console.log("Name #" + (i + 1) + ": " + response[i].get("n").value);
+                let explainable_relations = await response[i].explainables.relations;
+                explainable_relations.forEach(explainable => {
+                    console.log("Explainable part of the query: " + explainable.conjunction())
+                    explain_iterator = transaction.query.explain(explainable);
+                    for (explanation of explain_iterator) {
+                        console.log("Rule: " + explanation.rule.label)
+                        console.log("Condition: " + explanation.condition.toString())
+                        console.log("Conclusion " + explanation.conclusion.toString())
+                        for (qvar of explanation.variableMapping.keys()) {
+                            console.log("Query variable " + qvar + " maps to the rule variable " + explanation.variableMapping.get(qvar))
+                        }
+                    }
+                });
+            }
+        }
+        finally {if (transaction.isOpen()) {await transaction.close()};}
+    }
+    finally {await session?.close();}
+    // end::explain-get[]
 };
 
 main();

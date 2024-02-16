@@ -77,7 +77,7 @@ Node.js::
 .Example
 [,js]
 ----
-
+let users = await (await transaction.concepts.getEntityType("user")).getInstances(transaction).collect();
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -146,7 +146,7 @@ Node.js::
 .Example
 [,js]
 ----
-
+let attributes = user.getHas(transaction);
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_data_header[Data class] methods.
@@ -214,7 +214,7 @@ Node.js::
 .Example
 [,js]
 ----
-
+let newUser = await (await transaction.concepts.getEntityType("user")).create(transaction);
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -283,7 +283,7 @@ Node.js::
 .Example
 [,js]
 ----
-
+await newUser.delete(transaction);
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -348,9 +348,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-
+include::manual::partial$nodejs-manual-code.js[tags=data-api]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_data_header[Data class] methods.
