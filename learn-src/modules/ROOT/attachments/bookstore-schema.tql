@@ -155,6 +155,8 @@ locating sub relation,
     relates located,
     relates location;
 
+indirect-locating sub locating;
+
 recommendation sub relation,
     relates recommended,
     relates recipient;
@@ -266,8 +268,8 @@ rule order-line-total-discounted-price:
 
 rule transitive-location:
     when {
-        (location: $parent-place, located: $child-place) isa locating;
+        (location: $parent-place, located: $child-place) isa! locating;
         (location: $child-place, located: $x) isa locating;
     } then {
-        (location: $parent-place, located: $x) isa locating;
+        (location: $parent-place, located: $x) isa indirect-locating;
     };
