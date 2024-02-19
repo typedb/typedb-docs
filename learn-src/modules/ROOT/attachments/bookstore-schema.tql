@@ -61,7 +61,7 @@ publication sub entity,
     plays locating:located;
 
 user sub entity,
-    owns id,
+    owns id @key,
     owns name,
     owns birth-date,
     plays action-execution:executor,
@@ -76,7 +76,7 @@ order sub entity,
     plays delivery:delivered;
 
 promotion sub entity,
-    owns id @key,
+    owns name,
     owns start-timestamp,
     owns end-timestamp,
     owns discount,
@@ -248,7 +248,7 @@ rule order-line-total-discounted-price:
     when {
         ($order) isa action-execution, has timestamp $order-time;
         $line ($order, $item) isa order-line;
-        ($best-promotion, $iem) isa promotion-inclusion;
+        ($best-promotion, $item) isa promotion-inclusion;
         $best-promotion has discount $best-discount,
             has start-timestamp < $order-time,
             has end-timestamp > $order-time;
