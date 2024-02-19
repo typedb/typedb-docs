@@ -1,1 +1,215 @@
 = Lesson 4.1: Inserting simple data
+
+== The Insert query
+
+To insert new data into a database, we use an *Insert query*. The following query inserts a new user.
+
+[,typeql]
+----
+insert
+$evelin isa user,
+    has id "U0011",
+    has name "Evelin Griffith",
+    has birth-date 1994-08-03;
+----
+
+This Insert query consists of a single `insert` clause, which inserts a single entity of type `user` and assigns it three attributes: one each of types `id`, `name`, and `birth-date`.
+
+Using a *data* session and a *write* transaction, try *running* image:learn::studio-icons/run.png[] this query. After running it, make sure to *commit* image:learn::studio-icons/commit.png[] the transaction. The new user should now be in the database! You can check by switching to a *data* session and *read* transaction and then *running* image:learn::studio-icons/run.png[] the following query, which lists the names of users in the database.
+
+[,typeql]
+----
+match
+$user isa user;
+fetch
+$user: name;
+----
+
+If you have correctly executed the Insert query, the new user Evelin should appear in the results.
+
+.Exercise
+[caption=""]
+====
+Insert a new `promotion` entity with the following attributes:
+
+* A `name` with value `"Spring Sale 2024"`.
+* A `start-timestamp` with value `2024-03-15T00:00:00`.
+* An `end-timestamp` with value `2024-03-31T23:59:59`.
+* A `discount` with value `0.15`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+insert
+$spring-sale isa promotion,
+    has name "Spring Sale 2024",
+    has start-timestamp 2024-03-15T00:00:00,
+    has end-timestamp 2024-03-31T23:59:59,
+    has discount 0.15;
+----
+=====
+
+====
+
+[IMPORTANT]
+====
+In the remainder of Lesson 4, we will be using inserted data in later queries. If you would like to follow along, make sure to run the queries featured in each example and exercise once. To run any Insert, Delete, or Update query, use a *data* session and *write* transaction, *run* image:learn::studio-icons/run.png[] the query, and *commit* image:learn::studio-icons/commit.png[] the transaction.
+====
+
+== Inserting multiple objects
+
+An Insert query can insert any number of entities and relations. In the following query, we insert four new entities: a paperback, a contributor, a publisher, and a publication event, along with two new relations between them: an `authoring` relation and a `publishing` relation.
+
+[,typeql]
+----
+insert
+$frankenstein isa paperback,
+    has isbn-13 "9780486282114",
+    has title "Frankenstein",
+    has page-count 166,
+    has price 5.79,
+    has isbn-10 "0486282112";
+$shelley isa contributor,
+    has name "Shelley, Mary";
+$dover isa publisher,
+    has name "Dover Publications";
+$publication isa publication,
+    has year 1994;
+(work: $frankenstein, author: $shelley) isa authoring;
+(published: $frankenstein, publisher: $dover, publication: $publication) isa publishing;
+----
+
+[#_exercise_4_1_2]
+.Exercise
+[caption=""]
+====
+Insert two new users. The first user should have:
+
+* The user ID "U0012".
+* The name Fiona Carlson.
+* The birth date 10th July 1951.
+
+The second user should have:
+
+* The user ID "U0013".
+* The name Jordan Duarte.
+* The birth date 31st October 1963.
+
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+insert
+$fiona isa user,
+    has id "U0012",
+    has name "Fiona Carlson",
+    has birth-date 1951-07-10;
+$jordan isa user,
+    has id "U0013",
+    has name "Jordan Duarte",
+    has birth-date 1963-10-31;
+----
+=====
+
+====
+
+== Inserting references to existing objects
+
+So far, the Insert queries we've seen have only created entirely new entities, relations between them, and their attributes. We can also write Insert queries that create relations between existing entities, or add new attributes to existing entities or relations. To do so, we use an Insert query with two clauses: a `match` clause followed by an `insert` clause. In the following example, we record the stock of the newly added edition of _Frankenstein_.
+
+[,typeql]
+----
+match
+$book isa paperback, has isbn-13 "9780486282114";
+insert
+$book has stock 20;
+----
+
+This query matches the book we inserted previously by its ISBN, and then gives it a new `stock` attribute. In a Fetch query, the `match` clause identifies matching data within the database, and the `fetch` clause specifies what to retrieve from each match. In an Insert query, the `match` clause serves the same function, but then we insert new data for each match rather than retrieving existing data.
+
+In order to insert a new attribute, we have to match the attribute's existing owner, represented in the last query by the `$book` variable. Similarly, in the next query, we insert a new relation by matching the relation's existing roleplayers, represented by the `$city` and `$publication` variables. It records the fact that the publication of this edition of _Frankenstein_ by Dover Publications took place in NYC.
+
+[,typeql]
+----
+match
+$book isa paperback, has isbn-13 "9780486282114";
+$publisher isa publisher, has name "Dover Publications";
+$publication isa publication, has year 2002;
+(published: $book, publisher: $publisher, publication: $publication) isa publishing;
+$city isa city, has name "New York City";
+insert
+(location: $city, located: $publication) isa locating;
+----
+
+An Insert query without a `match` clause always inserts the data described in the `insert` clause *once*. However, an Insert query _with_ a `match` clause will insert the data described in the `insert` clause *multiple times*, once for each match found. The following query would assign a `stock` attribute to every paperback in the database, even if it already had one!
+
+[,typeql]
+----
+# Do not run this query
+match
+$book isa paperback;
+insert
+$book has stock 20;
+----
+
+Likewise, the following query would create a `locating` relation for every `publication` entity with a `year` attribute equal to `2002`.
+
+[,typeql]
+----
+# Do not run this query
+match
+$publication isa publication, has year 2002;
+$city isa city, has name "New York City";
+insert
+(location: $city, located: $publication) isa locating;
+----
+
+[IMPORTANT]
+====
+To prevent unintended data insertions, it is often useful to structure the `match` clause around the values of one or more *key attributes*, which can only be matched once. We have done this above using the key attribute `isbn-13`, as the value `"9780486282114"` uniquely identifies a single book. We will see how to define key attributes in xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[Lesson 5.1].
+====
+
+.Exercise
+[caption=""]
+====
+Insert a new `login` entity with a `success` attribute with value `true`, link that entity to the existing user Fiona Carlson (created in the <<#_exercise_4_1_2,last exercise>>) using an `action-execution` relation, and give that relation a `timestamp` attribute with value `2024-03-04T07:32:03.287`.
+
+.Hint 1
+[%collapsible]
+=====
+You can get the labels of the roles in the `action-execution` relation with the following Fetch query.
+
+[,typeql]
+----
+match
+action-execution relates $role;
+fetch
+$role;
+----
+=====
+
+.Hint 2
+[%collapsible]
+=====
+Make sure to identify Fiona by her unique user ID `"U0012"` so as not to match other users with the same name!
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$user isa user, has id "U0012";
+insert
+$login isa login, has success true;
+(action: $login, executor: $user) isa action-execution,
+    has timestamp 2024-03-04T07:32:03.287;
+----
+=====
+
+====
