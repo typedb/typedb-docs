@@ -1,8 +1,12 @@
 // tag::import[]
 use typedb_driver::{
-    concept::{Attribute, Concept, Transitivity, Value, ValueType}, transaction::{concept::api::{EntityTypeAPI, ThingAPI, ThingTypeAPI}, logic::api::RuleAPI}, Connection, DatabaseManager, Error, Options, Promise, Session, SessionType, TransactionType
+    concept::{Attribute, Concept, Transitivity, Value, ValueType},
+    transaction::{
+        concept::api::{EntityTypeAPI, ThingAPI, ThingTypeAPI},
+        logic::api::RuleAPI,
+    },
+    Connection, DatabaseManager, Error, Options, Promise, Session, SessionType, TransactionType,
 };
-//use typeql::pattern::{Conjunction, Pattern};
 // end::import[]
 
 fn main() -> Result<(), Error> {
@@ -11,10 +15,7 @@ fn main() -> Result<(), Error> {
 
     println!("TypeDB Manual sample code");
 
-    println!(
-        "Attempting to connect to a TypeDB Core server: {}",
-        SERVER_ADDR
-    );
+    println!("Attempting to connect to a TypeDB Core server: {}", SERVER_ADDR);
     // tag::driver[]
     let driver = Connection::new_core(SERVER_ADDR)?;
     // end::driver[]
@@ -38,7 +39,8 @@ fn main() -> Result<(), Error> {
         println!("Database setup complete");
     }
 
-    {   // tag::define[]
+    {
+        // tag::define[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Schema)?;
@@ -62,7 +64,8 @@ fn main() -> Result<(), Error> {
         // end::define[]
     }
 
-    {   // tag::undefine[]
+    {
+        // tag::undefine[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Schema)?;
@@ -76,7 +79,8 @@ fn main() -> Result<(), Error> {
         // end::undefine[]
     }
 
-    {   // tag::insert[]
+    {
+        // tag::insert[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Data)?;
@@ -95,7 +99,8 @@ fn main() -> Result<(), Error> {
         // end::insert[]
     }
 
-    {   // tag::match-insert[]
+    {
+        // tag::match-insert[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Data)?;
@@ -119,7 +124,8 @@ fn main() -> Result<(), Error> {
         // end::match-insert[]
     }
 
-    {   // tag::delete[]
+    {
+        // tag::delete[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Data)?;
@@ -139,7 +145,8 @@ fn main() -> Result<(), Error> {
         // end::delete[]
     }
 
-    {   // tag::update[]
+    {
+        // tag::update[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Data)?;
@@ -164,7 +171,8 @@ fn main() -> Result<(), Error> {
         // end::update[]
     }
 
-    {   // tag::fetch[]
+    {
+        // tag::fetch[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Data)?;
@@ -185,7 +193,8 @@ fn main() -> Result<(), Error> {
         // end::fetch[]
     }
 
-    {   // tag::get[]
+    {
+        // tag::get[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Data)?;
@@ -201,10 +210,7 @@ fn main() -> Result<(), Error> {
                 for (i, cm) in response.enumerate() {
                     let email_concept = cm.unwrap().get("e").unwrap().clone();
                     let email = match email_concept {
-                        Concept::Attribute(Attribute {
-                            value: Value::String(value),
-                            ..
-                        }) => value,
+                        Concept::Attribute(Attribute { value: Value::String(value), .. }) => value,
                         _ => unreachable!(),
                     };
                     println!("Email #{}: {}", (i + 1).to_string(), email)
@@ -214,9 +220,10 @@ fn main() -> Result<(), Error> {
         // end::get[]
     }
 
-    {   // tag::infer-rule[]
+    {
+        // tag::infer-rule[]
         let db = databases.get(DB_NAME)?;
-       {
+        {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
@@ -256,14 +263,21 @@ fn main() -> Result<(), Error> {
         // end::infer-fetch[]
     }
 
-    { // tag::types-editing[]
+    {
+        // tag::types-editing[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
                 let tag = &transaction.concept().put_attribute_type("tag".to_owned(), ValueType::String).resolve()?;
-                let entities = transaction.concept().get_entity_type("entity".to_owned()).resolve()?.ok_or("No root entity").unwrap().get_subtypes(&transaction, Transitivity::Explicit)?;
+                let entities = transaction
+                    .concept()
+                    .get_entity_type("entity".to_owned())
+                    .resolve()?
+                    .ok_or("No root entity")
+                    .unwrap()
+                    .get_subtypes(&transaction, Transitivity::Explicit)?;
                 for entity in entities {
                     let mut e = entity?;
                     println!("{}", e.label);
@@ -272,32 +286,44 @@ fn main() -> Result<(), Error> {
                     }
                 }
                 let _ = transaction.commit().resolve();
-
             }
         }
-      // end::types-editing[]
+        // end::types-editing[]
     }
 
-    { // tag::types-api[]
+    {
+        // tag::types-api[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                let user = transaction.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity").unwrap();
+                let user = transaction
+                    .concept()
+                    .get_entity_type("user".to_owned())
+                    .resolve()?
+                    .ok_or("No root entity")
+                    .unwrap();
                 let mut admin = transaction.concept().put_entity_type("admin".to_owned()).resolve()?;
                 drop(admin.set_supertype(&transaction, user).resolve());
-                let entities = transaction.concept().get_entity_type("entity".to_owned()).resolve()?.ok_or("No root entity").unwrap().get_subtypes(&transaction, Transitivity::Transitive)?;
+                let entities = transaction
+                    .concept()
+                    .get_entity_type("entity".to_owned())
+                    .resolve()?
+                    .ok_or("No root entity")
+                    .unwrap()
+                    .get_subtypes(&transaction, Transitivity::Transitive)?;
                 for subtype in entities {
                     println!("{}", subtype?.label);
                 }
                 let _ = transaction.commit().resolve();
             }
         }
-      // end::types-api[]
+        // end::types-api[]
     }
 
-    { // tag::rules-api[]
+    {
+        // tag::rules-api[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Schema)?;
@@ -307,9 +333,11 @@ fn main() -> Result<(), Error> {
                 println!("Rule label: {}", r.label);
                 println!("  Condition: {}", r.when.to_string());
                 println!("  Conclusion: {}", r.then.to_string());
-                let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?.into_conjunction();
+                let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?
+                    .into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
-                let mut new_rule = transaction.logic().put_rule("Employee".to_string(), condition, conclusion ).resolve()?;
+                let mut new_rule =
+                    transaction.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
                 let rules = transaction.logic().get_rules()?;
                 for rule in rules {
                     println!("{}", rule?.label);
@@ -318,16 +346,22 @@ fn main() -> Result<(), Error> {
                 let _ = transaction.commit().resolve();
             }
         }
-      // end::rules-api[]
+        // end::rules-api[]
     }
 
-    { // tag::data-api[]
+    {
+        // tag::data-api[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Data)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                let users = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().get_instances(&transaction,Transitivity::Transitive)?;
+                let users = transaction
+                    .concept()
+                    .get_entity_type("user".to_owned())
+                    .resolve()?
+                    .unwrap()
+                    .get_instances(&transaction, Transitivity::Transitive)?;
                 for user in users {
                     let user = user?;
                     println!("User:");
@@ -344,9 +378,17 @@ fn main() -> Result<(), Error> {
                         println!("  {}: {}", attribute.type_.label, value)
                     }
                 }
+                let new_user = transaction
+                    .concept()
+                    .get_entity_type("user".to_owned())
+                    .resolve()?
+                    .unwrap()
+                    .create(&transaction)
+                    .resolve()?;
+                let _ = new_user.delete(&transaction).resolve();
             }
         }
-      // end::data-api[]
+        // end::data-api[]
     }
 
     {
@@ -358,43 +400,42 @@ fn main() -> Result<(), Error> {
             {
                 let transaction = session.transaction_with_options(TransactionType::Read, options)?;
                 let get_query = "
-                                        match
-                                        $u isa user, has email $e, has name $n;
-                                        $e contains 'Alice';
-                                        get
-                                        $u, $n;
-                                        ";
+                                match
+                                $u isa user, has email $e, has name $n;
+                                $e contains 'Alice';
+                                get
+                                $u, $n;
+                                ";
                 let response = transaction.query().get(get_query)?;
                 for (i, cmap) in response.enumerate() {
                     let ncmap = cmap.clone();
                     let name_concept = ncmap?.get("n").unwrap().clone();
                     let name = match name_concept {
-                        Concept::Attribute(Attribute {
-                            value: Value::String(value),
-                            ..
-                        }) => value,
+                        Concept::Attribute(Attribute { value: Value::String(value), .. }) => value,
                         _ => unreachable!(),
                     };
                     println!("Name #{}: {}", (i + 1).to_string(), name);
                     let explainable_relations = cmap?.explainables.relations;
                     for (var, explainable) in explainable_relations {
-                        println!("{}",var);
-                        println!("{}",explainable.conjunction);
+                        println!("{}", var);
+                        println!("{}", explainable.conjunction);
 
-                        let explain_ierator = transaction.query().explain(&explainable)?;
-                        for explanation in explain_ierator{
+                        let explain_iterator = transaction.query().explain(&explainable)?;
+                        for explanation in explain_iterator {
                             let exp = explanation?;
-                            println!("Rule: {}",exp.rule.label);
-                            println!("Condition: {}",exp.rule.when.to_string());
-                            println!("Conclusion: {}",exp.rule.then.to_string());
+                            println!("Rule: {}", exp.rule.label);
+                            println!("Condition: {}", exp.rule.when.to_string());
+                            println!("Conclusion: {}", exp.rule.then.to_string());
                             println!("Variable mapping:");
                             for qvar in exp.variable_mapping.keys() {
-                                println!("Query variable {} maps to the rule variable {}", *qvar, exp.variable_mapping.get(qvar).unwrap().concat().to_string());
+                                println!(
+                                    "Query variable {} maps to the rule variable {}",
+                                    *qvar,
+                                    exp.variable_mapping.get(qvar).unwrap().concat().to_string()
+                                );
                             }
                         }
                     }
-
-
                 }
             }
         }
