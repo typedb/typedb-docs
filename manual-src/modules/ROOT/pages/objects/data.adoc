@@ -65,7 +65,7 @@ Java::
 .Example
 [,java]
 ----
-List<? extends Entity> users = Transaction.concepts().getEntityType("user").resolve().getInstances(Transaction).toList();
+List<? extends Entity> users = transaction.concepts().getEntityType("user").resolve().getInstances(Transaction).toList();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -202,7 +202,7 @@ Java::
 .Example
 [,java]
 ----
-Entity new_user = Transaction.concepts().getEntityType("user").resolve().create(Transaction).resolve();
+Entity new_user = transaction.concepts().getEntityType("user").resolve().create(Transaction).resolve();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
