@@ -4,7 +4,9 @@ bootstrapper-version: 1.0.0
 typedb-version: 2.26.6
 
 # Datasets to pre-install
+dataset-root: https://raw.githubusercontent.com/vaticle/typedb-docs/master/learn-src/modules/ROOT/attachments/
 datasets:
+  # The key will be used as database name. Schema & data file paths are relative to dataset-root
   bookstore:
     schema: bookstore-schema.tql
     data: bookstore-data.tql
