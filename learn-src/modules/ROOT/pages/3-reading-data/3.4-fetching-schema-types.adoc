@@ -7,7 +7,7 @@ So far, we've seen that the output of Fetch queries includes a `type` field for 
 [,typeql]
 ----
 match
-$user isa user, has id "U0008";
+$user isa user, has id "u0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
@@ -74,7 +74,7 @@ While the results list the books, they do not tell us anything about the nature 
 [,typeql]
 ----
 match
-$user isa user, has id "U0008";
+$user isa user, has id "u0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
@@ -179,7 +179,7 @@ Modify the above query to also retrieve the type of the relation between `$book`
 [,typeql]
 ----
 match
-$user isa user, has id "U0008";
+$user isa user, has id "u0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa! $relation-type;

@@ -8,7 +8,7 @@ To insert new data into a database, we use an *Insert query*. The following quer
 ----
 insert
 $evelin isa user,
-    has id "U0011",
+    has id "u0011",
     has name "Evelin Griffith",
     has birth-date 1994-08-03;
 ----
@@ -89,13 +89,13 @@ Notice that we have given the book two `genre` attributes! This is perfectly per
 ====
 Insert two new users. The first user should have:
 
-* The user ID "U0012".
+* The user ID "u0012".
 * The name Fiona Carlson.
 * The birth date 10th July 1951.
 
 The second user should have:
 
-* The user ID "U0013".
+* The user ID "u0013".
 * The name Jordan Duarte.
 * The birth date 31st October 1963.
 
@@ -107,11 +107,11 @@ The second user should have:
 ----
 insert
 $fiona isa user,
-    has id "U0012",
+    has id "u0012",
     has name "Fiona Carlson",
     has birth-date 1951-07-10;
 $jordan isa user,
-    has id "U0013",
+    has id "u0013",
     has name "Jordan Duarte",
     has birth-date 1963-10-31;
 ----
@@ -197,7 +197,7 @@ $role;
 .Hint 2
 [%collapsible]
 =====
-Make sure to identify Fiona by her unique user ID `"U0012"` so as not to match other users with the same name!
+Make sure to identify Fiona by her unique user ID `"u0012"` so as not to match other users with the same name!
 =====
 
 .Sample solution
@@ -206,7 +206,7 @@ Make sure to identify Fiona by her unique user ID `"U0012"` so as not to match o
 [,typeql]
 ----
 match
-$user isa user, has id "U0012";
+$user isa user, has id "u0012";
 insert
 $login isa login, has success true;
 (action: $login, executor: $user) isa action-execution,

@@ -407,7 +407,7 @@ This is more than enough information for TypeDB to infer the type of `$order`, w
         "type": { "label": "order-line", "root": "relation" }
     },
     "order": {
-        "id": [ { "value": "O0016", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "id": [ { "value": "o0016", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
         "type": { "label": "order", "root": "entity" }
     }
 }
@@ -417,7 +417,7 @@ This is more than enough information for TypeDB to infer the type of `$order`, w
         "type": { "label": "order-line", "root": "relation" }
     },
     "order": {
-        "id": [ { "value": "O0032", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "id": [ { "value": "o0032", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
         "type": { "label": "order", "root": "entity" }
     }
 }
@@ -427,7 +427,7 @@ This is more than enough information for TypeDB to infer the type of `$order`, w
         "type": { "label": "order-line", "root": "relation" }
     },
     "order": {
-        "id": [ { "value": "O0036", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "id": [ { "value": "o0036", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
         "type": { "label": "order", "root": "entity" }
     }
 }
@@ -565,7 +565,7 @@ Many useful polymorphic patterns combine more than one form of polymorphism. For
 [,typeql]
 ----
 match
-$user isa user, has id "U0008";
+$user isa user, has id "u0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
@@ -627,7 +627,7 @@ $book: isbn, title;
 }
 ----
 
-This query retrieves the ISBNs and title of any book that this particular user with ID "U0008" has interacted with via any kind of system action they performed, and is very useful for building a customer profile. If we extend our schema to introduce new ways that users can interact with books, then this query will return books interacted with in those ways too, without having to modify it! This is an example of a way in which we can declaratively encode high-level business questions as straightforward queries, and avoid having to modify queries when the data model is extended.
+This query retrieves the ISBNs and title of any book that this particular user with ID "u0008" has interacted with via any kind of system action they performed, and is very useful for building a customer profile. If we extend our schema to introduce new ways that users can interact with books, then this query will return books interacted with in those ways too, without having to modify it! This is an example of a way in which we can declaratively encode high-level business questions as straightforward queries, and avoid having to modify queries when the data model is extended.
 
 .Exercise
 [caption=""]

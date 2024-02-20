@@ -7,7 +7,7 @@ Try *running* image:learn::studio-icons/run.png[] the following query, which ret
 [,typeql]
 ----
 match
-$user isa user, has id "U0003";
+$user isa user, has id "u0003";
 ($located: $user, location: $place) isa locating;
 fetch
 $place: name;
@@ -69,7 +69,7 @@ rule transitive-location:
 
 The structure of this rule tells us that `locating` relations are *transitive*. Our data contains the following information encoded in `locating` relations:
 
-* The user with ID "U0003" is located in Newark.
+* The user with ID "u0003" is located in Newark.
 * Newark is located in New Jersey.
 * New Jersey is located in the United States.
 
