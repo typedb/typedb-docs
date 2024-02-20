@@ -77,7 +77,7 @@ order sub entity,
     plays delivery:delivered;
 
 promotion sub entity,
-    owns name @key,
+    owns name,
     owns start-timestamp,
     owns end-timestamp,
     plays promotion-inclusion:promotion;
