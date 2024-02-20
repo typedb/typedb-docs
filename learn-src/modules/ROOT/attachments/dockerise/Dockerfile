@@ -9,4 +9,4 @@ RUN python3 -m pip install requests==2.31.0 pyyaml==6.0.1
 COPY bootstrapper.py /typedb-samples
 
 # We need the 'exec' before typedb server, or the SIGTERM from `docker stop` will not forwarded to it
-CMD python3 bootstrapper.py; exec typedb server
+CMD python3 -u bootstrapper.py; exec typedb server
