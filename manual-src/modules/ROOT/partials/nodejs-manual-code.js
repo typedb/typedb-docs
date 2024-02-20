@@ -6,9 +6,7 @@ const { TypeDBOptions } = require("typedb-driver/api/connection/TypeDBOptions");
 const { Concept } = require("typedb-driver/api/concept/Concept");
 // end::import[]
 async function main() {
-    const DB_NAME = "sample_db";
-
-    console.log("TypeDB Manual sample code");
+    const DB_NAME = "manual_db";
     // tag::driver[]
     const driver = await TypeDB.coreDriver("127.0.0.1:1729");
     // end::driver[]
@@ -33,7 +31,7 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
+            tx = await session.transaction(TransactionType.WRITE);
             const define_query = `
                                 define
                                 email sub attribute, value string;
@@ -45,10 +43,10 @@ async function main() {
                                     plays friendship:friend;
                                 admin sub user;
                                 `;
-            await transaction.query.define(define_query);
-            await transaction.commit();
+            await tx.query.define(define_query);
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::define[]
@@ -56,12 +54,12 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
+            tx = await session.transaction(TransactionType.WRITE);
             const undefine_query = "undefine admin sub user;";
-            await transaction.query.undefine(undefine_query);
-            await transaction.commit();
+            await tx.query.undefine(undefine_query);
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::undefine[]
@@ -69,17 +67,17 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
+            tx = await session.transaction(TransactionType.WRITE);
             const insert_query = `
                                 insert
                                 $user1 isa user, has name "Alice", has email "alice@vaticle.com";
                                 $user2 isa user, has name "Bob", has email "bob@vaticle.com";
                                 $friendship (friend:$user1, friend: $user2) isa friendship;
                                 `;
-            await transaction.query.insert(insert_query);
-            await transaction.commit();
+            await tx.query.insert(insert_query);
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::insert[]
@@ -87,7 +85,7 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
+            tx = await session.transaction(TransactionType.WRITE);
             const match_insert_query = `
                                 match
                                 $u isa user, has name "Bob";
@@ -95,13 +93,13 @@ async function main() {
                                 $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
                                 $f($u,$new-u) isa friendship;
                                 `;
-            let response = await transaction.query.insert(match_insert_query).collect();
+            let response = await tx.query.insert(match_insert_query).collect();
             if (response.length == 1) {
-                await transaction.commit();
+                await tx.commit();
             }
-            else {await transaction.close();}
+            else {await tx.close();}
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::match-insert[]
@@ -109,7 +107,7 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
+            tx = await session.transaction(TransactionType.WRITE);
             const delete_query = `
                                 match
                                 $u isa user, has name "Charlie";
@@ -117,10 +115,10 @@ async function main() {
                                 delete
                                 $f isa friendship;
                                 `;
-            await transaction.query.delete(delete_query);
-            await transaction.commit();
+            await tx.query.delete(delete_query);
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::delete[]
@@ -128,7 +126,7 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
+            tx = await session.transaction(TransactionType.WRITE);
             const update_query = `
                                 match
                                 $u isa user, has name "Charlie", has email $e;
@@ -137,13 +135,13 @@ async function main() {
                                 insert
                                 $u has email "charles@vaticle.com";
                                 `;
-            let response = await transaction.query.update(update_query).collect();
+            let response = await tx.query.update(update_query).collect();
             if (response.length == 1) {
-                await transaction.commit();
+                await tx.commit();
             }
-            else {await transaction.close();}
+            else {await tx.close();}
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::update[]
@@ -151,19 +149,19 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
-            transaction = await session.transaction(TransactionType.READ);
+            tx = await session.transaction(TransactionType.READ);
             const fetch_query = `
                                 match
                                 $u isa user;
                                 fetch
                                 $u: name, email;
                                 `;
-            let response = await transaction.query.fetch(fetch_query).collect();
-            for(let i = 0; i < response.length; i++) {
+            let response = await tx.query.fetch(fetch_query).collect();
+            for (let i = 0; i < response.length; i++) {
                 console.log("User #" + (i + 1) + ": " + JSON.stringify(response[i], null, 4));
             }
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::fetch[]
@@ -171,19 +169,19 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
-            transaction = await session.transaction(TransactionType.READ);
+            tx = await session.transaction(TransactionType.READ);
             const get_query = `
                                 match
                                 $u isa user, has email $e;
                                 get
                                 $e;
                                 `;
-            let response = await transaction.query.get(get_query).collect();
-            for(let i = 0; i < response.length; i++) {
+            let response = await tx.query.get(get_query).collect();
+            for (let i = 0; i < response.length; i++) {
                 console.log("Email #" + (i + 1) + ": " + response[i].get("e").value);
             }
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::get[]
@@ -191,7 +189,7 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
+            tx = await session.transaction(TransactionType.WRITE);
             const define_query = `
                                 define
                                 rule users:
@@ -201,10 +199,10 @@ async function main() {
                                     $u has name "User";
                                 };
                                 `;
-            await transaction.query.define(define_query);
-            await transaction.commit();
+            await tx.query.define(define_query);
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::infer-rule[]
@@ -214,19 +212,19 @@ async function main() {
         try {
             let options = new TypeDBOptions();
             options.infer = true;
-            transaction = await session.transaction(TransactionType.READ, options);
+            tx = await session.transaction(TransactionType.READ, options);
             const fetch_query = `
                                 match
                                 $u isa user;
                                 fetch
                                 $u: name, email;
                                 `;
-            let response = await transaction.query.fetch(fetch_query).collect();
+            let response = await tx.query.fetch(fetch_query).collect();
             for(let i = 0; i < response.length; i++) {
                 console.log("User #" + (i + 1) + ": " + JSON.stringify(response[i], null, 4));
             }
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::infer-fetch[]
@@ -234,14 +232,14 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
-            let tag = await transaction.concepts.putAttributeType("tag", Concept.ValueType.STRING);
-            let rootEntity = await transaction.concepts.getRootEntityType();
-            let entites = await rootEntity.getSubtypes(transaction, Concept.Transitivity.EXPLICIT);
-            await entites.forEach(entity => entity.setOwns(transaction, tag));
-            await transaction.commit();
+            tx = await session.transaction(TransactionType.WRITE);
+            let tag = await tx.concepts.putAttributeType("tag", Concept.ValueType.STRING);
+            let rootEntity = await tx.concepts.getRootEntityType();
+            let entites = await rootEntity.getSubtypes(tx, Concept.Transitivity.EXPLICIT);
+            await entites.forEach(entity => entity.setOwns(tx, tag));
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::types-editing[]
@@ -249,16 +247,16 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
-            let user = await transaction.concepts.getEntityType("user");
-            let admin = await transaction.concepts.putEntityType("admin");
-            await admin.setSupertype(transaction, user);
-            let rootEntity = await transaction.concepts.getRootEntityType();
-            let subtypes = await rootEntity.getSubtypes(transaction, Concept.Transitivity.TRANSITIVE);
+            tx = await session.transaction(TransactionType.WRITE);
+            let user = await tx.concepts.getEntityType("user");
+            let admin = await tx.concepts.putEntityType("admin");
+            await admin.setSupertype(tx, user);
+            let rootEntity = await tx.concepts.getRootEntityType();
+            let subtypes = await rootEntity.getSubtypes(tx, Concept.Transitivity.TRANSITIVE);
             await subtypes.forEach(subtype => console.log(subtype.label.toString()));
-            await transaction.commit();
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::types-api[]
@@ -266,18 +264,18 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
-            await transaction.logic.getRules().forEach(rule => {
+            tx = await session.transaction(TransactionType.WRITE);
+            for await (const rule of tx.logic.getRules()) {
                 console.log("Rule label: " + rule.label);
                 console.log("  Condition: " + rule.when);
                 console.log("  Conclusion: " + rule.then);
-            });
-            let new_rule = await transaction.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
-            console.log((await transaction.logic.getRule("Employee")).label);
-            await new_rule.delete(transaction);
-            await transaction.commit();
+            }
+            let new_rule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+            console.log((await tx.logic.getRule("Employee")).label);
+            await new_rule.delete(tx);
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::rules-api[]
@@ -285,19 +283,21 @@ async function main() {
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
         try {
-            transaction = await session.transaction(TransactionType.WRITE);
-            let users = await (await transaction.concepts.getEntityType("user")).getInstances(transaction).collect();
-            users.forEach(user =>{
-                let attributes = user.getHas(transaction);
-                attributes.forEach(attribute => {
+            tx = await session.transaction(TransactionType.WRITE);
+            let userType = await tx.concepts.getEntityType("user");
+            let users = userType.getInstances(tx);
+            for await (const user of users) {
+                let attributes = user.getHas(tx);
+                console.log("User:");
+                for await (const attribute of attributes) {
                     console.log(" " + attribute.type.label.toString() + ": " + attribute.value.toString());
-                });
-            });
-            let newUser = await (await transaction.concepts.getEntityType("user")).create(transaction);
-            await newUser.delete(transaction);
-            await transaction.commit();
+                }
+            }
+            let newUser = await (await tx.concepts.getEntityType("user")).create(tx);
+            await newUser.delete(tx);
+            await tx.commit();
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::data-api[]
@@ -308,7 +308,7 @@ async function main() {
             let options = new TypeDBOptions();
             options.infer = true;
             options.explain = true;
-            transaction = await session.transaction(TransactionType.READ, options);
+            tx = await session.transaction(TransactionType.READ, options);
             const get_query = `
                                 match
                                 $u isa user, has email $e, has name $n;
@@ -316,13 +316,13 @@ async function main() {
                                 get
                                 $u, $n;
                                 `;
-            let response = await transaction.query.get(get_query).collect();
+            let response = await tx.query.get(get_query).collect();
             for(let i = 0; i < response.length; i++) {
                 console.log("Name #" + (i + 1) + ": " + response[i].get("n").value);
                 let explainable_relations = await response[i].explainables.relations;
-                explainable_relations.forEach(explainable => {
+                for await (const explainable of explainable_relations) {
                     console.log("Explainable part of the query: " + explainable.conjunction())
-                    explain_iterator = transaction.query.explain(explainable);
+                    explain_iterator = tx.query.explain(explainable);
                     for (explanation of explain_iterator) {
                         console.log("Rule: " + explanation.rule.label)
                         console.log("Condition: " + explanation.condition.toString())
@@ -331,10 +331,10 @@ async function main() {
                             console.log("Query variable " + qvar + " maps to the rule variable " + explanation.variableMapping.get(qvar))
                         }
                     }
-                });
+                }
             }
         }
-        finally {if (transaction.isOpen()) {await transaction.close()};}
+        finally {if (tx.isOpen()) {await tx.close()};}
     }
     finally {await session?.close();}
     // end::explain-get[]
