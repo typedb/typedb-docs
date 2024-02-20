@@ -3,7 +3,7 @@
 #include <typedb_driver.hpp>
 // end::import[]
 int main() {
-    std::string dbName = "manual";
+    std::string dbName = "manual_db";
     // tag::options[]
     TypeDB::Options options;
     // end::options[]
@@ -36,7 +36,7 @@ int main() {
     {   // tag::define[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string defineQuery = R"(
                                 define
                                 email sub attribute, value string;
@@ -48,8 +48,8 @@ int main() {
                                     plays friendship:friend;
                                 admin sub user;
                                 )";
-            txn.query.define(defineQuery).get();
-            txn.commit();
+            tx.query.define(defineQuery).get();
+            tx.commit();
         }
         // end::define[]
     }
@@ -57,10 +57,10 @@ int main() {
     {   // tag::undefine[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string undefineQuery = "undefine admin sub user;";
-            txn.query.undefine(undefineQuery).get();
-            txn.commit();
+            tx.query.undefine(undefineQuery).get();
+            tx.commit();
         }
         // end::undefine[]
     }
@@ -68,15 +68,15 @@ int main() {
     {   // tag::insert[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string insertQuery = R"(
                                     insert
                                     $user1 isa user, has name "Alice", has email "alice@vaticle.com";
                                     $user2 isa user, has name "Bob", has email "bob@vaticle.com";
                                     $friendship (friend:$user1, friend: $user2) isa friendship;
                                     )";
-            TypeDB::ConceptMapIterable result = txn.query.insert(insertQuery);
-            txn.commit();
+            TypeDB::ConceptMapIterable result = tx.query.insert(insertQuery);
+            tx.commit();
         }
         // end::insert[]
     }
@@ -84,7 +84,7 @@ int main() {
     {   // tag::match-insert[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string matchInsertQuery = R"(
                                             match
                                             $u isa user, has name "Bob";
@@ -92,13 +92,13 @@ int main() {
                                             $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
                                             $f($u,$new-u) isa friendship;
                                             )";
-            TypeDB::ConceptMapIterable result = txn.query.insert(matchInsertQuery);
+            TypeDB::ConceptMapIterable result = tx.query.insert(matchInsertQuery);
             int16_t i = 0;
             for (TypeDB::ConceptMap& element : result) { i+=1; }
             if (i == 1) {
-                txn.commit();
+                tx.commit();
             } else {
-                txn.close();
+                tx.close();
             }
         }
         // end::match-insert[]
@@ -107,7 +107,7 @@ int main() {
     {   // tag::delete[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string deleteQuery = R"(
                                         match
                                         $u isa user, has name "Charlie";
@@ -115,8 +115,8 @@ int main() {
                                         delete
                                         $f isa friendship;
                                         )";
-            txn.query.matchDelete(deleteQuery).get();
-            txn.commit();
+            tx.query.matchDelete(deleteQuery).get();
+            tx.commit();
         }
         // end::delete[]
     }
@@ -124,7 +124,7 @@ int main() {
     {   // tag::update[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string updateQuery = R"(
                                         match
                                         $u isa user, has name "Charlie", has email $e;
@@ -133,13 +133,13 @@ int main() {
                                         insert
                                         $u has email "charles@vaticle.com";
                                         )";
-            TypeDB::ConceptMapIterable result = txn.query.update(updateQuery);
+            TypeDB::ConceptMapIterable result = tx.query.update(updateQuery);
             int16_t i = 0;
             for (TypeDB::ConceptMap& element : result) { i+=1; }
             if (i == 1) {
-                txn.commit();
+                tx.commit();
             } else {
-                txn.close();
+                tx.close();
             }
         }
         // end::update[]
@@ -148,14 +148,14 @@ int main() {
     {   // tag::fetch[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::READ, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, options);
             std::string fetchQuery = R"(
                                         match
                                         $u isa user;
                                         fetch
                                         $u: name, email;
                                         )";
-            TypeDB::JSONIterable results = txn.query.fetch(fetchQuery);
+            TypeDB::JSONIterable results = tx.query.fetch(fetchQuery);
             std::vector<TypeDB::JSON> fetchResult;
             for (TypeDB::JSON& result : results) {
                 fetchResult.push_back(result);
@@ -167,14 +167,14 @@ int main() {
     {   // tag::get[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::READ, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, options);
             std::string getQuery = R"(
                                     match
                                     $u isa user, has email $e;
                                     get
                                     $e;
                                     )";
-            TypeDB::ConceptMapIterable result = txn.query.get(getQuery);
+            TypeDB::ConceptMapIterable result = tx.query.get(getQuery);
             int16_t i = 0;
             for (TypeDB::ConceptMap& cm : result) {
                 i += 1;
@@ -187,7 +187,7 @@ int main() {
     {   // tag::infer-rule[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string defineQuery = R"(
                                         define
                                         rule users:
@@ -197,8 +197,8 @@ int main() {
                                             $u has name "User";
                                         };
                                         )";
-            txn.query.define(defineQuery).get();
-            txn.commit();
+            tx.query.define(defineQuery).get();
+            tx.commit();
         }
         // end::infer-rule[]
         // tag::infer-fetch[]
@@ -206,14 +206,14 @@ int main() {
         inferOptions.infer(true);
         TypeDB::Session session2 = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
         {
-            TypeDB::Transaction txn2 = session.transaction(TypeDB::TransactionType::READ, inferOptions);
+            TypeDB::Transaction tx2 = session.transaction(TypeDB::TransactionType::READ, inferOptions);
             std::string fetchQuery = R"(
                                         match
                                         $u isa user;
                                         fetch
                                         $u: name, email;
                                         )";
-            TypeDB::JSONIterable results = txn2.query.fetch(fetchQuery);
+            TypeDB::JSONIterable results = tx2.query.fetch(fetchQuery);
             std::vector<TypeDB::JSON> fetchResult;
             for (TypeDB::JSON& result : results) {
                 fetchResult.push_back(result);
@@ -226,16 +226,16 @@ int main() {
         // tag::types-editing[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
-            std::unique_ptr<TypeDB::AttributeType> tag = txn.concepts.putAttributeType("tag", TypeDB::ValueType::STRING).get();
-            TypeDB::ConceptIterable<TypeDB::EntityType> entities = txn.concepts.getRootEntityType().get()->getSubtypes(txn);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            std::unique_ptr<TypeDB::AttributeType> tag = tx.concepts.putAttributeType("tag", TypeDB::ValueType::STRING).get();
+            TypeDB::ConceptIterable<TypeDB::EntityType> entities = tx.concepts.getRootEntityType().get()->getSubtypes(tx);
             for (std::unique_ptr<TypeDB::EntityType>& entity : entities) {
                 std::cout << entity.get()->getLabel() << std::endl;
                 if (!(entity.get()->isAbstract())) {
-                    (void) entity.get()->setOwns(txn, tag.get());
+                    (void) entity.get()->setOwns(tx, tag.get());
                 };
             }
-            txn.commit();
+            tx.commit();
         }
         // end::types-editing[]
     }
@@ -244,15 +244,15 @@ int main() {
         // tag::types-api[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
-            std::unique_ptr<TypeDB::EntityType> user = txn.concepts.getEntityType("user").get();
-            std::unique_ptr<TypeDB::EntityType> admin = txn.concepts.putEntityType("admin").get();
-            admin.get()->setSupertype(txn, user.get()).wait();
-            TypeDB::ConceptIterable<TypeDB::EntityType> entities = txn.concepts.getRootEntityType().get()->getSubtypes(txn, TypeDB::Transitivity::TRANSITIVE);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            std::unique_ptr<TypeDB::EntityType> user = tx.concepts.getEntityType("user").get();
+            std::unique_ptr<TypeDB::EntityType> admin = tx.concepts.putEntityType("admin").get();
+            admin.get()->setSupertype(tx, user.get()).wait();
+            TypeDB::ConceptIterable<TypeDB::EntityType> entities = tx.concepts.getRootEntityType().get()->getSubtypes(tx, TypeDB::Transitivity::TRANSITIVE);
             for (std::unique_ptr<TypeDB::EntityType>& entity : entities) {
                 std::cout << entity.get()->getLabel() << std::endl;
             }
-            txn.commit();
+            tx.commit();
         }
         // end::types-api[]
     }
@@ -261,17 +261,17 @@ int main() {
         // tag::rules-api[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
-            TypeDB::RuleIterable rules = txn.logic.getRules();
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            TypeDB::RuleIterable rules = tx.logic.getRules();
             for (TypeDB::Rule& rule : rules) {
                 std::cout << rule.label() << std::endl;
                 std::cout << rule.when() << std::endl;
                 std::cout << rule.then() << std::endl;
             }
-            TypeDB::Rule newRule = txn.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").get();
-            std::cout << txn.logic.getRule("Employee").get().value().label() << std::endl;
-            newRule.deleteRule(txn).get();
-            txn.commit();
+            TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").get();
+            std::cout << tx.logic.getRule("Employee").get().value().label() << std::endl;
+            newRule.deleteRule(tx).get();
+            tx.commit();
         }
         // end::rules-api[]
     }
@@ -280,19 +280,19 @@ int main() {
         // tag::data-api[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::WRITE, options);
-            std::unique_ptr<TypeDB::EntityType> userType = txn.concepts.getEntityType("user").get();
-            TypeDB::ConceptIterable<TypeDB::Entity> users = userType -> getInstances(txn);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            std::unique_ptr<TypeDB::EntityType> userType = tx.concepts.getEntityType("user").get();
+            TypeDB::ConceptIterable<TypeDB::Entity> users = userType -> getInstances(tx);
             for (std::unique_ptr<TypeDB::Entity>& user : users) {
-                TypeDB::ConceptIterable<TypeDB::Attribute> attributes = user.get()->getHas(txn);
+                TypeDB::ConceptIterable<TypeDB::Attribute> attributes = user.get()->getHas(tx);
                 std::cout << "User: " << std::endl;
                 for (std::unique_ptr<TypeDB::Attribute>& attribute : attributes) {
                     std::cout << "  " << attribute.get()->getType().get()->getLabel() << ": " << attribute.get()->getValue().get()->asString() << std::endl;
                 }
             }
-            std::unique_ptr<TypeDB::Entity> newUser = txn.concepts.getEntityType("user").get().get()->create(txn).get();
-            newUser.get()->deleteThing(txn).get();
-            txn.commit();
+            std::unique_ptr<TypeDB::Entity> newUser = tx.concepts.getEntityType("user").get().get()->create(tx).get();
+            newUser.get()->deleteThing(tx).get();
+            tx.commit();
         }
         // end::data-api[]
     }
@@ -304,7 +304,7 @@ int main() {
         inferOptions.explain(true);
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
         {
-            TypeDB::Transaction txn = session.transaction(TypeDB::TransactionType::READ, inferOptions);
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, inferOptions);
             std::string getQuery = R"(
                                     match
                                     $u isa user, has email $e, has name $n;
@@ -312,7 +312,7 @@ int main() {
                                     get
                                     $u, $n;
                                     )";
-            TypeDB::ConceptMapIterable results = txn.query.get(getQuery);
+            TypeDB::ConceptMapIterable results = tx.query.get(getQuery);
             int16_t i = 0;
             for (TypeDB::ConceptMap& cm : results) {
                 i += 1;
@@ -321,7 +321,7 @@ int main() {
                 for (std::string& explainable : explainableRelations) {
                     std::cout << "Explained variable " << explainable << std::endl;
                     std::cout << "Explainable part of the query " << cm.explainables().relation(explainable).conjunction() << std::endl;
-                    TypeDB::ExplanationIterable explainIterator = txn.query.explain(cm.explainables().relation(explainable));
+                    TypeDB::ExplanationIterable explainIterator = tx.query.explain(cm.explainables().relation(explainable));
                     for (TypeDB::Explanation& explanation : explainIterator) {
                         std::cout << "Rule: " << explanation.rule().label() << std::endl;
                         std::cout << "Condition: " << explanation.rule().when() << std::endl;
