@@ -12,6 +12,7 @@ $spring-sale isa promotion,
     has start-timestamp 2024-03-15T00:00:00,
     has end-timestamp 2024-03-31T23:59:59;
 ----
+image:learn::studio-icons/close.png[] *_Do not run_*
 
 However, we have not yet assigned any books to this sale. This sale is a pretty big one, so we're going to assign every book in the store to it with a 10% discount.
 
@@ -24,6 +25,7 @@ insert
 (promotion: $spring-sale, included: $book) isa promotion inclusion,
     has discount 0.10;
 ----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
 
 By matching books using the supertype `book`, this query will add all books to the promotion, regardless of whether they are paperbacks, hardbacks, or ebooks. In this case, TypeDB is using *type inference* to resolve the inheritance polymorphism in the write query. We can just as easily use interface or parametric polymorphism in data writes!
 
@@ -49,7 +51,7 @@ $sff-festival isa promotion,
     has start-timestamp 2024-04-19T00:00:00,
     has end-timestamp 2024-04-26T23:59:59;
 ----
-
+image:learn::studio-icons/run.png[] *_Run_*
 [,typeql]
 ----
 match
@@ -59,7 +61,7 @@ insert
 (promotion: $sff-festival, included: $book) isa promotion inclusion,
     has discount 0.15;
 ----
-
+image:learn::studio-icons/run.png[] *_Run_*
 [,typeql]
 ----
 match
@@ -69,8 +71,8 @@ insert
 (promotion: $sff-festival, included: $book) isa promotion inclusion,
     has discount 0.20;
 ----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
 =====
-
 ====
 
 == Inferring roles
@@ -88,6 +90,7 @@ $review isa review, has score 8;
 ($review, $user-13) isa action-execution,
     has timestamp 2024-03-19T03:32:00.073;
 ----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
 
 For this query, TypeDB is able to infer that `$review` plays the `review` role and `$frankenstein` plays the `rated` role in rating. This is because:
 
@@ -107,6 +110,7 @@ insert
 $ga isa state, has name "Georgia";
 ($us, $ga) isa locating;
 ----
+image:learn::studio-icons/run.png[] *_Try running_*
 
 The types `country` and `state` can play both `location:location` and `location:located`, so any of the following four combinations of roles would be valid:
 
@@ -134,6 +138,6 @@ insert
 ($sff-festival, $frankenstein) isa promotion inclusion,
     has discount 0.15;
 ----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
 =====
-
 ====
