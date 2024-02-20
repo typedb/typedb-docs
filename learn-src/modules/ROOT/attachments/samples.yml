@@ -1,0 +1,10 @@
+# Track version for breaking changes.
+bootstrapper-version: 1.0.0
+# TypeDB Version needed
+typedb-version: 2.26.6
+
+# Datasets to pre-install
+datasets:
+  bookstore:
+    schema: bookstore-schema.tql
+    data: bookstore-data.tql
