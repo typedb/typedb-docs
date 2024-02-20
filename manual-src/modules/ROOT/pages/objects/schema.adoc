@@ -59,7 +59,7 @@ Java::
 .Example
 [,java]
 ----
-EntityType user = Transaction.concepts().getEntityType("user").resolve();
+EntityType user = transaction.concepts().getEntityType("user").resolve();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -143,7 +143,7 @@ Java::
 .Example
 [,java]
 ----
-EntityType admin = Transaction.concepts().putEntityType("admin").resolve();
+EntityType admin = transaction.concepts().putEntityType("admin").resolve();
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -363,7 +363,7 @@ Java::
 .Example
 [,java]
 ----
-Rule oldRule = Transaction.logic().getRule("Employee").resolve();
+Rule oldRule = transaction.logic().getRule("Employee").resolve();
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -464,7 +464,7 @@ Java::
 .Example
 [,java]
 ----
-Transaction.logic().getRules().forEach(result -> {
+transaction.logic().getRules().forEach(result -> {
     System.out.println("Rule label: " + result.getLabel());
     System.out.println("  Condition: " + result.getWhen().toString());
     System.out.println("  Conclusion: " + result.getThen().toString());
@@ -573,7 +573,7 @@ Java::
 ----
 Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
 Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
-Rule newRule = Transaction.logic().putRule("Employee", condition, conclusion).resolve();
+Rule newRule = transaction.logic().putRule("Employee", condition, conclusion).resolve();
 ----
 
 [subs="macros, post_replacements, replacements"]
