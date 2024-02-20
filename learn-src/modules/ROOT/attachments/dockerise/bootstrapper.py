@@ -8,7 +8,7 @@ from os import environ
 from time import sleep
 
 BOOTSTRAPPER_VERSION = "1.0.0"
-DEFAULT_CONFIG_YML = "https://raw.githubusercontent.com/krishnangovindraj/typedb-docs/dockerised-samples/learn-src/modules/ROOT/attachments/config.yml"
+DEFAULT_CONFIG_YML = "https://raw.githubusercontent.com/vaticle/typedb-docs/master/learn-src/modules/ROOT/attachments/config.yml"
 PRINT_DEBUG = environ.get("DEBUG_BOOTSTRAPPER", "false").lower() != "false"
 BOOTSTRAPPER_PORT = 1730
 
