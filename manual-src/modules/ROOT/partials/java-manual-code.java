@@ -48,7 +48,7 @@ public class Main {
         }
         // tag::define[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String defineQuery = """
                                     define
                                     email sub attribute, value string;
@@ -60,37 +60,37 @@ public class Main {
                                         plays friendship:friend;
                                     admin sub user;
                                     """;
-                transaction.query().define(defineQuery).resolve();
-                transaction.commit();
+                tx.query().define(defineQuery).resolve();
+                tx.commit();
             }
         }
         // end::define[]
         // tag::undefine[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String undefineQuery = "undefine admin sub user;";
-                transaction.query().undefine(undefineQuery).resolve();
-                transaction.commit();
+                tx.query().undefine(undefineQuery).resolve();
+                tx.commit();
             }
         }
         // end::undefine[]
         // tag::insert[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String insertQuery = """
                                     insert
                                     $user1 isa user, has name "Alice", has email "alice@vaticle.com";
                                     $user2 isa user, has name "Bob", has email "bob@vaticle.com";
                                     $friendship (friend:$user1, friend: $user2) isa friendship;
                                     """;
-                transaction.query().insert(insertQuery);
-                transaction.commit();
+                tx.query().insert(insertQuery);
+                tx.commit();
             }
         }
         // end::insert[]
         // tag::match-insert[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String matchInsertQuery = """
                                         match
                                         $u isa user, has name "Bob";
@@ -98,18 +98,18 @@ public class Main {
                                         $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
                                         $f($u,$new-u) isa friendship;
                                         """;
-                long response_count = transaction.query().insert(matchInsertQuery).count();
+                long response_count = tx.query().insert(matchInsertQuery).count();
                 if (response_count == 1) {
-                    transaction.commit();
+                    tx.commit();
                 } else {
-                    transaction.close();
+                    tx.close();
                 }
             }
         }
         // end::match-insert[]
         // tag::delete[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String deleteQuery = """
                                     match
                                     $u isa user, has name "Charlie";
@@ -117,14 +117,14 @@ public class Main {
                                     delete
                                     $f isa friendship;
                                     """;
-                transaction.query().delete(deleteQuery).resolve();
-                transaction.commit();
+                tx.query().delete(deleteQuery).resolve();
+                tx.commit();
             }
         }
         // end::delete[]
         // tag::update[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String updateQuery = """
                                     match
                                     $u isa user, has name "Charlie", has email $e;
@@ -133,18 +133,18 @@ public class Main {
                                     insert
                                     $u has email "charles@vaticle.com";
                                     """;
-                long response_count = transaction.query().update(updateQuery).count();
+                long response_count = tx.query().update(updateQuery).count();
                 if (response_count == 1) {
-                    transaction.commit();
+                    tx.commit();
                 } else {
-                    transaction.close();
+                    tx.close();
                 }
             }
         }
         // end::update[]
         // tag::fetch[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ)) {
                 String fetchQuery = """
                                     match
                                     $u isa user;
@@ -152,13 +152,13 @@ public class Main {
                                     $u: name, email;
                                     """;
                 int[] ctr = new int[1];
-                transaction.query().fetch(fetchQuery).forEach(result -> System.out.println("Email #" + (++ctr[0]) + ": " + result.toString()));
+                tx.query().fetch(fetchQuery).forEach(result -> System.out.println("Email #" + (++ctr[0]) + ": " + result.toString()));
             }
         }
         // end::fetch[]
         // tag::get[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ)) {
                 String getQuery = """
                                     match
                                     $u isa user, has email $e;
@@ -166,13 +166,13 @@ public class Main {
                                     $e;
                                     """;
                 int[] ctr = new int[1];
-                transaction.query().get(getQuery).forEach(result -> System.out.println("Email #" + (++ctr[0]) + ": " + result.get("e").asAttribute().getValue().toString()));
+                tx.query().get(getQuery).forEach(result -> System.out.println("Email #" + (++ctr[0]) + ": " + result.get("e").asAttribute().getValue().toString()));
             }
         }
         // end::get[]
         // tag::infer-rule[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String defineQuery = """
                                     define
                                     rule users:
@@ -182,15 +182,15 @@ public class Main {
                                         $u has name "User";
                                     };
                                     """;
-                transaction.query().define(defineQuery).resolve();
-                transaction.commit();
+                tx.query().define(defineQuery).resolve();
+                tx.commit();
             }
         }
         // end::infer-rule[]
         // tag::infer-fetch[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
             TypeDBOptions options = new TypeDBOptions().infer(true);
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ, options)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ, options)) {
                 String fetchQuery = """
                                     match
                                     $u isa user;
@@ -198,71 +198,72 @@ public class Main {
                                     $u: name, email;
                                     """;
                 int[] ctr = new int[1];
-                transaction.query().fetch(fetchQuery).forEach(result -> System.out.println("Email #" + (++ctr[0]) + ": " + result.toString()));
+                tx.query().fetch(fetchQuery).forEach(result -> System.out.println("Email #" + (++ctr[0]) + ": " + result.toString()));
             }
         }
         // end::infer-fetch[]
         // tag::types-editing[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                AttributeType tag = transaction.concepts().putAttributeType("tag", Value.Type.STRING).resolve();
-                transaction.concepts().getRootEntityType().getSubtypes(transaction, Concept.Transitivity.EXPLICIT).forEach(result -> {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                AttributeType tag = tx.concepts().putAttributeType("tag", Value.Type.STRING).resolve();
+                tx.concepts().getRootEntityType().getSubtypes(tx, Concept.Transitivity.EXPLICIT).forEach(result -> {
                     System.out.println(result.getLabel().toString());
                     if (! result.isAbstract()) {
-                        result.setOwns(transaction,tag).resolve();
+                        result.setOwns(tx,tag).resolve();
                     }
                 });
-                transaction.commit();
+                tx.commit();
             }
         }
         // end::types-editing[]
         // tag::types-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                EntityType user = transaction.concepts().getEntityType("user").resolve();
-                EntityType admin = transaction.concepts().putEntityType("admin").resolve();
-                admin.setSupertype(transaction, user).resolve();
-                EntityType root_entity = transaction.concepts().getRootEntityType();
-                root_entity.getSubtypes(transaction, Concept.Transitivity.TRANSITIVE).forEach(result -> System.out.println(result.getLabel().name()));
-                transaction.commit();
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                EntityType user = tx.concepts().getEntityType("user").resolve();
+                EntityType admin = tx.concepts().putEntityType("admin").resolve();
+                admin.setSupertype(tx, user).resolve();
+                EntityType root_entity = tx.concepts().getRootEntityType();
+                root_entity.getSubtypes(tx, Concept.Transitivity.TRANSITIVE).forEach(result -> System.out.println(result.getLabel().name()));
+                tx.commit();
             }
         }
         // end::types-api[]
         // tag::rules-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                Rule oldRule = transaction.logic().getRule("users").resolve();
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                Rule oldRule = tx.logic().getRule("users").resolve();
                 System.out.println("Rule label: " + oldRule.getLabel());
                 System.out.println("  Condition: " + oldRule.getWhen().toString());
                 System.out.println("  Conclusion: " + oldRule.getThen().toString());
                 Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
                 Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
-                Rule newRule = transaction.logic().putRule("Employee", condition, conclusion).resolve();
-                transaction.logic().getRules().forEach(result -> System.out.println(result.getLabel()));
-                newRule.delete(transaction).resolve();
-                transaction.commit();
+                Rule newRule = tx.logic().putRule("Employee", condition, conclusion).resolve();
+                tx.logic().getRules().forEach(result -> System.out.println(result.getLabel()));
+                newRule.delete(tx).resolve();
+                tx.commit();
             }
         }
         // end::rules-api[]
         // tag::data-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 Set<ThingType.Annotation> annotations = Collections.emptySet();
-                transaction.concepts().getEntityType("user").resolve().getInstances(transaction).forEach(user -> {
+                EntityType userType = tx.concepts().getEntityType("user").resolve();
+                userType.getInstances(tx).forEach(user -> {
                     System.out.println("User");
-                    user.getHas(transaction, annotations).forEach(attribute ->
+                    user.getHas(tx, annotations).forEach(attribute ->
                         System.out.println(attribute.getType().getLabel().toString()+ ": " + attribute.getValue().toString()));
                 });
-                Entity new_user = transaction.concepts().getEntityType("user").resolve().create(transaction).resolve();
-                new_user.delete(transaction).resolve();
-                transaction.commit();
+                Entity new_user = tx.concepts().getEntityType("user").resolve().create(tx).resolve();
+                new_user.delete(tx).resolve();
+                tx.commit();
             }
         }
         // end::data-api[]
         // tag::explain-get[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
             TypeDBOptions options = new TypeDBOptions().infer(true).explain(true);
-            try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ, options)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ, options)) {
                 String getQuery = """
                                     match
                                     $u isa user, has email $e, has name $n;
@@ -271,14 +272,14 @@ public class Main {
                                     $u, $n;
                                     """;
                 int[] ctr = new int[1];
-                transaction.query().get(getQuery).forEach(result -> {
+                tx.query().get(getQuery).forEach(result -> {
                     String name = result.get("n").asAttribute().getValue().toString();
                     System.out.println("Email #" + (++ctr[0]) + ": " + name);
                     Stream<Pair<String, ConceptMap.Explainable>> explainable_relations = result.explainables().relations();
                     explainable_relations.forEach(explainable -> {
                         System.out.println("Explainable variable:" + explainable.first());
                         System.out.println("Explainable part of the query:" + explainable.second().conjunction());
-                        Stream<Explanation> explain_iterator = transaction.query().explain(explainable.second());
+                        Stream<Explanation> explain_iterator = tx.query().explain(explainable.second());
                         explain_iterator.forEach(explanation -> {
                             System.out.println("Rule: " + explanation.rule().getLabel());
                             System.out.println("  Condition: " + explanation.rule().getWhen().toString());
