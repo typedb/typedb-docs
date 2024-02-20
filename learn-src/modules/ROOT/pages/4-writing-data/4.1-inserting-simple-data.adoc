@@ -35,7 +35,6 @@ Insert a new `promotion` entity with the following attributes:
 * A `name` with value `"Spring Sale 2024"`.
 * A `start-timestamp` with value `2024-03-15T00:00:00`.
 * An `end-timestamp` with value `2024-03-31T23:59:59`.
-* A `discount` with value `0.15`.
 
 .Sample solution
 [%collapsible]
@@ -46,8 +45,7 @@ insert
 $spring-sale isa promotion,
     has name "Spring Sale 2024",
     has start-timestamp 2024-03-15T00:00:00,
-    has end-timestamp 2024-03-31T23:59:59,
-    has discount 0.15;
+    has end-timestamp 2024-03-31T23:59:59;
 ----
 =====
 
@@ -69,6 +67,8 @@ $frankenstein isa paperback,
     has isbn-13 "9780486282114",
     has title "Frankenstein",
     has page-count 166,
+    has genre "fiction",
+    has genre "horror",
     has price 5.79,
     has isbn-10 "0486282112";
 $shelley isa contributor,
@@ -80,6 +80,8 @@ $publication isa publication,
 (work: $frankenstein, author: $shelley) isa authoring;
 (published: $frankenstein, publisher: $dover, publication: $publication) isa publishing;
 ----
+
+Notice that we have given the book two `genre` attributes! This is perfectly permissible, and in fact all attributes in TypeDB are *multivalued* by default, allowing an entity or relation to own any number of attributes of the same type, as long as they each have different values.
 
 [#_exercise_4_1_2]
 .Exercise
