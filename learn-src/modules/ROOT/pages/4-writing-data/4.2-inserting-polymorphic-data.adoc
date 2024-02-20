@@ -80,12 +80,12 @@ In addition to inferring types of referenced data, TypeDB is able to infer the r
 [,typeql]
 ----
 match
-$jordan isa user, has id "U0013";
+$user-13 isa user, has id "u0013";
 $frankenstein isa book, has isbn-13 "9780486282114";
 insert
 $review isa review, has score 8;
 ($review, $frankenstein) isa rating;
-($review, $jordan) isa action-execution,
+($review, $user-13) isa action-execution,
     has timestamp 2024-03-19T03:32:00.073;
 ----
 
