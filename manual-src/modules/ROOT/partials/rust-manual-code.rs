@@ -356,12 +356,8 @@ fn main() -> Result<(), Error> {
             let session = Session::new(db, SessionType::Data)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                let users = transaction
-                    .concept()
-                    .get_entity_type("user".to_owned())
-                    .resolve()?
-                    .unwrap()
-                    .get_instances(&transaction, Transitivity::Transitive)?;
+                let user_type = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap();
+                let users = user_type.get_instances(&transaction, Transitivity::Transitive)?;
                 for user in users {
                     let user = user?;
                     println!("User:");
@@ -419,7 +415,6 @@ fn main() -> Result<(), Error> {
                     for (var, explainable) in explainable_relations {
                         println!("{}", var);
                         println!("{}", explainable.conjunction);
-
                         let explain_iterator = transaction.query().explain(&explainable)?;
                         for explanation in explain_iterator {
                             let exp = explanation?;
