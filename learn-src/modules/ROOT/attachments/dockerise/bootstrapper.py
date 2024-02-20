@@ -26,7 +26,7 @@ def http_get(url):
     if resp.status_code == 200:
         return resp.text
     else:
-        raise TypeDBBootstrapperException("Could not download sample.yml from: ", url)
+        raise TypeDBBootstrapperException("Could not download sample.yml from: " + url)
 
 def download_to_file(url, filepath):
     content = http_get(url)
@@ -87,6 +87,7 @@ def main():
         if config['bootstrapper-version'] != BOOTSTRAPPER_VERSION:
             raise TypeDBBootstrapperException("This bootstrapper is outdated and will not run. Please update to version: " + config['boostrapper-version'])
         if args.dataset_root is not None: config['dataset-root'] = args.dataset_root
+
         install_typedb(config['typedb-version'])
         with start_typedb() as typedb_process:
             try:
@@ -96,7 +97,11 @@ def main():
                 typedb_process.wait()
         print("Bootstrapping complete!")
     except Exception as e:
-        print("Error during bootstrapping: " + str(e))
-        raise e
+        print("Error during bootstrapping. Run with environment variable DEBUG_BOOTSTRAPPER=True for subcommand output")
+
+        if PRINT_DEBUG: raise e
+        else:
+            print(str(e))
+            quit(1)
 
 if __name__ == "__main__": main()
