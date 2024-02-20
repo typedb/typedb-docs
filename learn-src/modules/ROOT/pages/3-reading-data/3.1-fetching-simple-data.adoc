@@ -31,12 +31,14 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 {
     "book": {
         "attribute": [
-            { "value": "Great Discoveries in Medicine", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 18, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0500291225", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 12.050000190734863, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 352, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+            { "value": 1, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 240, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9780393045215", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 21.600000381469727, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "history", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "0393045218", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
         ],
         "type": { "label": "paperback", "root": "entity" }
     }
@@ -44,12 +46,14 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 {
     "book": {
         "attribute": [
-            { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 11, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 24.469999313354492, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 416, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+            { "value": 12, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 820, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 34.97999954223633, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "history", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
         ],
         "type": { "label": "paperback", "root": "entity" }
     }
@@ -57,38 +61,14 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 {
     "book": {
         "attribute": [
-            { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 15, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9781489962287", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "148996228X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 47.16999816894531, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 199, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "attribute": [
-            { "value": "Pride and Prejudice", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 15, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9780553212150", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "055321215X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 17.989999771118164, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 295, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "attribute": [
-            { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
             { "value": 16, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 281, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
             { "value": "9780446310789", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0446310786", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
             { "value": 21.639999389648438, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 281, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+            { "value": "fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "historical fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "0446310786", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
         ],
         "type": { "label": "paperback", "root": "entity" }
     }
@@ -96,11 +76,13 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 {
     "book": {
         "attribute": [
-            { "value": "Business Secrets of The Pharoahs", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
             { "value": 8, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 260, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
             { "value": "9798691153570", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
             { "value": 11.989999771118164, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 260, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+            { "value": "business", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "Business Secrets of The Pharoahs", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
         ],
         "type": { "label": "paperback", "root": "entity" }
     }
@@ -108,12 +90,14 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 {
     "book": {
         "attribute": [
-            { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 1, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9780393045215", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0393045218", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 21.600000381469727, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 240, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+            { "value": 11, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 416, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 24.469999313354492, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "art", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
         ],
         "type": { "label": "paperback", "root": "entity" }
     }
@@ -121,12 +105,14 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 {
     "book": {
         "attribute": [
-            { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 12, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 34.97999954223633, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 820, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+            { "value": 15, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 295, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9780553212150", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 17.989999771118164, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "historical fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "055321215X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "Pride and Prejudice", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
         ],
         "type": { "label": "paperback", "root": "entity" }
     }
@@ -134,38 +120,74 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 {
     "book": {
         "attribute": [
-            { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
+            { "value": 15, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 199, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9781489962287", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 47.16999816894531, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "technology", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "148996228X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
             { "value": 4, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 6.119999885559082, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 458, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "attribute": [
-            { "value": "The Hitchhiker's Guide to the Galaxy", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 9, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
-            { "value": "9780671461492", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0671461494", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
-            { "value": 91.47000122070312, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 215, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "attribute": [
-            { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } },
-            { "value": 4, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 160, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
             { "value": "9781859840665", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "1859840663", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
             { "value": 14.520000457763672, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
-            { "value": 160, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } }
+            { "value": "biography", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "1859840663", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": 18, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 352, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 12.050000190734863, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "history", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "0500291225", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "Great Discoveries in Medicine", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": 4, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 458, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 6.119999885559082, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "historical fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": 9, "value_type": "long", "type": { "label": "stock", "root": "attribute" } },
+            { "value": 215, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } },
+            { "value": "9780671461492", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
+            { "value": 91.47000122070312, "value_type": "double", "type": { "label": "price", "root": "attribute" } },
+            { "value": "fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "science fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "0671461494", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } },
+            { "value": "The Hitchhiker's Guide to the Galaxy", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
         ],
         "type": { "label": "paperback", "root": "entity" }
     }

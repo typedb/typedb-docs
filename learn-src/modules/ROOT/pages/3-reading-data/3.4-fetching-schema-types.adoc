@@ -423,9 +423,9 @@ $attribute;
 
 [,json]
 ----
-{ "attribute": { "label": "discount", "root": "attribute" } }
 { "attribute": { "label": "start-timestamp", "root": "attribute" } }
 { "attribute": { "label": "end-timestamp", "root": "attribute" } }
+{ "attribute": { "label": "name", "root": "attribute" } }
 ----
 
 To query ownerships, we use the `owns` keyword. As with the `sub` keyword, we can invert the intent of the statement by variablizing the object instead of the subject. We do this in the next query to retrieve the list of types that own the attribute type `isbn-13`.

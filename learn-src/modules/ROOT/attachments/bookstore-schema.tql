@@ -23,6 +23,7 @@ book sub entity,
     owns isbn-10 @unique,
     owns title,
     owns page-count,
+    owns genre,
     owns stock,
     owns price,
     plays contribution:work,
@@ -76,10 +77,9 @@ order sub entity,
     plays delivery:delivered;
 
 promotion sub entity,
-    owns name,
+    owns name @key,
     owns start-timestamp,
     owns end-timestamp,
-    owns discount,
     plays promotion-inclusion:promotion;
 
 review sub entity,
@@ -129,7 +129,8 @@ publishing sub relation,
 
 promotion-inclusion sub relation,
     relates promotion,
-    relates included;
+    relates included,
+    owns discount;
 
 order-line sub relation,
     relates order,
@@ -166,6 +167,7 @@ isbn-13 sub isbn;
 isbn-10 sub isbn;
 title sub attribute, value string;
 page-count sub attribute, value long;
+genre sub attribute, value string;
 stock sub attribute, value long;
 price sub attribute, value double;
 discount sub attribute, value double;
@@ -234,8 +236,8 @@ rule order-line-total-retail-price:
         $line ($order, $item) isa order-line;
         not {
             ($promotion, $item) isa promotion-inclusion;
-            $promotion has start-timestamp < $order-time,
-                has end-timestamp > $order-time;
+            $promotion has start-timestamp <= $order-time,
+                has end-timestamp >= $order-time;
         };
         $item has price $retail-price;
         $line has quantity $quantity;
@@ -248,15 +250,13 @@ rule order-line-total-discounted-price:
     when {
         ($order) isa action-execution, has timestamp $order-time;
         $line ($order, $item) isa order-line;
-        ($best-promotion, $item) isa promotion-inclusion;
-        $best-promotion has discount $best-discount,
-            has start-timestamp < $order-time,
-            has end-timestamp > $order-time;
+        ($best-promotion, $item) isa promotion-inclusion, has discount $best-discount;
+        $best-promotion has start-timestamp <= $order-time,
+            has end-timestamp >= $order-time;
         not {
-            ($other-promotion, $item) isa promotion-inclusion;
-            $other-promotion has discount > $best-discount,
-                has start-timestamp < $order-time,
-                has end-timestamp > $order-time;
+            ($other-promotion, $item) isa promotion-inclusion, has discount > $best-discount;
+            $other-promotion has start-timestamp <= $order-time,
+                has end-timestamp >= $order-time;
         };
         $item has price $retail-price;
         ?discounted-price = $retail-price * (1 - $best-discount);
