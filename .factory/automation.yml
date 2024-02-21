@@ -5,6 +5,24 @@ config:
 
 build:
   correctness:
+    test-sample-bootstrapper:
+      filter:
+        owner: vaticle
+        branch: development
+      image: vaticle-ubuntu-21.04
+      type: foreground
+      command: |
+        sudo apt-get update -y
+        sudo apt-get install docker
+        sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+        sudo chmod g+rwx "$HOME/.docker" -R
+        sudo service docker start
+        docker build  . -f typedb-samples-docker/Dockerfile  --tag test-typedb-samples
+        docker run -p 1729:1729   -e BOOTSTRAPPER_VERBOSE=true -e BOOTSTRAPPER_CONFIG=/typedb-samples/__test/config.yml -e BOOTSTRAPPER_DATASET_ROOT=/typedb-samples/__test --name test-typedb-samples-container test-typedb-samples &
+        sleep 30
+        docker exec test-typedb-samples-container typedb console --command="database list"  && export TEST_SUCCESS=0 || export TEST_SUCCESS=1 
+        docker stop test-typedb-samples-container; docker rm test-typedb-samples-container
+        exit $TEST_SUCCESS
     deploy-development:
       filter:
         owner: vaticle
