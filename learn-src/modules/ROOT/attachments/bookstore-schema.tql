@@ -77,12 +77,14 @@ order sub entity,
     plays delivery:delivered;
 
 promotion sub entity,
+    owns code @key,
     owns name,
     owns start-timestamp,
     owns end-timestamp,
     plays promotion-inclusion:promotion;
 
 review sub entity,
+    owns id @key,
     owns score,
     owns verified,
     plays rating:review,
@@ -172,6 +174,7 @@ stock sub attribute, value long;
 price sub attribute, value double;
 discount sub attribute, value double;
 id sub attribute, value string;
+code sub attribute, value string;
 name sub attribute, value string;
 birth-date sub attribute, value datetime;
 street sub attribute, value string;
