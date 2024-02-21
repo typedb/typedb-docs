@@ -6,7 +6,7 @@ import yaml
 
 from time import sleep
 
-BOOTSTRAPPER_VERSION = "1.0.0"  # Will fail if the config.yml is of a different version.
+BOOTSTRAPPER_VERSION = "0.0.3"  # Will fail if the config.yml is of a different version.
 DEFAULT_CONFIG_YML = "https://raw.githubusercontent.com/vaticle/typedb-docs/master/typedb-samples-docker/config.yml"
 BOOTSTRAPPER_PORT = 1730 # during dataset loading, typedb runs on a different port to to remain unreachable.
 
@@ -98,7 +98,7 @@ def main():
     try:
         config = load_config(DEFAULT_CONFIG_YML)
         if config['bootstrapper-version'] != BOOTSTRAPPER_VERSION:
-            raise TypeDBBootstrapperException("This bootstrapper is outdated and will not run. Please update to version: " + config['boostrapper-version'])
+            raise TypeDBBootstrapperException("This bootstrapper is outdated and will not run. Please update to version: " + config['bootstrapper-version'])
         install_typedb(config['typedb-version'])
         with start_typedb() as typedb_process:
             try:
