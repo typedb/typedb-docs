@@ -13,7 +13,7 @@ build:
       type: foreground
       command: |
         sudo apt-get update -y
-        sudo apt-get install docker
+        sudo apt-get install -y docker
         sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
         sudo chmod g+rwx "$HOME/.docker" -R
         sudo service docker start
