@@ -7,8 +7,7 @@ import yaml
 from time import sleep
 
 BOOTSTRAPPER_VERSION = "1.0.0"  # Will fail if the config.yml is of a different version.
-# DEFAULT_CONFIG_YML = "https://raw.githubusercontent.com/vaticle/typedb-docs/master/learn-src/modules/ROOT/attachments/config.yml"
-DEFAULT_CONFIG_YML = "https://raw.githubusercontent.com/krishnangovindraj/typedb-docs/dockerised-samples/learn-src/modules/ROOT/attachments/config.yml"
+DEFAULT_CONFIG_YML = "https://raw.githubusercontent.com/vaticle/typedb-docs/master/typedb-samples-docker/config.yml"
 BOOTSTRAPPER_PORT = 1730 # during dataset loading, typedb runs on a different port to to remain unreachable.
 
 VERBOSE = os.environ.get("BOOTSTRAPPER_VERBOSE", "false").lower() != "false"
@@ -18,7 +17,6 @@ DATASET_ROOT_OVERRIDE = os.environ.get("BOOTSTRAPPER_DATASET_ROOT", None)
 
 class TypeDBBootstrapperException(Exception):
     pass
-
 
 def _is_url(s):
     return s.startswith("https://") or s.startswith("http://")
@@ -43,7 +41,7 @@ def _run_cmd(cmd, silence_errors=False):
 def load_config(config_path):
     if CONFIG_OVERRIDE is not None:
         print("BOOTSTRAPPER_CONFIG was defined. Loading config from %s"%CONFIG_OVERRIDE)
-        raw_yaml = _http_get(config_path) if _is_url(config_path) else open(CONFIG_OVERRIDE, 'r').read()
+        raw_yaml = _http_get(CONFIG_OVERRIDE) if _is_url(CONFIG_OVERRIDE) else open(CONFIG_OVERRIDE, 'r').read()
     else:
         print("Loading config from %s"%config_path)
         raw_yaml = _http_get(config_path)
@@ -101,7 +99,7 @@ def main():
         config = load_config(DEFAULT_CONFIG_YML)
         if config['bootstrapper-version'] != BOOTSTRAPPER_VERSION:
             raise TypeDBBootstrapperException("This bootstrapper is outdated and will not run. Please update to version: " + config['boostrapper-version'])
-        # install_typedb(config['typedb-version'])
+        install_typedb(config['typedb-version'])
         with start_typedb() as typedb_process:
             try:
                 install_datasets(config['dataset-root'], config['datasets'])
