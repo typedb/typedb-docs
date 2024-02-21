@@ -6,7 +6,7 @@ import yaml
 
 from time import sleep
 
-BOOTSTRAPPER_VERSION = "0.0.3"  # Will fail if the config.yml is of a different version.
+BOOTSTRAPPER_VERSION = "1.0.0"  # Will fail if the config.yml is of a different version.
 DEFAULT_CONFIG_YML = "https://raw.githubusercontent.com/vaticle/typedb-docs/master/typedb-samples-docker/config.yml"
 BOOTSTRAPPER_PORT = 1730 # during dataset loading, typedb runs on a different port to to remain unreachable.
 
