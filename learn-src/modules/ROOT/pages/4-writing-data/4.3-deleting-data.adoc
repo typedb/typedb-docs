@@ -1,8 +1,10 @@
 = Lesson 4.3: Deleting data
 
-== Deleting attributes
+== The Delete query
 
 To delete data from the database, we use a *Delete query*. Delete queries always consist of a `match` clause followed by a `delete` clause. The way we write Delete queries depends on if we want to delete an entity, relation, or attribute. To begin with, we'll look at an example of an attribute.
+
+== Deleting attributes
 
 It turns out that _Fundamentals of Data Engineering_ has been mistakenly assigned the genre "children's fiction" (in addition to "nonfiction" and "technology"). We should probably change that before there are too many upset children, which we'll do with the following Delete query. To run a Delete query, use a *data* session and *write* transaction, *run* image:learn::studio-icons/run.png[] the query, and *commit* image:learn::studio-icons/commit.png[] the transaction.
 
